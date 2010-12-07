@@ -74,7 +74,7 @@ def get_resp_list(response, type):
     # in this case, we only care about the first returned item in this list
     if (respJson.__contains__("searchResult")):
         sr = respJson.get("searchResult")
-        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + "in:\n" + jstr(sr) 
+        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + " in:\n" + jstr(sr) 
         items = sr.get(plural(type)).get(type)
         if isinstance(items, list):
             resp_list = items

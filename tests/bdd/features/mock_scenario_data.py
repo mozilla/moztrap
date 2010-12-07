@@ -659,9 +659,14 @@ def get_scenario_data(scenarioName):
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
+                {"comment": "get id of test case", 
+                 "request": "/api/v1/testcases?name=Trans-Universe%20Communication",             
+                 "response": as_resp(as_sr(get_returned_test_case(["Trans-Universe Communication"]))),  
+                 "status": "200" 
+                 },
                 {"comment": "check now environment type exists", 
                  "request": "/api/v1/testcases/123/attachments",             
-                 "response": as_resp(as_sr(get_returned_attachments(["Selectric251"]))),
+                 "response": as_resp(as_sr(get_returned_attachments(["Selectric251.txt"]))),
                  "status": "200"
                  }
             ]

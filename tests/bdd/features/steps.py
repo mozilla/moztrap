@@ -406,6 +406,29 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     shouldFind = (haveness == "has")
     assert_equal(found, shouldFind, "looking for environment of " + environment)
 
+
+@step(u'test case with name "(.*)" (has|does not have) attachment with filename "(.*)"')
+def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
+    # fetch the test case's resource identity
+    test_case_id = get_test_case_resid(test_case)
+    
+    
+#    if haveness.strip() == "does not have":
+
+    world.conn.request("GET", "/api/v1/testcases/" + test_case_id + "/attachments")
+    response = world.conn.getresponse()
+    assert_equal(response.status, 200, "Fetched environments")
+
+    jsonList = get_resp_list(response, "attachment")
+
+    found = False
+    for item in jsonList:
+        if (item.get("fileName") == attachment):
+            found = True
+    
+    shouldFind = (haveness == "has")
+    assert_equal(found, shouldFind, "looking for attachment of " + attachment + " in:\n" + jstr(jsonList))
+
 '''
 ######################################################################
 
@@ -568,9 +591,6 @@ def upload_attachment_foo_to_test_case_bar(step, attachment, test_case):
 
 
 
-@step(u'test case with name "(.*)" has attachment with filename "(.*)"')
-def then_test_case_with_name_group1_has_attachment_with_filename_group2(step, group1, group2):
-    assert False, 'This step must be implemented'
 
 
 
