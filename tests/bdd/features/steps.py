@@ -4,7 +4,7 @@ Created on Oct 7, 2010
 @author: camerondawson
 '''
 from lettuce import *
-from numpy.ma.testutils import *
+#from numpy.ma.testutils import *
 from step_helper import *
 from step_helper import jstr
 import httplib

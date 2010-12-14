@@ -13,4 +13,5 @@ world.port = 8080
 # for the rails app
 #world.port = 3000
 
-world.testfile_dir = "/Users/camerondawson/gitspace/tcmtests/TcmTests/tests/src/data/"
+#world.testfile_dir = "/Users/camerondawson/gitspace/tcmtests/TcmTests/tests/src/data/"
+world.testfile_dir = "./data/"
