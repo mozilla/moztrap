@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BIN=`dirname $0`
+SCRIPT=`bin/abspath $0`
+BIN=`dirname $SCRIPT`
 BASE=`dirname $BIN`
 REQS=$BASE/requirements
 DIST=$REQS/dist

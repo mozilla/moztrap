@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+import os.path
+import sys
+
+for arg in sys.argv[1:]:
+    print os.path.abspath(arg)
