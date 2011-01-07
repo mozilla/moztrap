@@ -1,17 +1,44 @@
-#!/bin/bash
+#!/usr/bin/env python
+"""
+Install Python requirements for this project from source distribution tarballs
+in requirements/dist, based on requirements files in requirements/.
 
-SCRIPT=`bin/abspath $0`
-BIN=`dirname $SCRIPT`
-BASE=`dirname $BIN`
-REQS=$BASE/requirements
-DIST=$REQS/dist
+Usage: %s [install_type]
 
-if [ -n "$1" ]; then
-    TYPE=$1
-else
-    TYPE=base
-fi
+install_type, if present should be one of "dev" or "prod" (defaults to "dev").
 
-CMD="pip install --no-index -f file://$DIST -r $REQS/$TYPE.txt"
-echo "Running '$CMD'"
-$CMD
+"""
+import os.path
+import subprocess
+import sys
+
+
+def main(base_dir, argv):
+    reqs_dir = os.path.join(base_dir, "requirements")
+    dist_dir = os.path.join(reqs_dir, "dist")
+
+    install_type = "dev"
+
+    if len(argv[1:]):
+        if argv[1] in ["-h", "-?", "--help"]:
+            print __doc__ % argv[0]
+            return 0
+        install_type = argv[1]
+
+    reqs_file = os.path.join(reqs_dir, "%s.txt" % install_type)
+    if not os.path.isfile(reqs_file):
+        print "Requirements file %s does not exist or is not a file." % reqs_file
+        print
+        return 1
+
+    args = ["pip", "install", "--no-index",
+            "-f", "file://%s" % dist_dir, "-r", reqs_file]
+    print "Running '%s'" % " ".join(args)
+    subprocess.call(args)
+
+    return 0
+
+
+if __name__ == "__main__":
+    script = os.path.realpath(os.path.abspath(__file__))
+    sys.exit(main(os.path.dirname(os.path.dirname(script)), sys.argv))
