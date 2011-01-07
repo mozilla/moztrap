@@ -1,0 +1,17 @@
+#!/bin/bash
+
+SCRIPT=$(readlink -f $0)
+BIN=`dirname $SCRIPT`
+BASE=`dirname $BIN`
+REQS=$BASE/requirements
+DIST=$REQS/dist
+
+if [ -n "$1" ]; then
+    TYPE=$1
+else
+    TYPE=base
+fi
+
+CMD="pip install --no-index -f file://$DIST -r $REQS/$TYPE.txt"
+echo "Running '$CMD'"
+$CMD

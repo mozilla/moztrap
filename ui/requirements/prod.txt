@@ -1,0 +1,3 @@
+-r base.txt
+
+python-memcached==1.47

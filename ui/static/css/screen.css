@@ -1,0 +1,186 @@
+@charset "UTF-8";
+/* Reset --------------------------------------------------------------*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+
+body { line-height: 1; color: black; background: white; }
+
+ol, ul { list-style: none; }
+
+table { border-collapse: separate; border-spacing: 0; vertical-align: middle; }
+
+caption, th, td { text-align: left; font-weight: normal; vertical-align: middle; }
+
+q, blockquote { quotes: "" ""; }
+q:before, q:after, blockquote:before, blockquote:after { content: ""; }
+
+a img { border: none; }
+
+/* HTML5 Reset --------------------------------------------------------------*/
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary { margin: 0; padding: 0; border: 0; outline: 0; display: block; }
+
+/* Typography -------------------------------------------------------------- */
+/* The following classes are for use with @extend. */
+html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+
+.serif, body { font-family: Cambria, Georgia, serif; }
+
+.sans { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
+
+.caps, .allcaps, h1, h2, caption, .smallcaps, h4 { letter-spacing: 0.1em; }
+
+.allcaps, h1, h2, caption { text-transform: uppercase; }
+
+.smallcaps, h4 { font-variant: small-caps; }
+
+/* Body -------------------------------------------------------------- */
+body { color: #4c4c4c; }
+
+/* Selected Text -------------------------------------------------------------- */
+/* -moz- must be declared separately */
+::-moz-selection { color: white; background: #005498; text-shadow: none; }
+
+::selection { color: white; background: #005498; text-shadow: none; }
+
+/* Links -------------------------------------------------------------- */
+a:link, a:visited { color: #005498; }
+a:link, a:visited, a:hover, a:active { outline: none; }
+a:focus, a:hover, a:active { color: #984400; text-decoration: none; }
+a:focus { outline: thin dotted; }
+
+/* Headings -------------------------------------------------------------- */
+h2, h3, h4, h5, h6 { margin-bottom: 1.5em; }
+
+h1 { font-size: 1.313em; line-height: 1.143em; margin-bottom: 1.143em; }
+
+h3 { font-weight: bold; }
+
+h4 { text-transform: lowercase; }
+
+h5, h6 { font-style: italic; }
+
+/* Inline -------------------------------------------------------------- */
+cite, em, dfn, address, i { font-style: italic; }
+
+strong, dfn, b { font-weight: bold; }
+
+sup, sub { font-size: smaller; line-height: 0; }
+
+sup { vertical-align: super; }
+
+sub { vertical-align: sub; }
+
+abbr, acronym { border-bottom: 1px dotted; cursor: help; }
+
+ins { text-decoration: underline; }
+
+del { text-decoration: line-through; }
+
+mark { background: #ffff99; background-color: rgba(255, 255, 0, 0.5); text-shadow: none; }
+
+small { font-size: 0.75em; line-height: 2em; }
+
+q { font-style: italic; }
+q em { font-style: normal; }
+
+/* Block -------------------------------------------------------------- */
+p { margin-bottom: 1.5em; }
+
+pre { margin: 1.5em; white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word; }
+
+blockquote { margin: 1.5em; font-style: italic; }
+
+/* Replaced -------------------------------------------------------------- */
+img { vertical-align: text-bottom; max-width: 100%; -ms-interpolation-mode: bicubic; }
+
+/* Lists -------------------------------------------------------------- */
+ol, ul, dl { margin-bottom: 1.5em; margin-left: 1.5em; }
+
+ol { list-style: decimal; }
+
+ul { list-style: disc; }
+li ul { list-style-type: circle; }
+
+dt { margin-top: 1.5em; font-style: italic; }
+
+dd { padding-left: 1.5em; }
+
+/* Tables -------------------------------------------------------------- */
+/* tables still need 'cellspacing="0"' in the markup */
+table { margin-bottom: 1.5em; width: 100%; border-collapse: separate; border-spacing: 0; }
+
+table, td, th { vertical-align: top; }
+
+th, thead th { font-weight: bold; }
+
+th, td, caption { padding: 0.75em; text-align: left; font-weight: normal; }
+
+table, th { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; }
+
+tfoot { font-size: 0.875em; line-height: 1.714em; }
+
+/* Forms -------------------------------------------------------------- */
+fieldset { margin-bottom: 1.5em; border-style: solid; border-width: 0.063em; padding: 1.438em; }
+
+legend { font-size: 1.125em; line-height: 1.333em; font-weight: bold; }
+
+input[type="radio"], input[type="checkbox"] { vertical-align: baseline; }
+
+label, input[type=button], input[type=submit], button { cursor: pointer; }
+
+label { font-weight: bold; }
+
+input, button, textarea, select, optgroup { margin: 0; padding: 0; border: 0; outline: 0; }
+
+.textinput, textarea, input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=date], input[type=datetime], input[type=datetime-local], input[type=month], input[type=week], input[type=time], input[type=number], input[type=range], input[type=search], input[type=color] { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 0.875em; line-height: 1.714em; border-style: solid; border-width: 0.071em; padding: 0.357em; margin-bottom: 0.75em; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; width: 100%; border-color: #4c4c4c; height: 2.571em; }
+
+input:invalid, textarea:invalid { -moz-border-radius: 1px; -webkit-border-radius: 1px; -o-border-radius: 1px; -ms-border-radius: 1px; -khtml-border-radius: 1px; border-radius: 1px; -moz-box-shadow: red 0 0 0.25em 0; -webkit-box-shadow: red 0 0 0.25em 0; -o-box-shadow: red 0 0 0.25em 0; box-shadow: red 0 0 0.25em 0; }
+.no-boxshadow input:invalid, .no-boxshadow textarea:invalid { background-color: #f0dddd; }
+
+textarea { height: 11.143em; vertical-align: text-bottom; }
+
+input[type=search] { -webkit-appearance: none; }
+input[type=search]::-webkit-search-decoration { display: none; }
+
+button { width: auto; overflow: visible; }
+
+/* Mixins are slightly modified from Benjamin Doherty's first implementations: http://gist.github.com/377912 rgba-background mixin can now be passed an option $dir variable
+*/
+/* Helpers ------------------------------------------------------------------- */
+.full, header[role="banner"], div[role="main"], footer[role="contentinfo"] { clear: both; margin-right: 1.639%; margin-left: 1.639%; *zoom: 1; }
+.full:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+/* left and right floats for dynamic content */
+.left { display: inline; float: left; margin-right: 1em; margin-bottom: 0.5em; }
+
+.right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
+
+/* Wireframe ----------------------------------------------------------------- */
+body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 61em; max-width: 100%; }
+body > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+header[role="banner"] { padding-top: 1.5em; }
+header[role="banner"] h1 { margin: 0; }
+
+div[role="main"] { *zoom: 1; border-top-style: dotted; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: dotted; border-bottom-width: 0.063em; padding-bottom: 1.438em; }
+div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+footer[role="contentinfo"] { font-size: 0.75em; line-height: 2em; margin-bottom: 2em; font-style: italic; }
+footer[role="contentinfo"] .author, footer[role="contentinfo"] .credit { display: inline; float: left; width: 49.153%; margin-right: 1.695%; }
+footer[role="contentinfo"] .street-address { display: inline; }
+footer[role="contentinfo"] .street-address:after { content: ", "; }
+footer[role="contentinfo"] .credit { display: inline; float: right; margin-right: 0; #margin-left: -1em; text-align: right; }
+footer[role="contentinfo"] small { font-size: 1em; }
+
+a { text-decoration: none; }
+
+/* Layout -------------------------------------------------------------- */
+body { font-size: 100%; line-height: 1.5em; }
+
+html > body { font-size: 16px; }
+
+.container { *zoom: 1; margin-left: auto; margin-right: auto; width: 61em; max-width: 100%; background-image: url('../images/grid.png?1271752986'); background-repeat: repeat; background-position: 1em 0; }
+.container:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+/* Styles -------------------------------------------------------------- */
