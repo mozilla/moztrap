@@ -1,7 +1,6 @@
 #!/bin/bash
 
-SCRIPT=$(readlink -f $0)
-BIN=`dirname $SCRIPT`
+BIN=`dirname $0`
 BASE=`dirname $BIN`
 REQS=$BASE/requirements
 DIST=$REQS/dist
