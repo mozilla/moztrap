@@ -1,11 +1,7 @@
 <!DOCTYPE html>
-{% load compress %}
+<!--[if lt IE 7 ]><html class="no-js ie6" lang="en" dir="ltr"><![endif]--><!--[if IE 7 ]><html class="no-js ie7" lang="en" dir="ltr"><![endif]--><!--[if IE 8 ]><html class="no-js ie8" lang="en" dir="ltr"><![endif]--><!--[if IE 9 ]><html class="no-js ie9" lang="en" dir="ltr"><![endif]--><!--[if (gt IE 9)|!(IE)]><!--><html class="no-js" lang="en" dir="ltr"><!--<![endif]-->
 
-<!--[if lt IE 7 ]>              <html class="no-js ie6" lang="en" dir="ltr">   <![endif]-->
-<!--[if IE 7 ]>                 <html class="no-js ie7" lang="en" dir="ltr">   <![endif]-->
-<!--[if IE 8 ]>                 <html class="no-js ie8" lang="en" dir="ltr">   <![endif]-->
-<!--[if IE 9 ]>                 <html class="no-js ie9" lang="en" dir="ltr">   <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->  <html class="no-js" lang="en" dir="ltr">       <!--<![endif]-->
+{% load compress %}
 
 <head>
   <meta charset="utf-8" />
@@ -30,12 +26,6 @@
 	<!-- favicon.ico and apple-touch-icon.png -->
   <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" />
 	<link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png" />
-
-  <!--  iPhone/iPad/Opera Mobile Viewport Fix:
-  device-width : Make sure webpages occupy full width of the screen in its current orientation (portrait or landscape)
-  initial-scale = 1.0 retains dimensions of the page instead of zooming out if page height is larger than device height
-  maximum-scale = 1.0 retains dimensions of the page instead of zooming in if page width is smaller than device width   -->
-  <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
 
   <!-- Styles -->
   <!--[if !IE 6]><!-->
@@ -70,8 +60,33 @@
 {% block page %}
 
   <header role="banner">
-    <h1><a rel="home">TCM</a></h1>
+    <h1><a href="/" rel="home">TCM</a></h1>
   </header>
+  
+  <nav role="navigation">
+    <ul>
+      <li><a href="#">Run Tests</a></li>
+      <li><a href="#">Manage</a></li>
+      <li><a href="# ">Results</a></li>
+    </ul>
+  </nav>
+  
+  <nav class="meta">
+    <ul>
+      <li>Welcome Carl [<a href="#">Sign Out</a>]</li>      
+      <li><a href="#">Account Settings</a></li>
+      <li><a href="#">Help</a></li>
+    </ul>
+  </nav>
+  
+  <nav class="crumb">
+    <ol>
+      <li><a href="#">crumb</a></li>
+      <li><a href="#">trail</a></li>
+      <li><a href="#">to</a></li>
+      <li>here</li>
+    </ol>
+  </nav>
 
   <div role="main">
     {% block content %}
@@ -84,7 +99,7 @@
       <small>copyright &copy; 2011</small>
       <strong class="fn org">Mozilla</strong>
       <div class="adr">
-        <div class="street-address">650 Castro St, Suite 300</div>
+        <span class="street-address">650 Castro St, Suite 300</span>,
         <span class="locality">Mountain View</span>,
         <span class="region">CA</span>
         <span class="postal-code">94041-2021</span>

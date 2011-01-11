@@ -17,11 +17,91 @@ $legacy-support-for-ie6 : false
 // or @extend it to apply multiple containers on your site.
 .container
   +container
-  +show-grid("grid.png")
+  //+show-grid("grid.png")
 
-// show-grid loads a 64+16x24 grid image by default
-// For other grid settings, run `compass grid-img 30+10x20`
-// Where 30 is the column width, 10 is the gutter width, 
-// and 20 is the (optional) line-height.
+body > div
+  @extend .container
+  +padding-leader(.5)
+
+header[role="banner"]
+  +columns(3)
+  +alpha
+  h1
+    margin: 0
+  a
+    #{$link}
+      +padding-leader(.5,21px)
+      +padding-trailer(.5,21px)
+      display: block
+      color: $base
+    #{$focus}
+      color: $accent
+      
+nav[role="navigation"]
+  +columns(12)
+  +padding-leader(.5)
+  li
+    +float(left)
+  a
+    #{$link}
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +hpadding(1em)
+      +border-radius(.25em)
+    #{$focus}, &.active
+      background: rgba($base,.25)
+
+nav.meta
+  +columns(9)
+  +omega
+  +padding-leader(.5)
+  text-align: right
+  ul
+    margin-top: -2px
+  li
+    +inline-block
+    +adjust-font-size-to(14px)
+    padding: 0 .5em
+    border-right: 1px solid
+    &:last-child
+      border: 0
+
+nav.crumb
+  @extend .full
+  +h-borders(1px,.25)
+  border-color: #ccc
+  ol
+    margin-top: -2px
+  li
+    +inline-block
+    &::after
+      content: " »"
+    &:last-child::after
+      content: ""
+      
+
+div[role="main"]
+  @extend .full
+  +pie-clearfix
+  +padding-leader
+  +trailing-border(1px,1)
+  border-color: #ccc
+
+footer[role="contentinfo"]
+  @extend .full
+  +adjust-font-size-to(12px)
+  +trailer(1,12px)
+  font-style: italic
+  .author, .credit
+    +columns(6, 12)
+  .adr
+    display: inline
+    &::before
+      content: "| "
+  .credit
+    +omega(12)
+    text-align: right
+  small
+    font-size: 1em
 
 /* Styles --------------------------------------------------------------    

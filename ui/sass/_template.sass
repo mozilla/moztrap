@@ -1,11 +1,12 @@
 // Imports -------------------------------------------------------------------
-// @import lightbox
-// @import slideshow
-
-@import modernizr_mixins
 
 
 /* Helpers -------------------------------------------------------------------
+
+=hpadding($l,$r:$l)
+  padding:
+    left: $l
+    right: $r
 
 .full
   +full
@@ -24,44 +25,6 @@
   margin:
     left: 1em
     bottom: 0.5em
-
-
-/* Wireframe -----------------------------------------------------------------
-
-body > div
-  +container
-
-header[role="banner"]
-  @extend .full
-  +padding-leader(1)
-
-  h1
-    margin: 0
-
-div[role="main"]
-  @extend .full
-  +pie-clearfix
-  +h-borders(1px,1,$base-font-size,dotted)
-
-footer[role="contentinfo"]
-  @extend .full
-  +adjust-font-size-to(12px)
-  +trailer(1,12px)
-  font-style: italic
-  .author, .credit
-    +columns(6, 12)
-  .street-address
-    display: inline
-    &:after
-      content: ", "
-  .credit
-    +omega(12)
-    text-align: right
-  small
-    font-size: 1em
-
-a
-  text-decoration: none
 
 
 // Media Queries ---------------------------------------------------------------

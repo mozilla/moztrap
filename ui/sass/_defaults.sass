@@ -64,13 +64,17 @@ body
 
 /* Links --------------------------------------------------------------
 
+$link   :   "&:link, &:visited"
+$focus  :   "&:focus, &:hover, &:active"
+
 a
-  &:link, &:visited
+  #{$link}
     color: $alt
-  &:link, &:visited, &:hover, &:active
+    text-decoration: none
+  #{$link}, &:hover, &:active
     outline: none
-  &:focus, &:hover, &:active
-    color: complement($alt)
+  #{$focus}
+    color: $accent
     text-decoration: none
   &:focus
     outline: thin dotted
@@ -166,6 +170,10 @@ img
 
 /* Lists --------------------------------------------------------------
 
+=no-style-list
+  +no-bullets
+  +reset-box-model
+
 ol, ul, dl
   +trailer
   margin-left: $base-rhythm-unit
@@ -184,6 +192,10 @@ dt
   
 dd
   padding-left: $base-rhythm-unit
+  
+nav
+  ul, ol
+    +no-style-list
 
 /* Tables --------------------------------------------------------------
 /* tables still need 'cellspacing="0"' in the markup
