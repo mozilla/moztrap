@@ -149,6 +149,8 @@ textarea { height: 11.143em; vertical-align: text-bottom; }
 input[type=search] { -webkit-appearance: none; }
 input[type=search]::-webkit-search-decoration { display: none; }
 
+select { margin-bottom: 0.75em; border: 1px solid #cccccc; font: inherit; }
+
 .form-actions { clear: both; text-align: right; }
 
 button { margin: 0; padding: 0; border: 0; outline: 0; display: inline; width: auto; overflow: visible; background: none; color: inherit; font: inherit; line-height: inherit; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; border-style: solid; border-width: 0.063em; padding: 0.313em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background: #ccffcc; vertical-align: baseline; text-transform: uppercase; letter-spacing: 0.01em; }
@@ -165,6 +167,8 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 .full, nav.crumb, div[role="main"], footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
 .full:after, nav.crumb:after, div[role="main"]:after, footer[role="contentinfo"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
+.simple, #login, #register, #products, #environment { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
+
 /* left and right floats for dynamic content */
 .left { display: inline; float: left; margin-right: 1em; margin-bottom: 0.5em; }
 
@@ -175,7 +179,7 @@ body { font-size: 100%; line-height: 1.5em; }
 
 html > body { font-size: 16px; }
 
-.container, body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 85em; max-width: 100%; }
+.container, body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 85em; max-width: 100%; min-width: 750px; }
 .container:after, body > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
 body > div { padding-top: 0.375em; }
@@ -200,6 +204,7 @@ nav.crumb li { display: -moz-inline-box; -moz-box-orient: vertical; display: inl
 nav.crumb li { *display: inline; }
 nav.crumb li::after { content: " »"; }
 nav.crumb li:last-child::after { content: ""; }
+nav.crumb li:last-child a { color: inherit; }
 
 div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
@@ -212,15 +217,20 @@ footer[role="contentinfo"] .credit { display: inline; float: right; margin-right
 footer[role="contentinfo"] small { font-size: 1em; }
 
 /* login -------------------------------------------------------------- */
-#login { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
 #login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; }
 #login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
 #login h2 { margin: 0; }
 #login form { clear: both; }
 
 /* register -------------------------------------------------------------- */
-#register { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
 #register li { *zoom: 1; }
 #register li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #register label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
 #register input { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; position: relative; top: -0.429em; }
+
+/* products -------------------------------------------------------------- */
+/* environment -------------------------------------------------------------- */
+#environment li { *zoom: 1; }
+#environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+#environment select { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }

@@ -2,16 +2,16 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li>products</li>
+  <li><a href="/test/products/">products</a></li>
 {% endblock crumb %}
 
 {% block content %}
 <section id="products">
   <h2>Select a product to test:</h2>
   <ul>
-    <li><a href="#">listed</a></li>
-    <li><a href="#">products</a></li>
-    <li><a href="#">with links</a></li>
+    <li><a href="/test/product/firefox/environment/">listed</a></li>
+    <li><a href="/test/product/firefox/environment/">products</a></li>
+    <li><a href="/test/product/firefox/environment/">with links</a></li>
   </ul>
 </section>
 {% endblock content %}

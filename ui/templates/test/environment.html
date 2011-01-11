@@ -1,0 +1,41 @@
+{% extends 'test/products.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="/test/product/firefox/">firefox</a></li>
+  <li><a href="/test/product/firefox/environment/">environment</a></li>
+{% endblock crumb %}
+
+{% block content %}
+<section id="environment">
+  <h2>Set your configuration</h2>
+  <form>
+    <ul>
+      <li>
+        <label for="version">version</label>
+        <select name="version" id="version">
+          <option value="option1">option1</option>
+          <option value="option2">option2</option>
+        </select>
+      </li>
+      <li>
+        <label for="platform">platform</label>
+        <select name="platform" id="platform">
+          <option value="option1">option1</option>
+          <option value="option2">option2</option>
+        </select>
+      </li>
+      <li>
+        <label for="os">operating system</label>
+        <select name="os" id="os">
+          <option value="option1">option1</option>
+          <option value="option2">option2</option>
+        </select>
+      </li>
+    </ul>
+    <div class="form-actions">
+      <button>run tests</button>
+    </div>
+  </form>
+</section>
+{% endblock content %}

@@ -65,7 +65,7 @@
   
   <nav role="navigation">
     <ul>
-      <li class="run"><a href="#" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+      <li class="test"><a href="/" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
       {# if logged in as admin #}
       <li class="manage"><a href="#" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
       {# endif #}
@@ -84,9 +84,7 @@
   {% block bread %}
     <nav class="crumb">
       <ol>
-        {% block crumb %}
-          <li><a href="/" rel="home">home</a></li>
-        {% endblock crumb %}
+        {% block crumb %}{% endblock crumb %}
       </ol>
     </nav>
   {% endblock bread %}
