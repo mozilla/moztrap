@@ -1,0 +1,15 @@
+{% extends 'account/base.html' %}
+
+{% block test-active-nav %}active{% endblock test-active-nav %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li>register</li>
+{% endblock crumb %}
+
+{% block content %}
+<section id="register">
+  <h2>Register for Mozilla’s test case manager.</h2>
+  {% include "account/_account_form.html" %}
+</section>
+{% endblock content %}

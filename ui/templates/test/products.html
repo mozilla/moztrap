@@ -1,0 +1,17 @@
+{% extends 'test/base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li>products</li>
+{% endblock crumb %}
+
+{% block content %}
+<section id="products">
+  <h2>Select a product to test:</h2>
+  <ul>
+    <li><a href="#">listed</a></li>
+    <li><a href="#">products</a></li>
+    <li><a href="#">with links</a></li>
+  </ul>
+</section>
+{% endblock content %}

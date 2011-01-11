@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block test-active-nav %}active{% endblock test-active-nav %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="/test/">run tests</a></li>
+{% endblock crumb %}
