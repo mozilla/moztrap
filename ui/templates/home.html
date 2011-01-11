@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+{% block run-active-nav %}active{% endblock run-active-nav %}
+{% block bread %}{% endblock bread %}
+
 {% block content %}
 <section id="login">
   <figure class="logo"><img src="http://dummyimage.com/320x192/ccc/666&text=logo"></figure>
@@ -7,11 +10,11 @@
   <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
   <form>
     <ul>
-      <li><label for="email">email</label><input type="email" name="email" value="" id="email" placeholder="your email address"></li>
+      <li><label for="email">email</label><input type="email" name="email" value="" id="email" placeholder="email address"></li>
       <li><label for="password">password</label><input type="password" name="password" value="" id="password" placeholder="password"></li>
     </ul>
     <div class="form-actions">
-      <button class="sub">register</button> or
+      <a href="/account/register/">register</a> or
       <button>login</button>
     </div>
   </form>

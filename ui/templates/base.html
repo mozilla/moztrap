@@ -81,14 +81,15 @@
     </ul>
   </nav>
   
-  <nav class="crumb">
-    <ol>
-      <li><a href="#">crumb</a></li>
-      <li><a href="#">trail</a></li>
-      <li><a href="#">to</a></li>
-      <li>here</li>
-    </ol>
-  </nav>
+  {% block bread %}
+    <nav class="crumb">
+      <ol>
+        {% block crumb %}
+          <li><a href="/" rel="home">home</a></li>
+        {% endblock crumb %}
+      </ol>
+    </nav>
+  {% endblock bread %}
 
   <div role="main">
     {% block content %}

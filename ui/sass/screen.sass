@@ -67,7 +67,8 @@ nav.meta
 
 nav.crumb
   @extend .full
-  +h-borders(1px,.25)
+  +leading-border(1px,.25)
+  +padding-trailer(.25)
   border-color: #ccc
   li
     +inline-block
@@ -81,8 +82,7 @@ nav.crumb
 div[role="main"]
   @extend .full
   +pie-clearfix
-  +padding-leader
-  +trailing-border(1px,1)
+  +h-borders(1px,1)
   border-color: #ccc
 
 footer[role="contentinfo"]
@@ -107,6 +107,9 @@ footer[role="contentinfo"]
 #login
   +full(24)
   +pad(6,6,24)
+  label
+    +hide
+    position: absolute
   .logo
     +full(12)
     +pad(3,3,12)
@@ -115,4 +118,18 @@ footer[role="contentinfo"]
     margin: 0
   form
     +full(12)
-  
+
+/* register --------------------------------------------------------------    
+
+#register
+  +full(24)
+  +pad(6,6,24)
+  li
+    +pie-clearfix
+  label
+    +columns(4,12)
+  input
+    +columns(8,12)
+    +omega(12)
+    position: relative
+    top: - $base-line-height/14px*.25em

@@ -195,13 +195,13 @@ nav.meta li { display: -moz-inline-box; -moz-box-orient: vertical; display: inli
 nav.meta li { *display: inline; }
 nav.meta li:last-child { border: 0; }
 
-nav.crumb { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
+nav.crumb { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; padding-bottom: 0.375em; border-color: #cccccc; }
 nav.crumb li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; vertical-align: baseline; }
 nav.crumb li { *display: inline; }
 nav.crumb li::after { content: " »"; }
 nav.crumb li:last-child::after { content: ""; }
 
-div[role="main"] { *zoom: 1; padding-top: 1.5em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; }
+div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
 footer[role="contentinfo"] { font-size: 0.75em; line-height: 2em; margin-bottom: 2em; font-style: italic; }
@@ -213,6 +213,14 @@ footer[role="contentinfo"] small { font-size: 1em; }
 
 /* login -------------------------------------------------------------- */
 #login { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
+#login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; }
 #login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
 #login h2 { margin: 0; }
 #login form { clear: both; }
+
+/* register -------------------------------------------------------------- */
+#register { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
+#register li { *zoom: 1; }
+#register li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#register label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+#register input { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; position: relative; top: -0.429em; }
