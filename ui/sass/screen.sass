@@ -21,7 +21,7 @@ $legacy-support-for-ie6 : false
 
 body > div
   @extend .container
-  +padding-leader(.5)
+  +padding-leader(.25)
 
 header[role="banner"]
   +columns(3)
@@ -56,13 +56,12 @@ nav.meta
   +omega
   +padding-leader(.5)
   text-align: right
-  ul
-    margin-top: -2px
   li
     +inline-block
     +adjust-font-size-to(14px)
     padding: 0 .5em
     border-right: 1px solid
+    vertical-align: baseline
     &:last-child
       border: 0
 
@@ -70,10 +69,9 @@ nav.crumb
   @extend .full
   +h-borders(1px,.25)
   border-color: #ccc
-  ol
-    margin-top: -2px
   li
     +inline-block
+    vertical-align: baseline
     &::after
       content: " »"
     &:last-child::after
@@ -104,4 +102,17 @@ footer[role="contentinfo"]
   small
     font-size: 1em
 
-/* Styles --------------------------------------------------------------    
+/* login --------------------------------------------------------------    
+
+#login
+  +full(24)
+  +pad(6,6,24)
+  .logo
+    +full(12)
+    +pad(3,3,12)
+    +trailer
+  h2
+    margin: 0
+  form
+    +full(12)
+  

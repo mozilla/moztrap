@@ -228,6 +228,10 @@ caption
   
 /* Forms --------------------------------------------------------------
 
+form
+  > ul, > ol
+    +no-style-list
+
 fieldset
   +trailer
   +rhythm-borders(1px)
@@ -283,7 +287,45 @@ input
     &::-webkit-search-decoration
       display: none
 
-// manage buttons in IE
-button
+.form-actions
+  clear: both
+  text-align: right
+
+=base-button-reset
+  +reset-box-model
+  display: inline
   width: auto
   overflow: visible
+  background: none
+  color: inherit
+  font: inherit
+  line-height: inherit
+
+=button-reset
+  +base-button-reset
+  text-transform: none
+  letter-spacing: 0  
+
+=button
+  +inline-block
+  +rhythm-borders(1px,.25)
+  +border-radius(.5em)
+  +hpadding(.5em)
+  background: $green
+  vertical-align: baseline
+  text-transform: uppercase
+  letter-spacing: .01em
+  #{$focus}
+    background: darken($green,10%)
+
+button
+  +base-button-reset
+  +button
+  &.sub
+    +button-reset
+    color: $alt
+    #{$focus}
+      color: $accent
+
+.button
+  +button

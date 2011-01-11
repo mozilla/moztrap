@@ -65,9 +65,11 @@
   
   <nav role="navigation">
     <ul>
-      <li><a href="#">Run Tests</a></li>
-      <li><a href="#">Manage</a></li>
-      <li><a href="# ">Results</a></li>
+      <li class="run"><a href="#" class="{% block run-active-nav %}{% endblock run-active-nav %}">Run Tests</a></li>
+      {# if logged in as admin #}
+      <li class="manage"><a href="#" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
+      {# endif #}
+      <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
     </ul>
   </nav>
   

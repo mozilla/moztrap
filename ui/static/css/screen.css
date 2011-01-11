@@ -124,6 +124,9 @@ table, th { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bo
 tfoot { font-size: 0.875em; line-height: 1.714em; }
 
 /* Forms -------------------------------------------------------------- */
+form > ul, form > ol { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+form > ul li, form > ol li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+
 fieldset { margin-bottom: 1.5em; border-style: solid; border-width: 0.063em; padding: 1.438em; }
 
 legend { font-size: 1.125em; line-height: 1.333em; font-weight: bold; }
@@ -146,7 +149,17 @@ textarea { height: 11.143em; vertical-align: text-bottom; }
 input[type=search] { -webkit-appearance: none; }
 input[type=search]::-webkit-search-decoration { display: none; }
 
-button { width: auto; overflow: visible; }
+.form-actions { clear: both; text-align: right; }
+
+button { margin: 0; padding: 0; border: 0; outline: 0; display: inline; width: auto; overflow: visible; background: none; color: inherit; font: inherit; line-height: inherit; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; border-style: solid; border-width: 0.063em; padding: 0.313em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background: #ccffcc; vertical-align: baseline; text-transform: uppercase; letter-spacing: 0.01em; }
+button { *display: inline; }
+button:focus, button:hover, button:active { background: #99ff99; }
+button.sub { margin: 0; padding: 0; border: 0; outline: 0; display: inline; width: auto; overflow: visible; background: none; color: inherit; font: inherit; line-height: inherit; text-transform: none; letter-spacing: 0; color: #005498; }
+button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
+
+.button { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; border-style: solid; border-width: 0.063em; padding: 0.313em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background: #ccffcc; vertical-align: baseline; text-transform: uppercase; letter-spacing: 0.01em; }
+.button { *display: inline; }
+.button:focus, .button:hover, .button:active { background: #99ff99; }
 
 /* Helpers ------------------------------------------------------------------- */
 .full, nav.crumb, div[role="main"], footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
@@ -165,7 +178,7 @@ html > body { font-size: 16px; }
 .container, body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 85em; max-width: 100%; }
 .container:after, body > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-body > div { padding-top: 0.75em; }
+body > div { padding-top: 0.375em; }
 
 header[role="banner"] { display: inline; float: left; width: 11.176%; margin-right: 1.176%; margin-left: 1.176%; }
 header[role="banner"] h1 { margin: 0; }
@@ -178,14 +191,12 @@ nav[role="navigation"] a:link, nav[role="navigation"] a:visited { padding-top: 0
 nav[role="navigation"] a:focus, nav[role="navigation"] a:hover, nav[role="navigation"] a:active, nav[role="navigation"] a.active { background: rgba(76, 76, 76, 0.25); }
 
 nav.meta { display: inline; float: left; width: 35.882%; margin-right: 1.176%; display: inline; float: right; margin-right: 1.176%; #margin-left: -1em; padding-top: 0.75em; text-align: right; }
-nav.meta ul { margin-top: -2px; }
-nav.meta li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; font-size: 0.875em; line-height: 1.714em; padding: 0 0.5em; border-right: 1px solid; }
+nav.meta li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; font-size: 0.875em; line-height: 1.714em; padding: 0 0.5em; border-right: 1px solid; vertical-align: baseline; }
 nav.meta li { *display: inline; }
 nav.meta li:last-child { border: 0; }
 
 nav.crumb { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
-nav.crumb ol { margin-top: -2px; }
-nav.crumb li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; }
+nav.crumb li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; vertical-align: baseline; }
 nav.crumb li { *display: inline; }
 nav.crumb li::after { content: " »"; }
 nav.crumb li:last-child::after { content: ""; }
@@ -200,4 +211,8 @@ footer[role="contentinfo"] .adr::before { content: "| "; }
 footer[role="contentinfo"] .credit { display: inline; float: right; margin-right: 0; #margin-left: -1em; text-align: right; }
 footer[role="contentinfo"] small { font-size: 1em; }
 
-/* Styles -------------------------------------------------------------- */
+/* login -------------------------------------------------------------- */
+#login { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
+#login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
+#login h2 { margin: 0; }
+#login form { clear: both; }
