@@ -1,0 +1,339 @@
+//** DEFAULT STYLES **//
+
+// Based on the work of:
+// Andy Clarke: http://forabeautifulweb.com/
+// Paul Irish & Divya Manian: http://html5boilerplate.com/
+// Many others that inspired their work
+
+// Imports --------------------------------------------------------------
+
+@import base
+@import susy/reset
+
+/* Typography --------------------------------------------------------------
+/* The following classes are for use with @extend.
+
+html
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+
+.serif
+  +serif-family
+
+.sans
+  +sans-family
+
+.mono
+  +monospace-family
+
+.caps
+  letter-spacing: .1em
+
+.allcaps
+  @extend .caps
+  text-transform: uppercase
+
+.smallcaps
+  @extend .caps
+  font-variant: small-caps
+
+/* Body --------------------------------------------------------------
+
+body
+  @extend .serif
+  color: $base
+
+/* Selected Text --------------------------------------------------------------
+/* -moz- must be declared separately
+
+=accessible-color($background: #fff)
+  @if lightness($background) >= 65%
+    color: $base
+  @else
+    color: #fff
+
+::-moz-selection
+  +accessible-color($alt)
+  background: $alt
+  text-shadow: none
+
+::selection
+  +accessible-color($alt)
+  background: $alt
+  text-shadow: none
+
+/* Links --------------------------------------------------------------
+
+$link   :   "&:link, &:visited"
+$focus  :   "&:focus, &:hover, &:active"
+
+a
+  #{$link}
+    color: $alt
+    text-decoration: none
+  #{$link}, &:hover, &:active
+    outline: none
+  #{$focus}
+    color: $accent
+    text-decoration: none
+  &:focus
+    outline: thin dotted
+
+=no-style-link
+  color: inherit
+
+/* Headings --------------------------------------------------------------
+
+h2, h3, h4, h5, h6
+  +trailer
+
+h1
+  +adjust-font-size-to(21px)
+  +trailer(1,21px)
+
+h1, h2
+  @extend .allcaps
+
+h3
+  font-weight: bold
+
+h4
+  @extend .smallcaps
+  text-transform: lowercase
+
+h5, h6
+  font-style: italic
+
+/* Inline --------------------------------------------------------------
+
+cite, em, dfn, address, i
+  font-style: italic
+
+strong, dfn, b
+  font-weight: bold
+
+sup, sub
+  font-size: smaller
+  line-height: 0
+
+sup
+  vertical-align: super
+
+sub
+  vertical-align: sub
+
+abbr, acronym
+  border-bottom: 1px dotted
+  cursor: help
+
+ins
+  text-decoration: underline
+
+del
+  text-decoration: line-through
+
+mark
+  background: #ff9
+  background-color: rgba(#ff0,.5)
+  text-shadow: none
+
+small
+  +adjust-font-size-to(12px)
+
+q
+  font-style: italic
+  em
+    font-style: normal
+
+pre, code, tt
+  @extend .mono
+
+/* Block --------------------------------------------------------------
+
+p
+  +trailer
+
+pre
+  margin: $base-rhythm-unit
+  white-space: pre
+  white-space: pre-wrap
+  white-space: pre-line
+  word-wrap: break-word
+
+blockquote
+  margin: $base-rhythm-unit
+  font-style: italic
+
+/* Replaced --------------------------------------------------------------
+
+img
+  vertical-align: text-bottom
+  max-width: 100%
+  -ms-interpolation-mode: bicubic
+
+/* Lists --------------------------------------------------------------
+
+=no-style-list
+  +no-bullets
+  +reset-box-model
+
+ol, ul, dl
+  +trailer
+  margin-left: $base-rhythm-unit
+
+ol
+  list-style: decimal
+  
+ul
+  list-style: disc
+  li &
+    list-style-type: circle
+
+dt
+  +leader
+  font-style: italic
+  
+dd
+  padding-left: $base-rhythm-unit
+  
+nav
+  ul, ol
+    +no-style-list
+
+/* Tables --------------------------------------------------------------
+/* tables still need 'cellspacing="0"' in the markup
+
+table
+  +trailer
+  width: 100%
+  border-collapse: separate
+  border-spacing: 0
+
+table, td, th
+  vertical-align: top
+
+th, thead th
+  font-weight: bold
+
+th, td, caption
+  padding: $base-rhythm-unit * 0.5
+  text-align: left
+  font-weight: normal
+
+table, th
+  +trailing-border(1px, 0.5)
+
+tfoot
+  +adjust-font-size-to(14px)
+
+caption
+  @extend .allcaps
+  
+/* Forms --------------------------------------------------------------
+
+form
+  > ul, > ol
+    +no-style-list
+
+fieldset
+  +trailer
+  +rhythm-borders(1px)
+
+legend
+  +adjust-font-size-to(18px)
+  font-weight: bold
+
+input[type="radio"], input[type="checkbox"]
+  vertical-align: baseline
+
+label, input[type=button], input[type=submit], button
+  cursor: pointer
+
+label
+  font-weight: bold
+
+input, button, textarea, select, optgroup
+  +reset-box-model
+
+// box-sizing helps us control the width of inputs
+// which are otherwise very hard to manage in the grid.
+.textinput
+  +sans-family
+  +adjust-font-size-to(14px,1,16px)
+  +rhythm-borders(1px,.25,14px)
+  +trailer(.5)
+  +box-sizing(border-box)
+  width: 100%
+  border-color: $base
+  height: $base-line-height/14px*1.5em
+
+input, textarea
+  &:invalid
+    +border-radius(1px)
+    +box-shadow(red,0,0,.25em)
+    .no-boxshadow &
+      background-color: #f0dddd
+
+textarea
+  @extend .textinput
+  height: $base-line-height/14px*6.5em
+  vertical-align: text-bottom
+
+input
+  &[type=text], &[type=password], &[type=email], &[type=url], &[type=tel],
+  &[type=date], &[type=datetime], &[type=datetime-local], &[type=month], &[type=week], &[type=time],
+  &[type=number], &[type=range], &[type=search], &[type=color]
+    @extend .textinput
+  // reset webkit search styles
+  &[type=search]
+    -webkit-appearance: none
+    &::-webkit-search-decoration
+      display: none
+
+select
+  +trailer(.5)
+  border: 1px solid #ccc
+  font: inherit
+
+.form-actions
+  clear: both
+  text-align: right
+
+=base-button-reset
+  +reset-box-model
+  display: inline
+  width: auto
+  overflow: visible
+  background: none
+  color: inherit
+  font: inherit
+  line-height: inherit
+
+=button-reset
+  +base-button-reset
+  text-transform: none
+  letter-spacing: 0  
+
+=button
+  +inline-block
+  +rhythm-borders(1px,.25)
+  +border-radius(.5em)
+  +hpadding(.5em)
+  background: $green
+  vertical-align: baseline
+  text-transform: uppercase
+  letter-spacing: .01em
+  #{$focus}
+    background: darken($green,10%)
+
+button
+  +base-button-reset
+  +button
+  &.sub
+    +button-reset
+    color: $alt
+    #{$focus}
+      color: $accent
+
+.button
+  +button

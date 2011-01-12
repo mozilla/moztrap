@@ -1,0 +1,50 @@
+//** PRINT STYLES **//
+
+// Imports --------------------------------------------------------------*/
+
+@import base
+
+/* Print Defaults --------------------------------------------------------------
+
+nav
+  display: none
+
+* 
+  background: transparent !important
+  color: #444 !important
+  float: none !important
+  text-shadow: none !important
+
+body
+  +serif-family
+  font-size: 12pt
+  background: white
+  color: black
+
+a
+  &:link, &:visited
+    color: #444 !important
+    text-decoration: underline
+  &:after
+    content: " (" attr(href) ") "
+    font-size: smaller
+    &[href^="#"]
+      content: ''
+      display: none
+
+abbr:after
+  content: " (" attr(title) ")"
+  font-size: smaller
+
+pre, blockquote, img
+  page-break-inside: avoid
+
+@page
+  margin: 0.5cm
+
+p, h2, h3
+  orphans: 3
+  widows: 3
+
+h2, h3
+  page-break-after: avoid

@@ -1,0 +1,3 @@
+[submodule "ui/requirements/dist"]
+	path = ui/requirements/dist
+	url = git@github.com:mozilla/tcm-ui-reqs.git

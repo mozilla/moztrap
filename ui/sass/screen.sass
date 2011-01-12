@@ -1,0 +1,154 @@
+//** SCREEN STYLES **//
+
+// Settings --------------------------------------------------------------*/
+
+$legacy-support-for-ie6 : false
+
+// Imports --------------------------------------------------------------*/
+
+@import defaults
+@import template
+
+/* Layout --------------------------------------------------------------
+
++susy
+
+// change '.container' to match your HTML container element
+// or @extend it to apply multiple containers on your site.
+.container
+  +container
+  //+show-grid("grid.png")
+  min-width: 750px
+
+body > div
+  @extend .container
+  +padding-leader(.25)
+
+header[role="banner"]
+  +columns(3)
+  +alpha
+  h1
+    margin: 0
+  a
+    #{$link}
+      +padding-leader(.5,21px)
+      +padding-trailer(.5,21px)
+      display: block
+      color: $base
+    #{$focus}
+      color: $accent
+      
+nav[role="navigation"]
+  +columns(12)
+  +padding-leader(.5)
+  li
+    +float(left)
+  a
+    #{$link}
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +hpadding(1em)
+      +border-radius(.25em)
+    #{$focus}, &.active
+      background: rgba($base,.25)
+
+nav.meta
+  +columns(9)
+  +omega
+  +padding-leader(.5)
+  text-align: right
+  li
+    +inline-block
+    +adjust-font-size-to(14px)
+    padding: 0 .5em
+    border-right: 1px solid
+    vertical-align: baseline
+    &:last-child
+      border: 0
+
+nav.crumb
+  @extend .full
+  +leading-border(1px,.25)
+  +padding-trailer(.25)
+  border-color: #ccc
+  li
+    +inline-block
+    vertical-align: baseline
+    &::after
+      content: " »"
+    &:last-child
+      &::after
+        content: ""
+      a
+        +no-style-link
+
+div[role="main"]
+  @extend .full
+  +pie-clearfix
+  +h-borders(1px,1)
+  border-color: #ccc
+
+footer[role="contentinfo"]
+  @extend .full
+  +adjust-font-size-to(12px)
+  +trailer(1,12px)
+  font-style: italic
+  .author, .credit
+    +columns(6, 12)
+  .adr
+    display: inline
+    &::before
+      content: "| "
+  .credit
+    +omega(12)
+    text-align: right
+  small
+    font-size: 1em
+
+/* login --------------------------------------------------------------    
+
+#login
+  @extend .simple
+  label
+    +hide
+    position: absolute
+  .logo
+    +full(12)
+    +pad(3,3,12)
+    +trailer
+  h2
+    margin: 0
+  form
+    +full(12)
+
+/* register --------------------------------------------------------------    
+
+#register
+  @extend .simple
+  li
+    +pie-clearfix
+  label
+    +columns(4,12)
+  input
+    +columns(8,12)
+    +omega(12)
+    position: relative
+    top: - $base-line-height/14px*.25em
+
+/* products --------------------------------------------------------------    
+
+#products
+  @extend .simple
+
+/* environment --------------------------------------------------------------    
+
+#environment
+  @extend .simple
+  li
+    +pie-clearfix
+  label
+    +columns(4,12)
+  select
+    +columns(8,12)
+    +omega(12)
+    

@@ -1,0 +1,5 @@
+# Additional requirements needed only for a live/staging/qa deploy.
+
+-r base.txt
+
+python-memcached==1.47
