@@ -18,6 +18,7 @@ import urllib
 import json
 import step_helper
 from numpy.ma.testutils import assert_not_equal
+from lettuce import world
 
 def get_scenario_data(scenarioName):
     '''
@@ -37,27 +38,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                {"comment": "User does not exist", 
-                "request": "/api/v1/users?firstName=Jedi&lastName=Jones", 
+                "request": world.api_prefix + "users?firstName=Jedi&lastName=Jones", 
                 "response": "No response expected", 
                 "status": "404"
                 },
                {"comment": "Posting the user data", 
-                "request": "/api/v1/users",                               
+                "request": world.api_prefix + "users",                               
                 "response": "POST, w/o response",   
                 "status": "200"
                 },
                {"comment": "Check user exists, but not active", 
-                "request": "/api/v1/users?firstName=Jedi&lastName=Jones", 
+                "request": world.api_prefix + "users?firstName=Jedi&lastName=Jones", 
                 "response": as_resp(as_sr(get_returned_users(["Jedi Jones"], "false"))),      
                 "status": "200"
                 },
                {"comment": "request it to be activated", 
-                "request": "/api/v1/users?firstName=Jedi&lastName=Jones", 
+                "request": world.api_prefix + "users?firstName=Jedi&lastName=Jones", 
                 "response": as_resp(as_sr(get_returned_users(["Jedi Jones"], "false"))),      
                 "status": "200"
                 },
                {"comment": "expect it's now active",
-                "request": "/api/v1/users?firstName=Jedi&lastName=Jones", 
+                "request": world.api_prefix + "users?firstName=Jedi&lastName=Jones", 
                 "response": as_resp(as_sr(get_returned_users(["Jedi Jones"], "true"))),
                 "status": "200"       
                 }
@@ -67,27 +68,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "check user registered", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=NotActive",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=NotActive",
                  "response": as_resp(as_sr(get_returned_users(["Jedi NotActive"], "false"))),
                  "status": "200"
                  },
                 {"comment": "get user id", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=NotActive",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=NotActive",
                  "response": as_resp(as_sr(get_returned_users(["Jedi NotActive"], "false"))),
                  "status": "200"
                  },
                 {"comment": "check user active status false", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=NotActive",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=NotActive",
                  "response": as_resp(as_sr(get_returned_users(["Jedi NotActive"], "false"))),
                  "status": "200"
                  },
                 {"comment": "set user active", 
-                 "request": "/api/v1/users/8/activate",
+                 "request": world.api_prefix + "users/8/activate",
                  "response": "POST, no return",
                  "status": "200"
                  },
                 {"comment": "check user active status true", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=NotActive",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=NotActive",
                  "response": as_resp(as_sr(get_returned_users(["Jedi NotActive"], "true"))),
                  "status": "200"
                  }
@@ -97,27 +98,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "check user registered", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Active",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Active",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Active"], "true"))),
                  "status": "200"
                  },
                 {"comment": "get user id", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Active",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Active",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Active"], "true"))),
                  "status": "200"
                  },
                 {"comment": "check user active status true", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Active",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Active",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Active"], "true"))),
                  "status": "200"
                  },
                 {"comment": "set user deactivated", 
-                 "request": "/api/v1/users/8/activate",                    
+                 "request": world.api_prefix + "users/8/activate",                    
                  "response": "POST, w/o response",
                  "status": "200"
                  },
                 {"comment": "check user active status false", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Active",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Active",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Active"], "false"))),
                  "status": "200"
                  }
@@ -127,42 +128,42 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                       
+                 "request": world.api_prefix + "users/current",                       
                  "response": as_resp(get_returned_users(["Jedi Admin"], "true")),   
                  "status": "200"
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Admin", 
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Admin", 
                  "response": as_resp(as_sr(get_returned_users(["Jedi Admin"], "true"))),   
                  "status": "200"
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                       
+                 "request": world.api_prefix + "users/8/roles",                       
                  "response": as_resp(as_sr(get_returned_roles(["ADMINISTRATOR"]))),    
                  "status": "200"
                  },
                 {"comment": "create a new role", 
-                 "request": "/api/v1/roles",                               
+                 "request": world.api_prefix + "roles",                               
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of role", 
-                 "request": "/api/v1/roles?description=Creationator",      
+                 "request": world.api_prefix + "roles?description=Creationator",      
                  "response": as_resp(as_sr(get_returned_roles(["Creationator"]))),       
                  "status": "200"
                  },
                 {"comment": "add permission to role", 
-                 "request": "/api/v1/roles/24/permissions",                
+                 "request": world.api_prefix + "roles/24/permissions",                
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of role", 
-                 "request": "/api/v1/roles?description=Creationator",      
+                 "request": world.api_prefix + "roles?description=Creationator",      
                  "response": as_resp(as_sr(get_returned_roles(["Creationator"]))),       
                  "status": "200"
                  },
                 {"comment": "get permissions for new role", 
-                 "request": "/api/v1/roles/24/permissions",                
+                 "request": world.api_prefix + "roles/24/permissions",                
                  "response": as_resp(as_sr(get_returned_permissions(["Spammer"]))),    
                  "status": "200"
                  }
@@ -172,17 +173,17 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "get list of roles", 
-                 "request": "/api/v1/roles"                   ,
+                 "request": world.api_prefix + "roles"                   ,
                  "response": as_resp(as_sr(get_returned_roles(["Apple", "Zipper", "Frame"]))),       
                  "status": "200"
                  },
                 {"comment": "get list of ASC roles", 
-                 "request": "/api/v1/roles?sortDirection=ASC" ,
+                 "request": world.api_prefix + "roles?sortDirection=ASC" ,
                  "response": as_resp(as_sr(get_returned_roles(["Apple", "Frame", "Zipper"]))),   
                  "status": "200"
                  },
                 {"comment": "get list of DESC roles", 
-                 "request": "/api/v1/roles?sortDirection=DESC",
+                 "request": world.api_prefix + "roles?sortDirection=DESC",
                  "response": as_resp(as_sr(get_returned_roles(["Zipper", "Frame", "Apple"]))),  
                  "status": "200"
                  }
@@ -192,27 +193,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")),       
                  "status": "200"
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Creator", 
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Creator", 
                  "response": as_resp(as_sr(get_returned_users(["Jedi Creator"], "true"))),       
                  "status": "200"
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["TEST_CREATOR"]))),    
                  "status": "200"
                  },
                 {"comment": "create a new test case", 
-                 "request": "/api/v1/testcases",                             
+                 "request": world.api_prefix + "testcases",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get new test case data", 
-                 "request": "/api/v1/testcases?description=Testing%20mic%20%231.%20%20Isn%27t%20this%20a%20lot%20of%20fun.", 
+                 "request": world.api_prefix + "testcases?description=Testing%20mic%20%231.%20%20Isn%27t%20this%20a%20lot%20of%20fun.", 
                  "response": as_resp(as_sr(get_returned_test_case(["Testing mic #1.  Isn't this a lot of fun."]))),  
                  "status": "200"
                  }
@@ -222,42 +223,42 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "Given user Jedi Roller has active status true", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"
                  },
                 {"comment": "And the role of CHIPPER exists", 
-                 "request": "/api/v1/roles",                               
+                 "request": world.api_prefix + "roles",                               
                  "response": as_resp(as_sr(get_returned_roles(["CHIPPER"]))), 
                  "status": "200"
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"
                  },
                 {"comment": "And Jedi Roller does not already have the role of CHIPPER", 
-                 "request": "/api/v1/users/8/roles"                       ,
+                 "request": world.api_prefix + "users/8/roles"                       ,
                  "response": as_resp(as_sr(get_returned_roles(["MASHER", "SMASHER"]))), 
                  "status": "200"     
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"      
                  },
                 {"comment": "When I add role of CHIPPER to user Jedi Roller", 
-                 "request": "/api/v1/users/8/roles"                       ,
+                 "request": world.api_prefix + "users/8/roles"                       ,
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"      
                  },
                 {"comment": "Then Jedi Roller has the role of CHIPPER", 
-                 "request": "/api/v1/users/8/roles"                       ,
+                 "request": world.api_prefix + "users/8/roles"                       ,
                  "response": as_resp(as_sr(get_returned_roles(["MASHER", "SMASHER", "CHIPPER"]))), 
                  "status": "200"     
                  }
@@ -267,17 +268,17 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "Given user Jedi Roller has active status true", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"      
                  },
                 {"comment": "get id of user", 
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Roller",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Roller",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Roller"], "true"))), 
                  "status": "200"      
                  },
                 {"comment": "Then Jedi Roller has the role of MASHER and SMASHER", 
-                 "request": "/api/v1/users/8/roles",
+                 "request": world.api_prefix + "users/8/roles",
                  "response": as_resp(as_sr(get_returned_roles(["MASHER", "SMASHER"]))), 
                  "status": "200"         
                  }
@@ -287,17 +288,17 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "Given user has active status true",
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Assigned",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Assigned",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Assigned"], "true"))), 
                  "status": "200"
                  },
                 {"comment": "get id of user",
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Assigned",
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Assigned",
                  "response": as_resp(as_sr(get_returned_users(["Jedi Assigned"], "true"))), 
                  "status": "200"
                  },
                 {"comment": "Then the user has the listed assignments",
-                 "request": "/api/v1/users/8/assignments",
+                 "request": world.api_prefix + "users/8/assignments",
                  "response": as_resp(as_sr(get_returned_assignments(["What the cat dragged in", "Where I put the keys"]))), 
                  "status": "200" 
                  }
@@ -307,32 +308,32 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user",
-                 "request": "/api/v1/users/current",                          
+                 "request": world.api_prefix + "users/current",                          
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"       
                  },
                 {"comment": "get id of user",
-                 "request": "/api/v1/users?firstName=Jedi&lastName=Creator",  
+                 "request": world.api_prefix + "users?firstName=Jedi&lastName=Creator",  
                  "response": as_resp(as_sr(get_returned_users(["Jedi Creator"], "true"))), 
                  "status": "200"       
                  },
                 {"comment": "check users roles",
-                 "request": "/api/v1/users/8/roles",                          
+                 "request": world.api_prefix + "users/8/roles",                          
                  "response": as_resp(as_sr(get_returned_roles(["COMPANY_CREATOR"]))), 
                  "status": "200"    
                  },
                 {"comment": "check company does not exist",
-                 "request": "/api/v1/companies?name=Massive%20Dynamic",     
+                 "request": world.api_prefix + "companies?name=Massive%20Dynamic",     
                  "response": as_resp(as_sr(get_returned_companies([]))), 
                  "status": "404"   
                  },
                 {"comment": "create a new company",
-                 "request": "/api/v1/companies",                             
+                 "request": world.api_prefix + "companies",                             
                  "response": "POST, w/o response",
                  "status": "200" 
                  },
                 {"comment": "check now company exists", 
-                 "request": "/api/v1/companies?name=Massive%20Dynamic",     
+                 "request": world.api_prefix + "companies?name=Massive%20Dynamic",     
                  "response": as_resp(as_sr(get_returned_companies(["Massive Dynamic"]))), 
                  "status": "200"
                  }
@@ -343,27 +344,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"      
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["ENVIRONMENT_CREATOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment does not exist", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments([]))), 
                  "status": "404"        
                  },
                 {"comment": "create a new environment", 
-                 "request": "/api/v1/environments",                             
+                 "request": world.api_prefix + "environments",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "check now environment exists", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))),  
                  "status": "200"   
                  }
@@ -373,52 +374,52 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"      
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["PRODUCT_EDITOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment exists", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"        
                  },
                 {"comment": "check product exists", 
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",     
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",     
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"        
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "check environment is not added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments([]))),  
                  "status": "200"   
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "add environment to product", 
-                 "request": "/api/v1/products/8/environments",                             
+                 "request": world.api_prefix + "products/8/environments",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "check now environment is added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))),  
                  "status": "200"   
                  }
@@ -428,57 +429,57 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"      
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["PRODUCT_EDITOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment exists", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"        
                  },
                 {"comment": "check product exists", 
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",     
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",     
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"        
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "check environment is not added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))),  
                  "status": "200"   
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "get id of environment",
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",  
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",  
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"       
                  },
                 {"comment": "remove environment from product", 
-                 "request": "/api/v1/products/8/environments",                             
+                 "request": world.api_prefix + "products/8/environments",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_products(["Continuum Transfunctioner"]))), 
                  "status": "200"       
                  },
                 {"comment": "check now environment is added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments([]))),  
                  "status": "200"   
                  }
@@ -488,52 +489,52 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"      
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["TEST_EDITOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment exists", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"        
                  },
                 {"comment": "check product exists", 
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",     
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",     
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"        
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "check environment is not added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments([]))),  
                  "status": "200"   
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "add environment to product", 
-                 "request": "/api/v1/products/8/environments",                             
+                 "request": world.api_prefix + "products/8/environments",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "check now environment is added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))),  
                  "status": "200"   
                  }
@@ -543,57 +544,57 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")), 
                  "status": "200"      
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["TEST_EDITOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment exists", 
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",     
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"        
                  },
                 {"comment": "check product exists", 
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",     
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",     
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"        
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "check environment is not added to product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))),  
                  "status": "200"   
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "get id of environment",
-                 "request": "/api/v1/environments?name=Walter%27s%20Lab",  
+                 "request": world.api_prefix + "environments?name=Walter%27s%20Lab",  
                  "response": as_resp(as_sr(get_returned_environments(["Walter's Lab"]))), 
                  "status": "200"       
                  },
                 {"comment": "remove environment from product", 
-                 "request": "/api/v1/products/8/environments",                             
+                 "request": world.api_prefix + "products/8/environments",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of product",
-                 "request": "/api/v1/products?name=Continuum%20Transfunctioner",  
+                 "request": world.api_prefix + "products?name=Continuum%20Transfunctioner",  
                  "response": as_resp(as_sr(get_returned_test_case(["Wazzon Chokey?"]))), 
                  "status": "200"       
                  },
                 {"comment": "check now environment is removed from product", 
-                 "request": "/api/v1/products/8/environments/",     
+                 "request": world.api_prefix + "products/8/environments/",     
                  "response": as_resp(as_sr(get_returned_environments([]))),  
                  "status": "200"   
                  }
@@ -603,27 +604,27 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Jedi Creator"], "true")),  
                  "status": "200"     
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["ENVIRONMENT_CREATOR"]))),  
                  "status": "200"  
                  },
                 {"comment": "check environment type does not exist", 
-                 "request": "/api/v1/environmenttypes?name=Laboratory",             
+                 "request": world.api_prefix + "environmenttypes?name=Laboratory",             
                  "response": as_resp(as_sr(get_returned_environment_type([]))),  
                  "status": "404" 
                  },
                 {"comment": "create a new environment type", 
-                 "request": "/api/v1/environmenttypes",                             
+                 "request": world.api_prefix + "environmenttypes",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "check now environment type exists", 
-                 "request": "/api/v1/environmenttypes?name=Laboratory",             
+                 "request": world.api_prefix + "environmenttypes?name=Laboratory",             
                  "response": as_resp(as_sr(get_returned_environment_type(["Laboratory"]))),
                  "status": "200"
                  }
@@ -635,37 +636,36 @@ def get_scenario_data(scenarioName):
         steps = \
             [
                 {"comment": "logged in as user", 
-                 "request": "/api/v1/users/current",                         
+                 "request": world.api_prefix + "users/current",                         
                  "response": as_resp(get_returned_users(["Olivia Dunham"], "true")),  
                  "status": "200"     
                  },
                 {"comment": "check users roles", 
-                 "request": "/api/v1/users/8/roles",                         
+                 "request": world.api_prefix + "users/8/roles",                         
                  "response": as_resp(as_sr(get_returned_roles(["ATTACHER"]))),  
                  "status": "200"  
                  },
                 {"comment": "check test case exists", 
-                 "request": "/api/v1/testcases?name=Trans-Universe%20Communication",             
+                 "request": world.api_prefix + "testcases?name=Trans-Universe%20Communication",             
                  "response": as_resp(as_sr(get_returned_test_case(["Trans-Universe Communication"]))),  
                  "status": "200" 
                  },
                 {"comment": "get id of test case", 
-                 "request": "/api/v1/testcases?name=Trans-Universe%20Communication",             
+                 "request": world.api_prefix + "testcases?name=Trans-Universe%20Communication",             
                  "response": as_resp(as_sr(get_returned_test_case(["Trans-Universe Communication"]))),  
                  "status": "200" 
                  },
                 {"comment": "upload a new attachment", 
-                 "request": "/api/v1/testcases/123/attachments/upload",                             
+                 "request": world.api_prefix + "testcases/123/attachments/upload",                             
                  "response": "POST, w/o response", 
                  "status": "200"
                  },
                 {"comment": "get id of test case", 
-                 "request": "/api/v1/testcases?name=Trans-Universe%20Communication",             
+                 "request": world.api_prefix + "testcases?name=Trans-Universe%20Communication",             
                  "response": as_resp(as_sr(get_returned_test_case(["Trans-Universe Communication"]))),  
                  "status": "200" 
                  },
                 {"comment": "check now environment type exists", 
-                 "request": "/api/v1/testcases/123/attachments",             
                  "response": as_resp(as_sr(get_returned_attachments(["Selectric251.txt"]))),
                  "status": "200"
                  }

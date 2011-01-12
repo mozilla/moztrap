@@ -6,7 +6,7 @@ Created on Oct 7, 2010
 from lettuce import *
 #from numpy.ma.testutils import *
 from step_helper import *
-from step_helper import jstr
+from step_helper import jstr, add_params, get_count
 import httplib
 import mock_scenario_data
 import post_data
@@ -25,16 +25,17 @@ def setup_step_connection(step):
 # @todo Need to make this only run in DEBUG mode or something
 @before.each_scenario
 def setup_scenario_data(scenario):
-    scenarioData = mock_scenario_data.get_scenario_data(scenario.name).strip() 
-
-    headers = { 'content-Type':'text/plain',
-            "Content-Length": "%d" % len(scenarioData) }
-
-    setup_connection()
-    world.conn.request("POST", "/api/v1/mockdata?scenario=" + urllib.quote(scenario.name), "", headers)
-
-    world.conn.send(scenarioData)
-    world.conn.getresponse()
+    if (world.use_mock):
+        scenarioData = mock_scenario_data.get_scenario_data(scenario.name).strip() 
+    
+        headers = {'content-Type':'text/plain',
+                   "Content-Length": "%d" % len(scenarioData) }
+    
+        setup_connection()
+        world.conn.request("POST", add_params(world.path_mockdata, {"scenario" : scenario.name}), "", headers)
+    
+        world.conn.send(scenarioData)
+        world.conn.getresponse()
 
 '''
 ######################################################################
@@ -50,35 +51,42 @@ def logged_in_as_user_foo(step, name):
     
     name_headers = { 'firstname':names[0], 'lastname': names[1] }
 
-    world.conn.request("GET", "/api/v1/users/current", None, name_headers)
+    world.conn.request("GET", add_params(world.path_users + "current"), None, name_headers)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a user")
     
-    thisUser = get_single_item(response, "user")
+    thisUser = get_single_item(response, ns("user"))
 
     #save this off for later steps
     world.userResId = thisUser.get("resourceIdentity").get("id")
     assert world.userResId != None, "must have some value for user resourceIdentity: "+ jstr(thisUser)
     
-    assert_equal(thisUser.get("firstname"), names[0], "First Name field didn't match")
-    assert_equal(thisUser.get("lastname"), names[1], "Last Name field didn't match")
+    assert_equal(thisUser.get(ns("firstname")), names[0], "First Name field didn't match")
+    assert_equal(thisUser.get(ns("lastname")), names[1], "Last Name field didn't match")
 
     
 @step(u'user "(.*)" is (.*)registered')
 def user_foo_check_registration(step, name, registered):
     names = name.split()
-    
-    world.conn.request("GET", "/api/v1/users?firstName=" + names[0] + "&lastName=" + names[1])
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+
+    world.conn.request("GET", add_params(world.path_users, 
+                                         {"firstName": names[0], "lastName": names[1]}), "", headers)
     response = world.conn.getresponse()
 
+    assert_equal(response.status, 200, "registration status")
+
+    
     if registered.strip() == "not":
-        assert_equal(response.status, 404, "registration status")
+        # expect an empty search result
+        count = get_count(response, "user")
+        assert_equal(count, 0, "result size zero")
     else:
-        assert_equal(response.status, 200, "registration status")
 
         userJson = get_single_item(response, "user")
-        assert_equal(userJson.get("firstname"), names[0], "First Name field didn't match")
-        assert_equal(userJson.get("lastname"), names[1], "Last Name field didn't match")
+        assert_equal(userJson.get(ns("firstName")), names[0], "First Name field didn't match")
+        assert_equal(userJson.get(ns("lastName")), names[1], "Last Name field didn't match")
 
 
 @step(u'create new user named "(.*)"')
@@ -89,7 +97,7 @@ def submit_information_for_user_foo(step, name):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(xml_data) }
 
-    world.conn.request("POST", "/api/v1/users", "", headers)
+    world.conn.request("POST", add_params(world.path_users), "", headers)
     world.conn.send(xml_data)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Create new user")
@@ -98,7 +106,8 @@ def submit_information_for_user_foo(step, name):
 @step(u'user "(.*)" has active status "(.*)"')
 def user_has_foo__has_active_status_bar(step, name, exp_active):
     names = name.split()
-    world.conn.request("GET", "/api/v1/users?firstName=" + names[0] + "&lastName=" + names[1])
+    world.conn.request("GET", add_params(world.path_users, 
+                                         {"firstName": names[0], "lastName": names[1]}))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a user")
 
@@ -116,7 +125,7 @@ def user_foo_has_id_of_bar(step, name, exp_id):
 def activate_deactivate_user_foo(step, action, name):
     user_id = get_user_resid(name)
     
-    world.conn.request("PUT", "/api/v1/users/" + user_id + "/" + action)
+    world.conn.request("PUT", add_params(world.path_users + user_id + "/" + action))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, action +"ed user")
 
@@ -124,7 +133,7 @@ def activate_deactivate_user_foo(step, action, name):
 def foo_has_these_roles(step, name):
     user_id = get_user_resid(name)
 
-    world.conn.request("GET", "/api/v1/users/" + user_id + "/roles")
+    world.conn.request("GET", add_params(world.path_users + user_id + "/roles"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a user")
 
@@ -137,8 +146,8 @@ def foo_has_these_roles(step, name):
     for exp_role in roles:
         found = False
         for act_role in respJson:
-            exp = exp_role.get("description")
-            act = act_role.get("description")
+            exp = exp_role.get(ns("description"))
+            act = act_role.get(ns("description"))
             if (exp == act):
                 found = True
         assert_equal(found, True, "expected role of: " + exp)
@@ -146,7 +155,7 @@ def foo_has_these_roles(step, name):
 @step(u'user "(.*)" has these assignments:')
 def foo_has_these_assignments(step, name):
     user_id = get_user_resid(name)
-    world.conn.request("GET", "/api/v1/users/" + user_id + "/assignments")
+    world.conn.request("GET", add_params(world.path_users + user_id + "/assignments"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a user")
 
@@ -159,8 +168,8 @@ def foo_has_these_assignments(step, name):
     for exp_item in exp_list:
         found = False
         for act_item in respJson:
-            exp = exp_item.get("name")
-            act = act_item.get("name")
+            exp = exp_item.get(ns("name"))
+            act = act_item.get(ns("name"))
             if (exp == act):
                 found = True
         assert_equal(found, True, "expected assignment of: " + str(exp) +
@@ -201,18 +210,18 @@ def user_id_role_check(user_id, role, expected_tf, assert_text):
     #    1: get the id of the user
     #    2: check that user has that role
     
-    world.conn.request("GET", "/api/v1/users/" + str(user_id) + "/roles")
+    world.conn.request("GET", add_params(world.path_users + str(user_id) + "/roles"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a user")
 
     # walk through all roles for this user to see if it has the requested one
     
-    roleJsonList = get_resp_list(response, "role") 
+    roleJsonList = get_resp_list(response, ns("role")) 
     
     foundRole = False
     for roleJson in roleJsonList:
         assert isinstance(roleJson, dict), "unexpected type:\n" + jstr(roleJson)
-        if (roleJson.get("description") == role):
+        if (roleJson.get(ns("description")) == role):
             foundRole = True
     assert_equal(foundRole, expected_tf, assert_text + ": " + jstr(roleJsonList))
 
@@ -231,7 +240,7 @@ def add_role_of_foo_to_user_bar(step, role, name):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/users/" + user_id + "/roles", "", headers)
+    world.conn.request("POST", add_params(world.path_users + user_id + "/roles"), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "post new role to user")
@@ -243,7 +252,7 @@ def create_a_new_role_of_x(step, new_role):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(json_data) }
 
-    world.conn.request("POST", "/api/v1/roles", "", headers)
+    world.conn.request("POST", add_params(world.path_roles), "", headers)
     world.conn.send(json_data)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Create new role")
@@ -262,7 +271,7 @@ def add_permission_foo_to_role_bar(step, permission, role):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/roles/" + role_id + "/permissions", "", headers)
+    world.conn.request("POST", add_params(world.path_roles + role_id + "/permissions"), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "post new permission to role")
@@ -278,7 +287,7 @@ def role_foo_has_permission_of_bar(step, role, permission):
     # fetch the user's resource identity
     role_id = get_role_resid(role)
 
-    world.conn.request("GET", "/api/v1/roles/" + role_id + "/permissions")
+    world.conn.request("GET", add_params(world.path_roles + role_id + "/permissions"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched a permission")
 
@@ -286,7 +295,7 @@ def role_foo_has_permission_of_bar(step, role, permission):
     # walk through all roles for this user to see if it has the requested one
     for item in permJsonList:
         found = False
-        if (item.get("description") == permission):
+        if (item.get(ns("description")) == permission):
             found = True
     assert_equal(found, True, "looking for permission of " + permission)
 
@@ -302,7 +311,7 @@ def at_least_these_roles_exist(step):
 def check_role_existence(roles):
     
     # fetch the user's resource identity
-    world.conn.request("GET", "/api/v1/roles")
+    world.conn.request("GET", add_params(world.path_roles))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched list of all roles")
 
@@ -313,8 +322,8 @@ def check_role_existence(roles):
     for exp_role in roles:
         found = False
         for act_role in respJson:
-            exp = exp_role.get("description")
-            act = act_role.get("description")
+            exp = exp_role.get(ns("description"))
+            act = act_role.get(ns("description"))
             if (exp == act):
                 found = True
         assert_equal(found, True, "Didn't find role of:\n" + jstr(exp_role) + 
@@ -325,7 +334,7 @@ def check_role_existence(roles):
 def order_role_searches_list_foo_before_bar(step, order, first, second):
     
     # fetch the user's resource identity
-    world.conn.request("GET", "/api/v1/roles?sortDirection=" + order)
+    world.conn.request("GET", add_params(world.path_roles, {"sortDirection": order}))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched list of all roles")
 
@@ -347,14 +356,14 @@ def submit_a_new_test_case_with_description_foo(step, name):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/testcases", "", headers)
+    world.conn.request("POST", add_params(world.path_testcases), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "create new testcase")
 
 @step(u'test case( with name)? "(.*)" (exists|does not exist)')
 def test_case_exists_with_description_foo(step, ignore, name, existence):
-    check_existence(step, "testcases", "name", name, "testcase", existence)
+    check_existence(step, world.path_testcases, "name", name, "testcase", existence)
 
 @step(u'add environment "(.*)" to test case "(.*)"')
 def add_environment_foo_to_test_case_bar(step, environment, test_case):
@@ -369,7 +378,7 @@ def add_environment_foo_to_test_case_bar(step, environment, test_case):
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/testcases/" + test_case_id + "/environments", "", headers)
+    world.conn.request("POST", add_params(world.path_testcases + test_case_id + "/environments"), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "post new environment to test_case")
@@ -380,7 +389,7 @@ def remove_environment_from_test_case(step, environment, test_case):
     test_case_id = get_test_case_resid(test_case)
     environment_id = get_environment_resid(environment)
     
-    world.conn.request("DELETE", "/api/v1/testcases/" + test_case_id + "/environments/" + environment_id)
+    world.conn.request("DELETE", add_params(world.path_testcases + test_case_id + "/environments/" + environment_id))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "delete new environment from test case")
 
@@ -392,15 +401,15 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     
 #    if haveness.strip() == "does not have":
 
-    world.conn.request("GET", "/api/v1/testcases/" + test_case_id + "/environments")
+    world.conn.request("GET", add_params(world.path_testcases + test_case_id + "/environments"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched environments")
 
-    jsonList = get_resp_list(response, "environment")
+    jsonList = get_resp_list(response, ns("environment"))
 
     found = False
     for item in jsonList:
-        if (item.get("name") == environment):
+        if (item.get(ns("name")) == environment):
             found = True
     
     shouldFind = (haveness == "has")
@@ -415,7 +424,7 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     
 #    if haveness.strip() == "does not have":
 
-    world.conn.request("GET", "/api/v1/testcases/" + test_case_id + "/attachments")
+    world.conn.request("GET", add_params(world.path_testcases + test_case_id + "/attachments"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched environments")
 
@@ -423,7 +432,7 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
 
     found = False
     for item in jsonList:
-        if (item.get("fileName") == attachment):
+        if (item.get(ns("fileName")) == attachment):
             found = True
     
     shouldFind = (haveness == "has")
@@ -439,20 +448,23 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
 
 @step(u'company "(.*)" (does not exist|exists)')
 def check_company_foo_existence(step, company_name, existence):
-    check_existence(step, "companies", "name", company_name, "company", existence)
+    check_existence(step, world.path_companies, "name", company_name, "company", existence)
 
 
 @step(u'add a new company with name "(.*)"')
 def add_a_new_company_with_name_foo(step, company_name):
     post_payload = post_data.get_submit_company(company_name)
-    headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(post_payload) }
+    headers = {'content-Type':'text/xml',
+               "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/companies", "", headers)
+    world.conn.request("POST", add_params(world.path_companies), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "create new testcase")
 
+@step(u'search all Companies')
+def search_all_companies(step):
+    assert False, 'This step must be implemented'
 
 '''
 ######################################################################
@@ -464,15 +476,15 @@ def add_a_new_company_with_name_foo(step, company_name):
 
 @step(u'environment "(.*)" (does not exist|exists)')
 def check_environment_foo_existence(step, environment_name, existence):
-    check_existence(step, "environments", "name", environment_name, "environment", existence)
+    check_existence(step, world.path_environments, "name", environment_name, "environment", existence)
 
 @step(u'add a new environment with name "(.*)"')
 def add_a_new_environment_with_name_foo(step, environment_name):
     post_payload = post_data.get_submit_environment(environment_name)
-    headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(post_payload) }
+    headers = {'content-Type':'text/xml',
+               "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/environments", "", headers)
+    world.conn.request("POST", add_params(world.path_environments), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "create new environment")
@@ -482,7 +494,7 @@ def add_a_new_environment_with_name_foo(step, environment_name):
 '''
 @step(u'environment type "(.*)" (does not exist|exists)')
 def check_environment_type_foo_existence(step, env_type_name, existence):
-    check_existence(step, "environmenttypes", "name", env_type_name, "environmenttype", existence)
+    check_existence(step, world.path_environmenttypes, "name", env_type_name, "environmenttype", existence)
 
 
 '''
@@ -491,10 +503,10 @@ def check_environment_type_foo_existence(step, env_type_name, existence):
 @step(u'add a new environment type with name "(.*)"')
 def add_a_new_environment_type_with_name_foo(step, env_type_name):
     post_payload = post_data.get_submit_environment(env_type_name)
-    headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(post_payload) }
+    headers = {'content-Type':'text/xml',
+               "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/environmenttypes", "", headers)
+    world.conn.request("POST", add_params(world.path_environmenttypes), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "create new environment type")
@@ -509,7 +521,7 @@ def add_a_new_environment_type_with_name_foo(step, env_type_name):
 
 @step(u'product "(.*)" (does not exist|exists)')
 def check_product_foo_existence(step, product_name, existence):
-    check_existence(step, "products", "name", product_name, "product", existence)
+    check_existence(step, world.path_products, "name", product_name, "product", existence)
 
 @step(u'add environment "(.*)" to product "(.*)"')
 def add_environment_foo_to_product_bar(step, environment, product):
@@ -521,10 +533,10 @@ def add_environment_foo_to_product_bar(step, environment, product):
     product_id = get_product_resid(product)
     
     post_payload = post_data.get_submit_environment(environment)
-    headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(post_payload) }
+    headers = {'content-Type':'text/xml',
+               'Content-Length': "%d" % len(post_payload) }
 
-    world.conn.request("POST", "/api/v1/products/" + product_id + "/environments", "", headers)
+    world.conn.request("POST", add_params(world.path_products + product_id + "/environments"), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "post new environment to product")
@@ -535,7 +547,7 @@ def remove_environment_from_product(step, environment, product):
     product_id = get_product_resid(product)
     environment_id = get_environment_resid(environment)
     
-    world.conn.request("DELETE", "/api/v1/products/" + product_id + "/environments/" + environment_id)
+    world.conn.request("DELETE", add_params(world.path_products + product_id + "/environments/" + environment_id))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "delete new environment from product")
 
@@ -547,7 +559,7 @@ def product_foo_has_environment_bar(step, product, haveness, environment):
     
 #    if haveness.strip() == "does not have":
 
-    world.conn.request("GET", "/api/v1/products/" + product_id + "/environments")
+    world.conn.request("GET", add_params(world.path_products + product_id + "/environments"))
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Fetched environments")
 
@@ -556,7 +568,7 @@ def product_foo_has_environment_bar(step, product, haveness, environment):
     found = False
     for item in jsonList:
         assert isinstance(item, dict), "expected a list of dicts in:\n" + jstr(jsonList)
-        if (item.get("name") == environment):
+        if (item.get(ns("name")) == environment):
             found = True
     
     shouldFind = (haveness == "has")
@@ -583,7 +595,7 @@ def upload_attachment_foo_to_test_case_bar(step, attachment, test_case):
                "Content-Type":content_type,
                "Content-Length": "%d" % len(body) }
 
-    world.conn.request("POST", "/api/v1/testcases/" + test_case_id + "/attachments/upload", body, headers)
+    world.conn.request("POST", add_params(world.path_testcases + test_case_id + "/attachments/upload"), body, headers)
 
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Create new user")

@@ -9,4 +9,10 @@ Feature: Company Administration
         And company "Massive Dynamic" does not exist
         when I add a new company with name "Massive Dynamic"
         Then company "Massive Dynamic" exists
-    	
+
+    Scenario: Query Companies
+        When I search all Companies
+        Then these companies exist   	
+
+
+

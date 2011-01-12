@@ -9,6 +9,10 @@ from types import ListType
 import json
 import urllib
 import mimetypes
+import base64
+import string
+import re
+
 
 '''
 ######################################################################
@@ -18,18 +22,57 @@ import mimetypes
 ######################################################################
 '''
 
+def ns(field):
+    '''
+        Ensures the namespace is added to the beginning of the field name.
+        If it already is, don't add it again, though.  How clever.
+    '''
+    if not re.search(world.ns, field):
+        field = world.ns + field
+    
+    return field
+
+def add_params(uri_path, params = {}):
+    '''
+        add the param to request JSON responses to the params object
+        I'll first add on the URI prefix
+        then add in the params
+    '''
+    params["_type"] = "json"
+    #assert False, urllib.urlencode(params)
+    #assert False, params
+    
+    uri = uri_path + "?" + urllib.urlencode(params)
+    #if re.search("companies", uri_suffix):
+        #assert False, uri
+    return uri
+
+def get_auth_header():
+    userid = "admin@utest.com" 
+    passwd = "admin"
+
+    auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
+
+    return auth
+
 def check_existence(step, uri, arg_name, arg_value, obj_name, existence):
-    arg_value_enc = urllib.quote(arg_value)
-    world.conn.request("GET", "/api/v1/" + uri + "?" + arg_name + "=" + arg_value_enc)
+    #arg_value_enc = urllib.quote(arg_value)
+    url = add_params(uri, {arg_name : arg_value})
+
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+    
+    world.conn.request("GET", url, "", headers)
     response = world.conn.getresponse()
 
-    if existence.strip() == "does not exist":
-        assert_equal(response.status, 404, uri + " existence")
-    else:
-        assert_equal(response.status, 200, uri + " existence")
+    assert_equal(response.status, 200, uri + " existence")
 
-        environmentJson = get_single_item(response, obj_name)
-        assert_equal(environmentJson.get(arg_name), arg_value, obj_name + " name match")
+    if existence.strip() == "does not exist":
+        count = get_count(response, ns(obj_name))
+        assert_equal(count, 0, "expect result size zero")
+    else:
+        environmentJson = get_single_item(response, ns(obj_name))
+        assert_equal(environmentJson.get(ns(arg_name)), arg_value, obj_name + " name match")
     
 
 
@@ -38,18 +81,28 @@ def get_single_item(response, type):
         Expect the response to be a single item or a list.  
         If it's a list, we take the first item.
     '''
+    type = ns(type)
+    pl_type = plural(type)
 
-    respJson = json.loads(response.read())
-
+    response_txt = response.read()
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + response_txt
+    
     item = None
     
     # if this was a search, extract the item from the "searchResult" object
     # in this case, we only care about the first returned item in this list
-    if (respJson.__contains__("searchResult")):
-        sr = respJson.get("searchResult")
-        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + " in:\n" + jstr(sr)
-                 
-        items = sr.get(plural(type)).get(type)
+    sr_field = ns("searchResult")
+    if (respJson.__contains__(sr_field)):
+        sr = respJson.get(sr_field)
+
+        assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
+        pl_item = sr[0].get(pl_type)
+
+        assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
+        items = pl_item.get(type)
             
         if (len(items) > 0) and isinstance(items, list):
             item = items[0]
@@ -60,14 +113,47 @@ def get_single_item(response, type):
 
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
+  
+  
+def get_count(response, type):
+    '''
+        Expect the response to be a single item or a list.  
+        If it's a list, we take the first item.
+    '''
+    type = ns(type)
+    pl_type = plural(type)
+
+    response_txt = response.read()
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + response_txt
+    
+    count = None
+    
+    # if this was a search, extract the item from the "searchResult" object
+    # in this case, we only care about the first returned item in this list
+    sr_field = ns("searchResult")
+    if (respJson.__contains__(sr_field)):
+        sr = respJson.get(sr_field)
+
+        assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
+                 
+        count = sr[0].get(ns("totalResults"))
+            
+
+    assert count != None, "didn't find " + sr_field + " or " + ns("totalResults") + " in:\n" + jstr(respJson)
+    return count
+      
 
 def get_resp_list(response, type):
     '''
         Expect the response to be a search result containing a list.
         The list may be a list of size 1, though.
     '''
-    respJson = json.loads(response.read())
 
+    type = ns(type)
+    respJson = json.loads(response.read())
     resp_list = []
     
     # if this was a search, extract the item from the "searchResult" object
@@ -89,31 +175,32 @@ def get_user_resid(name):
         name: Split into 2 parts at the space.  Only the first two parts are used.  Must have at least 2 parts.
     '''
     names = name.split()
-    return get_resource_identity("user", "/api/v1/users?firstName=" + names[0] + "&lastName=" + names[1])
+    return get_resource_identity("user", add_params(world.path_users, {"firstName": names[0], "lastName": names[1]}))
 
 def get_role_resid(role):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("role", "/api/v1/roles?description=" + role)
+    return get_resource_identity("role", add_params(world.path_roles, {"description": role}))
 
 def get_product_resid(product):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("product", "/api/v1/products?name=" + urllib.quote(product))
+    return get_resource_identity("product", add_params(world.path_products, {"name": product}))
 
 def get_environment_resid(environment):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("environment", "/api/v1/environments?name=" + urllib.quote(environment))
+    return get_resource_identity("environment", add_params(world.path_environments, {"name": environment}))
+    
 
 def get_test_case_resid(test_case):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("testcase", "/api/v1/testcases?name=" + urllib.quote(test_case))
+    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : test_case}))
 
 def get_resource_identity(type, uri):
     '''
@@ -126,15 +213,19 @@ def get_resource_identity(type, uri):
         the first element of the list.  Will almost certainly need a better solution in the future.
         Like a new method "get_resource_identities" which returns a list of ids or something.  
     '''
-    world.conn.request("GET", uri)
+
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+
+    world.conn.request("GET", uri, "", headers)
     response = world.conn.getresponse()
     assert_equal(response.status, 200, "Response when asking for " + type)
     
-    field = "resourceIdentity"
+    field = ns("resourceIdentity")
     respJson = get_single_item(response, type)
     assert respJson.__contains__(field), "Object doesn't have " + field + ":\n" + jstr(respJson)
     # we always use this as a string
-    return str(respJson.get(field).get("id"))
+    return str(respJson.get(field).get(ns("id")))
 
 
 def find_ordered_response(type, field, first, second, obj_list):
@@ -159,22 +250,24 @@ def find_ordered_response(type, field, first, second, obj_list):
     
 def plural(type):
     pl_map = {
-              "attachment": "attachments",
-              "company": "companies",
-              "environment": "environments",
-              "environmenttype": "environmenttypes",
-              "permission":"permissions",
-              "product":"products",
-              "role":"roles",
-              "testcase": "testcases",
-              "testcycle":"testcycles",
-              "testplan":"testplans",
-              "testrun":"testruns",
-              "testsuite":"testsuites",
-              "user": "users"
+              world.ns + "attachment": world.ns + "attachments",
+              world.ns + "company": world.ns + "companies",
+              world.ns + "environment": world.ns + "environments",
+              world.ns + "environmenttype": world.ns + "environmenttypes",
+              world.ns + "permission":world.ns + "permissions",
+              world.ns + "product":world.ns + "products",
+              world.ns + "role":world.ns + "roles",
+              world.ns + "testcase": world.ns + "testcases",
+              world.ns + "testcycle":world.ns + "testcycles",
+              world.ns + "testplan":world.ns + "testplans",
+              world.ns + "testrun":world.ns + "testruns",
+              world.ns + "testsuite":world.ns + "testsuites",
+              world.ns + "user": world.ns + "users"
               }
 
-    return pl_map.get(type)
+    plural_type = pl_map.get(type)
+    assert plural_type, "Couldn't find plural of %s" % (type, )
+    return plural_type
 
 def jstr(obj):
     return json.dumps(obj, sort_keys=True, indent=4)
