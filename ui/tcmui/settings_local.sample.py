@@ -11,7 +11,7 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 #TEMPLATE_DEBUG = False
 
 # Absolute path to directory where static media will be collected by the
-# "collect_static management command, and can be served by front-end webserver.
+# "collect_static" management command, and can be served by front-end webserver.
 #STATIC_ROOT = ""
 
 # A unique (and secret) key for this deployment.
