@@ -3,19 +3,19 @@ User-related remote objects.
 
 """
 from ..core import api
-
+from ..core.models import Company
 
 
 class User(api.RemoteObject):
-    # @@@ identity = ResourceIdentityField()
-    # @@@ company = Link('Company')
+    # @@@ identity = api.ResourceIdentity()
+    company = api.Locator(Company)
     email = api.Field()
     firstName = api.Field()
     lastName = api.Field()
     password = api.Field()
     screenName = api.Field()
     # @@@
-    # userStatus = StaticDataField("USERSTATUS")
+    # userStatus = api.StaticDataField("USERSTATUS")
 
 
 class UserList(api.ListObject):

@@ -7,12 +7,10 @@ from . import api
 
 
 class Company(api.RemoteObject):
-    # @@@
-    # identity = ResourceIdentityField()
+    # @@@ identity = api.ResourceIdentity()
     address = api.Field()
     city = api.Field()
-    # @@@
-    # country = StaticDataField("COUNTRY")
+    # @@@ country = api.StaticDataField("COUNTRY")
     name = api.Field()
     phone = api.Field()
     url = api.Field()

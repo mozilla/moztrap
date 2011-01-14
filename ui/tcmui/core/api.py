@@ -124,7 +124,9 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             num_results = data["ns1.totalResults"]
             data = data["ns1.%s" % self.api_name]
             data = data["ns1.%s" % self.entryclass().api_name]
-            # @@@ API (oddly) eliminates list wrapper for length-1 lists.
+            # Because this JSON is BadgerFish-translated XML
+            # (http://ajaxian.com/archives/badgerfish-translating-xml-to-json)
+            # length-1 lists are not sent as lists, so we re-listify.
             if num_results == 1:
                 data = [data]
         return super(ListObject, self).update_from_dict(data)
@@ -148,6 +150,29 @@ class FieldMixin(object):
 class Field(FieldMixin, remoteobjects.fields.Field):
     pass
 
+
+
+class Locator(Field):
+    def __init__(self, cls, api_name=None, default=None):
+        self.cls = cls
+        super(Locator, self).__init__(api_name, default)
+
+
+    def install(self, attrname, cls):
+        super(Locator, self).install(attrname, cls)
+
+        self.api_name = "%sLocator" % self.api_name
+
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+
+        data = super(Locator, self).__get__(obj, cls)
+
+        if data and "@url" in data:
+            return self.cls.get(data["@url"])
+        return data
 
 
 List = remoteobjects.fields.List
