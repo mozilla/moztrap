@@ -153,13 +153,15 @@ footer[role="contentinfo"]
     +columns(8,12)
     +omega(12)
 
-/* environment --------------------------------------------------------------    
+/* cycles --------------------------------------------------------------    
 
 #cycles
-  .date, .start, .end
+  .date
     width: columns(4,24)
-  .name
-    width: columns(9,24)
+  .start, .end
+    width: columns(3,24)
+  .go
+    width: columns(4,24)
   th
     a
       #{$link}
@@ -172,8 +174,74 @@ footer[role="contentinfo"]
           right: 0
   td:last-child
     text-align: right
-  button
-    +opacity(0)
+    a
+      @extend .button
+      +opacity(0)
+      text-transform: lowercase
+      font-variant: small-caps
+      white-space: nowrap
   tr:hover
+    td:last-child
+      a
+        +opacity(1)
+
+/* run tests --------------------------------------------------------------    
+
+#run
+  .test, summary, .content
+    +full(24)
+  .test
+    +pie-clearfix
+    +trailing-border(1px,.5)
+    +trailer(.5)
+    &:last-child
+      margin: 0
+      padding: 0
+      border: 0
+  .started
+    summary
+      background: #eef
+  summary
+    +pie-clearfix
+  header
+    +columns(20,24)
+  h3
+    +adjust-font-size-to(24px)
+    margin: 0
+    font-weight: normal
+    b
+      +adjust-font-size-to(14px,1,24px)
+      +inline-block
+      width: columns(2,20)
+      margin-right: gutter(20)
+      vertical-align: top
+      font-weight: bold
+      text-align: right
+  .suite
+    +prefix(2,20)
+    margin: 0
+  .status
+    +adjust-font-size-to(14px)
+    +columns(4,24)
+    +omega(24)
+    +leader(.25,14px)
+    text-align: center
     button
-      +opacity(1)
+      +rhythm-borders(1px,.25,14px)
+  .content
+    +pad(2,4,24)
+    +leader
+  h4
+    margin: 0
+  .start
+    +box-sizing('border-box')
+    width: 100%
+  .invalid
+    background: #ffe
+    #{$focus}
+      background: #ffb
+  .fail
+    background: #fcc
+    #{$focus}
+      background: #fbb
+  

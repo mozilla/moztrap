@@ -162,9 +162,9 @@ button:focus, button:hover, button:active { background: #99ff99; }
 button.sub { margin: 0; padding: 0; border: 0; outline: 0; display: inline; width: auto; overflow: visible; background: none; color: inherit; font: inherit; line-height: inherit; text-transform: none; letter-spacing: 0; color: #005498; }
 button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 
-.button { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; border-style: solid; border-width: 0.063em; padding: 0.313em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background: #ccffcc; vertical-align: baseline; text-transform: uppercase; letter-spacing: 0.01em; }
-.button { *display: inline; }
-.button:focus, .button:hover, .button:active { background: #99ff99; }
+.button, #cycles td:last-child a { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; border-style: solid; border-width: 0.063em; padding: 0.313em; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; padding-left: 0.5em; padding-right: 0.5em; background: #ccffcc; vertical-align: baseline; text-transform: uppercase; letter-spacing: 0.01em; }
+.button, #cycles td:last-child a { *display: inline; }
+.button:focus, #cycles td:last-child a:focus, .button:hover, #cycles td:last-child a:hover, .button:active, #cycles td:last-child a:active { background: #99ff99; }
 
 /* Helpers ------------------------------------------------------------------- */
 .full, nav.crumb, div[role="main"], footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
@@ -176,6 +176,10 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 .left { display: inline; float: left; margin-right: 1em; margin-bottom: 0.5em; }
 
 .right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
+
+.no-details details { position: relative; }
+.no-details details > * { display: none; }
+.no-details details summary { display: block; cursor: pointer; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }
@@ -238,11 +242,35 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
 #environment select { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
-/* environment -------------------------------------------------------------- */
-#cycles .date, #cycles .start, #cycles .end { width: 15.663%; }
-#cycles .name { width: 36.747%; }
+/* cycles -------------------------------------------------------------- */
+#cycles .date { width: 15.663%; }
+#cycles .start, #cycles .end { width: 11.446%; }
+#cycles .go { width: 15.663%; }
 #cycles th a:link, #cycles th a:visited { display: block; position: relative; }
 #cycles th a:focus::after, #cycles th a:hover::after, #cycles th a:active::after { content: "»"; position: absolute; right: 0; }
 #cycles td:last-child { text-align: right; }
-#cycles button { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0); opacity: 0; }
-#cycles tr:hover button { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
+#cycles td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0); opacity: 0; text-transform: lowercase; font-variant: small-caps; white-space: nowrap; }
+#cycles tr:hover td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
+
+/* run tests -------------------------------------------------------------- */
+#run .test, #run summary, #run .content { clear: both; }
+#run .test { *zoom: 1; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; margin-bottom: 0.75em; }
+#run .test:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#run .test:last-child { margin: 0; padding: 0; border: 0; }
+#run .started summary { background: #eeeeff; }
+#run summary { *zoom: 1; }
+#run summary:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#run header { display: inline; float: left; width: 83.133%; margin-right: 1.205%; }
+#run h3 { font-size: 1.5em; line-height: 1em; margin: 0; font-weight: normal; }
+#run h3 b { font-size: 0.583em; line-height: 1.714em; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; width: 8.696%; margin-right: 1.449%; vertical-align: top; font-weight: bold; text-align: right; }
+#run h3 b { *display: inline; }
+#run .suite { padding-left: 10.145%; margin: 0; }
+#run .status { font-size: 0.875em; line-height: 1.714em; display: inline; float: left; width: 15.663%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 0.429em; text-align: center; }
+#run .status button { border-style: solid; border-width: 0.071em; padding: 0.357em; }
+#run .content { padding-left: 8.434%; padding-right: 16.867%; margin-top: 1.5em; }
+#run h4 { margin: 0; }
+#run .start { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; width: 100%; }
+#run .invalid { background: #ffffee; }
+#run .invalid:focus, #run .invalid:hover, #run .invalid:active { background: #ffffbb; }
+#run .fail { background: #ffcccc; }
+#run .fail:focus, #run .fail:hover, #run .fail:active { background: #ffbbbb; }

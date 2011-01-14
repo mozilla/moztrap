@@ -9,4 +9,5 @@ urlpatterns = patterns(
     url("^test/products/$", direct_to_template, {"template": "test/products.html"}, name="products"),
     url("^test/product/firefox/environment/$", direct_to_template, {"template": "test/environment.html"}, name="environment"),
     url("^test/product/firefox/cycles/$", direct_to_template, {"template": "test/cycles.html"}, name="cycles"),
+    url("^test/product/firefox/cycles/1/$", direct_to_template, {"template": "test/run.html"}, name="run"),
 )

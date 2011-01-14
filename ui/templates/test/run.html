@@ -1,0 +1,251 @@
+{% extends 'test/products.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="#">[product name]</a></li>
+  <li><a href="/test/product/firefox/cycles/">cycles</a></li>
+  <li><a href="/test/product/firefox/cycles/1/">[test cycle name/id]</a></li>
+{% endblock crumb %}
+
+{% block content %}
+  <section id="run">
+    <h2>Run Tests:</h2>
+    
+    <article class="test">
+      <details open="open">
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="start">start</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+    
+    <article class="test started">
+      <details>
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="pass">pass</button>
+            <button class="invalid">invalid</button>
+            <button class="fail">fail</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+
+    <article class="test">
+      <details>
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="start">start</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+
+    <article class="test">
+      <details>
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="start">start</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+
+    <article class="test">
+      <details>
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="start">start</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+
+    <article class="test">
+      <details>
+        
+        <summary>
+          <header>
+            <h3><b>#1294 </b>lorem ipsum dolor sit amet, consectetur</h3>
+            <p class="suite">test suite</p>
+          </header>
+          <div class="status">
+            <button class="start">start</button>
+          </div>
+        </summary>
+        
+        <div class="content">
+          <ol class="steps">
+            <li>
+              <h4>the first test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the second test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+            <li>
+              <h4>the third test step</h4>
+              <div class="results">
+                <p>here is an expected result for this test step.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+      </details>  
+    </article>
+
+  </section>
+{% endblock content %}
