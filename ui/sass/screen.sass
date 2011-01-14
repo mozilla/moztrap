@@ -43,6 +43,7 @@ nav[role="navigation"]
   +padding-leader(.5)
   li
     +float(left)
+    margin-right: .5em
   a
     #{$link}
       +padding-leader(.25)
@@ -151,4 +152,28 @@ footer[role="contentinfo"]
   select
     +columns(8,12)
     +omega(12)
-    
+
+/* environment --------------------------------------------------------------    
+
+#cycles
+  .date, .start, .end
+    width: columns(4,24)
+  .name
+    width: columns(9,24)
+  th
+    a
+      #{$link}
+        display: block
+        position: relative
+      #{$focus}
+        &::after
+          content: "»"
+          position: absolute
+          right: 0
+  td:last-child
+    text-align: right
+  button
+    +opacity(0)
+  tr:hover
+    button
+      +opacity(1)

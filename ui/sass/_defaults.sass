@@ -222,6 +222,15 @@ th, td, caption
 
 table, th
   +trailing-border(1px, 0.5)
+  border-color: #ccc
+
+tr
+  &:nth-child(even)
+    td
+      background: #eef
+  &:hover
+    td
+      background: #ddf
 
 tfoot
   +adjust-font-size-to(14px)
