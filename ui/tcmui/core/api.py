@@ -7,6 +7,7 @@ import cgi
 import urllib
 import urlparse
 
+from django.utils.encoding import StrAndUnicode
 import remoteobjects
 
 from . import conf
@@ -30,9 +31,10 @@ def add_to_querystring(url, **kwargs):
 
 
 
-class ObjectMixin(object):
+class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
-    
+
+
     def get_request(self, *args, **kwargs):
         """
         Add authorization header, request a JSON-formatted response, and
@@ -61,6 +63,17 @@ class ObjectMixin(object):
 
         return request
 
+
+    def update_from_response(self, url, response, content):
+        if isinstance(content, str):
+            try:
+                charset = cgi.parse_header(
+                    response["content-type"])[1]["charset"]
+            except KeyError:
+                charset = "utf-8"
+            content = content.decode(charset)
+        return super(ObjectMixin, self).update_from_response(
+            url, response, content)
 
 
 class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):

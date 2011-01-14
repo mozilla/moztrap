@@ -9,7 +9,7 @@ from .api import RemoteObject, ListObject, fields
 class Company(RemoteObject):
     address = fields.Field()
     city = fields.Field()
-    # @@@ country = fields.StaticDataField("COUNTRY")
+    country = fields.StaticData("COUNTRY")
     name = fields.Field()
     phone = fields.Field()
     url = fields.Field()

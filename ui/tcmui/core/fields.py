@@ -61,5 +61,41 @@ class ResourceIdentity(Field):
 
 
 
+class StaticData(Field):
+    """
+    A Field whose value is a key to a staticData lookup table. Attribute access
+    returns the full CodeValue instance (with id, description, and sortOrder
+    attributes.)
+
+    """
+    def __init__(self, key, default=None):
+        self.key = key
+        super(StaticData, self).__init__(None, default)
+
+
+    def install(self, attrname, cls):
+        super(StaticData, self).install(attrname, cls)
+
+        self.api_name = "%sId" % self.api_name
+
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+
+        data = super(StaticData, self).__get__(obj, cls)
+
+        if data:
+            from ..static.models import ArrayOfCodeValue
+            # @@@ For long lists, it might be better to query by id (if the API
+            # allows?).  For short lists, if we cache the entire list, this
+            # might be better anyway.
+            for code in ArrayOfCodeValue.get(self.key):
+                if code.id == data:
+                    return code
+        return data
+
+
+
 List = remoteobjects.fields.List
 Object = remoteobjects.fields.Object

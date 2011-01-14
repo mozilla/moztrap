@@ -15,6 +15,13 @@ class CodeValue(ObjectMixin, remoteobjects.RemoteObject):
     sortOrder = fields.Field()
 
 
+    def __unicode__(self):
+        return self.description
+
+
+    def __repr__(self):
+        return "<CodeValue: %s>" % self
+
 
 class ArrayOfCodeValue(ObjectMixin, remoteobjects.ListObject):
     api_base_url = urlparse.urljoin(conf.TCM_API_BASE, "staticData/values/")

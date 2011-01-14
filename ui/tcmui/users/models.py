@@ -13,7 +13,7 @@ class User(RemoteObject):
     lastName = fields.Field()
     password = fields.Field()
     screenName = fields.Field()
-    # @@@ userStatus = fields.StaticDataField("USERSTATUS")
+    userStatus = fields.StaticData("USERSTATUS")
 
 
 class UserList(ListObject):
