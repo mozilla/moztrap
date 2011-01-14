@@ -31,6 +31,8 @@ def add_to_querystring(url, **kwargs):
 
 
 class ObjectMixin(object):
+    api_base_url = conf.TCM_API_BASE
+    
     def get_request(self, *args, **kwargs):
         """
         Add authorization header, request a JSON-formatted response, and
@@ -44,7 +46,7 @@ class ObjectMixin(object):
 
         # Add API base URL to relative paths.
         if "://" not in request["uri"]:
-            request["uri"] = urlparse.urljoin(conf.TCM_API_BASE, request["uri"])
+            request["uri"] = urlparse.urljoin(self.api_base_url, request["uri"])
 
         # Request a JSON response.
         request["uri"] = add_to_querystring(request["uri"], _type="json")
@@ -58,17 +60,6 @@ class ObjectMixin(object):
             )
 
         return request
-
-
-    @classmethod
-    def get(cls, url=None, http=None, **kwargs):
-        if url is None:
-            try:
-                url = cls.default_url
-            except AttributeError:
-                raise ValueError("%s has no default URL; .get() requires url."
-                                 % cls)
-        return super(ObjectMixin, cls).get(url, http, **kwargs)
 
 
 
@@ -169,3 +160,14 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if num_results == 1:
                 data = [data]
         return super(ListObject, self).update_from_dict(data)
+
+
+    @classmethod
+    def get(cls, url=None, http=None, **kwargs):
+        if url is None:
+            try:
+                url = cls.default_url
+            except AttributeError:
+                raise ValueError("%s has no default URL; .get() requires url."
+                                 % cls)
+        return super(ObjectMixin, cls).get(url, http, **kwargs)
