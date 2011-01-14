@@ -23,7 +23,7 @@ def add_to_querystring(url, **kwargs):
 
     """
     parts = list(urlparse.urlparse(url))
-    queryargs = cgi.parse_qs(parts[4], keep_blank_values=True)
+    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=True)
     queryargs = dict([(k, v[0]) for k, v in queryargs.iteritems()])
     queryargs.update(kwargs)
     parts[4] = urllib.urlencode(queryargs)
