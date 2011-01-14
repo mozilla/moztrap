@@ -2,24 +2,23 @@
 Core remote objects.
 
 """
-from . import api
+from .api import RemoteObject, ListObject, fields
 
 
 
-class Company(api.RemoteObject):
-    # @@@ identity = api.ResourceIdentity()
-    address = api.Field()
-    city = api.Field()
-    # @@@ country = api.StaticDataField("COUNTRY")
-    name = api.Field()
-    phone = api.Field()
-    url = api.Field()
-    zip = api.Field()
+class Company(RemoteObject):
+    address = fields.Field()
+    city = fields.Field()
+    # @@@ country = fields.StaticDataField("COUNTRY")
+    name = fields.Field()
+    phone = fields.Field()
+    url = fields.Field()
+    zip = fields.Field()
 
 
 
-class CompanyList(api.ListObject):
+class CompanyList(ListObject):
     entryclass = Company
     api_name = "companies"
 
-    entries = api.List(api.Object(Company))
+    entries = fields.List(fields.Object(Company))

@@ -2,20 +2,19 @@
 Product-related remote objects.
 
 """
-from ..core import api
+from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
 
 
-class Product(api.RemoteObject):
-    # @@@ identity = api.ResourceIdentity()
-    company = api.Locator(Company)
-    description = api.Field()
-    name = api.Field()
+class Product(RemoteObject):
+    company = fields.Locator(Company)
+    description = fields.Field()
+    name = fields.Field()
 
 
 
-class ProductList(api.ListObject):
+class ProductList(ListObject):
     entryclass = Product
     api_name = "products"
 
-    entries = api.List(api.Object(Product))
+    entries = fields.List(fields.Object(Product))

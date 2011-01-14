@@ -10,6 +10,7 @@ import urlparse
 import remoteobjects
 
 from . import conf
+from . import fields
 
 
 
@@ -53,9 +54,28 @@ class ObjectMixin(object):
 
 
 class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
+    identity = fields.ResourceIdentity()
+
+
     @property
     def api_name(self):
         return self.__class__.__name__.lower()
+
+
+    def _set_location(self, val):
+        self._location_override = val
+
+
+    def _get_location(self):
+        if self._location_override:
+            return self._location_override
+        # Avoid infinite loopage; take care to not trigger delivery
+        if "identity" in self.__dict__ and "@url" in self.identity:
+            return self.identity["@url"]
+        return None
+
+
+    _location = property(_get_location, _set_location)
 
 
     def update_from_dict(self, data):
@@ -130,50 +150,3 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if num_results == 1:
                 data = [data]
         return super(ListObject, self).update_from_dict(data)
-
-
-
-class FieldMixin(object):
-    def install(self, attrname, cls):
-        super(FieldMixin, self).install(attrname, cls)
-
-        self.api_name = "ns1.%s" % self.api_name
-
-
-    def decode(self, value):
-        if value == {"@xsi.nil": "true"}:
-            value = None
-        return super(FieldMixin, self).decode(value)
-
-
-
-class Field(FieldMixin, remoteobjects.fields.Field):
-    pass
-
-
-
-class Locator(Field):
-    def __init__(self, cls, api_name=None, default=None):
-        self.cls = cls
-        super(Locator, self).__init__(api_name, default)
-
-
-    def install(self, attrname, cls):
-        super(Locator, self).install(attrname, cls)
-
-        self.api_name = "%sLocator" % self.api_name
-
-
-    def __get__(self, obj, cls):
-        if obj is None:
-            return self
-
-        data = super(Locator, self).__get__(obj, cls)
-
-        if data and "@url" in data:
-            return self.cls.get(data["@url"])
-        return data
-
-
-List = remoteobjects.fields.List
-Object = remoteobjects.fields.Object
