@@ -2,26 +2,26 @@
 Core remote objects.
 
 """
-from .api import TCMRemoteObject, TCMListObject, fields
+from . import api
 
 
 
-class Company(TCMRemoteObject):
+class Company(api.RemoteObject):
     # @@@
     # identity = ResourceIdentityField()
-    address = fields.Field()
-    city = fields.Field()
+    address = api.Field()
+    city = api.Field()
     # @@@
     # country = StaticDataField("COUNTRY")
-    name = fields.Field()
-    phone = fields.Field()
-    url = fields.Field()
-    zip = fields.Field()
+    name = api.Field()
+    phone = api.Field()
+    url = api.Field()
+    zip = api.Field()
 
 
 
-class CompanyList(TCMListObject):
+class CompanyList(api.ListObject):
     entryclass = Company
     api_name = "companies"
 
-    entries = fields.List(fields.Object(Company))
+    entries = api.List(api.Object(Company))

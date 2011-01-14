@@ -7,7 +7,7 @@ import cgi
 import urllib
 import urlparse
 
-from remoteobjects import RemoteObject, ListObject, fields
+import remoteobjects
 
 from . import conf
 
@@ -29,7 +29,7 @@ def add_to_querystring(url, **kwargs):
 
 
 
-class TCMMixin(object):
+class ObjectMixin(object):
     def get_request(self, *args, **kwargs):
         """
         Add authorization header and request a JSON-formatted response.
@@ -38,7 +38,7 @@ class TCMMixin(object):
         user = kwargs.pop("user", conf.TCM_ADMIN_USER)
         password = kwargs.pop("password", conf.TCM_ADMIN_PASS)
 
-        request = super(TCMMixin, self).get_request(*args, **kwargs)
+        request = super(ObjectMixin, self).get_request(*args, **kwargs)
         request["uri"] = add_to_querystring(request["uri"], _type="json")
 
         request["headers"]["Authorization"] = (
@@ -52,7 +52,7 @@ class TCMMixin(object):
 
 
 
-class TCMRemoteObject(TCMMixin, RemoteObject):
+class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     @property
     def api_name(self):
         return self.__class__.__name__.lower()
@@ -60,7 +60,7 @@ class TCMRemoteObject(TCMMixin, RemoteObject):
 
     def update_from_dict(self, data):
         """
-        Clean up the JSON data.
+        Unwrap the JSON data.
 
         We expect to get data in a form like this:
 
@@ -74,36 +74,24 @@ class TCMRemoteObject(TCMMixin, RemoteObject):
            ]
         }
 
-        We pass on just the inner-most dictionary, with "ns1." prefixes
-        stripped from keys.
+        We pass on just the inner-most dictionary.
 
-        In order to also support data passed in from TCMListObject instances,
-        both the outer dictionary wrapper and the list wrapper inside that are
-        optional, and will be stripped only if found.
+        In order to also support data passed in from ListObject instances,
+        the unwrapping is optional; if we get just a straight data dictionary,
+        we'll pass that on untouched.
 
         """
-        new = {}
         wrapper_key = "ns1.%s" % self.api_name
         if wrapper_key in data:
-            data = data[wrapper_key]
-        if isinstance(data, list):
-            data = data[0]
-        for key, val in data.iteritems():
-            if val == {"@xsi.nil": "true"}:
-                val = None
-            if key.startswith("ns1."):
-                key = key[len("ns1."):]
-
-            new[key] = val
-
-        return super(TCMRemoteObject, self).update_from_dict(new)
+            data = data[wrapper_key][0]
+        return super(RemoteObject, self).update_from_dict(data)
 
 
 
-class TCMListObject(TCMMixin, ListObject):
+class ListObject(ObjectMixin, remoteobjects.ListObject):
     def update_from_dict(self, data):
         """
-        Clean up the JSON data.
+        Unwrap the JSON data.
 
         We expect to get data in a form like this:
 
@@ -128,16 +116,39 @@ class TCMListObject(TCMMixin, ListObject):
            ]
         }
 
-        We pass on a list of data dictionaries. We don't do any cleaning within
-        those dictionaries (e.g. stripping "ns1" prefix, etc.), as the
-        individual TCMRemoteObject will take care of that.
+        We pass on the inner list of data dictionaries.
 
         """
-        data = data["ns1.searchResult"][0]
-        num_results = data["ns1.totalResults"]
-        data = data["ns1.%s" % self.api_name]
-        data = data["ns1.%s" % self.entryclass().api_name]
-        # @@@ API (oddly) eliminates list wrapper for length-1 lists.
-        if num_results == 1:
-            data = [data]
-        return super(TCMListObject, self).update_from_dict(data)
+        if "ns1.searchResult" in data:
+            data = data["ns1.searchResult"][0]
+            num_results = data["ns1.totalResults"]
+            data = data["ns1.%s" % self.api_name]
+            data = data["ns1.%s" % self.entryclass().api_name]
+            # @@@ API (oddly) eliminates list wrapper for length-1 lists.
+            if num_results == 1:
+                data = [data]
+        return super(ListObject, self).update_from_dict(data)
+
+
+
+class FieldMixin(object):
+    def install(self, attrname, cls):
+        super(FieldMixin, self).install(attrname, cls)
+
+        self.api_name = "ns1.%s" % self.api_name
+
+
+    def decode(self, value):
+        if value == {"@xsi.nil": "true"}:
+            value = None
+        return super(FieldMixin, self).decode(value)
+
+
+
+class Field(FieldMixin, remoteobjects.fields.Field):
+    pass
+
+
+
+List = remoteobjects.fields.List
+Object = remoteobjects.fields.Object
