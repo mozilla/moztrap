@@ -15,6 +15,9 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
+# Just to avoid deprecation warnings
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
+
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # On Unix systems, a value of None will cause Django to use the same
