@@ -20,5 +20,6 @@ class Company(RemoteObject):
 class CompanyList(ListObject):
     entryclass = Company
     api_name = "companies"
+    default_url = "companies"
 
     entries = fields.List(fields.Object(Company))

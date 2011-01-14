@@ -19,5 +19,6 @@ class User(RemoteObject):
 class UserList(ListObject):
     entryclass = User
     api_name = "users"
+    default_url = "users"
 
     entries = fields.List(fields.Object(User))

@@ -125,6 +125,7 @@ COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
                         "compressor.filters.yui.YUICSSFilter"]
 COMPRESS_JS_FILTERS = ["compressor.filters.yui.YUIJSFilter"]
 
+TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"
 TCM_ADMIN_PASS = "admin"
 

@@ -33,15 +33,23 @@ def add_to_querystring(url, **kwargs):
 class ObjectMixin(object):
     def get_request(self, *args, **kwargs):
         """
-        Add authorization header and request a JSON-formatted response.
+        Add authorization header, request a JSON-formatted response, and
+        prepend TCM_API_BASE to relative URL paths.
 
         """
         user = kwargs.pop("user", conf.TCM_ADMIN_USER)
         password = kwargs.pop("password", conf.TCM_ADMIN_PASS)
 
         request = super(ObjectMixin, self).get_request(*args, **kwargs)
+
+        # Add API base URL to relative paths.
+        if "://" not in request["uri"]:
+            request["uri"] = urlparse.urljoin(conf.TCM_API_BASE, request["uri"])
+
+        # Request a JSON response.
         request["uri"] = add_to_querystring(request["uri"], _type="json")
 
+        # Add Authorization header.
         request["headers"]["Authorization"] = (
             "Basic %s"
             % base64.encodestring(
@@ -50,6 +58,17 @@ class ObjectMixin(object):
             )
 
         return request
+
+
+    @classmethod
+    def get(cls, url=None, http=None, **kwargs):
+        if url is None:
+            try:
+                url = cls.default_url
+            except AttributeError:
+                raise ValueError("%s has no default URL; .get() requires url."
+                                 % cls)
+        return super(ObjectMixin, cls).get(url, http, **kwargs)
 
 
 

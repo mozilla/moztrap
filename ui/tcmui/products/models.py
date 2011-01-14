@@ -16,5 +16,6 @@ class Product(RemoteObject):
 class ProductList(ListObject):
     entryclass = Product
     api_name = "products"
+    default_url = "products"
 
     entries = fields.List(fields.Object(Product))
