@@ -120,10 +120,8 @@ LOGGING = {
 }
 
 INSTALLED_APPS += ["compressor"]
-COMPRESS_YUI_BINARY = "yuicompressor"
 COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
-                        "compressor.filters.yui.YUICSSFilter"]
-COMPRESS_JS_FILTERS = ["compressor.filters.yui.YUIJSFilter"]
+                        "tcmui.compressor_filters.SlimmerCSSFilter"]
 
 TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"

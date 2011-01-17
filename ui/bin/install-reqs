@@ -9,9 +9,9 @@ install_type, if present should be one of "dev" or "prod" (defaults to "dev").
 
 """
 import os.path
-import subprocess
 import sys
 
+import pip
 
 def main(base_dir, argv):
     reqs_dir = os.path.join(base_dir, "requirements")
@@ -31,12 +31,10 @@ def main(base_dir, argv):
         print
         return 1
 
-    args = ["pip", "install", "--no-index",
+    args = ["install", "--no-index",
             "-f", "file://%s" % dist_dir, "-r", reqs_file]
-    print "Running '%s'" % " ".join(args)
-    subprocess.call(args)
-
-    return 0
+    print "Running 'pip %s'" % ", ".join(args)
+    return pip.main(args)
 
 
 if __name__ == "__main__":
