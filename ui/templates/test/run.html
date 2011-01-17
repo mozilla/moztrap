@@ -1,10 +1,9 @@
-{% extends 'test/products.html' %}
+{% extends 'test/base.html' %}
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="#">[product name]</a></li>
-  <li><a href="/test/product/firefox/cycles/">cycles</a></li>
-  <li><a href="/test/product/firefox/cycles/1/">[test cycle name/id]</a></li>
+  <li><a href="/test/product/1/cycles/">[product name]</a></li>
+  <li>[test cycle name/id]</li>
 {% endblock crumb %}
 
 {% block content %}
