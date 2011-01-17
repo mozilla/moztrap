@@ -143,6 +143,29 @@ footer[role="contentinfo"]
 
 /* environment --------------------------------------------------------------    
 
+.environment
+  position: relative
+  summary
+    position: absolute
+    top: - $base-rhythm-unit*2
+    right: 0
+    color: $alt
+    &:hover
+      color: $accent
+  form
+    +full(24)
+    +prefix(12,24)
+    +trailing-border(1px,1)
+    +trailer
+  li
+    +pie-clearfix
+  label
+    +columns(4,12)
+  select
+    +columns(8,12)
+    +omega(12)
+    
+    
 #environment
   @extend .simple
   li
@@ -243,5 +266,4 @@ footer[role="contentinfo"]
   .fail
     background: #fcc
     #{$focus}
-      background: #fbb
-  
+      background: #fbb  

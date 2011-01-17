@@ -237,6 +237,15 @@ footer[role="contentinfo"] small { font-size: 1em; }
 
 /* products -------------------------------------------------------------- */
 /* environment -------------------------------------------------------------- */
+.environment { position: relative; }
+.environment summary { position: absolute; top: -3em; right: 0; color: #005498; }
+.environment summary:hover { color: #984400; }
+.environment form { clear: both; padding-left: 50.602%; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; margin-bottom: 1.5em; }
+.environment li { *zoom: 1; }
+.environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+.environment select { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+
 #environment li { *zoom: 1; }
 #environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
