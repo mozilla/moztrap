@@ -208,6 +208,71 @@ footer[role="contentinfo"]
       a
         +opacity(1)
 
+/* create tests --------------------------------------------------------------    
+
+.remove
+  +replace-text("http://dummyimage.com/16/933/fff&text=X")
+  display: block
+  height: $base-rhythm-unit
+
+.add
+  display: block
+  text-align: right
+
+#create
+  li
+    +pie-clearfix
+  
+  .meta
+    +columns(11,24)
+    label
+      +columns(2,11)
+    input, select
+      +columns(9,11)
+      +omega(11)
+  
+  .env
+    +columns(13,24)
+    +omega(24)
+    ul
+      +no-style-list
+    select
+      +columns(6,13)
+      + select
+        +columns(6,13)
+    .remove
+      +columns(1,13)
+      +omega(13)
+    .add
+      margin-right: columns(1,13) + gutter(13)
+  
+  .steps
+    +full(24)
+    counter-reset: step
+    .remove
+      +columns(1,24)
+      +omega(24)
+      +leader
+    .add
+      margin-right: columns(1,24) + gutter(24)
+    li
+      position: relative
+      counter-increment: step
+      &::before
+        +adjust-font-size-to(48px)
+        content: counter(step, decimal) "."
+        position: absolute
+        left: 0
+        top: 1.5em
+      &:last-child::before
+        content: ""
+  .step
+    +columns(10,24)
+    margin-left: columns(2,24) + gutter(24)
+  .result
+    +columns(11,24)
+    
+
 /* run tests --------------------------------------------------------------    
 
 #run

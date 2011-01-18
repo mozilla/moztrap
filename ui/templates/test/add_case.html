@@ -1,0 +1,75 @@
+{% extends 'test/manage_base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="/manage/testcase/add/">add test case</a></li>
+{% endblock crumb %}
+
+{% block content %}
+<section id="create">
+  <h2>create a new test case</h2>
+  <form>
+    <ul class="meta">
+      <li><label for="name">name</label><input type="text" name="name" value="" id="name" /></li>
+      <li><label for="product">product</label>
+        <select name="product" id="product">
+          <option value="option1">option1</option>
+          <option value="option2">option2</option>
+          <option value="option1">option3</option>
+          <option value="option2">option4</option>
+          <option value="option1">option5</option>
+          <option value="option2">option6</option>
+          <option value="option1">option7</option>
+          <option value="option2">option8</option>
+        </select>
+      </li>
+      <li><label for="tags">tags</label><input type="text" name="tags" value="" id="tags" /></li>
+    </ul>
+    
+    <div class="env">
+      <label>environment constraints</label>
+      <ul>
+        <li>
+          <select name="env_type1" id="env_type1">
+            <option value="option1">option1</option>
+            <option value="option2">option2</option>
+            <option value="option1">option3</option>
+            <option value="option2">option4</option>
+          </select>
+          <select name="env_value1" id="env_value1" multiple size="5">
+            <option value="option1">option1</option>
+            <option value="option2">option2</option>
+            <option value="option1">option3</option>
+            <option value="option2">option4</option>
+            <option value="option1">option5</option>
+            <option value="option2">option6</option>
+            <option value="option1">option7</option>
+            <option value="option2">option8</option>
+          </select>
+          <a href="#" class="remove">remove</a>
+        </li>
+        <li>
+          <a href="#" class="add">add a constraint »</a>
+        </li>
+      </ul>
+    </div>
+    
+    <ol class="steps">
+      <li>
+        <div class="step">
+          <label for="step1">step to execute</label>
+          <textarea name="step1"></textarea>            
+        </div>
+        <div class="result">
+          <label for="result1">expected result</label>
+          <textarea name="result1"></textarea>              
+        </div>
+        <a href="#" class="remove">remove</a>
+      </li>
+      <li>
+        <a href="#" class="add">add a step »</a>
+      </li>
+    </ol>
+  </form>
+</section>
+{% endblock content %}

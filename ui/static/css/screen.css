@@ -153,6 +153,7 @@ input[type=search] { -webkit-appearance: none; }
 input[type=search]::-webkit-search-decoration { display: none; }
 
 select { margin-bottom: 0.75em; border: 1px solid #cccccc; font: inherit; }
+select[multiple] { vertical-align: top; }
 
 .form-actions { clear: both; text-align: right; }
 
@@ -260,6 +261,32 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #cycles td:last-child { text-align: right; }
 #cycles td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0); opacity: 0; text-transform: lowercase; font-variant: small-caps; white-space: nowrap; }
 #cycles tr:hover td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
+
+/* create tests -------------------------------------------------------------- */
+.remove { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url(http://dummyimage.com/16/933/fff&text=X); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
+
+.add { display: block; text-align: right; }
+
+#create li { *zoom: 1; }
+#create li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#create .meta { display: inline; float: left; width: 45.181%; margin-right: 1.205%; }
+#create .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
+#create .meta input, #create .meta select { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .env { display: inline; float: left; width: 53.614%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+#create .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#create .env select { display: inline; float: left; width: 44.944%; margin-right: 2.247%; }
+#create .env select + select { display: inline; float: left; width: 44.944%; margin-right: 2.247%; }
+#create .env .remove { display: inline; float: left; width: 5.618%; margin-right: 2.247%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .env .add { margin-right: 7.865%; }
+#create .steps { clear: both; counter-reset: step; }
+#create .steps .remove { display: inline; float: left; width: 3.012%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 1.5em; }
+#create .steps .add { margin-right: 4.217%; }
+#create .steps li { position: relative; counter-increment: step; }
+#create .steps li::before { font-size: 3em; line-height: 1em; content: counter(step, decimal) "."; position: absolute; left: 0; top: 1.5em; }
+#create .steps li:last-child::before { content: ""; }
+#create .step { display: inline; float: left; width: 40.964%; margin-right: 1.205%; margin-left: 8.434%; }
+#create .result { display: inline; float: left; width: 45.181%; margin-right: 1.205%; }
 
 /* run tests -------------------------------------------------------------- */
 #run .test, #run summary, #run .content { clear: both; }
