@@ -270,16 +270,16 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #create li { *zoom: 1; }
 #create li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #create .form-actions { margin-top: 1.5em; }
-#create .meta { display: inline; float: left; width: 45.181%; margin-right: 1.205%; }
-#create .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
-#create .meta input, #create .meta select { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-#create .env { display: inline; float: left; width: 53.614%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .meta { display: inline; float: left; width: 49.398%; margin-right: 1.205%; }
+#create .meta label { display: inline; float: left; width: 14.634%; margin-right: 2.439%; }
+#create .meta input, #create .meta select { display: inline; float: left; width: 82.927%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .env { display: inline; float: left; width: 49.398%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 #create .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 #create .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-#create .env select { display: inline; float: left; width: 44.944%; margin-right: 2.247%; }
-#create .env select + select { display: inline; float: left; width: 44.944%; margin-right: 2.247%; }
-#create .env .remove { display: inline; float: left; width: 5.618%; margin-right: 2.247%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-#create .env .add { margin-right: 7.865%; }
+#create .env select { display: inline; float: left; width: 40.244%; margin-right: 2.439%; }
+#create .env select + select { display: inline; float: left; width: 48.78%; margin-right: 2.439%; }
+#create .env .remove { display: inline; float: left; width: 6.098%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .env .add { margin-right: 8.537%; }
 #create .steps { clear: both; counter-reset: step; }
 #create .steps .remove { display: inline; float: left; width: 3.012%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 1.5em; }
 #create .steps .add { margin-right: 4.217%; }
