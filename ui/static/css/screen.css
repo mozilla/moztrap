@@ -269,6 +269,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 
 #create li { *zoom: 1; }
 #create li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#create .form-actions { margin-top: 1.5em; }
 #create .meta { display: inline; float: left; width: 45.181%; margin-right: 1.205%; }
 #create .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
 #create .meta input, #create .meta select { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
