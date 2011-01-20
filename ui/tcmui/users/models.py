@@ -17,9 +17,17 @@ class User(RemoteObject):
     userStatus = StaticData("USERSTATUS")
 
 
+    def __unicode__(self):
+        return self.screenName
+
+
 class UserList(ListObject):
     entryclass = User
     api_name = "users"
     default_url = "users"
 
     entries = fields.List(fields.Object(User))
+
+
+    def __unicode__(self):
+        return u"%s Users" % len(self)
