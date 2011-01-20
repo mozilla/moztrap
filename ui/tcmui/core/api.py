@@ -5,6 +5,7 @@ Core objects for accessing platform API data.
 import base64
 import cgi
 from copy import deepcopy
+import logging
 import urllib
 import urlparse
 
@@ -15,6 +16,11 @@ from remoteobjects.http import userAgent
 from . import conf
 from . import fields
 from .. import __version__
+
+
+
+log = logging.getLogger('remoteobjects.http')
+
 
 
 def add_to_querystring(url, **kwargs):
@@ -122,16 +128,81 @@ class ObjectMixin(StrAndUnicode):
             http = userAgent
         response, content = http.request(**request)
 
+        log.debug('Yay POSTed new obj, now updating from %r', content)
+        # The returned data will include resourceIdentity with url, we don't
+        # want to override that with a list URL that isn't even right for the
+        # individual object, so we pass in None for the URL.
         obj.update_from_response(None, response, content)
+
+
+    def put(self, http=None):
+        """Save a previously requested `RemoteObject` back to its remote
+        resource through an HTTP ``PUT`` request.
+
+        Optional `http` parameter is the user agent object to use. `http`
+        objects should be compatible with `httplib2.Http` objects.
+
+        """
+        if getattr(self, '_location', None) is None:
+            raise ValueError('Cannot save %r with no URL to PUT to' % self)
+
+        body = urllib.urlencode(self.to_dict())
+
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        request = self.get_request(method='PUT', body=body, headers=headers)
+        if http is None:
+            http = userAgent
+        response, content = http.request(**request)
+
+        log.debug('Yay saved my obj, now updating from %r', content)
+        # The returned data will include resourceIdentity with url, we don't
+        # want to override that with a list URL that isn't even right for the
+        # individual object, so we pass in None for the URL.
+        self.update_from_response(None, response, content)
+
+
+    def delete(self, http=None):
+        """Delete the remote resource represented by the `RemoteObject`
+        instance through an HTTP ``DELETE`` request.
+
+        Optional parameter `http` is the user agent object to use. `http`
+        objects should be compatible with `httplib2.Http` objects.
+
+        """
+        if getattr(self, '_location', None) is None:
+            raise ValueError('Cannot delete %r with no URL to DELETE' % self)
+
+        body = urllib.urlencode(
+            {"resourceVersionId": self.identity["@version"]}
+        )
+
+        headers = {}
+
+        request = self.get_request(method='DELETE', body=body, headers=headers)
+        if http is None:
+            http = userAgent
+        response, content = http.request(**request)
+
+        self.raise_for_response(self._location, response, content)
+
+        log.debug('Yay deleted the remote resource, now disconnecting %r', self)
+
+        # No more resource.
+        self._location = None
+        self.identity = None
 
 
     def to_dict(self):
         """Encodes the DataObject to a dictionary."""
-        data = deepcopy(self.api_data)
+        data = {}
         for field_name, field in self.fields.iteritems():
             data.update(field.submit_data(self))
         return data
 
+
+    def __repr__(self):
+        return "<%s: %s>" % (self.__class__.__name__, self)
 
 
 
@@ -152,8 +223,11 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
         if self._location_override:
             return self._location_override
         # Avoid infinite loopage; take care to not trigger delivery
-        if self._delivered and "@url" in self.identity:
-            return self.identity["@url"]
+        try:
+            if self._delivered and "@url" in self.identity:
+                return self.identity["@url"]
+        except TypeError:
+            pass
         return None
 
 

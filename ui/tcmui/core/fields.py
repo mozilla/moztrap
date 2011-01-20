@@ -28,6 +28,8 @@ class FieldMixin(object):
             return {self.api_submit_name: self.encode(value)}
         return {}
 
+
+
 class Field(FieldMixin, remoteobjects.fields.Field):
     pass
 
@@ -84,6 +86,19 @@ class ResourceIdentity(Field):
         super(ResourceIdentity, self).__init__(api_name="resourceIdentity")
 
 
+    def submit_data(self, obj):
+        try:
+            d = super(ResourceIdentity, self).submit_data(
+                obj
+            )[self.api_submit_name]
+            if d:
+                return {
+                    "%s.id" % self.api_submit_name: d["@id"],
+                    "%s.version" % self.api_submit_name: d["@version"],
+                }
+        except KeyError:
+            pass
+        return {}
 
 
 
