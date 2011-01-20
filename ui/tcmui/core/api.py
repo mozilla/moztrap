@@ -4,15 +4,17 @@ Core objects for accessing platform API data.
 """
 import base64
 import cgi
+from copy import deepcopy
 import urllib
 import urlparse
 
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
+from remoteobjects.http import userAgent
 
 from . import conf
 from . import fields
-
+from .. import __version__
 
 
 def add_to_querystring(url, **kwargs):
@@ -35,10 +37,20 @@ class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
 
 
+    def __init__(self, **kwargs):
+        """
+        Rather than updating __dict__ directly with **kwargs, go through the
+        field descriptors for setting initial data.
+
+        """
+        super(ObjectMixin, self).__init__()
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
     def get_request(self, *args, **kwargs):
         """
-        Add authorization header, request a JSON-formatted response, and
-        prepend TCM_API_BASE to relative URL paths.
+        Add authorization and user-agent headers, request a JSON-formatted
+        response, and prepend TCM_API_BASE to relative URL paths.
 
         """
         user = kwargs.pop("user", conf.TCM_ADMIN_USER)
@@ -54,12 +66,15 @@ class ObjectMixin(StrAndUnicode):
         request["uri"] = add_to_querystring(request["uri"], _type="json")
 
         # Add Authorization header.
-        request["headers"]["Authorization"] = (
+        request["headers"]["authorization"] = (
             "Basic %s"
             % base64.encodestring(
                 "%s:%s" % (user, password)
                 )[:-1]
             )
+
+        # Add User-Agent header.
+        request["headers"]["user-agent"] = "TCMui/%s" % __version__
 
         return request
 
@@ -74,6 +89,50 @@ class ObjectMixin(StrAndUnicode):
             content = content.decode(charset)
         return super(ObjectMixin, self).update_from_response(
             url, response, content)
+
+
+    def post(self, obj, http=None):
+        """Add another `RemoteObject` to this remote resource through an HTTP
+        ``POST`` request.
+
+        Parameter `obj` is a `RemoteObject` instance to save to this
+        instance's resource. For example, this (`self`) may be a collection to
+        which you want to post an asset (`obj`).
+
+        Optional parameter `http` is the user agent object to use for posting.
+        `http` should be compatible with `httplib2.Http` objects.
+
+        """
+        if getattr(self, '_location', None) is None:
+            raise ValueError('Cannot add %r to %r with no URL to POST to'
+                % (obj, self))
+
+        body = urllib.urlencode(obj.to_dict())
+
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        request = obj.get_request(
+            url=self._location,
+            method='POST',
+            body=body,
+            headers=headers
+        )
+
+        if http is None:
+            http = userAgent
+        response, content = http.request(**request)
+
+        obj.update_from_response(None, response, content)
+
+
+    def to_dict(self):
+        """Encodes the DataObject to a dictionary."""
+        data = deepcopy(self.api_data)
+        for field_name, field in self.fields.iteritems():
+            data.update(field.submit_data(self))
+        return data
+
+
 
 
 class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
@@ -93,7 +152,7 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
         if self._location_override:
             return self._location_override
         # Avoid infinite loopage; take care to not trigger delivery
-        if "identity" in self.__dict__ and "@url" in self.identity:
+        if self._delivered and "@url" in self.identity:
             return self.identity["@url"]
         return None
 

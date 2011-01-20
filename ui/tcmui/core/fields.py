@@ -10,7 +10,10 @@ class FieldMixin(object):
     def install(self, attrname, cls):
         super(FieldMixin, self).install(attrname, cls)
 
-        self.api_name = "ns1.%s" % self.api_name
+        self.api_submit_name = self.api_name
+
+        if not self.api_name.startswith("ns1."):
+            self.api_name = "ns1.%s" % self.api_name
 
 
     def decode(self, value):
@@ -19,6 +22,11 @@ class FieldMixin(object):
         return super(FieldMixin, self).decode(value)
 
 
+    def submit_data(self, obj):
+        value = getattr(obj, self.attrname, None)
+        if value is not None:
+            return {self.api_submit_name: self.encode(value)}
+        return {}
 
 class Field(FieldMixin, remoteobjects.fields.Field):
     pass
@@ -40,6 +48,7 @@ class Locator(Field):
     def install(self, attrname, cls):
         super(Locator, self).install(attrname, cls)
 
+        self.api_submit_name = "%sId" % self.api_submit_name
         self.api_name = "%sLocator" % self.api_name
 
 
@@ -49,9 +58,24 @@ class Locator(Field):
 
         data = super(Locator, self).__get__(obj, cls)
 
-        if data and "@url" in data:
-            return self.cls.get(data["@url"])
+        try:
+            if "@url" in data:
+                value = self.cls.get(data["@url"])
+                self.__set__(obj, value)
+                return value
+        except TypeError:
+            pass
         return data
+
+    def __set__(self, obj, value):
+        super(Locator, self).__set__(obj, value)
+        obj.__dict__[self.api_submit_name] = value.identity["@id"]
+
+    def submit_data(self, obj):
+        value = getattr(obj, self.api_submit_name, None)
+        if value is not None:
+            return {self.api_submit_name: self.encode(value)}
+        return {}
 
 
 
@@ -77,6 +101,7 @@ class StaticData(Field):
         super(StaticData, self).install(attrname, cls)
 
         self.api_name = "%sId" % self.api_name
+        self.api_submit_name = "%sId" % self.api_submit_name
 
 
     def __get__(self, obj, cls):
@@ -95,6 +120,21 @@ class StaticData(Field):
                     return code
         return data
 
+
+    def __set__(self, obj, value):
+        try:
+            value = value.id
+        except AttributeError:
+            pass
+        super(StaticData, self).__set__(obj, value)
+
+
+    def encode(self, value):
+        try:
+            return value.id
+        except AttributeError:
+            pass
+        return value
 
 
 List = remoteobjects.fields.List
