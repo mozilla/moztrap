@@ -3,13 +3,13 @@ Core remote objects.
 
 """
 from .api import RemoteObject, ListObject, fields
-
+from ..static.fields import StaticData
 
 
 class Company(RemoteObject):
     address = fields.Field()
     city = fields.Field()
-    country = fields.StaticData("COUNTRY")
+    country = StaticData("COUNTRY")
     name = fields.Field()
     phone = fields.Field()
     url = fields.Field()
