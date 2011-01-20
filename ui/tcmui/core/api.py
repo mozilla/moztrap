@@ -19,7 +19,7 @@ from .. import __version__
 
 
 
-log = logging.getLogger('remoteobjects.http')
+log = logging.getLogger('tcmui.core.api')
 
 
 
@@ -128,7 +128,7 @@ class ObjectMixin(StrAndUnicode):
             http = userAgent
         response, content = http.request(**request)
 
-        log.debug('Yay POSTed new obj, now updating from %r', content)
+        log.debug('POSTed new obj, now updating from %r', content)
         # The returned data will include resourceIdentity with url, we don't
         # want to override that with a list URL that isn't even right for the
         # individual object, so we pass in None for the URL.
@@ -155,7 +155,7 @@ class ObjectMixin(StrAndUnicode):
             http = userAgent
         response, content = http.request(**request)
 
-        log.debug('Yay saved my obj, now updating from %r', content)
+        log.debug('Saved obj, now updating from %r', content)
         # The returned data will include resourceIdentity with url, we don't
         # want to override that with a list URL that isn't even right for the
         # individual object, so we pass in None for the URL.
@@ -177,7 +177,7 @@ class ObjectMixin(StrAndUnicode):
             {"resourceVersionId": self.identity["@version"]}
         )
 
-        headers = {}
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
 
         request = self.get_request(method='DELETE', body=body, headers=headers)
         if http is None:
@@ -186,7 +186,7 @@ class ObjectMixin(StrAndUnicode):
 
         self.raise_for_response(self._location, response, content)
 
-        log.debug('Yay deleted the remote resource, now disconnecting %r', self)
+        log.debug('Deleted the remote resource, now disconnecting %r', self)
 
         # No more resource.
         self._location = None

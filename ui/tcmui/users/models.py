@@ -2,9 +2,18 @@
 User-related remote objects.
 
 """
-from ..core.api import RemoteObject, ListObject, fields
+import logging
+from posixpath import join
+import urllib
+
+from ..core.api import RemoteObject, ListObject, fields, userAgent
 from ..core.models import Company
 from ..static.fields import StaticData
+
+
+
+log = logging.getLogger('tcmui.users.models')
+
 
 
 class User(RemoteObject):
@@ -19,6 +28,35 @@ class User(RemoteObject):
 
     def __unicode__(self):
         return self.screenName
+
+
+    def activate(self, http=None):
+        if getattr(self, '_location', None) is None:
+            raise ValueError('Cannot activate %r with no URL to PUT' % self)
+
+        url = join(self._location, "activate/")
+
+        body = urllib.urlencode(
+            {"resourceVersionId": self.identity["@version"]}
+        )
+
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        request = self.get_request(
+            url=url,
+            method='PUT',
+            body=body,
+            headers=headers
+        )
+
+        if http is None:
+            http = userAgent
+        response, content = http.request(**request)
+
+        log.debug('Activated object, updating from %r', content)
+
+        self.update_from_response(None, response, content)
+
 
 
 class UserList(ListObject):
