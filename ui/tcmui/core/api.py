@@ -177,7 +177,7 @@ class ObjectMixin(StrAndUnicode):
             {"resourceVersionId": self.identity["@version"]}
         )
 
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        headers = {}#@@@{'content-type': 'application/x-www-form-urlencoded'}
 
         request = self.get_request(method='DELETE', body=body, headers=headers)
         if http is None:
