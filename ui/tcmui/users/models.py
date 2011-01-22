@@ -2,17 +2,11 @@
 User-related remote objects.
 
 """
-import logging
-from posixpath import join
 import urllib
 
-from ..core.api import RemoteObject, ListObject, fields, userAgent
+from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
 from ..static.fields import StaticData
-
-
-
-log = logging.getLogger('tcmui.users.models')
 
 
 
@@ -30,32 +24,24 @@ class User(RemoteObject):
         return self.screenName
 
 
-    def activate(self, http=None):
-        if getattr(self, '_location', None) is None:
-            raise ValueError('Cannot activate %r with no URL to PUT' % self)
+    def activate(self):
+        self._put(relative_url="activate")
 
-        url = join(self._location, "activate/")
 
-        body = urllib.urlencode(
-            {"resourceVersionId": self.identity["@version"]}
-        )
+    def deactivate(self):
+        self._put(relative_url="deactivate")
 
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
 
-        request = self.get_request(
-            url=url,
-            method='PUT',
-            body=body,
-            headers=headers
-        )
+    def emailchange(self, newemail):
+        self._put(relative_url="emailchange/%s" % urllib.quote(newemail))
 
-        if http is None:
-            http = userAgent
-        response, content = http.request(**request)
 
-        log.debug('Activated object, updating from %r', content)
+    def emailconfirm(self):
+        self._put(relative_url="emailconfirm")
 
-        self.update_from_response(None, response, content)
+
+    def passwordchange(self, newpassword):
+        self._put(relative_url="passwordchange/%s" % urllib.quote(newpassword))
 
 
 

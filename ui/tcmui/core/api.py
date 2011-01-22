@@ -6,6 +6,7 @@ import base64
 import cgi
 from copy import deepcopy
 import logging
+from posixpath import join
 import urllib
 import urlparse
 
@@ -135,6 +136,42 @@ class ObjectMixin(StrAndUnicode):
         obj.update_from_response(None, response, content)
 
 
+    def _put(self, relative_url=None, full_payload=False, http=None):
+        if getattr(self, '_location', None) is None:
+            raise ValueError('Cannot PUT %r with no URL' % self)
+
+        if relative_url is not None:
+            url = join(self._location, relative_url)
+        else:
+            url = self._location
+
+        if full_payload:
+            body = urllib.urlencode(self.to_dict())
+        else:
+            body = urllib.urlencode(
+                {"resourceVersionId": self.identity["@version"]}
+            )
+
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+
+        request = self.get_request(
+            url=url,
+            method='PUT',
+            body=body,
+            headers=headers
+        )
+
+        log.debug('Sending request %r', request)
+
+        if http is None:
+            http = userAgent
+        response, content = http.request(**request)
+
+        log.debug('Got response %r, updating', response)
+
+        self.update_from_response(None, response, content)
+
+
     def put(self, http=None):
         """Save a previously requested `RemoteObject` back to its remote
         resource through an HTTP ``PUT`` request.
@@ -143,23 +180,7 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        if getattr(self, '_location', None) is None:
-            raise ValueError('Cannot save %r with no URL to PUT to' % self)
-
-        body = urllib.urlencode(self.to_dict())
-
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-        request = self.get_request(method='PUT', body=body, headers=headers)
-        if http is None:
-            http = userAgent
-        response, content = http.request(**request)
-
-        log.debug('Saved obj, now updating from %r', content)
-        # The returned data will include resourceIdentity with url, we don't
-        # want to override that with a list URL that isn't even right for the
-        # individual object, so we pass in None for the URL.
-        self.update_from_response(None, response, content)
+        self._put(full_payload=True, http=http)
 
 
     def delete(self, http=None):
