@@ -55,3 +55,11 @@ class UserList(ListObject):
 
     def __unicode__(self):
         return u"%s Users" % len(self)
+
+
+    def login(self):
+        self._put(
+            relative_url="login",
+            version_payload=False,
+            update_from_response=False,
+            )

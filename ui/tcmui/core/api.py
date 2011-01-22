@@ -24,6 +24,16 @@ log = logging.getLogger('tcmui.core.api')
 
 
 
+class Credentials(object):
+    def __init__(self, user, password):
+        self.user, self.password = user, password
+
+
+
+admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)
+
+
+
 def add_to_querystring(url, **kwargs):
     """
     Add keys/values in ``kwargs`` to the querystring of ``url``.
@@ -51,6 +61,7 @@ class ObjectMixin(StrAndUnicode):
 
         """
         super(ObjectMixin, self).__init__()
+        self.auth = None
         for k, v in kwargs.items():
             setattr(self, k, v)
 
@@ -60,8 +71,7 @@ class ObjectMixin(StrAndUnicode):
         response, and prepend TCM_API_BASE to relative URL paths.
 
         """
-        user = kwargs.pop("user", conf.TCM_ADMIN_USER)
-        password = kwargs.pop("password", conf.TCM_ADMIN_PASS)
+        auth = kwargs.pop("auth", self.auth)
 
         request = super(ObjectMixin, self).get_request(*args, **kwargs)
 
@@ -73,12 +83,13 @@ class ObjectMixin(StrAndUnicode):
         request["uri"] = add_to_querystring(request["uri"], _type="json")
 
         # Add Authorization header.
-        request["headers"]["authorization"] = (
-            "Basic %s"
-            % base64.encodestring(
-                "%s:%s" % (user, password)
-                )[:-1]
-            )
+        if auth is not None:
+            request["headers"]["authorization"] = (
+                "Basic %s"
+                % base64.encodestring(
+                    "%s:%s" % (auth.user, auth.password)
+                    )[:-1]
+                )
 
         # Add User-Agent header.
         request["headers"]["user-agent"] = "TCMui/%s" % __version__
@@ -98,16 +109,13 @@ class ObjectMixin(StrAndUnicode):
             url, response, content)
 
 
-    def post(self, obj, http=None):
+    def post(self, obj):
         """Add another `RemoteObject` to this remote resource through an HTTP
         ``POST`` request.
 
         Parameter `obj` is a `RemoteObject` instance to save to this
         instance's resource. For example, this (`self`) may be a collection to
         which you want to post an asset (`obj`).
-
-        Optional parameter `http` is the user agent object to use for posting.
-        `http` should be compatible with `httplib2.Http` objects.
 
         """
         if getattr(self, '_location', None) is None:
@@ -125,9 +133,7 @@ class ObjectMixin(StrAndUnicode):
             headers=headers
         )
 
-        if http is None:
-            http = userAgent
-        response, content = http.request(**request)
+        response, content = userAgent.request(**request)
 
         log.debug('POSTed new obj, now updating from %r', content)
         # The returned data will include resourceIdentity with url, we don't
@@ -136,43 +142,40 @@ class ObjectMixin(StrAndUnicode):
         obj.update_from_response(None, response, content)
 
 
-    def _put(self, relative_url=None, full_payload=False, http=None):
+    def _put(self, relative_url=None, full_payload=False, version_payload=True,
+             update_from_response=True):
         if getattr(self, '_location', None) is None:
             raise ValueError('Cannot PUT %r with no URL' % self)
 
+        kw = {"method": "PUT"}
+
         if relative_url is not None:
-            url = join(self._location, relative_url)
+            kw["url"] = join(self._location, relative_url)
         else:
-            url = self._location
+            kw["url"] = self._location
 
         if full_payload:
-            body = urllib.urlencode(self.to_dict())
-        else:
-            body = urllib.urlencode(
+            kw["body"] = urllib.urlencode(self.to_dict())
+        elif version_payload:
+            kw["body"] = urllib.urlencode(
                 {"resourceVersionId": self.identity["@version"]}
             )
 
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        kw["headers"] = {'content-type': 'application/x-www-form-urlencoded'}
 
-        request = self.get_request(
-            url=url,
-            method='PUT',
-            body=body,
-            headers=headers
-        )
+        request = self.get_request(**kw)
 
         log.debug('Sending request %r', request)
 
-        if http is None:
-            http = userAgent
-        response, content = http.request(**request)
+        response, content = userAgent.request(**request)
 
-        log.debug('Got response %r, updating', response)
+        if update_from_response:
+            log.debug('Got response %r, updating', response)
 
-        self.update_from_response(None, response, content)
+            self.update_from_response(None, response, content)
 
 
-    def put(self, http=None):
+    def put(self):
         """Save a previously requested `RemoteObject` back to its remote
         resource through an HTTP ``PUT`` request.
 
@@ -180,10 +183,10 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        self._put(full_payload=True, http=http)
+        self._put(full_payload=True)
 
 
-    def delete(self, http=None):
+    def delete(self):
         """Delete the remote resource represented by the `RemoteObject`
         instance through an HTTP ``DELETE`` request.
 
@@ -201,9 +204,8 @@ class ObjectMixin(StrAndUnicode):
         headers = {}#@@@{'content-type': 'application/x-www-form-urlencoded'}
 
         request = self.get_request(method='DELETE', body=body, headers=headers)
-        if http is None:
-            http = userAgent
-        response, content = http.request(**request)
+
+        response, content = userAgent.request(**request)
 
         self.raise_for_response(self._location, response, content)
 
@@ -330,11 +332,13 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
 
     @classmethod
-    def get(cls, url=None, http=None, **kwargs):
+    def get(cls, url=None, auth=None):
         if url is None:
             try:
                 url = cls.default_url
             except AttributeError:
                 raise ValueError("%s has no default URL; .get() requires url."
                                  % cls)
-        return super(ObjectMixin, cls).get(url, http, **kwargs)
+        obj = super(ListObject, cls).get(url)
+        obj.auth = auth
+        return obj
