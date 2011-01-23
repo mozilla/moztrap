@@ -56,6 +56,24 @@ class User(RemoteObject):
         )
 
 
+    def login(self, **kwargs):
+        self._put(
+            url="users/login",
+            version_payload=False,
+            update_from_response=False,
+            **kwargs
+            )
+
+
+    def logout(self, **kwargs):
+        self._put(
+            url="users/logout",
+            version_payload=False,
+            update_from_response=False,
+            **kwargs
+            )
+
+
 
 class UserList(ListObject):
     entryclass = User
@@ -67,19 +85,3 @@ class UserList(ListObject):
 
     def __unicode__(self):
         return u"%s Users" % len(self)
-
-
-    def login(self):
-        self._put(
-            relative_url="login",
-            version_payload=False,
-            update_from_response=False,
-            )
-
-
-    def logout(self):
-        self._put(
-            relative_url="logout",
-            version_payload=False,
-            update_from_response=False,
-            )

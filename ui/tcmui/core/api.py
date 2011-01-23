@@ -155,10 +155,11 @@ class ObjectMixin(StrAndUnicode):
 
         kw["method"] = "PUT"
 
-        if relative_url is not None:
-            kw["url"] = join(self._location, relative_url)
-        else:
-            kw["url"] = self._location
+        if "url" not in kw:
+            if relative_url is not None:
+                kw["url"] = join(self._location, relative_url)
+            else:
+                kw["url"] = self._location
 
         if full_payload:
             kw["body"] = urllib.urlencode(self.to_dict())
