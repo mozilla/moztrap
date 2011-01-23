@@ -24,24 +24,30 @@ class User(RemoteObject):
         return self.screenName
 
 
-    def activate(self):
-        self._put(relative_url="activate")
+    def activate(self, **kwargs):
+        self._put(relative_url="activate", **kwargs)
 
 
-    def deactivate(self):
-        self._put(relative_url="deactivate")
+    def deactivate(self, **kwargs):
+        self._put(relative_url="deactivate", **kwargs)
 
 
-    def emailchange(self, newemail):
-        self._put(relative_url="emailchange/%s" % urllib.quote(newemail))
+    def emailchange(self, newemail, **kwargs):
+        self._put(
+            relative_url="emailchange/%s" % urllib.quote(newemail),
+            **kwargs
+        )
 
 
-    def emailconfirm(self):
-        self._put(relative_url="emailconfirm")
+    def emailconfirm(self, **kwargs):
+        self._put(relative_url="emailconfirm", **kwargs)
 
 
-    def passwordchange(self, newpassword):
-        self._put(relative_url="passwordchange/%s" % urllib.quote(newpassword))
+    def passwordchange(self, newpassword, **kwargs):
+        self._put(
+            relative_url="passwordchange/%s" % urllib.quote(newpassword)
+            **kwargs
+        )
 
 
 

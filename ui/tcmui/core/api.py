@@ -109,7 +109,7 @@ class ObjectMixin(StrAndUnicode):
             url, response, content)
 
 
-    def post(self, obj):
+    def post(self, obj, **kwargs):
         """Add another `RemoteObject` to this remote resource through an HTTP
         ``POST`` request.
 
@@ -130,7 +130,8 @@ class ObjectMixin(StrAndUnicode):
             url=self._location,
             method='POST',
             body=body,
-            headers=headers
+            headers=headers,
+            **kwargs
         )
 
         response, content = userAgent.request(**request)
@@ -143,11 +144,11 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _put(self, relative_url=None, full_payload=False, version_payload=True,
-             update_from_response=True):
+             update_from_response=True, **kw):
         if getattr(self, '_location', None) is None:
             raise ValueError('Cannot PUT %r with no URL' % self)
 
-        kw = {"method": "PUT"}
+        kw["method"] = "PUT"
 
         if relative_url is not None:
             kw["url"] = join(self._location, relative_url)
@@ -175,7 +176,7 @@ class ObjectMixin(StrAndUnicode):
             self.update_from_response(None, response, content)
 
 
-    def put(self):
+    def put(self, **kwargs):
         """Save a previously requested `RemoteObject` back to its remote
         resource through an HTTP ``PUT`` request.
 
@@ -183,10 +184,10 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        self._put(full_payload=True)
+        self._put(full_payload=True, **kwargs)
 
 
-    def delete(self):
+    def delete(self, **kwargs):
         """Delete the remote resource represented by the `RemoteObject`
         instance through an HTTP ``DELETE`` request.
 
@@ -203,7 +204,12 @@ class ObjectMixin(StrAndUnicode):
 
         headers = {}#@@@{'content-type': 'application/x-www-form-urlencoded'}
 
-        request = self.get_request(method='DELETE', body=body, headers=headers)
+        request = self.get_request(
+            method='DELETE',
+            body=body,
+            headers=headers,
+            **kwargs
+        )
 
         response, content = userAgent.request(**request)
 
