@@ -24,6 +24,12 @@ class User(RemoteObject):
         return self.screenName
 
 
+    @classmethod
+    def current(cls, **kwargs):
+        kwargs["url"] = "users/current"
+        return cls.get(**kwargs)
+
+
     def activate(self, **kwargs):
         self._put(relative_url="activate", **kwargs)
 
@@ -45,7 +51,7 @@ class User(RemoteObject):
 
     def passwordchange(self, newpassword, **kwargs):
         self._put(
-            relative_url="passwordchange/%s" % urllib.quote(newpassword)
+            relative_url="passwordchange/%s" % urllib.quote(newpassword),
             **kwargs
         )
 
@@ -66,6 +72,14 @@ class UserList(ListObject):
     def login(self):
         self._put(
             relative_url="login",
+            version_payload=False,
+            update_from_response=False,
+            )
+
+
+    def logout(self):
+        self._put(
+            relative_url="logout",
             version_payload=False,
             update_from_response=False,
             )

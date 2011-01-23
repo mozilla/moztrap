@@ -109,6 +109,11 @@ class ObjectMixin(StrAndUnicode):
             url, response, content)
 
 
+    @classmethod
+    def get(cls, url, **kwargs):
+        return super(ObjectMixin, cls).get(url, **kwargs)
+
+
     def post(self, obj, **kwargs):
         """Add another `RemoteObject` to this remote resource through an HTTP
         ``POST`` request.
@@ -174,6 +179,9 @@ class ObjectMixin(StrAndUnicode):
             log.debug('Got response %r, updating', response)
 
             self.update_from_response(None, response, content)
+        else:
+            log.debug('Got response %r, raising', response)
+            self.raise_for_response(self._location, response, content)
 
 
     def put(self, **kwargs):
