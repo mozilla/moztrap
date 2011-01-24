@@ -87,3 +87,27 @@ class UserList(ListObject):
 
     def __unicode__(self):
         return u"%s Users" % len(self)
+
+
+
+class Permission(RemoteObject):
+    assignable = fields.Field()
+    name = fields.Field()
+    permissionCode = fields.Field()
+
+
+    def __unicode__(self):
+        return self.permissionCode
+
+
+
+class PermissionList(ListObject):
+    entryclass = Permission
+    api_name = "permissions"
+    default_url = "users/permissions"
+
+    entries = fields.List(fields.Object(Permission))
+
+
+    def __unicode__(self):
+        return u"%s Permissions" % len(self)
