@@ -4,5 +4,5 @@ django-compressor==0.6a8
 BeautifulSoup==3.2.0
 httplib2==0.6.0
 simplejson==2.1.2
-remoteobjects==1.1.1
+remoteobjects==1.1.1.moz1
 slimmer==0.1.30
