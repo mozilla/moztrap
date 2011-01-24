@@ -131,6 +131,9 @@ class ObjectMixin(StrAndUnicode):
 
         headers = {'content-type': 'application/x-www-form-urlencoded'}
 
+        if "auth" not in kwargs and self.auth is not None:
+            kwargs["auth"] = self.auth
+
         request = obj.get_request(
             url=self._location,
             method='POST',
