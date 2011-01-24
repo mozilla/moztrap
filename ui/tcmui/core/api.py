@@ -174,7 +174,7 @@ class ObjectMixin(StrAndUnicode):
             )
 
         headers = kw.setdefault("headers", {})
-        headers.setdefault("content-type", "application/x-www-form-urlencoded")
+        headers.setdefault("content-type", default_content_type)
 
         request = self.get_request(**kw)
 
