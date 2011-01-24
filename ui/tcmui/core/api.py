@@ -123,20 +123,20 @@ class ObjectMixin(StrAndUnicode):
         which you want to post an asset (`obj`).
 
         """
-        if getattr(self, '_location', None) is None:
-            raise ValueError('Cannot add %r to %r with no URL to POST to'
+        if getattr(self, "_location", None) is None:
+            raise ValueError("Cannot add %r to %r with no URL to POST to"
                 % (obj, self))
 
         body = urllib.urlencode(obj.to_dict())
 
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        headers = {"content-type": "application/x-www-form-urlencoded"}
 
         if "auth" not in kwargs and self.auth is not None:
             kwargs["auth"] = self.auth
 
         request = obj.get_request(
             url=self._location,
-            method='POST',
+            method="POST",
             body=body,
             headers=headers,
             **kwargs
@@ -144,7 +144,7 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = userAgent.request(**request)
 
-        log.debug('POSTed new obj, now updating from %r', content)
+        log.debug("POSTed new obj, now updating from %r", content)
         # The returned data will include resourceIdentity with url, we don't
         # want to override that with a list URL that isn't even right for the
         # individual object, so we pass in None for the URL.
@@ -152,9 +152,11 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _put(self, relative_url=None, full_payload=False, version_payload=True,
-             update_from_response=True, **kw):
-        if getattr(self, '_location', None) is None:
-            raise ValueError('Cannot PUT %r with no URL' % self)
+             update_from_response=True,
+             default_content_type="application/x-www-form-urlencoded",
+             **kw):
+        if getattr(self, "_location", None) is None:
+            raise ValueError("Cannot PUT %r with no URL" % self)
 
         kw["method"] = "PUT"
 
@@ -171,20 +173,21 @@ class ObjectMixin(StrAndUnicode):
                 {"resourceVersionId": self.identity["@version"]}
             )
 
-        kw["headers"] = {'content-type': 'application/x-www-form-urlencoded'}
+        headers = kw.setdefault("headers", {})
+        headers.setdefault("content-type", "application/x-www-form-urlencoded")
 
         request = self.get_request(**kw)
 
-        log.debug('Sending request %r', request)
+        log.debug("Sending request %r", request)
 
         response, content = userAgent.request(**request)
 
         if update_from_response:
-            log.debug('Got response %r, updating', response)
+            log.debug("Got response %r, updating", response)
 
             self.update_from_response(None, response, content)
         else:
-            log.debug('Got response %r, raising', response)
+            log.debug("Got response %r, raising", response)
             self.raise_for_response(self._location, response, content)
 
 
@@ -207,17 +210,17 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        if getattr(self, '_location', None) is None:
-            raise ValueError('Cannot delete %r with no URL to DELETE' % self)
+        if getattr(self, "_location", None) is None:
+            raise ValueError("Cannot delete %r with no URL to DELETE" % self)
 
         body = urllib.urlencode(
             {"resourceVersionId": self.identity["@version"]}
         )
 
-        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        headers = {"content-type": "application/x-www-form-urlencoded"}
 
         request = self.get_request(
-            method='DELETE',
+            method="DELETE",
             body=body,
             headers=headers,
             **kwargs
@@ -227,7 +230,7 @@ class ObjectMixin(StrAndUnicode):
 
         self.raise_for_response(self._location, response, content)
 
-        log.debug('Deleted the remote resource, now disconnecting %r', self)
+        log.debug("Deleted the remote resource, now disconnecting %r", self)
 
         # No more resource.
         self._location = None

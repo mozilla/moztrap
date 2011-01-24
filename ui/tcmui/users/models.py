@@ -61,6 +61,7 @@ class User(RemoteObject):
             url="users/login",
             version_payload=False,
             update_from_response=False,
+            default_content_type="application/json",
             **kwargs
             )
 
@@ -70,6 +71,7 @@ class User(RemoteObject):
             url="users/logout",
             version_payload=False,
             update_from_response=False,
+            default_content_type="application/json",
             **kwargs
             )
 
