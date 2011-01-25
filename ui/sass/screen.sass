@@ -327,8 +327,15 @@ footer[role="contentinfo"]
   .start
     +box-sizing('border-box')
     width: 100%
+  .pass, .invalid, .fail
+    width: 33%
+  .pass
+    +border-right-radius(0)
+    border-right: none
   .invalid
-    +background(linear-gradient(top center, #ffe 0%, #ee9 100%))    
+    +background(linear-gradient(top center, #ffe 0%, #ee9 100%))
+    +border-radius(0)   
   .fail
     +background(linear-gradient(top center, #fee 0%, #e99 100%))    
-    
+    +border-left-radius(0)
+    border-left: none
