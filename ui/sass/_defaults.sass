@@ -258,6 +258,9 @@ legend
   font-weight: bold
 
 label
+  +inline-block
+  +padding-leader(.25)
+  +padding-trailer(.25)
   font-weight: bold
 
 label, input[type=button], input[type=submit], button
@@ -288,8 +291,6 @@ optgroup
   +rhythm-borders(1px,.25,14px)
   +trailer(.5,14px)
   +box-sizing(border-box)
-  position: relative
-  top: - $base-line-height/14px*.25em
   width: 100%
   background-color: #fff
   color: $base
@@ -399,6 +400,14 @@ button
   .errorlist
     position: absolute
     left: 100% + gutter($c)
-    top: 0
+    top: $base-rhythm-unit*.25
     width: columns($n,$c)
-  
+
+=inline-form($nl,$ni,$c)
+  li
+    +pie-clearfix
+  label
+    +columns($nl,$c)
+  input, select, textarea
+    +columns($ni,$c)
+    +omega($c)
