@@ -297,7 +297,6 @@ optgroup
   border-color: $base
   height: $base-line-height/14px*1.5em
   outline: 0
-  -webkit-appearance: none
   .ie7 &
     height: auto
   [disabled]
@@ -305,6 +304,7 @@ optgroup
     color: lighten($base,15)
 
 input, textarea
+  -webkit-appearance: none
   &:valid
     +box-shadow(green 0 0 .25em)
   &:invalid
@@ -324,14 +324,8 @@ textarea
   resize: vertical
 
 select
-  background-image: image-url('forms/select_arrow.gif')
-  background-repeat: no-repeat
-  background-position: right center
-  padding-right: 20px
   &[multiple]
     height: auto
-    background-image: none
-    padding: 0
 
 input
   vertical-align: middle
