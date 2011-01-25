@@ -8,6 +8,7 @@ from copy import deepcopy
 import logging
 from posixpath import join
 import simplejson as json
+import urllib
 
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
