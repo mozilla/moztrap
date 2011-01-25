@@ -40,6 +40,6 @@ def register(request):
                 )
             return redirect("home")
     else:
-        form = RegistrationForm()
+        form = RegistrationForm(company=request.company)
 
     return TemplateResponse(request, "account/register.html", {"form": form})
