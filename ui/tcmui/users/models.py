@@ -48,6 +48,7 @@ class Role(RemoteObject):
         self._put(
             relative_url="permissions",
             extra_payload=payload_data,
+            update_from_response=False,
             **kwargs)
 
 
@@ -137,6 +138,7 @@ class User(RemoteObject):
         self._put(
             relative_url="roles",
             extra_payload=payload_data,
+            update_from_response=False,
             **kwargs)
 
 
