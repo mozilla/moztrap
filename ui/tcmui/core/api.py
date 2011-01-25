@@ -116,7 +116,9 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
-        return super(ObjectMixin, cls).get(url, **kwargs)
+        obj = super(ObjectMixin, cls).get(url, **kwargs)
+        obj.auth = kwargs.get("auth")
+        return obj
 
 
     def post(self, obj, **kwargs):
