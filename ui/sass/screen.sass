@@ -127,6 +127,9 @@ footer[role="contentinfo"]
 
 /* login --------------------------------------------------------------    
 
+#login, #register
+  +side-errors(6,12)
+
 #login
   @extend .simple
   label
@@ -152,8 +155,6 @@ footer[role="contentinfo"]
   input
     +columns(8,12)
     +omega(12)
-    position: relative
-    top: - $base-line-height/14px*.25em
 
 /* products --------------------------------------------------------------    
 
@@ -174,7 +175,8 @@ footer[role="contentinfo"]
   form
     +full(24)
     +prefix(12,24)
-    +trailing-border(1px,1)
+    +padding-leader(.5)
+    +trailing-border(1px,.5)
     +trailer
   li
     +pie-clearfix
