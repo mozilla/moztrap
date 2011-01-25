@@ -1,7 +1,9 @@
 import floppyforms as forms
 
+from ..core.api import admin
 from ..core.forms import RemoteObjectForm
 
+from .models import User, UserList
 from .util import get_user
 
 
@@ -15,6 +17,14 @@ class UserPlaceholdersMixin(object):
             else:
                 placeholder = field.label
             field.widget.attrs.setdefault("placeholder", placeholder)
+
+
+
+class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
+    email = forms.EmailField(label="email")
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        label="password")
 
 
     def clean(self):
@@ -31,14 +41,6 @@ class UserPlaceholdersMixin(object):
 
 
 
-class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
-    email = forms.EmailField(label="email")
-    password = forms.CharField(
-        widget=forms.PasswordInput,
-        label="password")
-
-
-
 class RegistrationForm(UserPlaceholdersMixin, RemoteObjectForm):
     firstName = forms.CharField(label="first name")
     lastName = forms.CharField(label="last name")
@@ -52,9 +54,23 @@ class RegistrationForm(UserPlaceholdersMixin, RemoteObjectForm):
         label="confirm password")
 
 
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+
+
     def clean(self):
         if "password" in self.cleaned_data and "password2" in self.cleaned_data:
             if self.cleaned_data["password"] != self.cleaned_data["password2"]:
                 raise forms.ValidationError("Provided passwords do not match.")
             del self.cleaned_data["password2"]
+
+        if all(k in self.cleaned_data
+               for k in ["firstName", "lastName", "screenName",
+                         "email", "password"]):
+            data = self.cleaned_data
+            data["company"] = self.company
+            user = User(**data)
+            UserList.get(auth=admin).post(user)
+            self.user = user
         return self.cleaned_data
