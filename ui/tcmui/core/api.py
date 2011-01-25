@@ -230,7 +230,7 @@ class ObjectMixin(StrAndUnicode):
             raise ValueError("Cannot delete %r with no URL to DELETE" % self)
 
         body = urllib.urlencode(
-            {"resourceVersionId": self.identity["@version"]}
+            {"originalVersionId": self.identity["@version"]}
         )
 
         headers = {"content-type": "application/x-www-form-urlencoded"}
