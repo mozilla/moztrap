@@ -89,6 +89,25 @@ div[role="main"]
   +h-borders(1px,1)
   border-color: #ccc
 
+#messages
+  @extend .full
+  @extend .sans
+  +border-radius(.5em)
+  +rhythm-borders(1px,.5)
+  +trailer()
+  +text-shadow(#efe 1px 1px 0)
+  margin: 
+    right: columns(4) + side_gutter() + gutter()
+    left: columns(4) + side_gutter() + gutter()
+  background: #cfc
+  color: #666
+  font-weight: bold
+  ul
+    +no-style-list
+  li
+    + li
+      +leader(.5)
+
 footer[role="contentinfo"]
   @extend .full
   +adjust-font-size-to(12px)
