@@ -16,7 +16,7 @@ def login(request):
     else:
         form = LoginForm()
 
-    return TemplateResponse(request, "home.html", {"form": form})
+    return TemplateResponse(request, "account/login.html", {"form": form})
 
 
 
