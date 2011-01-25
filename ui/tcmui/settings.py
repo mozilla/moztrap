@@ -138,6 +138,9 @@ TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"
 TCM_ADMIN_PASS = "admin"
 
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "products"
+
 try:
     from settings_local import *
 except ImportError:

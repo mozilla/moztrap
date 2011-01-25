@@ -9,7 +9,6 @@ import logging
 from posixpath import join
 import simplejson as json
 import urllib
-import urlparse
 
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
@@ -17,6 +16,7 @@ from remoteobjects.http import userAgent
 
 from . import conf
 from . import fields
+from . import util
 from .. import __version__
 
 
@@ -36,22 +36,6 @@ class Credentials(object):
 
 
 admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)
-
-
-
-def add_to_querystring(url, **kwargs):
-    """
-    Add keys/values in ``kwargs`` to the querystring of ``url``.
-
-    Based on code from remoteobjects' PromiseObject.filter method.
-
-    """
-    parts = list(urlparse.urlparse(url))
-    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=True)
-    queryargs = dict([(k, v[0]) for k, v in queryargs.iteritems()])
-    queryargs.update(kwargs)
-    parts[4] = urllib.urlencode(queryargs)
-    return urlparse.urlunparse(parts)
 
 
 
@@ -82,10 +66,10 @@ class ObjectMixin(StrAndUnicode):
 
         # Add API base URL to relative paths.
         if "://" not in request["uri"]:
-            request["uri"] = urlparse.urljoin(self.api_base_url, request["uri"])
+            request["uri"] = join(self.api_base_url, request["uri"])
 
         # Request a JSON response.
-        request["uri"] = add_to_querystring(request["uri"], _type="json")
+        request["uri"] = util.add_to_querystring(request["uri"], _type="json")
 
         # Add Authorization header.
         if auth is not None:
