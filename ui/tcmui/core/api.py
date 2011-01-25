@@ -7,6 +7,7 @@ import cgi
 from copy import deepcopy
 import logging
 from posixpath import join
+import simplejson as json
 import urllib
 import urlparse
 
@@ -152,7 +153,7 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _put(self, relative_url=None, full_payload=False, version_payload=True,
-             update_from_response=True,
+             update_from_response=True, extra_payload=None,
              default_content_type="application/x-www-form-urlencoded",
              **kw):
         if getattr(self, "_location", None) is None:
@@ -167,11 +168,20 @@ class ObjectMixin(StrAndUnicode):
                 kw["url"] = self._location
 
         if full_payload:
-            kw["body"] = urllib.urlencode(self.to_dict())
+            payload = self.to_dict()
         elif version_payload:
-            kw["body"] = urllib.urlencode(
-                {"resourceVersionId": self.identity["@version"]}
-            )
+            payload = {"resourceVersionId": self.identity["@version"]}
+        else:
+            payload = {}
+
+        if extra_payload:
+            payload.update(extra_payload)
+
+        if payload:
+            if default_content_type == "application/json":
+                kw["body"] = json.dumps(payload)
+            else:
+                kw["body"] = urllib.urlencode(payload, doseq=True)
 
         headers = kw.setdefault("headers", {})
         headers.setdefault("content-type", default_content_type)

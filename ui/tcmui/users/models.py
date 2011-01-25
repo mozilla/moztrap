@@ -123,6 +123,12 @@ class Role(RemoteObject):
         return self.name
 
 
+    def setpermissions(self, perms, **kwargs):
+        payload_data = {"permissionIds": [p.identity["@id"] for p in perms]}
+        self._put(relative_url="permissions", extra_payload=payload_data,
+                  version_payload = False, **kwargs)
+
+
 
 class RoleList(ListObject):
     entryclass = Role
