@@ -80,7 +80,10 @@
     <ul>
       {% block meta-user %}
       {% if request.user %}
-      <li>Welcome Carl [<a href="/">Sign Out</a>]</li>
+      <li>
+        Welcome {{ request.user.firstName }}
+        [<a href="{% url logout %}">Sign Out</a>]
+      </li>
       {% else %}
       <li>
         [

@@ -1,11 +1,17 @@
-from ..core.api import Credentials
+from .util import get_user, logout
+
 
 class AuthenticationMiddleware(object):
     def process_request(self, request):
         # @@@ persisting plaintext pw in session
-        user = request.session.get("user")
+        userid = request.session.get("userid")
         password = request.session.get("password")
-        if user and password:
-            request.auth = Credentials(user, password)
-        else:
-            request.auth = None
+
+        request.auth = None
+        request.user = None
+        if userid and password:
+            user = get_user(userid, password)
+            if user:
+                request.user = user
+            else:
+                logout(request)

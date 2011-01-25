@@ -26,8 +26,8 @@ log = logging.getLogger('tcmui.core.api')
 
 
 class Credentials(object):
-    def __init__(self, user, password):
-        self.user, self.password = user, password
+    def __init__(self, userid, password):
+        self.userid, self.password = userid, password
 
 
     def __repr__(self):
@@ -92,7 +92,7 @@ class ObjectMixin(StrAndUnicode):
             request["headers"]["authorization"] = (
                 "Basic %s"
                 % base64.encodestring(
-                    "%s:%s" % (auth.user, auth.password)
+                    "%s:%s" % (auth.userid, auth.password)
                     )[:-1]
                 )
 

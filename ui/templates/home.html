@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block test-active-nav %}active{% endblock test-active-nav %}
-{% block meta-user %}{% endblock %}
 {% block bread %}{% endblock bread %}
 
 {% block content %}
@@ -9,14 +8,21 @@
   <figure class="logo"><img src="http://dummyimage.com/320x192/ccc/666&text=logo"></figure>
   <h2>Welcome to Mozilla’s Test Case Manager!</h2>
   <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
-  <form action="/test/">
+  <form method="POST">
+    {% csrf_token %}
     <ul>
-      <li><label for="email">email</label><input type="email" name="email" value="" id="email" placeholder="email address"></li>
-      <li><label for="password">password</label><input type="password" name="password" value="" id="password" placeholder="password"></li>
+      {{ form.non_field_errors }}
+      {% for field in form %}
+      <li>
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field }}
+      </li>
+      {% endfor %}
     </ul>
     <div class="form-actions">
-      <a href="/account/register/">register</a> or
-      <button>login</button>
+      <a href="{% url register %}">register</a> or
+      <button type="submit">login</button>
     </div>
   </form>
 </section>

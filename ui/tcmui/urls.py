@@ -4,9 +4,9 @@ from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns(
     "",
+    url("^$", "tcmui.users.views.login", name="home"),
     url("^account/", include("tcmui.users.urls")),
 
-    url("^$", direct_to_template, {"template": "home.html"}, name="home"),
     url("^test/$", direct_to_template, {"template": "test/products.html"}, name="products"),
     url("^test/product/1/environment/$", direct_to_template, {"template": "test/environment.html"}, name="environment"),
     url("^test/product/1/cycles/$", direct_to_template, {"template": "test/cycles.html"}, name="cycles"),
