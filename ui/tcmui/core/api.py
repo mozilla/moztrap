@@ -30,6 +30,10 @@ class Credentials(object):
         self.user, self.password = user, password
 
 
+    def __repr__(self):
+        return "<Credentials: %s>" % self.user
+
+
 
 admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)
 
@@ -177,14 +181,14 @@ class ObjectMixin(StrAndUnicode):
         if extra_payload:
             payload.update(extra_payload)
 
+        headers = kw.setdefault("headers", {})
+        headers.setdefault("content-type", default_content_type)
+
         if payload:
-            if default_content_type == "application/json":
+            if headers["content-type"] == "application/json":
                 kw["body"] = json.dumps(payload)
             else:
                 kw["body"] = urllib.urlencode(payload, doseq=True)
-
-        headers = kw.setdefault("headers", {})
-        headers.setdefault("content-type", default_content_type)
 
         request = self.get_request(**kw)
 
@@ -384,3 +388,15 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         obj = super(ListObject, cls).get(url)
         obj.auth = auth
         return obj
+
+
+    def __getitem__(self, *args, **kwargs):
+        obj = super(ListObject, self).__getitem__(*args, **kwargs)
+        obj.auth = self.auth
+        return obj
+
+
+    def __iter__(self, *args, **kwargs):
+        for obj in super(ListObject, self).__iter__(*args, **kwargs):
+            obj.auth = self.auth
+            yield obj

@@ -113,7 +113,9 @@ class Link(remoteobjects.fields.Link):
         if instance._location is None:
             raise AttributeError('Cannot find URL of %s relative to URL-less %s' % (self.cls.__name__, owner.__name__))
         newurl = join(instance._location, self.api_name)
-        return self.cls.get(newurl, auth=instance.auth)
+        obj = self.cls.get(newurl, auth=instance.auth)
+        obj.auth = instance.auth
+        return obj
 
 
 
