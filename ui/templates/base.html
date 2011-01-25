@@ -94,6 +94,14 @@
     </nav>
   {% endblock bread %}
 
+  {% if messages %}
+  <ul id="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|safe }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   <div role="main">
     {% block content %}
 
