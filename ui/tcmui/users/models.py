@@ -46,7 +46,7 @@ class Role(RemoteObject):
     def setpermissions(self, perms, **kwargs):
         payload_data = {"permissionIds": [p.identity["@id"] for p in perms]}
         self._put(relative_url="permissions", extra_payload=payload_data,
-                  version_payload = False, **kwargs)
+                  version_payload=False, **kwargs)
 
 
 
@@ -128,6 +128,12 @@ class User(RemoteObject):
             default_content_type="application/json",
             **kwargs
             )
+
+
+    def setroles(self, roles, **kwargs):
+        payload_data = {"roleIds": [r.identity["@id"] for r in roles]}
+        self._put(relative_url="roles", extra_payload=payload_data,
+                  version_payload=False, **kwargs)
 
 
 
