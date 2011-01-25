@@ -349,15 +349,26 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         We pass on the inner list of data dictionaries.
 
         """
-        if "ns1.searchResult" in data:
-            data = data["ns1.searchResult"][0]
-            num_results = data["ns1.totalResults"]
-            data = data["ns1.%s" % self.api_name]
-            data = data["ns1.%s" % self.entryclass().api_name]
+        outer_key = None
+        for candidate_key in [
+            "ns1.ArrayOf%s" % self.entryclass.__name__,
+            "ns1.searchResult"
+            ]:
+            if candidate_key in data:
+                outer_key = candidate_key
+                break
+        if outer_key is not None:
+            data = data[outer_key][0]
+            if outer_key == "ns1.searchResult":
+                data = data["ns1.%s" % self.api_name]
+            try:
+                data = data["ns1.%s" % self.entryclass().api_name]
+            except KeyError:
+                data = []
             # Because this JSON is BadgerFish-translated XML
             # (http://ajaxian.com/archives/badgerfish-translating-xml-to-json)
             # length-1 lists are not sent as lists, so we re-listify.
-            if num_results == 1:
+            if not isinstance(data, list):
                 data = [data]
         return super(ListObject, self).update_from_dict(data)
 

@@ -10,6 +10,59 @@ from ..static.fields import StaticData
 
 
 
+class Permission(RemoteObject):
+    assignable = fields.Field()
+    name = fields.Field()
+    permissionCode = fields.Field()
+
+
+    def __unicode__(self):
+        return self.permissionCode
+
+
+
+class PermissionList(ListObject):
+    entryclass = Permission
+    api_name = "permissions"
+    default_url = "users/permissions"
+
+    entries = fields.List(fields.Object(Permission))
+
+
+    def __unicode__(self):
+        return u"%s Permissions" % len(self)
+
+
+
+class Role(RemoteObject):
+    company = fields.Locator(Company)
+    name = fields.Field()
+
+
+    def __unicode__(self):
+        return self.name
+
+
+    def setpermissions(self, perms, **kwargs):
+        payload_data = {"permissionIds": [p.identity["@id"] for p in perms]}
+        self._put(relative_url="permissions", extra_payload=payload_data,
+                  version_payload = False, **kwargs)
+
+
+
+class RoleList(ListObject):
+    entryclass = Role
+    api_name = "roles"
+    default_url = "users/roles"
+
+    entries = fields.List(fields.Object(Role))
+
+
+    def __unicode__(self):
+        return u"%s Roles" % len(self)
+
+
+
 class User(RemoteObject):
     company = fields.Locator(Company)
     email = fields.Field()
@@ -19,6 +72,7 @@ class User(RemoteObject):
     screenName = fields.Field()
     userStatus = StaticData("USERSTATUS")
 
+    roles = fields.Link(RoleList)
 
     def __unicode__(self):
         return self.screenName
@@ -87,56 +141,3 @@ class UserList(ListObject):
 
     def __unicode__(self):
         return u"%s Users" % len(self)
-
-
-
-class Permission(RemoteObject):
-    assignable = fields.Field()
-    name = fields.Field()
-    permissionCode = fields.Field()
-
-
-    def __unicode__(self):
-        return self.permissionCode
-
-
-
-class PermissionList(ListObject):
-    entryclass = Permission
-    api_name = "permissions"
-    default_url = "users/permissions"
-
-    entries = fields.List(fields.Object(Permission))
-
-
-    def __unicode__(self):
-        return u"%s Permissions" % len(self)
-
-
-
-class Role(RemoteObject):
-    company = fields.Locator(Company)
-    name = fields.Field()
-
-
-    def __unicode__(self):
-        return self.name
-
-
-    def setpermissions(self, perms, **kwargs):
-        payload_data = {"permissionIds": [p.identity["@id"] for p in perms]}
-        self._put(relative_url="permissions", extra_payload=payload_data,
-                  version_payload = False, **kwargs)
-
-
-
-class RoleList(ListObject):
-    entryclass = Role
-    api_name = "roles"
-    default_url = "users/roles"
-
-    entries = fields.List(fields.Object(Role))
-
-
-    def __unicode__(self):
-        return u"%s Roles" % len(self)
