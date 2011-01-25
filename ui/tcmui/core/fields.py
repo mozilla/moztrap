@@ -64,7 +64,7 @@ class Locator(Field):
 
         try:
             if "@url" in data:
-                value = self.cls.get(data["@url"])
+                value = self.cls.get(data["@url"], auth=obj.auth)
                 self.__set__(obj, value)
                 return value
         except TypeError:
