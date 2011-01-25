@@ -182,8 +182,8 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 
 /* Helpers ------------------------------------------------------------------- */
-.full, nav.crumb, div[role="main"], #messages, footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
-.full:after, nav.crumb:after, div[role="main"]:after, #messages:after, footer[role="contentinfo"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.full, nav.crumb, div[role="main"], footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
+.full:after, nav.crumb:after, div[role="main"]:after, footer[role="contentinfo"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
 .simple, #login, #register, #products, #environment { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
 
@@ -228,10 +228,10 @@ nav.crumb li::after { content: " »"; }
 nav.crumb li:last-child::after { content: ""; }
 nav.crumb li:last-child a { color: inherit; }
 
-div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; }
+div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; position: relative; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-#messages { -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; border-style: solid; border-width: 0.063em; padding: 0.688em; margin-bottom: 1.5em; text-shadow: #eeffee 1px 1px 0; margin-right: 17.647%; margin-left: 17.647%; background: #ccffcc; color: #666666; font-weight: bold; }
+#messages { clear: both; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; border-style: solid; border-width: 0.063em; padding: 0.688em; margin-bottom: 1.5em; text-shadow: #eeffee 1px 1px 0; background: #ccffcc; color: #666666; font-weight: bold; }
 #messages ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 #messages ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #messages li + li { margin-top: 0.75em; }

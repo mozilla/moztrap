@@ -88,17 +88,15 @@ div[role="main"]
   +pie-clearfix
   +h-borders(1px,1)
   border-color: #ccc
+  position: relative
 
 #messages
-  @extend .full
   @extend .sans
+  +full(24)
   +border-radius(.5em)
   +rhythm-borders(1px,.5)
   +trailer()
   +text-shadow(#efe 1px 1px 0)
-  margin: 
-    right: columns(4) + side_gutter() + gutter()
-    left: columns(4) + side_gutter() + gutter()
   background: #cfc
   color: #666
   font-weight: bold
