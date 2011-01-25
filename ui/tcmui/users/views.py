@@ -38,7 +38,7 @@ def register(request):
                 request,
                 "Congratulations, you've registered! Now you can login."
                 )
-            return redirect("home")
+            return redirect("products")
     else:
         form = RegistrationForm(company=request.company)
 
