@@ -176,7 +176,7 @@ class ObjectMixin(StrAndUnicode):
         if full_payload:
             payload = self.to_dict()
         elif version_payload:
-            payload = {"resourceVersionId": self.identity["@version"]}
+            payload = {"originalVersionId": self.identity["@version"]}
         else:
             payload = {}
 
