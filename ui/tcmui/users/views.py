@@ -2,11 +2,8 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..core.api import admin
-
 from . import util
 from .forms import LoginForm, RegistrationForm
-from .models import UserList, User
 
 
 
@@ -31,14 +28,11 @@ def logout(request):
 
 def register(request):
     if request.method == "POST":
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, company=request.company)
         if form.is_valid():
-            data = form.cleaned_data
-            data["company"] = request.company
-            user = User(**data)
-            UserList.get(auth=admin).post(user)
+            user = form.user
             # @@@ user.setroles(...)
-
+            # @@@ activate
             # @@@ Email confirmation step missing.
             messages.success(
                 request,
