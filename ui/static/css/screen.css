@@ -174,6 +174,9 @@ button[disabled] { color: #888888; }
 button.sub { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; color: #005498; }
 button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 
+.button, input[type="reset"], input[type="submit"], input[type="button"], #cycles td:last-child a { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ddffdd), color-stop(100%, #66ff66)); background: -moz-linear-gradient(top center, #ddffdd 0%, #66ff66 100%); background: linear-gradient(top center, #ddffdd 0%, #66ff66 100%); border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; border-color: #bbbbbb #999999 #666666; cursor: pointer; color: #333333; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
+.button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], #cycles td:last-child a[disabled] { color: #888888; }
+
 /* Helpers ------------------------------------------------------------------- */
 .full, nav.crumb, div[role="main"], #messages, footer[role="contentinfo"] { clear: both; margin-right: 1.176%; margin-left: 1.176%; *zoom: 1; }
 .full:after, nav.crumb:after, div[role="main"]:after, #messages:after, footer[role="contentinfo"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
@@ -319,7 +322,5 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .content { padding-left: 8.434%; padding-right: 16.867%; margin-top: 1.5em; }
 #run h4 { margin: 0; }
 #run .start { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; width: 100%; }
-#run .invalid { background: #ffffee; }
-#run .invalid:focus, #run .invalid:hover, #run .invalid:active { background: #ffffbb; }
-#run .fail { background: #ffcccc; }
-#run .fail:focus, #run .fail:hover, #run .fail:active { background: #ffbbbb; }
+#run .invalid { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffee), color-stop(100%, #eeee99)); background: -moz-linear-gradient(top center, #ffffee 0%, #eeee99 100%); background: linear-gradient(top center, #ffffee 0%, #eeee99 100%); }
+#run .fail { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffeeee), color-stop(100%, #ee9999)); background: -moz-linear-gradient(top center, #ffeeee 0%, #ee9999 100%); background: linear-gradient(top center, #ffeeee 0%, #ee9999 100%); }
