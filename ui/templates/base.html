@@ -67,9 +67,9 @@
   <nav role="navigation">
     <ul>
       <li class="test"><a href="/test/" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
-      {# if logged in as tester/admin #}
+      {% if request.user %}
         <li class="manage"><a href="/manage/testcase/add/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Add Test Case</a></li>
-      {# endif #}
+      {% endif %}
       {% comment %}
         <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
       {% endcomment %}
