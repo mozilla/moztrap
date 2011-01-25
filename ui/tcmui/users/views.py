@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -12,7 +13,8 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             util.login(request, form.user)
-            return redirect("products")
+            return redirect(
+                request.GET.get("next", settings.LOGIN_REDIRECT_URL))
     else:
         form = LoginForm()
 
@@ -23,7 +25,7 @@ def login(request):
 def logout(request):
     util.logout(request)
     messages.success(request, "You're logged out - see you next time!")
-    return redirect("home")
+    return redirect("login")
 
 
 def register(request):
