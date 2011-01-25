@@ -259,6 +259,18 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #register input { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
 /* products -------------------------------------------------------------- */
+#products .list { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+#products .list li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#products .list li { margin-bottom: 0.75em; display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+#products .list li a { border-style: solid; border-width: 0.063em; padding: 0.688em; display: block; background: #eeffee; }
+#products .list li:nth-child(3n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#products .list li:first-child:last-child { clear: both; }
+#products .list li:first-child:nth-last-child(2), #products .list li:first-child:nth-last-child(2) ~ li, #products .list li:first-child:nth-last-child(4), #products .list li:first-child:nth-last-child(4) ~ li, #products .list li:first-child:nth-last-child(7), #products .list li:first-child:nth-last-child(7) ~ li { display: inline; float: left; width: 48.78%; margin-right: 2.439%; }
+#products .list li:first-child:nth-last-child(2):nth-child(3n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(4):nth-child(3n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(7):nth-child(3n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(3n) { display: inline; float: left; margin-right: 2.439%; }
+#products .list li:first-child:nth-last-child(2):nth-child(2n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(4):nth-child(2n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(7):nth-child(2n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(2n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#products .list li:first-child:nth-last-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li, #products .list li:first-child:nth-last-child(5n), #products .list li:first-child:nth-last-child(5n) ~ li { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+#products .list li:first-child:nth-last-child(3n):nth-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(5n):nth-child(3n), #products .list li:first-child:nth-last-child(5n) ~ li:nth-child(3n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+
 /* environment -------------------------------------------------------------- */
 .environment { position: relative; }
 .environment summary { position: absolute; top: -3em; right: 0; color: #005498; }

@@ -158,6 +158,34 @@ footer[role="contentinfo"]
 
 #products
   @extend .simple
+  .list
+    +no-style-list
+    li
+      +trailer(.5)
+      +columns(4,12)
+      a
+        +rhythm-borders(1px,.5)
+        display: block
+        background: #efe
+      &:nth-child(3n)
+        +omega(12)
+      &:first-child:last-child
+        +full(12)
+      &:first-child
+        &:nth-last-child(2), &:nth-last-child(4), &:nth-last-child(7)
+          &, & ~ li
+            +columns(6,12)
+            &:nth-child(3n)
+              +float(left)
+              margin-right: gutter(12)
+            &:nth-child(2n)
+              +omega(12)
+      &:first-child
+        &:nth-last-child(3n), &:nth-last-child(5n)
+          &, & ~ li
+            +columns(4,12)
+            &:nth-child(3n)
+              +omega(12)
 
 /* environment --------------------------------------------------------------    
 
