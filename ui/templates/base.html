@@ -66,8 +66,8 @@
 
   <nav role="navigation">
     <ul>
-      <li class="test"><a href="/test/" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
-      {% if request.user %}
+      <li class="test"><a href="{% url products %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+      {% if request.user %} {# @@@ this check should be permission-based #}
         <li class="manage"><a href="/manage/testcase/add/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Add Test Case</a></li>
       {% endif %}
       {% comment %}
