@@ -96,7 +96,9 @@ class ObjectMixin(StrAndUnicode):
         resource, or because a resource can't be deleted because it is
         referenced by other resources, or because supplied data for a new
         resource violates unique constraints on that type of resource, or for
-        other reasons.
+        other reasons. It's up to the catching code to determine the meaning of
+        this exception, based on context and the error string from the server
+        (which will be available as the ``response_error`` attribute).
 
         This exception corresponds to the HTTP status code 409.
 
@@ -123,13 +125,9 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def raise_for_response(cls, url, response, content):
-        """Raises exceptions corresponding to invalid HTTP responses that
+        """
+        Raises exceptions corresponding to invalid HTTP responses that
         instances of this class can't be updated from.
-
-        Override this method to customize the error handling behavior of
-        `RemoteObject` for your target API. For example, if your API illegally
-        omits ``Location`` headers from 201 Created responses, override this
-        method to check for and allow them.
 
         """
         # Turn exceptional httplib2 responses into exceptions.
