@@ -78,15 +78,16 @@ class RegistrationForm(UserPlaceholdersMixin, RemoteObjectForm):
             try:
                 UserList.get(auth=admin).post(user)
             except UserList.Conflict, e:
-                if "Screen name" in e.response_error:
+                if e.response_error == "screenname.in.use":
                     self._errors["screenName"] = self.error_class(
                         ["This username is already in use."])
-                elif "Email" in e.response_error:
+                elif e.response_error == "email.in.use":
                     self._errors["email"] = self.error_class(
                         ["This email address is already in use."])
                 else:
                     raise forms.ValidationError(
-                        "Unknown conflict; please try again.")
+                        'Unknown conflict "%s"; please correct and try again.'
+                        % e.response_error)
             else:
                 self.user = user
         return self.cleaned_data
