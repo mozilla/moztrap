@@ -5,6 +5,7 @@ Core objects for accessing platform API data.
 import base64
 import cgi
 from copy import deepcopy
+import httplib
 import logging
 from posixpath import join
 import simplejson as json
@@ -84,6 +85,107 @@ class ObjectMixin(StrAndUnicode):
         request["headers"]["user-agent"] = "TCMui/%s" % __version__
 
         return request
+
+
+    class Conflict(httplib.HTTPException):
+        """An HTTPException thrown when the server reports that the requested
+        action cannot be taken because it conflicts with the current state of
+        the resource.
+
+        This could be due to trying to update an out-of-date version of a
+        resource, or because a resource can't be deleted because it is
+        referenced by other resources, or because supplied data for a new
+        resource violates unique constraints on that type of resource, or for
+        other reasons.
+
+        This exception corresponds to the HTTP status code 409.
+
+        """
+        pass
+
+
+    @classmethod
+    def exception_classes(cls):
+        """
+        Maps httplib exceptional status codes to Python exception classes.
+
+        """
+        return {
+            httplib.CONFLICT: cls.Conflict,
+            httplib.NOT_FOUND: cls.NotFound,
+            httplib.UNAUTHORIZED: cls.Unauthorized,
+            httplib.PRECONDITION_FAILED: cls.PreconditionFailed,
+            httplib.FORBIDDEN: cls.Forbidden,
+            httplib.BAD_REQUEST: cls.RequestError,
+            httplib.INTERNAL_SERVER_ERROR: cls.ServerError,
+            }
+
+
+    @classmethod
+    def raise_for_response(cls, url, response, content):
+        """Raises exceptions corresponding to invalid HTTP responses that
+        instances of this class can't be updated from.
+
+        Override this method to customize the error handling behavior of
+        `RemoteObject` for your target API. For example, if your API illegally
+        omits ``Location`` headers from 201 Created responses, override this
+        method to check for and allow them.
+
+        """
+        # Turn exceptional httplib2 responses into exceptions.
+        classname = cls.__name__
+        exception_classes = cls.exception_classes()
+        if response.status in exception_classes:
+            exc_cls = exception_classes[response.status]
+
+            # try to pull out an error
+            content_type = cgi.parse_header(response.get("content-type", ""))[0]
+            if content_type == "application/json":
+                # @@@ API has broken JSON output on errors, strip everything
+                # outside the outermost curly braces
+                content = "{" + content.split("{", 1)[-1]
+                content = content.split("}", 1)[0] + "}"
+
+                data = json.loads(content)
+                error = data.get("error", "")
+            else:
+                error = ""
+
+            exc = exc_cls(
+                '%d %s requesting %s %s: %s'
+                % (response.status, response.reason, classname, url, error)
+                )
+            exc.response_error = error
+            raise exc
+
+        try:
+            response_has_content = cls.response_has_content[response.status]
+        except KeyError:
+            # we only expect the statuses that we know do or don't have content
+            raise cls.BadResponse('Unexpected response requesting %s %s: %d %s'
+                % (classname, url, response.status, response.reason))
+
+        try:
+            location_header = cls.location_headers[response.status]
+        except KeyError:
+            pass
+        else:
+            if cls.location_header_required.get(response.status) and location_header.lower() not in response:
+                raise cls.BadResponse(
+                    "%r header missing from %d %s response requesting %s %s"
+                    % (location_header, response.status, response.reason,
+                       classname, url))
+
+        if not response_has_content:
+            # then there's no content-type either, so we're done
+            return
+
+        # check that the response body was json
+        content_type = response.get('content-type', '').split(';', 1)[0].strip()
+        if content_type not in cls.content_types:
+            raise cls.BadResponse(
+                'Bad response fetching %s %s: content-type %s is not an expected type'
+                % (classname, url, response.get('content-type')))
 
 
     def update_from_response(self, url, response, content):
