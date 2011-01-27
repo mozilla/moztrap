@@ -1,15 +1,14 @@
-{% extends 'test/products.html' %}
+{% extends 'test/base.html' %}
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="/test/product/firefox/">firefox</a></li>
-  <li><a href="/test/product/firefox/environment/">environment</a></li>
+  <li>[product name]</li>
 {% endblock crumb %}
 
 {% block content %}
 <section id="environment">
-  <h2>Set your configuration</h2>
-  <form>
+  <h2>Set your environment</h2>
+  <form action="/product/1/cycles/">
     <ul>
       <li>
         <label for="version">version</label>

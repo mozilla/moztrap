@@ -43,6 +43,7 @@ nav[role="navigation"]
   +padding-leader(.5)
   li
     +float(left)
+    margin-right: .5em
   a
     #{$link}
       +padding-leader(.25)
@@ -87,6 +88,23 @@ div[role="main"]
   +pie-clearfix
   +h-borders(1px,1)
   border-color: #ccc
+  position: relative
+
+#messages
+  @extend .sans
+  +full(24)
+  +border-radius(.5em)
+  +rhythm-borders(1px,.5)
+  +trailer()
+  +text-shadow(#efe 1px 1px 0)
+  background: #cfc
+  color: #666
+  font-weight: bold
+  ul
+    +no-style-list
+  li
+    + li
+      +leader(.5)
 
 footer[role="contentinfo"]
   @extend .full
@@ -106,6 +124,9 @@ footer[role="contentinfo"]
     font-size: 1em
 
 /* login --------------------------------------------------------------    
+
+#login, #register
+  +side-errors(6,12)
 
 #login
   @extend .simple
@@ -132,23 +153,219 @@ footer[role="contentinfo"]
   input
     +columns(8,12)
     +omega(12)
-    position: relative
-    top: - $base-line-height/14px*.25em
 
 /* products --------------------------------------------------------------    
 
 #products
   @extend .simple
+  .list
+    +no-style-list
+    li
+      +trailer(.5)
+      +columns(4,12)
+      a
+        +rhythm-borders(1px,.5)
+        display: block
+        background: #efe
+      &:nth-child(3n)
+        +omega(12)
+      &:first-child:last-child
+        +full(12)
+      &:first-child
+        &:nth-last-child(2), &:nth-last-child(4), &:nth-last-child(7)
+          &, & ~ li
+            +columns(6,12)
+            &:nth-child(3n)
+              +float(left)
+              margin-right: gutter(12)
+            &:nth-child(2n)
+              +omega(12)
+      &:first-child
+        &:nth-last-child(3n), &:nth-last-child(5n)
+          &, & ~ li
+            +columns(4,12)
+            &:nth-child(3n)
+              +omega(12)
 
 /* environment --------------------------------------------------------------    
 
+.environment
+  position: relative
+  summary
+    position: absolute
+    top: - $base-rhythm-unit*2
+    right: 0
+    color: $alt
+    &:hover
+      color: $accent
+  form
+    +full(24)
+    +prefix(12,24)
+    +trailing-border(1px,.5)
+    +trailer
+  +inline-form(4,8,12)
+    
 #environment
   @extend .simple
+  +inline-form(4,8,12)
+
+/* cycles --------------------------------------------------------------    
+
+#cycles
+  .date
+    width: columns(4,24)
+  .start, .end
+    width: columns(3,24)
+  .go
+    width: columns(4,24)
+  th
+    a
+      #{$link}
+        display: block
+        position: relative
+      #{$focus}
+        &::after
+          content: "»"
+          position: absolute
+          right: 0
+  td:last-child
+    text-align: right
+    a
+      @extend .button
+      +opacity(0)
+      text-transform: lowercase
+      font-variant: small-caps
+      white-space: nowrap
+  tr:hover
+    td:last-child
+      a
+        +opacity(1)
+
+/* create tests --------------------------------------------------------------    
+
+.remove
+  +replace-text("http://dummyimage.com/16/933/fff&text=X")
+  display: block
+  height: $base-rhythm-unit
+
+.add
+  display: block
+  text-align: right
+
+#create
   li
     +pie-clearfix
-  label
-    +columns(4,12)
-  select
-    +columns(8,12)
-    +omega(12)
+  .form-actions
+    +leader
+  
+  .meta
+    +columns(12,24)
+    +inline-form(2,10,12)
+  
+  .env
+    +columns(12,24)
+    +omega(24)
+    ul
+      +no-style-list
+    select
+      +columns(5,12)
+      + select
+        +columns(6,12)
+    .remove
+      +columns(1,12)
+      +omega(12)
+    .add
+      margin-right: columns(1,12) + gutter(12)
+  
+  .steps
+    +full(24)
+    counter-reset: step
+    .remove
+      +columns(1,24)
+      +omega(24)
+      +leader
+    .add
+      margin-right: columns(1,24) + gutter(24)
+    li
+      position: relative
+      counter-increment: step
+      &::before
+        +adjust-font-size-to(48px)
+        content: counter(step, decimal) "."
+        position: absolute
+        left: 0
+        top: 1.5em
+      &:last-child::before
+        content: ""
+    textarea
+      min-height: $base-rhythm-unit*6
+  .step
+    +columns(10,24)
+    margin-left: columns(2,24) + gutter(24)
+  .result
+    +columns(11,24)
     
+
+/* run tests --------------------------------------------------------------    
+
+#run
+  .test, summary, .content
+    +full(24)
+  .test
+    +pie-clearfix
+    +trailing-border(1px,.5)
+    +trailer(.5)
+    &:last-child
+      margin: 0
+      padding: 0
+      border: 0
+  .started
+    summary
+      background: #eef
+  summary
+    +pie-clearfix
+  header
+    +columns(20,24)
+  h3
+    +adjust-font-size-to(24px)
+    margin: 0
+    font-weight: normal
+    b
+      +adjust-font-size-to(14px,1,24px)
+      +inline-block
+      width: columns(2,20)
+      margin-right: gutter(20)
+      vertical-align: top
+      font-weight: bold
+      text-align: right
+  .suite
+    +prefix(2,20)
+    margin: 0
+  .status
+    +adjust-font-size-to(14px)
+    +columns(4,24)
+    +omega(24)
+    +leader(.25,14px)
+    text-align: center
+    button
+      +rhythm-borders(1px,.25,14px)
+  .content
+    +pad(2,4,24)
+    +leader
+  h4
+    margin: 0
+  .start
+    +box-sizing('border-box')
+    width: 100%
+  .pass, .invalid, .fail
+    width: 33%
+  .pass
+    +border-right-radius(0)
+    border-right: none
+  .invalid
+    +background(linear-gradient(top center, #ffe 0%, #ee9 100%))
+    +border-radius(0)   
+  .fail
+    +background(linear-gradient(top center, #fee 0%, #e99 100%))    
+    +border-left-radius(0)
+    border-left: none

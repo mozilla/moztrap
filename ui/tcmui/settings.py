@@ -15,6 +15,9 @@ ADMINS = [
 
 MANAGERS = ADMINS
 
+# Just to avoid deprecation warnings
+DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
+
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # On Unix systems, a value of None will cause Django to use the same
@@ -62,11 +65,20 @@ TEMPLATE_LOADERS = [
     "django.template.loaders.app_directories.Loader",
 ]
 
+TEMPLATE_CONTEXT_PROCESSORS = [
+    "django.core.context_processors.request",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages"
+]
+
 MIDDLEWARE_CLASSES = [
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "tcmui.users.middleware.AuthenticationMiddleware",
+    "tcmui.core.middleware.StaticCompanyMiddleware",
 ]
 
 ROOT_URLCONF = "tcmui.urls"
@@ -117,10 +129,17 @@ LOGGING = {
 }
 
 INSTALLED_APPS += ["compressor"]
-COMPRESS_YUI_BINARY = "yuicompressor"
 COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
-                        "compressor.filters.yui.YUICSSFilter"]
-COMPRESS_JS_FILTERS = ["compressor.filters.yui.YUIJSFilter"]
+                        "tcmui.compressor_filters.SlimmerCSSFilter"]
+
+INSTALLED_APPS += ["floppyforms"]
+
+TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
+TCM_ADMIN_USER = "admin@utest.com"
+TCM_ADMIN_PASS = "admin"
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "products"
 
 try:
     from settings_local import *

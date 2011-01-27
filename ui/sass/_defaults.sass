@@ -222,6 +222,15 @@ th, td, caption
 
 table, th
   +trailing-border(1px, 0.5)
+  border-color: #ccc
+
+tr
+  &:nth-child(even)
+    td
+      background: #eef
+  &:hover
+    td
+      background: #ddf
 
 tfoot
   +adjust-font-size-to(14px)
@@ -234,6 +243,11 @@ caption
 form
   > ul, > ol
     +no-style-list
+  li
+    position: relative
+
+::-moz-focus-inner
+  border: 0
 
 fieldset
   +trailer
@@ -243,17 +257,31 @@ legend
   +adjust-font-size-to(18px)
   font-weight: bold
 
-input[type="radio"], input[type="checkbox"]
-  vertical-align: baseline
+label
+  +inline-block
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  font-weight: bold
 
 label, input[type=button], input[type=submit], button
   cursor: pointer
 
-label
-  font-weight: bold
+input[type="radio"], input[type="checkbox"]
+  vertical-align: baseline
 
-input, button, textarea, select, optgroup
-  +reset-box-model
+input, button, textarea, select
+  +border-radius(0)
+  vertical-align: middle
+  &:focus, &:active
+    +box-shadow(#06f 0 0 .25em)
+    z-index: 1
+  &, optgroup
+    +reset-box-model
+
+optgroup
+  color: $base
+  font-style: normal
+  font-weight: normal
 
 // box-sizing helps us control the width of inputs
 // which are otherwise very hard to manage in the grid.
@@ -261,73 +289,93 @@ input, button, textarea, select, optgroup
   +sans-family
   +adjust-font-size-to(14px,1,16px)
   +rhythm-borders(1px,.25,14px)
-  +trailer(.5)
+  +trailer(.5,14px)
   +box-sizing(border-box)
   width: 100%
+  background-color: #fff
+  color: $base
   border-color: $base
   height: $base-line-height/14px*1.5em
+  outline: 0
+  .ie7 &
+    height: auto
+  [disabled]
+    background-color: #eee
+    color: lighten($base,15)
 
 input, textarea
+  -webkit-appearance: none
+  &:valid
+    +box-shadow(green 0 0 .25em)
   &:invalid
     +border-radius(1px)
-    +box-shadow(red,0,0,.25em)
+    +box-shadow(red 0 0 .25em)
+    &:focus
+      +box-shadow(#06f 0 0 .25em)
     .no-boxshadow &
       background-color: #f0dddd
 
-textarea
+textarea, select
   @extend .textinput
-  height: $base-line-height/14px*6.5em
-  vertical-align: text-bottom
+
+textarea
+  height: auto
+  overflow: auto
+  resize: vertical
+
+select
+  &[multiple]
+    height: auto
 
 input
-  &[type=text], &[type=password], &[type=email], &[type=url], &[type=tel],
-  &[type=date], &[type=datetime], &[type=datetime-local], &[type=month], &[type=week], &[type=time],
-  &[type=number], &[type=range], &[type=search], &[type=color]
+  vertical-align: middle
+  &[type="text"], &[type="password"], &[type="email"], &[type="url"], &[type="tel"],
+  &[type="date"], &[type="datetime"], &[type="datetime-local"], &[type="month"], &[type="week"], &[type="time"],
+  &[type="number"], &[type="search"], &[type="color"]
     @extend .textinput
-  // reset webkit search styles
-  &[type=search]
+  &[type="range"]
+    width: 100%
+  &[type="reset"], &[type="submit"], &[type="button"]
+    @extend .button
+  &[type="search"]
     -webkit-appearance: none
     &::-webkit-search-decoration
       display: none
-
-select
-  +trailer(.5)
-  border: 1px solid #ccc
-  font: inherit
 
 .form-actions
   clear: both
   text-align: right
 
-=base-button-reset
-  +reset-box-model
-  display: inline
-  width: auto
-  overflow: visible
-  background: none
-  color: inherit
+=button
+  +border-radius(1em)
+  +background(#ddd image-url('forms/button.png') repeat-x)
+  +background(linear-gradient(top center, #dfd 0%, #6f6 100%))
+  +rhythm-borders(1px,.25)
+  +hpadding
+  +text-shadow(#fff 0 1px 1px)
+  +trailer(.5)
+  border-color: #bbb #999 #666
+  cursor: pointer
+  color: #333
   font: inherit
-  line-height: inherit
+  outline: 0
+  overflow: visible
+  width: auto
+  vertical-align: baseline
+  &[disabled]
+    color: #888
 
 =button-reset
-  +base-button-reset
-  text-transform: none
-  letter-spacing: 0  
-
-=button
-  +inline-block
-  +rhythm-borders(1px,.25)
-  +border-radius(.5em)
-  +hpadding(.5em)
-  background: $green
-  vertical-align: baseline
-  text-transform: uppercase
-  letter-spacing: .01em
-  #{$focus}
-    background: darken($green,10%)
+  +border-radius(0)
+  +text-shadow(none)
+  display: inline
+  background: none
+  color: inherit
+  padding: 0
+  margin: 0
+  border: 0
 
 button
-  +base-button-reset
   +button
   &.sub
     +button-reset
@@ -337,3 +385,26 @@ button
 
 .button
   +button
+
+.errorlist
+  +no-style-list
+  +trailer
+  color: red
+
+=side-errors($n,$c,$s:'right')
+  li
+    .errorlist
+      position: absolute
+      left: 100% + gutter($c)
+      top: $base-rhythm-unit*.25
+      width: columns($n,$c)
+      margin: 0
+
+=inline-form($nl,$ni,$c)
+  li
+    +pie-clearfix
+  label
+    +columns($nl,$c)
+  input, select, textarea
+    +columns($ni,$c)
+    +omega($c)

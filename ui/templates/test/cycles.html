@@ -1,0 +1,76 @@
+{% extends 'test/base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li>[product name]</li>
+{% endblock crumb %}
+
+{% block content %}
+  <section id="cycles">
+    <h2>Select a test cycle to run</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th class="date"><a href="#" title="sort by date created">date created</a></th>
+          <th class="name"><a href="#" title="sort by name">name</a></th>
+          <th class="start"><a href="#" title="sort by start date">start date</a></th>
+          <th class="end"><a href="#" title="sort by end date">end date</a></th>
+          <th class="go"></th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 1 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 2 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 3 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 4 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 5 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+
+        <tr>
+          <td>6/21/2010</td>
+          <td>test cycle 6 name</td>
+          <td>1/13/2011</td>
+          <td>6/13/2011</td>
+          <td><a href="/product/1/cycles/1/">start this cycle!</a></td>
+        </tr>
+      </tbody>
+      
+    </table>
+    
+  </section>
+{% endblock content %}

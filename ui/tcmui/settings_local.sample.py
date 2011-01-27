@@ -7,11 +7,15 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 
 """
 
+#TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
+#TCM_ADMIN_USER = "admin@utest.com"
+#TCM_ADMIN_PASS = "admin"
+
 #DEBUG = False
 #TEMPLATE_DEBUG = False
 
 # Absolute path to directory where static media will be collected by the
-# "collect_static management command, and can be served by front-end webserver.
+# "collect_static" management command, and can be served by front-end webserver.
 #STATIC_ROOT = ""
 
 # A unique (and secret) key for this deployment.

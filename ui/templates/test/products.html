@@ -1,17 +1,18 @@
 {% extends 'test/base.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="/test/products/">products</a></li>
-{% endblock crumb %}
+{% block bread %}{% endblock bread %}
 
 {% block content %}
 <section id="products">
+  {% if products %}
   <h2>Select a product to test:</h2>
-  <ul>
-    <li><a href="/test/product/firefox/environment/">listed</a></li>
-    <li><a href="/test/product/firefox/environment/">products</a></li>
-    <li><a href="/test/product/firefox/environment/">with links</a></li>
+  <ul class="list">
+    {% for product in products %}
+    <li><a href="/product/1/environment/">{{ product.name }}</a></li>
+    {% endfor %}
   </ul>
+  {% else %}
+    <h2>no products available for testing.</h2>
+  {% endif %}
 </section>
 {% endblock content %}

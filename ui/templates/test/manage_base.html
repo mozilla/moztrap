@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block manage-active-nav %}active{% endblock manage-active-nav %}
+
+{% block crumb %}
+  {{ block.super }}
+  {% comment %}
+    <li><a href="#">manage</a></li>
+  {% endcomment %}
+{% endblock crumb %}
