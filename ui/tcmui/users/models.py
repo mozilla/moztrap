@@ -123,18 +123,23 @@ class User(RemoteObject):
 
 
     def activate(self, **kwargs):
-        self._put(relative_url="activate", **kwargs)
+        self._put(
+            relative_url="activate",
+            update_from_response=True,
+            **kwargs)
 
 
     def deactivate(self, **kwargs):
-        self._put(relative_url="deactivate", **kwargs)
+        self._put(
+            relative_url="deactivate",
+            update_from_response=True,
+            **kwargs)
 
 
     def emailchange(self, newemail, **kwargs):
         self._put(
             relative_url="emailchange/%s" % urllib.quote(newemail),
-            **kwargs
-        )
+            **kwargs)
 
 
     def emailconfirm(self, **kwargs):
