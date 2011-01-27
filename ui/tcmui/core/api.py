@@ -139,13 +139,10 @@ class ObjectMixin(StrAndUnicode):
             # try to pull out an error
             content_type = cgi.parse_header(response.get("content-type", ""))[0]
             if content_type == "application/json":
-                # @@@ API has broken JSON output on errors, strip everything
-                # outside the outermost curly braces
-                content = "{" + content.split("{", 1)[-1]
-                content = content.split("}", 1)[0] + "}"
-
                 data = json.loads(content)
-                error = data.get("error", "")
+                # error format is e.g. {"errors":[{"error":"email.in.use"}]}
+                # currently only one error is returned at a time
+                error = data.get("errors", [{}])[0].get("error", "")
             else:
                 error = ""
 
