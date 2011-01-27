@@ -474,7 +474,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
                 data = data["ns1.%s" % self.api_name]
             try:
                 data = data["ns1.%s" % self.entryclass().api_name]
-            except KeyError:
+            except (KeyError, TypeError):
                 data = []
             # Because this JSON is BadgerFish-translated XML
             # (http://ajaxian.com/archives/badgerfish-translating-xml-to-json)
