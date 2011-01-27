@@ -19,6 +19,9 @@ world.port = 8080
 world.use_mock = False
 #world.use_mock = True
 
+world.save_db = False
+world.restore_db = True
+
 # the namespace used to prefix every field
 world.ns = 'ns1.'
 
@@ -36,13 +39,18 @@ world.path_environments =       world.api_prefix + "env/environments/"
 world.path_environmenttypes =   world.api_prefix + "env/environmenttypes/"
 world.path_tags =               world.api_prefix + "env/tags/"
 
-world.path_login =              world.api_prefix + "usr/login/"
-world.path_logout =             world.api_prefix + "usr/logout/"
-world.path_permissions =        world.api_prefix + "usr/permissions/"
-world.path_roles =              world.api_prefix + "usr/roles/"
-world.path_users =              world.api_prefix + "usr/users/"
+world.path_login =              world.api_prefix + "users/login/"
+world.path_logout =             world.api_prefix + "users/logout/"
+world.path_permissions =        world.api_prefix + "users/permissions/"
+world.path_roles =              world.api_prefix + "users/roles/"
+world.path_users =              world.api_prefix + "users/"
+world.path_users_activation =   world.api_prefix + "users/%s/%s"
 
 world.path_testcases =          world.api_prefix + "testcases/"
+world.path_testsuites =         world.api_prefix + "testsuites/"
 world.path_products =           world.api_prefix + "products/"
 
+# paths for test automation
 world.path_mockdata =           "/mockdata"
+world.path_savedb =             "/TcmDbUnitServlet/savedb"
+world.path_restoredb =          "/TcmDbUnitServlet/restoredb"

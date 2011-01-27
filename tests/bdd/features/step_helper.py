@@ -6,12 +6,13 @@ Created on Nov 9, 2010
 from lettuce import *
 from numpy.ma.testutils import *
 from types import ListType
-import json
-import urllib
-import mimetypes
 import base64
-import string
+import copy
+import json
+import mimetypes
 import re
+import string
+import urllib
 
 
 '''
@@ -38,15 +39,25 @@ def add_params(uri_path, params = {}):
         I'll first add on the URI prefix
         then add in the params
     '''
-    params["_type"] = "json"
+    newparams = copy.copy(params)
+    newparams["_type"] = "json"
     #assert False, urllib.urlencode(params)
     #assert False, params
     
-    uri = uri_path + "?" + urllib.urlencode(params)
+    uri = uri_path + "?" + urllib.urlencode(newparams)
     #if re.search("companies", uri_suffix):
         #assert False, uri
     return uri
 
+def verify_status(exp_status, response, msg):
+    '''
+        Helper that prints out the error message if something other than what's expected
+        is returned.
+    '''
+    data = response.read()
+    assert_equal(response.status, 200, msg + ": " + str(data))
+    return data
+    
 def get_auth_header():
     userid = "admin@utest.com" 
     passwd = "admin"
@@ -55,9 +66,27 @@ def get_auth_header():
 
     return auth
 
-def check_existence(step, uri, arg_name, arg_value, obj_name, existence):
+def get_user_status_id(userStatus):
+    statusMap = {"active": 1,
+                 "inactive": 2,
+                 "disabled": 3}
+    return statusMap.get(userStatus)
+
+
+def search_and_verify_existence(step, uri, search_args, obj_name, existence):
+    expect_to_find = (existence.strip() == "exists")
+    search_and_verify(step, uri, search_args, obj_name, expect_to_find)
+
+def search_and_verify(step, uri, search_args, obj_name, expect_to_find):
+    '''
+        This does a search based on the search_args passed in.  So "expect_to_find"
+        is really filtered based on those parameters.  
+        
+        expect_to_find: If True, then we verify based on expecting to find something.
+                        If False, this will fail if we get a resultset greater than 0.
+    '''
     #arg_value_enc = urllib.quote(arg_value)
-    url = add_params(uri, {arg_name : arg_value})
+    url = add_params(uri, search_args)
 
     headers = {'Content-Type':'application/json',
                'Authorization': get_auth_header()}
@@ -65,18 +94,21 @@ def check_existence(step, uri, arg_name, arg_value, obj_name, existence):
     world.conn.request("GET", url, "", headers)
     response = world.conn.getresponse()
 
-    assert_equal(response.status, 200, uri + " existence")
+    data = verify_status(200, response, uri + " existence")
 
-    if existence.strip() == "does not exist":
-        count = get_count(response, ns(obj_name))
+    if not expect_to_find:
+        count = get_count(data, ns(obj_name))
         assert_equal(count, 0, "expect result size zero")
     else:
-        environmentJson = get_single_item(response, ns(obj_name))
-        assert_equal(environmentJson.get(ns(arg_name)), arg_value, obj_name + " name match")
+        environmentJson = get_single_item(data, ns(obj_name))
+
+        # Verify that the result's values match our search params 
+        for k, v in search_args.items():
+            assert_equal(environmentJson.get(ns(k)), v, obj_name + " match")
     
 
 
-def get_single_item(response, type):
+def get_single_item(response_txt, type):
     '''
         Expect the response to be a single item or a list.  
         If it's a list, we take the first item.
@@ -84,11 +116,12 @@ def get_single_item(response, type):
     type = ns(type)
     pl_type = plural(type)
 
-    response_txt = response.read()
     try:
         respJson = json.loads(response_txt)
     except ValueError:
-        assert False, "Bad JSON: " + response_txt
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
     
     item = None
     
@@ -115,7 +148,7 @@ def get_single_item(response, type):
     return item
   
   
-def get_count(response, type):
+def get_count(response_txt, type):
     '''
         Expect the response to be a single item or a list.  
         If it's a list, we take the first item.
@@ -123,7 +156,6 @@ def get_count(response, type):
     type = ns(type)
     pl_type = plural(type)
 
-    response_txt = response.read()
     try:
         respJson = json.loads(response_txt)
     except ValueError:
@@ -168,7 +200,6 @@ def get_resp_list(response, type):
             resp_list.append(items)
 
     return resp_list
-    
 
 def get_user_resid(name):
     ''' 
@@ -207,7 +238,7 @@ def get_resource_identity(type, uri):
         type: Something like user or role or permission.  The JSON object type
         uri: The URI stub to make the call
         
-        Return the id as a string.
+        Return the id and version as strings
         
         @TODO: This presumes a list of objects is returned.  So it ONLY returns the resid for
         the first element of the list.  Will almost certainly need a better solution in the future.
@@ -219,13 +250,16 @@ def get_resource_identity(type, uri):
 
     world.conn.request("GET", uri, "", headers)
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "Response when asking for " + type)
+    data = verify_status(200, response, "Response when asking for " + type)
     
     field = ns("resourceIdentity")
-    respJson = get_single_item(response, type)
+    respJson = get_single_item(data, type)
     assert respJson.__contains__(field), "Object doesn't have " + field + ":\n" + jstr(respJson)
+    resid = respJson.get(field);
+    assert resid.__contains__("@id"), "Result should have @id" + ":\n" + jstr(respJson)
+    assert resid.__contains__("@version"), "Result should have @version" + ":\n" + jstr(respJson)
     # we always use this as a string
-    return str(respJson.get(field).get(ns("id")))
+    return str(resid.get("@id")), str(resid.get("@version")) 
 
 
 def find_ordered_response(type, field, first, second, obj_list):

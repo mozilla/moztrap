@@ -12,24 +12,6 @@ Created on Oct 21, 2010
 import urllib
 
 
-
-def get_submit_user(fname, lname):    
-    user = """
-        {
-            "user":{
-                "firstname":"%(fname)s",
-                "lastname":"%(lname)s",
-                "email":"%(fname)s%(lname)s@utest.com",
-                "loginname":"%(fname)s%(lname)s",
-                "password":"%(fname)s%(lname)s123",
-                "companyid":1,
-                "communitymember":"false"
-            }
-        }
-    """ % {'fname': fname, 'lname': lname}
-
-    return urllib.quote(user)
-
 def get_submit_role(rolename):
     user = """
         {
@@ -74,22 +56,6 @@ def get_submit_test_case(name):
     """ % {'name': name}
     return urllib.quote(tc)
 
-def get_submit_company(co_name):
-    company = """
-        {
-            "company":{
-                "name": "%(co_name)s",
-                "phone": "617-417-0593",
-                "address": "31 lakeside drive",
-                "city": "Boston",
-                "zip": "01721",
-                "companyUrl": "http//www.utest.com",
-                "resourceIdentity": "5",
-                "timeline": "bleh"
-            }
-        }""" % {'co_name': co_name}
-    return urllib.quote(company)
-
 
 def get_submit_environment(env_name):
     environment = """
@@ -120,4 +86,28 @@ def get_submit_environment_type(envtype_name):
     return urllib.quote(envtype)
 
 
+def get_submit_user_params(fname, lname):    
+    user = {
+                "firstname":fname,
+                "lastname":lname,
+                "email":fname+lname + "@utest.com",
+                "screenname":fname+lname,
+                "password":fname+lname +"123",
+                "companyid":9,
+                "communitymember":"false"
+    }
+
+    return user
+
+def get_submit_company_params(co_name):
+    company = {
+                "name": co_name,
+                "phone": "617-417-0593",
+                "address": "31 lakeside drive",
+                "city": "Boston",
+                "zip": "01721",
+                "url": "http//www.utest.com",
+                "countryId": 123
+    }
+    return company
 
