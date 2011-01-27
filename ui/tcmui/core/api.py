@@ -360,6 +360,19 @@ class ObjectMixin(StrAndUnicode):
         return data
 
 
+    def filter(self, **kwargs):
+        """
+        Returns a new instance with filter parameters added as parameters to
+        the instance's query string.
+
+        """
+        auth = kwargs.pop("auth", self.auth)
+
+        newurl = util.add_to_querystring(self._location, **kwargs)
+
+        return self.get(newurl, auth=auth)
+
+
     def __repr__(self):
         return "<%s: %s>" % (self.__class__.__name__, self)
 
