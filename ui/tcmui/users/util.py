@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.core import urlresolvers
+from django.http import HttpResponseRedirect
 
 from ..core.api import Credentials
+from ..core.util import add_to_querystring
 
 from .models import User
 
@@ -40,7 +43,12 @@ def get_user(userid, password):
     return user
 
 
-def redirect_url(to, *args, **kwargs):
+def resolve_url(to, *args, **kwargs):
+    """
+    Accept a URL, a view function, or a reversible name (dotted path to view
+    function or named URL), and return the resolved URL.
+
+    """
     try:
         return urlresolvers.reverse(to, args=args, kwargs=kwargs)
     except urlresolvers.NoReverseMatch:
@@ -53,3 +61,11 @@ def redirect_url(to, *args, **kwargs):
 
     # Finally, fall back and assume it's a URL
     return to
+
+
+def redirect_to_login(from_url, redirect_field_name=None, login_url=None):
+    redirect_to = add_to_querystring(
+        resolve_url(login_url or settings.LOGIN_URL),
+        **{redirect_field_name: from_url}
+        )
+    return HttpResponseRedirect(redirect_to)

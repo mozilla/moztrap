@@ -1,45 +1,109 @@
 from functools import wraps
 
-from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.template import TemplateSyntaxError
 
-from ..core.util import add_to_querystring
+from ..core.api import RemoteObject
 
-from .util import redirect_url
+from .util import redirect_to_login
 
-def user_passes_test(test_func, redirect_field_name=None, login_url=None):
+
+
+def login_redirect(function=None, redirect_field_name=None, login_url=None):
     """
-    Decorator for views that checks that the user passes the given test,
-    redirecting to the log-in page if necessary. The test should be a callable
-    that takes the user object and returns True if the user passes.
+    Decorator for views that catches Unauthorized and Forbidden API errors
+    raised in a view and redirects to the login URL, with an explanatory
+    message in the Forbidden case.
 
     """
     redirect_field_name = redirect_field_name or "next"
 
     def decorator(view_func):
+        wrapped = unwrap_template_syntax_error(
+            force_render(view_func),
+            RemoteObject.Unauthorized,
+            RemoteObject.Forbidden)
+
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
-            if test_func(request.user):
-                return view_func(request, *args, **kwargs)
-            redirect_to = add_to_querystring(
-                redirect_url(login_url or settings.LOGIN_URL),
-                **{redirect_field_name: request.path}
-                )
-            return HttpResponseRedirect(redirect_to)
+            try:
+                response = wrapped(request, *args, **kwargs)
+            except RemoteObject.Unauthorized:
+                pass
+            except RemoteObject.Forbidden:
+                messages.warning(
+                    request,
+                    "Your account does not have sufficient permissions "
+                    "to view this page. Please log in with a different account "
+                    "or request the needed permissions from the system "
+                    "administrator.")
+            else:
+                return response
+
+            return redirect_to_login(
+                from_url=request.path,
+                redirect_field_name=redirect_field_name,
+                login_url=login_url)
         return _wrapped_view
+
+    if function is not None:
+        return decorator(function)
     return decorator
 
 
-def login_required(function=None, redirect_field_name=None, login_url=None):
+
+def login_required(view_func):
     """
-    Decorator for views that checks that the user is logged in, redirecting
-    to the log-in page if necessary.
+    A decorator to redirect to login if no user is logged in.
+
+    This is only needed to fake login-required on views that aren't doing
+    anything dynamic yet (wireframes). Otherwise, an API call will raise
+    Unauthorized and the login_redirect decorator is all that's needed.
+
     """
-    actual_decorator = user_passes_test(
-        lambda u: u is not None,
-        login_url=login_url,
-        redirect_field_name=redirect_field_name
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
+    @login_redirect
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.auth is None:
+            raise RemoteObject.Unauthorized("Must be logged-in.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
+
+
+def unwrap_template_syntax_error(function, *unwrap_exceptions):
+    """
+    A decorator to catch TemplateSyntaxError and unwrap it, reraising the
+    wrapped exception.
+
+    If unwrap_exceptions are passed, the unwrapping will only occur if the
+    wrapped exception is one of those exception types.
+
+    """
+    @wraps(function)
+    def _wrapped(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except TemplateSyntaxError, e:
+            wrapped = e.exc_info[1]
+            if (not unwrap_exceptions or
+                wrapped in unwrap_exceptions or
+                isinstance(wrapped, unwrap_exceptions)):
+                raise wrapped
+            raise
+    return _wrapped
+
+
+
+def force_render(view_func):
+    """
+    A view decorator to force immediate rendering of a TemplateResponse.
+
+    """
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        response = view_func(request, *args, **kwargs)
+        if hasattr(response, "render") and callable(response.render):
+            response.render()
+        return response
+    return _wrapped_view

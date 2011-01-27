@@ -13,5 +13,6 @@ class AuthenticationMiddleware(object):
             user = get_user(userid, password)
             if user:
                 request.user = user
+                request.auth = user.auth
             else:
                 logout(request)
