@@ -134,7 +134,27 @@ class User(RemoteObject):
 
 
     def setroles(self, roles, **kwargs):
-        payload_data = {"roleIds": [r.identity["@id"] for r in roles]}
+        roleIds = []
+        for r in roles:
+            try:
+                roleIds.append(r.identity["@id"])
+            except (AttributeError, KeyError):
+                pass
+            else:
+                continue
+
+            try:
+                roleIds.append(int(r))
+            except ValueError:
+                pass
+            else:
+                continue
+
+            raise ValueError("Values passed to User.setroles must be integer "
+                             "ids or Role instances; %r appears to be neither."
+                             % r)
+
+        payload_data = {"roleIds": roleIds}
         self._put(
             relative_url="roles",
             extra_payload=payload_data,

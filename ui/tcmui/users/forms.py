@@ -2,6 +2,7 @@ import floppyforms as forms
 
 from ..core.api import admin
 from ..core.forms import RemoteObjectForm
+from ..static import userstatus
 
 from .models import User, UserList
 from .util import get_user
@@ -35,8 +36,18 @@ class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
                 )
             if self.user is None:
                 raise forms.ValidationError(
-                    "Sorry, that email/password combination doesn't match "
+                    "That email/password combination doesn't match "
                     "any users in our records.")
+            if self.user.userStatus.id == userstatus.INACTIVE:
+                raise forms.ValidationError(
+                    "This user has not been activated. Please check your email "
+                    "for an activation link.")
+            elif self.user.userStatus.id == userstatus.DISABLED:
+                raise forms.ValidationError(
+                    "This user account has been disabled.")
+            elif self.user.userStatus.id != userstatus.ACTIVE:
+                raise forms.ValidationError(
+                    "This user account is not active.")
         return self.cleaned_data
 
 

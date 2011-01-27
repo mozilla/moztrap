@@ -3,6 +3,9 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
+from ..core import conf
+from ..core.api import admin
+
 from . import util
 from .forms import LoginForm, RegistrationForm
 
@@ -33,9 +36,9 @@ def register(request):
         form = RegistrationForm(request.POST, company=request.company)
         if form.is_valid():
             user = form.user
-            # @@@ user.setroles(...)
-            # @@@ activate
+            user.setroles([conf.TCM_NEW_USER_ROLE_ID], auth=admin)
             # @@@ Email confirmation step missing.
+            user.activate(auth=admin)
             messages.success(
                 request,
                 "Congratulations, you've registered! Now you can login."
