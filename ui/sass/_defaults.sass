@@ -388,14 +388,17 @@ button
 
 .errorlist
   +no-style-list
+  +trailer
   color: red
 
 =side-errors($n,$c,$s:'right')
-  .errorlist
-    position: absolute
-    left: 100% + gutter($c)
-    top: $base-rhythm-unit*.25
-    width: columns($n,$c)
+  li
+    .errorlist
+      position: absolute
+      left: 100% + gutter($c)
+      top: $base-rhythm-unit*.25
+      width: columns($n,$c)
+      margin: 0
 
 =inline-form($nl,$ni,$c)
   li

@@ -10,8 +10,8 @@
   <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
   <form method="POST">
     {% csrf_token %}
+    {{ form.non_field_errors }}
     <ul>
-      {{ form.non_field_errors }}
       {% for field in form %}
       <li>
         {{ field.errors }}

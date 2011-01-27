@@ -1,7 +1,7 @@
 <form method="POST">
   {% csrf_token %}
+  {{ form.non_field_errors }}
   <ul>
-    {{ form.non_field_errors }}
     {% for field in form %}
     <li>
       {{ field.errors }}

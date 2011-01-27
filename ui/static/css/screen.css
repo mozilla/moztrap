@@ -179,7 +179,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #984400; }
 .button, input[type="reset"], input[type="submit"], input[type="button"], #cycles td:last-child a { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ddffdd), color-stop(100%, #66ff66)); background: -moz-linear-gradient(top center, #ddffdd 0%, #66ff66 100%); background: linear-gradient(top center, #ddffdd 0%, #66ff66 100%); border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; border-color: #bbbbbb #999999 #666666; cursor: pointer; color: #333333; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
 .button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], #cycles td:last-child a[disabled] { color: #888888; }
 
-.errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; color: red; }
+.errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; margin-bottom: 1.5em; color: red; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 
 /* Helpers ------------------------------------------------------------------- */
@@ -245,7 +245,7 @@ footer[role="contentinfo"] .credit { display: inline; float: right; margin-right
 footer[role="contentinfo"] small { font-size: 1em; }
 
 /* login -------------------------------------------------------------- */
-#login .errorlist, #register .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; }
+#login li .errorlist, #register li .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; margin: 0; }
 
 #login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; }
 #login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
