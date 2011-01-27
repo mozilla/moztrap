@@ -220,6 +220,42 @@ class ObjectMixin(StrAndUnicode):
                  extra_payload=None,
                  default_content_type="application/x-www-form-urlencoded",
                  **kw):
+        """
+        Swiss army knife utility method to make HTTP requests relative to this
+        object.
+
+        ``method``
+            HTTP method to use.
+
+        ``relative_url``
+            URL relative to this object's location; if None, this object's
+            location is used.
+
+        ``full_payload``
+            If True, send the full contents of this object's to_dict() as the
+            payload. If set to another object, send the contents of that
+            object's to_dict() instead.
+
+        ``version_payload``
+            If True, send this object's resource version as originalVersionId
+            in payload. If set to another object, use that object's resource
+            version instead. Mutually exclusive with full_payload.
+
+        ``extra_payload``
+            A dictionary of extra payload data to send.
+
+        ``update_from_response``
+            If True, update this object from the response. If set to another
+            object, update that object instead.
+
+        ``default_content_type``
+            Send the body payload as this content type. Supported content types
+            are "application/json" and "application/x-www-form-urlencoded".
+
+        All other keyword arguments are passed along directly to get_request
+        (possibly modified as dictated by the other arguments)
+
+        """
         if getattr(self, "_location", None) is None:
             raise ValueError("Cannot %s %r with no URL" % (method, self))
 
@@ -231,13 +267,16 @@ class ObjectMixin(StrAndUnicode):
             else:
                 kw["url"] = self._location
 
+        payload = {}
         if full_payload:
-            payload = self.to_dict()
+            if not hasattr(full_payload, "to_dict"):
+                full_payload = self
+            payload.update(full_payload.to_dict())
         elif version_payload:
-            payload = {"originalVersionId": self.identity["@version"]}
-        else:
-            payload = {}
-
+            if not hasattr(version_payload, "identity"):
+                version_payload = self
+            payload.update({
+                "originalVersionId": version_payload.identity["@version"]})
         if extra_payload:
             payload.update(extra_payload)
 
@@ -247,8 +286,11 @@ class ObjectMixin(StrAndUnicode):
         if payload:
             if headers["content-type"] == "application/json":
                 kw["body"] = json.dumps(payload)
-            else:
+            elif headers["content-type"] == "application/x-www-form-urlencoded":
                 kw["body"] = urllib.urlencode(payload, doseq=True)
+            else:
+                raise ValueError("content type '%s' is not supported"
+                                 % headers["content-type"])
 
         request = self.get_request(**kw)
 
@@ -259,7 +301,10 @@ class ObjectMixin(StrAndUnicode):
         if update_from_response:
             log.debug("Got response %r, updating", response)
 
-            self.update_from_response(None, response, content)
+            if not hasattr(update_from_response, "update_from_response"):
+                update_from_response = self
+
+            update_from_response.update_from_response(None, response, content)
         else:
             log.debug("Got response %r, raising", response)
             self.raise_for_response(self._location, response, content)
@@ -274,16 +319,11 @@ class ObjectMixin(StrAndUnicode):
         which you want to post an asset (`obj`).
 
         """
-        extra_payload = urllib.urlencode(obj.to_dict())
-
-        kwargs.setdefault("auth", self.auth)
-
         self._request(
             "POST",
-            version_payload=False,
-            extra_payload=extra_payload)
-
-        obj.update_from_response(None, response, content)
+            full_payload=obj,
+            update_from_response=obj,
+            **kwargs)
 
 
     def put(self, **kwargs):
