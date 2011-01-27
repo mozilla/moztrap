@@ -10,6 +10,25 @@ from ..static.fields import StaticData
 
 
 
+def object_or_id(val):
+    """
+
+    """
+    try:
+        return val.identity["@id"]
+    except (AttributeError, KeyError):
+        pass
+
+    try:
+        return int(val)
+    except ValueError:
+        pass
+
+    raise ValueError("Values must be RemoteObject instances or integer ids, "
+                     "'%r' appears to be neither." % val)
+
+
+
 class Permission(RemoteObject):
     assignable = fields.Field()
     name = fields.Field()
@@ -44,11 +63,27 @@ class Role(RemoteObject):
 
 
     def setpermissions(self, perms, **kwargs):
-        payload_data = {"permissionIds": [p.identity["@id"] for p in perms]}
+        payload_data = {"permissionIds": [object_or_id(p) for p in perms]}
+
         self._put(
             relative_url="permissions",
             extra_payload=payload_data,
-            update_from_response=False,
+            **kwargs)
+
+
+    def addpermission(self, perm, **kwargs):
+        perm_id = object_or_id(perm)
+
+        self._post(
+            relative_url="permissions/%s" % perm_id,
+            **kwargs)
+
+
+    def removepermission(self, perm, **kwargs):
+        perm_id = object_or_id(perm)
+
+        self._delete(
+            relative_url="permissions/%s" % perm_id,
             **kwargs)
 
 
@@ -117,7 +152,6 @@ class User(RemoteObject):
         self._put(
             url="users/login",
             version_payload=False,
-            update_from_response=False,
             default_content_type="application/json",
             **kwargs
             )
@@ -127,38 +161,17 @@ class User(RemoteObject):
         self._put(
             url="users/logout",
             version_payload=False,
-            update_from_response=False,
             default_content_type="application/json",
             **kwargs
             )
 
 
     def setroles(self, roles, **kwargs):
-        roleIds = []
-        for r in roles:
-            try:
-                roleIds.append(r.identity["@id"])
-            except (AttributeError, KeyError):
-                pass
-            else:
-                continue
+        payload_data = {"roleIds": [object_or_id(r) for r in roles]}
 
-            try:
-                roleIds.append(int(r))
-            except ValueError:
-                pass
-            else:
-                continue
-
-            raise ValueError("Values passed to User.setroles must be integer "
-                             "ids or Role instances; %r appears to be neither."
-                             % r)
-
-        payload_data = {"roleIds": roleIds}
         self._put(
             relative_url="roles",
             extra_payload=payload_data,
-            update_from_response=False,
             **kwargs)
 
 

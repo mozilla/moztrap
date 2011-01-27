@@ -32,7 +32,7 @@ class Credentials(object):
 
 
     def __repr__(self):
-        return "<Credentials: %s>" % self.user
+        return "<Credentials: %s>" % self.userid
 
 
 
@@ -205,51 +205,28 @@ class ObjectMixin(StrAndUnicode):
         return obj
 
 
-    def post(self, obj, **kwargs):
-        """Add another `RemoteObject` to this remote resource through an HTTP
-        ``POST`` request.
+    def _put(self, **kwargs):
+        self._request("PUT", **kwargs)
 
-        Parameter `obj` is a `RemoteObject` instance to save to this
-        instance's resource. For example, this (`self`) may be a collection to
-        which you want to post an asset (`obj`).
 
-        """
+    def _post(self, **kwargs):
+        self._request("POST", **kwargs)
+
+
+    def _delete(self, **kwargs):
+        kwargs.setdefault("update_from_response", False)
+        return self._request("DELETE", **kwargs)
+
+
+    def _request(self, method, relative_url=None, full_payload=False,
+                 version_payload=True, update_from_response=False,
+                 extra_payload=None,
+                 default_content_type="application/x-www-form-urlencoded",
+                 **kw):
         if getattr(self, "_location", None) is None:
-            raise ValueError("Cannot add %r to %r with no URL to POST to"
-                % (obj, self))
+            raise ValueError("Cannot %s %r with no URL" % (method, self))
 
-        body = urllib.urlencode(obj.to_dict())
-
-        headers = {"content-type": "application/x-www-form-urlencoded"}
-
-        if "auth" not in kwargs and self.auth is not None:
-            kwargs["auth"] = self.auth
-
-        request = obj.get_request(
-            url=self._location,
-            method="POST",
-            body=body,
-            headers=headers,
-            **kwargs
-        )
-
-        response, content = userAgent.request(**request)
-
-        log.debug("POSTed new obj, now updating from %r", content)
-        # The returned data will include resourceIdentity with url, we don't
-        # want to override that with a list URL that isn't even right for the
-        # individual object, so we pass in None for the URL.
-        obj.update_from_response(None, response, content)
-
-
-    def _put(self, relative_url=None, full_payload=False, version_payload=True,
-             update_from_response=True, extra_payload=None,
-             default_content_type="application/x-www-form-urlencoded",
-             **kw):
-        if getattr(self, "_location", None) is None:
-            raise ValueError("Cannot PUT %r with no URL" % self)
-
-        kw["method"] = "PUT"
+        kw["method"] = method
 
         if "url" not in kw:
             if relative_url is not None:
@@ -291,6 +268,27 @@ class ObjectMixin(StrAndUnicode):
             self.raise_for_response(self._location, response, content)
 
 
+    def post(self, obj, **kwargs):
+        """Add another `RemoteObject` to this remote resource through an HTTP
+        ``POST`` request.
+
+        Parameter `obj` is a `RemoteObject` instance to save to this
+        instance's resource. For example, this (`self`) may be a collection to
+        which you want to post an asset (`obj`).
+
+        """
+        extra_payload = urllib.urlencode(obj.to_dict())
+
+        kwargs.setdefault("auth", self.auth)
+
+        self._request(
+            "POST",
+            version_payload=False,
+            extra_payload=extra_payload)
+
+        obj.update_from_response(None, response, content)
+
+
     def put(self, **kwargs):
         """Save a previously requested `RemoteObject` back to its remote
         resource through an HTTP ``PUT`` request.
@@ -299,7 +297,7 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        self._put(full_payload=True, **kwargs)
+        self._put(full_payload=True, update_from_response=True, **kwargs)
 
 
     def delete(self, **kwargs):
@@ -310,27 +308,7 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        if getattr(self, "_location", None) is None:
-            raise ValueError("Cannot delete %r with no URL to DELETE" % self)
-
-        body = urllib.urlencode(
-            {"originalVersionId": self.identity["@version"]}
-        )
-
-        headers = {"content-type": "application/x-www-form-urlencoded"}
-
-        request = self.get_request(
-            method="DELETE",
-            body=body,
-            headers=headers,
-            **kwargs
-        )
-
-        response, content = userAgent.request(**request)
-
-        self.raise_for_response(self._location, response, content)
-
-        log.debug("Deleted the remote resource, now disconnecting %r", self)
+        self._delete()
 
         # No more resource.
         self._location = None
@@ -470,15 +448,15 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
 
     @classmethod
-    def get(cls, url=None, auth=None):
+    def get(cls, url=None, **kwargs):
         if url is None:
             try:
                 url = cls.default_url
             except AttributeError:
                 raise ValueError("%s has no default URL; .get() requires url."
                                  % cls)
-        obj = super(ListObject, cls).get(url)
-        obj.auth = auth
+        obj = super(ListObject, cls).get(url, **kwargs)
+        obj.auth = kwargs.get("auth", None)
         return obj
 
 
