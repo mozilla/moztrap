@@ -14,6 +14,8 @@ def login(request, user):
     Persist the given user in the session.
 
     """
+    # @@@ should not be storing plaintext auth info in session, but currently
+    #     API doesn't allow for any other authentication method
     request.session["userid"] = user.auth.userid
     request.session["password"] = user.auth.password
     user.login()

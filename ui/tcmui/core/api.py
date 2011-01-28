@@ -216,6 +216,7 @@ class ObjectMixin(StrAndUnicode):
     def _request(self, method, relative_url=None, full_payload=False,
                  version_payload=True, update_from_response=False,
                  extra_payload=None,
+                 # @@@ change default to application/json once API supports it
                  default_content_type="application/x-www-form-urlencoded",
                  **kw):
         """

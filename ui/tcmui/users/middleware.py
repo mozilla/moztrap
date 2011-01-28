@@ -3,7 +3,8 @@ from .util import get_user, logout
 
 class AuthenticationMiddleware(object):
     def process_request(self, request):
-        # @@@ persisting plaintext pw in session
+        # @@@ should not be persisting plaintext pw in session, but
+        #     currently API doesn't allow any other technique
         userid = request.session.get("userid")
         password = request.session.get("password")
 
