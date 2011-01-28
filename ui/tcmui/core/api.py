@@ -210,7 +210,6 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _delete(self, **kwargs):
-        kwargs.setdefault("update_from_response", False)
         return self._request("DELETE", **kwargs)
 
 
@@ -344,7 +343,7 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        self._delete()
+        self._delete(**kwargs)
 
         # No more resource.
         self._location = None
