@@ -4,7 +4,6 @@ Core objects for accessing platform API data.
 """
 import base64
 import cgi
-from copy import deepcopy
 import httplib
 import logging
 from posixpath import join

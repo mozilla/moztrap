@@ -4,7 +4,6 @@ Environment-related remote objects.
 """
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
-from ..products.models import Product
 
 
 
