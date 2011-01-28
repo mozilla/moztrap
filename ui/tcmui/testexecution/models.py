@@ -4,9 +4,9 @@ testing.
 
 """
 from ..core.api import RemoteObject, ListObject, fields
+from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
-
 
 
 class TestCycle(RemoteObject):
@@ -17,12 +17,13 @@ class TestCycle(RemoteObject):
     startDate = fields.Date()
     endDate = fields.Date()
 
+    environmentgroups = fields.Link(EnvironmentGroupList)
+
 
     def __unicode__(self):
         return self.name
 
 
-    # @@@ broken in API, NullPointerException
     def activate(self, **kwargs):
         self._put(
             relative_url="activate",
@@ -30,7 +31,6 @@ class TestCycle(RemoteObject):
             **kwargs)
 
 
-    # @@@ broken in API, NullPointerException
     def deactivate(self, **kwargs):
         self._put(
             relative_url="deactivate",

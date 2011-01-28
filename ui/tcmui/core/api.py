@@ -470,10 +470,14 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
         We pass on the inner list of data dictionaries.
 
+        In some cases (when we're drilling down to linked resources rather than
+        doing a top-level search) the outer two layers are replaced by a
+        dictionary with a single "ArrayOfX" key; we support that as well.
+
         """
         outer_key = None
         for candidate_key in [
-            "ns1.ArrayOf%s" % self.entryclass.__name__,
+            "ns1.ArrayOf%s" % self.entryclass.__name__.lower().title(),
             "ns1.searchResult"
             ]:
             if candidate_key in data:
