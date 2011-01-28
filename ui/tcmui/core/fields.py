@@ -26,9 +26,12 @@ class FieldMixin(object):
 
     def submit_data(self, obj):
         value = getattr(obj, self.attrname, None)
-        if value is not None:
-            return {self.api_submit_name: self.encode(value)}
-        return {}
+        if value is None:
+            return {}
+        value = self.encode(value)
+        if isinstance(value, dict):
+            return value
+        return {self.api_submit_name: value}
 
 
 
@@ -71,15 +74,9 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
             pass
         return data
 
-    def __set__(self, obj, value):
-        super(Locator, self).__set__(obj, value)
-        obj.__dict__[self.api_submit_name] = value.identity["@id"]
 
-    def submit_data(self, obj):
-        value = getattr(obj, self.api_submit_name, None)
-        if value is not None:
-            return {self.api_submit_name: self.encode(value)}
-        return {}
+    def encode(self, value):
+        return value.identity["@id"]
 
 
 
@@ -88,19 +85,11 @@ class ResourceIdentity(Field):
         super(ResourceIdentity, self).__init__(api_name="resourceIdentity")
 
 
-    def submit_data(self, obj):
-        try:
-            d = super(ResourceIdentity, self).submit_data(
-                obj
-            )[self.api_submit_name]
-            if d:
-                return {
-                    "%s.id" % self.api_submit_name: d["@id"],
-                    "%s.version" % self.api_submit_name: d["@version"],
-                }
-        except KeyError:
-            pass
-        return {}
+    def encode(self, value):
+        return {
+            "%s.id" % self.api_submit_name: value["@id"],
+            "%s.version" % self.api_submit_name: value["@version"],
+            }
 
 
 
