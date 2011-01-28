@@ -10,6 +10,7 @@ from ..core.models import Company
 class EnvironmentType(RemoteObject):
     company = fields.Locator(Company)
     name = fields.Field()
+    # @@@ broken in API, will be changed to 1/0?
     groupType = fields.Field()
 
     environments = fields.Link("EnvironmentList")
