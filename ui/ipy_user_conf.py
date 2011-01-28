@@ -20,6 +20,7 @@ def main():
         "from tcmui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
         "from tcmui.products.models import Product, ProductList",
         "from tcmui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, EnvironmentGroupList",
+        "from tcmui.testexecution.models import TestCycle, TestCycleList",
         ]
 
     for imp in imports:
