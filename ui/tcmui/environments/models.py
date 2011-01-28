@@ -13,6 +13,8 @@ class EnvironmentType(RemoteObject):
     name = fields.Field()
     groupType = fields.Field()
 
+    environments = fields.Link("EnvironmentList")
+
 
     def __unicode__(self):
         return self.name
@@ -53,6 +55,8 @@ class EnvironmentGroup(RemoteObject):
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
     description = fields.Field()
+
+    environments = fields.Link(EnvironmentList)
 
 
     def __unicode__(self):

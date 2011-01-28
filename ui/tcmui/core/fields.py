@@ -37,7 +37,7 @@ class Field(FieldMixin, remoteobjects.fields.Field):
 
 
 
-class Locator(Field):
+class Locator(remoteobjects.fields.AcceptsStringCls, Field):
     """
     A Field type to correspond to the Locator data returned by the API for
     linked object IDs; e.g. companyLocator. Accessing the attribute returns an
