@@ -48,10 +48,6 @@ class PermissionList(ListObject):
     entries = fields.List(fields.Object(Permission))
 
 
-    def __unicode__(self):
-        return u"%s Permissions" % len(self)
-
-
 
 class Role(RemoteObject):
     company = fields.Locator(Company)
@@ -94,10 +90,6 @@ class RoleList(ListObject):
     default_url = "users/roles"
 
     entries = fields.List(fields.Object(Role))
-
-
-    def __unicode__(self):
-        return u"%s Roles" % len(self)
 
 
 
@@ -187,7 +179,3 @@ class UserList(ListObject):
     default_url = "users"
 
     entries = fields.List(fields.Object(User))
-
-
-    def __unicode__(self):
-        return u"%s Users" % len(self)

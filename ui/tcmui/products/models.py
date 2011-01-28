@@ -22,7 +22,3 @@ class ProductList(ListObject):
     default_url = "products"
 
     entries = fields.List(fields.Object(Product))
-
-
-    def __unicode__(self):
-        return u"%s Products" % len(self)

@@ -520,3 +520,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         for obj in super(ListObject, self).__iter__(*args, **kwargs):
             obj.auth = self.auth
             yield obj
+
+
+    def __unicode__(self):
+        return u"[%s]" % ", ".join([repr(e) for e in self])
