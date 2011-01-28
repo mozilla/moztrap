@@ -14,3 +14,22 @@ def add_to_querystring(url, **kwargs):
     queryargs.update(kwargs)
     parts[4] = urllib.urlencode(queryargs)
     return urlparse.urlunparse(parts)
+
+
+
+def object_or_id(val):
+    """
+
+    """
+    try:
+        return val.identity["@id"]
+    except (AttributeError, KeyError):
+        pass
+
+    try:
+        return int(val)
+    except ValueError:
+        pass
+
+    raise ValueError("Values must be RemoteObject instances or integer ids, "
+                     "'%r' appears to be neither." % val)

@@ -6,26 +6,8 @@ import urllib
 
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
+from ..core.util import object_or_id
 from ..static.fields import StaticData
-
-
-
-def object_or_id(val):
-    """
-
-    """
-    try:
-        return val.identity["@id"]
-    except (AttributeError, KeyError):
-        pass
-
-    try:
-        return int(val)
-    except ValueError:
-        pass
-
-    raise ValueError("Values must be RemoteObject instances or integer ids, "
-                     "'%r' appears to be neither." % val)
 
 
 
