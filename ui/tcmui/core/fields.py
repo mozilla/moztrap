@@ -4,6 +4,7 @@ Field types for TCM API.
 """
 from posixpath import join
 
+from dateutil import parser
 import remoteobjects
 
 
@@ -37,6 +38,21 @@ class FieldMixin(object):
 
 class Field(FieldMixin, remoteobjects.fields.Field):
     pass
+
+
+
+class Date(Field):
+    """
+    A Date field for when the server is returning a datetime, but we really
+    only care about the date.
+
+    """
+    def encode(self, value):
+        return value.strftime("%Y/%m/%d")
+
+
+    def decode(self, value):
+        return parser.parse(value).date()
 
 
 
