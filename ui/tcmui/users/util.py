@@ -16,6 +16,7 @@ def login(request, user):
     """
     request.session["userid"] = user.auth.userid
     request.session["password"] = user.auth.password
+    user.login()
 
 
 
@@ -24,6 +25,7 @@ def logout(request):
     Remove any logged-in user from the session, and flush all session data.
 
     """
+    request.user.logout()
     request.session.flush()
 
 
