@@ -4,7 +4,6 @@ Core objects for accessing platform API data.
 """
 import base64
 import cgi
-from copy import deepcopy
 import httplib
 import logging
 from posixpath import join
@@ -211,13 +210,13 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _delete(self, **kwargs):
-        kwargs.setdefault("update_from_response", False)
         return self._request("DELETE", **kwargs)
 
 
     def _request(self, method, relative_url=None, full_payload=False,
                  version_payload=True, update_from_response=False,
                  extra_payload=None,
+                 # @@@ change default to application/json once API supports it
                  default_content_type="application/x-www-form-urlencoded",
                  **kw):
         """
@@ -345,7 +344,7 @@ class ObjectMixin(StrAndUnicode):
         objects should be compatible with `httplib2.Http` objects.
 
         """
-        self._delete()
+        self._delete(**kwargs)
 
         # No more resource.
         self._location = None
@@ -472,10 +471,14 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
         We pass on the inner list of data dictionaries.
 
+        In some cases (when we're drilling down to linked resources rather than
+        doing a top-level search) the outer two layers are replaced by a
+        dictionary with a single "ArrayOfX" key; we support that as well.
+
         """
         outer_key = None
         for candidate_key in [
-            "ns1.ArrayOf%s" % self.entryclass.__name__,
+            "ns1.ArrayOf%s" % self.entryclass.__name__.lower().title(),
             "ns1.searchResult"
             ]:
             if candidate_key in data:
@@ -520,3 +523,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         for obj in super(ListObject, self).__iter__(*args, **kwargs):
             obj.auth = self.auth
             yield obj
+
+
+    def __unicode__(self):
+        return u"[%s]" % ", ".join([repr(e) for e in self])

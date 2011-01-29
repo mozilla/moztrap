@@ -27,7 +27,3 @@ class CompanyList(ListObject):
     default_url = "companies"
 
     entries = fields.List(fields.Object(Company))
-
-
-    def __unicode__(self):
-        return u"%s Companies" % len(self)

@@ -6,26 +6,8 @@ import urllib
 
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
+from ..core.util import object_or_id
 from ..static.fields import StaticData
-
-
-
-def object_or_id(val):
-    """
-
-    """
-    try:
-        return val.identity["@id"]
-    except (AttributeError, KeyError):
-        pass
-
-    try:
-        return int(val)
-    except ValueError:
-        pass
-
-    raise ValueError("Values must be RemoteObject instances or integer ids, "
-                     "'%r' appears to be neither." % val)
 
 
 
@@ -46,10 +28,6 @@ class PermissionList(ListObject):
     default_url = "users/permissions"
 
     entries = fields.List(fields.Object(Permission))
-
-
-    def __unicode__(self):
-        return u"%s Permissions" % len(self)
 
 
 
@@ -94,10 +72,6 @@ class RoleList(ListObject):
     default_url = "users/roles"
 
     entries = fields.List(fields.Object(Role))
-
-
-    def __unicode__(self):
-        return u"%s Roles" % len(self)
 
 
 
@@ -187,7 +161,3 @@ class UserList(ListObject):
     default_url = "users"
 
     entries = fields.List(fields.Object(User))
-
-
-    def __unicode__(self):
-        return u"%s Users" % len(self)
