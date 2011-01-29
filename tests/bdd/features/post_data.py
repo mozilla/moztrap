@@ -33,43 +33,24 @@ def get_submit_permission(permission_name):
 
     return urllib.quote(perm)
 
-def get_submit_test_case(name):
-    tc = """
-        {
-            "testcase":{
-                "productid":"1",
-                "maxattachmentsizeinmbytes":"10",
-                "maxnumberofattachments":"5",
-                "name": "%(name)s",
-                "description":"Generated test case",
-                "testcasesteps":{
-                    "testcasestep":{
-                        "stepnumber":"1",
-                        "name":"login name missing ",
-                        "instruction":"don't provide login name",
-                        "expectedresult":"validation message should appear",
-                        "estimatedtimeinmin":"1"
-                    }
-                }
-            }
-        }
-    """ % {'name': name}
-    return urllib.quote(tc)
-
-
-def get_submit_environment(env_name):
-    environment = """
-        {
-            "environment": {
-                    "name": "%(env_name)s",
-                    "localeCode": "en_US",
-                    "sortOrder": "0",
-                    "environmentTypeId": "1",
-                    "resourceIdentity": "...",
-                    "timeline": "..."
-            }
-        }""" % {'env_name': env_name}
-    return urllib.quote(environment)
+def get_submit_testcase_params(description, name):
+    tc = {
+          "productid":"1",
+          "maxattachmentsizeinmbytes":"10",
+          "maxnumberofattachments":"5",
+          "name": name,
+          "description": description,
+          "testcasesteps":{
+              "testcasestep":{
+                  "stepnumber":"1",
+                  "name":"login name missing ",
+                  "instruction":"don't provide login name",
+                  "expectedresult":"validation message should appear",
+                  "estimatedtimeinmin":"1"
+              }
+          }
+          }
+    return tc
 
 
 def get_submit_environment_type(envtype_name):
