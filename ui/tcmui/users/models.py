@@ -5,6 +5,7 @@ User-related remote objects.
 import urllib
 
 from ..core.api import RemoteObject, ListObject, fields
+from ..core.decorators import as_admin
 from ..core.models import Company
 from ..core.util import object_or_id
 from ..static.fields import StaticData
@@ -78,6 +79,7 @@ class User(RemoteObject):
     userStatus = StaticData("USERSTATUS")
 
     roles = fields.Link(RoleList)
+    permissions = fields.Link(PermissionList)
 
     def __unicode__(self):
         return self.screenName
@@ -87,6 +89,12 @@ class User(RemoteObject):
     def current(cls, **kwargs):
         kwargs["url"] = "users/current"
         return cls.get(**kwargs)
+
+
+    @property
+    @as_admin
+    def permissionCodes(self):
+        return [p.permissionCode for p in self.permissions]
 
 
     def activate(self, **kwargs):
