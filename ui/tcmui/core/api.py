@@ -60,7 +60,9 @@ class ObjectMixin(StrAndUnicode):
         response, and prepend TCM_API_BASE to relative URL paths.
 
         """
-        auth = kwargs.pop("auth", self.auth)
+        auth = kwargs.pop("auth", None)
+        if auth is None:
+            auth = self.auth
 
         request = super(ObjectMixin, self).get_request(*args, **kwargs)
 
