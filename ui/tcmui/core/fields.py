@@ -123,6 +123,13 @@ class Link(remoteobjects.fields.Link):
         return obj
 
 
+    def __set__(self, instance, value):
+        value.put(
+            url=join(instance._location, self.api_name),
+            version_payload=instance
+            )
+
+
 
 List = remoteobjects.fields.List
 Object = remoteobjects.fields.Object

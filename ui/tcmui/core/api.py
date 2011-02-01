@@ -515,6 +515,19 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         return obj
 
 
+    @property
+    def submit_ids_name(self):
+        return self.entryclass.__name__.lower() + "Ids"
+
+
+    def put(self, **kwargs):
+        payload_data = {
+            self.submit_ids_name: [util.object_or_id(o) for o in self]}
+
+        self._put(
+            extra_payload=payload_data,
+            **kwargs)
+
     def __getitem__(self, *args, **kwargs):
         obj = super(ListObject, self).__getitem__(*args, **kwargs)
         obj.auth = self.auth
