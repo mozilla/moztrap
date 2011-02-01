@@ -102,10 +102,10 @@ class ResourceIdentity(Field):
 
 
     def encode(self, value):
-        return {
-            "%s.id" % self.api_submit_name: value["@id"],
-            "%s.version" % self.api_submit_name: value["@version"],
-            }
+        ret = {"%s.id" % self.api_submit_name: value["@id"]}
+        if "@version" in value:
+            ret["%s.version" % self.api_submit_name] = value["@version"]
+        return ret
 
 
 
