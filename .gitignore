@@ -1,3 +1,4 @@
-ui/sass/.sass-cache
+ui/.sass-cache
 ui/collected-assets/*
 ui/tcmui/settings_local.py
+.livereload
