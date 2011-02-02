@@ -13,7 +13,7 @@ def get_env_from_request(request):
 
 
 
-class LazyEnvironment(object):
+class LazyEnvironmentGroup(object):
     def __get__(self, request, obj_type=None):
         if not hasattr(request, '_cached_env'):
             request._cached_env = get_env_from_request(request)
@@ -23,4 +23,4 @@ class LazyEnvironment(object):
 
 class EnvironmentMiddleware(object):
     def process_request(self, request):
-        request.__class__.environment = LazyEnvironment()
+        request.__class__.environmentgroup = LazyEnvironmentGroup()

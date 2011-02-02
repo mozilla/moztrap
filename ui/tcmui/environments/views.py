@@ -20,7 +20,9 @@ def set_environment(request, product_id):
     next = request.REQUEST.get("next", "cycles")
     product = Product.get("products/%s" % product_id, auth=request.auth)
     form = EnvironmentSelectionForm(
-        request.POST or None, groups=product.environmentgroups)
+        request.POST or None,
+        groups=product.environmentgroups,
+        current_group=request.environmentgroup)
 
     if request.method == "POST" and form.is_valid():
         request.session["environment_group_id"] = form.save()

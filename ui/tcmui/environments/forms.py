@@ -7,6 +7,8 @@ from ..core.util import id_for_object
 class EnvironmentSelectionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         groups = kwargs.pop("groups")
+        current = kwargs.pop("current_group", None)
+
         super(EnvironmentSelectionForm, self).__init__(*args, **kwargs)
 
         # maps (envtype.id, envtype.name) to list of env options for that type
@@ -30,6 +32,11 @@ class EnvironmentSelectionForm(forms.Form):
         for (typeid, typename), options in self.types.iteritems():
             self.fields["type_%s" % typeid] = forms.ChoiceField(
                 choices=options, label=typename)
+
+        # set initial data based on current env group
+        if current:
+            for env in current.environments:
+                self.initial["type_%s" % env.environmentType.id] = env.id
 
 
     def clean(self):
