@@ -408,11 +408,17 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     _location = property(_get_location, _set_location)
 
 
+    @property
+    def id(self):
+        return util.id_for_object(self)
+
+
     def update_from_response(self, url, response, content):
         super(RemoteObject, self).update_from_response(url, response, content)
         # If updated from a response, we should have a resourceIdentity.url;
         # use that canonical URL rather than any previously-set URL.
         self._location_override = None
+
 
     def update_from_dict(self, data):
         """
