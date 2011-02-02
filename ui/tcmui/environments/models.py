@@ -16,7 +16,7 @@ class EnvironmentType(RemoteObject):
 
 
     def __unicode__(self):
-        return self.name
+        return u"%s%s" % (self.groupType and u"(Group Type) " or u"", self.name)
 
 
 
