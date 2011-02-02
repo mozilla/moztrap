@@ -65,7 +65,7 @@
 
     <nav role="navigation">
       <ul>
-        <li class="test"><a href="{% url products %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+          <li class="test"><a href="{% url products %}" class="{% block test-active-nav %}{% endblock test-active-nav %}{% if not request.user %} disabled{% endif %}">Run Tests</a></li>
         {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
           <li class="manage"><a href="/manage/testcase/add/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Add Test Case</a></li>
         {% endif %}

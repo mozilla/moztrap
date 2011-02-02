@@ -48,6 +48,7 @@ a:link, a:visited { color: #005498; text-decoration: none; }
 a:link, a:visited, a:hover, a:active { outline: none; }
 a:focus, a:hover, a:active { color: #984400; text-decoration: none; }
 a:focus { outline: thin dotted; }
+a.disabled:link, a.disabled:visited, a.disabled:focus, a.disabled:hover, a.disabled:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50); opacity: 0.5; color: inherit; cursor: default; }
 
 /* Headings -------------------------------------------------------------- */
 h2, h3, h4, h5, h6 { margin-bottom: 1.5em; }
@@ -212,7 +213,7 @@ header[role="banner"] h1 { display: inline; float: left; width: 11.446%; margin-
 header[role="banner"] h1 a:link, header[role="banner"] h1 a:visited { padding-top: 0.571em; display: block; color: #4c4c4c; }
 header[role="banner"] h1 a:focus, header[role="banner"] h1 a:hover, header[role="banner"] h1 a:active { color: #984400; }
 
-nav[role="navigation"] { display: inline; float: left; width: 49.398%; margin-right: 1.205%; padding-top: 0.75em; }
+nav[role="navigation"] { display: inline; float: left; width: 49.398%; margin-right: 1.205%; padding-top: 0.75em; text-shadow: rgba(255, 255, 255, 0.5) 1px 1px 0; }
 nav[role="navigation"] li { display: inline; float: left; margin-right: 0.5em; }
 nav[role="navigation"] a:link, nav[role="navigation"] a:visited { padding-top: 0.375em; padding-bottom: 0.375em; padding-left: 1em; padding-right: 1em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; }
 nav[role="navigation"] a:focus, nav[role="navigation"] a:hover, nav[role="navigation"] a:active, nav[role="navigation"] a.active { background: rgba(76, 76, 76, 0.25); }

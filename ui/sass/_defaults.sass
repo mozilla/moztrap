@@ -78,6 +78,12 @@ a
     text-decoration: none
   &:focus
     outline: thin dotted
+  
+  &.disabled
+    #{$link}, #{$focus}
+      +opacity(.5)
+      color: inherit
+      cursor: default
 
 =no-style-link
   color: inherit
