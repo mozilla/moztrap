@@ -324,6 +324,8 @@ class ObjectMixin(StrAndUnicode):
             full_payload=obj,
             update_from_response=obj,
             **kwargs)
+        if obj.auth is None:
+            obj.auth = kwargs.get("auth", self.auth)
 
 
     def put(self, **kwargs):
