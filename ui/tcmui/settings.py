@@ -77,8 +77,9 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "tcmui.users.middleware.AuthenticationMiddleware",
     "tcmui.core.middleware.StaticCompanyMiddleware",
+    "tcmui.users.middleware.AuthenticationMiddleware",
+    "tcmui.environments.middleware.EnvironmentMiddleware",
 ]
 
 ROOT_URLCONF = "tcmui.urls"
