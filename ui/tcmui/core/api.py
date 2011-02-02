@@ -257,12 +257,11 @@ class ObjectMixin(StrAndUnicode):
         (possibly modified as dictated by the other arguments)
 
         """
-        if getattr(self, "_location", None) is None:
-            raise ValueError("Cannot %s %r with no URL" % (method, self))
-
         kw["method"] = method
 
         if "url" not in kw:
+            if getattr(self, "_location", None) is None:
+                raise ValueError("Cannot %s %r with no URL" % (method, self))
             if relative_url is not None:
                 kw["url"] = join(self._location, relative_url)
             else:
