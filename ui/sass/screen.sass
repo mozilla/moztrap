@@ -25,21 +25,23 @@ body > div
   +padding-leader(.25)
 
 header[role="banner"]
-  +columns(3)
-  +alpha
+  @extend .full
+  +trailing-border(1px,.5)
+  border-color: #ccc
+
   h1
-    margin: 0
-  a
-    #{$link}
-      +padding-leader(.5,21px)
-      +padding-trailer(.5,21px)
-      display: block
-      color: $base
-    #{$focus}
-      color: $accent
+    +columns(3,24)
+    +trailer(0)
+    a
+      #{$link}
+        +padding-leader(.5,21px)
+        display: block
+        color: $base
+      #{$focus}
+        color: $accent
       
 nav[role="navigation"]
-  +columns(12)
+  +columns(12,24)
   +padding-leader(.5)
   li
     +float(left)
@@ -54,8 +56,8 @@ nav[role="navigation"]
       background: rgba($base,.25)
 
 nav.meta
-  +columns(9)
-  +omega
+  +columns(9,24)
+  +omega(24)
   +padding-leader(.5)
   text-align: right
   li
@@ -66,11 +68,14 @@ nav.meta
     vertical-align: baseline
     &:last-child
       border: 0
+      padding-right: 0
 
 nav.crumb
-  @extend .full
-  +leading-border(1px,.25)
+  +columns(18)
+  +alpha
+  +padding-leader(.25)
   +padding-trailer(.25)
+  clear: both
   border-color: #ccc
   li
     +inline-block
@@ -192,19 +197,22 @@ footer[role="contentinfo"]
 .environment
   position: relative
   summary
-    position: absolute
-    top: - $base-rhythm-unit*2
-    right: 0
+    +columns(6)
+    +omega
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    text-align: right
     color: $alt
     &:hover
       color: $accent
   form
-    +full(24)
-    +prefix(12,24)
-    +trailing-border(1px,.5)
-    +trailer
+    @extend .full
+    +prefix(12)
+    +leading-border(1px)
+    +trailer(.5)
+    border-color: #ccc
   +inline-form(4,8,12)
-    
+
 #environment
   @extend .simple
   +inline-form(4,8,12)

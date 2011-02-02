@@ -62,42 +62,42 @@
 
   <header role="banner">
     <h1><a href="/" rel="home">TCM</a></h1>
+
+    <nav role="navigation">
+      <ul>
+        <li class="test"><a href="{% url products %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+        {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
+          <li class="manage"><a href="/manage/testcase/add/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Add Test Case</a></li>
+        {% endif %}
+        {% comment %}
+          <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
+        {% endcomment %}
+      </ul>
+    </nav>
+
+    <nav class="meta">
+      <ul>
+        {% block meta-user %}
+          {% if request.user %}
+            <li>
+              Welcome {{ request.user.firstName }}
+              [<a href="{% url logout %}">Sign Out</a>]
+            </li>
+          {% else %}
+            <li>
+              [
+              <a href="{% url login %}">Sign in</a>
+              or
+              <a href="{% url register %}">Register</a>
+              ]
+            </li>
+          {% endif %}
+          {# @@@ <li><a href="#">Account Settings</a></li> #}
+        {% endblock %}
+        {# @@@ <li><a href="#">Help</a></li> #}
+      </ul>
+    </nav>
   </header>
-
-  <nav role="navigation">
-    <ul>
-      <li class="test"><a href="{% url products %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
-      {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
-        <li class="manage"><a href="/manage/testcase/add/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Add Test Case</a></li>
-      {% endif %}
-      {% comment %}
-        <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
-      {% endcomment %}
-    </ul>
-  </nav>
-
-  <nav class="meta">
-    <ul>
-      {% block meta-user %}
-      {% if request.user %}
-      <li>
-        Welcome {{ request.user.firstName }}
-        [<a href="{% url logout %}">Sign Out</a>]
-      </li>
-      {% else %}
-      <li>
-        [
-        <a href="{% url login %}">Sign in</a>
-        or
-        <a href="{% url register %}">Register</a>
-        ]
-      </li>
-      {% endif %}
-      {# @@@ <li><a href="#">Account Settings</a></li> #}
-      {% endblock %}
-      {# @@@ <li><a href="#">Help</a></li> #}
-    </ul>
-  </nav>
 
   {% block bread %}
     <nav class="crumb">
