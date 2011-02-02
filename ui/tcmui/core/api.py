@@ -516,6 +516,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         return obj
 
 
+    @classmethod
+    def ours(cls, **kwargs):
+        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)
+
+
     @property
     def submit_ids_name(self):
         return self.entryclass.__name__.lower() + "Ids"
