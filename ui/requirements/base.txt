@@ -8,3 +8,4 @@ remoteobjects==1.1.1.moz2
 slimmer==0.1.30
 django-floppyforms==0.3
 django-classy-tags==0.3.0
+python-dateutil==1.5
