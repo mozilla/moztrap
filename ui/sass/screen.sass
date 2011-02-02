@@ -48,7 +48,11 @@ nav[role="navigation"]
     +float(left)
     margin-right: .5em
   a
-    #{$link}
+    &:not([href])
+      +opacity(.5)
+      color: inherit
+      cursor: default    
+    &, #{$link}
       +padding-leader(.25)
       +padding-trailer(.25)
       +hpadding(1em)
