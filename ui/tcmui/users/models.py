@@ -7,7 +7,7 @@ import urllib
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.decorators import as_admin
 from ..core.models import Company
-from ..core.util import object_or_id
+from ..core.util import id_for_object
 from ..static.fields import StaticData
 
 
@@ -44,18 +44,14 @@ class Role(RemoteObject):
 
 
     def addpermission(self, perm, **kwargs):
-        perm_id = object_or_id(perm)
-
         self._post(
-            relative_url="permissions/%s" % perm_id,
+            relative_url="permissions/%s" % id_for_object(perm),
             **kwargs)
 
 
     def removepermission(self, perm, **kwargs):
-        perm_id = object_or_id(perm)
-
         self._delete(
-            relative_url="permissions/%s" % perm_id,
+            relative_url="permissions/%s" % id_for_object(perm),
             **kwargs)
 
 

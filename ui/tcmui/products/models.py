@@ -4,7 +4,7 @@ Product-related remote objects.
 """
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
-from ..core.util import object_or_id
+from ..core.util import id_for_object
 from ..environments.models import EnvironmentGroupList
 
 
@@ -22,18 +22,21 @@ class Product(RemoteObject):
 
 
     def autogenerate_env_groups(self, environments, envtype=None, **kwargs):
+        """
+        Autogenerate environment groups for all combinations of given
+        ``environments`` (should be an iterable of Environments or Environment
+        IDs), optionally generating only groups of type ``envtype`` (should be
+        an EnvironmentType with groupType=True, or the ID of one).
+
+        """
         if envtype:
-            # support either a raw ID or an EnvironmentType object
-            try:
-                typeid = envtype.identity["@id"]
-            except (AttributeError, KeyError):
-                typeid = envtype
-            url = "environmentgroups/environmenttypes/%s/autogenerate" % typeid
+            url = ("environmentgroups/environmenttypes/%s/autogenerate"
+                   % id_for_object(envtype))
         else:
             url = "environmentgroups/autogenerate"
 
         extra_payload = {
-            "environmentIds": [object_or_id(e) for e in environments]}
+            "environmentIds": [id_for_object(e) for e in environments]}
 
         self._put(relative_url=url, extra_payload=extra_payload, **kwargs)
 

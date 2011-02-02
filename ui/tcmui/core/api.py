@@ -528,7 +528,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     def put(self, **kwargs):
         payload_data = {
-            self.submit_ids_name: [util.object_or_id(o) for o in self]}
+            self.submit_ids_name: [util.id_for_object(o) for o in self]}
 
         self._put(
             extra_payload=payload_data,

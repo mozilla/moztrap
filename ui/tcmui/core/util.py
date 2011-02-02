@@ -17,8 +17,10 @@ def add_to_querystring(url, **kwargs):
 
 
 
-def object_or_id(val):
+def id_for_object(val):
     """
+    Return the ID for a RemoteObject. If an integer ID (or something coercible
+    to one) is passed in, accept that as well.
 
     """
     try:
