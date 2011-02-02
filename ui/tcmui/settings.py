@@ -95,6 +95,12 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "tcmui.core",
+    "tcmui.static",
+    "tcmui.users",
+    "tcmui.products",
+    "tcmui.environments",
+    "tcmui.testexecution"
 ]
 
 CACHES = {

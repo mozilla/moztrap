@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load environment %}
+
 {% block test-active-nav %}active{% endblock test-active-nav %}
 
 {% block crumb %}
@@ -8,35 +10,27 @@
 {% endblock crumb %}
 
 {% block submeta %}
+  {% if product %}
+  {% get_environment_selection_form for product as form %}
   <details class="environment">
     <summary>environment »</summary>
-    <form>
+    <form action="{% url environment product_id=product.id %}">
+      <input type="hidden" name="next" value="{{ request.path }}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
       <ul>
+        {% for field in form %}
         <li>
-          <label for="version">version</label>
-          <select name="version" id="version">
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-          </select>
+          {{ field.label_tag }}
+          {{ field.errors }}
+          {{ field }}
         </li>
-        <li>
-          <label for="platform">platform</label>
-          <select name="platform" id="platform">
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-          </select>
-        </li>
-        <li>
-          <label for="os">operating system</label>
-          <select name="os" id="os">
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-          </select>
-        </li>
+        {% endfor %}
       </ul>
       <div class="form-actions">
-        <button>save changes</button>
+        <button type="submit">save changes</button>
       </div>
     </form>
   </details>
+  {% endif %}
 {% endblock %}
