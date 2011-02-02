@@ -28,7 +28,7 @@ class LazyUser(object):
 class LazyAuth(object):
     def __get__(self, request, obj_type=None):
         if not hasattr(request, '_cached_auth'):
-            request._cached_auth=None
+            request._cached_auth = None
             if request.user:
                 request._cached_auth = request.user.auth
         return request._cached_auth

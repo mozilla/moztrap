@@ -13,7 +13,14 @@
   {% if product %}
   {% get_environment_selection_form for product as form %}
   <details class="environment">
-    <summary>environment »</summary>
+    <summary>
+      {% if request.environment %}
+      {{ request.environment.summary }}
+      {% else %}
+      set your environment
+      {% endif %}
+      »
+    </summary>
     <form action="{% url environment product_id=product.id %}">
       <input type="hidden" name="next" value="{{ request.path }}">
       {% csrf_token %}

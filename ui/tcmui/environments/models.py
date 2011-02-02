@@ -62,6 +62,10 @@ class EnvironmentGroup(RemoteObject):
         return self.name
 
 
+    def summary(self):
+        return u", ".join([e.name for e in self.environments])
+
+
 
 class EnvironmentGroupList(ListObject):
     entryclass = EnvironmentGroup
