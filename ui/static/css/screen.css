@@ -293,7 +293,13 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #cycles .start, #cycles .end { width: 11.446%; }
 #cycles .go { width: 15.663%; }
 #cycles th a:link, #cycles th a:visited { display: block; position: relative; }
-#cycles th a:focus::after, #cycles th a:hover::after, #cycles th a:active::after { content: "»"; position: absolute; right: 0; }
+#cycles th a:link::after, #cycles th a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; height: 16px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; }
+#cycles th a:link::after, #cycles th a:visited::after { *display: inline; }
+#cycles th a:focus::after, #cycles th a:hover::after, #cycles th a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
+#cycles th.asc a:link::after, #cycles th.asc a:visited::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
+#cycles th.asc a:focus::after, #cycles th.asc a:hover::after, #cycles th.asc a:active::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
+#cycles th.desc a:link::after, #cycles th.desc a:visited::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
+#cycles th.desc a:focus::after, #cycles th.desc a:hover::after, #cycles th.desc a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
 #cycles td:last-child { text-align: right; }
 #cycles td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0); opacity: 0; text-transform: lowercase; font-variant: small-caps; white-space: nowrap; }
 #cycles tr:hover td:last-child a { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }

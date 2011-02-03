@@ -232,16 +232,38 @@ footer[role="contentinfo"]
     width: columns(3,24)
   .go
     width: columns(4,24)
+    
   th
     a
       #{$link}
         display: block
         position: relative
+        &::after
+          +replace-text-with-dimensions('ui/bullet_arrow_up.png')
+          +inline-block
+          content: " "
+          margin-left: .4em
+          background-image: none
       #{$focus}
         &::after
-          content: "»"
-          position: absolute
-          right: 0
+          background-image: image-url('ui/bullet_arrow_up.png')
+    &.asc
+      a
+        #{$link}
+          &::after
+            background-image: image-url('ui/bullet_arrow_up.png')
+        #{$focus}
+          &::after
+            background-image: image-url('ui/bullet_arrow_down.png')
+    &.desc
+      a
+        #{$link}
+          &::after
+            background-image: image-url('ui/bullet_arrow_down.png')
+        #{$focus}
+          &::after
+            background-image: image-url('ui/bullet_arrow_up.png')
+            
   td:last-child
     text-align: right
     a
