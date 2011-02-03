@@ -1,5 +1,7 @@
 {% extends 'test/base.html' %}
 
+{% load sort %}
+
 {% block crumb %}
   {{ block.super }}
   <li>{{ product }}</li>
@@ -12,9 +14,15 @@
     <table>
       <thead>
         <tr>
-          <th class="name"><a href="#" title="sort by name">name</a></th>
-          <th class="start"><a href="#" title="sort by start date">start date</a></th>
-          <th class="end"><a href="#" title="sort by end date">end date</a></th>
+          <th class="name">
+            <a href="{{ request|sort_url:"name" }}" title="sort by name">name</a>
+          </th>
+          <th class="start">
+            <a href="{{ request|sort_url:"startDate" }}" title="sort by start date">start date</a>
+          </th>
+          <th class="end">
+            <a href="{{ request|sort_url:"endDate" }}" title="sort by end date">end date</a>
+          </th>
           <th class="go"></th>
         </tr>
       </thead>

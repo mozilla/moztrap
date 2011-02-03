@@ -16,6 +16,7 @@ from remoteobjects.http import userAgent
 
 from . import conf
 from . import fields
+from . import sort
 from . import util
 from .. import __version__
 
@@ -551,6 +552,12 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if isinstance(obj, RemoteObject):
                 obj.auth = self.auth
             yield obj
+
+
+    def sort(self, field, direction=sort.DEFAULT):
+        if field is None:
+            return self
+        return self.filter(sortfield=field, sortdirection=direction)
 
 
     def __unicode__(self):
