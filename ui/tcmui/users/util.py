@@ -28,7 +28,8 @@ def logout(request):
     Remove any logged-in user from the session, and flush all session data.
 
     """
-    request.user.logout()
+    if request.user:
+        request.user.logout()
     request.session.flush()
 
 

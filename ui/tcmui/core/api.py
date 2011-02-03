@@ -548,7 +548,8 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     def __iter__(self, *args, **kwargs):
         for obj in super(ListObject, self).__iter__(*args, **kwargs):
-            obj.auth = self.auth
+            if isinstance(obj, RemoteObject):
+                obj.auth = self.auth
             yield obj
 
 
