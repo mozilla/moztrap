@@ -79,7 +79,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "tcmui.core.middleware.StaticCompanyMiddleware",
     "tcmui.users.middleware.AuthenticationMiddleware",
-    "tcmui.environments.middleware.EnvironmentMiddleware",
+    "tcmui.environments.middleware.EnvironmentsMiddleware",
 ]
 
 ROOT_URLCONF = "tcmui.urls"

@@ -22,13 +22,10 @@ class GetEnvironmentSelectionForm(Tag):
 
 
     def render_tag(self, context, product, varname):
-        current_env_group = getattr(
-            context.get("request", None),
-            "environmentgroup",
-            None)
+        request = context["request"]
         context[varname] = EnvironmentSelectionForm(
             groups=product.environmentgroups,
-            current_group=current_env_group)
+            current=request.session.get("environments", None))
         return u""
 
 

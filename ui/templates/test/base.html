@@ -14,8 +14,8 @@
   {% get_environment_selection_form for product as form %}
   <details class="environment">
     <summary>
-      {% if request.environmentgroup %}
-      environment: {{ request.environmentgroup.summary }}
+      {% if request.environments %}
+      environment: {{ request.environments.summary }}
       {% else %}
       set your environment
       {% endif %}

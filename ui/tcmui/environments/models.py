@@ -48,6 +48,10 @@ class EnvironmentList(ListObject):
     entries = fields.List(fields.Object(Environment))
 
 
+    def summary(self):
+        return u", ".join([e.name for e in self])
+
+
 
 class EnvironmentGroup(RemoteObject):
     company = fields.Locator(Company)
@@ -60,10 +64,6 @@ class EnvironmentGroup(RemoteObject):
 
     def __unicode__(self):
         return self.name
-
-
-    def summary(self):
-        return u", ".join([e.name for e in self.environments])
 
 
 

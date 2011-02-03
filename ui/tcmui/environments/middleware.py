@@ -1,26 +1,23 @@
-from .models import EnvironmentGroup
+from .models import EnvironmentList, Environment
 
 
-def get_env_from_request(request):
-    env_group_id = request.session.get("environment_group_id", None)
+def get_envs_from_request(request):
+    envs = request.session.get("environments", [])
 
-    env_group = None
-    if env_group_id:
-        env_group = EnvironmentGroup.get(
-            "environmentgroups/%s" % env_group_id,
-            auth=request.auth)
-    return env_group
+    return EnvironmentList(entries=
+        [Environment.get("environments/%s" % eid, auth=request.auth)
+         for etid, eid in envs])
 
 
 
-class LazyEnvironmentGroup(object):
+class LazyEnvironments(object):
     def __get__(self, request, obj_type=None):
-        if not hasattr(request, '_cached_env'):
-            request._cached_env = get_env_from_request(request)
-        return request._cached_env
+        if not hasattr(request, '_cached_envs'):
+            request._cached_envs = get_envs_from_request(request)
+        return request._cached_envs
 
 
 
-class EnvironmentMiddleware(object):
+class EnvironmentsMiddleware(object):
     def process_request(self, request):
-        request.__class__.environmentgroup = LazyEnvironmentGroup()
+        request.__class__.environments = LazyEnvironments()

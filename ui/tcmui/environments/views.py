@@ -22,10 +22,10 @@ def set_environment(request, product_id):
     form = EnvironmentSelectionForm(
         request.POST or None,
         groups=product.environmentgroups,
-        current_group=request.environmentgroup)
+        current=request.session.get("environments", None))
 
     if request.method == "POST" and form.is_valid():
-        request.session["environment_group_id"] = form.save()
+        request.session["environments"] = form.save()
         return redirect(next)
 
     return TemplateResponse(
