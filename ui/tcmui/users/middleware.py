@@ -1,4 +1,4 @@
-from .util import get_user, logout
+from .util import get_user
 
 
 
@@ -12,7 +12,7 @@ def get_user_from_request(request):
     if userid and password:
         user = get_user(userid, password)
         if not user:
-            logout(request)
+            request.session.flush()
     return user
 
 
