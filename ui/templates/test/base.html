@@ -21,7 +21,7 @@
       {% endif %}
       »
     </summary>
-    <form action="{% url environment product_id=product.id %}">
+    <form method="POST" action="{% url environment product_id=product.id %}">
       <input type="hidden" name="next" value="{{ request.path }}">
       {% csrf_token %}
       {{ form.non_field_errors }}

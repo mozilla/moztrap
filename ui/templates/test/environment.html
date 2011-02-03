@@ -2,9 +2,11 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li>{{ product.name }}</li>
+  <li>{{ product }}</li>
 {% endblock crumb %}
 
+{% block submeta %}
+{% endblock %}
 
 {% block content %}
 <section id="environment">
