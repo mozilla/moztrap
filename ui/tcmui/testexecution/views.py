@@ -12,9 +12,7 @@ from .models import TestCycleList
 def cycles(request, product_id):
     product = Product.get("products/%s" % product_id, auth=request.auth)
 
-    # @@@ should be auth=request.auth - API permissions broken here?
-    from ..core.api import admin
-    cycles = TestCycleList.get(auth=admin).filter(
+    cycles = TestCycleList.get(auth=request.auth).filter(
         productId=product_id, testCycleStatusId=testcyclestatus.ACTIVE)
 
     return TemplateResponse(
