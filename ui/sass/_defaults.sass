@@ -208,6 +208,10 @@ table
   width: 100%
   border-collapse: separate
   border-spacing: 0
+  *:last-child
+    td
+      +trailing-border(1px, 0.5)
+      border-color: #ccc
 
 table, td, th
   vertical-align: top
@@ -220,8 +224,9 @@ th, td, caption
   text-align: left
   font-weight: normal
 
-table, th
-  +trailing-border(1px, 0.5)
+th
+  +padding-leader(.75)
+  +trailing-border(1px, 0.25)
   border-color: #ccc
 
 tr

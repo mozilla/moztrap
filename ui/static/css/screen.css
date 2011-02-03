@@ -112,6 +112,7 @@ nav ul li, nav ol li { list-style-image: none; list-style-type: none; margin-lef
 /* Tables -------------------------------------------------------------- */
 /* tables still need 'cellspacing="0"' in the markup */
 table { margin-bottom: 1.5em; width: 100%; border-collapse: separate; border-spacing: 0; }
+table *:last-child td { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; border-color: #cccccc; }
 
 table, td, th { vertical-align: top; }
 
@@ -119,7 +120,7 @@ th, thead th { font-weight: bold; }
 
 th, td, caption { padding: 0.75em; text-align: left; font-weight: normal; }
 
-table, th { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; border-color: #cccccc; }
+th { padding-top: 1.125em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
 
 tr:nth-child(even) td { background: #eeeeff; }
 tr:hover td { background: #ddddff; }
@@ -265,7 +266,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #products .list li { margin-bottom: 0.75em; display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
 #products .list li a { border-style: solid; border-width: 0.063em; padding: 0.688em; display: block; background: #eeffee; }
 #products .list li:nth-child(3n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-#products .list li:first-child:last-child { clear: both; }
+#products .list li:first-child:last-child { float: none; display: block; width: auto; margin-right: auto; clear: both; }
 #products .list li:first-child:nth-last-child(2), #products .list li:first-child:nth-last-child(2) ~ li, #products .list li:first-child:nth-last-child(4), #products .list li:first-child:nth-last-child(4) ~ li, #products .list li:first-child:nth-last-child(7), #products .list li:first-child:nth-last-child(7) ~ li { display: inline; float: left; width: 48.78%; margin-right: 2.439%; }
 #products .list li:first-child:nth-last-child(2):nth-child(3n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(4):nth-child(3n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(7):nth-child(3n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(3n) { display: inline; float: left; margin-right: 2.439%; }
 #products .list li:first-child:nth-last-child(2):nth-child(2n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(4):nth-child(2n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(7):nth-child(2n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(2n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
