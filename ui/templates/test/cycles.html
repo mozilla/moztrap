@@ -17,10 +17,10 @@
           <th class="name {{ request|sort_status:"name" }}">
             <a href="{{ request|sort_url:"name" }}" title="sort by name">name</a>
           </th>
-          <th class="start {{ request|sort_status:"start" }}">
+          <th class="start {{ request|sort_status:"startDate" }}">
             <a href="{{ request|sort_url:"startDate" }}" title="sort by start date">start date</a>
           </th>
-          <th class="end {{ request|sort_status:"end" }}">
+          <th class="end {{ request|sort_status:"endDate" }}">
             <a href="{{ request|sort_url:"endDate" }}" title="sort by end date">end date</a>
           </th>
           <th class="go"></th>
