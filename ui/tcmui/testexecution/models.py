@@ -7,6 +7,8 @@ from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
+from ..testcases.models import TestCase, TestCaseVersion
+
 
 
 class TestCycle(Activatable, RemoteObject):
@@ -49,10 +51,19 @@ class TestRun(Activatable, RemoteObject):
     endDate = fields.Date()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    includedtestcases = fields.Link("IncludedTestCaseList")
 
 
     def __unicode__(self):
         return self.name
+
+
+    def add(self, case, **kwargs):
+        payload = {"%sid" % case.__class__.__name__.lower(): case.id}
+        self._post(
+            relative_url="includedtestcases",
+            extra_payload=payload,
+            **kwargs)
 
 
 
@@ -62,3 +73,26 @@ class TestRunList(ListObject):
     default_url = "testruns"
 
     entries = fields.List(fields.Object(TestRun))
+
+
+
+class IncludedTestCase(RemoteObject):
+    blocking = fields.Field()
+    priorityId = fields.Field()
+    runOrder = fields.Field()
+    testCase = fields.Locator(TestCase)
+    testCaseVersion = fields.Locator(TestCaseVersion)
+    # @@@ testSuite = fields.Locator(TestSuite)
+    testRun = fields.Locator(TestRun)
+
+
+    def __unicode__(self):
+        return self.id
+
+
+
+class IncludedTestCaseList(ListObject):
+    entryclass = IncludedTestCase
+    api_name = "includedtestcases"
+
+    entries = fields.List(fields.Object(IncludedTestCase))
