@@ -13,7 +13,7 @@ from ..users.models import User
 
 
 class Tag(CompanyLinkedRemoteObject):
-    name = fields.Field()
+    tag = fields.Field()
 
 
     def __unicode__(self):
