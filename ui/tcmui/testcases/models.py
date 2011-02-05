@@ -47,6 +47,7 @@ class TestCaseVersion(Activatable, TestCase):
     approvedBy = fields.Locator(User)
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    steps = fields.Link("TestCaseStepList")
 
     def __unicode__(self):
         return u"%s v%s.%s (%s)" % (
@@ -57,10 +58,23 @@ class TestCaseVersion(Activatable, TestCase):
             )
 
 
-    # @@@ Not currently working, neither are activate/deactivate
     def approve(self, **kwargs):
         self._put(
             relative_url="approve",
+            update_from_response=True,
+            **kwargs)
+
+
+    def reject(self, **kwargs):
+        self._put(
+            relative_url="reject",
+            update_from_response=True,
+            **kwargs)
+
+
+    def versionincrement(self, increment=1, **kwargs):
+        self._put(
+            relative_url="versionincrement/%s" % increment,
             update_from_response=True,
             **kwargs)
 
@@ -76,3 +90,25 @@ class TestCaseVersionList(ListObject):
     @classmethod
     def latest(cls, **kwargs):
         return cls.get(url="testcases/latestversions/", **kwargs)
+
+
+
+class TestCaseStep(RemoteObject):
+    name = fields.Field()
+    testCaseVersion = fields.Locator(TestCaseVersion)
+    stepNumber = fields.Field()
+    instruction = fields.Field()
+    expectedResult = fields.Field()
+    estimatedTimeInMin = fields.Field()
+
+
+    def __unicode__(self):
+        return self.name
+
+
+
+class TestCaseStepList(ListObject):
+    entryclass = TestCaseStep
+    api_name = "testcasestep"
+
+    entries = fields.List(fields.Object(TestCaseStep))
