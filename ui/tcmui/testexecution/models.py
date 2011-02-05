@@ -4,10 +4,11 @@ testing.
 
 """
 from ..core.api import Activatable, RemoteObject, ListObject, fields
-from ..environments.models import EnvironmentGroupList
+from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..testcases.models import TestCase, TestCaseVersion
+from ..users.models import User
 
 
 
@@ -85,14 +86,108 @@ class IncludedTestCase(RemoteObject):
     # @@@ testSuite = fields.Locator(TestSuite)
     testRun = fields.Locator(TestRun)
 
+    environmentgroups = fields.Link(EnvironmentGroupList)
+    assignments = fields.Link("TestCaseAssignmentList")
 
     def __unicode__(self):
         return self.id
+
+
+    def assign(self, tester, **kwargs):
+        payload = {"testerId": tester.id}
+        self._post(
+            relative_url="assignments",
+            extra_payload=payload,
+            **kwargs)
 
 
 
 class IncludedTestCaseList(ListObject):
     entryclass = IncludedTestCase
     api_name = "includedtestcases"
+    default_url = "testruns/includedtestcases"
 
     entries = fields.List(fields.Object(IncludedTestCase))
+
+
+
+class TestCaseAssignment(RemoteObject):
+    product = fields.Locator(Product)
+    testCase = fields.Locator(TestCase)
+    testCaseVersion = fields.Locator(TestCaseVersion)
+    tester = fields.Locator(User)
+
+    environmentgroups = fields.Link(EnvironmentGroupList)
+    results = fields.Link("TestResultList")
+
+    def __unicode__(self):
+        return self.id
+
+
+
+class TestCaseAssignmentList(ListObject):
+    entryclass = TestCaseAssignment
+    api_name = "testcaseassignments"
+    default_url = "testruns/assignments"
+
+    entries = fields.List(fields.Object(TestCaseAssignment))
+
+
+
+class TestResult(RemoteObject):
+    actualResult = fields.Field()
+    actualTimeInMin = fields.Field()
+    approvalStatus = StaticData("APPROVALSTATUS")
+    approvedBy = fields.Locator(User)
+    comment = fields.Field()
+    failedStepNumber = fields.Field()
+    product = fields.Locator(Product)
+    testCase = fields.Locator(TestCase)
+    testCaseVersion = fields.Locator(TestCaseVersion)
+    testRun = fields.Locator(TestRun)
+    testRunResultStatus = StaticData("TESTRUNRESULTSTATUS")
+    tester = fields.Locator(User)
+
+    environments = fields.Link(EnvironmentList)
+
+
+    def __unicode__(self):
+        return self.id
+
+
+    def start(self, **kwargs):
+        self._put(
+            relative_url="start",
+            **kwargs)
+
+
+    def approve(self, **kwargs):
+        self._put(
+            relative_url="approve",
+            **kwargs)
+
+
+    def reject(self, **kwargs):
+        self._put(
+            relative_url="reject",
+            **kwargs)
+
+
+    def finishsucceed(self, **kwargs):
+        self._put(
+            relative_url="finishsucceed",
+            **kwargs)
+
+
+    def finishfail(self, **kwargs):
+        self._put(
+            relative_url="finishfail",
+            **kwargs)
+
+
+class TestResultList(ListObject):
+    entryclass = TestResult
+    api_name = "testresults"
+    default_url = "testruns/results"
+
+    entries = fields.List(fields.Object(TestResult))
