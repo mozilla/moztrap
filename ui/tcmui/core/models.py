@@ -31,7 +31,7 @@ class CompanyList(ListObject):
 
 
 
-class CompanyLinked(object):
+class CompanyLinkedRemoteObject(RemoteObject):
     company = fields.Locator(Company)
 
 
