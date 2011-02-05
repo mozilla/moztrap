@@ -22,7 +22,7 @@ def main():
         "from tcmui.products.models import Product, ProductList",
         "from tcmui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, EnvironmentGroupList",
         "from tcmui.testexecution.models import TestCycle, TestCycleList, TestRun, TestRunList",
-        "from tcmui.testcases.models import TestCase, TestCaseList, TestCaseVersion, TestCaseVersionList, TestCaseStep, TestCaseStepList",
+        "from tcmui.testcases.models import Tag, TagList, TestCase, TestCaseList, TestCaseVersion, TestCaseVersionList, TestCaseStep, TestCaseStepList",
         ]
 
     for imp in imports:

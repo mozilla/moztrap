@@ -4,10 +4,29 @@ testing.
 
 """
 from ..core.api import RemoteObject, Activatable, ListObject, fields
+from ..core.models import CompanyLinkedRemoteObject
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..users.models import User
+
+
+
+class Tag(CompanyLinkedRemoteObject):
+    name = fields.Field()
+
+
+    def __unicode__(self):
+        return self.tag
+
+
+
+class TagList(ListObject):
+    entryclass = Tag
+    api_name = "tags"
+    default_url = "tags"
+
+    entries = fields.List(fields.Object(Tag))
 
 
 
