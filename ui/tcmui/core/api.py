@@ -391,18 +391,18 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
 
 
     def _set_location(self, val):
-        self._location_override = val
+        self._location_fallback = val
 
 
     def _get_location(self):
-        if self._location_override:
-            return self._location_override
         # Avoid infinite loopage; take care to not trigger delivery
         try:
             if self._delivered and "@url" in self.identity:
                 return self.identity["@url"]
         except TypeError:
             pass
+        if self._location_fallback:
+            return self._location_fallback
         return None
 
 
@@ -412,13 +412,6 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     @property
     def id(self):
         return util.id_for_object(self)
-
-
-    def update_from_response(self, url, response, content):
-        super(RemoteObject, self).update_from_response(url, response, content)
-        # If updated from a response, we should have a resourceIdentity.url;
-        # use that canonical URL rather than any previously-set URL.
-        self._location_override = None
 
 
     def update_from_dict(self, data):
@@ -523,11 +516,6 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         return obj
 
 
-    @classmethod
-    def ours(cls, **kwargs):
-        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)
-
-
     @property
     def submit_ids_name(self):
         return self.entryclass.__name__.lower() + "Ids"
@@ -562,3 +550,19 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     def __unicode__(self):
         return u"[%s]" % ", ".join([repr(e) for e in self])
+
+
+
+class Activatable(object):
+    def activate(self, **kwargs):
+        self._put(
+            relative_url="activate",
+            update_from_response=True,
+            **kwargs)
+
+
+    def deactivate(self, **kwargs):
+        self._put(
+            relative_url="deactivate",
+            update_from_response=True,
+            **kwargs)

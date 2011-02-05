@@ -3,14 +3,13 @@ Product-related remote objects.
 
 """
 from ..core.api import RemoteObject, ListObject, fields
-from ..core.models import Company
+from ..core.models import CompanyLinked
 from ..core.util import id_for_object
 from ..environments.models import EnvironmentGroupList
 
 
 
-class Product(RemoteObject):
-    company = fields.Locator(Company)
+class Product(CompanyLinked, RemoteObject):
     description = fields.Field()
     name = fields.Field()
 

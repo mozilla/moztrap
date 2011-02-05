@@ -4,9 +4,9 @@ User-related remote objects.
 """
 import urllib
 
-from ..core.api import RemoteObject, ListObject, fields
+from ..core.api import RemoteObject, Activatable, ListObject, fields
 from ..core.decorators import as_admin
-from ..core.models import Company
+from ..core.models import CompanyLinked
 from ..core.util import id_for_object
 from ..static.fields import StaticData
 
@@ -32,8 +32,7 @@ class PermissionList(ListObject):
 
 
 
-class Role(RemoteObject):
-    company = fields.Locator(Company)
+class Role(CompanyLinked, RemoteObject):
     name = fields.Field()
 
     permissions = fields.Link(PermissionList)
@@ -65,8 +64,7 @@ class RoleList(ListObject):
 
 
 
-class User(RemoteObject):
-    company = fields.Locator(Company)
+class User(CompanyLinked, Activatable, RemoteObject):
     email = fields.Field()
     firstName = fields.Field()
     lastName = fields.Field()
@@ -91,20 +89,6 @@ class User(RemoteObject):
     @as_admin
     def permissionCodes(self):
         return [p.permissionCode for p in self.permissions]
-
-
-    def activate(self, **kwargs):
-        self._put(
-            relative_url="activate",
-            update_from_response=True,
-            **kwargs)
-
-
-    def deactivate(self, **kwargs):
-        self._put(
-            relative_url="deactivate",
-            update_from_response=True,
-            **kwargs)
 
 
     def emailchange(self, newemail, **kwargs):

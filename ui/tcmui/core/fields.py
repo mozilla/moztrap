@@ -83,7 +83,10 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
 
         try:
             if "@url" in data:
-                value = self.cls.get(data["@url"], auth=obj.auth)
+                value = None
+                linked_id = data.get("@id", None)
+                if linked_id and int(linked_id):
+                    value = self.cls.get(data["@url"], auth=obj.auth)
                 self.__set__(obj, value)
                 return value
         except TypeError:
