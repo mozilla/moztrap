@@ -376,6 +376,10 @@ class ObjectMixin(StrAndUnicode):
         return self.get(newurl, auth=auth)
 
 
+    def refresh(self):
+        return self.__class__.get(self._location, auth=self.auth)
+
+
     def __repr__(self):
         return "<%s: %s>" % (self.__class__.__name__, self)
 
