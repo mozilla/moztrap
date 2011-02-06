@@ -9,11 +9,18 @@ import remoteobjects
 
 
 
-class FieldMixin(object):
-    def install(self, attrname, cls):
-        super(FieldMixin, self).install(attrname, cls)
 
-        self.api_submit_name = self.api_name
+class Field(remoteobjects.fields.Field):
+    def __init__(self, api_name=None, default=None, api_submit_name=None):
+        self.api_submit_name = api_submit_name
+        super(Field, self).__init__(api_name, default)
+
+
+    def install(self, attrname, cls):
+        super(Field, self).install(attrname, cls)
+
+        if self.api_submit_name is None:
+            self.api_submit_name = self.api_name
 
         if not self.api_name.startswith("ns1."):
             self.api_name = "ns1.%s" % self.api_name
@@ -22,10 +29,12 @@ class FieldMixin(object):
     def decode(self, value):
         if value == {"@xsi.nil": "true"}:
             value = None
-        return super(FieldMixin, self).decode(value)
+        return super(Field, self).decode(value)
 
 
     def submit_data(self, obj):
+        if not self.api_submit_name:
+            return {}
         value = getattr(obj, self.attrname, None)
         if value is None:
             return {}
@@ -33,11 +42,6 @@ class FieldMixin(object):
         if isinstance(value, dict):
             return value
         return {self.api_submit_name: value}
-
-
-
-class Field(FieldMixin, remoteobjects.fields.Field):
-    pass
 
 
 
@@ -63,16 +67,21 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
     instance of the actual linked object.
 
     """
-    def __init__(self, cls, api_name=None, default=None):
+    def __init__(self, cls, api_name=None, default=None, api_submit_name=None):
         self.cls = cls
-        super(Locator, self).__init__(api_name, default)
+        super(Locator, self).__init__(api_name, default, api_submit_name)
 
 
     def install(self, attrname, cls):
+        auto_api_name = (self.api_name is None)
+        auto_submit_name = (self.api_submit_name is None)
+
         super(Locator, self).install(attrname, cls)
 
-        self.api_submit_name = "%sId" % self.api_submit_name
-        self.api_name = "%sLocator" % self.api_name
+        if auto_api_name:
+            self.api_name = "%sLocator" % self.api_name
+        if auto_submit_name:
+            self.api_submit_name = "%sId" % self.api_submit_name
 
 
     def __get__(self, obj, cls):

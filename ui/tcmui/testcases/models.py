@@ -61,10 +61,10 @@ class TestCaseVersion(Activatable, TestCase):
     majorVersion = fields.Field()
     minorVersion = fields.Field()
     latestVersion = fields.Field()
-    testCaseStatus = StaticData("TESTCASESTATUS")
-    approvalStatus = StaticData("APPROVALSTATUS")
-    approveDate = fields.Date()
-    approvedBy = fields.Locator(User)
+    testCaseStatus = StaticData("TESTCASESTATUS", api_submit_name=False)
+    approvalStatus = StaticData("APPROVALSTATUS", api_submit_name=False)
+    approveDate = fields.Date(api_submit_name=False)
+    approvedBy = fields.Locator(User, api_submit_name=False)
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     steps = fields.Link("TestCaseStepList")
@@ -130,5 +130,6 @@ class TestCaseStep(RemoteObject):
 class TestCaseStepList(ListObject):
     entryclass = TestCaseStep
     api_name = "testcasestep"
+
 
     entries = fields.List(fields.Object(TestCaseStep))

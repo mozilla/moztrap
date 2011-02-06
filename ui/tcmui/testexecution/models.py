@@ -137,15 +137,15 @@ class TestCaseAssignmentList(ListObject):
 class TestResult(RemoteObject):
     actualResult = fields.Field()
     actualTimeInMin = fields.Field()
-    approvalStatus = StaticData("APPROVALSTATUS")
-    approvedBy = fields.Locator(User)
+    approvalStatus = StaticData("APPROVALSTATUS", api_submit_name=False)
+    approvedBy = fields.Locator(User, api_submit_name=False)
     comment = fields.Field()
     failedStepNumber = fields.Field()
     product = fields.Locator(Product)
     testCase = fields.Locator(TestCase)
     testCaseVersion = fields.Locator(TestCaseVersion)
     testRun = fields.Locator(TestRun)
-    testRunResultStatus = StaticData("TESTRUNRESULTSTATUS")
+    testRunResultStatus = StaticData("TESTRUNRESULTSTATUS", api_submit_name=False)
     tester = fields.Locator(User)
 
     environments = fields.Link(EnvironmentList)
