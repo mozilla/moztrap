@@ -9,7 +9,7 @@ from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..users.models import User
-
+from . import increment
 
 
 class Tag(RemoteObject):
@@ -92,10 +92,11 @@ class TestCaseVersion(Activatable, TestCase):
             **kwargs)
 
 
-    def versionincrement(self, increment=1, **kwargs):
+    def versionincrement(self, incr=increment.MINOR, **kwargs):
         self._put(
-            relative_url="versionincrement/%s" % increment,
+            relative_url="versionincrement/%s" % incr,
             update_from_response=True,
+            full_payload=True,
             **kwargs)
 
 
