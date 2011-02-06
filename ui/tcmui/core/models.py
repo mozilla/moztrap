@@ -28,13 +28,3 @@ class CompanyList(ListObject):
     default_url = "companies"
 
     entries = fields.List(fields.Object(Company))
-
-
-
-class CompanyLinkedRemoteObject(RemoteObject):
-    company = fields.Locator(Company)
-
-
-    @classmethod
-    def ours(cls, **kwargs):
-        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)

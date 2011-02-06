@@ -2,12 +2,13 @@
 Environment-related remote objects.
 
 """
-from ..core.api import ListObject, fields
-from ..core.models import CompanyLinkedRemoteObject
+from ..core.api import RemoteObject, ListObject, fields
+from ..core.models import Company
 
 
 
-class EnvironmentType(CompanyLinkedRemoteObject):
+class EnvironmentType(RemoteObject):
+    company = fields.Locator(Company)
     name = fields.Field()
     groupType = fields.Field()
 
@@ -28,7 +29,8 @@ class EnvironmentTypeList(ListObject):
 
 
 
-class Environment(CompanyLinkedRemoteObject):
+class Environment(RemoteObject):
+    company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
 
@@ -51,7 +53,8 @@ class EnvironmentList(ListObject):
 
 
 
-class EnvironmentGroup(CompanyLinkedRemoteObject):
+class EnvironmentGroup(RemoteObject):
+    company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
     description = fields.Field()

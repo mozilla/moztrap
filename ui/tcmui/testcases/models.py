@@ -4,7 +4,7 @@ testing.
 
 """
 from ..core.api import RemoteObject, Activatable, ListObject, fields
-from ..core.models import CompanyLinkedRemoteObject
+from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
@@ -12,7 +12,8 @@ from ..users.models import User
 
 
 
-class Tag(CompanyLinkedRemoteObject):
+class Tag(RemoteObject):
+    company = fields.Locator(Company)
     tag = fields.Field()
 
 

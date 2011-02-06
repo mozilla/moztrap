@@ -6,7 +6,7 @@ import urllib
 
 from ..core.api import RemoteObject, Activatable, ListObject, fields
 from ..core.decorators import as_admin
-from ..core.models import CompanyLinkedRemoteObject
+from ..core.models import Company
 from ..core.util import id_for_object
 from ..static.fields import StaticData
 
@@ -32,7 +32,8 @@ class PermissionList(ListObject):
 
 
 
-class Role(CompanyLinkedRemoteObject):
+class Role(RemoteObject):
+    company = fields.Locator(Company)
     name = fields.Field()
 
     permissions = fields.Link(PermissionList)
@@ -64,7 +65,8 @@ class RoleList(ListObject):
 
 
 
-class User(Activatable, CompanyLinkedRemoteObject):
+class User(Activatable, RemoteObject):
+    company = fields.Locator(Company)
     email = fields.Field()
     firstName = fields.Field()
     lastName = fields.Field()

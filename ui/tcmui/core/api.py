@@ -438,7 +438,7 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
 
         """
         wrapper_key = "ns1.%s" % self.api_name
-        if wrapper_key in data:
+        if wrapper_key in data and isinstance(data[wrapper_key], list):
             data = data[wrapper_key][0]
         return super(RemoteObject, self).update_from_dict(data)
 
@@ -514,6 +514,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         obj = super(ListObject, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth", None)
         return obj
+
+
+    @classmethod
+    def ours(cls, **kwargs):
+        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)
 
 
     @property
