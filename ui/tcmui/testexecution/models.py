@@ -179,10 +179,18 @@ class TestResult(RemoteObject):
             **kwargs)
 
 
-    def finishfail(self, **kwargs):
+    def finishfail(self, comment, failedStepNumber, actualResult, **kwargs):
         self._put(
             relative_url="finishfail",
+            extra_payload={
+                "comment": comment,
+                "failedStepNumber": failedStepNumber,
+                "actualResult": actualResult
+                },
             **kwargs)
+        self.comment = comment
+        self.failedStepNumber = failedStepNumber
+        self.actualResult = actualResult
 
 
 class TestResultList(ListObject):
