@@ -4,7 +4,12 @@ Core remote objects.
 """
 from .api import RemoteObject, ListObject, fields
 from ..static.fields import StaticData
-from . import conf
+
+
+
+# Fake Company ID constant
+SYSTEM_WIDE = -22222
+
 
 
 class Company(RemoteObject):
