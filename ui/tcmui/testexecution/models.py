@@ -166,24 +166,28 @@ class TestResult(RemoteObject):
     def start(self, **kwargs):
         self._put(
             relative_url="start",
+            update_from_response=True,
             **kwargs)
 
 
     def approve(self, **kwargs):
         self._put(
             relative_url="approve",
+            update_from_response=True,
             **kwargs)
 
 
     def reject(self, **kwargs):
         self._put(
             relative_url="reject",
+            update_from_response=True,
             **kwargs)
 
 
     def finishsucceed(self, **kwargs):
         self._put(
             relative_url="finishsucceed",
+            update_from_response=True,
             **kwargs)
 
 
@@ -195,10 +199,9 @@ class TestResult(RemoteObject):
                 "failedStepNumber": failedStepNumber,
                 "actualResult": actualResult
                 },
+            update_from_response=True,
             **kwargs)
-        self.comment = comment
-        self.failedStepNumber = failedStepNumber
-        self.actualResult = actualResult
+
 
 
 class TestResultList(ListObject):

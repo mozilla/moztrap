@@ -96,16 +96,21 @@ class User(Activatable, RemoteObject):
     def emailchange(self, newemail, **kwargs):
         self._put(
             relative_url="emailchange/%s" % urllib.quote(newemail),
+            update_from_response=True,
             **kwargs)
 
 
     def emailconfirm(self, **kwargs):
-        self._put(relative_url="emailconfirm", **kwargs)
+        self._put(
+            relative_url="emailconfirm",
+            update_from_response=True,
+            **kwargs)
 
 
     def passwordchange(self, newpassword, **kwargs):
         self._put(
             relative_url="passwordchange/%s" % urllib.quote(newpassword),
+            update_from_response=True,
             **kwargs
         )
 
