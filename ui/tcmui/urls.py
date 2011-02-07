@@ -14,7 +14,10 @@ urlpatterns = patterns(
     url("^product/(?P<product_id>\d+)/cycles/$",
         "tcmui.testexecution.views.cycles",
         name="cycles"),
+    url("^product/(?P<product_id>\d+)/cycle/(?P<cycle_id>\d+)/$",
+        "tcmui.testexecution.views.testruns",
+        name="testruns"),
 
-    url("^product/1/cycles/1/$", direct_to_template_login, {"template": "test/run.html"}, name="run"),
+    url("^product/1/cycle/1/run/1/$", direct_to_template_login, {"template": "test/run.html"}, name="run"),
     url("^manage/testcase/add/$", direct_to_template_login, {"template": "test/add_case.html"}, name="add"),
 )

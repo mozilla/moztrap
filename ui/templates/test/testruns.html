@@ -1,15 +1,15 @@
-{% extends 'test/base.html' %}
+{% extends 'test/cycles.html' %}
 
 {% load sort %}
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
+  <li><a href="{{ cycle.get_absolute_url }}">{{ cycle }}</a></li>
 {% endblock crumb %}
 
 {% block content %}
-  <section id="cycles">
-    <h2>Select a test cycle</h2>
+  <section id="testruns">
+    <h2>Select a test run</h2>
 
     <table>
       <thead>
@@ -28,16 +28,12 @@
       </thead>
 
       <tbody>
-        {% for cycle in cycles %}
+        {% for testrun in testruns %}
         <tr>
-          <td>{{ cycle.name }}</td>
-          <td>{{ cycle.startDate|date:"Y/m/d" }}</td>
-          <td>{{ cycle.endDate|date:"Y/m/d" }}</td>
-          <td>
-            <a href="{{ cycle.get_absolute_url }}">
-              go
-            </a>
-          </td>
+          <td>{{ testrun.name }}</td>
+          <td>{{ testrun.startDate|date:"Y/m/d" }}</td>
+          <td>{{ testrun.endDate|date:"Y/m/d" }}</td>
+          <td><a href="/product/1/cycle/1/run/1/">run tests</a></td>
         </tr>
         {% endfor %}
       </tbody>

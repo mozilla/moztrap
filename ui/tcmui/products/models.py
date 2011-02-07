@@ -2,6 +2,8 @@
 Product-related remote objects.
 
 """
+from django.core.urlresolvers import reverse
+
 from ..core.api import ListObject, RemoteObject, fields
 from ..core.models import Company
 from ..core.util import id_for_object
@@ -19,6 +21,10 @@ class Product(RemoteObject):
 
     def __unicode__(self):
         return self.name
+
+
+    def get_absolute_url(self):
+        return reverse("cycles", kwargs={"product_id": self.id})
 
 
     def autogenerate_env_groups(self, environments, envtype=None, **kwargs):

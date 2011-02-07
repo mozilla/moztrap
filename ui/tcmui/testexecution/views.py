@@ -1,13 +1,12 @@
-import urlparse
-
+from django.http import Http404
 from django.template.response import TemplateResponse
 
 from ..core import sort
 from ..products.models import Product
-from ..static import testcyclestatus
+from ..static import testcyclestatus, testrunstatus
 from ..users.decorators import login_required
 
-from .models import TestCycleList
+from .models import TestCycle, TestCycleList, TestRunList
 
 
 
@@ -21,3 +20,24 @@ def cycles(request, product_id):
 
     return TemplateResponse(
         request, "test/cycles.html", {"product": product, "cycles": cycles})
+
+
+
+@login_required
+def testruns(request, product_id, cycle_id):
+    cycle = TestCycle.get("testcycles/%s" % cycle_id, auth=request.auth)
+    product = cycle.product
+    if int(product.id) != int(product_id):
+        raise Http404
+
+    testruns = TestRunList.get(auth=request.auth).filter(
+        testCycleId=cycle_id, testRunStatusId=testrunstatus.ACTIVE).sort(
+        *sort.from_request(request))
+
+    return TemplateResponse(
+        request,
+        "test/testruns.html",
+        {"product": cycle.product,
+         "cycle": cycle,
+         "testruns": testruns
+         })

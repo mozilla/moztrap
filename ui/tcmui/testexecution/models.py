@@ -3,6 +3,8 @@ Remote objects related to the "documentation" (as opposed to execution) side of
 testing.
 
 """
+from django.core.urlresolvers import reverse
+
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
@@ -26,6 +28,12 @@ class TestCycle(Activatable, RemoteObject):
 
     def __unicode__(self):
         return self.name
+
+
+    def get_absolute_url(self):
+        return reverse(
+            "testruns",
+            kwargs={"product_id": self.product.id, "cycle_id": self.id})
 
 
 
