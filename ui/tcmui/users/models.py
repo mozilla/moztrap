@@ -70,7 +70,7 @@ class User(Activatable, RemoteObject):
     email = fields.Field()
     firstName = fields.Field()
     lastName = fields.Field()
-    password = fields.Field(api_submit_name=False)
+    password = fields.Field()
     screenName = fields.Field()
     userStatus = StaticData("USERSTATUS")
 
