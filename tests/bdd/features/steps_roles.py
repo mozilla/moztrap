@@ -6,8 +6,7 @@ Created on Jan 28, 2011
 from lettuce import *
 from step_helper import *
 from step_helper import jstr, add_params
-from post_data import *
-
+#from nose.tools import *
 
 '''
 ######################################################################
@@ -45,7 +44,7 @@ def user_id_role_check(user_id, role, expected_tf, assert_text):
     
     world.conn.request("GET", add_params(world.path_users + str(user_id) + "/roles"))
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "Fetched a user")
+    eq_(response.status, 200, "Fetched a user")
 
     # walk through all roles for this user to see if it has the requested one
     
@@ -56,7 +55,7 @@ def user_id_role_check(user_id, role, expected_tf, assert_text):
         assert isinstance(roleJson, dict), "unexpected type:\n" + jstr(roleJson)
         if (roleJson.get(ns("description")) == role):
             foundRole = True
-    assert_equal(foundRole, expected_tf, assert_text + ": " + jstr(roleJsonList))
+    eq_(foundRole, expected_tf, assert_text + ": " + jstr(roleJsonList))
 
 @step(u'add role of "(.*)" to user "(.*)"')
 def add_role_of_foo_to_user_bar(step, role, name):
@@ -69,26 +68,29 @@ def add_role_of_foo_to_user_bar(step, role, name):
     # fetch the role's resource identity
     user_id, version = get_user_resid(name)
     
-    post_payload = get_submit_role(role)
+    post_payload = {
+                    "description":role
+                    }
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
     world.conn.request("POST", add_params(world.path_users + user_id + "/roles", {"originalVersionId": version}), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "post new role to user")
+    eq_(response.status, 200, "post new role to user")
 
 @step(u'create a new role of "(.*)"')
-def create_a_new_role_of_x(step, new_role):
+def create_a_new_role_of_x(step, role):
     
-    json_data = get_submit_role(new_role)
+    post_payload = {
+                    "description":role
+                    }
     headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(json_data) }
+            "Content-Length": "%d" % len(post_payload) }
 
-    world.conn.request("POST", add_params(world.path_roles), "", headers)
-    world.conn.send(json_data)
+    world.conn.request("POST", add_params(world.path_roles), post_payload, headers)
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "Create new role")
+    eq_(response.status, 200, "Create new role")
     
 
 @step(u'add permission of "(.*)" to the role of "(.*)"')
@@ -100,14 +102,16 @@ def add_permission_foo_to_role_bar(step, permission, role):
     # fetch the role's resource identity
     role_id, version = get_role_resid(role)
     
-    post_payload = get_submit_permission(permission)
+    post_payload = {
+                    "description": permission
+                    }
     headers = { 'content-Type':'text/xml',
             "Content-Length": "%d" % len(post_payload) }
 
     world.conn.request("POST", add_params(world.path_roles + role_id + "/permissions", {"originalVersionId": version}), "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "post new permission to role")
+    eq_(response.status, 200, "post new permission to role")
 
 
 
@@ -130,7 +134,7 @@ def role_foo_has_permission_of_bar(step, role, permission):
         found = False
         if (item.get(ns("description")) == permission):
             found = True
-    assert_equal(found, True, "looking for permission of " + permission)
+    eq_(found, True, "looking for permission of " + permission)
 
 @step(u'role of "(.*)" exists')
 def role_of_foo_exists(step, role):
@@ -159,7 +163,7 @@ def check_role_existence(roles):
             act = act_role.get(ns("description"))
             if (exp == act):
                 found = True
-        assert_equal(found, True, "Didn't find role of:\n" + jstr(exp_role) + 
+        eq_(found, True, "Didn't find role of:\n" + jstr(exp_role) + 
                      "\n in data:\n" + jstr(respJson))
 
 

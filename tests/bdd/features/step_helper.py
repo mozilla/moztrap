@@ -4,8 +4,6 @@ Created on Nov 9, 2010
 @author: camerondawson
 '''
 from lettuce import *
-from numpy.ma.testutils import *
-from types import ListType
 import base64
 import copy
 import json
@@ -13,6 +11,7 @@ import mimetypes
 import re
 import string
 import urllib
+#from types import ListType
 
 
 '''
@@ -22,6 +21,20 @@ import urllib
 
 ######################################################################
 '''
+
+def get_stored_or_store_name(objtype, stored, name):
+    '''
+        Help figure out if the test writer wants to use a stored name from a previous step, or if
+        the name was passed in explicitly. 
+        
+        If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
+        the stored one.  Otherwise, the explicit name passed in.  
+    '''
+    if (stored.strip() == "that name"):
+        name = world.names[objtype]
+    else:
+        world.names[objtype] = name
+    return name
 
 def ns(field):
     '''
@@ -55,8 +68,11 @@ def verify_status(exp_status, response, msg):
         is returned.
     '''
     data = response.read()
-    assert_equal(response.status, 200, msg + ": " + str(data))
+    eq_(response.status, 200, msg + ": " + str(data))
     return data
+    
+def eq_(act, exp, msg):
+    assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
     
 def get_auth_header():
     userid = "admin@utest.com" 
@@ -98,17 +114,56 @@ def search_and_verify(step, uri, search_args, obj_name, expect_to_find):
 
     if not expect_to_find:
         count = get_count(data, ns(obj_name))
-        assert_equal(count, 0, "expect result size zero")
+        eq_(count, 0, "expect result size zero")
     else:
         environmentJson = get_single_item(data, ns(obj_name))
 
         # Verify that the result's values match our search params 
         for k, v in search_args.items():
-            assert_equal(environmentJson.get(ns(k)), v, obj_name + " match")
+            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
     
 
 
 def get_single_item(response_txt, type):
+    '''
+        Expect the response to be a single item.  If it's more, we assert.
+    '''
+    type = ns(type)
+    pl_type = plural(type)
+
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
+    
+    item = None
+    
+    # if this was a search, extract the item from the "searchResult" object
+    # in this case, we only care about the first returned item in this list
+    sr_field = ns("searchResult")
+    if (respJson.__contains__(sr_field)):
+        sr = respJson.get(sr_field)
+
+        assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
+        pl_item = sr[0].get(pl_type)
+
+        assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
+        items = pl_item.get(type)
+            
+        if (len(items) > 0) and isinstance(items, list):
+            item = items[0]
+        else:
+            item = items
+    else:
+        item = respJson.get(type)
+
+    assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
+    return item
+
+
+def get_first_item(response_txt, type):
     '''
         Expect the response to be a single item or a list.  
         If it's a list, we take the first item.
@@ -216,22 +271,34 @@ def get_role_resid(role):
 
 def get_product_resid(product):
     '''
-        Get the resourceIdentity of a role, based on the description of the role
+        Get the resourceIdentity, based on the name
     '''
     return get_resource_identity("product", add_params(world.path_products, {"name": product}))
 
 def get_environment_resid(environment):
     '''
-        Get the resourceIdentity of a role, based on the description of the role
+        Get the resourceIdentity, based on the name
     '''
     return get_resource_identity("environment", add_params(world.path_environments, {"name": environment}))
     
 
-def get_test_case_resid(test_case):
+def get_environmenttype_resid(environment):
     '''
-        Get the resourceIdentity of a role, based on the description of the role
+        Get the resourceIdentity, based on the name
     '''
-    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : test_case}))
+    return get_resource_identity("environmenttype", add_params(world.path_environmenttypes, {"name": environment}))
+    
+def get_environmentgroup_resid(environment):
+    '''
+        Get the resourceIdentity, based on the name
+    '''
+    return get_resource_identity("environmentgroup", add_params(world.path_environmentgroups, {"name": environment}))
+
+def get_testcase_resid(testcase):
+    '''
+        Get the resourceIdentity, based on the name
+    '''
+    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : testcase}))
 
 def get_resource_identity(type, uri):
     '''

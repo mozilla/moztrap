@@ -6,6 +6,8 @@ Created on Jan 28, 2011
 from lettuce import *
 from step_helper import *
 from step_helper import jstr, add_params
+#from nose.tools import *
+
 
 
 '''
@@ -24,11 +26,9 @@ def create_testcase_with_name_foo(step, stored, name):
                'content-type': "application/x-www-form-urlencoded"
                }
                
-    post_payload = {"majorversion": 1,
-                    "minorversion": 1,
-                    "productid": 1,
-                    "maxattachmentsizeinmbytes":"10",
-                    "maxnumberofattachments":"5",
+    post_payload = {"productId": 1,
+                    "maxAttachmentSizeInMBytes":"10",
+                    "maxNumberOfAttachments":"5",
                     "name": name,
                     "description": "Lettuce tc"
                    }
@@ -43,11 +43,30 @@ def create_testcase_with_name_foo(step, stored, name):
 
 
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
-def check_user_foo_existence(step, stored, name, existence):
+def check_testcase_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_testcase_name(stored, name)
     search_and_verify_existence(step, world.path_testcases, 
                     {"name": name}, 
-                    "testcase", existence)
+                     "testcase", existence)
+
+
+@step(u'delete the testcase with (that name|name "(.*)")')
+def delete_testcase_with_name_foo(step, stored, name):
+    name = get_stored_or_store_testcase_name(stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    testcase_id, version = get_testcase_resid(name)
+               
+    world.conn.request("DELETE", 
+                       add_params(world.path_testcases + testcase_id, 
+                                  {"originalVersionId": version}), "", headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "delete testcase")
+
 
 @step(u'add environment "(.*)" to test case "(.*)"')
 def add_environment_foo_to_test_case_bar(step, environment, test_case):
@@ -56,16 +75,16 @@ def add_environment_foo_to_test_case_bar(step, environment, test_case):
     #    2: add the environment to the test case
     
     # fetch the test case's resource identity
-    test_case_id, version = get_test_case_resid(test_case)
+    test_case_id, version = get_testcase_resid(test_case)
     
     post_payload = {"name": "test environment"
                    }
-    headers = { 'content-Type':'text/xml',
-            "Content-Length": "%d" % len(post_payload) }
+    headers = {'content-Type':'text/xml',
+               "Content-Length": "%d" % len(post_payload) }
 
     world.conn.request("POST", 
                        add_params(world.path_testcases + test_case_id + "/environments", 
-                                  {"orifinalVersionId": version}), 
+                                  {"originalVersionId": version}), 
                        "", headers)
     world.conn.send(post_payload)
     response = world.conn.getresponse()
@@ -74,7 +93,7 @@ def add_environment_foo_to_test_case_bar(step, environment, test_case):
 @step(u'remove environment "(.*)" from test case "(.*)"')
 def remove_environment_from_test_case(step, environment, test_case):
     # fetch the test case's resource identity
-    test_case_id, version = get_test_case_resid(test_case)
+    test_case_id, version = get_testcase_resid(test_case)
     environment_id = get_environment_resid(environment)
     
     world.conn.request("DELETE", 
@@ -86,7 +105,7 @@ def remove_environment_from_test_case(step, environment, test_case):
 @step(u'test case "(.*)" (has|does not have) environment "(.*)"')
 def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     # fetch the test case's resource identity
-    test_case_id, version = get_test_case_resid(test_case)
+    test_case_id, version = get_testcase_resid(test_case)
     
     
 #    if haveness.strip() == "does not have":
@@ -103,13 +122,13 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
             found = True
     
     shouldFind = (haveness == "has")
-    assert_equal(found, shouldFind, "looking for environment of " + environment)
+    eq_(found, shouldFind, "looking for environment of " + environment)
 
 
 @step(u'test case with name "(.*)" (has|does not have) attachment with filename "(.*)"')
 def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
-    test_case_id, version = get_test_case_resid(test_case)
+    test_case_id, version = get_testcase_resid(test_case)
     
     
 #    if haveness.strip() == "does not have":
@@ -126,7 +145,7 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
             found = True
     
     shouldFind = (haveness == "has")
-    assert_equal(found, shouldFind, "looking for attachment of " + attachment + " in:\n" + jstr(jsonList))
+    eq_(found, shouldFind, "looking for attachment of " + attachment + " in:\n" + jstr(jsonList))
 
 def get_stored_or_store_testcase_name(stored, name):
     '''

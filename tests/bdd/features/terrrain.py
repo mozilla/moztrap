@@ -33,11 +33,10 @@ world.api_prefix = "/tcm/services/v2/rest/"
 
 # URI namespace path map
 world.path_companies =          world.api_prefix + "companies/"
-world.path_env_companies =      world.api_prefix + "env/companies/"
-world.path_environmentgroups =  world.api_prefix + "env/environmentgroups/"
-world.path_environments =       world.api_prefix + "env/environments/"
-world.path_environmenttypes =   world.api_prefix + "env/environmenttypes/"
-world.path_tags =               world.api_prefix + "env/tags/"
+world.path_environmentgroups =  world.api_prefix + "environmentgroups/"
+world.path_environments =       world.api_prefix + "environments/"
+world.path_environmenttypes =   world.api_prefix + "environmenttypes/"
+world.path_tags =               world.api_prefix + "tags/"
 
 world.path_login =              world.api_prefix + "users/login/"
 world.path_logout =             world.api_prefix + "users/logout/"
@@ -54,3 +53,6 @@ world.path_products =           world.api_prefix + "products/"
 world.path_mockdata =           "/mockdata"
 world.path_savedb =             "/TcmDbUnitServlet/savedb"
 world.path_restoredb =          "/TcmDbUnitServlet/restoredb"
+
+# dict of names of objects used in scenarios to remember from one step to the next
+world.names = {}

@@ -4,12 +4,9 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from lettuce import *
+#from nose.tools import *
 from step_helper import *
-from step_helper import jstr, add_params
-import httplib
-import mock_scenario_data
-import post_data
-import time
+
 
 '''
 ######################################################################
@@ -35,8 +32,18 @@ def get_stored_or_store_user_name(stored, name):
 @step(u'create a new user with (that name|name "(.*)")')
 def create_user_with_name_foo(step, stored, name):
     names = get_stored_or_store_user_name(stored, name).split()
+    fname = names[0]
+    lname = names[1]
+    post_payload = {
+                "firstName":fname,
+                "lastName":lname,
+                "email":fname+lname + "@utest.com",
+                "screenName":fname+lname,
+                "password":fname+lname +"123",
+                "companyId":9,
+                "communityMember":"false"
+    } 
     
-    post_payload = post_data.get_submit_user_params(names[0], names[1])
     headers = {'Authorization': get_auth_header()}
 
     world.conn.request("POST", add_params(world.path_users),
@@ -51,7 +58,7 @@ def logged_in_as_user_foo(step, name):
     names = name.split()
     world.user_name = name
     
-    name_headers = { 'firstname':names[0], 'lastname': names[1] }
+    name_headers = { 'firstName':names[0], 'lastName': names[1] }
 
     world.conn.request("GET", add_params(world.path_users + "current"), None, name_headers)
     response = world.conn.getresponse()
@@ -59,8 +66,8 @@ def logged_in_as_user_foo(step, name):
     
     thisUser = get_single_item(data, ns("user"))
 
-    assert_equal(thisUser.get(ns("firstname")), names[0], "First Name field didn't match")
-    assert_equal(thisUser.get(ns("lastname")), names[1], "Last Name field didn't match")
+    eq_(thisUser.get(ns("firstName")), names[0], "First Name field didn't match")
+    eq_(thisUser.get(ns("lastName")), names[1], "Last Name field didn't match")
 
 @step(u'user with (that name|name "(.*)") (exists|does not exist)')
 def check_user_foo_existence(step, stored, name, existence):
@@ -96,17 +103,6 @@ def activate_user_with_name_foo(step, status_action, stored, name):
     response = world.conn.getresponse()
     verify_status(200, response, "%s new user" % (status_action))
 
-@step(u'user "(.*)" has active status "(.*)"')
-def user_has_foo__has_active_status_bar(step, name, exp_active):
-    names = name.split()
-    
-    world.conn.request("GET", add_params(world.path_users, 
-                                         {"firstName": names[0], "lastName": names[1]}))
-    response = world.conn.getresponse()
-    data = verify_status(200, response, "Fetched a user")
-
-    userJson = get_single_item(data, "user")
-    assert_equal(userJson.get("active"), exp_active, "active status")
 
 @step(u'user "(.*)" has these roles:')
 def foo_has_these_roles(step, name):
@@ -114,7 +110,7 @@ def foo_has_these_roles(step, name):
 
     world.conn.request("GET", add_params(world.path_users + user_id + "/roles"))
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "Fetched a user")
+    eq_(response.status, 200, "Fetched a user")
 
     # walk through all roles for this user to see if it has the requested one
     respJson = get_resp_list(response, "role")
@@ -129,14 +125,14 @@ def foo_has_these_roles(step, name):
             act = act_role.get(ns("description"))
             if (exp == act):
                 found = True
-        assert_equal(found, True, "expected role of: " + exp)
+        eq_(found, True, "expected role of: " + exp)
 
 @step(u'user "(.*)" has these assignments:')
 def foo_has_these_assignments(step, name):
     user_id, version = get_user_resid(name)
     world.conn.request("GET", add_params(world.path_users + user_id + "/assignments"))
     response = world.conn.getresponse()
-    assert_equal(response.status, 200, "Fetched a user")
+    eq_(response.status, 200, "Fetched a user")
 
     # walk through all roles for this user to see if it has the requested one
     respJson = get_resp_list(response, "testcase")
@@ -151,6 +147,6 @@ def foo_has_these_assignments(step, name):
             act = act_item.get(ns("name"))
             if (exp == act):
                 found = True
-        assert_equal(found, True, "expected assignment of: " + str(exp) +
+        eq_(found, True, "expected assignment of: " + str(exp) +
                       "\nin response:\n" + jstr(respJson))
 

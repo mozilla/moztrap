@@ -4,8 +4,10 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from lettuce import *
+#from nose.tools import *
 from step_helper import *
-from step_helper import jstr, add_params
+from features.step_helper import get_stored_or_store_name
+
 
 '''
 ######################################################################
@@ -23,7 +25,7 @@ def create_product_with_name_foo(step, stored, name):
                'content-type': "application/x-www-form-urlencoded"
                }
                
-    post_payload = {"companyid": 9,
+    post_payload = {"companyId": 9,
                     "name": name,
                     "description": "Lettuce Product Description"
                    }
@@ -44,6 +46,23 @@ def check_user_foo_existence(step, stored, name, existence):
                     {"name": name}, 
                     "product", existence)
 
+@step(u'delete the product with (that name|name "(.*)")')
+def delete_product_with_name(step, stored, name):
+    name = get_stored_or_store_name("product", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    resid, version = get_resource_identity("product", add_params(world.path_products, {"name": name}))
+               
+    world.conn.request("DELETE", 
+                       add_params(world.path_products + resid, 
+                                  {"originalVersionId": version}), "", headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "delete product")
+
 
 @step(u'add environment "(.*)" to product "(.*)"')
 def add_environment_foo_to_product_bar(step, environment, product):
@@ -56,7 +75,7 @@ def add_environment_foo_to_product_bar(step, environment, product):
     
     post_payload = {"name": "Walter's Lab"}
     
-    headers = {'content-Type':'text/xml',
+    headers = {'Content-Type':'text/xml',
                'Content-Length': "%d" % len(post_payload) }
 
     world.conn.request("POST", add_params(world.path_products + product_id + "/environments", {"originalVersionId": version}), "", headers)
@@ -97,13 +116,7 @@ def product_foo_has_environment_bar(step, product, haveness, environment):
             found = True
     
     shouldFind = (haveness == "has")
-    assert_equal(found, shouldFind, "looking for environment of " + environment)
-
-
-
-
-
-
+    eq_(found, shouldFind, "looking for environment of " + environment)
 
 
 def get_stored_or_store_product_name(stored, name):
@@ -114,8 +127,10 @@ def get_stored_or_store_product_name(stored, name):
         If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
         the stored one.  Otherwise, the explicit name passed in.  
     '''
-    if (stored.strip() == "that name"):
-        name = world.product_name
-    else:
-        world.product_name = name
-    return name
+    return get_stored_or_store_name("product", stored, name)
+    
+#    if (stored.strip() == "that name"):
+#        name = world.product_name
+#    else:
+#        world.product_name = name
+#    return name

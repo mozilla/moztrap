@@ -3,26 +3,20 @@ Feature: User Administration
     As an Administrator
     I want to be able to change user values
 
-    Scenario: Create a new user
+    Scenario: Create a new user, activate, then deactivate, then reactivate that user
         Given user with name "Jedi Jones" does not exist
-        When I create new user with name "Jedi Jones"
-        Then user with name "Jedi Jones" exists
-        And user "Jedi Jones" has active status "false"
-
-    Scenario: Activate a Non Active user
-        Given user with name "Jedi NotActive" exists
-        And user "Jedi NotActive" has active status "false"
-        When I activate user "Jedi NotActive"
-        Then user "Jedi NotActive" has active status "true"
-
-    Scenario: Deactivate an Active user
-        Given user with name "Jedi Active" exists
-        And user with name "Jedi Active" has active status "true"
-        When I activate user "Jedi Active"
-        Then user "Jedi Active" has active status "false"
+        When I create a new user with that name
+        Then the user with that name exists
+        And the user with that name is inactive
+        and when I activate the user with that name
+        then the user with that name is active
+        And when I deactivate the user with that name
+        Then the user with that name is disabled
+        And when I activate the user with that name
+        Then the user with that name is active
 
     Scenario: Assign a Role to a User
-        Given user with name "Jedi Roller" has active status "true"
+        Given the user with name "Admin Admin" is active
         And the role of "CHIPPER" exists
         And user with name "Jedi Roller" does not already have the role of "CHIPPER"
         When I add role of "CHIPPER" to user "Jedi Roller"
