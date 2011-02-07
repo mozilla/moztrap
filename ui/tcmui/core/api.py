@@ -276,7 +276,9 @@ class ObjectMixin(StrAndUnicode):
         elif version_payload:
             if version_payload is True:
                 version_payload = self
-            payload.update(version_payload.identity.submit_data())
+            if "identity" in version_payload.fields:
+                field = version_payload.fields["identity"]
+                payload.update(field.submit_data(version_payload))
         if extra_payload:
             payload.update(extra_payload)
 
