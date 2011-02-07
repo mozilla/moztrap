@@ -241,7 +241,7 @@ class ObjectMixin(StrAndUnicode):
         ``version_payload``
             If True, send this object's resource version as originalVersionId
             in payload. If set to another object, use that object's resource
-            version instead. Mutually exclusive with full_payload.
+            version instead. Has no effect if full_payload is specified.
 
         ``extra_payload``
             A dictionary of extra payload data to send.
@@ -270,14 +270,13 @@ class ObjectMixin(StrAndUnicode):
 
         payload = {}
         if full_payload:
-            if not hasattr(full_payload, "to_dict"):
+            if full_payload is True:
                 full_payload = self
             payload.update(full_payload.to_dict())
         elif version_payload:
-            if not hasattr(version_payload, "identity"):
+            if version_payload is True:
                 version_payload = self
-            payload.update({
-                "originalVersionId": version_payload.identity["@version"]})
+            payload.update(version_payload.identity.submit_data())
         if extra_payload:
             payload.update(extra_payload)
 
