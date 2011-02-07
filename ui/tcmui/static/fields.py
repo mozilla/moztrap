@@ -9,16 +9,21 @@ class StaticData(Field):
     attributes.)
 
     """
-    def __init__(self, key, default=None):
+    def __init__(self, key, api_name=None, default=None, api_submit_name=None):
         self.key = key
-        super(StaticData, self).__init__(None, default)
+        super(StaticData, self).__init__(api_name, default, api_submit_name)
 
 
     def install(self, attrname, cls):
+        auto_api_name = (self.api_name is None)
+        auto_submit_name = (self.api_submit_name is None)
+
         super(StaticData, self).install(attrname, cls)
 
-        self.api_name = "%sId" % self.api_name
-        self.api_submit_name = "%sId" % self.api_submit_name
+        if auto_api_name:
+            self.api_name = "%sId" % self.api_name
+        if auto_submit_name:
+            self.api_submit_name = "%sId" % self.api_submit_name
 
 
     def __get__(self, obj, cls):

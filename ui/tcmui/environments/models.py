@@ -5,19 +5,19 @@ Environment-related remote objects.
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
 
+from . import util
 
 
 class EnvironmentType(RemoteObject):
     company = fields.Locator(Company)
     name = fields.Field()
-    # @@@ broken in API, will be changed to 1/0?
     groupType = fields.Field()
 
     environments = fields.Link("EnvironmentList")
 
 
     def __unicode__(self):
-        return self.name
+        return u"%s%s" % (self.groupType and u"(Group Type) " or u"", self.name)
 
 
 
@@ -49,6 +49,10 @@ class EnvironmentList(ListObject):
     entries = fields.List(fields.Object(Environment))
 
 
+    def summary(self):
+        return u", ".join([e.name for e in self])
+
+
 
 class EnvironmentGroup(RemoteObject):
     company = fields.Locator(Company)
@@ -63,6 +67,26 @@ class EnvironmentGroup(RemoteObject):
         return self.name
 
 
+    def match(self, environments):
+        """
+        Return True if the given set of environments matches this environment
+        group.
+
+        If this environment group includes multiple environments of the same
+        type (e.g. Windows 7 and Windows Vista), it will match a set of
+        environments containing either one of those.
+
+        """
+        types = util.by_type(environments)
+        for type_id, envs in util.by_type(self.environments).iteritems():
+            try:
+                if not types[type_id].issubset(envs):
+                    return False
+            except KeyError:
+                return False
+        return True
+
+
 
 class EnvironmentGroupList(ListObject):
     entryclass = EnvironmentGroup
@@ -70,3 +94,15 @@ class EnvironmentGroupList(ListObject):
     default_url = "environmentgroups"
 
     entries = fields.List(fields.Object(EnvironmentGroup))
+
+    def match(self, environments):
+        """
+        If the given set of ``environments`` match any environment group in
+        this environment group list, return that environment group. Else return
+        None.
+
+        """
+        for group in self:
+            if group.match(environments):
+                return group
+        return None

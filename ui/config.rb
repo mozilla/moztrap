@@ -16,7 +16,6 @@ css_dir = "static/css"
 images_dir = "static/images"
 fonts_dir = "static/fonts"
 javascripts_dir = "static/js"
-cache_dir = "sass/.sass-cache"
 line_comments = false
 preferred_syntax = :sass
 output_style = :compact

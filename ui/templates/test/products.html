@@ -8,7 +8,9 @@
   <h2>Select a product to test:</h2>
   <ul class="list">
     {% for product in products %}
-    <li><a href="/product/1/environment/">{{ product.name }}</a></li>
+    <li>
+      <a href="{% url cycles product_id=product.id %}">{{ product.name }}</a>
+    </li>
     {% endfor %}
   </ul>
   {% else %}

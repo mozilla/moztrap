@@ -25,27 +25,34 @@ body > div
   +padding-leader(.25)
 
 header[role="banner"]
-  +columns(3)
-  +alpha
+  @extend .full
+  +trailing-border(1px,.5)
+  border-color: #ccc
+
   h1
-    margin: 0
-  a
-    #{$link}
-      +padding-leader(.5,21px)
-      +padding-trailer(.5,21px)
-      display: block
-      color: $base
-    #{$focus}
-      color: $accent
+    +columns(3,24)
+    +trailer(0)
+    a
+      #{$link}
+        +padding-leader(.5,21px)
+        display: block
+        color: $base
+      #{$focus}
+        color: $accent
       
 nav[role="navigation"]
-  +columns(12)
+  +columns(12,24)
   +padding-leader(.5)
+  +text-shadow(rgba(white,.5) 1px 1px 0)
   li
     +float(left)
     margin-right: .5em
   a
-    #{$link}
+    &:not([href])
+      +opacity(.5)
+      color: inherit
+      cursor: default    
+    &, #{$link}
       +padding-leader(.25)
       +padding-trailer(.25)
       +hpadding(1em)
@@ -54,8 +61,8 @@ nav[role="navigation"]
       background: rgba($base,.25)
 
 nav.meta
-  +columns(9)
-  +omega
+  +columns(9,24)
+  +omega(24)
   +padding-leader(.5)
   text-align: right
   li
@@ -66,11 +73,14 @@ nav.meta
     vertical-align: baseline
     &:last-child
       border: 0
+      padding-right: 0
 
 nav.crumb
-  @extend .full
-  +leading-border(1px,.25)
+  +columns(18)
+  +alpha
+  +padding-leader(.25)
   +padding-trailer(.25)
+  clear: both
   border-color: #ccc
   li
     +inline-block
@@ -170,6 +180,7 @@ footer[role="contentinfo"]
       &:nth-child(3n)
         +omega(12)
       &:first-child:last-child
+        +un-column
         +full(12)
       &:first-child
         &:nth-last-child(2), &:nth-last-child(4), &:nth-last-child(7)
@@ -192,19 +203,22 @@ footer[role="contentinfo"]
 .environment
   position: relative
   summary
-    position: absolute
-    top: - $base-rhythm-unit*2
-    right: 0
+    +columns(6)
+    +omega
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    text-align: right
     color: $alt
     &:hover
       color: $accent
   form
-    +full(24)
-    +prefix(12,24)
-    +trailing-border(1px,.5)
-    +trailer
+    @extend .full
+    +prefix(12)
+    +leading-border(1px)
+    +trailer(.5)
+    border-color: #ccc
   +inline-form(4,8,12)
-    
+
 #environment
   @extend .simple
   +inline-form(4,8,12)
@@ -218,16 +232,38 @@ footer[role="contentinfo"]
     width: columns(3,24)
   .go
     width: columns(4,24)
+    
   th
     a
       #{$link}
         display: block
         position: relative
+        &::after
+          +replace-text-with-dimensions('ui/bullet_arrow_up.png')
+          +inline-block
+          content: " "
+          margin-left: .4em
+          background-image: none
       #{$focus}
         &::after
-          content: "»"
-          position: absolute
-          right: 0
+          background-image: image-url('ui/bullet_arrow_up.png')
+    &.asc
+      a
+        #{$link}
+          &::after
+            background-image: image-url('ui/bullet_arrow_up.png')
+        #{$focus}
+          &::after
+            background-image: image-url('ui/bullet_arrow_down.png')
+    &.desc
+      a
+        #{$link}
+          &::after
+            background-image: image-url('ui/bullet_arrow_down.png')
+        #{$focus}
+          &::after
+            background-image: image-url('ui/bullet_arrow_up.png')
+            
   td:last-child
     text-align: right
     a

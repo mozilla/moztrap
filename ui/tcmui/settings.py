@@ -77,8 +77,9 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "tcmui.users.middleware.AuthenticationMiddleware",
     "tcmui.core.middleware.StaticCompanyMiddleware",
+    "tcmui.users.middleware.AuthenticationMiddleware",
+    "tcmui.environments.middleware.EnvironmentsMiddleware",
 ]
 
 ROOT_URLCONF = "tcmui.urls"
@@ -92,9 +93,14 @@ TEMPLATE_DIRS = [
 
 INSTALLED_APPS = [
     "django.contrib.sessions",
-    "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "tcmui.core",
+    "tcmui.static",
+    "tcmui.users",
+    "tcmui.products",
+    "tcmui.environments",
+    "tcmui.testexecution"
 ]
 
 CACHES = {

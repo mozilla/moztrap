@@ -6,6 +6,12 @@ from .api import RemoteObject, ListObject, fields
 from ..static.fields import StaticData
 
 
+
+# Fake Company ID constant
+SYSTEM_WIDE = -22222
+
+
+
 class Company(RemoteObject):
     address = fields.Field()
     city = fields.Field()

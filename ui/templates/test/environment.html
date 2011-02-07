@@ -2,38 +2,30 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li>[product name]</li>
+  <li>{{ product }}</li>
 {% endblock crumb %}
+
+{% block submeta %}
+{% endblock %}
 
 {% block content %}
 <section id="environment">
   <h2>Set your environment</h2>
-  <form action="/product/1/cycles/">
+  <form method="POST">
+    <input type="hidden" name="next" value="{{ next }}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
     <ul>
+      {% for field in form %}
       <li>
-        <label for="version">version</label>
-        <select name="version" id="version">
-          <option value="option1">option1</option>
-          <option value="option2">option2</option>
-        </select>
+        {{ field.label_tag }}
+        {{ field.errors }}
+        {{ field }}
       </li>
-      <li>
-        <label for="platform">platform</label>
-        <select name="platform" id="platform">
-          <option value="option1">option1</option>
-          <option value="option2">option2</option>
-        </select>
-      </li>
-      <li>
-        <label for="os">operating system</label>
-        <select name="os" id="os">
-          <option value="option1">option1</option>
-          <option value="option2">option2</option>
-        </select>
-      </li>
+      {% endfor %}
     </ul>
     <div class="form-actions">
-      <button>run tests</button>
+      <button type="submit">run tests</button>
     </div>
   </form>
 </section>

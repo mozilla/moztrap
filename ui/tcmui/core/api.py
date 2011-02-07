@@ -16,6 +16,7 @@ from remoteobjects.http import userAgent
 
 from . import conf
 from . import fields
+from . import sort
 from . import util
 from .. import __version__
 
@@ -60,7 +61,9 @@ class ObjectMixin(StrAndUnicode):
         response, and prepend TCM_API_BASE to relative URL paths.
 
         """
-        auth = kwargs.pop("auth", self.auth)
+        auth = kwargs.pop("auth", None)
+        if auth is None:
+            auth = self.auth
 
         request = super(ObjectMixin, self).get_request(*args, **kwargs)
 
@@ -255,12 +258,11 @@ class ObjectMixin(StrAndUnicode):
         (possibly modified as dictated by the other arguments)
 
         """
-        if getattr(self, "_location", None) is None:
-            raise ValueError("Cannot %s %r with no URL" % (method, self))
-
         kw["method"] = method
 
         if "url" not in kw:
+            if getattr(self, "_location", None) is None:
+                raise ValueError("Cannot %s %r with no URL" % (method, self))
             if relative_url is not None:
                 kw["url"] = join(self._location, relative_url)
             else:
@@ -323,6 +325,8 @@ class ObjectMixin(StrAndUnicode):
             full_payload=obj,
             update_from_response=obj,
             **kwargs)
+        if obj.auth is None:
+            obj.auth = kwargs.get("auth", self.auth)
 
 
     def put(self, **kwargs):
@@ -372,6 +376,10 @@ class ObjectMixin(StrAndUnicode):
         return self.get(newurl, auth=auth)
 
 
+    def refresh(self):
+        return self.__class__.get(self._location, auth=self.auth)
+
+
     def __repr__(self):
         return "<%s: %s>" % (self.__class__.__name__, self)
 
@@ -387,29 +395,28 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
 
 
     def _set_location(self, val):
-        self._location_override = val
+        self._location_fallback = val
 
 
     def _get_location(self):
-        if self._location_override:
-            return self._location_override
         # Avoid infinite loopage; take care to not trigger delivery
         try:
             if self._delivered and "@url" in self.identity:
                 return self.identity["@url"]
         except TypeError:
             pass
+        if self._location_fallback:
+            return self._location_fallback
         return None
 
 
     _location = property(_get_location, _set_location)
 
 
-    def update_from_response(self, url, response, content):
-        super(RemoteObject, self).update_from_response(url, response, content)
-        # If updated from a response, we should have a resourceIdentity.url;
-        # use that canonical URL rather than any previously-set URL.
-        self._location_override = None
+    @property
+    def id(self):
+        return util.id_for_object(self)
+
 
     def update_from_dict(self, data):
         """
@@ -435,7 +442,7 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
 
         """
         wrapper_key = "ns1.%s" % self.api_name
-        if wrapper_key in data:
+        if wrapper_key in data and isinstance(data[wrapper_key], list):
             data = data[wrapper_key][0]
         return super(RemoteObject, self).update_from_dict(data)
 
@@ -513,6 +520,24 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         return obj
 
 
+    @classmethod
+    def ours(cls, **kwargs):
+        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)
+
+
+    @property
+    def submit_ids_name(self):
+        return self.entryclass.__name__.lower() + "Ids"
+
+
+    def put(self, **kwargs):
+        payload_data = {
+            self.submit_ids_name: [util.id_for_object(o) for o in self]}
+
+        self._put(
+            extra_payload=payload_data,
+            **kwargs)
+
     def __getitem__(self, *args, **kwargs):
         obj = super(ListObject, self).__getitem__(*args, **kwargs)
         obj.auth = self.auth
@@ -521,9 +546,32 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     def __iter__(self, *args, **kwargs):
         for obj in super(ListObject, self).__iter__(*args, **kwargs):
-            obj.auth = self.auth
+            if isinstance(obj, RemoteObject):
+                obj.auth = self.auth
             yield obj
+
+
+    def sort(self, field, direction=sort.DEFAULT):
+        if field is None:
+            return self
+        return self.filter(sortfield=field, sortdirection=direction)
 
 
     def __unicode__(self):
         return u"[%s]" % ", ".join([repr(e) for e in self])
+
+
+
+class Activatable(object):
+    def activate(self, **kwargs):
+        self._put(
+            relative_url="activate",
+            update_from_response=True,
+            **kwargs)
+
+
+    def deactivate(self, **kwargs):
+        self._put(
+            relative_url="deactivate",
+            update_from_response=True,
+            **kwargs)

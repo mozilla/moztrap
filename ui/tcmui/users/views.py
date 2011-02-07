@@ -8,6 +8,7 @@ from ..core.api import admin
 
 from . import util
 from .forms import LoginForm, RegistrationForm
+from .models import RoleList
 
 
 
@@ -36,14 +37,15 @@ def register(request):
         form = RegistrationForm(request.POST, company=request.company)
         if form.is_valid():
             user = form.user
-            user.setroles([conf.TCM_NEW_USER_ROLE_ID], auth=admin)
+            user.roles = RoleList(
+                entries=[conf.TCM_NEW_USER_ROLE_ID], auth=admin)
             # @@@ Email confirmation step missing.
             user.activate(auth=admin)
             messages.success(
                 request,
                 "Congratulations, you've registered! Now you can login."
                 )
-            return redirect("products")
+            return redirect("login")
     else:
         form = RegistrationForm(company=request.company)
 

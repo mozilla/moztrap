@@ -4,9 +4,10 @@ User-related remote objects.
 """
 import urllib
 
-from ..core.api import RemoteObject, ListObject, fields
+from ..core.api import RemoteObject, Activatable, ListObject, fields
+from ..core.decorators import as_admin
 from ..core.models import Company
-from ..core.util import object_or_id
+from ..core.util import id_for_object
 from ..static.fields import StaticData
 
 
@@ -35,33 +36,22 @@ class Role(RemoteObject):
     company = fields.Locator(Company)
     name = fields.Field()
 
+    permissions = fields.Link(PermissionList)
+
 
     def __unicode__(self):
         return self.name
 
 
-    def setpermissions(self, perms, **kwargs):
-        payload_data = {"permissionIds": [object_or_id(p) for p in perms]}
-
-        self._put(
-            relative_url="permissions",
-            extra_payload=payload_data,
-            **kwargs)
-
-
     def addpermission(self, perm, **kwargs):
-        perm_id = object_or_id(perm)
-
         self._post(
-            relative_url="permissions/%s" % perm_id,
+            relative_url="permissions/%s" % id_for_object(perm),
             **kwargs)
 
 
     def removepermission(self, perm, **kwargs):
-        perm_id = object_or_id(perm)
-
         self._delete(
-            relative_url="permissions/%s" % perm_id,
+            relative_url="permissions/%s" % id_for_object(perm),
             **kwargs)
 
 
@@ -75,16 +65,17 @@ class RoleList(ListObject):
 
 
 
-class User(RemoteObject):
+class User(Activatable, RemoteObject):
     company = fields.Locator(Company)
     email = fields.Field()
     firstName = fields.Field()
     lastName = fields.Field()
-    password = fields.Field()
+    password = fields.Field(api_submit_name=False)
     screenName = fields.Field()
     userStatus = StaticData("USERSTATUS")
 
     roles = fields.Link(RoleList)
+    permissions = fields.Link(PermissionList)
 
     def __unicode__(self):
         return self.screenName
@@ -96,18 +87,10 @@ class User(RemoteObject):
         return cls.get(**kwargs)
 
 
-    def activate(self, **kwargs):
-        self._put(
-            relative_url="activate",
-            update_from_response=True,
-            **kwargs)
-
-
-    def deactivate(self, **kwargs):
-        self._put(
-            relative_url="deactivate",
-            update_from_response=True,
-            **kwargs)
+    @property
+    @as_admin
+    def permissionCodes(self):
+        return [p.permissionCode for p in self.permissions]
 
 
     def emailchange(self, newemail, **kwargs):
@@ -143,15 +126,6 @@ class User(RemoteObject):
             default_content_type="application/json",
             **kwargs
             )
-
-
-    def setroles(self, roles, **kwargs):
-        payload_data = {"roleIds": [object_or_id(r) for r in roles]}
-
-        self._put(
-            relative_url="roles",
-            extra_payload=payload_data,
-            **kwargs)
 
 
 

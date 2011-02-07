@@ -20,9 +20,8 @@ def login_redirect(function=None, redirect_field_name=None, login_url=None):
 
     def decorator(view_func):
         wrapped = unwrap_template_syntax_error(
-            force_render(view_func),
             RemoteObject.Unauthorized,
-            RemoteObject.Forbidden)
+            RemoteObject.Forbidden)(force_render(view_func))
 
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
@@ -71,27 +70,29 @@ def login_required(view_func):
 
 
 
-def unwrap_template_syntax_error(function, *unwrap_exceptions):
+def unwrap_template_syntax_error(*exceptions):
     """
     A decorator to catch TemplateSyntaxError and unwrap it, reraising the
     wrapped exception.
 
-    If unwrap_exceptions are passed, the unwrapping will only occur if the
-    wrapped exception is one of those exception types.
+    Only unwraps if the wrapped exception is one of ``exceptions``.
 
     """
-    @wraps(function)
-    def _wrapped(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except TemplateSyntaxError, e:
-            wrapped = e.exc_info[1]
-            if (not unwrap_exceptions or
-                wrapped in unwrap_exceptions or
-                isinstance(wrapped, unwrap_exceptions)):
-                raise wrapped
-            raise
-    return _wrapped
+
+    def decorator(func):
+        @wraps(func)
+        def _wrapped(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except TemplateSyntaxError, e:
+                if hasattr(e, "exc_info"):
+                    wrapped = e.exc_info[1]
+                    if (wrapped in exceptions or
+                        isinstance(wrapped, exceptions)):
+                        raise wrapped
+                raise
+        return _wrapped
+    return decorator
 
 
 

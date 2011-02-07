@@ -1,8 +1,43 @@
 {% extends 'base.html' %}
 
+{% load environment %}
+
 {% block test-active-nav %}active{% endblock test-active-nav %}
 
 {% block crumb %}
   {{ block.super }}
   <li><a href="{% url products %}">run tests</a></li>
 {% endblock crumb %}
+
+{% block submeta %}
+  {% if product %}
+  {% get_environment_selection_form for product as form %}
+  <details class="environment">
+    <summary>
+      {% if request.environments %}
+      environment: {{ request.environments.summary }}
+      {% else %}
+      set your environment
+      {% endif %}
+      »
+    </summary>
+    <form method="POST" action="{% url environment product_id=product.id %}">
+      <input type="hidden" name="next" value="{{ request.path }}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <ul>
+        {% for field in form %}
+        <li>
+          {{ field.label_tag }}
+          {{ field.errors }}
+          {{ field }}
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="form-actions">
+        <button type="submit">save changes</button>
+      </div>
+    </form>
+  </details>
+  {% endif %}
+{% endblock %}
