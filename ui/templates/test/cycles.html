@@ -1,6 +1,6 @@
 {% extends 'test/base.html' %}
 
-{% load sort %}
+{% load sort environment %}
 
 {% block crumb %}
   {{ block.super }}
@@ -28,7 +28,8 @@
       </thead>
 
       <tbody>
-        {% for cycle in cycles %}
+        {% match_environment cycles request.environments as split %}
+        {% for cycle in split.matched %}
         <tr>
           <td>{{ cycle.name }}</td>
           <td>{{ cycle.startDate|date:"Y/m/d" }}</td>
@@ -40,6 +41,11 @@
           </td>
         </tr>
         {% endfor %}
+        {% if split.unmatched %}
+        Omitting {{ split.unmatched|length }}
+        cycle{{ split.unmatched|length|pluralize }} incompatible with your
+        current environment settings.
+        {% endif %}
       </tbody>
 
     </table>

@@ -29,5 +29,33 @@ class GetEnvironmentSelectionForm(Tag):
         return u""
 
 
-
 register.tag(GetEnvironmentSelectionForm)
+
+
+
+class MatchEnvironment(Tag):
+    name = "match_environment"
+    options = Options(
+        Argument("items"),
+        Argument("environments"),
+        "as",
+        Argument("varname", resolve=False)
+        )
+
+
+    def render_tag(self, context, items, environments, varname):
+        matched = []
+        unmatched = []
+        if environments:
+            for item in items:
+                if item.environmentgroups.match(environments):
+                    matched.append(item)
+                else:
+                    unmatched.append(item)
+        else:
+            matched = items
+        context[varname] = {"matched": matched, "unmatched": unmatched}
+        return u""
+
+
+register.tag(MatchEnvironment)

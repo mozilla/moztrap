@@ -4,9 +4,11 @@ from .models import EnvironmentList, Environment
 def get_envs_from_request(request):
     envs = request.session.get("environments", [])
 
-    return EnvironmentList(entries=
+    ret = EnvironmentList(entries=
         [Environment.get("environments/%s" % eid, auth=request.auth)
          for etid, eid in envs])
+    ret.auth = request.auth
+    return ret
 
 
 
