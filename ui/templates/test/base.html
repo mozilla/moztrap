@@ -11,6 +11,7 @@
 
 {% block submeta %}
   {% if product %}
+  {# @@@ make the form options specific to current product/cycle/run #}
   {% get_environment_selection_form for product as form %}
   <details class="environment">
     <summary>
