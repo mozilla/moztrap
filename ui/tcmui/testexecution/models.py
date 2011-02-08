@@ -33,7 +33,7 @@ class TestCycle(Activatable, RemoteObject):
     def get_absolute_url(self):
         return reverse(
             "testruns",
-            kwargs={"product_id": self.product.id, "cycle_id": self.id})
+            kwargs={"cycle_id": self.id})
 
 
 
@@ -65,6 +65,10 @@ class TestRun(Activatable, RemoteObject):
 
     def __unicode__(self):
         return self.name
+
+
+    def get_absolute_url(self):
+        return reverse("runtests", kwargs={"testrun_id": self.id})
 
 
     def add(self, case, **kwargs):
@@ -124,6 +128,7 @@ class TestCaseAssignment(RemoteObject):
     testCase = fields.Locator(TestCase)
     testCaseVersion = fields.Locator(TestCaseVersion)
     tester = fields.Locator(User)
+    testRun = fields.Locator(TestRun)
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     results = fields.Link("TestResultList")

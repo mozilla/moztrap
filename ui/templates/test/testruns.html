@@ -1,9 +1,10 @@
-{% extends 'test/cycles.html' %}
+{% extends 'test/base.html' %}
 
 {% load sort environment %}
 
 {% block crumb %}
   {{ block.super }}
+  <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
   <li><a href="{{ cycle.get_absolute_url }}">{{ cycle }}</a></li>
 {% endblock crumb %}
 
@@ -34,7 +35,7 @@
           <td>{{ testrun.name }}</td>
           <td>{{ testrun.startDate|date:"Y/m/d" }}</td>
           <td>{{ testrun.endDate|date:"Y/m/d" }}</td>
-          <td><a href="/product/1/cycle/1/run/1/">run tests</a></td>
+          <td><a href="{{ testrun.get_absolute_url }}">run tests</a></td>
         </tr>
         {% endfor %}
         {% if split.unmatched %}

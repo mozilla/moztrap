@@ -1,4 +1,3 @@
-from django.http import Http404
 from django.template.response import TemplateResponse
 
 from ..core import sort
@@ -6,7 +5,7 @@ from ..products.models import Product
 from ..static import testcyclestatus, testrunstatus
 from ..users.decorators import login_required
 
-from .models import TestCycle, TestCycleList, TestRunList
+from .models import TestCycle, TestCycleList, TestRun, TestRunList
 
 
 
@@ -24,14 +23,14 @@ def cycles(request, product_id):
 
 
 @login_required
-def testruns(request, product_id, cycle_id):
+def testruns(request, cycle_id):
     cycle = TestCycle.get("testcycles/%s" % cycle_id, auth=request.auth)
-    product = cycle.product
-    if int(product.id) != int(product_id):
-        raise Http404
 
     testruns = TestRunList.get(auth=request.auth).filter(
-        testCycleId=cycle_id, testRunStatusId=testrunstatus.ACTIVE).sort(
+        testCycleId=cycle_id,
+        testRunStatusId=testrunstatus.ACTIVE,
+# @@@        selfAssignAllowed=True,
+        ).sort(
         *sort.from_request(request))
 
     return TemplateResponse(
@@ -40,4 +39,20 @@ def testruns(request, product_id, cycle_id):
         {"product": cycle.product,
          "cycle": cycle,
          "testruns": testruns
+         })
+
+
+
+@login_required
+def runtests(request, testrun_id):
+    testrun = TestRun.get("testruns/%s" % testrun_id, auth=request.auth)
+    cycle = testrun.testCycle
+    product = cycle.product
+
+    return TemplateResponse(
+        request,
+        "test/run.html",
+        {"product": product,
+         "cycle": cycle,
+         "testrun": testrun
          })

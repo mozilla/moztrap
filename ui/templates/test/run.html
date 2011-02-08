@@ -2,8 +2,9 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="/product/1/cycles/">[product name]</a></li>
-  <li>[test cycle name/id]</li>
+  <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
+  <li><a href="{{ cycle.get_absolute_url }}">{{ cycle }}</a></li>
+  <li><a href="{{ testrun.get_absolute_url }}">{{ testrun }}</a></li>
 {% endblock crumb %}
 
 {% block content %}
@@ -58,8 +59,11 @@
             <p class="suite">test suite</p>
           </header>
           <div class="status">
-            {# important that these buttons are spaceless #}
-            <button class="pass">pass</button><button class="invalid">invalid</button><button class="fail">fail</button>
+            {% spaceless %}
+            <button class="pass">pass</button>
+            <button class="invalid">invalid</button>
+            <button class="fail">fail</button>
+            {% endspaceless %}
           </div>
         </summary>
 
