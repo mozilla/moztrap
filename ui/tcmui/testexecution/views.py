@@ -29,7 +29,7 @@ def testruns(request, cycle_id):
     testruns = TestRunList.get(auth=request.auth).filter(
         testCycleId=cycle_id,
         testRunStatusId=testrunstatus.ACTIVE,
-# @@@        selfAssignAllowed=True,
+        selfAssignAllowed=True,
         ).sort(
         *sort.from_request(request))
 
