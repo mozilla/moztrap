@@ -23,7 +23,6 @@
           <th class="end {{ request|sort_status:"endDate" }}">
             <a href="{{ request|sort_url:"endDate" }}" title="sort by end date">end date</a>
           </th>
-          <th class="go"></th>
         </tr>
       </thead>
 
@@ -31,14 +30,13 @@
         {% match_environment cycles request.environments as split %}
         {% for cycle in split.matched %}
         <tr>
-          <td>{{ cycle.name }}</td>
-          <td>{{ cycle.startDate|date:"Y/m/d" }}</td>
-          <td>{{ cycle.endDate|date:"Y/m/d" }}</td>
           <td>
             <a href="{{ cycle.get_absolute_url }}">
-              go
+              {{ cycle.name }}
             </a>
           </td>
+          <td>{{ cycle.startDate|date:"Y/m/d" }}</td>
+          <td>{{ cycle.endDate|date:"Y/m/d" }}</td>
         </tr>
         {% endfor %}
         {% if split.unmatched %}
