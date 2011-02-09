@@ -279,6 +279,7 @@ input, button, textarea, select
   vertical-align: middle
   &:focus, &:active
     +box-shadow(#06f 0 0 .25em)
+    +box-shadow(inset #06f 0 0 .25em)
     z-index: 1
   &, optgroup
     +reset-box-model
@@ -312,11 +313,14 @@ input, textarea
   -webkit-appearance: none
   &:valid
     +box-shadow(green 0 0 .25em)
+    +box-shadow(inset green 0 0 .25em)
   &:invalid
     +border-radius(1px)
     +box-shadow(red 0 0 .25em)
+    +box-shadow(inset red 0 0 .25em)
     &:focus
       +box-shadow(#06f 0 0 .25em)
+      +box-shadow(inset #06f 0 0 .25em)
     .no-boxshadow &
       background-color: #f0dddd
 
