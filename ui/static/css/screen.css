@@ -121,6 +121,14 @@ th, thead th { font-weight: bold; }
 th, td, caption { padding: 0.75em; text-align: left; font-weight: normal; }
 
 th { padding-top: 1.125em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
+th a:link, th a:visited { display: block; position: relative; }
+th a:link::after, th a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; height: 16px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; }
+th a:link::after, th a:visited::after { *display: inline; }
+th a:focus::after, th a:hover::after, th a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
+th.asc a:link::after, th.asc a:visited::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
+th.asc a:focus::after, th.asc a:hover::after, th.asc a:active::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
+th.desc a:link::after, th.desc a:visited::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
+th.desc a:focus::after, th.desc a:hover::after, th.desc a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
 
 tr:nth-child(even) td { background: #eeeeff; }
 tr:hover td { background: #ddddff; }
@@ -288,19 +296,12 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
 #environment input, #environment select, #environment textarea { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
-/* cycles -------------------------------------------------------------- */
-#cycles .date { width: 15.663%; }
-#cycles .start, #cycles .end { width: 11.446%; }
-#cycles th a:link, #cycles th a:visited { display: block; position: relative; }
-#cycles th a:link::after, #cycles th a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; height: 16px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; }
-#cycles th a:link::after, #cycles th a:visited::after { *display: inline; }
-#cycles th a:focus::after, #cycles th a:hover::after, #cycles th a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
-#cycles th.asc a:link::after, #cycles th.asc a:visited::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
-#cycles th.asc a:focus::after, #cycles th.asc a:hover::after, #cycles th.asc a:active::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
-#cycles th.desc a:link::after, #cycles th.desc a:visited::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
-#cycles th.desc a:focus::after, #cycles th.desc a:hover::after, #cycles th.desc a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
-#cycles td:first-child { padding: 0; border: 0; }
-#cycles td:first-child a:link, #cycles td:first-child a:visited { display: block; padding: 0.75em; border-color: #cccccc; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; }
+/* cycles + testruns -------------------------------------------------------------- */
+#cycles .date, #testruns .date { width: 15.663%; }
+#cycles .start, #cycles .end, #testruns .start, #testruns .end { width: 11.446%; }
+#cycles td:first-child, #testruns td:first-child { padding: 0; border: 0; }
+#cycles td:first-child a:link, #cycles td:first-child a:visited, #testruns td:first-child a:link, #testruns td:first-child a:visited { display: block; padding: 0.75em; border-color: #cccccc; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; }
+#cycles .note, #testruns .note { margin-top: -0.75em; margin-bottom: 2.25em; text-align: right; font-style: italic; }
 
 /* create tests -------------------------------------------------------------- */
 .remove { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url(http://dummyimage.com/16/933/fff&text=X); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }

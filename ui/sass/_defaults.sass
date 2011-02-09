@@ -228,6 +228,35 @@ th
   +padding-leader(.75)
   +trailing-border(1px, 0.25)
   border-color: #ccc
+  a
+    #{$link}
+      display: block
+      position: relative
+      &::after
+        +replace-text-with-dimensions('ui/bullet_arrow_up.png')
+        +inline-block
+        content: " "
+        margin-left: .4em
+        background-image: none
+    #{$focus}
+      &::after
+        background-image: image-url('ui/bullet_arrow_up.png')
+  &.asc
+    a
+      #{$link}
+        &::after
+          background-image: image-url('ui/bullet_arrow_up.png')
+      #{$focus}
+        &::after
+          background-image: image-url('ui/bullet_arrow_down.png')
+  &.desc
+    a
+      #{$link}
+        &::after
+          background-image: image-url('ui/bullet_arrow_down.png')
+      #{$focus}
+        &::after
+          background-image: image-url('ui/bullet_arrow_up.png')
 
 tr
   &:nth-child(even)
