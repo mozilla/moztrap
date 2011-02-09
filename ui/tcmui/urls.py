@@ -1,8 +1,6 @@
 from django.conf.urls.defaults import patterns, url, include
-from django.views.generic.simple import direct_to_template
 
-from .users.decorators import login_required
-direct_to_template_login = login_required(direct_to_template)
+
 
 urlpatterns = patterns(
     "",
@@ -24,5 +22,7 @@ urlpatterns = patterns(
         "tcmui.testexecution.views.result",
         name="result"),
 
-    url("^manage/testcase/add/$", direct_to_template_login, {"template": "test/add_case.html"}, name="add"),
+    url("^manage/testcase/add/$",
+        "tcmui.testcases.views.add_testcase",
+        name="add_testcase"),
 )
