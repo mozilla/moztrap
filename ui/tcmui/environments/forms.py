@@ -57,8 +57,8 @@ class EnvironmentSelectionForm(forms.Form):
         if not match:
             raise forms.ValidationError(
                 "The selected environment combination is not valid for this "
-                "product. Please select a different combination, or ask the "
-                "system administrator to add this one.")
+                "product, test cycle, or test run. Please select a different "
+                "combination, or ask the system administrator to add this one.")
 
         return self.cleaned_data
 

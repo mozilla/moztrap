@@ -8,7 +8,7 @@ urlpatterns = patterns(
     "",
     url("^$", "tcmui.products.views.product_list", name="products"),
     url("^account/", include("tcmui.users.urls")),
-    url("^test/product/(?P<product_id>\d+)/environment/$",
+    url("^environment/$",
         "tcmui.environments.views.set_environment",
         name="environment"),
     url("^test/product/(?P<product_id>\d+)/cycles/$",

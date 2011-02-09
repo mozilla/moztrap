@@ -10,9 +10,8 @@
 {% endblock crumb %}
 
 {% block submeta %}
-  {% if product %}
-  {# @@@ make the form options specific to current product/cycle/run #}
-  {% get_environment_selection_form for product as form %}
+  {% if environmentgroups %}
+  {% get_environment_selection_form for environmentgroups as form %}
   <details class="environment">
     <summary>
       {% if request.environments %}
@@ -22,7 +21,7 @@
       {% endif %}
       »
     </summary>
-    <form method="POST" action="{% url environment product_id=product.id %}">
+    <form method="POST" action="{{ environmentgroups|set_environment_url }}">
       <input type="hidden" name="next" value="{{ request.path }}">
       {% csrf_token %}
       {{ form.non_field_errors }}

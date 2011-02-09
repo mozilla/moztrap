@@ -1,6 +1,9 @@
 {% extends 'test/base.html' %}
 
-{% block bread %}{% endblock bread %}
+{% block crumb %}
+{{ block.super }}
+<li>Products</li>
+{% endblock crumb %}
 
 {% block content %}
 <section id="products">

@@ -1,6 +1,8 @@
+from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 
 from ..core import sort
+from ..environments.util import set_environment_url
 from ..products.models import Product
 from ..static import testcyclestatus, testrunstatus
 from ..users.decorators import login_required
@@ -18,7 +20,12 @@ def cycles(request, product_id):
         *sort.from_request(request))
 
     return TemplateResponse(
-        request, "test/cycles.html", {"product": product, "cycles": cycles})
+        request,
+        "test/cycles.html",
+        {"product": product,
+         "cycles": cycles,
+         "environmentgroups": product.environmentgroups,
+         })
 
 
 
@@ -38,7 +45,8 @@ def testruns(request, cycle_id):
         "test/testruns.html",
         {"product": cycle.product,
          "cycle": cycle,
-         "testruns": testruns
+         "testruns": testruns,
+         "environmentgroups": cycle.environmentgroups,
          })
 
 
@@ -48,8 +56,10 @@ def runtests(request, testrun_id):
     testrun = TestRun.get("testruns/%s" % testrun_id, auth=request.auth)
 
     if not testrun.environmentgroups.match(request.environments):
-        from django.http import HttpResponse
-        return HttpResponse("set your envs, yo") # @@@
+        return HttpResponseRedirect("%s&next=%s" % (
+            set_environment_url(testrun.environmentgroups),
+            request.path
+            ))
 
     cycle = testrun.testCycle
     product = cycle.product
@@ -59,5 +69,6 @@ def runtests(request, testrun_id):
         "test/run.html",
         {"product": product,
          "cycle": cycle,
-         "testrun": testrun
+         "testrun": testrun,
+         "environmentgroups": testrun.environmentgroups,
          })
