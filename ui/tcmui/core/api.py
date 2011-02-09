@@ -529,7 +529,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
     @property
     def submit_ids_name(self):
         classname = self.entryclass.__name__
-        return classname[0].lower() + classname[1:] + "Ids"
+        return util.lc_first(classname) + "Ids"
 
 
     def put(self, **kwargs):

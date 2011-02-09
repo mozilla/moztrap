@@ -5,6 +5,7 @@ testing.
 """
 from django.core.urlresolvers import reverse
 
+from ..core import util
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
@@ -74,7 +75,11 @@ class TestRun(Activatable, RemoteObject):
 
 
     def add(self, case, **kwargs):
-        payload = {"%sid" % case.__class__.__name__.lower(): case.id}
+        payload = {
+            "%sId" % util.lc_first(case.__class__.__name__): case.id,
+            "priorityId": 0, # @@@
+            "runOrder": 0, # @@@
+            }
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,

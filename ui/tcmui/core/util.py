@@ -35,3 +35,8 @@ def id_for_object(val):
 
     raise ValueError("Values must be RemoteObject instances or integer ids, "
                      "'%r' appears to be neither." % val)
+
+
+
+def lc_first(s):
+    return s[0].lower() + s[1:]
