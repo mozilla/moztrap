@@ -5,12 +5,15 @@
             {% if result.started %}
               {% spaceless %}
               <button class="pass" data-action="finishsucceed">pass</button>
-              {# @@@ should have Invalid too, API doesn't support it yet #}
+              <button class="invalid" data-action="finishinvalidate">invalid</button>
               <button class="fail" data-action="finishfail">fail</button>
               {% endspaceless %}
             {% endif %}
             {% if result.passed %}
               <p class="pass">Passed</p>
+            {% endif %}
+            {% if result.invalidated %}
+              <p class="pass">Invalid</p>
             {% endif %}
             {% if result.failed %}
               <p class="pass">Failed</p>

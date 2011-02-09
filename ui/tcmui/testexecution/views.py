@@ -80,7 +80,8 @@ def runtests(request, testrun_id):
 ACTIONS = {
     "start": [],
     "finishsucceed": [],
-    "finishfail": ["comment", "failedStepNumber", "actualResult"]
+    "finishinvalidate": ["comment"],
+    "finishfail": ["comment", "failedStepNumber", "actualResult"],
     }
 
 

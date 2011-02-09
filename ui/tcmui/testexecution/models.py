@@ -200,6 +200,14 @@ class TestResult(RemoteObject):
             **kwargs)
 
 
+    def finishinvalidate(self, comment, **kwargs):
+        self._put(
+            relative_url="finishinvalidate",
+            extra_payload={"comment": comment},
+            update_from_response=True,
+            **kwargs)
+
+
     def finishfail(self, comment, failedStepNumber, actualResult, **kwargs):
         self._put(
             relative_url="finishfail",
@@ -233,6 +241,11 @@ class TestResult(RemoteObject):
     @property
     def passed(self):
         return self.testRunResultStatus.id == testresultstatus.PASSED
+
+
+    @property
+    def invalidated(self):
+        return self.testRunResultStatus.id == testresultstatus.INVALIDATED
 
 
     @property
