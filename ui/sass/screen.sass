@@ -230,8 +230,6 @@ footer[role="contentinfo"]
     width: columns(4,24)
   .start, .end
     width: columns(3,24)
-  .go
-    width: columns(4,24)
     
   th
     a
@@ -263,20 +261,18 @@ footer[role="contentinfo"]
         #{$focus}
           &::after
             background-image: image-url('ui/bullet_arrow_up.png')
-            
-  td:last-child
-    text-align: right
-    a
-      @extend .button
-      +opacity(0)
-      text-transform: lowercase
-      font-variant: small-caps
-      white-space: nowrap
-  tr:hover
-    td:last-child
-      a
-        +opacity(1)
 
+  td:first-child
+    padding: 0
+    border: 0
+    a
+      #{$link}
+        display: block
+        padding: $base-rhythm-unit * 0.5
+        border-color: #ccc
+        +trailing-border(1px,.5)
+        
+        
 /* create tests --------------------------------------------------------------    
 
 .remove
