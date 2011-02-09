@@ -12,6 +12,8 @@ from ..static.fields import StaticData
 from ..testcases.models import TestCase, TestCaseVersion
 from ..users.models import User
 
+from . import testresultstatus
+
 
 
 class TestCycle(Activatable, RemoteObject):
@@ -107,10 +109,14 @@ class IncludedTestCase(RemoteObject):
 
     def assign(self, tester, **kwargs):
         payload = {"testerId": tester.id}
+        assignment = TestCaseAssignment()
         self._post(
             relative_url="assignments",
             extra_payload=payload,
+            update_from_response=assignment,
             **kwargs)
+        assignment.auth = self.auth
+        return assignment
 
 
 
@@ -182,16 +188,10 @@ class TestResult(RemoteObject):
             **kwargs)
 
 
-    def reject(self, **kwargs):
-        self._put(
-            relative_url="reject",
-            update_from_response=True,
-            **kwargs)
-
-
-    def finishsucceed(self, **kwargs):
+    def finishsucceed(self, comment, **kwargs):
         self._put(
             relative_url="finishsucceed",
+            extra_payload={"comment": comment},
             update_from_response=True,
             **kwargs)
 
@@ -206,6 +206,34 @@ class TestResult(RemoteObject):
                 },
             update_from_response=True,
             **kwargs)
+
+
+    def reject(self, comment, **kwargs):
+        self._put(
+            relative_url="reject",
+            extra_payload={"comment": comment},
+            update_from_response=True,
+            **kwargs)
+
+
+    @property
+    def pending(self):
+        return self.testRunResultStatus.id == testresultstatus.PENDING
+
+
+    @property
+    def started(self):
+        return self.testRunResultStatus.id == testresultstatus.STARTED
+
+
+    @property
+    def passed(self):
+        return self.testRunResultStatus.id == testresultstatus.PASSED
+
+
+    @property
+    def failed(self):
+        return self.testRunResultStatus.id == testresultstatus.FAILED
 
 
 

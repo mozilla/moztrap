@@ -46,6 +46,11 @@ def testruns(request, cycle_id):
 @login_required
 def runtests(request, testrun_id):
     testrun = TestRun.get("testruns/%s" % testrun_id, auth=request.auth)
+
+    if not testrun.environmentgroups.match(request.environments):
+        from django.http import HttpResponse
+        return HttpResponse("set your envs, yo") # @@@
+
     cycle = testrun.testCycle
     product = cycle.product
 

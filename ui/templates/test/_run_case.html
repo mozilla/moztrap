@@ -1,0 +1,42 @@
+    <article class="test">
+      <details{% if open %} open="open"{% endif %}>
+
+        <summary>
+          <header>
+            <h3><b>#{{ case.id }} </b>{{ case.name }}</h3>
+          </header>
+          <div class="status">
+            {% if result.pending %}
+              <button class="start">start</button>
+            {% endif %}
+            {% if result.started %}
+              {% spaceless %}
+              <button class="pass">pass</button>
+              {# @@@ should have Invalid too, API doesn't support it yet #}
+              <button class="fail">fail</button>
+              {% endspaceless %}
+            {% endif %}
+            {% if result.passed %}
+              <p class="pass">Passed</p>
+            {% endif %}
+            {% if result.failed %}
+              <p class="pass">Failed</p>
+            {% endif %}
+          </div>
+        </summary>
+
+        <div class="content">
+          <ol class="steps">
+            {% for step in caseversion.steps %}
+            <li>
+              <h4>{{ step.instruction }}</h4>
+              <div class="results">
+                <p>{{ step.expectedResult }}</p>
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+
+      </details>
+    </article>
