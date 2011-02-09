@@ -57,17 +57,22 @@
     </div>
 
     <ol class="steps">
+      {{ form.steps_formset.management_form }}
+      {% for stepform in form.steps_formset.forms %}
       <li>
         <div class="step">
-          <label for="step1">step to execute</label>
-          <textarea name="step1"></textarea>
+          {{ stepform.instruction.errors }}
+          {{ stepform.instruction.label_tag }}
+          {{ stepform.instruction }}
         </div>
         <div class="result">
-          <label for="result1">expected result</label>
-          <textarea name="result1"></textarea>
+          {{ stepform.expected_result.errors }}
+          {{ stepform.expected_result.label_tag }}
+          {{ stepform.expected_result }}
         </div>
         <a href="#" class="remove">remove</a>
       </li>
+      {% endfor %}
       <li>
         <a href="#" class="add">add a step »</a>
       </li>
