@@ -3,6 +3,8 @@ function testCaseButtons() {
         "click",
         function(event) {
             event.preventDefault();
+            // @@@ this does not work on a live event
+            // event.stopPropagation();
             var button = $(this);
             var testcase = button.closest("article.test");
             $.post(
