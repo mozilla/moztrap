@@ -1,0 +1,18 @@
+          <div class="status">
+            {% if result.pending %}
+              <button class="start" data-action="start">start</button>
+            {% endif %}
+            {% if result.started %}
+              {% spaceless %}
+              <button class="pass" data-action="finishsucceed">pass</button>
+              {# @@@ should have Invalid too, API doesn't support it yet #}
+              <button class="fail" data-action="finishfail">fail</button>
+              {% endspaceless %}
+            {% endif %}
+            {% if result.passed %}
+              <p class="pass">Passed</p>
+            {% endif %}
+            {% if result.failed %}
+              <p class="pass">Failed</p>
+            {% endif %}
+          </div>

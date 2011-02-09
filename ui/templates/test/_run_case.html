@@ -1,28 +1,11 @@
-    <article class="test">
+    <article class="test" data-action-url="{% url result result_id=result.id %}">
       <details{% if open %} open="open"{% endif %}>
 
         <summary>
           <header>
             <h3><b>#{{ case.id }} </b>{{ case.name }}</h3>
           </header>
-          <div class="status">
-            {% if result.pending %}
-              <button class="start">start</button>
-            {% endif %}
-            {% if result.started %}
-              {% spaceless %}
-              <button class="pass">pass</button>
-              {# @@@ should have Invalid too, API doesn't support it yet #}
-              <button class="fail">fail</button>
-              {% endspaceless %}
-            {% endif %}
-            {% if result.passed %}
-              <p class="pass">Passed</p>
-            {% endif %}
-            {% if result.failed %}
-              <p class="pass">Failed</p>
-            {% endif %}
-          </div>
+          {% include "test/_run_case_status.html" %}
         </summary>
 
         <div class="content">

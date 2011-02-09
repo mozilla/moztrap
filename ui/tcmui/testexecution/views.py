@@ -1,4 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
 
 from ..core import sort
@@ -7,7 +9,7 @@ from ..products.models import Product
 from ..static import testcyclestatus, testrunstatus
 from ..users.decorators import login_required
 
-from .models import TestCycle, TestCycleList, TestRun, TestRunList
+from .models import TestCycle, TestCycleList, TestRun, TestRunList, TestResult
 
 
 
@@ -71,4 +73,46 @@ def runtests(request, testrun_id):
          "cycle": cycle,
          "testrun": testrun,
          "environmentgroups": testrun.environmentgroups,
+         })
+
+
+
+ACTIONS = {
+    "start": [],
+    "finishsucceed": [],
+    "finishfail": ["comment", "failedStepNumber", "actualResult"]
+    }
+
+
+@login_required
+@require_POST
+def result(request, result_id):
+    result = TestResult.get(
+        "testruns/results/%s" % result_id,
+        auth=request.auth)
+
+    action = request.POST.get("action", None)
+    try:
+        argnames = ACTIONS[action]
+    except KeyError:
+        return HttpResponseBadRequest(
+            "%s is not a valid result action." % action)
+
+    kwargs = {"auth": request.auth}
+
+    for argname in argnames:
+        try:
+            kwargs[argname] = request.POST[argname]
+        except KeyError:
+            return HttpResponseBadRequest(
+                "Required parameter %s missing." % argname)
+
+    getattr(result, action)(**kwargs)
+
+    return render_to_response(
+        "test/_run_case_status.html",
+        {"case": result.testCase,
+         "caseversion": result.testCaseVersion,
+         "result": result,
+         "open": True,
          })

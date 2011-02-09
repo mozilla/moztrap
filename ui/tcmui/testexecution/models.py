@@ -188,10 +188,9 @@ class TestResult(RemoteObject):
             **kwargs)
 
 
-    def finishsucceed(self, comment, **kwargs):
+    def finishsucceed(self, **kwargs):
         self._put(
             relative_url="finishsucceed",
-            extra_payload={"comment": comment},
             update_from_response=True,
             **kwargs)
 
