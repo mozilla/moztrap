@@ -28,17 +28,28 @@ $(function() {
           });
   });
 
-function autoFocusScroll(trigger) {
+function autoFocus(trigger) {
     var button = $(trigger);
     
     button.click(function() {
         if ($(this).parent().hasClass('open')) {
             $(this).parent().find('textarea').focus();
-            $.scrollTo($(this).siblings('.failform'), 750);
+        }
+    });
+}
+
+function autoScroll(trigger, formcontainer) {
+    var button = $(trigger);
+    
+    button.click(function() {
+        if ($(this).parent().hasClass('open')) {
+            $.scrollTo($(this).siblings(formcontainer), 750);
         }
     });
 }
 
 $(document).ready(function() {
-    autoFocusScroll('details.stepfail > summary');
+    autoFocus('details.stepfail > summary');
+    autoScroll('details.stepfail > summary', '.failform');
+    autoFocus('details.testinvalid > summary');
 });
