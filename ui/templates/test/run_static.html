@@ -1,0 +1,251 @@
+{% extends 'test/base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="#">{ product }</a></li>
+  <li><a href="#">{ cycle }</a></li>
+  <li><a href="#">{ testrun }</a></li>
+{% endblock crumb %}
+
+{% block content %}
+  <section id="run">
+    <h2>Run Tests:</h2>
+
+    <details class="test" open="open">
+
+      <summary class="header">
+        <header>
+          <small>#256</small>
+          <h3>Another Test Case</h3>            
+        </header>
+        
+        <div class="status">
+          <button class="start">start</button>
+        </div>
+      </summary>
+
+      <ol class="steps">
+        <li>
+          <h4>step instruction</h4>
+          <div class="results">
+            <p>Step Expected Result</p>
+          </div>
+          <details class="stepfail" open="open">
+            <summary>fail</summary>
+            <div>
+              <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+              <div class="form-actions">
+                <button class="fail">submit step failure</button>
+              </div>
+            </div>
+          </details>
+        </li>
+        <li>
+          <h4>step instruction</h4>
+          <div class="results">
+            <p>Step Expected Result</p>
+          </div>
+          <details class="stepfail">
+            <summary>fail</summary>
+            <div>
+              <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+              <div class="form-actions">
+                <button class="fail">submit step failure</button>
+              </div>
+            </div>
+          </details>
+        </li>
+        <li>
+          <h4>step instruction</h4>
+          <div class="results">
+            <p>Step Expected Result</p>
+          </div>
+          <details class="stepfail">
+            <summary>fail</summary>
+            <div>
+              <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+              <div class="form-actions">
+                <button class="fail">submit step failure</button>
+              </div>
+            </div>
+          </details>
+        </li>
+      </ol>
+
+    </details>
+
+    <details class="test started">
+
+      <summary class="header">
+        <header>
+          <small>#256</small>
+          <h3>Another Test Case</h3>            
+        </header>
+        
+        <div class="status">
+          {% spaceless %}
+            <button class="invalid">mark as invalid</button> or
+            <button class="pass">pass all steps</button>
+          {% endspaceless %}
+        </div>
+      </summary>
+
+      <div class="content">
+        <ol class="steps">
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </div>
+
+    </details>
+
+    <details class="test passed">
+
+      <summary class="header">
+        <header>
+          <small>#256</small>
+          <h3>Another Test Case</h3>            
+        </header>
+        
+        <div class="status">
+          <p>Passed (<a href="#">reopen</a>)</p>
+        </div>
+      </summary>
+
+      <div class="content">
+        <ol class="steps">
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </div>
+
+    </details>
+
+    <details class="test invalidated">
+
+      <summary class="header">
+        <header>
+          <small>#256</small>
+          <h3>Another Test Case</h3>            
+        </header>
+        
+        <div class="status">
+          <p>Marked Invalid (<a href="#">reopen</a>)</p>
+        </div>
+      </summary>
+
+      <div class="content">
+        <ol class="steps">
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </div>
+
+    </details>
+
+    <details class="test failed">
+
+      <summary class="header">
+        <header>
+          <small>#256</small>
+          <h3>Another Test Case</h3>            
+        </header>
+        
+        <div class="status">
+          <p>Failed (<a href="#">reopen</a>)</p>
+        </div>
+      </summary>
+
+      <div class="content">
+        <ol class="steps">
+          <li>
+            <h4>step instruction</h4>
+            <div class="results">
+              <p>Step Expected Result</p>
+            </div>
+            <details class="stepfail">
+              <summary>fail</summary>
+              <div>
+                <textarea name="actualResult" placeholder="please explain the actual results of this step."></textarea>
+                <div class="form-actions">
+                  <button class="fail">submit step failure</button>
+                </div>
+              </div>
+            </details>
+          </li>
+        </ol>
+      </div>
+
+    </details>
+    
+  </section>
+{% endblock content %}

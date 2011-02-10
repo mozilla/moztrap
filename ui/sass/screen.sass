@@ -315,63 +315,105 @@ footer[role="contentinfo"]
 /* run tests --------------------------------------------------------------    
 
 #run
-  .test, summary, .content
+  .test, .content
     +full(24)
   .test
+    +pie-clearfix      
+    &[open], &.open, .header
+      +trailing-border(1px,.5)
+    &[open], &.open
+      .header
+        border-bottom-color: #ccc
+    &:first-of-type
+      &, &[open], &.open
+        padding-top: 0
+        .header
+          +leading-border(1px,.5)
+  .header
     +pie-clearfix
-    +trailing-border(1px,.5)
-    +trailer(.5)
-    &:last-child
+    +padding-leader(.5)
+    p
+      +padding-leader(.25)
+      +padding-trailer(.25)
       margin: 0
-      padding: 0
-      border: 0
-  .started
-    summary
-      background: #eef
-  summary
-    +pie-clearfix
   header
-    +columns(20,24)
-  h3
-    +adjust-font-size-to(24px)
-    margin: 0
-    font-weight: normal
-    b
-      +adjust-font-size-to(14px,1,24px)
-      +inline-block
-      width: columns(2,20)
-      margin-right: gutter(20)
+    +columns(16,24)
+    +leader(.25)
+    +trailer(.25)
+    h3
+      +columns(14,16)
+      +adjust-font-size-to(24px)
+      margin: 0
+      font-weight: normal
+    small
+      +columns(2,16)
+      +adjust-font-size-to(14px)
       vertical-align: top
       font-weight: bold
       text-align: right
-  .suite
-    +prefix(2,20)
-    margin: 0
+
+  .steps
+    +prefix(2,24)
+    +leader
+    margin-left: 0
+  li
+    +pie-clearfix
+    clear: both
+    position: relative
+  
+  h4
+    +trailer(.5)
+    background: $light
+  .results
+    +columns(14,22)
+  .stepfail
+    +columns(8,22)
+    +omega(22)
+    +trailer
+    summary
+      position: absolute
+      right: 0
+      top: 0
+      width: columns(2,22) - gutter(22)
+      padding: 0 gutter(22)
+      background: rgba($red-light,.5)
+      color: $light
+      text-align: center
+      &:hover
+        background: $red
   .status
     +adjust-font-size-to(14px)
-    +columns(4,24)
+    +columns(8,24)
     +omega(24)
-    +leader(.25,14px)
-    text-align: center
-    button
-      +rhythm-borders(1px,.25,14px)
-  .content
-    +pad(2,4,24)
-    +leader
-  h4
+    text-align: right
+    a
+      #{$link}
+        font-style: italic
+
+  .start, .pass, .fail
+    +rhythm-borders(1px,.25,14px)
+    +hpadding(1em)
+    width: columns(4,8)
     margin: 0
-  .start
-    +box-sizing('border-box')
-    width: 100%
-  .pass, .invalid, .fail
-    width: 33%
-  .pass
-    +border-right-radius(0)
-    border-right: none
   .invalid
-    +background(linear-gradient(top center, #ffe 0%, #ee9 100%))
-    +border-radius(0)   
+    +button-reset
+    +link
+    border: 0
+  .invalid
+    font-style: italic
   .fail
-    +background(linear-gradient(top center, #fee 0%, #e99 100%))    
-    +border-left-radius(0)
-    border-left: none
+    @extend .redbutton
+  
+  .started
+    .header
+      background: $blue-lighter
+  .passed
+    .header
+      background: $green-lighter
+  .invalidated
+    .header
+      background: $yellow-light
+  .failed
+    .header
+      background: $red-lighter
+  
