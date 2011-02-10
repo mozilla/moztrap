@@ -103,7 +103,8 @@ def search_and_verify(step, uri, search_args, obj_name, expect_to_find):
     '''
     #arg_value_enc = urllib.quote(arg_value)
     url = add_params(uri, search_args)
-
+    
+#    print "Searching: " + url
     headers = {'Content-Type':'application/json',
                'Authorization': get_auth_header()}
     
@@ -114,15 +115,45 @@ def search_and_verify(step, uri, search_args, obj_name, expect_to_find):
 
     if not expect_to_find:
         count = get_count(data, ns(obj_name))
-        eq_(count, 0, "expect result size zero")
+        eq_(count, 0, "expect result size zero:\n" + data)
     else:
         environmentJson = get_single_item(data, ns(obj_name))
 
         # Verify that the result's values match our search params 
         for k, v in search_args.items():
             eq_(environmentJson.get(ns(k)), v, obj_name + " match")
-    
+    return url
 
+def search_and_verify_array(step, uri, search_args, obj_name, expect_to_find):
+    '''
+        This does a search based on the search_args passed in.  So "expect_to_find"
+        is really filtered based on those parameters.  
+        
+        expect_to_find: If True, then we verify based on expecting to find something.
+                        If False, this will fail if we get a resultset greater than 0.
+    '''
+    #arg_value_enc = urllib.quote(arg_value)
+    url = add_params(uri, search_args)
+    
+#    print "Searching: " + url
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+    
+    world.conn.request("GET", url, "", headers)
+    response = world.conn.getresponse()
+
+    data = verify_status(200, response, uri + " existence")
+
+    if not expect_to_find:
+        count = get_count(data, ns(obj_name))
+        eq_(count, 0, "expect result size zero:\n" + data)
+    else:
+        environmentJson = get_array_item(data, obj_name)
+
+        # Verify that the result's values match our search params 
+        for k, v in search_args.items():
+            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
+    return url
 
 def get_single_item(response_txt, type):
     '''
@@ -162,6 +193,37 @@ def get_single_item(response_txt, type):
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
 
+def get_array_item(response_txt, type):
+    '''
+        Expect the response to be a single item.  If it's more, we assert.
+    '''
+    array_type = as_arrayof(type)
+    ns_type = ns(type)
+
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
+    
+    item = None
+    
+
+    assert respJson.__contains__(array_type), "didn't find expected type: %s in:\n%s" % (array_type, jstr(respJson))
+    objarray = respJson.get(array_type)
+
+    arr_item = objarray[0]
+    assert arr_item.__contains__(ns_type), "didn't find expected type: %s within %s in:\n%s" % (ns_type, array_type, jstr(respJson))
+    items = arr_item.get(ns_type)
+            
+    if (len(items) > 0) and isinstance(items, list):
+        item = items[0]
+    else:
+        item = items
+
+    assert item != None, "didn't find expected type: " + ns_type + " in:\n" + jstr(respJson)
+    return item
 
 def get_first_item(response_txt, type):
     '''
@@ -350,26 +412,17 @@ def find_ordered_response(type, field, first, second, obj_list):
     assert foundSecond == True, "Second was found"
     
 def plural(type):
-    pl_map = {
-              world.ns + "attachment": world.ns + "attachments",
-              world.ns + "company": world.ns + "companies",
-              world.ns + "environment": world.ns + "environments",
-              world.ns + "environmenttype": world.ns + "environmenttypes",
-              world.ns + "permission":world.ns + "permissions",
-              world.ns + "product":world.ns + "products",
-              world.ns + "role":world.ns + "roles",
-              world.ns + "testcase": world.ns + "testcases",
-              world.ns + "testcycle":world.ns + "testcycles",
-              world.ns + "testplan":world.ns + "testplans",
-              world.ns + "testrun":world.ns + "testruns",
-              world.ns + "testsuite":world.ns + "testsuites",
-              world.ns + "user": world.ns + "users"
-              }
+    
+    if (type == ns("company")):
+        plural_type = ns("companies")
+    else:
+        plural_type = type + "s"   
 
-    plural_type = pl_map.get(type)
-    assert plural_type, "Couldn't find plural of %s" % (type, )
     return plural_type
 
+def as_arrayof(type):
+    return ns("ArrayOf" + str.capitalize(type))
+    
 def jstr(obj):
     return json.dumps(obj, sort_keys=True, indent=4)
 

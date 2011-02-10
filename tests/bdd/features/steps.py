@@ -13,7 +13,7 @@ def save_db_state():
         This will dump the database to a file.  That file will then be used at the beginning
         of each scenario to reset to a known state of the database
     '''
-    conn = httplib.HTTPConnection(world.hostname, world.port, timeout=50)
+    conn = httplib.HTTPConnection(world.hostname, world.port, timeout=120)
     conn.request("GET", world.path_savedb)
     data = conn.getresponse()
 
@@ -22,7 +22,7 @@ def restore_db_state():
         This will re-create the database from the dump created in save_db_state().  This will
         be run at the beginning end of each scenario to reset the database to the known state.
     '''
-    conn = httplib.HTTPConnection(world.hostname, world.port, timeout=50)
+    conn = httplib.HTTPConnection(world.hostname, world.port, timeout=120)
     conn.request("GET", world.path_restoredb)
     response = conn.getresponse()
     verify_status(200, response, "Restored the database")
