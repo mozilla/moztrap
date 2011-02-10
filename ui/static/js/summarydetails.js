@@ -8,11 +8,11 @@ $(function() {
    // Store a reference to the current `details` element in a variable
    var $details = $(this),
        // Store a reference to the `summary` element of the current `details` element (if any) in a variable
-       $detailsSummary = $('summary', $details),
+       $detailsSummary = $('summary:first', $details),
        // Do the same for the info within the `details` element
-       $detailsNotSummary = $details.children(':not(summary)'),
+       $detailsNotSummary = $details.children(':not(summary:first)'),
        // This will be used later to look for direct child text nodes
-       $detailsNotSummaryContents = $details.contents(':not(summary)');
+       $detailsNotSummaryContents = $details.contents(':not(summary:first)');
 
    // If there is no `summary` in the current `details` element…
    if (!$detailsSummary.length) {
@@ -28,7 +28,7 @@ $(function() {
      return (this.nodeType === 3) && (/[^\t\n\r ]/.test(this.data));
     }).wrap('<span>');
     // There are now no direct child text nodes anymore — they’re wrapped in `span` elements
-    $detailsNotSummary = $details.children(':not(summary)');
+    $detailsNotSummary = $details.children(':not(summary:first)');
    }
 
    // Hide content unless there’s an `open` attribute
