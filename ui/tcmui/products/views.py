@@ -1,6 +1,7 @@
 from django.template.response import TemplateResponse
 
 from ..core import conf
+from ..environments.models import EnvironmentGroupList
 from ..users.decorators import login_redirect
 
 from .models import ProductList
@@ -13,5 +14,7 @@ def product_list(request):
         "test/products.html",
         {"products":
              ProductList.get(auth=request.auth).filter(
-                companyId=conf.TCM_COMPANY_ID)}
+                companyId=conf.TCM_COMPANY_ID),
+         "environmentgroups": EnvironmentGroupList.ours(auth=request.auth)
+         }
     )

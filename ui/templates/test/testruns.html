@@ -1,9 +1,10 @@
-{% extends 'test/cycles.html' %}
+{% extends 'test/base.html' %}
 
-{% load sort %}
+{% load sort environment %}
 
 {% block crumb %}
   {{ block.super }}
+  <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
   <li><a href="{{ cycle.get_absolute_url }}">{{ cycle }}</a></li>
 {% endblock crumb %}
 
@@ -23,22 +24,29 @@
           <th class="end {{ request|sort_status:"endDate" }}">
             <a href="{{ request|sort_url:"endDate" }}" title="sort by end date">end date</a>
           </th>
-          <th class="go"></th>
         </tr>
       </thead>
 
       <tbody>
-        {% for testrun in testruns %}
+        {% match_environment testruns request.environments as split %}
+        {% for testrun in split.matched %}
         <tr>
-          <td>{{ testrun.name }}</td>
+          <td><a href="{{ testrun.get_absolute_url }}">{{ testrun.name }}</a></td>
           <td>{{ testrun.startDate|date:"Y/m/d" }}</td>
           <td>{{ testrun.endDate|date:"Y/m/d" }}</td>
-          <td><a href="/product/1/cycle/1/run/1/">run tests</a></td>
         </tr>
         {% endfor %}
       </tbody>
 
     </table>
+
+    {% if split.unmatched %}
+    <p class="note">
+      Omitting {{ split.unmatched|length }}
+      test run{{ split.unmatched|length|pluralize }} incompatible with your
+      current environment settings.
+    </p>
+    {% endif %}
 
   </section>
 {% endblock content %}

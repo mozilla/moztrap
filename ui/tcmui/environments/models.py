@@ -53,6 +53,19 @@ class EnvironmentList(ListObject):
         return u", ".join([e.name for e in self])
 
 
+    def match(self, environments):
+        """
+        Return True if the given set of environments matches this set of
+        environments.
+
+        If this set of environments includes multiple environments of the same
+        type (e.g. Windows 7 and Windows Vista), it will match a set of
+        environments containing either one of those.
+
+        """
+        return util.match(environments, self)
+
+
 
 class EnvironmentGroup(RemoteObject):
     company = fields.Locator(Company)
@@ -77,14 +90,7 @@ class EnvironmentGroup(RemoteObject):
         environments containing either one of those.
 
         """
-        types = util.by_type(environments)
-        for type_id, envs in util.by_type(self.environments).iteritems():
-            try:
-                if not types[type_id].issubset(envs):
-                    return False
-            except KeyError:
-                return False
-        return True
+        return self.environments.match(environments)
 
 
 

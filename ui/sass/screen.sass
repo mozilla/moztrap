@@ -223,60 +223,30 @@ footer[role="contentinfo"]
   @extend .simple
   +inline-form(4,8,12)
 
-/* cycles --------------------------------------------------------------    
+/* cycles + testruns --------------------------------------------------------------    
 
-#cycles
+#cycles, #testruns
   .date
     width: columns(4,24)
   .start, .end
     width: columns(3,24)
-  .go
-    width: columns(4,24)
     
-  th
+  td:first-child
+    padding: 0
+    border: 0
     a
       #{$link}
         display: block
-        position: relative
-        &::after
-          +replace-text-with-dimensions('ui/bullet_arrow_up.png')
-          +inline-block
-          content: " "
-          margin-left: .4em
-          background-image: none
-      #{$focus}
-        &::after
-          background-image: image-url('ui/bullet_arrow_up.png')
-    &.asc
-      a
-        #{$link}
-          &::after
-            background-image: image-url('ui/bullet_arrow_up.png')
-        #{$focus}
-          &::after
-            background-image: image-url('ui/bullet_arrow_down.png')
-    &.desc
-      a
-        #{$link}
-          &::after
-            background-image: image-url('ui/bullet_arrow_down.png')
-        #{$focus}
-          &::after
-            background-image: image-url('ui/bullet_arrow_up.png')
-            
-  td:last-child
+        padding: $base-rhythm-unit * 0.5
+        border-color: #ccc
+        +trailing-border(1px,.5)
+  
+  .note
+    +leader(-.5)
+    +trailer(1.5)
     text-align: right
-    a
-      @extend .button
-      +opacity(0)
-      text-transform: lowercase
-      font-variant: small-caps
-      white-space: nowrap
-  tr:hover
-    td:last-child
-      a
-        +opacity(1)
-
+    font-style: italic
+        
 /* create tests --------------------------------------------------------------    
 
 .remove

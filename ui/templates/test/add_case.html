@@ -8,24 +8,26 @@
 {% block content %}
 <section id="create">
   <h2>create a new test case</h2>
-  <form>
+  <form method="POST">
+    {% csrf_token %}
     <ul class="meta">
-      <li><label for="name">name</label><input type="text" name="name" value="" id="name" /></li>
-      <li><label for="product">product</label>
-        <select name="product" id="product">
-          <option value="option1">option1</option>
-          <option value="option2">option2</option>
-          <option value="option1">option3</option>
-          <option value="option2">option4</option>
-          <option value="option1">option5</option>
-          <option value="option2">option6</option>
-          <option value="option1">option7</option>
-          <option value="option2">option8</option>
-        </select>
+      <li>
+        {{ form.name.errors }}
+        {{ form.name.label_tag }}
+        {{ form.name }}
       </li>
-      <li><label for="tags">tags</label><input type="text" name="tags" value="" id="tags" /></li>
+      <li>
+        {{ form.product.errors }}
+        {{ form.product.label_tag }}
+        {{ form.product }}
+      </li>
+      <li>
+        {{ form.tags.errors }}
+        {{ form.tags.label_tag }}
+        {{ form.tags }}
+      </li>
     </ul>
-    
+
     <div class="env">
       <label>environment constraints</label>
       <ul>
@@ -53,28 +55,33 @@
         </li>
       </ul>
     </div>
-    
+
     <ol class="steps">
+      {{ form.steps_formset.management_form }}
+      {% for stepform in form.steps_formset.forms %}
       <li>
         <div class="step">
-          <label for="step1">step to execute</label>
-          <textarea name="step1"></textarea>            
+          {{ stepform.instruction.errors }}
+          {{ stepform.instruction.label_tag }}
+          {{ stepform.instruction }}
         </div>
         <div class="result">
-          <label for="result1">expected result</label>
-          <textarea name="result1"></textarea>              
+          {{ stepform.expected_result.errors }}
+          {{ stepform.expected_result.label_tag }}
+          {{ stepform.expected_result }}
         </div>
         <a href="#" class="remove">remove</a>
       </li>
+      {% endfor %}
       <li>
         <a href="#" class="add">add a step »</a>
       </li>
     </ol>
-    
+
     <div class="form-actions">
-      <button>save test case</button>
+      <button type="submit">save test case</button>
     </div>
-    
+
   </form>
 </section>
 {% endblock content %}

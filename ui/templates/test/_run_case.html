@@ -1,0 +1,25 @@
+    <article class="test" data-action-url="{% url result result_id=result.id %}">
+      <details{% if open %} open="open"{% endif %}>
+
+        <summary>
+          <header>
+            <h3><b>#{{ case.id }} </b>{{ case.name }}</h3>
+          </header>
+          {% include "test/_run_case_status.html" %}
+        </summary>
+
+        <div class="content">
+          <ol class="steps">
+            {% for step in caseversion.steps %}
+            <li>
+              <h4>{{ step.instruction }}</h4>
+              <div class="results">
+                <p>{{ step.expectedResult }}</p>
+              </div>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+
+      </details>
+    </article>

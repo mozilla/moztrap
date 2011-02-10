@@ -5,12 +5,15 @@ testing.
 """
 from django.core.urlresolvers import reverse
 
+from ..core import util
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..testcases.models import TestCase, TestCaseVersion
 from ..users.models import User
+
+from . import testresultstatus
 
 
 
@@ -33,7 +36,7 @@ class TestCycle(Activatable, RemoteObject):
     def get_absolute_url(self):
         return reverse(
             "testruns",
-            kwargs={"product_id": self.product.id, "cycle_id": self.id})
+            kwargs={"cycle_id": self.id})
 
 
 
@@ -67,8 +70,16 @@ class TestRun(Activatable, RemoteObject):
         return self.name
 
 
+    def get_absolute_url(self):
+        return reverse("runtests", kwargs={"testrun_id": self.id})
+
+
     def add(self, case, **kwargs):
-        payload = {"%sid" % case.__class__.__name__.lower(): case.id}
+        payload = {
+            "%sId" % util.lc_first(case.__class__.__name__): case.id,
+            "priorityId": 0, # @@@
+            "runOrder": 0, # @@@
+            }
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,
@@ -103,10 +114,14 @@ class IncludedTestCase(RemoteObject):
 
     def assign(self, tester, **kwargs):
         payload = {"testerId": tester.id}
+        assignment = TestCaseAssignment()
         self._post(
             relative_url="assignments",
             extra_payload=payload,
+            update_from_response=assignment,
             **kwargs)
+        assignment.auth = self.auth
+        return assignment
 
 
 
@@ -124,6 +139,7 @@ class TestCaseAssignment(RemoteObject):
     testCase = fields.Locator(TestCase)
     testCaseVersion = fields.Locator(TestCaseVersion)
     tester = fields.Locator(User)
+    testRun = fields.Locator(TestRun)
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     results = fields.Link("TestResultList")
@@ -166,24 +182,29 @@ class TestResult(RemoteObject):
     def start(self, **kwargs):
         self._put(
             relative_url="start",
+            update_from_response=True,
             **kwargs)
 
 
     def approve(self, **kwargs):
         self._put(
             relative_url="approve",
-            **kwargs)
-
-
-    def reject(self, **kwargs):
-        self._put(
-            relative_url="reject",
+            update_from_response=True,
             **kwargs)
 
 
     def finishsucceed(self, **kwargs):
         self._put(
             relative_url="finishsucceed",
+            update_from_response=True,
+            **kwargs)
+
+
+    def finishinvalidate(self, comment, **kwargs):
+        self._put(
+            relative_url="finishinvalidate",
+            extra_payload={"comment": comment},
+            update_from_response=True,
             **kwargs)
 
 
@@ -195,10 +216,42 @@ class TestResult(RemoteObject):
                 "failedStepNumber": failedStepNumber,
                 "actualResult": actualResult
                 },
+            update_from_response=True,
             **kwargs)
-        self.comment = comment
-        self.failedStepNumber = failedStepNumber
-        self.actualResult = actualResult
+
+
+    def reject(self, comment, **kwargs):
+        self._put(
+            relative_url="reject",
+            extra_payload={"comment": comment},
+            update_from_response=True,
+            **kwargs)
+
+
+    @property
+    def pending(self):
+        return self.testRunResultStatus.id == testresultstatus.PENDING
+
+
+    @property
+    def started(self):
+        return self.testRunResultStatus.id == testresultstatus.STARTED
+
+
+    @property
+    def passed(self):
+        return self.testRunResultStatus.id == testresultstatus.PASSED
+
+
+    @property
+    def invalidated(self):
+        return self.testRunResultStatus.id == testresultstatus.INVALIDATED
+
+
+    @property
+    def failed(self):
+        return self.testRunResultStatus.id == testresultstatus.FAILED
+
 
 
 class TestResultList(ListObject):

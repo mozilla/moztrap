@@ -70,7 +70,7 @@ class User(Activatable, RemoteObject):
     email = fields.Field()
     firstName = fields.Field()
     lastName = fields.Field()
-    password = fields.Field(api_submit_name=False)
+    password = fields.Field()
     screenName = fields.Field()
     userStatus = StaticData("USERSTATUS")
 
@@ -96,16 +96,21 @@ class User(Activatable, RemoteObject):
     def emailchange(self, newemail, **kwargs):
         self._put(
             relative_url="emailchange/%s" % urllib.quote(newemail),
+            update_from_response=True,
             **kwargs)
 
 
     def emailconfirm(self, **kwargs):
-        self._put(relative_url="emailconfirm", **kwargs)
+        self._put(
+            relative_url="emailconfirm",
+            update_from_response=True,
+            **kwargs)
 
 
     def passwordchange(self, newpassword, **kwargs):
         self._put(
             relative_url="passwordchange/%s" % urllib.quote(newpassword),
+            update_from_response=True,
             **kwargs
         )
 
