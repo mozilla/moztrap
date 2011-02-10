@@ -27,7 +27,7 @@ def create_testcase_with_name_foo(step, stored, name):
                }
                
     post_payload = {"productId": 1,
-                    "maxAttachmentSizeInMBytes":"10",
+                    "maxAttachmentSizeInMbytes":"10",
                     "maxNumberOfAttachments":"5",
                     "name": name,
                     "description": "Lettuce tc"
@@ -160,3 +160,201 @@ def get_stored_or_store_testcase_name(stored, name):
     else:
         world.testcase_name = name
     return name
+
+'''
+######################################################################
+
+                     TESTCYCLE STEPS
+
+######################################################################
+'''
+@step(u'create a new testcycle with (that name|name "(.*)")')
+def create_testcycle_with_name(step, stored, name):
+    name = get_stored_or_store_name("testcycle", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+               
+    post_payload = {"name": name,
+                    "description": "Ahh, the cycle of life...",
+                    "productId": 1,
+                    "communityAuthoringAllowed": "true",
+                    "communityAccessAllowed": "true",
+                    "startDate": "2011/02/02",
+                    "endDate": "2012/02/02"
+                   }
+    
+    world.conn.request("POST", add_params(world.path_testcycles), 
+                       urllib.urlencode(post_payload, doseq=True), 
+                       headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "Create new user")
+
+
+
+@step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
+def check_testcycle_foo_existence(step, stored, name, existence):
+    name = get_stored_or_store_name("testcycle", stored, name)
+    search_and_verify_existence(step, world.path_testcycles, 
+                    {"name": name}, 
+                     "testcycle", existence)
+
+
+@step(u'delete the testcycle with (that name|name "(.*)")')
+def delete_testcycle_with_name_foo(step, stored, name):
+    name = get_stored_or_store_name("testcycle", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    testcycle_id, version = get_resource_identity("testcycle", 
+                                                  add_params(world.path_testcycles, {"name": name}))
+               
+    world.conn.request("DELETE", 
+                       add_params(world.path_testcycles + testcycle_id, 
+                                  {"originalVersionId": version}), "", headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "delete testcycle")
+
+'''
+######################################################################
+
+                     TESTRUN STEPS
+
+######################################################################
+'''
+
+@step(u'create a new testrun with (that name|name "(.*)") with testcycle "(.*)"')
+def create_testrun_with_name(step, stored, name, testcycle_name):
+    name = get_stored_or_store_name("testrun", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    testcycle_id, version = get_resource_identity("testcycle", 
+                                                  add_params(world.path_testcycles,
+                                                             {"name": testcycle_name}))
+               
+    post_payload = {"testCycleId": testcycle_id,
+                    "name": name,
+                    "description": "Yeah, I'm gonna run to you...",
+                    "selfAssignAllowed": "true", 
+                    "selfAssignPerEnvironment": "true", 
+                    "selfAssignLimit": 10, 
+                    "useLatestVersions": "true", 
+                    "startDate": "2011/02/02",
+                    "endDate": "2012/02/02"
+
+                   }
+    
+    world.conn.request("POST", add_params(world.path_testruns), 
+                       urllib.urlencode(post_payload, doseq=True), 
+                       headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "Create new user")
+
+
+
+@step(u'testrun with (that name|name "(.*)") (exists|does not exist)')
+def check_testrun_foo_existence(step, stored, name, existence):
+    name = get_stored_or_store_name("testrun", stored, name)
+    search_and_verify_existence(step, world.path_testruns, 
+                    {"name": name}, 
+                     "testrun", existence)
+
+
+@step(u'delete the testrun with (that name|name "(.*)")')
+def delete_testrun_with_name_foo(step, stored, name):
+    name = get_stored_or_store_name("testrun", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    testrun_id, version = get_resource_identity("testrun", 
+                                                  add_params(world.path_testruns, {"name": name}))
+               
+    world.conn.request("DELETE", 
+                       add_params(world.path_testruns + testrun_id, 
+                                  {"originalVersionId": version}), "", headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "delete testrun")
+    
+    
+@step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
+def testcycle_has_testrun(step, cycle_name, run_name):
+
+    testcycle_id, version = get_resource_identity("testcycle", 
+                                                  add_params(world.path_testcycles, {"name": cycle_name}))
+
+    uri = world.path_testcycles + str(testcycle_id) + "/testruns/"
+    search_and_verify_array(step, uri,
+                    {"name": run_name}, 
+                     "testrun", True)
+    
+
+
+'''
+######################################################################
+
+                     TESTSUITE STEPS
+
+######################################################################
+'''
+
+@step(u'create a new testsuite with (that name|name "(.*)")')
+def create_testsuite_with_name(step, stored, name):
+    name = get_stored_or_store_name("testsuite", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    post_payload = {"productId": 1,
+                    "name": name,
+                    "description": "Sweet Relief",
+                    "useLatestVersions": "true"
+                   }
+    
+    world.conn.request("POST", add_params(world.path_testsuites), 
+                       urllib.urlencode(post_payload, doseq=True), 
+                       headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "Create new user")
+
+
+
+@step(u'testsuite with (that name|name "(.*)") (exists|does not exist)')
+def check_testsuite_foo_existence(step, stored, name, existence):
+    name = get_stored_or_store_name("testsuite", stored, name)
+    search_and_verify_existence(step, world.path_testsuites, 
+                    {"name": name}, 
+                     "testsuite", existence)
+
+
+@step(u'delete the testsuite with (that name|name "(.*)")')
+def delete_testsuite_with_name_foo(step, stored, name):
+    name = get_stored_or_store_name("testsuite", stored, name)
+    
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded"
+               }
+
+    testsuite_id, version = get_resource_identity("testsuite", 
+                                                  add_params(world.path_testsuites, {"name": name}))
+               
+    world.conn.request("DELETE", 
+                       add_params(world.path_testsuites + testsuite_id, 
+                                  {"originalVersionId": version}), "", headers)
+
+    response = world.conn.getresponse()
+    verify_status(200, response, "delete testsuite")
+

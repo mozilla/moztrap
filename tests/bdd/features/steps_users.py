@@ -41,7 +41,7 @@ def create_user_with_name_foo(step, stored, name):
                 "screenName":fname+lname,
                 "password":fname+lname +"123",
                 "companyId":9,
-                "communityMember":"false"
+#                "communityMember":"false"
     } 
     
     headers = {'Authorization': get_auth_header()}
