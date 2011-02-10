@@ -27,3 +27,18 @@ $(function() {
               );
           });
   });
+
+function autoFocusScroll(trigger) {
+    var button = $(trigger);
+    
+    button.click(function() {
+        if ($(this).parent().hasClass('open')) {
+            $(this).parent().find('textarea').focus();
+            $.scrollTo($(this).siblings('.failform'), 750);
+        }
+    });
+}
+
+$(document).ready(function() {
+    autoFocusScroll('details.stepfail > summary');
+});
