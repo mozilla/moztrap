@@ -381,7 +381,7 @@ footer[role="contentinfo"]
       text-align: center
       &:hover
         background: $red
-    &[open], &.open
+    &[open], &.open, &.failed
       summary
         background: $red
     textarea
@@ -414,6 +414,8 @@ footer[role="contentinfo"]
     +hpadding(1em)
     width: columns(4,8)
     margin: 0
+  .start
+    @extend .bluebutton
   .invalid
     +button-reset
     +link

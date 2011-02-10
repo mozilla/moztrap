@@ -192,6 +192,8 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 
 .yellowbutton { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fee58c), color-stop(100%, #fdc80e)); background: -moz-linear-gradient(top center, #fee58c 0%, #fdc80e 100%); background: linear-gradient(top center, #fee58c 0%, #fdc80e 100%); border-color: #deb72c; }
 
+.bluebutton, #run .start { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dbe9e8), color-stop(100%, #8bb9b7)); background: -moz-linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); background: linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); border-color: #a2a2a2; }
+
 .errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; margin-bottom: 1.5em; color: #b9292f; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 
@@ -358,7 +360,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .stepfail { display: inline; float: left; width: 43.548%; margin-right: 1.613%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
 #run .stepfail summary { position: absolute; right: 0; top: 0; width: 8.065%; padding: 0 1.613%; background: rgba(227, 127, 131, 0.5); color: #eeeeee; text-align: center; }
 #run .stepfail summary:hover { background: #b9292f; }
-#run .stepfail[open] summary, #run .stepfail.open summary { background: #b9292f; }
+#run .stepfail[open] summary, #run .stepfail.open summary, #run .stepfail.failed summary { background: #b9292f; }
 #run .stepfail textarea { min-height: 9em; }
 #run .stepfail .failform, #run .stepfail .faildesc { margin-top: -0.75em; padding-top: 0.75em; padding-bottom: 1.5em; padding-left: 1em; padding-right: 1em; background: #fef0bf; }
 #run .status { font-size: 0.875em; line-height: 1.714em; display: inline; float: right; width: 31.325%; padding-right: 1.205%; margin-left: -3px; text-align: right; }
