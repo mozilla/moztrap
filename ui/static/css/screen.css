@@ -28,9 +28,9 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, .smallcaps, h4 { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, #run .status p, .smallcaps, h4 { letter-spacing: 0.1em; }
 
-.allcaps, h1, h2, caption { text-transform: uppercase; }
+.allcaps, h1, h2, caption, #run .status p { text-transform: uppercase; }
 
 .smallcaps, h4 { font-variant: small-caps; }
 
@@ -350,16 +350,19 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run header { display: inline; float: left; width: 66.265%; margin-right: 1.205%; margin-top: 0.375em; margin-bottom: 0.375em; }
 #run header h3 { display: inline; float: left; width: 87.273%; margin-right: 1.818%; font-size: 1.5em; line-height: 1em; margin: 0; font-weight: normal; }
 #run header small { display: inline; float: left; width: 10.909%; margin-right: 1.818%; font-size: 0.875em; line-height: 1.714em; vertical-align: top; font-weight: bold; text-align: right; }
-#run .steps { padding-left: 8.434%; margin-top: 1.5em; margin-left: 0; }
+#run .steps { padding-left: 8.434%; padding-right: 16.867%; margin-top: 1.5em; margin-left: 0; }
 #run li { *zoom: 1; clear: both; position: relative; }
 #run li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #run h4 { margin-bottom: 0.75em; background: #eeeeee; }
-#run .results { display: inline; float: left; width: 63.158%; margin-right: 1.316%; }
-#run .stepfail { display: inline; float: left; width: 35.526%; margin-right: 1.316%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
-#run .stepfail summary { position: absolute; right: 0; top: 0; width: 6.579%; padding: 0 1.316%; background: rgba(227, 127, 131, 0.5); color: #eeeeee; text-align: center; }
+#run .results { display: inline; float: left; width: 54.839%; margin-right: 1.613%; }
+#run .stepfail { display: inline; float: left; width: 43.548%; margin-right: 1.613%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
+#run .stepfail summary { position: absolute; right: 0; top: 0; width: 8.065%; padding: 0 1.613%; background: rgba(227, 127, 131, 0.5); color: #eeeeee; text-align: center; }
 #run .stepfail summary:hover { background: #b9292f; }
-#run .status { font-size: 0.875em; line-height: 1.714em; display: inline; float: left; width: 32.53%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; text-align: right; }
-#run .status a:link, #run .status a:visited { font-style: italic; }
+#run .stepfail[open] summary, #run .stepfail.open summary { background: #b9292f; }
+#run .stepfail textarea { min-height: 9em; }
+#run .stepfail .failform, #run .stepfail .faildesc { margin-top: -0.75em; padding-top: 0.75em; padding-bottom: 1.5em; padding-left: 1em; padding-right: 1em; background: #fef0bf; }
+#run .status { font-size: 0.875em; line-height: 1.714em; display: inline; float: right; width: 31.325%; padding-right: 1.205%; margin-left: -3px; text-align: right; }
+#run .status p { display: inline; float: right; -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; padding-left: 3.704%; padding-right: 3.704%; width: 40.741%; color: #eeeeee; text-align: center; font-weight: bold; }
 #run .start, #run .pass, #run .fail { border-style: solid; border-width: 0.071em; padding: 0.357em; padding-left: 1em; padding-right: 1em; width: 48.148%; margin: 0; }
 #run .invalid { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; border: 0; }
 #run .invalid, #run .invalid:link, #run .invalid:visited { color: #5d7b7a; text-decoration: none; }
@@ -369,5 +372,8 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .invalid { font-style: italic; }
 #run .started .header { background: #accbc9; }
 #run .passed .header { background: #cdeca9; }
+#run .passed .status p { text-shadow: rgba(52, 81, 18, 0.75) 1px 1px 0; background: #77b929 url('../images/ui/accept.png?1142225294') no-repeat scroll 7.692%; }
 #run .invalidated .header { background: #fef0bf; }
+#run .invalidated .status p { text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0; background: #d6a702 url('../images/ui/error.png?1142225566') no-repeat scroll 7.692%; }
 #run .failed .header { background: #eca9ab; }
+#run .failed .status p { text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0; background: #b9292f url('../images/ui/delete.png?1142225530') no-repeat scroll 7.692%; }

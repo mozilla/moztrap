@@ -353,7 +353,7 @@ footer[role="contentinfo"]
       text-align: right
 
   .steps
-    +prefix(2,24)
+    +pad(2,4,24)
     +leader
     margin-left: 0
   li
@@ -365,30 +365,49 @@ footer[role="contentinfo"]
     +trailer(.5)
     background: $light
   .results
-    +columns(14,22)
+    +columns(10,18)
   .stepfail
-    +columns(8,22)
-    +omega(22)
+    +columns(8,18)
+    +omega(18)
     +trailer
     summary
       position: absolute
       right: 0
       top: 0
-      width: columns(2,22) - gutter(22)
-      padding: 0 gutter(22)
+      width: columns(2,18) - gutter(18)
+      padding: 0 gutter(18)
       background: rgba($red-light,.5)
       color: $light
       text-align: center
       &:hover
         background: $red
+    &[open], &.open
+      summary
+        background: $red
+    textarea
+      min-height: $base-rhythm-unit*6
+    .failform, .faildesc
+      +leader(-.5)
+      +padding-leader(.5)
+      +padding-trailer(1)
+      +hpadding(1em)
+      background: $yellow-light
   .status
     +adjust-font-size-to(14px)
-    +columns(8,24)
-    +omega(24)
+    +float('right')
+    width: columns(8,24) - gutter(24)
+    padding-right: gutter(24)
+    margin-left: -3px
     text-align: right
-    a
-      #{$link}
-        font-style: italic
+    p
+      @extend .allcaps
+      +float('right')
+      +border-radius(1em)
+      +hpadding(gutter(8))
+      width: columns(4,8) - gutter(8)*2
+      color: $light
+      text-align: center
+      font-weight: bold
 
   .start, .pass, .fail
     +rhythm-borders(1px,.25,14px)
@@ -410,10 +429,21 @@ footer[role="contentinfo"]
   .passed
     .header
       background: $green-lighter
+    .status
+      p
+        +text-shadow(rgba($green-dark,.75) 1px 1px 0)
+        background: $green image-url('ui/accept.png') no-repeat scroll gutter(4)
   .invalidated
     .header
       background: $yellow-light
+    .status
+      p
+        +text-shadow(rgba($red,.75) 1px 1px 0)
+        background: $yellow-darker image-url('ui/error.png') no-repeat scroll gutter(4)
   .failed
     .header
       background: $red-lighter
-  
+    .status
+      p
+        +text-shadow(rgba($red-dark,.75) 1px 1px 0)
+        background: $red image-url('ui/delete.png') no-repeat scroll gutter(4)
