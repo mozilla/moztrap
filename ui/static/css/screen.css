@@ -356,9 +356,9 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .status p { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; margin: 0 7.692%; color: #eeeeee; font-weight: bold; }
 #run .status button { width: 84.615%; margin: 0 7.692%; }
 #run .steps { padding-left: 8.434%; padding-right: 16.867%; margin-top: 1.5em; margin-left: 0; }
-#run li { *zoom: 1; clear: both; position: relative; }
-#run li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#run h4 { margin-bottom: 0.75em; background: #eeeeee; }
+#run .steps > li { *zoom: 1; clear: both; position: relative; }
+#run .steps > li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#run .steps h4 { margin-bottom: 0.75em; background: #eeeeee; }
 #run .results { clear: both; }
 #run .stepfail { clear: both; margin-bottom: 1.5em; }
 #run .stepfail summary { position: absolute; right: 0; top: 0; width: 8.065%; padding: 0 1.613%; background: rgba(227, 127, 131, 0.5); color: #eeeeee; text-align: center; }
