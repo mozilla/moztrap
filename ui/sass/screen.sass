@@ -368,7 +368,8 @@ footer[role="contentinfo"]
 
   .steps
     +pad(2,4,24)
-    +leader
+    +padding-leader
+    clear: both
     margin-left: 0
     > li
       +pie-clearfix
@@ -409,7 +410,6 @@ footer[role="contentinfo"]
   .invalidform, .invaliddesc
     +float('left')
     +padding-leader
-    +trailer
     +hpadding(gutter(24))
     +border-bottom-radius(1em)
     width: columns(18,24) - gutter(24)*2
