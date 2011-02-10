@@ -337,20 +337,34 @@ footer[role="contentinfo"]
       +padding-trailer(.25)
       margin: 0
   header
-    +columns(16,24)
+    +columns(20,24)
     +leader(.25)
     +trailer(.25)
     h3
-      +columns(14,16)
+      +columns(14,20)
       +adjust-font-size-to(24px)
       margin: 0
       font-weight: normal
     small
-      +columns(2,16)
+      +columns(2,20)
       +adjust-font-size-to(14px)
       vertical-align: top
       font-weight: bold
       text-align: right
+
+  .status
+    +columns(4,24)
+    +omega(24)
+    text-align: center
+    p
+      @extend .allcaps
+      +border-radius(1em)
+      margin: 0 gutter(4)
+      color: $light
+      font-weight: bold
+    button
+      width: 100% - gutter(4)*2
+      margin: 0 gutter(4)
 
   .steps
     +pad(2,4,24)
@@ -359,13 +373,13 @@ footer[role="contentinfo"]
   li
     +pie-clearfix
     clear: both
-    position: relative
-  
+    position: relative  
   h4
     +trailer(.5)
     background: $light
   .results
     +full(18)
+
   .stepfail
     +full(18)
     +trailer
@@ -383,45 +397,53 @@ footer[role="contentinfo"]
     &[open], &.open, &.failed
       summary
         background: $red
+        
+  .failform, .invalidform
     textarea
       min-height: $base-rhythm-unit*6
-    .failform, .faildesc
-      +leader
-      +padding-leader
-      +hpadding(gutter(18))
+  .failform, .faildesc
+    +leader
+    +padding-leader
+    +hpadding(gutter(18))
+    background: $yellow-light
+  .invalidform, .invaliddesc
+    +float('left')
+    +padding-leader
+    +trailer
+    +hpadding(gutter(24))
+    +border-bottom-radius(1em)
+    width: columns(18,24) - gutter(24)*2
+    margin-left: columns(2,24) + gutter(24)
+    background: $yellow
+    
+  .testinvalid
+    position: relative
+    summary
+      @extend .smallcaps
+      +text-shadow(rgba($yellow-light,.75) 1px 1px 0)
+      +border-bottom-radius(1em)
+      position: absolute
+      top: 0
+      right: 0
+      width: columns(4,24) - gutter(24)*2
+      padding: $base-rhythm-unit*.5 gutter(24)
       background: $yellow-light
-  .status
-    +adjust-font-size-to(14px)
-    +float('right')
-    width: columns(8,24) - gutter(24)
-    padding-right: gutter(24)
-    margin-left: -3px
-    text-align: right
-    p
-      @extend .allcaps
-      +float('right')
-      +border-radius(1em)
-      +hpadding(gutter(8))
-      width: columns(4,8) - gutter(8)*2
-      color: $light
       text-align: center
-      font-weight: bold
+      &:hover
+        background: $yellow
+    &[open], &.open, &.invalidated
+      summary
+        background: $yellow
 
   .start, .pass, .fail
-    +rhythm-borders(1px,.25,14px)
     +hpadding(1em)
-    width: columns(4,8)
-    margin: 0
   .start
     @extend .bluebutton
   .invalid
-    +button-reset
-    +link
-    border: 0
-  .invalid
-    font-style: italic
+    @extend .yellowbutton
   .fail
     @extend .redbutton
+  .invalid, .fail
     +trailer
     width: columns(4,18)
   
