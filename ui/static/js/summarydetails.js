@@ -36,7 +36,7 @@ $(function() {
     $details.addClass('open');
     $detailsNotSummary.slideDown('fast');
    } else {
-    $detailsNotSummary.slideUp('fast');
+    $detailsNotSummary.hide();
    }
 
    // Set the `tabindex` attribute of the `summary` element to 0 to make it keyboard accessible
