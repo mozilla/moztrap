@@ -368,48 +368,61 @@ footer[role="contentinfo"]
 
   .steps
     +pad(2,4,24)
-    +padding-leader
     clear: both
-    margin-left: 0
+    margin: 0
+    counter-reset: step
     > li
       +pie-clearfix
-      clear: both
-      position: relative  
-    h4
-      +trailer(.5)
+      +leader
+      +trailer
+      position: relative
+      padding: $base-rhythm-unit*.5
+        bottom: 0
       background: $light
-  .results
-    +full(18)
+      list-style: none
+      counter-increment: step
+      &::before
+        +adjust-font-size-to(48px)
+        content: counter(step, decimal) "."
+        position: absolute
+        right: 100% + gutter(18)
+        top: 0
+    h4
+      +trailer(0)
 
   .stepfail
     +full(18)
-    +trailer
+    position: relative
+    margin: 0 0 - $base-rhythm-unit*.5
+    border-top: $base-rhythm-unit solid $yellow-light
     summary
+      @extend .allcaps
+      +transition(all,300ms)
       position: absolute
+      top: - $base-rhythm-unit
       right: 0
-      top: 0
-      width: columns(2,18) - gutter(18)
       padding: 0 gutter(18)
-      background: rgba($red-light,.5)
+      width: columns(2,18)
+      background: $red-light
       color: $light
       text-align: center
       &:hover
         background: $red
     &[open], &.open, &.failed
       summary
+        width: 100%
+        padding: 0
         background: $red
         
   .failform, .invalidform
     textarea
       min-height: $base-rhythm-unit*6
   .failform, .faildesc
-    +leader
-    +padding-leader
-    +hpadding(gutter(18))
-    +pie-clearfix
-    background: $yellow-light
+    padding: $base-rhythm-unit*.5
+    background: $red-lightest
   .invalidform, .invaliddesc
     +float('left')
+    +trailer
     +padding-leader
     +hpadding(gutter(24))
     +border-bottom-radius(1em)
