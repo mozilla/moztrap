@@ -29,9 +29,9 @@ $(function() {
   });
 
 function autoFocus(trigger) {
-    var button = $(trigger);
+    var trigger = $(trigger);
     
-    button.click(function() {
+    trigger.click(function() {
         if ($(this).parent().hasClass('open')) {
             $(this).parent().find('textarea').focus();
         }
