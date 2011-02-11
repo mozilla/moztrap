@@ -4,7 +4,7 @@ Feature: Test Cases
         Given a testcase with name "Come on fhqwhgads" does not exist
         when I create a new testcase with that name
         then a testcase with that name exists
-        and when I add steps to the testcase with that name with these values:
+        and when I add these steps to the testcase with that name:
             | name      | stepNumber | estimatedTimeInMin | instruction    | expectedResult        |
             | Mockery   | 1          | 5                  | Go this way    | They went this way    |
             | Flockery  | 2          | 2                  | Go that way    | They went that way    |
@@ -20,6 +20,9 @@ Feature: Test Cases
             | Blockery  | 5          | 25                 | Just go away   | They went away        |
         and when I approve that testcase
         then that testcase has status of approved
+        
+    Scenario: add a testcase to a testrun
+        Not implemented yet
 
     Scenario: Create a Testcycle and Testrun and verify the testrun is in the testcycle
         Given a testcycle with name "Baroque Cycle" does not exist

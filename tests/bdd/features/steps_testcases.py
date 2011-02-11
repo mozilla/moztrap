@@ -67,6 +67,56 @@ def delete_testcase_with_name_foo(step, stored, name):
     response = world.conn.getresponse()
     verify_status(200, response, "delete testcase")
 
+@step(u'add these steps to the testcase with (that name|name "(.*)")')
+def add_steps_to_testcase_name(step, stored, name):
+    name = get_stored_or_store_testcase_name(stored, name)
+    
+    # first we need the testcase id so we can get the latest version to add steps to
+    testcase_id, version = get_resource_identity("testcase", 
+                                                  add_params(world.path_testcases, {"name": name}))
+
+    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+
+    headers = {'Authorization': get_auth_header(),
+               'content-type': "application/x-www-form-urlencoded" }
+
+    uri = world.path_testcases + "versions/" + testcaseversion_id + "/steps/" 
+    for case_step in step.hashes:
+
+        world.conn.request("POST", add_params(uri), 
+                       urllib.urlencode(case_step, doseq=True), 
+                       headers)
+
+        response = world.conn.getresponse()
+        verify_status(200, response, "Create testcase step " + jstr(case_step))
+    
+@step(u'the testcase with (that name|name "(.*)") has these steps')
+def verify_testcase_steps(step, stored, name):
+    name = get_stored_or_store_testcase_name(stored, name)
+    
+    # first we need the testcase id so we can get the latest version to add steps to
+    testcase_id, version = get_resource_identity("testcase", 
+                                                  add_params(world.path_testcases, {"name": name}))
+
+    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+    
+    # fetch the steps for this testcase from the latestversion
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+
+    uri = world.path_testcases + "versions/" + testcaseversion_id + "/steps/" 
+    world.conn.request("GET", add_params(uri), "", headers)
+    response = world.conn.getresponse()
+    data = verify_status(200, response, "Create fetch testcase steps")
+    
+    # get the array of steps out of the response
+    testcasesteps = get_array_of_type("testcasestep", data)
+    
+    # compare the returned values with those passed in to verify match
+    for case_step in step.hashes:
+        assert False
+
+
 
 @step(u'add environment "(.*)" to test case "(.*)"')
 def add_environment_foo_to_test_case_bar(step, environment, test_case):

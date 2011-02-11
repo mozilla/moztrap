@@ -30,7 +30,17 @@ def get_stored_or_store_name(objtype, stored, name):
         If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
         the stored one.  Otherwise, the explicit name passed in.  
     '''
-    if (stored.strip() == "that name"):
+    return get_stored_or_store_field("name", objtype, stored, name)
+
+def get_stored_or_store_field(field_name, objtype, stored, name):
+    '''
+        Help figure out if the test writer wants to use a stored name from a previous step, or if
+        the name was passed in explicitly. 
+        
+        If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
+        the stored one.  Otherwise, the explicit name passed in.  
+    '''
+    if (stored.strip() == "that " + field_name):
         name = world.names[objtype]
     else:
         world.names[objtype] = name
@@ -174,6 +184,7 @@ def get_single_item(response_txt, type):
     # if this was a search, extract the item from the "searchResult" object
     # in this case, we only care about the first returned item in this list
     sr_field = ns("searchResult")
+    
     if (respJson.__contains__(sr_field)):
         sr = respJson.get(sr_field)
 
@@ -225,6 +236,27 @@ def get_array_item(response_txt, type):
     assert item != None, "didn't find expected type: " + ns_type + " in:\n" + jstr(respJson)
     return item
 
+def get_array_of_type(type, response_txt):
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
+    
+    
+    # if this was a search, extract the item from the "searchResult" object
+    # in this case, we only care about the first returned item in this list
+    sr_field = ns(as_arrayof(type))
+    assert respJson.__contains__(sr_field)
+    sr = respJson.get(sr_field)
+        
+    testcasestep_field = ns(type)
+    assert sr[0].__contains__(testcasestep_field), "didn't find expected type: %s in:\n%s" % (testcasestep_field, jstr(sr))
+    item = sr[0].get(testcasestep_field)
+
+    return item
+
 def get_first_item(response_txt, type):
     '''
         Expect the response to be a single item or a list.  
@@ -263,7 +295,7 @@ def get_first_item(response_txt, type):
 
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
-  
+
   
 def get_count(response_txt, type):
     '''
@@ -390,7 +422,36 @@ def get_resource_identity(type, uri):
     # we always use this as a string
     return str(resid.get("@id")), str(resid.get("@version")) 
 
+def get_testcase_latestversion_id(testcase_id):
+    # now get the latest version for that testcase id
+    
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+    latestversion_uri = world.path_testcases + testcase_id + "/latestversion/"
 
+    world.conn.request("GET", add_params(latestversion_uri), "", headers)
+    response = world.conn.getresponse()
+    response_txt = verify_status(200, response, "Response when asking for latestversion")
+    
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
+
+    type = ns("testcaseversion")
+    assert respJson.__contains__(type), "didn't find expected type: %s in:\n%s" % (type, jstr(respJson))
+    tcv = respJson[type][0]
+
+    field = ns("resourceIdentity")
+    assert tcv.__contains__(field), "didn't find expected type: %s in:\n%s" % (field, jstr(tcv))
+    resid = tcv[field]
+    
+    assert resid.__contains__("@id"), "didn't find expected type: %s in:\n%s" % ("@id", jstr(resid))
+    return resid["@id"]
+    
+    
 def find_ordered_response(type, field, first, second, obj_list):
     # now walk through the expected items and check the response
     # to see that it is represented in the right order
@@ -425,6 +486,15 @@ def as_arrayof(type):
     
 def jstr(obj):
     return json.dumps(obj, sort_keys=True, indent=4)
+
+def json_to_obj(response_txt):
+    try:
+        respJson = json.loads(response_txt)
+    except ValueError:
+        assert False, "Bad JSON: " + str(response_txt)
+    except TypeError:
+        assert False, "Bad JSON: " + str(response_txt)
+    return respJson
 
 '''
     Upload files.

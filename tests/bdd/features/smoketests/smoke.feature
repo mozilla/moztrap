@@ -66,11 +66,11 @@ Feature: Smoke Tests
         then an environmentgroup with that name does not exist
         
     Scenario: Create and delete a tag
-        Given a tag with name "You are IT" does not exist
-        when I create a new tag with that name
-        then a tag with that name exists
-        and when I delete the tag with that name
-        then a tag with that name does not exist
+        Given a tag with tag "You are IT" does not exist
+        when I create a new tag with that tag
+        then a tag with that tag exists
+        and when I delete the tag with that tag
+        then a tag with that tag does not exist
 
     Scenario: Create and delete a Testcase
         Given a testcase with name "Come on fhqwhgads" does not exist

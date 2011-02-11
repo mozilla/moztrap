@@ -159,7 +159,7 @@ def check_role_existence(roles):
     for exp_role in roles:
         found = False
         for act_role in respJson:
-            exp = exp_role.get(ns("description"))
+            exp = exp_role.get("description")
             act = act_role.get(ns("description"))
             if (exp == act):
                 found = True
