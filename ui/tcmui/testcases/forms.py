@@ -56,6 +56,13 @@ class StepForm(forms.Form):
     expected_result = forms.CharField(widget=forms.Textarea)
 
 
+    def __init__(self, *args, **kwargs):
+        super(StepForm, self).__init__(*args, **kwargs)
+        # undo default rows and cols attrs
+        self.fields["instruction"].widget.attrs = {}
+        self.fields["expected_result"].widget.attrs = {}
+
+
     def save(self, testcaseversion, stepnumber):
         step = TestCaseStep(
             name="step %s" % stepnumber, # @@@
