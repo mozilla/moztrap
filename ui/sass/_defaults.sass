@@ -67,8 +67,8 @@ body
 $link   :   "&:link, &:visited"
 $focus  :   "&:focus, &:hover, &:active"
 
-a
-  #{$link}
+=link
+  &, #{$link}
     color: $alt
     text-decoration: none
   #{$link}, &:hover, &:active
@@ -78,6 +78,9 @@ a
     text-decoration: none
   &:focus
     outline: thin dotted
+
+a
+  +link
 
 =no-style-link
   color: inherit
@@ -307,8 +310,8 @@ input, button, textarea, select
   +border-radius(0)
   vertical-align: middle
   &:focus, &:active
-    +box-shadow(#06f 0 0 .25em)
-    +box-shadow(inset #06f 0 0 .25em)
+    +box-shadow($blue-light 0 0 .25em)
+    +box-shadow(inset $blue-light 0 0 .25em)
     z-index: 1
   &, optgroup
     +reset-box-model
@@ -335,7 +338,7 @@ optgroup
   .ie7 &
     height: auto
   [disabled]
-    background-color: #eee
+    background-color: $light
     color: lighten($base,15)
 
 input, textarea
@@ -348,10 +351,10 @@ input, textarea
     +box-shadow(red 0 0 .25em)
     +box-shadow(inset red 0 0 .25em)
     &:focus
-      +box-shadow(#06f 0 0 .25em)
-      +box-shadow(inset #06f 0 0 .25em)
+      +box-shadow($blue-light 0 0 .25em)
+      +box-shadow(inset $blue-light 0 0 .25em)
     .no-boxshadow &
-      background-color: #f0dddd
+      background-color: $yellow-light
 
 textarea, select
   @extend .textinput
@@ -384,23 +387,27 @@ input
   clear: both
   text-align: right
 
+=button-color($c:$green)
+  +background(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+  border-color: desaturate($c,25)
+
 =button
   +border-radius(1em)
   +background(#ddd image-url('forms/button.png') repeat-x)
-  +background(linear-gradient(top center, #dfd 0%, #6f6 100%))
+  +button-color
   +rhythm-borders(1px,.25)
-  +hpadding
+  +hpadding(1em)
   +text-shadow(#fff 0 1px 1px)
   +trailer(.5)
-  border-color: #bbb #999 #666
   cursor: pointer
-  color: #333
+  color: #111
   font: inherit
   outline: 0
   overflow: visible
   width: auto
   vertical-align: baseline
   &[disabled]
+    +background(#ddd image-url('forms/button.png') repeat-x)
     color: #888
 
 =button-reset
@@ -424,10 +431,19 @@ button
 .button
   +button
 
+.redbutton
+  +button-color(lighten($red,20))
+
+.yellowbutton
+  +button-color($yellow-dark)
+
+.bluebutton
+  +button-color($blue-light)
+
 .errorlist
   +no-style-list
   +trailer
-  color: red
+  color: $red
 
 =side-errors($n,$c,$s:'right')
   li

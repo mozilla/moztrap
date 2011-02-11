@@ -315,63 +315,160 @@ footer[role="contentinfo"]
 /* run tests --------------------------------------------------------------    
 
 #run
-  .test, summary, .content
+  .test, .content
     +full(24)
   .test
+    +pie-clearfix      
+    &[open], &.open, .header
+      +trailing-border(1px,.5)
+    &[open], &.open
+      .header
+        border-bottom-color: #ccc
+    &:first-of-type
+      &, &[open], &.open
+        padding-top: 0
+        .header
+          +leading-border(1px,.5)
+  .header
     +pie-clearfix
-    +trailing-border(1px,.5)
-    +trailer(.5)
-    &:last-child
+    +padding-leader(.5)
+    p
+      +padding-leader(.25)
+      +padding-trailer(.25)
       margin: 0
-      padding: 0
-      border: 0
-  .started
-    summary
-      background: #eef
-  summary
-    +pie-clearfix
   header
     +columns(20,24)
-  h3
-    +adjust-font-size-to(24px)
-    margin: 0
-    font-weight: normal
-    b
-      +adjust-font-size-to(14px,1,24px)
-      +inline-block
-      width: columns(2,20)
-      margin-right: gutter(20)
+    +leader(.25)
+    +trailer(.25)
+    h3
+      +columns(14,20)
+      +adjust-font-size-to(24px)
+      margin: 0
+      font-weight: normal
+    small
+      +columns(2,20)
+      +adjust-font-size-to(14px)
       vertical-align: top
       font-weight: bold
       text-align: right
-  .suite
-    +prefix(2,20)
-    margin: 0
+
   .status
-    +adjust-font-size-to(14px)
     +columns(4,24)
     +omega(24)
-    +leader(.25,14px)
     text-align: center
+    p
+      @extend .allcaps
+      +border-radius(1em)
+      margin: 0 gutter(4)
+      color: $light
+      font-weight: bold
     button
-      +rhythm-borders(1px,.25,14px)
-  .content
+      width: 100% - gutter(4)*2
+      margin: 0 gutter(4)
+
+  .steps
     +pad(2,4,24)
+    +padding-leader
+    clear: both
+    margin-left: 0
+    > li
+      +pie-clearfix
+      clear: both
+      position: relative  
+    h4
+      +trailer(.5)
+      background: $light
+  .results
+    +full(18)
+
+  .stepfail
+    +full(18)
+    +trailer
+    summary
+      position: absolute
+      right: 0
+      top: 0
+      width: columns(2,18) - gutter(18)
+      padding: 0 gutter(18)
+      background: rgba($red-light,.5)
+      color: $light
+      text-align: center
+      &:hover
+        background: $red
+    &[open], &.open, &.failed
+      summary
+        background: $red
+        
+  .failform, .invalidform
+    textarea
+      min-height: $base-rhythm-unit*6
+  .failform, .faildesc
     +leader
-  h4
-    margin: 0
+    +padding-leader
+    +hpadding(gutter(18))
+    +pie-clearfix
+    background: $yellow-light
+  .invalidform, .invaliddesc
+    +float('left')
+    +padding-leader
+    +hpadding(gutter(24))
+    +border-bottom-radius(1em)
+    width: columns(18,24) - gutter(24)*2
+    margin-left: columns(2,24) + gutter(24)
+    background: $yellow
+    
+  .testinvalid
+    position: relative
+    summary
+      @extend .smallcaps
+      +text-shadow(rgba($yellow-light,.75) 1px 1px 0)
+      +border-bottom-radius(1em)
+      position: absolute
+      top: 0
+      right: 0
+      width: columns(4,24) - gutter(24)*2
+      padding: $base-rhythm-unit*.5 gutter(24)
+      background: $yellow-light
+      text-align: center
+      &:hover
+        background: $yellow
+    &[open], &.open, &.invalidated
+      summary
+        background: $yellow
+
+  .start, .pass, .fail
+    +hpadding(1em)
   .start
-    +box-sizing('border-box')
-    width: 100%
-  .pass, .invalid, .fail
-    width: 33%
-  .pass
-    +border-right-radius(0)
-    border-right: none
+    @extend .bluebutton
   .invalid
-    +background(linear-gradient(top center, #ffe 0%, #ee9 100%))
-    +border-radius(0)   
+    @extend .yellowbutton
   .fail
-    +background(linear-gradient(top center, #fee 0%, #e99 100%))    
-    +border-left-radius(0)
-    border-left: none
+    @extend .redbutton
+  .invalid, .fail
+    +trailer
+    width: columns(4,18)
+  
+  .started
+    .header
+      background: $blue-lighter
+  .passed
+    .header
+      background: $green-lighter
+    .status
+      p
+        +text-shadow(rgba($green-dark,.75) 1px 1px 0)
+        background: $green image-url('ui/accept.png') no-repeat scroll gutter(4)
+  .invalidated
+    .header
+      background: $yellow-light
+    .status
+      p
+        +text-shadow(rgba($red,.75) 1px 1px 0)
+        background: $yellow-darker image-url('ui/error.png') no-repeat scroll gutter(4)
+  .failed
+    .header
+      background: $red-lighter
+    .status
+      p
+        +text-shadow(rgba($red-dark,.75) 1px 1px 0)
+        background: $red image-url('ui/delete.png') no-repeat scroll gutter(4)
