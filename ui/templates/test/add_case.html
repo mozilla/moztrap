@@ -70,12 +70,8 @@
           {{ stepform.expected_result.label_tag }}
           {{ stepform.expected_result }}
         </div>
-        <a href="#" class="remove">remove</a>
       </li>
       {% endfor %}
-      <li>
-        <a href="#" class="add">add a step »</a>
-      </li>
     </ol>
 
     <div class="form-actions">
@@ -85,3 +81,18 @@
   </form>
 </section>
 {% endblock content %}
+
+{% block extrajs %}
+<script type="text/javascript">
+  $(function() {
+    $('ol.steps li').formset({
+      prefix: '{{ form.steps_formset.prefix }}',
+      deleteCssClass: 'remove',
+      deleteText: 'remove',
+      addCssClass: 'add',
+      addText: 'add a step »'
+    });
+  })
+</script>
+
+{% endblock %}
