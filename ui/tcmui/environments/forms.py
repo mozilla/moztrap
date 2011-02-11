@@ -1,3 +1,5 @@
+from django.forms.formsets import formset_factory, BaseFormSet
+
 import floppyforms as forms
 
 from ..core.util import id_for_object
@@ -5,6 +7,15 @@ from ..core.util import id_for_object
 
 
 class EnvironmentSelectionForm(forms.Form):
+    """
+    A form for selecting an environment group from a set of possible
+    environment groups, in the form of a dropdown for each environment type
+    present in the groups.
+
+    Validates that the selected combination (one value per environment type)
+    actually matches one of the possible groups.
+
+    """
     def __init__(self, *args, **kwargs):
         groups = kwargs.pop("groups")
         # should be a list of (envtypeid, envid) tuples
@@ -29,9 +40,11 @@ class EnvironmentSelectionForm(forms.Form):
             self.groups.append(env_ids)
 
         # construct choice-field for each env type
-        for (typeid, typename), options in self.types.iteritems():
+        for (typeid, typename), options in sorted(
+            self.types.items(), key=lambda x: x[0][1]):
             self.fields["type_%s" % typeid] = forms.ChoiceField(
-                choices=options, label=typename)
+                choices=sorted(options, key=lambda x: x[1]),
+                label=typename)
 
         # set initial data based on current user environments
         if current:
@@ -66,3 +79,57 @@ class EnvironmentSelectionForm(forms.Form):
     def save(self):
         return [(int(field_name[len("type_"):]), eid) for field_name, eid
                 in self.cleaned_data.iteritems()]
+
+
+
+class EnvironmentConstraintForm(forms.Form):
+    """
+    Form for selecting multiple options for a single environment type, given a
+    set of environment groups.
+
+    """
+    env_type = forms.ChoiceField(choices=[])
+    environments = forms.MultipleChoiceField(choices=[])
+
+
+    def __init__(self, *args, **kwargs):
+        groups = kwargs.pop("groups")
+
+        super(EnvironmentConstraintForm, self).__init__(*args, **kwargs)
+
+        # contains (envtype.id, envtype.name) tuples
+        types = set()
+        # contains (envtype.id:env.id, env.name) tuples
+        environments = set()
+
+        for group in groups:
+            for env in group.environments:
+                et = env.environmentType
+                types.add((et.id, et.name))
+                environments.add(("%s:%s" % (et.id, env.id), env.name))
+
+        k = lambda x: x[1]
+        self.fields["env_type"].choices = sorted(types, key=k)
+        self.fields["environments"].choices = sorted(environments, key=k)
+        self.fields["environments"].widget.attrs["size"] = 5
+
+
+
+class BaseEnvironmentConstraintFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        self.groups = kwargs.pop("groups")
+
+        super(BaseEnvironmentConstraintFormSet, self).__init__(*args, **kwargs)
+
+
+    def _construct_form(self, i, **kwargs):
+        kwargs["groups"] = self.groups
+        return super(BaseEnvironmentConstraintFormSet, self)._construct_form(
+            i, **kwargs)
+
+
+
+EnvironmentConstraintFormSet = formset_factory(
+    EnvironmentConstraintForm,
+    formset=BaseEnvironmentConstraintFormSet
+    )

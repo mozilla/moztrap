@@ -28,37 +28,30 @@
       </li>
     </ul>
 
-    <div class="env">
+    <ul class="env">
       <label>environment constraints</label>
-      <ul>
-        <li>
-          <select name="env_type1" id="env_type1">
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-            <option value="option1">option3</option>
-            <option value="option2">option4</option>
-          </select>
-          <select name="env_value1" id="env_value1" multiple size="5">
-            <option value="option1">option1</option>
-            <option value="option2">option2</option>
-            <option value="option1">option3</option>
-            <option value="option2">option4</option>
-            <option value="option1">option5</option>
-            <option value="option2">option6</option>
-            <option value="option1">option7</option>
-            <option value="option2">option8</option>
-          </select>
-          <a href="#" class="remove">remove</a>
-        </li>
-        <li>
-          <a href="#" class="add">add a constraint »</a>
-        </li>
-      </ul>
-    </div>
+      {{ form.env_formset.management_forms }}
+      {% for envform in form.env_formset %}
+      <li>
+        <ul>
+          <li>
+            {{ envform.env_type.errors }}
+            {{ envform.env_type.label_tag }}
+            {{ envform.env_type }}
+          </li>
+          <li>
+            {{ envform.environments.errors }}
+            {{ envform.environments.label_tag }}
+            {{ envform.environments }}
+          </li>
+        </ul>
+      </li>
+      {% endfor %}
+    </ul>
 
     <ol class="steps">
       {{ form.steps_formset.management_form }}
-      {% for stepform in form.steps_formset.forms %}
+      {% for stepform in form.steps_formset %}
       <li>
         <div class="step">
           {{ stepform.instruction.errors }}
@@ -87,10 +80,19 @@
   $(function() {
     $('ol.steps li').formset({
       prefix: '{{ form.steps_formset.prefix }}',
+      formCssClass: 'steps-form',
       deleteCssClass: 'remove',
       deleteText: 'remove',
       addCssClass: 'add',
       addText: 'add a step »'
+    });
+    $('ul.env > li').formset({
+      prefix: '{{ form.env_formset.prefix }}',
+      formCssClass: 'env-form',
+      deleteCssClass: 'remove',
+      deleteText: 'remove',
+      addCssClass: 'add',
+      addText: 'add a constraint »'
     });
   })
 </script>

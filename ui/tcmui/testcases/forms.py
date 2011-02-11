@@ -2,6 +2,9 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 import floppyforms as forms
 
+from ..environments.forms import EnvironmentConstraintFormSet
+from ..environments.models import EnvironmentGroupList
+
 from .models import TestCaseVersion, TestCaseList, TestCaseStep
 
 
@@ -23,7 +26,16 @@ class TestCaseForm(forms.Form):
         self.fields["product"].choices = choices
         self.auth = products.auth
 
-        self.steps_formset = StepFormSet(*args, **kwargs)
+        self.steps_formset = StepFormSet(
+            *args, **dict(kwargs, prefix="steps"))
+        self.env_formset = EnvironmentConstraintFormSet(
+            *args,
+            **dict(
+                kwargs,
+                groups=EnvironmentGroupList.ours(auth=products.auth),
+                prefix="environments"
+            )
+        )
 
 
     def is_valid(self):
