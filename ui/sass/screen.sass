@@ -368,12 +368,12 @@ footer[role="contentinfo"]
 
   .steps
     +pad(2,4,24)
+    +padding-leader
     clear: both
     margin: 0
     counter-reset: step
     > li
       +pie-clearfix
-      +leader
       +trailer
       position: relative
       padding: $base-rhythm-unit*.5
@@ -422,7 +422,6 @@ footer[role="contentinfo"]
     background: $red-lightest
   .invalidform, .invaliddesc
     +float('left')
-    +trailer
     +padding-leader
     +hpadding(gutter(24))
     +border-bottom-radius(1em)
