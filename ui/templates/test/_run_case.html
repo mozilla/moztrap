@@ -1,6 +1,6 @@
 {% load execution %}
 
-    <details class="test {{ result|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
+    <details id="result-{{ result.id }}" class="test {{ result|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
 
       <summary class="header">
         <header>
@@ -39,7 +39,7 @@
                 <p>{{ result.comment }}</p>
               </div>
             {% else %}
-              <div class="invalidform">
+              <div class="invalidform form">
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
                 <div class="form-actions">
@@ -62,7 +62,7 @@
             {% if result.started %}
               <details class="stepfail">
                 <summary>fail</summary>
-                <div class="failform">
+                <div class="failform form">
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <label for="{{ step.id }}-actualResult">actual result:</label>
                   <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>

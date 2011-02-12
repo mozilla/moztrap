@@ -1,10 +1,14 @@
-$(function() {
+function summaryDetails(context) {
+    // Execute the fallback only if there’s no native `details` support
+    if (!('open' in document.createElement('details'))) {
+        var all;
+        if ($(context).is("details")) {
+                all = $(context).find("details").andSelf();
+            } else {
+                all = $(context).find("details");
+            }
 
- // Execute the fallback only if there’s no native `details` support
- if (!('open' in document.createElement('details'))) {
-
-  // Loop through all `details` elements
-  $('details').each(function() {
+            all.each(function() {
    // Store a reference to the current `details` element in a variable
    var $details = $(this),
        // Store a reference to the `summary` element of the current `details` element (if any) in a variable
@@ -61,5 +65,8 @@ $(function() {
   });
 
  }
+}
 
+$(function() {
+      summaryDetails("body");
 });
