@@ -110,8 +110,10 @@ class EnvironmentConstraintForm(forms.Form):
 
         k = lambda x: x[1]
         self.fields["env_type"].choices = sorted(types, key=k)
+        self.fields["env_type"].widget.attrs["class"] = "env_type"
         self.fields["environments"].choices = sorted(environments, key=k)
         self.fields["environments"].widget.attrs["size"] = 5
+        self.fields["environments"].widget.attrs["class"] = "environments"
 
 
 
