@@ -81,7 +81,7 @@ ACTIONS = {
     "start": [],
     "finishsucceed": [],
     "finishinvalidate": ["comment"],
-    "finishfail": ["comment", "failedStepNumber", "actualResult"],
+    "finishfail": ["failedStepNumber", "actualResult"],
     }
 
 
@@ -111,7 +111,7 @@ def result(request, result_id):
     getattr(result, action)(**kwargs)
 
     return render_to_response(
-        "test/_run_case_status.html",
+        "test/_run_case.html",
         {"case": result.testCase,
          "caseversion": result.testCaseVersion,
          "result": result,

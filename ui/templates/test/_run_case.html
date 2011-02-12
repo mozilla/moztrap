@@ -1,25 +1,87 @@
-    <article class="test" data-action-url="{% url result result_id=result.id %}">
-      <details{% if open %} open="open"{% endif %}>
+{% load execution %}
 
-        <summary>
-          <header>
-            <h3><b>#{{ case.id }} </b>{{ case.name }}</h3>
-          </header>
-          {% include "test/_run_case_status.html" %}
-        </summary>
+    <details class="test {{ result|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
 
-        <div class="content">
-          <ol class="steps">
-            {% for step in caseversion.steps %}
-            <li>
-              <h4>{{ step.instruction }}</h4>
-              <div class="results">
-                <p>{{ step.expectedResult }}</p>
-              </div>
-            </li>
-            {% endfor %}
-          </ol>
+      <summary class="header">
+        <header>
+          <small>#{{ case.id }}</small>
+          <h3>{{ case.name }}</h3>
+        </header>
+
+        <div class="status">
+          {% if result.pending %}
+            <button class="start" data-action="start">start</button>
+          {% endif %}
+          {% if result.started %}
+            <button class="pass" data-action="finishsucceed">
+              pass
+            </button>
+          {% endif %}
+          {% if result.passed %}
+            <p class="pass">Passed</p>
+          {% endif %}
+          {% if result.invalidated %}
+            <p class="pass">Invalid</p>
+          {% endif %}
+          {% if result.failed %}
+            <p class="pass">Failed</p>
+          {% endif %}
         </div>
+      </summary>
 
-      </details>
-    </article>
+      <div>
+        {% if result.started or result.invalidated %}
+          <details class="testinvalid{% if result.invalidated %} invalidated {% endif %}"{% if result.invalidated %} open="open"{% endif %}>
+            <summary>invalid</summary>
+            {% if result.invalidated %}
+              <div class="invaliddesc">
+                <h4>Invalid because:</h4>
+                <p>{{ result.comment }}</p>
+              </div>
+            {% else %}
+              <div class="invalidform">
+                <label>description of problem:</label>
+                <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
+                <div class="form-actions">
+                  <button class="invalid" data-action="finishinvalidate">mark as invalid</button>
+                </div>
+              </div>
+            {% endif %}
+          </details>
+        {% endif %}
+
+        <ol class="steps">
+          {% for step in caseversion.steps %}
+          <li>
+            <div class="step">
+              <h4>Instructions:</h4>
+              <p>{{ step.instruction }}</p>
+              <h4>Expected Results:</h4>
+              <p>{{ step.expectedResult }}</p>
+            </div>
+            {% if result.started %}
+              <details class="stepfail">
+                <summary>fail</summary>
+                <div class="failform">
+                  <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
+                  <label for="{{ step.id }}-actualResult">actual result:</label>
+                  <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
+                  <div class="form-actions">
+                    <button class="fail" data-action="finishfail">submit failure</button>
+                  </div>
+                </div>
+              </details>
+            {% endif %}
+            {% if result.failed %}
+              <details class="stepfail failed" open="open">
+                <summary>failed</summary>
+                <div class="faildesc">
+                  <p>{{ result.actualResult }}</p>
+                </div>
+              </details>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+    </details>

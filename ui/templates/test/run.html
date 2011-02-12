@@ -12,8 +12,10 @@
 {% block content %}
   <section id="run">
     <h2>Run Tests:</h2>
+
     {% for includedtestcase in testrun.includedtestcases %}
       {% run_case includedtestcase request.user request.environments %}
     {% endfor %}
+
   </section>
 {% endblock content %}
