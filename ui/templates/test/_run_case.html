@@ -72,7 +72,7 @@
                 </div>
               </details>
             {% endif %}
-            {% if result.failed %}
+            {% if result.failed and result.failedStepNumber == step.stepNumber %}
               <details class="stepfail failed" open="open">
                 <summary>failed</summary>
                 <div class="faildesc">
