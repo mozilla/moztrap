@@ -250,13 +250,21 @@ footer[role="contentinfo"]
 /* create tests --------------------------------------------------------------    
 
 .remove
-  +replace-text("http://dummyimage.com/16/933/fff&text=X")
+  +replace-text('ui/cross.png')
   display: block
   height: $base-rhythm-unit
 
 .add
-  display: block
-  text-align: right
+  #{$link}
+    @extend .smallcaps
+    display: block
+    padding: 0 $base-rhythm-unit*.5
+    color: $green-dark
+    background: $green-lightest
+    text-align: right
+  #{$focus}
+    color: $base
+    background: $green
 
 #create
   li
@@ -267,49 +275,70 @@ footer[role="contentinfo"]
   .meta
     +columns(12,24)
     +inline-form(2,10,12)
+    +trailer
   
   .env
     +columns(12,24)
     +omega(24)
+    +trailer
+    h3
+      padding: $base-rhythm-unit*.25
+      background: darken($light,5)
+      margin: 0
     ul
       +no-style-list
-    select
-      +columns(5,12)
-      + select
-        +columns(6,12)
+    label
+      +hide
+      position: absolute
+      height: 0
     .remove
       +columns(1,12)
       +omega(12)
-    .add
-      margin-right: columns(1,12) + gutter(12)
+  
+  .env-form
+    +leading-border(1px,.5)
+    border-color: darken($light,10)
+    background: $light
+    li
+      +columns(5,12)
+      &:first-child
+        +prefix(1,12)
   
   .steps
     +full(24)
+  .steplist
+    +no-style-list
+    +full(24)
+    +prefix(2,24)
     counter-reset: step
+  .steps-form
+    +full(22)
+    +prefix(1,22)
+    +leading-border(1px,.25)
+    position: relative
+    border-color: darken($light,10)
+    background: $light
+    counter-increment: step
+    &::before
+      +adjust-font-size-to(48px)
+      content: counter(step, decimal) "."
+      position: absolute
+      right: 100% + gutter(21)
+      top: 0
+    &:last-child::before
+      content: ""
+    .action
+      +columns(9,21)
+    .result
+      +columns(11,21)
     .remove
-      +columns(1,24)
-      +omega(24)
-      +leader
+      +columns(1,21)
+      +omega(21)
+      +leader(.25)
     .add
-      margin-right: columns(1,24) + gutter(24)
-    li
-      position: relative
-      counter-increment: step
-      &::before
-        +adjust-font-size-to(48px)
-        content: counter(step, decimal) "."
-        position: absolute
-        left: 0
-        top: 1.5em
-      &:last-child::before
-        content: ""
+      margin-left: columns(2,24) + gutter(24)
     textarea
       min-height: $base-rhythm-unit*6
-  .step
-    +columns(10,24)
-    margin-left: columns(2,24) + gutter(24)
-  .result
-    +columns(11,24)
     
 
 /* run tests --------------------------------------------------------------    

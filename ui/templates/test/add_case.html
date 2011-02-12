@@ -28,44 +28,48 @@
       </li>
     </ul>
 
-    <ul class="env">
-      <label>environment constraints</label>
+    <div class="env">
+      <h3>Environment Constraints</h3>
       {{ form.env_formset.management_forms }}
-      {% for envform in form.env_formset %}
-      <li>
-        <ul>
-          <li>
-            {{ envform.env_type.errors }}
-            {{ envform.env_type.label_tag }}
-            {{ envform.env_type }}
-          </li>
-          <li>
-            {{ envform.environments.errors }}
-            {{ envform.environments.label_tag }}
-            {{ envform.environments }}
-          </li>
-        </ul>
-      </li>
-      {% endfor %}
-    </ul>
+      <ul class="envlist">
+        {% for envform in form.env_formset %}
+        <li>
+          <ul>
+            <li>
+              {{ envform.env_type.errors }}
+              {{ envform.env_type.label_tag }}
+              {{ envform.env_type }}
+            </li>
+            <li>
+              {{ envform.environments.errors }}
+              {{ envform.environments.label_tag }}
+              {{ envform.environments }}
+            </li>
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-    <ol class="steps">
+    <div class="steps">
       {{ form.steps_formset.management_form }}
       {% for stepform in form.steps_formset %}
-      <li>
-        <div class="step">
-          {{ stepform.instruction.errors }}
-          {{ stepform.instruction.label_tag }}
-          {{ stepform.instruction }}
-        </div>
-        <div class="result">
-          {{ stepform.expected_result.errors }}
-          {{ stepform.expected_result.label_tag }}
-          {{ stepform.expected_result }}
-        </div>
-      </li>
-      {% endfor %}
-    </ol>
+      <ol class="steplist">
+        <li>
+          <div class="action">
+            {{ stepform.instruction.errors }}
+            {{ stepform.instruction.label_tag }}
+            {{ stepform.instruction }}
+          </div>
+          <div class="result">
+            {{ stepform.expected_result.errors }}
+            {{ stepform.expected_result.label_tag }}
+            {{ stepform.expected_result }}
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
 
     <div class="form-actions">
       <button type="submit">save test case</button>
@@ -75,10 +79,13 @@
 </section>
 {% endblock content %}
 
+
+{# @@@ move the classes into the markup #}
+
 {% block extrajs %}
 <script type="text/javascript">
   $(function() {
-    $('ol.steps li').formset({
+    $('ol.steplist > li').formset({
       prefix: '{{ form.steps_formset.prefix }}',
       formCssClass: 'steps-form',
       deleteCssClass: 'remove',
@@ -86,7 +93,7 @@
       addCssClass: 'add',
       addText: 'add a step »'
     });
-    $('ul.env > li').formset({
+    $('ul.envlist > li').formset({
       prefix: '{{ form.env_formset.prefix }}',
       formCssClass: 'env-form',
       deleteCssClass: 'remove',
