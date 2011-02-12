@@ -89,7 +89,7 @@ class EnvironmentConstraintForm(forms.Form):
 
     """
     env_type = forms.ChoiceField(choices=[])
-    environments = forms.MultipleChoiceField(choices=[])
+    environments = forms.MultipleChoiceField(choices=[], required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -128,6 +128,30 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
         kwargs["groups"] = self.groups
         return super(BaseEnvironmentConstraintFormSet, self)._construct_form(
             i, **kwargs)
+
+
+    def save(self, testcaseversion):
+        constraints = {}
+        for form in self.forms:
+            envs = [v.split(":") for v in form.cleaned_data["environments"]]
+            if envs:
+                etid = form.cleaned_data["env_type"]
+                for_type = constraints.setdefault(etid, set())
+                for_type.update([v[1] for v in envs if v[0] == etid])
+
+        valid_group_ids = set()
+        for group in self.groups:
+            valid = True
+            for env in group.environments:
+                etid = env.environmentType.id
+                if (etid in constraints and
+                    env.id not in constraints[etid]):
+                    valid = False
+                    break
+            if valid:
+                valid_group_ids.add(group.id)
+
+        testcaseversion.environmentgroups = valid_group_ids
 
 
 

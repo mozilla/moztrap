@@ -136,7 +136,7 @@ class Link(remoteobjects.fields.Link):
 
 
     def __set__(self, instance, value):
-        if isinstance(value, (list, tuple)):
+        if isinstance(value, (list, tuple, set)):
             value = self.cls(entries=list(value))
         value.put(
             url=join(instance._location, self.api_name),

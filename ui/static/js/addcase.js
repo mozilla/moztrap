@@ -28,5 +28,5 @@ function filterEnvironments(forms) {
 
 $(document).ready(
     function() {
-        filterEnvironments("ul.env > li");
+        filterEnvironments("ul.envlist > li");
     });

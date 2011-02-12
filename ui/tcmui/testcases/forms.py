@@ -41,7 +41,8 @@ class TestCaseForm(forms.Form):
     def is_valid(self):
         return (
             super(TestCaseForm, self).is_valid() and
-            self.steps_formset.is_valid()
+            self.steps_formset.is_valid() and
+            self.env_formset.is_valid()
             )
 
 
@@ -58,6 +59,7 @@ class TestCaseForm(forms.Form):
         TestCaseList.get(auth=self.auth).post(testcase)
 
         self.steps_formset.save(testcase)
+        self.env_formset.save(testcase)
 
         return testcase
 
@@ -73,6 +75,7 @@ class StepForm(forms.Form):
         # undo default rows and cols attrs
         self.fields["instruction"].widget.attrs = {}
         self.fields["expected_result"].widget.attrs = {}
+        self.empty_permitted = False
 
 
     def save(self, testcaseversion, stepnumber):
