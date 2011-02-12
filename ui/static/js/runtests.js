@@ -18,27 +18,22 @@ function testCaseButtons() {
         });
 }
 
-$(function() {
-      testCaseButtons();
-      $("div[role=main]").ajaxError(
-          function(event, request, settings) {
-              $(this).prepend(
-                  '<aside class="error">' + request.responseText + '</aside>'
-              );
-          });
-  });
-
 function autoFocus(trigger) {
-    var trigger = $(trigger);
-    
-    trigger.click(function() {
+    $(trigger).click(function() {
         if ($(this).parent().hasClass('open')) {
             $(this).parent().find('textarea').focus();
         }
     });
 }
 
-$(document).ready(function() {
+$(function() {
     autoFocus('details.stepfail > summary');
     autoFocus('details.testinvalid > summary');
+//    testCaseButtons();
+    $("div[role=main]").ajaxError(
+        function(event, request, settings) {
+            $(this).prepend(
+                '<aside class="error">' + request.responseText + '</aside>'
+            );
+        });
 });
