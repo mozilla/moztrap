@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core import urlresolvers
-from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponseRedirect
 
 from ..core.api import Credentials
@@ -64,10 +63,6 @@ def resolve_url(to, *args, **kwargs):
         # If this doesn't "feel" like a URL, re-raise.
         if '/' not in to and '.' not in to:
             raise
-
-    if " " in to or "//" in to:
-        raise SuspiciousOperation(
-            "Redirect should not have spaces or be absolute.")
 
     # Finally, fall back and assume it's a URL
     return to

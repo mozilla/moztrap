@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
@@ -17,8 +18,13 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             util.login(request, form.user)
-            return redirect(
-                request.GET.get("next", settings.LOGIN_REDIRECT_URL))
+
+            to = request.GET.get("next", settings.LOGIN_REDIRECT_URL)
+            if " " in to or "//" in to:
+                raise SuspiciousOperation(
+                    "Redirect should not have spaces or be absolute.")
+
+            return redirect(to)
     else:
         form = LoginForm()
 
