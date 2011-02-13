@@ -115,5 +115,5 @@ def result(request, result_id):
         {"case": result.testCase,
          "caseversion": result.testCaseVersion,
          "result": result,
-         "open": True,
+         "open": action == "start",
          })
