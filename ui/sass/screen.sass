@@ -374,10 +374,6 @@ footer[role="contentinfo"]
   .header
     +pie-clearfix
     +padding-leader(.5)
-    p
-      +padding-leader(.25)
-      +padding-trailer(.25)
-      margin: 0
   header
     +columns(20,24)
     +leader(.25)
@@ -400,7 +396,11 @@ footer[role="contentinfo"]
     text-align: center
     p
       @extend .allcaps
-      +border-radius(1em)
+      +adjust-font-size-to(14px)
+      +border-radius(1.5em)
+      +padding-leader(.25,14px)
+      +padding-trailer(.25,14px)
+      +hpadding(2em)
       margin: 0 gutter(4)
       color: $light
       font-weight: bold
