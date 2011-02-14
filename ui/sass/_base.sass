@@ -29,6 +29,7 @@ $blue: #5d7b7a
 $blue-light: #8bb9b7
 $blue-lighter: mix($blue-light,#eee,66%)
 $blue-lightest: mix($blue-light,#eee,33%)
+$blue-hint: lighten($blue-lightest,10)
 $blue-dark: #2e3e3d
 
 $red: #b9292f
@@ -71,3 +72,9 @@ $accent: $red
   padding:
     left: $l
     right: $r
+
+=gone
+  +hide
+  position: absolute
+  height: 0
+  width: 0

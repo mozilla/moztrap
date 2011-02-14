@@ -82,6 +82,7 @@ nav.crumb
   +padding-trailer(.25)
   clear: both
   border-color: #ccc
+  text-transform: capitalize
   li
     +inline-block
     vertical-align: baseline
@@ -103,12 +104,11 @@ div[role="main"]
 #messages
   @extend .sans
   +full(24)
-  +border-radius(.5em)
-  +rhythm-borders(1px,.5)
   +trailer()
-  +text-shadow(#efe 1px 1px 0)
-  background: #cfc
-  color: #666
+  +text-shadow($green-lightest 1px 1px 0)
+  padding: $base-rhythm-unit*.5
+  background: $green-lighter
+  color: $green-dark
   font-weight: bold
   ul
     +no-style-list
@@ -135,14 +135,17 @@ footer[role="contentinfo"]
 
 /* login --------------------------------------------------------------    
 
-#login, #register
+
+.simpleform
+  +inline-form(4,8,12)
   +side-errors(6,12)
 
-#login
+#login, #register
   @extend .simple
-  label
-    +hide
-    position: absolute
+
+#login
+  +padding-leader
+  +padding-trailer
   .logo
     +full(12)
     +pad(3,3,12)
@@ -150,19 +153,13 @@ footer[role="contentinfo"]
   h2
     margin: 0
   form
-    +full(12)
-
-/* register --------------------------------------------------------------    
+    +side-errors(6,12)
+  label
+    +gone
 
 #register
-  @extend .simple
-  li
-    +pie-clearfix
-  label
-    +columns(4,12)
-  input
-    +columns(8,12)
-    +omega(12)
+  form
+    @extend .simpleform
 
 /* products --------------------------------------------------------------    
 
@@ -174,9 +171,14 @@ footer[role="contentinfo"]
       +trailer(.5)
       +columns(4,12)
       a
-        +rhythm-borders(1px,.5)
-        display: block
-        background: #efe
+        #{$link}
+          +text-shadow($green-lightest 1px 1px 0)
+          display: block
+          padding: $base-rhythm-unit*.5
+          color: $green-dark
+          background: $blue-lighter
+        #{$focus}
+          background: $green-light
       &:nth-child(3n)
         +omega(12)
       &:first-child:last-child
@@ -209,14 +211,17 @@ footer[role="contentinfo"]
     +padding-trailer(.25)
     text-align: right
     color: $alt
+    text-transform: capitalize
     &:hover
       color: $accent
   form
     @extend .full
     +prefix(12)
     +leading-border(1px)
-    +trailer(.5)
+    +padding-trailer(.5)
+    padding-right: gutter(24)
     border-color: #ccc
+    background: $yellow-light
   +inline-form(4,8,12)
 
 #environment
@@ -271,11 +276,16 @@ footer[role="contentinfo"]
     +pie-clearfix
   .form-actions
     +leader
+  .errorlist
+    +no-style-list
   
   .meta
     +columns(12,24)
     +inline-form(2,10,12)
     +trailer
+    .errorlist
+      +full(12)
+      +prefix(2,12)
   
   .env
     +columns(12,24)
@@ -306,6 +316,7 @@ footer[role="contentinfo"]
   
   .steps
     +full(24)
+    +clearfix
   .steplist
     +no-style-list
     +full(24)
@@ -339,6 +350,10 @@ footer[role="contentinfo"]
       margin-left: columns(2,24) + gutter(24)
     textarea
       min-height: $base-rhythm-unit*6
+    .errorlist
+      +float('right')
+      +padding-leader(.25)
+      +padding-trailer(.25)
     
 
 /* run tests --------------------------------------------------------------    
@@ -350,9 +365,7 @@ footer[role="contentinfo"]
     +pie-clearfix      
     &[open], &.open, .header
       +trailing-border(1px,.5)
-    &[open], &.open
-      .header
-        border-bottom-color: #ccc
+      border-color: #ccc
     &:first-of-type
       &, &[open], &.open
         padding-top: 0
@@ -418,6 +431,8 @@ footer[role="contentinfo"]
         top: 0
     h4
       +trailer(0)
+    .step
+      overflow: hidden
 
   .stepfail
     +full(18)

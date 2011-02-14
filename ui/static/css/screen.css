@@ -130,8 +130,8 @@ th.asc a:focus::after, th.asc a:hover::after, th.asc a:active::after { backgroun
 th.desc a:link::after, th.desc a:visited::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
 th.desc a:focus::after, th.desc a:hover::after, th.desc a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
 
-tr:nth-child(even) td { background: #eeeeff; }
-tr:hover td { background: #ddddff; }
+tr:nth-child(even) td { background: #ebf1f1; }
+tr:hover td { background: #e5f5d2; }
 
 tfoot { font-size: 0.875em; line-height: 1.714em; }
 
@@ -237,7 +237,7 @@ nav.meta li { display: -moz-inline-box; -moz-box-orient: vertical; display: inli
 nav.meta li { *display: inline; }
 nav.meta li:last-child { border: 0; padding-right: 0; }
 
-nav.crumb { display: inline; float: left; width: 72.941%; margin-right: 1.176%; margin-left: 1.176%; padding-top: 0.375em; padding-bottom: 0.375em; clear: both; border-color: #cccccc; }
+nav.crumb { display: inline; float: left; width: 72.941%; margin-right: 1.176%; margin-left: 1.176%; padding-top: 0.375em; padding-bottom: 0.375em; clear: both; border-color: #cccccc; text-transform: capitalize; }
 nav.crumb li { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; vertical-align: baseline; }
 nav.crumb li { *display: inline; }
 nav.crumb li::after { content: " »"; }
@@ -247,7 +247,7 @@ nav.crumb li:last-child a { color: inherit; }
 div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; position: relative; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-#messages { clear: both; -moz-border-radius: 0.5em; -webkit-border-radius: 0.5em; -o-border-radius: 0.5em; -ms-border-radius: 0.5em; -khtml-border-radius: 0.5em; border-radius: 0.5em; border-style: solid; border-width: 0.063em; padding: 0.688em; margin-bottom: 1.5em; text-shadow: #eeffee 1px 1px 0; background: #ccffcc; color: #666666; font-weight: bold; }
+#messages { clear: both; margin-bottom: 1.5em; text-shadow: #e5f5d2 1px 1px 0; padding: 0.75em; background: #cdeca9; color: #345112; font-weight: bold; }
 #messages ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 #messages ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #messages li + li { margin-top: 0.75em; }
@@ -260,24 +260,24 @@ footer[role="contentinfo"] .credit { display: inline; float: right; margin-right
 footer[role="contentinfo"] small { font-size: 1em; }
 
 /* login -------------------------------------------------------------- */
-#login li .errorlist, #register li .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; margin: 0; }
+.simpleform li, #register form li { *zoom: 1; }
+.simpleform li:after, #register form li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.simpleform label, #register form label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
+.simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.simpleform li .errorlist, #register form li .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; margin: 0; }
 
-#login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; }
+#login { padding-top: 1.5em; padding-bottom: 1.5em; }
 #login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
 #login h2 { margin: 0; }
-#login form { clear: both; }
-
-/* register -------------------------------------------------------------- */
-#register li { *zoom: 1; }
-#register li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#register label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
-#register input { display: inline; float: left; width: 65.854%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#login form li .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; margin: 0; }
+#login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; width: 0; }
 
 /* products -------------------------------------------------------------- */
 #products .list { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 #products .list li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #products .list li { margin-bottom: 0.75em; display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
-#products .list li a { border-style: solid; border-width: 0.063em; padding: 0.688em; display: block; background: #eeffee; }
+#products .list li a:link, #products .list li a:visited { text-shadow: #e5f5d2 1px 1px 0; display: block; padding: 0.75em; color: #345112; background: #accbc9; }
+#products .list li a:focus, #products .list li a:hover, #products .list li a:active { background: #b5e37f; }
 #products .list li:nth-child(3n) { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 #products .list li:first-child:last-child { float: none; display: block; width: auto; margin-right: auto; clear: both; }
 #products .list li:first-child:nth-last-child(2), #products .list li:first-child:nth-last-child(2) ~ li, #products .list li:first-child:nth-last-child(4), #products .list li:first-child:nth-last-child(4) ~ li, #products .list li:first-child:nth-last-child(7), #products .list li:first-child:nth-last-child(7) ~ li { display: inline; float: left; width: 48.78%; margin-right: 2.439%; }
@@ -288,9 +288,9 @@ footer[role="contentinfo"] small { font-size: 1em; }
 
 /* environment -------------------------------------------------------------- */
 .environment { position: relative; }
-.environment summary { display: inline; float: left; width: 23.529%; margin-right: 1.176%; display: inline; float: right; margin-right: 1.176%; #margin-left: -1em; padding-top: 0.375em; padding-bottom: 0.375em; text-align: right; color: #5d7b7a; }
+.environment summary { display: inline; float: left; width: 23.529%; margin-right: 1.176%; display: inline; float: right; margin-right: 1.176%; #margin-left: -1em; padding-top: 0.375em; padding-bottom: 0.375em; text-align: right; color: #5d7b7a; text-transform: capitalize; }
 .environment summary:hover { color: #b9292f; }
-.environment form { padding-left: 49.412%; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; margin-bottom: 0.75em; border-color: #cccccc; }
+.environment form { padding-left: 49.412%; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; padding-bottom: 0.75em; padding-right: 1.205%; border-color: #cccccc; background: #fef0bf; }
 .environment li { *zoom: 1; }
 .environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .environment label { display: inline; float: left; width: 31.707%; margin-right: 2.439%; }
@@ -317,11 +317,14 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #create li { *zoom: 1; }
 #create li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #create .form-actions { margin-top: 1.5em; }
+#create .errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+#create .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #create .meta { display: inline; float: left; width: 49.398%; margin-right: 1.205%; margin-bottom: 1.5em; }
 #create .meta li { *zoom: 1; }
 #create .meta li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #create .meta label { display: inline; float: left; width: 14.634%; margin-right: 2.439%; }
 #create .meta input, #create .meta select, #create .meta textarea { display: inline; float: left; width: 82.927%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#create .meta .errorlist { clear: both; padding-left: 17.073%; }
 #create .env { display: inline; float: left; width: 49.398%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
 #create .env h3 { padding: 0.375em; background: #e1e1e1; margin: 0; }
 #create .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
@@ -331,7 +334,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #create .env-form { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.688em; border-color: #d4d4d4; background: #eeeeee; }
 #create .env-form li { display: inline; float: left; width: 40.244%; margin-right: 2.439%; }
 #create .env-form li:first-child { padding-left: 8.537%; }
-#create .steps { clear: both; }
+#create .steps { clear: both; overflow: hidden; *zoom: 1; }
 #create .steplist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; clear: both; padding-left: 8.434%; counter-reset: step; }
 #create .steplist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #create .steps-form { clear: both; padding-left: 4.605%; border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; position: relative; border-color: #d4d4d4; background: #eeeeee; counter-increment: step; }
@@ -342,13 +345,13 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #create .steps-form .remove { display: inline; float: left; width: 3.448%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 0.375em; }
 #create .steps-form .add { margin-left: 8.434%; }
 #create .steps-form textarea { min-height: 9em; }
+#create .steps-form .errorlist { display: inline; float: right; padding-top: 0.375em; padding-bottom: 0.375em; }
 
 /* run tests -------------------------------------------------------------- */
 #run .test, #run .content { clear: both; }
 #run .test { *zoom: 1; }
 #run .test:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#run .test[open], #run .test.open, #run .test .header { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; }
-#run .test[open] .header, #run .test.open .header { border-bottom-color: #cccccc; }
+#run .test[open], #run .test.open, #run .test .header { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; border-color: #cccccc; }
 #run .test:first-of-type, #run .test:first-of-type[open], #run .test:first-of-type.open { padding-top: 0; }
 #run .test:first-of-type .header, #run .test:first-of-type[open] .header, #run .test:first-of-type.open .header { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.688em; }
 #run .header { *zoom: 1; padding-top: 0.75em; }
@@ -365,6 +368,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .steps > li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #run .steps > li::before { font-size: 3em; line-height: 1em; content: counter(step, decimal) "."; position: absolute; right: 101.613%; top: 0; }
 #run .steps h4 { margin-bottom: 0em; }
+#run .steps .step { overflow: hidden; }
 #run .stepfail { clear: both; position: relative; margin: 0 -0.75em; border-top: 1.5em solid #fef0bf; }
 #run .stepfail summary { -moz-transition-property: all; -webkit-transition-property: all; -o-transition-property: all; transition-property: all; -moz-transition-duration: 300ms; -webkit-transition-duration: 300ms; -o-transition-duration: 300ms; transition-duration: 300ms; position: absolute; top: -1.5em; right: 0; padding: 0 1.613%; width: 9.677%; background: #e37f83; color: #eeeeee; text-align: center; }
 #run .stepfail summary:hover { background: #b9292f; }
