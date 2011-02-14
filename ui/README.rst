@@ -50,3 +50,13 @@ Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
+
+Deployment
+----------
+
+In addition to the above configuration, in any production deployment this
+entire app should be served exclusively over HTTPS (since almost all use of the
+site is authenticated, and serving authenticated pages over HTTP invites
+session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
+HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
+in ``settings_local.py`` whenever the app is being served over HTTPS.

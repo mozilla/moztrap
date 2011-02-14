@@ -12,3 +12,5 @@ for name in [
         locals()[name] = getattr(settings, name)
     except AttributeError:
         raise ImproperlyConfigured("%s setting is required." % name)
+
+HTTPS_STS_SECONDS = getattr(settings, "HTTPS_STS_SETTINGS", 0)

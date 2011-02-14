@@ -18,6 +18,12 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 # "collect_static" management command, and can be served by front-end webserver.
 #STATIC_ROOT = ""
 
+# Uncomment these if the app is served over HTTPS (required for any
+# production deployment to avoid session hijacking):
+#SESSION_COOKIE_SECURE = True
+# http://en.wikipedia.org/wiki/Strict_Transport_Security
+#HTTPS_STS_SECONDS = 86400
+
 # A unique (and secret) key for this deployment.
 #SECRET_KEY = ""
 
