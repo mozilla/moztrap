@@ -1,11 +1,17 @@
 """
-Settings overrides for a particular deployment of this app. The defaults should
-be suitable for local development; settings below are likely to need adjustment
-for a staging or production deployment.
+Settings overrides for a particular deployment of this app. Aside from the two
+required settings at the top, the defaults should be suitable for local
+development; other settings below are likely to need adjustment for a staging
+or production deployment.
 
 Copy settings_local.sample.py to settings_local.py and modify as needed.
 
 """
+
+# Set these to IDs of actual company/roles; use "./manage.py create_company" to
+# create them if needed.
+TCM_COMPANY_ID = 0
+TCM_NEW_USER_ROLE_ID = 0
 
 #TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 #TCM_ADMIN_USER = "admin@utest.com"
@@ -13,6 +19,15 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 
 #DEBUG = False
 #TEMPLATE_DEBUG = False
+
+# Causes CSS/JS to be served in a single combined, minified file, with a name
+# based on contents hash (thus can be safely far-futures-expired).  This
+# setting requires the Django server process to have write access to
+# STATIC_ROOT (or, more specifically, a CACHE/ subdirectory of it), as minified
+# combined files are generated on-demand if the underlying files have
+# changed. If static files are hosted off-site, a custom Django file storage
+# handler can be used as well.
+#COMPRESS = True
 
 # Absolute path to directory where static assets will be collected by the
 # "collectstatic" management command, and can be served by front-end webserver.
@@ -42,3 +57,12 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 #        'LOCATION': '127.0.0.1:11211',
 #    }
 #}
+
+# If a mail server is not available at localhost:25, set these to appropriate
+# values:
+#EMAIL_HOST = ""
+#EMAIL_PORT = ""
+# If the mail server configured above requires authentication and/or TLS:
+#EMAIL_USE_TLS = True
+#EMAIL_HOST_USER = ""
+#EMAIL_HOST_PASSWORD = ""
