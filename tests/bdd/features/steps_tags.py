@@ -19,20 +19,12 @@ from step_helper import *
 def create_tag_with_name(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     post_payload = {"companyId": 9,
                     "tag": tag
                    }
     
-    world.conn.request("POST", add_params(world.path_tags), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_tags,
+            post_payload)
 
 
 
@@ -48,17 +40,9 @@ def check_tag_foo_existence(step, stored, tag, existence):
 def delete_tag_with_tag_foo(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     tag_id, version = get_resource_identity("tag", 
-                                                  add_params(world.path_tags, {"tag": tag}))
+                                             add_params(world.path_tags, {"tag": tag}))
                
-    world.conn.request("DELETE", 
-                       add_params(world.path_tags + tag_id, 
-                                  {"originalVersionId": version}), "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete tag")
+    do_delete(world.path_tags + tag_id, 
+              {"originalVersionId": version})
 

@@ -20,31 +20,21 @@ from step_helper import jstr, add_params
 
 @step(u'create a new testcase with (that name|name "(.*)")')
 def create_testcase_with_name_foo(step, stored, name):
-    name = get_stored_or_store_testcase_name(stored, name)
+    name = get_stored_or_store_name("testcase", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {"productId": 1,
                     "maxAttachmentSizeInMbytes":"10",
                     "maxNumberOfAttachments":"5",
                     "name": name,
                     "description": "Lettuce tc"
                    }
+    do_post(world.path_testcases,
+            post_payload)
     
-    world.conn.request("POST", add_params(world.path_testcases), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
-
-
 
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_testcase_name(stored, name)
+    name = get_stored_or_store_name("testcase", stored, name)
     search_and_verify_existence(step, world.path_testcases, 
                     {"name": name}, 
                      "testcase", existence)
@@ -52,7 +42,7 @@ def check_testcase_foo_existence(step, stored, name, existence):
 
 @step(u'delete the testcase with (that name|name "(.*)")')
 def delete_testcase_with_name_foo(step, stored, name):
-    name = get_stored_or_store_testcase_name(stored, name)
+    name = get_stored_or_store_name("testcase", stored, name)
     
     headers = {'Authorization': get_auth_header(),
                'content-type': "application/x-www-form-urlencoded"
@@ -69,7 +59,7 @@ def delete_testcase_with_name_foo(step, stored, name):
 
 @step(u'add these steps to the testcase with (that name|name "(.*)")')
 def add_steps_to_testcase_name(step, stored, name):
-    name = get_stored_or_store_testcase_name(stored, name)
+    name = get_stored_or_store_name("testcase", stored, name)
     
     # first we need the testcase id so we can get the latest version to add steps to
     testcase_id, version = get_resource_identity("testcase", 
@@ -77,22 +67,13 @@ def add_steps_to_testcase_name(step, stored, name):
 
     testcaseversion_id = get_testcase_latestversion_id(testcase_id)
 
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded" }
-
     uri = world.path_testcases + "versions/" + testcaseversion_id + "/steps/" 
     for case_step in step.hashes:
-
-        world.conn.request("POST", add_params(uri), 
-                       urllib.urlencode(case_step, doseq=True), 
-                       headers)
-
-        response = world.conn.getresponse()
-        verify_status(200, response, "Create testcase step " + jstr(case_step))
+        do_post(uri, case_step)
     
 @step(u'the testcase with (that name|name "(.*)") has these steps')
 def verify_testcase_steps(step, stored, name):
-    name = get_stored_or_store_testcase_name(stored, name)
+    name = get_stored_or_store_name("testcase", stored, name)
     
     # first we need the testcase id so we can get the latest version to add steps to
     testcase_id, version = get_resource_identity("testcase", 
@@ -105,17 +86,66 @@ def verify_testcase_steps(step, stored, name):
                'Authorization': get_auth_header()}
 
     uri = world.path_testcases + "versions/" + testcaseversion_id + "/steps/" 
-    world.conn.request("GET", add_params(uri), "", headers)
-    response = world.conn.getresponse()
-    data = verify_status(200, response, "Create fetch testcase steps")
-    
-    # get the array of steps out of the response
-    testcasesteps = get_array_of_type("testcasestep", data)
+    testcasestep_list = get_list_from_endpoint("testcasestep", uri)
     
     # compare the returned values with those passed in to verify match
-    for case_step in step.hashes:
-        assert False
+    step_num = 0
+    try:
+        for exp_step in step.hashes:
+            act_step = testcasestep_list[step_num]
+            eq_(act_step[ns("name")], exp_step["name"], "name match")
+            step_num += 1
+    except KeyError:
+        assert False, "Object field mismatch.\nExpected:\n" + jstr(step.hashes) + "\n\nActual:\n" + jstr(testcasestep_list)
 
+
+@step(u'user with (that name|name "(.*)") approves the testcase with (that name|name "(.*)")')
+def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_name):
+    testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+
+    # get the user email and password
+    names = user_name.split()
+    user_list = get_list_from_search("user",
+                                     world.path_users,
+                                     {"firstName": names[0], "lastName": names[1]})
+    try:
+        useremail = user_list[0][ns("email")]
+        userpw = names[0] + names[1] + "123"
+    except KeyError:
+        assert False, "%s\nDidn't find field in %s" % (str(KeyError), user_list)
+    
+    
+    # first we need the testcase id so we can get the latest version to approve
+    testcase_id, version = get_resource_identity("testcase", 
+                                                  add_params(world.path_testcases, 
+                                                             {"name": testcase_name}))
+    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+
+    
+    # do the approval of the testcase
+    uri = world.path_testcases + "versions/" + testcaseversion_id + "/approve/" 
+    do_put(uri, 
+           {"originalVersionId": version},
+           get_auth_header(useremail, userpw))
+    
+    
+@step(u'the testcase with (that name|name "(.*)") has status of approved')
+def testcase_has_status_of_approved(step, stored, name):
+    name = get_stored_or_store_name("testcase", stored, name)
+
+    # fetch the steps for this testcase from the latestversion
+    headers = {'Content-Type':'application/json',
+               'Authorization': get_auth_header()}
+
+    world.conn.request("GET", 
+                       add_params(world.path_testcases), 
+                       {"name": name}, 
+                       headers)
+    response = world.conn.getresponse()
+    data = verify_status(200, response, "Get testcase with name: " + name)
+    testcase = get_single_item(data, "testcase")
+    eq_(testcase["approved"], True, "Testcase is approved: " + jstr(testcase))
 
 
 @step(u'add environment "(.*)" to test case "(.*)"')
@@ -127,18 +157,10 @@ def add_environment_foo_to_test_case_bar(step, environment, test_case):
     # fetch the test case's resource identity
     test_case_id, version = get_testcase_resid(test_case)
     
-    post_payload = {"name": "test environment"
-                   }
-    headers = {'content-Type':'text/xml',
-               "Content-Length": "%d" % len(post_payload) }
-
-    world.conn.request("POST", 
-                       add_params(world.path_testcases + test_case_id + "/environments", 
-                                  {"originalVersionId": version}), 
-                       "", headers)
-    world.conn.send(post_payload)
-    response = world.conn.getresponse()
-    verify_status(200, response, "post new environment to test_case")
+    post_payload = {"name": "test environment"}
+    do_post(world.path_testcases + test_case_id + "/environments",
+            post_payload,
+            params = {"originalVersionId": version})
 
 @step(u'remove environment "(.*)" from test case "(.*)"')
 def remove_environment_from_test_case(step, environment, test_case):
@@ -197,20 +219,6 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     shouldFind = (haveness == "has")
     eq_(found, shouldFind, "looking for attachment of " + attachment + " in:\n" + jstr(jsonList))
 
-def get_stored_or_store_testcase_name(stored, name):
-    '''
-        Help figure out if the test writer wants to use a stored name from a previous step, or if
-        the name was passed in explicitly. 
-        
-        If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
-        the stored one.  Otherwise, the explicit name passed in.  
-    '''
-    if (stored.strip() == "that name"):
-        name = world.testcase_name
-    else:
-        world.testcase_name = name
-    return name
-
 '''
 ######################################################################
 
@@ -222,10 +230,6 @@ def get_stored_or_store_testcase_name(stored, name):
 def create_testcycle_with_name(step, stored, name):
     name = get_stored_or_store_name("testcycle", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {"name": name,
                     "description": "Ahh, the cycle of life...",
                     "productId": 1,
@@ -235,12 +239,8 @@ def create_testcycle_with_name(step, stored, name):
                     "endDate": "2012/02/02"
                    }
     
-    world.conn.request("POST", add_params(world.path_testcycles), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_testcycles, 
+            post_payload)
 
 
 
@@ -282,10 +282,6 @@ def delete_testcycle_with_name_foo(step, stored, name):
 def create_testrun_with_name(step, stored, name, testcycle_name):
     name = get_stored_or_store_name("testrun", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     testcycle_id, version = get_resource_identity("testcycle", 
                                                   add_params(world.path_testcycles,
                                                              {"name": testcycle_name}))
@@ -302,12 +298,8 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
 
                    }
     
-    world.conn.request("POST", add_params(world.path_testruns), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_testruns,
+            post_payload)
 
 
 
@@ -363,22 +355,14 @@ def testcycle_has_testrun(step, cycle_name, run_name):
 def create_testsuite_with_name(step, stored, name):
     name = get_stored_or_store_name("testsuite", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     post_payload = {"productId": 1,
                     "name": name,
                     "description": "Sweet Relief",
                     "useLatestVersions": "true"
                    }
     
-    world.conn.request("POST", add_params(world.path_testsuites), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_testsuites, 
+            post_payload)
 
 
 

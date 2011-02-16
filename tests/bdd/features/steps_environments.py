@@ -43,22 +43,14 @@ def create_environment_with_name(step, stored, name, type_name):
     
     type_resid = get_environmenttype_resid(type_name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {
                     "name": name,
                     "companyId": 9,
                     "environmentTypeId": type_resid
                     }
     
-    world.conn.request("POST", add_params(world.path_environments), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new environemnttype")
+    do_post(world.path_environments,
+            post_payload)
 
 
 @step(u'delete the environment with (that name|name "(.*)")')
@@ -113,22 +105,14 @@ def create_environmenttype_with_name(step, group, stored, name):
     groupType = (group.strip() == "group environmenttype")
     name = get_stored_or_store_name("environmenttype", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {
                     "name": name,
                     "groupType": groupType,
                     "companyId": 9
                     }
     
-    world.conn.request("POST", add_params(world.path_environmenttypes),  
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new environmenttype")
+    do_post(world.path_environmenttypes,
+            post_payload)
 
 @step(u'delete the environmenttype with (that name|name "(.*)")')
 def delete_environmenttype_with_name(step, stored, name):
@@ -180,10 +164,6 @@ def create_environmentgroup_with_name(step, stored, name, type_name):
     
     type_resid, version = get_resource_identity("environmenttype", 
                                            add_params(world.path_environmenttypes, {"name": type_name}))
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {
                     "name": name,
                     "description": "oh, this old thing...",
@@ -191,12 +171,9 @@ def create_environmentgroup_with_name(step, stored, name, type_name):
                     "environmentTypeId": type_resid
                     }
     
-    world.conn.request("POST", add_params(world.path_environmentgroups), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
+    do_post(world.path_environmentgroups,
+            post_payload)
 
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new environemntgroup")
 
 @step(u'delete the environmentgroup with (that name|name "(.*)")')
 def delete_environmentgroup_with_name(step, stored, name):

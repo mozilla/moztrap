@@ -35,12 +35,9 @@ def create_a_new_company_with_name(step, company_name):
                     "url": "http//www.utest.com",
                     "countryId": 123
                     }
-    headers = {'Authorization': get_auth_header()}
 
-    world.conn.request("POST", add_params(world.path_companies, post_payload), "", headers)
-    #world.conn.send(post_payload)
-    response = world.conn.getresponse()
-    verify_status(200, response, "create new company")
+    do_post(world.path_companies, 
+            post_payload)
 
 
 @step(u'delete the company with (that name|name "(.*)")')

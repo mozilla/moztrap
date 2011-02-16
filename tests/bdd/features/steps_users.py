@@ -37,21 +37,15 @@ def create_user_with_name_foo(step, stored, name):
     post_payload = {
                 "firstName":fname,
                 "lastName":lname,
-                "email":fname+lname + "@utest.com",
+                "email":fname+lname + "@mozilla.com",
                 "screenName":fname+lname,
                 "password":fname+lname +"123",
                 "companyId":9,
 #                "communityMember":"false"
     } 
     
-    headers = {'Authorization': get_auth_header()}
-
-    world.conn.request("POST", add_params(world.path_users),
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_users,
+            post_payload)
 
 @step(u'logged in as user "(.*)"')
 def logged_in_as_user_foo(step, name):

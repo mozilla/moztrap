@@ -21,21 +21,13 @@ from features.step_helper import get_stored_or_store_name
 def create_product_with_name_foo(step, stored, name):
     name = get_stored_or_store_product_name(stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-               
     post_payload = {"companyId": 9,
                     "name": name,
                     "description": "Lettuce Product Description"
                    }
     
-    world.conn.request("POST", add_params(world.path_products), 
-                       urllib.urlencode(post_payload, doseq=True), 
-                       headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "Create new user")
+    do_post(world.path_products, 
+            post_payload)
 
 
 
@@ -75,13 +67,9 @@ def add_environment_foo_to_product_bar(step, environment, product):
     
     post_payload = {"name": "Walter's Lab"}
     
-    headers = {'Content-Type':'text/xml',
-               'Content-Length': "%d" % len(post_payload) }
-
-    world.conn.request("POST", add_params(world.path_products + product_id + "/environments", {"originalVersionId": version}), "", headers)
-    world.conn.send(post_payload)
-    response = world.conn.getresponse()
-    verify_status(200, response, "post new environment to product")
+    do_post(world.path_products + product_id + "/environments",
+            post_payload,
+            params ={"originalVersionId": version})
 
 @step(u'remove environment "(.*)" from product "(.*)"')
 def remove_environment_from_product(step, environment, product):

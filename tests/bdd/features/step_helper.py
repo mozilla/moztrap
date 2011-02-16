@@ -84,13 +84,84 @@ def verify_status(exp_status, response, msg):
 def eq_(act, exp, msg):
     assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
     
-def get_auth_header():
-    userid = "admin@utest.com" 
-    passwd = "admin"
+def get_auth_header(userid = "admin@utest.com", passwd = "admin"):
 
     auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
 
     return auth
+
+def get_list_from_search(type, uri, params = {}, auth_header = get_auth_header()):
+    '''
+        This will always return an array.  May have many, one or no items in it
+        it goes into the "searchResult" type of response
+    '''
+    headers = {'Content-Type':'application/json',
+               'Authorization': auth_header}
+    
+    world.conn.request("GET", add_params(uri, params), "", headers)
+    response = world.conn.getresponse()
+    response_txt = verify_status(200, response, "search for type %s" % (type))
+    
+    # get the array of steps out of the response
+    return get_search_result_list(response_txt, type)
+
+def get_list_from_endpoint(type, uri, auth_header = get_auth_header()):
+    '''
+        This hits an endpoint.  It goes into the ArrayOfXXX type of response
+    '''
+    headers = {'Content-Type':'application/json',
+               'Authorization': auth_header}
+
+    
+    world.conn.request("GET", add_params(uri), "", headers)
+    response = world.conn.getresponse()
+    response_txt = verify_status(200, response, "endpoint for type %s" % (type))
+    
+    # get the array of steps out of the response
+    return get_list_of_type(type, response_txt)
+
+def do_post(uri, payload, params = {}, auth_header = get_auth_header()):
+    return do_request("POST", uri, payload = payload, auth_header = auth_header)
+
+def do_put(uri, params, auth_header = get_auth_header()):
+    return do_request("PUT", uri, params = params, auth_header = auth_header)
+
+def do_delete(uri, params, auth_header = get_auth_header()):
+    return do_request("DELETE", uri, params = params, auth_header = auth_header)
+
+def do_request(method, uri, params = {}, payload = {}, auth_header = get_auth_header()):
+    ''' 
+        This will post the payload to the uri
+    '''
+    headers = {'Authorization': auth_header,
+               'content-type': "application/x-www-form-urlencoded"}
+
+    
+    world.conn.request(method, add_params(uri, params), 
+                       urllib.urlencode(payload, doseq=True), 
+                       headers)
+    response = world.conn.getresponse()
+
+    return verify_status(200, response, "%s %s:\n%s" % (method, uri, payload))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def get_user_status_id(userStatus):
     statusMap = {"active": 1,
@@ -165,6 +236,24 @@ def search_and_verify_array(step, uri, search_args, obj_name, expect_to_find):
             eq_(environmentJson.get(ns(k)), v, obj_name + " match")
     return url
 
+def get_resid_from_creation_response(response_txt, type):
+    '''
+        Expect the response to be a single item.  If it's more, we assert.
+    '''
+    type = ns(type)
+
+    respJson = json_to_obj(response_txt)
+    
+    try:
+        assert respJson.__contains__(type), "didn't find expected type: %s in:\n%s" % (type, jstr(respJson))
+        item = respJson.get(type)
+
+    except KeyError:
+        assert False, "Key Error in\n" + jstr(respJson)
+    return item
+
+    
+    
 def get_single_item(response_txt, type):
     '''
         Expect the response to be a single item.  If it's more, we assert.
@@ -172,12 +261,7 @@ def get_single_item(response_txt, type):
     type = ns(type)
     pl_type = plural(type)
 
-    try:
-        respJson = json.loads(response_txt)
-    except ValueError:
-        assert False, "Bad JSON: " + str(response_txt)
-    except TypeError:
-        assert False, "Bad JSON: " + str(response_txt)
+    respJson = json_to_obj(response_txt)
     
     item = None
     
@@ -203,6 +287,31 @@ def get_single_item(response_txt, type):
 
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
+
+def get_search_result_list(response_txt, type):
+    '''
+        return the array of this type that's within the search result
+    '''
+    type = ns(type)
+    pl_type = plural(type)
+
+    respJson = json_to_obj(response_txt)
+    
+    sr_field = ns("searchResult")
+    
+    assert respJson.__contains__(sr_field), "didn't find expected type: %s in:\n%s" % (sr_field, jstr(respJson))        
+    sr = respJson.get(sr_field)
+
+    assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
+    pl_item = sr[0].get(pl_type)
+
+    assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
+    items = pl_item.get(type)
+            
+    if (isinstance(items, list)):
+        return items
+    else:
+        return [items]
 
 def get_array_item(response_txt, type):
     '''
@@ -236,7 +345,7 @@ def get_array_item(response_txt, type):
     assert item != None, "didn't find expected type: " + ns_type + " in:\n" + jstr(respJson)
     return item
 
-def get_array_of_type(type, response_txt):
+def get_list_of_type(type, response_txt):
     try:
         respJson = json.loads(response_txt)
     except ValueError:
@@ -245,17 +354,20 @@ def get_array_of_type(type, response_txt):
         assert False, "Bad JSON: " + str(response_txt)
     
     
-    # if this was a search, extract the item from the "searchResult" object
-    # in this case, we only care about the first returned item in this list
-    sr_field = ns(as_arrayof(type))
-    assert respJson.__contains__(sr_field)
-    sr = respJson.get(sr_field)
-        
-    testcasestep_field = ns(type)
-    assert sr[0].__contains__(testcasestep_field), "didn't find expected type: %s in:\n%s" % (testcasestep_field, jstr(sr))
-    item = sr[0].get(testcasestep_field)
+    try:
+        item = respJson[ns(as_arrayof(type))][0][ns(type)]
+    except KeyError:
+        assert False, "didn't find expected type:  %s -- %s in:\n%s" % (ns(as_arrayof(type)),
+                                                                     ns(type),
+                                                                     jstr(respJson))
 
-    return item
+    # If there is only one, this may not come back as a list.  But I don't want to handle
+    # that case everywhere, so we guarantee this is a list
+    
+    if isinstance(item, list):
+        return item
+    else:
+        return [item]
 
 def get_first_item(response_txt, type):
     '''
@@ -495,6 +607,17 @@ def json_to_obj(response_txt):
     except TypeError:
         assert False, "Bad JSON: " + str(response_txt)
     return respJson
+
+def json_pretty(response_txt):
+    return jstr(json_to_obj(response_txt))
+
+def get_POST_headers():
+    return {'Authorization': get_auth_header(),
+            'content-type': "application/x-www-form-urlencoded"}
+def get_GET_headers():
+    return {'Content-Type':'application/json',
+            'Authorization': get_auth_header()}
+
 
 '''
     Upload files.
