@@ -22,10 +22,11 @@ class UserPlaceholdersMixin(object):
 
 
 class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
-    email = forms.EmailField(label="email")
+    email = forms.EmailField(label="email", max_length=255)
     password = forms.CharField(
         widget=forms.PasswordInput,
-        label="password")
+        label="password",
+        max_length=255)
 
 
     def clean(self):
@@ -53,16 +54,18 @@ class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
 
 
 class RegistrationForm(UserPlaceholdersMixin, RemoteObjectForm):
-    firstName = forms.CharField(label="first name")
-    lastName = forms.CharField(label="last name")
-    screenName = forms.CharField(label="username")
-    email = forms.EmailField(label="email")
+    firstName = forms.CharField(label="first name", max_length=50)
+    lastName = forms.CharField(label="last name", max_length=50)
+    screenName = forms.CharField(label="username", max_length=20)
+    email = forms.EmailField(label="email", max_length=255)
     password = forms.CharField(
         widget=forms.PasswordInput,
-        label="password")
+        label="password",
+        max_length=255)
     password2 = forms.CharField(
         widget=forms.PasswordInput,
-        label="confirm password")
+        label="confirm password",
+        max_length=255)
 
 
     def __init__(self, *args, **kwargs):
