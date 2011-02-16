@@ -30,6 +30,12 @@ your local configuration. Two settings are required:
     The (integer) id of the role that all new user registrations should be
     given by default.
 
+There is a management command available to create an initial company and a
+default user role. Run ``./manage.py create_company "Company Name"``; a new
+company named "Company Name" and a role named "Company Name Tester" will be
+created, and the command will output their IDs, which can then be used for the
+above two settings.
+
 Several other settings have reasonable defaults, but may need to be modified:
 
 ``TCM_API_BASE``
@@ -59,4 +65,4 @@ entire app should be served exclusively over HTTPS (since almost all use of the
 site is authenticated, and serving authenticated pages over HTTP invites
 session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
 HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
-in ``settings_local.py`` whenever the app is being served over HTTPS.
+in ``settings_local.py`` when the app is being served over HTTPS.
