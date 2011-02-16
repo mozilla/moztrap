@@ -6,7 +6,7 @@ import urlparse
 
 import remoteobjects
 
-from ..core import conf
+from ..core.conf import conf
 from ..core.api import ObjectMixin, fields
 
 class CodeValue(ObjectMixin, remoteobjects.RemoteObject):

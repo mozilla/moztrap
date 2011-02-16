@@ -4,7 +4,7 @@ from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..core import conf
+from ..core.conf import conf
 from ..core.api import admin
 
 from . import util

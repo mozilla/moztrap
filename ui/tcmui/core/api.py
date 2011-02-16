@@ -14,7 +14,7 @@ from django.utils.encoding import StrAndUnicode
 import remoteobjects
 from remoteobjects.http import userAgent
 
-from . import conf
+from .conf import conf
 from . import fields
 from . import sort
 from . import util

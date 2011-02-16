@@ -1,6 +1,6 @@
 from django.template.response import TemplateResponse
 
-from ..core import conf
+from ..core.conf import conf
 from ..environments.models import EnvironmentGroupList
 from ..users.decorators import login_redirect
 

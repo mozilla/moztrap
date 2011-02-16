@@ -1,4 +1,4 @@
-from . import conf
+from .conf import conf
 from .api import admin
 from .models import Company
 
