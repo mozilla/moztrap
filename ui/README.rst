@@ -19,7 +19,10 @@ Python projects on your system, create the virtualenv and activate it. Then run
 Python environment.
 
 You'll need to create a ``tcmui/settings_local.py`` file with some details of
-your local configuration. Two settings are required:
+your local configuration. See ``tcmui/settings_local.sample.py`` for a sample
+that can be copied to ``tcmui/settings_local.py`` and modified.
+
+Two settings are required:
 
 ``TCM_COMPANY_ID``
     The UI is per-company, and will ignore all data related to other
@@ -30,11 +33,11 @@ your local configuration. Two settings are required:
     The (integer) id of the role that all new user registrations should be
     given by default.
 
-There is a management command available to create an initial company and a
-default user role. Run ``./manage.py create_company "Company Name"``; a new
-company named "Company Name" and a role named "Company Name Tester" will be
-created, and the command will output their IDs, which can then be used for the
-above two settings.
+The ``create_company`` management command is available to create an initial
+company and a default user role. Run ``./manage.py create_company "Company
+Name"``; a new company named "Company Name" and a role named "Company Name
+Tester" will be created, and the command will output their IDs, which can then
+be used for the above two settings.
 
 Several other settings have reasonable defaults, but may need to be modified:
 
@@ -66,3 +69,12 @@ site is authenticated, and serving authenticated pages over HTTP invites
 session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
 HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
 in ``settings_local.py`` when the app is being served over HTTPS.
+
+This app also uses the new `staticfiles contrib app`_ in Django 1.3 beta for
+collecting static assets from reusable components into a single directory for
+production serving. Run ``./manage.py collectstatic`` to collect all static
+assets into the ``collected-assets`` directory (or whatever ``STATIC_ROOT`` is
+set to in ``settings_local.py``), and make those collected assets available by
+HTTP at the ``STATIC_URL`` setting.
+
+.. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/

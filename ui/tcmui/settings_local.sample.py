@@ -14,9 +14,13 @@ Copy settings_local.sample.py to settings_local.py and modify as needed.
 #DEBUG = False
 #TEMPLATE_DEBUG = False
 
-# Absolute path to directory where static media will be collected by the
-# "collect_static" management command, and can be served by front-end webserver.
+# Absolute path to directory where static assets will be collected by the
+# "collectstatic" management command, and can be served by front-end webserver.
+# Defaults to absolute filesystem path to "ui/collected-assets" directory.
 #STATIC_ROOT = ""
+
+# Base URL where files in STATIC_ROOT are deployed.
+#STATIC_URL = ""
 
 # Uncomment these if the app is served over HTTPS (required for any
 # production deployment to avoid session hijacking):
