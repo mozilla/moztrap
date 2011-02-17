@@ -18,7 +18,8 @@ from step_helper import *
   
 @step(u'create a new user with (that name|name "(.*)")')
 def create_user_with_name_foo(step, stored, name):
-    names = get_stored_or_store_name("user", stored, name).split()
+    name = get_stored_or_store_name("user", stored, name)
+    names = name.split()
     fname = names[0]
     lname = names[1]
     post_payload = {
