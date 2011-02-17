@@ -19,7 +19,7 @@ world.port = 8080
 world.use_mock = False
 #world.use_mock = True
 
-world.save_db = True
+world.save_db = False
 world.restore_db = True
 
 # the namespace used to prefix every field
