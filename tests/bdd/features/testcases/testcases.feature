@@ -37,7 +37,6 @@ Feature: Test Cases
         then the testcase with that name has status of Active
         
     Scenario: add a testcase to a testrun
-        Not implemented yet
 
     Scenario: Create a Testcycle and Testrun and verify the testrun is in the testcycle
         Given a testcycle with name "Baroque Cycle" does not exist
