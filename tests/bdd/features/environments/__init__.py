@@ -1,5 +1,10 @@
 import features.terrrain
 import features.steps
+import features.steps_attachments
+import features.steps_companies
 import features.steps_environments
 import features.steps_products
+import features.steps_roles
 import features.steps_testcases
+import features.steps_users
+import features.steps_tags

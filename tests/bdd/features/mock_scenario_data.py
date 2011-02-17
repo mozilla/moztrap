@@ -17,7 +17,6 @@ Created on Oct 18, 2010
 import urllib
 import json
 import step_helper
-from numpy.ma.testutils import assert_not_equal
 from lettuce import world
 
 def get_scenario_data(scenarioName):

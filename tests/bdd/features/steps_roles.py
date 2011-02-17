@@ -81,9 +81,7 @@ def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
     role_name = get_stored_or_store_name("role", stored_role, role_name)
     
     # fetch the role's resource identity
-    user_id, user_version = get_resource_identity("user", 
-                                                  add_params(world.path_users, 
-                                                             {"name": user_name}))
+    user_id, user_version = get_user_resid(user_name)
     role_id, role_version = get_resource_identity("role", 
                                                   add_params(world.path_roles, 
                                                              {"name": role_name}))
@@ -91,6 +89,24 @@ def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
     do_post(world.path_users + "%s/roles/%s/" % (user_id, role_id), 
             {"originalVersionId": user_version})
 
+@step(u'add the following roles to the user with (that name|name "(.*)")')
+def add_roles_to_user(step, stored_role, role_name, stored_user, user_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    
+    assert False, "need to implement adding all roles in the steps.hashes"
+    
+    
+    role_name = get_stored_or_store_name("role", stored_role, role_name)
+    
+    # fetch the role's resource identity
+    user_id, user_version = get_user_resid(user_name)
+    role_id, role_version = get_resource_identity("role", 
+                                                  add_params(world.path_roles, 
+                                                             {"name": role_name}))
+    do_put(world.path_users + "%s/roles/" % (user_id), 
+            {"originalVersionId": user_version,
+             "roleIds": role_id})
+    
 
 
 @step(u'user with (that name|name "(.*)") has the role with (that name|name "(.*)")')
@@ -99,9 +115,7 @@ def user_has_role(step, stored_user, user_name, stored_role, role_name):
     role_name = get_stored_or_store_name("role", stored_role, role_name)
     
     # fetch the role's resource identity
-    user_id, user_version = get_resource_identity("user", 
-                                                  add_params(world.path_users, 
-                                                             {"name": user_name}))
+    user_id, user_version = get_user_resid(user_name)
 
     role_list = get_list_from_endpoint("role", 
                                        world.path_users + user_id + "/roles")

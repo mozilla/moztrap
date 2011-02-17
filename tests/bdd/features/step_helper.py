@@ -90,35 +90,62 @@ def get_auth_header(userid = "admin@utest.com", passwd = "admin"):
 
     return auth
 
+def get_auth_header_user_name(user_name):
+    names = user_name.split()
+    user_list = get_list_from_search("user",
+                                     world.path_users,
+                                     {"firstName": names[0], "lastName": names[1]})
+    try:
+        useremail = user_list[0][ns("email")]
+        userpw = get_user_password(user_name)
+    except KeyError:
+        assert False, "%s\nDidn't find field in %s" % (str(KeyError), user_list)
+
+    return get_auth_header(useremail, userpw)
+
+# for simplicity, we just always use the same algorithm for passwords
+def get_user_password(name):
+    names = name.split()
+    return "%s%s123" % (names[0], names[1])
+
 def get_list_from_search(type, uri, params = {}, auth_header = get_auth_header()):
     '''
         This will always return an array.  May have many, one or no items in it
         it goes into the "searchResult" type of response
     '''
-    headers = {'Content-Type':'application/json',
-               'Authorization': auth_header}
+    response_txt = do_get(uri, params)
     
-    world.conn.request("GET", add_params(uri, params), "", headers)
-    response = world.conn.getresponse()
-    response_txt = verify_status(200, response, "search for type %s" % (type))
-    
-    # get the array of steps out of the response
     return get_search_result_list(response_txt, type)
 
 def get_list_from_endpoint(type, uri, auth_header = get_auth_header()):
     '''
         This hits an endpoint.  It goes into the ArrayOfXXX type of response
     '''
+    response_txt = do_get(uri)
+
+    return get_list_of_type(type, response_txt)
+
+def get_single_item_from_endpoint(type, uri, auth_header = get_auth_header()):
+    '''
+        This hits an endpoint.  It goes into the ArrayOfXXX type of response
+    '''
+    
+    response_txt = do_get(uri)
+    
+    try:
+        return json_to_obj(response_txt)[ns(type)][0]
+    except KeyError:
+        assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(type),response_txt)
+
+
+def do_get(uri, params = {}, auth_header = get_auth_header()):
+
     headers = {'Content-Type':'application/json',
                'Authorization': auth_header}
-
     
-    world.conn.request("GET", add_params(uri), "", headers)
+    world.conn.request("GET", add_params(uri, params), "", headers)
     response = world.conn.getresponse()
-    response_txt = verify_status(200, response, "endpoint for type %s" % (type))
-    
-    # get the array of steps out of the response
-    return get_list_of_type(type, response_txt)
+    return verify_status(200, response, "Expecting type %s" % (type))
 
 def do_post(uri, payload, params = {}, auth_header = get_auth_header()):
     return do_request("POST", uri, payload = payload, auth_header = auth_header)
@@ -160,7 +187,9 @@ def do_request(method, uri, params = {}, payload = {}, auth_header = get_auth_he
 
 
 
-
+##########################
+# THESE METHODS MAY NEED CLEANUP
+##########################
 
 
 def get_user_status_id(userStatus):

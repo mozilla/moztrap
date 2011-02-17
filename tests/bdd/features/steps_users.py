@@ -15,23 +15,10 @@ from step_helper import *
 
 ######################################################################
 '''
-def get_stored_or_store_user_name(stored, name):
-    '''
-        Help figure out if the test writer wants to use a stored name from a previous step, or if
-        the name was passed in explicitly. 
-        
-        If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
-        the stored one.  Otherwise, the explicit name passed in.  
-    '''
-    if (stored.strip() == "that name"):
-        name = world.user_name
-    else:
-        world.user_name = name
-    return name
   
 @step(u'create a new user with (that name|name "(.*)")')
 def create_user_with_name_foo(step, stored, name):
-    names = get_stored_or_store_user_name(stored, name).split()
+    names = get_stored_or_store_name("user", stored, name).split()
     fname = names[0]
     lname = names[1]
     post_payload = {
@@ -39,7 +26,7 @@ def create_user_with_name_foo(step, stored, name):
                 "lastName":lname,
                 "email":fname+lname + "@mozilla.com",
                 "screenName":fname+lname,
-                "password":fname+lname +"123",
+                "password":get_user_password(name),
                 "companyId":9,
 #                "communityMember":"false"
     } 
@@ -65,14 +52,14 @@ def logged_in_as_user_foo(step, name):
 
 @step(u'user with (that name|name "(.*)") (exists|does not exist)')
 def check_user_foo_existence(step, stored, name, existence):
-    names = get_stored_or_store_user_name(stored, name).split()
+    names = get_stored_or_store_name("user", stored, name).split()
     search_and_verify_existence(step, world.path_users, 
                     {"firstName": names[0], "lastName": names[1]}, 
                     "user", existence)
 
 @step(u'user with (that name|name "(.*)") is (active|inactive|disabled)')
 def check_user_foo_activated(step, stored, name, userStatus):
-    names = get_stored_or_store_user_name(stored, name).split()
+    names = get_stored_or_store_name("user", stored, name).split()
     statusId = get_user_status_id(userStatus) 
         
     # we DO expect to find this user, but we're just checking if they're activated or 
@@ -86,7 +73,7 @@ def activate_user_with_name_foo(step, status_action, stored, name):
     '''
         Users are not deleted, they're just registered or unregistered.
     '''
-    name = get_stored_or_store_user_name(stored, name)
+    name = get_stored_or_store_name("user", stored, name)
     
     resid, version = get_user_resid(name)
     headers = {'Authorization': get_auth_header()}

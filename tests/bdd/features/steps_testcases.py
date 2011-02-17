@@ -32,6 +32,21 @@ def create_testcase_with_name_foo(step, stored, name):
             post_payload)
     
 
+@step(u'user with (that name|name "(.*)") creates a new testcase with (that name|name "(.*)")')
+def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcase, testcase_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
+    
+    post_payload = {"productId": 1,
+                    "maxAttachmentSizeInMbytes":"10",
+                    "maxNumberOfAttachments":"5",
+                    "name": testcase_name,
+                    "description": "Lettuce tc"
+                   }
+    do_post(world.path_testcases,
+            post_payload,
+            auth_header = get_auth_header_user_name(user_name))
+
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testcase", stored, name)
@@ -104,18 +119,6 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
     testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
     user_name = get_stored_or_store_name("user", stored_user, user_name)
 
-    # get the user email and password
-    names = user_name.split()
-    user_list = get_list_from_search("user",
-                                     world.path_users,
-                                     {"firstName": names[0], "lastName": names[1]})
-    try:
-        useremail = user_list[0][ns("email")]
-        userpw = names[0] + names[1] + "123"
-    except KeyError:
-        assert False, "%s\nDidn't find field in %s" % (str(KeyError), user_list)
-    
-    
     # first we need the testcase id so we can get the latest version to approve
     testcase_id, version = get_resource_identity("testcase", 
                                                   add_params(world.path_testcases, 
@@ -127,25 +130,24 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
     uri = world.path_testcases + "versions/" + testcaseversion_id + "/approve/" 
     do_put(uri, 
            {"originalVersionId": version},
-           get_auth_header(useremail, userpw))
+           get_auth_header_user_name(user_name))
     
     
-@step(u'the testcase with (that name|name "(.*)") has status of approved')
-def testcase_has_status_of_approved(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
+@step(u'the testcase with (that name|name "(.*)") has status of Active')
+def testcase_has_status_of_approved(step, stored, testcase_name):
+    testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
 
     # fetch the steps for this testcase from the latestversion
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
-
-    world.conn.request("GET", 
-                       add_params(world.path_testcases), 
-                       {"name": name}, 
-                       headers)
-    response = world.conn.getresponse()
-    data = verify_status(200, response, "Get testcase with name: " + name)
-    testcase = get_single_item(data, "testcase")
-    eq_(testcase["approved"], True, "Testcase is approved: " + jstr(testcase))
+    testcase_id, version = get_resource_identity("testcase", 
+                                                  add_params(world.path_testcases, 
+                                                             {"name": testcase_name}))
+    testcaseversion = get_single_item_from_endpoint("testcaseversion",
+                                            world.path_testcases + testcase_id + "/latestversion/")
+    # should be just one
+    try:
+        eq_(testcaseversion[ns("approvalStatusId")], 2, "Testcase is approved: " + str(testcaseversion))
+    except KeyError:
+        assert False, "Object field mismatch.\nExpected:\n" + ns("approved") + "\n\nActual:\n" + jstr(testcaseversion)
 
 
 @step(u'add environment "(.*)" to test case "(.*)"')
