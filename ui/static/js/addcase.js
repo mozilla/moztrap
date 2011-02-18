@@ -8,7 +8,7 @@ function filterEnvironments(forms) {
         allopts.each(
             function() {
                 if ($(this).val().split(":")[0] == typeid) {
-                    var newopt = $(this).clone()
+                    var newopt = $(this).clone();
                     newopt.appendTo(envselect);
                 }
         });
