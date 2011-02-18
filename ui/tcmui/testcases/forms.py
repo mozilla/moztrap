@@ -40,28 +40,42 @@ class TestCaseForm(forms.Form):
 
     def is_valid(self):
         return (
-            super(TestCaseForm, self).is_valid() and
             self.steps_formset.is_valid() and
-            self.env_formset.is_valid()
+            self.env_formset.is_valid() and
+            super(TestCaseForm, self).is_valid()
             )
+
+
+    def clean(self):
+        # @@@ ignoring tags field
+        if all([k in self.cleaned_data for k in ["name", "product"]]):
+            testcase = TestCaseVersion(
+                name=self.cleaned_data["name"],
+                product=self.products[self.cleaned_data["product"]],
+                maxAttachmentSizeInMbytes = 0, # @@@
+                maxNumberOfAttachments = 0, # @@@
+                description = "" # @@@
+                )
+            try:
+                TestCaseList.get(auth=self.auth).post(testcase)
+            except TestCaseList.Conflict, e:
+                if e.response_error == "duplicate.name":
+                    self._errors["name"] = self.error_class(
+                        ["This name is already in use."])
+                else:
+                    raise forms.ValidationError(
+                        'Unknown conflict "%s"; please correct and try again.'
+                        % e.response_error)
+            else:
+                self.testcase = testcase
+        return self.cleaned_data
 
 
     def save(self):
-        # @@@ ignoring tags field
-        testcase = TestCaseVersion(
-            name=self.cleaned_data["name"],
-            product=self.products[self.cleaned_data["product"]],
-            maxAttachmentSizeInMbytes = 0, # @@@
-            maxNumberOfAttachments = 0, # @@@
-            description = "" # @@@
-            )
+        self.steps_formset.save(self.testcase)
+        self.env_formset.save(self.testcase)
 
-        TestCaseList.get(auth=self.auth).post(testcase)
-
-        self.steps_formset.save(testcase)
-        self.env_formset.save(testcase)
-
-        return testcase
+        return self.testcase
 
 
 
