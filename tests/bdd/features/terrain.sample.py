@@ -8,6 +8,8 @@ from lettuce import world
 world.applicationUnderTest = "Case Keeper"
 world.hostname = "camd.mv.mozilla.com"
 
+world.db_hostname = world.hostname
+
 # for my servlet
 world.port = 8080
 # for the rails app
@@ -61,8 +63,8 @@ world.path_products =           world.api_prefix + "products/"
 
 # paths for test automation
 world.path_mockdata =           "/mockdata"
-world.path_savedb =             "/TcmDbUnitServlet/savedb"
-world.path_restoredb =          "/TcmDbUnitServlet/restoredb"
+world.path_savedb =             "/TcmDbUnitServlet/savedb?host=%s" % (world.db_hostname)
+world.path_restoredb =          "/TcmDbUnitServlet/restoredb?host=%s" % (world.db_hostname)
 
 # dict of names of objects used in scenarios to remember from one step to the next
 world.names = {}
