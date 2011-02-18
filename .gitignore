@@ -3,3 +3,4 @@ ui/collected-assets/*
 ui/tcmui/settings_local.py
 .livereload
 *.pyc
+*.class
