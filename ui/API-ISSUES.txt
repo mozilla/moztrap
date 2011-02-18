@@ -1,0 +1,8 @@
+* API requires passing plaintext auth info with each request, requiring the UI
+  to store plaintext auth info for as long as a user session is active.
+
+* Double-assignment of an included-test-case should raise an error, but
+  currently creates a second assignment.
+
+* Permissions-checking uses wrong permissions in some cases (i.e. EDIT rather
+  than APPROVE), and may not be sufficiently granular.
