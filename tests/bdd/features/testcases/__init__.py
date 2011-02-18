@@ -1,4 +1,4 @@
-import features.terrrain
+import features.terrain
 import features.steps
 import features.steps_attachments
 import features.steps_companies
