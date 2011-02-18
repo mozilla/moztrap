@@ -37,7 +37,7 @@ def setup_before_all():
         save_db_state()
 
 @after.all
-def teardown_after_all():
+def teardown_after_all(total):
     if (world.restore_db_after_all):
         restore_db_state()
 
