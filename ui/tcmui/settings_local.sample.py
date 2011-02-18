@@ -20,6 +20,12 @@ TCM_NEW_USER_ROLE_ID = 0
 #DEBUG = False
 #TEMPLATE_DEBUG = False
 
+# This email address will get emailed on 500 server errors.
+#ADMINS = [
+#    ("Some One", "someone@mozilla.com"),
+#]
+
+
 # Causes CSS/JS to be served in a single combined, minified file, with a name
 # based on contents hash (thus can be safely far-futures-expired).  This
 # setting requires the Django server process to have write access to
