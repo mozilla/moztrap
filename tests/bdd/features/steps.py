@@ -15,7 +15,7 @@ def save_db_state():
     '''
     conn = httplib.HTTPConnection(world.hostname, world.port, timeout=120)
     conn.request("GET", world.path_savedb)
-    data = conn.getresponse()
+    conn.getresponse()
 
 def restore_db_state():
     '''
@@ -36,11 +36,11 @@ def setup_before_all():
     if (world.save_db):
         save_db_state()
 
+@after.all
+def teardown_after_all():
+    if (world.restore_db_after_all):
+        restore_db_state()
 
-# DATA SETUP
-# This is the function that uploads the expected data to the mock server.
-#
-# @todo Need to make this only run in DEBUG mode or something
 @before.each_scenario
 def setup_before_scenario(scenario):
     if (world.restore_db):
@@ -53,15 +53,15 @@ def setup_before_scenario(scenario):
                    "Content-Length": "%d" % len(scenarioData) }
     
         setup_connection()
-        world.conn.request("POST", add_params(world.path_mockdata, {"scenario" : scenario.name}), "", headers)
+        world.conn.request("POST", 
+                           add_params(world.path_mockdata, 
+                                      {"scenario" : scenario.name}), 
+                            "", headers)
     
         world.conn.send(scenarioData)
         world.conn.getresponse()
 
-#@after.each_scenario
-def restore_db(scenario):
-    restore_db_state()
-    
+   
 @before.each_step
 def setup_step_connection(step):
     setup_connection() 

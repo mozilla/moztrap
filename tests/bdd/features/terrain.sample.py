@@ -21,8 +21,21 @@ world.port = 8080
 world.use_mock = False
 #world.use_mock = True
 
+# whether or not to save the database for restoration before any tests are executed.
+# generally a good idea on the Hudson deployment.
+# generally NOT what you want when developing and debugging tests.  Especially true
+# if you don't have restore_db_after_all set to True, because you may end up saving a
+# non-clean state.
 world.save_db = True
+
+# whether or not to restore the DB between each scenario.  
+# generally a good idea in general
 world.restore_db = True
+
+# whether or not to restore the DB to default state after all tests were run.
+# generally a good idea on the Hudson deployment.
+# generally NOT what you want when developing and debugging tests.
+world.restore_db_after_all = True
 
 # the namespace used to prefix every field
 world.ns = 'ns1.'
