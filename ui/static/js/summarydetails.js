@@ -1,6 +1,7 @@
 function summaryDetails(context) {
     // Execute the fallback only if there’s no native `details` support
-    if (!('open' in document.createElement('details'))) {
+    // Chrome 10 beta passes this test, but there's no functionality there
+    // if (!('open' in document.createElement('details'))) {
         var all;
         if ($(context).is("details")) {
                 all = $(context).find("details").andSelf();
@@ -35,8 +36,9 @@ function summaryDetails(context) {
     $detailsNotSummary = $details.children(':not(summary:first)');
    }
 
-   // Hide content unless there’s an `open` attribute
-   if (typeof $details.attr('open') !== 'undefined') {
+   // Hide content unless the `open` attribute is truthy
+   // (in Chrome 10 beta it will be false, other browsers undefined)
+   if ($details.attr('open')) {
     $details.addClass('open');
     $detailsNotSummary.slideDown('fast');
    } else {
@@ -48,7 +50,7 @@ function summaryDetails(context) {
     // Focus on the `summary` element
     $detailsSummary.focus();
     // Toggle the `open` attribute of the `details` element
-    typeof $details.attr('open') !== 'undefined' ? $details.removeAttr('open') : $details.attr('open', 'open');
+    $details.attr('open') ? $details.removeAttr('open') : $details.attr('open', 'open');
     // Toggle the additional information in the `details` element
     $detailsNotSummary.slideToggle('fast');
     $details.toggleClass('open');
@@ -64,7 +66,8 @@ function summaryDetails(context) {
    });
   });
 
- }
+// end "if no native support"
+// }
 }
 
 $(function() {
