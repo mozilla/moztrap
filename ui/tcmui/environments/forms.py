@@ -124,6 +124,13 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
         super(BaseEnvironmentConstraintFormSet, self).__init__(*args, **kwargs)
 
 
+    def _get_empty_form(self, **kwargs):
+        kwargs["groups"] = self.groups
+        return super(BaseEnvironmentConstraintFormSet, self)._get_empty_form(
+            **kwargs)
+    empty_form = property(_get_empty_form)
+
+
     def _construct_form(self, i, **kwargs):
         kwargs["groups"] = self.groups
         return super(BaseEnvironmentConstraintFormSet, self)._construct_form(
