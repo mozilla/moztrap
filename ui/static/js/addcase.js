@@ -1,5 +1,5 @@
-function filterEnvironments(forms) {
-    var allopts = $(forms).eq(0).find("select.environments option").clone();
+function filterEnvironments(template, forms) {
+    var allopts = $(template).find("select.environments option").clone();
 
     function doFilter(form) {
         var typeid = $(form).find("select.env_type").val();
@@ -8,11 +8,14 @@ function filterEnvironments(forms) {
         allopts.each(
             function() {
                 if ($(this).val().split(":")[0] == typeid) {
-                    var newopt = $(this).clone();
+                    var newopt = $(this).clone()
                     newopt.appendTo(envselect);
                 }
         });
     }
+    
+    doFilter($(template));
+    
     $(forms).each(
         function() {
             doFilter(this);
@@ -28,5 +31,5 @@ function filterEnvironments(forms) {
 
 $(document).ready(
     function() {
-        filterEnvironments("ul.envlist > li");
+        filterEnvironments("div.env ul.empty-form > li", "ul.envlist > li");
     });
