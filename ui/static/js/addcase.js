@@ -26,8 +26,12 @@ function filterEnvironments(template, forms) {
             // @@@ this selector should be passed in somehow
             doFilter($(this).closest("li.env-form"));
         });
-
 }
+
+$(window).load(
+    function () {
+        $('ol.steplist li.steps-form').eq(0).find('a.remove').hide();
+    });
 
 $(document).ready(
     function() {
