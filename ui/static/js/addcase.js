@@ -13,9 +13,9 @@ function filterEnvironments(template, forms) {
                 }
         });
     }
-    
+
     doFilter($(template));
-    
+
     $(forms).each(
         function() {
             doFilter(this);
@@ -27,11 +27,6 @@ function filterEnvironments(template, forms) {
             doFilter($(this).closest("li.env-form"));
         });
 }
-
-$(window).load(
-    function () {
-        $('ol.steplist li.steps-form').eq(0).find('a.remove').hide();
-    });
 
 $(document).ready(
     function() {

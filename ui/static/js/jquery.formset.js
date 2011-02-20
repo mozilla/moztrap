@@ -88,7 +88,9 @@
                 del.remove();
             }
             if (hasChildElements(row)) {
-                insertDeleteLink(row);
+                if (!options.deleteOnlyNew) {
+                    insertDeleteLink(row);
+                }
                 row.addClass(options.formCssClass);
                 applyExtraClasses(row, i);
             }
@@ -152,7 +154,7 @@
         }
 
         return $$;
-    }
+    };
 
     /* Setup plugin defaults */
     $.fn.formset.defaults = {
@@ -162,9 +164,10 @@
         deleteText: 'remove',            // Text for the delete link
         addCssClass: 'add-row',          // CSS class applied to the add link
         deleteCssClass: 'delete-row',    // CSS class applied to the delete link
+        deleteOnlyNew: false,            // If true, only newly-added rows can be deleted
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn
         added: null,                     // Function called each time a new form is added
         removed: null                    // Function called each time a form is deleted
     };
-})(jQuery)
+  })(jQuery);
