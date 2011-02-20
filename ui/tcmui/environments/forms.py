@@ -126,6 +126,9 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
 
     def _get_empty_form(self, **kwargs):
         kwargs["groups"] = self.groups
+        # work around http://code.djangoproject.com/ticket/15349
+        kwargs["data"] = None
+        kwargs["files"] = None
         return super(BaseEnvironmentConstraintFormSet, self)._get_empty_form(
             **kwargs)
     empty_form = property(_get_empty_form)
