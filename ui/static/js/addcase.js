@@ -20,11 +20,11 @@ function filterEnvironments(template, forms) {
         function() {
             doFilter(this);
         });
+
     $(forms).find("select.env_type").live(
         "change",
         function() {
-            // @@@ this selector should be passed in somehow
-            doFilter($(this).closest("li.env-form"));
+            doFilter($(this).closest(forms));
         });
 }
 
