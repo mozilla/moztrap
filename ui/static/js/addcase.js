@@ -30,5 +30,5 @@ function filterEnvironments(template, forms) {
 
 $(document).ready(
     function() {
-        filterEnvironments("div.env ul.empty-form > li", "ul.envlist > li");
+        filterEnvironments("#empty-env-form > li", "ul.envlist > li");
     });

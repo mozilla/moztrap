@@ -30,24 +30,6 @@
 
     <div class="env">
       <h3>Environment Constraints</h3>
-      <ul class="empty-form" style="display: none">
-        {% with form.env_formset.empty_form as envform %}
-          <li>
-            <ul>
-              <li>
-                {{ envform.env_type.errors }}
-                {{ envform.env_type.label_tag }}
-                {{ envform.env_type }}
-              </li>
-              <li>
-                {{ envform.environments.errors }}
-                {{ envform.environments.label_tag }}
-                {{ envform.environments }}
-              </li>
-            </ul>
-          </li>
-        {% endwith %}
-      </ul>
       {{ form.env_formset.management_form }}
       <ul class="envlist">
         {% for envform in form.env_formset %}
@@ -70,22 +52,6 @@
     </div>
 
     <div class="steps">
-      <ol class="empty-form" style="display: none">
-        {% with form.steps_formset.empty_form as stepform %}
-          <li>
-            <div class="action">
-              {{ stepform.instruction.errors }}
-              {{ stepform.instruction.label_tag }}
-              {{ stepform.instruction }}
-            </div>
-            <div class="result">
-              {{ stepform.expected_result.errors }}
-              {{ stepform.expected_result.label_tag }}
-              {{ stepform.expected_result }}
-            </div>
-          </li>
-        {% endwith %}
-      </ol>
       {{ form.steps_formset.management_form }}
       {% for stepform in form.steps_formset %}
       <ol class="steplist">
@@ -110,6 +76,43 @@
     </div>
 
   </form>
+
+  <ul id="empty-env-form" class="empty-form" style="display: none">
+    {% with form.env_formset.empty_form as envform %}
+      <li>
+        <ul>
+          <li>
+            {{ envform.env_type.errors }}
+            {{ envform.env_type.label_tag }}
+            {{ envform.env_type }}
+          </li>
+          <li>
+            {{ envform.environments.errors }}
+            {{ envform.environments.label_tag }}
+            {{ envform.environments }}
+          </li>
+        </ul>
+      </li>
+    {% endwith %}
+  </ul>
+
+  <ul id="empty-step-form" class="empty-form" style="display: none">
+    {% with form.steps_formset.empty_form as stepform %}
+      <li>
+        <div class="action">
+          {{ stepform.instruction.errors }}
+          {{ stepform.instruction.label_tag }}
+          {{ stepform.instruction }}
+        </div>
+        <div class="result">
+          {{ stepform.expected_result.errors }}
+          {{ stepform.expected_result.label_tag }}
+          {{ stepform.expected_result }}
+        </div>
+      </li>
+    {% endwith %}
+  </ul>
+
 </section>
 {% endblock content %}
 
@@ -121,7 +124,7 @@
   $(function() {
     $('ol.steplist > li').formset({
       prefix: '{{ form.steps_formset.prefix }}',
-      formTemplate: '.steps .empty-form > li',
+      formTemplate: '#empty-step-form > li',
       formCssClass: 'steps-form',
       deleteCssClass: 'remove',
       deleteText: 'remove',
@@ -131,7 +134,7 @@
     });
     $('ul.envlist > li').formset({
       prefix: '{{ form.env_formset.prefix }}',
-      formTemplate: '.env .empty-form > li',
+      formTemplate: '#empty-env-form > li',
       formCssClass: 'env-form',
       deleteCssClass: 'remove',
       deleteText: 'remove',
