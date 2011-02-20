@@ -33,20 +33,7 @@
       {{ form.env_formset.management_form }}
       <ul class="envlist">
         {% for envform in form.env_formset %}
-        <li>
-          <ul>
-            <li>
-              {{ envform.env_type.errors }}
-              {{ envform.env_type.label_tag }}
-              {{ envform.env_type }}
-            </li>
-            <li>
-              {{ envform.environments.errors }}
-              {{ envform.environments.label_tag }}
-              {{ envform.environments }}
-            </li>
-          </ul>
-        </li>
+        {% include "test/_env_form.html" %}
         {% endfor %}
       </ul>
     </div>
@@ -55,18 +42,7 @@
       {{ form.steps_formset.management_form }}
       {% for stepform in form.steps_formset %}
       <ol class="steplist">
-        <li>
-          <div class="action">
-            {{ stepform.instruction.errors }}
-            {{ stepform.instruction.label_tag }}
-            {{ stepform.instruction }}
-          </div>
-          <div class="result">
-            {{ stepform.expected_result.errors }}
-            {{ stepform.expected_result.label_tag }}
-            {{ stepform.expected_result }}
-          </div>
-        </li>
+        {% include "test/_step_form.html" %}
         {% endfor %}
       </ol>
     </div>
@@ -79,45 +55,19 @@
 
   <ul id="empty-env-form" class="empty-form" style="display: none">
     {% with form.env_formset.empty_form as envform %}
-      <li>
-        <ul>
-          <li>
-            {{ envform.env_type.errors }}
-            {{ envform.env_type.label_tag }}
-            {{ envform.env_type }}
-          </li>
-          <li>
-            {{ envform.environments.errors }}
-            {{ envform.environments.label_tag }}
-            {{ envform.environments }}
-          </li>
-        </ul>
-      </li>
+    {% include "test/_env_form.html" %}
     {% endwith %}
   </ul>
 
   <ul id="empty-step-form" class="empty-form" style="display: none">
     {% with form.steps_formset.empty_form as stepform %}
-      <li>
-        <div class="action">
-          {{ stepform.instruction.errors }}
-          {{ stepform.instruction.label_tag }}
-          {{ stepform.instruction }}
-        </div>
-        <div class="result">
-          {{ stepform.expected_result.errors }}
-          {{ stepform.expected_result.label_tag }}
-          {{ stepform.expected_result }}
-        </div>
-      </li>
+    {% include "test/_step_form.html" %}
     {% endwith %}
   </ul>
 
 </section>
 {% endblock content %}
 
-
-{# @@@ move the classes into the markup #}
 
 {% block extrajs %}
 <script type="text/javascript">
