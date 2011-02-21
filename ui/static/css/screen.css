@@ -47,7 +47,7 @@ body { color: #444444; }
 a, a:link, a:visited { color: #5d7b7a; text-decoration: none; }
 a:link, a:visited, a:hover, a:active { outline: none; }
 a:focus, a:hover, a:active { color: #b9292f; text-decoration: none; }
-a:focus { outline: thin dotted; }
+a:focus { outline: thin dotted #77b929; }
 
 /* Headings -------------------------------------------------------------- */
 h2, h3, h4, h5, h6 { margin-bottom: 1.5em; }
@@ -90,6 +90,9 @@ p { margin-bottom: 1.5em; }
 pre { margin: 1.5em; white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word; }
 
 blockquote { margin: 1.5em; font-style: italic; }
+
+summary { cursor: pointer; }
+summary:focus { outline: thin dotted #77b929; }
 
 /* Replaced -------------------------------------------------------------- */
 img { vertical-align: text-bottom; max-width: 100%; -ms-interpolation-mode: bicubic; }
@@ -209,7 +212,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
 
 .no-details details > * { display: none; }
-.no-details details summary { display: block; cursor: pointer; }
+.no-details details summary { display: block; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }

@@ -77,7 +77,7 @@ $focus  :   "&:focus, &:hover, &:active"
     color: $accent
     text-decoration: none
   &:focus
-    outline: thin dotted
+    outline: thin dotted $green
 
 a
   +link
@@ -166,6 +166,11 @@ pre
 blockquote
   margin: $base-rhythm-unit
   font-style: italic
+
+summary
+  cursor: pointer
+  &:focus
+    outline: thin dotted $green
 
 /* Replaced --------------------------------------------------------------
 
