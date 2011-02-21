@@ -35,7 +35,7 @@
       {{ form.env_formset.management_form }}
       <ul class="envlist">
         {% for envform in form.env_formset %}
-        {% include "test/_env_form.html" %}
+        {% include "manage/testcase/_env_form.html" %}
         {% endfor %}
       </ul>
     </div>
@@ -44,7 +44,7 @@
       {{ form.steps_formset.management_form }}
       {% for stepform in form.steps_formset %}
       <ol class="steplist">
-        {% include "test/_step_form.html" %}
+        {% include "manage/testcase/_step_form.html" %}
         {% endfor %}
       </ol>
     </div>
@@ -57,13 +57,13 @@
 
   <ul id="empty-env-form" class="empty-form" style="display: none">
     {% with form.env_formset.empty_form as envform %}
-    {% include "test/_env_form.html" %}
+    {% include "manage/testcase/_env_form.html" %}
     {% endwith %}
   </ul>
 
   <ul id="empty-step-form" class="empty-form" style="display: none">
     {% with form.steps_formset.empty_form as stepform %}
-    {% include "test/_step_form.html" %}
+    {% include "manage/testcase/_step_form.html" %}
     {% endwith %}
   </ul>
 

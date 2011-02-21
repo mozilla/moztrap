@@ -24,6 +24,6 @@ def add_testcase(request):
 
     return TemplateResponse(
         request,
-        "test/add_case.html",
+        "manage/testcase/add_case.html",
         {"form": form })
 
