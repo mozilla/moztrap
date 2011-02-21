@@ -1,11 +1,13 @@
-{% extends 'test/manage_base.html' %}
+{% extends 'manage/base.html' %}
 
 {% block crumb %}
   {{ block.super }}
   <li><a href="/manage/testcase/add/">add test case</a></li>
 {% endblock crumb %}
 
-{% block content %}
+{% block cases-active-nav %}active{% endblock cases-active-nav %}
+
+{% block managecontent %}
 <section id="create">
   <h2>create a new test case</h2>
   <form method="POST">
@@ -66,7 +68,7 @@
   </ul>
 
 </section>
-{% endblock content %}
+{% endblock managecontent %}
 
 
 {% block extrajs %}

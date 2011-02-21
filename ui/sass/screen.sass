@@ -13,8 +13,6 @@ $legacy-support-for-ie6 : false
 
 +susy
 
-// change '.container' to match your HTML container element
-// or @extend it to apply multiple containers on your site.
 .container
   +container
   //+show-grid("grid.png")
@@ -22,7 +20,6 @@ $legacy-support-for-ie6 : false
 
 body > div
   @extend .container
-  +padding-leader(.25)
 
 header[role="banner"]
   @extend .full
@@ -251,6 +248,28 @@ footer[role="contentinfo"]
     text-align: right
     font-style: italic
         
+/* manage --------------------------------------------------------------    
+
+nav.manage
+  +float(left)
+  width: columns(3,24)
+  a
+    #{$link}
+      +adjust-font-size-to(14px,1.5)
+      display: block
+      padding: 0 1em
+    #{$focus}
+      background: $light
+    &.active
+      #{$link}, #{$focus}
+        background: $blue-lightest
+        color: $blue-dark
+
+#managecontent
+  overflow: hidden
+  padding-left: gutter(24)
+  border-left: 1px solid $light
+
 /* create tests --------------------------------------------------------------    
 
 .remove
@@ -279,16 +298,16 @@ footer[role="contentinfo"]
     +no-style-list
   
   .meta
-    +columns(12,24)
-    +inline-form(2,10,12)
+    +columns(11,21)
+    +inline-form(2,9,11)
     +trailer
     .errorlist
-      +full(12)
-      +prefix(2,12)
+      +full(11)
+      +prefix(2,11)
   
   .env
-    +columns(12,24)
-    +omega(24)
+    +columns(10,21)
+    +omega(21)
     +trailer
     h3
       padding: $base-rhythm-unit*.25
@@ -301,29 +320,29 @@ footer[role="contentinfo"]
       position: absolute
       height: 0
     .remove
-      +columns(1,12)
-      +omega(12)
+      +columns(1,10)
+      +omega(10)
   
   .env-form
     +leading-border(1px,.5)
     border-color: darken($light,10)
     background: $light
     li
-      +columns(5,12)
+      +columns(4,10)
       &:first-child
-        +prefix(1,12)
+        +prefix(1,10)
   
   .steps
-    +full(24)
+    +full(21)
     +clearfix
   .steplist
     +no-style-list
-    +full(24)
-    +prefix(2,24)
+    +full(21)
+    +prefix(2,21)
     counter-reset: step
   .steps-form
-    +full(22)
-    +prefix(1,22)
+    +full(19)
+    +prefix(1,19)
     +leading-border(1px,.25)
     position: relative
     border-color: darken($light,10)
@@ -333,20 +352,20 @@ footer[role="contentinfo"]
       +adjust-font-size-to(48px)
       content: counter(step, decimal) "."
       position: absolute
-      right: 100% + gutter(21)
+      right: 100% + gutter(18)
       top: 0
     &:last-child::before
       content: ""
     .action
-      +columns(9,21)
+      +columns(8,18)
     .result
-      +columns(11,21)
+      +columns(9,18)
     .remove
-      +columns(1,21)
-      +omega(21)
+      +columns(1,18)
+      +omega(18)
       +leader(.25)
     .add
-      margin-left: columns(2,24) + gutter(24)
+      margin-left: columns(2,21) + gutter(21)
     textarea
       min-height: $base-rhythm-unit*6
     .errorlist
