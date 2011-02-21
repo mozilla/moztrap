@@ -47,7 +47,7 @@ body { color: #444444; }
 a, a:link, a:visited { color: #5d7b7a; text-decoration: none; }
 a:link, a:visited, a:hover, a:active { outline: none; }
 a:focus, a:hover, a:active { color: #b9292f; text-decoration: none; }
-a:focus { outline: thin dotted; }
+a:focus { outline: thin dotted #77b929; }
 
 /* Headings -------------------------------------------------------------- */
 h2, h3, h4, h5, h6 { margin-bottom: 1.5em; }
@@ -90,6 +90,9 @@ p { margin-bottom: 1.5em; }
 pre { margin: 1.5em; white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word; }
 
 blockquote { margin: 1.5em; font-style: italic; }
+
+summary { cursor: pointer; }
+summary:focus { outline: thin dotted #77b929; }
 
 /* Replaced -------------------------------------------------------------- */
 img { vertical-align: text-bottom; max-width: 100%; -ms-interpolation-mode: bicubic; }
@@ -164,10 +167,11 @@ optgroup { color: #444444; font-style: normal; font-weight: normal; }
 .textinput [disabled], textarea [disabled], select [disabled], input[type="text"] [disabled], input[type="password"] [disabled], input[type="email"] [disabled], input[type="url"] [disabled], input[type="tel"] [disabled], input[type="date"] [disabled], input[type="datetime"] [disabled], input[type="datetime-local"] [disabled], input[type="month"] [disabled], input[type="week"] [disabled], input[type="time"] [disabled], input[type="number"] [disabled], input[type="search"] [disabled], input[type="color"] [disabled] { background-color: #eeeeee; color: #6a6a6a; }
 
 input, textarea { -webkit-appearance: none; }
-input:valid, textarea:valid { -moz-box-shadow: green 0 0 0.25em; -webkit-box-shadow: green 0 0 0.25em; -o-box-shadow: green 0 0 0.25em; box-shadow: green 0 0 0.25em; -moz-box-shadow: inset green 0 0 0.25em; -webkit-box-shadow: inset green 0 0 0.25em; -o-box-shadow: inset green 0 0 0.25em; box-shadow: inset green 0 0 0.25em; }
-input:invalid, textarea:invalid { -moz-border-radius: 1px; -webkit-border-radius: 1px; -o-border-radius: 1px; -ms-border-radius: 1px; -khtml-border-radius: 1px; border-radius: 1px; -moz-box-shadow: red 0 0 0.25em; -webkit-box-shadow: red 0 0 0.25em; -o-box-shadow: red 0 0 0.25em; box-shadow: red 0 0 0.25em; -moz-box-shadow: inset red 0 0 0.25em; -webkit-box-shadow: inset red 0 0 0.25em; -o-box-shadow: inset red 0 0 0.25em; box-shadow: inset red 0 0 0.25em; }
-input:invalid:focus, textarea:invalid:focus { -moz-box-shadow: #8bb9b7 0 0 0.25em; -webkit-box-shadow: #8bb9b7 0 0 0.25em; -o-box-shadow: #8bb9b7 0 0 0.25em; box-shadow: #8bb9b7 0 0 0.25em; -moz-box-shadow: inset #8bb9b7 0 0 0.25em; -webkit-box-shadow: inset #8bb9b7 0 0 0.25em; -o-box-shadow: inset #8bb9b7 0 0 0.25em; box-shadow: inset #8bb9b7 0 0 0.25em; }
-.no-boxshadow input:invalid, .no-boxshadow textarea:invalid { background-color: #fef0bf; }
+input:valid, textarea:valid { -moz-box-shadow: #accbc9 0 0 0.375em; -webkit-box-shadow: #accbc9 0 0 0.375em; -o-box-shadow: #accbc9 0 0 0.375em; box-shadow: #accbc9 0 0 0.375em; -moz-box-shadow: inset #accbc9 0 0 0.375em; -webkit-box-shadow: inset #accbc9 0 0 0.375em; -o-box-shadow: inset #accbc9 0 0 0.375em; box-shadow: inset #accbc9 0 0 0.375em; }
+input:valid:focus, input:valid .hasvalue, textarea:valid:focus, textarea:valid .hasvalue { -moz-box-shadow: #77b929 0 0 0.375em; -webkit-box-shadow: #77b929 0 0 0.375em; -o-box-shadow: #77b929 0 0 0.375em; box-shadow: #77b929 0 0 0.375em; -moz-box-shadow: inset #77b929 0 0 0.375em; -webkit-box-shadow: inset #77b929 0 0 0.375em; -o-box-shadow: inset #77b929 0 0 0.375em; box-shadow: inset #77b929 0 0 0.375em; }
+input:invalid, textarea:invalid { -moz-box-shadow: #5d7b7a 0 0 0.375em; -webkit-box-shadow: #5d7b7a 0 0 0.375em; -o-box-shadow: #5d7b7a 0 0 0.375em; box-shadow: #5d7b7a 0 0 0.375em; -moz-box-shadow: inset #5d7b7a 0 0 0.375em; -webkit-box-shadow: inset #5d7b7a 0 0 0.375em; -o-box-shadow: inset #5d7b7a 0 0 0.375em; box-shadow: inset #5d7b7a 0 0 0.375em; }
+input:invalid:focus, input:invalid .hadfocus, textarea:invalid:focus, textarea:invalid .hadfocus { -moz-border-radius: 1px; -webkit-border-radius: 1px; -o-border-radius: 1px; -ms-border-radius: 1px; -khtml-border-radius: 1px; border-radius: 1px; -moz-box-shadow: #b9292f 0 0 0.375em; -webkit-box-shadow: #b9292f 0 0 0.375em; -o-box-shadow: #b9292f 0 0 0.375em; box-shadow: #b9292f 0 0 0.375em; -moz-box-shadow: inset #b9292f 0 0 0.375em; -webkit-box-shadow: inset #b9292f 0 0 0.375em; -o-box-shadow: inset #b9292f 0 0 0.375em; box-shadow: inset #b9292f 0 0 0.375em; }
+.no-boxshadow input:invalid:focus, .no-boxshadow input:invalid .hadfocus, .no-boxshadow textarea:invalid:focus, .no-boxshadow textarea:invalid .hadfocus { background-color: #fef0bf; }
 
 textarea { height: auto; overflow: auto; resize: vertical; }
 
@@ -209,7 +213,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
 
 .no-details details > * { display: none; }
-.no-details details summary { display: block; cursor: pointer; }
+.no-details details summary { display: block; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }

@@ -77,7 +77,7 @@ $focus  :   "&:focus, &:hover, &:active"
     color: $accent
     text-decoration: none
   &:focus
-    outline: thin dotted
+    outline: thin dotted $green
 
 a
   +link
@@ -166,6 +166,11 @@ pre
 blockquote
   margin: $base-rhythm-unit
   font-style: italic
+
+summary
+  cursor: pointer
+  &:focus
+    outline: thin dotted $green
 
 /* Replaced --------------------------------------------------------------
 
@@ -344,17 +349,20 @@ optgroup
 input, textarea
   -webkit-appearance: none
   &:valid
-    +box-shadow(green 0 0 .25em)
-    +box-shadow(inset green 0 0 .25em)
+    +box-shadow($blue-lighter 0 0 .375em)
+    +box-shadow(inset $blue-lighter 0 0 .375em)
+    &:focus, .hasvalue
+      +box-shadow($green 0 0 .375em)
+      +box-shadow(inset $green 0 0 .375em)    
   &:invalid
-    +border-radius(1px)
-    +box-shadow(red 0 0 .25em)
-    +box-shadow(inset red 0 0 .25em)
-    &:focus
-      +box-shadow($blue-light 0 0 .25em)
-      +box-shadow(inset $blue-light 0 0 .25em)
-    .no-boxshadow &
-      background-color: $yellow-light
+    +box-shadow($blue 0 0 .375em)
+    +box-shadow(inset $blue 0 0 .375em)
+    &:focus, .hadfocus
+      +border-radius(1px)
+      +box-shadow($red 0 0 .375em)
+      +box-shadow(inset $red 0 0 .375em)
+      .no-boxshadow &
+        background-color: $yellow-light
 
 textarea, select
   @extend .textinput
