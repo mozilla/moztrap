@@ -1,0 +1,105 @@
+{% extends 'manage/base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="/manage/">test cycles</a></li>
+{% endblock crumb %}
+
+{% block cycles-active-nav %}active{% endblock cycles-active-nav %}
+
+{% block managecontent %}
+<section id="managecycles">
+  <h2>Manage Test Cycles</h2>
+  <a href="/manage/testcycle/add/" class="create">create a cycle</a>
+  
+  <p class="message success">3 test cycles activated</p>
+  
+  <p class="message error">Cannot activate test cycle because X</p>
+  
+  <form>
+    <div class="bulk">
+      <label for="bukactions">select an action:</label>
+      <select name="bulkactions" id="bulkactions">
+        <option value="activate">activate</option>
+        <option value="deactivate">deactivate</option>
+        <option value="clone">clone</option>
+        <option value="delete">delete</option>
+      </select>
+      <button class="bulkapply">apply changes</button>
+    </div>
+  
+    <table>
+      <thead>
+        <tr>
+          <th>bulk</th>
+          <th><a href="#">title</a></th>
+          <th><a href="#">start date</a></th>
+          <th><a href="#">end date</a></th>
+          <th><a href="#">status</a></th>
+          <th>controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="draft">
+          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td>Test Cycle Title</td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>draft</td>
+          <td>
+            <a href="#">edit</a>
+            <button class="activate">activate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+        <tr class="active">
+          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td>Test Cycle Title</td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>active</td>
+          <td>
+            <a href="#">edit</a>
+            <button class="deactivate">deactivate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+        <tr class="locked">
+          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td>Test Cycle Title</td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>locked</td>
+          <td>
+            <a href="#">edit</a>
+            <button class="activate">activate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>  
+  <nav class="listnav"> 
+    <p class="location">showing 21-40 of 700</p>
+    <ul class="pagination">
+      <li><a href="?page=3" class="prev">&laquo; previous</a> </li>
+      <li><a href="?page=1" class="page">1</a></li>
+      <li><span class="current page">2</span> </li>
+      <li><a href="?page=3" class="page">3</a> </li>
+      <li><a href="?page=3" class="next">next &raquo;</a> </li>
+    </ul>
+    <form>
+      <label for="per_page">cycles per page:</label>
+      <select name="per_page" id="per_page">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+    </form>
+  </nav>
+  
+  
+  
+</section>
+{% endblock managecontent %}

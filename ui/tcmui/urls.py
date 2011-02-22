@@ -22,6 +22,10 @@ urlpatterns = patterns(
         "tcmui.testexecution.views.result",
         name="result"),
 
+    url("^manage/$", 
+        "django.views.generic.simple.direct_to_template", 
+        {"template": "manage/testcycle/cycles.html"}),
+           
     url("^manage/testcase/add/$",
         "tcmui.testcases.views.add_testcase",
         name="add_testcase"),
