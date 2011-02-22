@@ -10,11 +10,11 @@
 {% block managecontent %}
 <section id="managecycles">
   <h2>Manage Test Cycles</h2>
-  <a href="/manage/testcycle/add/" class="create">create a cycle</a>
+  <a href="/manage/testcycles/add/" class="create">create a cycle</a>
   
   <p class="message success">3 test cycles activated</p>
   
-  <p class="message error">Cannot activate test cycle because X</p>
+  {# <p class="message error">Cannot activate test cycle because X</p> #}
   
   <form>
     <div class="bulk">
@@ -28,20 +28,20 @@
       <button class="bulkapply">apply changes</button>
     </div>
   
-    <table>
+    <table class="cycles">
       <thead>
         <tr>
-          <th>bulk</th>
-          <th><a href="#">title</a></th>
-          <th><a href="#">start date</a></th>
-          <th><a href="#">end date</a></th>
-          <th><a href="#">status</a></th>
-          <th>controls</th>
+          <th class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></th>
+          <th class="title"><a href="#">title</a></th>
+          <th class="start"><a href="#">start date</a></th>
+          <th class="end"><a href="#">end date</a></th>
+          <th class="state"><a href="#">status</a></th>
+          <th class="controls">controls</th>
         </tr>
       </thead>
       <tbody>
         <tr class="draft">
-          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
           <td>Test Cycle Title</td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
@@ -53,7 +53,7 @@
           </td>
         </tr>
         <tr class="active">
-          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
           <td>Test Cycle Title</td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
@@ -65,7 +65,7 @@
           </td>
         </tr>
         <tr class="locked">
-          <td><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
           <td>Test Cycle Title</td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
@@ -78,7 +78,8 @@
         </tr>
       </tbody>
     </table>
-  </form>  
+  </form> 
+  
   <nav class="listnav"> 
     <p class="location">showing 21-40 of 700</p>
     <ul class="pagination">
@@ -88,7 +89,7 @@
       <li><a href="?page=3" class="page">3</a> </li>
       <li><a href="?page=3" class="next">next &raquo;</a> </li>
     </ul>
-    <form>
+    <form class="perpage">
       <label for="per_page">cycles per page:</label>
       <select name="per_page" id="per_page">
         <option value="10">10</option>

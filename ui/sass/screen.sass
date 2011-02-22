@@ -98,15 +98,25 @@ div[role="main"]
   border-color: #ccc
   position: relative
 
-#messages
+.message
   @extend .sans
   +full(24)
-  +trailer()
-  +text-shadow($green-lightest 1px 1px 0)
+  +trailer
   padding: $base-rhythm-unit*.5
-  background: $green-lighter
-  color: $green-dark
   font-weight: bold
+  
+  &, &.success
+    +text-shadow($green-lightest 1px 1px 0)
+    background: $green-lighter
+    color: $green-dark
+
+  &.error
+    +text-shadow($red-lightest 1px 1px 0)
+    background: $red-lighter
+    color: $red-dark
+
+#messages
+  @extend .message
   ul
     +no-style-list
   li
@@ -246,133 +256,7 @@ footer[role="contentinfo"]
     +leader(-.5)
     +trailer(1.5)
     text-align: right
-    font-style: italic
-        
-/* manage --------------------------------------------------------------    
-
-nav.manage
-  +float(left)
-  width: columns(3,24)
-  a
-    #{$link}
-      +adjust-font-size-to(14px,1.5)
-      display: block
-      padding: 0 1em
-    #{$focus}
-      background: $light
-    &.active
-      #{$link}, #{$focus}
-        background: $blue-lightest
-        color: $blue-dark
-
-#managecontent
-  overflow: hidden
-  padding-left: gutter(24)
-  border-left: 1px solid $light
-
-/* create tests --------------------------------------------------------------    
-
-.remove
-  +replace-text('ui/cross.png')
-  display: block
-  height: $base-rhythm-unit
-
-.add
-  #{$link}
-    @extend .smallcaps
-    display: block
-    padding: 0 $base-rhythm-unit*.5
-    color: $green-dark
-    background: $green-lightest
-    text-align: right
-  #{$focus}
-    color: $base
-    background: $green
-
-#create
-  li
-    +pie-clearfix
-  .form-actions
-    +leader
-  .errorlist
-    +no-style-list
-  
-  .meta
-    +columns(11,21)
-    +inline-form(2,9,11)
-    +trailer
-    .errorlist
-      +full(11)
-      +prefix(2,11)
-  
-  .env
-    +columns(10,21)
-    +omega(21)
-    +trailer
-    h3
-      padding: $base-rhythm-unit*.25
-      background: darken($light,5)
-      margin: 0
-    ul
-      +no-style-list
-    label
-      +hide
-      position: absolute
-      height: 0
-    .remove
-      +columns(1,10)
-      +omega(10)
-  
-  .env-form
-    +leading-border(1px,.5)
-    border-color: darken($light,10)
-    background: $light
-    li
-      +columns(4,10)
-      &:first-child
-        +prefix(1,10)
-  
-  .steps
-    +full(21)
-    +clearfix
-  .steplist
-    +no-style-list
-    +full(21)
-    +prefix(2,21)
-    counter-reset: step
-  .steps-form
-    +full(19)
-    +prefix(1,19)
-    +leading-border(1px,.25)
-    position: relative
-    border-color: darken($light,10)
-    background: $light
-    counter-increment: step
-    &::before
-      +adjust-font-size-to(48px)
-      content: counter(step, decimal) "."
-      position: absolute
-      right: 100% + gutter(18)
-      top: 0
-    &:last-child::before
-      content: ""
-    .action
-      +columns(8,18)
-    .result
-      +columns(9,18)
-    .remove
-      +columns(1,18)
-      +omega(18)
-      +leader(.25)
-    .add
-      margin-left: columns(2,21) + gutter(21)
-    textarea
-      min-height: $base-rhythm-unit*6
-    .errorlist
-      +float('right')
-      +padding-leader(.25)
-      +padding-trailer(.25)
-    
+    font-style: italic    
 
 /* run tests --------------------------------------------------------------    
 
@@ -546,3 +430,189 @@ nav.manage
       p
         +text-shadow(rgba($red-dark,.75) 1px 1px 0)
         background: $red image-url('ui/delete.png') no-repeat scroll gutter(4)
+
+/* manage --------------------------------------------------------------    
+
+nav.manage
+  +float(left)
+  width: columns(3,24)
+  a
+    #{$link}
+      +adjust-font-size-to(14px,1.5)
+      display: block
+      padding: 0 1em
+    #{$focus}
+      background: $light
+    &.active
+      #{$link}, #{$focus}
+        background: $blue-lightest
+        color: $blue-dark
+
+#managecontent
+  overflow: hidden
+  padding-left: gutter(24)
+  border-left: 1px solid $light
+
+/* manage cycles --------------------------------------------------------------    
+
+#managecycles
+  position: relative
+  .create
+    @extend .button
+    position: absolute
+    top: 0
+    right: 0
+
+  .bulk
+    +pie-clearfix
+    +full(21)
+    +suffix(12,21)
+    label, select, button
+      +columns(3,9)
+      font-weight: normal
+    button
+      @extend .bluebutton
+      +omega(9)
+  
+  .bulkselect
+    width: columns(1,21)
+    label
+      display: none
+  
+  .controls
+    +hide
+    width: columns(5,21)
+  
+  .cycles
+    +trailer(.5)
+    button
+      +button-reset
+      +link
+      &:before
+        content: "| "
+        color: $base
+  
+  .location, .perpage
+    +columns(6,21)
+    font-style: italic
+  .perpage
+    +omega(21)
+    label
+      +columns(4,6)
+      padding: 0
+      font-weight: normal
+      text-align: right
+    select
+      +columns(2,6)
+      +omega(6)
+      padding-top: 0
+      padding-bottom: 0
+      height: auto
+  .pagination
+    +columns(9,21)
+    +inline-block-list
+    text-align: center
+
+
+/* create tests --------------------------------------------------------------    
+
+.remove
+  +replace-text('ui/cross.png')
+  display: block
+  height: $base-rhythm-unit
+
+.add
+  #{$link}
+    @extend .smallcaps
+    display: block
+    padding: 0 $base-rhythm-unit*.5
+    color: $green-dark
+    background: $green-lightest
+    text-align: right
+  #{$focus}
+    color: $base
+    background: $green
+
+#create
+  li
+    +pie-clearfix
+  .form-actions
+    +leader
+  .errorlist
+    +no-style-list
+
+  .meta
+    +columns(11,21)
+    +inline-form(2,9,11)
+    +trailer
+    .errorlist
+      +full(11)
+      +prefix(2,11)
+
+  .env
+    +columns(10,21)
+    +omega(21)
+    +trailer
+    h3
+      padding: $base-rhythm-unit*.25
+      background: darken($light,5)
+      margin: 0
+    ul
+      +no-style-list
+    label
+      +hide
+      position: absolute
+      height: 0
+    .remove
+      +columns(1,10)
+      +omega(10)
+
+  .env-form
+    +leading-border(1px,.5)
+    border-color: darken($light,10)
+    background: $light
+    li
+      +columns(4,10)
+      &:first-child
+        +prefix(1,10)
+
+  .steps
+    +full(21)
+    +clearfix
+  .steplist
+    +no-style-list
+    +full(21)
+    +prefix(2,21)
+    counter-reset: step
+  .steps-form
+    +full(19)
+    +prefix(1,19)
+    +leading-border(1px,.25)
+    position: relative
+    border-color: darken($light,10)
+    background: $light
+    counter-increment: step
+    &::before
+      +adjust-font-size-to(48px)
+      content: counter(step, decimal) "."
+      position: absolute
+      right: 100% + gutter(18)
+      top: 0
+    &:last-child::before
+      content: ""
+    .action
+      +columns(8,18)
+    .result
+      +columns(9,18)
+    .remove
+      +columns(1,18)
+      +omega(18)
+      +leader(.25)
+    .add
+      margin-left: columns(2,21) + gutter(21)
+    textarea
+      min-height: $base-rhythm-unit*6
+    .errorlist
+      +float('right')
+      +padding-leader(.25)
+      +padding-trailer(.25)
