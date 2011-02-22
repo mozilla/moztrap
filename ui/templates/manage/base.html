@@ -10,11 +10,11 @@
 {% block content %}
   <nav class="manage">
     <ul>
-      <li><a href="#" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
-      <li><a href="#" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
-      <li><a href="#" class="{% block suites-active-nav %}{% endblock suites-active-nav %}">Test Suites</a></li>
-      <li><a href="#" class="{% block cases-active-nav %}{% endblock cases-active-nav %}">Test Cases</a></li>
-      <li><a href="#" class="{% block users-active-nav %}{% endblock users-active-nav %}">Users</a></li>
+      <li><a href="/manage/" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
+      <li><a href="/manage/testruns/" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
+      <li><a href="/manage/testsuites/" class="{% block suites-active-nav %}{% endblock suites-active-nav %}">Test Suites</a></li>
+      <li><a href="/manage/testcases/" class="{% block cases-active-nav %}{% endblock cases-active-nav %}">Test Cases</a></li>
+      {#<li><a href="/manage/users/" class="{% block users-active-nav %}{% endblock users-active-nav %}">Users</a></li>#}
     </ul>
   </nav>
   
