@@ -235,15 +235,36 @@ def create_testcycle_with_name(step, stored, name):
     post_payload = {"name": name,
                     "description": "Ahh, the cycle of life...",
                     "productId": 1,
+                    "startDate": "2011/02/02",
                     "communityAuthoringAllowed": "true",
                     "communityAccessAllowed": "true",
-                    "startDate": "2011/02/02",
-                    "endDate": "2012/02/02"
+                    "endDate": "2014/02/02"
                    }
-    
+
     do_post(world.path_testcycles, 
             post_payload)
 
+@step(u'create the following new testcycles:')
+def create_testcycles(step):
+
+    for testcycle in step.hashes:
+        # persist the last one we make.  Sometimes we will only make one.
+        world.names["testcycle"] = testcycle["name"]
+        
+        # get the product id from the passed product name
+        product_id = get_product_resid(testcycle["product name"])
+        
+        post_payload = {"name": testcycle["name"],
+                        "description": testcycle["description"],
+                        "productId": product_id,
+                        "startDate": testcycle["startDate"],
+                        "endDate": testcycle["endDate"],
+                        "communityAuthoringAllowed": testcycle["communityAuthoringAllowed"],
+                        "communityAccessAllowed": testcycle["communityAccessAllowed"]
+                       }
+    
+        do_post(world.path_testcycles, 
+                post_payload)
 
 
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
@@ -296,7 +317,8 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
                     "selfAssignLimit": 10, 
                     "useLatestVersions": "true", 
                     "startDate": "2011/02/02",
-                    "endDate": "2012/02/02"
+                    "endDate": "2012/02/02",
+                    "autoAssignToTeam": "true"
 
                    }
     

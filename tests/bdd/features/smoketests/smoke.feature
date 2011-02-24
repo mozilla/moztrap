@@ -87,8 +87,11 @@ Feature: Smoke Tests
         then a testsuite with that name does not exist
 
     Scenario: Create a Testcycle and Testrun then delete them
-        Given a testcycle with name "Baroque Cycle" does not exist
-        when I create a new testcycle with that name
+        Given I create a new product with name "Continuum Transfunctioner"
+        And given a testcycle with name "Baroque Cycle" does not exist
+        when I create the following new testcycles:
+            | name          | description               | product name              | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Continuum Transfunctioner | 2011/02/02 | 2012/02/02 | true                      | true                   |
         then a testcycle with that name exists
         and when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
         then a testrun with that name exists
