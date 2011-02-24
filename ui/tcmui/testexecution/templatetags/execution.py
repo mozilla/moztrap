@@ -21,8 +21,6 @@ class RunCase(Tag):
 
 
     def render_tag(self, context, includedtestcase, user, environments):
-        # @@@ once double-assignment raises error, maybe just try to assign
-        #     and catch that error
         assignments = TestCaseAssignmentList.get(auth=user.auth).filter(
             testCaseVersionId=includedtestcase.testCaseVersion.id,
             testRunId=includedtestcase.testRun.id,
