@@ -1,3 +1,5 @@
 # Additional requirements useful for development.
 
 -r base.txt
+
+mock==0.7.0rc1
