@@ -3,16 +3,15 @@ Feature: Staging area for Tests
     as a test developer
     I need to test one scenario at a time
 
-    Scenario: Create a Testcycle and Testrun then delete them
-        Given I create a new product with name "Continuum Transfunctioner"
-        And given a testcycle with name "Baroque Cycle" does not exist
-        when I create the following new testcycles:
-            | name          | description               | product name              | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
-            | Baroque Cycle | Ahh, the cycle of life... | Continuum Transfunctioner | 2011/02/02 | 2012/02/02 | true                      | true                   |
-        then a testcycle with that name exists
-        and when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
-        then a testrun with that name exists
-        and when I delete the testrun with that name
-        then the testrun with that name does not exist
-        and when I delete the testcycle with that name
-        then the testcycle with that name does not exist
+    Scenario: create a company
+        create the following new companies:
+            | name    | phone        | address | city   | zip     | url     | country name   |
+            | smell   | fff-432-4321 | fefefe  | fefefe | d3333   | nun     | United States  |
+        create the following new products:
+            | name    | description   | company name    | 
+            | flipper   | fff-432-4321 | smell  | 
+
+    Scenario: Test the thing
+        Given I create the seed company and product
+        and I create a new user with name "Flipper snot"
+

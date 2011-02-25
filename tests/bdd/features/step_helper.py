@@ -510,6 +510,24 @@ def get_product_resid(product):
     '''
     return get_resource_identity("product", add_params(world.path_products, {"name": product}))
 
+def get_seed_product_id():
+    return  get_product_resid(world.seed_product["name"])[0]
+
+def get_company_resid(product):
+    '''
+        Get the resourceIdentity, based on the name
+    '''
+    return get_resource_identity("company", add_params(world.path_companies, {"name": product}))
+
+def get_seed_company_id():
+    return get_company_resid(world.seed_company["name"])[0]
+
+def get_country_resid(country):
+    '''
+        Get the resourceIdentity, based on the name
+    '''
+    return get_resource_identity("country", add_params(world.path_countries, {"name": country}))
+
 def get_environment_resid(environment):
     '''
         Get the resourceIdentity, based on the name
@@ -529,11 +547,23 @@ def get_environmentgroup_resid(environment):
     '''
     return get_resource_identity("environmentgroup", add_params(world.path_environmentgroups, {"name": environment}))
 
-def get_testcase_resid(testcase):
+def get_testcase_resid(name):
     '''
         Get the resourceIdentity, based on the name
     '''
-    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : testcase}))
+    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : name}))
+
+def get_testsuite_resid(name):
+    return get_resource_identity("testsuite", add_params(world.path_testsuites, {"name" : name}))
+
+def get_testcycle_resid(name):
+    return get_resource_identity("testcycle", add_params(world.path_testcycles, {"name": name}))
+
+def get_testrun_resid(name):
+    return get_resource_identity("testrun", add_params(world.path_testruns, {"name": name}))
+    
+def get_tag_resid(tag):
+    return get_resource_identity("tag", add_params(world.path_tags, {"tag": tag}))
 
 def get_resource_identity(type, uri):
     '''

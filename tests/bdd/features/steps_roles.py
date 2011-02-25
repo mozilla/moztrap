@@ -21,7 +21,7 @@ def create_role_with_permissions(step, stored, name):
     name = get_stored_or_store_name("role", stored, name)
     
     # create the new role
-    role_payload = {"companyId": 9,
+    role_payload = {"companyId": get_seed_company_id(),
                     "name": name}
     do_post(world.path_roles, role_payload)
     

@@ -21,7 +21,7 @@ from features.step_helper import get_stored_or_store_name
 def create_product_with_name_foo(step, stored, name):
     name = get_stored_or_store_product_name(stored, name)
     
-    post_payload = {"companyId": 9,
+    post_payload = {"companyId": get_seed_company_id(),
                     "name": name,
                     "description": "Lettuce Product Description"
                    }
@@ -30,6 +30,24 @@ def create_product_with_name_foo(step, stored, name):
             post_payload)
 
 
+@step(u'create the following new products')
+def create_products(step):
+
+    for item in step.hashes:
+        # must copy the item, because we change it, and that freaks lettuce out
+        # when it displays results
+        product = item.copy()
+        # persist the last one we make.  Sometimes we will only make one.
+        world.names["product"] = product["name"]
+        
+        # get the company id from the passed company name
+        company_id = get_company_resid(product["company name"])[0]
+        product["companyId"] = company_id 
+        del product["company name"]
+        
+    
+        do_post(world.path_products, 
+                product)
 
 @step(u'product with (that name|name "(.*)") (exists|does not exist)')
 def check_user_foo_existence(step, stored, name, existence):
@@ -86,7 +104,7 @@ def remove_environment_from_product(step, environment, product):
 @step(u'product "(.*)" (has|does not have) environment "(.*)"')
 def product_foo_has_environment_bar(step, product, haveness, environment):
     # fetch the product's resource identity
-    product_id, version = get_product_resid(product)
+    product_id = get_product_resid(product)[0]
     
     
 #    if haveness.strip() == "does not have":

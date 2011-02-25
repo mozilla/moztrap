@@ -22,7 +22,7 @@ from step_helper import jstr, add_params
 def create_testcase_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("testcase", stored, name)
     
-    post_payload = {"productId": 1,
+    post_payload = {"productId": get_seed_product_id(),
                     "maxAttachmentSizeInMbytes":"10",
                     "maxNumberOfAttachments":"5",
                     "name": name,
@@ -37,7 +37,7 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
     user_name = get_stored_or_store_name("user", stored_user, user_name)
     testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
     
-    post_payload = {"productId": 1,
+    post_payload = {"productId": get_seed_product_id(),
                     "maxAttachmentSizeInMbytes":"10",
                     "maxNumberOfAttachments":"5",
                     "name": testcase_name,
@@ -77,8 +77,7 @@ def add_steps_to_testcase_name(step, stored, name):
     name = get_stored_or_store_name("testcase", stored, name)
     
     # first we need the testcase id so we can get the latest version to add steps to
-    testcase_id, version = get_resource_identity("testcase", 
-                                                  add_params(world.path_testcases, {"name": name}))
+    testcase_id = get_testcase_resid(name)[0]
 
     testcaseversion_id = get_testcase_latestversion_id(testcase_id)
 
@@ -91,8 +90,7 @@ def verify_testcase_steps(step, stored, name):
     name = get_stored_or_store_name("testcase", stored, name)
     
     # first we need the testcase id so we can get the latest version to add steps to
-    testcase_id, version = get_resource_identity("testcase", 
-                                                  add_params(world.path_testcases, {"name": name}))
+    testcase_id = get_testcase_resid(name)[0]
 
     testcaseversion_id = get_testcase_latestversion_id(testcase_id)
     
@@ -120,9 +118,7 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
     user_name = get_stored_or_store_name("user", stored_user, user_name)
 
     # first we need the testcase id so we can get the latest version to approve
-    testcase_id, version = get_resource_identity("testcase", 
-                                                  add_params(world.path_testcases, 
-                                                             {"name": testcase_name}))
+    testcase_id, version = get_testcase_resid(testcase_name)
     testcaseversion_id = get_testcase_latestversion_id(testcase_id)
 
     
@@ -138,9 +134,7 @@ def testcase_has_status_of_approved(step, stored, testcase_name):
     testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
 
     # fetch the steps for this testcase from the latestversion
-    testcase_id, version = get_resource_identity("testcase", 
-                                                  add_params(world.path_testcases, 
-                                                             {"name": testcase_name}))
+    testcase_id = get_testcase_resid(testcase_name)[0]
     testcaseversion = get_single_item_from_endpoint("testcaseversion",
                                             world.path_testcases + testcase_id + "/latestversion/")
     # should be just one
@@ -179,7 +173,7 @@ def remove_environment_from_test_case(step, environment, test_case):
 @step(u'test case "(.*)" (has|does not have) environment "(.*)"')
 def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     # fetch the test case's resource identity
-    test_case_id, version = get_testcase_resid(test_case)
+    test_case_id = get_testcase_resid(test_case)[0]
     
     
 #    if haveness.strip() == "does not have":
@@ -202,7 +196,7 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
 @step(u'test case with name "(.*)" (has|does not have) attachment with filename "(.*)"')
 def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
-    test_case_id, version = get_testcase_resid(test_case)
+    test_case_id = get_testcase_resid(test_case)[0]
     
     
 #    if haveness.strip() == "does not have":
@@ -234,7 +228,7 @@ def create_testcycle_with_name(step, stored, name):
     
     post_payload = {"name": name,
                     "description": "Ahh, the cycle of life...",
-                    "productId": 1,
+                    "productId": get_seed_product_id(),
                     "startDate": "2011/02/02",
                     "communityAuthoringAllowed": "true",
                     "communityAccessAllowed": "true",
@@ -247,24 +241,23 @@ def create_testcycle_with_name(step, stored, name):
 @step(u'create the following new testcycles:')
 def create_testcycles(step):
 
-    for testcycle in step.hashes:
+    for item in step.hashes:
+        # must do this or it will freak out the lettuce reporting, because
+        # we delete items from this before submitting.
+        testcycle = item.copy()
         # persist the last one we make.  Sometimes we will only make one.
         world.names["testcycle"] = testcycle["name"]
         
         # get the product id from the passed product name
-        product_id = get_product_resid(testcycle["product name"])
+        product_id = get_product_resid(testcycle["product name"])[0]
         
-        post_payload = {"name": testcycle["name"],
-                        "description": testcycle["description"],
-                        "productId": product_id,
-                        "startDate": testcycle["startDate"],
-                        "endDate": testcycle["endDate"],
-                        "communityAuthoringAllowed": testcycle["communityAuthoringAllowed"],
-                        "communityAccessAllowed": testcycle["communityAccessAllowed"]
-                       }
+        testcycle["productId"] = product_id
+        
+        if testcycle.has_key('product name'):
+            del testcycle['product name'] 
     
         do_post(world.path_testcycles, 
-                post_payload)
+                testcycle)
 
 
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
@@ -283,8 +276,7 @@ def delete_testcycle_with_name_foo(step, stored, name):
                'content-type': "application/x-www-form-urlencoded"
                }
 
-    testcycle_id, version = get_resource_identity("testcycle", 
-                                                  add_params(world.path_testcycles, {"name": name}))
+    testcycle_id, version = get_testcycle_resid(name)
                
     world.conn.request("DELETE", 
                        add_params(world.path_testcycles + testcycle_id, 
@@ -305,9 +297,7 @@ def delete_testcycle_with_name_foo(step, stored, name):
 def create_testrun_with_name(step, stored, name, testcycle_name):
     name = get_stored_or_store_name("testrun", stored, name)
     
-    testcycle_id, version = get_resource_identity("testcycle", 
-                                                  add_params(world.path_testcycles,
-                                                             {"name": testcycle_name}))
+    testcycle_id = get_testcycle_resid(testcycle_name)[0]
                
     post_payload = {"testCycleId": testcycle_id,
                     "name": name,
@@ -319,7 +309,6 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
                     "startDate": "2011/02/02",
                     "endDate": "2012/02/02",
                     "autoAssignToTeam": "true"
-
                    }
     
     do_post(world.path_testruns,
@@ -343,8 +332,7 @@ def delete_testrun_with_name_foo(step, stored, name):
                'content-type': "application/x-www-form-urlencoded"
                }
 
-    testrun_id, version = get_resource_identity("testrun", 
-                                                  add_params(world.path_testruns, {"name": name}))
+    testrun_id, version = get_testrun_resid(name)
                
     world.conn.request("DELETE", 
                        add_params(world.path_testruns + testrun_id, 
@@ -357,8 +345,7 @@ def delete_testrun_with_name_foo(step, stored, name):
 @step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
 def testcycle_has_testrun(step, cycle_name, run_name):
 
-    testcycle_id, version = get_resource_identity("testcycle", 
-                                                  add_params(world.path_testcycles, {"name": cycle_name}))
+    testcycle_id = get_testcycle_resid(cycle_name)[0]
 
     uri = world.path_testcycles + str(testcycle_id) + "/testruns/"
     search_and_verify_array(step, uri,
@@ -379,7 +366,7 @@ def testcycle_has_testrun(step, cycle_name, run_name):
 def create_testsuite_with_name(step, stored, name):
     name = get_stored_or_store_name("testsuite", stored, name)
     
-    post_payload = {"productId": 1,
+    post_payload = {"productId": get_seed_product_id(),
                     "name": name,
                     "description": "Sweet Relief",
                     "useLatestVersions": "true"
@@ -406,8 +393,7 @@ def delete_testsuite_with_name_foo(step, stored, name):
                'content-type': "application/x-www-form-urlencoded"
                }
 
-    testsuite_id, version = get_resource_identity("testsuite", 
-                                                  add_params(world.path_testsuites, {"name": name}))
+    testsuite_id, version = get_testsuite_resid(name)
                
     world.conn.request("DELETE", 
                        add_params(world.path_testsuites + testsuite_id, 

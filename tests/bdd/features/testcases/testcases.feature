@@ -1,6 +1,7 @@
 Feature: Test Cases
 
     Scenario: Create and approve a Testcase with steps
+        Given I create the seed company and product
         When I create a new user with name "Capn Admin"
         and I activate the user with that name
         And I create a new role with name "Approvationalist" with the following permissions:
@@ -39,7 +40,8 @@ Feature: Test Cases
     Scenario: add a testcase to a testrun
 
     Scenario: Create a Testcycle and Testrun and verify the testrun is in the testcycle
-        Given I create a new product with name "Continuum Transfunctioner"
+        Given I create the seed company and product
+        And I create a new product with name "Continuum Transfunctioner"
         And given a testcycle with name "Baroque Cycle" does not exist
         when I create the following new testcycles:
             | name          | description               | product name              | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |

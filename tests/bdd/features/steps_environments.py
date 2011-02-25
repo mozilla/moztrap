@@ -41,11 +41,11 @@ def create_environment_with_name(step, stored, name, type_name):
     '''
     name = get_stored_or_store_name("environment", stored, name)
     
-    type_resid = get_environmenttype_resid(type_name)
+    type_resid = get_environmenttype_resid(type_name)[0]
     
     post_payload = {
                     "name": name,
-                    "companyId": 9,
+                    "companyId": get_seed_company_id(),
                     "environmentTypeId": type_resid
                     }
     
@@ -79,7 +79,7 @@ def product_has_environementgroup(step, stored_prod, prod_name, haveness, stored
     # this url needs to search for environment groups for that product
     # should be products/{id}/environmentgroups
     
-    resid, version = get_product_resid(prod_name)
+    resid = get_product_resid(prod_name)[0]
 
     
     url = world.path_products + "/" + resid + "/environmentgroups"
@@ -108,7 +108,7 @@ def create_environmenttype_with_name(step, group, stored, name):
     post_payload = {
                     "name": name,
                     "groupType": groupType,
-                    "companyId": 9
+                    "companyId": get_seed_company_id()
                     }
     
     do_post(world.path_environmenttypes,
@@ -162,12 +162,11 @@ def check_group_environmenttype_with_name(step, stored, name, is_group):
 def create_environmentgroup_with_name(step, stored, name, type_name):
     name = get_stored_or_store_name("environmentgroup", stored, name)
     
-    type_resid, version = get_resource_identity("environmenttype", 
-                                           add_params(world.path_environmenttypes, {"name": type_name}))
+    type_resid = get_environmenttype_resid(type_name)[0]
     post_payload = {
                     "name": name,
                     "description": "oh, this old thing...",
-                    "companyId": 9,
+                    "companyId": get_seed_company_id(),
                     "environmentTypeId": type_resid
                     }
     

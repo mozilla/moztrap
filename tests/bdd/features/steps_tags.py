@@ -19,7 +19,7 @@ from step_helper import *
 def create_tag_with_name(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
     
-    post_payload = {"companyId": 9,
+    post_payload = {"companyId": get_seed_company_id(),
                     "tag": tag
                    }
     
@@ -40,8 +40,7 @@ def check_tag_foo_existence(step, stored, tag, existence):
 def delete_tag_with_tag_foo(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
     
-    tag_id, version = get_resource_identity("tag", 
-                                             add_params(world.path_tags, {"tag": tag}))
+    tag_id, version = get_tag_resid(tag) 
                
     do_delete(world.path_tags + tag_id, 
               {"originalVersionId": version})

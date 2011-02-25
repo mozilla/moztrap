@@ -28,8 +28,7 @@ def create_user_with_name_foo(step, stored, name):
                 "email":fname+lname + "@mozilla.com",
                 "screenName":fname+lname,
                 "password":get_user_password(name),
-                "companyId":9,
-#                "communityMember":"false"
+                "companyId":get_seed_company_id(),
     } 
     
     do_post(world.path_users,
@@ -88,7 +87,7 @@ def activate_user_with_name_foo(step, status_action, stored, name):
 
 @step(u'user "(.*)" has these roles:')
 def foo_has_these_roles(step, name):
-    user_id, version = get_user_resid(name)
+    user_id = get_user_resid(name)[0]
 
     world.conn.request("GET", add_params(world.path_users + user_id + "/roles"))
     response = world.conn.getresponse()
@@ -111,7 +110,7 @@ def foo_has_these_roles(step, name):
 
 @step(u'user "(.*)" has these assignments:')
 def foo_has_these_assignments(step, name):
-    user_id, version = get_user_resid(name)
+    user_id = get_user_resid(name)[0]
     world.conn.request("GET", add_params(world.path_users + user_id + "/assignments"))
     response = world.conn.getresponse()
     eq_(response.status, 200, "Fetched a user")

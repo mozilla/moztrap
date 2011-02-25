@@ -5,6 +5,7 @@ Created on Oct 7, 2010
 '''
 from lettuce import *
 from step_helper import *
+from steps_companies import *
 import httplib
 import mock_scenario_data
 
@@ -45,6 +46,9 @@ def teardown_after_all(total):
 def setup_before_scenario(scenario):
     if (world.restore_db):
         restore_db_state()
+        
+    if (world.setup_seed_data):
+        setup_seed_data()
 
     if (world.use_mock):
         scenarioData = mock_scenario_data.get_scenario_data(scenario.name).strip() 
@@ -61,6 +65,48 @@ def setup_before_scenario(scenario):
         world.conn.send(scenarioData)
         world.conn.getresponse()
 
+@step(u'create the seed company and product')
+def create_seed_company_and_product(step):
+    
+    # create the seed company
+#    step.given('''
+#        create the following new companies:
+#            | name    | phone     | address     | city     | zip     | url     | country name     |
+#            |%(name)s | %(phone)s | %(address)s | %(city)s | %(zip)s | %(url)s | %(country name)s |
+#    ''' % world.seed_company)
+
+
+    # create the seed company    
+    company = world.seed_company
+    world.names["company"] = company["name"]
+
+    #TODO: not able to search for the country name yet    
+    company["countryId"] = 123
+    if company.has_key("country name"):
+        del company["country name"]
+
+    do_post(world.path_companies, 
+            company)
+    
+    # create the seed product
+    # persist the last one we make.  Sometimes we will only make one.
+    product = world.seed_product
+    world.names["product"] = product["name"]
+    
+    # get the company id from the passed company name
+    company_id, version = get_company_resid(product["company name"])
+    product["companyId"] = company_id 
+    if product.has_key("company_name"):
+        del product["company name"]
+
+    do_post(world.path_products, 
+            product)
+    
+
+
+# creates a company and product that is used for many of the tests
+def setup_seed_data():
+    pass
    
 @before.each_step
 def setup_step_connection(step):

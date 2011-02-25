@@ -39,6 +39,23 @@ def create_a_new_company_with_name(step, company_name):
     do_post(world.path_companies, 
             post_payload)
 
+@step(u'create the following new companies')
+def create_companies(step):
+
+    for item in step.hashes:
+        company = item.copy()
+        # persist the last one we make.  Sometimes we will only make one.
+        world.names["company"] = company["name"]
+        
+        # get the product id from the passed product name
+        #country_id = get_country_resid(company["country name"])
+        country_id = 123
+        company["countryId"] = country_id
+        del company["country name"]
+        
+    
+        do_post(world.path_companies, 
+                company)
 
 @step(u'delete the company with (that name|name "(.*)")')
 def delete_company_with_name(step, stored, name):
