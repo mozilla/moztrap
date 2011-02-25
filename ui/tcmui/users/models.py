@@ -116,12 +116,21 @@ class User(Activatable, RemoteObject):
 
 
     def login(self, **kwargs):
-        self._put(
+        """
+        Returns the token cookie that can be used for further logins.
+
+        """
+        response = self._put(
             url="users/login",
             version_payload=False,
             default_content_type="application/json",
             **kwargs
             )
+        # Work around httplib2's broken multiple-header handling
+        # http://code.google.com/p/httplib2/issues/detail?id=90
+        # This will break if a cookie value contains commas.
+        cookies = [c.strip() for c in response["set-cookie"].split(",")]
+        return [c for c in cookies if c.startswith("USERTOKEN=")][0]
 
 
     def logout(self, **kwargs):

@@ -14,11 +14,8 @@ def login(request, user):
     Persist the given user in the session.
 
     """
-    # @@@ should not be storing plaintext auth info in session, but currently
-    #     API doesn't allow for any other authentication method
     request.session["userid"] = user.auth.userid
-    request.session["password"] = user.auth.password
-    user.login()
+    request.session["cookie"] = user.login()
 
 
 
@@ -33,13 +30,13 @@ def logout(request):
 
 
 
-def get_user(userid, password):
+def get_user(userid, password=None, cookie=None):
     """
     Tries to fetch the user matching the given credentials. Returns a User
     object if successful, otherwise None.
 
     """
-    auth = Credentials(userid, password)
+    auth = Credentials(userid, password=password, cookie=cookie)
     try:
         user = User.current(auth=auth)
         user.deliver()

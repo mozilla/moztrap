@@ -3,14 +3,12 @@ from .util import get_user
 
 
 def get_user_from_request(request):
-    # @@@ should not be persisting plaintext pw in session, but
-    #     currently API doesn't allow any other technique
     userid = request.session.get("userid")
-    password = request.session.get("password")
+    cookie = request.session.get("cookie")
 
     user = None
-    if userid and password:
-        user = get_user(userid, password)
+    if userid and cookie:
+        user = get_user(userid, cookie=cookie)
         if not user:
             request.session.flush()
     return user

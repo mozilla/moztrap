@@ -223,11 +223,11 @@ class ObjectMixin(StrAndUnicode):
 
 
     def _put(self, **kwargs):
-        self._request("PUT", **kwargs)
+        return self._request("PUT", **kwargs)
 
 
     def _post(self, **kwargs):
-        self._request("POST", **kwargs)
+        return self._request("POST", **kwargs)
 
 
     def _delete(self, **kwargs):
@@ -273,7 +273,10 @@ class ObjectMixin(StrAndUnicode):
             are "application/json" and "application/x-www-form-urlencoded".
 
         All other keyword arguments are passed along directly to get_request
-        (possibly modified as dictated by the other arguments)
+        (possibly modified as dictated by the other arguments).
+
+        Returns the httplib2 Response object, in case calling method needs to
+        pull other data out of the response (such as cookies).
 
         """
         kw["method"] = method
@@ -328,6 +331,8 @@ class ObjectMixin(StrAndUnicode):
         else:
             log.debug("Got response %r, raising", response)
             self.raise_for_response(self._location, response, content)
+
+        return response
 
 
     def post(self, obj, **kwargs):
