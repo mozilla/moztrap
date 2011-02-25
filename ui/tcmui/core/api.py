@@ -27,8 +27,31 @@ log = logging.getLogger('tcmui.core.api')
 
 
 class Credentials(object):
-    def __init__(self, userid, password):
-        self.userid, self.password = userid, password
+    def __init__(self, userid, password=None, cookie=None):
+        self.userid, self.password, self.cookie = userid, password, cookie
+
+
+    def headers(self):
+        if self.password is not None:
+            return self.basic_auth_headers()
+        elif self.cookie is not None:
+            return self.cookie_headers()
+        return {}
+
+
+    def basic_auth_headers(self):
+        return {
+            "authorization": (
+                "Basic %s"
+                % base64.encodestring(
+                    "%s:%s" % (self.userid, self.password)
+                    )[:-1]
+                )
+            }
+
+
+    def cookie_headers(self):
+        return {"cookie": self.cookie}
 
 
     def __repr__(self):
@@ -74,14 +97,9 @@ class ObjectMixin(StrAndUnicode):
         # Request a JSON response.
         request["uri"] = util.add_to_querystring(request["uri"], _type="json")
 
-        # Add Authorization header.
+        # Add authorization headers.
         if auth is not None:
-            request["headers"]["authorization"] = (
-                "Basic %s"
-                % base64.encodestring(
-                    "%s:%s" % (auth.userid, auth.password)
-                    )[:-1]
-                )
+            request["headers"].update(auth.headers())
 
         # Add User-Agent header.
         request["headers"]["user-agent"] = "TCMui/%s" % __version__
