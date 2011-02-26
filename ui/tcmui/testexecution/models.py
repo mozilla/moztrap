@@ -81,15 +81,21 @@ class TestRun(Activatable, RemoteObject):
         return reverse("runtests", kwargs={"testrun_id": self.id})
 
 
-    def add(self, case, **kwargs):
+    def addcase(self, case, **kwargs):
         payload = {
-            "%sId" % util.lc_first(case.__class__.__name__): case.id,
+            "testCaseVersionId": case.id,
             "priorityId": 0, # @@@
             "runOrder": 0, # @@@
             }
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,
+            **kwargs)
+
+
+    def addsuite(self, suite, **kwargs):
+        self._post(
+            relative_url="includedtestcases/testsuite/%s/" % suite.id,
             **kwargs)
 
 

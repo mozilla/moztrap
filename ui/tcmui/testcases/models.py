@@ -148,7 +148,7 @@ class TestSuite(Activatable, RemoteObject):
     includedtestcases = fields.Link("TestSuiteIncludedTestCaseList")
 
 
-    def add(self, case, **kwargs):
+    def addcase(self, case, **kwargs):
         payload = {
             "testCaseVersionId": case.id,
             "priorityId": 0, # @@@
