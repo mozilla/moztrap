@@ -39,6 +39,12 @@ class TestCycle(Activatable, RemoteObject):
             kwargs={"cycle_id": self.id})
 
 
+    def approveallresults(self, **kwargs):
+        self._put(
+            relative_url="approveallresults",
+            **kwargs)
+
+
 
 class TestCycleList(ListObject):
     entryclass = TestCycle
@@ -83,6 +89,12 @@ class TestRun(Activatable, RemoteObject):
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,
+            **kwargs)
+
+
+    def approveallresults(self, **kwargs):
+        self._put(
+            relative_url="approveallresults",
             **kwargs)
 
 
