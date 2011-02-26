@@ -134,3 +134,67 @@ class TestCaseStepList(ListObject):
 
 
     entries = fields.List(fields.Object(TestCaseStep))
+
+
+
+class TestSuite(Activatable, RemoteObject):
+    name = fields.Field()
+    description = fields.Field()
+    product = fields.Locator(Product)
+    testSuiteStatus = StaticData("TESTSUITESTATUS", api_submit_name=False)
+    useLatestVersions = fields.Field()
+
+    environmentgroups = fields.Link(EnvironmentGroupList)
+    includedtestcases = fields.Link("TestSuiteIncludedTestCaseList")
+
+
+    def add(self, case, **kwargs):
+        payload = {
+            "testCaseVersionId": case.id,
+            "priorityId": 0, # @@@
+            "runOrder": 0, # @@@
+            }
+        self._post(
+            relative_url="includedtestcases",
+            extra_payload=payload,
+            **kwargs)
+
+
+    def __unicode__(self):
+        return self.name
+
+
+
+class TestSuiteList(ListObject):
+    entryclass = TestSuite
+    api_name = "testsuites"
+    default_url = "testsuites/"
+
+
+    entries = fields.List(fields.Object(TestSuite))
+
+
+
+class TestSuiteIncludedTestCase(RemoteObject):
+    api_name = "includedtestcase"
+
+    blocking = fields.Field()
+    priorityId = fields.Field()
+    runOrder = fields.Field()
+    testCase = fields.Locator(TestCase)
+    testCaseVersion = fields.Locator(TestCaseVersion)
+    testSuite = fields.Locator(TestSuite)
+
+    environmentgroups = fields.Link(EnvironmentGroupList)
+
+    def __unicode__(self):
+        return self.id
+
+
+
+class TestSuiteIncludedTestCaseList(ListObject):
+    entryclass = TestSuiteIncludedTestCase
+    api_name = "includedtestcases"
+    array_name = "includedtestcase"
+
+    entries = fields.List(fields.Object(TestSuiteIncludedTestCase))

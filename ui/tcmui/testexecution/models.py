@@ -10,7 +10,8 @@ from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
-from ..testcases.models import TestCase, TestCaseVersion
+from ..testcases.models import (
+    TestCase, TestCaseVersion, TestSuiteIncludedTestCase)
 from ..users.models import User
 
 from . import testresultstatus
@@ -69,7 +70,7 @@ class TestRun(Activatable, RemoteObject):
     endDate = fields.Date()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
-    includedtestcases = fields.Link("IncludedTestCaseList")
+    includedtestcases = fields.Link("TestRunIncludedTestCaseList")
 
 
     def __unicode__(self):
@@ -108,21 +109,10 @@ class TestRunList(ListObject):
 
 
 
-class IncludedTestCase(RemoteObject):
-    blocking = fields.Field()
-    priorityId = fields.Field()
-    runOrder = fields.Field()
-    testCase = fields.Locator(TestCase)
-    testCaseVersion = fields.Locator(TestCaseVersion)
-    # @@@ testSuite = fields.Locator(TestSuite)
+class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
     testRun = fields.Locator(TestRun)
 
-    environmentgroups = fields.Link(EnvironmentGroupList)
     assignments = fields.Link("TestCaseAssignmentList")
-
-    def __unicode__(self):
-        return self.id
-
 
     def assign(self, tester, **kwargs):
         payload = {"testerId": tester.id}
@@ -137,12 +127,13 @@ class IncludedTestCase(RemoteObject):
 
 
 
-class IncludedTestCaseList(ListObject):
-    entryclass = IncludedTestCase
+class TestRunIncludedTestCaseList(ListObject):
+    entryclass = TestRunIncludedTestCase
     api_name = "includedtestcases"
+    array_name = "includedtestcase"
     default_url = "testruns/includedtestcases"
 
-    entries = fields.List(fields.Object(IncludedTestCase))
+    entries = fields.List(fields.Object(TestRunIncludedTestCase))
 
 
 
