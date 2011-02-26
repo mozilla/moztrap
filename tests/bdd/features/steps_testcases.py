@@ -95,8 +95,6 @@ def verify_testcase_steps(step, stored, name):
     testcaseversion_id = get_testcase_latestversion_id(testcase_id)
     
     # fetch the steps for this testcase from the latestversion
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
 
     uri = world.path_testcases + "versions/" + testcaseversion_id + "/steps/" 
     testcasestep_list = get_list_from_endpoint("testcasestep", uri)

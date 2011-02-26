@@ -17,6 +17,14 @@ from step_helper import *
 ######################################################################
 '''
 
+@step(u'fetch the company with name "(.*)" by its id')
+def fetch_company_by_id(step, name):
+    
+    resid = get_company_resid(name)[0]
+    data = get_single_item_from_endpoint("company", world.path_companies + resid)
+    eq_(data[ns("name")], name, "Fetch company by id")
+
+
 @step(u'company with (that name|name "(.*)") (does not exist|exists)')
 def check_company_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("company", stored, name)
@@ -56,23 +64,27 @@ def create_companies(step):
     
         do_post(world.path_companies, 
                 company)
-
+@step(u'search for all companies returns at least these results:')
+def at_least_these_companys_exist(step):
+    company_list = get_list_from_search("company", world.path_companies)
+    
+    # walk through all the expected roles and make sure it has them all
+    # note, it doesn't check that ONLY these roles exist.  That should be a different
+    # method.
+    for company in step.hashes:
+        found_company = [x for x in company_list if x[ns("name")] == company["name"]] 
+        
+        assert len(found_company) == 1, "Expected to find company named %s in:\n%s" % (company["name"],
+                                                                                   str(company_list))
+    
 @step(u'delete the company with (that name|name "(.*)")')
 def delete_company_with_name(step, stored, name):
     name = get_stored_or_store_name("company", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
+    resid, version = get_company_resid(name)
 
-    resid, version = get_resource_identity("company", add_params(world.path_companies, {"name": name}))
-               
-    world.conn.request("DELETE", 
-                       add_params(world.path_companies + resid, 
-                                  {"originalVersionId": version}), "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete company")
+    do_delete(world.path_companies + resid, 
+              {"originalVersionId": version})
 
 
 @step(u'search all Companies')

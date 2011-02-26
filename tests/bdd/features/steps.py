@@ -77,7 +77,7 @@ def create_seed_company_and_product(step):
 
 
     # create the seed company    
-    company = world.seed_company
+    company = world.seed_company.copy()
     world.names["company"] = company["name"]
 
     #TODO: not able to search for the country name yet    
@@ -90,13 +90,13 @@ def create_seed_company_and_product(step):
     
     # create the seed product
     # persist the last one we make.  Sometimes we will only make one.
-    product = world.seed_product
+    product = world.seed_product.copy()
     world.names["product"] = product["name"]
     
     # get the company id from the passed company name
-    company_id, version = get_company_resid(product["company name"])
+    company_id = get_company_resid(product["company name"])[0]
     product["companyId"] = company_id 
-    if product.has_key("company_name"):
+    if product.has_key("company name"):
         del product["company name"]
 
     do_post(world.path_products, 
