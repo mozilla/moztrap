@@ -11,7 +11,7 @@ from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..testcases.models import (
-    TestCase, TestCaseVersion, TestSuiteIncludedTestCase)
+    TestCase, TestCaseVersion, TestSuite, TestSuiteIncludedTestCase)
 from ..users.models import User
 
 from . import testresultstatus
@@ -147,6 +147,7 @@ class TestCaseAssignment(RemoteObject):
     product = fields.Locator(Product)
     testCase = fields.Locator(TestCase)
     testCaseVersion = fields.Locator(TestCaseVersion)
+    testSuite = fields.Locator(TestSuite)
     tester = fields.Locator(User)
     testRun = fields.Locator(TestRun)
 
@@ -177,6 +178,7 @@ class TestResult(RemoteObject):
     product = fields.Locator(Product)
     testCase = fields.Locator(TestCase)
     testCaseVersion = fields.Locator(TestCaseVersion)
+    testSuite = fields.Locator(TestSuite)
     testRun = fields.Locator(TestRun)
     testRunResultStatus = StaticData("TESTRUNRESULTSTATUS", api_submit_name=False)
     tester = fields.Locator(User)
