@@ -66,6 +66,7 @@ class TestRun(Activatable, RemoteObject):
     selfAssignLimit = fields.Field()
     selfAssignPerEnvironment = fields.Field()
     useLatestVersions = fields.Field()
+    autoAssignToTeam = fields.Field()
     startDate = fields.Date()
     endDate = fields.Date()
 
