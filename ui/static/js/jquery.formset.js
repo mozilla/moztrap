@@ -40,7 +40,7 @@
 
             showAddButton = function() {
                 return maxForms.length == 0 ||   // For Django versions pre 1.2
-                    (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0))
+                    (maxForms.val() == '' || (maxForms.val() - totalForms.val() > 0));
             },
 
             insertDeleteLink = function(row) {
