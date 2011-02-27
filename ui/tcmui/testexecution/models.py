@@ -5,14 +5,13 @@ testing.
 """
 from django.core.urlresolvers import reverse
 
-from ..core import util
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..testcases.models import (
     TestCase, TestCaseVersion, TestSuite, TestSuiteIncludedTestCase)
-from ..users.models import User
+from ..users.models import User, Team
 
 from . import testresultstatus
 
@@ -28,6 +27,7 @@ class TestCycle(Activatable, RemoteObject):
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     testruns = fields.Link("TestRunList")
+    team = fields.Link(Team, api_name="team/members")
 
 
     def __unicode__(self):
@@ -71,6 +71,7 @@ class TestRun(Activatable, RemoteObject):
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
+    team = fields.Link(Team, api_name="team/members")
 
 
     def __unicode__(self):

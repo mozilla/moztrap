@@ -8,6 +8,7 @@ from ..core.api import ListObject, RemoteObject, fields
 from ..core.models import Company
 from ..core.util import id_for_object
 from ..environments.models import EnvironmentGroupList
+from ..users.models import Team
 
 
 
@@ -17,6 +18,7 @@ class Product(RemoteObject):
     name = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    team = fields.Link(Team, api_name="team/members")
 
 
     def __unicode__(self):

@@ -3,6 +3,7 @@ User-related remote objects.
 
 """
 import urllib
+from posixpath import join
 
 from ..core.api import RemoteObject, Activatable, ListObject, fields
 from ..core.decorators import as_admin
@@ -149,3 +150,18 @@ class UserList(ListObject):
     default_url = "users"
 
     entries = fields.List(fields.Object(User))
+
+
+
+class Team(UserList):
+    def roles_for(self, user, roles=None):
+        url = join(self._location.split("?")[0], user.id, "roles")
+        if roles is None:
+            return RoleList.get(url, auth=self.auth)
+        if isinstance(roles, (list, tuple, set)):
+            roles = RoleList(entries=list(roles))
+        roles.put(
+            url=url,
+            version_payload=False,
+            auth=roles.auth or self.auth
+            )
