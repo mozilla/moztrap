@@ -446,7 +446,7 @@ nav.manage
   padding-left: gutter(24)
   border-left: 1px solid $light
 
-/* manage cycles --------------------------------------------------------------    
+/* manage lists --------------------------------------------------------------    
 
 =bulk-color($value,$color,$back,$hover:$color)
   &[value="#{$value}"]
@@ -457,29 +457,27 @@ nav.manage
       background: $hover
       color: white
 
-#managecycles
+.bulk
+  +pie-clearfix
+  +full(21)
+  button
+    +button-reset
+    +text-shadow(rgba(white,.75) 1px 1px 0)
+    padding: 0 .4em
+    background: $blue-lightest
+    color: $blue
+    +bulk-color(activate,$green,$green-lightest)
+    +bulk-color(deactivate,$yellow-darker,$yellow-light)
+    +bulk-color(clone,$blue,$blue-lightest)
+    +bulk-color(delete,$red-light,$red-lightest,$red)
+
+.managelists
   position: relative
   .create
     @extend .button
     position: absolute
     top: - $base-rhythm-unit*.5
     right: 0
-
-  .bulk
-    +pie-clearfix
-    +full(21)
-    +trailer(.5)
-    text-align: right
-    button
-      +button-reset
-      +text-shadow(rgba(white,.75) 1px 1px 0)
-      padding: 0 .4em
-      background: $blue-lightest
-      color: $blue
-      +bulk-color(activate,$green,$green-lightest)
-      +bulk-color(deactivate,$yellow-darker,$yellow-light)
-      +bulk-color(clone,$blue,$blue-lightest)
-      +bulk-color(delete,$red-light,$red-lightest,$red)
   
   .bulkselect
     width: columns(1,21)
@@ -493,8 +491,10 @@ nav.manage
     +hide
     width: columns(4,21)
   
-  .cycles
-    +trailer(.5)
+  table
+    +leader(.5)
+    margin-bottom: 0
+    
     td
       &:nth-child(2)
         @extend .tdlink
@@ -511,7 +511,17 @@ nav.manage
       &:first-child::after
         content: " |"
         color: $base
-  
+
+.listnav
+  +pie-clearfix
+  +trailer(.5)
+  +padding-leader(.25)
+  +trailing-border(1px,.25)
+  +hpadding(.5em)
+  background: $light
+  border-color: #ccc
+  p, ul
+    +reset-box-model
   .location, .perpage
     +columns(6,21)
     font-style: italic
@@ -525,6 +535,7 @@ nav.manage
     select
       +columns(2,6)
       +omega(6)
+      margin: 0
       padding-top: 0
       padding-bottom: 0
       height: auto
@@ -533,6 +544,9 @@ nav.manage
     +inline-block-list
     text-align: center
 
+
+#managecycles
+  @extend .managelists
 
 /* create tests --------------------------------------------------------------    
 
