@@ -8,24 +8,20 @@
 {% block cycles-active-nav %}active{% endblock cycles-active-nav %}
 
 {% block managecontent %}
+<p class="message success">3 test cycles activated</p>
+{# @@@ <p class="message error">Cannot activate test cycle because X</p> #}
+
 <section id="managecycles">
+
   <h2>Manage Test Cycles</h2>
   <a href="/manage/testcycles/add/" class="create">create a cycle</a>
-  
-  <p class="message success">3 test cycles activated</p>
-  
-  {# <p class="message error">Cannot activate test cycle because X</p> #}
-  
+    
   <form>
     <div class="bulk">
-      <label for="bukactions">select an action:</label>
-      <select name="bulkactions" id="bulkactions">
-        <option value="activate">activate</option>
-        <option value="deactivate">deactivate</option>
-        <option value="clone">clone</option>
-        <option value="delete">delete</option>
-      </select>
-      <button class="bulkapply">apply changes</button>
+      <button value="activate">activate</button>
+      <button value="deactivate">deactivate</button>
+      <button value="clone">clone</button>
+      <button value="delete">delete</button>
     </div>
   
     <table class="cycles">

@@ -195,7 +195,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 
 .yellowbutton, #run .invalid { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fee58c), color-stop(100%, #fdc80e)); background: -moz-linear-gradient(top center, #fee58c 0%, #fdc80e 100%); background: linear-gradient(top center, #fee58c 0%, #fdc80e 100%); border-color: #deb72c; }
 
-.bluebutton, #run .start, #managecycles .bulk button { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dbe9e8), color-stop(100%, #8bb9b7)); background: -moz-linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); background: linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); border-color: #a2a2a2; }
+.bluebutton, #run .start { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dbe9e8), color-stop(100%, #8bb9b7)); background: -moz-linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); background: linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); border-color: #a2a2a2; }
 
 .errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; margin-bottom: 1.5em; color: #b9292f; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
@@ -363,15 +363,23 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 
 /* manage cycles -------------------------------------------------------------- */
 #managecycles { position: relative; }
-#managecycles .create { position: absolute; top: 0; right: 0; }
-#managecycles .bulk { *zoom: 1; clear: both; padding-right: 57.931%; }
+#managecycles .create { position: absolute; top: -0.75em; right: 0; }
+#managecycles .bulk { *zoom: 1; clear: both; margin-bottom: 0.75em; text-align: right; }
 #managecycles .bulk:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#managecycles .bulk label, #managecycles .bulk select, #managecycles .bulk button { display: inline; float: left; width: 31.148%; margin-right: 3.279%; font-weight: normal; }
-#managecycles .bulk button { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+#managecycles .bulk button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; text-shadow: rgba(255, 255, 255, 0.75) 1px 1px 0; padding: 0 0.4em; background: #cddcdb; color: #5d7b7a; }
+#managecycles .bulk button[value="activate"] { background: #e5f5d2; color: #77b929; }
+#managecycles .bulk button[value="activate"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #77b929; color: white; }
+#managecycles .bulk button[value="deactivate"] { background: #fef0bf; color: #d6a702; }
+#managecycles .bulk button[value="deactivate"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #d6a702; color: white; }
+#managecycles .bulk button[value="clone"] { background: #cddcdb; color: #5d7b7a; }
+#managecycles .bulk button[value="clone"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #5d7b7a; color: white; }
+#managecycles .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
+#managecycles .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #e37f83; color: white; }
 #managecycles .bulkselect { width: 3.448%; }
 #managecycles .bulkselect label { display: none; }
 #managecycles .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 22.759%; }
 #managecycles .cycles { margin-bottom: 0.75em; }
+#managecycles .cycles th { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; }
 #managecycles .cycles button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
 #managecycles .cycles button, #managecycles .cycles button:link, #managecycles .cycles button:visited { color: #5d7b7a; text-decoration: none; }
 #managecycles .cycles button:link, #managecycles .cycles button:visited, #managecycles .cycles button:hover, #managecycles .cycles button:active { outline: none; }

@@ -455,24 +455,39 @@ nav.manage
 
 /* manage cycles --------------------------------------------------------------    
 
+=bulk-color($value,$color,$back,$hover:$color)
+  &[value="#{$value}"]
+    background: $back
+    color: $color
+    &:hover
+      +text-shadow(rgba(black,.5) 1px 1px 0)
+      background: $color
+      color: white
+
 #managecycles
   position: relative
   .create
     @extend .button
     position: absolute
-    top: 0
+    top: - $base-rhythm-unit*.5
     right: 0
 
   .bulk
     +pie-clearfix
     +full(21)
-    +suffix(12,21)
-    label, select, button
-      +columns(3,9)
-      font-weight: normal
+    +trailer(.5)
+    text-align: right
     button
-      @extend .bluebutton
-      +omega(9)
+      +button-reset
+      +text-shadow(rgba(white,.75) 1px 1px 0)
+      padding: 0 .4em
+      background: $blue-lightest
+      color: $blue
+      +bulk-color(activate,$green,$green-lightest)
+      +bulk-color(deactivate,$yellow-darker,$yellow-light)
+      +bulk-color(clone,$blue,$blue-lightest)
+      +bulk-color(delete,$red-light,$red-lightest)
+        
   
   .bulkselect
     width: columns(1,21)
@@ -485,6 +500,8 @@ nav.manage
   
   .cycles
     +trailer(.5)
+    th
+      +leading-border(1px,.25)
     button
       +button-reset
       +link
