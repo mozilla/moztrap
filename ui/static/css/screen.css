@@ -252,7 +252,7 @@ nav.crumb li:last-child a { color: inherit; }
 div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; position: relative; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.message, #messages { clear: both; margin-bottom: 1.5em; padding: 0.375em 0.75em; font-weight: bold; }
+.message, #messages { clear: both; margin-bottom: 0.75em; padding: 0.375em 0.75em; font-weight: bold; }
 .message, #messages, .message.success, .success#messages { text-shadow: #e5f5d2 1px 1px 0; background: #cdeca9; color: #345112; }
 .message.error, .error#messages { text-shadow: #f5d2d4 1px 1px 0; background: #eca9ab; color: #511214; }
 
