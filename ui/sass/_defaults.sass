@@ -216,19 +216,22 @@ table
   width: 100%
   border-collapse: separate
   border-spacing: 0
-  *:last-child
-    td
-      +trailing-border(1px, 0.5)
-      border-color: #ccc
+
+td
+  +trailing-border(1px, 0.25)
+  border-color: #ccc
 
 table, td, th
   vertical-align: top
 
 th, thead th
+  +leading-border(1px,.25)
+  white-space: nowrap
   font-weight: bold
+  background: $light
 
 th, td, caption
-  padding: $base-rhythm-unit * 0.5
+  padding: $base-rhythm-unit * 0.25
   text-align: left
   font-weight: normal
 

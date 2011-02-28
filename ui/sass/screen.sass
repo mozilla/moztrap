@@ -102,7 +102,7 @@ div[role="main"]
   @extend .sans
   +full(24)
   +trailer
-  padding: $base-rhythm-unit*.5
+  padding: $base-rhythm-unit*.25 $base-rhythm-unit*.5
   font-weight: bold
   
   &, &.success
@@ -243,15 +243,8 @@ footer[role="contentinfo"]
     width: columns(3,24)
     
   td:first-child
-    padding: 0
-    border: 0
-    a
-      #{$link}
-        display: block
-        padding: $base-rhythm-unit * 0.5
-        border-color: #ccc
-        +trailing-border(1px,.5)
-  
+    @extend .tdlink
+    
   .note
     +leader(-.5)
     +trailer(1.5)
@@ -461,7 +454,7 @@ nav.manage
     color: $color
     &:hover
       +text-shadow(rgba(black,.5) 1px 1px 0)
-      background: $color
+      background: $hover
       color: white
 
 #managecycles
@@ -486,27 +479,37 @@ nav.manage
       +bulk-color(activate,$green,$green-lightest)
       +bulk-color(deactivate,$yellow-darker,$yellow-light)
       +bulk-color(clone,$blue,$blue-lightest)
-      +bulk-color(delete,$red-light,$red-lightest)
-        
+      +bulk-color(delete,$red-light,$red-lightest,$red)
   
   .bulkselect
     width: columns(1,21)
     label
       display: none
   
+  .title
+    width: columns(10,21)
+  
   .controls
     +hide
-    width: columns(5,21)
+    width: columns(4,21)
   
   .cycles
     +trailer(.5)
-    th
-      +leading-border(1px,.25)
+    td
+      &:nth-child(2)
+        @extend .tdlink
+        a
+          #{$focus}
+            background: image-url("ui/pencil.png") no-repeat scroll right
+      &:last-child
+        text-align: right
+        white-space: nowrap
+            
     button
       +button-reset
       +link
-      &:before
-        content: "| "
+      &:first-child::after
+        content: " |"
         color: $base
   
   .location, .perpage

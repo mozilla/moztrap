@@ -115,13 +115,14 @@ nav ul li, nav ol li { list-style-image: none; list-style-type: none; margin-lef
 /* Tables -------------------------------------------------------------- */
 /* tables still need 'cellspacing="0"' in the markup */
 table { margin-bottom: 1.5em; width: 100%; border-collapse: separate; border-spacing: 0; }
-table *:last-child td { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; border-color: #cccccc; }
+
+td { border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
 
 table, td, th { vertical-align: top; }
 
-th, thead th { font-weight: bold; }
+th, thead th { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; white-space: nowrap; font-weight: bold; background: #eeeeee; }
 
-th, td, caption { padding: 0.75em; text-align: left; font-weight: normal; }
+th, td, caption { padding: 0.375em; text-align: left; font-weight: normal; }
 
 th { padding-top: 1.125em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
 th a:link, th a:visited { display: block; position: relative; }
@@ -214,6 +215,9 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .no-details details > * { display: none; }
 .no-details details summary { display: block; }
 
+.tdlink, #cycles td:first-child, #testruns td:first-child, #managecycles .cycles td:nth-child(2) { padding: 0; border: 0; }
+.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, #managecycles .cycles td:nth-child(2) a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited, #managecycles .cycles td:nth-child(2) a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
+
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }
 
@@ -248,7 +252,7 @@ nav.crumb li:last-child a { color: inherit; }
 div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 1.438em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 1.438em; border-color: #cccccc; position: relative; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.message, #messages { clear: both; margin-bottom: 1.5em; padding: 0.75em; font-weight: bold; }
+.message, #messages { clear: both; margin-bottom: 1.5em; padding: 0.375em 0.75em; font-weight: bold; }
 .message, #messages, .message.success, .success#messages { text-shadow: #e5f5d2 1px 1px 0; background: #cdeca9; color: #345112; }
 .message.error, .error#messages { text-shadow: #f5d2d4 1px 1px 0; background: #eca9ab; color: #511214; }
 
@@ -307,8 +311,6 @@ footer[role="contentinfo"] small { font-size: 1em; }
 /* cycles + testruns -------------------------------------------------------------- */
 #cycles .date, #testruns .date { width: 15.663%; }
 #cycles .start, #cycles .end, #testruns .start, #testruns .end { width: 11.446%; }
-#cycles td:first-child, #testruns td:first-child { padding: 0; border: 0; }
-#cycles td:first-child a:link, #cycles td:first-child a:visited, #testruns td:first-child a:link, #testruns td:first-child a:visited { display: block; padding: 0.75em; border-color: #cccccc; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.688em; }
 #cycles .note, #testruns .note { margin-top: -0.75em; margin-bottom: 2.25em; text-align: right; font-style: italic; }
 
 /* run tests -------------------------------------------------------------- */
@@ -374,18 +376,20 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #managecycles .bulk button[value="clone"] { background: #cddcdb; color: #5d7b7a; }
 #managecycles .bulk button[value="clone"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #5d7b7a; color: white; }
 #managecycles .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
-#managecycles .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #e37f83; color: white; }
+#managecycles .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #b9292f; color: white; }
 #managecycles .bulkselect { width: 3.448%; }
 #managecycles .bulkselect label { display: none; }
-#managecycles .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 22.759%; }
+#managecycles .title { width: 46.897%; }
+#managecycles .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 17.931%; }
 #managecycles .cycles { margin-bottom: 0.75em; }
-#managecycles .cycles th { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; }
+#managecycles .cycles td:nth-child(2) a:focus, #managecycles .cycles td:nth-child(2) a:hover, #managecycles .cycles td:nth-child(2) a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
+#managecycles .cycles td:last-child { text-align: right; white-space: nowrap; }
 #managecycles .cycles button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
 #managecycles .cycles button, #managecycles .cycles button:link, #managecycles .cycles button:visited { color: #5d7b7a; text-decoration: none; }
 #managecycles .cycles button:link, #managecycles .cycles button:visited, #managecycles .cycles button:hover, #managecycles .cycles button:active { outline: none; }
 #managecycles .cycles button:focus, #managecycles .cycles button:hover, #managecycles .cycles button:active { color: #b9292f; text-decoration: none; }
 #managecycles .cycles button:focus { outline: thin dotted #77b929; }
-#managecycles .cycles button:before { content: "| "; color: #444444; }
+#managecycles .cycles button:first-child::after { content: " |"; color: #444444; }
 #managecycles .location, #managecycles .perpage { display: inline; float: left; width: 27.586%; margin-right: 1.379%; font-style: italic; }
 #managecycles .perpage { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 #managecycles .perpage label { display: inline; float: left; width: 65%; margin-right: 5%; padding: 0; font-weight: normal; text-align: right; }
