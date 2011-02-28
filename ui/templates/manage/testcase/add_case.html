@@ -72,7 +72,7 @@
 {% block extrajs %}
 <script type="text/javascript">
   $(function() {
-    $('ol.steplist > li').formset({
+    $('ol.steplist').formset({
       prefix: '{{ form.steps_formset.prefix }}',
       formTemplate: '#empty-step-form > li',
       formCssClass: 'steps-form',
@@ -82,7 +82,7 @@
       addCssClass: 'add',
       addText: 'add a step »'
     });
-    $('ul.envlist > li').formset({
+    $('ul.envlist').formset({
       prefix: '{{ form.env_formset.prefix }}',
       formTemplate: '#empty-env-form > li',
       formCssClass: 'env-form',
