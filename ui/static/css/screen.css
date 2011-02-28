@@ -376,8 +376,8 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
 .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #b9292f; color: white; }
 
-.managelists, #managecycles { position: relative; }
-.managelists .create, #managecycles .create { position: absolute; top: -0.75em; right: 0; }
+.managelists, #managecycles { padding-top: 0.375em; position: relative; }
+.managelists .create, #managecycles .create { position: absolute; top: 0; right: 0; }
 .managelists .bulkselect, #managecycles .bulkselect { width: 3.448%; }
 .managelists .bulkselect label, #managecycles .bulkselect label { display: none; }
 .managelists .title, #managecycles .title { width: 46.897%; }
