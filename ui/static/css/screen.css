@@ -189,8 +189,8 @@ button[disabled] { background: #dddddd url('../images/forms/button.png?129539639
 button.sub { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; color: #5d7b7a; }
 button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 
-.button, input[type="reset"], input[type="submit"], input[type="button"], .managelists .create, #managecycles .create { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background: linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; cursor: pointer; color: #111111; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
-.button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], .managelists [disabled].create, #managecycles [disabled].create { background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; color: #888888; }
+.button, input[type="reset"], input[type="submit"], input[type="button"], .managelists .create, #managecycles .create, #managecases .create { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background: linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; cursor: pointer; color: #111111; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
+.button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], .managelists [disabled].create, #managecycles [disabled].create, #managecases [disabled].create { background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; color: #888888; }
 
 .redbutton, #run .fail { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f5d2d4), color-stop(100%, #de6a6f)); background: -moz-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%); background: linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%); border-color: #c78184; }
 
@@ -215,8 +215,8 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .no-details details > * { display: none; }
 .no-details details summary { display: block; }
 
-.tdlink, #cycles td:first-child, #testruns td:first-child, .managelists table td:nth-child(2), #managecycles table td:nth-child(2) { padding: 0; border: 0; }
-.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .managelists table td:nth-child(2) a:link, #managecycles table td:nth-child(2) a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited, .managelists table td:nth-child(2) a:visited, #managecycles table td:nth-child(2) a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
+.tdlink, #cycles td:first-child, #testruns td:first-child, .managelists table td:nth-child(2), #managecycles table td:nth-child(2), #managecases table td:nth-child(2) { padding: 0; border: 0; }
+.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .managelists table td:nth-child(2) a:link, #managecycles table td:nth-child(2) a:link, #managecases table td:nth-child(2) a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited, .managelists table td:nth-child(2) a:visited, #managecycles table td:nth-child(2) a:visited, #managecases table td:nth-child(2) a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }
@@ -376,21 +376,21 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
 .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #b9292f; color: white; }
 
-.managelists, #managecycles { padding-top: 0.375em; position: relative; }
-.managelists .create, #managecycles .create { position: absolute; top: 0; right: 0; }
-.managelists .bulkselect, #managecycles .bulkselect { width: 3.448%; }
-.managelists .bulkselect label, #managecycles .bulkselect label { display: none; }
-.managelists .title, #managecycles .title { width: 46.897%; }
-.managelists .controls, #managecycles .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 17.931%; }
-.managelists table, #managecycles table { margin-top: 0.75em; margin-bottom: 0; }
-.managelists table td:nth-child(2) a:focus, #managecycles table td:nth-child(2) a:focus, .managelists table td:nth-child(2) a:hover, #managecycles table td:nth-child(2) a:hover, .managelists table td:nth-child(2) a:active, #managecycles table td:nth-child(2) a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
-.managelists table td:last-child, #managecycles table td:last-child { text-align: right; white-space: nowrap; }
-.managelists table button, #managecycles table button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
-.managelists table button, #managecycles table button, .managelists table button:link, #managecycles table button:link, .managelists table button:visited, #managecycles table button:visited { color: #5d7b7a; text-decoration: none; }
-.managelists table button:link, #managecycles table button:link, .managelists table button:visited, #managecycles table button:visited, .managelists table button:hover, #managecycles table button:hover, .managelists table button:active, #managecycles table button:active { outline: none; }
-.managelists table button:focus, #managecycles table button:focus, .managelists table button:hover, #managecycles table button:hover, .managelists table button:active, #managecycles table button:active { color: #b9292f; text-decoration: none; }
-.managelists table button:focus, #managecycles table button:focus { outline: thin dotted #77b929; }
-.managelists table button:first-child::after, #managecycles table button:first-child::after { content: " |"; color: #444444; }
+.managelists, #managecycles, #managecases { padding-top: 0.375em; position: relative; }
+.managelists .create, #managecycles .create, #managecases .create { position: absolute; top: 0; right: 0; }
+.managelists .bulkselect, #managecycles .bulkselect, #managecases .bulkselect { width: 3.448%; }
+.managelists .bulkselect label, #managecycles .bulkselect label, #managecases .bulkselect label { display: none; }
+.managelists .title, #managecycles .title, #managecases .title { width: 46.897%; }
+.managelists .controls, #managecycles .controls, #managecases .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 17.931%; }
+.managelists table, #managecycles table, #managecases table { margin-top: 0.75em; margin-bottom: 0; }
+.managelists table td:nth-child(2) a:focus, #managecycles table td:nth-child(2) a:focus, #managecases table td:nth-child(2) a:focus, .managelists table td:nth-child(2) a:hover, #managecycles table td:nth-child(2) a:hover, #managecases table td:nth-child(2) a:hover, .managelists table td:nth-child(2) a:active, #managecycles table td:nth-child(2) a:active, #managecases table td:nth-child(2) a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
+.managelists table td:last-child, #managecycles table td:last-child, #managecases table td:last-child { text-align: right; white-space: nowrap; }
+.managelists table button, #managecycles table button, #managecases table button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
+.managelists table button, #managecycles table button, #managecases table button, .managelists table button:link, #managecycles table button:link, #managecases table button:link, .managelists table button:visited, #managecycles table button:visited, #managecases table button:visited { color: #5d7b7a; text-decoration: none; }
+.managelists table button:link, #managecycles table button:link, #managecases table button:link, .managelists table button:visited, #managecycles table button:visited, #managecases table button:visited, .managelists table button:hover, #managecycles table button:hover, #managecases table button:hover, .managelists table button:active, #managecycles table button:active, #managecases table button:active { outline: none; }
+.managelists table button:focus, #managecycles table button:focus, #managecases table button:focus, .managelists table button:hover, #managecycles table button:hover, #managecases table button:hover, .managelists table button:active, #managecycles table button:active, #managecases table button:active { color: #b9292f; text-decoration: none; }
+.managelists table button:focus, #managecycles table button:focus, #managecases table button:focus { outline: thin dotted #77b929; }
+.managelists table button:first-child::after, #managecycles table button:first-child::after, #managecases table button:first-child::after { content: " |"; color: #444444; }
 
 .listnav { *zoom: 1; margin-bottom: 0.75em; padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; padding-left: 0.5em; padding-right: 0.5em; background: #eeeeee; border-color: #cccccc; }
 .listnav:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }

@@ -25,12 +25,16 @@ urlpatterns = patterns(
     url("^manage/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/cycles.html"}),
-    url("^manage/testcycle/$", 
+    url("^manage/testcycles/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/cycles.html"}),
     url("^manage/testcycle/add/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/add_cycle.html"}),
+
+    url("^manage/testcases/$", 
+        "django.views.generic.simple.direct_to_template", 
+        {"template": "manage/testcase/cases.html"}),
            
     url("^manage/testcase/add/$",
         "tcmui.testcases.views.add_testcase",
