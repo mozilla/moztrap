@@ -47,9 +47,6 @@ def setup_before_scenario(scenario):
     if (world.restore_db):
         restore_db_state()
         
-    if (world.setup_seed_data):
-        setup_seed_data()
-
     if (world.use_mock):
         scenarioData = mock_scenario_data.get_scenario_data(scenario.name).strip() 
     
@@ -104,10 +101,6 @@ def create_seed_company_and_product(step):
     
 
 
-# creates a company and product that is used for many of the tests
-def setup_seed_data():
-    pass
-   
 @before.each_step
 def setup_step_connection(step):
     setup_connection() 
