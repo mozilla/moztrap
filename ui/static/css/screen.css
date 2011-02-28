@@ -361,7 +361,7 @@ nav.manage a:link, nav.manage a:visited { font-size: 0.875em; line-height: 2.571
 nav.manage a:focus, nav.manage a:hover, nav.manage a:active { background: #eeeeee; }
 nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus, nav.manage a.active:hover, nav.manage a.active:active { background: #cddcdb; color: #2e3e3d; }
 
-#managecontent { overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; }
+#managecontent { overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; min-height: 18em; }
 
 /* manage lists -------------------------------------------------------------- */
 .bulk { *zoom: 1; clear: both; }
