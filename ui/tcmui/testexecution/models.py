@@ -10,7 +10,8 @@ from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..testcases.models import (
-    TestCase, TestCaseVersion, TestSuite, TestSuiteIncludedTestCase)
+    TestCase, TestCaseVersion, TestSuite, TestSuiteList,
+    TestSuiteIncludedTestCase)
 from ..users.models import User, Team
 
 from . import testresultstatus
@@ -73,6 +74,7 @@ class TestRun(Activatable, RemoteObject):
     environmentgroups = fields.Link(EnvironmentGroupList)
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
+    testsuites = fields.Link(TestSuiteList)
 
 
     def __unicode__(self):
