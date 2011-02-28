@@ -130,7 +130,8 @@ class User(Activatable, RemoteObject):
         # Work around httplib2's broken multiple-header handling
         # http://code.google.com/p/httplib2/issues/detail?id=90
         # This will break if a cookie value contains commas.
-        cookies = [c.strip() for c in response["set-cookie"].split(",")]
+        cookies = [c.split(";")[0].strip() for c in
+                   response["set-cookie"].split(",")]
         return [c for c in cookies if c.startswith("USERTOKEN=")][0]
 
 
