@@ -25,10 +25,10 @@ urlpatterns = patterns(
     url("^manage/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/cycles.html"}),
-    url("^manage/testcycles/$", 
+    url("^manage/testcycle/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/cycles.html"}),
-    url("^manage/testcycles/add/$", 
+    url("^manage/testcycle/add/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testcycle/add_cycle.html"}),
            
