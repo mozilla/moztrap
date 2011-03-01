@@ -375,13 +375,7 @@ def get_array_item(response_txt, type):
     return item
 
 def get_list_of_type(type, response_txt):
-    try:
-        respJson = json.loads(response_txt)
-    except ValueError:
-        assert False, "Bad JSON: " + str(response_txt)
-    except TypeError:
-        assert False, "Bad JSON: " + str(response_txt)
-    
+    respJson = json_to_obj(response_txt)
     
     try:
         item = respJson[ns(as_arrayof(type))][0][ns(type)]
@@ -397,6 +391,7 @@ def get_list_of_type(type, response_txt):
         return item
     else:
         return [item]
+
 
 def get_first_item(response_txt, type):
     '''
@@ -502,7 +497,7 @@ def get_role_resid(role):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("role", add_params(world.path_roles, {"description": role}))
+    return get_resource_identity("role", add_params(world.path_roles, {"name": role}))
 
 def get_product_resid(product):
     '''

@@ -37,6 +37,62 @@ def setup_before_all():
     if (world.save_db):
         save_db_state()
 
+    # dict of names of objects used in scenarios to remember from one step to the next
+    world.names = {}
+
+    ################################
+    # paths relative to the namespace        
+    ################################
+    
+    # URI namespace path map
+    world.path_companies =          world.api_prefix + "companies/"
+    world.path_environmentgroups =  world.api_prefix + "environmentgroups/"
+    world.path_environments =       world.api_prefix + "environments/"
+    world.path_environmenttypes =   world.api_prefix + "environmenttypes/"
+    
+    world.env_path_map = {"environments":      world.path_environments,
+                          "environment":       world.path_environments,
+                          "environmenttypes":  world.path_environmenttypes,
+                          "environmenttype":   world.path_environmenttypes,
+                          "environmentgroups": world.path_environmentgroups,
+                          "environmentgroup":  world.path_environmentgroups}
+    
+    world.path_tags =               world.api_prefix + "tags/"
+    
+    world.path_login =              world.api_prefix + "users/login/"
+    world.path_logout =             world.api_prefix + "users/logout/"
+    world.path_permissions =        world.api_prefix + "users/permissions/"
+    world.path_roles =              world.api_prefix + "users/roles/"
+    world.path_users =              world.api_prefix + "users/"
+    world.path_users_activation =   world.api_prefix + "users/%s/%s"
+    
+    world.path_testcases =          world.api_prefix + "testcases/"
+    world.path_testcycles =         world.api_prefix + "testcycles/"
+    world.path_testruns =           world.api_prefix + "testruns/"
+    world.path_testsuites =         world.api_prefix + "testsuites/"
+    world.path_products =           world.api_prefix + "products/"
+            
+    ################################
+    # setup objects
+    ################################
+    
+    # usually, the test will replace the countryId based on looking it up
+    world.seed_company = {"name": "Massive Dynamic",
+                          "phone": "555-867-5309",
+                          "address": "650 Castro St.",
+                          "city": "Mountain View",
+                          "zip": "94043",
+                          "url": "http//www.fringepedia.net",
+                          "country name": "United States"
+                          }
+    
+    # usually the test setup will replace the companyId with the one looked up based on creating
+    # the seed company above.
+    world.seed_product = {"company name": "Massive Dynamic",
+                          "name": "Cortexiphan",
+                          "description": "I can see your universe from here"
+                          }    
+
 @after.all
 def teardown_after_all(total):
     if (world.restore_db_after_all):
@@ -47,9 +103,6 @@ def setup_before_scenario(scenario):
     if (world.restore_db):
         restore_db_state()
         
-    if (world.setup_seed_data):
-        setup_seed_data()
-
     if (world.use_mock):
         scenarioData = mock_scenario_data.get_scenario_data(scenario.name).strip() 
     
@@ -104,10 +157,6 @@ def create_seed_company_and_product(step):
     
 
 
-# creates a company and product that is used for many of the tests
-def setup_seed_data():
-    pass
-   
 @before.each_step
 def setup_step_connection(step):
     setup_connection() 

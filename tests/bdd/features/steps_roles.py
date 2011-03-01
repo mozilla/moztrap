@@ -16,7 +16,7 @@ from step_helper import jstr, add_params
 ######################################################################
 '''
 
-@step(u'And I create a new role with (that name|name "(.*)") with the following permissions')
+@step(u'create a new role with (that name|name "(.*)") with the following permissions')
 def create_role_with_permissions(step, stored, name):
     name = get_stored_or_store_name("role", stored, name)
     
@@ -124,7 +124,41 @@ def user_has_role(step, stored_user, user_name, stored_role, role_name):
     
     assert len(found_role) == 1, "Expected to find role with name %s in:\n%s" % (role_name,
                                                                                str(role_list))
+
+@step(u'at least this role exists:')
+def at_least_this_role_exists(step):
+    check_roles_exist(step.hashes)
     
+@step(u'at least these roles exist:')
+def at_least_these_roles_exist(step):
+    check_roles_exist(step.hashes)
+    
+def check_roles_exist(hashes):
+    role_list = get_list_from_search("role",
+                                     world.path_roles)
+    
+    # walk through all the expected roles and make sure it has them all
+    # note, it doesn't check that ONLY these roles exist.  That should be a different
+    # method.
+    for role in hashes:
+        role_name = role["name"]
+        found_perm = [x for x in role_list if x[ns("name")] == role_name] 
+        
+        assert len(found_perm) == 1, "Expected to find permissionCode %s in:\n%s" % (role_name,
+                                                                                   jstr(role_list))
+
+@step(u'find the role with (that name|name "(.*)") by id')
+def find_role_by_id(step, stored_role, role_name):
+    role_name = get_stored_or_store_name("role", stored_role, role_name)
+
+    # fetch the role's resource identity
+    role_id = get_role_resid(role_name)[0]
+
+    role = get_single_item_from_endpoint("role",  
+                                       world.path_roles + role_id)
+
+    assert role[ns("name")] == role_name, "Expected to find role with name %s in:\n%s" % (role_name,
+                                                                                 jstr(role))
     
 
 
@@ -137,46 +171,6 @@ def user_has_role(step, stored_user, user_name, stored_role, role_name):
 
 
 
-
-
-
-@step(u'user "(.*)" does not already have the role of "(.*)"')
-def foo_does_not_already_have_the_role_of_bar(step, name, role):
-    user_role_check(name, role, False, "should not have role of " + role)
-
-def user_role_check(name, role, expected_tf, assert_text):
-    
-    # fetch the user's resource identity
-    user_id, version = get_user_resid(name)
-    return user_id_role_check(user_id, role, expected_tf, assert_text)
-
-def user_id_role_check(user_id, role, expected_tf, assert_text):
-    # This takes 2 requests to complete
-    #    1: get the id of the user
-    #    2: check that user has that role
-    
-    world.conn.request("GET", add_params(world.path_users + str(user_id) + "/roles"))
-    response = world.conn.getresponse()
-    eq_(response.status, 200, "Fetched a user")
-
-    # walk through all roles for this user to see if it has the requested one
-    
-    roleJsonList = get_resp_list(response, ns("role")) 
-     
-    foundRole = False
-    for roleJson in roleJsonList:
-        assert isinstance(roleJson, dict), "unexpected type:\n" + jstr(roleJson)
-        if (roleJson.get(ns("description")) == role):
-            foundRole = True
-    eq_(foundRole, expected_tf, assert_text + ": " + jstr(roleJsonList))
-
-@step(u'create a new role of "(.*)"')
-def create_a_new_role_of_x(step, role):
-    
-    post_payload = {"description":role}
-
-    do_post(world.path_roles, post_payload)
-    
 
 @step(u'add permission named "(.*)" to the role named "(.*)"')
 def add_permission_foo_to_role_bar(step, permission, role):
@@ -194,37 +188,6 @@ def add_permission_foo_to_role_bar(step, permission, role):
             post_payload,
             params = {"originalVersionId": version})
 
-
-
-@step(u'role of "(.*)" exists')
-def role_of_foo_exists(step, role):
-    check_role_existence([{"description": role}])
-    
-
-@step(u'at least these roles exist:')
-def at_least_these_roles_exist(step):
-    check_role_existence(step.hashes)
-    
-def check_role_existence(roles):
-    
-    # fetch the user's resource identity
-    world.conn.request("GET", add_params(world.path_roles))
-    response = world.conn.getresponse()
-    verify_status(200, response, "Fetched list of all roles")
-
-    respJson = get_resp_list(response, "role")
-
-    # now walk through the expected roles and check the response
-    # to see that it is represented
-    for exp_role in roles:
-        found = False
-        for act_role in respJson:
-            exp = exp_role.get("description")
-            act = act_role.get(ns("description"))
-            if (exp == act):
-                found = True
-        eq_(found, True, "Didn't find role of:\n" + jstr(exp_role) + 
-                     "\n in data:\n" + jstr(respJson))
 
 
 @step(u'"(ASC|DESC)" role searches list "(.*)" before "(.*)"')
