@@ -3,8 +3,8 @@ $(function() {
     prefix: '{{ form.steps_formset.prefix }}',
     formTemplate: '#empty-step-form > li',
     formCssClass: 'steps-form',
-    deleteCssClass: 'remove',
-    deleteText: 'removefields',
+    deleteCssClass: 'removefields',
+    deleteText: 'remove',
     deleteOnlyNew: true,
     addCssClass: 'addfields',
     addText: 'add a step »'
