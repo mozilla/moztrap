@@ -32,7 +32,7 @@
       <h3>Environment Constraints</h3>
       {{ form.env_formset.management_form }}
       <ul class="envlist">
-        {% for envform in form.env_formset %}
+        {% for form in form.env_formset %}
         {% include "manage/_env_form.html" %}
         {% endfor %}
       </ul>
@@ -40,7 +40,7 @@
 
     <div class="steps">
       {{ form.steps_formset.management_form }}
-      {% for stepform in form.steps_formset %}
+      {% for form in form.steps_formset %}
       <ol class="steplist">
         {% include "manage/testcase/_step_form.html" %}
         {% endfor %}
@@ -52,14 +52,41 @@
     </div>
 
   </form>
-
-  {% include "manage/_empty_env_form.html" %}
-  {% include "manage/testcase/_empty_step_form.html" %}
-
 </section>
 {% endblock managecontent %}
 
 {% block extrajs %}
-  <script src="{{ STATIC_URL }}js/envforms.js"></script>
-  <script src="{{ STATIC_URL }}js/stepforms.js"></script>
+  {% with form.env_formset as formset %}
+    {% include "manage/_env_formset_js.html" %}
+  {% endwith %}
+  <script>
+  $(
+      function() {
+          $('ol.steplist').formset(
+              {
+                  prefix: '{{ form.steps_formset.prefix }}',
+                  formTemplate: '#empty-step-form > li',
+                  formCssClass: 'steps-form',
+                  deleteCssClass: 'removefields',
+                  deleteText: 'remove',
+                  deleteOnlyNew: true,
+                  addCssClass: 'addfields',
+                  addText: 'add a step »'
+              });
+      });
+
+  </script>
+{% endblock %}
+
+{% block last %}
+<div style="display: none;">
+  {% with form.env_formset.empty_form as form %}
+  {% include "manage/_empty_env_form.html" %}
+  {% endwith %}
+  <ul id="empty-step-form" class="empty-form">
+    {% with form.steps_formset.empty_form as form %}
+    {% include "manage/testcase/_step_form.html" %}
+    {% endwith %}
+  </ul>
+</div>
 {% endblock %}
