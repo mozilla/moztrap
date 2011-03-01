@@ -511,7 +511,7 @@ nav.manage
       text-align: right
       white-space: nowrap
       
-  table
+  .list
     +leader(.5)
     margin-bottom: 0
                   
@@ -618,6 +618,7 @@ nav.manage
 #addcycle
   @extend .addform
   @extend .managelists
+  
   .addrun
     padding: 0
     button
@@ -627,6 +628,107 @@ nav.manage
       margin: 0
       width: 100%
       border: 0
+
+.assignto
+  +leader
+  p
+    margin: 0
+  label
+    font-weight: normal
+    &[for="communal"]
+      margin-left: .4em
+  
+.userselect
+  summary
+    +link
+    width: columns(10,21)
+    font-style: italic
+  > div
+    +pie-clearfix
+    +full(21)
+    +pad(1,1,21)
+    +leader
+    +leading-border(1px,1)
+    +trailing-border(1px,1)
+    background: $light
+    border-color: #ccc
+    position: relative
+    overflow: visible !important
+    &::before
+      content: " "
+      display: block
+      position: absolute
+      bottom: 100%
+      left: columns(1,21) + gutter(21)
+      width: 0
+      height: 0
+      border: 1em solid rgba(#ccc,0)
+        width: $base-rhythm-unit*.5
+      border-bottom-color: #ccc
+  .unselected, .selected
+    +columns(9,19)
+  .selected
+    +omega(19)
+  h3
+    @extend .allcaps
+    +hpadding(1.5em)
+    margin: 0
+    color: $light
+    background: $blue
+    font-weight: normal
+  label[for="search"]
+    +hide
+    position: absolute
+    height: 0
+  input[type="search"]
+    width: columns(9,19)
+  ul
+    +no-style-list
+    height: $base-rhythm-unit*8
+    border: 1px solid #ccc
+    background: $blue-lightest
+    overflow-y: scroll
+    li
+      +adjust-font-size-to(14px,1)
+    input
+      display: none
+    label
+      +padding-leader(.25,14px)
+      +hpadding(16px/14px*1.5em)
+      +trailing-border(1px,.25,14px)
+      display: block
+      background: $blue-lightest
+      border-color: $light
+  
+  .unselected
+    label
+      #{$focus}
+        background: $green-light image-url('ui/arrow_right.png') no-repeat scroll right
+
+  .selected
+    label
+      #{$focus}
+        background: $red-lighter image-url('ui/arrow_left.png') no-repeat scroll left
+  
+  .addall, .removeall
+    @extend .allcaps
+    +adjust-font-size-to(14px,1)
+    +button-reset
+    display: block
+    width: 100%
+    +hpadding(16px/14px*1.5em)
+    text-align: left
+  .addall
+    color: $green-lighter
+    background: $green
+    text-align: right
+    &:hover
+      background: $green-dark
+  .removeall
+    color: $red-lighter
+    background: $red
+    &:hover
+      background: $red-dark
 
 /* add case --------------------------------------------------------------    
 
