@@ -132,6 +132,7 @@ class Link(remoteobjects.fields.Link):
         newurl = join(instance._location, self.api_name)
         obj = self.cls.get(newurl, auth=instance.auth)
         obj.auth = instance.auth
+        obj.linked_from = instance
         return obj
 
 

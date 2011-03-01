@@ -163,6 +163,6 @@ class Team(UserList):
             roles = RoleList(entries=list(roles))
         roles.put(
             url=url,
-            version_payload=False,
+            version_payload=self.linked_from,
             auth=roles.auth or self.auth
             )
