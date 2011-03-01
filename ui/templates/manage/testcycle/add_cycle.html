@@ -22,15 +22,7 @@
     <div class="env">
       {# @@@ this H3 should be unhidden by JS when there are constraints present #}
       <h3 style="display:none;">Environment Constraints</h3>
-      {% comment %}
-        @@@ start with 0 constraints shown, only the link to add.
-        
-        <ul class="envlist">
-          {% for envform in form.env_formset %}
-          {% include "manage/_env_form.html" %}
-          {% endfor %}
-        </ul>
-      {% endcomment %}
+      {# @@@ start with 0 constraints shown, only the link to add. #}
       <a href="#" class="addfields">add environment constraints »</a>
     </div>
     
@@ -215,16 +207,6 @@
     </div>
 
   </form>
-  
-  {% comment %}
-    {% include "manage/_empty_env_form.html" %}
-  {% endcomment %}
-  
+    
 </section>
 {% endblock managecontent %}
-
-{% block extrajs %}
-  {% comment %}
-    <script src="{{ STATIC_URL }}js/envforms.js"></script>
-  {% endcomment %}
-{% endblock %}
