@@ -67,6 +67,14 @@ body
 $link   :   "&:link, &:visited"
 $focus  :   "&:focus, &:hover, &:active"
 
+=link-button
+  +button-reset
+  color: $alt
+  #{$focus}
+    color: $accent
+  &:focus
+    outline: thin dotted $green
+
 =link
   &, #{$link}
     color: $alt
@@ -277,9 +285,6 @@ tr
     td
       background: $green-lightest
 
-tfoot
-  +adjust-font-size-to(14px)
-
 caption
   @extend .allcaps
   
@@ -452,7 +457,6 @@ button
 
 .errorlist
   +no-style-list
-  +trailer
   color: $red
 
 =side-errors($n,$c,$s:'right')

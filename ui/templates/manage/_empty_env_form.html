@@ -1,0 +1,5 @@
+<ul id="empty-env-form" class="empty-form" style="display: none">
+  {% with form.env_formset.empty_form as envform %}
+  {% include "manage/_env_form.html" %}
+  {% endwith %}
+</ul>

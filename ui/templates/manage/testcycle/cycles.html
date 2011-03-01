@@ -14,10 +14,11 @@
 <section id="managecycles">
 
   <h2>Manage Test Cycles</h2>
-  <a href="/manage/testcycle/add/" class="create">create a cycle</a>
+  <a href="/manage/testcycle/add/" class="create">create a test cycle</a>
     
   <form>
     <div class="bulk">
+      <strong>Actions:</strong>
       <button value="activate">activate</button>
       <button value="deactivate">deactivate</button>
       <button value="clone">clone</button>
@@ -28,7 +29,7 @@
       <thead>
         <tr>
           <th class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></th>
-          <th class="title"><a href="#">title</a></th>
+          <th class="title"><a href="#">test cycles</a></th>
           <th class="start"><a href="#">start date</a></th>
           <th class="end"><a href="#">end date</a></th>
           <th class="state"><a href="#">status</a></th>
@@ -38,198 +39,33 @@
       <tbody>
         <tr class="draft">
           <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
+          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
           <td>draft</td>
-          <td>
+          <td class="controls">
             <button class="activate">activate</button>
             <button class="delete">delete</button>
           </td>
         </tr>
         <tr class="active">
           <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
+          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
           <td>active</td>
-          <td>
+          <td class="controls">
             <button class="deactivate">deactivate</button>
             <button class="delete">delete</button>
           </td>
         </tr>
         <tr class="locked">
           <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
+          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
           <td>2.24.2011</td>
           <td>12.24.2011</td>
           <td>locked</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td>
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td>
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td>
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td>
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td>
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td>
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td>
+          <td class="controls">
             <button class="activate">activate</button>
             <button class="delete">delete</button>
           </td>
@@ -258,6 +94,7 @@
     </nav>
     
     <div class="bulk">
+      <strong>Actions:</strong>
       <button value="activate">activate</button>
       <button value="deactivate">deactivate</button>
       <button value="clone">clone</button>

@@ -6,5 +6,95 @@
 {% endblock crumb %}
 
 {% block managecontent %}
-  <p>something</p>
+<section id="addcycle">
+  <h2>create a new test cycle</h2>
+  <form method="POST">
+    <ul class="meta">
+      <li>
+        {# <ul class="errorlist"> #}
+        {#   <li>this field is required</li> #}
+        {# </ul> #}
+        <label for="name">name</label>
+        <input type="text" name="name" value="" id="name" required="required">
+      </li>
+    </ul>
+
+    <div class="env">
+      {# @@@ this H3 should be unhidden by JS when there are constraints present #}
+      <h3 style="display:none;">Environment Constraints</h3>
+      {% comment %}
+        @@@ start with 0 constraints shown, only the link to add.
+        
+        <ul class="envlist">
+          {% for envform in form.env_formset %}
+          {% include "manage/_env_form.html" %}
+          {% endfor %}
+        </ul>
+      {% endcomment %}
+      <a href="#" class="addfields">add environment constraints »</a>
+    </div>
+    
+    <table class="cycles">
+      <thead>
+        <tr>
+          <th class="title"><a href="#">test runs</a></th>
+          <th class="start"><a href="#">start date</a></th>
+          <th class="end"><a href="#">end date</a></th>
+          <th class="state"><a href="#">status</a></th>
+          <th class="controls">controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="draft">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>draft</td>
+          <td class="controls">
+            <button class="remove">remove</button>
+          </td>
+        </tr>
+        <tr class="active">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>active</td>
+          <td class="controls">
+            <button class="remove">remove</button>
+          </td>
+        </tr>
+        <tr class="locked">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>locked</td>
+          <td class="controls">
+            <button class="remove">remove</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="addrun" colspan="5"><button>add test run &raquo;</button></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="form-actions">
+      <button type="submit">save test cycle</button>
+    </div>
+
+  </form>
+  
+  {% comment %}
+    {% include "manage/_empty_env_form.html" %}
+  {% endcomment %}
+  
+</section>
 {% endblock managecontent %}
+
+{% block extrajs %}
+  {% comment %}
+    <script src="{{ STATIC_URL }}js/envforms.js"></script>
+  {% endcomment %}
+{% endblock %}

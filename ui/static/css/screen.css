@@ -28,11 +28,11 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, #run .status p, #run .stepfail summary, .smallcaps, h4, #run .testinvalid summary, .add:link, .add:visited { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, #run .status p, #run .stepfail summary, .smallcaps, h4, #run .testinvalid summary, .addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited { letter-spacing: 0.1em; }
 
 .allcaps, h1, h2, caption, #run .status p, #run .stepfail summary { text-transform: uppercase; }
 
-.smallcaps, h4, #run .testinvalid summary, .add:link, .add:visited { font-variant: small-caps; }
+.smallcaps, h4, #run .testinvalid summary, .addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited { font-variant: small-caps; }
 
 /* Body -------------------------------------------------------------- */
 body { color: #444444; }
@@ -137,8 +137,6 @@ th.desc a:focus::after, th.desc a:hover::after, th.desc a:active::after { backgr
 tr:nth-child(even) td { background: #ebf1f1; }
 tr:hover td { background: #e5f5d2; }
 
-tfoot { font-size: 0.875em; line-height: 1.714em; }
-
 /* Forms -------------------------------------------------------------- */
 form > ul, form > ol { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 form > ul li, form > ol li { list-style-image: none; list-style-type: none; margin-left: 0px; }
@@ -189,8 +187,8 @@ button[disabled] { background: #dddddd url('../images/forms/button.png?129539639
 button.sub { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; color: #5d7b7a; }
 button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 
-.button, input[type="reset"], input[type="submit"], input[type="button"], .managelists .create, #managecycles .create, #managecases .create { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background: linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; cursor: pointer; color: #111111; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
-.button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], .managelists [disabled].create, #managecycles [disabled].create, #managecases [disabled].create { background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; color: #888888; }
+.button, input[type="reset"], input[type="submit"], input[type="button"], .managelists .create, #managecycles .create, #managecases .create, #addcycle .create { -moz-border-radius: 1em; -webkit-border-radius: 1em; -o-border-radius: 1em; -ms-border-radius: 1em; -khtml-border-radius: 1em; border-radius: 1em; background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background: linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; border-style: solid; border-width: 0.063em; padding: 0.313em; padding-left: 1em; padding-right: 1em; text-shadow: white 0 1px 1px; margin-bottom: 0.75em; cursor: pointer; color: #111111; font: inherit; outline: 0; overflow: visible; width: auto; vertical-align: baseline; }
+.button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], .managelists [disabled].create, #managecycles [disabled].create, #managecases [disabled].create, #addcycle [disabled].create { background: #dddddd url('../images/forms/button.png?1295396398') repeat-x; color: #888888; }
 
 .redbutton, #run .fail { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f5d2d4), color-stop(100%, #de6a6f)); background: -moz-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%); background: linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%); border-color: #c78184; }
 
@@ -198,7 +196,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 
 .bluebutton, #run .start { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #dbe9e8), color-stop(100%, #8bb9b7)); background: -moz-linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); background: linear-gradient(top center, #dbe9e8 0%, #8bb9b7 100%); border-color: #a2a2a2; }
 
-.errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; margin-bottom: 1.5em; color: #b9292f; }
+.errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; color: #b9292f; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 
 /* Helpers ------------------------------------------------------------------- */
@@ -215,8 +213,8 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .no-details details > * { display: none; }
 .no-details details summary { display: block; }
 
-.tdlink, #cycles td:first-child, #testruns td:first-child, .managelists table td:nth-child(2), #managecycles table td:nth-child(2), #managecases table td:nth-child(2) { padding: 0; border: 0; }
-.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .managelists table td:nth-child(2) a:link, #managecycles table td:nth-child(2) a:link, #managecases table td:nth-child(2) a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited, .managelists table td:nth-child(2) a:visited, #managecycles table td:nth-child(2) a:visited, #managecases table td:nth-child(2) a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
+.tdlink, #cycles td:first-child, #testruns td:first-child, .managelists td.title, #managecycles td.title, #managecases td.title, #addcycle td.title { padding: 0; border: 0; }
+.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .managelists td.title a:link, #managecycles td.title a:link, #managecases td.title a:link, #addcycle td.title a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited, .managelists td.title a:visited, #managecycles td.title a:visited, #managecases td.title a:visited, #addcycle td.title a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 100%; line-height: 1.5em; }
@@ -361,7 +359,7 @@ nav.manage a:link, nav.manage a:visited { font-size: 0.875em; line-height: 2.571
 nav.manage a:focus, nav.manage a:hover, nav.manage a:active { background: #eeeeee; }
 nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus, nav.manage a.active:hover, nav.manage a.active:active { background: #cddcdb; color: #2e3e3d; }
 
-#managecontent { overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; min-height: 18em; }
+#managecontent { padding-top: 0.375em; position: relative; overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; min-height: 18em; }
 
 /* manage lists -------------------------------------------------------------- */
 .bulk { *zoom: 1; clear: both; }
@@ -376,21 +374,20 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
 .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #b9292f; color: white; }
 
-.managelists, #managecycles, #managecases { padding-top: 0.375em; position: relative; }
-.managelists .create, #managecycles .create, #managecases .create { position: absolute; top: 0; right: 0; }
-.managelists .bulkselect, #managecycles .bulkselect, #managecases .bulkselect { width: 3.448%; }
-.managelists .bulkselect label, #managecycles .bulkselect label, #managecases .bulkselect label { display: none; }
-.managelists .title, #managecycles .title, #managecases .title { width: 46.897%; }
-.managelists .controls, #managecycles .controls, #managecases .controls { text-indent: -119988px; overflow: hidden; text-align: left; width: 17.931%; }
-.managelists table, #managecycles table, #managecases table { margin-top: 0.75em; margin-bottom: 0; }
-.managelists table td:nth-child(2) a:focus, #managecycles table td:nth-child(2) a:focus, #managecases table td:nth-child(2) a:focus, .managelists table td:nth-child(2) a:hover, #managecycles table td:nth-child(2) a:hover, #managecases table td:nth-child(2) a:hover, .managelists table td:nth-child(2) a:active, #managecycles table td:nth-child(2) a:active, #managecases table td:nth-child(2) a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
-.managelists table td:last-child, #managecycles table td:last-child, #managecases table td:last-child { text-align: right; white-space: nowrap; }
-.managelists table button, #managecycles table button, #managecases table button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
-.managelists table button, #managecycles table button, #managecases table button, .managelists table button:link, #managecycles table button:link, #managecases table button:link, .managelists table button:visited, #managecycles table button:visited, #managecases table button:visited { color: #5d7b7a; text-decoration: none; }
-.managelists table button:link, #managecycles table button:link, #managecases table button:link, .managelists table button:visited, #managecycles table button:visited, #managecases table button:visited, .managelists table button:hover, #managecycles table button:hover, #managecases table button:hover, .managelists table button:active, #managecycles table button:active, #managecases table button:active { outline: none; }
-.managelists table button:focus, #managecycles table button:focus, #managecases table button:focus, .managelists table button:hover, #managecycles table button:hover, #managecases table button:hover, .managelists table button:active, #managecycles table button:active, #managecases table button:active { color: #b9292f; text-decoration: none; }
-.managelists table button:focus, #managecycles table button:focus, #managecases table button:focus { outline: thin dotted #77b929; }
-.managelists table button:first-child::after, #managecycles table button:first-child::after, #managecases table button:first-child::after { content: " |"; color: #444444; }
+.managelists .create, #managecycles .create, #managecases .create, #addcycle .create { position: absolute; top: 0; right: 0; }
+.managelists .bulkselect, #managecycles .bulkselect, #managecases .bulkselect, #addcycle .bulkselect { width: 3.448%; }
+.managelists .bulkselect label, #managecycles .bulkselect label, #managecases .bulkselect label, #addcycle .bulkselect label { display: none; }
+.managelists .title, #managecycles .title, #managecases .title, #addcycle .title { width: 46.897%; }
+.managelists .controls, #managecycles .controls, #managecases .controls, #addcycle .controls { width: 17.931%; }
+.managelists .controls button, #managecycles .controls button, #managecases .controls button, #addcycle .controls button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; color: #5d7b7a; }
+.managelists .controls button:focus, #managecycles .controls button:focus, #managecases .controls button:focus, #addcycle .controls button:focus, .managelists .controls button:hover, #managecycles .controls button:hover, #managecases .controls button:hover, #addcycle .controls button:hover, .managelists .controls button:active, #managecycles .controls button:active, #managecases .controls button:active, #addcycle .controls button:active { color: #b9292f; }
+.managelists .controls button:focus, #managecycles .controls button:focus, #managecases .controls button:focus, #addcycle .controls button:focus { outline: thin dotted #77b929; }
+.managelists .controls button + button::before, #managecycles .controls button + button::before, #managecases .controls button + button::before, #addcycle .controls button + button::before { content: "| "; color: #444444; }
+.managelists th.controls, #managecycles th.controls, #managecases th.controls, #addcycle th.controls { text-indent: -119988px; overflow: hidden; text-align: left; }
+.managelists td.title a:focus, #managecycles td.title a:focus, #managecases td.title a:focus, #addcycle td.title a:focus, .managelists td.title a:hover, #managecycles td.title a:hover, #managecases td.title a:hover, #addcycle td.title a:hover, .managelists td.title a:active, #managecycles td.title a:active, #managecases td.title a:active, #addcycle td.title a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
+.managelists td.controls, #managecycles td.controls, #managecases td.controls, #addcycle td.controls { text-align: right; white-space: nowrap; }
+.managelists table, #managecycles table, #managecases table, #addcycle table { margin-top: 0.75em; margin-bottom: 0; }
+.managelists .form-actions, #managecycles .form-actions, #managecases .form-actions, #addcycle .form-actions { margin-top: 1.5em; }
 
 .listnav { *zoom: 1; margin-bottom: 0.75em; padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; padding-left: 0.5em; padding-right: 0.5em; background: #eeeeee; border-color: #cccccc; }
 .listnav:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
@@ -403,41 +400,47 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .listnav .pagination li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
 .listnav .pagination li { *display: inline; }
 
-/* create tests -------------------------------------------------------------- */
-.remove { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/cross.png?1142225500'); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
+/* ADD ITEMS -------------------------------------------------------------- */
+.removefields { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/cross.png?1142225500'); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
 
-.add:link, .add:visited { display: block; padding: 0 0.75em; color: #345112; background: #e5f5d2; text-align: right; }
-.add:focus, .add:hover, .add:active { color: #444444; background: #77b929; }
+.addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited { display: block; padding: 0 0.75em; color: #345112; background: #e5f5d2; text-align: right; }
+.addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited { padding-top: 0.375em; padding-bottom: 0.375em; }
+.addfields:focus, #addcycle .addrun button:focus, .addfields:hover, #addcycle .addrun button:hover, .addfields:active, #addcycle .addrun button:active { color: #444444; background: #77b929; }
 
-#create li { *zoom: 1; }
-#create li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#create .form-actions { margin-top: 1.5em; }
-#create .errorlist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
-#create .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-#create .meta { display: inline; float: left; width: 51.724%; margin-right: 1.379%; margin-bottom: 1.5em; }
-#create .meta li { *zoom: 1; }
-#create .meta li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#create .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
-#create .meta input, #create .meta select, #create .meta textarea { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-#create .meta .errorlist { clear: both; padding-left: 18.667%; }
-#create .env { display: inline; float: left; width: 46.897%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
-#create .env h3 { padding: 0.375em; background: #e1e1e1; margin: 0; }
-#create .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
-#create .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-#create .env label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
-#create .env .remove { display: inline; float: left; width: 7.353%; margin-right: 2.941%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-#create .env-form { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.688em; border-color: #d4d4d4; background: #eeeeee; }
-#create .env-form li { display: inline; float: left; width: 38.235%; margin-right: 2.941%; }
-#create .env-form li:first-child { padding-left: 10.294%; }
-#create .steps { clear: both; overflow: hidden; *zoom: 1; }
-#create .steplist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; clear: both; padding-left: 9.655%; counter-reset: step; }
-#create .steplist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-#create .steps-form { clear: both; padding-left: 5.344%; border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; position: relative; border-color: #d4d4d4; background: #eeeeee; counter-increment: step; }
-#create .steps-form::before { font-size: 3em; line-height: 1em; content: counter(step, decimal) "."; position: absolute; right: 101.613%; top: 0; }
-#create .steps-form:last-child::before { content: ""; }
-#create .steps-form .action { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
-#create .steps-form .result { display: inline; float: left; width: 49.194%; margin-right: 1.613%; }
-#create .steps-form .remove { display: inline; float: left; width: 4.032%; margin-right: 1.613%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 0.375em; }
-#create .steps-form .add { margin-left: 9.655%; }
-#create .steps-form textarea { min-height: 9em; }
-#create .steps-form .errorlist { display: inline; float: right; padding-top: 0.375em; padding-bottom: 0.375em; }
+.addform .meta, #addcycle .meta, #addcase .meta { display: inline; float: left; width: 51.724%; margin-right: 1.379%; margin-bottom: 1.5em; }
+.addform .meta li, #addcycle .meta li, #addcase .meta li { *zoom: 1; }
+.addform .meta li:after, #addcycle .meta li:after, #addcase .meta li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.addform .meta label, #addcycle .meta label, #addcase .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
+.addform .meta input, #addcycle .meta input, #addcase .meta input, .addform .meta select, #addcycle .meta select, #addcase .meta select, .addform .meta textarea, #addcycle .meta textarea, #addcase .meta textarea { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .meta .errorlist, #addcycle .meta .errorlist, #addcase .meta .errorlist { clear: both; padding-left: 18.667%; }
+.addform .env, #addcycle .env, #addcase .env { display: inline; float: left; width: 46.897%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
+.addform .env h3, #addcycle .env h3, #addcase .env h3 { padding: 0.375em; background: #e1e1e1; margin: 0; }
+.addform .env ul, #addcycle .env ul, #addcase .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+.addform .env ul li, #addcycle .env ul li, #addcase .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+.addform .env label, #addcycle .env label, #addcase .env label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
+.addform .env .remove, #addcycle .env .remove, #addcase .env .remove { display: inline; float: left; width: 7.353%; margin-right: 2.941%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .env-form, #addcycle .env-form, #addcase .env-form { *zoom: 1; border-top-style: solid; border-top-width: 0.063em; padding-top: 0.688em; border-color: #d4d4d4; background: #eeeeee; }
+.addform .env-form:after, #addcycle .env-form:after, #addcase .env-form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.addform .env-form li, #addcycle .env-form li, #addcase .env-form li { display: inline; float: left; width: 38.235%; margin-right: 2.941%; }
+.addform .env-form li:first-child, #addcycle .env-form li:first-child, #addcase .env-form li:first-child { padding-left: 10.294%; }
+
+/* add cycle -------------------------------------------------------------- */
+#addcycle .addrun { padding: 0; }
+#addcycle .addrun button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; display: block; margin: 0; width: 100%; border: 0; }
+
+/* add case -------------------------------------------------------------- */
+#addcase li { *zoom: 1; }
+#addcase li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#addcase .form-actions { margin-top: 1.5em; }
+#addcase .steps { clear: both; overflow: hidden; *zoom: 1; }
+#addcase .steplist { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; clear: both; padding-left: 9.655%; counter-reset: step; }
+#addcase .steplist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#addcase .steps-form { clear: both; padding-left: 5.344%; border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; position: relative; border-color: #d4d4d4; background: #eeeeee; counter-increment: step; }
+#addcase .steps-form::before { font-size: 3em; line-height: 1em; content: counter(step, decimal) "."; position: absolute; right: 101.613%; top: 0; }
+#addcase .steps-form:last-child::before { content: ""; }
+#addcase .steps-form .action { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#addcase .steps-form .result { display: inline; float: left; width: 49.194%; margin-right: 1.613%; }
+#addcase .steps-form .remove { display: inline; float: left; width: 4.032%; margin-right: 1.613%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-top: 0.375em; }
+#addcase .steps-form .add { margin-left: 9.655%; }
+#addcase .steps-form textarea { min-height: 9em; }
+#addcase .steps-form .errorlist { display: inline; float: right; padding-top: 0.375em; padding-bottom: 0.375em; }

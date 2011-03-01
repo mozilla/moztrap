@@ -442,6 +442,8 @@ nav.manage
         color: $blue-dark
 
 #managecontent
+  +padding-leader(.25)
+  position: relative
   overflow: hidden
   padding-left: gutter(24)
   border-left: 1px solid $light
@@ -473,8 +475,6 @@ nav.manage
     +bulk-color(delete,$red-light,$red-lightest,$red)
 
 .managelists
-  +padding-leader(.25)
-  position: relative
   .create
     @extend .button
     position: absolute
@@ -490,29 +490,33 @@ nav.manage
     width: columns(10,21)
   
   .controls
-    +hide
     width: columns(4,21)
+    button
+      +link-button
+      + button::before
+        content: "| "
+        color: $base
   
+  th
+    &.controls
+      +hide
+  
+  td
+    &.title
+      @extend .tdlink
+      a
+        #{$focus}
+          background: image-url("ui/pencil.png") no-repeat scroll right
+    &.controls
+      text-align: right
+      white-space: nowrap
+      
   table
     +leader(.5)
     margin-bottom: 0
-    
-    td
-      &:nth-child(2)
-        @extend .tdlink
-        a
-          #{$focus}
-            background: image-url("ui/pencil.png") no-repeat scroll right
-      &:last-child
-        text-align: right
-        white-space: nowrap
-            
-    button
-      +button-reset
-      +link
-      &:first-child::after
-        content: " |"
-        color: $base
+                  
+  .form-actions
+    +leader
 
 .listnav
   +pie-clearfix
@@ -550,33 +554,29 @@ nav.manage
 #managecycles, #managecases
   @extend .managelists
 
-/* create tests --------------------------------------------------------------    
+/* ADD ITEMS --------------------------------------------------------------    
 
-.remove
+.removefields
   +replace-text('ui/cross.png')
   display: block
   height: $base-rhythm-unit
 
-.add
-  #{$link}
+.addfields
+  &, #{$link}
     @extend .smallcaps
     display: block
     padding: 0 $base-rhythm-unit*.5
     color: $green-dark
     background: $green-lightest
     text-align: right
+    &:first-child:last-child, h3 + &
+      +padding-leader(.25)
+      +padding-trailer(.25)
   #{$focus}
     color: $base
     background: $green
 
-#create
-  li
-    +pie-clearfix
-  .form-actions
-    +leader
-  .errorlist
-    +no-style-list
-
+.addform
   .meta
     +columns(11,21)
     +inline-form(2,9,11)
@@ -604,6 +604,7 @@ nav.manage
       +omega(10)
 
   .env-form
+    +pie-clearfix
     +leading-border(1px,.5)
     border-color: darken($light,10)
     background: $light
@@ -611,6 +612,30 @@ nav.manage
       +columns(4,10)
       &:first-child
         +prefix(1,10)
+
+/* add cycle --------------------------------------------------------------
+
+#addcycle
+  @extend .addform
+  @extend .managelists
+  .addrun
+    padding: 0
+    button
+      @extend .addfields
+      +border-radius(0)
+      display: block
+      margin: 0
+      width: 100%
+      border: 0
+
+/* add case --------------------------------------------------------------    
+
+#addcase
+  @extend .addform
+  li
+    +pie-clearfix
+  .form-actions
+    +leader
 
   .steps
     +full(21)

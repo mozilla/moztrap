@@ -6,7 +6,7 @@
 {% endblock crumb %}
 
 {% block managecontent %}
-<section id="create">
+<section id="addcase">
   <h2>create a new test case</h2>
   <form method="POST">
     {% csrf_token %}
@@ -33,7 +33,7 @@
       {{ form.env_formset.management_form }}
       <ul class="envlist">
         {% for envform in form.env_formset %}
-        {% include "manage/testcase/_env_form.html" %}
+        {% include "manage/_env_form.html" %}
         {% endfor %}
       </ul>
     </div>
@@ -53,45 +53,13 @@
 
   </form>
 
-  <ul id="empty-env-form" class="empty-form" style="display: none">
-    {% with form.env_formset.empty_form as envform %}
-    {% include "manage/testcase/_env_form.html" %}
-    {% endwith %}
-  </ul>
-
-  <ul id="empty-step-form" class="empty-form" style="display: none">
-    {% with form.steps_formset.empty_form as stepform %}
-    {% include "manage/testcase/_step_form.html" %}
-    {% endwith %}
-  </ul>
+  {% include "manage/_empty_env_form.html" %}
+  {% include "manage/testcase/_empty_step_form.html" %}
 
 </section>
 {% endblock managecontent %}
 
-
 {% block extrajs %}
-<script type="text/javascript">
-  $(function() {
-    $('ol.steplist').formset({
-      prefix: '{{ form.steps_formset.prefix }}',
-      formTemplate: '#empty-step-form > li',
-      formCssClass: 'steps-form',
-      deleteCssClass: 'remove',
-      deleteText: 'remove',
-      deleteOnlyNew: true,
-      addCssClass: 'add',
-      addText: 'add a step »'
-    });
-    $('ul.envlist').formset({
-      prefix: '{{ form.env_formset.prefix }}',
-      formTemplate: '#empty-env-form > li',
-      formCssClass: 'env-form',
-      deleteCssClass: 'remove',
-      deleteText: 'remove',
-      addCssClass: 'add',
-      addText: 'add a constraint »'
-    });
-  })
-</script>
-
+  <script src="{{ STATIC_URL }}js/envforms.js"></script>
+  <script src="{{ STATIC_URL }}js/stepforms.js"></script>
 {% endblock %}
