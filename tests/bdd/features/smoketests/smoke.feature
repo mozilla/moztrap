@@ -20,6 +20,9 @@ Feature: Smoke Tests
         Then the user with that name is active
         and when I deactivate the user with that name
         Then the user with that name is disabled
+        And when I activate the user with that name
+        Then the user with that name is active
+        
         
     Scenario: Create and delete a Product
         Given I create the seed company and product

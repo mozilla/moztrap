@@ -3,6 +3,37 @@ Feature: Users Roles
     As Users
     We should implement Role management
 
+    Scenario: Create roles, and ensure they show in the list of all roles
+        Given I create the seed company and product
+        And I create a new role with name "Approvationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "Improvisationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "Interrogationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        Then at least these roles exist:
+            | name               |
+            | Approvationalist   |
+            | Improvisationalist |
+            | Interrogationalist |
+        and at least this role exists:
+            | name               |
+            | Approvationalist   |
+
+    Scenario: Find role by id
+        Given I create the seed company and product
+        And I create a new role with name "Approvationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        Then I can find the role with that name by id        
+        
     Scenario: Get list of roles
         Given at least these roles exist:
             | description |
