@@ -463,6 +463,10 @@ nav.manage
 .bulk
   +pie-clearfix
   +full(21)
+  +trailer(.5)
+  strong
+    +adjust-font-size-to(14px)
+    font-weight: normal
   button
     +button-reset
     +text-shadow(rgba(white,.75) 1px 1px 0)
@@ -473,6 +477,31 @@ nav.manage
     +bulk-color(deactivate,$yellow-darker,$yellow-light)
     +bulk-color(clone,$blue,$blue-lightest)
     +bulk-color(delete,$red-light,$red-lightest,$red)
+
+.listfilter
+  overflow: hidden
+  background: $blue-lighter
+  +padding-trailer(.5)
+  h3, h4
+    margin: 0
+    padding: 0
+      left: $gutter-width
+  h3
+    +h-borders(1px,.25)
+    background: $blue-light
+    border-color: $blue
+  h4
+    +padding-leader(.25)
+    +padding-trailer(.25)
+  a
+    #{$link}
+      +adjust-font-size-to(14px)
+      +hpadding(16px/14px*($gutter-width*.5))
+      display: block
+      margin: 0 16px/14px*($gutter-width*.5)
+    #{$focus}, &.selected
+      background: $blue
+      color: white
 
 .managelists
   .create
@@ -512,9 +541,8 @@ nav.manage
       white-space: nowrap
       
   .list
-    +leader(.5)
-    margin-bottom: 0
-                  
+    margin: 0
+                    
   .form-actions
     +leader
 
@@ -524,6 +552,7 @@ nav.manage
   +padding-leader(.25)
   +trailing-border(1px,.25)
   +hpadding(.5em)
+  clear: both
   background: $light
   border-color: #ccc
   p, ul
@@ -553,6 +582,9 @@ nav.manage
 
 #managecycles, #managecases
   @extend .managelists
+  .list
+    +columns(18,21)
+    margin: 0
 
 /* ADD ITEMS --------------------------------------------------------------    
 

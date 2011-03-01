@@ -362,8 +362,9 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #managecontent { padding-top: 0.375em; position: relative; overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; min-height: 18em; }
 
 /* manage lists -------------------------------------------------------------- */
-.bulk { *zoom: 1; clear: both; }
+.bulk { *zoom: 1; clear: both; margin-bottom: 0.75em; }
 .bulk:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.bulk strong { font-size: 0.875em; line-height: 1.714em; font-weight: normal; }
 .bulk button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; text-shadow: rgba(255, 255, 255, 0.75) 1px 1px 0; padding: 0 0.4em; background: #cddcdb; color: #5d7b7a; }
 .bulk button[value="activate"] { background: #e5f5d2; color: #77b929; }
 .bulk button[value="activate"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #77b929; color: white; }
@@ -373,6 +374,13 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .bulk button[value="clone"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #5d7b7a; color: white; }
 .bulk button[value="delete"] { background: #f5d2d4; color: #e37f83; }
 .bulk button[value="delete"]:hover { text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 0; background: #b9292f; color: white; }
+
+.listfilter { overflow: hidden; background: #accbc9; padding-bottom: 0.75em; }
+.listfilter h3, .listfilter h4 { margin: 0; padding: 0; padding-left: 1em; }
+.listfilter h3 { border-top-style: solid; border-top-width: 0.063em; padding-top: 0.313em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; background: #8bb9b7; border-color: #5d7b7a; }
+.listfilter h4 { padding-top: 0.375em; padding-bottom: 0.375em; }
+.listfilter a:link, .listfilter a:visited { font-size: 0.875em; line-height: 1.714em; padding-left: 0.571em; padding-right: 0.571em; display: block; margin: 0 0.571em; }
+.listfilter a:focus, .listfilter a:hover, .listfilter a:active, .listfilter a.selected { background: #5d7b7a; color: white; }
 
 .managelists .create, #managecycles .create, #managecases .create, #addcycle .create { position: absolute; top: 0; right: 0; }
 .managelists .bulkselect, #managecycles .bulkselect, #managecases .bulkselect, #addcycle .bulkselect { width: 3.448%; }
@@ -386,10 +394,10 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .managelists th.controls, #managecycles th.controls, #managecases th.controls, #addcycle th.controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .managelists td.title a:focus, #managecycles td.title a:focus, #managecases td.title a:focus, #addcycle td.title a:focus, .managelists td.title a:hover, #managecycles td.title a:hover, #managecases td.title a:hover, #addcycle td.title a:hover, .managelists td.title a:active, #managecycles td.title a:active, #managecases td.title a:active, #addcycle td.title a:active { background: url('../images/ui/pencil.png?1142225764') no-repeat scroll right; }
 .managelists td.controls, #managecycles td.controls, #managecases td.controls, #addcycle td.controls { text-align: right; white-space: nowrap; }
-.managelists .list, #managecycles .list, #managecases .list, #addcycle .list { margin-top: 0.75em; margin-bottom: 0; }
+.managelists .list, #managecycles .list, #managecases .list, #addcycle .list { margin: 0; }
 .managelists .form-actions, #managecycles .form-actions, #managecases .form-actions, #addcycle .form-actions { margin-top: 1.5em; }
 
-.listnav { *zoom: 1; margin-bottom: 0.75em; padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; padding-left: 0.5em; padding-right: 0.5em; background: #eeeeee; border-color: #cccccc; }
+.listnav { *zoom: 1; margin-bottom: 0.75em; padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; padding-left: 0.5em; padding-right: 0.5em; clear: both; background: #eeeeee; border-color: #cccccc; }
 .listnav:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .listnav p, .listnav ul { margin: 0; padding: 0; border: 0; outline: 0; }
 .listnav .location, .listnav .perpage { display: inline; float: left; width: 27.586%; margin-right: 1.379%; font-style: italic; }
@@ -399,6 +407,8 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .listnav .pagination { display: inline; float: left; width: 42.069%; margin-right: 1.379%; margin: 0; padding: 0; border: 0; outline: 0; overflow: hidden; *zoom: 1; text-align: center; }
 .listnav .pagination li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
 .listnav .pagination li { *display: inline; }
+
+#managecycles .list, #managecases .list { display: inline; float: left; width: 85.517%; margin-right: 1.379%; margin: 0; }
 
 /* ADD ITEMS -------------------------------------------------------------- */
 .removefields { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/cross.png?1142225500'); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
