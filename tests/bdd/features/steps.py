@@ -37,6 +37,9 @@ def setup_before_all():
     if (world.save_db):
         save_db_state()
 
+    # dict of names of objects used in scenarios to remember from one step to the next
+    world.names = {}
+
     ################################
     # paths relative to the namespace        
     ################################
