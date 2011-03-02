@@ -30,15 +30,20 @@ log = logging.getLogger('tcmui.core.api')
 
 class CachedHttp(httplib2.Http):
     def request(self, **kwargs):
-        cache_key = kwargs["uri"]
-        cached = cache.get(cache_key)
-        if cached is not None:
-            return cached
+        method = kwargs.get("method", "GET").upper()
+        if method == "GET":
+            cache_key = kwargs["uri"]
+            cached = cache.get(cache_key)
+            if cached is not None:
+                return cached
 
-        ret = super(CachedHttp, self).request(**kwargs)
+        response, content = super(CachedHttp, self).request(**kwargs)
 
-        cache.set(cache_key, ret, conf.TCM_CACHE_SECONDS)
-        return ret
+        # only cache 200 OK responses
+        if method == "GET" and response.status == httplib.OK:
+            cache.set(cache_key, (response, content), conf.TCM_CACHE_SECONDS)
+
+        return (response, content)
 
 
 
