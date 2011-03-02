@@ -4,7 +4,7 @@ function testCaseButtons(context) {
             event.preventDefault();
             event.stopPropagation();
             var button = $(this);
-            var testcase = button.closest("details.test");
+            var testcase = button.closest("details.test").addClass('loading');
             var container = button.closest("div.form");
             var data = {
                 action: button.attr("data-action")
