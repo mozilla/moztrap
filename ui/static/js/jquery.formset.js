@@ -44,23 +44,9 @@
             },
 
             insertDeleteLink = function(row) {
-                if (row.is('TR')) {
-                    // If the forms are laid out in table rows, insert
-                    // the remove button into the last table cell:
-                    row.children(':last').append('<a class="' + options.deleteCssClass +'" href="javascript:void(0)">' + options.deleteText + '</a>');
-                } else if (row.is('UL') || row.is('OL')) {
-                    // If they're laid out as an ordered/unordered list,
-                    // insert an <li> after the last list item:
-                    row.append('<li><a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a></li>');
-                } else {
-                    // Otherwise, just insert the remove button as the
-                    // last child element of the form's container:
-                    row.append('<a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a>');
-                }
-                row.find('a.' + options.deleteCssClass).click(function() {
+                $(options.deleteLink).appendTo(row).click(function() {
                     var row = $(this).parents('.' + options.formCssClass),
                         del = row.find('input:hidden[id $= "-DELETE"]'),
-                        buttonRow = row.siblings("a." + options.addCssClass + ', .' + options.formCssClass + '-add'),
                         forms;
                     if (del.length) {
                         // We're dealing with an inline formset.
@@ -86,8 +72,6 @@
                             });
                         }
                     }
-                    // Check if we need to show the add button:
-                    if (buttonRow.is(':hidden') && showAddButton()) buttonRow.show();
                     // If a post-delete callback was provided, call it with the deleted form:
                     if (options.removed) options.removed(row);
                     return false;
@@ -124,71 +108,37 @@
             }
         });
 
-        // This constraint needs to be commented out so that the addButton is displayed even when
-        // there are no form elements:
-        // if ($$.length) {
-            var hideAddButton = !showAddButton(),
-                addButton, template;
-            if (options.formTemplate) {
-                // If a form template was specified, we'll clone it to generate new form instances:
-                template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
-                template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
-                template.find('input,select,textarea,label').each(function() {
-                    updateElementIndex($(this), options.prefix, 2012);
-                });
-                insertDeleteLink(template);
-            } else {
-                // Otherwise, use the last form in the formset; this works much better if you've got
-                // extra (>= 1) forms (thanks to justhamade for pointing this out):
-                template = $('.' + options.formCssClass + ':last').clone(true).removeAttr('id');
-                template.find('input:hidden[id $= "-DELETE"]').remove();
-                template.find('input,select,textarea,label').each(function() {
-                    var elem = $(this);
-                    // If this is a checkbox or radiobutton, uncheck it.
-                    // This fixes Issue 1, reported by Wilson.Andrew.J:
-                    if (elem.is('input:checkbox') || elem.is('input:radio')) {
-                        elem.attr('checked', false);
-                    } else {
-                        elem.val('');
-                    }
-                });
-            }
-            // FIXME: Perhaps using $.data would be a better idea?
-            options.formTemplate = template;
+        var hideAddButton = !showAddButton(),
+            addButton, template;
+        // Clone the form template to generate new form instances:
+        template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
+        template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
+        template.find('input,select,textarea,label').each(function() {
+            updateElementIndex($(this), options.prefix, 2012);
+        });
+        insertDeleteLink(template);
+        // FIXME: Perhaps using $.data would be a better idea?
+        options.formTemplate = template;
 
-            if ($$.attr('tagName') == 'TR') {
-                // If forms are laid out as table rows, insert the
-                // "add" button in a new table row:
-                var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
-                    buttonRow = $('<tr><td colspan="' + numCols + '"><a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a></tr>')
-                                .addClass(options.formCssClass + '-add');
-                $$.parent().append(buttonRow);
-                if (hideAddButton) buttonRow.hide();
-                addButton = buttonRow.find('a');
-            } else {
-                // Otherwise, insert it immediately after the last form:
-                parent.after('<a class="' + options.addCssClass + '" href="javascript:void(0)">' + options.addText + '</a>');
-                addButton = parent.next();
-                if (hideAddButton) addButton.hide();
-            }
-            addButton.click(function() {
-                var formCount = parseInt(totalForms.val()),
-                    row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this);
-                applyExtraClasses(row, formCount);
-                buttonRow.prev().append(row);
-                row.show();
-                row.find('input,select,textarea,label').each(function() {
-                    updateElementIndex($(this), options.prefix, formCount);
-                });
-                totalForms.val(formCount + 1);
-                // Check if we've exceeded the maximum allowed number of forms:
-                if (!showAddButton()) buttonRow.hide();
-                // If a post-add callback was supplied, call it with the added form:
-                if (options.added) options.added(row);
-                return false;
+        // Otherwise, insert it immediately after the last form:
+        parent.after(options.addLink);
+        addButton = parent.next();
+        if (hideAddButton) addButton.hide();
+        addButton.click(function() {
+            var formCount = parseInt(totalForms.val()),
+                row = options.formTemplate.clone(true).removeClass('formset-custom-template');
+            applyExtraClasses(row, formCount);
+            row.appendTo($(this).prev()).show();
+            row.find('input,select,textarea,label').each(function() {
+                updateElementIndex($(this), options.prefix, formCount);
             });
-        // }
+            totalForms.val(formCount + 1);
+            // Check if we've exceeded the maximum allowed number of forms:
+            if (!showAddButton()) $(this).hide();
+            // If a post-add callback was supplied, call it with the added form:
+            if (options.added) options.added(row);
+            return false;
+        });
 
         return $$;
     };
@@ -197,10 +147,8 @@
     $.fn.formset.defaults = {
         prefix: 'form',                  // The form prefix for your django formset
         formTemplate: null,              // The jQuery selection cloned to generate new form instances
-        addText: 'add another',          // Text for the add link
-        deleteText: 'remove',            // Text for the delete link
-        addCssClass: 'add-row',          // CSS class applied to the add link
-        deleteCssClass: 'delete-row',    // CSS class applied to the delete link
+        deleteLink: '<a class="delete-row" href="javascript:void(0)">remove</a>',
+        addLink: '<a class="add-row" href="javascript:void(0)">add</a>',
         deleteOnlyNew: false,            // If true, only newly-added rows can be deleted
         formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
         extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn

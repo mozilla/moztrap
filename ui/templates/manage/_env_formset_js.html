@@ -6,10 +6,8 @@ $(
                 prefix: '{{ formset.prefix }}',
                 formTemplate: '#empty-env-form > li',
                 formCssClass: 'env-form',
-                deleteCssClass: 'removefields',
-                deleteText: 'remove',
-                addCssClass: 'addfields',
-                addText: 'add environment constraints »'
+                deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                addLink: '<a class="addfields" href="javascript:void(0)">add environment constraints »</a>'
             });
     });
 </script>
