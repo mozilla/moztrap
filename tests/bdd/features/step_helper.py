@@ -147,16 +147,16 @@ def do_get(uri, params = {}, auth_header = get_auth_header()):
     response = world.conn.getresponse()
     return verify_status(200, response, "Expecting type %s" % (type))
 
-def do_post(uri, payload, params = {}, auth_header = get_auth_header()):
-    return do_request("POST", uri, payload = payload, auth_header = auth_header)
+def do_post(uri, body, params = {}, auth_header = get_auth_header()):
+    return do_request("POST", uri, body = body, auth_header = auth_header)
 
-def do_put(uri, params, auth_header = get_auth_header()):
-    return do_request("PUT", uri, params = params, auth_header = auth_header)
+def do_put(uri, body, auth_header = get_auth_header()):
+    return do_request("PUT", uri, body = body, auth_header = auth_header)
 
 def do_delete(uri, params, auth_header = get_auth_header()):
     return do_request("DELETE", uri, params = params, auth_header = auth_header)
 
-def do_request(method, uri, params = {}, payload = {}, auth_header = get_auth_header()):
+def do_request(method, uri, params = {}, body = {}, auth_header = get_auth_header()):
     ''' 
         This will post the payload to the uri
     '''
@@ -165,11 +165,11 @@ def do_request(method, uri, params = {}, payload = {}, auth_header = get_auth_he
 
     
     world.conn.request(method, add_params(uri, params), 
-                       urllib.urlencode(payload, doseq=True), 
+                       urllib.urlencode(body, doseq=True), 
                        headers)
     response = world.conn.getresponse()
 
-    return verify_status(200, response, "%s %s:\n%s" % (method, uri, payload))
+    return verify_status(200, response, "%s %s:\n%s" % (method, uri, body))
 
 
 
@@ -618,25 +618,13 @@ def get_testcase_latestversion_id(testcase_id):
     return resid["@id"]
     
     
-def find_ordered_response(type, field, first, second, obj_list):
-    # now walk through the expected items and check the response
-    # to see that it is represented in the right order
-    foundFirst = False
-    foundSecond = False
-    
-    for act_item in obj_list:
-        act = act_item.get(field)
-        if (first == act):
-            foundFirst = True
-            assert foundSecond == False, "found %(second) before %(first)" % {'second':second, 'first':first}
-        if (second == act):
-            foundSecond = True
-            assert foundFirst == True, "found %(second) before %(first)" % {'second':second, 'first':first}
+def check_first_before_second(field, first, second, obj_list):
 
-    # since it's possible to drop through here without finding one or the other, we have to check that 
-    # both were actually found.
-    assert foundFirst == True, "First was found"
-    assert foundSecond == True, "Second was found"
+    first_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == first]
+    second_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == second]
+    assert first_idx < second_idx, "Expected %s before %s in %s" % (first, second, 
+                                                                    jstr(obj_list))
+    
     
 def plural(type):
     

@@ -7,6 +7,37 @@ from lettuce import *
 #from nose.tools import *
 from step_helper import *
 
+'''
+######################################################################
+
+                     USER HELPER FUNCTIONS
+
+######################################################################
+'''
+
+def create_user_from_obj(user_obj):
+    '''
+        Create a user based on an already formed user object
+    '''
+    do_post(world.path_users,
+            user_obj)
+    
+def create_user_from_name(name):
+    '''
+        Create a user based on just the user name and seed data
+    '''
+    names = name.split()
+    fname = names[0]
+    lname = names[1]
+    user_obj = {
+                "firstName":fname,
+                "lastName":lname,
+                "email":fname+lname + "@mozilla.com",
+                "screenName":fname+lname,
+                "password":get_user_password(name),
+                "companyId":get_seed_company_id(),
+    } 
+    create_user_from_obj(user_obj)
 
 '''
 ######################################################################
@@ -15,25 +46,13 @@ from step_helper import *
 
 ######################################################################
 '''
-  
+    
+
 @step(u'create a new user with (that name|name "(.*)")')
 def create_user_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
-    names = name.split()
-    fname = names[0]
-    lname = names[1]
-    post_payload = {
-                "firstName":fname,
-                "lastName":lname,
-                "email":fname+lname + "@mozilla.com",
-                "screenName":fname+lname,
-                "password":get_user_password(name),
-                "companyId":get_seed_company_id(),
-    } 
+    create_user_from_name(name)
     
-    do_post(world.path_users,
-            post_payload)
-
 @step(u'logged in as user "(.*)"')
 def logged_in_as_user_foo(step, name):
     names = name.split()

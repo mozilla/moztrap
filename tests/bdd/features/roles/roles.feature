@@ -34,21 +34,48 @@ Feature: Users Roles
             | PERMISSION_TEST_CASE_APPROVE |
         Then I can find the role with that name by id        
         
-    Scenario: Get list of roles
-        Given at least these roles exist:
-            | description |
-            | Frame       |
-            | Apple       |
-            | Zipper      |
-        Then "ASC" role searches list "Apple" before "Zipper"
-        and "DESC" role searches list "Zipper" before "Apple"
-        
-    Scenario: Create a new Role and add Permission
-        Given I am logged in as user "Jedi Admin"
-        and user "Jedi Admin" has the role of "ADMINISTRATOR"
-        When I create a new role of "Creationator"
-        and add permission of "Spammer" to the role of "Creationator"
-        Then role of "Creationator" has permission of "Spammer"
+    Scenario: Give a user multiple roles
+        Given I create the seed company and product
+        And I create a new user with name "Walter Bishop"
+        And I create a new role with name "Approvationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "Improvisationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "Interrogationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        When I add the following roles to the user with that name
+            | name               |
+            | Approvationalist   |
+            | Improvisationalist |
+            | Interrogationalist |
+        Then the user with that name has at least these roles:
+            | name               |
+            | Approvationalist   |
+            | Improvisationalist |
+            | Interrogationalist |
 
+    Scenario: Get list of roles ascending an descending
+        Given I create the seed company and product
+        And I create a new role with name "Improvisationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "StephenColberationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I create a new role with name "Approvationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        Then "ASC" role searches list "Approvationalist" before "StephenColberationalist"
+        and "DESC" role searches list "StephenColberationalist" before "Approvationalist"
+        
     
    

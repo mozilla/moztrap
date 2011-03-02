@@ -6,6 +6,7 @@ Created on Oct 7, 2010
 from lettuce import *
 from step_helper import *
 from steps_companies import *
+from steps_users import *
 import httplib
 import mock_scenario_data
 
@@ -91,7 +92,9 @@ def setup_before_all():
     world.seed_product = {"company name": "Massive Dynamic",
                           "name": "Cortexiphan",
                           "description": "I can see your universe from here"
-                          }    
+                          }
+    
+    
 
 @after.all
 def teardown_after_all(total):
@@ -155,7 +158,6 @@ def create_seed_company_and_product(step):
     do_post(world.path_products, 
             product)
     
-
 
 @before.each_step
 def setup_step_connection(step):

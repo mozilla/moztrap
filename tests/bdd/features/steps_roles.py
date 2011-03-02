@@ -57,9 +57,7 @@ def create_role_with_permissions(step, stored, name):
 def role_has_permissions(step, stored, role_name):
     role_name = get_stored_or_store_name("role", stored, role_name)
 
-    role_id, role_version = get_resource_identity("role", 
-                                                  add_params(world.path_roles, 
-                                                             {"name": role_name}))
+    role_id = get_role_resid(role_name)[0]
 
     perm_list = get_list_from_endpoint("permission",
                                        world.path_roles + role_id + "/permissions")
@@ -82,30 +80,26 @@ def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
     
     # fetch the role's resource identity
     user_id, user_version = get_user_resid(user_name)
-    role_id, role_version = get_resource_identity("role", 
-                                                  add_params(world.path_roles, 
-                                                             {"name": role_name}))
+    role_id = get_role_resid(role_name)[0]
     
     do_post(world.path_users + "%s/roles/%s/" % (user_id, role_id), 
             {"originalVersionId": user_version})
 
 @step(u'add the following roles to the user with (that name|name "(.*)")')
-def add_roles_to_user(step, stored_role, role_name, stored_user, user_name):
+def add_roles_to_user(step, stored_user, user_name):
     user_name = get_stored_or_store_name("user", stored_user, user_name)
-    
-    assert False, "need to implement adding all roles in the steps.hashes"
-    
-    
-    role_name = get_stored_or_store_name("role", stored_role, role_name)
     
     # fetch the role's resource identity
     user_id, user_version = get_user_resid(user_name)
-    role_id, role_version = get_resource_identity("role", 
-                                                  add_params(world.path_roles, 
-                                                             {"name": role_name}))
+
+    role_ids = []
+    for role in step.hashes:
+        role_id = get_role_resid(role["name"])[0]
+        role_ids.append(role_id)
+
     do_put(world.path_users + "%s/roles/" % (user_id), 
             {"originalVersionId": user_version,
-             "roleIds": role_id})
+             "roleIds": role_ids})
     
 
 
@@ -115,7 +109,7 @@ def user_has_role(step, stored_user, user_name, stored_role, role_name):
     role_name = get_stored_or_store_name("role", stored_role, role_name)
     
     # fetch the role's resource identity
-    user_id, user_version = get_user_resid(user_name)
+    user_id = get_user_resid(user_name)[0]
 
     role_list = get_list_from_endpoint("role", 
                                        world.path_users + user_id + "/roles")
@@ -144,7 +138,7 @@ def check_roles_exist(hashes):
         role_name = role["name"]
         found_perm = [x for x in role_list if x[ns("name")] == role_name] 
         
-        assert len(found_perm) == 1, "Expected to find permissionCode %s in:\n%s" % (role_name,
+        assert len(found_perm) == 1, "Expected to find role name %s in:\n%s" % (role_name,
                                                                                    jstr(role_list))
 
 @step(u'find the role with (that name|name "(.*)") by id')
@@ -160,6 +154,36 @@ def find_role_by_id(step, stored_role, role_name):
     assert role[ns("name")] == role_name, "Expected to find role with name %s in:\n%s" % (role_name,
                                                                                  jstr(role))
     
+@step(u'user with (that name|name "(.*)") has at least these roles')
+def user_has_at_least_these_roles(step, stored_user, user_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    
+    user_id = get_user_resid(user_name)[0]
+    role_list = get_list_from_endpoint("role",
+                                     world.path_users + user_id + "/roles/")
+    
+    # walk through all the expected roles and make sure it has them all
+    # note, it doesn't check that ONLY these roles exist.  That should be a different
+    # method.
+    for role in step.hashes:
+        role_name = role["name"]
+        found_perm = [x for x in role_list if x[ns("name")] == role_name] 
+        
+        assert len(found_perm) == 1, "Expected to find role name %s in:\n%s" % (role_name,
+                                                                                jstr(role_list))
+    
+
+@step(u'"(ASC|DESC)" role searches list "(.*)" before "(.*)"')
+def order_role_searches_list_foo_before_bar(step, order, first, second):
+    
+    role_list = get_list_from_search("role",
+                                     world.path_roles, 
+                                     {"sortDirection": order, "sortField": "name"}
+                                    )
+
+    # check that the index of "first" is before "second"
+    check_first_before_second("name", first, second, role_list) 
+    
 
 
 
@@ -169,7 +193,13 @@ def find_role_by_id(step, stored_role, role_name):
 
 
 
+'''
+######################################################################
 
+                     NEED REFACTORING
+
+######################################################################
+'''
 
 
 @step(u'add permission named "(.*)" to the role named "(.*)"')
@@ -190,15 +220,4 @@ def add_permission_foo_to_role_bar(step, permission, role):
 
 
 
-@step(u'"(ASC|DESC)" role searches list "(.*)" before "(.*)"')
-def order_role_searches_list_foo_before_bar(step, order, first, second):
-    
-    # fetch the user's resource identity
-    world.conn.request("GET", add_params(world.path_roles, {"sortDirection": order}))
-    response = world.conn.getresponse()
-    verify_status(200, response, "Fetched list of all roles")
-
-    respJson = get_resp_list(response, "role")
-
-    find_ordered_response("role", "description", first, second, respJson)
 
