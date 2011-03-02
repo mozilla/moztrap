@@ -566,22 +566,23 @@ nav.manage
     font-style: italic
   .perpage
     +omega(21)
-    label
-      +columns(4,6)
-      padding: 0
+    text-align: right
+    strong
       font-weight: normal
-      text-align: right
-    select
-      +columns(2,6)
-      +omega(6)
-      margin: 0
-      padding-top: 0
-      padding-bottom: 0
-      height: auto
+  .perpage ul, .pagination
+    +inline-block-list
+    display: inline
+    font-style: normal
+    li
+      vertical-align: baseline
+      + li::before
+        content: "| "
+        color: #ccc
   .pagination
     +columns(9,21)
-    +inline-block-list
     text-align: center
+  .current
+    font-weight: bold
 
 
 #managecycles, #managecases

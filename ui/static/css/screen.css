@@ -403,12 +403,15 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .listnav:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .listnav p, .listnav ul { margin: 0; padding: 0; border: 0; outline: 0; }
 .listnav .location, .listnav .perpage { display: inline; float: left; width: 27.586%; margin-right: 1.379%; font-style: italic; }
-.listnav .perpage { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-.listnav .perpage label { display: inline; float: left; width: 65%; margin-right: 5%; padding: 0; font-weight: normal; text-align: right; }
-.listnav .perpage select { display: inline; float: left; width: 30%; margin-right: 5%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin: 0; padding-top: 0; padding-bottom: 0; height: auto; }
-.listnav .pagination { display: inline; float: left; width: 42.069%; margin-right: 1.379%; margin: 0; padding: 0; border: 0; outline: 0; overflow: hidden; *zoom: 1; text-align: center; }
-.listnav .pagination li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
-.listnav .pagination li { *display: inline; }
+.listnav .perpage { display: inline; float: right; margin-right: 0; #margin-left: -1em; text-align: right; }
+.listnav .perpage strong { font-weight: normal; }
+.listnav .perpage ul, .listnav .pagination { margin: 0; padding: 0; border: 0; outline: 0; overflow: hidden; *zoom: 1; display: inline; font-style: normal; }
+.listnav .perpage ul li, .listnav .pagination li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
+.listnav .perpage ul li, .listnav .pagination li { *display: inline; }
+.listnav .perpage ul li, .listnav .pagination li { vertical-align: baseline; }
+.listnav .perpage ul li + li::before, .listnav .pagination li + li::before { content: "| "; color: #cccccc; }
+.listnav .pagination { display: inline; float: left; width: 42.069%; margin-right: 1.379%; text-align: center; }
+.listnav .current { font-weight: bold; }
 
 #managecycles .list, #managecases .list { display: inline; float: left; width: 85.517%; margin-right: 1.379%; margin: 0; }
 
