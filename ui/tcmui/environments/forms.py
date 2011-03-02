@@ -149,19 +149,18 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
                 for_type = constraints.setdefault(etid, set())
                 for_type.update([v[1] for v in envs if v[0] == etid])
 
-        valid_group_ids = set()
-        for group in self.groups:
-            valid = True
-            for env in group.environments:
-                etid = env.environmentType.id
-                if (etid in constraints and
-                    env.id not in constraints[etid]):
-                    valid = False
-                    break
-            if valid:
-                valid_group_ids.add(group.id)
+        if constraints:
+            valid_group_ids = set([g.id for g in
+                                   testcaseversion.product.environmentgroups])
+            for group in self.groups:
+                for env in group.environments:
+                    etid = env.environmentType.id
+                    if (etid in constraints and
+                        env.id not in constraints[etid]):
+                        valid_group_ids.remove(group.id)
+                        break
 
-        testcaseversion.environmentgroups = valid_group_ids
+            testcaseversion.environmentgroups = valid_group_ids
 
 
 
