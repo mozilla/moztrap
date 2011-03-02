@@ -5,11 +5,13 @@ Core objects for accessing platform API data.
 import base64
 import cgi
 import httplib
+import httplib2
 import logging
 from posixpath import join
 import simplejson as json
 import urllib
 
+from django.core.cache import cache
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
 from remoteobjects.http import userAgent
@@ -23,6 +25,24 @@ from .. import __version__
 
 
 log = logging.getLogger('tcmui.core.api')
+
+
+
+class CachedHttp(httplib2.Http):
+    def request(self, **kwargs):
+        cache_key = kwargs["uri"]
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        ret = super(CachedHttp, self).request(**kwargs)
+
+        cache.set(cache_key, ret, conf.TCM_CACHE_SECONDS)
+        return ret
+
+
+
+cachedUserAgent = CachedHttp()
 
 
 
@@ -65,6 +85,7 @@ admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)
 
 class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
+    cache = False
 
 
     def __init__(self, **kwargs):
@@ -217,6 +238,8 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
+        if cls.cache and "http" not in kwargs:
+            kwargs["http"] = cachedUserAgent
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj

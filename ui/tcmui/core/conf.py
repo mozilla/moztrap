@@ -17,4 +17,4 @@ class Configuration(object):
             raise ImproperlyConfigured("%s setting is required." % k)
 
 
-conf = Configuration(HTTPS_STS_SECONDS=0)
+conf = Configuration(HTTPS_STS_SECONDS=0, TCM_CACHE_SECONDS=600)
