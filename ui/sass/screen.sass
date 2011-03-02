@@ -516,29 +516,33 @@ nav.manage
       display: none
   
   .title
-    width: columns(10,21)
+    width: 90%
   
   .controls
-    width: columns(4,21)
+    width: columns(2,21)
     button
-      +link-button
-      + button::before
-        content: "| "
-        color: $base
+      +button-reset
+      +opacity(.75)
+      #{$focus}
+        +opacity(1)
+      +icon('activate','ui/accept.png')
+      +icon('delete','ui/delete.png')
+      +icon('deactivate','ui/cancel.png')
   
   th
     &.controls
       +hide
   
   td
+    white-space: nowrap
     &.title
       @extend .tdlink
       a
-        #{$focus}
-          background: image-url("ui/pencil.png") no-repeat scroll right
+        #{$link}
+          padding-left: image-width("ui/pencil.png")/$base-font-size*1.5em
+          background: image-url("ui/pencil.png") no-repeat scroll left
     &.controls
       text-align: right
-      white-space: nowrap
       
   .list
     margin: 0

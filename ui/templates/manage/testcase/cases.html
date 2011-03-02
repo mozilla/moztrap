@@ -4,5 +4,111 @@
 <section id="managecases">
   <h2>manage test cases</h2>
   <a href="/manage/testcase/add/" class="create">create a test case</a>
+  
+  <form>
+    <div class="bulk">
+      <strong>With checked:</strong>
+      <button value="activate">activate</button>
+      <button value="deactivate">deactivate</button>
+      <button value="clone">clone</button>
+      <button value="delete">delete</button>
+    </div>
+
+    <table class="list">
+      <thead>
+        <tr>
+          <th class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></th>
+          <th class="title"><a href="#">test cases</a></th>
+          <th class="product"><a href="#">product</a></th>
+          <th class="version"><a href="#">version</a></th>
+          <th class="state"><a href="#">status</a></th>
+          <th class="tags"><a href="#">tags</a></th>
+          <th class="controls">controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="draft">
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="title"><a href="/manage/testcase/add/">Test Case Title</a></td>
+          <td>Firefox</td>
+          <td>4.0</td>
+          <td>draft</td>
+          <td>some, various, odd, tags</td>
+          <td class="controls">
+            <button class="activate">activate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+        <tr class="active">
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="title"><a href="/manage/testcase/add/">Test Case Title</a></td>
+          <td>Fennec</td>
+          <td>0.5</td>
+          <td>active</td>
+          <td>more, tags, than, this</td>
+          <td class="controls">
+            <button class="deactivate">deactivate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+        <tr class="locked">
+          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
+          <td class="title"><a href="/manage/testcase/add/">Test Case Title</a></td>
+          <td>Firefox</td>
+          <td>2.3</td>
+          <td>locked</td>
+          <td>these, tags, rock</td>
+          <td class="controls">
+            <button class="activate">activate</button>
+            <button class="delete">delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <nav class="listfilter">
+      <h3>Filters</h3>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Firefox</a></li>
+        <li><a href="#">Fennec</a></li>
+      </ul>
+      <h4>Status</h4>
+      <ul>
+        <li><a href="#">active</a></li>
+        <li><a href="#">draft</a></li>
+        <li><a href="#">locked</a></li>
+      </ul>
+    </nav>
+    
+    <nav class="listnav">
+      <p class="location">showing 21-40 of 700</p>
+      <ul class="pagination">
+        <li><a href="?page=3" class="prev">&laquo; previous</a> </li>
+        <li><a href="?page=1" class="page">1</a></li>
+        <li><span class="current page">2</span> </li>
+        <li><a href="?page=3" class="page">3</a> </li>
+        <li><a href="?page=3" class="next">next &raquo;</a> </li>
+      </ul>
+      <div class="perpage">
+        <label for="per_page">cases per page:</label>
+        <select name="per_page" id="per_page">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </nav>
+
+    <div class="bulk">
+      <strong>With checked:</strong>
+      <button value="activate">activate</button>
+      <button value="deactivate">deactivate</button>
+      <button value="clone">clone</button>
+      <button value="delete">delete</button>
+    </div>
+  </form>
+  
 </section>
 {% endblock managecontent %}

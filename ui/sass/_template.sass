@@ -39,4 +39,9 @@
       display: block
       padding: $base-rhythm-unit * 0.25
       border-bottom: 1px solid #ccc
-  
+
+=icon($class,$img)
+  &.#{$class}
+    +replace-text($img)
+    width: image-width($img)
+    min-height: image-height($img)
