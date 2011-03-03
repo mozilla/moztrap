@@ -26,9 +26,7 @@ def create_role_with_permissions(step, stored, name):
     do_post(world.path_roles, role_payload)
     
     #get the new role ID
-    role_id, role_version = get_resource_identity("role", 
-                                                  add_params(world.path_roles, 
-                                                             {"name": name}))
+    role_id, role_version = get_role_resid(name)
 
     # get the list of all available permissions
     perm_array = get_list_from_search("permission", world.path_permissions)    
@@ -84,6 +82,20 @@ def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
     
     do_post(world.path_users + "%s/roles/%s/" % (user_id, role_id), 
             {"originalVersionId": user_version})
+
+
+@step(u'remove the role with (that name|name "(.*)") from the user with (that name|name "(.*)")')
+def remove_role_from_user(step, stored_role, role_name, stored_user, user_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    role_name = get_stored_or_store_name("role", stored_role, role_name)
+    
+    # fetch the role's resource identity
+    user_id, user_version = get_user_resid(user_name)
+    role_id = get_role_resid(role_name)[0]
+    
+    do_post(world.path_users + "%s/roles/%s/" % (user_id, role_id), 
+            {"originalVersionId": user_version})
+
 
 @step(u'add the following roles to the user with (that name|name "(.*)")')
 def add_roles_to_user(step, stored_user, user_name):
@@ -185,38 +197,6 @@ def order_role_searches_list_foo_before_bar(step, order, first, second):
     check_first_before_second("name", first, second, role_list) 
     
 
-
-
-
-
-
-
-
-
-'''
-######################################################################
-
-                     NEED REFACTORING
-
-######################################################################
-'''
-
-
-@step(u'add permission named "(.*)" to the role named "(.*)"')
-def add_permission_foo_to_role_bar(step, permission, role):
-    # this takes 2 requests.  
-    #    1: get the id of this role
-    #    2: add the permission to the role
-    
-    # fetch the role's resource identity
-    role_id, version = get_role_resid(role)
-    
-    post_payload = {
-                    "description": permission
-                    }
-    do_post(world.path_roles + role_id + "/permissions", 
-            post_payload,
-            params = {"originalVersionId": version})
 
 
 

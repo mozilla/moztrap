@@ -50,7 +50,7 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testcase", stored, name)
-    search_and_verify_existence(step, world.path_testcases, 
+    search_and_verify_existence(world.path_testcases, 
                     {"name": name}, 
                      "testcase", existence)
 
@@ -59,18 +59,10 @@ def check_testcase_foo_existence(step, stored, name, existence):
 def delete_testcase_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("testcase", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     testcase_id, version = get_testcase_resid(name)
-               
-    world.conn.request("DELETE", 
-                       add_params(world.path_testcases + testcase_id, 
-                                  {"originalVersionId": version}), "", headers)
+    do_delete(world.path_testcases + testcase_id, 
+              {"originalVersionId": version})
 
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete testcase")
 
 @step(u'add these steps to the testcase with (that name|name "(.*)")')
 def add_steps_to_testcase_name(step, stored, name):
@@ -126,7 +118,7 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
            {"originalVersionId": version},
            get_auth_header_user_name(user_name))
     
-    
+#@todo: This has a hardcoded value for approvalStatusId, fix that
 @step(u'the testcase with (that name|name "(.*)") has status of Active')
 def testcase_has_status_of_approved(step, stored, testcase_name):
     testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
@@ -162,25 +154,16 @@ def remove_environment_from_test_case(step, environment, test_case):
     test_case_id, version = get_testcase_resid(test_case)
     environment_id = get_environment_resid(environment)
     
-    world.conn.request("DELETE", 
-                       add_params(world.path_testcases + test_case_id + "/environments/" + environment_id, 
-                                  {"originalVersionId": version}))
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete new environment from test case")
+    do_delete(world.path_testcases + test_case_id + "/environments/" + environment_id, 
+              {"originalVersionId": version})
 
 @step(u'test case "(.*)" (has|does not have) environment "(.*)"')
 def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
     
-    
-#    if haveness.strip() == "does not have":
-
-    world.conn.request("GET", add_params(world.path_testcases + test_case_id + "/environments"))
-    response = world.conn.getresponse()
-    verify_status(200, response, "Fetched environments")
-
-    jsonList = get_resp_list(response, ns("environment"))
+    jsonList = get_list_from_search("environment", 
+                                    world.path_testcases + test_case_id + "/environments")    
 
     found = False
     for item in jsonList:
@@ -196,15 +179,9 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
     
+    jsonList = get_list_from_search("attachment", 
+                                    world.path_testcases + test_case_id + "/attachments")    
     
-#    if haveness.strip() == "does not have":
-
-    world.conn.request("GET", add_params(world.path_testcases + test_case_id + "/attachments"))
-    response = world.conn.getresponse()
-    verify_status(200, response, "Fetched environments")
-
-    jsonList = get_resp_list(response, "attachment")
-
     found = False
     for item in jsonList:
         if (item.get(ns("fileName")) == attachment):
@@ -261,7 +238,7 @@ def create_testcycles(step):
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
 def check_testcycle_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testcycle", stored, name)
-    search_and_verify_existence(step, world.path_testcycles, 
+    search_and_verify_existence(world.path_testcycles, 
                     {"name": name}, 
                      "testcycle", existence)
 
@@ -270,18 +247,10 @@ def check_testcycle_foo_existence(step, stored, name, existence):
 def delete_testcycle_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("testcycle", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     testcycle_id, version = get_testcycle_resid(name)
-               
-    world.conn.request("DELETE", 
-                       add_params(world.path_testcycles + testcycle_id, 
-                                  {"originalVersionId": version}), "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete testcycle")
+    
+    do_delete(world.path_testcycles + testcycle_id, 
+                                  {"originalVersionId": version})           
 
 '''
 ######################################################################
@@ -317,7 +286,7 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
 @step(u'testrun with (that name|name "(.*)") (exists|does not exist)')
 def check_testrun_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testrun", stored, name)
-    search_and_verify_existence(step, world.path_testruns, 
+    search_and_verify_existence(world.path_testruns, 
                     {"name": name}, 
                      "testrun", existence)
 
@@ -326,19 +295,11 @@ def check_testrun_foo_existence(step, stored, name, existence):
 def delete_testrun_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("testrun", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     testrun_id, version = get_testrun_resid(name)
                
-    world.conn.request("DELETE", 
-                       add_params(world.path_testruns + testrun_id, 
-                                  {"originalVersionId": version}), "", headers)
+    do_delete(world.path_testruns + testrun_id, 
+              {"originalVersionId": version})
 
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete testrun")
-    
     
 @step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
 def testcycle_has_testrun(step, cycle_name, run_name):
@@ -346,7 +307,7 @@ def testcycle_has_testrun(step, cycle_name, run_name):
     testcycle_id = get_testcycle_resid(cycle_name)[0]
 
     uri = world.path_testcycles + str(testcycle_id) + "/testruns/"
-    search_and_verify_array(step, uri,
+    search_and_verify_array(uri,
                     {"name": run_name}, 
                      "testrun", True)
     
@@ -378,7 +339,7 @@ def create_testsuite_with_name(step, stored, name):
 @step(u'testsuite with (that name|name "(.*)") (exists|does not exist)')
 def check_testsuite_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testsuite", stored, name)
-    search_and_verify_existence(step, world.path_testsuites, 
+    search_and_verify_existence(world.path_testsuites, 
                     {"name": name}, 
                      "testsuite", existence)
 
@@ -387,16 +348,13 @@ def check_testsuite_foo_existence(step, stored, name, existence):
 def delete_testsuite_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("testsuite", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
     testsuite_id, version = get_testsuite_resid(name)
                
-    world.conn.request("DELETE", 
-                       add_params(world.path_testsuites + testsuite_id, 
-                                  {"originalVersionId": version}), "", headers)
+    do_delete(world.path_testsuites + testsuite_id, 
+              {"originalVersionId": version})
 
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete testsuite")
+
+
+
+
 

@@ -58,11 +58,8 @@ def logged_in_as_user_foo(step, name):
     names = name.split()
     world.user_name = name
     
-    name_headers = { 'firstName':names[0], 'lastName': names[1] }
-
-    world.conn.request("GET", add_params(world.path_users + "current"), None, name_headers)
-    response = world.conn.getresponse()
-    data = verify_status(200, response, "Fetched a user")
+    params = { 'firstName':names[0], 'lastName': names[1] }
+    data = do_get(world.path_users + "current", params)
     
     thisUser = get_single_item(data, ns("user"))
 
@@ -72,7 +69,7 @@ def logged_in_as_user_foo(step, name):
 @step(u'user with (that name|name "(.*)") (exists|does not exist)')
 def check_user_foo_existence(step, stored, name, existence):
     names = get_stored_or_store_name("user", stored, name).split()
-    search_and_verify_existence(step, world.path_users, 
+    search_and_verify_existence(world.path_users, 
                     {"firstName": names[0], "lastName": names[1]}, 
                     "user", existence)
 
@@ -83,7 +80,7 @@ def check_user_foo_activated(step, stored, name, userStatus):
         
     # we DO expect to find this user, but we're just checking if they're activated or 
     # deactivated
-    search_and_verify(step, world.path_users, 
+    search_and_verify(world.path_users, 
                     {"firstName": names[0], "lastName": names[1], "userStatusId": statusId}, 
                     "user", True)
     
@@ -93,60 +90,27 @@ def activate_user_with_name_foo(step, status_action, stored, name):
         Users are not deleted, they're just registered or unregistered.
     '''
     name = get_stored_or_store_name("user", stored, name)
-    
     resid, version = get_user_resid(name)
-    headers = {'Authorization': get_auth_header()}
 
-    url = add_params(world.path_users_activation % (resid, status_action), {"originalVersionId": version})
-    world.conn.request("PUT", url, "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "%s new user" % (status_action))
+    do_put(world.path_users_activation % (resid, status_action), {"originalVersionId": version})
 
 
-@step(u'user "(.*)" has these roles:')
-def foo_has_these_roles(step, name):
-    user_id = get_user_resid(name)[0]
+@step(u'user with (that name| name "(.*)") has at least these assignments:')
+def foo_has_these_assignments(step, stored_user, user_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    
+    user_id = get_user_resid(user_name)[0]
+    assignment_list = get_list_from_endpoint("assignments",
+                                     world.path_users + user_id + "/assignments")
+    
+    # walk through all the expected roles and make sure it has them all
+    # note, it doesn't check that ONLY these roles exist.  That should be a different
+    # method.
+    for role in step.hashes:
+        role_name = role["name"]
+        found_perm = [x for x in assignment_list if x[ns("name")] == role_name] 
+        
+        assert len(found_perm) == 1, "Expected to find assignment name %s in:\n%s" % (role_name,
+                                                                                jstr(assignment_list))
 
-    world.conn.request("GET", add_params(world.path_users + user_id + "/roles"))
-    response = world.conn.getresponse()
-    eq_(response.status, 200, "Fetched a user")
-
-    # walk through all roles for this user to see if it has the requested one
-    respJson = get_resp_list(response, "role")
-
-    # now walk through the expected roles and check the response
-    # to see that it is represented
-    roles = step.hashes
-    for exp_role in roles:
-        found = False
-        for act_role in respJson:
-            exp = exp_role.get(ns("description"))
-            act = act_role.get(ns("description"))
-            if (exp == act):
-                found = True
-        eq_(found, True, "expected role of: " + exp)
-
-@step(u'user "(.*)" has these assignments:')
-def foo_has_these_assignments(step, name):
-    user_id = get_user_resid(name)[0]
-    world.conn.request("GET", add_params(world.path_users + user_id + "/assignments"))
-    response = world.conn.getresponse()
-    eq_(response.status, 200, "Fetched a user")
-
-    # walk through all roles for this user to see if it has the requested one
-    respJson = get_resp_list(response, "testcase")
-
-    # now walk through the expected roles and check the response
-    # to see that it is represented
-    exp_list = step.hashes
-    for exp_item in exp_list:
-        found = False
-        for act_item in respJson:
-            exp = exp_item.get(ns("name"))
-            act = act_item.get(ns("name"))
-            if (exp == act):
-                found = True
-        eq_(found, True, "expected assignment of: " + str(exp) +
-                      "\nin response:\n" + jstr(respJson))
-
+    

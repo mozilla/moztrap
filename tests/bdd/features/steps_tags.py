@@ -31,7 +31,7 @@ def create_tag_with_name(step, stored, tag):
 @step(u'tag with (that tag|tag "(.*)") (exists|does not exist)')
 def check_tag_foo_existence(step, stored, tag, existence):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
-    search_and_verify_existence(step, world.path_tags, 
+    search_and_verify_existence(world.path_tags, 
                     {"tag": tag}, 
                      "tag", existence)
 

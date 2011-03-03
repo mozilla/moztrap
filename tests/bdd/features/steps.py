@@ -9,6 +9,7 @@ from steps_companies import *
 from steps_users import *
 import httplib
 import mock_scenario_data
+import pprint
 
 def save_db_state():
     '''
@@ -94,12 +95,26 @@ def setup_before_all():
                           "description": "I can see your universe from here"
                           }
     
-    
+    # keep track of the api(uri) calls made
+    world.apis_called = {}
 
 @after.all
 def teardown_after_all(total):
     if (world.restore_db_after_all):
         restore_db_state()
+    
+    pp = pprint.PrettyPrinter(indent=4)
+    output = pp.pformat(world.apis_called)
+    # write out api calls by sentence
+    f = open(world.apis_called_file, 'w')
+    f.write(output)
+    
+    # write out just the unique apis that were called
+    
+#    api_set = set([obj[0] for obj in mylistofobjs])
+    
+#    f = open(world.api_calls_file, 'w')
+#    f.write(jstr(world.apis_by_sentence))
 
 @before.each_scenario
 def setup_before_scenario(scenario):
@@ -163,7 +178,7 @@ def create_seed_company_and_product(step):
 def setup_step_connection(step):
     setup_connection() 
 
-    
+    world.current_sentence = step.sentence
 
 
 
