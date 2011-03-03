@@ -37,6 +37,7 @@ Feature: Environment Object Business Rules
 
     Scenario: Environment - Remove from Product
         Given I create the seed company and product
+        Not yet implemented
         And I am logged in as user "Jedi Creator"
         And I have the role of "PRODUCT_EDITOR"
         And Environment "Walter's Lab" exists
