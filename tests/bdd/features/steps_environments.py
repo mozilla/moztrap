@@ -34,7 +34,25 @@ def check_group_environement_foo_existence(step, stored, name, existence):
                      "groupType": True}, 
                      objtype, existence)
 
-@step(u'create a new environment with (that name|name "(.*)") of type (.*)')
+@step(u'at least the following environments exist')
+def at_least_these_environments_exist(step):
+
+    env_list = get_list_from_search("environment",
+                                     world.path_environments)
+    
+    # walk through all the expected roles and make sure it has them all
+    # note, it doesn't check that ONLY these roles exist.  That should be a different
+    # method.
+    for env in step.hashes:
+        env_name = env["name"]
+        envtype_id = get_environmenttype_resid(env["type"])
+        found_env = [x for x in env_list if ((x[ns("name")] == env_name) and (x[ns("environmentTypeId")] == envtype_id))] 
+        
+        assert (len(found_env) == 1, 
+                 "Expected to find environment with name %s and environmentTypeId of %s in:\n%s" % 
+                 (env_name, envtype_id, jstr(env_list)))
+
+@step(u'create a new environment with (that name|name "(.*)") of type "(.*)"')
 def create_environment_with_name(step, stored, name, type_name):
     '''
         This creates an environmenttype that applies to an environment object
@@ -63,8 +81,7 @@ def delete_environment_with_name(step, stored, name):
               {"originalVersionId": version})
                
 
-#@todo: do we need this function?
-#@step(u'product with (that name|name "(.*)" (has|does not have) the environmentgroup with (that name|name "(.*)"')
+@step(u'product with (that name|name "(.*)") (has|does not have) the environmentgroup with (that name|name "(.*)")')
 def product_has_environementgroup(step, stored_prod, prod_name, haveness, stored_envgrp, envgrp_name):
     prod_name = get_stored_or_store_name("product", stored_prod, prod_name) 
     envgrp_name  = get_stored_or_store_name("environment", stored_envgrp, envgrp_name)
