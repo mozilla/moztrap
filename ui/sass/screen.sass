@@ -586,7 +586,32 @@ a.create
   a
     #{$link}
       display: block
-  
+      position: relative
+      &::after
+        +replace-text-with-dimensions('ui/angle_up.png')
+        +inline-block
+        content: " "
+        margin-left: .4em
+        background-image: none
+        vertical-align: baseline
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+    &.asc
+      #{$link}
+        &::after
+          background-image: image-url('ui/angle_up.png')
+      #{$focus}
+        &::after
+          background-image: image-url('ui/angle_down.png')
+    &.desc
+      #{$link}
+        &::after
+          background-image: image-url('ui/angle_down.png')
+      #{$focus}
+        &::after
+          background-image: image-url('ui/angle_up.png')
+ 
   #managecycles &
     .bytitle
       +columns(5,18)
