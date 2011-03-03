@@ -6,8 +6,8 @@
 
 // Font Sizes --------------------------------------------------------------
 
-$base-font-size: 16px
-$base-line-height: 24px
+$base-font-size: 14px
+$base-line-height: 21px
 
 // Grid --------------------------------------------------------------
 
@@ -78,3 +78,14 @@ $accent: $red
   position: absolute
   height: 0
   width: 0
+
+=icon($select,$img,$back:false)
+  &#{$select}
+    @if $back
+      +border-radius(.25em)
+      background-color: $back
+    +box-sizing('content-box')
+    +replace-text($img)
+    width: image-width($img)
+    min-height: image-height($img)
+    padding: 0 .25em

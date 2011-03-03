@@ -40,13 +40,17 @@
       padding: $base-rhythm-unit * 0.25
       border-bottom: 1px solid #ccc
 
-=icon($class,$img,$back:false)
-  &.#{$class}
-    @if $back
-      +border-radius(.25em)
-      background-color: $back
-    +box-sizing('content-box')
-    +replace-text($img)
-    width: image-width($img)
-    min-height: image-height($img)
-    padding: 0 .25em 
+.controls
+  a
+    #{$link}
+      +inline-block
+      +icon('[title="edit"]','ui/pencil.png')
+      +opacity(.5)
+    #{$focus}
+      +opacity(1)
+  button
+    +icon('[title="clone"]','ui/clone.png')
+    +icon('[title="delete"]','ui/trash.png')
+    +opacity(.5)
+    #{$focus}
+      +opacity(1)

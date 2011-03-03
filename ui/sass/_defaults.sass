@@ -40,7 +40,7 @@ html
 /* Body --------------------------------------------------------------
 
 body
-  @extend .serif
+  @extend .sans
   color: $base
 
 /* Selected Text --------------------------------------------------------------
@@ -52,15 +52,25 @@ body
   @else
     color: #fff
 
-::-moz-selection
+=selection
   +accessible-color($alt)
   background: $alt
   text-shadow: none
 
+::-moz-selection
+  +selection
+
 ::selection
-  +accessible-color($alt)
-  background: $alt
-  text-shadow: none
+  +selection
+
+=placeholder
+  color: #999
+
+::-webkit-input-placeholder
+  +placeholder
+
+::-moz-placeholder
+  +placeholder
 
 /* Links --------------------------------------------------------------
 
@@ -104,8 +114,9 @@ h1
 
 h1, h2
   @extend .allcaps
+  font-weight: bold
 
-h3
+h3, h4
   font-weight: bold
 
 h4
@@ -217,7 +228,6 @@ nav
     +no-style-list
 
 /* Tables --------------------------------------------------------------
-/* tables still need 'cellspacing="0"' in the markup
 
 table
   +trailer
@@ -334,19 +344,17 @@ optgroup
   font-style: normal
   font-weight: normal
 
-// box-sizing helps us control the width of inputs
-// which are otherwise very hard to manage in the grid.
 .textinput
   +sans-family
-  +adjust-font-size-to(14px,1,16px)
-  +rhythm-borders(1px,.25,14px)
-  +trailer(.5,14px)
+  +rhythm-borders(1px,.25)
+  +trailer(.5)
   +box-sizing(border-box)
+  font-size: inherit
+  line-height: inherit
   width: 100%
   background-color: #fff
   color: $base
   border-color: $base
-  height: $base-line-height/14px*1.5em
   outline: 0
   .ie7 &
     height: auto
@@ -408,8 +416,12 @@ input
   clear: both
   text-align: right
 
-=button-color($c:$green)
-  +background(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+=button-color($c:$green,$icon:false)
+  @if $icon
+    +background-image(image-url($icon))
+    +background-image(image-url($icon), linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+  @else
+    +background-image(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
   border-color: desaturate($c,25)
 
 =button
@@ -419,7 +431,7 @@ input
   +rhythm-borders(1px,.25)
   +hpadding(1em)
   +text-shadow(#fff 0 1px 1px)
-  +trailer(.5)
+  +trailer(.25)
   cursor: pointer
   color: #111
   font: inherit

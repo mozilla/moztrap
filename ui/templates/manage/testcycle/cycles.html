@@ -1,10 +1,5 @@
 {% extends 'manage/testcycle/base.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="/manage/">test cycles</a></li>
-{% endblock crumb %}
-
 {% block cycles-active-nav %}active{% endblock cycles-active-nav %}
 
 {% block managecontent %}
@@ -12,66 +7,155 @@
 {# @@@ <p class="message error">Cannot activate test cycle because X</p> #}
 
 <section id="managecycles">
-
   <h2>Manage Test Cycles</h2>
-  <a href="/manage/testcycle/add/" class="create">create a test cycle</a>
-
+  <a href="/manage/testcycle/add/" class="create">create test cycle</a>
   <form>
-    <div class="bulk">
-      <strong>With checked:</strong>
-      <button value="activate">activate</button>
-      <button value="deactivate">deactivate</button>
-      <button value="clone">clone</button>
-      <button value="delete">delete</button>
-    </div>
 
-    <table class="list">
-      <thead>
-        <tr>
-          <th class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></th>
-          <th class="title"><a href="#">test cycles</a></th>
-          <th class="start"><a href="#">start date</a></th>
-          <th class="end"><a href="#">end date</a></th>
-          <th class="state"><a href="#">status</a></th>
-          <th class="controls">controls</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="draft">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
-          <td class="controls">
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="active">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td class="controls">
-            <button class="deactivate">deactivate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="bulkselect"><label for="bulk">bulk action</label><input type="checkbox" name="bulk" value="" id="bulk"></td>
-          <td class="title"><a href="/manage/testcycle/add/">Test Cycle Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td class="controls">
-            <button class="activate">activate</button>
-            <button class="delete">delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <section class="managelist">
+      <nav class="listordering">
+        <ul>
+          <li class="bytitle"><a href="#">title</a></li>
+          <li class="byproduct"><a href="#">product</a></li>
+          <li class="bystart"><a href="#">start date</a></th>
+          <li class="byend"><a href="#">end date</a></th>
+        </ul>
+      </nav>
+      <article id="unique-slug-id01" class="draft">
+        <details>
+          <summary class="header">
+            <p class="status"><button title="activate" class="draft">draft</button></p>
+            <h3 class="title">Test Cycle Title</h3>
+            <p class="product">Firefox</p>
+            <time class="start">2.24.2011</time>
+            <time class="end">12.24.2011</time>
+            <div class="controls">
+              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              <button title="clone">clone</button>
+              <button title="delete">delete</button>
+            </div>
+          </summary>
+          <div class="content">
+            <p class="id">#3456</p>
+            <div class="description">
+              <h4 class="byline hcard">
+                Created by <span class="fn">Eric Meyer</span>
+                on <time pubdate>12.28.2010</time>
+              </h4>
+              
+              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
+            </div>
+            <div class="environments">
+              <h4>environrments</h4>
+              <ul>
+                <li>env 01</li>
+                <li>env 02</li>
+                <li>env 03</li>
+                <li>env 04</li>
+              </ul>
+            </div>
+            <div class="testers">
+              <h4>testers</h4>
+              <ul>
+                <li>tester 01</li>
+                <li>tester 02</li>
+                <li>tester 03</li>
+                <li>tester 04</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
+      <article id="unique-slug-id01" class="active">
+        <details>
+          <summary class="header">
+            <p class="status"><button title="lock" class="active">active</button></p>
+            <h3 class="title">Test Cycle Title</h3>
+            <p class="product">Firefox</p>
+            <time class="start">2.24.2011</time>
+            <time class="end">12.24.2011</time>
+            <div class="controls">
+              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              <button title="clone">clone</button>
+              <button title="delete">delete</button>
+            </div>
+          </summary>
+          <div class="content">
+            <p class="id">#3456</p>
+            <div class="description">
+              <h4 class="byline hcard">
+                Created by <span class="fn">Eric Meyer</span>
+                on <time pubdate>12.28.2010</time>
+              </h4>
+              
+              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
+            </div>
+            <div class="environments">
+              <h4>environrments</h4>
+              <ul>
+                <li>env 01</li>
+                <li>env 02</li>
+                <li>env 03</li>
+                <li>env 04</li>
+              </ul>
+            </div>
+            <div class="testers">
+              <h4>testers</h4>
+              <ul>
+                <li>tester 01</li>
+                <li>tester 02</li>
+                <li>tester 03</li>
+                <li>tester 04</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
+      <article id="unique-slug-id01" class="locked">
+        <details>
+          <summary class="header">
+            <p class="status"><button title="activate" class="locked">locked</button></p>
+            <h3 class="title">Test Cycle Title</h3>
+            <p class="product">Firefox</p>
+            <time class="start">2.24.2011</time>
+            <time class="end">12.24.2011</time>
+            <div class="controls">
+              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              <button title="clone">clone</button>
+              <button title="delete">delete</button>
+            </div>
+          </summary>
+          <div class="content">
+            <p class="id">#3456</p>
+            <div class="description">
+              <h4 class="byline hcard">
+                Created by <span class="fn">Eric Meyer</span>
+                on <time pubdate>12.28.2010</time>
+              </h4>
+              
+              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
+            </div>
+            <div class="environments">
+              <h4>environrments</h4>
+              <ul>
+                <li>env 01</li>
+                <li>env 02</li>
+                <li>env 03</li>
+                <li>env 04</li>
+              </ul>
+            </div>
+            <div class="testers">
+              <h4>testers</h4>
+              <ul>
+                <li>tester 01</li>
+                <li>tester 02</li>
+                <li>tester 03</li>
+                <li>tester 04</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
+    </section>
     
     <nav class="listfilter">
       <h3>Filters</h3>
@@ -82,9 +166,9 @@
       </ul>
       <h4>Status</h4>
       <ul>
-        <li><a href="#">active</a></li>
-        <li><a href="#">draft</a></li>
-        <li><a href="#">locked</a></li>
+        <li><a href="#">Active</a></li>
+        <li><a href="#">Draft</a></li>
+        <li><a href="#">Locked</a></li>
       </ul>
     </nav>
     
@@ -108,14 +192,6 @@
       </div>
     </nav>
 
-    <div class="bulk">
-      <strong>With checked:</strong>
-      <button value="activate">activate</button>
-      <button value="deactivate">deactivate</button>
-      <button value="clone">clone</button>
-      <button value="delete">delete</button>
-    </div>
   </form>
-
 </section>
 {% endblock managecontent %}
