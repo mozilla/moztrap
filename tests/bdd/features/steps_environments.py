@@ -19,7 +19,7 @@ def check_environement_foo_existence(step, objtype, stored, name, existence):
     name = get_stored_or_store_name(objtype, stored, name)
     
     
-    search_and_verify_existence(step, world.env_path_map[objtype], 
+    search_and_verify_existence(world.env_path_map[objtype], 
                     {"name": name}, 
                     objtype, existence)
 
@@ -29,7 +29,7 @@ def check_group_environement_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name(objtype, stored, name)
     
     
-    url = search_and_verify_existence(step, world.env_path_map[objtype], 
+    search_and_verify_existence(world.env_path_map[objtype], 
                     {"name": name,
                      "groupType": True}, 
                      objtype, existence)
@@ -57,20 +57,13 @@ def create_environment_with_name(step, stored, name, type_name):
 def delete_environment_with_name(step, stored, name):
     name = get_stored_or_store_name("environment", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
+    resid, version = get_environment_resid(name)
 
-    resid, version = get_resource_identity("environment", add_params(world.path_environments, {"name": name}))
+    do_delete(world.path_environments + resid, 
+              {"originalVersionId": version})
                
-    world.conn.request("DELETE", 
-                       add_params(world.path_environments + resid, 
-                                  {"originalVersionId": version}), "", headers)
 
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete environment")
-
-
+#@todo: do we need this function?
 #@step(u'product with (that name|name "(.*)" (has|does not have) the environmentgroup with (that name|name "(.*)"')
 def product_has_environementgroup(step, stored_prod, prod_name, haveness, stored_envgrp, envgrp_name):
     prod_name = get_stored_or_store_name("product", stored_prod, prod_name) 
@@ -82,8 +75,8 @@ def product_has_environementgroup(step, stored_prod, prod_name, haveness, stored
     resid = get_product_resid(prod_name)[0]
 
     
-    url = world.path_products + "/" + resid + "/environmentgroups"
-    search_and_verify(step, url, 
+    uri = world.path_products + "/" + resid + "/environmentgroups"
+    search_and_verify(uri, 
                       {"name": envgrp_name}, 
                       "environmentgroup", 
                       (haveness == "has"))
@@ -118,19 +111,10 @@ def create_environmenttype_with_name(step, group, stored, name):
 def delete_environmenttype_with_name(step, stored, name):
     name = get_stored_or_store_name("environmenttype", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
-    resid, version = get_resource_identity("environmenttype", 
-                                           add_params(world.path_environmenttypes, {"name": name}))
+    resid, version = get_environmenttype_resid(name)
+    do_delete(world.path_environmenttypes + resid, 
+              {"originalVersionId": version})
                
-    world.conn.request("DELETE", 
-                       add_params(world.path_environmenttypes + resid, 
-                                  {"originalVersionId": version}), "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete environmenttype")
 
 @step(u'environmenttype with (that name|name "(.*)") is (a group|not a group) environmenttype')
 def check_group_environmenttype_with_name(step, stored, name, is_group):
@@ -138,15 +122,7 @@ def check_group_environmenttype_with_name(step, stored, name, is_group):
     name = get_stored_or_store_name("environmenttype", stored, name)
     groupType = (is_group.strip() == "a group")
    
-    url = add_params(world.path_environmenttypes, {"name": name})
-
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
-    
-    world.conn.request("GET", url, "", headers)
-    response = world.conn.getresponse()
-
-    data = verify_status(200, response, url)
+    data = do_get(world.path_environmenttypes, {"name": name})
 
     env_type = get_single_item(data, "environmenttype")
     eq_(env_type[ns("groupType")], groupType, "GroupType match check")
@@ -176,19 +152,11 @@ def create_environmentgroup_with_name(step, stored, name, type_name):
 
 @step(u'delete the environmentgroup with (that name|name "(.*)")')
 def delete_environmentgroup_with_name(step, stored, name):
-    objtype = "environmentgroup"
-    name = get_stored_or_store_name(objtype, stored, name)
+    name = get_stored_or_store_name("environmentgroup", stored, name)
     
-    headers = {'Authorization': get_auth_header(),
-               'content-type': "application/x-www-form-urlencoded"
-               }
-
-    resid, version = get_resource_identity(objtype, 
-                                           add_params(world.path_environmentgroups, {"name": name}))
+    resid, version = get_environmentgroup_resid(name)
                
-    world.conn.request("DELETE", add_params(world.path_environmentgroups + resid, 
-                                            {"originalVersionId": version}), "", headers)
-
-    response = world.conn.getresponse()
-    verify_status(200, response, "delete environmentgroup")
+    do_delete(world.path_environmentgroups + resid, 
+                                            {"originalVersionId": version})
+   
 

@@ -5,7 +5,6 @@ Created on Jan 31, 2011
 '''
 
 from lettuce import *
-#from nose.tools import *
 from step_helper import *
 
 
@@ -28,7 +27,7 @@ def fetch_company_by_id(step, name):
 @step(u'company with (that name|name "(.*)") (does not exist|exists)')
 def check_company_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("company", stored, name)
-    search_and_verify_existence(step, world.path_companies, 
+    search_and_verify_existence(world.path_companies, 
                     {"name": name}, 
                      "company", existence)
 

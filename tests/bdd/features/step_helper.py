@@ -142,10 +142,12 @@ def do_get(uri, params = {}, auth_header = get_auth_header()):
 
     headers = {'Content-Type':'application/json',
                'Authorization': auth_header}
+
+    record_api_for_step("GET", uri)
     
     world.conn.request("GET", add_params(uri, params), "", headers)
     response = world.conn.getresponse()
-    return verify_status(200, response, "Expecting type %s" % (type))
+    return verify_status(200, response, str(uri))
 
 def do_post(uri, body, params = {}, auth_header = get_auth_header()):
     return do_request("POST", uri, body = body, auth_header = auth_header)
@@ -158,11 +160,12 @@ def do_delete(uri, params, auth_header = get_auth_header()):
 
 def do_request(method, uri, params = {}, body = {}, auth_header = get_auth_header()):
     ''' 
-        This will post the payload to the uri
+        do the request
     '''
     headers = {'Authorization': auth_header,
                'content-type': "application/x-www-form-urlencoded"}
 
+    record_api_for_step(method, uri)
     
     world.conn.request(method, add_params(uri, params), 
                        urllib.urlencode(body, doseq=True), 
@@ -170,6 +173,67 @@ def do_request(method, uri, params = {}, body = {}, auth_header = get_auth_heade
     response = world.conn.getresponse()
 
     return verify_status(200, response, "%s %s:\n%s" % (method, uri, body))
+
+
+
+def record_api_for_step(method, uri):
+    '''
+        This should look like:
+        {"Given I create a user": 
+            {"/users/foo": 
+                ["POST", "GET"]
+            }
+        }
+    '''
+    methods = world.apis_called.setdefault(uri, set())
+    methods.add(method)
+    
+def search_and_verify_existence(uri, search_args, obj_name, existence):
+    expect_to_find = (existence.strip() == "exists")
+    search_and_verify(uri, search_args, obj_name, expect_to_find)
+
+def search_and_verify(uri, search_args, obj_name, expect_to_find):
+    '''
+        This does a search based on the search_args passed in.  So "expect_to_find"
+        is really filtered based on those parameters.  
+        
+        expect_to_find: If True, then we verify based on expecting to find something.
+                        If False, this will fail if we get a resultset greater than 0.
+    '''
+    
+    data = do_get(uri, search_args)
+    
+    if not expect_to_find:
+        count = get_count(data, ns(obj_name))
+        eq_(count, 0, "expect result size zero:\n" + data)
+    else:
+        environmentJson = get_single_item(data, ns(obj_name))
+
+        # Verify that the result's values match our search params 
+        for k, v in search_args.items():
+            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
+
+def search_and_verify_array(uri, search_args, obj_name, expect_to_find):
+    '''
+        This does a search based on the search_args passed in.  So "expect_to_find"
+        is really filtered based on those parameters.  
+        
+        expect_to_find: If True, then we verify based on expecting to find something.
+                        If False, this will fail if we get a resultset greater than 0.
+    '''
+    data = do_get(uri, search_args)
+
+    if not expect_to_find:
+        count = get_count(data, ns(obj_name))
+        eq_(count, 0, "expect result size zero:\n" + data)
+    else:
+        environmentJson = get_array_item(data, obj_name)
+
+        # Verify that the result's values match our search params 
+        for k, v in search_args.items():
+            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
+
+
 
 
 
@@ -199,71 +263,6 @@ def get_user_status_id(userStatus):
     return statusMap.get(userStatus)
 
 
-def search_and_verify_existence(step, uri, search_args, obj_name, existence):
-    expect_to_find = (existence.strip() == "exists")
-    search_and_verify(step, uri, search_args, obj_name, expect_to_find)
-
-def search_and_verify(step, uri, search_args, obj_name, expect_to_find):
-    '''
-        This does a search based on the search_args passed in.  So "expect_to_find"
-        is really filtered based on those parameters.  
-        
-        expect_to_find: If True, then we verify based on expecting to find something.
-                        If False, this will fail if we get a resultset greater than 0.
-    '''
-    #arg_value_enc = urllib.quote(arg_value)
-    url = add_params(uri, search_args)
-    
-#    print "Searching: " + url
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
-    
-    world.conn.request("GET", url, "", headers)
-    response = world.conn.getresponse()
-
-    data = verify_status(200, response, uri + " existence")
-
-    if not expect_to_find:
-        count = get_count(data, ns(obj_name))
-        eq_(count, 0, "expect result size zero:\n" + data)
-    else:
-        environmentJson = get_single_item(data, ns(obj_name))
-
-        # Verify that the result's values match our search params 
-        for k, v in search_args.items():
-            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
-    return url
-
-def search_and_verify_array(step, uri, search_args, obj_name, expect_to_find):
-    '''
-        This does a search based on the search_args passed in.  So "expect_to_find"
-        is really filtered based on those parameters.  
-        
-        expect_to_find: If True, then we verify based on expecting to find something.
-                        If False, this will fail if we get a resultset greater than 0.
-    '''
-    #arg_value_enc = urllib.quote(arg_value)
-    url = add_params(uri, search_args)
-    
-#    print "Searching: " + url
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
-    
-    world.conn.request("GET", url, "", headers)
-    response = world.conn.getresponse()
-
-    data = verify_status(200, response, uri + " existence")
-
-    if not expect_to_find:
-        count = get_count(data, ns(obj_name))
-        eq_(count, 0, "expect result size zero:\n" + data)
-    else:
-        environmentJson = get_array_item(data, obj_name)
-
-        # Verify that the result's values match our search params 
-        for k, v in search_args.items():
-            eq_(environmentJson.get(ns(k)), v, obj_name + " match")
-    return url
 
 def get_resid_from_creation_response(response_txt, type):
     '''
@@ -463,106 +462,87 @@ def get_count(response_txt, type):
     return count
       
 
-def get_resp_list(response, type):
-    '''
-        Expect the response to be a search result containing a list.
-        The list may be a list of size 1, though.
-    '''
-
-    type = ns(type)
-    respJson = json.loads(response.read())
-    resp_list = []
-    
-    # if this was a search, extract the item from the "searchResult" object
-    # in this case, we only care about the first returned item in this list
-    if (respJson.__contains__("searchResult")):
-        sr = respJson.get("searchResult")
-        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + " in:\n" + jstr(sr) 
-        items = sr.get(plural(type)).get(type)
-        if isinstance(items, list):
-            resp_list = items
-        else:
-            resp_list.append(items)
-
-    return resp_list
+#def get_resp_list(response, type):
+#    '''
+#        Expect the response to be a search result containing a list.
+#        The list may be a list of size 1, though.
+#    '''
+#
+#    type = ns(type)
+#    respJson = json.loads(response.read())
+#    resp_list = []
+#    
+#    # if this was a search, extract the item from the "searchResult" object
+#    # in this case, we only care about the first returned item in this list
+#    if (respJson.__contains__("searchResult")):
+#        sr = respJson.get("searchResult")
+#        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + " in:\n" + jstr(sr) 
+#        items = sr.get(plural(type)).get(type)
+#        if isinstance(items, list):
+#            resp_list = items
+#        else:
+#            resp_list.append(items)
+#
+#    return resp_list
 
 def get_user_resid(name):
     ''' 
         name: Split into 2 parts at the space.  Only the first two parts are used.  Must have at least 2 parts.
     '''
     names = name.split()
-    return get_resource_identity("user", add_params(world.path_users, {"firstName": names[0], "lastName": names[1]}))
+    return get_resource_identity("user", world.path_users, {"firstName": names[0], "lastName": names[1]})
 
 def get_role_resid(role):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("role", add_params(world.path_roles, {"name": role}))
+    return get_resource_identity("role", world.path_roles, {"name": role})
 
 def get_product_resid(product):
     '''
         Get the resourceIdentity, based on the name
     '''
-    return get_resource_identity("product", add_params(world.path_products, {"name": product}))
+    return get_resource_identity("product", world.path_products, {"name": product})
 
 def get_seed_product_id():
     return  get_product_resid(world.seed_product["name"])[0]
 
 def get_company_resid(product):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("company", add_params(world.path_companies, {"name": product}))
+    return get_resource_identity("company", world.path_companies, {"name": product})
 
 def get_seed_company_id():
     return get_company_resid(world.seed_company["name"])[0]
 
 def get_country_resid(country):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("country", add_params(world.path_countries, {"name": country}))
+    return get_resource_identity("country", world.path_countries, {"name": country})
 
 def get_environment_resid(environment):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("environment", add_params(world.path_environments, {"name": environment}))
+    return get_resource_identity("environment", world.path_environments, {"name": environment})
     
-
 def get_environmenttype_resid(environment):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("environmenttype", add_params(world.path_environmenttypes, {"name": environment}))
+    return get_resource_identity("environmenttype", world.path_environmenttypes, {"name": environment})
     
 def get_environmentgroup_resid(environment):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("environmentgroup", add_params(world.path_environmentgroups, {"name": environment}))
+    return get_resource_identity("environmentgroup", world.path_environmentgroups, {"name": environment})
 
 def get_testcase_resid(name):
-    '''
-        Get the resourceIdentity, based on the name
-    '''
-    return get_resource_identity("testcase", add_params(world.path_testcases, {"name" : name}))
+    return get_resource_identity("testcase", world.path_testcases, {"name" : name})
 
 def get_testsuite_resid(name):
-    return get_resource_identity("testsuite", add_params(world.path_testsuites, {"name" : name}))
+    return get_resource_identity("testsuite", world.path_testsuites, {"name" : name})
 
 def get_testcycle_resid(name):
-    return get_resource_identity("testcycle", add_params(world.path_testcycles, {"name": name}))
+    return get_resource_identity("testcycle", world.path_testcycles, {"name": name})
 
 def get_testrun_resid(name):
-    return get_resource_identity("testrun", add_params(world.path_testruns, {"name": name}))
+    return get_resource_identity("testrun", world.path_testruns, {"name": name})
     
 def get_tag_resid(tag):
-    return get_resource_identity("tag", add_params(world.path_tags, {"tag": tag}))
+    return get_resource_identity("tag", world.path_tags, {"tag": tag})
 
-def get_resource_identity(type, uri):
+def get_resource_identity(type, uri, params):
     '''
-        type: Something like user or role or permission.  The JSON object type
+        type: Something like user or role or permission.
         uri: The URI stub to make the call
         
         Return the id and version as strings
@@ -572,12 +552,14 @@ def get_resource_identity(type, uri):
         Like a new method "get_resource_identities" which returns a list of ids or something.  
     '''
 
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
+    data = do_get(uri, params)
 
-    world.conn.request("GET", uri, "", headers)
-    response = world.conn.getresponse()
-    data = verify_status(200, response, "Response when asking for " + type)
+#    headers = {'Content-Type':'application/json',
+#               'Authorization': get_auth_header()}
+#
+#    world.conn.request("GET", uri, "", headers)
+#    response = world.conn.getresponse()
+#    data = verify_status(200, response, "Response when asking for " + type)
     
     field = ns("resourceIdentity")
     respJson = get_single_item(data, type)
@@ -591,20 +573,10 @@ def get_resource_identity(type, uri):
 def get_testcase_latestversion_id(testcase_id):
     # now get the latest version for that testcase id
     
-    headers = {'Content-Type':'application/json',
-               'Authorization': get_auth_header()}
     latestversion_uri = world.path_testcases + testcase_id + "/latestversion/"
 
-    world.conn.request("GET", add_params(latestversion_uri), "", headers)
-    response = world.conn.getresponse()
-    response_txt = verify_status(200, response, "Response when asking for latestversion")
-    
-    try:
-        respJson = json.loads(response_txt)
-    except ValueError:
-        assert False, "Bad JSON: " + str(response_txt)
-    except TypeError:
-        assert False, "Bad JSON: " + str(response_txt)
+    response_txt = do_get(latestversion_uri)
+    respJson = json_to_obj(response_txt)
 
     type = ns("testcaseversion")
     assert respJson.__contains__(type), "didn't find expected type: %s in:\n%s" % (type, jstr(respJson))
