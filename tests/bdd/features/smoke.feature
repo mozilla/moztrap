@@ -44,7 +44,7 @@ Feature: Smoke Tests
         Given I create the seed company and product
         And I create a new environmenttype with name "Obfuscated"
         And an environment with name "Come on fhqwhgads" does not exist
-        when I create a new environment with that name of type Obfuscated
+        when I create a new environment with that name of type "Obfuscated"
         then an environment with that name exists
         and when I delete the environment with that name
         then an environment with that name does not exist
