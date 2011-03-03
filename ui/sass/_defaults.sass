@@ -252,30 +252,30 @@ th
       display: block
       position: relative
       &::after
-        +replace-text-with-dimensions('ui/bullet_arrow_up.png')
+        +replace-text-with-dimensions('ui/angle_up.png')
         +inline-block
         content: " "
         margin-left: .4em
         background-image: none
     #{$focus}
       &::after
-        background-image: image-url('ui/bullet_arrow_up.png')
+        background-image: image-url('ui/angle_up.png')
   &.asc
     a
       #{$link}
         &::after
-          background-image: image-url('ui/bullet_arrow_up.png')
+          background-image: image-url('ui/angle_up.png')
       #{$focus}
         &::after
-          background-image: image-url('ui/bullet_arrow_down.png')
+          background-image: image-url('ui/angle_down.png')
   &.desc
     a
       #{$link}
         &::after
-          background-image: image-url('ui/bullet_arrow_down.png')
+          background-image: image-url('ui/angle_down.png')
       #{$focus}
         &::after
-          background-image: image-url('ui/bullet_arrow_up.png')
+          background-image: image-url('ui/angle_up.png')
 
 tr
   &:nth-child(even)
@@ -398,7 +398,7 @@ input
     +border-radius(2em)
     padding-left: 2em
     background:
-      image: image-url('ui/magnifier.png')
+      image: image-url('ui/search.png')
       position: .5em
       repeat: no-repeat
     &::-webkit-search-decoration

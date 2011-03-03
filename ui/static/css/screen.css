@@ -126,13 +126,13 @@ th, td, caption { padding: 0.375em; text-align: left; font-weight: normal; }
 
 th { padding-top: 1.125em; border-bottom-style: solid; border-bottom-width: 0.063em; padding-bottom: 0.313em; border-color: #cccccc; }
 th a:link, th a:visited { display: block; position: relative; }
-th a:link::after, th a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; height: 16px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; }
+th a:link::after, th a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/angle_up.png?1299110594'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; height: 16px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; }
 th a:link::after, th a:visited::after { *display: inline; }
-th a:focus::after, th a:hover::after, th a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
-th.asc a:link::after, th.asc a:visited::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
-th.asc a:focus::after, th.asc a:hover::after, th.asc a:active::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
-th.desc a:link::after, th.desc a:visited::after { background-image: url('../images/ui/bullet_arrow_down.png?1142225394'); }
-th.desc a:focus::after, th.desc a:hover::after, th.desc a:active::after { background-image: url('../images/ui/bullet_arrow_up.png?1142225394'); }
+th a:focus::after, th a:hover::after, th a:active::after { background-image: url('../images/ui/angle_up.png?1299110594'); }
+th.asc a:link::after, th.asc a:visited::after { background-image: url('../images/ui/angle_up.png?1299110594'); }
+th.asc a:focus::after, th.asc a:hover::after, th.asc a:active::after { background-image: url('../images/ui/angle_down.png?1299110614'); }
+th.desc a:link::after, th.desc a:visited::after { background-image: url('../images/ui/angle_down.png?1299110614'); }
+th.desc a:focus::after, th.desc a:hover::after, th.desc a:active::after { background-image: url('../images/ui/angle_up.png?1299110594'); }
 
 tr:nth-child(even) td { background: #ebf1f1; }
 tr:hover td { background: #e5f5d2; }
@@ -177,7 +177,7 @@ select[multiple] { height: auto; }
 
 input { vertical-align: middle; }
 input[type="range"] { width: 100%; }
-input[type="search"] { -webkit-appearance: none; -moz-border-radius: 2em; -webkit-border-radius: 2em; -o-border-radius: 2em; -ms-border-radius: 2em; -khtml-border-radius: 2em; border-radius: 2em; padding-left: 2em; background-image: url('../images/ui/magnifier.png?1142225668'); background-position: 0.5em; background-repeat: no-repeat; }
+input[type="search"] { -webkit-appearance: none; -moz-border-radius: 2em; -webkit-border-radius: 2em; -o-border-radius: 2em; -ms-border-radius: 2em; -khtml-border-radius: 2em; border-radius: 2em; padding-left: 2em; background-image: url('../images/ui/search.png?1299110205'); background-position: 0.5em; background-repeat: no-repeat; }
 input[type="search"]::-webkit-search-decoration { display: none; }
 
 .form-actions { clear: both; text-align: right; }
@@ -347,11 +347,11 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .invalid, #run .fail { margin-bottom: 1.5em; width: 20.968%; }
 #run .started .header { background: #accbc9; }
 #run .passed .header { background: #cdeca9; }
-#run .passed .status p { text-shadow: rgba(52, 81, 18, 0.75) 1px 1px 0; background: #77b929 url('../images/ui/accept.png?1142225294') no-repeat scroll 7.692%; }
+#run .passed .status p { text-shadow: rgba(52, 81, 18, 0.75) 1px 1px 0; background: #77b929 url('../images/ui/check.png?1299109813') no-repeat scroll 7.692%; }
 #run .invalidated .header { background: #fef0bf; }
-#run .invalidated .status p { text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0; background: #d6a702 url('../images/ui/error.png?1142225566') no-repeat scroll 7.692%; }
+#run .invalidated .status p { text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0; background: #d6a702 url('../images/ui/warning.png?1299109996') no-repeat scroll 7.692%; }
 #run .failed .header { background: #eca9ab; }
-#run .failed .status p { text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0; background: #b9292f url('../images/ui/delete.png?1142225530') no-repeat scroll 7.692%; }
+#run .failed .status p { text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0; background: #b9292f url('../images/ui/minus_circle.png?1299110065') no-repeat scroll 7.692%; }
 
 /* manage -------------------------------------------------------------- */
 nav.manage { display: inline; float: left; width: 11.446%; }
@@ -389,12 +389,12 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .managelists .controls, #managecycles .controls, #managecases .controls, #addcycle .controls { width: 8.276%; }
 .managelists .controls button, #managecycles .controls button, #managecases .controls button, #addcycle .controls button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75); opacity: 0.75; }
 .managelists .controls button:focus, #managecycles .controls button:focus, #managecases .controls button:focus, #addcycle .controls button:focus, .managelists .controls button:hover, #managecycles .controls button:hover, #managecases .controls button:hover, #addcycle .controls button:hover, .managelists .controls button:active, #managecycles .controls button:active, #managecases .controls button:active, #addcycle .controls button:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
-.managelists .controls button.activate, #managecycles .controls button.activate, #managecases .controls button.activate, #addcycle .controls button.activate { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/accept.png?1142225294'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; }
-.managelists .controls button.delete, #managecycles .controls button.delete, #managecases .controls button.delete, #addcycle .controls button.delete { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/delete.png?1142225530'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; }
-.managelists .controls button.deactivate, #managecycles .controls button.deactivate, #managecases .controls button.deactivate, #addcycle .controls button.deactivate { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/cancel.png?1142225424'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; }
+.managelists .controls button.activate, #managecycles .controls button.activate, #managecases .controls button.activate, #addcycle .controls button.activate { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #e37f83; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/power.png?1299110391'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; padding: 0 0.25em; }
+.managelists .controls button.delete, #managecycles .controls button.delete, #managecases .controls button.delete, #addcycle .controls button.delete { -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/trash.png?1299109771'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; padding: 0 0.25em; }
+.managelists .controls button.deactivate, #managecycles .controls button.deactivate, #managecases .controls button.deactivate, #addcycle .controls button.deactivate { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #b5e37f; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/power.png?1299110391'); background-repeat: no-repeat; background-position: 50% 50%; width: 16px; min-height: 16px; padding: 0 0.25em; }
 .managelists th.controls, #managecycles th.controls, #managecases th.controls, #addcycle th.controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .managelists td, #managecycles td, #managecases td, #addcycle td { white-space: nowrap; }
-.managelists td.title a:link, #managecycles td.title a:link, #managecases td.title a:link, #addcycle td.title a:link, .managelists td.title a:visited, #managecycles td.title a:visited, #managecases td.title a:visited, #addcycle td.title a:visited { padding-left: 1.5em; background: url('../images/ui/pencil.png?1142225764') no-repeat scroll left; }
+.managelists td.title a:link, #managecycles td.title a:link, #managecases td.title a:link, #addcycle td.title a:link, .managelists td.title a:visited, #managecycles td.title a:visited, #managecases td.title a:visited, #addcycle td.title a:visited { padding-left: 1.5em; background: url('../images/ui/pencil.png?1299110332') no-repeat scroll left; }
 .managelists td.controls, #managecycles td.controls, #managecases td.controls, #addcycle td.controls { text-align: right; }
 .managelists .list, #managecycles .list, #managecases .list, #addcycle .list { margin: 0; }
 .managelists .form-actions, #managecycles .form-actions, #managecases .form-actions, #addcycle .form-actions { margin-top: 1.5em; }
@@ -417,7 +417,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #managecycles .list, #managecases .list { display: inline; float: left; width: 85.517%; margin-right: 1.379%; margin: 0; }
 
 /* ADD ITEMS -------------------------------------------------------------- */
-.removefields { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/cross.png?1142225500'); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
+.removefields { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/x_circle.png?1299109975'); background-repeat: no-repeat; background-position: 50% 50%; display: block; height: 1.5em; }
 
 .addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited { display: block; padding: 0 0.75em; color: #345112; background: #e5f5d2; text-align: right; }
 .addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited { padding-top: 0.375em; padding-bottom: 0.375em; }
@@ -467,8 +467,8 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .userselect ul li { font-size: 0.875em; line-height: 1.714em; }
 .userselect ul input { display: none; }
 .userselect ul label { padding-top: 0.429em; padding-left: 1.714em; padding-right: 1.714em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.357em; display: block; background: #cddcdb; border-color: #eeeeee; }
-.userselect .unselected label:focus, .userselect .unselected label:hover, .userselect .unselected label:active { background: #b5e37f url('../images/ui/arrow_right.png?1142225330') no-repeat scroll right; }
-.userselect .selected label:focus, .userselect .selected label:hover, .userselect .selected label:active { background: #eca9ab url('../images/ui/arrow_left.png?1142225326') no-repeat scroll left; }
+.userselect .unselected label:focus, .userselect .unselected label:hover, .userselect .unselected label:active { background: #b5e37f url('../images/ui/arrow_right.png?1299110648') no-repeat scroll right; }
+.userselect .selected label:focus, .userselect .selected label:hover, .userselect .selected label:active { background: #eca9ab url('../images/ui/arrow_left.png?1299110631') no-repeat scroll left; }
 .userselect .addall, .userselect .removeall { font-size: 0.875em; line-height: 1.714em; -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; display: block; width: 100%; padding-left: 1.714em; padding-right: 1.714em; text-align: left; }
 .userselect .addall { color: #cdeca9; background: #77b929; text-align: right; }
 .userselect .addall:hover { background: #345112; }

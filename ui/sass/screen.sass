@@ -408,21 +408,21 @@ footer[role="contentinfo"]
     .status
       p
         +text-shadow(rgba($green-dark,.75) 1px 1px 0)
-        background: $green image-url('ui/accept.png') no-repeat scroll gutter(4)
+        background: $green image-url('ui/check.png') no-repeat scroll gutter(4)
   .invalidated
     .header
       background: $yellow-light
     .status
       p
         +text-shadow(rgba($red,.75) 1px 1px 0)
-        background: $yellow-darker image-url('ui/error.png') no-repeat scroll gutter(4)
+        background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
   .failed
     .header
       background: $red-lighter
     .status
       p
         +text-shadow(rgba($red-dark,.75) 1px 1px 0)
-        background: $red image-url('ui/delete.png') no-repeat scroll gutter(4)
+        background: $red image-url('ui/minus_circle.png') no-repeat scroll gutter(4)
 
 /* manage --------------------------------------------------------------    
 
@@ -525,9 +525,9 @@ nav.manage
       +opacity(.75)
       #{$focus}
         +opacity(1)
-      +icon('activate','ui/accept.png')
-      +icon('delete','ui/delete.png')
-      +icon('deactivate','ui/cancel.png')
+      +icon('activate','ui/power.png',$red-light)
+      +icon('delete','ui/trash.png')
+      +icon('deactivate','ui/power.png',$green-light)
   
   th
     &.controls
@@ -596,7 +596,7 @@ nav.manage
 /* ADD ITEMS --------------------------------------------------------------    
 
 .removefields
-  +replace-text('ui/cross.png')
+  +replace-text('ui/x_circle.png')
   display: block
   height: $base-rhythm-unit
 

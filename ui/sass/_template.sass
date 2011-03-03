@@ -40,8 +40,13 @@
       padding: $base-rhythm-unit * 0.25
       border-bottom: 1px solid #ccc
 
-=icon($class,$img)
+=icon($class,$img,$back:false)
   &.#{$class}
+    @if $back
+      +border-radius(.25em)
+      background-color: $back
+    +box-sizing('content-box')
     +replace-text($img)
     width: image-width($img)
     min-height: image-height($img)
+    padding: 0 .25em 
