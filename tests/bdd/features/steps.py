@@ -10,6 +10,7 @@ from steps_users import *
 import httplib
 import mock_scenario_data
 import pprint
+import cgi
 
 def save_db_state():
     '''
@@ -103,10 +104,47 @@ def teardown_after_all(total):
     if (world.restore_db_after_all):
         restore_db_state()
     
-    pp = pprint.PrettyPrinter(indent=4)
-    output = pp.pformat(world.apis_called)
+    write_apis_called_file()
+
+
+def write_apis_called_file():
+    
+#    pp = pprint.PrettyPrinter(indent=4)
+#    output = pp.pformat(world.apis_called)
     # write out api calls by sentence
     f = open(world.apis_called_file, 'w')
+    
+    world.apis_called
+    
+    tablerows = ""
+    # we can't sort a dict, so we need to sort the keys, then fetch the value for it
+    keys = world.apis_called.keys()
+    keys.sort()
+    for key in keys:
+        # each value is a set of the methods called (to keep them unique) so we join them by spaces
+        tablerow = "<tr><td>%s</td><td>%s</td></tr>" % (key, ' '.join(world.apis_called[key]))
+        tablerows += tablerow
+
+    output = '''
+            <html xmlns="http://www.w3.org/1999/xhtml">
+                <head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                    
+                    <title>%(appUnderTest)s Results</title>
+                </head>
+                <body>
+                    <h1>%(appUnderTest)s APIs Called</h1>
+                    <table border=1>
+                    <tr><th>API</th><th>Methods</th></tr>
+                    %(tablerows)s
+                    </table>
+                </body>
+            </html>
+        ''' % {'tablerows': tablerows,
+               'appUnderTest': cgi.escape(world.applicationUnderTest)
+               }
+    
+    
     f.write(output)
     
     # write out just the unique apis that were called
@@ -115,6 +153,7 @@ def teardown_after_all(total):
     
 #    f = open(world.api_calls_file, 'w')
 #    f.write(jstr(world.apis_by_sentence))
+    
 
 @before.each_scenario
 def setup_before_scenario(scenario):

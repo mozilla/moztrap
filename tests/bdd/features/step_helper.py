@@ -185,6 +185,24 @@ def record_api_for_step(method, uri):
             }
         }
     '''
+    # if the uri has a number/id in it, we want to replace that with "{id}" so we
+    # don't get repeats for different ids.
+    
+    if uri.startswith(world.api_prefix):
+        uri = uri[len(world.api_prefix):]
+    
+    uri_parts = uri.strip().split("/")
+    for index, item in enumerate(uri_parts):
+        try:
+            int(item)
+            uri_parts[index] = "{id}"
+        except ValueError:
+            # not a number, that's ok
+            pass
+    
+    uri = '/'.join(uri_parts)
+    
+    
     methods = world.apis_called.setdefault(uri, set())
     methods.add(method)
     
