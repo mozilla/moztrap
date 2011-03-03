@@ -483,6 +483,30 @@ a.create
     position: .75em, left
     repeat: no-repeat
 
+=bulk-color($value,$color,$back,$hover:$color)
+  &[value="#{$value}"]
+    background: $back
+    color: $color
+    &:hover
+      +text-shadow(rgba(black,.5) 1px 1px 0)
+      background: $hover
+      color: white
+
+.bulk
+  +pie-clearfix
+  +full(21)
+  +trailer(.5)
+  strong
+    +adjust-font-size-to(14px)
+    font-weight: normal
+  button
+    +button-reset
+    +text-shadow(rgba(white,.75) 1px 1px 0)
+    padding: 0 .4em
+    background: $blue-lightest
+    color: $blue
+    +bulk-color(suite,$green,$green-lightest)
+
 .managelist
   +columns(18,21)
   margin: 0
@@ -502,50 +526,55 @@ a.create
       margin-bottom: 0
   .content
     background: $light
-      
-  .status, .start, .end, .controls, .id
-    +columns(2,18)
-  .title
-    +columns(6,18)
-  .description
-    +columns(8,18)
-  .product, .environments, .testers
-    +columns(4,18)
-  .controls, .testers
-    +omega(18)
   
-  .status
-    button
-      +opacity(.75)
-      display: block
-      padding: 0 .5em 0 2em
-      width: 100%
-      background: $light image-url('ui/power.png') no-repeat .5em
-      text-align: left
-      &[title="activate"]
-        background-color: $red-lighter
-        #{$focus}
-          background-color: $green-light
-      &[title="lock"]
-        background-color: $green-lighter
-        #{$focus}
-          background-color: $red-light
-      &.active
-        background-image: image-url('ui/check.png')
-        #{$focus}
-          background-image: image-url('ui/lock.png')
-      &.locked
-        background-image: image-url('ui/lock.png')
-        #{$focus}
-          background-image: image-url('ui/check.png')
-      &.draft
-        background-color: $light
-        #{$focus}
-          background-image: image-url('ui/check.png')
-      #{$focus}
-        +opacity(1)
   .id
     text-align: right
+  .bulkselect
+    label
+      +gone
+  .status
+    button
+      +icon('.draft','ui/power.png',$light)
+      +icon('.active','ui/power.png',$green-light)
+      +icon('.locked','ui/lock.png',$red-lighter)
+      #{$focus}
+        +icon('.active','ui/lock.png',$green-light)
+        +icon('.locked','ui/unlock.png',$red-lighter)
+  .controls
+    text-align: right
+        
+  #managecycles &
+    .status, .start, .end, .id
+      +columns(2,18)
+    .product, .controls
+      +columns(3,18)
+    .environments, .testers
+      +columns(4,18)
+    .title
+      +columns(5,18)
+    .description
+      +columns(8,18)
+    .controls, .testers
+      +omega(18)
+
+  #managecases &
+    .bulkselect, .status
+      +columns(1,18)
+    .id, .version
+      +columns(2,18)
+    .title, .tags, .environments
+      +columns(8,18)
+    .product, .controls
+      +columns(3,18)
+    .byline
+      +columns(16,18)
+    .tags
+      +prefix(2,18)
+      clear: left
+    .controls, .byline, .environments
+      +omega(18)
+    .status
+      text-align: right
   
 .listordering
   +clearfix
@@ -554,28 +583,39 @@ a.create
   border-color: #ccc
   ul
     +no-style-list
-  .bytitle
-    +columns(6,18)
-    +prefix(2,18)
-  .byproduct
-    +columns(4,18)
-  .bystart, .byend
-    +columns(2,18)
   a
     #{$link}
       display: block
+  
+  #managecycles &
+    .bytitle
+      +columns(5,18)
+      +prefix(2,18)
+    .byproduct
+      +columns(3,18)
+    .bystart, .byend
+      +columns(2,18)
+  
+  #managecases &
+    .bytitle
+      +columns(8,18)
+      +prefix(2,18)
+    .byproduct, .byversion
+      +columns(3,18)
       
 .listnav
   +pie-clearfix
-  +trailer(.5)
-  +padding-leader(.25)
-  +trailing-border(1px,.25)
+  +adjust-font-size-to(12px)
+  +trailer(.5,12px)
+  +padding-leader(.25,12px)
+  +trailing-border(1px,.25,12px)
   +hpadding(.5em)
   clear: both
   margin-top: -1px
   background: $light
   border-top: 1px solid
   border-color: #ccc
+  white-space: nowrap
   p, ul
     +reset-box-model
   .location, .perpage
