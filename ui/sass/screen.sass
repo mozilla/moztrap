@@ -524,6 +524,9 @@ a.create
   .header
     p, h3
       margin-bottom: 0
+    #{$focus}
+      outline: 0
+      background: $green-lightest
   .content
     background: $light
   
@@ -540,8 +543,6 @@ a.create
       #{$focus}
         +icon('.active','ui/lock.png',$green-light)
         +icon('.locked','ui/unlock.png',$red-lighter)
-  .controls
-    text-align: right
         
   #managecycles &
     .status, .start, .end, .id
@@ -693,6 +694,8 @@ a.create
     +columns(11,21)
     +inline-form(2,9,11)
     +trailer
+    li
+      clear: both
     .errorlist
       +full(11)
       +prefix(2,11)

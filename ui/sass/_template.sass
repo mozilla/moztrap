@@ -41,6 +41,9 @@
       border-bottom: 1px solid #ccc
 
 .controls
+  text-align: right
+  thead &
+    +hide
   a
     #{$link}
       +inline-block
@@ -49,5 +52,6 @@
     #{$focus}
       +opacity(1)
   button
+    +button-reset
     +icon('[title="clone"]','ui/clone.png')
     +icon('[title="delete"]','ui/trash.png')
