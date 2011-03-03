@@ -49,7 +49,7 @@ world.testfile_dir = "./data/"
 world.apis_by_sentence_file = 'apis_by_sentence.json'
 
 # this file is a listing of all unique api calls made in this test
-world.api_calls_file = 'api_calls.json'
+world.apis_called_file = 'apis_called.html'
 
 #prefix to uri pathing
 world.api_prefix = "/tcm/services/v2/rest/"
