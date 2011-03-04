@@ -56,33 +56,18 @@
     +icon('[title="clone"]','ui/clone.png')
     +icon('[title="delete"]','ui/trash.png')
 
-@-webkit-keyframes loadingbackground
-  0%
-    background-position: left
-  100%
-    background-position: right
-
-=loading-animation
-  position: relative
-  +background-image(linear-gradient(left, rgba($light,.5), rgba($light,0), rgba($light,.5)))
-  background:
-    size: $base-rhythm-unit*2 100%
-    repeat: repeat
-  -webkit-animation: loadingbackground 15s linear infinite
-
 .loading
-  +loading-animation
-  +text-shadow($base 0 0 6px !important)
+  position: relative
   > *
-    +opacity(.5)
+    +opacity(.25)
   &::before
     @extend .allcaps
     +text-shadow(rgba($base,.675) 1px 1px 0)
     display: block
     position: absolute
     content: "loading..."
-    color: rgba($light,.85)
-    background-color: rgba($base,.5)
+    color: rgba($light,.95)
+    background-color: rgba($base,.25)
     font-weight: bold
     text-align: center
     top: 0
