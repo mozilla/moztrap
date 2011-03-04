@@ -101,9 +101,6 @@
         // Clone the form template to generate new form instances:
         template = $(options.formTemplate);
         template.removeAttr('id');
-        template.find('input,select,textarea,label').each(function() {
-            updateElementIndex($(this), options.prefix);
-        });
         insertDeleteLink(template);
         // FIXME: Perhaps using $.data would be a better idea?
         options.formTemplate = template;
