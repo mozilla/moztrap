@@ -40,8 +40,8 @@
 
     <div class="steps">
       {{ form.steps_formset.management_form }}
-      {% for form in form.steps_formset %}
       <ol class="steplist">
+        {% for form in form.steps_formset %}
         {% include "manage/testcase/_step_form.html" %}
         {% endfor %}
       </ol>
