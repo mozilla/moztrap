@@ -13,18 +13,10 @@
     $.fn.formset = function(opts)
     {
         var options = $.extend({}, $.fn.formset.defaults, opts),
-            flatExtraClasses = options.extraClasses.join(' '),
             totalForms = $('#id_' + options.prefix + '-TOTAL_FORMS'),
             maxForms = $('#id_' + options.prefix + '-MAX_NUM_FORMS'),
             parent = $(this),
             $$ = $(this).children('li'),
-
-            applyExtraClasses = function(row, ndx) {
-                if (options.extraClasses) {
-                    row.removeClass(flatExtraClasses);
-                    row.addClass(options.extraClasses[ndx % options.extraClasses.length]);
-                }
-            },
 
             updateElementIndex = function(elem, prefix, ndx) {
                 var idRegex = new RegExp('(' + prefix + '-(\\d+|__prefix__)-)'),
@@ -45,7 +37,7 @@
 
             insertDeleteLink = function(row) {
                 $(options.deleteLink).appendTo(row).click(function() {
-                    var row = $(this).parents('.' + options.formCssClass),
+                    var row = $(this).parents(options.formSelector),
                         del = row.find('input:hidden[id $= "-DELETE"]'),
                         forms;
                     if (del.length) {
@@ -54,18 +46,16 @@
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
                         row.hide();
-                        forms = $('.' + options.formCssClass).not(':hidden');
+                        forms = parent.find(options.formSelector).not(':hidden');
                     } else {
                         row.remove();
                         // Update the TOTAL_FORMS count:
-                        forms = $('.' + options.formCssClass).not('.formset-custom-template');
+                        forms = parent.find(options.formSelector);
                         totalForms.val(forms.length);
                     }
-                    // Apply extraClasses to form rows so they're nicely alternating.
-                    // Also update names and IDs for all child controls, if this isn't a delete-able
+                    // Update names and IDs for all child controls, if this isn't a delete-able
                     // inline formset, so they remain in sequence.
                     for (var i=0, formCount=forms.length; i<formCount; i++) {
-                        applyExtraClasses(forms.eq(i), i);
                         if (!del.length) {
                             forms.eq(i).find('input,select,textarea,label').each(function() {
                                 updateElementIndex($(this), options.prefix, i);
@@ -98,12 +88,10 @@
                 del.remove();
             }
             if (hasChildElements(row)) {
-                row.addClass(options.formCssClass);
                 if (row.is(':visible')) {
                     if (!options.deleteOnlyNew) {
                         insertDeleteLink(row);
                     }
-                    applyExtraClasses(row, i);
                 }
             }
         });
@@ -111,10 +99,10 @@
         var hideAddButton = !showAddButton(),
             addButton, template;
         // Clone the form template to generate new form instances:
-        template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
-        template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
+        template = $(options.formTemplate);
+        template.removeAttr('id');
         template.find('input,select,textarea,label').each(function() {
-            updateElementIndex($(this), options.prefix, 2012);
+            updateElementIndex($(this), options.prefix);
         });
         insertDeleteLink(template);
         // FIXME: Perhaps using $.data would be a better idea?
@@ -126,8 +114,7 @@
         if (hideAddButton) addButton.hide();
         addButton.click(function() {
             var formCount = parseInt(totalForms.val()),
-                row = options.formTemplate.clone(true).removeClass('formset-custom-template');
-            applyExtraClasses(row, formCount);
+                row = options.formTemplate.clone(true);
             row.appendTo($(this).prev()).show();
             row.find('input,select,textarea,label').each(function() {
                 updateElementIndex($(this), options.prefix, formCount);
@@ -147,11 +134,14 @@
     $.fn.formset.defaults = {
         prefix: 'form',                  // The form prefix for your django formset
         formTemplate: null,              // The jQuery selection cloned to generate new form instances
+                                         // This empty-form must be outside the parent (element on which
+                                         // formset is called)
         deleteLink: '<a class="delete-row" href="javascript:void(0)">remove</a>',
+                                         // The HTML "remove" link added to the end of each form-row
         addLink: '<a class="add-row" href="javascript:void(0)">add</a>',
+                                         // The HTML "add" link added to the end of all forms
         deleteOnlyNew: false,            // If true, only newly-added rows can be deleted
-        formCssClass: 'dynamic-form',    // CSS class applied to each form in a formset
-        extraClasses: [],                // Additional CSS classes, which will be applied to each form in turn
+        formSelector: '.dynamic-form',   // jQuery selector used to match each form in a formset
         added: null,                     // Function called each time a new form is added
         removed: null                    // Function called each time a form is deleted
     };
