@@ -3,8 +3,7 @@ function filterEnvironments(template, forms) {
 
     function doFilter(form) {
         var typeid = $(form).find("select.env_type").val();
-        var envselect = $(form).find("select.environments");
-        envselect.empty();
+        var envselect = $(form).find("select.environments").empty();
         allopts.each(
             function() {
                 if ($(this).val().split(":")[0] == typeid) {
@@ -15,11 +14,6 @@ function filterEnvironments(template, forms) {
     }
 
     doFilter($(template));
-
-    $(forms).each(
-        function() {
-            doFilter(this);
-        });
 
     $(forms).find("select.env_type").live(
         "change",
