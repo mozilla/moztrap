@@ -66,13 +66,16 @@
   position: relative
   +background-image(linear-gradient(left, rgba($light,.5), rgba($light,0), rgba($light,.5)))
   background:
-    size: $base-rhythm-unit 100%
+    size: $base-rhythm-unit*2 100%
     repeat: repeat
-  -webkit-animation: loadingbackground 10s linear infinite
+  -webkit-animation: loadingbackground 15s linear infinite
 
 .loading
   +loading-animation
-  &::after
+  +text-shadow($base 0 0 6px !important)
+  > *
+    +opacity(.5)
+  &::before
     @extend .allcaps
     +text-shadow(rgba($base,.675) 1px 1px 0)
     display: block
@@ -86,4 +89,5 @@
     right: 0
     bottom: 0
     left: 0
+    z-index: 50
     
