@@ -106,12 +106,23 @@ class EnvironmentConstraintForm(forms.Form):
             for env in group.environments:
                 et = env.environmentType
                 types.add((et.id, et.name))
-                environments.add(("%s:%s" % (et.id, env.id), env.name))
+                environments.add(((et.id, env.id), env.name))
 
         k = lambda x: x[1]
+
         self.fields["env_type"].choices = sorted(types, key=k)
         self.fields["env_type"].widget.attrs["class"] = "env_type"
-        self.fields["environments"].choices = sorted(environments, key=k)
+
+        # Filter the list of environments to only those relevant to the
+        # selected environment type, if form is bound.
+        if self.is_bound:
+            etid = self.data.get(self.add_prefix("env_type"), None)
+            if etid is not None:
+                environments = (e for e in environments if e[0][0] == etid)
+
+        self.fields["environments"].choices = sorted(
+            ((":".join(e[0]), e[1]) for e in environments),
+            key=k)
         self.fields["environments"].widget.attrs["size"] = 5
         self.fields["environments"].widget.attrs["class"] = "environments"
 
@@ -126,7 +137,7 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
 
     def _get_empty_form(self, **kwargs):
         kwargs["groups"] = self.groups
-        # work around http://code.djangoproject.com/ticket/15349
+        # @@@ work around http://code.djangoproject.com/ticket/15349
         kwargs["data"] = None
         kwargs["files"] = None
         return super(BaseEnvironmentConstraintFormSet, self)._get_empty_form(
