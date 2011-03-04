@@ -79,17 +79,23 @@ $accent: $red
   height: 0
   width: 0
 
+=icon-style($img,$back:false)
+  @if $back
+    +border-radius(.25em)
+    background-color: $back
+  +box-sizing('content-box')
+  +replace-text($img)
+  width: image-width($img)
+  min-height: image-height($img)
+  padding: 0 .25em
+  +opacity(.675)
+  #{$focus}
+    +opacity(1)
+
 =icon($select,$img,$back:false)
-  &#{$select}
-    @if $back
-      +border-radius(.25em)
-      background-color: $back
-    +box-sizing('content-box')
-    +replace-text($img)
-    width: image-width($img)
-    min-height: image-height($img)
-    padding: 0 .25em
-    +opacity(.675)
-    #{$focus}
-      +opacity(1)
+  @if $select
+    &#{$select}
+      +icon-style($img,$back)
+  @else
+    +icon-style($img,$back)
     
