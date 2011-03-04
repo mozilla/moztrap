@@ -15,6 +15,13 @@ function filterEnvironments(template, forms) {
 
     doFilter($(template));
 
+    // bound forms' environment choices are filtered on the server side
+    // and we don't want to wipe out existing selections.
+     $(forms).not(".bound").each(
+        function() {
+            doFilter(this);
+        });
+
     $(forms).find("select.env_type").live(
         "change",
         function() {
