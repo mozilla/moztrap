@@ -3,14 +3,13 @@ Created on Oct 7, 2010
 
 @author: camerondawson
 '''
-from lettuce import *
-from step_helper import *
-from steps_companies import *
-from steps_users import *
+from features.step_helper import verify_status, add_params, do_post, \
+    get_company_resid
+from lettuce import step, world
+from lettuce.terrain import before, after
+import cgi
 import httplib
 import mock_scenario_data
-import pprint
-import cgi
 
 def save_db_state():
     '''

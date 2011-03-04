@@ -3,8 +3,10 @@
 Created on Jan 28, 2011
 @author: camerondawson
 '''
-from lettuce import *
-from step_helper import *
+from features.step_helper import get_stored_or_store_name, get_seed_company_id, \
+    do_post, get_company_resid, search_and_verify_existence, get_product_resid, \
+    do_delete, get_environment_resid, search_and_verify
+from lettuce import step, world
 
 
 '''

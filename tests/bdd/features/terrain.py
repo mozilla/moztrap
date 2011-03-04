@@ -10,7 +10,7 @@ the tests and/or the Tcm Platform
 from lettuce import world
 
 world.applicationUnderTest = "Case Keeper"
-world.hostname = "camd.mv.mozilla.com"
+world.hostname = "localhost"
 
 world.db_hostname = world.hostname
 
@@ -45,9 +45,6 @@ world.ns = 'ns1.'
 #used to find data, such as sample files for upload
 world.testfile_dir = "./data/"
 
-# this file is a listing of all api calls made for each sentence
-world.apis_by_sentence_file = 'apis_by_sentence.json'
-
 # this file is a listing of all unique api calls made in this test
 world.apis_called_file = 'apis_called.html'
 
@@ -59,3 +56,12 @@ world.api_prefix = "/tcm/services/v2/rest/"
 world.path_mockdata =           "/mockdata"
 world.path_savedb =             "/TcmDbUnitServlet/savedb?host=%s" % (world.db_hostname)
 world.path_restoredb =          "/TcmDbUnitServlet/restoredb?host=%s" % (world.db_hostname)
+
+# now import the "local" file for any user-changed settings
+try:
+    import terrain_local
+except:
+    # if it doesn't exist, just use all these default values
+    pass
+
+

@@ -4,9 +4,9 @@ Created on Jan 31, 2011
 @author: camerondawson
 '''
 
-from lettuce import *
-#from nose.tools import *
-from step_helper import *
+from features.step_helper import do_post, get_testcase_resid, \
+    encode_multipart_formdata
+from lettuce import step, world
 
 '''
 ######################################################################

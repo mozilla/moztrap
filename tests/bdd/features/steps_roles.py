@@ -3,10 +3,11 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from lettuce import *
-from step_helper import *
-from step_helper import jstr, add_params
-#from nose.tools import *
+from features.step_helper import get_stored_or_store_name, get_seed_company_id, \
+    do_post, get_role_resid, get_list_from_search, ns, get_list_from_endpoint, \
+    get_user_resid, do_put, get_single_item_from_endpoint, check_first_before_second, \
+    jstr
+from lettuce import step, world
 
 '''
 ######################################################################
@@ -37,7 +38,6 @@ def create_role_with_permissions(step, stored, name):
         
         # find the matching permission object based on the permissionCode field
         found_perm = [x for x in perm_array if x[ns("permissionCode")] == permissionCode] 
-        assert found_perm != None, "Expected permissionCode: " + permissionCode
         assert len(found_perm) >= 1, "Should be at least one found"
         try:
             # there will always be only one that matches, in this case

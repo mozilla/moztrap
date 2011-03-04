@@ -3,7 +3,7 @@ Created on Nov 9, 2010
 
 @author: camerondawson
 '''
-from lettuce import *
+from lettuce.terrain import world
 import base64
 import copy
 import json
