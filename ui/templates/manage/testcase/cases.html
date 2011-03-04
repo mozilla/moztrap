@@ -6,11 +6,6 @@
   <a href="/manage/testcase/add/" class="create">create a test case</a>
   <form>
     
-    <div class="bulk">
-      <strong>bulk action:</strong>
-      <button value="suite">create test suite</button>
-    </div>
-
     <section class="managelist">
       <nav class="listordering">
         <ul>
@@ -19,13 +14,94 @@
           <li class="byversion"><a href="#">version</a></th>
         </ul>
       </nav>
+      <article id="unique-slug-id01" class="item pending">
+        <details>
+          <summary class="header">
+            <p class="status">
+              <span class="pending">
+                <button title="approve">approve</button>
+                <button title="reject">reject</button>
+              </span>
+            </p>
+            <h3 class="title">Test Case Name</h3>
+            <p class="product">Firefox</p>
+            <p class="version">2.24</p>
+            <div class="controls">
+              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              <button title="clone">clone</button>
+              <button title="delete">delete</button>
+            </div>
+          </summary>
+          <div class="content">
+            <p class="id">#3456</p>
+            <h4 class="byline hcard">
+              Created by <span class="fn">Eric Meyer</span>
+              on <time pubdate>12.28.2010</time>
+            </h4>
+            <div class="tags">
+              <h4>tags</h4>
+              <ul>
+                <li>tag 01</li>
+                <li>tag 02</li>
+                <li>tag 03</li>
+                <li>tag 04</li>
+              </ul>
+            </div>
+            <div class="environments">
+              <h4>environrments</h4>
+              <ul>
+                <li>env 01</li>
+                <li>env 02</li>
+                <li>env 03</li>
+                <li>env 04</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
+      <article id="unique-slug-id01" class="item rejected">
+        <details>
+          <summary class="header">
+            <p class="status"><button title="approve" class="rejected">rejected</button></p>
+            <h3 class="title">Test Case Name</h3>
+            <p class="product">Firefox</p>
+            <p class="version">2.24</p>
+            <div class="controls">
+              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              <button title="clone">clone</button>
+              <button title="delete">delete</button>
+            </div>
+          </summary>
+          <div class="content">
+            <p class="id">#3456</p>
+            <h4 class="byline hcard">
+              Created by <span class="fn">Eric Meyer</span>
+              on <time pubdate>12.28.2010</time>
+            </h4>
+            <div class="tags">
+              <h4>tags</h4>
+              <ul>
+                <li>tag 01</li>
+                <li>tag 02</li>
+                <li>tag 03</li>
+                <li>tag 04</li>
+              </ul>
+            </div>
+            <div class="environments">
+              <h4>environrments</h4>
+              <ul>
+                <li>env 01</li>
+                <li>env 02</li>
+                <li>env 03</li>
+                <li>env 04</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
       <article id="unique-slug-id01" class="item draft">
         <details>
           <summary class="header">
-            <p class="bulkselect">
-              <input type="checkbox" name="bulk" value="" id="bulk">
-              <label for="bulk">select for bulk action</label>
-            </p>
             <p class="status"><button title="activate" class="draft">draft</button></p>
             <h3 class="title">Test Case Name</h3>
             <p class="product">Firefox</p>
@@ -66,10 +142,6 @@
       <article id="unique-slug-id01" class="item active">
         <details>
           <summary class="header">
-            <p class="bulkselect">
-              <input type="checkbox" name="bulk" value="" id="bulk">
-              <label for="bulk">select for bulk action</label>
-            </p>
             <p class="status"><button title="lock" class="active">active</button></p>
             <h3 class="title">Test Case Name</h3>
             <p class="product">Fennec</p>
@@ -114,10 +186,6 @@
       <article id="unique-slug-id01" class="item locked">
         <details>
           <summary class="header">
-            <p class="bulkselect">
-              <input type="checkbox" name="bulk" value="" id="bulk">
-              <label for="bulk">select for bulk action</label>
-            </p>
             <p class="status"><button title="activate" class="locked">locked</button></p>
             <h3 class="title">Test Case Name</h3>
             <p class="product">Firefox</p>
@@ -195,11 +263,6 @@
         </ul>
       </div>
     </nav>
-
-    <div class="bulk">
-      <strong>bulk action:</strong>
-      <button value="suite">create test suite</button>
-    </div>
     
   </form>
 </section>
