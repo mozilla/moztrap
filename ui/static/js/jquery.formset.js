@@ -105,7 +105,7 @@
         // FIXME: Perhaps using $.data would be a better idea?
         options.formTemplate = template;
 
-        // Otherwise, insert it immediately after the last form:
+        // Insert the add-link immediately after the last form:
         parent.after(options.addLink);
         addButton = parent.next();
         if (hideAddButton) addButton.hide();
