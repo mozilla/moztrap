@@ -570,15 +570,15 @@ a.create
         +icon('.locked','ui/unlock.png',$green-light,text)
       &.rejected, &.draft, &.active, &.locked
         width: 100%
+        position: relative
         #{$focus}
           +hide
           &::after
             content: attr(title)
             position: absolute
             top: 0
-            left: 1.5em
+            left: 0
             text-indent: 0
-          
         
   #managecycles &
     .status, .start, .end, .id
