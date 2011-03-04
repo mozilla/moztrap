@@ -4,3 +4,4 @@ ui/tcmui/settings_local.py
 .livereload
 *.pyc
 *.class
+apis_called.html
