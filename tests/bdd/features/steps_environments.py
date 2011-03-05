@@ -51,9 +51,9 @@ def at_least_these_environments_exist(step):
         envtype_id = get_environmenttype_resid(env["type"])
         found_env = [x for x in env_list if ((x[ns("name")] == env_name) and (x[ns("environmentTypeId")] == envtype_id))] 
         
-        assert (len(found_env) == 1, 
-                 "Expected to find environment with name %s and environmentTypeId of %s in:\n%s" % 
-                 (env_name, envtype_id, jstr(env_list)))
+        assert (len(found_env) == 1), \
+            "Expected to find environment with name %s and environmentTypeId of %s in:\n%s" % \
+            (env_name, envtype_id, jstr(env_list))
 
 @step(u'create a new environment with (that name|name "(.*)") of type "(.*)"')
 def create_environment_with_name(step, stored, name, type_name):

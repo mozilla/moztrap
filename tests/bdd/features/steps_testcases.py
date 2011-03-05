@@ -9,7 +9,7 @@ from features.step_helper import get_stored_or_store_name, do_post, \
     get_auth_header_user_name, search_and_verify_existence, get_testcase_resid, \
     do_delete, get_testcase_latestversion_id, eq_, get_environment_resid, \
     get_product_resid, get_testcycle_resid, get_testrun_resid, \
-    search_and_verify_array, get_testsuite_resid
+    search_and_verify_array, get_testsuite_resid, get_form_headers
 from lettuce import step, world
 
 
@@ -46,10 +46,11 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
                     "maxNumberOfAttachments":"5",
                     "name": testcase_name,
                     "description": "Lettuce tc"
-                   }
+                    }
+    headers = get_form_headers(get_auth_header_user_name(user_name))
     do_post(world.path_testcases,
             post_payload,
-            auth_header = get_auth_header_user_name(user_name))
+            headers = headers)
 
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
@@ -117,10 +118,12 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
 
     
     # do the approval of the testcase
-    uri = world.path_testcases + "versions/" + testcaseversion_id + "/approve/" 
+    uri = world.path_testcases + "versions/" + testcaseversion_id + "/approve/"
+    headers = get_form_headers(get_auth_header_user_name(user_name))
+     
     do_put(uri, 
            {"originalVersionId": version},
-           get_auth_header_user_name(user_name))
+            headers = headers)
     
 #@todo: This has a hardcoded value for approvalStatusId, fix that
 @step(u'the testcase with (that name|name "(.*)") has status of Active')

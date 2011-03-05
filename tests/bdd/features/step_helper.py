@@ -22,6 +22,19 @@ import urllib
 ######################################################################
 '''
 
+def get_auth_header(userid = "admin@utest.com", passwd = "admin"):
+    auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
+
+    return auth
+
+def get_form_headers(auth_header = get_auth_header()):
+    return {'Authorization': auth_header,
+            'content-type': "application/x-www-form-urlencoded"}
+
+def get_json_headers(auth_header = get_auth_header()):
+    return {'Authorization': auth_header,
+            'Content-Type':'application/json'}
+
 def get_stored_or_store_name(objtype, stored, name):
     '''
         Help figure out if the test writer wants to use a stored name from a previous step, or if
@@ -84,11 +97,6 @@ def verify_status(exp_status, response, msg):
 def eq_(act, exp, msg):
     assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
     
-def get_auth_header(userid = "admin@utest.com", passwd = "admin"):
-
-    auth = 'Basic ' + string.strip(base64.encodestring(userid + ':' + passwd))
-
-    return auth
 
 def get_auth_header_user_name(user_name):
     names = user_name.split()
@@ -108,40 +116,62 @@ def get_user_password(name):
     names = name.split()
     return "%s%s123" % (names[0], names[1])
 
-def get_list_from_search(type, uri, params = {}, auth_header = get_auth_header()):
+def log_user_in(name):
+    headers = get_json_headers(get_auth_header_user_name(name))
+    # log the user in
+    
+    return do_put_for_cookie(world.path_users + "login", "", headers)
+
+
+def get_list_from_search(type, uri, params = {}, headers = get_json_headers()):
     '''
         This will always return an array.  May have many, one or no items in it
         it goes into the "searchResult" type of response
     '''
-    response_txt = do_get(uri, params)
+    response_txt = do_get(uri, params, headers)
     
-    return get_search_result_list(response_txt, type)
+    sr_field = ns("searchResult")
+    type = ns(type)
+    pl_type = plural(type)
+    
+    try:
+        items = json_to_obj(response_txt)[sr_field][0][pl_type][type]
+    except KeyError:
+        assert False, \
+            "%s\nDidn't find %s / %s / %s in\n%s" % \
+            (str(KeyError), 
+             sr_field,
+             pl_type,
+             ns(type),
+             jstr(response_txt))
 
-def get_list_from_endpoint(type, uri, auth_header = get_auth_header()):
+    if (isinstance(items, list)):
+        return items
+    else:
+        return [items]
+
+
+def get_list_from_endpoint(type, uri, headers = get_json_headers()):
     '''
         This hits an endpoint.  It goes into the ArrayOfXXX type of response
     '''
-    response_txt = do_get(uri)
+    response_txt = do_get(uri, headers = headers)
 
     return get_list_of_type(type, response_txt)
 
-def get_single_item_from_endpoint(type, uri, auth_header = get_auth_header()):
+def get_single_item_from_endpoint(type, uri, headers = get_json_headers()):
     '''
         This hits an endpoint.  It goes into the ArrayOfXXX type of response
     '''
     
-    response_txt = do_get(uri)
+    response_txt = do_get(uri, headers = headers)
     
     try:
         return json_to_obj(response_txt)[ns(type)][0]
     except KeyError:
         assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(type),response_txt)
 
-
-def do_get(uri, params = {}, auth_header = get_auth_header()):
-
-    headers = {'Content-Type':'application/json',
-               'Authorization': auth_header}
+def do_get(uri, params = {}, headers = get_json_headers()):
 
     record_api_for_step("GET", uri)
     
@@ -149,21 +179,46 @@ def do_get(uri, params = {}, auth_header = get_auth_header()):
     response = world.conn.getresponse()
     return verify_status(200, response, str(uri))
 
-def do_post(uri, body, params = {}, auth_header = get_auth_header()):
-    return do_request("POST", uri, body = body, auth_header = auth_header)
+def do_put_for_cookie(uri, body, headers = get_form_headers()):
+    ''' 
+        usually we don't care about the returned headers,  but in
+        the case of login, for instance, we need the cookie it returns
+    '''
+    method = "PUT"
 
-def do_put(uri, body, auth_header = get_auth_header()):
-    return do_request("PUT", uri, body = body, auth_header = auth_header)
+    record_api_for_step(method, uri)
+    
+    world.conn.request(method, add_params(uri), 
+                       urllib.urlencode(body, doseq=True), 
+                       headers)
+    response = world.conn.getresponse()
 
-def do_delete(uri, params, auth_header = get_auth_header()):
-    return do_request("DELETE", uri, params = params, auth_header = auth_header)
+    # stolen from Carl Meyer's code
+    # Work around httplib2's broken multiple-header handling
+    # http://code.google.com/p/httplib2/issues/detail?id=90
+    # This will break if a cookie value contains commas.
+    cookies = [c.split(";")[0].strip() for c in
+               response.getheader("set-cookie").split(",")]
+    auth_cookie = [c for c in cookies if c.startswith("USERTOKEN=")][0]
+    
 
-def do_request(method, uri, params = {}, body = {}, auth_header = get_auth_header()):
+
+    data = verify_status(200, response, "%s %s:\n%s" % (method, uri, body))
+    return data, auth_cookie
+
+def do_put(uri, body, headers = get_form_headers()):
+    return do_request("PUT", uri, body = body, headers = headers)
+
+def do_post(uri, body, params = {}, headers = get_form_headers()):
+    return do_request("POST", uri, body = body, headers = headers)
+
+def do_delete(uri, params, headers = get_form_headers()):
+    return do_request("DELETE", uri, params = params, headers = headers)
+
+def do_request(method, uri, params = {}, body = {}, headers = get_form_headers()):
     ''' 
         do the request
     '''
-    headers = {'Authorization': auth_header,
-               'content-type': "application/x-www-form-urlencoded"}
 
     record_api_for_step(method, uri)
     
@@ -187,7 +242,7 @@ def record_api_for_step(method, uri):
     '''
     # if the uri has a number/id in it, we want to replace that with "{id}" so we
     # don't get repeats for different ids.
-    
+    uri = uri.rstrip('/')
     if uri.startswith(world.api_prefix):
         uri = uri[len(world.api_prefix):]
     
@@ -251,9 +306,40 @@ def search_and_verify_array(uri, search_args, obj_name, expect_to_find):
         for k, v in search_args.items():
             eq_(environmentJson.get(ns(k)), v, obj_name + " match")
 
+def get_list_of_type(type, response_txt):
+    respJson = json_to_obj(response_txt)
+    
+    try:
+        array_of_type = respJson[ns(as_arrayof(type))][0]
+        if (len(array_of_type) > 1):
+            item = array_of_type[ns(type)]
+        else:
+            return []
+    except KeyError:
+        assert False, "didn't find expected type:  %s -- %s in:\n%s" % (ns(as_arrayof(type)),
+                                                                     ns(type),
+                                                                     jstr(respJson))
+
+    # If there is only one, this may not come back as a list.  But I don't want to handle
+    # that case everywhere, so we guarantee this is a list
+    
+    if isinstance(item, list):
+        return item
+    else:
+        return [item]
 
 
-
+def list_size_check(at_least_only, exp, act):
+    # if it's "exactly" these, then just make sure the lengths of the lists match,
+    # otherwise, they don't need to
+    if (at_least_only == "exactly"):
+        passing = len(exp) == len(act)
+    else:
+        passing = len(exp) <= len(act)
+    assert passing, \
+        "These list sizes should match:\nEXPECTED:\n%s\nACTUAL:\n%s" % \
+        (jstr(exp), jstr(act))
+    
 
 
 
@@ -334,30 +420,30 @@ def get_single_item(response_txt, type):
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
 
-def get_search_result_list(response_txt, type):
-    '''
-        return the array of this type that's within the search result
-    '''
-    type = ns(type)
-    pl_type = plural(type)
-
-    respJson = json_to_obj(response_txt)
-    
-    sr_field = ns("searchResult")
-    
-    assert respJson.__contains__(sr_field), "didn't find expected type: %s in:\n%s" % (sr_field, jstr(respJson))        
-    sr = respJson.get(sr_field)
-
-    assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
-    pl_item = sr[0].get(pl_type)
-
-    assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
-    items = pl_item.get(type)
-            
-    if (isinstance(items, list)):
-        return items
-    else:
-        return [items]
+#def get_search_result_list(response_txt, type):
+#    '''
+#        return the array of this type that's within the search result
+#    '''
+#    type = ns(type)
+#    pl_type = plural(type)
+#
+#    respJson = json_to_obj(response_txt)
+#    
+#    sr_field = ns("searchResult")
+#    
+#    assert respJson.__contains__(sr_field), "didn't find expected type: %s in:\n%s" % (sr_field, jstr(respJson))        
+#    sr = respJson.get(sr_field)
+#
+#    assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
+#    pl_item = sr[0].get(pl_type)
+#
+#    assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
+#    items = pl_item.get(type)
+#            
+#    if (isinstance(items, list)):
+#        return items
+#    else:
+#        return [items]
 
 def get_array_item(response_txt, type):
     '''
@@ -391,23 +477,6 @@ def get_array_item(response_txt, type):
     assert item != None, "didn't find expected type: " + ns_type + " in:\n" + jstr(respJson)
     return item
 
-def get_list_of_type(type, response_txt):
-    respJson = json_to_obj(response_txt)
-    
-    try:
-        item = respJson[ns(as_arrayof(type))][0][ns(type)]
-    except KeyError:
-        assert False, "didn't find expected type:  %s -- %s in:\n%s" % (ns(as_arrayof(type)),
-                                                                     ns(type),
-                                                                     jstr(respJson))
-
-    # If there is only one, this may not come back as a list.  But I don't want to handle
-    # that case everywhere, so we guarantee this is a list
-    
-    if isinstance(item, list):
-        return item
-    else:
-        return [item]
 
 
 def get_first_item(response_txt, type):
@@ -480,28 +549,6 @@ def get_count(response_txt, type):
     return count
       
 
-#def get_resp_list(response, type):
-#    '''
-#        Expect the response to be a search result containing a list.
-#        The list may be a list of size 1, though.
-#    '''
-#
-#    type = ns(type)
-#    respJson = json.loads(response.read())
-#    resp_list = []
-#    
-#    # if this was a search, extract the item from the "searchResult" object
-#    # in this case, we only care about the first returned item in this list
-#    if (respJson.__contains__("searchResult")):
-#        sr = respJson.get("searchResult")
-#        assert sr.__contains__(plural(type)), "didn't find expected type: " + plural(type) + " in:\n" + jstr(sr) 
-#        items = sr.get(plural(type)).get(type)
-#        if isinstance(items, list):
-#            resp_list = items
-#        else:
-#            resp_list.append(items)
-#
-#    return resp_list
 
 def get_user_resid(name):
     ''' 
@@ -643,12 +690,6 @@ def json_to_obj(response_txt):
 def json_pretty(response_txt):
     return jstr(json_to_obj(response_txt))
 
-def get_POST_headers():
-    return {'Authorization': get_auth_header(),
-            'content-type': "application/x-www-form-urlencoded"}
-def get_GET_headers():
-    return {'Content-Type':'application/json',
-            'Authorization': get_auth_header()}
 
 
 '''

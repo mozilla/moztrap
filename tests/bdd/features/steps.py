@@ -156,6 +156,9 @@ def write_apis_called_file():
 
 @before.each_scenario
 def setup_before_scenario(scenario):
+    # make sure the auth cookie is cleared
+    world.auth_cookie = None
+    
     if (world.restore_db):
         restore_db_state()
         
