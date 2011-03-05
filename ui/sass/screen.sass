@@ -515,9 +515,6 @@ a.create
   .item
     +clearfix
     clear: both
-    &.loading
-      .content
-        +loading-animation
   
   .header, .content
     +pie-clearfix
@@ -539,13 +536,49 @@ a.create
     label
       +gone
   .status
+    .pending
+      +border-radius(.25em)
+      display: block
+      button
+        +icon('[title="approve"]','ui/check.png',$light)
+        +icon('[title="reject"]','ui/x.png',$light)
+        &[title="approve"], &[title="reject"]
+          +columns(1,2)
+          +opacity(.5)
+          padding: 0
+        &[title="reject"]
+          +omega(2)
+          #{$focus}
+            background:
+              image: image-url('ui/x.png')
+              color: $red-lighter
+        &[title="approve"]
+          #{$focus}
+            background:
+              image: image-url('ui/check.png')
+              color: $green-light
     button
-      +icon('.draft','ui/power.png',$light)
-      +icon('.active','ui/power.png',$green-light)
-      +icon('.locked','ui/lock.png',$red-lighter)
+      position: relative
+      +icon('.rejected','ui/x.png',$red-lighter,text)
+      +icon('.draft','ui/power.png',$blue-lighter,text)
+      +icon('.active','ui/power.png',$green-light,text)
+      +icon('.locked','ui/lock.png',$yellow,text)
       #{$focus}
-        +icon('.active','ui/lock.png',$green-light)
-        +icon('.locked','ui/unlock.png',$red-lighter)
+        +icon('.rejected','ui/check.png',$green-light,text)
+        +icon('.draft','ui/power.png',$green-light,text)
+        +icon('.active','ui/lock.png',$yellow,text)
+        +icon('.locked','ui/unlock.png',$green-light,text)
+      &.rejected, &.draft, &.active, &.locked
+        width: 100%
+        position: relative
+        #{$focus}
+          +hide
+          &::after
+            content: attr(title)
+            position: absolute
+            top: 0
+            left: 0
+            text-indent: 0
         
   #managecycles &
     .status, .start, .end, .id
@@ -562,9 +595,7 @@ a.create
       +omega(18)
 
   #managecases &
-    .bulkselect, .status
-      +columns(1,18)
-    .id, .version
+    .status, .id, .version
       +columns(2,18)
     .title, .tags, .environments
       +columns(8,18)
@@ -577,8 +608,6 @@ a.create
       clear: left
     .controls, .byline, .environments
       +omega(18)
-    .status
-      text-align: right
   
 .listordering
   +clearfix

@@ -3,8 +3,7 @@ function filterEnvironments(template, forms) {
 
     function doFilter(form) {
         var typeid = $(form).find("select.env_type").val();
-        var envselect = $(form).find("select.environments");
-        envselect.empty();
+        var envselect = $(form).find("select.environments").empty();
         allopts.each(
             function() {
                 if ($(this).val().split(":")[0] == typeid) {
@@ -16,7 +15,9 @@ function filterEnvironments(template, forms) {
 
     doFilter($(template));
 
-    $(forms).each(
+    // bound forms' environment choices are filtered on the server side
+    // and we don't want to wipe out existing selections.
+     $(forms).not(".bound").each(
         function() {
             doFilter(this);
         });
