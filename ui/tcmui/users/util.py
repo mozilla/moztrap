@@ -40,7 +40,7 @@ def get_user(userid, password=None, cookie=None):
     try:
         user = User.current(auth=auth)
         user.deliver()
-    except (User.Forbidden, User.Unauthorized):
+    except (User.Forbidden, User.Unauthorized, User.NotFound):
         user = None
     return user
 

@@ -292,13 +292,32 @@ footer[role="contentinfo"]
       +border-radius(1.5em)
       +padding-leader(.25,12px)
       +padding-trailer(.25,12px)
-      +hpadding(2em)
+      +hpadding(1em)
       margin: 0 gutter(4)
       color: $light
       font-weight: bold
     button
       width: 100% - gutter(4)*2
       margin: 0 gutter(4)
+    .passed
+      +text-shadow(rgba($green-dark,.75) 1px 1px 0)
+      background: $green image-url('ui/check.png') no-repeat scroll gutter(4)
+    .invalidated
+      +text-shadow(rgba($red,.75) 1px 1px 0)
+      background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
+    .failed 
+      +text-shadow(rgba($red-dark,.75) 1px 1px 0)
+      background: $red image-url('ui/x.png') no-repeat scroll gutter(4)
+
+  .start
+    @extend .bluebutton
+  .invalid
+    @extend .yellowbutton
+  .fail
+    @extend .redbutton
+  .invalid, .fail
+    +trailer
+    width: columns(4,18)
 
   .steps
     +pad(2,4,24)
@@ -383,18 +402,6 @@ footer[role="contentinfo"]
     &[open], &.open, &.invalidated
       summary
         background: $yellow
-
-  .start, .pass, .fail
-    +hpadding(1em)
-  .start
-    @extend .bluebutton
-  .invalid
-    @extend .yellowbutton
-  .fail
-    @extend .redbutton
-  .invalid, .fail
-    +trailer
-    width: columns(4,18)
   
   .started
     .header
@@ -402,24 +409,12 @@ footer[role="contentinfo"]
   .passed
     .header
       background: $green-lighter
-    .status
-      p
-        +text-shadow(rgba($green-dark,.75) 1px 1px 0)
-        background: $green image-url('ui/check.png') no-repeat scroll gutter(4)
   .invalidated
     .header
       background: $yellow-light
-    .status
-      p
-        +text-shadow(rgba($red,.75) 1px 1px 0)
-        background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
   .failed
     .header
       background: $red-lighter
-    .status
-      p
-        +text-shadow(rgba($red-dark,.75) 1px 1px 0)
-        background: $red image-url('ui/minus_circle.png') no-repeat scroll gutter(4)
 
 /* manage --------------------------------------------------------------    
 
@@ -535,79 +530,78 @@ a.create
   .bulkselect
     label
       +gone
-  .status
-    .pending
-      +border-radius(.25em)
-      display: block
-      button
-        +icon('[title="approve"]','ui/check.png',$light)
-        +icon('[title="reject"]','ui/x.png',$light)
-        &[title="approve"], &[title="reject"]
-          +columns(1,2)
-          +opacity(.5)
-          padding: 0
-        &[title="reject"]
-          +omega(2)
-          #{$focus}
-            background:
-              image: image-url('ui/x.png')
-              color: $red-lighter
-        &[title="approve"]
-          #{$focus}
-            background:
-              image: image-url('ui/check.png')
-              color: $green-light
-    button
-      position: relative
-      +icon('.rejected','ui/x.png',$red-lighter,text)
-      +icon('.draft','ui/power.png',$blue-lighter,text)
-      +icon('.active','ui/power.png',$green-light,text)
-      +icon('.locked','ui/lock.png',$yellow,text)
-      #{$focus}
-        +icon('.rejected','ui/check.png',$green-light,text)
-        +icon('.draft','ui/power.png',$green-light,text)
-        +icon('.active','ui/lock.png',$yellow,text)
-        +icon('.locked','ui/unlock.png',$green-light,text)
-      &.rejected, &.draft, &.active, &.locked
-        width: 100%
-        position: relative
-        #{$focus}
-          +hide
-          &::after
-            content: attr(title)
-            position: absolute
-            top: 0
-            left: 0
-            text-indent: 0
-        
-  #managecycles &
-    .status, .start, .end, .id
-      +columns(2,18)
-    .product, .controls
-      +columns(3,18)
-    .environments, .testers
-      +columns(4,18)
-    .title
-      +columns(5,18)
-    .description
-      +columns(8,18)
-    .controls, .testers
-      +omega(18)
 
-  #managecases &
-    .status, .id, .version
-      +columns(2,18)
-    .title, .tags, .environments
-      +columns(8,18)
-    .product, .controls
-      +columns(3,18)
-    .byline
-      +columns(16,18)
-    .tags
-      +prefix(2,18)
-      clear: left
-    .controls, .byline, .environments
-      +omega(18)
+.status
+  position: relative
+  .pending
+    +border-radius(.25em)
+    display: block
+    button
+      +icon('[title="approve"]','ui/check.png',$light)
+      +icon('[title="reject"]','ui/x.png',$light)
+      &[title="approve"], &[title="reject"]
+        +columns(1,2)
+        +opacity(.5)
+        padding: 0
+      &[title="reject"]
+        +omega(2)
+        #{$focus}
+          background:
+            image: image-url('ui/x.png')
+            color: $red-lighter
+      &[title="approve"]
+        #{$focus}
+          background:
+            image: image-url('ui/check.png')
+            color: $green-light
+  button
+    +icon('.rejected','ui/x.png',$red-lighter,text)
+    +icon('.draft','ui/power.png',$blue-lighter,text)
+    +icon('.active','ui/power.png',$green-light,text)
+    +icon('.locked','ui/lock.png',$yellow,text)
+    #{$focus}
+      +icon('.rejected','ui/check.png',$green-light,text)
+      +icon('.draft','ui/power.png',$green-light,text)
+      +icon('.active','ui/lock.png',$yellow,text)
+      +icon('.locked','ui/unlock.png',$green-light,text)
+    &.rejected, &.draft, &.active, &.locked
+      width: 100%
+      #{$focus}
+        +hide
+        &::after
+          content: attr(title)
+          position: absolute
+          left: 1.5em
+          text-indent: 0
+        
+#managecycles
+  .status, .start, .end, .id
+    +columns(2,18)
+  .product, .controls
+    +columns(3,18)
+  .environments, .testers
+    +columns(4,18)
+  .title
+    +columns(5,18)
+  .description
+    +columns(8,18)
+  .controls, .testers
+    +omega(18)
+
+#managecases
+  .status, .id, .version
+    +columns(2,18)
+  .title, .tags, .environments
+    +columns(8,18)
+  .product, .controls
+    +columns(3,18)
+  .byline
+    +columns(16,18)
+  .tags
+    +prefix(2,18)
+    clear: left
+  .controls, .byline, .environments
+    +omega(18)
   
 .listordering
   +clearfix
@@ -765,6 +759,9 @@ a.create
 #addcycle
   @extend .addform
   @extend .managelists
+  
+  .list
+    clear: both
   
   .addrun
     padding: 0
