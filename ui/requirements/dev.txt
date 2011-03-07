@@ -3,3 +3,4 @@
 -r base.txt
 
 mock==0.7.0rc1
+unittest2==0.5.1
