@@ -536,6 +536,7 @@ a.create
     label
       +gone
   .status
+    position: relative
     .pending
       +border-radius(.25em)
       display: block
@@ -558,7 +559,6 @@ a.create
               image: image-url('ui/check.png')
               color: $green-light
     button
-      position: relative
       +icon('.rejected','ui/x.png',$red-lighter,text)
       +icon('.draft','ui/power.png',$blue-lighter,text)
       +icon('.active','ui/power.png',$green-light,text)
@@ -570,14 +570,12 @@ a.create
         +icon('.locked','ui/unlock.png',$green-light,text)
       &.rejected, &.draft, &.active, &.locked
         width: 100%
-        position: relative
         #{$focus}
           +hide
           &::after
             content: attr(title)
             position: absolute
-            top: 0
-            left: 0
+            left: 1.5em
             text-indent: 0
         
   #managecycles &
