@@ -229,7 +229,7 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 
 .loading { position: relative; }
 .loading > * { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25); opacity: 0.25; }
-.loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; }
+.loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; top: 0; right: 0; bottom: 0; left: 0; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; z-index: 50; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 87.5%; line-height: 1.5em; }
