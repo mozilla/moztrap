@@ -66,5 +66,6 @@ $(function() {
             $(this).prepend(
                 '<aside class="error">' + request.responseText + '</aside>'
             );
+            $('.loadingCSS').detach();
         });
 });
