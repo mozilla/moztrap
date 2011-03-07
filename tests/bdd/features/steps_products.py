@@ -62,7 +62,7 @@ def delete_product_with_name(step, stored, name):
     
 
     resid, version = get_product_resid(name)
-    do_delete(world.path_products + resid, 
+    do_delete(world.path_products + str(resid), 
               {"originalVersionId": version})
 
 
@@ -77,7 +77,7 @@ def add_environment_foo_to_product_bar(step, environment, product):
     
     post_payload = {"name": "Walter's Lab"}
     
-    do_post(world.path_products + product_id + "/environments",
+    do_post(world.path_products + str(product_id) + "/environments",
             post_payload,
             params ={"originalVersionId": version})
 
@@ -87,7 +87,7 @@ def remove_environment_from_product(step, environment, product):
     product_id, version = get_product_resid(product)
     environment_id = get_environment_resid(environment)
     
-    do_delete(world.path_products + product_id + "/environments/" + environment_id, 
+    do_delete(world.path_products + str(product_id) + "/environments/" + environment_id, 
               {"originalVersionId": version})
 
     
@@ -98,7 +98,7 @@ def product_foo_has_environment_bar(step, product, haveness, env_name):
     
     expect_to_find = (haveness == "has")
     search_and_verify("environment", 
-                    world.path_products + product_id + "/environments",
+                    world.path_products + str(product_id) + "/environments",
                     "",
                     "name", 
                     env_name,

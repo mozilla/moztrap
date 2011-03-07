@@ -30,7 +30,7 @@ world.use_mock = False
 # non-clean state.
 world.save_db = True
 
-# whether or not to restore the DB between each scenario.  
+# whether or not to restore the DB between each scenario.
 # generally a good idea in general
 world.restore_db = True
 

@@ -19,3 +19,8 @@ Feature: User Administration
             | email                    | password    |
             | WalterBishop@mozilla.com | cortexiphan |
         Then I am logged in as the user with that name
+
+    Scenario: Get specific User by id
+        Given I create the seed company and product
+        And I create a new user with name "Olivia Dunham"
+        Then I can get that newly created user by id

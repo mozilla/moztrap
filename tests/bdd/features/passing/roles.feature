@@ -32,8 +32,8 @@ Feature: Users Roles
             | permissionCode               |
             | PERMISSION_TEST_CASE_EDIT    |
             | PERMISSION_TEST_CASE_APPROVE |
-        Then I can find the role with that name by id        
-        
+        Then I can find the role with that name by id
+
     Scenario: Give a user multiple roles, then remove one, and add it back
         Given I create the seed company and product
         And I create a new user with name "Walter Bishop"
@@ -104,7 +104,7 @@ Feature: Users Roles
             | name               |
             | Approvationalist   |
             | Interrogationalist |
-    
+
     Scenario: Get list of roles ascending an descending
         Given I create the seed company and product
         And I create a new role with name "Improvisationalist" with the following permissions:
@@ -121,8 +121,8 @@ Feature: Users Roles
             | PERMISSION_TEST_CASE_APPROVE |
         Then "ASC" role searches list "Approvationalist" before "StephenColberationalist"
         and "DESC" role searches list "StephenColberationalist" before "Approvationalist"
-     
-    Scenario: Give a user multiple roles, then remove one
+
+    Scenario: Give a user a role and check permissions
         Given I create the seed company and product
         And I create a new user with name "Walter Bishop"
         And I create a new role with name "Approvationalist" with the following permissions:
@@ -137,6 +137,5 @@ Feature: Users Roles
             | PERMISSION_TEST_CASE_EDIT                 |
             | PERMISSION_TEST_CASE_APPROVE              |
             | PERMISSION_TEST_RUN_TEST_CASE_SELF_ASSIGN |
-   
-    
-   
+
+

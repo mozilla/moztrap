@@ -17,7 +17,7 @@ from lettuce import step, world
 '''
 
 '''
-    Hmmm, this may not work.  May be a special case I need to call explicitly, not 
+    Hmmm, this may not work.  May be a special case I need to call explicitly, not
     with the do_post method.
 '''
 
@@ -26,16 +26,16 @@ from lettuce import step, world
 def upload_attachment_foo_to_test_case_bar(step, attachment, test_case):
     test_case_id, version = get_testcase_resid(test_case)
 
-    content_type, body = encode_multipart_formdata([], [{'key': attachment, 
-                                                         'filename': attachment, 
+    content_type, body = encode_multipart_formdata([], [{'key': attachment,
+                                                         'filename': attachment,
                                                          'value': open(world.testfile_dir + attachment, 'rb')}])
 
-    headers = {"Accept": "application/xml", 
+    headers = {"Accept": "application/xml",
                "Content-Type":content_type,
                "Content-Length": "%d" % len(body) }
 
-    do_post(world.path_testcases + test_case_id + "/attachments/upload",
+    do_post(world.path_testcases + str(test_case_id) + "/attachments/upload",
             body,
             {"originalVersionId": version})
-    
+
 

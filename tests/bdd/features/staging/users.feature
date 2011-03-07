@@ -4,7 +4,7 @@ Feature: User Administration
     I want to be able to change user values
 
 
-    Scenario: Log in and out as user
+    Scenario: Log in and out as user: (Bug 636586)
         Given I create the seed company and product
         And I create a new user with name "Walter Bishop"
         When I log in user with that name
@@ -22,7 +22,7 @@ Feature: User Administration
         Then the user with that name has these values:
             | firstName | lastName | email               | screenName | company name       |
             | Walter    | Bishop   | doctor@horrible.com | drHorrible | Massive Dynamic    |
-        
+
 
     Scenario: Get specific User by id
     Scenario: Search for Users
@@ -33,7 +33,7 @@ Feature: User Administration
             | name                 |
             | What the cat dragged in     |
             | Where I put the keys        |
-    
+
     Scenario: Prevented from creating a new user with conflicting email
         Given user with email "admin@utest.com" exists
         Then I am prevented from creating new user with email "admin@utest.com"
@@ -41,4 +41,3 @@ Feature: User Administration
     Scenario: Prevented from creating a new user with conflicting screenname
         Given user with screenname "adminadmin" exists
         Then I am prevented from creating new user with screenname "adminadmin"
-    
