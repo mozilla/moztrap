@@ -37,8 +37,15 @@ function testCaseButtons(context) {
                         var newCase = $("#" + id);
                         summaryDetails(newCase);
                         testCaseButtons(newCase);
+                        $('.loadingCSS').detach();
                     });
             }
+            function addLoadingCSS() {
+                var vertHeight = (parseInt(testcase.css('height')) - parseInt(testcase.css('line-height'))) / 2 + 'px';
+                var style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+                $('head').append(style);
+            }
+            addLoadingCSS();
         });
 }
 
