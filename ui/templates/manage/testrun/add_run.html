@@ -1,0 +1,200 @@
+{% extends 'manage/testrun/base.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="/manage/testrun/add/">add test run</a></li>
+{% endblock crumb %}
+
+{% block managecontent %}
+<section id="addcycle">
+  <h2>create a new test run</h2>
+  <form method="POST">
+    <ul class="meta">
+      <li>
+        {# <ul class="errorlist"> #}
+        {#   <li>this field is required</li> #}
+        {# </ul> #}
+        <label for="name">name</label>
+        <input type="text" name="name" value="" id="name" required="required">
+      </li>
+      <li>
+        {# <ul class="errorlist"> #}
+        {#   <li>this field is required</li> #}
+        {# </ul> #}
+        <label for="desc">description</label>
+        <textarea name="desc" required></textarea>
+      </li>
+    </ul>
+
+    <div class="env">
+      {# @@@ this H3 should be unhidden by JS when there are constraints present #}
+      <h3 style="display:none;">Environment Constraints</h3>
+      {# @@@ start with 0 constraints shown, only the link to add. #}
+      <a href="#" class="addfields">add environment constraints »</a>
+    </div>
+    
+    <section class="suiteselect">
+      <h3>add test suites to your test run</h3>
+      <div>
+        <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for suites to add"></p>
+        <div class="unselected">
+          <h4>un-selected suites</h4>
+          <ul>
+            <li>
+              <input type="checkbox" name="suite01" value="" id="suite01">
+              <label for="suite01">
+                <span class="id">#3456</span>
+                <span class="title">Test Suite 01</span>
+              </label>
+            </li>
+          </ul>
+          <button class="addall">add all &raquo;</button>
+        </div>
+        <div class="selected">
+          <h4>selected suites</h4>
+          <ul>
+            <li>
+              <input type="checkbox" name="suite06" value="" id="suite06">
+              <label for="suite06">
+                <span class="id">#4567</span>
+                <span class="title">Test Suite 06</span>
+              </label>
+            </li>
+          </ul>
+          <button class="removeall">&laquo; remove all</button>
+        </div>
+      </div>
+    </section>
+        
+    <details class="userselect">
+      <summary>assign specific users to this test run &raquo;</summary>
+      <div>
+        <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for users to add"></p>
+        <div class="unselected">
+          <h3>un-selected users</h3>
+          <ul>
+            <li>
+              <input type="checkbox" name="user01" value="" id="user01">
+              <label for="user01" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user02" value="" id="user02">
+              <label for="user02" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user03" value="" id="user03">
+              <label for="user03" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user04" value="" id="user04">
+              <label for="user04" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user05" value="" id="user05">
+              <label for="user01" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user11" value="" id="user11">
+              <label for="user11" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user12" value="" id="user12">
+              <label for="user12" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user13" value="" id="user13">
+              <label for="user13" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user14" value="" id="user14">
+              <label for="user14" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user15" value="" id="user15">
+              <label for="user15" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+          </ul>
+          <button class="addall">add all &raquo;</button>
+        </div>
+        <div class="selected">
+          <h3>selected users</h3>
+          <ul>
+            <li>
+              <input type="checkbox" name="user06" value="" id="user06">
+              <label for="user06" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user07" value="" id="user07">
+              <label for="user07" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user08" value="" id="user08">
+              <label for="user08" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user09" value="" id="user09">
+              <label for="user09" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" name="user10" value="" id="user10">
+              <label for="user10" class="hcard">
+                (<span class="nickname">username</span>) 
+                <span class="fn">First Last</span>
+              </label>
+            </li>
+          </ul>
+          <button class="removeall">&laquo; remove all</button>
+        </div>
+      </div>
+    </details>
+
+    <div class="form-actions">
+      <button type="submit">save test run</button>
+    </div>
+
+  </form>
+    
+</section>
+{% endblock managecontent %}
