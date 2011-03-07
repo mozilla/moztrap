@@ -36,7 +36,7 @@ Feature: Test Cases
         And I add the role with name "Approvationalist" to the user with that name
         and when the user with name "Joe Approver" approves the testcase with that name
         then the testcase with that name has status of Active
-        
+
     Scenario: add a testcase to a testrun
 
     Scenario: Create a Testcycle and Testrun and verify the testrun is in the testcycle
@@ -50,7 +50,7 @@ Feature: Test Cases
         and when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
         then a testrun with that name exists
         and the testcycle with name "Baroque Cycle" has the testrun with name "Running Man"
-        
-        
 
-        
+
+
+

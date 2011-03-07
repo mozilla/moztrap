@@ -5,10 +5,10 @@ Created on Jan 28, 2011
 '''
 from features.step_helper import get_stored_or_store_name, get_seed_company_id, \
     do_post, ns, get_list_from_endpoint, get_user_resid, do_put, jstr, \
-    get_user_password, do_get, get_single_item, eq_, search_and_verify_existence, \
-    get_user_status_id, search_and_verify, get_company_resid, get_list_from_search, \
-    log_user_in, get_auth_header, get_json_headers, do_put_for_cookie, \
-    get_single_item_from_endpoint
+    get_user_password, do_get, eq_, search_and_verify_existence, get_user_status_id, \
+    search_and_verify, get_company_resid, get_list_from_search, log_user_in, \
+    get_auth_header, get_json_headers, do_put_for_cookie, \
+    get_single_item_from_endpoint, compare_dicts_by_keys, json_to_obj, ns_keys
 from lettuce import step, world
 
 '''
@@ -23,9 +23,15 @@ def create_user_from_obj(user_obj):
     '''
         Create a user based on an already formed user object
     '''
-    do_post(world.path_users,
+    data = do_post(world.path_users,
             user_obj)
-    
+#    assert False, data
+    created_obj = json_to_obj(data)[ns("user")][0]
+    compare_dicts_by_keys(ns_keys(user_obj),
+                          created_obj,
+                          ("firstName", "lastName", "email", "screenName", "companyId"))
+    world.created_objects["user"] = created_obj
+
 def create_user_from_name(name):
     '''
         Create a user based on just the user name and seed data
@@ -40,7 +46,7 @@ def create_user_from_name(name):
                 "screenName":fname+lname,
                 "password":get_user_password(name),
                 "companyId":get_seed_company_id(),
-    } 
+    }
     create_user_from_obj(user_obj)
 
 '''
@@ -50,18 +56,28 @@ def create_user_from_name(name):
 
 ######################################################################
 '''
-    
+
 
 @step(u'create a new user with (that name|name "(.*)")')
 def create_user_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     create_user_from_name(name)
-    
+
+@step(u'get that newly created user by id')
+def get_new_user_by_id(step):
+    last_created_user = world.created_objects["user"]
+    id = last_created_user[ns("resourceIdentity")]["@id"]
+    data = do_get(world.path_users + str(id))
+
+    compare_dicts_by_keys(last_created_user,
+                          json_to_obj(data)[ns("user")][0],
+                          ("firstName", "lastName", "email", "screenName", "companyId"))
+
 @step(u'update the user with (that name|name "(.*)") to have these values')
 def update_user_with_name(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
-    
-    
+
+
     user_id, version = get_user_resid(name)
 
     new_values = step.hashes[0].copy()
@@ -70,42 +86,42 @@ def update_user_with_name(step, stored, name):
     del new_values["company name"]
     new_values["originalVersionId"] = version
 
-    do_put(world.path_users + user_id, new_values)
+    do_put(world.path_users + str(user_id), new_values)
 
 @step(u'user with (that name|name "(.*)") has these values')
 def user_with_name_has_values(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     names = name.split()
-    
-    act_user = get_list_from_search("user", world.path_users, 
+
+    act_user = get_list_from_search("user", world.path_users,
                                 {"firstName": names[0], "lastName": names[1]})[0]
 
     exp_user = step.hashes[0].copy()
     exp_user["companyId"] = get_company_resid(exp_user["company name"])[0]
-    
+
     # check that the data matches
     eq_(act_user.get(ns("firstName")), exp_user["firstName"], "First Name field didn't match")
     eq_(act_user.get(ns("lastName")), exp_user["lastName"], "lastName field didn't match")
     eq_(act_user.get(ns("email")), exp_user["email"], "email field didn't match")
     eq_(act_user.get(ns("screenName")), exp_user["screenName"], "screenName field didn't match")
     eq_(act_user.get(ns("companyId")), int(exp_user["companyId"]), "companyId field didn't match")
-    
+
 
 @step(u'change the email to "(.*)" for the user with (that name|name "(.*)")')
 def change_user_email(step, new_email, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     user_id, version = get_user_resid(name)
 
-    do_put(world.path_users + user_id + "/emailchange/%s" % new_email,
-           {"originalVersionId": version})    
+    do_put(world.path_users + "%s/emailchange/%s" % (user_id, new_email),
+           {"originalVersionId": version})
 
 @step(u'change the password to "(.*)" for the user with (that name|name "(.*)")')
 def change_user_password(step, new_pw, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     user_id, version = get_user_resid(name)
 
-    do_put(world.path_users + user_id + "/passwordchange/%s" % new_pw,
-           {"originalVersionId": version})    
+    do_put(world.path_users + "%s/passwordchange/%s" % (user_id, new_pw),
+           {"originalVersionId": version})
 
 
 @step(u'log out the user with (that name|name "(.*)")')
@@ -116,8 +132,8 @@ def log_out(step, stored, user_name):
                'Content-Type':'application/json' }
 
     return do_put(world.path_users + "logout", "", headers)
-    
-    
+
+
 @step(u'log in user with (that name|name "(.*)")')
 def log_in_with_name(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
@@ -130,7 +146,7 @@ def log_in_with_name(step, stored, name):
 def log_in_with_credentials(step):
     user = step.hashes[0]
     headers = get_json_headers(get_auth_header(user["email"], user["password"]))
-    
+
     cookie = do_put_for_cookie(world.path_users + "login", "", headers)[1]
     world.auth_cookie = cookie
     # store the cookie in world
@@ -139,14 +155,14 @@ def log_in_with_credentials(step):
 def logged_in_as_user(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     names = name.split()
-    
+
     headers = {'cookie': world.auth_cookie,
                'Content-Type':'application/json' }
-    
-    thisUser = get_single_item_from_endpoint("user", 
-                                             world.path_users + "current", 
+
+    thisUser = get_single_item_from_endpoint("user",
+                                             world.path_users + "current",
                                              headers = headers)
-    
+
     eq_(thisUser[ns("firstName")], names[0], "First Name field didn't match")
     eq_(thisUser[ns("lastName")], names[1], "Last Name field didn't match")
 
@@ -154,31 +170,33 @@ def logged_in_as_user(step, stored, name):
 def user_not_logged_in(step):
     headers = {'cookie': world.auth_cookie,
                'Content-Type':'application/json' }
-    
-    thisUser = get_single_item_from_endpoint("user", 
-                                             world.path_users + "current", 
-                                             headers = headers)
-    assert False, thisUser
-    
+
+    do_get(world.path_users + "current",
+                  headers = headers, exp_status = 401)
+    #
+#    thisUser = get_single_item_from_endpoint("user",
+#                                             world.path_users + "current",
+#                                             headers = headers)
+
 
 @step(u'user with (that name|name "(.*)") (exists|does not exist)')
 def check_user_foo_existence(step, stored, name, existence):
     names = get_stored_or_store_name("user", stored, name).split()
-    search_and_verify_existence(world.path_users, 
-                    {"firstName": names[0], "lastName": names[1]}, 
+    search_and_verify_existence(world.path_users,
+                    {"firstName": names[0], "lastName": names[1]},
                     "user", existence)
 
 @step(u'user with (that name|name "(.*)") is (active|inactive|disabled)')
 def check_user_foo_activated(step, stored, name, userStatus):
     names = get_stored_or_store_name("user", stored, name).split()
-    statusId = get_user_status_id(userStatus) 
-        
-    # we DO expect to find this user, but we're just checking if they're activated or 
+    statusId = get_user_status_id(userStatus)
+
+    # we DO expect to find this user, but we're just checking if they're activated or
     # deactivated
-    search_and_verify(world.path_users, 
-                    {"firstName": names[0], "lastName": names[1], "userStatusId": statusId}, 
+    search_and_verify(world.path_users,
+                    {"firstName": names[0], "lastName": names[1], "userStatusId": statusId},
                     "user", True)
-    
+
 @step(u'(activate|deactivate) the user with (that name|name "(.*)")')
 def activate_user_with_name_foo(step, status_action, stored, name):
     '''
@@ -193,19 +211,19 @@ def activate_user_with_name_foo(step, status_action, stored, name):
 @step(u'user with (that name| name "(.*)") has at least these assignments:')
 def foo_has_these_assignments(step, stored_user, user_name):
     user_name = get_stored_or_store_name("user", stored_user, user_name)
-    
+
     user_id = get_user_resid(user_name)[0]
     assignment_list = get_list_from_endpoint("assignments",
-                                     world.path_users + user_id + "/assignments")
-    
+                                     world.path_users + "%s/assignments" % user_id)
+
     # walk through all the expected roles and make sure it has them all
     # note, it doesn't check that ONLY these roles exist.  That should be a different
     # method.
     for role in step.hashes:
         role_name = role["name"]
-        found_perm = [x for x in assignment_list if x[ns("name")] == role_name] 
-        
+        found_perm = [x for x in assignment_list if x[ns("name")] == role_name]
+
         assert len(found_perm) == 1, "Expected to find assignment name %s in:\n%s" % (role_name,
                                                                                 jstr(assignment_list))
 
-    
+

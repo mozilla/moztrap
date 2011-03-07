@@ -2,14 +2,14 @@ Feature: Smoke Tests
     In order to perform small, quick tests of the TCM
     As a tester
     I want to be able to run short, simple tests
- 
+
     Scenario: Create and delete a company
         Given company with name "macho face" does not exist
         when I create a new company with name "macho face"
         then a company with name "macho face" exists
         and when I delete the company with that name
-        then a company with that name does not exist      
-        
+        then a company with that name does not exist
+
     Scenario: Create and then deactivate a new user
         Given I create the seed company and product
         And a user with name "Nowhere Man" does not exist
@@ -22,8 +22,8 @@ Feature: Smoke Tests
         Then the user with that name is disabled
         And when I activate the user with that name
         Then the user with that name is active
-        
-        
+
+
     Scenario: Create and delete a Product
         Given I create the seed company and product
         And a product with name "Camera Pencil Sharpener" does not exist
@@ -74,7 +74,7 @@ Feature: Smoke Tests
         Then an environmentgroup with that name exists
         and when I delete the environmentgroup with that name
         then an environmentgroup with that name does not exist
-        
+
     Scenario: Create and delete a tag
         Given I create the seed company and product
         And a tag with tag "You are IT" does not exist
@@ -114,4 +114,3 @@ Feature: Smoke Tests
         and when I delete the testcycle with that name
         then the testcycle with that name does not exist
 
-        

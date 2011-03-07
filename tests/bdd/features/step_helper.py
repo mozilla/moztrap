@@ -38,20 +38,20 @@ def get_json_headers(auth_header = get_auth_header()):
 def get_stored_or_store_name(objtype, stored, name):
     '''
         Help figure out if the test writer wants to use a stored name from a previous step, or if
-        the name was passed in explicitly. 
-        
+        the name was passed in explicitly.
+
         If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
-        the stored one.  Otherwise, the explicit name passed in.  
+        the stored one.  Otherwise, the explicit name passed in.
     '''
     return get_stored_or_store_field("name", objtype, stored, name)
 
 def get_stored_or_store_field(field_name, objtype, stored, name):
     '''
         Help figure out if the test writer wants to use a stored name from a previous step, or if
-        the name was passed in explicitly. 
-        
+        the name was passed in explicitly.
+
         If they refer to a user as 'that name' rather than 'name "foo bar"' then it uses
-        the stored one.  Otherwise, the explicit name passed in.  
+        the stored one.  Otherwise, the explicit name passed in.
     '''
     if (stored.strip() == "that " + field_name):
         name = world.names[objtype]
@@ -66,7 +66,7 @@ def ns(field):
     '''
     if not re.search(world.ns, field):
         field = world.ns + field
-    
+
     return field
 
 def add_params(uri_path, params = {}):
@@ -79,7 +79,7 @@ def add_params(uri_path, params = {}):
     newparams["_type"] = "json"
     #assert False, urllib.urlencode(params)
     #assert False, params
-    
+
     uri = uri_path + "?" + urllib.urlencode(newparams)
     #if re.search("companies", uri_suffix):
         #assert False, uri
@@ -91,12 +91,31 @@ def verify_status(exp_status, response, msg):
         is returned.
     '''
     data = response.read()
-    eq_(response.status, 200, msg + ": " + str(data))
+    eq_(response.status, exp_status, msg + ": " + str(data))
     return data
-    
+
 def eq_(act, exp, msg):
     assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
-    
+
+def compare_dicts_by_keys(exp, act, keys):
+    for key in keys:
+        actual = act[ns(key)]
+        try:
+            actual = int(actual)
+        except:
+            pass
+            # just trying to cast it to an int, if it is an int
+        eq_(act[ns(key)], exp[ns(key)],
+            "Field \"%s\" mismatch" % (key))
+
+def ns_keys(dict_obj):
+    '''
+        Prefix the namespace to the keys in this dictionary so they'll match
+        something sent back from the platform.
+        Note, this only does one deep.  Second level, often needs the "@"
+        prepended.  May need to support that later.
+    '''
+    return dict((ns(key), value) for (key, value) in dict_obj.items())
 
 def get_auth_header_user_name(user_name):
     names = user_name.split()
@@ -119,7 +138,7 @@ def get_user_password(name):
 def log_user_in(name):
     headers = get_json_headers(get_auth_header_user_name(name))
     # log the user in
-    
+
     return do_put_for_cookie(world.path_users + "login", "", headers)
 
 
@@ -129,17 +148,17 @@ def get_list_from_search(type, uri, params = {}, headers = get_json_headers()):
         it goes into the "searchResult" type of response
     '''
     response_txt = do_get(uri, params, headers)
-    
+
     sr_field = ns("searchResult")
     type = ns(type)
     pl_type = plural(type)
-    
+
     try:
         items = json_to_obj(response_txt)[sr_field][0][pl_type][type]
     except KeyError:
         assert False, \
             "%s\nDidn't find %s / %s / %s in\n%s" % \
-            (str(KeyError), 
+            (str(KeyError),
              sr_field,
              pl_type,
              ns(type),
@@ -163,33 +182,33 @@ def get_single_item_from_endpoint(type, uri, headers = get_json_headers()):
     '''
         This hits an endpoint.  It goes into the ArrayOfXXX type of response
     '''
-    
+
     response_txt = do_get(uri, headers = headers)
-    
+
     try:
         return json_to_obj(response_txt)[ns(type)][0]
     except KeyError:
         assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(type),response_txt)
 
-def do_get(uri, params = {}, headers = get_json_headers()):
+def do_get(uri, params = {}, headers = get_json_headers(), exp_status = 200):
 
     record_api_for_step("GET", uri)
-    
+
     world.conn.request("GET", add_params(uri, params), "", headers)
     response = world.conn.getresponse()
-    return verify_status(200, response, str(uri))
+    return verify_status(exp_status, response, str(uri))
 
 def do_put_for_cookie(uri, body, headers = get_form_headers()):
-    ''' 
+    '''
         usually we don't care about the returned headers,  but in
         the case of login, for instance, we need the cookie it returns
     '''
     method = "PUT"
 
     record_api_for_step(method, uri)
-    
-    world.conn.request(method, add_params(uri), 
-                       urllib.urlencode(body, doseq=True), 
+
+    world.conn.request(method, add_params(uri),
+                       urllib.urlencode(body, doseq=True),
                        headers)
     response = world.conn.getresponse()
 
@@ -200,7 +219,7 @@ def do_put_for_cookie(uri, body, headers = get_form_headers()):
     cookies = [c.split(";")[0].strip() for c in
                response.getheader("set-cookie").split(",")]
     auth_cookie = [c for c in cookies if c.startswith("USERTOKEN=")][0]
-    
+
 
 
     data = verify_status(200, response, "%s %s:\n%s" % (method, uri, body))
@@ -215,27 +234,27 @@ def do_post(uri, body, params = {}, headers = get_form_headers()):
 def do_delete(uri, params, headers = get_form_headers()):
     return do_request("DELETE", uri, params = params, headers = headers)
 
-def do_request(method, uri, params = {}, body = {}, headers = get_form_headers()):
-    ''' 
+def do_request(method, uri, params = {}, body = {}, headers = get_form_headers(), exp_status = 200):
+    '''
         do the request
     '''
 
     record_api_for_step(method, uri)
-    
-    world.conn.request(method, add_params(uri, params), 
-                       urllib.urlencode(body, doseq=True), 
+
+    world.conn.request(method, add_params(uri, params),
+                       urllib.urlencode(body, doseq=True),
                        headers)
     response = world.conn.getresponse()
 
-    return verify_status(200, response, "%s %s:\n%s" % (method, uri, body))
+    return verify_status(exp_status, response, "%s %s:\n%s" % (method, uri, body))
 
 
 
 def record_api_for_step(method, uri):
     '''
         This should look like:
-        {"Given I create a user": 
-            {"/users/foo": 
+        {"Given I create a user":
+            {"/users/foo":
                 ["POST", "GET"]
             }
         }
@@ -245,7 +264,7 @@ def record_api_for_step(method, uri):
     uri = uri.rstrip('/')
     if uri.startswith(world.api_prefix):
         uri = uri[len(world.api_prefix):]
-    
+
     uri_parts = uri.strip().split("/")
     for index, item in enumerate(uri_parts):
         try:
@@ -254,13 +273,13 @@ def record_api_for_step(method, uri):
         except ValueError:
             # not a number, that's ok
             pass
-    
+
     uri = '/'.join(uri_parts)
-    
-    
+
+
     methods = world.apis_called.setdefault(uri, set())
     methods.add(method)
-    
+
 def search_and_verify_existence(uri, search_args, obj_name, existence):
     expect_to_find = (existence.strip() == "exists")
     search_and_verify(uri, search_args, obj_name, expect_to_find)
@@ -268,29 +287,29 @@ def search_and_verify_existence(uri, search_args, obj_name, existence):
 def search_and_verify(uri, search_args, obj_name, expect_to_find):
     '''
         This does a search based on the search_args passed in.  So "expect_to_find"
-        is really filtered based on those parameters.  
-        
+        is really filtered based on those parameters.
+
         expect_to_find: If True, then we verify based on expecting to find something.
                         If False, this will fail if we get a resultset greater than 0.
     '''
-    
+
     data = do_get(uri, search_args)
-    
+
     if not expect_to_find:
         count = get_count(data, ns(obj_name))
         eq_(count, 0, "expect result size zero:\n" + data)
     else:
         environmentJson = get_single_item(data, ns(obj_name))
 
-        # Verify that the result's values match our search params 
+        # Verify that the result's values match our search params
         for k, v in search_args.items():
             eq_(environmentJson.get(ns(k)), v, obj_name + " match")
 
 def search_and_verify_array(uri, search_args, obj_name, expect_to_find):
     '''
         This does a search based on the search_args passed in.  So "expect_to_find"
-        is really filtered based on those parameters.  
-        
+        is really filtered based on those parameters.
+
         expect_to_find: If True, then we verify based on expecting to find something.
                         If False, this will fail if we get a resultset greater than 0.
     '''
@@ -302,13 +321,13 @@ def search_and_verify_array(uri, search_args, obj_name, expect_to_find):
     else:
         environmentJson = get_array_item(data, obj_name)
 
-        # Verify that the result's values match our search params 
+        # Verify that the result's values match our search params
         for k, v in search_args.items():
             eq_(environmentJson.get(ns(k)), v, obj_name + " match")
 
 def get_list_of_type(type, response_txt):
     respJson = json_to_obj(response_txt)
-    
+
     try:
         array_of_type = respJson[ns(as_arrayof(type))][0]
         if (len(array_of_type) > 1):
@@ -322,7 +341,7 @@ def get_list_of_type(type, response_txt):
 
     # If there is only one, this may not come back as a list.  But I don't want to handle
     # that case everywhere, so we guarantee this is a list
-    
+
     if isinstance(item, list):
         return item
     else:
@@ -339,7 +358,7 @@ def list_size_check(at_least_only, exp, act):
     assert passing, \
         "These list sizes should match:\nEXPECTED:\n%s\nACTUAL:\n%s" % \
         (jstr(exp), jstr(act))
-    
+
 
 
 
@@ -375,7 +394,7 @@ def get_resid_from_creation_response(response_txt, type):
     type = ns(type)
 
     respJson = json_to_obj(response_txt)
-    
+
     try:
         assert respJson.__contains__(type), "didn't find expected type: %s in:\n%s" % (type, jstr(respJson))
         item = respJson.get(type)
@@ -384,8 +403,8 @@ def get_resid_from_creation_response(response_txt, type):
         assert False, "Key Error in\n" + jstr(respJson)
     return item
 
-    
-    
+
+
 def get_single_item(response_txt, type):
     '''
         Expect the response to be a single item.  If it's more, we assert.
@@ -394,13 +413,13 @@ def get_single_item(response_txt, type):
     pl_type = plural(type)
 
     respJson = json_to_obj(response_txt)
-    
+
     item = None
-    
+
     # if this was a search, extract the item from the "searchResult" object
     # in this case, we only care about the first returned item in this list
     sr_field = ns("searchResult")
-    
+
     if (respJson.__contains__(sr_field)):
         sr = respJson.get(sr_field)
 
@@ -409,7 +428,7 @@ def get_single_item(response_txt, type):
 
         assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
         items = pl_item.get(type)
-            
+
         if (len(items) > 0) and isinstance(items, list):
             item = items[0]
         else:
@@ -428,10 +447,10 @@ def get_single_item(response_txt, type):
 #    pl_type = plural(type)
 #
 #    respJson = json_to_obj(response_txt)
-#    
+#
 #    sr_field = ns("searchResult")
-#    
-#    assert respJson.__contains__(sr_field), "didn't find expected type: %s in:\n%s" % (sr_field, jstr(respJson))        
+#
+#    assert respJson.__contains__(sr_field), "didn't find expected type: %s in:\n%s" % (sr_field, jstr(respJson))
 #    sr = respJson.get(sr_field)
 #
 #    assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
@@ -439,7 +458,7 @@ def get_single_item(response_txt, type):
 #
 #    assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
 #    items = pl_item.get(type)
-#            
+#
 #    if (isinstance(items, list)):
 #        return items
 #    else:
@@ -458,9 +477,9 @@ def get_array_item(response_txt, type):
         assert False, "Bad JSON: " + str(response_txt)
     except TypeError:
         assert False, "Bad JSON: " + str(response_txt)
-    
+
     item = None
-    
+
 
     assert respJson.__contains__(array_type), "didn't find expected type: %s in:\n%s" % (array_type, jstr(respJson))
     objarray = respJson.get(array_type)
@@ -468,7 +487,7 @@ def get_array_item(response_txt, type):
     arr_item = objarray[0]
     assert arr_item.__contains__(ns_type), "didn't find expected type: %s within %s in:\n%s" % (ns_type, array_type, jstr(respJson))
     items = arr_item.get(ns_type)
-            
+
     if (len(items) > 0) and isinstance(items, list):
         item = items[0]
     else:
@@ -481,7 +500,7 @@ def get_array_item(response_txt, type):
 
 def get_first_item(response_txt, type):
     '''
-        Expect the response to be a single item or a list.  
+        Expect the response to be a single item or a list.
         If it's a list, we take the first item.
     '''
     type = ns(type)
@@ -493,9 +512,9 @@ def get_first_item(response_txt, type):
         assert False, "Bad JSON: " + str(response_txt)
     except TypeError:
         assert False, "Bad JSON: " + str(response_txt)
-    
+
     item = None
-    
+
     # if this was a search, extract the item from the "searchResult" object
     # in this case, we only care about the first returned item in this list
     sr_field = ns("searchResult")
@@ -507,7 +526,7 @@ def get_first_item(response_txt, type):
 
         assert pl_item.__contains__(type), "didn't find expected type: %s within %s in:\n%s" % (type, pl_type, jstr(sr))
         items = pl_item.get(type)
-            
+
         if (len(items) > 0) and isinstance(items, list):
             item = items[0]
         else:
@@ -518,10 +537,10 @@ def get_first_item(response_txt, type):
     assert item != None, "didn't find expected type: " + type + " in:\n" + jstr(respJson)
     return item
 
-  
+
 def get_count(response_txt, type):
     '''
-        Expect the response to be a single item or a list.  
+        Expect the response to be a single item or a list.
         If it's a list, we take the first item.
     '''
     type = ns(type)
@@ -531,9 +550,9 @@ def get_count(response_txt, type):
         respJson = json.loads(response_txt)
     except ValueError:
         assert False, "Bad JSON: " + response_txt
-    
+
     count = None
-    
+
     # if this was a search, extract the item from the "searchResult" object
     # in this case, we only care about the first returned item in this list
     sr_field = ns("searchResult")
@@ -541,17 +560,17 @@ def get_count(response_txt, type):
         sr = respJson.get(sr_field)
 
         assert sr[0].__contains__(pl_type), "didn't find expected type: %s in:\n%s" % (pl_type, jstr(sr))
-                 
+
         count = sr[0].get(ns("totalResults"))
-            
+
 
     assert count != None, "didn't find " + sr_field + " or " + ns("totalResults") + " in:\n" + jstr(respJson)
     return count
-      
+
 
 
 def get_user_resid(name):
-    ''' 
+    '''
         name: Split into 2 parts at the space.  Only the first two parts are used.  Must have at least 2 parts.
     '''
     names = name.split()
@@ -583,10 +602,10 @@ def get_country_resid(country):
 
 def get_environment_resid(environment):
     return get_resource_identity("environment", world.path_environments, {"name": environment})
-    
+
 def get_environmenttype_resid(environment):
     return get_resource_identity("environmenttype", world.path_environmenttypes, {"name": environment})
-    
+
 def get_environmentgroup_resid(environment):
     return get_resource_identity("environmentgroup", world.path_environmentgroups, {"name": environment})
 
@@ -601,7 +620,7 @@ def get_testcycle_resid(name):
 
 def get_testrun_resid(name):
     return get_resource_identity("testrun", world.path_testruns, {"name": name})
-    
+
 def get_tag_resid(tag):
     return get_resource_identity("tag", world.path_tags, {"tag": tag})
 
@@ -609,36 +628,31 @@ def get_resource_identity(type, uri, params):
     '''
         type: Something like user or role or permission.
         uri: The URI stub to make the call
-        
+
         Return the id and version as strings
-        
+
         @TODO: This presumes a list of objects is returned.  So it ONLY returns the resid for
         the first element of the list.  Will almost certainly need a better solution in the future.
-        Like a new method "get_resource_identities" which returns a list of ids or something.  
+        Like a new method "get_resource_identities" which returns a list of ids or something.
     '''
 
     data = do_get(uri, params)
-
-#    headers = {'Content-Type':'application/json',
-#               'Authorization': get_auth_header()}
-#
-#    world.conn.request("GET", uri, "", headers)
-#    response = world.conn.getresponse()
-#    data = verify_status(200, response, "Response when asking for " + type)
-    
-    field = ns("resourceIdentity")
     respJson = get_single_item(data, type)
-    assert respJson.__contains__(field), "Object doesn't have " + field + ":\n" + jstr(respJson)
-    resid = respJson.get(field);
-    assert resid.__contains__("@id"), "Result should have @id" + ":\n" + jstr(respJson)
-    assert resid.__contains__("@version"), "Result should have @version" + ":\n" + jstr(respJson)
-    # we always use this as a string
-    return str(resid.get("@id")), str(resid.get("@version")) 
+
+    try:
+        resid = int(respJson[ns("resourceIdentity")]["@id"])
+        version = respJson[ns("resourceIdentity")]["@version"]
+        return resid, version
+    except KeyError:
+        assert False, "didn't find expected type:  %s -- %s or %s in:\n%s" % (ns("resourceIdentity"),
+                                                                     "@id",
+                                                                     "@version",
+                                                                     jstr(respJson))
 
 def get_testcase_latestversion_id(testcase_id):
     # now get the latest version for that testcase id
-    
-    latestversion_uri = world.path_testcases + testcase_id + "/latestversion/"
+
+    latestversion_uri = world.path_testcases + str(testcase_id) + "/latestversion/"
 
     response_txt = do_get(latestversion_uri)
     respJson = json_to_obj(response_txt)
@@ -650,31 +664,31 @@ def get_testcase_latestversion_id(testcase_id):
     field = ns("resourceIdentity")
     assert tcv.__contains__(field), "didn't find expected type: %s in:\n%s" % (field, jstr(tcv))
     resid = tcv[field]
-    
+
     assert resid.__contains__("@id"), "didn't find expected type: %s in:\n%s" % ("@id", jstr(resid))
     return resid["@id"]
-    
-    
+
+
 def check_first_before_second(field, first, second, obj_list):
 
     first_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == first]
     second_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == second]
-    assert first_idx < second_idx, "Expected %s before %s in %s" % (first, second, 
+    assert first_idx < second_idx, "Expected %s before %s in %s" % (first, second,
                                                                     jstr(obj_list))
-    
-    
+
+
 def plural(type):
-    
+
     if (type == ns("company")):
         plural_type = ns("companies")
     else:
-        plural_type = type + "s"   
+        plural_type = type + "s"
 
     return plural_type
 
 def as_arrayof(type):
     return ns("ArrayOf" + str.capitalize(type))
-    
+
 def jstr(obj):
     return json.dumps(obj, sort_keys=True, indent=4)
 

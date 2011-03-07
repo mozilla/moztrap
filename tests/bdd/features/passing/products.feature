@@ -1,5 +1,5 @@
 Feature: Product Tests
- 
+
     Scenario: Try creating and deleting a Product
         Given I create the seed company and product
         And a product with name "Camera Pencil Sharpener" does not exist

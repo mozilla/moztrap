@@ -20,17 +20,17 @@ from lettuce import step, world
 
 @step(u'fetch the company with name "(.*)" by its id')
 def fetch_company_by_id(step, name):
-    
+
     resid = get_company_resid(name)[0]
-    data = get_single_item_from_endpoint("company", world.path_companies + resid)
+    data = get_single_item_from_endpoint("company", world.path_companies + str(resid))
     eq_(data[ns("name")], name, "Fetch company by id")
 
 
 @step(u'company with (that name|name "(.*)") (does not exist|exists)')
 def check_company_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("company", stored, name)
-    search_and_verify_existence(world.path_companies, 
-                    {"name": name}, 
+    search_and_verify_existence(world.path_companies,
+                    {"name": name},
                      "company", existence)
 
 
@@ -45,7 +45,7 @@ def create_a_new_company_with_name(step, company_name):
                     "countryId": 123
                     }
 
-    do_post(world.path_companies, 
+    do_post(world.path_companies,
             post_payload)
 
 @step(u'create the following new companies')
@@ -55,36 +55,36 @@ def create_companies(step):
         company = item.copy()
         # persist the last one we make.  Sometimes we will only make one.
         world.names["company"] = company["name"]
-        
+
         # get the product id from the passed product name
         #country_id = get_country_resid(company["country name"])
         country_id = 123
         company["countryId"] = country_id
         del company["country name"]
-        
-    
-        do_post(world.path_companies, 
+
+
+        do_post(world.path_companies,
                 company)
 @step(u'search for all companies returns at least these results:')
 def at_least_these_companys_exist(step):
     company_list = get_list_from_search("company", world.path_companies)
-    
+
     # walk through all the expected roles and make sure it has them all
     # note, it doesn't check that ONLY these roles exist.  That should be a different
     # method.
     for company in step.hashes:
-        found_company = [x for x in company_list if x[ns("name")] == company["name"]] 
-        
+        found_company = [x for x in company_list if x[ns("name")] == company["name"]]
+
         assert len(found_company) == 1, "Expected to find company named %s in:\n%s" % (company["name"],
                                                                                    str(company_list))
-    
+
 @step(u'delete the company with (that name|name "(.*)")')
 def delete_company_with_name(step, stored, name):
     name = get_stored_or_store_name("company", stored, name)
-    
+
     resid, version = get_company_resid(name)
 
-    do_delete(world.path_companies + resid, 
+    do_delete(world.path_companies + str(resid),
               {"originalVersionId": version})
 
 

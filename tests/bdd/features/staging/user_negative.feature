@@ -3,7 +3,7 @@ Feature: User Negative Tests
     As an Administrator
     Some actions should be prevented
 
-    
+
     Scenario: Prevented from creating a new user with conflicting email
         Given user with email "admin@utest.com" exists
         Then I am prevented from creating new user with email "admin@utest.com"
