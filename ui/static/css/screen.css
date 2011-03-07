@@ -28,9 +28,9 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .userselect h3, .userselect .addall, .userselect .removeall, .smallcaps, h4, #run .testinvalid summary { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall, .smallcaps, h4, #run .testinvalid summary { letter-spacing: 0.1em; }
 
-.allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .userselect h3, .userselect .addall, .userselect .removeall { text-transform: uppercase; }
+.allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall { text-transform: uppercase; }
 
 .smallcaps, h4, #run .testinvalid summary { font-variant: small-caps; }
 
@@ -214,17 +214,18 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .tdlink, #cycles td:first-child, #testruns td:first-child { padding: 0; border: 0; }
 .tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
 
-.controls { text-align: right; }
+.controls { text-align: right; white-space: nowrap; }
+.controls *:last-child { margin-right: 0.375em; }
 thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .controls a:link, .controls a:visited { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50); opacity: 0.5; }
 .controls a:link, .controls a:visited { *display: inline; }
-.controls a:link[title="edit"], .controls a:visited[title="edit"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/pencil.png?1299181367'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.25em; }
+.controls a:link[title="edit"], .controls a:visited[title="edit"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/pencil.png?1299181367'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .controls a:link[title="edit"]:focus, .controls a:link[title="edit"]:hover, .controls a:link[title="edit"]:active, .controls a:visited[title="edit"]:focus, .controls a:visited[title="edit"]:hover, .controls a:visited[title="edit"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
 .controls a:focus, .controls a:hover, .controls a:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
 .controls button { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; }
-.controls button[title="clone"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/clone.png?1299181303'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.25em; }
+.controls button[title="clone"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/clone.png?1299181303'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .controls button[title="clone"]:focus, .controls button[title="clone"]:hover, .controls button[title="clone"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
-.controls button[title="delete"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/trash.png?1299181339'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.25em; }
+.controls button[title="delete"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/trash.png?1299181339'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .controls button[title="delete"]:focus, .controls button[title="delete"]:hover, .controls button[title="delete"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
 
 .loading { position: relative; }
@@ -236,7 +237,7 @@ body { font-size: 87.5%; line-height: 1.5em; }
 
 html > body { font-size: 14px; }
 
-.container, body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 85em; max-width: 100%; min-width: 750px; }
+.container, body > div { *zoom: 1; margin-left: auto; margin-right: auto; width: 85em; max-width: 100%; min-width: 800px; }
 .container:after, body > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
 header[role="banner"] { border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.679em; border-color: #cccccc; }
@@ -405,9 +406,9 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 
 .status { position: relative; }
 .status .pending { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; display: block; }
-.status .pending button[title="approve"] { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eeeeee; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/check.png?1299276480'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.25em; }
+.status .pending button[title="approve"] { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eeeeee; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/check.png?1299276480'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .status .pending button[title="approve"]:focus, .status .pending button[title="approve"]:hover, .status .pending button[title="approve"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
-.status .pending button[title="reject"] { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eeeeee; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/x.png?1299276461'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.25em; }
+.status .pending button[title="reject"] { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eeeeee; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68); opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/x.png?1299276461'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .status .pending button[title="reject"]:focus, .status .pending button[title="reject"]:hover, .status .pending button[title="reject"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100); opacity: 1; }
 .status .pending button[title="approve"], .status .pending button[title="reject"] { display: inline; float: left; width: 41.667%; margin-right: 16.667%; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50); opacity: 0.5; padding: 0; }
 .status .pending button[title="reject"] { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
@@ -440,6 +441,13 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 #managecycles .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managecycles .controls, #managecycles .testers { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
+#manageruns .status, #manageruns .product, #manageruns .start, #manageruns .end, #manageruns .id, #manageruns .controls { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#manageruns .cycle { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
+#manageruns .environments, #manageruns .suites { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
+#manageruns .title { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
+#manageruns .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#manageruns .controls, #manageruns .suites { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+
 #managecases .status, #managecases .id, #managecases .version { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #managecases .title, #managecases .tags, #managecases .environments { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managecases .product, #managecases .controls { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
@@ -461,6 +469,9 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 #managecycles .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
 #managecycles .listordering .byproduct { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #managecycles .listordering .bystart, #managecycles .listordering .byend { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#manageruns .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
+#manageruns .listordering .bycycle { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
+#manageruns .listordering .byproduct, #manageruns .listordering .bystart, #manageruns .listordering .byend { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #managecases .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; padding-left: 11.29%; }
 #managecases .listordering .byproduct, #managecases .listordering .byversion { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 
@@ -503,6 +514,24 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .addform .env-form li, #addcycle .env-form li, #addcase .env-form li { display: inline; float: left; width: 38.235%; margin-right: 2.941%; }
 .addform .env-form li:first-child, #addcycle .env-form li:first-child, #addcase .env-form li:first-child { padding-left: 10.294%; }
 
+.superselect p, .userselect p, .suiteselect p { margin: 0; }
+.superselect .unselected, .userselect .unselected, .suiteselect .unselected, .superselect .selected, .userselect .selected, .suiteselect .selected { display: inline; float: left; width: 46.565%; margin-right: 1.527%; }
+.superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4 { padding-left: 1.5em; padding-right: 1.5em; margin: 0; color: #eeeeee; background: #5d7b7a; font-weight: normal; }
+.superselect .selected, .userselect .selected, .suiteselect .selected { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.superselect label[for="search"], .userselect label[for="search"], .suiteselect label[for="search"] { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
+.superselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"] { width: 46.565%; }
+.superselect ul, .userselect ul, .suiteselect ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; height: 12em; border: 1px solid #cccccc; background: #cddcdb; overflow-y: scroll; }
+.superselect ul li, .userselect ul li, .suiteselect ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+.superselect ul input, .userselect ul input, .suiteselect ul input { display: none; }
+.superselect ul label, .userselect ul label, .suiteselect ul label { padding-top: 0.375em; padding-left: 1.5em; padding-right: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; display: block; background: #cddcdb; border-color: #eeeeee; }
+.superselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .superselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .superselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active { background: #b5e37f url('../images/ui/arrow_right.png?1299186728') no-repeat scroll right; }
+.superselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .superselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .superselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active { background: #eca9ab url('../images/ui/arrow_left.png?1299186686') no-repeat scroll left; }
+.superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-size: 0.857em; line-height: 1.75em; padding-left: 1.5em; padding-right: 1.5em; display: block; width: 100%; text-align: left; font-weight: bold; }
+.superselect .addall, .userselect .addall, .suiteselect .addall { color: #cdeca9; background: #77b929; text-align: right; }
+.superselect .addall:hover, .userselect .addall:hover, .suiteselect .addall:hover { background: #345112; }
+.superselect .removeall, .userselect .removeall, .suiteselect .removeall { color: #eca9ab; background: #b9292f; }
+.superselect .removeall:hover, .userselect .removeall:hover, .suiteselect .removeall:hover { background: #511214; }
+
 /* add cycle -------------------------------------------------------------- */
 #addcycle .list { clear: both; }
 #addcycle .addrun { padding: 0; }
@@ -518,25 +547,17 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .userselect summary:link, .userselect summary:visited, .userselect summary:hover, .userselect summary:active { outline: none; }
 .userselect summary:focus, .userselect summary:hover, .userselect summary:active { color: #b9292f; text-decoration: none; }
 .userselect summary:focus { outline: thin dotted #77b929; }
-.userselect > div { *zoom: 1; clear: both; padding-left: 4.828%; padding-right: 4.828%; margin-top: 1.5em; margin-bottom: 1.5em; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; background: #eeeeee; border-color: #cccccc; position: relative; overflow: visible !important; }
+.userselect > div { *zoom: 1; clear: both; padding-left: 4.828%; padding-right: 4.828%; margin-top: 1.5em; margin-bottom: 1.5em; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; position: relative; background: #eeeeee; border-color: #cccccc; overflow: visible !important; }
 .userselect > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .userselect > div::before { content: " "; display: block; position: absolute; bottom: 100%; left: 4.828%; width: 0; height: 0; border: 1em solid rgba(204, 204, 204, 0); border-width: 0.75em; border-bottom-color: #cccccc; }
-.userselect .unselected, .userselect .selected { display: inline; float: left; width: 46.565%; margin-right: 1.527%; }
-.userselect .selected { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-.userselect h3 { padding-left: 1.5em; padding-right: 1.5em; margin: 0; color: #eeeeee; background: #5d7b7a; font-weight: normal; }
-.userselect label[for="search"] { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
-.userselect input[type="search"] { width: 46.565%; }
-.userselect ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; height: 12em; border: 1px solid #cccccc; background: #cddcdb; overflow-y: scroll; }
-.userselect ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-.userselect ul input { display: none; }
-.userselect ul label { padding-top: 0.375em; padding-left: 1.5em; padding-right: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; display: block; background: #cddcdb; border-color: #eeeeee; }
-.userselect .unselected label:focus, .userselect .unselected label:hover, .userselect .unselected label:active { background: #b5e37f url('../images/ui/arrow_right.png?1299186728') no-repeat scroll right; }
-.userselect .selected label:focus, .userselect .selected label:hover, .userselect .selected label:active { background: #eca9ab url('../images/ui/arrow_left.png?1299186686') no-repeat scroll left; }
-.userselect .addall, .userselect .removeall { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-size: 0.857em; line-height: 1.75em; padding-left: 1.5em; padding-right: 1.5em; display: block; width: 100%; text-align: left; font-weight: bold; }
-.userselect .addall { color: #cdeca9; background: #77b929; text-align: right; }
-.userselect .addall:hover { background: #345112; }
-.userselect .removeall { color: #eca9ab; background: #b9292f; }
-.userselect .removeall:hover { background: #511214; }
+
+/* add run -------------------------------------------------------------- */
+.suiteselect { overflow: hidden; *zoom: 1; margin-bottom: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; clear: both; background: #eeeeee; border-color: #cccccc; }
+.suiteselect h3 { padding-top: 0.75em; padding-bottom: 0.75em; background: #cccccc; }
+.suiteselect h3, .suiteselect > div { clear: both; padding-left: 4.828%; padding-right: 4.828%; }
+.suiteselect label { overflow: hidden; *zoom: 1; }
+.suiteselect .id { display: inline; float: left; width: 19.672%; margin-right: 3.279%; text-align: right; font-weight: normal; }
+.suiteselect .title { display: inline; float: left; width: 77.049%; margin-right: 3.279%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
 /* add case -------------------------------------------------------------- */
 #addcase li { *zoom: 1; }

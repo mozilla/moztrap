@@ -1,18 +1,17 @@
-{% extends 'manage/testcycle/base.html' %}
+{% extends 'manage/testrun/base.html' %}
 
 {% block managecontent %}
-{# @@@ <p class="message success">3 test cycles activated</p> #}
-{# @@@ <p class="message error">Cannot activate test cycle because X</p> #}
 
-<section id="managecycles">
-  <h2>Manage Test Cycles</h2>
-  <a href="/manage/testcycle/add/" class="create">create test cycle</a>
+<section id="manageruns">
+  <h2>Manage Test Runs</h2>
+  <a href="/manage/testrun/add/" class="create">create test run</a>
   <form>
 
     <section class="managelist">
       <nav class="listordering">
         <ul>
           <li class="bytitle"><a href="#" class="asc">title</a></li>
+          <li class="bycycle"><a href="#">test cycle</a></li>
           <li class="byproduct"><a href="#">product</a></li>
           <li class="bystart"><a href="#">start date</a></th>
           <li class="byend"><a href="#">end date</a></th>
@@ -22,7 +21,8 @@
         <details>
           <summary class="header">
             <p class="status"><button title="activate" class="draft">draft</button></p>
-            <h3 class="title">Test Cycle Title</h3>
+            <h3 class="title">Test Run Title</h3>
+            <p class="cycle">Cycle Name</p>
             <p class="product">Firefox</p>
             <time class="start">2.24.2011</time>
             <time class="end">12.24.2011</time>
@@ -51,13 +51,13 @@
                 <li>env 04</li>
               </ul>
             </div>
-            <div class="testers">
-              <h4>testers</h4>
+            <div class="suites">
+              <h4>suites</h4>
               <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
+                <li>suite 01</li>
+                <li>suite 02</li>
+                <li>suite 03</li>
+                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -67,7 +67,8 @@
         <details>
           <summary class="header">
             <p class="status"><button title="lock" class="active">active</button></p>
-            <h3 class="title">Test Cycle Title</h3>
+            <h3 class="title">Test Run Title</h3>
+            <p class="cycle">Cycle Name</p>
             <p class="product">Firefox</p>
             <time class="start">2.24.2011</time>
             <time class="end">12.24.2011</time>
@@ -96,13 +97,13 @@
                 <li>env 04</li>
               </ul>
             </div>
-            <div class="testers">
-              <h4>testers</h4>
+            <div class="suites">
+              <h4>suites</h4>
               <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
+                <li>suite 01</li>
+                <li>suite 02</li>
+                <li>suite 03</li>
+                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -112,7 +113,8 @@
         <details>
           <summary class="header">
             <p class="status"><button title="activate" class="locked">locked</button></p>
-            <h3 class="title">Test Cycle Title</h3>
+            <h3 class="title">Test Run Title</h3>
+            <p class="cycle">Cycle Name</p>
             <p class="product">Firefox</p>
             <time class="start">2.24.2011</time>
             <time class="end">12.24.2011</time>
@@ -141,13 +143,13 @@
                 <li>env 04</li>
               </ul>
             </div>
-            <div class="testers">
-              <h4>testers</h4>
+            <div class="suites">
+              <h4>suites</h4>
               <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
+                <li>suite 01</li>
+                <li>suite 02</li>
+                <li>suite 03</li>
+                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -161,6 +163,13 @@
       <ul>
         <li><a href="#">Firefox</a></li>
         <li><a href="#">Fennec</a></li>
+      </ul>
+      <h4>Test Cycle</h4>
+      <ul>
+        <li><a href="#">Cycle 01</a></li>
+        <li><a href="#">Cycle 02</a></li>
+        <li><a href="#">Cycle 03</a></li>
+        <li><a href="#">Cycle 04</a></li>
       </ul>
       <h4>Status</h4>
       <ul>
@@ -180,7 +189,7 @@
         <li><a href="?page=3" class="next">next &raquo;</a> </li>
       </ul>
       <div class="perpage">
-        <strong>cycles per page:</strong>
+        <strong>runs per page:</strong>
         <ul>
           <li><a href="#">10</a></li>
           <li><span href="#" class="current">20</span></li>

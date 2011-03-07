@@ -16,7 +16,7 @@ $legacy-support-for-ie6 : false
 .container
   +container
   //+show-grid("grid.png")
-  min-width: 750px
+  min-width: 800px
 
 body > div
   @extend .container
@@ -588,6 +588,20 @@ a.create
   .controls, .testers
     +omega(18)
 
+#manageruns
+  .status, .product, .start, .end, .id, .controls
+    +columns(2,18)
+  .cycle
+    +columns(3,18)
+  .environments, .suites
+    +columns(4,18)
+  .title
+    +columns(5,18)
+  .description
+    +columns(8,18)
+  .controls, .suites
+    +omega(18)
+
 #managecases
   .status, .id, .version
     +columns(2,18)
@@ -648,6 +662,15 @@ a.create
     .bystart, .byend
       +columns(2,18)
   
+  #manageruns &
+    .bytitle
+      +columns(5,18)
+      +prefix(2,18)
+    .bycycle
+      +columns(3,18)
+    .byproduct, .bystart, .byend
+      +columns(2,18)
+
   #managecases &
     .bytitle
       +columns(8,18)
@@ -754,73 +777,20 @@ a.create
       &:first-child
         +prefix(1,10)
 
-/* add cycle --------------------------------------------------------------
-
-#addcycle
-  @extend .addform
-  @extend .managelists
-  
-  .list
-    clear: both
-  
-  .addrun
-    padding: 0
-    button
-      @extend .addfields
-      +border-radius(0)
-      display: block
-      margin: 0
-      width: 100%
-      border: 0
-
-.assignto
-  +leader
+.superselect
   p
     margin: 0
-  label
-    font-weight: normal
-    &[for="communal"]
-      margin-left: .4em
-  
-.userselect
-  summary
-    +link
-    width: columns(10,21)
-    font-style: italic
-  > div
-    +pie-clearfix
-    +full(21)
-    +pad(1,1,21)
-    +leader
-    +trailer
-    +leading-border(1px,1)
-    +trailing-border(1px,1)
-    background: $light
-    border-color: #ccc
-    position: relative
-    overflow: visible !important
-    &::before
-      content: " "
-      display: block
-      position: absolute
-      bottom: 100%
-      left: columns(1,21) + gutter(21)
-      width: 0
-      height: 0
-      border: 1em solid rgba(#ccc,0)
-        width: $base-rhythm-unit*.5
-      border-bottom-color: #ccc
   .unselected, .selected
     +columns(9,19)
+    h3, h4
+      @extend .allcaps
+      +hpadding(1.5em)
+      margin: 0
+      color: $light
+      background: $blue
+      font-weight: normal
   .selected
     +omega(19)
-  h3
-    @extend .allcaps
-    +hpadding(1.5em)
-    margin: 0
-    color: $light
-    background: $blue
-    font-weight: normal
   label[for="search"]
     +hide
     position: absolute
@@ -873,6 +843,92 @@ a.create
     background: $red
     &:hover
       background: $red-dark
+  
+/* add cycle --------------------------------------------------------------
+
+#addcycle
+  @extend .addform
+  @extend .managelists
+  
+  .list
+    clear: both
+  
+  .addrun
+    padding: 0
+    button
+      @extend .addfields
+      +border-radius(0)
+      display: block
+      margin: 0
+      width: 100%
+      border: 0
+
+.assignto
+  +leader
+  p
+    margin: 0
+  label
+    font-weight: normal
+    &[for="communal"]
+      margin-left: .4em
+  
+.userselect
+  @extend .superselect
+  summary
+    +link
+    width: columns(10,21)
+    font-style: italic
+  > div
+    +pie-clearfix
+    +full(21)
+    +pad(1,1,21)
+    +leader
+    +trailer
+    +leading-border(1px,1)
+    +trailing-border(1px,1)
+    position: relative
+    background: $light
+    border-color: #ccc
+    overflow: visible !important
+    &::before
+      content: " "
+      display: block
+      position: absolute
+      bottom: 100%
+      left: columns(1,21) + gutter(21)
+      width: 0
+      height: 0
+      border: 1em solid rgba(#ccc,0)
+        width: $base-rhythm-unit*.5
+      border-bottom-color: #ccc
+
+/* add run --------------------------------------------------------------
+
+.suiteselect
+  @extend .superselect
+  +clearfix
+  +trailer
+  +trailing-border(1px,1)
+  clear: both
+  background: $light
+  border-color: #ccc
+  h3
+    +padding-leader(.5)
+    +padding-trailer(.5)
+    background: #ccc
+  h3, > div
+    +full(21)
+    +pad(1,1,21)
+  label
+    +clearfix
+  .id
+    +columns(2,9)
+    text-align: right
+    font-weight: normal
+  .title
+    +columns(7,9)
+    +omega(9)
+    
 
 /* add case --------------------------------------------------------------    
 
