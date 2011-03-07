@@ -67,5 +67,6 @@ $(function() {
                 '<aside class="error">' + request.responseText + '</aside>'
             );
             $('.loadingCSS').detach();
+            $('.loading').removeClass("loading");
         });
 });
