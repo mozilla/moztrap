@@ -854,18 +854,33 @@ a.create
       font-weight: normal
   .unselected
     label
-      #{$focus}
+      #{$focus}, &.mark
         background: 
           color: $green-light 
           image: image-url('ui/arrow_right.png')
 
   .selected
     label
-      #{$focus}
+      #{$focus}, &.mark
         background: 
           color: $red-lighter 
           image: image-url('ui/arrow_left.png')
   
+  .addremove
+    +columns(1,19)
+    +leader(3)
+    button
+      +trailer(.5)
+      display: block
+      padding: 0
+      border: 0
+      width: 100%      
+      +icon('[title^="add"]','ui/arrow_right.png',$green-light)
+      +icon('[title^="update"]','ui/arrow_leftright_21.png',$blue-light)
+      +icon('[title^="remove"]','ui/arrow_left.png',$red-light)
+      &[title^="update"]
+        +padding-leader
+        +padding-trailer
   .addall, .removeall
     @extend .allcaps
     +button-reset
@@ -876,16 +891,16 @@ a.create
     text-align: left
     font-weight: bold
   .addall
-    color: $green-lighter
+    color: $green-lightest
     background: $green
     text-align: right
     &:hover
-      background: $green-dark
+      background-color: $green-dark
   .removeall
-    color: $red-lighter
-    background: $red
+    color: $red-lightest
+    background: $red-light
     &:hover
-      background: $red-dark
+      background-color: $red
 
 .mainselect
   @extend .superselect

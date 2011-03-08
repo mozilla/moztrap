@@ -52,7 +52,7 @@
       <div>
         <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for suites to add"></p>
         <div class="unselected">
-          <h4>un-selected suites</h4>
+          <h4>available suites</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
@@ -68,10 +68,14 @@
               </label>
             </li>
           </ul>
-          <button class="addall">add all &raquo;</button>
+        </div>
+        <div class="addremove">
+          <button class="add" title="add selected">add selected</button>
+          <button class="update" title="update all">update all</button>
+          <button class="remove" title="remove selected">&laquo; remove selected</button>
         </div>
         <div class="selected">
-          <h4>selected suites</h4>
+          <h4>included suites</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
@@ -87,7 +91,6 @@
               </label>
             </li>
           </ul>
-          <button class="removeall">&laquo; remove all</button>
         </div>
       </div>
     </section>
@@ -97,7 +100,7 @@
       <div>
         <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for users to add"></p>
         <div class="unselected">
-          <h3>un-selected users</h3>
+          <h3>available users</h3>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="nickname">username</a></li>
@@ -113,10 +116,14 @@
               </label>
             </li>
           </ul>
-          <button class="addall">add all &raquo;</button>
+        </div>
+        <div class="addremove">
+          <button class="add" title="add selected">add selected</button>
+          <button class="update" title="update all">update all</button>
+          <button class="remove" title="remove selected">&laquo; remove selected</button>
         </div>
         <div class="selected">
-          <h3>selected users</h3>
+          <h3>included users</h3>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="nickname">username</a></li>
@@ -132,7 +139,6 @@
               </label>
             </li>
           </ul>
-          <button class="removeall">&laquo; remove all</button>
         </div>
       </div>
     </details>

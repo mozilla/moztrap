@@ -38,7 +38,7 @@
       <div>
         <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for suites to add"></p>
         <div class="unselected">
-          <h4>un-selected cases</h4>
+          <h4>available cases</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
@@ -56,10 +56,14 @@
               </label>
             </li>
           </ul>
-          <button class="addall">add all &raquo;</button>
+        </div>
+        <div class="addremove">
+          <button class="add" title="add selected">add selected</button>
+          <button class="update" title="update all">update all</button>
+          <button class="remove" title="remove selected">&laquo; remove selected</button>
         </div>
         <div class="selected">
-          <h4>selected cases</h4>
+          <h4>included cases</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
@@ -77,7 +81,6 @@
               </label>
             </li>
           </ul>
-          <button class="removeall">&laquo; remove all</button>
         </div>
       </div>
     </section>
