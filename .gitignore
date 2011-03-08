@@ -1,6 +1,7 @@
 ui/.sass-cache
 ui/collected-assets/*
 ui/tcmui/settings_local.py
+ui/coverage/*
 .livereload
 *.pyc
 *.class
