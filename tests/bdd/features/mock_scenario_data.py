@@ -14,10 +14,10 @@ Created on Oct 18, 2010
 @author: camerondawson
 '''
 
-import urllib
-import json
-import step_helper
 from lettuce import world
+from tcm_data_helper import plural
+import json
+import urllib
 
 def get_scenario_data(scenarioName):
     '''
@@ -692,7 +692,7 @@ def as_sr(object):
     return_value = {
         "searchResult": {
             "@xsi.type": "searchResult",
-            step_helper.plural(type): object
+            plural(type): object
         }
     }
     return return_value

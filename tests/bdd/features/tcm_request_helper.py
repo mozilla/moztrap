@@ -180,57 +180,57 @@ def get_user_resid(name):
         name: Split into 2 parts at the space.  Only the first two parts are used.  Must have at least 2 parts.
     '''
     names = name.split()
-    return get_resource_identity("user", world.path_users, {"firstName": names[0], "lastName": names[1]})
+    return search_for_resid("user", world.path_users, {"firstName": names[0], "lastName": names[1]})
 
 def get_role_resid(role):
     '''
         Get the resourceIdentity of a role, based on the description of the role
     '''
-    return get_resource_identity("role", world.path_roles, {"name": role})
+    return search_for_resid("role", world.path_roles, {"name": role})
 
 def get_product_resid(product):
     '''
         Get the resourceIdentity, based on the name
     '''
-    return get_resource_identity("product", world.path_products, {"name": product})
+    return search_for_resid("product", world.path_products, {"name": product})
 
 def get_seed_product_id():
     return  get_product_resid(world.seed_product["name"])[0]
 
 def get_company_resid(product):
-    return get_resource_identity("company", world.path_companies, {"name": product})
+    return search_for_resid("company", world.path_companies, {"name": product})
 
 def get_seed_company_id():
     return get_company_resid(world.seed_company["name"])[0]
 
 def get_country_resid(country):
-    return get_resource_identity("country", world.path_countries, {"name": country})
+    return search_for_resid("country", world.path_countries, {"name": country})
 
 def get_environment_resid(environment):
-    return get_resource_identity("environment", world.path_environments, {"name": environment})
+    return search_for_resid("environment", world.path_environments, {"name": environment})
 
 def get_environmenttype_resid(environment):
-    return get_resource_identity("environmenttype", world.path_environmenttypes, {"name": environment})
+    return search_for_resid("environmenttype", world.path_environmenttypes, {"name": environment})
 
 def get_environmentgroup_resid(environment):
-    return get_resource_identity("environmentgroup", world.path_environmentgroups, {"name": environment})
+    return search_for_resid("environmentgroup", world.path_environmentgroups, {"name": environment})
 
 def get_testcase_resid(name):
-    return get_resource_identity("testcase", world.path_testcases, {"name" : name})
+    return search_for_resid("testcase", world.path_testcases, {"name" : name})
 
 def get_testsuite_resid(name):
-    return get_resource_identity("testsuite", world.path_testsuites, {"name" : name})
+    return search_for_resid("testsuite", world.path_testsuites, {"name" : name})
 
 def get_testcycle_resid(name):
-    return get_resource_identity("testcycle", world.path_testcycles, {"name": name})
+    return search_for_resid("testcycle", world.path_testcycles, {"name": name})
 
 def get_testrun_resid(name):
-    return get_resource_identity("testrun", world.path_testruns, {"name": name})
+    return search_for_resid("testrun", world.path_testruns, {"name": name})
 
 def get_tag_resid(tag):
-    return get_resource_identity("tag", world.path_tags, {"tag": tag})
+    return search_for_resid("tag", world.path_tags, {"tag": tag})
 
-def get_resource_identity(obj_name, uri, params):
+def search_for_resid(obj_name, uri, params = {}):
     '''
         tcm_type: Something like user or role or permission.
         uri: The URI stub to make the call
@@ -243,40 +243,27 @@ def get_resource_identity(obj_name, uri, params):
     '''
 
     resp_list = get_list_from_search(obj_name, uri, params = params)
-    item = resp_list[0]
+    return get_resource_identity(resp_list[0])
+
+def get_resource_identity(tcm_obj):
     try:
-        resid = int(item[ns("resourceIdentity")]["@id"])
-        version = item[ns("resourceIdentity")]["@version"]
+        resid = int(tcm_obj[ns("resourceIdentity")]["@id"])
+        version = tcm_obj[ns("resourceIdentity")]["@version"]
         return resid, version
     except KeyError:
         assert False, "didn't find expected tcm_type:  %s -- %s or %s in:\n%s" % (ns("resourceIdentity"),
                                                                      "@id",
                                                                      "@version",
-                                                                     jstr(resp_list))
+                                                                     jstr(tcm_obj))
 
-def get_testcase_latestversion_id(testcase_id):
+
+def get_testcase_latestversion_resid(testcase_id):
     # now get the latest version for that testcase id
 
     latestversion_uri = world.path_testcases + str(testcase_id) + "/latestversion/"
 
-    response_txt = do_get(latestversion_uri)
-    respJson = json_to_obj(response_txt)
-
-    tcm_type = ns("testcaseversion")
-    assert respJson.__contains__(tcm_type), "didn't find expected tcm_type: %s in:\n%s" % (tcm_type, jstr(respJson))
-    tcv = respJson[tcm_type][0]
-
-    field = ns("resourceIdentity")
-    assert tcv.__contains__(field), "didn't find expected tcm_type: %s in:\n%s" % (field, jstr(tcv))
-    resid = tcv[field]
-
-    assert resid.__contains__("@id"), "didn't find expected tcm_type: %s in:\n%s" % ("@id", jstr(resid))
-    return resid["@id"]
-
-
-
-
-
+    testcaseversion = get_single_item_from_endpoint("testcaseversion", latestversion_uri)
+    return get_resource_identity(testcaseversion)
 
 
 '''
@@ -319,28 +306,6 @@ def get_list_from_search(tcm_type, uri, params = {}, headers = get_json_headers(
              json_pretty(response_txt))
 
 
-#def get_list_of_type(tcm_type, response_txt):
-#    respJson = json_to_obj(response_txt)
-#
-#    try:
-#        array_of_type = respJson[ns(as_arrayof(tcm_type))][0]
-#        if (len(array_of_type) > 1):
-#            item = array_of_type[ns(tcm_type)]
-#        else:
-#            return []
-#    except KeyError:
-#        assert False, "didn't find expected tcm_type:  %s -- %s in:\n%s" % (ns(as_arrayof(tcm_type)),
-#                                                                     ns(tcm_type),
-#                                                                     jstr(respJson))
-
-    # If there is only one, this may not come back as a list.  But I don't want to handle
-    # that case everywhere, so we guarantee this is a list
-#
-#    if isinstance(item, list):
-#        return item
-#    else:
-#        return [item]
-
 def get_list_from_endpoint(tcm_type, uri, headers = get_json_headers()):
     '''
         This hits an endpoint.  It goes into the ArrayOfXXX tcm_type of response
@@ -367,7 +332,7 @@ def get_list_from_endpoint(tcm_type, uri, headers = get_json_headers()):
 
 def get_single_item_from_endpoint(tcm_type, uri, headers = get_json_headers()):
     '''
-        This hits an endpoint.  It goes into the ArrayOfXXX tcm_type of response
+        This hits an endpoint.  No searchResult or ArrayOfXXXX part here
     '''
 
     response_txt = do_get(uri, headers = headers)
@@ -375,7 +340,7 @@ def get_single_item_from_endpoint(tcm_type, uri, headers = get_json_headers()):
     try:
         return json_to_obj(response_txt)[ns(tcm_type)][0]
     except KeyError:
-        assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(tcm_type),response_txt)
+        assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(tcm_type), response_txt)
 
 
 

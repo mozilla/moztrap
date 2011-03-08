@@ -6,7 +6,7 @@ Created on Jan 28, 2011
 from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr
 from features.tcm_request_helper import get_seed_product_id, do_post, \
     get_form_headers, get_auth_header_user_name, search_and_verify_existence, \
-    get_testcase_resid, do_delete, get_testcase_latestversion_id, \
+    get_testcase_resid, do_delete, get_testcase_latestversion_resid, \
     get_list_from_endpoint, do_put, get_single_item_from_endpoint, \
     get_environment_resid, get_list_from_search, get_product_resid, \
     get_testcycle_resid, get_testrun_resid, get_testsuite_resid
@@ -76,7 +76,7 @@ def add_steps_to_testcase_name(step, stored, name):
     # first we need the testcase id so we can get the latest version to add steps to
     testcase_id = get_testcase_resid(name)[0]
 
-    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+    testcaseversion_id = get_testcase_latestversion_resid(testcase_id)[0]
 
     uri = world.path_testcases + "versions/" + str(testcaseversion_id) + "/steps/"
     for case_step in step.hashes:
@@ -89,7 +89,7 @@ def verify_testcase_steps(step, stored, name):
     # first we need the testcase id so we can get the latest version to add steps to
     testcase_id = get_testcase_resid(name)[0]
 
-    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+    testcaseversion_id = get_testcase_latestversion_resid(testcase_id)[0]
 
     # fetch the steps for this testcase from the latestversion
 
@@ -114,7 +114,7 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
 
     # first we need the testcase id so we can get the latest version to approve
     testcase_id, version = get_testcase_resid(testcase_name)
-    testcaseversion_id = get_testcase_latestversion_id(testcase_id)
+    testcaseversion_id = get_testcase_latestversion_resid(testcase_id)[0]
 
 
     # do the approval of the testcase
