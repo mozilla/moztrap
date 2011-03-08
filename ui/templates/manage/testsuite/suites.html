@@ -1,33 +1,27 @@
-{% extends 'manage/testrun/base.html' %}
+{% extends 'manage/testsuite/base.html' %}
 
 {% block managecontent %}
 
-<section id="manageruns">
-  <h2>Manage Test Runs</h2>
-  <a href="/manage/testrun/add/" class="create">create test run</a>
+<section id="managesuites">
+  <h2>Manage Test Suites</h2>
+  <a href="/manage/testsuite/add/" class="create">create test suite</a>
   <form>
 
     <section class="managelist">
       <nav class="listordering">
         <ul>
           <li class="bytitle"><a href="#" class="asc">title</a></li>
-          <li class="bycycle"><a href="#">test cycle</a></li>
           <li class="byproduct"><a href="#">product</a></li>
-          <li class="bystart"><a href="#">start date</a></th>
-          <li class="byend"><a href="#">end date</a></th>
         </ul>
       </nav>
       <article id="unique-slug-id01" class="item draft">
         <details>
           <summary class="header">
             <p class="status"><button title="activate" class="draft">draft</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
+            <h3 class="title">Test Suite Title</h3>
             <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
             <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
+              <a href="/manage/testsuite/add/" title="edit">edit</a>
               <button title="clone">clone</button>
               <button title="delete">delete</button>
             </div>
@@ -49,15 +43,6 @@
                 <li>env 02</li>
                 <li>env 03</li>
                 <li>env 04</li>
-              </ul>
-            </div>
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -67,13 +52,10 @@
         <details>
           <summary class="header">
             <p class="status"><button title="lock" class="active">active</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
+            <h3 class="title">Test Suite Title</h3>
             <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
             <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
+              <a href="/manage/testsuite/add/" title="edit">edit</a>
               <button title="clone">clone</button>
               <button title="delete">delete</button>
             </div>
@@ -95,15 +77,6 @@
                 <li>env 02</li>
                 <li>env 03</li>
                 <li>env 04</li>
-              </ul>
-            </div>
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -113,13 +86,10 @@
         <details>
           <summary class="header">
             <p class="status"><button title="activate" class="locked">locked</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
+            <h3 class="title">Test Suite Title</h3>
             <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
             <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
+              <a href="/manage/testsuite/add/" title="edit">edit</a>
               <button title="clone">clone</button>
               <button title="delete">delete</button>
             </div>
@@ -141,15 +111,6 @@
                 <li>env 02</li>
                 <li>env 03</li>
                 <li>env 04</li>
-              </ul>
-            </div>
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
               </ul>
             </div>
           </div>
@@ -163,13 +124,6 @@
       <ul>
         <li><a href="#">Firefox</a></li>
         <li><a href="#">Fennec</a></li>
-      </ul>
-      <h4>Test Cycle</h4>
-      <ul>
-        <li><a href="#">Cycle 01</a></li>
-        <li><a href="#">Cycle 02</a></li>
-        <li><a href="#">Cycle 03</a></li>
-        <li><a href="#">Cycle 04</a></li>
       </ul>
       <h4>Status</h4>
       <ul>
@@ -189,7 +143,7 @@
         <li><a href="?page=3" class="next">next &raquo;</a> </li>
       </ul>
       <div class="perpage">
-        <strong>runs per page:</strong>
+        <strong>suites per page:</strong>
         <ul>
           <li><a href="#">10</a></li>
           <li><span href="#" class="current">20</span></li>

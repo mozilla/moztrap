@@ -575,9 +575,9 @@ a.create
           text-indent: 0
         
 #managecycles
-  .status, .start, .end, .id
+  .status, .id, .controls
     +columns(2,18)
-  .product, .controls
+  .product, .start, .end
     +columns(3,18)
   .environments, .testers
     +columns(4,18)
@@ -602,6 +602,16 @@ a.create
   .controls, .suites
     +omega(18)
 
+#managesuites
+  .status, .id
+    +columns(2,18)
+  .product, .controls
+    +columns(4,18)
+  .title, .description, .environments
+    +columns(8,18)
+  .controls, .environments
+    +omega(18)
+
 #managecases
   .status, .id, .version
     +columns(2,18)
@@ -616,6 +626,35 @@ a.create
     clear: left
   .controls, .byline, .environments
     +omega(18)
+
+.sortlinks
+  #{$link}
+    display: block
+    position: relative
+    &::after
+      +replace-text-with-dimensions('ui/angle_up.png')
+      +inline-block
+      content: " "
+      margin-left: .4em
+      background-image: none
+      vertical-align: baseline
+  #{$focus}
+    &::after
+      background-image: image-url('ui/angle_up.png')
+  &.asc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+  &.desc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_up.png')
   
 .listordering
   +clearfix
@@ -625,42 +664,14 @@ a.create
   ul
     +no-style-list
   a
-    #{$link}
-      display: block
-      position: relative
-      &::after
-        +replace-text-with-dimensions('ui/angle_up.png')
-        +inline-block
-        content: " "
-        margin-left: .4em
-        background-image: none
-        vertical-align: baseline
-    #{$focus}
-      &::after
-        background-image: image-url('ui/angle_up.png')
-    &.asc
-      #{$link}
-        &::after
-          background-image: image-url('ui/angle_up.png')
-      #{$focus}
-        &::after
-          background-image: image-url('ui/angle_down.png')
-    &.desc
-      #{$link}
-        &::after
-          background-image: image-url('ui/angle_down.png')
-      #{$focus}
-        &::after
-          background-image: image-url('ui/angle_up.png')
+    @extend .sortlinks
  
   #managecycles &
     .bytitle
       +columns(5,18)
       +prefix(2,18)
-    .byproduct
+    .byproduct, .bystart, .byend
       +columns(3,18)
-    .bystart, .byend
-      +columns(2,18)
   
   #manageruns &
     .bytitle
@@ -670,6 +681,13 @@ a.create
       +columns(3,18)
     .byproduct, .bystart, .byend
       +columns(2,18)
+  
+  #managesuites &
+    .bytitle
+      +columns(8,18)
+      +prefix(2,18)
+    .byproduct
+      +columns(4,18)
 
   #managecases &
     .bytitle
@@ -745,6 +763,18 @@ a.create
     +trailer
     li
       clear: both
+    .date
+      +columns(5,11)
+      clear: none
+      + .date
+        +omega(11)
+      label
+        +columns(2,5)
+      input
+        +columns(3,5)
+        +omega(5)
+      .errorlist
+        padding: 0
     .errorlist
       +full(11)
       +prefix(2,11)
@@ -780,6 +810,11 @@ a.create
 .superselect
   p
     margin: 0
+  nav
+    padding-right: 1em
+    border: 1px solid #ccc
+      width: 0px 1px
+
   .unselected, .selected
     +columns(9,19)
     h3, h4
@@ -797,31 +832,39 @@ a.create
     height: 0
   input[type="search"]
     width: columns(9,19)
-  ul
+  .select
     +no-style-list
     height: $base-rhythm-unit*8
     border: 1px solid #ccc
     background: $blue-lightest
     overflow-y: scroll
     input
-      display: none
+      position: absolute
+      left: -9999px
+      top: -9999px
+      z-index: -1
     label
-      +padding-leader(.25)
-      +hpadding($base-rhythm-unit)
-      +trailing-border(1px,.25)
+      +adjust-font-size-to(12px)
+      +clearfix
+      +padding-leader(.25,12px)
+      +trailing-border(1px,.25,12px)
       display: block
-      background: $blue-lightest
+      background: $blue-lightest no-repeat scroll 1em
       border-color: $light
-  
+      font-weight: normal
   .unselected
     label
       #{$focus}
-        background: $green-light image-url('ui/arrow_right.png') no-repeat scroll right
+        background: 
+          color: $green-light 
+          image: image-url('ui/arrow_right.png')
 
   .selected
     label
       #{$focus}
-        background: $red-lighter image-url('ui/arrow_left.png') no-repeat scroll left
+        background: 
+          color: $red-lighter 
+          image: image-url('ui/arrow_left.png')
   
   .addall, .removeall
     @extend .allcaps
@@ -843,6 +886,22 @@ a.create
     background: $red
     &:hover
       background: $red-dark
+
+.mainselect
+  @extend .superselect
+  +clearfix
+  +trailer
+  +trailing-border(1px,1)
+  clear: both
+  background: $light
+  border-color: #ccc
+  h3
+    +padding-leader(.5)
+    +padding-trailer(.5)
+    background: #ccc
+  h3, > div
+    +full(21)
+    +pad(1,1,21)
   
 /* add cycle --------------------------------------------------------------
 
@@ -901,34 +960,41 @@ a.create
       border: 1em solid rgba(#ccc,0)
         width: $base-rhythm-unit*.5
       border-bottom-color: #ccc
+  .nickname
+    +columns(3,9)
+    +prefix(1,9)
+  .fn
+    +columns(5,9)
+    +omega(9)
 
 /* add run --------------------------------------------------------------
 
+#addrun
+  @extend .addform
+
 .suiteselect
-  @extend .superselect
-  +clearfix
-  +trailer
-  +trailing-border(1px,1)
-  clear: both
-  background: $light
-  border-color: #ccc
-  h3
-    +padding-leader(.5)
-    +padding-trailer(.5)
-    background: #ccc
-  h3, > div
-    +full(21)
-    +pad(1,1,21)
-  label
-    +clearfix
+  @extend .mainselect
   .id
     +columns(2,9)
-    text-align: right
-    font-weight: normal
+    +prefix(1,9)
   .title
-    +columns(7,9)
+    +columns(6,9)
     +omega(9)
     
+/* add suite --------------------------------------------------------------    
+
+#addsuite
+  @extend .addform
+
+.caseselect
+  @extend .mainselect
+  .id
+    +columns(2,9)
+    +prefix(1,9)
+  .title, .author
+    +columns(3,9)
+  .author
+    +omega(9)
 
 /* add case --------------------------------------------------------------    
 

@@ -1,13 +1,13 @@
-{% extends 'manage/testrun/base.html' %}
+{% extends 'manage/testsuite/base.html' %}
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="/manage/testrun/add/">add test run</a></li>
+  <li><a href="/manage/testsuite/add/">add test suite</a></li>
 {% endblock crumb %}
 
 {% block managecontent %}
-<section id="addrun">
-  <h2>create a new test run</h2>
+<section id="addsuite">
+  <h2>create a new test suite</h2>
   <form method="POST">
     <ul class="meta">
       <li>
@@ -29,14 +29,14 @@
         {#   <li>this field is required</li> #}
         {# </ul> #}
         <label for="start">start date</label>
-        <input type="date" name="start" value="2011-03-07" id="start">
+        <input type="date" name="start" value="2011-03-07" id="start" required>
       </li>
       <li class="date">
         {# <ul class="errorlist"> #}
         {#   <li>this field is required</li> #}
         {# </ul> #}
         <label for="end">end date</label>
-        <input type="date" name="end" value="" id="start">
+        <input type="date" name="end" value="" id="start" required>
       </li>
     </ul>
 
@@ -47,43 +47,47 @@
       <a href="#" class="addfields">add environment constraints »</a>
     </div>
     
-    <section class="suiteselect">
-      <h3>add test suites to your test run</h3>
+    <section class="caseselect">
+      <h3>add test cases to your test suite</h3>
       <div>
         <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for suites to add"></p>
         <div class="unselected">
-          <h4>un-selected suites</h4>
+          <h4>un-selected cases</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
               <li><a href="#" class="title">title</a></li>
+              <li><a href="#" class="author">author</a></li>
             </ul>
           </nav>
           <ul class="select">
             <li>
-              <input type="checkbox" name="suite01" value="" id="suite01">
-              <label for="suite01">
+              <input type="checkbox" name="case01" value="" id="case01">
+              <label for="case01" class="hcard">
                 <span class="id">#3456</span>
-                <span class="title">Test Suite 01</span>
+                <span class="title">Test Case 01</span>
+                <span class="author fn">Author Name</span>
               </label>
             </li>
           </ul>
           <button class="addall">add all &raquo;</button>
         </div>
         <div class="selected">
-          <h4>selected suites</h4>
+          <h4>selected cases</h4>
           <nav class="listordering">
             <ul>
               <li><a href="#" class="id">id</a></li>
               <li><a href="#" class="title">title</a></li>
+              <li><a href="#" class="author">author</a></li>
             </ul>
           </nav>
           <ul class="select">
             <li>
-              <input type="checkbox" name="suite06" value="" id="suite06">
-              <label for="suite06">
+              <input type="checkbox" name="case06" value="" id="case06">
+              <label for="case06">
                 <span class="id">#4567</span>
-                <span class="title">Test Suite 06</span>
+                <span class="title">Test Case 06</span>
+                <span class="author fn">Author Name</span>
               </label>
             </li>
           </ul>
@@ -91,51 +95,6 @@
         </div>
       </div>
     </section>
-        
-    <details class="userselect">
-      <summary>assign specific users to this test run &raquo;</summary>
-      <div>
-        <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for users to add"></p>
-        <div class="unselected">
-          <h3>un-selected users</h3>
-          <nav class="listordering">
-            <ul>
-              <li><a href="#" class="nickname">username</a></li>
-              <li><a href="#" class="fn">name</a></li>
-            </ul>
-          </nav>
-          <ul class="select">
-            <li>
-              <input type="checkbox" name="user01" value="" id="user01">
-              <label for="user01" class="hcard">
-                <span class="nickname">username</span>
-                <span class="fn">First Last</span>
-              </label>
-            </li>
-          </ul>
-          <button class="addall">add all &raquo;</button>
-        </div>
-        <div class="selected">
-          <h3>selected users</h3>
-          <nav class="listordering">
-            <ul>
-              <li><a href="#" class="nickname">username</a></li>
-              <li><a href="#" class="fn">name</a></li>
-            </ul>
-          </nav>
-          <ul class="select">
-            <li>
-              <input type="checkbox" name="user06" value="" id="user06">
-              <label for="user06" class="hcard">
-                <span class="nickname">username</span>
-                <span class="fn">First Last</span>
-              </label>
-            </li>
-          </ul>
-          <button class="removeall">&laquo; remove all</button>
-        </div>
-      </div>
-    </details>
 
     <div class="form-actions">
       <button type="submit">save test run</button>

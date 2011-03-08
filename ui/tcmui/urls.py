@@ -40,6 +40,13 @@ urlpatterns = patterns(
     url("^manage/testrun/add/$", 
         "django.views.generic.simple.direct_to_template", 
         {"template": "manage/testrun/add_run.html"}),
+    # testsuites direct-to-template
+    url("^manage/testsuites/$", 
+        "django.views.generic.simple.direct_to_template", 
+        {"template": "manage/testsuite/suites.html"}),
+    url("^manage/testsuite/add/$", 
+        "django.views.generic.simple.direct_to_template", 
+        {"template": "manage/testsuite/add_suite.html"}),
     # testcases direct-to-template
     url("^manage/testcases/$", 
         "django.views.generic.simple.direct_to_template", 

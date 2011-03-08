@@ -28,9 +28,9 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall, .smallcaps, h4, #run .testinvalid summary { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .smallcaps, h4, #run .testinvalid summary { letter-spacing: 0.1em; }
 
-.allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall { text-transform: uppercase; }
+.allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall { text-transform: uppercase; }
 
 .smallcaps, h4, #run .testinvalid summary { font-variant: small-caps; }
 
@@ -434,8 +434,8 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .status button.rejected:focus, .status button.rejected:hover, .status button.rejected:active, .status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.active:focus, .status button.active:hover, .status button.active:active, .status button.locked:focus, .status button.locked:hover, .status button.locked:active { text-indent: -119988px; overflow: hidden; text-align: left; }
 .status button.rejected:focus::after, .status button.rejected:hover::after, .status button.rejected:active::after, .status button.draft:focus::after, .status button.draft:hover::after, .status button.draft:active::after, .status button.active:focus::after, .status button.active:hover::after, .status button.active:active::after, .status button.locked:focus::after, .status button.locked:hover::after, .status button.locked:active::after { content: attr(title); position: absolute; left: 1.5em; text-indent: 0; }
 
-#managecycles .status, #managecycles .start, #managecycles .end, #managecycles .id { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
-#managecycles .product, #managecycles .controls { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
+#managecycles .status, #managecycles .id, #managecycles .controls { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#managecycles .product, #managecycles .start, #managecycles .end { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #managecycles .environments, #managecycles .testers { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
 #managecycles .title { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
 #managecycles .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
@@ -448,6 +448,11 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 #manageruns .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #manageruns .controls, #manageruns .suites { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
+#managesuites .status, #managesuites .id { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#managesuites .product, #managesuites .controls { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
+#managesuites .title, #managesuites .description, #managesuites .environments { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#managesuites .controls, #managesuites .environments { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+
 #managecases .status, #managecases .id, #managecases .version { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #managecases .title, #managecases .tags, #managecases .environments { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managecases .product, #managecases .controls { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
@@ -455,23 +460,25 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 #managecases .tags { padding-left: 11.29%; clear: left; }
 #managecases .controls, #managecases .byline, #managecases .environments { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
+.sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited { display: block; position: relative; }
+.sortlinks:link::after, .listordering a:link::after, .sortlinks:visited::after, .listordering a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/angle_up.png?1299180949'); background-repeat: no-repeat; background-position: 50% 50%; width: 9px; height: 9px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; vertical-align: baseline; }
+.sortlinks:link::after, .listordering a:link::after, .sortlinks:visited::after, .listordering a:visited::after { *display: inline; }
+.sortlinks:focus::after, .listordering a:focus::after, .sortlinks:hover::after, .listordering a:hover::after, .sortlinks:active::after, .listordering a:active::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
+.sortlinks.asc:link::after, .listordering a.asc:link::after, .sortlinks.asc:visited::after, .listordering a.asc:visited::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
+.sortlinks.asc:focus::after, .listordering a.asc:focus::after, .sortlinks.asc:hover::after, .listordering a.asc:hover::after, .sortlinks.asc:active::after, .listordering a.asc:active::after { background-image: url('../images/ui/angle_down.png?1299180970'); }
+.sortlinks.desc:link::after, .listordering a.desc:link::after, .sortlinks.desc:visited::after, .listordering a.desc:visited::after { background-image: url('../images/ui/angle_down.png?1299180970'); }
+.sortlinks.desc:focus::after, .listordering a.desc:focus::after, .sortlinks.desc:hover::after, .listordering a.desc:hover::after, .sortlinks.desc:active::after, .listordering a.desc:active::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
+
 .listordering { overflow: hidden; *zoom: 1; border-top-style: solid; border-top-width: 0.071em; padding-top: 0.304em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; background: #eeeeee; border-color: #cccccc; }
 .listordering ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
 .listordering ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-.listordering a:link, .listordering a:visited { display: block; position: relative; }
-.listordering a:link::after, .listordering a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/angle_up.png?1299180949'); background-repeat: no-repeat; background-position: 50% 50%; width: 9px; height: 9px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; vertical-align: baseline; }
-.listordering a:link::after, .listordering a:visited::after { *display: inline; }
-.listordering a:focus::after, .listordering a:hover::after, .listordering a:active::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
-.listordering a.asc:link::after, .listordering a.asc:visited::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
-.listordering a.asc:focus::after, .listordering a.asc:hover::after, .listordering a.asc:active::after { background-image: url('../images/ui/angle_down.png?1299180970'); }
-.listordering a.desc:link::after, .listordering a.desc:visited::after { background-image: url('../images/ui/angle_down.png?1299180970'); }
-.listordering a.desc:focus::after, .listordering a.desc:hover::after, .listordering a.desc:active::after { background-image: url('../images/ui/angle_up.png?1299180949'); }
 #managecycles .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
-#managecycles .listordering .byproduct { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
-#managecycles .listordering .bystart, #managecycles .listordering .byend { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#managecycles .listordering .byproduct, #managecycles .listordering .bystart, #managecycles .listordering .byend { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #manageruns .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
 #manageruns .listordering .bycycle { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #manageruns .listordering .byproduct, #manageruns .listordering .bystart, #manageruns .listordering .byend { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+#managesuites .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; padding-left: 11.29%; }
+#managesuites .listordering .byproduct { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
 #managecases .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; padding-left: 11.29%; }
 #managecases .listordering .byproduct, #managecases .listordering .byversion { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 
@@ -496,41 +503,51 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited { padding-top: 0.375em; padding-bottom: 0.375em; }
 .addfields:focus, #addcycle .addrun button:focus, .addfields:hover, #addcycle .addrun button:hover, .addfields:active, #addcycle .addrun button:active { color: #444444; background: #77b929; }
 
-.addform .meta, #addcycle .meta, #addcase .meta { display: inline; float: left; width: 51.724%; margin-right: 1.379%; margin-bottom: 1.5em; }
-.addform .meta li, #addcycle .meta li, #addcase .meta li { *zoom: 1; }
-.addform .meta li:after, #addcycle .meta li:after, #addcase .meta li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-.addform .meta label, #addcycle .meta label, #addcase .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
-.addform .meta input, #addcycle .meta input, #addcase .meta input, .addform .meta select, #addcycle .meta select, #addcase .meta select, .addform .meta textarea, #addcycle .meta textarea, #addcase .meta textarea { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-.addform .meta li, #addcycle .meta li, #addcase .meta li { clear: both; }
-.addform .meta .errorlist, #addcycle .meta .errorlist, #addcase .meta .errorlist { clear: both; padding-left: 18.667%; }
-.addform .env, #addcycle .env, #addcase .env { display: inline; float: left; width: 46.897%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
-.addform .env h3, #addcycle .env h3, #addcase .env h3 { padding: 0.375em; background: #e1e1e1; margin: 0; }
-.addform .env ul, #addcycle .env ul, #addcase .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
-.addform .env ul li, #addcycle .env ul li, #addcase .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-.addform .env label, #addcycle .env label, #addcase .env label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
-.addform .env .remove, #addcycle .env .remove, #addcase .env .remove { display: inline; float: left; width: 7.353%; margin-right: 2.941%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-.addform .env-form, #addcycle .env-form, #addcase .env-form { *zoom: 1; border-top-style: solid; border-top-width: 0.071em; padding-top: 0.679em; border-color: #d4d4d4; background: #eeeeee; }
-.addform .env-form:after, #addcycle .env-form:after, #addcase .env-form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-.addform .env-form li, #addcycle .env-form li, #addcase .env-form li { display: inline; float: left; width: 38.235%; margin-right: 2.941%; }
-.addform .env-form li:first-child, #addcycle .env-form li:first-child, #addcase .env-form li:first-child { padding-left: 10.294%; }
+.addform .meta, #addcycle .meta, #addrun .meta, #addsuite .meta, #addcase .meta { display: inline; float: left; width: 51.724%; margin-right: 1.379%; margin-bottom: 1.5em; }
+.addform .meta li, #addcycle .meta li, #addrun .meta li, #addsuite .meta li, #addcase .meta li { *zoom: 1; }
+.addform .meta li:after, #addcycle .meta li:after, #addrun .meta li:after, #addsuite .meta li:after, #addcase .meta li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.addform .meta label, #addcycle .meta label, #addrun .meta label, #addsuite .meta label, #addcase .meta label { display: inline; float: left; width: 16%; margin-right: 2.667%; }
+.addform .meta input, #addcycle .meta input, #addrun .meta input, #addsuite .meta input, #addcase .meta input, .addform .meta select, #addcycle .meta select, #addrun .meta select, #addsuite .meta select, #addcase .meta select, .addform .meta textarea, #addcycle .meta textarea, #addrun .meta textarea, #addsuite .meta textarea, #addcase .meta textarea { display: inline; float: left; width: 81.333%; margin-right: 2.667%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .meta li, #addcycle .meta li, #addrun .meta li, #addsuite .meta li, #addcase .meta li { clear: both; }
+.addform .meta .date, #addcycle .meta .date, #addrun .meta .date, #addsuite .meta .date, #addcase .meta .date { display: inline; float: left; width: 44%; margin-right: 2.667%; clear: none; }
+.addform .meta .date + .date, #addcycle .meta .date + .date, #addrun .meta .date + .date, #addsuite .meta .date + .date, #addcase .meta .date + .date { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .meta .date label, #addcycle .meta .date label, #addrun .meta .date label, #addsuite .meta .date label, #addcase .meta .date label { display: inline; float: left; width: 36.364%; margin-right: 6.061%; }
+.addform .meta .date input, #addcycle .meta .date input, #addrun .meta .date input, #addsuite .meta .date input, #addcase .meta .date input { display: inline; float: left; width: 57.576%; margin-right: 6.061%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .meta .date .errorlist, #addcycle .meta .date .errorlist, #addrun .meta .date .errorlist, #addsuite .meta .date .errorlist, #addcase .meta .date .errorlist { padding: 0; }
+.addform .meta .errorlist, #addcycle .meta .errorlist, #addrun .meta .errorlist, #addsuite .meta .errorlist, #addcase .meta .errorlist { clear: both; padding-left: 18.667%; }
+.addform .env, #addcycle .env, #addrun .env, #addsuite .env, #addcase .env { display: inline; float: left; width: 46.897%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; #margin-left: -1em; margin-bottom: 1.5em; }
+.addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 { padding: 0.375em; background: #e1e1e1; margin: 0; }
+.addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; }
+.addform .env ul li, #addcycle .env ul li, #addrun .env ul li, #addsuite .env ul li, #addcase .env ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+.addform .env label, #addcycle .env label, #addrun .env label, #addsuite .env label, #addcase .env label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
+.addform .env .remove, #addcycle .env .remove, #addrun .env .remove, #addsuite .env .remove, #addcase .env .remove { display: inline; float: left; width: 7.353%; margin-right: 2.941%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.addform .env-form, #addcycle .env-form, #addrun .env-form, #addsuite .env-form, #addcase .env-form { *zoom: 1; border-top-style: solid; border-top-width: 0.071em; padding-top: 0.679em; border-color: #d4d4d4; background: #eeeeee; }
+.addform .env-form:after, #addcycle .env-form:after, #addrun .env-form:after, #addsuite .env-form:after, #addcase .env-form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.addform .env-form li, #addcycle .env-form li, #addrun .env-form li, #addsuite .env-form li, #addcase .env-form li { display: inline; float: left; width: 38.235%; margin-right: 2.941%; }
+.addform .env-form li:first-child, #addcycle .env-form li:first-child, #addrun .env-form li:first-child, #addsuite .env-form li:first-child, #addcase .env-form li:first-child { padding-left: 10.294%; }
 
-.superselect p, .userselect p, .suiteselect p { margin: 0; }
-.superselect .unselected, .userselect .unselected, .suiteselect .unselected, .superselect .selected, .userselect .selected, .suiteselect .selected { display: inline; float: left; width: 46.565%; margin-right: 1.527%; }
-.superselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .superselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .superselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .superselect .selected h4, .userselect .selected h4, .suiteselect .selected h4 { padding-left: 1.5em; padding-right: 1.5em; margin: 0; color: #eeeeee; background: #5d7b7a; font-weight: normal; }
-.superselect .selected, .userselect .selected, .suiteselect .selected { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
-.superselect label[for="search"], .userselect label[for="search"], .suiteselect label[for="search"] { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
-.superselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"] { width: 46.565%; }
-.superselect ul, .userselect ul, .suiteselect ul { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; height: 12em; border: 1px solid #cccccc; background: #cddcdb; overflow-y: scroll; }
-.superselect ul li, .userselect ul li, .suiteselect ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-.superselect ul input, .userselect ul input, .suiteselect ul input { display: none; }
-.superselect ul label, .userselect ul label, .suiteselect ul label { padding-top: 0.375em; padding-left: 1.5em; padding-right: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; display: block; background: #cddcdb; border-color: #eeeeee; }
-.superselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .superselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .superselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active { background: #b5e37f url('../images/ui/arrow_right.png?1299186728') no-repeat scroll right; }
-.superselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .superselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .superselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active { background: #eca9ab url('../images/ui/arrow_left.png?1299186686') no-repeat scroll left; }
-.superselect .addall, .userselect .addall, .suiteselect .addall, .superselect .removeall, .userselect .removeall, .suiteselect .removeall { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-size: 0.857em; line-height: 1.75em; padding-left: 1.5em; padding-right: 1.5em; display: block; width: 100%; text-align: left; font-weight: bold; }
-.superselect .addall, .userselect .addall, .suiteselect .addall { color: #cdeca9; background: #77b929; text-align: right; }
-.superselect .addall:hover, .userselect .addall:hover, .suiteselect .addall:hover { background: #345112; }
-.superselect .removeall, .userselect .removeall, .suiteselect .removeall { color: #eca9ab; background: #b9292f; }
-.superselect .removeall:hover, .userselect .removeall:hover, .suiteselect .removeall:hover { background: #511214; }
+.superselect p, .mainselect p, .suiteselect p, .caseselect p, .userselect p { margin: 0; }
+.superselect nav, .mainselect nav, .suiteselect nav, .caseselect nav, .userselect nav { padding-right: 1em; border: 1px solid #cccccc; border-width: 0px 1px; }
+.superselect .unselected, .mainselect .unselected, .suiteselect .unselected, .caseselect .unselected, .userselect .unselected, .superselect .selected, .mainselect .selected, .suiteselect .selected, .caseselect .selected, .userselect .selected { display: inline; float: left; width: 46.565%; margin-right: 1.527%; }
+.superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4 { padding-left: 1.5em; padding-right: 1.5em; margin: 0; color: #eeeeee; background: #5d7b7a; font-weight: normal; }
+.superselect .selected, .mainselect .selected, .suiteselect .selected, .caseselect .selected, .userselect .selected { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.superselect label[for="search"], .mainselect label[for="search"], .suiteselect label[for="search"], .caseselect label[for="search"], .userselect label[for="search"] { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; }
+.superselect input[type="search"], .mainselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"], .userselect input[type="search"] { width: 46.565%; }
+.superselect .select, .mainselect .select, .suiteselect .select, .caseselect .select, .userselect .select { list-style: none; margin: 0; padding: 0; border: 0; outline: 0; height: 12em; border: 1px solid #cccccc; background: #cddcdb; overflow-y: scroll; }
+.superselect .select li, .mainselect .select li, .suiteselect .select li, .caseselect .select li, .userselect .select li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+.superselect .select input, .mainselect .select input, .suiteselect .select input, .caseselect .select input, .userselect .select input { position: absolute; left: -9999px; top: -9999px; z-index: -1; }
+.superselect .select label, .mainselect .select label, .suiteselect .select label, .caseselect .select label, .userselect .select label { font-size: 0.857em; line-height: 1.75em; overflow: hidden; *zoom: 1; padding-top: 0.438em; border-bottom-style: solid; border-bottom-width: 0.083em; padding-bottom: 0.354em; display: block; background: #cddcdb no-repeat scroll 1em; border-color: #eeeeee; font-weight: normal; }
+.superselect .unselected label:focus, .mainselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .userselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .userselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .userselect .unselected label:active { background-color: #b5e37f; background-image: url('../images/ui/arrow_right.png?1299186728'); }
+.superselect .selected label:focus, .mainselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .userselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .userselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .userselect .selected label:active { background-color: #eca9ab; background-image: url('../images/ui/arrow_left.png?1299186686'); }
+.superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall { -moz-border-radius: 0; -webkit-border-radius: 0; -o-border-radius: 0; -ms-border-radius: 0; -khtml-border-radius: 0; border-radius: 0; text-shadow: none; display: inline; background: none; color: inherit; padding: 0; margin: 0; border: 0; font-size: 0.857em; line-height: 1.75em; padding-left: 1.5em; padding-right: 1.5em; display: block; width: 100%; text-align: left; font-weight: bold; }
+.superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall { color: #cdeca9; background: #77b929; text-align: right; }
+.superselect .addall:hover, .mainselect .addall:hover, .suiteselect .addall:hover, .caseselect .addall:hover, .userselect .addall:hover { background: #345112; }
+.superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall { color: #eca9ab; background: #b9292f; }
+.superselect .removeall:hover, .mainselect .removeall:hover, .suiteselect .removeall:hover, .caseselect .removeall:hover, .userselect .removeall:hover { background: #511214; }
+
+.mainselect, .suiteselect, .caseselect { overflow: hidden; *zoom: 1; margin-bottom: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; clear: both; background: #eeeeee; border-color: #cccccc; }
+.mainselect h3, .suiteselect h3, .caseselect h3 { padding-top: 0.75em; padding-bottom: 0.75em; background: #cccccc; }
+.mainselect h3, .suiteselect h3, .caseselect h3, .mainselect > div, .suiteselect > div, .caseselect > div { clear: both; padding-left: 4.828%; padding-right: 4.828%; }
 
 /* add cycle -------------------------------------------------------------- */
 #addcycle .list { clear: both; }
@@ -550,14 +567,17 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .userselect > div { *zoom: 1; clear: both; padding-left: 4.828%; padding-right: 4.828%; margin-top: 1.5em; margin-bottom: 1.5em; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; position: relative; background: #eeeeee; border-color: #cccccc; overflow: visible !important; }
 .userselect > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .userselect > div::before { content: " "; display: block; position: absolute; bottom: 100%; left: 4.828%; width: 0; height: 0; border: 1em solid rgba(204, 204, 204, 0); border-width: 0.75em; border-bottom-color: #cccccc; }
+.userselect .nickname { display: inline; float: left; width: 31.148%; margin-right: 3.279%; padding-left: 11.475%; }
+.userselect .fn { display: inline; float: left; width: 54.098%; margin-right: 3.279%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
 /* add run -------------------------------------------------------------- */
-.suiteselect { overflow: hidden; *zoom: 1; margin-bottom: 1.5em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; clear: both; background: #eeeeee; border-color: #cccccc; }
-.suiteselect h3 { padding-top: 0.75em; padding-bottom: 0.75em; background: #cccccc; }
-.suiteselect h3, .suiteselect > div { clear: both; padding-left: 4.828%; padding-right: 4.828%; }
-.suiteselect label { overflow: hidden; *zoom: 1; }
-.suiteselect .id { display: inline; float: left; width: 19.672%; margin-right: 3.279%; text-align: right; font-weight: normal; }
-.suiteselect .title { display: inline; float: left; width: 77.049%; margin-right: 3.279%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+.suiteselect .id { display: inline; float: left; width: 19.672%; margin-right: 3.279%; padding-left: 11.475%; }
+.suiteselect .title { display: inline; float: left; width: 65.574%; margin-right: 3.279%; display: inline; float: right; margin-right: 0; #margin-left: -1em; }
+
+/* add suite -------------------------------------------------------------- */
+.caseselect .id { display: inline; float: left; width: 19.672%; margin-right: 3.279%; padding-left: 11.475%; }
+.caseselect .title, .caseselect .author { display: inline; float: left; width: 31.148%; margin-right: 3.279%; }
+.caseselect .author { display: inline; float: right; margin-right: 0; #margin-left: -1em; }
 
 /* add case -------------------------------------------------------------- */
 #addcase li { *zoom: 1; }
