@@ -3,12 +3,13 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.step_helper import get_stored_or_store_name, get_seed_company_id, \
-    do_post, ns, get_list_from_endpoint, get_user_resid, do_put, jstr, \
-    get_user_password, do_get, eq_, search_and_verify_existence, get_user_status_id, \
-    search_and_verify, get_company_resid, get_list_from_search, log_user_in, \
-    get_auth_header, get_json_headers, do_put_for_cookie, \
-    get_single_item_from_endpoint, compare_dicts_by_keys, json_to_obj, ns_keys
+from features.tcm_data_helper import compare_dicts_by_keys, ns_keys, \
+    get_stored_or_store_name
+from features.tcm_request_helper import get_seed_company_id, do_post, ns, \
+    get_list_from_endpoint, get_user_resid, do_put, jstr, get_user_password, do_get, \
+    eq_, search_and_verify_existence, get_user_status_id, search_and_verify, \
+    get_company_resid, get_list_from_search, log_user_in, get_auth_header, \
+    get_json_headers, do_put_for_cookie, get_single_item_from_endpoint, json_to_obj
 from lettuce import step, world
 
 '''
@@ -94,17 +95,20 @@ def user_with_name_has_values(step, stored, name):
     names = name.split()
 
     act_user = get_list_from_search("user", world.path_users,
-                                {"firstName": names[0], "lastName": names[1]})[0]
+                                    {"firstName": names[0], "lastName": names[1]})[0]
 
     exp_user = step.hashes[0].copy()
-    exp_user["companyId"] = get_company_resid(exp_user["company name"])[0]
+    try:
+        exp_user["companyId"] = get_company_resid(exp_user["company name"])[0]
+        del exp_user["company name"]
+    except KeyError:
+        # we may not be checking company name, and that's ok, so just pass
+        pass
 
     # check that the data matches
-    eq_(act_user.get(ns("firstName")), exp_user["firstName"], "First Name field didn't match")
-    eq_(act_user.get(ns("lastName")), exp_user["lastName"], "lastName field didn't match")
-    eq_(act_user.get(ns("email")), exp_user["email"], "email field didn't match")
-    eq_(act_user.get(ns("screenName")), exp_user["screenName"], "screenName field didn't match")
-    eq_(act_user.get(ns("companyId")), int(exp_user["companyId"]), "companyId field didn't match")
+    compare_dicts_by_keys(ns_keys(exp_user),
+                          act_user,
+                          exp_user.keys())
 
 
 @step(u'change the email to "(.*)" for the user with (that name|name "(.*)")')
@@ -113,6 +117,14 @@ def change_user_email(step, new_email, stored, name):
     user_id, version = get_user_resid(name)
 
     do_put(world.path_users + "%s/emailchange/%s" % (user_id, new_email),
+           {"originalVersionId": version})
+
+@step(u'confirm the email for the user with (that name|name "(.*)")')
+def confirm_user_email(step, stored, name):
+    name = get_stored_or_store_name("user", stored, name)
+    user_id, version = get_user_resid(name)
+
+    do_put(world.path_users + "%s/emailconfirm" % (user_id),
            {"originalVersionId": version})
 
 @step(u'change the password to "(.*)" for the user with (that name|name "(.*)")')

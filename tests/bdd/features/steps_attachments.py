@@ -4,8 +4,8 @@ Created on Jan 31, 2011
 @author: camerondawson
 '''
 
-from features.step_helper import do_post, get_testcase_resid, \
-    encode_multipart_formdata
+from features.tcm_request_helper import get_testcase_resid, \
+    encode_multipart_formdata, do_post
 from lettuce import step, world
 
 '''

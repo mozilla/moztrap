@@ -3,13 +3,13 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.step_helper import get_stored_or_store_name, do_post, \
-    get_list_from_search, ns, get_list_from_endpoint, do_put, \
-    get_single_item_from_endpoint, jstr, get_seed_product_id, \
-    get_auth_header_user_name, search_and_verify_existence, get_testcase_resid, \
-    do_delete, get_testcase_latestversion_id, eq_, get_environment_resid, \
-    get_product_resid, get_testcycle_resid, get_testrun_resid, \
-    search_and_verify_array, get_testsuite_resid, get_form_headers
+from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr
+from features.tcm_request_helper import get_seed_product_id, do_post, \
+    get_form_headers, get_auth_header_user_name, search_and_verify_existence, \
+    get_testcase_resid, do_delete, get_testcase_latestversion_id, \
+    get_list_from_endpoint, do_put, get_single_item_from_endpoint, \
+    get_environment_resid, get_list_from_search, get_product_resid, \
+    get_testcycle_resid, get_testrun_resid, get_testsuite_resid
 from lettuce import step, world
 
 
@@ -169,16 +169,16 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
 
-    jsonList = get_list_from_search("environment",
+    result_list = get_list_from_search("environment",
                                     world.path_testcases + "%s/environments" % test_case_id)
 
-    found = False
-    for item in jsonList:
-        if (item.get(ns("name")) == environment):
-            found = True
-
-    shouldFind = (haveness == "has")
-    eq_(found, shouldFind, "looking for environment of " + environment)
+    found_item = [x for x in result_list if x[ns("name")] == environment]
+    if (haveness == "has"):
+        assert len(found_item) == 1, "Expected to find %s in:\n%s" % (environment,
+                                                                 jstr(result_list))
+    else:
+        assert len(found_item) == 0, "Expected to NOT find %s in:\n%s" % (environment,
+                                                                 jstr(result_list))
 
 
 @step(u'test case with name "(.*)" (has|does not have) attachment with filename "(.*)"')
@@ -186,16 +186,17 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
 
-    jsonList = get_list_from_search("attachment",
+    result_list = get_list_from_search("attachment",
                                     world.path_testcases + "%s/attachments" % test_case_id)
 
-    found = False
-    for item in jsonList:
-        if (item.get(ns("fileName")) == attachment):
-            found = True
+    found_item = [x for x in result_list if x[ns("name")] == attachment]
+    if (haveness == "has"):
+        assert len(found_item) == 1, "Expected to find %s in:\n%s" % (attachment,
+                                                                 jstr(result_list))
+    else:
+        assert len(found_item) == 0, "Expected to NOT find %s in:\n%s" % (attachment,
+                                                                 jstr(result_list))
 
-    shouldFind = (haveness == "has")
-    eq_(found, shouldFind, "looking for attachment of " + attachment + " in:\n" + jstr(jsonList))
 
 '''
 ######################################################################
@@ -314,9 +315,12 @@ def testcycle_has_testrun(step, cycle_name, run_name):
     testcycle_id = get_testcycle_resid(cycle_name)[0]
 
     uri = world.path_testcycles + "%s/testruns/" % testcycle_id
-    search_and_verify_array(uri,
-                    {"name": run_name},
-                     "testrun", True)
+    testrun_list = get_list_from_endpoint("testrun", uri)
+
+    found_run = [x for x in testrun_list if x[ns("name")] == run_name]
+    assert len(found_run) == 1, "Expected to find name %s in:\n%s" % (run_name,
+                                                                      jstr(testrun_list))
+
 
 
 

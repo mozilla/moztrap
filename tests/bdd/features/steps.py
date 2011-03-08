@@ -3,7 +3,7 @@ Created on Oct 7, 2010
 
 @author: camerondawson
 '''
-from features.step_helper import verify_status, add_params, do_post, \
+from features.tcm_request_helper import verify_status, add_params, do_post, \
     get_company_resid
 from lettuce import step, world
 from lettuce.terrain import before, after

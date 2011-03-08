@@ -3,10 +3,11 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.step_helper import get_stored_or_store_name, get_seed_company_id, \
-    do_post, get_list_from_search, ns, jstr, search_and_verify_existence, \
-    get_environmenttype_resid, get_environment_resid, do_delete, get_product_resid, \
-    search_and_verify, do_get, get_single_item, eq_, get_environmentgroup_resid
+from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, eq_
+from features.tcm_request_helper import do_post, do_delete, get_list_from_search, \
+    get_seed_company_id, search_and_verify_existence, get_environmenttype_resid, \
+    get_environment_resid, get_product_resid, search_and_verify, do_get, \
+    get_environmentgroup_resid
 from lettuce import step, world
 
 '''
@@ -142,9 +143,11 @@ def check_group_environmenttype_with_name(step, stored, name, is_group):
     name = get_stored_or_store_name("environmenttype", stored, name)
     groupType = (is_group.strip() == "a group")
 
-    data = do_get(world.path_environmenttypes, {"name": name})
-
-    env_type = get_single_item(data, "environmenttype")
+    resp_list = get_list_from_search("environmenttype",
+                                world.path_environmenttypes,
+                                {"name": name})
+    # taking the first one
+    env_type = resp_list[0]
     eq_(env_type[ns("groupType")], groupType, "GroupType match check")
 
 '''
