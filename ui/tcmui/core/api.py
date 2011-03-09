@@ -190,7 +190,7 @@ class ObjectMixin(StrAndUnicode):
                 # currently only one error is returned at a time
                 error = data.get("errors", [{}])[0].get("error", "")
             else:
-                error = ""
+                error = str(content)
 
             exc = exc_cls(
                 '%d %s requesting %s %s: %s'
@@ -433,7 +433,10 @@ class ObjectMixin(StrAndUnicode):
 
 
     def __repr__(self):
-        return "<%s: %s>" % (self.__class__.__name__, self)
+        if self._delivered:
+            return "<%s: %s>" % (self.__class__.__name__, self)
+        else:
+            return "<%s: %s>" % (self.__class__.__name__, self._location)
 
 
 

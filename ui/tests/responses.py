@@ -22,12 +22,12 @@ COMPANY_DEFAULTS = {
 def make_company(**kwargs):
     for k, v in COMPANY_DEFAULTS.items():
         kwargs.setdefault(k, v)
-    return make_one("company", **kwargs)
+    return {"ns1.company": [make_one("company", **kwargs)]}
 
 
 
 def make_one(resource_type, **kwargs):
-    kwargs.setdefault("resourceIdentity", make_resource_id())
+    kwargs.setdefault("resourceIdentity", make_identity())
     kwargs.setdefault("timeline", make_timeline())
 
     data = dict(("ns1.%s" % k, v) for k, v in kwargs.items())
@@ -36,7 +36,7 @@ def make_one(resource_type, **kwargs):
 
 
 
-def make_resource_id(id="1", url="some/url", version="0"):
+def make_identity(id="1", url="some/url", version="0"):
     return {
         "@id": id,
         "@url": join(conf.TCM_API_BASE, url),
@@ -58,15 +58,19 @@ def make_timeline(createDate=None, createdBy="1",
 
 
 
-def response(status, content):
-    return (FakeResponse(status, headers={"content-type": "application/json"}),
-            json.dumps(content))
+def response(status, content, headers=None):
+    headers = headers or {}
+    headers.setdefault("content-type", "application/json")
+    if headers["content-type"] == "application/json":
+        content = json.dumps(content)
+    return (FakeResponse(status, headers=headers), content)
 
 
 
 class FakeResponse(dict):
     def __init__(self, status, headers=None):
         self.status = status
+        self.reason = ""
         if headers:
             for k, v in headers.iteritems():
                 self[k.lower()] = v
