@@ -60,6 +60,8 @@ runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
 .. _virtualenv: http://pypi.python.org/pypi/virtualenv
 
+To install the necessary Ruby Gems for Sass development, run ``bin/install-gems requirements/gems.txt``. Update ``requirements/gems.txt`` if newer gems should be used.
+
 Deployment
 ----------
 
