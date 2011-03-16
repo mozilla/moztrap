@@ -1,8 +1,8 @@
 //** SCREEN STYLES **//
 
-// Settings --------------------------------------------------------------*/
+/* Reset --------------------------------------------------------------
 
-$legacy-support-for-ie6 : false
+@import compass/reset
 
 // Imports --------------------------------------------------------------*/
 
@@ -11,12 +11,12 @@ $legacy-support-for-ie6 : false
 
 /* Layout --------------------------------------------------------------
 
-+susy
++establish-baseline
 
 .container
   +container
-  //+show-grid("grid.png")
   min-width: 800px
+  //+show-grid
 
 body > div
   @extend .container
@@ -567,7 +567,7 @@ a.create
     &.rejected, &.draft, &.active, &.locked
       width: 100%
       #{$focus}
-        +hide
+        +hide-text
         &::after
           content: attr(title)
           position: absolute
@@ -790,7 +790,7 @@ a.create
     ul
       +no-style-list
     label
-      +hide
+      +hide-text
       position: absolute
       height: 0
     .remove
@@ -827,7 +827,7 @@ a.create
   .selected
     +omega(19)
   label[for="search"]
-    +hide
+    +hide-text
     position: absolute
     height: 0
   input[type="search"]
