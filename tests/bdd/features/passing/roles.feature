@@ -148,5 +148,5 @@ Feature: Users Roles
             | permissionCode                            |
             | PERMISSION_TEST_CASE_EDIT                 |
             | PERMISSION_TEST_CASE_APPROVE              |
-
+            | PERMISSION_TEST_RUN_TEST_CASE_SELF_ASSIGN |
 
