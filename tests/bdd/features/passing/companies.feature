@@ -4,7 +4,9 @@ Feature: Company Administration
     I want to be able to administer company entries
 
     Scenario: Find a company by its companyId
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         Then I can fetch the company with name "Massive Dynamic" by its id
 
     Scenario: Query Companies

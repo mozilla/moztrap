@@ -4,7 +4,7 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, \
-    list_size_check, check_first_before_second
+    list_size_check, check_first_before_second, verify_single_item_in_list
 from features.tcm_request_helper import do_post, do_delete, \
     get_list_from_endpoint, do_put, get_single_item_from_endpoint, \
     get_list_from_search, get_seed_company_id, get_role_resid, get_user_resid
@@ -38,11 +38,11 @@ def create_role_with_permissions(step, stored, name):
         permissionCode = perm_code["permissionCode"]
 
         # find the matching permission object based on the permissionCode field
-        found_perm = [x for x in perm_array if x[ns("permissionCode")] == permissionCode]
-        assert len(found_perm) >= 1, "Should be at least one found"
+        found_perm = verify_single_item_in_list(perm_array, "permissionCode", permissionCode)
+
         try:
             # there will always be only one that matches, in this case
-            perm_id = found_perm[0][ns("resourceIdentity")]["@id"]
+            perm_id = found_perm[ns("resourceIdentity")]["@id"]
         except KeyError:
             assert False, "%s.%s not found in:\n%s" % (ns("resourceIdentity"), "@id", found_perm)
 

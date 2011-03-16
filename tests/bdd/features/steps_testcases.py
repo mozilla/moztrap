@@ -3,13 +3,15 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr
-from features.tcm_request_helper import get_seed_product_id, do_post, \
-    get_form_headers, get_auth_header_user_name, search_and_verify_existence, \
-    get_testcase_resid, do_delete, get_testcase_latestversion_resid, \
+from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
+    json_to_obj, verify_single_item_in_list
+from features.tcm_request_helper import get_seed_product_id, get_form_headers, \
+    get_auth_header_user_name, get_testcase_resid, do_delete, \
+    get_testcase_latestversion_resid, get_environment_resid, get_product_resid, \
+    get_testcycle_resid, get_testsuite_resid, do_post, search_and_verify_existence, \
     get_list_from_endpoint, do_put, get_single_item_from_endpoint, \
-    get_environment_resid, get_list_from_search, get_product_resid, \
-    get_testcycle_resid, get_testrun_resid, get_testsuite_resid
+    get_list_from_search, get_testrun_resid, get_user_resid, get_resource_identity, \
+    get_stored_or_store_obj, tcmpath
 from lettuce import step, world
 
 
@@ -125,8 +127,109 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
            {"originalVersionId": version},
             headers = headers)
 
+@step(u'assign the following testcases to the user with (that name|name "(.*)") for the testrun with (that name|name "(.*)")')
+def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_testrun, testrun_name):
+    '''
+        Expect hashes to contain:
+        | testcase name |
+    '''
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    user_id = get_user_resid(user_name)[0]
+    testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
+    testrun_id, testrun_version = get_testrun_resid(testrun_name)
+
+    # get the list of testcases for this testrun
+    includedtestcase_list = get_list_from_endpoint("includedtestcase", world.path_testruns + "%s/includedtestcases" % testrun_id)
+
+    for tc in step.hashes:
+        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        # find that in the list of testcases
+        found_items = [x for x in includedtestcase_list if x[ns("testCaseId")] == testcase_id]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the includedtestcase list for id:%s.  Found: %s\n%s" % \
+            (testcase_id, len(found_items), jstr(found_items))
+
+        includedtestcase_id = get_resource_identity(found_items[0])[0]
+
+        post_uri = world.path_testruns + "includedtestcases/%s/assignments/" % includedtestcase_id
+        body = {"testerId": user_id, "originalVersionId": testrun_version}
+
+        do_post(post_uri, body)
+
+
+@step(u'user with (that name|name "(.*)") marks the following testcase result statuses for the testrun with (that name|name "(.*)")')
+def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, testrun_name):
+    testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    status_map = {"pass": "finishsucceed",
+                  "fail": "finishfail",
+                  "invalid": "finishinvalidate"}
+    # first we need the testrun id so we can get the latest version to approve
+#    user_id = get_user_resid(user_name)[0]
+    testrun_id = get_testrun_resid(testrun_name)[0]
+
+    # get the list of testcases for this testrun
+    includedtestcase_list = get_list_from_endpoint("includedtestcase",
+                                                   world.path_testruns + "%s/includedtestcases" %
+                                                   testrun_id)
+
+    for tc in step.hashes:
+        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        # find that in the list of testcases
+        found_items = [x for x in includedtestcase_list if x[ns("testCaseId")] == testcase_id]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the includedtestcase list for id:%s.  Found: %s\n%s" % \
+            (testcase_id, len(found_items), jstr(found_items))
+
+        includedtestcase_id = get_resource_identity(found_items[0])[0]
+
+#        assert False, "%s: %s" % (testcase_id, includedtestcase_id)
+        tcassignment_list = get_list_from_endpoint("testcaseassignment",
+                                         world.path_testruns + "includedtestcases/%s/assignments" % includedtestcase_id)
+
+        found_assignments = [x for x in tcassignment_list if x[ns("testCaseId")] == testcase_id]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the assignments list for id:%s.  Found: %s\n%s" % \
+            (testcase_id, len(found_assignments), jstr(found_assignments))
+
+        assignment_id = get_resource_identity(found_assignments[0])[0]
+
+        # find the right assignment id, then call the endpoint for the results for it
+
+        result_list = get_list_from_endpoint("testresult",
+                                             world.path_testruns + "assignments/%s/results" % (assignment_id))
+        assert len(result_list) == 1, \
+            "Expected 1 matching item in the result list for id:%s.  Found: %s\n%s" % \
+            (assignment_id, len(result_list), jstr(result_list))
+
+        result_id, result_version = get_resource_identity(result_list[0])
+
+        # start the test
+        headers = get_form_headers(get_auth_header_user_name(user_name))
+        testresult = do_put(world.path_testruns + "results/%s/start" % (result_id),
+                            {"originalVersionId": result_version}, headers)
+        started_result = json_to_obj(testresult)[ns("testresult")][0]
+
+        started_result_version = get_resource_identity(started_result)[1]
+        # now finally mark it with the specified status
+
+        do_put(world.path_testruns + "results/%s/%s" % (result_id, status_map[tc["status"]]),
+               {"originalVersionId": started_result_version}, headers)
+
+
+@step(u'activate the testcase with (that name|name "(.*)")')
+def activate_testcase_with_name(step, stored, name):
+    name = get_stored_or_store_name("testcase", stored, name)
+
+    testcase_id = get_testcase_resid(name)[0]
+    testcaseversion_id, version = get_testcase_latestversion_resid(testcase_id)
+
+    do_put(world.path_testcases + "versions/%s/activate" % testcaseversion_id,
+              {"originalVersionId": version})
+
+
 #@todo: This has a hardcoded value for approvalStatusId, fix that
-@step(u'the testcase with (that name|name "(.*)") has status of Active')
+@step(u'the testcase with (that name|name "(.*)") has approval status of Active')
 def testcase_has_status_of_approved(step, stored, testcase_name):
     testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
 
@@ -140,6 +243,109 @@ def testcase_has_status_of_approved(step, stored, testcase_name):
     except KeyError:
         assert False, "Object field mismatch.\nExpected:\n" + ns("approved") + "\n\nActual:\n" + jstr(testcaseversion)
 
+@step(u'the following testcases have the following approval statuses')
+def testcases_have_approval_statuses(step):
+    for tc in step.hashes:
+        pass
+    assert False, "need to implement"
+
+@step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
+def testcases_have_result_statuses(step, stored_testrun, testrun_name):
+    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+
+    status_map = {"pass": "finishsucceed",
+                  "fail": "finishfail",
+                  "invalid": "finishinvalidate"}
+
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    includedtestcase_list = get_list_from_endpoint("includedtestcase",
+                                                   tcmpath("testruns") + "%s/includedtestcases" %
+                                                   testrun_id)
+    # walk through and verify that each testcase has the expected status
+    for tc in step.hashes:
+        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        # find that in the list of testcases
+        includedtestcase = verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
+        includedtestcase_id = get_resource_identity(includedtestcase)[0]
+
+        #get the list of assignments
+        tcassignment_list = get_list_from_endpoint("testcaseassignment",
+                                         tcmpath("testruns") + "includedtestcases/%s/assignments" %
+                                         includedtestcase_id)
+
+        # find the right assignment id, then call the endpoint for the results for it
+        found_assignment = verify_single_item_in_list(tcassignment_list, "testCaseId", testcase_id)
+        assignment_id = get_resource_identity(found_assignment)[0]
+
+        result_list = get_list_from_endpoint("testresult",
+                                             world.path_testruns + "assignments/%s/results" % (assignment_id))
+        assert len(result_list) == 1, \
+            "Expected 1 matching item in the result list for id:%s.  Found: %s\n%s" % \
+            (assignment_id, len(result_list), jstr(result_list))
+
+        result_id, result_version = get_resource_identity(result_list[0])
+        assert False, "Waiting for the new api from Vadim that can get the results for a testrun without all this bullshit"
+        # start the test
+#        headers = get_form_headers(get_auth_header_user_name(user_name))
+#        testresult = do_put(world.path_testruns + "results/%s/start" % (result_id),
+#                            {"originalVersionId": result_version}, headers)
+#        started_result = json_to_obj(testresult)[ns("testresult")][0]
+#
+#        started_result_version = get_resource_identity(started_result)[1]
+#        # now finally mark it with the specified status
+#
+#        do_put(world.path_testruns + "results/%s/%s" % (result_id, status_map[tc["status"]]),
+#               {"originalVersionId": started_result_version}, headers)
+    assert False, "need to implement"
+
+
+@step(u'(that testrun|the testrun with name "(.*)") has the following testsuites')
+def testrun_has_testsuites(step, stored_testrun, testrun_name):
+    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    testsuite_list = get_list_from_endpoint("testsuite",
+                                                   tcmpath("testruns") + "%s/testsuites" %
+                                                   testrun_id)
+    # walk through and verify that each testcase has the expected status
+    for exp_suite in step.hashes:
+
+        # find that in the list of testcases
+        verify_single_item_in_list(testsuite_list, "name", exp_suite["testsuite"])
+
+@step(u'(that testrun|the testrun with name "(.*)") has the following included testcases')
+def testrun_has_testcases(step, stored_testrun, testrun_name):
+    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    # get the list of testcases for this testrun
+    includedtestcase_list = get_list_from_endpoint("includedtestcase",
+                                                   tcmpath("testruns") + "%s/includedtestcases" %
+                                                   testrun_id)
+    # walk through and verify that each testcase has the expected status
+    for tc in step.hashes:
+        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        # find that in the list of testcases
+        verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
+
+@step(u'(that testrun|the testrun with name "(.*)") has the following components')
+def testrun_has_components(step, stored_testrun, testrun_name):
+    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    # get the list of testcases for this testrun
+    component_list = get_list_from_endpoint("component",
+                                                   tcmpath("testruns") + "%s/components" %
+                                                   testrun_id)
+    # walk through and verify that each testcase has the expected status
+    for component in step.hashes:
+        # find that in the list of testcases
+        verify_single_item_in_list(component_list, "name", component["name"])
 
 @step(u'add environment "(.*)" to test case "(.*)"')
 def add_environment_foo_to_test_case_bar(step, environment, test_case):
@@ -164,7 +370,7 @@ def remove_environment_from_test_case(step, environment, test_case):
     do_delete(world.path_testcases + "%s/environments/%s" % (test_case_id, environment_id),
               {"originalVersionId": version})
 
-@step(u'test case "(.*)" (has|does not have) environment "(.*)"')
+@step(u'testcase "(.*)" (has|does not have) environment "(.*)"')
 def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
@@ -181,7 +387,7 @@ def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
                                                                  jstr(result_list))
 
 
-@step(u'test case with name "(.*)" (has|does not have) attachment with filename "(.*)"')
+@step(u'testcase with name "(.*)" (has|does not have) attachment with filename "(.*)"')
 def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
     test_case_id = get_testcase_resid(test_case)[0]
@@ -196,6 +402,7 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     else:
         assert len(found_item) == 0, "Expected to NOT find %s in:\n%s" % (attachment,
                                                                  jstr(result_list))
+
 
 
 '''
@@ -260,67 +467,14 @@ def delete_testcycle_with_name_foo(step, stored, name):
     do_delete(world.path_testcycles + str(testcycle_id),
                                   {"originalVersionId": version})
 
-'''
-######################################################################
+@step(u'activate the testcycle with (that name|name "(.*)")')
+def activate_testrun_with_name(step, stored, name):
+    name = get_stored_or_store_name("testcycle", stored, name)
 
-                     TESTRUN STEPS
+    testcycle_id, version = get_testcycle_resid(name)
 
-######################################################################
-'''
-
-@step(u'create a new testrun with (that name|name "(.*)") with testcycle "(.*)"')
-def create_testrun_with_name(step, stored, name, testcycle_name):
-    name = get_stored_or_store_name("testrun", stored, name)
-
-    testcycle_id = get_testcycle_resid(testcycle_name)[0]
-
-    post_payload = {"testCycleId": testcycle_id,
-                    "name": name,
-                    "description": "Yeah, I'm gonna run to you...",
-                    "selfAssignAllowed": "true",
-                    "selfAssignPerEnvironment": "true",
-                    "selfAssignLimit": 10,
-                    "useLatestVersions": "true",
-                    "startDate": "2011/02/02",
-                    "endDate": "2012/02/02",
-                    "autoAssignToTeam": "true"
-                   }
-
-    do_post(world.path_testruns,
-            post_payload)
-
-
-
-@step(u'testrun with (that name|name "(.*)") (exists|does not exist)')
-def check_testrun_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("testrun", stored, name)
-    search_and_verify_existence(world.path_testruns,
-                    {"name": name},
-                     "testrun", existence)
-
-
-@step(u'delete the testrun with (that name|name "(.*)")')
-def delete_testrun_with_name_foo(step, stored, name):
-    name = get_stored_or_store_name("testrun", stored, name)
-
-    testrun_id, version = get_testrun_resid(name)
-
-    do_delete(world.path_testruns + str(testrun_id),
+    do_put(world.path_testcycles + "%s/activate" % testcycle_id,
               {"originalVersionId": version})
-
-
-@step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
-def testcycle_has_testrun(step, cycle_name, run_name):
-
-    testcycle_id = get_testcycle_resid(cycle_name)[0]
-
-    uri = world.path_testcycles + "%s/testruns/" % testcycle_id
-    testrun_list = get_list_from_endpoint("testrun", uri)
-
-    found_run = [x for x in testrun_list if x[ns("name")] == run_name]
-    assert len(found_run) == 1, "Expected to find name %s in:\n%s" % (run_name,
-                                                                      jstr(testrun_list))
-
 
 
 
@@ -345,6 +499,35 @@ def create_testsuite_with_name(step, stored, name):
     do_post(world.path_testsuites,
             post_payload)
 
+@step(u'create the following new testsuites:')
+def create_testsuites(step):
+
+    for item in step.hashes:
+        # must do this or it will freak out the lettuce reporting, because
+        # we delete items from this before submitting.
+        testsuite = item.copy()
+        # persist the last one we make.  Sometimes we will only make one.
+        world.names["testcycle"] = testsuite["name"]
+
+        # get the product id from the passed product name
+        product_id = get_product_resid(testsuite["product name"])[0]
+
+        testsuite["productId"] = product_id
+
+        if testsuite.has_key('product name'):
+            del testsuite['product name']
+
+        do_post(world.path_testsuites,
+                testsuite)
+
+@step(u'activate the testsuite with (that name|name "(.*)")')
+def activate_testsuite_with_name(step, stored, name):
+    name = get_stored_or_store_name("testsuite", stored, name)
+
+    testsuite_id, version = get_testsuite_resid(name)
+
+    do_put(world.path_testsuites + "%s/activate" % testsuite_id,
+              {"originalVersionId": version})
 
 
 @step(u'testsuite with (that name|name "(.*)") (exists|does not exist)')
@@ -364,8 +547,69 @@ def delete_testsuite_with_name_foo(step, stored, name):
     do_delete(world.path_testsuites + str(testsuite_id),
               {"originalVersionId": version})
 
+@step(u'add the following testcases to the testsuite with (that name|name "(.*)")')
+def add_testcases_to_testsuite(step, stored, name):
+    name = get_stored_or_store_name("testsuite", stored, name)
+    testsuite_id, version = get_testsuite_resid(name)
 
+    for tc in step.hashes:
+        tc_id = get_testcase_resid(tc["testcase"])[0]
+        tc_ver_id = get_testcase_latestversion_resid(tc_id)[0]
 
+        uri = world.path_testsuites + "%s/includedtestcases" % (testsuite_id)
+        do_post(uri,
+                {"testCaseVersionId": tc_ver_id,
+                 "priorityId": 1,
+                 "runOrder": 1,
+                 "blocking": "false",
+                 "originalVersionId": version})
+
+@step(u'add the following testsuites to the testrun with (that name|name "(.*)")')
+def add_testsuites_to_testrun(step, stored, name):
+    name = get_stored_or_store_name("testrun", stored, name)
+    testrun_id, version = get_testrun_resid(name)
+
+    for testsuite in step.hashes:
+        testsuite_id = get_testsuite_resid(testsuite["testsuite"])[0]
+
+        uri = world.path_testruns + "%s/includedtestcases/testsuite/%s" % (testrun_id, testsuite_id)
+        do_post(uri,
+                {"originalVersionId": version})
+
+@step('create the seed testcycle, testrun and testcases')
+def create_seed_testcycle_testcases_testrun(step):
+    step.behave_as("""
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        When I create a new user with name "Capn Admin"
+        and I activate the user with that name
+        And I create a new role with name "Approvationalist" with the following permissions:
+            | permissionCode               |
+            | PERMISSION_TEST_CASE_EDIT    |
+            | PERMISSION_TEST_CASE_APPROVE |
+        And I add the role with name "Approvationalist" to the user with that name
+        when the user with that name creates a new testcase with name "Check the Gizmo"
+        and when I add these steps to the testcase with that name:
+            | name      | stepNumber | estimatedTimeInMin | instruction    | expectedResult        |
+            | Mockery   | 1          | 5                  | Go this way    | They went this way    |
+            | Flockery  | 2          | 2                  | Go that way    | They went that way    |
+            | Chockery  | 3          | 4                  | Go my way      | They went my way      |
+            | Trockery  | 4          | 1                  | Go the highway | They went the highway |
+            | Blockery  | 5          | 25                 | Just go away   | They went away        |
+        Then when I create a new user with name "Joe Approver"
+        and I activate the user with that name
+        And I add the role with name "Approvationalist" to the user with that name
+        and when the user with name "Joe Approver" approves the testcase with that name
+        And when I create the following new testcycles:
+            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
+        and when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
+    """)
+
+@step('create the seed test')
+def create_seed_test(step):
+    step.given("create a new testsuite with name \"Capn Admin\"")
 
 
 

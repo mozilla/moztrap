@@ -4,7 +4,9 @@ Feature: Users Roles
     We should implement Role management
 
     Scenario: Create roles, and ensure they show in the list of all roles
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new role with name "Approvationalist" with the following permissions:
             | permissionCode               |
             | PERMISSION_TEST_CASE_EDIT    |
@@ -27,7 +29,9 @@ Feature: Users Roles
             | Approvationalist   |
 
     Scenario: Find role by id
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new role with name "Approvationalist" with the following permissions:
             | permissionCode               |
             | PERMISSION_TEST_CASE_EDIT    |
@@ -35,7 +39,9 @@ Feature: Users Roles
         Then I can find the role with that name by id
 
     Scenario: Give a user multiple roles, then remove one, and add it back
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new user with name "Walter Bishop"
         And I create a new role with name "Approvationalist" with the following permissions:
             | permissionCode               |
@@ -72,7 +78,9 @@ Feature: Users Roles
             | Interrogationalist |
 
     Scenario: Give a user multiple roles, then replace with fewer
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new user with name "Walter Bishop"
         And I create a new role with name "Approvationalist" with the following permissions:
             | permissionCode               |
@@ -106,7 +114,9 @@ Feature: Users Roles
             | Interrogationalist |
 
     Scenario: Get list of roles ascending an descending
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new role with name "Improvisationalist" with the following permissions:
             | permissionCode               |
             | PERMISSION_TEST_CASE_EDIT    |
@@ -123,7 +133,9 @@ Feature: Users Roles
         and "DESC" role searches list "StephenColberationalist" before "Approvationalist"
 
     Scenario: Give a user a role and check permissions
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new user with name "Walter Bishop"
         And I create a new role with name "Approvationalist" with the following permissions:
             | permissionCode               |
@@ -136,6 +148,5 @@ Feature: Users Roles
             | permissionCode                            |
             | PERMISSION_TEST_CASE_EDIT                 |
             | PERMISSION_TEST_CASE_APPROVE              |
-            | PERMISSION_TEST_RUN_TEST_CASE_SELF_ASSIGN |
 
 

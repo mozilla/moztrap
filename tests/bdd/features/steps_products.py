@@ -6,7 +6,8 @@ Created on Jan 28, 2011
 from features.tcm_data_helper import get_stored_or_store_name
 from features.tcm_request_helper import do_post, do_delete, get_seed_company_id, \
     get_company_resid, search_and_verify_existence, get_product_resid, \
-    get_environment_resid, search_and_verify
+    get_environment_resid, search_and_verify, get_stored_or_store_obj, \
+    get_resource_identity, tcmpath
 from lettuce import step, world
 
 
@@ -66,6 +67,16 @@ def delete_product_with_name(step, stored, name):
     do_delete(world.path_products + str(resid),
               {"originalVersionId": version})
 
+@step(u'add the following components to (that product|the product with name "(.*)")')
+def add_components_to_product(step, stored_product, product_name):
+    product = get_stored_or_store_obj("product", stored_product, product_name)
+    product_resid, version = get_resource_identity(product)
+
+    for component in step.hashes:
+        do_post(tcmpath("products") + "%s/components" % (product_resid),
+                {"name": component["name"],
+                 "description": component["description"],
+                 "originalVersionId": version})
 
 @step(u'add environment "(.*)" to product "(.*)"')
 def add_environment_foo_to_product_bar(step, environment, product):

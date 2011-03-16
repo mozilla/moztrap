@@ -4,15 +4,19 @@ Feature: Environment Object Business Rules
     I should support the business rules for the Environment Object
 
     Scenario: Environment - Add to Product
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         And I create a new environmenttype with name "Brickhouse"
         And I create a new environment with name "Walter's Lab" of type "Brickhouse"
         And the product with name "Cortexiphan" does not have the environment with that name
         When I add the environment with name "Walter's Lab" to the product with that name
-        Then product "Continuum Transfunctioner" has environment "Walter's Lab"
+        Then product "Cortexiphan" has environment "Walter's Lab"
 
     Scenario: Environment - Remove from Product
-        Given I create the seed company and product
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
         Not yet implemented
         And I am logged in as user "Jedi Creator"
         And I have the role of "PRODUCT_EDITOR"

@@ -6,5 +6,6 @@ import features.steps_environments
 import features.steps_products
 import features.steps_roles
 import features.steps_testcases
+import features.steps_testruns
 import features.steps_users
 import features.steps_tags

@@ -3,27 +3,6 @@ Feature: User Administration
     As an Administrator
     I want to be able to change user values
 
-
-    Scenario: Log in and out as user: (Bug 636586)
-        Given I create the seed company and product
-        And I create a new user with name "Walter Bishop"
-        When I log in user with that name
-        Then I am logged in as the user with that name
-        And when I log out the user with that name
-        Then that user is not logged in
-
-    Scenario: Update User information (Bug 638935)
-        Given I create the seed company and product
-        And I create a new user with name "Walter Bishop"
-        And I create a new company with name "Ace Max Detectives"
-        When I update the user with that name to have these values:
-            | firstName | lastName | email               | screenName | company name       |
-            | Walter    | Bishop   | doctor@horrible.com | drHorrible | Ace Max Detectives |
-        Then the user with that name has these values:
-            | firstName | lastName | email               | screenName | company name       |
-            | Walter    | Bishop   | doctor@horrible.com | drHorrible | Massive Dynamic    |
-
-
     Scenario: Get specific User by id
     Scenario: Search for Users
 

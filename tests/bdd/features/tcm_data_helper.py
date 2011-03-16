@@ -118,6 +118,13 @@ def list_size_check(at_least_only, exp, act):
         "These list sizes should match:\nEXPECTED:\n%s\nACTUAL:\n%s" % \
         (jstr(exp), jstr(act))
 
+def verify_single_item_in_list(tcm_obj_list, field, exp_value):
+    found_items = [x for x in tcm_obj_list if x[ns(field)] == exp_value]
+    assert len(found_items) == 1, \
+        "Expected 1 matching item in the list for %s == %s.  Found: %s\n%s" % \
+        (field, exp_value, len(found_items), jstr(tcm_obj_list))
+    return found_items[0]
+
 def check_first_before_second(field, first, second, obj_list):
 
     first_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == first]
@@ -126,14 +133,21 @@ def check_first_before_second(field, first, second, obj_list):
                                                                     jstr(obj_list))
 
 
-def plural(type):
+def plural(tcm_type):
+    '''
+        Pluralize the tcm_type sent in.  This can handle namespaced or non-namespaced strings
+    '''
+    namespace = ""
+    if tcm_type.startswith(world.ns):
+        tcm_type = tcm_type[len(world.ns):]
+        namespace = world.ns
 
-    if (type == ns("company")):
-        plural_type = ns("companies")
+    if (tcm_type == "company"):
+        plural_type = "companies"
     else:
-        plural_type = type + "s"
+        plural_type = tcm_type + "s"
 
-    return plural_type
+    return namespace + plural_type
 
 def as_arrayof(type):
     return ns("ArrayOf" + str.capitalize(type))

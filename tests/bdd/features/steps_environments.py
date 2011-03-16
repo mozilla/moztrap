@@ -3,11 +3,13 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, eq_
+from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, eq_, \
+    verify_single_item_in_list
 from features.tcm_request_helper import do_post, do_delete, get_list_from_search, \
     get_seed_company_id, search_and_verify_existence, get_environmenttype_resid, \
-    get_environment_resid, get_product_resid, search_and_verify, do_get, \
-    get_environmentgroup_resid
+    get_environment_resid, get_product_resid, search_and_verify, \
+    get_environmentgroup_resid, do_put, get_testrun_resid, get_stored_or_store_obj, \
+    get_resource_identity, get_list_from_endpoint, tcmpath, get_testcase_resid
 from lettuce import step, world
 
 '''
@@ -182,4 +184,47 @@ def delete_environmentgroup_with_name(step, stored, name):
     do_delete(world.path_environmentgroups + str(resid),
                                             {"originalVersionId": version})
 
+@step(u'add the following environments to the environmentgroup with (that name|name "(.*)")')
+def add_environment_to_environmentgroup(step, stored_envgrp, envgrp_name):
+    envgrp_name = get_stored_or_store_name("environmentgroup", stored_envgrp, envgrp_name)
+    envgrp_resid, version = get_environmentgroup_resid(envgrp_name)
+
+    env_ids = []
+    for env in step.hashes:
+        env_id = get_environment_resid(env["name"])[0]
+        env_ids.append(env_id)
+
+    do_put(world.path_environmentgroups + "%s/environments" % (envgrp_resid),
+           {"environmentIds": env_ids,
+            "originalVersionId": version})
+
+
+@step(u'add the following environmentgroups to the testrun with (that name|name "(.*)")')
+def add_envgroups_to_testrun(step, stored_testrun, testrun_name):
+    testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
+    testrun_resid, version = get_testrun_resid(testrun_name)
+
+    envgrp_ids = []
+    for envgrp in step.hashes:
+        envgrp_id = get_environmentgroup_resid(envgrp["name"])[0]
+        envgrp_ids.append(envgrp_id)
+
+    do_put(world.path_testruns + "%s/environmentgroups" % (testrun_resid),
+           {"environmentGroupIds": envgrp_ids,
+            "originalVersionId": version})
+
+@step(u'(that testrun|the testrun with name "(.*)") has the following environmentgroups')
+def testrun_has_environments(step, stored_testrun, testrun_name):
+    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    # get the list of testcases for this testrun
+    envgrp_list = get_list_from_endpoint("environmentgroup",
+                                         tcmpath("testruns") + "%s/environmentgroups" %
+                                         testrun_id)
+    # walk through and verify that each environment is included
+    for envgrp in step.hashes:
+        # find that in the list of items
+        verify_single_item_in_list(envgrp_list, "name", envgrp["name"])
 

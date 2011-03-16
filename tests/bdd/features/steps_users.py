@@ -8,8 +8,10 @@ from features.tcm_data_helper import compare_dicts_by_keys, ns_keys, \
 from features.tcm_request_helper import get_seed_company_id, do_post, ns, \
     get_list_from_endpoint, get_user_resid, do_put, jstr, get_user_password, do_get, \
     eq_, search_and_verify_existence, get_user_status_id, search_and_verify, \
-    get_company_resid, get_list_from_search, log_user_in, get_auth_header, \
-    get_json_headers, do_put_for_cookie, get_single_item_from_endpoint, json_to_obj
+    get_company_resid, log_user_in, get_auth_header, get_json_headers, \
+    do_put_for_cookie, get_single_item_from_endpoint, json_to_obj, \
+    get_single_item_from_search, get_resource_identity, store_latest_of_type,\
+    get_latest_of_type
 from lettuce import step, world
 
 '''
@@ -31,7 +33,10 @@ def create_user_from_obj(user_obj):
     compare_dicts_by_keys(ns_keys(user_obj),
                           created_obj,
                           ("firstName", "lastName", "email", "screenName", "companyId"))
-    world.created_objects["user"] = created_obj
+
+    # last referenced object of that type.  Then I can fetch whatever I want from it.  Though
+    # the originalVersionId can be out of date.
+    store_latest_of_type("user", created_obj)
 
 def create_user_from_name(name):
     '''
@@ -66,7 +71,7 @@ def create_user_with_name_foo(step, stored, name):
 
 @step(u'get that newly created user by id')
 def get_new_user_by_id(step):
-    last_created_user = world.created_objects["user"]
+    last_created_user = get_latest_of_type("user")
     id = last_created_user[ns("resourceIdentity")]["@id"]
     data = do_get(world.path_users + str(id))
 
@@ -94,8 +99,8 @@ def user_with_name_has_values(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     names = name.split()
 
-    act_user = get_list_from_search("user", world.path_users,
-                                    {"firstName": names[0], "lastName": names[1]})[0]
+    act_user = get_single_item_from_search("user", world.path_users,
+                                    {"firstName": names[0], "lastName": names[1]})
 
     exp_user = step.hashes[0].copy()
     try:
@@ -110,6 +115,24 @@ def user_with_name_has_values(step, stored, name):
                           act_user,
                           exp_user.keys())
 
+@step(u'that user has these values')
+def last_referenced_user_has_values(step):
+    user_id = get_resource_identity(get_latest_of_type("user"))[0]
+
+    act_user = get_single_item_from_endpoint("user", world.path_users + str(user_id))
+
+    exp_user = step.hashes[0].copy()
+    try:
+        exp_user["companyId"] = get_company_resid(exp_user["company name"])[0]
+        del exp_user["company name"]
+    except KeyError:
+        # we may not be checking company name, and that's ok, so just pass
+        pass
+
+    # check that the data matches
+    compare_dicts_by_keys(ns_keys(exp_user),
+                          act_user,
+                          exp_user.keys())
 
 @step(u'change the email to "(.*)" for the user with (that name|name "(.*)")')
 def change_user_email(step, new_email, stored, name):

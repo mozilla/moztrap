@@ -197,8 +197,8 @@ def get_product_resid(product):
 def get_seed_product_id():
     return  get_product_resid(world.seed_product["name"])[0]
 
-def get_company_resid(product):
-    return search_for_resid("company", world.path_companies, {"name": product})
+def get_company_resid(company):
+    return search_for_resid("company", world.path_companies, {"name": company})
 
 def get_seed_company_id():
     return get_company_resid(world.seed_company["name"])[0]
@@ -230,7 +230,7 @@ def get_testrun_resid(name):
 def get_tag_resid(tag):
     return search_for_resid("tag", world.path_tags, {"tag": tag})
 
-def search_for_resid(obj_name, uri, params = {}):
+def search_for_resid(tcm_type, uri, params = {}):
     '''
         tcm_type: Something like user or role or permission.
         uri: The URI stub to make the call
@@ -242,10 +242,12 @@ def search_for_resid(obj_name, uri, params = {}):
         Like a new method "get_resource_identities" which returns a list of ids or something.
     '''
 
-    resp_list = get_list_from_search(obj_name, uri, params = params)
-    return get_resource_identity(resp_list[0])
+    item = get_single_item_from_search(tcm_type, uri, params = params)
+    assert item != None, "%s not found in search with these params: %s" % (tcm_type, jstr(params))
+    return get_resource_identity(item)
 
 def get_resource_identity(tcm_obj):
+
     try:
         resid = int(tcm_obj[ns("resourceIdentity")]["@id"])
         version = tcm_obj[ns("resourceIdentity")]["@version"]
@@ -260,12 +262,45 @@ def get_resource_identity(tcm_obj):
 def get_testcase_latestversion_resid(testcase_id):
     # now get the latest version for that testcase id
 
-    latestversion_uri = world.path_testcases + str(testcase_id) + "/latestversion/"
+    latestversion_uri = world.path_testcases + "%s/latestversion/" % testcase_id
 
     testcaseversion = get_single_item_from_endpoint("testcaseversion", latestversion_uri)
     return get_resource_identity(testcaseversion)
 
+def get_stored_or_store_obj(tcm_type, stored, name):
+    '''
+        If stored is not None and has the word "that" in it, then we try to use the last stored object
+        of that type.  This can be tricky, because that last stored one might not have the latest verison id.
+        Some step code may need to refetch the latest version.  Or perhaps we should re-fetch the latest
+        version here?
 
+        If stored IS None, then we do a search for the object of that type with that name.  For type of "users"
+        we have to split the name to first and last.  Sucky special case.
+    '''
+    if stored == None:
+        # search for the object with that name
+        if tcm_type == "user":
+            names = name.split()
+            params = {"firstName": names[0], "lastName": names[1]}
+        else:
+            params = {"name": name}
+        tcm_obj = get_single_item_from_search(tcm_type, tcmpath(tcm_type), params)
+        store_latest_of_type(tcm_type, tcm_obj)
+    else:
+        # returned the stored object
+        # DO WE RE-FETCH IT TO GET THE LATEST VERSION?
+        tcm_obj = get_latest_of_type(tcm_type)
+        tcm_obj = get_single_item_from_endpoint(tcm_type, tcmpath(tcm_type) + str(get_resource_identity(tcm_obj)[0]))
+        return tcm_obj
+
+def tcmpath(tcm_type):
+    '''
+        The URI path for a given tcm object type.  Shortcut to make the code cleaner.
+    '''
+    if not tcm_type.endswith('s'):
+        # needs to be plural
+        return world.path_map[plural(tcm_type)]
+    return world.path_map[tcm_type]
 '''
 ######################################################################
 
@@ -305,6 +340,30 @@ def get_list_from_search(tcm_type, uri, params = {}, headers = get_json_headers(
              ns(tcm_type),
              json_pretty(response_txt))
 
+def get_single_item_from_search(tcm_type, uri, params = {}, headers = get_json_headers()):
+    '''
+        This will always return a single item or None type.  May have many responses, so throw an
+        error if there is more than one.
+        It goes into the "searchResult" tcm_type of response
+
+        Yeah, it's inefficient to create a list, then potentially return the first item as NOT a list.
+        But this makes the coding easier and more uniform, so I chose to do that.
+    '''
+    list = get_list_from_search(tcm_type, uri, params = params, headers = headers)
+
+    # if the last attempt to get something returned None, we want to persist that in the last_id,
+    # otherwise we may think we're referencing the LAST one, but we'd be getting the one from before
+    if len(list) == 0:
+        store_latest_of_type(tcm_type, None)
+        return None
+    assert len(list) < 2,\
+        "More than one object returned from search.  Don't know which one to return:\n%s"\
+        % jstr(list)
+
+    item = list[0]
+    store_latest_of_type(tcm_type, item)
+    return item
+
 
 def get_list_from_endpoint(tcm_type, uri, headers = get_json_headers()):
     '''
@@ -338,14 +397,20 @@ def get_single_item_from_endpoint(tcm_type, uri, headers = get_json_headers()):
     response_txt = do_get(uri, headers = headers)
 
     try:
-        return json_to_obj(response_txt)[ns(tcm_type)][0]
+        item = json_to_obj(response_txt)[ns(tcm_type)][0]
+        store_latest_of_type(tcm_type, item)
+        return item
+
     except KeyError:
         assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(tcm_type), response_txt)
 
 
+# simple accessors that can be changed if I change where I store these things.
+def store_latest_of_type(tcm_type, tcm_obj):
+    world.latest_of_type[tcm_type] = tcm_obj
 
-
-
+def get_latest_of_type(tcm_type):
+    return world.latest_of_type[tcm_type]
 
 
 
