@@ -85,7 +85,7 @@ Feature: Test Cases
             | name          | description               | product name | useLatestVersions |
             | Sweet Suite   | Ahh, the cycle of life... | Cortexiphan  | true              |
         And I add the following testcases to the testsuite with name "Sweet Suite":
-            | testcase        |
+            | name            |
             | Check the Gizmo |
         And I activate the testsuite with name "Sweet Suite"
         And when I create the following new testcycles:
@@ -93,13 +93,13 @@ Feature: Test Cases
             | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
         And when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
         And when I add the following testsuites to the testrun with that name
-            | testsuite    |
-            | Sweet Suite  |
+            | name        |
+            | Sweet Suite |
         Then that testrun has the following testsuites
-            | testsuite   |
+            | name        |
             | Sweet Suite |
         And that testrun has the following included testcases
-            | testcase        |
+            | name            |
             | Check the Gizmo |
 
 

@@ -69,13 +69,6 @@ def log_user_in(name):
 
     return do_put_for_cookie(world.path_users + "login", "", headers)
 
-#@todo: this should do a request.  Or perhaps we should request once before.all and build this map in memory
-def get_user_status_id(userStatus):
-    statusMap = {"active": 1,
-                 "inactive": 2,
-                 "disabled": 3}
-    return statusMap.get(userStatus)
-
 
 
 

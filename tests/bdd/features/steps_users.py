@@ -4,14 +4,13 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from features.tcm_data_helper import compare_dicts_by_keys, ns_keys, \
-    get_stored_or_store_name
+    get_stored_or_store_name, get_user_status_id
 from features.tcm_request_helper import get_seed_company_id, do_post, ns, \
     get_list_from_endpoint, get_user_resid, do_put, jstr, get_user_password, do_get, \
-    eq_, search_and_verify_existence, get_user_status_id, search_and_verify, \
-    get_company_resid, log_user_in, get_auth_header, get_json_headers, \
-    do_put_for_cookie, get_single_item_from_endpoint, json_to_obj, \
-    get_single_item_from_search, get_resource_identity, store_latest_of_type,\
-    get_latest_of_type
+    eq_, search_and_verify_existence, search_and_verify, get_company_resid, \
+    log_user_in, get_auth_header, get_json_headers, do_put_for_cookie, \
+    get_single_item_from_endpoint, json_to_obj, get_single_item_from_search, \
+    get_resource_identity, store_latest_of_type, get_latest_of_type
 from lettuce import step, world
 
 '''

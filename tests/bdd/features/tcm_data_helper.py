@@ -131,7 +131,22 @@ def check_first_before_second(field, first, second, obj_list):
     second_idx = [i for i, x in enumerate(obj_list) if x[ns(field)] == second]
     assert first_idx < second_idx, "Expected %s before %s in %s" % (first, second,
                                                                     jstr(obj_list))
+#@todo: this should do a request.  Or perhaps we should request once before.all and build this map in memory
+def get_user_status_id(userStatus):
+    statusMap = {"active": 1,
+                 "inactive": 2,
+                 "disabled": 3}
+    return statusMap[userStatus]
 
+def get_testcase_status_id(tcStatus):
+    statusMap = {"Pending": 1,
+                 "Passed": 2,
+                 "Failed": 3,
+                 "Blocked": 4,
+                 "Started": 5,
+                 "Invalidated": 6,
+                 "Skipped": 7}
+    return statusMap[tcStatus]
 
 def plural(tcm_type):
     '''
@@ -149,8 +164,8 @@ def plural(tcm_type):
 
     return namespace + plural_type
 
-def as_arrayof(type):
-    return ns("ArrayOf" + str.capitalize(type))
+def as_arrayof(tcm_type):
+    return ns("ArrayOf" + tcm_type[0].capitalize() + tcm_type[1:])
 
 def jstr(obj):
     return json.dumps(obj, sort_keys=True, indent=4)

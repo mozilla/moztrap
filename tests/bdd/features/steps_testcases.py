@@ -4,7 +4,7 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
-    json_to_obj, verify_single_item_in_list
+    json_to_obj, verify_single_item_in_list, get_testcase_status_id
 from features.tcm_request_helper import get_seed_product_id, get_form_headers, \
     get_auth_header_user_name, get_testcase_resid, do_delete, \
     get_testcase_latestversion_resid, get_environment_resid, get_product_resid, \
@@ -110,7 +110,7 @@ def verify_testcase_steps(step, stored, name):
 
 
 @step(u'user with (that name|name "(.*)") approves the testcase with (that name|name "(.*)")')
-def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_name):
+def user_approves_testcase(step, stored_user, user_name, stored_testcase, testcase_name):
     testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
     user_name = get_stored_or_store_name("user", stored_user, user_name)
 
@@ -127,6 +127,25 @@ def approve_testcase(step, stored_user, user_name, stored_testcase, testcase_nam
            {"originalVersionId": version},
             headers = headers)
 
+@step(u'user with (that name|name "(.*)") approves the following testcases')
+def user_approves_testcases(step, stored_user, user_name):
+    user_name = get_stored_or_store_name("user", stored_user, user_name)
+
+    for tc in step.hashes:
+
+        # first we need the testcase id so we can get the latest version to approve
+        testcase_id, version = get_testcase_resid(tc["name"])
+        testcaseversion_id = get_testcase_latestversion_resid(testcase_id)[0]
+
+
+        # do the approval of the testcase
+        uri = world.path_testcases + "versions/%s/approve/" % (testcaseversion_id)
+        headers = get_form_headers(get_auth_header_user_name(user_name))
+
+        do_put(uri,
+               {"originalVersionId": version},
+                headers = headers)
+
 @step(u'assign the following testcases to the user with (that name|name "(.*)") for the testrun with (that name|name "(.*)")')
 def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_testrun, testrun_name):
     '''
@@ -142,7 +161,7 @@ def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_te
     includedtestcase_list = get_list_from_endpoint("includedtestcase", world.path_testruns + "%s/includedtestcases" % testrun_id)
 
     for tc in step.hashes:
-        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        testcase_id = get_testcase_resid(tc["name"])[0]
         # find that in the list of testcases
         found_items = [x for x in includedtestcase_list if x[ns("testCaseId")] == testcase_id]
         assert len(found_items) == 1, \
@@ -161,9 +180,9 @@ def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_te
 def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, testrun_name):
     testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
     user_name = get_stored_or_store_name("user", stored_user, user_name)
-    status_map = {"pass": "finishsucceed",
-                  "fail": "finishfail",
-                  "invalid": "finishinvalidate"}
+    status_map = {"Passed": "finishsucceed",
+                  "Failed": "finishfail",
+                  "Invalidated": "finishinvalidate"}
     # first we need the testrun id so we can get the latest version to approve
 #    user_id = get_user_resid(user_name)[0]
     testrun_id = get_testrun_resid(testrun_name)[0]
@@ -174,7 +193,7 @@ def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, tes
                                                    testrun_id)
 
     for tc in step.hashes:
-        testcase_id = get_testcase_resid(tc["testcase"])[0]
+        testcase_id = get_testcase_resid(tc["name"])[0]
         # find that in the list of testcases
         found_items = [x for x in includedtestcase_list if x[ns("testCaseId")] == testcase_id]
         assert len(found_items) == 1, \
@@ -228,6 +247,20 @@ def activate_testcase_with_name(step, stored, name):
               {"originalVersionId": version})
 
 
+
+@step(u'activate the following testcases')
+def activate_testcases(step):
+
+    for tc in step.hashes:
+
+        # first we need the testcase id so we can get the latest version to approve
+        testcase_id = get_testcase_resid(tc["name"])[0]
+        testcaseversion_id, version = get_testcase_latestversion_resid(testcase_id)
+
+        do_put(world.path_testcases + "versions/%s/activate" % testcaseversion_id,
+                  {"originalVersionId": version})
+
+
 #@todo: This has a hardcoded value for approvalStatusId, fix that
 @step(u'the testcase with (that name|name "(.*)") has approval status of Active')
 def testcase_has_status_of_approved(step, stored, testcase_name):
@@ -253,99 +286,70 @@ def testcases_have_approval_statuses(step):
 def testcases_have_result_statuses(step, stored_testrun, testrun_name):
     testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
 
-    status_map = {"pass": "finishsucceed",
-                  "fail": "finishfail",
-                  "invalid": "finishinvalidate"}
+    status_map = {"Passed": "finishsucceed",
+                  "Failed": "finishfail",
+                  "Invalidated": "finishinvalidate"}
 
     testrun_id = get_resource_identity(testrun)[0]
 
     # get the list of testcases for this testrun
     includedtestcase_list = get_list_from_endpoint("includedtestcase",
-                                                   tcmpath("testruns") + "%s/includedtestcases" %
+                                                   world.path_testruns + "%s/includedtestcases" %
                                                    testrun_id)
-    # walk through and verify that each testcase has the expected status
-    for tc in step.hashes:
-        testcase_id = get_testcase_resid(tc["testcase"])[0]
-        # find that in the list of testcases
-        includedtestcase = verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
-        includedtestcase_id = get_resource_identity(includedtestcase)[0]
 
-        #get the list of assignments
+    for tc in step.hashes:
+        testcase_id = get_testcase_resid(tc["name"])[0]
+        # find that in the list of testcases
+        found_items = [x for x in includedtestcase_list if x[ns("testCaseId")] == testcase_id]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the includedtestcase list for id:%s.  Found: %s\n%s" % \
+            (testcase_id, len(found_items), jstr(found_items))
+
+        includedtestcase_id = get_resource_identity(found_items[0])[0]
+
+#        assert False, "%s: %s" % (testcase_id, includedtestcase_id)
         tcassignment_list = get_list_from_endpoint("testcaseassignment",
-                                         tcmpath("testruns") + "includedtestcases/%s/assignments" %
-                                         includedtestcase_id)
+                                         world.path_testruns + "includedtestcases/%s/assignments" % includedtestcase_id)
+
+        found_assignments = [x for x in tcassignment_list if x[ns("testCaseId")] == testcase_id]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the assignments list for id:%s.  Found: %s\n%s" % \
+            (testcase_id, len(found_assignments), jstr(found_assignments))
+
+        assignment_id = get_resource_identity(found_assignments[0])[0]
 
         # find the right assignment id, then call the endpoint for the results for it
-        found_assignment = verify_single_item_in_list(tcassignment_list, "testCaseId", testcase_id)
-        assignment_id = get_resource_identity(found_assignment)[0]
 
         result_list = get_list_from_endpoint("testresult",
                                              world.path_testruns + "assignments/%s/results" % (assignment_id))
-        assert len(result_list) == 1, \
-            "Expected 1 matching item in the result list for id:%s.  Found: %s\n%s" % \
-            (assignment_id, len(result_list), jstr(result_list))
 
-        result_id, result_version = get_resource_identity(result_list[0])
-        assert False, "Waiting for the new api from Vadim that can get the results for a testrun without all this bullshit"
-        # start the test
-#        headers = get_form_headers(get_auth_header_user_name(user_name))
-#        testresult = do_put(world.path_testruns + "results/%s/start" % (result_id),
-#                            {"originalVersionId": result_version}, headers)
-#        started_result = json_to_obj(testresult)[ns("testresult")][0]
-#
-#        started_result_version = get_resource_identity(started_result)[1]
-#        # now finally mark it with the specified status
-#
-#        do_put(world.path_testruns + "results/%s/%s" % (result_id, status_map[tc["status"]]),
-#               {"originalVersionId": started_result_version}, headers)
-    assert False, "need to implement"
+        testcase = verify_single_item_in_list(result_list, "testCaseId", testcase_id)
+
+        # ok, we have the testcase in question, now check that its status matches expectations
+        eq_(testcase[ns("testRunResultStatusId")], get_testcase_status_id(tc["status"]), "testRunResultStatusId check")
 
 
-@step(u'(that testrun|the testrun with name "(.*)") has the following testsuites')
-def testrun_has_testsuites(step, stored_testrun, testrun_name):
+@step(u'(that testrun|the testrun with name "(.*)") has the following result status summary counts')
+def testrun_has_summary_counts(step, stored_testrun, testrun_name):
     testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+
     testrun_id = get_resource_identity(testrun)[0]
 
     # get the list of testcases for this testrun
-    testsuite_list = get_list_from_endpoint("testsuite",
-                                                   tcmpath("testruns") + "%s/testsuites" %
-                                                   testrun_id)
+    summary_list = get_list_from_endpoint("CategoryValueInfo",
+                                          tcmpath("testruns") + "%s/reports/coverage/resultstatus" %
+                                          testrun_id)
     # walk through and verify that each testcase has the expected status
-    for exp_suite in step.hashes:
-
+    for category in step.hashes:
         # find that in the list of testcases
-        verify_single_item_in_list(testsuite_list, "name", exp_suite["testsuite"])
+        status_id = get_testcase_status_id(category["name"])
+        categoryInfo = verify_single_item_in_list(summary_list, "categoryName",
+                                                  status_id)
+        assert str(categoryInfo[ns("categoryValue")]) == category["count"], \
+            "%s count was wrong.  Expected categoryName: %s , categoryValue: %s:\n%s" % \
+            (category["name"], status_id, category["count"], jstr(categoryInfo))
 
-@step(u'(that testrun|the testrun with name "(.*)") has the following included testcases')
-def testrun_has_testcases(step, stored_testrun, testrun_name):
-    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
-    testrun_id = get_resource_identity(testrun)[0]
 
-    # get the list of testcases for this testrun
-    # get the list of testcases for this testrun
-    includedtestcase_list = get_list_from_endpoint("includedtestcase",
-                                                   tcmpath("testruns") + "%s/includedtestcases" %
-                                                   testrun_id)
-    # walk through and verify that each testcase has the expected status
-    for tc in step.hashes:
-        testcase_id = get_testcase_resid(tc["testcase"])[0]
-        # find that in the list of testcases
-        verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
-
-@step(u'(that testrun|the testrun with name "(.*)") has the following components')
-def testrun_has_components(step, stored_testrun, testrun_name):
-    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
-    testrun_id = get_resource_identity(testrun)[0]
-
-    # get the list of testcases for this testrun
-    # get the list of testcases for this testrun
-    component_list = get_list_from_endpoint("component",
-                                                   tcmpath("testruns") + "%s/components" %
-                                                   testrun_id)
-    # walk through and verify that each testcase has the expected status
-    for component in step.hashes:
-        # find that in the list of testcases
-        verify_single_item_in_list(component_list, "name", component["name"])
 
 @step(u'add environment "(.*)" to test case "(.*)"')
 def add_environment_foo_to_test_case_bar(step, environment, test_case):
@@ -553,7 +557,7 @@ def add_testcases_to_testsuite(step, stored, name):
     testsuite_id, version = get_testsuite_resid(name)
 
     for tc in step.hashes:
-        tc_id = get_testcase_resid(tc["testcase"])[0]
+        tc_id = get_testcase_resid(tc["name"])[0]
         tc_ver_id = get_testcase_latestversion_resid(tc_id)[0]
 
         uri = world.path_testsuites + "%s/includedtestcases" % (testsuite_id)
@@ -570,7 +574,7 @@ def add_testsuites_to_testrun(step, stored, name):
     testrun_id, version = get_testrun_resid(name)
 
     for testsuite in step.hashes:
-        testsuite_id = get_testsuite_resid(testsuite["testsuite"])[0]
+        testsuite_id = get_testsuite_resid(testsuite["name"])[0]
 
         uri = world.path_testruns + "%s/includedtestcases/testsuite/%s" % (testrun_id, testsuite_id)
         do_post(uri,

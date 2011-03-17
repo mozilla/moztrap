@@ -1,13 +1,5 @@
 Feature: Test Runs
 
-    Scenario: Create and approve a Testcase with steps
-        Given I create the seed company and product with these names:
-            | company name    | product name  |
-            | Massive Dynamic | Cortexiphan   |
-        When I create a new user with name "Capn Admin"
-        and I activate the user with that name
-        And I create a new role with name "Approvationalist" with the following permissions:
-
     Scenario: Verify results of a testrun
         Given I create the seed company and product with these names:
             | company name    | product name  |
@@ -106,22 +98,3 @@ Feature: Test Runs
             | Another Passing tc | Passed      |
             | Failing tc         | Failed      |
             | Invalidisimo       | Invalidated |
-
-
-    Scenario: Add components to a product, and check testrun for those components
-        Given I create the seed company and product with these names:
-            | company name    | product name  |
-            | Massive Dynamic | Cortexiphan   |
-        And I add the following components to that product:
-            | name     | description      |
-            | chunk    | The chunky part  |
-            | squish   | The squishy part |
-        And I create the following new testcycles:
-            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
-            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
-        And I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
-        Then that testrun has the following components:
-            | name     | description      |
-            | chunk    | The chunky part  |
-            | squish   | The squishy part |
-
