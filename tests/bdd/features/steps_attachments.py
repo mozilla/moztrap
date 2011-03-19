@@ -4,8 +4,8 @@ Created on Jan 31, 2011
 @author: camerondawson
 '''
 
-from features.tcm_request_helper import get_testcase_resid, \
-    encode_multipart_formdata, do_post
+from features.models import TestcaseModel
+from features.tcm_request_helper import encode_multipart_formdata, do_post
 from lettuce import step, world
 
 '''
@@ -24,7 +24,7 @@ from lettuce import step, world
 
 @step(u'upload attachment with filename "(.*)" to test case with name "(.*)"')
 def upload_attachment_foo_to_test_case_bar(step, attachment, test_case):
-    test_case_id, version = get_testcase_resid(test_case)
+    test_case_id, version = TestcaseModel().get_resid(test_case)
 
     content_type, body = encode_multipart_formdata([], [{'key': attachment,
                                                          'filename': attachment,

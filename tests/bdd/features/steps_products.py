@@ -3,10 +3,9 @@
 Created on Jan 28, 2011
 @author: camerondawson
 '''
+from features.models import CompanyModel, ProductModel, EnvironmentModel
 from features.tcm_data_helper import get_stored_or_store_name
-from features.tcm_request_helper import do_post, do_delete, get_seed_company_id, \
-    get_company_resid, search_and_verify_existence, get_product_resid, \
-    get_environment_resid, search_and_verify, get_stored_or_store_obj, \
+from features.tcm_request_helper import do_post, do_delete, \
     get_resource_identity, tcmpath
 from lettuce import step, world
 
@@ -23,7 +22,7 @@ from lettuce import step, world
 def create_product_with_name_foo(step, stored, name):
     name = get_stored_or_store_name("product", stored, name)
 
-    post_payload = {"companyId": get_seed_company_id(),
+    post_payload = {"companyId": CompanyModel().get_seed_resid()[0],
                     "name": name,
                     "description": "Lettuce Product Description"
                    }
@@ -43,7 +42,7 @@ def create_products(step):
         world.names["product"] = product["name"]
 
         # get the company id from the passed company name
-        company_id = get_company_resid(product["company name"])[0]
+        company_id = CompanyModel().get_resid(product["company name"])[0]
         product["companyId"] = company_id
         del product["company name"]
 
@@ -53,30 +52,28 @@ def create_products(step):
 
 @step(u'product with (that name|name "(.*)") (exists|does not exist)')
 def check_product_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("product", stored, name)
-    search_and_verify_existence(world.path_products,
-                    {"name": name},
-                    "product", existence)
+    productModel = ProductModel()
+    name = productModel.get_stored_or_store_name(stored, name)
+    productModel.verify_existence(name, existence)
 
 @step(u'delete the product with (that name|name "(.*)")')
 def delete_product_with_name(step, stored, name):
-    name = get_stored_or_store_name("product", stored, name)
+    productModel = ProductModel()
+    name = productModel.get_stored_or_store_name(stored, name)
 
-
-    resid, version = get_product_resid(name)
-    do_delete(world.path_products + str(resid),
-              {"originalVersionId": version})
+    productModel.delete(name)
 
 @step(u'add the following components to (that product|the product with name "(.*)")')
 def add_components_to_product(step, stored_product, product_name):
-    product = get_stored_or_store_obj("product", stored_product, product_name)
-    product_resid, version = get_resource_identity(product)
+    productModel = ProductModel()
+    product = productModel.get_stored_or_store_obj(stored_product, product_name)
+
+    product_resid, version = productModel.get_resid(product)
 
     for component in step.hashes:
-        do_post(tcmpath("products") + "%s/components" % (product_resid),
-                {"name": component["name"],
-                 "description": component["description"],
-                 "originalVersionId": version})
+        productModel.add_component(product_resid, version,
+                                   {"name": component["name"],
+                                    "description": component["description"]})
 
 @step(u'add environment "(.*)" to product "(.*)"')
 def add_environment_foo_to_product_bar(step, environment, product):
@@ -85,7 +82,7 @@ def add_environment_foo_to_product_bar(step, environment, product):
     #    2: add the environment to the product
 
     # fetch the product's resource identity
-    product_id, version = get_product_resid(product)
+    product_id, version = ProductModel().get_resid(product)
 
     post_payload = {"name": "Walter's Lab"}
 
@@ -96,24 +93,19 @@ def add_environment_foo_to_product_bar(step, environment, product):
 @step(u'remove environment "(.*)" from product "(.*)"')
 def remove_environment_from_product(step, environment, product):
     # fetch the product's resource identity
-    product_id, version = get_product_resid(product)
-    environment_id = get_environment_resid(environment)
+    product_id, version = ProductModel().get_resid(product)
+    environment_id = EnvironmentModel().get_resid(environment)
 
     do_delete(world.path_products + str(product_id) + "/environments/" + environment_id,
               {"originalVersionId": version})
 
 
 @step(u'product "(.*)" (has|does not have) environment "(.*)"')
-def product_foo_has_environment_bar(step, product, haveness, env_name):
+def product_foo_has_environment_bar(step, product_name, haveness, env_name):
     # fetch the product's resource identity
-    product_id = get_product_resid(product)[0]
-
+    productModel = ProductModel()
     expect_to_find = (haveness == "has")
-    search_and_verify("environment",
-                    world.path_products + str(product_id) + "/environments",
-                    "",
-                    "name",
-                    env_name,
-                    expect_to_find)
+
+    productModel.verify_has_environment(product_name, env_name, expect_to_find)
 
 

@@ -3,13 +3,14 @@ Created on Oct 7, 2010
 
 @author: camerondawson
 '''
-from features.tcm_request_helper import verify_status, add_params, do_post, \
-    get_company_resid, get_stored_or_store_obj
+from features.models import CompanyModel, ProductModel
+from features.tcm_request_helper import verify_status, add_params, do_post
 from lettuce import step, world
 from lettuce.terrain import before, after
 import cgi
 import httplib
 import mock_scenario_data
+
 
 def save_db_state():
     '''
@@ -219,9 +220,8 @@ def create_seed_company_and_product(step):
     if company.has_key("country name"):
         del company["country name"]
 
-    do_post(world.path_companies,
-            company)
-    get_stored_or_store_obj("company", None, company["name"])
+    companyModel = CompanyModel()
+    companyModel.create(company)
 
     # create the seed product
     # persist the last one we make.  Sometimes we will only make one.
@@ -230,14 +230,13 @@ def create_seed_company_and_product(step):
     world.names["product"] = product["name"]
 
     # get the company id from the passed company name
-    company_id = get_company_resid(product["company name"])[0]
+    company_id = CompanyModel().get_resid(product["company name"])[0]
     product["companyId"] = company_id
     if product.has_key("company name"):
         del product["company name"]
 
-    do_post(world.path_products,
-            product)
-    get_stored_or_store_obj("product", None, product["name"])
+    productModel = ProductModel()
+    productModel.create(product)
 
 
 

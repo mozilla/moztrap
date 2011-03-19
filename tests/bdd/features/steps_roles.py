@@ -3,11 +3,10 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, \
-    list_size_check, check_first_before_second, verify_single_item_in_list
-from features.tcm_request_helper import do_post, do_delete, \
-    get_list_from_endpoint, do_put, get_single_item_from_endpoint, \
-    get_list_from_search, get_seed_company_id, get_role_resid, get_user_resid
+from features.models import UserModel, RoleModel, CompanyModel, PermissionModel
+from features.tcm_data_helper import ns, jstr, list_size_check, \
+    check_first_before_second, verify_single_item_in_list
+from features.tcm_request_helper import do_post, do_delete
 from lettuce import step, world
 
 '''
@@ -20,18 +19,19 @@ from lettuce import step, world
 
 @step(u'create a new role with (that name|name "(.*)") with the following permissions')
 def create_role_with_permissions(step, stored, name):
-    name = get_stored_or_store_name("role", stored, name)
+    roleModel = RoleModel()
+    name = roleModel.get_stored_or_store_name(stored, name)
 
     # create the new role
-    role_payload = {"companyId": get_seed_company_id(),
+    role_payload = {"companyId": CompanyModel().get_seed_resid()[0],
                     "name": name}
     do_post(world.path_roles, role_payload)
 
     #get the new role ID
-    role_id, role_version = get_role_resid(name)
+    role_id, role_version = RoleModel().get_resid(name)
 
     # get the list of all available permissions
-    perm_array = get_list_from_search("permission", world.path_permissions)
+    perm_array = PermissionModel().get_all_list()
 
     # walk the hash of permissionCodes add these to the new role
     for perm_code in step.hashes:
@@ -54,12 +54,10 @@ def create_role_with_permissions(step, stored, name):
 
 @step(u'role with (that name|name "(.*)") has the following permissions')
 def role_has_permissions(step, stored, role_name):
-    role_name = get_stored_or_store_name("role", stored, role_name)
+    roleModel = RoleModel()
+    role_name = roleModel.get_stored_or_store_name(stored, role_name)
 
-    role_id = get_role_resid(role_name)[0]
-
-    perm_list = get_list_from_endpoint("permission",
-                                       world.path_roles + str(role_id) + "/permissions")
+    perm_list = roleModel.get_permissions_list(role_name)
 
     # walk through all the expected roles and make sure it has them all
     # note, it doesn't check that ONLY these roles exist.  That should be a different
@@ -74,41 +72,37 @@ def role_has_permissions(step, stored, role_name):
 
 @step(u'add the role with (that name|name "(.*)") to the user with (that name|name "(.*)")')
 def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
-    role_name = get_stored_or_store_name("role", stored_role, role_name)
-
-    # fetch the role's resource identity
-    user_id, user_version = get_user_resid(user_name)
-    role_id = get_role_resid(role_name)[0]
-
-    do_post(world.path_users + "%s/roles/%s/" % (user_id, role_id),
-            {"originalVersionId": user_version})
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
+#    roleModel = RoleModel()
+#    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
+    role_name = "Approvationalist"
+    userModel.add_role(user_name, role_name)
 
 
 @step(u'replace the role list for the user with (that name|name "(.*)") with these roles')
 def replace_role_list_for_user(step, stored_user, user_name):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
-
-    # fetch the role's resource identity
-    user_id, user_version = get_user_resid(user_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
 
     role_ids = []
     for role in step.hashes:
-        role_id = get_role_resid(role["name"])[0]
+        role_id = RoleModel().get_resid(role["name"])[0]
         role_ids.append(role_id)
 
-    do_put(world.path_users + "%s/roles/" % (user_id),
-            {"originalVersionId": user_version,
-             "roleIds": role_ids})
+
+    userModel.set_roles(user_name, role_ids)
 
 @step(u'remove the role with (that name|name "(.*)") from the user with (that name|name "(.*)")')
 def remove_role_from_user(step, stored_role, role_name, stored_user, user_name):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
-    role_name = get_stored_or_store_name("role", stored_role, role_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
+    roleModel = RoleModel()
+    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
 
     # fetch the user's and the role's resource identity
-    user_id, user_version = get_user_resid(user_name)
-    role_id_to_remove = get_role_resid(role_name)[0]
+    user_id, user_version = UserModel().get_resid(user_name)
+    role_id_to_remove = RoleModel().get_resid(role_name)[0]
 
 #    role_list[:] = [x for x in role_list if x[ns("name")] != role_name]
 
@@ -117,48 +111,23 @@ def remove_role_from_user(step, stored_role, role_name, stored_user, user_name):
 
 @step(u'add the following roles to the user with (that name|name "(.*)")')
 def add_roles_to_user(step, stored_user, user_name):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
 
-    # fetch the role's resource identity
-    user_id, user_version = get_user_resid(user_name)
-
-    # use a set, so we avoid duplicate ids
-    role_ids = set()
-
-    # add in the roles we want to add
-    for role in step.hashes:
-        role_id = get_role_resid(role["name"])[0]
-        role_ids.add(role_id)
-
-    # now add what the user already has
-    role_list = get_list_from_endpoint("role",
-                                       world.path_users + str(user_id) + "/roles")
-    for role in role_list:
-        role_id = role[ns("resourceIdentity")]["@id"]
-        role_ids.add(role_id)
-
-
-    do_put(world.path_users + "%s/roles/" % (user_id),
-            {"originalVersionId": user_version,
-             "roleIds": role_ids})
-
+    '''
+        adds them one at a time in the model
+    '''
+    userModel.add_roles(user_name, step.hashes)
 
 
 @step(u'user with (that name|name "(.*)") has the role with (that name|name "(.*)")')
 def user_has_role(step, stored_user, user_name, stored_role, role_name):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
-    role_name = get_stored_or_store_name("role", stored_role, role_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
+    roleModel = RoleModel()
+    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
 
-    # fetch the role's resource identity
-    user_id = get_user_resid(user_name)[0]
-
-    role_list = get_list_from_endpoint("role",
-                                       world.path_users + str(user_id) + "/roles")
-
-    found_role = [x for x in role_list if x[ns("name")] == role_name]
-
-    assert len(found_role) == 1, "Expected to find role with name %s in:\n%s" % (role_name,
-                                                                               str(role_list))
+    userModel.has_role(user_name, role_name)
 
 @step(u'at least this role exists:')
 def at_least_this_role_exists(step):
@@ -169,8 +138,8 @@ def at_least_these_roles_exist(step):
     check_roles_exist(step.hashes)
 
 def check_roles_exist(hashes):
-    role_list = get_list_from_search("role",
-                                     world.path_roles)
+    roleModel = RoleModel()
+    role_list = roleModel.get_all_list()
 
     # walk through all the expected roles and make sure it has them all
     # note, it doesn't check that ONLY these roles exist.  That should be a different
@@ -184,24 +153,20 @@ def check_roles_exist(hashes):
 
 @step(u'find the role with (that name|name "(.*)") by id')
 def find_role_by_id(step, stored_role, role_name):
-    role_name = get_stored_or_store_name("role", stored_role, role_name)
+    roleModel = RoleModel()
+    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
 
-    # fetch the role's resource identity
-    role_id = get_role_resid(role_name)[0]
-
-    role = get_single_item_from_endpoint("role",
-                                       world.path_roles + str(role_id))
+    role = roleModel.get_by_name(role_name)
 
     assert role[ns("name")] == role_name, "Expected to find role with name %s in:\n%s" % (role_name,
                                                                                  jstr(role))
 
 @step(u'user with (that name|name "(.*)") has (at least|exactly) these roles')
 def user_has_these_roles(step, stored_user, user_name, at_least_only):
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
 
-    user_id = get_user_resid(user_name)[0]
-    role_list = get_list_from_endpoint("role",
-                                     world.path_users + str(user_id) + "/roles/")
+    role_list = userModel.get_role_list(user_name)
 
     list_size_check(at_least_only, step.hashes, role_list)
 
@@ -218,11 +183,10 @@ def user_has_these_roles(step, stored_user, user_name, at_least_only):
 
 @step(u'"(ASC|DESC)" role searches list "(.*)" before "(.*)"')
 def order_role_searches_list_foo_before_bar(step, order, first, second):
+    roleModel = RoleModel()
 
-    role_list = get_list_from_search("role",
-                                     world.path_roles,
-                                     {"sortDirection": order, "sortField": "name"}
-                                    )
+    role_list = roleModel.get_all_list(sort_direction = order,
+                                       sort_field = "name")
 
     # check that the index of "first" is before "second"
     check_first_before_second("name", first, second, role_list)
@@ -230,12 +194,10 @@ def order_role_searches_list_foo_before_bar(step, order, first, second):
 
 @step(u'user with (that name|name "(.*)") has (at least|exactly) these permissions')
 def user_has_permissions(step, stored, user_name, at_least_only):
-    user_name = get_stored_or_store_name("user", stored, user_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored, user_name)
 
-    user_id = get_user_resid(user_name)[0]
-
-    perm_list = get_list_from_endpoint("permission",
-                                       world.path_users + str(user_id) + "/permissions")
+    perm_list = userModel.get_permission_list(user_name)
 
     list_size_check(at_least_only, step.hashes, perm_list)
 

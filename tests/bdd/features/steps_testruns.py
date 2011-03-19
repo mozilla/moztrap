@@ -3,14 +3,12 @@ Created on Mar 9, 2011
 
 @author: camerondawson
 '''
-from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
+from features.models import TestcaseModel, UserModel, TestcycleModel, \
+    TestrunModel
+from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, \
     verify_single_item_in_list, json_to_obj
-from features.tcm_request_helper import get_testcycle_resid, do_post, \
-    search_and_verify_existence, get_testrun_resid, do_delete, \
-    get_list_from_endpoint, get_testcase_resid, do_put, \
-    get_testcase_latestversion_resid, get_form_headers, get_auth_header_user_name, \
-    do_get, get_user_resid, get_testsuite_resid, get_stored_or_store_obj, \
-    get_resource_identity, tcmpath, store_latest_of_type
+from features.tcm_request_helper import do_post, do_delete, do_put, do_get, \
+    get_resource_identity
 from lettuce import step, world
 
 
@@ -26,7 +24,7 @@ from lettuce import step, world
 def create_testrun_with_name(step, stored, name, testcycle_name):
     name = get_stored_or_store_name("testrun", stored, name)
 
-    testcycle_id = get_testcycle_resid(testcycle_name)[0]
+    testcycle_id = TestcycleModel().get_resid(testcycle_name)[0]
 
     post_payload = {"testCycleId": testcycle_id,
                     "name": name,
@@ -43,22 +41,22 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
     data = do_post(world.path_testruns,
                    post_payload)
     tcm_obj = json_to_obj(data)
-    store_latest_of_type("testrun", tcm_obj[ns("testrun")][0])
+    TestrunModel().store_latest(tcm_obj[ns("testrun")][0])
 
 
 @step(u'testrun with (that name|name "(.*)") (exists|does not exist)')
 def check_testrun_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testrun", stored, name)
-    search_and_verify_existence(world.path_testruns,
+    TestrunModel().search_and_verify_existence(world.path_testruns,
                     {"name": name},
-                     "testrun", existence)
+                    existence)
 
 
 @step(u'delete the testrun with (that name|name "(.*)")')
 def delete_testrun_with_name(step, stored, name):
     name = get_stored_or_store_name("testrun", stored, name)
 
-    testrun_id, version = get_testrun_resid(name)
+    testrun_id, version = TestrunModel().get_resid(name)
 
     do_delete(world.path_testruns + str(testrun_id),
               {"originalVersionId": version})
@@ -67,7 +65,7 @@ def delete_testrun_with_name(step, stored, name):
 def activate_testrun_with_name(step, stored, name):
     name = get_stored_or_store_name("testrun", stored, name)
 
-    testrun_id, version = get_testrun_resid(name)
+    testrun_id, version = TestrunModel().get_resid(name)
 
     do_put(world.path_testruns + "%s/activate" % testrun_id,
               {"originalVersionId": version})
@@ -75,11 +73,10 @@ def activate_testrun_with_name(step, stored, name):
 
 @step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
 def testcycle_has_testrun(step, cycle_name, run_name):
+    testcycleModel = TestcycleModel()
+    testcycle_id = testcycleModel.get_resid(cycle_name)[0]
 
-    testcycle_id = get_testcycle_resid(cycle_name)[0]
-
-    uri = world.path_testcycles + "%s/testruns/" % testcycle_id
-    testrun_list = get_list_from_endpoint("testrun", uri)
+    testrun_list = testcycleModel.get_testrun_list(testcycle_id)
 
     found_run = [x for x in testrun_list if x[ns("name")] == run_name]
     assert len(found_run) == 1, "Expected to find name %s in:\n%s" % (run_name,
@@ -88,11 +85,12 @@ def testcycle_has_testrun(step, cycle_name, run_name):
 @step(u'add the following testcases to the testrun with (that name|name "(.*)")')
 def add_testcases_to_testrun(step, stored, testrun_name):
     testrun_name = get_stored_or_store_name("testrun", stored, testrun_name)
-    testrun_id, version = get_testrun_resid(testrun_name)
+    testrun_id, version = TestrunModel().get_resid(testrun_name)
+
+    tcModel = TestcaseModel()
 
     for tc in step.hashes:
-        tc_id, tc_ver = get_testcase_resid(tc["testcase"])
-        tc_ver_id, tc_ver_ver = get_testcase_latestversion_resid(tc_id)
+        tc_id = tcModel.get_resid(tc["testcase"])[0]
 
         uri = world.path_testruns + "%s/includedtestcases" % (testrun_id)
         do_post(uri,
@@ -110,11 +108,11 @@ def testrun_has_results(step, stored, testrun_name):
 @step(u'add the following users to the testrun with (that name|name "(.*)")')
 def add_users_to_testrun(step, stored, testrun_name):
     testrun_name = get_stored_or_store_name("testrun", stored, testrun_name)
-    testrun_id, version = get_testrun_resid(testrun_name)
+    testrun_id, version = TestrunModel().get_resid(testrun_name)
 
     user_ids = []
     for user in step.hashes:
-        user_id = get_user_resid(user["name"])[0]
+        user_id = UserModel().get_resid(user["name"])[0]
         user_ids.append(user_id)
 
     do_put(world.path_testruns + "%s/team/members" % (testrun_id),
@@ -124,13 +122,12 @@ def add_users_to_testrun(step, stored, testrun_name):
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following testsuites')
 def testrun_has_testsuites(step, stored_testrun, testrun_name):
-    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrunModel = TestrunModel()
+    testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
     testrun_id = get_resource_identity(testrun)[0]
 
     # get the list of testcases for this testrun
-    testsuite_list = get_list_from_endpoint("testsuite",
-                                                   tcmpath("testruns") + "%s/testsuites" %
-                                                   testrun_id)
+    testsuite_list = testrunModel.get_testsuite_list(testrun_id)
     # walk through and verify that each testcase has the expected status
     for exp_suite in step.hashes:
 
@@ -139,30 +136,29 @@ def testrun_has_testsuites(step, stored_testrun, testrun_name):
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following included testcases')
 def testrun_has_testcases(step, stored_testrun, testrun_name):
-    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrunModel = TestrunModel()
+    testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
     testrun_id = get_resource_identity(testrun)[0]
 
     # get the list of testcases for this testrun
     # get the list of testcases for this testrun
-    includedtestcase_list = get_list_from_endpoint("includedtestcase",
-                                                   tcmpath("testruns") + "%s/includedtestcases" %
-                                                   testrun_id)
+    includedtestcase_list = testrunModel.get_included_testcases(testrun_id)
+
     # walk through and verify that each testcase has the expected status
     for tc in step.hashes:
-        testcase_id = get_testcase_resid(tc["name"])[0]
+        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
         # find that in the list of testcases
         verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following components')
 def testrun_has_components(step, stored_testrun, testrun_name):
-    testrun = get_stored_or_store_obj("testrun", stored_testrun, testrun_name)
+    testrunModel = TestrunModel()
+    testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+
     testrun_id = get_resource_identity(testrun)[0]
 
-    # get the list of testcases for this testrun
-    # get the list of testcases for this testrun
-    component_list = get_list_from_endpoint("component",
-                                                   tcmpath("testruns") + "%s/components" %
-                                                   testrun_id)
+    component_list = testrunModel.get_component_list(testrun_id)
+
     # walk through and verify that each testcase has the expected status
     for component in step.hashes:
         # find that in the list of testcases

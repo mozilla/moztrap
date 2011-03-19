@@ -4,10 +4,9 @@ Created on Jan 31, 2011
 @author: camerondawson
 '''
 
+from features.models import CompanyModel
 from features.tcm_data_helper import get_stored_or_store_name, ns
-from features.tcm_request_helper import do_post, do_delete, \
-    get_single_item_from_endpoint, get_list_from_search, eq_, get_company_resid, \
-    search_and_verify_existence
+from features.tcm_request_helper import do_post, do_delete, eq_
 from lettuce import step, world
 
 
@@ -22,17 +21,14 @@ from lettuce import step, world
 @step(u'fetch the company with name "(.*)" by its id')
 def fetch_company_by_id(step, name):
 
-    resid = get_company_resid(name)[0]
-    data = get_single_item_from_endpoint("company", world.path_companies + str(resid))
+    data = CompanyModel().get_by_name(name)
     eq_(data[ns("name")], name, "Fetch company by id")
 
 
 @step(u'company with (that name|name "(.*)") (does not exist|exists)')
 def check_company_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("company", stored, name)
-    search_and_verify_existence(world.path_companies,
-                    {"name": name},
-                     "company", existence)
+    CompanyModel().verify_existence(name, existence)
 
 
 @step(u'create a new company with name "(.*)"')
@@ -68,7 +64,7 @@ def create_companies(step):
                 company)
 @step(u'search for all companies returns at least these results:')
 def at_least_these_companys_exist(step):
-    company_list = get_list_from_search("company", world.path_companies)
+    company_list = CompanyModel().get_all_list()
 
     # walk through all the expected roles and make sure it has them all
     # note, it doesn't check that ONLY these roles exist.  That should be a different
@@ -83,7 +79,7 @@ def at_least_these_companys_exist(step):
 def delete_company_with_name(step, stored, name):
     name = get_stored_or_store_name("company", stored, name)
 
-    resid, version = get_company_resid(name)
+    resid, version = CompanyModel().get_resid(name)
 
     do_delete(world.path_companies + str(resid),
               {"originalVersionId": version})

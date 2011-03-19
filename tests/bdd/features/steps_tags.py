@@ -3,9 +3,9 @@ Created on Feb 9, 2011
 
 @author: camerondawson
 '''
+from features.models import TagModel, CompanyModel
 from features.tcm_data_helper import get_stored_or_store_field
-from features.tcm_request_helper import do_post, search_and_verify_existence, \
-    do_delete, get_seed_company_id, get_tag_resid
+from features.tcm_request_helper import do_post, do_delete
 from lettuce import step, world
 
 
@@ -21,7 +21,7 @@ from lettuce import step, world
 def create_tag_with_name(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
 
-    post_payload = {"companyId": get_seed_company_id(),
+    post_payload = {"companyId": CompanyModel().get_seed_resid()[0],
                     "tag": tag
                    }
 
@@ -32,17 +32,17 @@ def create_tag_with_name(step, stored, tag):
 
 @step(u'tag with (that tag|tag "(.*)") (exists|does not exist)')
 def check_tag_foo_existence(step, stored, tag, existence):
-    tag = get_stored_or_store_field("tag", "tag", stored, tag)
-    search_and_verify_existence(world.path_tags,
-                    {"tag": tag},
-                     "tag", existence)
+    tagModel = TagModel()
+    tag = tagModel.get_stored_or_store_tag(stored, tag)
+    tagModel.verify_existence(tag, existence,
+                              {"tag": tag})
 
 
 @step(u'delete the tag with (that tag|tag "(.*)")')
 def delete_tag_with_tag_foo(step, stored, tag):
     tag = get_stored_or_store_field("tag", "tag", stored, tag)
 
-    tag_id, version = get_tag_resid(tag)
+    tag_id, version = TagModel().get_resid(tag)
 
     do_delete(world.path_tags + str(tag_id),
               {"originalVersionId": version})
