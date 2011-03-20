@@ -221,14 +221,16 @@ def testcases_have_approval_statuses(step):
 
 @step(u'user with (that name|name "(.*)") marks the following testcase result statuses for the testrun with (that name|name "(.*)")')
 def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, testrun_name):
-    testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
-    user_name = get_stored_or_store_name("user", stored_user, user_name)
+    trModel = TestrunModel()
+    testrun_name = trModel.get_stored_or_store_name(stored_testrun, testrun_name)
+    userModel = UserModel()
+    user_name = userModel.get_stored_or_store_name(stored_user, user_name)
+
     status_map = {"Passed": "finishsucceed",
                   "Failed": "finishfail",
                   "Invalidated": "finishinvalidate"}
     # first we need the testrun id so we can get the latest version to approve
 #    user_id = UserModel().get_resid(user_name)[0]
-    trModel = TestrunModel()
     testrun_id = trModel.get_resid(testrun_name)[0]
 
     # get the list of testcases for this testrun

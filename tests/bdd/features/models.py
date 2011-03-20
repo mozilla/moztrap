@@ -582,7 +582,7 @@ class TestrunModel(BaseModel):
                                            tcm_type = "CategoryValueInfo")
 
     def get_result_list(self, assignment_id):
-        return self.get_list_from_endpoint("%sassignments/%s/results" % \
+        return self.get_list_from_endpoint("%s/assignments/%s/results" % \
                                                 (self.root_path, assignment_id),
                                            tcm_type = "testresult")
 

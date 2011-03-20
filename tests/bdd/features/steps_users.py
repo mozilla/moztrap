@@ -66,7 +66,7 @@ def create_user_with_name_foo(step, stored, name):
 def get_new_user_by_id(step):
     userModel = UserModel()
     last_created_user = userModel.get_latest_stored()
-    user_id = get_resource_identity(last_created_user)
+    user_id = get_resource_identity(last_created_user)[0]
     user_obj = userModel.get_by_id(user_id)
 
     compare_dicts_by_keys(last_created_user,
@@ -101,6 +101,8 @@ def user_with_name_has_values(step, stored, name):
 def last_referenced_user_has_values(step):
     userModel = UserModel()
     act_user = userModel.get_latest_stored()
+    # fetch the latest values for this user
+    act_user = userModel.get_by_id(get_resource_identity(act_user)[0])
 
     exp_user = step.hashes[0].copy()
     userModel.check_values(act_user, exp_user)
