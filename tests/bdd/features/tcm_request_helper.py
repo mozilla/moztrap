@@ -32,7 +32,7 @@ def add_params(uri_path, params = {}):
         I'll first add on the URI prefix
         then add in the params
     '''
-    newparams = copy.copy(params)
+    newparams = params.copy()
     newparams["_type"] = "json"
     #assert False, urllib.urlencode(params)
     #assert False, params

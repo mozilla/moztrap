@@ -9,7 +9,7 @@ from features.tcm_data_helper import jstr, ns, json_to_obj, json_pretty, \
     get_stored_or_store_name, get_stored_or_store_field, compare_dicts_by_keys, \
     ns_keys
 from features.tcm_request_helper import get_resource_identity, get_json_headers, \
-    do_get, get_auth_header, do_put_for_cookie, do_post, do_delete
+    do_get, get_auth_header, do_put_for_cookie, do_post, do_delete, do_put
 from lettuce.terrain import world
 
 class BaseModel(object):
@@ -40,7 +40,7 @@ class BaseModel(object):
         '''
 
         item = self.get_single_item_from_search(self.root_path, params = params)
-        assert item != None, "%s not found in search with these params: %s" % \
+        assert item != None, "%s not found in search with these params:\n%s" % \
             (self.singular, jstr(params))
 
         return get_resource_identity(item)
@@ -165,8 +165,9 @@ class BaseModel(object):
             # returned the stored object
             # DO WE RE-FETCH IT TO GET THE LATEST VERSION?
             tcm_obj = self.get_latest_stored()
-            tcm_obj = self.get_single_item_from_endpoint(self.root_path + \
-                                                         str(get_resource_identity(tcm_obj)[0]))
+            tcm_obj = self.get_single_item_from_endpoint("%s/%s" % \
+                                                         (self.root_path,
+                                                         str(get_resource_identity(tcm_obj)[0])))
             return tcm_obj
 
     # simple accessors that can be changed if I change where I store these things.
@@ -233,13 +234,12 @@ class BaseModel(object):
 
     def get_single_item_from_endpoint(self,
                                       uri,
-                                      tcm_type = None,
                                       headers = get_json_headers()):
         '''
             This hits an endpoint.  No searchResult or ArrayOfXXXX part here
         '''
 
-        response_txt = do_get(uri, tcm_type, headers = headers)
+        response_txt = do_get(uri, headers = headers)
 
         try:
             item = json_to_obj(response_txt)[ns(self.singular)][0]
@@ -273,20 +273,42 @@ class BaseModel(object):
         else:
             # we want to verify just ONE of the items returned.  Indeed, we likely
             # expect only one.  So we pick the first item returned
-            item = resp_list[0]
 
-            # Verify that the result's values match our search params
-            for k, v in search_args.items():
-                eq_(item.get(ns(k)), v, tcm_type + " match")
+            verify_single_item_in_list(resp_list,
+                                       params = search_args)
 
 
-    def verify_existence(self, name, existence, params = {}):
+    def verify_existence_on_root(self,
+                                 name = None,
+                                 existence = "exists",
+                                 params = {}):
+        '''
+            the existence parameter is a string that has either "exists"
+            or "does not exist" and a boolean is formed based on that in the
+            delegated method call to search_and_verify_existence
+        '''
         if params == {}:
             params = {"name": name}
         self.search_and_verify_existence(self.root_path,
                                          params,
                                          existence)
 
+    def verify_found_on_root(self,
+                             name = None,
+                             exp_to_find = True,
+                             params = {}):
+        '''
+            Find the object with this name in the root_path, with the
+            specified search parameters.
+
+            More generic than the verify_existence method.  It takes
+            a boolean for exp_to_find
+        '''
+        if params == {}:
+            params = {"name": name}
+        self.search_and_verify(self.root_path,
+                               params,
+                               exp_to_find)
 
     def verify_has(self, uri, search_args, expect_to_find, tcm_type):
         self.search_and_verify(uri, search_args, expect_to_find, tcm_type)
@@ -367,7 +389,7 @@ class UserModel(BaseModel):
             replace the users roles with these roles
         '''
         user_id, user_version = self.get_resid(user_name)
-        do_post("%s/%s/roles/" % (self.root_path, user_id),
+        do_put("%s/%s/roles/" % (self.root_path, user_id),
             {"originalVersionId": user_version,
              "roleIds": role_ids})
 
@@ -387,10 +409,10 @@ class UserModel(BaseModel):
         user_id = self.get_resid(user_name)[0]
 
         return self.get_list_from_endpoint("%s/%s/roles" % (self.root_path, user_id),
-                                           "roles")
+                                           "role")
 
     def get_permission_list(self, user_name):
-        user_id = self.get_resid(user_name)
+        user_id = self.get_resid(user_name)[0]
         return self.get_list_from_endpoint("%s/%s/permissions"% (self.root_path, user_id),
                                            "permission")
 

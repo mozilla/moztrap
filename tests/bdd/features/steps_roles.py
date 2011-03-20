@@ -74,9 +74,8 @@ def role_has_permissions(step, stored, role_name):
 def add_role_to_user(step, stored_role, role_name, stored_user, user_name):
     userModel = UserModel()
     user_name = userModel.get_stored_or_store_name(stored_user, user_name)
-#    roleModel = RoleModel()
-#    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
-    role_name = "Approvationalist"
+    roleModel = RoleModel()
+    role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
     userModel.add_role(user_name, role_name)
 
 

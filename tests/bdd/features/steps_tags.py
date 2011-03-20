@@ -34,8 +34,8 @@ def create_tag_with_name(step, stored, tag):
 def check_tag_foo_existence(step, stored, tag, existence):
     tagModel = TagModel()
     tag = tagModel.get_stored_or_store_tag(stored, tag)
-    tagModel.verify_existence(tag, existence,
-                              {"tag": tag})
+    tagModel.verify_existence_on_root(existence = existence,
+                                      params = {"tag": tag})
 
 
 @step(u'delete the tag with (that tag|tag "(.*)")')

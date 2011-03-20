@@ -5,10 +5,9 @@ Created on Jan 28, 2011
 '''
 from features.models import UserModel, CompanyModel
 from features.tcm_data_helper import compare_dicts_by_keys, ns_keys, \
-    get_stored_or_store_name, get_user_status_id, json_to_obj, ns, get_user_password, \
-    eq_, jstr
-from features.tcm_request_helper import do_post, do_get, do_put, \
-    get_resource_identity, get_json_headers, get_auth_header, do_put_for_cookie
+    get_stored_or_store_name, get_user_status_id, ns, get_user_password, eq_, jstr
+from features.tcm_request_helper import do_get, do_put, get_resource_identity, \
+    get_json_headers, get_auth_header, do_put_for_cookie
 from lettuce import step, world
 
 '''
@@ -184,27 +183,24 @@ def user_not_logged_in(step):
 
 
 @step(u'user with (that name|name "(.*)") (exists|does not exist)')
-def check_user_foo_existence(step, stored, name, existence):
+def check_user_existence(step, stored, name, existence):
     userModel = UserModel()
     name = userModel.get_stored_or_store_name(stored, name)
     names = name.split()
-    userModel.verify_existence(name,
-                               True,
-                               {"firstName": names[0],
-                                "lastName": names[1]})
+    userModel.verify_existence_on_root(existence = existence,
+                                       params = {"firstName": names[0],
+                                                 "lastName": names[1]})
 
 @step(u'user with (that name|name "(.*)") is (active|inactive|disabled)')
-def check_user_foo_activated(step, stored, name, userStatus):
+def check_user_activated(step, stored, name, userStatus):
     userModel = UserModel()
     name = userModel.get_stored_or_store_name(stored, name)
     names = name.split()
     statusId = get_user_status_id(userStatus)
 
-    userModel.verify_existence(name,
-                               True,
-                               {"firstName": names[0],
-                                "lastName": names[1],
-                                "userStatusId": statusId})
+    userModel.verify_found_on_root(params = {"firstName": names[0],
+                                             "lastName": names[1],
+                                             "userStatusId": statusId})
 
 
 @step(u'(activate|deactivate) the user with (that name|name "(.*)")')

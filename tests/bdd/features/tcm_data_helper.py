@@ -66,6 +66,12 @@ def ns_keys(dict_obj):
     '''
     return dict((ns(key), value) for (key, value) in dict_obj.items())
 
+def is_subset(tcm_dict, subset_dict):
+    # Verify that the result's values match our search params
+    for k, v in subset_dict.items():
+        if not (tcm_dict[k] == v):
+            return False
+    return True
 
 # for simplicity, we just always use the same algorithm for passwords
 def get_user_password(name):
@@ -118,11 +124,22 @@ def list_size_check(at_least_only, exp, act):
         "These list sizes should match:\nEXPECTED:\n%s\nACTUAL:\n%s" % \
         (jstr(exp), jstr(act))
 
-def verify_single_item_in_list(tcm_obj_list, field, exp_value):
-    found_items = [x for x in tcm_obj_list if x[ns(field)] == exp_value]
-    assert len(found_items) == 1, \
-        "Expected 1 matching item in the list for %s == %s.  Found: %s\n%s" % \
-        (field, exp_value, len(found_items), jstr(tcm_obj_list))
+def verify_single_item_in_list(tcm_obj_list,
+                               field = None,
+                               exp_value = None,
+                               params = None):
+    if params is not None:
+        ns_params = ns_keys(params)
+        found_items = [x for x in tcm_obj_list if is_subset(x, ns_params)]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the list for\n%s.  Found: %s\n%s" % \
+            (jstr(ns_params), len(found_items), jstr(tcm_obj_list))
+    else:
+        found_items = [x for x in tcm_obj_list if x[ns(field)] == exp_value]
+        assert len(found_items) == 1, \
+            "Expected 1 matching item in the list for %s == %s.  Found: %s\n%s" % \
+            (field, exp_value, len(found_items), jstr(tcm_obj_list))
+
     return found_items[0]
 
 def check_first_before_second(field, first, second, obj_list):

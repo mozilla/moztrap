@@ -28,7 +28,8 @@ def fetch_company_by_id(step, name):
 @step(u'company with (that name|name "(.*)") (does not exist|exists)')
 def check_company_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("company", stored, name)
-    CompanyModel().verify_existence(name, existence)
+    CompanyModel().verify_existence_on_root(name,
+                                            existence = existence)
 
 
 @step(u'create a new company with name "(.*)"')

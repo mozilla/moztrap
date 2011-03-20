@@ -55,7 +55,8 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testcase", stored, name)
-    TestcaseModel().verify_existence(name, existence)
+    TestcaseModel().verify_existence_on_root (name,
+                                              existence = existence)
 
 
 @step(u'delete the testcase with (that name|name "(.*)")')
@@ -405,7 +406,8 @@ def create_testcycles(step):
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
 def check_testcycle_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testcycle", stored, name)
-    TestcycleModel().verify_existence(name, existence)
+    TestcycleModel().verify_existence_on_root(name,
+                                              existence = existence)
 
 
 @step(u'delete the testcycle with (that name|name "(.*)")')
@@ -483,7 +485,8 @@ def activate_testsuite_with_name(step, stored, name):
 @step(u'testsuite with (that name|name "(.*)") (exists|does not exist)')
 def check_testsuite_foo_existence(step, stored, name, existence):
     name = get_stored_or_store_name("testsuite", stored, name)
-    TestsuiteModel().verify_existence(name, existence)
+    TestsuiteModel().verify_existence_on_root(name,
+                                              existence = existence)
 
 
 @step(u'delete the testsuite with (that name|name "(.*)")')

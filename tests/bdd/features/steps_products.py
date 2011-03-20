@@ -54,7 +54,7 @@ def create_products(step):
 def check_product_existence(step, stored, name, existence):
     productModel = ProductModel()
     name = productModel.get_stored_or_store_name(stored, name)
-    productModel.verify_existence(name, existence)
+    productModel.verify_existence_on_root(name, existence = existence)
 
 @step(u'delete the product with (that name|name "(.*)")')
 def delete_product_with_name(step, stored, name):

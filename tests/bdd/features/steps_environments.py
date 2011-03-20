@@ -22,29 +22,29 @@ from lettuce import step, world
 def check_environement_foo_existence(step, stored, name, existence):
     model = EnvironmentModel()
     name = model.get_stored_or_store_name(stored, name)
-    model.verify_existence(name, existence)
+    model.verify_existence_on_root(name, existence = existence)
 
 @step(u'an environmenttype with (that name|name "(.*)") (exists|does not exist)')
 def check_environementtype_existence(step, stored, name, existence):
     model = EnvironmenttypeModel()
     name = model.get_stored_or_store_name(stored, name)
-    model.verify_existence(name, existence)
+    model.verify_existence_on_root(name, existence = existence)
 
 @step(u'an environmentgroup with (that name|name "(.*)") (exists|does not exist)')
 def check_environementgroup_existence(step, stored, name, existence):
     model = EnvironmentgroupModel()
     name = model.get_stored_or_store_name(stored, name)
-    model.verify_existence(name, existence)
+    model.verify_existence_on_root(name, existence = existence)
 
 @step(u'a group environmenttype with (that name|name "(.*)") (exists|does not exist)')
 def check_group_environement_foo_existence(step, stored, name, existence):
     model = EnvironmenttypeModel()
     name = model.get_stored_or_store_name(stored, name)
 
-    model.verify_existence(name,
-                           existence,
-                           params = {"name": name,
-                                     "groupType": True})
+    model.verify_existence_on_root(name,
+                                   existence = existence,
+                                   params = {"name": name,
+                                             "groupType": True})
 
 @step(u'at least the following environments exist')
 def at_least_these_environments_exist(step):
@@ -214,7 +214,7 @@ def add_envgroups_to_testrun(step, stored_testrun, testrun_name):
 def testrun_has_environments(step, stored_testrun, testrun_name):
     testrunModel = TestrunModel()
     testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
-    testrun_id = testrunModel.get_resid(testrun)[0]
+    testrun_id = testrunModel.get_resid(testrun[ns("name")])[0]
 
     envgrp_list = testrunModel.get_environmentgroup_list(testrun_id)
 
