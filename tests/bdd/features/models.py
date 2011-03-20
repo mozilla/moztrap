@@ -234,15 +234,19 @@ class BaseModel(object):
 
     def get_single_item_from_endpoint(self,
                                       uri,
+                                      tcm_type = None,
                                       headers = get_json_headers()):
         '''
             This hits an endpoint.  No searchResult or ArrayOfXXXX part here
         '''
 
+        if tcm_type == None:
+            tcm_type = self.singular
+
         response_txt = do_get(uri, headers = headers)
 
         try:
-            item = json_to_obj(response_txt)[ns(self.singular)][0]
+            item = json_to_obj(response_txt)[ns(tcm_type)][0]
             self.store_latest(item)
             return item
 
@@ -325,7 +329,7 @@ class UserModel(BaseModel):
     def get_auth_header(self, user_name):
         names = user_name.split()
         user_list = self.get_list_from_search(self.root_path,
-                                         {"firstName": names[0], "lastName": names[1]})
+                                              params = {"firstName": names[0], "lastName": names[1]})
         try:
             useremail = user_list[0][ns("email")]
             userpw = get_user_password(user_name)
@@ -426,7 +430,8 @@ class RoleModel(BaseModel):
 
         return self.get_list_from_endpoint("%s/%s/permissions" %
                                                 (self.root_path,
-                                                 role_id))
+                                                 role_id),
+                                            tcm_type = "permission")
 
 
 class PermissionModel(BaseModel):
@@ -502,14 +507,13 @@ class TestcaseModel(BaseModel):
 
         latestversion_uri = "%s/%s/latestversion/" % (self.root_path, testcase_id)
 
-        return super(TestcaseModel,
-                                self).get_single_item_from_endpoint(latestversion_uri,
-                                                                    tcm_type = "testcaseversion",)
+        return self.get_single_item_from_endpoint(latestversion_uri,
+                                                  tcm_type = "testcaseversion",)
     def get_latestversion_resid(self, testcase_id):
         return get_resource_identity(self.get_latestversion(testcase_id))
 
     def get_steps_list(self, testcaseversion_id):
-        uri = "%sversions/%s/steps/" % (self.root_path, testcaseversion_id)
+        uri = "%s/versions/%s/steps" % (self.root_path, testcaseversion_id)
         return self.get_list_from_endpoint(uri, "testcasestep")
 
     def get_latest_steps_list(self, name):
@@ -539,8 +543,9 @@ class TestcycleModel(BaseModel):
         super(TestcycleModel, self).__init__("testcycle")
 
     def get_testrun_list(self, testcycle_id):
-        uri = self.singular + "%s/testruns/" % testcycle_id
-        return self.get_list_from_endpoint(uri)
+        uri = "%s/%s/testruns" % (self.root_path, testcycle_id)
+        return self.get_list_from_endpoint(uri,
+                                           tcm_type = "testrun")
 
 
 class TestrunModel(BaseModel):
@@ -564,7 +569,8 @@ class TestrunModel(BaseModel):
 
     def get_testsuite_list(self, testrun_id):
         return self.get_list_from_endpoint("%s/%s/testsuites" % (self.root_path,
-                                                         testrun_id))
+                                                         testrun_id),
+                                            tcm_type = "testsuite")
 
     def get_component_list(self, testrun_id):
         return self.get_list_from_endpoint("%s/%s/components" % (self.root_path,

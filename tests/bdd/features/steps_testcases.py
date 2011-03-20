@@ -39,7 +39,8 @@ def create_testcase_with_name_foo(step, stored, name):
 def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcase, testcase_name):
     userModel = UserModel()
     user_name = userModel.get_stored_or_store_name(stored_user, user_name)
-    testcase_name = get_stored_or_store_name("testcase", stored_testcase, testcase_name)
+    testcaseModel = TestcaseModel()
+    testcase_name = testcaseModel.get_stored_or_store_name(stored_testcase, testcase_name)
 
     post_payload = {"productId": ProductModel().get_seed_resid()[0],
                     "maxAttachmentSizeInMbytes":"10",
@@ -47,8 +48,8 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
                     "name": testcase_name,
                     "description": "Lettuce tc"
                     }
-    headers = get_form_headers(UserModel().get_auth_header(user_name))
-    do_post(world.path_testcases,
+    headers = get_form_headers(userModel.get_auth_header(user_name))
+    do_post(testcaseModel.root_path,
             post_payload,
             headers = headers)
 
@@ -83,8 +84,8 @@ def add_steps_to_testcase_name(step, stored, name):
 
 @step(u'the testcase with (that name|name "(.*)") has these steps')
 def verify_testcase_steps(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
     tcModel = TestcaseModel()
+    name = tcModel.get_stored_or_store_name(stored, name)
 
     testcasestep_list = tcModel.get_latest_steps_list(name)
 
