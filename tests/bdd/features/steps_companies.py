@@ -43,12 +43,12 @@ def create_a_new_company_with_name(step, company_name):
                     "countryId": 123
                     }
 
-    do_post(world.path_companies,
-            post_payload)
+    companyModel = CompanyModel()
+    companyModel.create(post_payload)
 
 @step(u'create the following new companies')
 def create_companies(step):
-
+    companyModel = CompanyModel()
     for item in step.hashes:
         company = item.copy()
         # persist the last one we make.  Sometimes we will only make one.
@@ -60,9 +60,8 @@ def create_companies(step):
         company["countryId"] = country_id
         del company["country name"]
 
+        companyModel.create(company)
 
-        do_post(world.path_companies,
-                company)
 @step(u'search for all companies returns at least these results:')
 def at_least_these_companys_exist(step):
     company_list = CompanyModel().get_all_list()
@@ -78,12 +77,9 @@ def at_least_these_companys_exist(step):
 
 @step(u'delete the company with (that name|name "(.*)")')
 def delete_company_with_name(step, stored, name):
-    name = get_stored_or_store_name("company", stored, name)
-
-    resid, version = CompanyModel().get_resid(name)
-
-    do_delete(world.path_companies + str(resid),
-              {"originalVersionId": version})
+    companyModel = CompanyModel()
+    name = companyModel.get_stored_or_store_name(stored, name)
+    companyModel.delete(name)
 
 
 @step(u'search all Companies')

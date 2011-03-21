@@ -3,12 +3,10 @@ Created on Mar 8, 2011
 
 @author: camerondawson
 '''
-from features.tcm_data_helper import eq_, get_user_password, record_api_for_step, \
-    jstr, json_to_obj, as_arrayof, plural, json_pretty
+from features.tcm_data_helper import eq_, record_api_for_step, jstr
 from lettuce.terrain import world
 from tcm_data_helper import ns
 import base64
-import copy
 import mimetypes
 import string
 import urllib
@@ -51,28 +49,26 @@ def verify_status(exp_status, response, msg):
     eq_(response.status, exp_status, "URI: %s/n%s" % (msg, str(data)))
     return data
 
-#def get_auth_header_user_name(user_name):
-#    names = user_name.split()
-#    user_list = get_list_from_search("user",
-#                                     world.path_users,
-#                                     {"firstName": names[0], "lastName": names[1]})
-#    try:
-#        useremail = user_list[0][ns("email")]
-#        userpw = get_user_password(user_name)
-#    except KeyError:
-#        assert False, "%s\nDidn't find field in %s" % (str(KeyError), user_list)
-#
-#    return get_auth_header(useremail, userpw)
+def get_resource_identity(tcm_obj):
 
-#def log_user_in(name):
-#    headers = get_json_headers(get_auth_header_user_name(name))
-#    # log the user in
-#
-#    return do_put_for_cookie(world.path_users + "login", "", headers)
+    try:
+        resid = int(tcm_obj[ns("resourceIdentity")]["@id"])
+        version = tcm_obj[ns("resourceIdentity")]["@version"]
+        return resid, version
+    except KeyError:
+        assert False, "didn't find expected tcm_type:  %s -- %s or %s in:\n%s" % (ns("resourceIdentity"),
+                                                                     "@id",
+                                                                     "@version",
+                                                                     jstr(tcm_obj))
 
 
+'''
+######################################################################
 
+                     REQUEST FUNCTIONS
 
+######################################################################
+'''
 
 
 def do_get(uri, params = {}, headers = get_json_headers(), exp_status = 200):
@@ -132,193 +128,6 @@ def do_request(method, uri, params = {}, body = {}, headers = get_form_headers()
     response = world.conn.getresponse()
 
     return verify_status(exp_status, response, "%s %s:\n%s" % (method, uri, body))
-
-#def search_and_verify_existence(uri, search_args, obj_name, existence):
-#    expect_to_find = (existence.strip() == "exists")
-#    search_and_verify(uri, search_args, obj_name, expect_to_find)
-#
-#def search_and_verify(uri, search_args, obj_name, expect_to_find):
-#    '''
-#        This does a search based on the search_args passed in.  So "expect_to_find"
-#        is really filtered based on those parameters.
-#
-#        expect_to_find: If True, then we verify based on expecting to find something.
-#                        If False, this will fail if we get a resultset greater than 0.
-#    '''
-#    assert False, "move to model and fix this"
-#    resp_list = get_list_from_search(obj_name, uri, params = search_args)
-#
-#    if not expect_to_find:
-#        eq_(len(resp_list), 0, "expect result size zero:\n" + jstr(resp_list))
-#    else:
-#        # we want to verify just ONE of the items returned.  Indeed, we likely
-#        # expect only one.  So we pick the first item returned
-#        item = resp_list[0]
-#
-#        # Verify that the result's values match our search params
-#        for k, v in search_args.items():
-#            eq_(item.get(ns(k)), v, obj_name + " match")
-
-
-
-
-
-def get_resource_identity(tcm_obj):
-
-    try:
-        resid = int(tcm_obj[ns("resourceIdentity")]["@id"])
-        version = tcm_obj[ns("resourceIdentity")]["@version"]
-        return resid, version
-    except KeyError:
-        assert False, "didn't find expected tcm_type:  %s -- %s or %s in:\n%s" % (ns("resourceIdentity"),
-                                                                     "@id",
-                                                                     "@version",
-                                                                     jstr(tcm_obj))
-
-#def get_stored_or_store_obj(tcm_type, stored, name):
-#    '''
-#        If stored is not None and has the word "that" in it, then we try to use the last stored object
-#        of that type.  This can be tricky, because that last stored one might not have the latest verison id.
-#        Some step code may need to refetch the latest version.  Or perhaps we should re-fetch the latest
-#        version here?
-#
-#        If stored IS None, then we do a search for the object of that type with that name.  For type of "users"
-#        we have to split the name to first and last.  Sucky special case.
-#    '''
-#    if stored == None:
-#        # search for the object with that name
-#        if tcm_type == "user":
-#            names = name.split()
-#            params = {"firstName": names[0], "lastName": names[1]}
-#        else:
-#            params = {"name": name}
-#        tcm_obj = get_single_item_from_search(tcm_type, tcmpath(tcm_type), params)
-#        store_latest_of_type(tcm_type, tcm_obj)
-#    else:
-#        # returned the stored object
-#        # DO WE RE-FETCH IT TO GET THE LATEST VERSION?
-#        tcm_obj = get_latest_of_type(tcm_type)
-#        tcm_obj = get_single_item_from_endpoint(tcm_type, tcmpath(tcm_type) + str(get_resource_identity(tcm_obj)[0]))
-#        return tcm_obj
-
-def tcmpath(tcm_type):
-    '''
-        The URI path for a given tcm object type.  Shortcut to make the code cleaner.
-    '''
-    if not tcm_type.endswith('s'):
-        # needs to be plural
-        return world.path_map[plural(tcm_type)]
-    return world.path_map[tcm_type]
-'''
-######################################################################
-
-                     LIST FUNCTIONS
-
-######################################################################
-'''
-
-
-#def get_list_from_search(tcm_type, uri, params = {}, headers = get_json_headers()):
-#    '''
-#        This will always return an array.  May have many, one or no items in it
-#        it goes into the "searchResult" tcm_type of response
-#    '''
-#    response_txt = do_get(uri, params, headers)
-#
-#    sr_field = ns("searchResult")
-#    tcm_type = ns(tcm_type)
-#    pl_type = plural(tcm_type)
-#
-#    try:
-#        sr = json_to_obj(response_txt)[sr_field][0]
-#        if (sr[ns("totalResults")] > 0):
-#            items = sr[pl_type][tcm_type]
-#            if (not isinstance(items, list)):
-#                items = [items]
-#        else:
-#            items = []
-#
-#        return items
-#    except (KeyError, TypeError) as err:
-#        assert False, \
-#            "%s\nDidn't find [%s][0][%s][%s] in\n%s" % \
-#            (str(err),
-#             sr_field,
-#             pl_type,
-#             ns(tcm_type),
-#             json_pretty(response_txt))
-
-#def get_single_item_from_search(tcm_type, uri, params = {}, headers = get_json_headers()):
-#    '''
-#        This will always return a single item or None type.  May have many responses, so throw an
-#        error if there is more than one.
-#        It goes into the "searchResult" tcm_type of response
-#
-#        Yeah, it's inefficient to create a list, then potentially return the first item as NOT a list.
-#        But this makes the coding easier and more uniform, so I chose to do that.
-#    '''
-#    list = get_list_from_search(tcm_type, uri, params = params, headers = headers)
-#
-#    # if the last attempt to get something returned None, we want to persist that in the last_id,
-#    # otherwise we may think we're referencing the LAST one, but we'd be getting the one from before
-#    if len(list) == 0:
-#        store_latest_of_type(tcm_type, None)
-#        return None
-#    assert len(list) < 2,\
-#        "More than one object returned from search.  Don't know which one to return:\n%s"\
-#        % jstr(list)
-#
-#    item = list[0]
-#    store_latest_of_type(tcm_type, item)
-#    return item
-
-
-#def get_list_from_endpoint(tcm_type, uri, headers = get_json_headers()):
-#    '''
-#        This hits an endpoint.  It goes into the ArrayOfXXX tcm_type of response
-#    '''
-#    response_txt = do_get(uri, headers = headers)
-#
-#    try:
-#        array_of_type = json_to_obj(response_txt)[ns(as_arrayof(tcm_type))][0]
-#        if (len(array_of_type) > 1):
-#            items = array_of_type[ns(tcm_type)]
-#            if (not isinstance(items, list)):
-#                items = [items]
-#        else:
-#            items = []
-#
-#        return items
-#    except (KeyError, TypeError) as err:
-#        assert False, \
-#            "%s\nDidn't find [%s][0][%s] in\n%s" % \
-#            (str(err),
-#             ns(as_arrayof(tcm_type)),
-#             ns(tcm_type),
-#             json_pretty(response_txt))
-#
-#def get_single_item_from_endpoint(tcm_type, uri, headers = get_json_headers()):
-#    '''
-#        This hits an endpoint.  No searchResult or ArrayOfXXXX part here
-#    '''
-#
-#    response_txt = do_get(uri, headers = headers)
-#
-#    try:
-#        item = json_to_obj(response_txt)[ns(tcm_type)][0]
-#        store_latest_of_type(tcm_type, item)
-#        return item
-#
-#    except KeyError:
-#        assert False, "%s\nDidn't find %s in %s" % (str(KeyError), ns(tcm_type), response_txt)
-
-
-## simple accessors that can be changed if I change where I store these things.
-#def store_latest_of_type(tcm_type, tcm_obj):
-#    world.latest_of_type[tcm_type] = tcm_obj
-#
-#def get_latest_of_type(tcm_type):
-#    return world.latest_of_type[tcm_type]
 
 
 

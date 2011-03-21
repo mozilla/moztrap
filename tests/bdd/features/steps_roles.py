@@ -6,8 +6,7 @@ Created on Jan 28, 2011
 from features.models import UserModel, RoleModel, CompanyModel, PermissionModel
 from features.tcm_data_helper import ns, jstr, list_size_check, \
     check_first_before_second, verify_single_item_in_list
-from features.tcm_request_helper import do_post, do_delete
-from lettuce import step, world
+from lettuce import step
 
 '''
 ######################################################################
@@ -25,10 +24,10 @@ def create_role_with_permissions(step, stored, name):
     # create the new role
     role_payload = {"companyId": CompanyModel().get_seed_resid()[0],
                     "name": name}
-    do_post(world.path_roles, role_payload)
+    roleModel.create(role_payload)
 
     #get the new role ID
-    role_id, role_version = RoleModel().get_resid(name)
+    role_id, role_version = roleModel.get_resid(name)
 
     # get the list of all available permissions
     perm_array = PermissionModel().get_all_list()
@@ -47,10 +46,7 @@ def create_role_with_permissions(step, stored, name):
             assert False, "%s.%s not found in:\n%s" % (ns("resourceIdentity"), "@id", found_perm)
 
         # now add the permissions to that role
-        perm_uri = world.path_roles + "%s/permissions/%s/" % (str(role_id), str(perm_id))
-        perm_payload = {"permissionId": perm_id,
-                        "originalVersionId": role_version}
-        do_post(perm_uri, perm_payload)
+        roleModel.add_permission(role_id, role_version, perm_id)
 
 @step(u'role with (that name|name "(.*)") has the following permissions')
 def role_has_permissions(step, stored, role_name):
@@ -99,14 +95,7 @@ def remove_role_from_user(step, stored_role, role_name, stored_user, user_name):
     roleModel = RoleModel()
     role_name = roleModel.get_stored_or_store_name(stored_role, role_name)
 
-    # fetch the user's and the role's resource identity
-    user_id, user_version = UserModel().get_resid(user_name)
-    role_id_to_remove = RoleModel().get_resid(role_name)[0]
-
-#    role_list[:] = [x for x in role_list if x[ns("name")] != role_name]
-
-    do_delete(world.path_users + "%s/roles/%s" % (user_id, role_id_to_remove),
-            {"originalVersionId": user_version})
+    userModel.remove_role(user_name, role_name)
 
 @step(u'add the following roles to the user with (that name|name "(.*)")')
 def add_roles_to_user(step, stored_user, user_name):

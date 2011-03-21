@@ -86,7 +86,7 @@ def update_user_with_name(step, stored, name):
     del new_values["company name"]
     new_values["originalVersionId"] = version
 
-    do_put(world.path_users + str(user_id), new_values)
+    do_put(UserModel().root_path + "/" + str(user_id), new_values)
 
 @step(u'user with (that name|name "(.*)") has these values')
 def user_with_name_has_values(step, stored, name):
@@ -112,7 +112,7 @@ def change_user_email(step, new_email, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     user_id, version = UserModel().get_resid(name)
 
-    do_put(world.path_users + "%s/emailchange/%s" % (user_id, new_email),
+    do_put(UserModel().root_path + "/" + "%s/emailchange/%s" % (user_id, new_email),
            {"originalVersionId": version})
 
 @step(u'confirm the email for the user with (that name|name "(.*)")')
@@ -120,7 +120,7 @@ def confirm_user_email(step, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     user_id, version = UserModel().get_resid(name)
 
-    do_put(world.path_users + "%s/emailconfirm" % (user_id),
+    do_put(UserModel().root_path + "/" + "%s/emailconfirm" % (user_id),
            {"originalVersionId": version})
 
 @step(u'change the password to "(.*)" for the user with (that name|name "(.*)")')
@@ -128,7 +128,7 @@ def change_user_password(step, new_pw, stored, name):
     name = get_stored_or_store_name("user", stored, name)
     user_id, version = UserModel().get_resid(name)
 
-    do_put(world.path_users + "%s/passwordchange/%s" % (user_id, new_pw),
+    do_put(UserModel().root_path + "/" + "%s/passwordchange/%s" % (user_id, new_pw),
            {"originalVersionId": version})
 
 
@@ -139,7 +139,7 @@ def log_out(step, stored, user_name):
     headers = {'cookie': world.auth_cookie,
                'Content-Type':'application/json' }
 
-    return do_put(world.path_users + "logout", "", headers)
+    return do_put(UserModel().root_path + "/" + "logout", "", headers)
 
 
 @step(u'log in user with (that name|name "(.*)")')
@@ -156,7 +156,7 @@ def log_in_with_credentials(step):
     user = step.hashes[0]
     headers = get_json_headers(get_auth_header(user["email"], user["password"]))
 
-    cookie = do_put_for_cookie(world.path_users + "login", "", headers)[1]
+    cookie = do_put_for_cookie(UserModel().root_path + "/" + "login", "", headers)[1]
     world.auth_cookie = cookie
     # store the cookie in world
 
@@ -176,7 +176,7 @@ def user_not_logged_in(step):
     headers = {'cookie': world.auth_cookie,
                'Content-Type':'application/json' }
 
-    do_get(world.path_users + "current",
+    do_get(UserModel().root_path + "/" + "current",
                   headers = headers, exp_status = 401)
     #
 #    thisUser = get_single_item_from_endpoint("user",
@@ -206,14 +206,17 @@ def check_user_activated(step, stored, name, userStatus):
 
 
 @step(u'(activate|deactivate) the user with (that name|name "(.*)")')
-def activate_user_with_name_foo(step, status_action, stored, name):
+def activate_user(step, status_action, stored, name):
     '''
         Users are not deleted, they're just registered or unregistered.
     '''
-    name = get_stored_or_store_name("user", stored, name)
-    resid, version = UserModel().get_resid(name)
+    userModel = UserModel()
+    name = userModel.get_stored_or_store_name(stored, name)
 
-    do_put(world.path_users_activation % (resid, status_action), {"originalVersionId": version})
+    if (status_action == "activate"):
+        userModel.activate(name)
+    else:
+        userModel.deactivate(name)
 
 
 @step(u'user with (that name| name "(.*)") has at least these assignments:')

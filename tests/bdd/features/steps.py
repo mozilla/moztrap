@@ -41,57 +41,57 @@ def setup_before_all():
         save_db_state()
 
 
-    ################################
-    # paths relative to the namespace
-    ################################
-
-    # URI namespace path map
-    world.path_companies =          world.api_prefix + "companies/"
-    world.path_environmentgroups =  world.api_prefix + "environmentgroups/"
-    world.path_environments =       world.api_prefix + "environments/"
-    world.path_environmenttypes =   world.api_prefix + "environmenttypes/"
-
-    world.env_path_map = {"environments":      world.path_environments,
-                          "environment":       world.path_environments,
-                          "environmenttypes":  world.path_environmenttypes,
-                          "environmenttype":   world.path_environmenttypes,
-                          "environmentgroups": world.path_environmentgroups,
-                          "environmentgroup":  world.path_environmentgroups}
-
-    world.path_tags =               world.api_prefix + "tags/"
-
-    world.path_login =              world.api_prefix + "users/login/"
-    world.path_logout =             world.api_prefix + "users/logout/"
-    world.path_permissions =        world.api_prefix + "users/permissions/"
-    world.path_roles =              world.api_prefix + "users/roles/"
-    world.path_users =              world.api_prefix + "users/"
-    world.path_users_activation =   world.api_prefix + "users/%s/%s"
-
-    world.path_testcases =          world.api_prefix + "testcases/"
-    world.path_testcycles =         world.api_prefix + "testcycles/"
-    world.path_testruns =           world.api_prefix + "testruns/"
-    world.path_testsuites =         world.api_prefix + "testsuites/"
-    world.path_products =           world.api_prefix + "products/"
-
-    ################################
-    # setup objects
-    ################################
-
-    world.path_map = {
-        "companies":         world.api_prefix + "companies/",
-        "environmentgroups": world.api_prefix + "environmentgroups/",
-        "environmenttypes":  world.api_prefix + "environmenttypes/",
-        "environments":      world.api_prefix + "environments/",
-        "tags":              world.api_prefix + "tags/",
-        "users":             world.api_prefix + "users/",
-        "permissions":       world.api_prefix + "users/permissions/",
-        "roles":             world.api_prefix + "users/roles/",
-        "testcases":         world.api_prefix + "testcases/",
-        "testcycles":        world.api_prefix + "testcycles/",
-        "testruns":          world.api_prefix + "testruns/",
-        "testsuites":        world.api_prefix + "testsuites/",
-        "products":          world.api_prefix + "products/"
-    }
+#    ################################
+#    # paths relative to the namespace
+#    ################################
+#
+#    # URI namespace path map
+#    world.path_companies =          world.api_prefix + "companies/"
+#    world.path_environmentgroups =  world.api_prefix + "environmentgroups/"
+#    world.path_environments =       world.api_prefix + "environments/"
+#    world.path_environmenttypes =   world.api_prefix + "environmenttypes/"
+#
+#    world.env_path_map = {"environments":      world.path_environments,
+#                          "environment":       world.path_environments,
+#                          "environmenttypes":  world.path_environmenttypes,
+#                          "environmenttype":   world.path_environmenttypes,
+#                          "environmentgroups": world.path_environmentgroups,
+#                          "environmentgroup":  world.path_environmentgroups}
+#
+#    world.path_tags =               world.api_prefix + "tags/"
+#
+#    world.path_login =              world.api_prefix + "users/login/"
+#    world.path_logout =             world.api_prefix + "users/logout/"
+#    world.path_permissions =        world.api_prefix + "users/permissions/"
+#    world.path_roles =              world.api_prefix + "users/roles/"
+#    world.path_users =              world.api_prefix + "users/"
+#    world.path_users_activation =   world.api_prefix + "users/%s/%s"
+#
+#    world.path_testcases =          world.api_prefix + "testcases/"
+#    world.path_testcycles =         world.api_prefix + "testcycles/"
+#    world.path_testruns =           world.api_prefix + "testruns/"
+#    world.path_testsuites =         world.api_prefix + "testsuites/"
+#    world.path_products =           world.api_prefix + "products/"
+#
+#    ################################
+#    # setup objects
+#    ################################
+#
+#    world.path_map = {
+#        "companies":         world.api_prefix + "companies/",
+#        "environmentgroups": world.api_prefix + "environmentgroups/",
+#        "environmenttypes":  world.api_prefix + "environmenttypes/",
+#        "environments":      world.api_prefix + "environments/",
+#        "tags":              world.api_prefix + "tags/",
+#        "users":             world.api_prefix + "users/",
+#        "permissions":       world.api_prefix + "users/permissions/",
+#        "roles":             world.api_prefix + "users/roles/",
+#        "testcases":         world.api_prefix + "testcases/",
+#        "testcycles":        world.api_prefix + "testcycles/",
+#        "testruns":          world.api_prefix + "testruns/",
+#        "testsuites":        world.api_prefix + "testsuites/",
+#        "products":          world.api_prefix + "products/"
+#    }
 
     # usually, the test will replace the countryId based on looking it up
     world.seed_company = {"name": "Massive Dynamic",

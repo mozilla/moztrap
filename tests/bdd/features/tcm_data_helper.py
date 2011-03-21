@@ -47,6 +47,12 @@ def eq_(act, exp, msg):
     assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
 
 def compare_dicts_by_keys(exp, act, keys):
+    '''
+        exp = expected object
+        act = actual object
+        keys = tuple or list of keys that should match in both objects.  Namespace will be added to
+               keys if they're not present.
+    '''
     for key in keys:
         actual = act[ns(key)]
         try:

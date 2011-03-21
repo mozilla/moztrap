@@ -3,12 +3,11 @@ Created on Jan 28, 2011
 
 @author: camerondawson
 '''
-from features.models import TestcaseModel, UserModel, TestrunModel, \
-    EnvironmentModel, ProductModel, TestcycleModel, TestsuiteModel
+from features.models import TestcaseModel, UserModel, TestrunModel, ProductModel, \
+    TestcycleModel, TestsuiteModel
 from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
-    json_to_obj, verify_single_item_in_list, get_testcase_status_id
-from features.tcm_request_helper import get_form_headers, do_delete, do_post, \
-    do_put, get_resource_identity
+    verify_single_item_in_list, get_testcase_status_id
+from features.tcm_request_helper import get_form_headers, get_resource_identity
 from lettuce import step, world
 
 
@@ -22,8 +21,9 @@ from lettuce import step, world
 '''
 
 @step(u'create a new testcase with (that name|name "(.*)")')
-def create_testcase_with_name_foo(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
+def create_testcase_with_name(step, stored, name):
+    testcaseModel = TestcaseModel()
+    name = testcaseModel.get_stored_or_store_name(stored, name)
 
     post_payload = {"productId": ProductModel().get_seed_resid()[0],
                     "maxAttachmentSizeInMbytes":"10",
@@ -31,8 +31,7 @@ def create_testcase_with_name_foo(step, stored, name):
                     "name": name,
                     "description": "Lettuce tc"
                    }
-    do_post(world.path_testcases,
-            post_payload)
+    testcaseModel.create(post_payload)
 
 
 @step(u'user with (that name|name "(.*)") creates a new testcase with (that name|name "(.*)")')
@@ -49,38 +48,34 @@ def user_creates_testcase_with_name(step, stored_user, user_name, stored_testcas
                     "description": "Lettuce tc"
                     }
     headers = get_form_headers(userModel.get_auth_header(user_name))
-    do_post(testcaseModel.root_path,
-            post_payload,
-            headers = headers)
+
+    testcaseModel.create(post_payload, headers)
 
 @step(u'testcase with (that name|name "(.*)") (exists|does not exist)')
 def check_testcase_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("testcase", stored, name)
-    TestcaseModel().verify_existence_on_root (name,
+    testcaseModel = TestcaseModel()
+    name = testcaseModel.get_stored_or_store_name(stored, name)
+    testcaseModel.verify_existence_on_root (name,
                                               existence = existence)
 
 
 @step(u'delete the testcase with (that name|name "(.*)")')
 def delete_testcase_with_name_foo(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
+    testcaseModel = TestcaseModel()
+    name = testcaseModel.get_stored_or_store_name(stored, name)
 
-    testcase_id, version = TestcaseModel().get_resid(name)
-    do_delete(world.path_testcases + str(testcase_id),
-              {"originalVersionId": version})
+    testcaseModel.delete(name)
 
 
 @step(u'add these steps to the testcase with (that name|name "(.*)")')
 def add_steps_to_testcase_name(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
-    tcModel = TestcaseModel()
+    testcaseModel = TestcaseModel()
+    name = testcaseModel.get_stored_or_store_name(stored, name)
     # first we need the testcase id so we can get the latest version to add steps to
-    testcase_id = tcModel.get_resid(name)[0]
+    testcase_id = testcaseModel.get_resid(name)[0]
+    testcaseversion_id = testcaseModel.get_latestversion_resid(testcase_id)[0]
 
-    testcaseversion_id = tcModel.get_latestversion_resid(testcase_id)[0]
-
-    uri = world.path_testcases + "versions/" + str(testcaseversion_id) + "/steps/"
-    for case_step in step.hashes:
-        do_post(uri, case_step)
+    testcaseModel.add_steps(testcaseversion_id, step.hashes)
 
 @step(u'the testcase with (that name|name "(.*)") has these steps')
 def verify_testcase_steps(step, stored, name):
@@ -106,18 +101,7 @@ def user_approves_testcase(step, stored_user, user_name, stored_testcase, testca
     user_name = get_stored_or_store_name("user", stored_user, user_name)
 
     tcModel = TestcaseModel()
-    # first we need the testcase id so we can get the latest version to approve
-    testcase_id, version = tcModel.get_resid(testcase_name)
-    testcaseversion_id = tcModel.get_latestversion_resid(testcase_id)[0]
-
-
-    # do the approval of the testcase
-    uri = world.path_testcases + "versions/%s/approve/" % (testcaseversion_id)
-    headers = get_form_headers(UserModel().get_auth_header(user_name))
-
-    do_put(uri,
-           {"originalVersionId": version},
-            headers = headers)
+    tcModel.approve_by_user(testcase_name, user_name)
 
 @step(u'user with (that name|name "(.*)") approves the following testcases')
 def user_approves_testcases(step, stored_user, user_name):
@@ -126,19 +110,7 @@ def user_approves_testcases(step, stored_user, user_name):
     tcModel = TestcaseModel()
 
     for tc in step.hashes:
-
-        # first we need the testcase id so we can get the latest version to approve
-        testcase_id, version = tcModel.get_resid(tc["name"])
-        testcaseversion_id = tcModel.get_latestversion_resid(testcase_id)[0]
-
-
-        # do the approval of the testcase
-        uri = world.path_testcases + "versions/%s/approve/" % (testcaseversion_id)
-        headers = get_form_headers(UserModel().get_auth_header(user_name))
-
-        do_put(uri,
-               {"originalVersionId": version},
-                headers = headers)
+        tcModel.approve_by_user(tc["name"], user_name)
 
 @step(u'assign the following testcases to the user with (that name|name "(.*)") for the testrun with (that name|name "(.*)")')
 def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_testrun, testrun_name):
@@ -150,36 +122,18 @@ def assign_testcases_to_user_for_testrun(step, stored_user, user_name, stored_te
     user_id = UserModel().get_resid(user_name)[0]
     testrun_name = get_stored_or_store_name("testrun", stored_testrun, testrun_name)
     trModel = TestrunModel()
-    testrun_id, testrun_version = trModel.get_resid(testrun_name)
-
-    # get the list of testcases for this testrun
-    includedtestcase_list = trModel.get_included_testcases(testrun_id)
 
     for tc in step.hashes:
-        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
-        # find that in the list of testcases
-        includedtestcase = verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
-
-        includedtestcase_id = get_resource_identity(includedtestcase)[0]
-
-        post_uri = world.path_testruns + "includedtestcases/%s/assignments/" % includedtestcase_id
-        body = {"testerId": user_id, "originalVersionId": testrun_version}
-
-        do_post(post_uri, body)
+        trModel.assign_testcase(testrun_name, user_id, tc["name"])
 
 
 
 @step(u'activate the testcase with (that name|name "(.*)")')
 def activate_testcase_with_name(step, stored, name):
-    name = get_stored_or_store_name("testcase", stored, name)
-
     tcModel = TestcaseModel()
+    name = tcModel.get_stored_or_store_name(stored, name)
 
-    testcase_id = tcModel.get_resid(name)[0]
-    testcaseversion_id, version = tcModel.get_latestversion_resid(testcase_id)
-
-    do_put(world.path_testcases + "versions/%s/activate" % testcaseversion_id,
-              {"originalVersionId": version})
+    tcModel.activate(name)
 
 
 
@@ -189,13 +143,7 @@ def activate_testcases(step):
     tcModel = TestcaseModel()
 
     for tc in step.hashes:
-
-        # first we need the testcase id so we can get the latest version to approve
-        testcase_id = tcModel.get_resid(tc["name"])[0]
-        testcaseversion_id, version = tcModel.get_latestversion_resid(testcase_id)
-
-        do_put(world.path_testcases + "versions/%s/activate" % testcaseversion_id,
-                  {"originalVersionId": version})
+        tcModel.activate(tc["name"])
 
 
 #@todo: This has a hardcoded value for approvalStatusId, fix that
@@ -226,9 +174,6 @@ def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, tes
     userModel = UserModel()
     user_name = userModel.get_stored_or_store_name(stored_user, user_name)
 
-    status_map = {"Passed": "finishsucceed",
-                  "Failed": "finishfail",
-                  "Invalidated": "finishinvalidate"}
     # first we need the testrun id so we can get the latest version to approve
 #    user_id = UserModel().get_resid(user_name)[0]
     testrun_id = trModel.get_resid(testrun_name)[0]
@@ -239,21 +184,15 @@ def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, tes
     for tc in step.hashes:
         testcase_id = TestcaseModel().get_resid(tc["name"])[0]
 
-        result = trModel.get_result(testcase_id, includedtestcase_list)
+        result_obj = trModel.get_result(testcase_id,
+                                    includedtestcase_list = includedtestcase_list)
+        result_id = get_resource_identity(result_obj)[0]
 
-        result_id, result_version = get_resource_identity(result)
-
-        # start the test
-        headers = get_form_headers(UserModel().get_auth_header(user_name))
-        testresult = do_put(world.path_testruns + "results/%s/start" % (result_id),
-                            {"originalVersionId": result_version}, headers)
-        started_result = json_to_obj(testresult)[ns("testresult")][0]
-
+        started_result = trModel.start_testcase(result_obj, user_name)
         started_result_version = get_resource_identity(started_result)[1]
         # now finally mark it with the specified status
 
-        do_put(world.path_testruns + "results/%s/%s" % (result_id, status_map[tc["status"]]),
-               {"originalVersionId": started_result_version}, headers)
+        trModel.set_testcase_status(result_id, started_result_version, user_name, tc["status"])
 
 
 @step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
@@ -269,7 +208,8 @@ def testcases_have_result_statuses(step, stored_testrun, testrun_name):
     for tc in step.hashes:
         testcase_id = TestcaseModel().get_resid(tc["name"])[0]
 
-        result = trModel.get_result(testcase_id, includedtestcase_list)
+        result = trModel.get_result(testcase_id,
+                                    includedtestcase_list = includedtestcase_list)
 
         # ok, we have the tc result in question, now check that its status matches expectations
         eq_(result[ns("testRunResultStatusId")],
@@ -300,48 +240,6 @@ def testrun_has_summary_counts(step, stored_testrun, testrun_name):
 
 
 
-@step(u'add environment "(.*)" to test case "(.*)"')
-def add_environment_foo_to_test_case_bar(step, environment, test_case):
-    # this takes 2 requests.
-    #    1: get the id of this test case
-    #    2: add the environment to the test case
-
-    # fetch the test case's resource identity
-    test_case_id, version = TestcaseModel().get_resid(test_case)
-
-    post_payload = {"name": "test environment"}
-    do_post(world.path_testcases + "%s/environments" % (test_case_id),
-            post_payload,
-            params = {"originalVersionId": version})
-
-@step(u'remove environment "(.*)" from test case "(.*)"')
-def remove_environment_from_test_case(step, environment, test_case):
-    # fetch the test case's resource identity
-    test_case_id, version = TestcaseModel().get_resid(test_case)
-    environment_id = EnvironmentModel().get_resid(environment)
-
-    do_delete(world.path_testcases + "%s/environments/%s" % (test_case_id, environment_id),
-              {"originalVersionId": version})
-
-@step(u'testcase "(.*)" (has|does not have) environment "(.*)"')
-def test_case_foo_has_environment_bar(step, test_case, haveness, environment):
-    # fetch the test case's resource identity
-    testcaseModel = TestcaseModel()
-    testcase_id = testcaseModel.get_resid(test_case)[0]
-
-
-    environment_list = testcaseModel.get_environment_list(testcase_id)
-
-    #@todo: this should be abstracted into a helper method or in the model
-    found_item = [x for x in environment_list if x[ns("name")] == environment]
-    if (haveness == "has"):
-        assert len(found_item) == 1, "Expected to find %s in:\n%s" % (environment,
-                                                                 jstr(environment_list))
-    else:
-        assert len(found_item) == 0, "Expected to NOT find %s in:\n%s" % (environment,
-                                                                 jstr(environment_list))
-
-
 @step(u'testcase with name "(.*)" (has|does not have) attachment with filename "(.*)"')
 def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
@@ -370,7 +268,8 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
 '''
 @step(u'create a new testcycle with (that name|name "(.*)")')
 def create_testcycle_with_name(step, stored, name):
-    name = get_stored_or_store_name("testcycle", stored, name)
+    testcycleModel = TestcycleModel()
+    name = testcycleModel.get_stored_or_store_name(stored, name)
 
     post_payload = {"name": name,
                     "description": "Ahh, the cycle of life...",
@@ -380,19 +279,16 @@ def create_testcycle_with_name(step, stored, name):
                     "communityAccessAllowed": "true",
                     "endDate": "2014/02/02"
                    }
-
-    do_post(world.path_testcycles,
-            post_payload)
+    testcycleModel.create(post_payload)
 
 @step(u'create the following new testcycles:')
 def create_testcycles(step):
+    testcycleModel = TestcycleModel()
 
     for item in step.hashes:
         # must do this or it will freak out the lettuce reporting, because
         # we delete items from this before submitting.
         testcycle = item.copy()
-        # persist the last one we make.  Sometimes we will only make one.
-        world.names["testcycle"] = testcycle["name"]
 
         # get the product id from the passed product name
         product_id = ProductModel().get_resid(testcycle["product name"])[0]
@@ -402,35 +298,31 @@ def create_testcycles(step):
         if testcycle.has_key('product name'):
             del testcycle['product name']
 
-        do_post(world.path_testcycles,
-                testcycle)
+        testcycleModel.create(testcycle)
 
 
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
 def check_testcycle_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("testcycle", stored, name)
-    TestcycleModel().verify_existence_on_root(name,
-                                              existence = existence)
+    testcycleModel = TestcycleModel()
+    name = testcycleModel.get_stored_or_store_name(stored, name)
+
+    testcycleModel.verify_existence_on_root(name,
+                                            existence = existence)
 
 
 @step(u'delete the testcycle with (that name|name "(.*)")')
 def delete_testcycle_with_name_foo(step, stored, name):
-    name = get_stored_or_store_name("testcycle", stored, name)
+    testcycleModel = TestcycleModel()
+    name = testcycleModel.get_stored_or_store_name(stored, name)
 
-    testcycle_id, version = TestcycleModel().get_resid(name)
-
-    do_delete(world.path_testcycles + str(testcycle_id),
-                                  {"originalVersionId": version})
+    testcycleModel.delete(name)
 
 @step(u'activate the testcycle with (that name|name "(.*)")')
-def activate_testrun_with_name(step, stored, name):
-    name = get_stored_or_store_name("testcycle", stored, name)
+def activate_testcycle_with_name(step, stored, name):
+    testcycleModel = TestcycleModel()
+    name = testcycleModel.get_stored_or_store_name(stored, name)
 
-    testcycle_id, version = TestcycleModel().get_resid(name)
-
-    do_put(world.path_testcycles + "%s/activate" % testcycle_id,
-              {"originalVersionId": version})
-
+    testcycleModel.activate(name)
 
 
 '''
@@ -443,26 +335,24 @@ def activate_testrun_with_name(step, stored, name):
 
 @step(u'create a new testsuite with (that name|name "(.*)")')
 def create_testsuite_with_name(step, stored, name):
-    name = get_stored_or_store_name("testsuite", stored, name)
+    testsuiteModel = TestsuiteModel()
+    name = testsuiteModel.get_stored_or_store_name(stored, name)
 
     post_payload = {"productId": ProductModel().get_seed_resid()[0],
                     "name": name,
                     "description": "Sweet Relief",
                     "useLatestVersions": "true"
                    }
-
-    do_post(world.path_testsuites,
-            post_payload)
+    testsuiteModel.create(post_payload)
 
 @step(u'create the following new testsuites:')
 def create_testsuites(step):
+    testsuiteModel = TestsuiteModel()
 
     for item in step.hashes:
         # must do this or it will freak out the lettuce reporting, because
         # we delete items from this before submitting.
         testsuite = item.copy()
-        # persist the last one we make.  Sometimes we will only make one.
-        world.names["testcycle"] = testsuite["name"]
 
         # get the product id from the passed product name
         product_id = ProductModel().get_resid(testsuite["product name"])[0]
@@ -472,67 +362,58 @@ def create_testsuites(step):
         if testsuite.has_key('product name'):
             del testsuite['product name']
 
-        do_post(world.path_testsuites,
-                testsuite)
+        testsuiteModel.create(testsuite)
 
 @step(u'activate the testsuite with (that name|name "(.*)")')
 def activate_testsuite_with_name(step, stored, name):
-    name = get_stored_or_store_name("testsuite", stored, name)
+    testsuiteModel = TestsuiteModel()
+    name = testsuiteModel.get_stored_or_store_name(stored, name)
 
-    testsuite_id, version = TestsuiteModel().get_resid(name)
-
-    do_put(world.path_testsuites + "%s/activate" % testsuite_id,
-              {"originalVersionId": version})
+    testsuiteModel.activate(name)
 
 
 @step(u'testsuite with (that name|name "(.*)") (exists|does not exist)')
 def check_testsuite_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("testsuite", stored, name)
-    TestsuiteModel().verify_existence_on_root(name,
-                                              existence = existence)
+    testsuiteModel = TestsuiteModel()
+    name = testsuiteModel.get_stored_or_store_name(stored, name)
+
+    testsuiteModel.verify_existence_on_root(name,
+                                            existence = existence)
 
 
 @step(u'delete the testsuite with (that name|name "(.*)")')
 def delete_testsuite_with_name_foo(step, stored, name):
-    name = get_stored_or_store_name("testsuite", stored, name)
+    testsuiteModel = TestsuiteModel()
+    name = testsuiteModel.get_stored_or_store_name(stored, name)
 
-    testsuite_id, version = TestsuiteModel().get_resid(name)
-
-    do_delete(world.path_testsuites + str(testsuite_id),
-              {"originalVersionId": version})
+    testsuiteModel.delete(name)
 
 @step(u'add the following testcases to the testsuite with (that name|name "(.*)")')
 def add_testcases_to_testsuite(step, stored, name):
-    name = get_stored_or_store_name("testsuite", stored, name)
-    testsuite_id, version = TestsuiteModel().get_resid(name)
-    tcModel = TestcaseModel()
+    testsuiteModel = TestsuiteModel()
+    name = testsuiteModel.get_stored_or_store_name(stored, name)
 
     for tc in step.hashes:
-        tc_id = tcModel.get_resid(tc["name"])[0]
-        tc_ver_id = tcModel.get_latestversion_resid(tc_id)[0]
+        testsuiteModel.add_testcase(name, tc["name"])
 
-        uri = world.path_testsuites + "%s/includedtestcases" % (testsuite_id)
-        do_post(uri,
-                {"testCaseVersionId": tc_ver_id,
-                 "priorityId": 1,
-                 "runOrder": 1,
-                 "blocking": "false",
-                 "originalVersionId": version})
 
 @step(u'add the following testsuites to the testrun with (that name|name "(.*)")')
-def add_testsuites_to_testrun(step, stored, name):
-    name = get_stored_or_store_name("testrun", stored, name)
-    testrun_id, version = TestrunModel().get_resid(name)
+def add_testsuites_to_testrun(step, stored, testrun_name):
+    testrunModel = TestrunModel()
+    testrun_name = testrunModel.get_stored_or_store_name(stored, testrun_name)
 
     for testsuite in step.hashes:
-        testsuite_id = TestsuiteModel().get_resid(testsuite["name"])[0]
-
-        uri = world.path_testruns + "%s/includedtestcases/testsuite/%s" % (testrun_id, testsuite_id)
-        do_post(uri,
-                {"originalVersionId": version})
+        testrunModel.add_testsuite(testrun_name, testsuite["name"])
 
 @step('create the seed testcycle, testrun and testcases')
 def create_seed_testcycle_testcases_testrun(step):
+    '''
+        Bug in lettuce prevents me from using this technique
+
+    '''
+
+
+
     step.behave_as("""
         Given I create the seed company and product with these names:
             | company name    | product name  |
@@ -562,9 +443,6 @@ def create_seed_testcycle_testcases_testrun(step):
         and when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
     """)
 
-@step('create the seed test')
-def create_seed_test(step):
-    step.given("create a new testsuite with name \"Capn Admin\"")
 
 
 

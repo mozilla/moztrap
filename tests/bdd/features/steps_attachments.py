@@ -5,8 +5,7 @@ Created on Jan 31, 2011
 '''
 
 from features.models import TestcaseModel
-from features.tcm_request_helper import encode_multipart_formdata, do_post
-from lettuce import step, world
+from lettuce import step
 
 '''
 ######################################################################
@@ -22,20 +21,11 @@ from lettuce import step, world
 '''
 
 
-@step(u'upload attachment with filename "(.*)" to test case with name "(.*)"')
-def upload_attachment_foo_to_test_case_bar(step, attachment, test_case):
-    test_case_id, version = TestcaseModel().get_resid(test_case)
+@step(u'upload attachment with filename "(.*)" to (that testcase|the testcase with name "(.*)")')
+def upload_attachment_foo_to_test_case_bar(step, filename, stored, name):
+    testcaseModel = TestcaseModel()
+    testcase = testcaseModel.get_stored_or_store_obj(stored, name)
+    testcaseModel.upload_attachment(filename, testcase)
 
-    content_type, body = encode_multipart_formdata([], [{'key': attachment,
-                                                         'filename': attachment,
-                                                         'value': open(world.testfile_dir + attachment, 'rb')}])
-
-    headers = {"Accept": "application/xml",
-               "Content-Type":content_type,
-               "Content-Length": "%d" % len(body) }
-
-    do_post(world.path_testcases + str(test_case_id) + "/attachments/upload",
-            body,
-            {"originalVersionId": version})
 
 

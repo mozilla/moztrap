@@ -5,11 +5,10 @@ Created on Mar 9, 2011
 '''
 from features.models import TestcaseModel, UserModel, TestcycleModel, \
     TestrunModel
-from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, \
-    verify_single_item_in_list, json_to_obj
-from features.tcm_request_helper import do_post, do_delete, do_put, do_get, \
-    get_resource_identity
-from lettuce import step, world
+from features.tcm_data_helper import ns, jstr, verify_single_item_in_list, \
+    compare_dicts_by_keys
+from features.tcm_request_helper import get_resource_identity
+from lettuce import step
 
 
 '''
@@ -22,7 +21,8 @@ from lettuce import step, world
 
 @step(u'create a new testrun with (that name|name "(.*)") with testcycle "(.*)"')
 def create_testrun_with_name(step, stored, name, testcycle_name):
-    name = get_stored_or_store_name("testrun", stored, name)
+    testrunModel = TestrunModel()
+    name = testrunModel.get_stored_or_store_name(stored, name)
 
     testcycle_id = TestcycleModel().get_resid(testcycle_name)[0]
 
@@ -38,37 +38,31 @@ def create_testrun_with_name(step, stored, name, testcycle_name):
                     "autoAssignToTeam": "true"
                    }
 
-    data = do_post(world.path_testruns,
-                   post_payload)
-    tcm_obj = json_to_obj(data)
-    TestrunModel().store_latest(tcm_obj[ns("testrun")][0])
+    testrunModel.create(post_payload)
 
 
 @step(u'testrun with (that name|name "(.*)") (exists|does not exist)')
-def check_testrun_foo_existence(step, stored, name, existence):
-    name = get_stored_or_store_name("testrun", stored, name)
-    TestrunModel().search_and_verify_existence(world.path_testruns,
+def check_testrun_existence(step, stored, name, existence):
+    testrunModel = TestrunModel()
+    name = testrunModel.get_stored_or_store_name(stored, name)
+    testrunModel.search_and_verify_existence(testrunModel.root_path,
                     {"name": name},
                     existence)
 
 
 @step(u'delete the testrun with (that name|name "(.*)")')
 def delete_testrun_with_name(step, stored, name):
-    name = get_stored_or_store_name("testrun", stored, name)
+    testrunModel = TestrunModel()
+    name = testrunModel.get_stored_or_store_name(stored, name)
 
-    testrun_id, version = TestrunModel().get_resid(name)
-
-    do_delete(world.path_testruns + str(testrun_id),
-              {"originalVersionId": version})
+    testrunModel.delete(name)
 
 @step(u'activate the testrun with (that name|name "(.*)")')
 def activate_testrun_with_name(step, stored, name):
-    name = get_stored_or_store_name("testrun", stored, name)
+    testrunModel = TestrunModel()
+    name = testrunModel.get_stored_or_store_name(stored, name)
 
-    testrun_id, version = TestrunModel().get_resid(name)
-
-    do_put(world.path_testruns + "%s/activate" % testrun_id,
-              {"originalVersionId": version})
+    testrunModel.activate(name)
 
 
 @step(u'testcycle with name "(.*)" has the testrun with name "(.*)"')
@@ -84,21 +78,11 @@ def testcycle_has_testrun(step, cycle_name, run_name):
 
 @step(u'add the following testcases to the testrun with (that name|name "(.*)")')
 def add_testcases_to_testrun(step, stored, testrun_name):
-    testrun_name = get_stored_or_store_name("testrun", stored, testrun_name)
-    testrun_id, version = TestrunModel().get_resid(testrun_name)
-
-    tcModel = TestcaseModel()
+    testrunModel = TestrunModel()
+    testrun_name = testrunModel.get_stored_or_store_name(stored, testrun_name)
 
     for tc in step.hashes:
-        tc_id = tcModel.get_resid(tc["testcase"])[0]
-
-        uri = world.path_testruns + "%s/includedtestcases" % (testrun_id)
-        do_post(uri,
-                {"testCaseVersionId": tc_id,
-                 "priorityId": 1,
-                 "runOrder": 1,
-                 "blocking": "false",
-                 "originalVersionId": version})
+        testrunModel.add_testcase(testrun_name, tc["testcase"])
 
 @step(u'that testrun has the following results')
 def testrun_has_results(step, stored, testrun_name):
@@ -107,18 +91,15 @@ def testrun_has_results(step, stored, testrun_name):
 
 @step(u'add the following users to the testrun with (that name|name "(.*)")')
 def add_users_to_testrun(step, stored, testrun_name):
-    testrun_name = get_stored_or_store_name("testrun", stored, testrun_name)
-    testrun_id, version = TestrunModel().get_resid(testrun_name)
+    testrunModel = TestrunModel()
+    testrun_name = testrunModel.get_stored_or_store_name(stored, testrun_name)
 
     user_ids = []
     for user in step.hashes:
         user_id = UserModel().get_resid(user["name"])[0]
         user_ids.append(user_id)
 
-    do_put(world.path_testruns + "%s/team/members" % (testrun_id),
-           {"userIds": user_ids,
-            "originalVersionId": version})
-
+    testrunModel.add_users(testrun_name, user_ids)
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following testsuites')
 def testrun_has_testsuites(step, stored_testrun, testrun_name):
@@ -166,7 +147,30 @@ def testrun_has_components(step, stored_testrun, testrun_name):
 
 
 
-@step(u'set the following testcase statuses for the testrun with (that name|name "(.*)")')
-def mark_testcase_status(step, stored_testrun, testrun_name):
-    data = do_get(world.path_testruns + "results")
-    assert False, data
+@step(u'fetch the following testcase results for (that testrun|the testrun with name "(.*)") by their ids')
+def fetch_results_by_ids(step, stored_testrun, testrun_name):
+    testrunModel = TestrunModel()
+    testcaseModel = TestcaseModel()
+    testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    for testcase in step.hashes:
+        # for each testcase name, fetch the result that matches it in the testrun list
+        testcase_obj = testcaseModel.get_by_name(testcase["name"])
+        testcase_id = get_resource_identity(testcase_obj)[0]
+
+        result_from_list = testrunModel.get_result(testcase_id,
+                                                   testrun_id = testrun_id)
+        testresult_id = get_resource_identity(result_from_list)[0]
+        result_from_endpoint = testrunModel.get_result_by_id(testresult_id)
+        compare_dicts_by_keys(result_from_list, result_from_endpoint, ("testCaseId", "testRunId", "testSuiteId"))
+
+
+
+
+
+
+
+
+
+
