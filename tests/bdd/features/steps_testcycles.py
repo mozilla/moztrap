@@ -121,6 +121,25 @@ def testcycle_has_environmentgroups(step, stored_testcycle, testcycle_name):
                                    "name",
                                    exp_name)
 
+@step(u'(that testcycle|the testcycle with name "(.*)") has the following testruns')
+def testcycle_has_testruns(step, stored_testcycle, testcycle_name):
+    testcycleModel = TestcycleModel()
+    testcycle = testcycleModel.get_stored_or_store_obj(stored_testcycle, testcycle_name)
+    testcycle_id = get_resource_identity(testcycle)[0]
+
+    # get the list of testcases for this testcycle
+    testrun_list = testcycleModel.get_testrun_list(testcycle_id)
+
+    # walk through and verify that each testcase has the expected status
+    for testrun in step.hashes:
+        # find that in the list of testcases
+        exp_name = testrun["name"]
+
+        verify_single_item_in_list(testrun_list,
+                                   "name",
+                                   exp_name)
+
+
 @step(u'add the following users to the testcycle with (that name|name "(.*)")')
 def add_users_to_testcycle(step, stored, testcycle_name):
     testcycleModel = TestcycleModel()
