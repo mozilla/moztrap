@@ -1,7 +1,6 @@
 from django.template import Library
 
 from .. import sort
-from ..util import add_to_querystring
 
 
 
