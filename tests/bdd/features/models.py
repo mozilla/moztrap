@@ -734,11 +734,18 @@ class RunnableTestContainerBaseModel(BaseModel):
                                            tcm_type = "CategoryValueInfo")
 
     def approve_all_results(self, testcycle):
-        testcycle_id, version = get_resource_identity(testcycle)
+        tcm_id, version = get_resource_identity(testcycle)
         return do_put("%s/%s/approveallresults" % (self.root_path,
-                                                 testcycle_id),
+                                                 tcm_id),
                       body = {"originalVersionId": version}
                       )
+
+    def add_environmentgroups(self, tcm_name, envgrp_ids):
+        tcm_id, version = self.get_resid(tcm_name)
+
+        do_put("%s/%s/environmentgroups" % (self.root_path, tcm_id),
+               {"environmentGroupIds": envgrp_ids,
+                "originalVersionId": version})
 
     def get_environmentgroup_list(self, tcm_id):
         return self.get_list_from_endpoint("%s/%s/environmentgroups" % (self.root_path,
@@ -759,14 +766,6 @@ class TestcycleModel(RunnableTestContainerBaseModel):
 class TestrunModel(RunnableTestContainerBaseModel):
     def __init__(self):
         super(TestrunModel, self).__init__("testrun")
-
-
-    def add_environmentgroups(self, testrun_name, envgrp_ids):
-        testrun_id, version = TestrunModel().get_resid(testrun_name)
-
-        do_put("%s/%s/environmentgroups" % (self.root_path, testrun_id),
-               {"environmentGroupIds": envgrp_ids,
-                "originalVersionId": version})
 
 
     def add_testcase(self,
