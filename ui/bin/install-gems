@@ -1,3 +1,4 @@
+#!/bin/bash
 vfile=$1
 for line in `cat ${vfile}`; do
     gem=${line%%=*}
