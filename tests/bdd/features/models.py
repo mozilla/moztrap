@@ -752,6 +752,18 @@ class RunnableTestContainerBaseModel(BaseModel):
                                                                         tcm_id),
                                            "environmentgroup")
 
+    def add_team_members(self, tcm_name, user_ids):
+        tcm_id, version = self.get_resid(tcm_name)
+
+        do_put("%s/%s/team/members" % (self.root_path, tcm_id),
+           {"userIds": user_ids,
+            "originalVersionId": version})
+
+    def get_team_members_list(self, tcm_id):
+        return self.get_list_from_endpoint("%s/%s/team/members" % (self.root_path,
+                                                                        tcm_id),
+                                           "user")
+
 
 class TestcycleModel(RunnableTestContainerBaseModel):
     def __init__(self):
@@ -786,13 +798,6 @@ class TestrunModel(RunnableTestContainerBaseModel):
                  "runOrder": runOrder,
                  "blocking": blocking,
                  "originalVersionId": version})
-
-    def add_users(self, testrun_name, user_ids):
-        testrun_id, version = TestrunModel().get_resid(testrun_name)
-
-        do_put("%s/%s/team/members" % (self.root_path, testrun_id),
-           {"userIds": user_ids,
-            "originalVersionId": version})
 
 
     def get_testsuite_list(self, testrun_id):

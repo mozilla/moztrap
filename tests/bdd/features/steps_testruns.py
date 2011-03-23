@@ -99,7 +99,7 @@ def add_users_to_testrun(step, stored, testrun_name):
         user_id = UserModel().get_resid(user["name"])[0]
         user_ids.append(user_id)
 
-    testrunModel.add_users(testrun_name, user_ids)
+    testrunModel.add_team_members(testrun_name, user_ids)
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following testsuites')
 def testrun_has_testsuites(step, stored_testrun, testrun_name):
@@ -145,6 +145,22 @@ def testrun_has_components(step, stored_testrun, testrun_name):
         # find that in the list of testcases
         verify_single_item_in_list(component_list, "name", component["name"])
 
+
+@step(u'(that testrun|the testrun with name "(.*)") has the following team members')
+def testrun_has_team_members(step, stored_testrun, testrun_name):
+    testrunModel = TestrunModel()
+    testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+    testrun_id = get_resource_identity(testrun)[0]
+
+    teammember_list = testrunModel.get_team_members_list(testrun_id)
+
+    for teammember in step.hashes:
+        names = teammember["name"].split()
+
+        verify_single_item_in_list(teammember_list,
+                                   params = {"firstName": names[0],
+                                             "lastName": names[1]}
+                                   )
 
 
 @step(u'fetch the following testcase results for (that testrun|the testrun with name "(.*)") by their ids')

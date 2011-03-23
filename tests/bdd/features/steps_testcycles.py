@@ -3,7 +3,7 @@ Created on Mar 23, 2011
 
 @author: camerondawson
 '''
-from features.models import TestcycleModel, ProductModel
+from features.models import TestcycleModel, ProductModel, UserModel
 from features.tcm_data_helper import get_result_status_id, \
     verify_single_item_in_list, ns, jstr
 from features.tcm_request_helper import get_resource_identity
@@ -69,7 +69,7 @@ def activate_testcycle_with_name(step, stored, name):
 
 
 @step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
-def check_testcycle_foo_existence(step, stored, name, existence):
+def check_testcycle_existence(step, stored, name, existence):
     testcycleModel = TestcycleModel()
     name = testcycleModel.get_stored_or_store_name(stored, name)
 
@@ -121,7 +121,34 @@ def testcycle_has_environmentgroups(step, stored_testcycle, testcycle_name):
                                    "name",
                                    exp_name)
 
+@step(u'add the following users to the testcycle with (that name|name "(.*)")')
+def add_users_to_testcycle(step, stored, testcycle_name):
+    testcycleModel = TestcycleModel()
+    testcycle_name = testcycleModel.get_stored_or_store_name(stored, testcycle_name)
 
+    user_ids = []
+    for user in step.hashes:
+        user_id = UserModel().get_resid(user["name"])[0]
+        user_ids.append(user_id)
+
+    testcycleModel.add_team_members(testcycle_name, user_ids)
+
+
+@step(u'(that testcycle|the testcycle with name "(.*)") has the following team members')
+def testcycle_has_team_members(step, stored_testcycle, testcycle_name):
+    testcycleModel = TestcycleModel()
+    testcycle = testcycleModel.get_stored_or_store_obj(stored_testcycle, testcycle_name)
+    testcycle_id = get_resource_identity(testcycle)[0]
+
+    teammember_list = testcycleModel.get_team_members_list(testcycle_id)
+
+    for teammember in step.hashes:
+        names = teammember["name"].split()
+
+        verify_single_item_in_list(teammember_list,
+                                   params = {"firstName": names[0],
+                                             "lastName": names[1]}
+                                   )
 
 
 
