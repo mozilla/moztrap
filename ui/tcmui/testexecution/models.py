@@ -8,13 +8,13 @@ from django.core.urlresolvers import reverse
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
+from ..static import testresultstatus
 from ..static.fields import StaticData
 from ..testcases.models import (
     TestCase, TestCaseVersion, TestSuite, TestSuiteList,
     TestSuiteIncludedTestCase)
 from ..users.models import User, Team
 
-from . import testresultstatus
 
 
 
