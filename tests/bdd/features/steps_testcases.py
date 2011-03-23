@@ -6,7 +6,7 @@ Created on Jan 28, 2011
 from features.models import TestcaseModel, UserModel, TestrunModel, ProductModel, \
     TestcycleModel, TestsuiteModel
 from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
-    verify_single_item_in_list, get_testcase_status_id
+    verify_single_item_in_list, get_result_status_id
 from features.tcm_request_helper import get_form_headers, get_resource_identity
 from lettuce import step, world
 
@@ -149,9 +149,9 @@ def activate_testcases(step):
 #@todo: This has a hardcoded value for approvalStatusId, fix that
 @step(u'the testcase with (that name|name "(.*)") has approval status of Active')
 def testcase_has_status_of_approved(step, stored, testcase_name):
-    testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
-
     tcModel = TestcaseModel()
+    testcase_name = tcModel.get_stored_or_store_name(stored, testcase_name)
+
     # fetch the steps for this testcase from the latestversion
     testcase_id = tcModel.get_resid(testcase_name)[0]
     testcaseversion = tcModel.get_latestversion(testcase_id)
@@ -163,9 +163,18 @@ def testcase_has_status_of_approved(step, stored, testcase_name):
 
 @step(u'the following testcases have the following approval statuses')
 def testcases_have_approval_statuses(step):
+
+    tcModel = TestcaseModel()
+
     for tc in step.hashes:
-        pass
-    assert False, "need to implement"
+        testcase_id = tcModel.get_resid(tc["name"])[0]
+        testcaseversion = tcModel.get_latestversion(testcase_id)
+        # should be just one
+        try:
+            eq_(testcaseversion[ns("approvalStatusId")], 2, "Testcase is approved: " + str(testcaseversion))
+        except KeyError:
+            assert False, "Object field mismatch.\nExpected:\n" + ns("approved") + "\n\nActual:\n" + jstr(testcaseversion)
+
 
 @step(u'user with (that name|name "(.*)") marks the following testcase result statuses for the testrun with (that name|name "(.*)")')
 def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, testrun_name):
@@ -193,51 +202,6 @@ def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, tes
         # now finally mark it with the specified status
 
         trModel.set_testcase_status(result_id, started_result_version, user_name, tc["status"])
-
-
-@step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
-def testcases_have_result_statuses(step, stored_testrun, testrun_name):
-    trModel = TestrunModel()
-    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
-
-    testrun_id = get_resource_identity(testrun)[0]
-
-    # get the list of testcases for this testrun
-    includedtestcase_list = trModel.get_included_testcases(testrun_id)
-
-    for tc in step.hashes:
-        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
-
-        result = trModel.get_result(testcase_id,
-                                    includedtestcase_list = includedtestcase_list)
-
-        # ok, we have the tc result in question, now check that its status matches expectations
-        eq_(result[ns("testRunResultStatusId")],
-            get_testcase_status_id(tc["status"]),
-            "testRunResultStatusId check")
-
-
-@step(u'(that testrun|the testrun with name "(.*)") has the following result status summary counts')
-def testrun_has_summary_counts(step, stored_testrun, testrun_name):
-    trModel = TestrunModel()
-
-    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
-
-    testrun_id = get_resource_identity(testrun)[0]
-
-    # get the list of testcases for this testrun
-    summary_list = trModel.get_summary_list(testrun_id)
-
-    # walk through and verify that each testcase has the expected status
-    for category in step.hashes:
-        # find that in the list of testcases
-        status_id = get_testcase_status_id(category["name"])
-        categoryInfo = verify_single_item_in_list(summary_list, "categoryName",
-                                                  status_id)
-        assert str(categoryInfo[ns("categoryValue")]) == category["count"], \
-            "%s count was wrong.  Expected categoryName: %s , categoryValue: %s:\n%s" % \
-            (category["name"], status_id, category["count"], jstr(categoryInfo))
-
 
 
 @step(u'testcase with name "(.*)" (has|does not have) attachment with filename "(.*)"')

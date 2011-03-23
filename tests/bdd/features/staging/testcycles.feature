@@ -1,9 +1,6 @@
-Feature: Staging area for Tests
-    in order to do a small test
-    as a test developer
-    I need to test one scenario at a time
+Feature: Test Cycles
 
-    Scenario: Retest a testrun, after it was run once
+    Scenario: Get summary results of a testcycle
         Given I create the seed company and product with these names:
             | company name    | product name  |
             | Massive Dynamic | Cortexiphan   |
@@ -90,13 +87,8 @@ Feature: Staging area for Tests
             | Another Passing tc | Passed      |
             | Failing tc         | Failed      |
             | Invalidisimo       | Invalidated |
-        When I call retest for that testrun
-        Then the following testcases have the following result statuses for that testrun
-            | name               | status   |
-            | Passing tc         | Pending  |
-            | Another Passing tc | Pending  |
-            | Failing tc         | Pending  |
-            | Invalidisimo       | Pending  |
-
-
-
+        Then the testcycle with name "Baroque Cycle" has the following result status summary counts:
+            | name        | count |
+            | Passed      | 2     |
+            | Failed      | 1     |
+            | Invalidated | 1     |

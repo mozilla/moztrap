@@ -155,13 +155,13 @@ def check_first_before_second(field, first, second, obj_list):
     assert first_idx < second_idx, "Expected %s before %s in %s" % (first, second,
                                                                     jstr(obj_list))
 #@todo: this should do a request.  Or perhaps we should request once before.all and build this map in memory
-def get_user_status_id(userStatus):
+def get_user_status_id(user_status):
     statusMap = {"active": 1,
                  "inactive": 2,
                  "disabled": 3}
-    return statusMap[userStatus]
+    return statusMap[user_status]
 
-def get_testcase_status_id(tcStatus):
+def get_result_status_id(result_status):
     statusMap = {"Pending": 1,
                  "Passed": 2,
                  "Failed": 3,
@@ -169,7 +169,14 @@ def get_testcase_status_id(tcStatus):
                  "Started": 5,
                  "Invalidated": 6,
                  "Skipped": 7}
-    return statusMap[tcStatus]
+    return statusMap[result_status]
+
+def get_approval_status_id(approval_status):
+    statusMap = {"Pending": 1,
+                 "Approved": 2,
+                 "Rejected": 3}
+    return statusMap[approval_status]
+
 
 def plural(tcm_type):
     '''
