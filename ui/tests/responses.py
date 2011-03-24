@@ -24,14 +24,73 @@ def make_company(**kwargs):
                 "company", defaults=COMPANY_DEFAULTS, **kwargs)]}
 
 
+def make_companies(*company_dicts):
+    return make_searchresult(
+        "company",
+        "companies",
+        *[make_one("company", defaults=COMPANY_DEFAULTS, **company_info)
+          for company_info in company_dicts])
+
+
+CODEVALUE_DEFAULTS = {
+    "description": "Draft",
+    "id": 1,
+    "sortOrder": 0,
+
+    "add_identity": False,
+    "add_timeline": False,
+    }
+
+
+def make_codevalues(**codevalue_dicts):
+    return make_array(
+        "CodeValue",
+        *[make_one("CodeValue", defaults=CODEVALUE_DEFAULTS, **cv_info)
+          for cv_info in codevalue_dicts])
+
+
+def make_array(single_type, *args):
+    objects = list(args)
+    total = len(objects)
+    if total == 1:
+        # simulate broken length-1 lists from BadgerFish XML translation
+        objects = objects[0]
+    return {
+        "ns1.ArrayOf%s" % single_type: [
+            {
+                "@xsi.type": "ns1.ArrayOf%s" % single_type,
+                "ns1.%s" % single_type: objects
+                }
+            ]
+        }
+
+
+def make_searchresult(single_type, plural_type, *args):
+    objects = list(args)
+    total = len(objects)
+    if total == 1:
+        # simulate broken length-1 lists from BadgerFish XML translation
+        objects = objects[0]
+    return {
+        "ns1.searchResult": [
+            {
+                "@xsi.type": "ns1.searchResult",
+                "ns1.%s" % plural_type: {"ns1.%s" % single_type: objects},
+                "ns1.totalResults": total
+                }
+            ]
+        }
+
 
 def make_one(resource_type, defaults=None, **kwargs):
     if defaults:
         for k, v in defaults.items():
             kwargs.setdefault(k, v)
 
-    kwargs.setdefault("resourceIdentity", make_identity())
-    kwargs.setdefault("timeline", make_timeline())
+    if kwargs.pop("add_identity", True):
+        kwargs.setdefault("resourceIdentity", make_identity())
+    if kwargs.pop("add_timeline", True):
+        kwargs.setdefault("timeline", make_timeline())
 
     data = dict(("ns1.%s" % k, v) for k, v in kwargs.items())
     data["@xsi.type"] = "ns1:%s" % resource_type

@@ -4,7 +4,8 @@ import json
 from mock import patch
 from unittest2 import TestCase
 
-from .responses import FakeResponse, response, make_company, make_identity
+from .responses import (FakeResponse, response, make_company, make_identity,
+                        make_companies)
 
 
 
@@ -236,3 +237,37 @@ class CompanyTest(TestCase):
         from tcmui.core.api import cachedUserAgent
 
         mock.assert_called_with('companies/3', http=cachedUserAgent)
+
+
+
+@patch("remoteobjects.http.userAgent")
+class CompanyListTest(TestCase):
+    @property
+    def resource(self):
+        from tcmui.core.models import CompanyList
+        return CompanyList
+
+
+    def creds(self, *args, **kwargs):
+        from tcmui.core.api import Credentials
+        return Credentials(*args, **kwargs)
+
+
+    def test_get_data_one(self, http):
+        http.request.return_value = response(
+            httplib.OK, make_companies({"name":"Test Company"}))
+
+        c = self.resource.get()
+
+        self.assertEqual(c[0].name, "Test Company")
+
+
+    def test_get_data_multiple(self, http):
+        http.request.return_value = response(
+            httplib.OK, make_companies(
+                {"name": "Test Company"},
+                {"name": "Second Test"}))
+
+        c = self.resource.get()
+
+        self.assertEqual(c[1].name, "Second Test")
