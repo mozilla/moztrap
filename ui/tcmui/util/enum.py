@@ -1,8 +1,12 @@
 class EnumMetaclass(type):
     def __new__(cls, name, bases, attrs):
+        base_attrs = {}
+        for base in bases:
+            base_attrs.update(getattr(base, "_forward_map", {}))
+        base_attrs.update(attrs)
         _forward_map = {}
         _reverse_map = {}
-        for k, v in attrs.iteritems():
+        for k, v in base_attrs.iteritems():
             if v in _reverse_map:
                 raise ValueError(
                     "Enum %s has duplicate attributes with value %r."

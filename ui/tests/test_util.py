@@ -30,3 +30,29 @@ class EnumTest(TestCase):
     def test_reverse_access(self):
         Test = self._make_enum()
         self.assertEqual(Test[1], "ACTIVE")
+
+
+    def test_inheritance(self):
+        Test = self._make_enum()
+        class New(Test):
+            ARCHIVED = 3
+
+        self.assertEqual(New.ACTIVE, 1)
+        self.assertEqual(New.ARCHIVED, 3)
+
+
+    def test_inheritance_keeps_unique(self):
+        Test = self._make_enum()
+        with self.assertRaises(ValueError):
+            class New(Test):
+                ARCHIVED = 1
+
+
+    def test_multi_inheritance_keeps_unique(self):
+        Test = self._make_enum()
+        class Base2(Enum):
+            OTHER = 1
+
+        with self.assertRaises(ValueError):
+            class New(Test, Base2):
+                ARCHIVED = 3
