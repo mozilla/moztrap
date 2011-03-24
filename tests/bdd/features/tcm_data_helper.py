@@ -46,6 +46,11 @@ def ns(field):
 def eq_(act, exp, msg):
     assert exp == act, "\n\tExp:%r\n\tAct:%r\n%r" % (exp, act, msg)
 
+def eq_list_length(act_list, exp_list):
+    assert len(act_list) == len(exp_list), \
+        "Expect same number of values in these lists:\nExpected:\n%s\n\nActual:\n%s" % \
+        (exp_list, act_list)
+
 def compare_dicts_by_keys(exp, act, keys):
     '''
         exp = expected object

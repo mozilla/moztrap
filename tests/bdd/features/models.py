@@ -368,7 +368,9 @@ class UserModel(BaseModel):
         headers = get_json_headers(self.get_auth_header(name))
         # log the user in
 
-        return do_put_for_cookie(self.root_path + "login", "", headers)
+        return do_put_for_cookie("%s/login" % self.root_path,
+                                 "",
+                                 headers)
 
     def get_logged_in_user(self):
         headers = {'cookie': world.auth_cookie,
@@ -878,6 +880,12 @@ class TestrunModel(RunnableTestContainerBaseModel):
                                                     tcm_type = "testresult")
         return result
 
+    def get_result_environments_list(self, testresult_id):
+        #results/{resultId}/environments
+        return self.get_list_from_endpoint("%s/results/%s/environments" % \
+                                                (self.root_path, testresult_id),
+                                           tcm_type = "environment")
+
     def approve_result(self, testrun_id, testcase_id):
 
         #/testruns/results/{resultId}/approve/
@@ -929,9 +937,10 @@ class TestrunModel(RunnableTestContainerBaseModel):
                {"originalVersionId": started_result_version},
                headers = headers)
 
-    def retest(self, testrun):
+    def retest(self, testrun, only_failed = False):
         testrun_id, version = get_resource_identity(testrun)
 
         do_post("%s/%s/retest" % (self.root_path, testrun_id),
-                body = {"originalVersionId": version})
+                body = {"originalVersionId": version,
+                        "failedResultsOnly": only_failed})
 

@@ -4,7 +4,7 @@ Feature: Some bugs with regard to User Administration
     I want to be able to change user values
 
 
-    Scenario: Log in and out as user: (Bug 636586)
+    Scenario: Log in and out as user, should no longer be logged in: (Bug 636586)
         Given I create the seed company and product with these names:
             | company name    | product name  |
             | Massive Dynamic | Cortexiphan   |

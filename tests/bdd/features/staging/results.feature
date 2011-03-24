@@ -28,7 +28,7 @@ Feature: Verify results of tests
             | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
             | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
         And when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
-        And I activate the testcycle with that name
+        And I activate the testcycle with name "Baroque Cycle"
         And I activate the testrun with that name
         And I create a new environmenttype with name "EnvType1"
         And I create a new environment with name "Env1" of type "EnvType1"

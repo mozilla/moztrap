@@ -6,7 +6,8 @@ Created on Mar 9, 2011
 from features.models import TestcaseModel, UserModel, TestcycleModel, \
     TestrunModel
 from features.tcm_data_helper import ns, jstr, verify_single_item_in_list, \
-    compare_dicts_by_keys, get_approval_status_id, eq_, get_result_status_id
+    compare_dicts_by_keys, get_approval_status_id, eq_, get_result_status_id, \
+    eq_list_length
 from features.tcm_request_helper import get_resource_identity
 from lettuce import step
 
@@ -154,6 +155,8 @@ def testrun_has_team_members(step, stored_testrun, testrun_name):
 
     teammember_list = testrunModel.get_team_members_list(testrun_id)
 
+    eq_list_length(teammember_list, step.hashes)
+
     for teammember in step.hashes:
         names = teammember["name"].split()
 
@@ -216,12 +219,15 @@ def testrun_results_have_approval_statuses(step, stored_testrun, testrun_name):
             "Wrong approvalStatusId for result.  Expected:\n%s" % testcase)
 
 
-@step(u'call retest for (that testrun|the testrun with name "(.*)")')
-def retest_for_testrun(step, stored_testrun, testrun_name):
+@step(u'call retest (all|only failed) for (that testrun|the testrun with name "(.*)")')
+def retest_for_testrun(step, scope, stored_testrun, testrun_name):
     testrunModel = TestrunModel()
     testrun = testrunModel.get_stored_or_store_obj(stored_testrun, testrun_name)
 
-    testrunModel.retest(testrun)
+    only_failed = (scope == "only failed")
+
+    testrunModel.retest(testrun,
+                        only_failed = only_failed)
 
 
 @step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
@@ -245,6 +251,27 @@ def testcases_have_result_statuses(step, stored_testrun, testrun_name):
             get_result_status_id(tc["status"]),
             "testRunResultStatusId check")
 
+
+@step(u'the following testcases have the following environments for (that testrun|the testrun with name "(.*)")')
+def testcases_have_environments(step, stored_testrun, testrun_name):
+    trModel = TestrunModel()
+    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    includedtestcase_list = trModel.get_included_testcases(testrun_id)
+
+    for tc in step.hashes:
+        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
+
+        result = trModel.get_result(testcase_id,
+                                    includedtestcase_list = includedtestcase_list)
+        testresult_id = get_resource_identity(result)[0]
+
+        environments_list = trModel.get_result_environments_list(testresult_id)
+
+        assert False, jstr(environments_list)
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following result status summary counts')
 def testrun_has_summary_counts(step, stored_testrun, testrun_name):

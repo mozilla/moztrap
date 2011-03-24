@@ -5,7 +5,7 @@ Created on Mar 23, 2011
 '''
 from features.models import TestcycleModel, ProductModel, UserModel
 from features.tcm_data_helper import get_result_status_id, \
-    verify_single_item_in_list, ns, jstr
+    verify_single_item_in_list, ns, jstr, eq_list_length
 from features.tcm_request_helper import get_resource_identity
 from lettuce.decorators import step
 
@@ -160,6 +160,11 @@ def testcycle_has_team_members(step, stored_testcycle, testcycle_name):
     testcycle_id = get_resource_identity(testcycle)[0]
 
     teammember_list = testcycleModel.get_team_members_list(testcycle_id)
+
+    eq_list_length(teammember_list, step.hashes)
+#    assert len(teammember_list) == len(step.hashes), \
+#        "Expect same number of values in these lists:\nExpected:\n%s\n\nActual:\n%s" % \
+#        (step.hashes, teammember_list)
 
     for teammember in step.hashes:
         names = teammember["name"].split()
