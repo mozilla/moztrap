@@ -42,5 +42,5 @@ class TestResultStatus(Enum):
 
 
 
-STATUS_ENUMS_BY_KEY = dict((s._staticdata_key, s) for s in
-                           locals() if hasattr(s, "_staticdata_key"))
+STATUS_ENUMS_BY_KEY = dict((s._staticdata_key, s) for s in locals().values()
+                           if hasattr(s, "_staticdata_key"))

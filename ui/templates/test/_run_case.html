@@ -1,6 +1,6 @@
 {% load execution staticdata %}
 
-    <details id="result-{{ result.id }}" class="test {{ result|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
+    <details id="result-{{ result.id }}" class="test {{ result|status_class:"testRunResultStatus" }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
 
       <summary class="header">
         <header>
