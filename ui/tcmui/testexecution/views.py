@@ -6,7 +6,7 @@ from django.template.response import TemplateResponse
 from ..core import sort
 from ..environments.util import set_environment_url
 from ..products.models import Product
-from ..static import testcyclestatus, testrunstatus
+from ..static.status import TestCycleStatus, TestRunStatus
 from ..users.decorators import login_required
 
 from .models import TestCycle, TestCycleList, TestRun, TestRunList, TestResult
@@ -18,7 +18,7 @@ def cycles(request, product_id):
     product = Product.get("products/%s" % product_id, auth=request.auth)
 
     cycles = TestCycleList.get(auth=request.auth).filter(
-        productId=product_id, testCycleStatusId=testcyclestatus.ACTIVE).sort(
+        productId=product_id, testCycleStatusId=TestCycleStatus.ACTIVE).sort(
         *sort.from_request(request))
 
     return TemplateResponse(
@@ -37,7 +37,7 @@ def testruns(request, cycle_id):
 
     testruns = TestRunList.get(auth=request.auth).filter(
         testCycleId=cycle_id,
-        testRunStatusId=testrunstatus.ACTIVE,
+        testRunStatusId=TestRunStatus.ACTIVE,
         selfAssignAllowed=True,
         ).sort(
         *sort.from_request(request))

@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
-from ..static import testresultstatus
+from ..static.status import TestResultStatus
 from ..static.fields import StaticData
 from ..testcases.models import (
     TestCase, TestCaseVersion, TestSuite, TestSuiteList,
@@ -255,27 +255,27 @@ class TestResult(RemoteObject):
 
     @property
     def pending(self):
-        return self.testRunResultStatus.id == testresultstatus.PENDING
+        return self.testRunResultStatus.id == TestResultStatus.PENDING
 
 
     @property
     def started(self):
-        return self.testRunResultStatus.id == testresultstatus.STARTED
+        return self.testRunResultStatus.id == TestResultStatus.STARTED
 
 
     @property
     def passed(self):
-        return self.testRunResultStatus.id == testresultstatus.PASSED
+        return self.testRunResultStatus.id == TestResultStatus.PASSED
 
 
     @property
     def invalidated(self):
-        return self.testRunResultStatus.id == testresultstatus.INVALIDATED
+        return self.testRunResultStatus.id == TestResultStatus.INVALIDATED
 
 
     @property
     def failed(self):
-        return self.testRunResultStatus.id == testresultstatus.FAILED
+        return self.testRunResultStatus.id == TestResultStatus.FAILED
 
 
 

@@ -9,6 +9,8 @@ import remoteobjects
 from ..core.conf import conf
 from ..core.api import ObjectMixin, fields
 
+
+
 class CodeValue(ObjectMixin, remoteobjects.RemoteObject):
     id = fields.Field()
     description = fields.Field()
@@ -21,6 +23,7 @@ class CodeValue(ObjectMixin, remoteobjects.RemoteObject):
 
     def __repr__(self):
         return "<CodeValue: %s>" % self
+
 
 
 class ArrayOfCodeValue(ObjectMixin, remoteobjects.ListObject):
