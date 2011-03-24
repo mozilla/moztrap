@@ -56,3 +56,14 @@ class EnumTest(TestCase):
         with self.assertRaises(ValueError):
             class New(Test, Base2):
                 ARCHIVED = 3
+
+
+    def test_underscore_attrs_ignored(self):
+        class Test(Enum):
+            ACTIVE = 1
+
+            _ignored = "blah"
+
+        with self.assertRaises(KeyError):
+            Test["blah"]
+

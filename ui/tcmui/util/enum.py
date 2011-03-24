@@ -7,6 +7,8 @@ class EnumMetaclass(type):
         _forward_map = {}
         _reverse_map = {}
         for k, v in base_attrs.iteritems():
+            if k.startswith("_"):
+                continue
             if v in _reverse_map:
                 raise ValueError(
                     "Enum %s has duplicate attributes with value %r."
