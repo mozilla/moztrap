@@ -268,10 +268,9 @@ def testcases_have_environments(step, stored_testrun, testrun_name):
         result = trModel.get_result(testcase_id,
                                     includedtestcase_list = includedtestcase_list)
         testresult_id = get_resource_identity(result)[0]
-
         environments_list = trModel.get_result_environments_list(testresult_id)
 
-        assert False, jstr(environments_list)
+        verify_single_item_in_list(environments_list, "name", tc["environment"])
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following result status summary counts')
 def testrun_has_summary_counts(step, stored_testrun, testrun_name):
