@@ -20,13 +20,16 @@ COMPANY_DEFAULTS = {
 
 
 def make_company(**kwargs):
-    for k, v in COMPANY_DEFAULTS.items():
-        kwargs.setdefault(k, v)
-    return {"ns1.company": [make_one("company", **kwargs)]}
+    return {"ns1.company": [make_one(
+                "company", defaults=COMPANY_DEFAULTS, **kwargs)]}
 
 
 
-def make_one(resource_type, **kwargs):
+def make_one(resource_type, defaults=None, **kwargs):
+    if defaults:
+        for k, v in defaults.items():
+            kwargs.setdefault(k, v)
+
     kwargs.setdefault("resourceIdentity", make_identity())
     kwargs.setdefault("timeline", make_timeline())
 
