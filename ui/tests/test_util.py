@@ -67,3 +67,20 @@ class EnumTest(TestCase):
         with self.assertRaises(KeyError):
             Test["blah"]
 
+
+
+    def test_underscore_attrs_access(self):
+        class Test(Enum):
+            ACTIVE = 1
+
+            _ignored = "blah"
+
+        self.assertEqual(Test._ignored, "blah")
+
+
+    def test_attribute_error(self):
+        Test = self._make_enum()
+
+        with self.assertRaises(AttributeError):
+            Test.blah
+

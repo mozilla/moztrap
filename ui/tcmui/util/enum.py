@@ -6,8 +6,10 @@ class EnumMetaclass(type):
         base_attrs.update(attrs)
         _forward_map = {}
         _reverse_map = {}
+        new_attrs = {}
         for k, v in base_attrs.iteritems():
             if k.startswith("_"):
+                new_attrs[k] = v
                 continue
             if v in _reverse_map:
                 raise ValueError(
@@ -15,13 +17,21 @@ class EnumMetaclass(type):
                     % (name, v))
             _forward_map[k] = v
             _reverse_map[v] = k
-        return super(EnumMetaclass, cls).__new__(
-            cls, name, bases, {"_forward_map": _forward_map,
-                               "_reverse_map": _reverse_map})
+        new_attrs["_forward_map"] = _forward_map
+        new_attrs["_reverse_map"] = _reverse_map
+        return super(EnumMetaclass, cls).__new__(cls, name, bases, new_attrs)
 
 
     def __getattr__(cls, k):
-        return cls._forward_map[k]
+        try:
+            return cls._forward_map[k]
+        except KeyError:
+            try:
+                return cls.__dict__[k]
+            except KeyError:
+                raise AttributeError(
+                    "%r object has no attribute %r" % (cls.__name__, k))
+
 
 
     def __getitem__(cls, k):
