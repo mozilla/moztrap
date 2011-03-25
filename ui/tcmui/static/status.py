@@ -1,6 +1,7 @@
 from flufl.enum import Enum
 
 
+
 class TestCycleStatus(Enum):
     DRAFT = 1
     ACTIVE = 2
@@ -9,12 +10,32 @@ class TestCycleStatus(Enum):
     DISCARDED = 5
 
 
+
 class TestRunStatus(Enum):
     DRAFT = 1
     ACTIVE = 2
     LOCKED = 3
     CLOSED = 4
     DISCARDED = 5
+
+
+
+class TestCaseStatus(Enum):
+    DRAFT = 1
+    ACTIVE = 2
+    LOCKED = 3
+    CLOSED = 4
+    DISCARDED = 5
+
+
+
+class TestSuiteStatus(Enum):
+    DRAFT = 1
+    ACTIVE = 2
+    LOCKED = 3
+    CLOSED = 4
+    DISCARDED = 5
+
 
 
 class UserStatus(Enum):
@@ -31,3 +52,10 @@ class TestResultStatus(Enum):
     BLOCKED = 4
     STARTED = 5
     INVALIDATED = 6
+
+
+
+class ApprovalStatus(Enum):
+    PENDING = 1
+    APPROVED = 2
+    REJECTED = 3
