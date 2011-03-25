@@ -66,12 +66,14 @@
               <p>{{ cycle.description }}</p>
             </div>
             <div class="environments">
-              <h4>environment groups</h4>
+              <h4>environments</h4>
               <ul>
-                {% for group in cycle.environmentgroups %}
+                {% regroup cycle.environmentgroups.environments by typename as type_list %}
+                {% for type in type_list %}
                 <li>
+                  <h5>{{ type.grouper }}</h5>
                   <ul>
-                    {% for env in group.environments %}
+                    {% for env in type.list %}
                     <li>{{ env.name }}</li>
                     {% endfor %}
                   </ul>

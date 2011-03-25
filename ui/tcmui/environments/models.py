@@ -2,6 +2,8 @@
 Environment-related remote objects.
 
 """
+from collections import namedtuple
+
 from ..core.api import RemoteObject, ListObject, fields
 from ..core.models import Company
 
@@ -103,6 +105,8 @@ class EnvironmentGroup(RemoteObject):
         return self.environments.match(environments)
 
 
+HashableEnvironment = namedtuple("HashableEnvironment", ["name", "typename"])
+
 
 class EnvironmentGroupList(ListObject):
     cache = True
@@ -125,3 +129,21 @@ class EnvironmentGroupList(ListObject):
             if group.match(environments):
                 return group
         return None
+
+
+    def environments(self):
+        """
+        Return a list of all unique environments in this environment group list.
+
+        Each environment is represented as a dictionary with keys "name" and
+        "typename".
+
+        """
+        ret = set()
+        for group in self:
+            for env in group.environments:
+                ret.add(
+                    HashableEnvironment(
+                        name=env.name, typename=env.environmentType.name)
+                    )
+        return sorted(ret, key=lambda e: e.typename)
