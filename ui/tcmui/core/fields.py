@@ -22,7 +22,8 @@ class Field(remoteobjects.fields.Field):
         if self.api_submit_name is None:
             self.api_submit_name = self.api_name
 
-        if not self.api_name.startswith("ns1."):
+        if not (self.api_name.startswith("ns1.") or
+                self.api_name.startswith("@")):
             self.api_name = "ns1.%s" % self.api_name
 
 
@@ -118,6 +119,63 @@ class ResourceIdentity(Field):
         if "@version" in value:
             return {"originalVersionId": value["@version"]}
         return {}
+
+
+
+class UserID(remoteobjects.fields.AcceptsStringCls, Field):
+    """
+    A Field type that can find a User object based on just the ID; used by
+    Timeline.
+
+    """
+    def __init__(self, api_name=None, default=None):
+        self.cls = "User"
+        super(UserID, self).__init__(api_name, default, api_submit_name=False)
+
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+
+        data = super(UserID, self).__get__(obj, cls)
+
+        try:
+            value = self.cls.get(join("users", str(int(data))), auth=obj.auth)
+            self.__set__(obj, value)
+            return value
+        except TypeError:
+            pass
+        return data
+
+
+
+class Timeline(remoteobjects.dataobject.DataObject):
+    createDate = Date("@createDate")
+    createdBy = UserID("@createdBy")
+    lastChangeDate = Date("@lastChangeDate")
+    lastChangedBy = UserID("@lastChangedBy")
+
+
+
+class TimelineField(Field):
+    def __init__(self):
+        super(TimelineField, self).__init__(
+            api_name="timeline",
+            api_submit_name=False)
+
+
+    def decode(self, value):
+        return Timeline.from_dict(value)
+
+
+    def __get__(self, obj, cls):
+        if obj is None:
+            return self
+
+        t = super(TimelineField, self).__get__(obj, cls)
+        t.auth = obj.auth
+
+        return t
 
 
 

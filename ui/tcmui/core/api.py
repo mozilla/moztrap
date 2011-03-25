@@ -442,6 +442,7 @@ class ObjectMixin(StrAndUnicode):
 
 class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     identity = fields.ResourceIdentity()
+    timeline = fields.TimelineField()
 
 
     @property
