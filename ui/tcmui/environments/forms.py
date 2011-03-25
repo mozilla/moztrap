@@ -151,7 +151,7 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
             i, **kwargs)
 
 
-    def save(self, testcaseversion):
+    def save(self, owner, validgroups):
         constraints = {}
         for form in self.forms:
             envs = [v.split(":") for v in form.cleaned_data["environments"]]
@@ -162,7 +162,7 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
 
         if constraints:
             valid_group_ids = set()
-            for group in testcaseversion.product.environmentgroups:
+            for group in validgroups:
                 valid = True
                 for env in group.environments:
                     etid = env.environmentType.id
@@ -173,7 +173,7 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
                 if valid:
                     valid_group_ids.add(group.id)
 
-            testcaseversion.environmentgroups = valid_group_ids
+            owner.environmentgroups = valid_group_ids
 
 
 

@@ -74,7 +74,8 @@ class TestCaseForm(forms.Form):
 
     def save(self):
         self.steps_formset.save(self.testcase)
-        self.env_formset.save(self.testcase)
+        self.env_formset.save(
+            self.testcase, self.testcase.product.environmentgroups)
 
         return self.testcase
 
