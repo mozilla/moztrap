@@ -56,10 +56,8 @@
 {% endblock managecontent %}
 
 {% block extrajs %}
-  {% with form.env_formset as formset %}
-    {% include "manage/_env_formset_js.html" %}
-  {% endwith %}
-  <script>
+{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
+<script>
   $(
       function() {
           $('ol.steplist').formset(
@@ -73,18 +71,14 @@
               });
       });
 
-  </script>
+</script>
 {% endblock %}
 
 {% block last %}
 <div style="display: none;">
-  {% with form.env_formset.empty_form as form %}
-  {% include "manage/_empty_env_form.html" %}
-  {% endwith %}
+  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
   <ul id="empty-step-form" class="empty-form">
-    {% with form.steps_formset.empty_form as form %}
-    {% include "manage/testcase/_step_form.html" %}
-    {% endwith %}
+    {% include "manage/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
   </ul>
 </div>
 {% endblock %}
