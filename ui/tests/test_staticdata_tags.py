@@ -1,120 +1,36 @@
+from flufl.enum import Enum
 from unittest2 import TestCase
 
-from mock import patch, Mock
-
-from tcmui.static.fields import StaticData
-from tcmui.static.templatetags.staticdata import status_class
-from tcmui.util.enum import Enum
 
 
-
-class TestStatus1(Enum):
-    _staticdata_key = "TESTSTATUS1"
-
+class SomeStatus(Enum):
     DRAFT = 1
     ACTIVE = 2
 
 
 
-class TestStatus2(Enum):
-    _staticdata_key = "TESTSTATUS2"
+class StatusFilterTest(TestCase):
+    def _status(self, status1, status2):
+        from tcmui.static.templatetags.staticdata import status
 
-    ACTIVE = 1
-    INACTIVE = 2
-    DISABLED = 3
-
+        return status(status1, status2)
 
 
-STATUS_ENUMS_BY_KEY = {
-    "TESTSTATUS1": TestStatus1,
-    "TESTSTATUS2": TestStatus2
-    }
+    def test_true(self):
+        self.assertIs(self._status(SomeStatus.DRAFT, SomeStatus.DRAFT), True)
 
 
-
-STATUS_CLASSES = {
-    TestStatus1: {
-        "DRAFT": "draft",
-        "ACTIVE": "active",
-        },
-    TestStatus2: {
-        "ACTIVE": "active",
-        "INACTIVE": "inactive",
-        "DISABLED": "disabled"
-        }
-    }
+    def test_false(self):
+        self.assertIs(self._status(SomeStatus.DRAFT, SomeStatus.ACTIVE), False)
 
 
 
-class MockObject(object):
-    def __init__(self, **kw):
-        for k, v in kw.iteritems():
-            m = Mock()
-            m.id = v
-            setattr(self, k, m)
-
-        for a, f in self.fields.iteritems():
-            f.attrname = a
-
-
-class NoStaticDataFields(MockObject):
-    fields = {"somethingElse": Mock()}
-
-
-class OneStaticDataField(MockObject):
-    fields = {"statusOne": StaticData("TESTSTATUS1")}
-
-
-
-class TwoStaticDataFields(MockObject):
-    fields = {
-        "statusOne": StaticData("TESTSTATUS1"),
-        "statusTwo": StaticData("TESTSTATUS2")
-        }
-
-
-@patch("tcmui.static.templatetags.staticdata.STATUS_CLASSES", STATUS_CLASSES)
-@patch("tcmui.static.templatetags.staticdata.STATUS_ENUMS_BY_KEY",
-       STATUS_ENUMS_BY_KEY)
 class StatusClassFilterTest(TestCase):
-    def test_unspecified_when_one(self):
-        one = OneStaticDataField(statusOne=TestStatus1.DRAFT)
+    def _class(self, status):
+        from tcmui.static.templatetags.staticdata import status_class
 
-        self.assertEqual(status_class(one), "draft")
-
-
-    def test_specified_when_one(self):
-        one = OneStaticDataField(statusOne=TestStatus1.DRAFT)
-
-        self.assertEqual(status_class(one, "statusOne"), "draft")
+        return status_class(status)
 
 
-    def test_bad_attr(self):
-        one = OneStaticDataField(statusOne=TestStatus1.DRAFT)
-
-        with self.assertRaises(ValueError):
-            status_class(one, "doesntexist")
-
-
-    def test_no_staticdata_fields(self):
-        nofields = NoStaticDataFields()
-
-        with self.assertRaises(ValueError):
-            status_class(nofields)
-
-
-    def test_unspecified_when_multiple(self):
-        two = TwoStaticDataFields(statusOne=TestStatus1.ACTIVE,
-                                  statusTwo=TestStatus2.ACTIVE)
-
-        with self.assertRaises(ValueError):
-            status_class(two)
-
-
-    def test_specified_when_multiple(self):
-        two = TwoStaticDataFields(statusOne=TestStatus1.ACTIVE,
-                                  statusTwo=TestStatus2.DISABLED)
-
-        self.assertEqual(status_class(two, "statusTwo"), "disabled")
-
-
+    def test_simple(self):
+        self.assertEqual(self._class(SomeStatus.DRAFT), "draft")

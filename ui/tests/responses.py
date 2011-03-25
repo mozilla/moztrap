@@ -42,7 +42,7 @@ CODEVALUE_DEFAULTS = {
     }
 
 
-def make_codevalues(**codevalue_dicts):
+def make_codevalues(*codevalue_dicts):
     return make_array(
         "CodeValue",
         *[make_one("CodeValue", defaults=CODEVALUE_DEFAULTS, **cv_info)

@@ -39,14 +39,14 @@ class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
                 raise forms.ValidationError(
                     "That email/password combination doesn't match "
                     "any users in our records.")
-            if self.user.userStatus.id == UserStatus.INACTIVE:
+            if self.user.userStatus is UserStatus.INACTIVE:
                 raise forms.ValidationError(
                     "This user has not been activated. Please check your email "
                     "for an activation link.")
-            elif self.user.userStatus.id == UserStatus.DISABLED:
+            elif self.user.userStatus is UserStatus.DISABLED:
                 raise forms.ValidationError(
                     "This user account has been disabled.")
-            elif self.user.userStatus.id != UserStatus.ACTIVE:
+            elif self.user.userStatus is not UserStatus.ACTIVE:
                 raise forms.ValidationError(
                     "This user account is not active.")
         return self.cleaned_data

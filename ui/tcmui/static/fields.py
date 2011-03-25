@@ -1,5 +1,17 @@
-from .models import ArrayOfCodeValue
+from .data import get_codevalue
+from .status import (TestResultStatus, TestCycleStatus, TestRunStatus,
+                     UserStatus)
 from ..core.fields import Field
+
+
+
+STATUS_ENUMS_BY_KEY = {
+    "TESTCYCLESTATUS": TestCycleStatus,
+    "TESTRUNSTATUS": TestRunStatus,
+    "USERSTATUS": UserStatus,
+    "TESTRUNRESULTSTATUS": TestResultStatus,
+    }
+
 
 
 class StaticData(Field):
@@ -11,6 +23,7 @@ class StaticData(Field):
     """
     def __init__(self, key, api_name=None, default=None, api_submit_name=None):
         self.key = key
+        self.states = STATUS_ENUMS_BY_KEY.get(self.key)
         super(StaticData, self).__init__(api_name, default, api_submit_name)
 
 
@@ -32,11 +45,11 @@ class StaticData(Field):
 
         data = super(StaticData, self).__get__(obj, cls)
 
-        if data:
-            # @@@ Make a hash-like memory/cache-based abstraction for this
-            for code in ArrayOfCodeValue.get(self.key):
-                if code.id == data:
-                    return code
+        code = get_codevalue(self.key, data)
+        if code:
+            if self.states is not None:
+                return self.states[code.id]
+            return code
         return data
 
 

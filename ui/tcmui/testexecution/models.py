@@ -255,27 +255,27 @@ class TestResult(RemoteObject):
 
     @property
     def pending(self):
-        return self.testRunResultStatus.id == TestResultStatus.PENDING
+        return self.testRunResultStatus is TestResultStatus.PENDING
 
 
     @property
     def started(self):
-        return self.testRunResultStatus.id == TestResultStatus.STARTED
+        return self.testRunResultStatus is TestResultStatus.STARTED
 
 
     @property
     def passed(self):
-        return self.testRunResultStatus.id == TestResultStatus.PASSED
+        return self.testRunResultStatus is TestResultStatus.PASSED
 
 
     @property
     def invalidated(self):
-        return self.testRunResultStatus.id == TestResultStatus.INVALIDATED
+        return self.testRunResultStatus is TestResultStatus.INVALIDATED
 
 
     @property
     def failed(self):
-        return self.testRunResultStatus.id == TestResultStatus.FAILED
+        return self.testRunResultStatus is TestResultStatus.FAILED
 
 
 
