@@ -113,6 +113,7 @@ class EnvironmentGroupList(ListObject):
 
     entries = fields.List(fields.Object(EnvironmentGroup))
 
+
     def match(self, environments):
         """
         If the given set of ``environments`` match any environment group in

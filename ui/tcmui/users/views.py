@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
 from ..core.conf import conf
-from ..core.api import admin
+from ..core.auth import admin
 
 from . import util
 from .forms import LoginForm, RegistrationForm

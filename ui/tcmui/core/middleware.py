@@ -1,5 +1,5 @@
 from .conf import conf
-from .api import admin
+from .auth import admin
 from .models import Company
 
 

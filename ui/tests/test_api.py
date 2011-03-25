@@ -71,7 +71,7 @@ class CachedHttpTest(TestCase):
 
 class CredentialsTest(TestCase):
     def get_creds(self, *args, **kwargs):
-        from tcmui.core.api import Credentials
+        from tcmui.core.auth import Credentials
         return Credentials(*args, **kwargs)
 
 

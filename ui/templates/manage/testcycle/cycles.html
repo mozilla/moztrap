@@ -1,158 +1,99 @@
 {% extends 'manage/testcycle/base.html' %}
 
+{% load sort staticdata %}
+
 {% block managecontent %}
 {# @@@ <p class="message success">3 test cycles activated</p> #}
 {# @@@ <p class="message error">Cannot activate test cycle because X</p> #}
 
 <section id="managecycles">
   <h2>Manage Test Cycles</h2>
-  <a href="/manage/testcycle/add/" class="create">create test cycle</a>
+  <a href="{% url manage_testcycle_add %}" class="create">create test cycle</a>
   <form>
 
     <section class="managelist">
       <nav class="listordering">
         <ul>
-          <li class="bytitle"><a href="#" class="asc">title</a></li>
-          <li class="byproduct"><a href="#">product</a></li>
-          <li class="bystart"><a href="#">start date</a></th>
-          <li class="byend"><a href="#">end date</a></th>
+          <li class="bytitle">
+            <a href="{{ request|sort_url:"title" }}" class="{{ request|sort_status:"title" }}">title</a>
+          </li>
+          <li class="byproduct">
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+          <li class="bystart">
+            <a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a>
+          </li>
+          <li class="byend">
+            <a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a>
+          </li>
         </ul>
       </nav>
-      <article id="unique-slug-id01" class="item draft">
+      {% for cycle in cycles %}
+      <article id="cycle-id-{{ cycle.id }}" class="item {{ cycle.status|status_class }}">
         <details>
           <summary class="header">
-            <p class="status"><button title="activate" class="draft">draft</button></p>
-            <h3 class="title">Test Cycle Title</h3>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
+            <p class="status">
+              {# @@@ activate these #}
+              {% if cycle.status.DRAFT %}
+              <button title="activate" class="draft">draft</button>
+              {% endif %}
+              {% if cycle.status.ACTIVE %}
+              <button title="lock" class="active">active</button>
+              {% endif %}
+              {% if cycle.status.LOCKED %}
+              <button title="activate" class="locked">locked</button>
+              {% endif %}
+            </p>
+            <h3 class="title">{{ cycle.name }}</h3>
+            <p class="product">{{ cycle.product.name }}</p>
+            <time class="start">{{ cycle.startDate|date:"Y/m/d" }}</time>
+            <time class="end">{{ cycle.endDate|date:"Y/m/d" }}</time>
             <div class="controls">
-              <a href="/manage/testcycle/add/" title="edit">edit</a>
+              {# @@@ activate these #}
+              <a href="#" title="edit">edit</a>
               <button title="clone">clone</button>
               <button title="delete">delete</button>
             </div>
           </summary>
           <div class="content">
-            <p class="id">#3456</p>
+            <p class="id">#{{ cycle.id }}</p>
             <div class="description">
               <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
+                Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
+                on <time pubdate>{{ cycle.timeline.createDate|date:"Y/m/d" }}</time>
               </h4>
 
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
+              <p>{{ cycle.description }}</p>
             </div>
             <div class="environments">
-              <h4>environments</h4>
+              <h4>environment groups</h4>
               <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
+                {% for group in cycle.environmentgroups %}
+                <li>
+                  <ul>
+                    {% for env in group.environments %}
+                    <li>{{ env.name }}</li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% endfor %}
               </ul>
             </div>
+            {% if cycle.team|length %}
             <div class="testers">
               <h4>testers</h4>
               <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
+                {% for tester in cycle.team %}
+                <li>{{ tester.screenName }}</li>
+                {% endfor %}
               </ul>
             </div>
+            {% endif %}
           </div>
         </details>
       </article>
-      <article id="unique-slug-id01" class="item active">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="lock" class="active">active</button></p>
-            <h3 class="title">Test Cycle Title</h3>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
-            <div class="controls">
-              <a href="/manage/testcycle/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
+      {% endfor %}
 
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
-      <article id="unique-slug-id01" class="item locked">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="activate" class="locked">locked</button></p>
-            <h3 class="title">Test Cycle Title</h3>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
-            <div class="controls">
-              <a href="/manage/testcycle/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
-
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
     </section>
 
     <nav class="listfilter">

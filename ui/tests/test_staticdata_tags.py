@@ -27,9 +27,10 @@ class StatusFilterTest(TestCase):
 
 class StatusClassFilterTest(TestCase):
     def _class(self, status):
+        from tcmui.static.fields import StatusValue
         from tcmui.static.templatetags.staticdata import status_class
 
-        return status_class(status)
+        return status_class(StatusValue(status))
 
 
     def test_simple(self):

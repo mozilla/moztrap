@@ -1,6 +1,6 @@
 from functools import wraps
 
-from .api import admin
+from .auth import admin
 
 
 def as_admin(method):

@@ -13,4 +13,4 @@ def status(status1, status2):
 
 @register.filter
 def status_class(status):
-    return status.enumname.lower()
+    return status.status.enumname.lower()

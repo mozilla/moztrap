@@ -1,8 +1,8 @@
 import datetime
 
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand, CommandError
 
-from ...api import admin, Credentials
+from ...auth import admin, Credentials
 from ...conf import conf
 from ...models import Company
 from ....environments.models import (
@@ -111,20 +111,37 @@ PRODUCTS = {
 
 USERS = [
     {
-    "firstName": "Carl",
-    "lastName": "Meyer",
-    "screenName": "carljm",
-    "email": "cmeyer@mozilla.com",
-    "password": "testpw",
-    },
+        "firstName": "Some",
+        "lastName": "Tester",
+        "screenName": "tester",
+        "email": "tester@example.com",
+        "password": "testpw",
+        },
+    ]
+
+ADMINS = [
+    {
+        "firstName": "The",
+        "lastName": "Admin",
+        "screenName": "admin",
+        "email": "admin@example.com",
+        "password": "testpw",
+        },
     ]
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = ("Create a set of test data useful for experimenting with the TCM.")
+    args = '[<admin role ID>]'
 
+    def handle(self, *args, **options):
+        try:
+            ADMIN_ROLE_ID = int(args[0])
+        except IndexError:
+            ADMIN_ROLE_ID = None
+        except ValueError:
+            raise CommandError("Optional arg should be integer admin role ID")
 
-    def handle_noargs(self, **options):
         company = Company.get("companies/%s" % conf.TCM_COMPANY_ID, auth=admin)
 
         environments = {}
@@ -163,6 +180,16 @@ class Command(NoArgsCommand):
             user.activate()
             print "Created user '%s.'" % user.screenName
             users.append(user)
+
+        if ADMIN_ROLE_ID is not None:
+            admins = []
+            for data in ADMINS:
+                user = User(company=company, **data)
+                UserList.get(auth=admin).post(user)
+                user.roles = [ADMIN_ROLE_ID]
+                user.activate()
+                print "Created admin user '%s.'" % user.screenName
+                admins.append(user)
 
         cc = Credentials(USERS[0]["email"], password=USERS[0]["password"])
 

@@ -1,8 +1,7 @@
 import floppyforms as forms
 
-from ..core.api import admin
+from ..core.auth import admin
 from ..core.forms import RemoteObjectForm
-from ..static.status import UserStatus
 
 from .models import User, UserList
 from .util import get_user

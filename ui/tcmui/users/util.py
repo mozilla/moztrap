@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 
-from ..core.api import Credentials
+from ..core.auth import Credentials
 from ..core.util import add_to_querystring
 
 from .models import User

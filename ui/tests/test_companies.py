@@ -18,7 +18,7 @@ class CompanyTest(TestCase):
 
 
     def creds(self, *args, **kwargs):
-        from tcmui.core.api import Credentials
+        from tcmui.core.auth import Credentials
         return Credentials(*args, **kwargs)
 
 
@@ -249,7 +249,7 @@ class CompanyListTest(TestCase):
 
 
     def creds(self, *args, **kwargs):
-        from tcmui.core.api import Credentials
+        from tcmui.core.auth import Credentials
         return Credentials(*args, **kwargs)
 
 

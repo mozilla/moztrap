@@ -6,6 +6,8 @@ urlpatterns = patterns(
     "",
     url("^$", "tcmui.products.views.product_list", name="products"),
     url("^account/", include("tcmui.users.urls")),
+
+    # run tests
     url("^environment/$",
         "tcmui.environments.views.set_environment",
         name="environment"),
@@ -21,39 +23,7 @@ urlpatterns = patterns(
     url("^result/(?P<result_id>\d+)/$",
         "tcmui.testexecution.views.result",
         name="result"),
-    
-    # management wireframes direct-to-template
-    url("^manage/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testcycle/cycles.html"}),
-    # testcycles direct-to-template
-    url("^manage/testcycles/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testcycle/cycles.html"}),
-    url("^manage/testcycle/add/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testcycle/add_cycle.html"}),
-    # testruns direct-to-template
-    url("^manage/testruns/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testrun/runs.html"}),
-    url("^manage/testrun/add/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testrun/add_run.html"}),
-    # testsuites direct-to-template
-    url("^manage/testsuites/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testsuite/suites.html"}),
-    url("^manage/testsuite/add/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testsuite/add_suite.html"}),
-    # testcases direct-to-template
-    url("^manage/testcases/$", 
-        "django.views.generic.simple.direct_to_template", 
-        {"template": "manage/testcase/cases.html"}),
 
-    # add testcase wireframe is live
-    url("^manage/testcase/add/$",
-        "tcmui.testcases.views.add_testcase",
-        name="add_testcase"),
+    # manage
+    url("^manage/", include("tcmui.manage.urls")),
 )

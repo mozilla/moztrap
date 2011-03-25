@@ -7,6 +7,7 @@ from posixpath import join
 from dateutil import parser
 import remoteobjects
 
+from .auth import admin
 
 
 
@@ -140,10 +141,11 @@ class UserID(remoteobjects.fields.AcceptsStringCls, Field):
         data = super(UserID, self).__get__(obj, cls)
 
         try:
-            value = self.cls.get(join("users", str(int(data))), auth=obj.auth)
+            # @@@ PERMISSION_USER_ACCOUNT_VIEW doesn't work, using admin
+            value = self.cls.get(join("users", str(int(data))), auth=admin)
             self.__set__(obj, value)
             return value
-        except TypeError:
+        except ValueError:
             pass
         return data
 
