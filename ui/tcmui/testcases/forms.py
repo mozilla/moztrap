@@ -2,6 +2,7 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 import floppyforms as forms
 
+from ..core.forms import BareTextarea
 from ..environments.forms import EnvironmentConstraintFormSet
 from ..environments.models import EnvironmentGroupList
 
@@ -80,15 +81,12 @@ class TestCaseForm(forms.Form):
 
 
 class StepForm(forms.Form):
-    instruction = forms.CharField(widget=forms.Textarea)
-    expected_result = forms.CharField(widget=forms.Textarea)
+    instruction = forms.CharField(widget=BareTextarea)
+    expected_result = forms.CharField(widget=BareTextarea)
 
 
     def __init__(self, *args, **kwargs):
         super(StepForm, self).__init__(*args, **kwargs)
-        # undo default rows and cols attrs
-        self.fields["instruction"].widget.attrs = {}
-        self.fields["expected_result"].widget.attrs = {}
         self.empty_permitted = False
 
 
