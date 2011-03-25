@@ -368,7 +368,9 @@ class UserModel(BaseModel):
         headers = get_json_headers(self.get_auth_header(name))
         # log the user in
 
-        return do_put_for_cookie(self.root_path + "login", "", headers)
+        return do_put_for_cookie("%s/login" % self.root_path,
+                                 "",
+                                 headers)
 
     def get_logged_in_user(self):
         headers = {'cookie': world.auth_cookie,
@@ -547,6 +549,38 @@ class EnvironmentgroupModel(BaseModel):
                {"environmentIds": env_ids,
                 "originalVersionId": version})
 
+class TagModel(BaseModel):
+    def __init__(self):
+        super(TagModel, self).__init__("tag")
+
+    def get_resid(self, name):
+        return super(TagModel, self).__get_resid__({"tag": name})
+
+    def get_stored_or_store_tag(self, stored, tag):
+        return get_stored_or_store_field("tag", self.singular, stored, tag)
+
+    def delete(self, name):
+        resid, version = self.get_resid(name)
+        do_delete("%s/%s" % (self.root_path, str(resid)),
+                  {"originalVersionId": version})
+
+
+
+
+
+
+
+
+
+
+'''
+    ############################################################################
+
+            TEST OBJECT CLASSES
+
+    ############################################################################
+'''
+
 
 class TestcaseModel(BaseModel):
     def __init__(self):
@@ -658,7 +692,82 @@ class TestsuiteModel(BaseModel):
 
 
 
-class TestcycleModel(BaseModel):
+
+
+
+
+
+
+
+
+
+'''
+    ############################################################################
+
+    These classes are runnable and contain tests.  They have
+    a number of apis in common, so they have a common base-class
+
+    ############################################################################
+'''
+
+
+class RunnableTestContainerBaseModel(BaseModel):
+    '''
+        Base class for Models that contain tests, such as Testcycles and Testruns.
+        Testsuites may also use this.
+    '''
+
+    def __init__(self,
+                 singular,
+                 plural = None,
+                 root_path = None,
+                 creation_key = None):
+        super(RunnableTestContainerBaseModel, self).__init__(singular, plural, root_path, creation_key)
+
+    def activate(self, tcm_name):
+        tcm_id, version = self.get_resid(tcm_name)
+
+        do_put("%s/%s/activate" % (self.root_path, tcm_id),
+                  {"originalVersionId": version})
+
+    def get_summary_list(self, tcm_id):
+        return self.get_list_from_endpoint("%s/%s/reports/coverage/resultstatus" %
+                                           (self.root_path, tcm_id),
+                                           tcm_type = "CategoryValueInfo")
+
+    def approve_all_results(self, testcycle):
+        tcm_id, version = get_resource_identity(testcycle)
+        return do_put("%s/%s/approveallresults" % (self.root_path,
+                                                 tcm_id),
+                      body = {"originalVersionId": version}
+                      )
+
+    def add_environmentgroups(self, tcm_name, envgrp_ids):
+        tcm_id, version = self.get_resid(tcm_name)
+
+        do_put("%s/%s/environmentgroups" % (self.root_path, tcm_id),
+               {"environmentGroupIds": envgrp_ids,
+                "originalVersionId": version})
+
+    def get_environmentgroup_list(self, tcm_id):
+        return self.get_list_from_endpoint("%s/%s/environmentgroups" % (self.root_path,
+                                                                        tcm_id),
+                                           "environmentgroup")
+
+    def add_team_members(self, tcm_name, user_ids):
+        tcm_id, version = self.get_resid(tcm_name)
+
+        do_put("%s/%s/team/members" % (self.root_path, tcm_id),
+           {"userIds": user_ids,
+            "originalVersionId": version})
+
+    def get_team_members_list(self, tcm_id):
+        return self.get_list_from_endpoint("%s/%s/team/members" % (self.root_path,
+                                                                        tcm_id),
+                                           "user")
+
+
+class TestcycleModel(RunnableTestContainerBaseModel):
     def __init__(self):
         super(TestcycleModel, self).__init__("testcycle")
 
@@ -667,45 +776,11 @@ class TestcycleModel(BaseModel):
         return self.get_list_from_endpoint(uri,
                                            tcm_type = "testrun")
 
-    def activate(self, testcycle_name):
-        testcycle_id, version = self.get_resid(testcycle_name)
 
-        do_put("%s/%s/activate" % (self.root_path, testcycle_id),
-                  {"originalVersionId": version})
-
-
-class TestrunModel(BaseModel):
+class TestrunModel(RunnableTestContainerBaseModel):
     def __init__(self):
         super(TestrunModel, self).__init__("testrun")
 
-    def get_included_testcases(self, testrun_id):
-        return self.get_list_from_endpoint("%s/%s/includedtestcases" % \
-                                                (self.root_path, testrun_id),
-                                           tcm_type = "includedtestcase")
-
-    def get_testcase_assignments(self, includedtestcase_id):
-        return self.get_list_from_endpoint("%s/includedtestcases/%s/assignments" % \
-                                                (self.root_path, includedtestcase_id),
-                                           tcm_type = "testcaseassignment")
-
-    def get_result_list(self, assignment_id):
-        return self.get_list_from_endpoint("%s/assignments/%s/results" % \
-                                                (self.root_path, assignment_id),
-                                           tcm_type = "testresult")
-
-
-    def add_environmentgroups(self, testrun_name, envgrp_ids):
-        testrun_id, version = TestrunModel().get_resid(testrun_name)
-
-        do_put("%s/%s/environmentgroups" % (self.root_path, testrun_id),
-               {"environmentGroupIds": envgrp_ids,
-                "originalVersionId": version})
-
-
-    def get_environmentgroup_list(self, testrun_id):
-        return self.get_list_from_endpoint("%s/%s/environmentgroups" % (self.root_path,
-                                                                        testrun_id),
-                                           "environmentgroup")
 
     def add_testcase(self,
                      testrun_name,
@@ -726,13 +801,6 @@ class TestrunModel(BaseModel):
                  "blocking": blocking,
                  "originalVersionId": version})
 
-    def add_users(self, testrun_name, user_ids):
-        testrun_id, version = TestrunModel().get_resid(testrun_name)
-
-        do_put("%s/%s/team/members" % (self.root_path, testrun_id),
-           {"userIds": user_ids,
-            "originalVersionId": version})
-
 
     def get_testsuite_list(self, testrun_id):
         return self.get_list_from_endpoint("%s/%s/testsuites" % (self.root_path,
@@ -752,38 +820,56 @@ class TestrunModel(BaseModel):
         return self.get_list_from_endpoint("%s/%s/components" % (self.root_path,
                                                           testrun_id))
 
-    def get_summary_list(self, testrun_id):
-        return self.get_list_from_endpoint("%s/%s/reports/coverage/resultstatus" %
-                                           (self.root_path, testrun_id),
-                                           tcm_type = "CategoryValueInfo")
+    def get_included_testcases(self, testrun_id):
+        return self.get_list_from_endpoint("%s/%s/includedtestcases" % \
+                                                (self.root_path, testrun_id),
+                                           tcm_type = "includedtestcase")
 
+    def get_testcase_assignments(self, includedtestcase_id):
+        return self.get_list_from_endpoint("%s/includedtestcases/%s/assignments" % \
+                                                (self.root_path, includedtestcase_id),
+                                           tcm_type = "testcaseassignment")
 
-    def get_result(self, testcase_id,
+    def get_result_list(self,
+                   testcase_id,
                    testrun_id = None,
                    includedtestcase_list = None,
-                   tcassignment_list = None,
-                   result_list = None):
+                   tcassignment_list = None):
         '''
             I *think* this is the best way to overload the method for several possible parameters.
             trying this technique
         '''
-        if result_list is None:
-            # we need to do work to get the result_list first
-            if tcassignment_list is None:
+        if tcassignment_list is None:
+            # we need to get it first
+            if includedtestcase_list is None:
                 # we need to get it first
-                if includedtestcase_list is None:
-                    # we need to get it first
-                    if testrun_id is None:
-                        assert False, "we need at least a testrun_id to fetch a result"
-                    includedtestcase_list = self.get_included_testcases(testrun_id)
+                if testrun_id is None:
+                    assert False, "we need at least a testrun_id to fetch a result"
+                includedtestcase_list = self.get_included_testcases(testrun_id)
 
-                testcase = verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
-                includedtestcase_id = get_resource_identity(testcase)[0]
-                tcassignment_list = self.get_testcase_assignments(includedtestcase_id)
+            incl_testcase = verify_single_item_in_list(includedtestcase_list, "testCaseId", testcase_id)
+            includedtestcase_id = get_resource_identity(incl_testcase)[0]
+            tcassignment_list = self.get_testcase_assignments(includedtestcase_id)
 
-            found_assignment = verify_single_item_in_list(tcassignment_list, "testCaseId", testcase_id)
-            assignment_id = get_resource_identity(found_assignment)[0]
-            result_list = self.get_result_list(assignment_id)
+
+        found_assignment = verify_single_item_in_list(tcassignment_list, "testCaseId", testcase_id)
+        assignment_id = get_resource_identity(found_assignment)[0]
+        return self.get_list_from_endpoint("%s/assignments/%s/results" % \
+                                                (self.root_path, assignment_id),
+                                           tcm_type = "testresult")
+
+
+    def get_result(self,
+                   testcase_id,
+                   testrun_id = None,
+                   includedtestcase_list = None,
+                   tcassignment_list = None,
+                   result_list = None):
+        if result_list == None:
+            result_list = self.get_result_list(testcase_id,
+                                                 testrun_id = testrun_id,
+                                                 includedtestcase_list = includedtestcase_list,
+                                                 tcassignment_list = tcassignment_list)
 
         result = verify_single_item_in_list(result_list, "testCaseId", testcase_id)
         return result
@@ -794,10 +880,22 @@ class TestrunModel(BaseModel):
                                                     tcm_type = "testresult")
         return result
 
-    def approve_result(self, testresult_id):
-        return self.get_list_from_endpoint("%s/assignments/%s/results" % \
+    def get_result_environments_list(self, testresult_id):
+        #results/{resultId}/environments
+        return self.get_list_from_endpoint("%s/results/%s/environments" % \
                                                 (self.root_path, testresult_id),
-                                           tcm_type = "testresult")
+                                           tcm_type = "environment")
+
+    def approve_result(self, testrun_id, testcase_id):
+
+        #/testruns/results/{resultId}/approve/
+        result_obj = self.get_result(testcase_id, testrun_id)
+        result_id, version = get_resource_identity(result_obj)
+        return do_put("%s/results/%s/approve" % (self.root_path,
+                                                 result_id),
+                      body = {"originalVersionId": version}
+                      )
+
 
     def assign_testcase(self, testrun_name, user_id, testcase_name):
         testrun_id, testrun_version = self.get_resid(testrun_name)
@@ -830,6 +928,7 @@ class TestrunModel(BaseModel):
     def set_testcase_status(self, result_id, started_result_version, user_name, status):
         status_map = {"Passed": "finishsucceed",
                       "Failed": "finishfail",
+                      "Skipped": "finishskip",
                       "Invalidated": "finishinvalidate"}
 
         headers = get_form_headers(UserModel().get_auth_header(user_name))
@@ -838,24 +937,10 @@ class TestrunModel(BaseModel):
                {"originalVersionId": started_result_version},
                headers = headers)
 
-    def activate(self, testrun_name):
-        testrun_id, version = self.get_resid(testrun_name)
+    def retest(self, testrun, only_failed = False):
+        testrun_id, version = get_resource_identity(testrun)
 
-        do_put("%s/%s/activate" % (self.root_path, testrun_id),
-                  {"originalVersionId": version})
-
-class TagModel(BaseModel):
-    def __init__(self):
-        super(TagModel, self).__init__("tag")
-
-    def get_resid(self, name):
-        return super(TagModel, self).__get_resid__({"tag": name})
-
-    def get_stored_or_store_tag(self, stored, tag):
-        return get_stored_or_store_field("tag", self.singular, stored, tag)
-
-    def delete(self, name):
-        resid, version = self.get_resid(name)
-        do_delete("%s/%s" % (self.root_path, str(resid)),
-                  {"originalVersionId": version})
+        do_post("%s/%s/retest" % (self.root_path, testrun_id),
+                body = {"originalVersionId": version,
+                        "failedResultsOnly": only_failed})
 

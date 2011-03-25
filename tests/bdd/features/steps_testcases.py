@@ -6,7 +6,7 @@ Created on Jan 28, 2011
 from features.models import TestcaseModel, UserModel, TestrunModel, ProductModel, \
     TestcycleModel, TestsuiteModel
 from features.tcm_data_helper import get_stored_or_store_name, eq_, ns, jstr, \
-    verify_single_item_in_list, get_testcase_status_id
+    verify_single_item_in_list, get_result_status_id
 from features.tcm_request_helper import get_form_headers, get_resource_identity
 from lettuce import step, world
 
@@ -149,9 +149,9 @@ def activate_testcases(step):
 #@todo: This has a hardcoded value for approvalStatusId, fix that
 @step(u'the testcase with (that name|name "(.*)") has approval status of Active')
 def testcase_has_status_of_approved(step, stored, testcase_name):
-    testcase_name = get_stored_or_store_name("testcase", stored, testcase_name)
-
     tcModel = TestcaseModel()
+    testcase_name = tcModel.get_stored_or_store_name(stored, testcase_name)
+
     # fetch the steps for this testcase from the latestversion
     testcase_id = tcModel.get_resid(testcase_name)[0]
     testcaseversion = tcModel.get_latestversion(testcase_id)
@@ -163,9 +163,18 @@ def testcase_has_status_of_approved(step, stored, testcase_name):
 
 @step(u'the following testcases have the following approval statuses')
 def testcases_have_approval_statuses(step):
+
+    tcModel = TestcaseModel()
+
     for tc in step.hashes:
-        pass
-    assert False, "need to implement"
+        testcase_id = tcModel.get_resid(tc["name"])[0]
+        testcaseversion = tcModel.get_latestversion(testcase_id)
+        # should be just one
+        try:
+            eq_(testcaseversion[ns("approvalStatusId")], 2, "Testcase is approved: " + str(testcaseversion))
+        except KeyError:
+            assert False, "Object field mismatch.\nExpected:\n" + ns("approved") + "\n\nActual:\n" + jstr(testcaseversion)
+
 
 @step(u'user with (that name|name "(.*)") marks the following testcase result statuses for the testrun with (that name|name "(.*)")')
 def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, testrun_name):
@@ -195,53 +204,8 @@ def user_marks_testcase_status(step, stored_user, user_name, stored_testrun, tes
         trModel.set_testcase_status(result_id, started_result_version, user_name, tc["status"])
 
 
-@step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
-def testcases_have_result_statuses(step, stored_testrun, testrun_name):
-    trModel = TestrunModel()
-    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
-
-    testrun_id = get_resource_identity(testrun)[0]
-
-    # get the list of testcases for this testrun
-    includedtestcase_list = trModel.get_included_testcases(testrun_id)
-
-    for tc in step.hashes:
-        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
-
-        result = trModel.get_result(testcase_id,
-                                    includedtestcase_list = includedtestcase_list)
-
-        # ok, we have the tc result in question, now check that its status matches expectations
-        eq_(result[ns("testRunResultStatusId")],
-            get_testcase_status_id(tc["status"]),
-            "testRunResultStatusId check")
-
-
-@step(u'(that testrun|the testrun with name "(.*)") has the following result status summary counts')
-def testrun_has_summary_counts(step, stored_testrun, testrun_name):
-    trModel = TestrunModel()
-
-    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
-
-    testrun_id = get_resource_identity(testrun)[0]
-
-    # get the list of testcases for this testrun
-    summary_list = trModel.get_summary_list(testrun_id)
-
-    # walk through and verify that each testcase has the expected status
-    for category in step.hashes:
-        # find that in the list of testcases
-        status_id = get_testcase_status_id(category["name"])
-        categoryInfo = verify_single_item_in_list(summary_list, "categoryName",
-                                                  status_id)
-        assert str(categoryInfo[ns("categoryValue")]) == category["count"], \
-            "%s count was wrong.  Expected categoryName: %s , categoryValue: %s:\n%s" % \
-            (category["name"], status_id, category["count"], jstr(categoryInfo))
-
-
-
 @step(u'testcase with name "(.*)" (has|does not have) attachment with filename "(.*)"')
-def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
+def testcase_has_attachment(step, test_case, haveness, attachment):
     # fetch the test case's resource identity
     testcaseModel = TestcaseModel()
     testcase_id = testcaseModel.get_resid(test_case)[0]
@@ -258,71 +222,6 @@ def test_case_foo_has_attachment_bar(step, test_case, haveness, attachment):
                                                                  jstr(result_list))
 
 
-
-'''
-######################################################################
-
-                     TESTCYCLE STEPS
-
-######################################################################
-'''
-@step(u'create a new testcycle with (that name|name "(.*)")')
-def create_testcycle_with_name(step, stored, name):
-    testcycleModel = TestcycleModel()
-    name = testcycleModel.get_stored_or_store_name(stored, name)
-
-    post_payload = {"name": name,
-                    "description": "Ahh, the cycle of life...",
-                    "productId": ProductModel().get_seed_resid()[0],
-                    "startDate": "2011/02/02",
-                    "communityAuthoringAllowed": "true",
-                    "communityAccessAllowed": "true",
-                    "endDate": "2014/02/02"
-                   }
-    testcycleModel.create(post_payload)
-
-@step(u'create the following new testcycles:')
-def create_testcycles(step):
-    testcycleModel = TestcycleModel()
-
-    for item in step.hashes:
-        # must do this or it will freak out the lettuce reporting, because
-        # we delete items from this before submitting.
-        testcycle = item.copy()
-
-        # get the product id from the passed product name
-        product_id = ProductModel().get_resid(testcycle["product name"])[0]
-
-        testcycle["productId"] = product_id
-
-        if testcycle.has_key('product name'):
-            del testcycle['product name']
-
-        testcycleModel.create(testcycle)
-
-
-@step(u'testcycle with (that name|name "(.*)") (exists|does not exist)')
-def check_testcycle_foo_existence(step, stored, name, existence):
-    testcycleModel = TestcycleModel()
-    name = testcycleModel.get_stored_or_store_name(stored, name)
-
-    testcycleModel.verify_existence_on_root(name,
-                                            existence = existence)
-
-
-@step(u'delete the testcycle with (that name|name "(.*)")')
-def delete_testcycle_with_name_foo(step, stored, name):
-    testcycleModel = TestcycleModel()
-    name = testcycleModel.get_stored_or_store_name(stored, name)
-
-    testcycleModel.delete(name)
-
-@step(u'activate the testcycle with (that name|name "(.*)")')
-def activate_testcycle_with_name(step, stored, name):
-    testcycleModel = TestcycleModel()
-    name = testcycleModel.get_stored_or_store_name(stored, name)
-
-    testcycleModel.activate(name)
 
 
 '''

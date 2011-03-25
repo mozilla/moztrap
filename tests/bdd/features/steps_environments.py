@@ -4,7 +4,7 @@ Created on Jan 28, 2011
 @author: camerondawson
 '''
 from features.models import EnvironmenttypeModel, EnvironmentModel, ProductModel, \
-    EnvironmentgroupModel, TestrunModel, CompanyModel
+    EnvironmentgroupModel, TestrunModel, CompanyModel, TestcycleModel
 from features.tcm_data_helper import get_stored_or_store_name, ns, jstr, eq_, \
     verify_single_item_in_list
 from lettuce import step
@@ -164,6 +164,21 @@ def create_environmentgroup_with_name(step, stored, name, type_name):
                     }
     model.create(post_payload)
 
+@step(u'create the following new environmentgroups')
+def create_environmentgroups(step):
+    model = EnvironmentgroupModel()
+
+    for envgrp in step.hashes:
+
+        type_resid = EnvironmenttypeModel().get_resid(envgrp["environmenttype name"],)[0]
+
+        post_payload = {
+                        "name": envgrp["name"],
+                        "description": envgrp["description"],
+                        "companyId": CompanyModel().get_seed_resid()[0],
+                        "environmentTypeId": type_resid
+                        }
+        model.create(post_payload)
 
 @step(u'delete the environmentgroup with (that name|name "(.*)")')
 def delete_environmentgroup_with_name(step, stored, name):
@@ -198,6 +213,19 @@ def add_envgroups_to_testrun(step, stored_testrun, testrun_name):
         envgrp_ids.append(envgrp_id)
 
     testrunModel.add_environmentgroups(testrun_name, envgrp_ids)
+
+@step(u'add the following environmentgroups to the testcycle with (that name|name "(.*)")')
+def add_envgroups_to_testcycle(step, stored_testcycle, testcycle_name):
+    testcycleModel = TestcycleModel()
+    testcycle_name = testcycleModel.get_stored_or_store_name(stored_testcycle, testcycle_name)
+
+    envgrp_ids = []
+    for envgrp in step.hashes:
+        envgrp_id = EnvironmentgroupModel().get_resid(envgrp["name"])[0]
+        envgrp_ids.append(envgrp_id)
+
+    testcycleModel.add_environmentgroups(testcycle_name, envgrp_ids)
+
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following environmentgroups')
 def testrun_has_environments(step, stored_testrun, testrun_name):
