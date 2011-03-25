@@ -9,31 +9,31 @@
         </header>
 
         <div class="status">
-          {% if result.pending %}
+          {% if result.status.PENDING %}
             <button class="start" data-action="start">start</button>
           {% endif %}
-          {% if result.started %}
+          {% if result.status.STARTED %}
             <button class="pass" data-action="finishsucceed">
               pass
             </button>
           {% endif %}
-          {% if result.passed %}
+          {% if result.status.PASSED %}
             <p class="passed">Passed</p>
           {% endif %}
-          {% if result.invalidated %}
+          {% if result.status.INVALIDATED %}
             <p class="invalidated">Invalid</p>
           {% endif %}
-          {% if result.failed %}
+          {% if result.status.FAILED %}
             <p class="failed">Failed</p>
           {% endif %}
         </div>
       </summary>
 
       <div>
-        {% if result.started or result.invalidated %}
-          <details class="testinvalid{% if result.invalidated %} invalidated {% endif %}"{% if result.invalidated %} open="open"{% endif %}>
+        {% if result.status.STARTED or result.status.INVALIDATED %}
+          <details class="testinvalid{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} open="open"{% endif %}>
             <summary>invalid</summary>
-            {% if result.invalidated %}
+            {% if result.status.INVALIDATED %}
               <div class="invaliddesc">
                 <h4>Invalid because:</h4>
                 <p>{{ result.comment }}</p>
@@ -59,7 +59,7 @@
               <h4>Expected Results:</h4>
               <p>{{ step.expectedResult }}</p>
             </div>
-            {% if result.started %}
+            {% if result.status.STARTED %}
               <details class="stepfail">
                 <summary>fail</summary>
                 <div class="failform form">
@@ -72,7 +72,7 @@
                 </div>
               </details>
             {% endif %}
-            {% if result.failed and result.failedStepNumber == step.stepNumber %}
+            {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
               <details class="stepfail failed" open="open">
                 <summary>failed</summary>
                 <div class="faildesc">

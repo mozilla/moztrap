@@ -61,8 +61,10 @@ class TestCaseVersion(Activatable, TestCase):
     majorVersion = fields.Field()
     minorVersion = fields.Field()
     latestVersion = fields.Field()
-    testCaseStatus = StaticData("TESTCASESTATUS", api_submit_name=False)
-    approvalStatus = StaticData("APPROVALSTATUS", api_submit_name=False)
+    status = StaticData(
+        "TESTCASESTATUS", "testCaseStatusId", api_submit_name=False)
+    approval = StaticData(
+        "APPROVALSTATUS", "approvalStatusId", api_submit_name=False)
     approveDate = fields.Date(api_submit_name=False)
     approvedBy = fields.Locator(User, api_submit_name=False)
 
@@ -141,7 +143,8 @@ class TestSuite(Activatable, RemoteObject):
     name = fields.Field()
     description = fields.Field()
     product = fields.Locator(Product)
-    testSuiteStatus = StaticData("TESTSUITESTATUS", api_submit_name=False)
+    status = StaticData(
+        "TESTSUITESTATUS", "testSuiteStatusId", api_submit_name=False)
     useLatestVersions = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)

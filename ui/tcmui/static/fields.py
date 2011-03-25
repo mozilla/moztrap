@@ -17,6 +17,30 @@ STATUS_ENUMS_BY_KEY = {
     }
 
 
+class StatusValue(object):
+    """
+    A wrapper for Enum status values that provides nice syntactic sugar for
+    checking the status. Accessing any attribute on a StatusValue with a name
+    matching a valid possible state will return True if that is the actual
+    state; false otherwise.
+
+    """
+    def __init__(self, status):
+        self.status = status
+        self.possible_states = set(s.enumname for s in status.enumclass)
+
+
+    def __getattr__(self, attr):
+        if attr in self.possible_states:
+            return attr == self.status.enumname
+        raise AttributeError("%r object has no attribute %r"
+                             % (self.__class__.__name__, attr))
+
+
+    def __repr__(self):
+        return "<StatusValue: %s>" % repr(self.status)
+
+
 
 class StaticData(Field):
     """
@@ -52,7 +76,7 @@ class StaticData(Field):
         code = get_codevalue(self.key, data)
         if code:
             if self.states is not None:
-                return self.states[code.id]
+                return StatusValue(self.states[code.id])
             return code
         return data
 

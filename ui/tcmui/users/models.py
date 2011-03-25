@@ -73,7 +73,7 @@ class User(Activatable, RemoteObject):
     lastName = fields.Field()
     password = fields.Field()
     screenName = fields.Field()
-    userStatus = StaticData("USERSTATUS")
+    status = StaticData("USERSTATUS", "userStatusId")
 
     roles = fields.Link(RoleList)
     permissions = fields.Link(PermissionList)

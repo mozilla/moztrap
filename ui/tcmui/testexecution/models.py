@@ -8,7 +8,6 @@ from django.core.urlresolvers import reverse
 from ..core.api import Activatable, RemoteObject, ListObject, fields
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
-from ..static.status import TestResultStatus
 from ..static.fields import StaticData
 from ..testcases.models import (
     TestCase, TestCaseVersion, TestSuite, TestSuiteList,
@@ -22,7 +21,7 @@ class TestCycle(Activatable, RemoteObject):
     product = fields.Locator(Product)
     name = fields.Field()
     description = fields.Field()
-    testCycleStatus = StaticData("TESTCYCLESTATUS")
+    status = StaticData("TESTCYCLESTATUS", "testCycleStatusId")
     startDate = fields.Date()
     endDate = fields.Date()
 
@@ -73,7 +72,7 @@ class TestRun(Activatable, RemoteObject):
     testCycle = fields.Locator(TestCycle)
     name = fields.Field()
     description = fields.Field()
-    testRunStatus = StaticData("TESTRUNSTATUS")
+    status = StaticData("TESTRUNSTATUS", "testRunStatusId")
     selfAssignAllowed = fields.Field()
     selfAssignLimit = fields.Field()
     selfAssignPerEnvironment = fields.Field()
@@ -186,7 +185,8 @@ class TestCaseAssignmentList(ListObject):
 class TestResult(RemoteObject):
     actualResult = fields.Field()
     actualTimeInMin = fields.Field()
-    approvalStatus = StaticData("APPROVALSTATUS", api_submit_name=False)
+    approval = StaticData(
+        "APPROVALSTATUS", "approvalStatusId", api_submit_name=False)
     approvedBy = fields.Locator(User, api_submit_name=False)
     comment = fields.Field()
     failedStepNumber = fields.Field()
@@ -195,7 +195,8 @@ class TestResult(RemoteObject):
     testCaseVersion = fields.Locator(TestCaseVersion)
     testSuite = fields.Locator(TestSuite)
     testRun = fields.Locator(TestRun)
-    testRunResultStatus = StaticData("TESTRUNRESULTSTATUS", api_submit_name=False)
+    status = StaticData(
+        "TESTRUNRESULTSTATUS", "testRunResultStatusId", api_submit_name=False)
     tester = fields.Locator(User)
 
     environments = fields.Link(EnvironmentList)
@@ -251,31 +252,6 @@ class TestResult(RemoteObject):
             extra_payload={"comment": comment},
             update_from_response=True,
             **kwargs)
-
-
-    @property
-    def pending(self):
-        return self.testRunResultStatus is TestResultStatus.PENDING
-
-
-    @property
-    def started(self):
-        return self.testRunResultStatus is TestResultStatus.STARTED
-
-
-    @property
-    def passed(self):
-        return self.testRunResultStatus is TestResultStatus.PASSED
-
-
-    @property
-    def invalidated(self):
-        return self.testRunResultStatus is TestResultStatus.INVALIDATED
-
-
-    @property
-    def failed(self):
-        return self.testRunResultStatus is TestResultStatus.FAILED
 
 
 
