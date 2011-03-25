@@ -16,7 +16,7 @@ def main():
 
     imports = [
         "import datetime",
-        "from tcmui.core.api import admin, Credentials",
+        "from tcmui.core.auth import admin, Credentials",
         "from tcmui.core.models import Company, CompanyList",
         "from tcmui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
         "from tcmui.products.models import Product, ProductList",
