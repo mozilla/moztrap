@@ -18,7 +18,7 @@
             <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
           </li>
           <li class="byproduct">
-            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"productId" }}">product</a>
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
           </li>
           <li class="bystart">
             <a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a>
@@ -114,26 +114,7 @@
       </ul>
     </nav>
 
-    {# @@@ activate pagination #}
-    <nav class="listnav">
-      <p class="location">showing 21-40 of 700</p>
-      <ul class="pagination">
-        <li><a href="?page=3" class="prev">&laquo; previous</a> </li>
-        <li><a href="?page=1" class="page">1</a></li>
-        <li><span class="current page">2</span> </li>
-        <li><a href="?page=3" class="page">3</a> </li>
-        <li><a href="?page=3" class="next">next &raquo;</a> </li>
-      </ul>
-      <div class="perpage">
-        <strong>cycles per page:</strong>
-        <ul>
-          <li><a href="#">10</a></li>
-          <li><span href="#" class="current">20</span></li>
-          <li><a href="#">50</a></li>
-          <li><a href="#">100</a></li>
-        </ul>
-      </div>
-    </nav>
+    {% include "manage/_listnav.html" %}
 
   </form>
 </section>

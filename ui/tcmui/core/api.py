@@ -17,7 +17,7 @@ from remoteobjects.http import userAgent
 
 from .conf import conf
 from . import fields
-from . import sort
+from . import sort, pagination
 from . import util
 from .. import __version__
 
@@ -403,8 +403,14 @@ class ObjectMixin(StrAndUnicode):
         for (k, v) in kwargs.iteritems():
             if k == "sortfield" and v in valid_fieldnames:
                 filters[k] = self.filterable_fields[v].api_filter_name
-            elif k == "sortdirection" and v in ["asc", "desc"]:
+            elif k == "sortdirection" and v in sort.DIRECTIONS:
                 filters[k] = v
+            elif k == "pagesize":
+                filters[k] = pagination.positive_integer(
+                    v, pagination.DEFAULT_PAGESIZE)
+            elif k == "pagenumber":
+                filters[k] = pagination.positive_integer(
+                    v, 1)
             elif k in valid_fieldnames:
                 filters[self.filterable_fields[k].api_filter_name] = v
 
@@ -535,6 +541,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         if outer_key is not None:
             data = data[outer_key][0]
             if outer_key == "ns1.searchResult":
+                self._totalResults = int(data["ns1.totalResults"])
                 data = data["ns1.%s" % self.api_name]
             try:
                 data = data["ns1.%s" % self.entryclass().api_name]
@@ -546,6 +553,13 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if not isinstance(data, list):
                 data = [data]
         return super(ListObject, self).update_from_dict(data)
+
+
+    @property
+    def totalResults(self):
+        if not self._delivered:
+            self.deliver()
+        return self._totalResults
 
 
     @classmethod
@@ -609,6 +623,16 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         if field is None:
             return self
         return self.filter(sortfield=field, sortdirection=direction)
+
+
+    def paginate(self, pagesize=None, pagenumber=None):
+        if pagesize == None and pagenumber == None:
+            return self
+
+        return self.filter(
+            pagesize=pagination.positive_integer(
+                pagesize, pagination.DEFAULT_PAGESIZE),
+            pagenumber=pagination.positive_integer(pagenumber, 1))
 
 
     def __unicode__(self):

@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..core import sort
+from ..core import sort, pagination
 from ..products.models import ProductList
 from ..testexecution.models import TestCycleList
 from ..users.decorators import login_redirect
@@ -17,12 +17,15 @@ def home(request):
 
 @login_redirect
 def testcycles(request):
+    pagesize, pagenum = pagination.from_request(request)
     cycles = TestCycleList.ours(auth=request.auth).sort(
-        *sort.from_request(request))
+        *sort.from_request(request)).paginate(
+        pagesize, pagenum)
+    paginator = pagination.Paginator(cycles.totalResults, pagesize, pagenum)
     return TemplateResponse(
         request,
         "manage/testcycle/cycles.html",
-        {"cycles": cycles}
+        {"cycles": cycles, "pager": paginator}
         )
 
 
