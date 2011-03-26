@@ -1,0 +1,117 @@
+{% extends 'manage/testcycle/base.html' %}
+
+{% block managecontent %}
+{# @@@ this id doesn't make sense for edit_form #}
+<section id="addcycle">
+  <h2>{% block formtitle %}{% endblock %}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <ul class="meta">
+      <li>
+        {{ form.name.errors }}
+        {{ form.name.label_tag }}
+        {{ form.name }}
+      </li>
+      <li>
+        {{ form.product.errors }}
+        {{ form.product.label_tag }}
+        {{ form.product }}
+      </li>
+      <li>
+        {{ form.description.errors }}
+        {{ form.description.label_tag }}
+        {{ form.description }}
+      </li>
+      <li class="date">
+        {{ form.start_date.errors }}
+        {{ form.start_date.label_tag }}
+        {{ form.start_date }}
+      </li>
+      <li class="date">
+        {{ form.end_date.errors }}
+        {{ form.end_date.label_tag }}
+        {{ form.end_date }}
+      </li>
+    </ul>
+
+    <div class="env">
+      <h3>Environment Constraints</h3>
+      {{ form.env_formset.management_form }}
+      <ul class="envlist">
+        {% for form in form.env_formset %}
+        {% include "manage/_env_form.html" %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    {% block midform %}{% endblock %}
+
+    {# @@@ activate user assignment #}
+    <div class="assignto">
+      <details class="userselect">
+        <summary>assign specific users to this test run &raquo;</summary>
+        <div>
+          <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for users to add"></p>
+          <div class="unselected">
+            <h3>available users</h3>
+            <nav class="listordering">
+              <ul>
+                <li><a href="#" class="nickname">username</a></li>
+                <li><a href="#" class="fn">name</a></li>
+              </ul>
+            </nav>
+            <ul class="select">
+              <li>
+                <input type="checkbox" name="user01" value="" id="user01">
+                <label for="user01" class="hcard">
+                  <span class="nickname">username</span>
+                  <span class="fn">First Last</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+          <div class="addremove">
+            <button class="add" title="add selected">add selected</button>
+            <button class="update" title="update all">update all</button>
+            <button class="remove" title="remove selected">&laquo; remove selected</button>
+          </div>
+          <div class="selected">
+            <h3>included users</h3>
+            <nav class="listordering">
+              <ul>
+                <li><a href="#" class="nickname">username</a></li>
+                <li><a href="#" class="fn">name</a></li>
+              </ul>
+            </nav>
+            <ul class="select">
+              <li>
+                <input type="checkbox" name="user06" value="" id="user06">
+                <label for="user06" class="hcard">
+                  <span class="nickname">username</span>
+                  <span class="fn">First Last</span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">save test cycle</button>
+    </div>
+
+  </form>
+
+</section>
+{% endblock managecontent %}
+
+{% block extrajs %}
+{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
+{% endblock %}
+
+{% block last %}
+<div style="display: none;">
+  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
+</div>
+{% endblock %}

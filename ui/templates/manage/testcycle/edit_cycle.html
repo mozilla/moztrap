@@ -1,0 +1,57 @@
+{% extends 'manage/testcycle/cycle_form.html' %}
+
+{% block crumb %}
+  {{ block.super }}
+  <li><a href="{% url manage_testcycle_edit cycle_id=cycle.id %}">edit {{ cycle.name }}</a></li>
+{% endblock crumb %}
+
+{% block formtitle %}{{ cycle.name }}{% endblock %}
+
+{% block midform %}
+  {# @@@ activate test run list #}
+    <table class="list">
+      <thead>
+        <tr class="listordering">
+          <th class="title"><a href="#">test runs</a></th>
+          <th class="start"><a href="#">start date</a></th>
+          <th class="end"><a href="#">end date</a></th>
+          <th class="state"><a href="#">status</a></th>
+          <th class="controls">controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="draft">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>draft</td>
+          <td class="controls">
+            <button title="delete">remove</button>
+          </td>
+        </tr>
+        <tr class="active">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>active</td>
+          <td class="controls">
+            <button title="delete">remove</button>
+          </td>
+        </tr>
+        <tr class="locked">
+          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
+          <td>2.24.2011</td>
+          <td>12.24.2011</td>
+          <td>locked</td>
+          <td class="controls">
+            <button title="delete">remove</button>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="addrun" colspan="5"><button>add test run &raquo;</button></td>
+        </tr>
+      </tfoot>
+    </table>
+{% endblock midform %}
