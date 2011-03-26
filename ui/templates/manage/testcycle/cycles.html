@@ -47,8 +47,7 @@
             <time class="start">{{ cycle.startDate|date:"Y/m/d" }}</time>
             <time class="end">{{ cycle.endDate|date:"Y/m/d" }}</time>
             <div class="controls">
-              {# @@@ activate editing #}
-              <a href="#" title="edit">edit</a>
+              <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
               <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
               {% if cycle.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
