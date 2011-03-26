@@ -54,12 +54,16 @@ class Paginator(object):
 
     @property
     def low(self):
-        return max(0, (self.pagesize * (self.pagenumber - 1)) + 1)
+        return self.constrain((self.pagesize * (self.pagenumber - 1)) + 1)
 
 
     @property
     def high(self):
-        return min(self.total, (self.pagesize * self.pagenumber))
+        return self.constrain(self.pagesize * self.pagenumber)
+
+
+    def constrain(self, num):
+        return min(self.total, max(0, num))
 
 
     @property
