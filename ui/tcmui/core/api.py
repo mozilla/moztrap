@@ -53,6 +53,7 @@ cachedUserAgent = CachedHttp()
 class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = False
+    _filterable_fields = None
 
 
     def __init__(self, **kwargs):
@@ -63,7 +64,6 @@ class ObjectMixin(StrAndUnicode):
         """
         super(ObjectMixin, self).__init__()
         self.auth = None
-        self._filterable_fields = None
         for k, v in kwargs.items():
             setattr(self, k, v)
 
@@ -378,13 +378,13 @@ class ObjectMixin(StrAndUnicode):
         return data
 
 
-    @property
-    def filterable_fields(self):
-        if self._filterable_fields is None:
-            self._filterable_fields = dict(
-                (n, f) for (n, f) in self.fields.iteritems()
+    @classmethod
+    def filterable_fields(cls):
+        if cls._filterable_fields is None:
+            cls._filterable_fields = dict(
+                (n, f) for (n, f) in cls.fields.iteritems()
                 if getattr(f, "api_filter_name", False))
-        return self._filterable_fields
+        return cls._filterable_fields
 
 
     def filter(self, **kwargs):
@@ -398,11 +398,11 @@ class ObjectMixin(StrAndUnicode):
         """
         auth = kwargs.pop("auth", self.auth)
 
-        valid_fieldnames = set(self.filterable_fields.keys())
+        valid_fieldnames = set(self.filterable_fields().keys())
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k == "sortfield" and v in valid_fieldnames:
-                filters[k] = self.filterable_fields[v].api_filter_name
+                filters[k] = self.filterable_fields()[v].api_filter_name
             elif k == "sortdirection" and v in sort.DIRECTIONS:
                 filters[k] = v
             elif k == "pagesize":
@@ -412,7 +412,7 @@ class ObjectMixin(StrAndUnicode):
                 filters[k] = pagination.positive_integer(
                     v, 1)
             elif k in valid_fieldnames:
-                filters[self.filterable_fields[k].api_filter_name] = v
+                filters[self.filterable_fields()[k].api_filter_name] = v
 
         newurl = util.add_to_querystring(self._location, **filters)
 
@@ -612,11 +612,9 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             yield obj
 
 
-    @property
-    def filterable_fields(self):
-        if self._filterable_fields is None:
-            self._filterable_fields = self.entryclass().filterable_fields
-        return self._filterable_fields
+    @classmethod
+    def filterable_fields(cls):
+        return cls.entryclass.filterable_fields()
 
 
     def sort(self, field, direction=sort.DEFAULT):
