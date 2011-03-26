@@ -4,6 +4,8 @@
 {% block bread %}{% endblock bread %}
 
 {% block content %}
+{% include "_messages.html" %}
+
 <section id="login">
   {% comment %}
     <figure class="logo"><img src="http://dummyimage.com/320x192/ccc/666&text=logo"></figure>
@@ -28,4 +30,4 @@
     </div>
   </form>
 </section>
-{% endblock %}
+{% endblock content %}

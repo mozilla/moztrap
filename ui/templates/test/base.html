@@ -41,3 +41,11 @@
   </details>
   {% endif %}
 {% endblock %}
+
+{% block content %}
+  {% include "_messages.html" %}
+
+  {% block testcontent %}
+  {% endblock %}
+
+{% endblock %}

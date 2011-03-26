@@ -4,3 +4,11 @@
   {{ block.super }}
   <li><a href="{% url login %}">login</a></li>
 {% endblock crumb %}
+
+{% block content %}
+  {% include "_messages.html" %}
+
+  {% block accountcontent %}
+  {% endblock %}
+
+{% endblock %}
