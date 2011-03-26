@@ -59,7 +59,7 @@ class FilterField(object):
         return sorted(
             [FilterOption(name=o[0], value=o[1], count=c)
              for (o, c) in self._options.iteritems()],
-            key=lambda fo: fo.count)
+            key=lambda fo: fo.count, reverse=True)
 
 
     def __repr__(self):
