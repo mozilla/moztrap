@@ -69,6 +69,11 @@ class AddEditForm(RemoteObjectForm):
                 this_map[obj.id] = obj
             self.fields[fname].choices = choices
 
+        for fname in self.no_edit_fields:
+            self.fields[fname].widget = ReadOnlyWidget()
+            if fname in self.model_choice_fields:
+                self.initial[fname] = unicode(self.model_choice_maps[fname][self.initial[fname]])
+
         self.create_formsets(*args, **initial_kwargs)
 
 
@@ -139,6 +144,7 @@ class AddEditForm(RemoteObjectForm):
         return self.cleaned_data
 
 
+
 class BareTextarea(forms.Textarea):
     """
     A Textarea with no rows or cols attributes.
@@ -147,3 +153,9 @@ class BareTextarea(forms.Textarea):
     def __init__(self, *args, **kwargs):
         super(BareTextarea, self).__init__(*args, **kwargs)
         self.attrs = {}
+
+
+
+class ReadOnlyWidget(forms.Widget):
+    def render(self, name, value, attrs=None):
+        return value
