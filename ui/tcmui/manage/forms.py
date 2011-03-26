@@ -44,6 +44,7 @@ class TestCycleForm(AddEditForm):
 
 
     def save(self):
-        self.env_formset.save(self.obj, self.obj.product.environmentgroups)
+        self.env_formset.save(
+            self.instance, self.instance.environmentgroups)
 
-        return self.obj
+        return self.instance

@@ -52,7 +52,7 @@ class AddEditForm(RemoteObjectForm):
         self.instance = kwargs.pop("instance", None)
         if self.instance is not None:
             initial = kwargs.setdefault("initial", {})
-            for fname in self.fields.iterkeys():
+            for fname in self.base_fields.iterkeys():
                 initial[fname] = getattr(
                     self.instance, self.form_to_model(fname))
                 if fname in self.model_choice_fields:
@@ -83,35 +83,60 @@ class AddEditForm(RemoteObjectForm):
             return self.edit_clean()
 
 
+    def prep_form_data(self, data, editing=False):
+        """
+        Takes a dictionary of form data and converts it to data ready for
+        assigning to a model.
+
+        If ``editing`` is True, ignore fields listed in ``no_edit_fields``.
+
+        """
+        obj_dict = {}
+        for fname, value in self.cleaned_data.iteritems():
+            if editing and fname in self.no_edit_fields:
+                continue
+            if fname in self.model_choice_maps:
+                value = self.model_choice_maps[fname][value]
+            obj_dict[self.form_to_model(fname)] = value
+        return obj_dict
+
+
+    def handle_error(self, e):
+        if e.response_error == "duplicate.name":
+            self._errors["name"] = self.error_class(
+                ["This name is already in use."])
+        else:
+            raise forms.ValidationError(
+                'Unknown conflict "%s"; please correct and try again.'
+                % e.response_error)
+
+
     def add_clean(self):
         required_field_names = set(self.required_fields.iterkeys())
         if all([k in self.cleaned_data for k in required_field_names]):
-            obj_dict = {}
-            for fname, value in self.cleaned_data.iteritems():
-                if fname in self.model_choice_maps:
-                    value = self.model_choice_maps[fname][value]
-                obj_dict[self.form_to_model(fname)] = value
 
-            obj = self.entryclass(**obj_dict)
+            obj = self.entryclass(**self.prep_form_data(self.cleaned_data))
 
             try:
                 self.listclass.get(auth=self.auth).post(obj)
             except self.listclass.Conflict, e:
-                if e.response_error == "duplicate.name":
-                    self._errors["name"] = self.error_class(
-                        ["This name is already in use."])
-                else:
-                    raise forms.ValidationError(
-                        'Unknown conflict "%s"; please correct and try again.'
-                        % e.response_error)
+                self.handle_error(e)
             else:
-                self.obj = obj
+                self.instance = obj
+
         return self.cleaned_data
 
 
     def edit_clean(self):
-        pass
+        for k, v in self.prep_form_data(
+            self.cleaned_data, editing=True).iteritems():
+            setattr(self.instance, k, v)
+        try:
+            self.instance.put()
+        except self.instance.Conflict, e:
+            self.handle_error(e)
 
+        return self.cleaned_data
 
 
 class BareTextarea(forms.Textarea):

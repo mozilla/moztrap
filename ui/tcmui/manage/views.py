@@ -76,7 +76,8 @@ def edit_testcycle(request, cycle_id):
     form = TestCycleForm(
         request.POST or None,
         instance=cycle,
-        products=ProductList.ours(auth=request.auth))
+        products=ProductList.ours(auth=request.auth),
+        auth=request.auth)
     if request.method == "POST":
         if form.is_valid():
             cycle = form.save()
