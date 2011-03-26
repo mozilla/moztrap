@@ -3,8 +3,6 @@
 {% load sort staticdata %}
 
 {% block managecontent %}
-{# @@@ <p class="message success">3 test cycles activated</p> #}
-{# @@@ <p class="message error">Cannot activate test cycle because X</p> #}
 
 <section id="managecycles">
   <h2>Manage Test Cycles</h2>
@@ -34,15 +32,14 @@
         <details>
           <summary class="header">
             <p class="status">
-              {# @@@ activate these #}
               {% if cycle.status.DRAFT %}
-              <button title="activate" class="draft">draft</button>
+              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
               {% endif %}
               {% if cycle.status.ACTIVE %}
-              <button title="lock" class="active">active</button>
+              <button title="lock" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
               {% endif %}
               {% if cycle.status.LOCKED %}
-              <button title="activate" class="locked">locked</button>
+              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
               {% endif %}
             </p>
             <h3 class="title">{{ cycle.name }}</h3>
@@ -50,10 +47,10 @@
             <time class="start">{{ cycle.startDate|date:"Y/m/d" }}</time>
             <time class="end">{{ cycle.endDate|date:"Y/m/d" }}</time>
             <div class="controls">
-              {# @@@ activate these #}
+              {# @@@ activate editing #}
               <a href="#" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
+              <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
+              <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
             </div>
           </summary>
           <div class="content">

@@ -17,6 +17,17 @@ def home(request):
 
 @login_redirect
 def testcycles(request):
+    if request.method == "POST":
+        actions = [(k, v) for k, v in request.POST.iteritems()
+                   if k.startswith("action-")]
+        if actions:
+            action, cycle_id = actions[0]
+            action = action[len("action-"):]
+            if action in ["activate", "deactivate", "delete", "clone"]:
+                cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+                getattr(cycle, action)()
+        return redirect(request.get_full_path())
+
     pagesize, pagenum = pagination.from_request(request)
     cycles = filters.filter(
         TestCycleList.ours(auth=request.auth).sort(

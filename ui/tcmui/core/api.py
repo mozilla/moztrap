@@ -633,6 +633,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             pagenumber=pagination.positive_integer(pagenumber, 1))
 
 
+    @classmethod
+    def get_by_id(cls, id_, **kwargs):
+        return cls.entryclass.get(join(cls.api_name, str(id_)), **kwargs)
+
+
     def __unicode__(self):
         return u"[%s]" % ", ".join([repr(e) for e in self])
 
