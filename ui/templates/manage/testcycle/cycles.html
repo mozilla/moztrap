@@ -50,7 +50,9 @@
               {# @@@ activate editing #}
               <a href="#" title="edit">edit</a>
               <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
+              {% if cycle.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
+              {% endif %}
             </div>
           </summary>
           <div class="content">

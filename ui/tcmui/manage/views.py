@@ -25,7 +25,14 @@ def testcycles(request):
             action = action[len("action-"):]
             if action in ["activate", "deactivate", "delete", "clone"]:
                 cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
-                getattr(cycle, action)()
+                try:
+                    getattr(cycle, action)()
+                except cycle.Conflict, e:
+                    if e.response_error == "deleting.used.entity":
+                        messages.error(
+                            request,
+                            'Cannot delete activated test cycle "%s."'
+                            % cycle.name)
         return redirect(request.get_full_path())
 
     pagesize, pagenum = pagination.from_request(request)
