@@ -37,6 +37,10 @@ class StatusValue(object):
                              % (self.__class__.__name__, attr))
 
 
+    def __str__(self):
+        return self.status.enumname
+
+
     def __repr__(self):
         return "<StatusValue: %s>" % repr(self.status)
 
@@ -92,8 +96,10 @@ class StaticData(Field):
 
 
     def encode(self, value):
+        if isinstance(value, StatusValue):
+            value = value.status
         try:
-            return value.id
-        except AttributeError:
+            return str(int(value))
+        except ValueError:
             pass
         return value

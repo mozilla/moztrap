@@ -98,21 +98,7 @@
 
     </section>
 
-    {# @@@ activate filtering #}
-    <nav class="listfilter">
-      <h3>Filters</h3>
-      <h4>Product</h4>
-      <ul>
-        <li><a href="#">Firefox</a></li>
-        <li><a href="#">Fennec</a></li>
-      </ul>
-      <h4>Status</h4>
-      <ul>
-        <li><a href="#">Active</a></li>
-        <li><a href="#">Draft</a></li>
-        <li><a href="#">Locked</a></li>
-      </ul>
-    </nav>
+    {% include "manage/_listfilter.html" with objs=cycles fields="status,product" %}
 
     {% include "manage/_listnav.html" %}
 

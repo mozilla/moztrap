@@ -9,9 +9,12 @@ def add_to_querystring(url, **kwargs):
 
     """
     parts = list(urlparse.urlparse(url))
-    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=True)
-    queryargs = dict([(k, v[0]) for k, v in queryargs.iteritems()])
+    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=False)
+    queryargs = dict((k, v[0]) for k, v in queryargs.iteritems())
     queryargs.update(kwargs)
+    # Remove any args we set to None
+    queryargs = dict((k, v) for k, v in queryargs.iteritems()
+                     if v is not None)
     parts[4] = urllib.urlencode(queryargs)
     return urlparse.urlunparse(parts)
 
