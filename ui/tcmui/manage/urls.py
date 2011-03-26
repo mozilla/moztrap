@@ -8,15 +8,11 @@ urlpatterns = patterns(
 
     # test cycles
     url("^testcycles/$", "testcycles", name="manage_testcycles"),
+    url("^testcycle/add/$", "add_testcycle", name="manage_testcycle_add"),
 )
 
 urlpatterns += patterns(
     "",
-    url("^testcycle/add/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testcycle/add_cycle.html"},
-        name="manage_testcycle_add"),
-
     # testruns direct-to-template
     url("^testruns/$",
         "django.views.generic.simple.direct_to_template",

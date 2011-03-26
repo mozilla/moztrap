@@ -12,6 +12,9 @@ from .auth import admin
 
 
 class Field(remoteobjects.fields.Field):
+    api_filter_name = None
+
+
     def __init__(self, api_name=None, default=None, api_submit_name=None):
         self.api_submit_name = api_submit_name
         super(Field, self).__init__(api_name, default)
@@ -22,6 +25,9 @@ class Field(remoteobjects.fields.Field):
 
         if self.api_submit_name is None:
             self.api_submit_name = self.api_name
+
+        if self.api_filter_name is None:
+            self.api_filter_name = self.api_name
 
         if not (self.api_name.startswith("ns1.") or
                 self.api_name.startswith("@")):
@@ -80,9 +86,11 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
 
         super(Locator, self).install(attrname, cls)
 
-        if auto_api_name:
+        if auto_api_name and not self.api_name.endswith("Locator"):
             self.api_name = "%sLocator" % self.api_name
-        if auto_submit_name:
+        if self.api_filter_name and not self.api_filter_name.endswith("Id"):
+            self.api_filter_name = "%sId" % self.api_filter_name
+        if auto_submit_name and not self.api_submit_name.endswith("Id"):
             self.api_submit_name = "%sId" % self.api_submit_name
 
 
@@ -112,6 +120,8 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
 
 
 class ResourceIdentity(Field):
+    api_filter_name = False
+
     def __init__(self):
         super(ResourceIdentity, self).__init__(api_name="resourceIdentity")
 
@@ -160,6 +170,9 @@ class Timeline(remoteobjects.dataobject.DataObject):
 
 
 class TimelineField(Field):
+    api_filter_name = False
+
+
     def __init__(self):
         super(TimelineField, self).__init__(
             api_name="timeline",

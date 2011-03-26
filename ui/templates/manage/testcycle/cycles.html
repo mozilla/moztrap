@@ -15,10 +15,10 @@
       <nav class="listordering">
         <ul>
           <li class="bytitle">
-            <a href="{{ request|sort_url:"title" }}" class="{{ request|sort_status:"title" }}">title</a>
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
           </li>
           <li class="byproduct">
-            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"productId" }}">product</a>
           </li>
           <li class="bystart">
             <a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a>
@@ -98,6 +98,7 @@
 
     </section>
 
+    {# @@@ activate filtering #}
     <nav class="listfilter">
       <h3>Filters</h3>
       <h4>Product</h4>
@@ -113,6 +114,7 @@
       </ul>
     </nav>
 
+    {# @@@ activate pagination #}
     <nav class="listnav">
       <p class="location">showing 21-40 of 700</p>
       <ul class="pagination">

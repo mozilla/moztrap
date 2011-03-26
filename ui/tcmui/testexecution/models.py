@@ -21,7 +21,8 @@ class TestCycle(Activatable, RemoteObject):
     product = fields.Locator(Product)
     name = fields.Field()
     description = fields.Field()
-    status = StaticData("TESTCYCLESTATUS", "testCycleStatusId")
+    status = StaticData(
+        "TESTCYCLESTATUS", "testCycleStatusId", api_submit_name=False)
     startDate = fields.Date()
     endDate = fields.Date()
 
@@ -72,7 +73,8 @@ class TestRun(Activatable, RemoteObject):
     testCycle = fields.Locator(TestCycle)
     name = fields.Field()
     description = fields.Field()
-    status = StaticData("TESTRUNSTATUS", "testRunStatusId")
+    status = StaticData(
+        "TESTRUNSTATUS", "testRunStatusId", api_submit_name=False)
     selfAssignAllowed = fields.Field()
     selfAssignLimit = fields.Field()
     selfAssignPerEnvironment = fields.Field()

@@ -2,51 +2,52 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="/manage/testcycle/add/">add test cycle</a></li>
+  <li><a href="{% url manage_testcycle_add %}">add test cycle</a></li>
 {% endblock crumb %}
 
 {% block managecontent %}
 <section id="addcycle">
   <h2>create a new test cycle</h2>
   <form method="POST">
+    {% csrf_token %}
     <ul class="meta">
       <li>
-        {# <ul class="errorlist"> #}
-        {#   <li>this field is required</li> #}
-        {# </ul> #}
-        <label for="name">name</label>
-        <input type="text" name="name" value="" id="name" required="required">
+        {{ form.name.errors }}
+        {{ form.name.label_tag }}
+        {{ form.name }}
       </li>
       <li>
-        {# <ul class="errorlist"> #}
-        {#   <li>this field is required</li> #}
-        {# </ul> #}
-        <label for="desc">description</label>
-        <textarea name="desc" required></textarea>
+        {{ form.product.errors }}
+        {{ form.product.label_tag }}
+        {{ form.product }}
+      </li>
+      <li>
+        {{ form.description.errors }}
+        {{ form.description.label_tag }}
+        {{ form.description }}
       </li>
       <li class="date">
-        {# <ul class="errorlist"> #}
-        {#   <li>this field is required</li> #}
-        {# </ul> #}
-        <label for="start">start date</label>
-        <input type="date" name="start" value="" id="start">
+        {{ form.start_date.errors }}
+        {{ form.start_date.label_tag }}
+        {{ form.start_date }}
       </li>
       <li class="date">
-        {# <ul class="errorlist"> #}
-        {#   <li>this field is required</li> #}
-        {# </ul> #}
-        <label for="end">end date</label>
-        <input type="date" name="end" value="" id="start">
+        {{ form.end_date.errors }}
+        {{ form.end_date.label_tag }}
+        {{ form.end_date }}
       </li>
     </ul>
 
     <div class="env">
-      {# @@@ this H3 should be unhidden by JS when there are constraints present #}
-      <h3 style="display:none;">Environment Constraints</h3>
-      {# @@@ start with 0 constraints shown, only the link to add. #}
-      <a href="#" class="addfields">add environment constraints »</a>
+      <h3>Environment Constraints</h3>
+      {{ form.env_formset.management_form }}
+      <ul class="envlist">
+        {% for form in form.env_formset %}
+        {% include "manage/_env_form.html" %}
+        {% endfor %}
+      </ul>
     </div>
-    
+
     <table class="list">
       <thead>
         <tr class="listordering">
@@ -92,7 +93,7 @@
         </tr>
       </tfoot>
     </table>
-    
+
     <div class="assignto">
       <p>
         <input type="checkbox" name="communal" value="" id="communal">
@@ -152,6 +153,16 @@
     </div>
 
   </form>
-    
+
 </section>
 {% endblock managecontent %}
+
+{% block extrajs %}
+{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
+{% endblock %}
+
+{% block last %}
+<div style="display: none;">
+  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
+</div>
+{% endblock %}

@@ -63,6 +63,7 @@ class ObjectMixin(StrAndUnicode):
         """
         super(ObjectMixin, self).__init__()
         self.auth = None
+        self._filterable_fields = None
         for k, v in kwargs.items():
             setattr(self, k, v)
 
@@ -377,15 +378,37 @@ class ObjectMixin(StrAndUnicode):
         return data
 
 
+    @property
+    def filterable_fields(self):
+        if self._filterable_fields is None:
+            self._filterable_fields = dict(
+                (n, f) for (n, f) in self.fields.iteritems()
+                if getattr(f, "api_filter_name", False))
+        return self._filterable_fields
+
+
     def filter(self, **kwargs):
         """
         Returns a new instance with filter parameters added as parameters to
         the instance's query string.
 
+        Resolves Python field names to correct API names, and ignores any
+        requested filters that don't map to an actual field.
+
         """
         auth = kwargs.pop("auth", self.auth)
 
-        newurl = util.add_to_querystring(self._location, **kwargs)
+        valid_fieldnames = set(self.filterable_fields.keys())
+        filters = {}
+        for (k, v) in kwargs.iteritems():
+            if k == "sortfield" and v in valid_fieldnames:
+                filters[k] = self.filterable_fields[v].api_filter_name
+            elif k == "sortdirection" and v in ["asc", "desc"]:
+                filters[k] = v
+            elif k in valid_fieldnames:
+                filters[self.filterable_fields[k].api_filter_name] = v
+
+        newurl = util.add_to_querystring(self._location, **filters)
 
         return self.get(newurl, auth=auth)
 
@@ -540,7 +563,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     @classmethod
     def ours(cls, **kwargs):
-        return cls.get(**kwargs).filter(companyId=conf.TCM_COMPANY_ID)
+        return cls.get(**kwargs).filter(company=conf.TCM_COMPANY_ID)
 
 
     @property
@@ -573,6 +596,13 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if isinstance(obj, RemoteObject):
                 obj.auth = self.auth
             yield obj
+
+
+    @property
+    def filterable_fields(self):
+        if self._filterable_fields is None:
+            self._filterable_fields = self.entryclass().filterable_fields
+        return self._filterable_fields
 
 
     def sort(self, field, direction=sort.DEFAULT):

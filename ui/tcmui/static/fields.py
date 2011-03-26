@@ -61,9 +61,11 @@ class StaticData(Field):
 
         super(StaticData, self).install(attrname, cls)
 
-        if auto_api_name:
+        if auto_api_name and not self.api_name.endswith("Id"):
             self.api_name = "%sId" % self.api_name
-        if auto_submit_name:
+        if self.api_filter_name and not self.api_filter_name.endswith("Id"):
+            self.api_filter_name = "%sId" % self.api_filter_name
+        if auto_submit_name and not self.api_submit_name.endswith("Id"):
             self.api_submit_name = "%sId" % self.api_submit_name
 
 
