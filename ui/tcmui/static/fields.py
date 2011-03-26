@@ -1,4 +1,5 @@
 from .data import get_codevalue
+from .models import CodeValue
 from .status import (TestResultStatus, TestCycleStatus, TestRunStatus,
                      UserStatus, TestCaseStatus, TestSuiteStatus,
                      ApprovalStatus)
@@ -98,8 +99,10 @@ class StaticData(Field):
     def encode(self, value):
         if isinstance(value, StatusValue):
             value = value.status
+        elif isinstance(value, CodeValue):
+            value = value.id
         try:
             return str(int(value))
-        except ValueError:
+        except (TypeError, ValueError):
             pass
         return value
