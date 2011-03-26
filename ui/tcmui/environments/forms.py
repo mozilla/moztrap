@@ -131,6 +131,10 @@ class EnvironmentConstraintForm(forms.Form):
 class BaseEnvironmentConstraintFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
         self.groups = kwargs.pop("groups")
+        self.instance = kwargs.pop("instance", None)
+        # @@@ how will env constraints be edited?
+        # if self.instance is not None:
+        #     initial = kwargs.setdefault("initial", [])
 
         super(BaseEnvironmentConstraintFormSet, self).__init__(*args, **kwargs)
 

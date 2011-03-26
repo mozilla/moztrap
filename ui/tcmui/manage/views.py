@@ -53,7 +53,8 @@ def testcycles(request):
 def add_testcycle(request):
     form = TestCycleForm(
         request.POST or None,
-        products=ProductList.ours(auth=request.auth))
+        products=ProductList.ours(auth=request.auth),
+        auth=request.auth)
     if request.method == "POST":
         if form.is_valid():
             cycle = form.save()
@@ -65,4 +66,29 @@ def add_testcycle(request):
         request,
         "manage/testcycle/add_cycle.html",
         {"form": form}
+        )
+
+
+
+@login_redirect
+def edit_testcycle(request, cycle_id):
+    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    form = TestCycleForm(
+        request.POST or None,
+        instance=cycle,
+        products=ProductList.ours(auth=request.auth))
+    if request.method == "POST":
+        if form.is_valid():
+            cycle = form.save()
+            messages.success(
+                request,
+                "The test cycle '%s' has been saved."  % cycle.name)
+            return redirect("manage_testcycles")
+    return TemplateResponse(
+        request,
+        "manage/testcycle/edit_cycle.html",
+        {
+            "form": form,
+            "cycle": cycle
+            }
         )

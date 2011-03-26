@@ -9,6 +9,7 @@ urlpatterns = patterns(
     # test cycles
     url("^testcycles/$", "testcycles", name="manage_testcycles"),
     url("^testcycle/add/$", "add_testcycle", name="manage_testcycle_add"),
+    url("^testcycle/(?P<cycle_id>\d+)/$", "edit_testcycle", name="manage_testcycle_edit"),
 )
 
 urlpatterns += patterns(
