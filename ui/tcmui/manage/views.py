@@ -8,7 +8,9 @@ from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
+from .decorators import handle_actions
 from .forms import TestCycleForm
+
 
 
 def home(request):
@@ -17,25 +19,8 @@ def home(request):
 
 
 @login_redirect
+@handle_actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
 def testcycles(request):
-    if request.method == "POST":
-        actions = [(k, v) for k, v in request.POST.iteritems()
-                   if k.startswith("action-")]
-        if actions:
-            action, cycle_id = actions[0]
-            action = action[len("action-"):]
-            if action in ["activate", "deactivate", "delete", "clone"]:
-                cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
-                try:
-                    getattr(cycle, action)()
-                except cycle.Conflict, e:
-                    if e.response_error == "deleting.used.entity":
-                        messages.error(
-                            request,
-                            'Cannot delete activated test cycle "%s."'
-                            % cycle.name)
-        return redirect(request.get_full_path())
-
     pagesize, pagenum = pagination.from_request(request)
     cycles = filters.filter(
         TestCycleList.ours(auth=request.auth).sort(
@@ -57,13 +42,12 @@ def add_testcycle(request):
         product_choices=ProductList.ours(auth=request.auth),
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
-    if request.method == "POST":
-        if form.is_valid():
-            cycle = form.save()
-            messages.success(
-                request,
-                "The test cycle '%s' has been created."  % cycle.name)
-            return redirect("manage_testcycles")
+    if request.method == "POST" and form.is_valid():
+        cycle = form.save()
+        messages.success(
+            request,
+            "The test cycle '%s' has been created."  % cycle.name)
+        return redirect("manage_testcycles")
     return TemplateResponse(
         request,
         "manage/testcycle/add_cycle.html",
@@ -73,6 +57,7 @@ def add_testcycle(request):
 
 
 @login_redirect
+@handle_actions(TestRunList, ["delete"])
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
@@ -81,29 +66,12 @@ def edit_testcycle(request, cycle_id):
         product_choices=ProductList.ours(auth=request.auth),
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
-    if request.method == "POST":
-        actions = [(k, v) for k, v in request.POST.iteritems()
-                   if k.startswith("action-")]
-        if actions:
-            action, run_id = actions[0]
-            action = action[len("action-"):]
-            if action in ["delete"]:
-                run = TestRunList.get_by_id(run_id, auth=request.auth)
-                try:
-                    getattr(run, action)()
-                except run.Conflict, e:
-                    if e.response_error == "deleting.used.entity":
-                        messages.error(
-                            request,
-                            'Cannot delete activated test run "%s."'
-                            % run.name)
-            return redirect(request.get_full_path())
-        if form.is_valid():
-            cycle = form.save()
-            messages.success(
-                request,
-                "The test cycle '%s' has been saved."  % cycle.name)
-            return redirect("manage_testcycles")
+    if request.method == "POST" and form.is_valid():
+        cycle = form.save()
+        messages.success(
+            request,
+            "The test cycle '%s' has been saved."  % cycle.name)
+        return redirect("manage_testcycles")
 
     testruns = TestRunList.ours(auth=request.auth).filter(
         testCycle=cycle.id).sort(
