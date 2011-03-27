@@ -12,6 +12,7 @@ class RemoteObjectForm(forms.Form):
 class AddEditForm(RemoteObjectForm):
     no_edit_fields = []
     field_mapping = {}
+    assign_later = []
     entryclass = None
     listclass = None
 
@@ -76,12 +77,25 @@ class AddEditForm(RemoteObjectForm):
 
     def clean(self):
         if self.instance is None:
-            return self.add_clean()
+            cleaned = self.add_clean()
+            editing = False
         else:
-            return self.edit_clean()
+            cleaned = self.edit_clean()
+            editing = True
+        if self.instance is not None:
+            try:
+                for fname, value in self.prep_assign_later_data(
+                    cleaned).iteritems():
+                    setattr(self.instance, fname, value)
+                    self.instance = self.instance.refresh()
+            except self.instance.Conflict, e:
+                if not editing:
+                    self.instance.delete()
+                self.handle_error(e)
+        return cleaned
 
 
-    def prep_form_data(self, data, editing=False):
+    def prep_form_data(self, data, editing=False, immediate=True):
         """
         Takes a dictionary of form data and converts it to data ready for
         assigning to a model.
@@ -90,11 +104,20 @@ class AddEditForm(RemoteObjectForm):
 
         """
         obj_dict = {}
-        for fname, value in self.cleaned_data.iteritems():
+        for fname, value in data.iteritems():
+            if immediate and fname in self.assign_later:
+                continue
             if editing and fname in self.no_edit_fields:
                 continue
             obj_dict[self.form_to_model(fname)] = value
         return obj_dict
+
+
+    def prep_assign_later_data(self, data, editing=False):
+        return self.prep_form_data(
+            dict((k, v) for k, v in data.iteritems() if k in self.assign_later),
+            editing=editing,
+            immediate=False)
 
 
     def handle_error(self, e):
@@ -257,3 +280,46 @@ class ModelChoiceField(forms.Field):
 
     def validate(self, value):
         return forms.Field.validate(self, value)
+
+
+class ModelMultipleChoiceField(ModelChoiceField):
+    widget = forms.SelectMultiple
+    hidden_widget = forms.MultipleHiddenInput
+    default_error_messages = {
+        "list": u"Enter a list of values.",
+        "invalid_choice": u"Select a valid choice. %s is not one of the"
+                            u" available choices.",
+    }
+
+    def __init__(self, cache_choices=False, required=True,
+                 widget=None, label=None, initial=None,
+                 help_text=None, *args, **kwargs):
+        super(ModelMultipleChoiceField, self).__init__(None,
+            cache_choices, required, widget, label, initial, help_text,
+            *args, **kwargs)
+
+    def clean(self, value):
+        if self.required and not value:
+            raise forms.ValidationError(self.error_messages["required"])
+        elif not self.required and not value:
+            return []
+        if not isinstance(value, (list, tuple)):
+            raise forms.ValidationError(self.error_messages["list"])
+
+        objs = []
+        for val in value:
+            try:
+                objs.append(self._obj_map[val])
+            except KeyError:
+                raise forms.ValidationError(
+                    self.error_messages["invalid_choice"] % val)
+        # Since this overrides the inherited ModelChoiceField.clean
+        # we run custom validators here
+        self.run_validators(value)
+        return objs
+
+    def prepare_value(self, value):
+        if hasattr(value, "entries"):
+            return [super(ModelMultipleChoiceField, self).prepare_value(v) for v
+                    in value]
+        return super(ModelMultipleChoiceField, self).prepare_value(value)

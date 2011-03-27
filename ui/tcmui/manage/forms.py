@@ -1,6 +1,6 @@
 import floppyforms as forms
 
-from ..core.forms import AddEditForm, BareTextarea, ModelChoiceField
+from ..core import forms as tcmforms
 from ..environments.forms import EnvironmentConstraintFormSet
 from ..environments.models import EnvironmentGroupList
 
@@ -8,19 +8,20 @@ from ..testexecution.models import TestCycle, TestCycleList
 
 
 
-class TestCycleForm(AddEditForm):
+class TestCycleForm(tcmforms.AddEditForm):
     name = forms.CharField()
-    description = forms.CharField(widget=BareTextarea)
-    product = ModelChoiceField()
+    description = forms.CharField(widget=tcmforms.BareTextarea)
+    product = tcmforms.ModelChoiceField()
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
+    team = tcmforms.ModelMultipleChoiceField(required=False)
 
 
     no_edit_fields = ["product"]
-    model_choice_fields = {"product": "products"}
     field_mapping = {
         "start_date": "startDate",
         "end_date": "endDate"}
+    assign_later = ["team"]
     entryclass = TestCycle
     listclass = TestCycleList
 

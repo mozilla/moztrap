@@ -31,7 +31,7 @@
           <td>{{ testrun.status }}</td>
           <td class="controls">
             {% if testrun.status.DRAFT %}
-            <button title="delete" type="submit" value="{{ cycle.id }}" name="action-delete">remove</button>
+            <button title="delete" type="submit" value="{{ testrun.id }}" name="action-delete">remove</button>
             {% endif %}
           </td>
         </tr>
