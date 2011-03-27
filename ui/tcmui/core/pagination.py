@@ -32,9 +32,10 @@ def pagenumber_url(url, pagenumber):
 
 
 
-class Paginator(object):
+class Pager(object):
     def __init__(self, total, pagesize, pagenumber):
-        self.total = total
+        self._total = total
+        self._cached_total = None
         self.pagesize = pagesize
         self.pagenumber = pagenumber
 
@@ -45,6 +46,16 @@ class Paginator(object):
 
     def pages(self):
         return xrange(1, self.num_pages + 1)
+
+
+    @property
+    def total(self):
+        if self._cached_total is None:
+            if callable(self._total):
+                self._cached_total = self._total()
+            else:
+                self._cached_total = self._total
+        return self._cached_total
 
 
     @property

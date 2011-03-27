@@ -3,11 +3,81 @@ from functools import wraps
 from django.contrib import messages
 from django.shortcuts import redirect
 
-from ..core import errors
+from ..core import pagination, filters, errors, sort as sort_util
 
 
 
-def handle_actions(list_model, allowed_actions, fall_through=False):
+def sort(ctx_name):
+    """
+    View decorator that handles sorting of a ListObject. Expects to find it
+    in the TemplateResponse context under the name ``ctx_name``.
+
+    This needs to not force delivery of the ListObject.
+
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            response = view_func(request, *args, **kwargs)
+            ctx = response.context_data
+            ctx[ctx_name] = ctx[ctx_name].sort(*sort_util.from_request(request))
+            return response
+
+        return _wrapped_view
+
+    return decorator
+
+
+
+def filter(ctx_name):
+    """
+    View decorator that handles filtering of a ListObject. Expects to find it
+    in the TemplateResponse context under the name ``ctx_name``.
+
+    This needs to not force delivery of the ListObject.
+
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            response = view_func(request, *args, **kwargs)
+            ctx = response.context_data
+            ctx[ctx_name] = filters.filter(ctx[ctx_name], request)
+            return response
+
+        return _wrapped_view
+
+    return decorator
+
+
+
+def paginate(ctx_name):
+    """
+    View decorator that handles pagination of a ListObject. Expects to find it
+    in the TemplateResponse context under the name ``ctx_name``.
+
+    This needs to not force delivery of the ListObject.
+
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            response = view_func(request, *args, **kwargs)
+            ctx = response.context_data
+            pagesize, pagenum = pagination.from_request(request)
+            ctx[ctx_name] = ctx[ctx_name].paginate(pagesize, pagenum)
+            # the lambda here makes Pager fetch the total result count
+            # lazily; another decorator might modify the result set yet.
+            ctx["pager"] = pagination.Pager(
+                lambda: ctx[ctx_name].totalResults, pagesize, pagenum)
+            return response
+
+        return _wrapped_view
+
+    return decorator
+
+
+def actions(list_model, allowed_actions, fall_through=False):
     """
     View decorator that handles any POST keys named "action-method", where
     "method" must be in ``allowed_actions``. The value of the key should be an
@@ -41,5 +111,7 @@ def handle_actions(list_model, allowed_actions, fall_through=False):
                 if action_taken or not fall_through:
                     return redirect(request.get_full_path())
             return view_func(request, *args, **kwargs)
+
         return _wrapped_view
+
     return decorator

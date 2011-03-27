@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..core import sort, pagination, filters
+from ..core import sort
 from ..products.models import ProductList
 from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
-from .decorators import handle_actions
+from . import decorators as dec
 from .forms import TestCycleForm
 
 
@@ -17,20 +17,16 @@ def home(request):
     return redirect("manage_testcycles")
 
 
-
 @login_redirect
-@handle_actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
+@dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
+@dec.filter("cycles")
+@dec.paginate("cycles")
+@dec.sort("cycles")
 def testcycles(request):
-    pagesize, pagenum = pagination.from_request(request)
-    cycles = filters.filter(
-        TestCycleList.ours(auth=request.auth).sort(
-        *sort.from_request(request)).paginate(
-        pagesize, pagenum), request)
-    paginator = pagination.Paginator(cycles.totalResults, pagesize, pagenum)
     return TemplateResponse(
         request,
         "manage/testcycle/cycles.html",
-        {"cycles": cycles, "pager": paginator}
+        {"cycles": TestCycleList.ours(auth=request.auth)}
         )
 
 
@@ -57,7 +53,7 @@ def add_testcycle(request):
 
 
 @login_redirect
-@handle_actions(TestRunList, ["delete"])
+@dec.actions(TestRunList, ["delete"])
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
