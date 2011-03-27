@@ -1,5 +1,7 @@
 {% extends 'manage/testcycle/cycle_form.html' %}
 
+{% load sort staticdata %}
+
 {% block crumb %}
   {{ block.super }}
   <li><a href="{% url manage_testcycle_edit cycle_id=cycle.id %}">edit {{ cycle.name }}</a></li>
@@ -8,49 +10,36 @@
 {% block formtitle %}Edit "{{ cycle.name }}"{% endblock %}
 
 {% block midform %}
-  {# @@@ activate test run list #}
     <table class="list">
       <thead>
         <tr class="listordering">
-          <th class="title"><a href="#">test runs</a></th>
-          <th class="start"><a href="#">start date</a></th>
-          <th class="end"><a href="#">end date</a></th>
-          <th class="state"><a href="#">status</a></th>
+          <th class="title">
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">test runs</a>
+          </th>
+          <th class="start"><a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a></th>
+          <th class="end"><a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a></th>
+          <th class="state"><a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a></th>
           <th class="controls">controls</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="draft">
-          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>draft</td>
+        {% for testrun in testruns %}
+        <tr class="{{ testrun.status|status_class }}">
+          <td class="title"><a href="{# @@@ url manage_testrun_edit run_id=testrun.id #}">{{ testrun.name }}</a></td>
+          <td>{{ testrun.startDate|date }}</td>
+          <td>{{ testrun.endDate|date }}</td>
+          <td>{{ testrun.status }}</td>
           <td class="controls">
-            <button title="delete">remove</button>
+            {% if testrun.status.DRAFT %}
+            <button title="delete" type="submit" value="{{ cycle.id }}" name="action-delete">remove</button>
+            {% endif %}
           </td>
         </tr>
-        <tr class="active">
-          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>active</td>
-          <td class="controls">
-            <button title="delete">remove</button>
-          </td>
-        </tr>
-        <tr class="locked">
-          <td class="title"><a href="/manage/testcycle/add/">Test Run Title</a></td>
-          <td>2.24.2011</td>
-          <td>12.24.2011</td>
-          <td>locked</td>
-          <td class="controls">
-            <button title="delete">remove</button>
-          </td>
-        </tr>
+        {% endfor %}
       </tbody>
       <tfoot>
         <tr>
-          <td class="addrun" colspan="5"><button>add test run &raquo;</button></td>
+          <td class="addrun" colspan="5"><a href="{# @@@ url manage_testrun_add #}">add test run &raquo;</a></td>
         </tr>
       </tfoot>
     </table>

@@ -4,7 +4,7 @@ from django.template.response import TemplateResponse
 
 from ..core import sort, pagination, filters
 from ..products.models import ProductList
-from ..testexecution.models import TestCycleList
+from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 
 from .forms import TestCycleForm
@@ -85,11 +85,17 @@ def edit_testcycle(request, cycle_id):
                 request,
                 "The test cycle '%s' has been saved."  % cycle.name)
             return redirect("manage_testcycles")
+
+    testruns = TestRunList.ours(auth=request.auth).filter(
+        testCycle=cycle.id).sort(
+        *sort.from_request(request))
+
     return TemplateResponse(
         request,
         "manage/testcycle/edit_cycle.html",
         {
             "form": form,
-            "cycle": cycle
+            "cycle": cycle,
+            "testruns": testruns,
             }
         )
