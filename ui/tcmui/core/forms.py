@@ -101,6 +101,10 @@ class AddEditForm(RemoteObjectForm):
         if e.response_error == "duplicate.name":
             self._errors["name"] = self.error_class(
                 ["This name is already in use."])
+        elif e.response_error == "changing.used.entity":
+            raise forms.ValidationError(
+                "This object is in use and cannot be modified."
+                )
         else:
             raise forms.ValidationError(
                 'Unknown conflict "%s"; please correct and try again.'
