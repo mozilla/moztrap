@@ -26,13 +26,13 @@ class TestCycleForm(AddEditForm):
 
 
     def create_formsets(self, *args, **kwargs):
+        if self.instance is None:
+            possible_groups = EnvironmentGroupList.ours(auth=self.auth)
+        else:
+            possible_groups = self.instance.product.environmentgroups
         self.env_formset = EnvironmentConstraintFormSet(
             *args,
-            **dict(
-                kwargs,
-                groups=EnvironmentGroupList.ours(auth=self.auth),
-                prefix="environments"
-            )
+            **dict(kwargs, groups=possible_groups, prefix="environments")
         )
 
 
@@ -45,6 +45,6 @@ class TestCycleForm(AddEditForm):
 
     def save(self):
         self.env_formset.save(
-            self.instance, self.instance.environmentgroups)
+            self.instance, self.instance.product.environmentgroups)
 
         return self.instance

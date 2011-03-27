@@ -18,6 +18,23 @@ def by_type(environments):
 
 
 
+def environments_of(groups):
+    """
+    Given an iterable of environment groups, break it down into a dictionary
+    mapping an (environmentType.id, environmentType.name) tuple to a set of
+    (environment.id, environment.name) tuples.
+
+    """
+    types = {}
+    for group in groups:
+        for env in group.environments:
+            et = env.environmentType
+            envs = types.setdefault((et.id, et.name), set())
+            envs.add((env.id, env.name))
+    return types
+
+
+
 def match(testenvs, matchenvs):
     """
     Return True if the given iterable of ``testenvs`` matches the given

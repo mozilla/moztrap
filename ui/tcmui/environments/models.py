@@ -109,8 +109,6 @@ HashableEnvironment = namedtuple("HashableEnvironment", ["name", "typename"])
 
 
 class EnvironmentGroupList(ListObject):
-    cache = True
-
     entryclass = EnvironmentGroup
     api_name = "environmentgroups"
     default_url = "environmentgroups"

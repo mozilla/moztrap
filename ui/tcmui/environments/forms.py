@@ -4,6 +4,7 @@ import floppyforms as forms
 
 from ..core.util import id_for_object
 
+from .util import environments_of
 
 
 class EnvironmentSelectionForm(forms.Form):
@@ -93,35 +94,39 @@ class EnvironmentConstraintForm(forms.Form):
 
 
     def __init__(self, *args, **kwargs):
-        groups = kwargs.pop("groups")
+        # If filtered is set to False, will not filter
+        filtered = kwargs.pop("filtered", True)
+        # map of (et.id, et.name) to set of (env.id, env.name)
+        environments = kwargs.pop("environments")
 
         super(EnvironmentConstraintForm, self).__init__(*args, **kwargs)
 
         # contains (envtype.id, envtype.name) tuples
-        types = set()
-        # contains (envtype.id:env.id, env.name) tuples
-        environments = set()
-
-        for group in groups:
-            for env in group.environments:
-                et = env.environmentType
-                types.add((et.id, et.name))
-                environments.add(((et.id, env.id), env.name))
+        types = set(environments.iterkeys())
+        # contains ((envtype.id, env.id), env.name) tuples
+        choices = set()
+        for (etid, etname), envs in environments.iteritems():
+            for (envid, envname) in envs:
+                choices.add(((etid, envid), envname))
 
         k = lambda x: x[1]
 
         self.fields["env_type"].choices = sorted(types, key=k)
         self.fields["env_type"].widget.attrs["class"] = "env_type"
 
-        # Filter the list of environments to only those relevant to the
-        # selected environment type, if form is bound.
-        if self.is_bound:
-            etid = self.data.get(self.add_prefix("env_type"), None)
+        # Filter the list of choices to only those relevant to the
+        # selected environment type.
+        if filtered:
+            etid = self.data.get(
+                self.add_prefix("env_type"),
+                self.initial.get(
+                    "env_type",
+                    self.fields["env_type"].choices[0][0]))
             if etid is not None:
-                environments = (e for e in environments if e[0][0] == etid)
+                choices = (c for c in choices if c[0][0] == etid)
 
         self.fields["environments"].choices = sorted(
-            ((":".join(e[0]), e[1]) for e in environments),
+            ((":".join(c[0]), c[1]) for c in choices),
             key=k)
         self.fields["environments"].widget.attrs["size"] = 5
         self.fields["environments"].widget.attrs["class"] = "environments"
@@ -130,17 +135,34 @@ class EnvironmentConstraintForm(forms.Form):
 
 class BaseEnvironmentConstraintFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
-        self.groups = kwargs.pop("groups")
+        # map of (et.id, et.name) to set of (env.id, env.name)
+        self.environments = environments_of(kwargs.pop("groups"))
         self.instance = kwargs.pop("instance", None)
-        # @@@ how will env constraints be edited?
-        # if self.instance is not None:
-        #     initial = kwargs.setdefault("initial", [])
+        if self.instance is not None:
+            initial = kwargs.setdefault("initial", [])
+            narrowed = environments_of(self.instance.environmentgroups)
+            # reconstruct previously selected constraints from difference
+            # between candidate environments and actual (narrowed)
+            for et, envs in self.environments.iteritems():
+                diff = envs.difference(narrowed[et])
+                if diff:
+                    selected = envs.difference(diff)
+                    initial.append(
+                        {
+                            "env_type": et[0],
+                            "environments": [
+                                "%s:%s" % (et[0], env[0])
+                                for env in selected
+                                ]
+                            })
 
         super(BaseEnvironmentConstraintFormSet, self).__init__(*args, **kwargs)
 
 
     def _get_empty_form(self, **kwargs):
-        kwargs["groups"] = self.groups
+        kwargs["environments"] = self.environments
+        # the template form needs all options; no filtering.
+        kwargs["filtered"] = False
         # @@@ work around http://code.djangoproject.com/ticket/15349
         kwargs["data"] = None
         kwargs["files"] = None
@@ -150,7 +172,7 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
 
 
     def _construct_form(self, i, **kwargs):
-        kwargs["groups"] = self.groups
+        kwargs["environments"] = self.environments
         return super(BaseEnvironmentConstraintFormSet, self)._construct_form(
             i, **kwargs)
 
@@ -183,5 +205,6 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
 
 EnvironmentConstraintFormSet = formset_factory(
     EnvironmentConstraintForm,
-    formset=BaseEnvironmentConstraintFormSet
+    formset=BaseEnvironmentConstraintFormSet,
+    extra=0
     )
