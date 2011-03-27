@@ -53,7 +53,7 @@ def testcycles(request):
 def add_testcycle(request):
     form = TestCycleForm(
         request.POST or None,
-        products=ProductList.ours(auth=request.auth),
+        product_choices=ProductList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST":
         if form.is_valid():
@@ -76,7 +76,7 @@ def edit_testcycle(request, cycle_id):
     form = TestCycleForm(
         request.POST or None,
         instance=cycle,
-        products=ProductList.ours(auth=request.auth),
+        product_choices=ProductList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST":
         if form.is_valid():

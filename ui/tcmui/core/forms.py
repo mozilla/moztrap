@@ -1,3 +1,5 @@
+from django.utils.safestring import mark_safe
+
 import floppyforms as forms
 
 
@@ -9,7 +11,6 @@ class RemoteObjectForm(forms.Form):
 
 class AddEditForm(RemoteObjectForm):
     no_edit_fields = []
-    model_choice_fields = {}
     field_mapping = {}
     entryclass = None
     listclass = None
@@ -42,8 +43,9 @@ class AddEditForm(RemoteObjectForm):
 
     def __init__(self, *args, **kwargs):
         model_choices = {}
-        for fname, kwargname in self.model_choice_fields.iteritems():
-            model_choices[fname] = kwargs.pop(kwargname)
+        for fname, field in self.base_fields.iteritems():
+            if hasattr(field, "obj_list"):
+                model_choices[fname] = kwargs.pop("%s_choices" % fname)
 
         self.auth = kwargs.pop("auth")
 
@@ -55,24 +57,15 @@ class AddEditForm(RemoteObjectForm):
             for fname in self.base_fields.iterkeys():
                 initial[fname] = getattr(
                     self.instance, self.form_to_model(fname))
-                if fname in self.model_choice_fields:
-                    initial[fname] = initial[fname].id
 
         super(RemoteObjectForm, self).__init__(*args, **kwargs)
 
-        self.model_choice_maps = {}
-        for fname, model_list in model_choices.iteritems():
-            choices = []
-            this_map = self.model_choice_maps.setdefault(fname, {})
-            for obj in model_list:
-                choices.append((obj.id, obj.name))
-                this_map[obj.id] = obj
-            self.fields[fname].choices = choices
+        if self.instance is not None:
+            for fname in self.no_edit_fields:
+                self.fields[fname].widget = ReadOnlyWidget()
 
-        for fname in self.no_edit_fields:
-            self.fields[fname].widget = ReadOnlyWidget()
-            if fname in self.model_choice_fields:
-                self.initial[fname] = unicode(self.model_choice_maps[fname][self.initial[fname]])
+        for fname, model_list in model_choices.iteritems():
+            self.fields[fname].obj_list = model_list
 
         self.create_formsets(*args, **initial_kwargs)
 
@@ -100,8 +93,6 @@ class AddEditForm(RemoteObjectForm):
         for fname, value in self.cleaned_data.iteritems():
             if editing and fname in self.no_edit_fields:
                 continue
-            if fname in self.model_choice_maps:
-                value = self.model_choice_maps[fname][value]
             obj_dict[self.form_to_model(fname)] = value
         return obj_dict
 
@@ -158,4 +149,107 @@ class BareTextarea(forms.Textarea):
 
 class ReadOnlyWidget(forms.Widget):
     def render(self, name, value, attrs=None):
+        # If choices is set, use the display label
+        displayed = dict(getattr(self, "choices", [])).get(value, value)
+        return mark_safe(
+            displayed + forms.HiddenInput().render(name, value, attrs))
+
+
+
+class ModelChoiceIterator(object):
+    def __init__(self, field):
+        self.field = field
+        self.obj_list = field.obj_list
+
+    def __iter__(self):
+        if self.field.empty_label is not None:
+            yield (u"", self.field.empty_label)
+        if self.field.cache_choices:
+            if self.field.choice_cache is None:
+                self.field.choice_cache = [
+                    self.choice(obj) for obj in self.obj_list
+                ]
+            for choice in self.field.choice_cache:
+                yield choice
+        else:
+            for obj in self.obj_list:
+                yield self.choice(obj)
+
+    def __len__(self):
+        return len(self.obj_list)
+
+    def choice(self, obj):
+        return (self.field.prepare_value(obj),
+                self.field.label_from_instance(obj))
+
+
+
+class ModelChoiceField(forms.Field):
+    widget = forms.Select
+
+    default_error_messages = {
+        "invalid_choice": u"Select a valid choice. That choice is not one of"
+                          u" the available choices.",
+    }
+
+    def __init__(self, empty_label=u"---------", cache_choices=False,
+                 required=True, widget=None, label=None, initial=None,
+                 help_text=None, *args, **kwargs):
+        if required and (initial is not None):
+            self.empty_label = None
+        else:
+            self.empty_label = empty_label
+        self.cache_choices = cache_choices
+
+        super(ModelChoiceField, self).__init__(
+            required, widget, label, initial, help_text, *args, **kwargs)
+
+        self.obj_list = []
+        self.choice_cache = None
+
+    def _get_obj_list(self):
+        return self._obj_list
+
+    def _set_obj_list(self, obj_list):
+        self._obj_list = obj_list
+        self._obj_map = {}
+        for obj in obj_list:
+            self._obj_map[obj.id] = obj
+        self.widget.choices = self.choices
+
+    obj_list = property(_get_obj_list, _set_obj_list)
+
+    def label_from_instance(self, obj):
+        return unicode(obj)
+
+    def _get_choices(self):
+        # If self._choices is set, then somebody must have manually set
+        # the property self.choices. In this case, just return self._choices.
+        if hasattr(self, "_choices"):
+            return self._choices
+
+        # Otherwise, iterate over self.obj_list to determine the choices
+        # dynamically. Return a fresh ModelChoiceIterator that has not been
+        # consumed. This construct might look complicated but it allows for
+        # lazy evaluation of the object list.
+        return ModelChoiceIterator(self)
+
+    choices = property(_get_choices, forms.ChoiceField._set_choices)
+
+    def prepare_value(self, value):
+        try:
+            return value.id
+        except AttributeError:
+            return super(ModelChoiceField, self).prepare_value(value)
+
+    def to_python(self, value):
+        if value in [None, "", [], (), {}]:
+            return None
+        try:
+            value = self._obj_map[value]
+        except KeyError:
+            raise forms.ValidationError(self.error_messages['invalid_choice'])
         return value
+
+    def validate(self, value):
+        return forms.Field.validate(self, value)

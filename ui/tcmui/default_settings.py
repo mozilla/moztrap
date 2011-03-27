@@ -32,11 +32,11 @@ LANGUAGE_CODE = "en-us"
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = True
+USE_L10N = False
 
 # Absolute path to the directory that holds static files.
 # Example: "/home/media/media.lawrence.com/static/"
@@ -91,6 +91,8 @@ TEMPLATE_DIRS = [
     # Don"t forget to use absolute paths, not relative paths.
     join(BASE_PATH, "templates"),
 ]
+
+DATE_FORMAT = "m/d/Y"
 
 INSTALLED_APPS = [
     "django.contrib.sessions",

@@ -44,8 +44,8 @@
             </p>
             <h3 class="title">{{ cycle.name }}</h3>
             <p class="product">{{ cycle.product.name }}</p>
-            <time class="start">{{ cycle.startDate|date:"Y/m/d" }}</time>
-            <time class="end">{{ cycle.endDate|date:"Y/m/d" }}</time>
+            <time class="start">{{ cycle.startDate|date }}</time>
+            <time class="end">{{ cycle.endDate|date }}</time>
             <div class="controls">
               <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
               <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
@@ -59,7 +59,7 @@
             <div class="description">
               <h4 class="byline hcard">
                 Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ cycle.timeline.createDate|date:"Y/m/d" }}</time>
+                on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
               </h4>
 
               <p>{{ cycle.description }}</p>

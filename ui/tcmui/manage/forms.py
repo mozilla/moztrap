@@ -1,6 +1,6 @@
 import floppyforms as forms
 
-from ..core.forms import AddEditForm, BareTextarea
+from ..core.forms import AddEditForm, BareTextarea, ModelChoiceField
 from ..environments.forms import EnvironmentConstraintFormSet
 from ..environments.models import EnvironmentGroupList
 
@@ -11,7 +11,7 @@ from ..testexecution.models import TestCycle, TestCycleList
 class TestCycleForm(AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=BareTextarea)
-    product = forms.ChoiceField(choices=[])
+    product = ModelChoiceField()
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
 

@@ -5,7 +5,7 @@
   <li><a href="{% url manage_testcycle_edit cycle_id=cycle.id %}">edit {{ cycle.name }}</a></li>
 {% endblock crumb %}
 
-{% block formtitle %}{{ cycle.name }}{% endblock %}
+{% block formtitle %}Edit "{{ cycle.name }}"{% endblock %}
 
 {% block midform %}
   {# @@@ activate test run list #}

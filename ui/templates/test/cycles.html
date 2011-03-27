@@ -35,8 +35,8 @@
               {{ cycle.name }}
             </a>
           </td>
-          <td>{{ cycle.startDate|date:"Y/m/d" }}</td>
-          <td>{{ cycle.endDate|date:"Y/m/d" }}</td>
+          <td>{{ cycle.startDate|date }}</td>
+          <td>{{ cycle.endDate|date }}</td>
         </tr>
         {% endfor %}
         {% if split.unmatched %}
