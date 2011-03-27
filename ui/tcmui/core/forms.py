@@ -2,6 +2,8 @@ from django.utils.safestring import mark_safe
 
 import floppyforms as forms
 
+from . import errors
+
 
 
 class RemoteObjectForm(forms.Form):
@@ -120,18 +122,14 @@ class AddEditForm(RemoteObjectForm):
             immediate=False)
 
 
-    def handle_error(self, e):
-        if e.response_error == "duplicate.name":
-            self._errors["name"] = self.error_class(
-                ["This name is already in use."])
-        elif e.response_error == "changing.used.entity":
-            raise forms.ValidationError(
-                "This object is in use and cannot be modified."
-                )
-        else:
-            raise forms.ValidationError(
-                'Unknown conflict "%s"; please correct and try again.'
-                % e.response_error)
+    def handle_error(self, err):
+        message, fields = errors.error_message_and_fields(err)
+        for fname in fields:
+            if fname in self.fields:
+                self._errors[fname] = self.error_class(
+                    [message])
+            else:
+                raise forms.ValidationError(message)
 
 
     def add_clean(self):
