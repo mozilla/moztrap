@@ -18,7 +18,7 @@ def filter(list_obj, request):
 
 
 def filter_url(url, field, value=None):
-    return add_to_querystring(url, **{field: value})
+    return add_to_querystring(url, **{field: value, "pagenumber": 1})
 
 
 
