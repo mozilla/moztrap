@@ -14,6 +14,8 @@ from ..static.fields import StaticData
 
 
 class Permission(RemoteObject):
+    cache = True
+
     assignable = fields.Field()
     name = fields.Field()
     permissionCode = fields.Field()
@@ -25,6 +27,8 @@ class Permission(RemoteObject):
 
 
 class PermissionList(ListObject):
+    cache = True
+
     entryclass = Permission
     api_name = "permissions"
     default_url = "users/permissions"
@@ -34,6 +38,8 @@ class PermissionList(ListObject):
 
 
 class Role(RemoteObject):
+    cache = True
+
     company = fields.Locator(Company)
     name = fields.Field()
 
@@ -58,6 +64,8 @@ class Role(RemoteObject):
 
 
 class RoleList(ListObject):
+    cache = True
+
     entryclass = Role
     api_name = "roles"
     default_url = "users/roles"
@@ -67,6 +75,8 @@ class RoleList(ListObject):
 
 
 class User(Activatable, RemoteObject):
+    cache = True
+
     company = fields.Locator(Company)
     email = fields.Field()
     firstName = fields.Field()
