@@ -19,9 +19,6 @@
           <li class="byproduct">
             <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
           </li>
-          <li class="byversion">
-            <a href="{{ request|sort_url:"majorVersion" }}" class="{{ request|sort_status:"majorVersion" }}">version</a>
-          </li>
         </ul>
       </nav>
 
@@ -37,23 +34,22 @@
               </span>
               {% endif %}
               {% if case.approval.REJECTED %}
-              <button title="approve" class="rejected">rejected</button>
+              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
               {% endif %}
               {% if case.approval.APPROVED %}
               {% if case.status.DRAFT %}
-              <button title="activate" class="draft">draft</button>
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
               {% endif %}
               {% if case.status.ACTIVE %}
-              <button title="lock" class="active">active</button>
+              <button title="lock" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
               {% endif %}
               {% if case.status.LOCKED %}
-              <button title="activate" class="locked">locked</button>
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">locked</button>
               {% endif %}
               {% endif %}
             </p>
             <h3 class="title">{{ case.name }}</h3>
             <p class="product">{{ case.product }}</p>
-            <p class="version">{{ case.majorVersion }}.{{ case.minorVersion }}</p>
             <div class="controls">
               {% if case.status.DRAFT %}
               <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
@@ -100,7 +96,7 @@
       {% endfor %}
     </section>
 
-    {% include "manage/_listfilter.html" with objs=cases fields="status,product" %}
+    {% include "manage/_listfilter.html" with objs=cases fields="approval,status,product" %}
 
     {% include "manage/_listnav.html" %}
 
