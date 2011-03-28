@@ -39,7 +39,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td class="addrun" colspan="5"><a href="{# @@@ url manage_testrun_add #}">add test run &raquo;</a></td>
+          <td class="addrun" colspan="5"><a href="{% url manage_testrun_add %}?cycle={{ cycle.id }}">add test run &raquo;</a></td>
         </tr>
       </tfoot>
     </table>

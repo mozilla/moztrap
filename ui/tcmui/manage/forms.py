@@ -38,7 +38,7 @@ class TestRunForm(EnvConstrainedAddEditForm):
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
     team = tcmforms.ModelMultipleChoiceField(required=False)
-    # @@@ test suites
+    suites = tcmforms.ModelMultipleChoiceField(required=False)
 
 
     no_edit_fields = ["test_cycle"]
@@ -46,7 +46,7 @@ class TestRunForm(EnvConstrainedAddEditForm):
         "test_cycle": "testCycle",
         "start_date": "startDate",
         "end_date": "endDate"}
-    assign_later = ["team"]
+    assign_later = ["team", "suites"]
     entryclass = TestRun
     listclass = TestRunList
     parent_name = "testCycle"
