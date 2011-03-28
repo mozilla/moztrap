@@ -67,8 +67,7 @@
       <ul>
           <li class="test"><a {% if request.user %}href="{% url products %}"{% endif %} class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
         {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
-          {# @@@ href and text of the manage tab are dependant on permissions. #}
-          <li class="manage"><a href="/manage/" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
+          <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
         {% endif %}
         {% comment %}
           <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
