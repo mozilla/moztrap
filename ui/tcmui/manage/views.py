@@ -55,13 +55,13 @@ def add_testcycle(request):
 
 
 @login_redirect
-@dec.actions(TestRunList, ["delete"])
+@dec.actions(TestRunList, ["delete"], fall_through=True)
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
         request.POST or None,
         instance=cycle,
-        product_choices=ProductList.ours(auth=request.auth),
+        product_choices=[cycle.product],
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
@@ -267,7 +267,7 @@ def edit_testcase(request, case_id):
     form = TestCaseForm(
         request.POST or None,
         instance=case,
-        product_choices=ProductList.ours(auth=request.auth),
+        product_choices=[case.product],
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         case = form.save()
