@@ -1,0 +1,82 @@
+{% extends 'manage/testcase/base.html' %}
+
+{% block managecontent %}
+<section id="addcase">
+  <h2>{% block formtitle %}{% endblock %}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <ul class="meta">
+      <li>
+        {{ form.name.errors }}
+        {{ form.name.label_tag }}
+        {{ form.name }}
+      </li>
+      <li>
+        {{ form.product.errors }}
+        {{ form.product.label_tag }}
+        {{ form.product }}
+      </li>
+      {% comment %} @@@
+      <li>
+        {{ form.tags.errors }}
+        {{ form.tags.label_tag }}
+        {{ form.tags }}
+      </li>
+      {% endcomment %}
+    </ul>
+
+    <div class="env">
+      <h3>Environment Constraints</h3>
+      {{ form.env_formset.management_form }}
+      <ul class="envlist">
+        {% for form in form.env_formset %}
+        {% include "manage/_env_form.html" %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="steps">
+      {{ form.steps_formset.management_form }}
+      <ol class="steplist">
+        {% for form in form.steps_formset %}
+        {% include "manage/testcase/_step_form.html" %}
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">save test case</button>
+    </div>
+
+  </form>
+</section>
+{% endblock managecontent %}
+
+{% block extrajs %}
+{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
+<script>
+  $(
+      function() {
+          $('ol.steplist').formset(
+              {
+                  prefix: '{{ form.steps_formset.prefix }}',
+                  formTemplate: '#empty-step-form > li',
+                  formSelector: '.steps-form',
+                  deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                  addLink: '<a class="addfields" href="javascript:void(0)">add a step »</a>',
+              });
+          // can't remove the first step
+          $('ol.steplist .removefields').eq(0).remove();
+      });
+
+</script>
+{% endblock %}
+
+{% block last %}
+<div style="display: none;">
+  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
+  <ul id="empty-step-form" class="empty-form">
+    {% include "manage/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,9 +1,12 @@
+from django.forms.formsets import formset_factory, BaseFormSet
+
 import floppyforms as forms
 
 from ..core import forms as tcmforms
 from ..environments.forms import EnvironmentConstraintFormSet
 from ..environments.models import EnvironmentGroupList
 
+from ..testcases.models import TestCaseVersion, TestCaseList, TestCaseStep
 from ..testexecution.models import TestCycle, TestCycleList
 
 
@@ -49,3 +52,131 @@ class TestCycleForm(tcmforms.AddEditForm):
             self.instance, self.instance.product.environmentgroups)
 
         return self.instance
+
+
+
+class TestCaseForm(tcmforms.AddEditForm):
+    name = forms.CharField()
+    product = tcmforms.ModelChoiceField()
+    # @@@ tags = forms.CharField(required=False)
+
+
+    no_edit_fields = ["name", "product"]
+    entryclass = TestCaseVersion
+    listclass = TestCaseList
+    extra_creation_data = {
+        "maxAttachmentSizeInMbytes": 0,
+        "maxNumberOfAttachments": 0,
+        "description": ""
+        }
+
+    def create_formsets(self, *args, **kwargs):
+        self.steps_formset = StepFormSet(
+            *args, **dict(kwargs, prefix="steps"))
+
+        if self.instance is None:
+            possible_groups = EnvironmentGroupList.ours(auth=self.auth)
+        else:
+            possible_groups = self.instance.product.environmentgroups
+        self.env_formset = EnvironmentConstraintFormSet(
+            *args,
+            **dict(kwargs, groups=possible_groups, prefix="environments")
+        )
+
+
+    def is_valid(self):
+        return (
+            self.steps_formset.is_valid() and
+            self.env_formset.is_valid() and
+            super(TestCaseForm, self).is_valid()
+            )
+
+
+    def save(self):
+        self.steps_formset.save(self.instance)
+        self.env_formset.save(
+            self.instance, self.instance.product.environmentgroups)
+
+        return self.instance
+
+
+
+class StepForm(forms.Form):
+    instruction = forms.CharField(widget=tcmforms.BareTextarea)
+    expected_result = forms.CharField(widget=tcmforms.BareTextarea)
+
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop("instance", None)
+        if self.instance is not None:
+            initial = kwargs.setdefault("initial", {})
+            initial["instruction"] = self.instance.instruction
+            initial["expected_result"] = self.instance.expectedResult
+
+        super(StepForm, self).__init__(*args, **kwargs)
+        self.empty_permitted = False
+
+
+    def save(self, testcaseversion, stepnumber):
+        info = dict(
+            instruction=self.cleaned_data["instruction"],
+            expectedResult=self.cleaned_data["expected_result"],
+            stepNumber=stepnumber,
+            )
+
+        if self.instance is not None:
+            for k, v in info.iteritems():
+                setattr(self.instance, k, v)
+            self.instance.put()
+        else:
+            step = TestCaseStep(
+                **dict(
+                    info,
+                    name="step %s" % stepnumber, # @@@
+                    testCaseVersion=testcaseversion,
+                    estimatedTimeInMin=0 # @@@
+                    ))
+
+            testcaseversion.steps.post(step)
+
+
+
+class BaseStepFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.pop("instance", None)
+        if instance is not None:
+            self.instances = list(instance.steps)
+            # just need the initial data to trigger form creation, StepForm
+            # will handle actually filling in the data.
+            kwargs["initial"] = [{} for i in self.instances]
+            self.extra = 0
+        else:
+            self.instances = []
+
+        super(BaseStepFormSet, self).__init__(*args, **kwargs)
+
+
+    def save(self, testcaseversion):
+        for i, form in enumerate(self.forms):
+            form.save(testcaseversion, i + 1)
+        for extra_step in self.instances[i+1:]:
+            extra_step.delete()
+
+
+    def _construct_form(self, i, **kwargs):
+        try:
+            kwargs["instance"] = self.instances[i]
+        except:
+            pass
+        return super(BaseStepFormSet, self)._construct_form(i, **kwargs)
+
+
+    def _get_empty_form(self, **kwargs):
+        # work around http://code.djangoproject.com/ticket/15349
+        kwargs["data"] = None
+        kwargs["files"] = None
+        return super(BaseStepFormSet, self)._get_empty_form(**kwargs)
+    empty_form = property(_get_empty_form)
+
+
+
+StepFormSet = formset_factory(StepForm, formset=BaseStepFormSet)

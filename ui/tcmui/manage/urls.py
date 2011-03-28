@@ -10,6 +10,12 @@ urlpatterns = patterns(
     url("^testcycles/$", "testcycles", name="manage_testcycles"),
     url("^testcycle/add/$", "add_testcycle", name="manage_testcycle_add"),
     url("^testcycle/(?P<cycle_id>\d+)/$", "edit_testcycle", name="manage_testcycle_edit"),
+
+
+    # test cases
+    url("^testcases/$", "testcases", name="manage_testcases"),
+    url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
+    url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 )
 
 urlpatterns += patterns(
@@ -29,17 +35,4 @@ urlpatterns += patterns(
     url("^testsuite/add/$",
         "django.views.generic.simple.direct_to_template",
         {"template": "manage/testsuite/add_suite.html"}),
-
-    # testcases direct-to-template
-    url("^testcases/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testcase/cases.html"}),
-)
-
-
-urlpatterns += patterns(
-    "",
-    url("^testcase/add/$",
-        "tcmui.testcases.views.add_testcase",
-        name="manage_testcase_add"),
 )

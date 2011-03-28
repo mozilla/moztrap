@@ -1,43 +1,73 @@
 {% extends 'manage/testcase/base.html' %}
 
+{% load sort staticdata %}
+
 {% block managecontent %}
+
 <section id="managecases">
-  <h2>manage test cases</h2>
-  <a href="/manage/testcase/add/" class="create">create a test case</a>
-  <form>
+  <h2>Manage Test Cases</h2>
+  <a href="{% url manage_testcase_add %}" class="create">create a test case</a>
+  <form method="POST">
+    {% csrf_token %}
 
     <section class="managelist">
       <nav class="listordering">
         <ul>
-          <li class="bytitle"><a href="#">title</a></li>
-          <li class="byproduct"><a href="#">product</a></li>
-          <li class="byversion"><a href="#">version</a></th>
+          <li class="bytitle">
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+          </li>
+          <li class="byproduct">
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+          <li class="byversion">
+            <a href="{{ request|sort_url:"majorVersion" }}" class="{{ request|sort_status:"majorVersion" }}">version</a>
+          </li>
         </ul>
       </nav>
-      <article id="unique-slug-id01" class="item pending">
+
+      {% for case in cases %}
+      <article id="case-id-{{ case.id }}" class="item {{ case.status|status_class }}">
         <details>
           <summary class="header">
             <p class="status">
+              {% if case.approval.PENDING %}
               <span class="pending">
-                <button title="approve">approve</button>
-                <button title="reject">reject</button>
+                <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
+                <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
               </span>
+              {% endif %}
+              {% if case.approval.REJECTED %}
+              <button title="approve" class="rejected">rejected</button>
+              {% endif %}
+              {% if case.approval.APPROVED %}
+              {% if case.status.DRAFT %}
+              <button title="activate" class="draft">draft</button>
+              {% endif %}
+              {% if case.status.ACTIVE %}
+              <button title="lock" class="active">active</button>
+              {% endif %}
+              {% if case.status.LOCKED %}
+              <button title="activate" class="locked">locked</button>
+              {% endif %}
+              {% endif %}
             </p>
-            <h3 class="title">Test Case Name</h3>
-            <p class="product">Firefox</p>
-            <p class="version">2.24</p>
+            <h3 class="title">{{ case.name }}</h3>
+            <p class="product">{{ case.product }}</p>
+            <p class="version">{{ case.majorVersion }}.{{ case.minorVersion }}</p>
             <div class="controls">
-              <a href="/manage/testcase/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
+              {% if case.status.DRAFT %}
+              <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
+              <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
+              {% endif %}
             </div>
           </summary>
           <div class="content">
-            <p class="id">#3456</p>
+            <p class="id">#{{ case.testCaseId }}</p>
             <h4 class="byline hcard">
-              Created by <span class="fn">Eric Meyer</span>
-              on <time pubdate>12.28.2010</time>
+              Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
+              on <time pubdate>{{ case.timeline.createDate|date }}</time>
             </h4>
+            {% comment %} @@@
             <div class="tags">
               <h4>tags</h4>
               <ul>
@@ -47,224 +77,32 @@
                 <li>tag 04</li>
               </ul>
             </div>
+            {% endcomment %}
             <div class="environments">
               <h4>environments</h4>
               <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
+                {% regroup case.environmentgroups.environments by typename as type_list %}
+                {% for type in type_list %}
+                <li>
+                  <h5>{{ type.grouper }}</h5>
+                  <ul>
+                    {% for env in type.list %}
+                    <li>{{ env.name }}</li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% endfor %}
               </ul>
             </div>
           </div>
         </details>
       </article>
-      <article id="unique-slug-id01" class="item rejected">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="approve" class="rejected">rejected</button></p>
-            <h3 class="title">Test Case Name</h3>
-            <p class="product">Firefox</p>
-            <p class="version">2.24</p>
-            <div class="controls">
-              <a href="/manage/testcase/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <h4 class="byline hcard">
-              Created by <span class="fn">Eric Meyer</span>
-              on <time pubdate>12.28.2010</time>
-            </h4>
-            <div class="tags">
-              <h4>tags</h4>
-              <ul>
-                <li>tag 01</li>
-                <li>tag 02</li>
-                <li>tag 03</li>
-                <li>tag 04</li>
-              </ul>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
-      <article id="unique-slug-id01" class="item draft">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="activate" class="draft">draft</button></p>
-            <h3 class="title">Test Case Name</h3>
-            <p class="product">Firefox</p>
-            <p class="version">2.24</p>
-            <div class="controls">
-              <a href="/manage/testcase/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <h4 class="byline hcard">
-              Created by <span class="fn">Eric Meyer</span>
-              on <time pubdate>12.28.2010</time>
-            </h4>
-            <div class="tags">
-              <h4>tags</h4>
-              <ul>
-                <li>tag 01</li>
-                <li>tag 02</li>
-                <li>tag 03</li>
-                <li>tag 04</li>
-              </ul>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
-      <article id="unique-slug-id01" class="item active">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="lock" class="active">active</button></p>
-            <h3 class="title">Test Case Name</h3>
-            <p class="product">Fennec</p>
-            <p class="version">0.3</p>
-            <div class="controls">
-              <a href="/manage/testcase/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
-
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
-      <article id="unique-slug-id01" class="item locked">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="activate" class="locked">locked</button></p>
-            <h3 class="title">Test Case Name</h3>
-            <p class="product">Firefox</p>
-            <p class="version">4.0</p>
-            <div class="controls">
-              <a href="/manage/testcase/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
-
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                <li>tester 01</li>
-                <li>tester 02</li>
-                <li>tester 03</li>
-                <li>tester 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
+      {% endfor %}
     </section>
 
-    <nav class="listfilter">
-      <h3>Filters</h3>
-      <h4>Product</h4>
-      <ul>
-        <li><a href="#">Firefox</a></li>
-        <li><a href="#">Fennec</a></li>
-      </ul>
-      <h4>Status</h4>
-      <ul>
-        <li><a href="#">Active</a></li>
-        <li><a href="#">Draft</a></li>
-        <li><a href="#">Locked</a></li>
-        <li><a href="#">Pending Approval</a></li>
-        <li><a href="#">Rejected</a></li>
-      </ul>
-    </nav>
+    {% include "manage/_listfilter.html" with objs=cases fields="status,product" %}
 
-    <nav class="listnav">
-      <p class="location">showing 21-40 of 700</p>
-      <ul class="pagination">
-        <li><a href="?page=3" class="prev">&laquo; previous</a> </li>
-        <li><a href="?page=1" class="page">1</a></li>
-        <li><span class="current page">2</span> </li>
-        <li><a href="?page=3" class="page">3</a> </li>
-        <li><a href="?page=3" class="next">next &raquo;</a> </li>
-      </ul>
-      <div class="perpage">
-        <strong>cases per page:</strong>
-        <ul>
-          <li><a href="#">10</a></li>
-          <li><span href="#" class="current">20</span></li>
-          <li><a href="#">50</a></li>
-          <li><a href="#">100</a></li>
-        </ul>
-      </div>
-    </nav>
+    {% include "manage/_listnav.html" %}
 
   </form>
 </section>
