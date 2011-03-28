@@ -518,12 +518,18 @@ class ProductModel(BaseModel):
         do_post("%s/%s/components" % (self.root_path, product_id),
                 params)
 
-    def add_environmentgroups(self, product_name, envgrp_ids):
-        product_id, version = self.get_resid(product_name)
-        do_put("%s/%s/environments" % (self.root_path, product_id),
-               params ={"environmentGroupIds": envgrp_ids,
-                        "originalVersionId": version})
+    def add_environmentgroups(self, tcm_name, envgrp_ids):
+        tcm_id, version = self.get_resid(tcm_name)
 
+        do_put("%s/%s/environmentgroups" % (self.root_path, tcm_id),
+               {"environmentGroupIds": envgrp_ids,
+                "originalVersionId": version})
+
+
+    def get_environmentgroup_list(self, tcm_id):
+        return self.get_list_from_endpoint("%s/%s/environmentgroups" % (self.root_path,
+                                                                        tcm_id),
+                                           "environmentgroup")
 
 class CountryModel(BaseModel):
     def __init__(self):

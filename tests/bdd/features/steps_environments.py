@@ -226,6 +226,18 @@ def add_envgroups_to_testcycle(step, stored_testcycle, testcycle_name):
 
     testcycleModel.add_environmentgroups(testcycle_name, envgrp_ids)
 
+@step(u'add the following environmentgroups to the product with (that name|name "(.*)")')
+def add_envgroups_to_product(step, stored_product, product_name):
+    productModel = ProductModel()
+    product_name = productModel.get_stored_or_store_name(stored_product, product_name)
+
+    envgrp_ids = []
+    for envgrp in step.hashes:
+        envgrp_id = EnvironmentgroupModel().get_resid(envgrp["name"])[0]
+        envgrp_ids.append(envgrp_id)
+
+    productModel.add_environmentgroups(product_name, envgrp_ids)
+
 
 @step(u'(that testrun|the testrun with name "(.*)") has the following environmentgroups')
 def testrun_has_environments(step, stored_testrun, testrun_name):

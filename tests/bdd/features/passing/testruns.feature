@@ -374,6 +374,38 @@ Feature: Test Runs
             | EnvGrp3 |
             | EnvGrp4 |
 
+    Scenario: Ensure environmentgroups added to testrun are not added to parent testcycle
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        When I create the following new testcycles:
+            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
+        And when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
+        And I create a new environmenttype with name "EnvType1"
+        And I create a new environment with name "Env1" of type "EnvType1"
+        And I create a new group environmenttype with name "GrpEnvType1"
+        And I create the following new environmentgroups
+            | name     | description  | environmenttype name |
+            | EnvGrp1 | group1       | GrpEnvType1          |
+            | EnvGrp2 | group2       | GrpEnvType1          |
+            | EnvGrp3 | group3       | GrpEnvType1          |
+            | EnvGrp4 | group4       | GrpEnvType1          |
+        And I add the following environmentgroups to the testrun with name "Running Man":
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+            | EnvGrp3 |
+            | EnvGrp4 |
+        Then the testrun with name "Running Man" has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+            | EnvGrp3 |
+            | EnvGrp4 |
+        Then the testcycle with name "Baroque Cycle" has no environmentgroups
+
+
     Scenario: Add team members to a Testrun
         Given I create the seed company and product with these names:
             | company name    | product name  |
@@ -513,7 +545,7 @@ Feature: Test Runs
             | Joe Tester |
         Then the testrun with name "Running Man" has the following team members:
 
-Scenario: Retest a completed testrun
+Scenario: Testrun results have environment after being run
         Given I create the seed company and product with these names:
             | company name    | product name  |
             | Massive Dynamic | Cortexiphan   |
@@ -612,3 +644,45 @@ Scenario: Retest a completed testrun
         Then the following testcases have the following environments for that testrun
             | name               | environment |
             | Passing tc         | Env1        |
+
+    Scenario: Ensure environmentgroups set on Testrun don't modify parent Testcycle environmentgroups
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        And I create a new environmenttype with name "EnvType1"
+        And I create a new environment with name "Env1" of type "EnvType1"
+        And I create a new group environmenttype with name "GrpEnvType1"
+        And I create the following new environmentgroups
+            | name     | description  | environmenttype name |
+            | EnvGrp1 | group1       | GrpEnvType1          |
+            | EnvGrp2 | group2       | GrpEnvType1          |
+        And I add the following environmentgroups to the product with name "Cortexiphan":
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+        Then the product with name "Cortexiphan" has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+        When I create the following new testcycles:
+            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
+        And when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
+        And the testrun with name "Running Man" has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+        And when I add the following environmentgroups to the testrun with name "Running Man":
+            | name    |
+            | EnvGrp1 |
+        Then that testrun has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+        And the testcycle with name "Baroque Cycle" has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |
+        And the product with name "Cortexiphan" has the following environmentgroups:
+            | name    |
+            | EnvGrp1 |
+            | EnvGrp2 |

@@ -3,10 +3,12 @@
 Created on Jan 28, 2011
 @author: camerondawson
 '''
-from features.models import CompanyModel, ProductModel, EnvironmentModel,\
+from features.models import CompanyModel, ProductModel, EnvironmentModel, \
     EnvironmentgroupModel
-from features.tcm_data_helper import get_stored_or_store_name
-from features.tcm_request_helper import do_post, do_delete
+from features.tcm_data_helper import get_stored_or_store_name, eq_list_length, \
+    verify_single_item_in_list
+from features.tcm_request_helper import do_post, do_delete, \
+    get_resource_identity
 from lettuce import step, world
 
 
@@ -89,4 +91,25 @@ def product_foo_has_environment_bar(step, product_name, haveness, envgrp_name):
 
     productModel.verify_has_environmentgroup(product_name, envgrp_name, expect_to_find)
 
+@step(u'(that product|the product with name "(.*)") has (no|the following) environmentgroups')
+def product_has_environmentgroups(step, stored_product, product_name, expect_any):
+    productModel = ProductModel()
+    product = productModel.get_stored_or_store_obj(stored_product, product_name)
+    product_id = get_resource_identity(product)[0]
+
+    # get the list of testcases for this product
+    envgrp_list = productModel.get_environmentgroup_list(product_id)
+
+    # this checks that the lengths match.  The expect_any holder is not used, but it allows for
+    # alternate wording in the step.
+    eq_list_length(envgrp_list, step.hashes)
+
+    # walk through and verify that each testcase has the expected status
+    for envgrp in step.hashes:
+        # find that in the list of testcases
+        exp_name = envgrp["name"]
+
+        verify_single_item_in_list(envgrp_list,
+                                   "name",
+                                   exp_name)
 

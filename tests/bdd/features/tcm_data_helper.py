@@ -49,7 +49,7 @@ def eq_(act, exp, msg):
 def eq_list_length(act_list, exp_list):
     assert len(act_list) == len(exp_list), \
         "Expect same number of values in these lists:\nExpected:\n%s\n\nActual:\n%s" % \
-        (exp_list, act_list)
+        (jstr(exp_list), jstr(act_list))
 
 def compare_dicts_by_keys(exp, act, keys):
     '''

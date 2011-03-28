@@ -86,6 +86,8 @@ def testcycle_has_summary_counts(step, stored_testcycle, testcycle_name):
     # get the list of testcases for this testcycle
     summary_list = testcycleModel.get_summary_list(testcycle_id)
 
+    eq_list_length(summary_list, step.hashes)
+
     # walk through and verify that each testcase has the expected status
     for category in step.hashes:
         # find that in the list of testcases
@@ -103,14 +105,18 @@ def approve_all_results_for_testcycle(step, stored_testcycle, testcycle_name):
 
     testcycleModel.approve_all_results(testcycle)
 
-@step(u'(that testcycle|the testcycle with name "(.*)") has the following environmentgroups')
-def testcycle_has_environmentgroups(step, stored_testcycle, testcycle_name):
+@step(u'(that testcycle|the testcycle with name "(.*)") has (no|the following) environmentgroups')
+def testcycle_has_environmentgroups(step, stored_testcycle, testcycle_name, expect_any):
     testcycleModel = TestcycleModel()
     testcycle = testcycleModel.get_stored_or_store_obj(stored_testcycle, testcycle_name)
     testcycle_id = get_resource_identity(testcycle)[0]
 
     # get the list of testcases for this testcycle
     envgrp_list = testcycleModel.get_environmentgroup_list(testcycle_id)
+
+    # this checks that the lengths match.  The expect_any holder is not used, but it allows for
+    # alternate wording in the step.
+    eq_list_length(envgrp_list, step.hashes)
 
     # walk through and verify that each testcase has the expected status
     for envgrp in step.hashes:
@@ -121,14 +127,16 @@ def testcycle_has_environmentgroups(step, stored_testcycle, testcycle_name):
                                    "name",
                                    exp_name)
 
-@step(u'(that testcycle|the testcycle with name "(.*)") has the following testruns')
-def testcycle_has_testruns(step, stored_testcycle, testcycle_name):
+@step(u'(that testcycle|the testcycle with name "(.*)") has (no|the following) testruns')
+def testcycle_has_testruns(step, stored_testcycle, testcycle_name, expect_any):
     testcycleModel = TestcycleModel()
     testcycle = testcycleModel.get_stored_or_store_obj(stored_testcycle, testcycle_name)
     testcycle_id = get_resource_identity(testcycle)[0]
 
     # get the list of testcases for this testcycle
     testrun_list = testcycleModel.get_testrun_list(testcycle_id)
+
+    eq_list_length(testrun_list, step.hashes)
 
     # walk through and verify that each testcase has the expected status
     for testrun in step.hashes:
@@ -153,8 +161,8 @@ def add_users_to_testcycle(step, stored, testcycle_name):
     testcycleModel.add_team_members(testcycle_name, user_ids)
 
 
-@step(u'(that testcycle|the testcycle with name "(.*)") has the following team members')
-def testcycle_has_team_members(step, stored_testcycle, testcycle_name):
+@step(u'(that testcycle|the testcycle with name "(.*)") has (no|the following) team members')
+def testcycle_has_team_members(step, stored_testcycle, testcycle_name, expect_any):
     testcycleModel = TestcycleModel()
     testcycle = testcycleModel.get_stored_or_store_obj(stored_testcycle, testcycle_name)
     testcycle_id = get_resource_identity(testcycle)[0]
@@ -162,9 +170,6 @@ def testcycle_has_team_members(step, stored_testcycle, testcycle_name):
     teammember_list = testcycleModel.get_team_members_list(testcycle_id)
 
     eq_list_length(teammember_list, step.hashes)
-#    assert len(teammember_list) == len(step.hashes), \
-#        "Expect same number of values in these lists:\nExpected:\n%s\n\nActual:\n%s" % \
-#        (step.hashes, teammember_list)
 
     for teammember in step.hashes:
         names = teammember["name"].split()
