@@ -53,7 +53,8 @@ class AddEditForm(RemoteObjectForm):
 
         self.auth = kwargs.pop("auth")
 
-        initial_kwargs = kwargs.copy()
+        formset_kwargs = kwargs.copy()
+        formset_kwargs.pop("initial", None)
 
         self.instance = kwargs.pop("instance", None)
         if self.instance is not None:
@@ -71,7 +72,7 @@ class AddEditForm(RemoteObjectForm):
         for fname, model_list in model_choices.iteritems():
             self.fields[fname].obj_list = model_list
 
-        self.create_formsets(*args, **initial_kwargs)
+        self.create_formsets(*args, **formset_kwargs)
 
 
     def create_formsets(self, *args, **kwargs):
