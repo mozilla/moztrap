@@ -127,6 +127,13 @@ ADMINS = [
         "email": "admin@example.com",
         "password": "testpw",
         },
+    {
+        "firstName": "Other",
+        "lastName": "Admin",
+        "screenName": "other",
+        "email": "other@example.com",
+        "password": "testpw",
+        },
     ]
 
 
