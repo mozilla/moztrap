@@ -21,9 +21,9 @@ class RunCase(Tag):
 
     def render_tag(self, context, includedtestcase, user, environments):
         assignments = TestCaseAssignmentList.get(auth=user.auth).filter(
-            testCaseVersionId=includedtestcase.testCaseVersion.id,
-            testRunId=includedtestcase.testRun.id,
-            testerId=user.id)
+            testCaseVersion=includedtestcase.testCaseVersion.id,
+            testRun=includedtestcase.testRun.id,
+            tester=user.id)
         if len(assignments):
             assignment = assignments[0]
         else:

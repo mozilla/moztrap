@@ -18,7 +18,7 @@ def cycles(request, product_id):
     product = Product.get("products/%s" % product_id, auth=request.auth)
 
     cycles = TestCycleList.get(auth=request.auth).filter(
-        productId=product_id, testCycleStatusId=TestCycleStatus.ACTIVE).sort(
+        product=product_id, status=int(TestCycleStatus.ACTIVE)).sort(
         *sort.from_request(request))
 
     return TemplateResponse(
@@ -36,8 +36,8 @@ def testruns(request, cycle_id):
     cycle = TestCycle.get("testcycles/%s" % cycle_id, auth=request.auth)
 
     testruns = TestRunList.get(auth=request.auth).filter(
-        testCycleId=cycle_id,
-        testRunStatusId=TestRunStatus.ACTIVE,
+        testCycle=cycle_id,
+        status=int(TestRunStatus.ACTIVE),
         selfAssignAllowed=True,
         ).sort(
         *sort.from_request(request))
