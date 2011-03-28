@@ -61,10 +61,12 @@ class TestSuiteForm(EnvConstrainedAddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
     product = tcmforms.ModelChoiceField()
-    # @@@ test cases
+    cases = tcmforms.ModelMultipleChoiceField(
+        required=False, label_from_instance=lambda c: c.name)
 
 
     no_edit_fields = ["product"]
+    assign_later = ["cases"]
     entryclass = TestSuite
     listclass = TestSuiteList
     parent_name = "product"

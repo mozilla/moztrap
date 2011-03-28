@@ -230,6 +230,9 @@ class ModelChoiceField(forms.Field):
             self.empty_label = empty_label
         self.cache_choices = cache_choices
 
+        self.custom_label_from_instance = kwargs.pop(
+            "label_from_instance", None)
+
         super(ModelChoiceField, self).__init__(
             required, widget, label, initial, help_text, *args, **kwargs)
 
@@ -249,6 +252,8 @@ class ModelChoiceField(forms.Field):
     obj_list = property(_get_obj_list, _set_obj_list)
 
     def label_from_instance(self, obj):
+        if self.custom_label_from_instance is not None:
+            return self.custom_label_from_instance(obj)
         return unicode(obj)
 
     def _get_choices(self):

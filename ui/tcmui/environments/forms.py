@@ -200,9 +200,18 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
                 if valid:
                     valid_group_ids.add(group.id)
 
-            owner.environmentgroups = valid_group_ids
+            self.set_environment_groups(owner, valid_group_ids)
         elif self.instance is not None:
-            owner.environmentgroups = validgroups
+            self.set_environment_groups(owner, validgroups)
+
+
+    def set_environment_groups(self, owner, groups):
+        try:
+            owner.environmentgroups = groups
+        except EnvironmentGroupList.Conflict, e:
+            if e.response_error != "unsupported.environment.selection":
+                raise
+            # @@@ platform always gives u.e.s on test suite with cases
 
 
 

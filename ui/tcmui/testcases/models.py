@@ -163,6 +163,28 @@ class TestSuite(Activatable, RemoteObject):
             **kwargs)
 
 
+    def _get_cases(self):
+        return TestCaseVersionList(
+            entries=[
+                itc.testCaseVersion for itc in
+                self.includedtestcases.sort("runOrder")])
+
+
+    def _set_cases(self, cases):
+        existing = dict(
+            (itc.testCaseVersion.id, itc) for itc in self.includedtestcases)
+        for case in cases:
+            if case.id not in existing:
+                self.addcase(case)
+            else:
+                del existing[case.id]
+        for itc in existing.itervalues():
+            itc.delete()
+
+
+    cases = property(_get_cases, _set_cases)
+
+
     def clone(self, **kwargs):
         obj = self.__class__()
         self._post(
