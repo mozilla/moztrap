@@ -11,7 +11,7 @@ MESSAGES = {
     "activating.incomplete.entity": (
         {
             "TestSuite": "Test suite is empty; add some test cases.",
-            "TestRun": "Unlock parent test cycle first.",
+            "TestRun": "Activate or unlock parent test cycle first.",
          },
         []),
     }
