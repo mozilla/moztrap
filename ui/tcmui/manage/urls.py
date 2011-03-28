@@ -11,6 +11,10 @@ urlpatterns = patterns(
     url("^testcycle/add/$", "add_testcycle", name="manage_testcycle_add"),
     url("^testcycle/(?P<cycle_id>\d+)/$", "edit_testcycle", name="manage_testcycle_edit"),
 
+    # test runs
+    url("^testruns/$", "testruns", name="manage_testruns"),
+    url("^testrun/add/$", "add_testrun", name="manage_testrun_add"),
+    url("^testrun/(?P<run_id>\d+)/$", "edit_testrun", name="manage_testrun_edit"),
 
     # test cases
     url("^testcases/$", "testcases", name="manage_testcases"),

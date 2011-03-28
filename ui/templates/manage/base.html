@@ -15,7 +15,7 @@
       {% endif %}
 
       {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
-      <li><a href="{# @@@ url manage_testruns #}" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
+      <li><a href="{% url manage_testruns %}" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
       {% endif %}
 
       {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}

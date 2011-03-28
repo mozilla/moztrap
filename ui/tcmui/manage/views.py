@@ -10,7 +10,7 @@ from ..users.decorators import login_redirect
 from ..users.models import UserList
 
 from . import decorators as dec
-from .forms import TestCycleForm, TestCaseForm
+from .forms import TestCycleForm, TestRunForm, TestCaseForm
 
 
 
@@ -88,9 +88,71 @@ def edit_testcycle(request, cycle_id):
 
 
 @login_redirect
+@dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
+@dec.filter("runs")
+@dec.paginate("runs")
+@dec.sort("runs")
+def testruns(request):
+    return TemplateResponse(
+        request,
+        "manage/testrun/runs.html",
+        {"runs": TestRunList.ours(auth=request.auth)}
+        )
+
+
+
+@login_redirect
+def add_testrun(request):
+    form = TestRunForm(
+        request.POST or None,
+        test_cycle_choices=TestCycleList.ours(auth=request.auth),
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        run = form.save()
+        messages.success(
+            request,
+            "The test run '%s' has been created."  % run.name)
+        return redirect("manage_testruns")
+    return TemplateResponse(
+        request,
+        "manage/testrun/add_run.html",
+        {"form": form}
+        )
+
+
+
+@login_redirect
+def edit_testrun(request, run_id):
+    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    form = TestRunForm(
+        request.POST or None,
+        instance=run,
+        test_cycle_choices=TestCycleList.ours(auth=request.auth),
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        run = form.save()
+        messages.success(
+            request,
+            "The test run '%s' has been saved."  % run.name)
+        return redirect("manage_testruns")
+
+    return TemplateResponse(
+        request,
+        "manage/testrun/edit_run.html",
+        {
+            "form": form,
+            "run": run,
+            }
+        )
+
+
+
+@login_redirect
 @dec.actions(
     TestCaseVersionList,
-    ["approve", "reject", "activate", "deactivate", "delete", "clone"])
+    ["approve", "reject", "activate", "deactivate", "delete"])
 @dec.filter("cases")
 @dec.paginate("cases")
 @dec.sort("cases")

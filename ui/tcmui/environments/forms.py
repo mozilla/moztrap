@@ -2,10 +2,11 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 import floppyforms as forms
 
+from ..core import forms as tcmforms
 from ..core.util import id_for_object
 
+from .models import EnvironmentGroupList
 from .util import environments_of
-
 
 class EnvironmentSelectionForm(forms.Form):
     """
@@ -210,3 +211,35 @@ EnvironmentConstraintFormSet = formset_factory(
     formset=BaseEnvironmentConstraintFormSet,
     extra=0
     )
+
+
+
+class EnvConstrainedAddEditForm(tcmforms.AddEditForm):
+    parent_name = "product"
+
+
+    def create_formsets(self, *args, **kwargs):
+        if self.instance is None:
+            possible_groups = EnvironmentGroupList.ours(auth=self.auth)
+        else:
+            possible_groups = getattr(
+                self.instance, self.parent_name).environmentgroups
+        self.env_formset = EnvironmentConstraintFormSet(
+            *args,
+            **dict(kwargs, groups=possible_groups, prefix="environments")
+        )
+
+
+    def is_valid(self):
+        return (
+            self.env_formset.is_valid() and
+            super(EnvConstrainedAddEditForm, self).is_valid()
+            )
+
+
+    def save(self):
+        self.env_formset.save(
+            self.instance,
+            getattr(self.instance, self.parent_name).environmentgroups)
+
+        return self.instance

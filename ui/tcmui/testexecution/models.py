@@ -121,6 +121,17 @@ class TestRun(Activatable, RemoteObject):
             **kwargs)
 
 
+    def clone(self, assignments=False, **kwargs):
+        obj = self.__class__()
+        self._post(
+            relative_url="clone",
+            version_payload=False,
+            extra_payload={"cloneAssignments": assignments},
+            update_from_response=obj,
+            **kwargs)
+        return obj
+
+
 
 class TestRunList(ListObject):
     entryclass = TestRun

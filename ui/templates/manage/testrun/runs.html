@@ -1,203 +1,119 @@
 {% extends 'manage/testrun/base.html' %}
 
+{% load sort staticdata %}
+
 {% block managecontent %}
 
 <section id="manageruns">
   <h2>Manage Test Runs</h2>
-  <a href="/manage/testrun/add/" class="create">create test run</a>
-  <form>
+  <a href="{% url manage_testrun_add %}" class="create">create test run</a>
+  <form method="POST">
+    {% csrf_token %}
 
     <section class="managelist">
       <nav class="listordering">
         <ul>
-          <li class="bytitle"><a href="#" class="asc">title</a></li>
-          <li class="bycycle"><a href="#">test cycle</a></li>
-          <li class="byproduct"><a href="#">product</a></li>
-          <li class="bystart"><a href="#">start date</a></th>
-          <li class="byend"><a href="#">end date</a></th>
+          <li class="bytitle">
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+          </li>
+          <li class="bycycle">
+            <a href="{{ request|sort_url:"testCycle" }}" class="{{ request|sort_status:"testCycle" }}">test cycle</a>
+          </li>
+          <li class="byproduct">
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+          <li class="bystart">
+            <a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a>
+          </li>
+          <li class="byend">
+            <a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a>
+          </li>
         </ul>
       </nav>
-      <article id="unique-slug-id01" class="item draft">
+      {% for run in runs %}
+      <article id="run-id-{{ run.id }}" class="item {{ run.status|status_class }}">
         <details>
           <summary class="header">
-            <p class="status"><button title="activate" class="draft">draft</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
+            <p class="status">
+              {% if run.status.DRAFT %}
+              <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
+              {% endif %}
+              {% if run.status.ACTIVE %}
+              <button title="lock" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
+              {% endif %}
+              {% if run.status.LOCKED %}
+              <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">locked</button>
+              {% endif %}
+            </p>
+            <h3 class="title">{{ run.name }}</h3>
+            <p class="cycle">{{ run.testCycle.name }}</p>
+            <p class="product">{{ run.product.name }}</p>
+            <time class="start">{{ run.startDate|date }}</time>
+            <time class="end">{{ run.endDate|date }}</time>
             <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
+              {% if run.status.DRAFT %}
+              <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
+              {% endif %}
+              <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
+              {% if run.status.DRAFT %}
+              <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
+              {% endif %}
             </div>
           </summary>
           <div class="content">
-            <p class="id">#3456</p>
+            <p class="id">#{{ run.id }}</p>
             <div class="description">
               <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
+                Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
+                on <time pubdate>{{ run.timeline.createDate|date }}</time>
               </h4>
 
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
+              <p>{{ run.description }}</p>
             </div>
             <div class="environments">
               <h4>environments</h4>
               <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
+                {% regroup run.environmentgroups.environments by typename as type_list %}
+                {% for type in type_list %}
+                <li>
+                  <h5>{{ type.grouper }}</h5>
+                  <ul>
+                    {% for env in type.list %}
+                    <li>{{ env.name }}</li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                {% endfor %}
               </ul>
             </div>
             <div class="suites">
               <h4>suites</h4>
               <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
+                {% for suite in run.testsuites %}
+                <li>{{ suite.name }}</li>
+                {% endfor %}
               </ul>
             </div>
+            {% if run.team|length %}
+            <div class="testers">
+              <h4>testers</h4>
+              <ul>
+                {% for tester in run.team %}
+                <li>{{ tester.screenName }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
           </div>
         </details>
       </article>
-      <article id="unique-slug-id01" class="item active">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="lock" class="active">active</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
-            <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
-
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
-      <article id="unique-slug-id01" class="item locked">
-        <details>
-          <summary class="header">
-            <p class="status"><button title="activate" class="locked">locked</button></p>
-            <h3 class="title">Test Run Title</h3>
-            <p class="cycle">Cycle Name</p>
-            <p class="product">Firefox</p>
-            <time class="start">2.24.2011</time>
-            <time class="end">12.24.2011</time>
-            <div class="controls">
-              <a href="/manage/testrun/add/" title="edit">edit</a>
-              <button title="clone">clone</button>
-              <button title="delete">delete</button>
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#3456</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">Eric Meyer</span>
-                on <time pubdate>12.28.2010</time>
-              </h4>
-
-              <p>Ii legunt saepius claritas est etiam processus dynamicus qui sequitur mutationem? Et quinta decima eodem modo typi qui nunc nobis videntur.</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                <li>env 01</li>
-                <li>env 02</li>
-                <li>env 03</li>
-                <li>env 04</li>
-              </ul>
-            </div>
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                <li>suite 01</li>
-                <li>suite 02</li>
-                <li>suite 03</li>
-                <li>suite 04</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-      </article>
+      {% endfor %}
     </section>
 
-    <nav class="listfilter">
-      <h3>Filters</h3>
-      <h4>Product</h4>
-      <ul>
-        <li><a href="#">Firefox</a></li>
-        <li><a href="#">Fennec</a></li>
-      </ul>
-      <h4>Test Cycle</h4>
-      <ul>
-        <li><a href="#">Cycle 01</a></li>
-        <li><a href="#">Cycle 02</a></li>
-        <li><a href="#">Cycle 03</a></li>
-        <li><a href="#">Cycle 04</a></li>
-      </ul>
-      <h4>Status</h4>
-      <ul>
-        <li><a href="#">Active</a></li>
-        <li><a href="#">Draft</a></li>
-        <li><a href="#">Locked</a></li>
-      </ul>
-    </nav>
 
-    <nav class="listnav">
-      <p class="location">showing 21-40 of 700</p>
-      <ul class="pagination">
-        <li><a href="?page=3" class="prev">&laquo; previous</a> </li>
-        <li><a href="?page=1" class="page">1</a></li>
-        <li><span class="current page">2</span> </li>
-        <li><a href="?page=3" class="page">3</a> </li>
-        <li><a href="?page=3" class="next">next &raquo;</a> </li>
-      </ul>
-      <div class="perpage">
-        <strong>runs per page:</strong>
-        <ul>
-          <li><a href="#">10</a></li>
-          <li><span href="#" class="current">20</span></li>
-          <li><a href="#">50</a></li>
-          <li><a href="#">100</a></li>
-        </ul>
-      </div>
-    </nav>
+    {% include "manage/_listfilter.html" with objs=runs fields="status,product,testCycle" %}
+
+    {% include "manage/_listnav.html" %}
 
   </form>
 </section>
