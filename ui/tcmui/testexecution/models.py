@@ -115,6 +115,35 @@ class TestRun(Activatable, RemoteObject):
             **kwargs)
 
 
+    def removesuite(self, suite):
+        # @@@ This doesn't work because filtering/searching ITC's is broken in
+        # the platform; if it worked, we wouldn't need the conditional inside
+        # the loop.
+        # for itc in TestRunIncludedTestCase.get(auth=self.auth).filter(
+        #     testRun=self, testSuite=suite):
+        for itc in self.includedtestcases:
+            if itc.testSuite and itc.testSuite.id == suite.id:
+                itc.delete()
+
+
+    def _get_suites(self):
+        return self.testsuites
+
+
+    def _set_suites(self, suites):
+        existing = dict((s.id, s) for s in self.testsuites)
+        for suite in suites:
+            if suite.id not in existing:
+                self.addsuite(suite)
+            else:
+                del existing[suite.id]
+        for suite in existing.itervalues():
+            self.removesuite(suite)
+
+
+    suites = property(_get_suites, _set_suites)
+
+
     def approveallresults(self, **kwargs):
         self._put(
             relative_url="approveallresults",
