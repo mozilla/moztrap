@@ -200,6 +200,8 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
                     valid_group_ids.add(group.id)
 
             owner.environmentgroups = valid_group_ids
+        elif self.instance is not None:
+            owner.environmentgroups = validgroups
 
 
 
