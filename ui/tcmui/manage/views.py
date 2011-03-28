@@ -5,12 +5,12 @@ from django.template.response import TemplateResponse
 from ..core import sort
 from ..products.models import ProductList
 from ..testexecution.models import TestCycleList, TestRunList
-from ..testcases.models import TestCaseVersionList
+from ..testcases.models import TestSuiteList, TestCaseVersionList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
 from . import decorators as dec
-from .forms import TestCycleForm, TestRunForm, TestCaseForm
+from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
 
@@ -144,6 +144,66 @@ def edit_testrun(request, run_id):
         {
             "form": form,
             "run": run,
+            }
+        )
+
+
+
+@login_redirect
+@dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
+@dec.filter("suites")
+@dec.paginate("suites")
+@dec.sort("suites")
+def testsuites(request):
+    return TemplateResponse(
+        request,
+        "manage/testsuite/suites.html",
+        {"suites": TestSuiteList.ours(auth=request.auth)}
+        )
+
+
+
+@login_redirect
+def add_testsuite(request):
+    form = TestSuiteForm(
+        request.POST or None,
+        product_choices=ProductList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        suite = form.save()
+        messages.success(
+            request,
+            "The test suite '%s' has been created."  % suite.name)
+        return redirect("manage_testsuites")
+    return TemplateResponse(
+        request,
+        "manage/testsuite/add_suite.html",
+        {"form": form}
+        )
+
+
+
+@login_redirect
+def edit_testsuite(request, suite_id):
+    suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
+    form = TestSuiteForm(
+        request.POST or None,
+        instance=suite,
+        product_choices=ProductList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        suite = form.save()
+        messages.success(
+            request,
+            "The test suite '%s' has been saved."  % suite.name)
+        return redirect("manage_testsuites")
+
+    return TemplateResponse(
+        request,
+        "manage/testsuite/edit_suite.html",
+        {
+            "form": form,
+            "suite": suite,
             }
         )
 

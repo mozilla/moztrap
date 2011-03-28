@@ -19,7 +19,7 @@
       {% endif %}
 
       {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
-      <li><a href="{# @@@ url manage_testsuites #}" class="{% block suites-active-nav %}{% endblock suites-active-nav %}">Test Suites</a></li>
+      <li><a href="{% url manage_testsuites %}" class="{% block suites-active-nav %}{% endblock suites-active-nav %}">Test Suites</a></li>
       {% endif %}
 
       {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}

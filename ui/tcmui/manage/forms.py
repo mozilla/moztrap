@@ -4,7 +4,8 @@ from ..core import forms as tcmforms
 from ..environments.forms import EnvConstrainedAddEditForm
 
 from ..testcases.forms import StepFormSet
-from ..testcases.models import TestCaseVersion, TestCaseList
+from ..testcases.models import (
+    TestSuite, TestSuiteList, TestCaseVersion, TestCaseList)
 from ..testexecution.models import (
     TestCycle, TestCycleList, TestRun, TestRunList)
 
@@ -53,6 +54,20 @@ class TestRunForm(EnvConstrainedAddEditForm):
         "selfAssignLimit": 0,
         "selfAssignAllowed": True,
         }
+
+
+
+class TestSuiteForm(EnvConstrainedAddEditForm):
+    name = forms.CharField()
+    description = forms.CharField(widget=tcmforms.BareTextarea)
+    product = tcmforms.ModelChoiceField()
+    # @@@ test cases
+
+
+    no_edit_fields = ["product"]
+    entryclass = TestSuite
+    listclass = TestSuiteList
+    parent_name = "product"
 
 
 

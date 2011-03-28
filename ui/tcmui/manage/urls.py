@@ -16,27 +16,14 @@ urlpatterns = patterns(
     url("^testrun/add/$", "add_testrun", name="manage_testrun_add"),
     url("^testrun/(?P<run_id>\d+)/$", "edit_testrun", name="manage_testrun_edit"),
 
+    # test suites
+    url("^testsuites/$", "testsuites", name="manage_testsuites"),
+    url("^testsuite/add/$", "add_testsuite", name="manage_testsuite_add"),
+    url("^testsuite/(?P<suite_id>\d+)/$", "edit_testsuite", name="manage_testsuite_edit"),
+
     # test cases
     url("^testcases/$", "testcases", name="manage_testcases"),
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 )
 
-urlpatterns += patterns(
-    "",
-    # testruns direct-to-template
-    url("^testruns/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testrun/runs.html"}),
-    url("^testrun/add/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testrun/add_run.html"}),
-
-    # testsuites direct-to-template
-    url("^testsuites/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testsuite/suites.html"}),
-    url("^testsuite/add/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/testsuite/add_suite.html"}),
-)
