@@ -94,7 +94,7 @@ class AddEditForm(RemoteObjectForm):
             except self.instance.Conflict, e:
                 if not editing:
                     self.instance.delete()
-                self.handle_error(e)
+                self.handle_error(self.instance, e)
         return cleaned
 
 
@@ -123,8 +123,8 @@ class AddEditForm(RemoteObjectForm):
             immediate=False)
 
 
-    def handle_error(self, err):
-        message, fields = errors.error_message_and_fields(err)
+    def handle_error(self, obj, err):
+        message, fields = errors.error_message_and_fields(obj, err)
         for fname in fields:
             if fname in self.fields:
                 self._errors[fname] = self.error_class(
@@ -145,7 +145,7 @@ class AddEditForm(RemoteObjectForm):
             try:
                 self.listclass.get(auth=self.auth).post(obj)
             except self.listclass.Conflict, e:
-                self.handle_error(e)
+                self.handle_error(obj, e)
             else:
                 self.instance = obj
 
@@ -159,7 +159,7 @@ class AddEditForm(RemoteObjectForm):
         try:
             self.instance.put()
         except self.instance.Conflict, e:
-            self.handle_error(e)
+            self.handle_error(self.instance, e)
 
         return self.cleaned_data
 

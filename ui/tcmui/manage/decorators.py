@@ -106,7 +106,7 @@ def actions(list_model, allowed_actions, fall_through=False):
                             getattr(obj, action)()
                         except obj.Conflict, e:
                             messages.error(
-                                request, errors.error_message(e, unicode(obj)))
+                                request, errors.error_message(obj, e))
                         action_taken = True
                 if action_taken or not fall_through:
                     return redirect(request.get_full_path())

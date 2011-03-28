@@ -8,25 +8,33 @@ MESSAGES = {
         "The %(name)s is in use and cannot be deleted.", []),
     "invalid.user": (
         "You created this; someone else must approve or reject it.", []),
+    "activating.incomplete.entity": (
+        {
+            "TestSuite": "Test suite is empty; add some test cases.",
+            "TestRun": "Unlock parent test cycle first.",
+         },
+        []),
     }
 
 
-def error_message_and_fields(err, obj_name="object"):
+def error_message_and_fields(obj, err):
     """
     Given an exception and the name of an object that caused it, return a tuple
     of (error-message, fields), where fields is a list of field names this
     message is likely related to.
 
     """
-    if err.response_error in MESSAGES:
-        data = MESSAGES[err.response_error]
-        return (data[0] % {"name": obj_name}, data[1])
-    else:
+    try:
+        message, fields = MESSAGES[err.response_error]
+        if isinstance(message, dict):
+            message = message[obj.__class__.__name__]
+        return (message % {"name": unicode(obj)}, fields)
+    except KeyError:
         return (
             'Unknown conflict "%s"; please correct and try again.'
             % err.response_error,
             [])
 
 
-def error_message(err, obj_name):
-    return error_message_and_fields(err, obj_name)[0]
+def error_message(obj, err):
+    return error_message_and_fields(obj, err)[0]
