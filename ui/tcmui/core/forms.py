@@ -17,6 +17,7 @@ class AddEditForm(RemoteObjectForm):
     assign_later = []
     entryclass = None
     listclass = None
+    extra_creation_data = {}
 
 
     def form_to_model(self, formfield):
@@ -136,7 +137,10 @@ class AddEditForm(RemoteObjectForm):
         required_field_names = set(self.required_fields.iterkeys())
         if all([k in self.cleaned_data for k in required_field_names]):
 
-            obj = self.entryclass(**self.prep_form_data(self.cleaned_data))
+            obj = self.entryclass(
+                **dict(
+                    self.prep_form_data(self.cleaned_data),
+                    **self.extra_creation_data))
 
             try:
                 self.listclass.get(auth=self.auth).post(obj)
