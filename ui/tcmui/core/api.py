@@ -635,7 +635,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     @classmethod
     def get_by_id(cls, id_, **kwargs):
-        return cls.entryclass.get(join(cls.api_name, str(id_)), **kwargs)
+        try:
+            return cls.entryclass.get(join(cls.default_url, str(id_)), **kwargs)
+        except AttributeError:
+            raise ValueError("%s has no default URL; .get_by_id() requires url."
+                             % cls)
 
 
     def __unicode__(self):
