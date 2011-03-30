@@ -37,6 +37,7 @@ class TestCase(RemoteObject):
     maxAttachmentSizeInMbytes = fields.Field()
     maxNumberOfAttachments = fields.Field()
     product = fields.Locator(Product)
+    company = fields.Locator(Company)
     testCycle = fields.Locator("TestCycle")
 
     versions = fields.Link("TestCaseVersionList")
