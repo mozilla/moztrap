@@ -206,7 +206,7 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
-        if cls.cache and "http" not in kwargs:
+        if "http" not in kwargs and kwargs.pop("cache", cls.cache):
             kwargs["http"] = cachedUserAgent
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")

@@ -95,6 +95,7 @@ class User(Activatable, RemoteObject):
     @classmethod
     def current(cls, **kwargs):
         kwargs["url"] = "users/current"
+        kwargs["cache"] = False
         return cls.get(**kwargs)
 
 
