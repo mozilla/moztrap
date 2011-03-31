@@ -229,6 +229,26 @@ def retest_for_testrun(step, scope, stored_testrun, testrun_name):
     testrunModel.retest(testrun,
                         only_failed = only_failed)
 
+@step(u'call retest on the following testcases for (that testrun|the testrun with name "(.*)")')
+def retest_for_testcases(step, stored_testrun, testrun_name):
+    trModel = TestrunModel()
+    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+
+    testrun_id = get_resource_identity(testrun)[0]
+
+    # get the list of testcases for this testrun
+    includedtestcase_list = trModel.get_included_testcases(testrun_id)
+
+    for tc in step.hashes:
+        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
+        tester_id = UserModel().get_resid(tc["user name"])[0]
+        result = trModel.get_result(testcase_id,
+                                    includedtestcase_list = includedtestcase_list)
+
+        result_id = get_resource_identity(result)[0]
+
+        trModel.retest_single(result_id, tester_id)
+
 
 @step(u'the following testcases have the following result statuses for (that testrun|the testrun with name "(.*)")')
 def testcases_have_result_statuses(step, stored_testrun, testrun_name):
@@ -251,6 +271,28 @@ def testcases_have_result_statuses(step, stored_testrun, testrun_name):
             get_result_status_id(tc["status"]),
             "testRunResultStatusId check")
 
+@step(u'the following testcases have pending result statuses for (that testrun|the testrun with name "(.*)")')
+def testcases_have_pending_result_statuses(step, stored_testrun, testrun_name):
+    trModel = TestrunModel()
+    testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
+
+    testrun_id = get_resource_identity(testrun)[0]
+    status_id = get_result_status_id("Pending")
+    # get the list of testcases for this testrun
+    result_list = trModel.search_for_results_by_result_status(testrun_id,
+                                                              status_id)
+
+    eq_list_length(result_list, step.hashes)
+
+    for tc in step.hashes:
+        testcase_id = TestcaseModel().get_resid(tc["name"])[0]
+
+        result = verify_single_item_in_list(result_list, "testCaseId", testcase_id)
+
+        # ok, we have the tc result in question, now check that its status matches expectations
+        eq_(result[ns("testRunResultStatusId")],
+            status_id,
+            "testRunResultStatusId check")
 
 @step(u'the following testcases have the following environments for (that testrun|the testrun with name "(.*)")')
 def testcases_have_environments(step, stored_testrun, testrun_name):

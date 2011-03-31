@@ -7,7 +7,7 @@ Created on Mar 17, 2011
 from features.tcm_data_helper import jstr, ns, json_to_obj, json_pretty, \
     get_user_password, as_arrayof, eq_, verify_single_item_in_list, \
     get_stored_or_store_name, get_stored_or_store_field, compare_dicts_by_keys, \
-    ns_keys
+    ns_keys, plural
 from features.tcm_request_helper import get_resource_identity, get_json_headers, \
     do_get, get_auth_header, do_put_for_cookie, do_post, do_delete, do_put, \
     encode_multipart_formdata, get_form_headers
@@ -81,6 +81,7 @@ class BaseModel(object):
     def get_list_from_search(self,
                              uri,
                              tcm_type = None,
+                             plural_tcm_type = None,
                              params = {},
                              headers = get_json_headers()):
         '''
@@ -89,12 +90,16 @@ class BaseModel(object):
         '''
         if tcm_type == None:
             tcm_type = self.singular
+            plural_tcm_type = self.plural
+
+        if plural_tcm_type == None:
+            plural_tcm_type = plural(tcm_type)
 
         response_txt = do_get(uri, params, headers)
 
         sr_field = ns("searchResult")
-        tcm_type = ns(self.singular)
-        pl_type = ns(self.plural)
+        tcm_type = ns(tcm_type)
+        pl_type = ns(plural_tcm_type)
 
         try:
             sr = json_to_obj(response_txt)[sr_field][0]
@@ -880,6 +885,19 @@ class TestrunModel(RunnableTestContainerBaseModel):
         result = verify_single_item_in_list(result_list, "testCaseId", testcase_id)
         return result
 
+    def search_for_results_by_result_status(self,
+                                            testrun_id,
+                                            status_id):
+
+        #../testruns/results/?pageSize=20&testRunId=123&testRunResultStatusId=1
+
+        result_list = self.get_list_from_search("%s/results" % self.root_path,
+                                                tcm_type = "testresult",
+                                                params = {"testRunId": testrun_id,
+                                                          "testRunResultStatusId": status_id})
+        return result_list
+
+
     def get_result_by_id(self, testresult_id):
 
         result = self.get_single_item_from_endpoint("%s/results/%s" % (self.root_path, testresult_id),
@@ -949,4 +967,21 @@ class TestrunModel(RunnableTestContainerBaseModel):
         do_post("%s/%s/retest" % (self.root_path, testrun_id),
                 body = {"originalVersionId": version,
                         "failedResultsOnly": only_failed})
+
+    def retest_single(self, result_id, tester_id):
+
+        do_post("%s/results/%s/retest" % (self.root_path, result_id),
+                body = {"testerId": tester_id})
+
+
+
+
+
+
+
+
+
+
+
+
 
