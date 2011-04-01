@@ -28,6 +28,10 @@ class TestCycleForm(EnvConstrainedAddEditForm):
     entryclass = TestCycle
     listclass = TestCycleList
     parent_name = "product"
+    extra_creation_data = {
+        "communityAccessAllowed": True,
+        "communityAuthoringAllowed": True,
+        }
 
 
 

@@ -25,6 +25,8 @@ class TestCycle(Activatable, RemoteObject):
         "TESTCYCLESTATUS", "testCycleStatusId", api_submit_name=False)
     startDate = fields.Date()
     endDate = fields.Date()
+    communityAccessAllowed = fields.Field()
+    communityAuthoringAllowed = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     testruns = fields.Link("TestRunList")
