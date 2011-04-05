@@ -88,8 +88,8 @@ Feature: Staging area for Tests
             | Failing tc         | Failed      |
             | Invalidisimo       | Invalidated |
         When I call retest on the following testcases for that testrun:
-            | name               | user name   |
-            | Passing tc         | Joe Tester  |
+            | name               |
+            | Passing tc         |
         Then the following testcases have pending result statuses for that testrun
             | name               |
             | Passing tc         |

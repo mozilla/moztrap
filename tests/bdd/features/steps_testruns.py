@@ -231,6 +231,11 @@ def retest_for_testrun(step, scope, stored_testrun, testrun_name):
 
 @step(u'call retest on the following testcases for (that testrun|the testrun with name "(.*)")')
 def retest_for_testcases(step, stored_testrun, testrun_name):
+    '''
+        Step hashes can have a user name field or not.  If it's not specified, it will,
+        obviously, not pass a user id, so it will assign the new result object to the
+        user of the previous result.
+    '''
     trModel = TestrunModel()
     testrun = trModel.get_stored_or_store_obj(stored_testrun, testrun_name)
 
@@ -241,7 +246,13 @@ def retest_for_testcases(step, stored_testrun, testrun_name):
 
     for tc in step.hashes:
         testcase_id = TestcaseModel().get_resid(tc["name"])[0]
-        tester_id = UserModel().get_resid(tc["user name"])[0]
+
+        try:
+            tester_id = UserModel().get_resid(tc["user name"])[0]
+
+        except KeyError:
+            tester_id = None
+
         result = trModel.get_result(testcase_id,
                                     includedtestcase_list = includedtestcase_list)
 

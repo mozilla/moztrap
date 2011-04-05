@@ -18,11 +18,15 @@ def get_auth_header(userid = "admin@utest.com", passwd = "admin"):
 
 def get_form_headers(auth_header = get_auth_header()):
     return {'Authorization': auth_header,
-            'content-type': "application/x-www-form-urlencoded"}
+            'Content-Type': "application/x-www-form-urlencoded"}
 
 def get_json_headers(auth_header = get_auth_header()):
     return {'Authorization': auth_header,
             'Content-Type':'application/json'}
+
+def get_xml_headers(auth_header = get_auth_header()):
+    return {'Authorization': auth_header,
+            'Content-Type':'application/xml'}
 
 def add_params(uri_path, params = {}):
     '''
@@ -115,16 +119,22 @@ def do_post(uri, body, params = {}, headers = get_form_headers()):
 def do_delete(uri, params, headers = get_form_headers()):
     return do_request("DELETE", uri, params = params, headers = headers)
 
-def do_request(method, uri, params = {}, body = {}, headers = get_form_headers(), exp_status = 200):
+def do_request(method, uri, params = {}, body = None, headers = get_form_headers(), exp_status = 200):
     '''
         do the request
     '''
 
     record_api_for_step(method, uri)
 
-    world.conn.request(method, add_params(uri, params),
-                       urllib.urlencode(body, doseq=True),
-                       headers)
+    if body == None:
+#        del headers["Content-Type"]
+        world.conn.request(method, add_params(uri, params), None, headers)
+    else:
+        encoded_body = urllib.urlencode(body, doseq=True)
+        world.conn.request(method, add_params(uri, params),
+                           encoded_body,
+                           headers)
+
     response = world.conn.getresponse()
 
     return verify_status(exp_status, response, "%s %s:\n%s" % (method, uri, body))

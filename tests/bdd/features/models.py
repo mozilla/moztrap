@@ -968,10 +968,14 @@ class TestrunModel(RunnableTestContainerBaseModel):
                 body = {"originalVersionId": version,
                         "failedResultsOnly": only_failed})
 
-    def retest_single(self, result_id, tester_id):
+    def retest_single(self, result_id, tester_id = None):
+        body = None
+
+        if tester_id is not None:
+            body = {"testerId": tester_id}
 
         do_post("%s/results/%s/retest" % (self.root_path, result_id),
-                body = {"testerId": tester_id})
+                body = body)
 
 
 
