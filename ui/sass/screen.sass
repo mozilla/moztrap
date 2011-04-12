@@ -446,7 +446,7 @@ nav.manage
 .listfilter
   overflow: hidden
   background: $blue-lighter
-  +padding-trailer(.5)
+  +padding-trailer
   h3, h4
     margin: 0
     padding: 0
@@ -456,16 +456,20 @@ nav.manage
     background: $blue-light
     border-color: $blue
   h4
-    +padding-leader(.25)
-    +padding-trailer(.25)
+    +padding-leader(.5)
   a
     #{$link}
       +hpadding($gutter-width*.5)
       display: block
       margin: 0 $gutter-width*.5
-    #{$focus}, &.selected
-      background: $blue
+    #{$focus}
+      background: rgba($blue,.75)
       color: white
+  .selected
+    +hpadding($gutter-width*.5)
+    display: block
+    margin: 0 $gutter-width*.5
+    font-weight: bold
 
 a.create
   @extend .button

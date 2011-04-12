@@ -12,7 +12,7 @@
             All
           </a>
           {% else %}
-            All
+            <span class="selected">All</span>
           {% endif %}
           {% endwith %}
         </li>
@@ -24,7 +24,7 @@
             {{ option.name }} <span class="count">({{ option.count }})</span>
           </a>
           {% else %}
-          {{ option.name }} <span class="count">({{ option.count }})</span>
+            <span class="selected">{{ option.name }} <span class="count">({{ option.count }})</span></span>
           {% endif %}
         </li>
         {% endfor %}

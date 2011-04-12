@@ -375,12 +375,13 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #managecontent { padding-top: 0.375em; position: relative; overflow: hidden; padding-left: 1.205%; border-left: 1px solid #eeeeee; min-height: 18em; }
 
 /* manage lists -------------------------------------------------------------- */
-.listfilter { overflow: hidden; background: #accbc9; padding-bottom: 0.75em; }
+.listfilter { overflow: hidden; background: #accbc9; padding-bottom: 1.5em; }
 .listfilter h3, .listfilter h4 { margin: 0; padding: 0; padding-left: 1em; }
 .listfilter h3 { border-top-style: solid; border-top-width: 0.071em; padding-top: 0.304em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; background: #8bb9b7; border-color: #5d7b7a; }
-.listfilter h4 { padding-top: 0.375em; padding-bottom: 0.375em; }
+.listfilter h4 { padding-top: 0.75em; }
 .listfilter a:link, .listfilter a:visited { padding-left: 0.5em; padding-right: 0.5em; display: block; margin: 0 0.5em; }
-.listfilter a:focus, .listfilter a:hover, .listfilter a:active, .listfilter a.selected { background: #5d7b7a; color: white; }
+.listfilter a:focus, .listfilter a:hover, .listfilter a:active { background: rgba(93, 123, 122, 0.75); color: white; }
+.listfilter .selected { padding-left: 0.5em; padding-right: 0.5em; display: block; margin: 0 0.5em; font-weight: bold; }
 
 a.create { background-image: url('../images/ui/plus.png?1299181696'); background-image: url('../images/ui/plus.png?1299181696'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background-image: url('../images/ui/plus.png?1299181696'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; position: absolute; top: 0; right: 0; padding-left: 35px; background-position: 0.75em, left; background-repeat: no-repeat; }
 
