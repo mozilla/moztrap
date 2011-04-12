@@ -36,7 +36,7 @@ header[role="banner"]
         color: $base
       #{$focus}
         color: $accent
-      
+
 nav[role="navigation"]
   +columns(12,24)
   +padding-leader(.5)
@@ -48,7 +48,7 @@ nav[role="navigation"]
     &:not([href])
       +opacity(.5)
       color: inherit
-      cursor: default    
+      cursor: default
     &, #{$link}
       +padding-leader(.25)
       +padding-trailer(.25)
@@ -103,7 +103,7 @@ div[role="main"]
   +trailer(.5)
   padding: $base-rhythm-unit*.25 $base-rhythm-unit*.5
   font-weight: bold
-  
+
   &, &.success
     +text-shadow($green-lightest 1px 1px 0)
     background: $green-lighter
@@ -138,7 +138,7 @@ footer[role="contentinfo"]
   small
     font-size: 1em
 
-/* login --------------------------------------------------------------    
+/* login --------------------------------------------------------------
 
 
 .simpleform
@@ -166,7 +166,7 @@ footer[role="contentinfo"]
   form
     @extend .simpleform
 
-/* products --------------------------------------------------------------    
+/* products --------------------------------------------------------------
 
 #products
   @extend .simple
@@ -205,7 +205,7 @@ footer[role="contentinfo"]
             &:nth-child(3n)
               +omega(12)
 
-/* environment --------------------------------------------------------------    
+/* environment --------------------------------------------------------------
 
 .environment
   summary
@@ -232,7 +232,7 @@ footer[role="contentinfo"]
   @extend .simple
   +inline-form(4,8,12)
 
-/* cycles + testruns --------------------------------------------------------------    
+/* cycles + testruns --------------------------------------------------------------
 
 #cycles, #testruns
   @extend .simple
@@ -240,23 +240,23 @@ footer[role="contentinfo"]
     width: columns(4,12)
   .start, .end
     width: columns(3,12)
-    
+
   td:first-child
     @extend .tdlink
-    
+
   .note
     +leader(-.5)
     +trailer(1.5)
     text-align: right
-    font-style: italic    
+    font-style: italic
 
-/* run tests --------------------------------------------------------------    
+/* run tests --------------------------------------------------------------
 
 #run
   .test, .content
     +full(24)
   .test
-    +pie-clearfix      
+    +pie-clearfix
     &[open], &.open, .header
       +trailing-border(1px,.5)
       border-color: #ccc
@@ -305,7 +305,7 @@ footer[role="contentinfo"]
     .invalidated
       +text-shadow(rgba($red,.75) 1px 1px 0)
       background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
-    .failed 
+    .failed
       +text-shadow(rgba($red-dark,.75) 1px 1px 0)
       background: $red image-url('ui/x.png') no-repeat scroll gutter(4)
 
@@ -368,7 +368,7 @@ footer[role="contentinfo"]
         width: 100%
         padding: 0
         background: $red
-        
+
   .failform, .invalidform
     textarea
       min-height: $base-rhythm-unit*6
@@ -383,7 +383,7 @@ footer[role="contentinfo"]
     width: columns(18,24) - gutter(24)*2
     margin-left: columns(2,24) + gutter(24)
     background: $yellow
-    
+
   .testinvalid
     position: relative
     summary
@@ -402,7 +402,7 @@ footer[role="contentinfo"]
     &[open], &.open, &.invalidated
       summary
         background: $yellow
-  
+
   .started
     .header
       background: $blue-lighter
@@ -416,7 +416,7 @@ footer[role="contentinfo"]
     .header
       background: $red-lighter
 
-/* manage --------------------------------------------------------------    
+/* manage --------------------------------------------------------------
 
 nav.manage
   +float(left)
@@ -441,7 +441,7 @@ nav.manage
   border-left: 1px solid $light
   min-height: $base-rhythm-unit*12
 
-/* manage lists --------------------------------------------------------------    
+/* manage lists --------------------------------------------------------------
 
 .listfilter
   overflow: hidden
@@ -510,7 +510,7 @@ a.create
   .item
     +clearfix
     clear: both
-  
+
   .header, .content
     +pie-clearfix
     +padding-leader(.25)
@@ -524,7 +524,7 @@ a.create
       background: $green-lightest
   .content
     background: $light
-  
+
   .id
     text-align: right
   .bulkselect
@@ -573,7 +573,7 @@ a.create
           position: absolute
           left: 1.5em
           text-indent: 0
-        
+
 #managecycles
   .status, .id, .controls
     +columns(2,18)
@@ -655,7 +655,7 @@ a.create
     #{$focus}
       &::after
         background-image: image-url('ui/angle_up.png')
-  
+
 .listordering
   +clearfix
   +h-borders(1px,.25)
@@ -665,37 +665,39 @@ a.create
     +no-style-list
   a
     @extend .sortlinks
- 
+
+  .bystatus
+    +columns(2,18)
+    a
+      #{$link}
+        padding-left: .375em
+
   #managecycles &
     .bytitle
       +columns(5,18)
-      +prefix(2,18)
     .byproduct, .bystart, .byend
       +columns(3,18)
-  
+
   #manageruns &
     .bytitle
       +columns(5,18)
-      +prefix(2,18)
     .bycycle
       +columns(3,18)
     .byproduct, .bystart, .byend
       +columns(2,18)
-  
+
   #managesuites &
     .bytitle
       +columns(8,18)
-      +prefix(2,18)
     .byproduct
       +columns(4,18)
 
   #managecases &
     .bytitle
       +columns(8,18)
-      +prefix(2,18)
     .byproduct, .byversion
       +columns(3,18)
-      
+
 .listnav
   +pie-clearfix
   +adjust-font-size-to(12px)
@@ -734,7 +736,7 @@ a.create
     font-weight: bold
 
 
-/* ADD ITEMS --------------------------------------------------------------    
+/* ADD ITEMS --------------------------------------------------------------
 
 .removefields
   +replace-text('ui/x_circle.png')
@@ -855,17 +857,17 @@ a.create
   .unselected
     label
       #{$focus}, &.mark
-        background: 
-          color: $green-light 
+        background:
+          color: $green-light
           image: image-url('ui/arrow_right.png')
 
   .selected
     label
       #{$focus}, &.mark
-        background: 
-          color: $red-lighter 
+        background:
+          color: $red-lighter
           image: image-url('ui/arrow_left.png')
-  
+
   .addremove
     +columns(1,19)
     +leader(3)
@@ -874,7 +876,7 @@ a.create
       display: block
       padding: 0
       border: 0
-      width: 100%      
+      width: 100%
       +icon('[title^="add"]','ui/arrow_right.png',$green-light)
       +icon('[title^="update"]','ui/arrow_leftright_21.png',$blue-light)
       +icon('[title^="remove"]','ui/arrow_left.png',$red-light)
@@ -917,17 +919,17 @@ a.create
   h3, > div
     +full(21)
     +pad(1,1,21)
-  
+
 /* add cycle --------------------------------------------------------------
 
 #addcycle
   @extend .addform
   @extend .managelists
-  
+
   .list
     clear: both
     margin-bottom: 0
-  
+
   .addrun
     padding: 0
     button
@@ -946,7 +948,7 @@ a.create
     font-weight: normal
     &[for="communal"]
       margin-left: .4em
-  
+
 .userselect
   @extend .superselect
   summary
@@ -996,8 +998,8 @@ a.create
   .title
     +columns(6,9)
     +omega(9)
-    
-/* add suite --------------------------------------------------------------    
+
+/* add suite --------------------------------------------------------------
 
 #addsuite
   @extend .addform
@@ -1012,7 +1014,7 @@ a.create
   .author
     +omega(9)
 
-/* add case --------------------------------------------------------------    
+/* add case --------------------------------------------------------------
 
 #addcase
   @extend .addform

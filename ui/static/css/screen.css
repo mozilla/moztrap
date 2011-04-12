@@ -470,14 +470,16 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .listordering { overflow: hidden; *zoom: 1; border-top-style: solid; border-top-width: 0.071em; padding-top: 0.304em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; background: #eeeeee; border-color: #cccccc; }
 .listordering ul { list-style: none; margin: 0; padding: 0; border: 0; }
 .listordering ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
-#managecycles .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
+.listordering .bystatus { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
+.listordering .bystatus a:link, .listordering .bystatus a:visited { padding-left: 0.375em; }
+#managecycles .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
 #managecycles .listordering .byproduct, #managecycles .listordering .bystart, #managecycles .listordering .byend { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
-#manageruns .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; padding-left: 11.29%; }
+#manageruns .listordering .bytitle { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
 #manageruns .listordering .bycycle { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #manageruns .listordering .byproduct, #manageruns .listordering .bystart, #manageruns .listordering .byend { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
-#managesuites .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; padding-left: 11.29%; }
+#managesuites .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managesuites .listordering .byproduct { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
-#managecases .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; padding-left: 11.29%; }
+#managecases .listordering .bytitle { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managecases .listordering .byproduct, #managecases .listordering .byversion { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 
 .listnav { *zoom: 1; font-size: 0.857em; line-height: 1.75em; margin-bottom: 0.875em; padding-top: 0.438em; border-bottom-style: solid; border-bottom-width: 0.083em; padding-bottom: 0.354em; padding-left: 0.5em; padding-right: 0.5em; clear: both; margin-top: -1px; background: #eeeeee; border-top: 1px solid; border-color: #cccccc; white-space: nowrap; }
