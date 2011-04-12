@@ -522,9 +522,11 @@ a.create
     #{$focus}
       outline: 0
       background: $green-lightest
+  .open
+    .header
+      background: $green-lightest
   .content
     background: $light
-
   .id
     text-align: right
   .bulkselect
@@ -574,6 +576,28 @@ a.create
           left: 1.5em
           text-indent: 0
 
+.byline
+  text-transform: none
+  font-variant: normal
+
+.environments
+  h5
+    margin: 0
+    display: inline
+    font-style: normal
+    &::after
+      content: ": "
+  > ul
+    +no-style-list
+    +trailer
+    > li
+      +trailer(.5)
+    ul
+      +comma-delimited-list
+      font-style: italic
+      li:last-child::after
+        content: "."
+
 #managecycles
   .status, .id, .controls
     +columns(2,18)
@@ -583,10 +607,11 @@ a.create
     +columns(4,18)
   .title
     +columns(5,18)
-  .description
+  .description, .environments:last-child
     +columns(8,18)
-  .controls, .testers
+  .controls, .testers, .environments:last-child
     +omega(18)
+
 
 #manageruns
   .status, .product, .start, .end, .id, .controls
@@ -597,9 +622,9 @@ a.create
     +columns(4,18)
   .title
     +columns(5,18)
-  .description
+  .description, .environments:last-child
     +columns(8,18)
-  .controls, .suites
+  .controls, .suites, .environments:last-child
     +omega(18)
 
 #managesuites
@@ -615,16 +640,14 @@ a.create
 #managecases
   .status, .id, .version
     +columns(2,18)
-  .title, .tags, .environments
+  .title, .tags, .byline, .environments
     +columns(8,18)
   .product, .controls
     +columns(3,18)
-  .byline
-    +columns(16,18)
   .tags
     +prefix(2,18)
     clear: left
-  .controls, .byline, .environments
+  .controls, .environments
     +omega(18)
 
 .sortlinks

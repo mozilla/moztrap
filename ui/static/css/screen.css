@@ -398,6 +398,7 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .managelist .header:after, .managelist .content:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 .managelist .header p, .managelist .header h3 { margin-bottom: 0; }
 .managelist .header:focus, .managelist .header:hover, .managelist .header:active { outline: 0; background: #e5f5d2; }
+.managelist .open .header { background: #e5f5d2; }
 .managelist .content { background: #eeeeee; }
 .managelist .id { text-align: right; }
 .managelist .bulkselect label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; width: 0; }
@@ -432,19 +433,33 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 .status button.rejected:focus, .status button.rejected:hover, .status button.rejected:active, .status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.active:focus, .status button.active:hover, .status button.active:active, .status button.locked:focus, .status button.locked:hover, .status button.locked:active { text-indent: -119988px; overflow: hidden; text-align: left; }
 .status button.rejected:focus::after, .status button.rejected:hover::after, .status button.rejected:active::after, .status button.draft:focus::after, .status button.draft:hover::after, .status button.draft:active::after, .status button.active:focus::after, .status button.active:hover::after, .status button.active:active::after, .status button.locked:focus::after, .status button.locked:hover::after, .status button.locked:active::after { content: attr(title); position: absolute; left: 1.5em; text-indent: 0; }
 
+.byline { text-transform: none; font-variant: normal; }
+
+.environments h5 { margin: 0; display: inline; font-style: normal; }
+.environments h5::after { content: ": "; }
+.environments > ul { list-style: none; margin: 0; padding: 0; border: 0; margin-bottom: 1.5em; }
+.environments > ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+.environments > ul > li { margin-bottom: 0.75em; }
+.environments > ul ul { list-style-type: none; font-style: italic; }
+.environments > ul ul, .environments > ul ul li { margin: 0px; padding: 0px; display: inline; }
+.environments > ul ul li:after { content: ", "; }
+.environments > ul ul li:last-child:after { content: ""; }
+.environments > ul ul li.last:after { content: ""; }
+.environments > ul ul li:last-child::after { content: "."; }
+
 #managecycles .status, #managecycles .id, #managecycles .controls { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #managecycles .product, #managecycles .start, #managecycles .end { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #managecycles .environments, #managecycles .testers { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
 #managecycles .title { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
-#managecycles .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
-#managecycles .controls, #managecycles .testers { display: inline; float: right; margin-right: 0; }
+#managecycles .description, #managecycles .environments:last-child { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#managecycles .controls, #managecycles .testers, #managecycles .environments:last-child { display: inline; float: right; margin-right: 0; }
 
 #manageruns .status, #manageruns .product, #manageruns .start, #manageruns .end, #manageruns .id, #manageruns .controls { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #manageruns .cycle { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
 #manageruns .environments, #manageruns .suites { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
 #manageruns .title { display: inline; float: left; width: 26.613%; margin-right: 1.613%; }
-#manageruns .description { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
-#manageruns .controls, #manageruns .suites { display: inline; float: right; margin-right: 0; }
+#manageruns .description, #manageruns .environments:last-child { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#manageruns .controls, #manageruns .suites, #manageruns .environments:last-child { display: inline; float: right; margin-right: 0; }
 
 #managesuites .status, #managesuites .id { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
 #managesuites .product, #managesuites .controls { display: inline; float: left; width: 20.968%; margin-right: 1.613%; }
@@ -452,11 +467,10 @@ a.create { background-image: url('../images/ui/plus.png?1299181696'); background
 #managesuites .controls, #managesuites .environments { display: inline; float: right; margin-right: 0; }
 
 #managecases .status, #managecases .id, #managecases .version { display: inline; float: left; width: 9.677%; margin-right: 1.613%; }
-#managecases .title, #managecases .tags, #managecases .environments { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
+#managecases .title, #managecases .tags, #managecases .byline, #managecases .environments { display: inline; float: left; width: 43.548%; margin-right: 1.613%; }
 #managecases .product, #managecases .controls { display: inline; float: left; width: 15.323%; margin-right: 1.613%; }
-#managecases .byline { display: inline; float: left; width: 88.71%; margin-right: 1.613%; }
 #managecases .tags { padding-left: 11.29%; clear: left; }
-#managecases .controls, #managecases .byline, #managecases .environments { display: inline; float: right; margin-right: 0; }
+#managecases .controls, #managecases .environments { display: inline; float: right; margin-right: 0; }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited { display: block; position: relative; }
 .sortlinks:link::after, .listordering a:link::after, .sortlinks:visited::after, .listordering a:visited::after { text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/angle_up.png?1299180949'); background-repeat: no-repeat; background-position: 50% 50%; width: 9px; height: 9px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; content: " "; margin-left: 0.4em; background-image: none; vertical-align: baseline; }

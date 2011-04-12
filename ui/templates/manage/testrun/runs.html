@@ -89,6 +89,7 @@
                 {% endfor %}
               </ul>
             </div>
+            {% if run.testsuites|length %}
             <div class="suites">
               <h4>suites</h4>
               <ul>
@@ -97,6 +98,8 @@
                 {% endfor %}
               </ul>
             </div>
+            {% endif %}
+
             {% if run.team|length %}
             <div class="testers">
               <h4>testers</h4>
