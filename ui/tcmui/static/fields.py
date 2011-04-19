@@ -39,7 +39,7 @@ class StatusValue(object):
 
 
     def __str__(self):
-        return self.status.enumname
+        return self.status.enumname.title()
 
 
     def __repr__(self):

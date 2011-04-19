@@ -33,7 +33,7 @@ def filter_fields(list_obj, *args):
     for obj in list_obj:
         for fname, (field, ffield) in ffields.iteritems():
             val = getattr(obj, fname)
-            ffield.add((str(val), field.encode(val)))
+            ffield.add((unicode(val), field.encode(val)))
 
     return sorted(
         (i[1] for i in ffields.itervalues()),
