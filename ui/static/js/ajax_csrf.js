@@ -18,7 +18,6 @@ $('html').ajaxSend(
         }
         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
             // Only send the token to relative URLs i.e. locally.
-            debugger;
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
     });
