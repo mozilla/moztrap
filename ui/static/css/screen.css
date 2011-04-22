@@ -231,7 +231,7 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; top: 0; right: 0; bottom: 0; left: 0; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; z-index: 50; }
 
 /* filtering -------------------------------------------------------------- */
-#filters { clear: both; margin-left: 1.176%; margin-right: 1.176%; padding-left: 12.651%; }
+#filters { clear: both; }
 #filters ul { list-style: none; margin: 0; padding: 0; border: 0; }
 #filters ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #filters h3 { margin: 0; font-weight: normal; }
@@ -239,14 +239,15 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filters .textual label { display: inline; float: left; width: 6.098%; margin-right: 2.439%; }
 #filters .textual input { display: inline; float: left; width: 91.463%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; }
 #filters .suggest { display: none; position: absolute; left: 8.537%; right: 0; top: 2.25em; background: white; z-index: 900; }
-#filters .suggest a:link, #filters .suggest a:visited { padding-top: 0.75em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.679em; overflow: hidden; *zoom: 1; display: block; border: 1px solid #eeeeee; border-color: transparent #999999 #eeeeee; border-width: 0 1px 1px; }
+#filters .suggest a:link, #filters .suggest a:visited { padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; overflow: hidden; *zoom: 1; padding-left: 1em; padding-right: 1em; display: block; color: #444444; border: 1px solid #eeeeee; border-color: transparent #999999 #eeeeee; border-width: 0 1px 1px; }
 #filters .suggest li:first-child a:link, #filters .suggest li:first-child a:visited { background: #fef0bf; }
 #filters .suggest li:last-child a:link, #filters .suggest li:last-child a:visited { border-bottom-color: #999999; }
-#filters .suggest i { display: inline; float: left; padding-left: 2.667%; margin-right: 2.667%; }
-#filters .suggest b { color: #444444; }
+#filters .suggest i { display: inline; float: right; padding-left: 1em; font-style: normal; color: #999999; }
 #filters #filter:focus + .suggest { display: block; }
 #filters .summary { display: inline; float: left; width: 42.069%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; margin-top: 0.375em; font-style: italic; }
-#filters .content, #filters .closed { clear: both; font-size: 0.857em; line-height: 1.313em; }
+#filters .summary:focus { outline: 0; color: #5d7b7a; }
+#filters .content, #filters .closed { clear: both; font-size: 0.857em; line-height: 1.313em; *zoom: 1; margin-bottom: 0.75em; }
+#filters .content:after, #filters .closed:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #filters .content div, #filters .closed div { display: inline; float: left; width: 13.103%; margin-right: 1.379%; margin-bottom: 0.75em; }
 #filters .content div:nth-of-type(7n), #filters .closed div:nth-of-type(7n) { display: inline; float: right; margin-right: 0; }
 #filters .content div:nth-of-type(7n+1), #filters .closed div:nth-of-type(7n+1) { clear: left; }
@@ -264,6 +265,12 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filters .closed label:hover { background: #f5d2d4; }
 #filters .closed input:checked + label { display: block; }
 #filters .closed input:checked + label, #filters .closed input:checked + label:hover { background-image: none; }
+
+#filterlist { list-style: none; margin: 0; padding: 0; border: 0; clear: both; }
+#filterlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#filterlist li { border-top-style: solid; border-top-width: 0.071em; padding-top: 0.304em; padding-bottom: 0.375em; padding-left: 0.5em; padding-right: 0.5em; border-color: #999999; }
+#filterlist li:last-child { border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.679em; }
+#filterlist li:nth-child(odd) { background: #eeeeee; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 87.5%; line-height: 1.5em; }
@@ -402,7 +409,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #run .failed .header { background: #eca9ab; }
 
 /* manage -------------------------------------------------------------- */
-nav.manage { display: inline; float: left; width: 11.446%; }
+nav.manage { display: inline; float: left; width: 11.446%; min-height: 1.5em; }
 nav.manage a:link, nav.manage a:visited { line-height: 2.25em; display: block; padding: 0 1em; }
 nav.manage a:focus, nav.manage a:hover, nav.manage a:active { background: #eeeeee; }
 nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus, nav.manage a.active:hover, nav.manage a.active:active { background: #cddcdb; color: #2e3e3d; }

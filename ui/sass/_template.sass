@@ -82,8 +82,7 @@
 /* filtering --------------------------------------------------------------
 
 #filters
-  +full
-  +prefix(3,24)
+  +full(21)
   ul
     +no-style-list
   h3
@@ -109,10 +108,12 @@
     z-index: 900
     a
       #{$link}
-        +padding-leader(.5)
-        +trailing-border(1px,.5)
+        +padding-leader(.25)
+        +trailing-border(1px,.25)
         +clearfix
+        +hpadding(1em)
         display: block
+        color: $base
         border: 1px solid $light
           color: transparent $mid $light
           width: 0 1px 1px
@@ -125,11 +126,10 @@
         #{$link}
           border-bottom-color: $mid
     i
-      +float(left)
-      padding-left: gutter(11)
-      margin-right: gutter(11)
-    b
-      color: $base
+      +float(right)
+      padding-left: 1em
+      font-style: normal
+      color: $mid
   #filter:focus + .suggest
     display: block
   .summary
@@ -137,9 +137,14 @@
     +omega(21)
     +leader(.25)
     font-style: italic
+    &:focus
+      outline: 0
+      color: $blue
   .content, .closed
     +full(21)
     +adjust-font-size-to(12px,.75)
+    +pie-clearfix
+    +trailer(.5)
     div
       +columns(3,21)
       +trailer(.5)
@@ -194,3 +199,16 @@
       display: block
       &, &:hover
         background-image: none
+
+#filterlist
+  +no-style-list
+  +full(21)
+  li
+    +leading-border(1px,.25)
+    +padding-trailer(.25)
+    +hpadding(.5em)
+    border-color: $mid
+    &:last-child
+      +trailing-border(1px,.5)
+    &:nth-child(odd)
+      background: $light

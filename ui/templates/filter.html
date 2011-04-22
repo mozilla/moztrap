@@ -1,15 +1,15 @@
-{% extends 'base.html' %}
+{% extends 'manage/base.html' %}
 
-{% block content %}
+{% block managecontent %}
   <h2>TCM List Page with Filtering</h2>
   <form id="filters">
     <div class="textual">
       <label for="filter">filter</label>
       <input type="text" name="filter" value="" id="filter" placeholder="operating system, language, status, keyword, etc.">
       <ul class="suggest">
-        <li><a href="#"><i>language:</i> "<b>en</b>glish"</a></li>
-        <li><a href="#"><i>keyword:</i> "<b>en</b>titled"</a></li>
-        <li><a href="#"><i>keyword:</i> "<b>en</b>dangered"</a></li>
+        <li><a href="#"><b>en</b>glish <i>[language]</i></a></li>
+        <li><a href="#"><b>en</b>titled <i>[keyword]</i></a></li>
+        <li><a href="#"><b>en</b>dangered <i>[keyword]</i></a></li>
       </ul>
     </div>
 
@@ -32,11 +32,11 @@
               <label for="windows">windows</label>
             </li>
             <li>
-              <input type="checkbox" name="ios" value="" id="locked">
+              <input type="checkbox" name="ios" value="" id="ios">
               <label for="ios">ios</label>
             </li>
             <li>
-              <input type="checkbox" name="android" value="" id="locked">
+              <input type="checkbox" name="android" value="" id="android">
               <label for="android">android</label>
             </li>
           </ul>
@@ -145,4 +145,11 @@
     </div>
 
   </form>
-{% endblock content %}
+
+  <ul id="filterlist">
+    <li>a list of items</li>
+    <li>test cycles, runs, results, etc.</li>
+    <li>this list will be filtered</li>
+    <li>based on the actions above</li>
+  </ul>
+{% endblock managecontent %}
