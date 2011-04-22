@@ -204,9 +204,14 @@
         width: 100%
         summary
           text-align: right
+          &::after
+            content: " more »"
         &[open]
           summary
-            display: none
+            &::after
+              content: " less"
+            &::before
+              content: "« "
       input
         display: none
       label
