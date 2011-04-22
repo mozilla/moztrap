@@ -1,0 +1,127 @@
+<form id="filters">
+  <div class="textual">
+    <label for="filter">filter</label>
+    <input type="text" name="filter" value="" id="filter" placeholder="filter by operating system, language, status, keyword, etc.">
+    <ul class="suggest">
+      <li><a href="#"><b>en</b>glish <i>[language]</i></a></li>
+      <li><a href="#"><b>en</b>titled <i>[keyword]</i></a></li>
+      <li><a href="#"><b>en</b>dangered <i>[keyword]</i></a></li>
+    </ul>
+  </div>
+
+  <div class="visual compact">
+    <p class="summary"><a href="#">advanced filtering &raquo;</a></p>
+    <div class="content">
+      <div class="filter-operating-system">
+        <h3>operating system</h3>
+        <ul>
+          <li>
+            <input type="checkbox" name="linux" value="" id="linux">
+            <label for="linux">linux <small>(20)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="mac_os_x" value="" id="mac_os_x">
+            <label for="mac_os_x">mac os x <small>(15)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="windows" value="" id="windows">
+            <label for="windows">windows <small>(3)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="ios" value="" id="ios">
+            <label for="ios">ios <small>(75)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="android" value="" id="android">
+            <label for="android">android <small>(3)</small></label>
+          </li>
+        </ul>
+      </div>
+      <div class="filter-language">
+        <h3>language</h3>
+        <ul class="long">
+          <li>
+            <input type="checkbox" name="en" value="" id="en">
+            <label for="en">english <small>(3)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="sp" value="" id="sp">
+            <label for="sp">spanish <small>(13)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="arabic" value="" id="arabic">
+            <label for="arabic">arabic <small>(24)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="latin" value="" id="latin">
+            <label for="latin">latin <small>(12)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="german" value="" id="german">
+            <label for="german">german <small>(5)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="french" value="" id="french">
+            <label for="french">french <small>(3)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="sesotho" value="" id="sesotho">
+            <label for="sesotho">sesotho <small>(23)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="hindi" value="" id="hindi">
+            <label for="hindi">hindi <small>(34)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="bengali" value="" id="bengali">
+            <label for="bengali">bengali <small>(14)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="russian" value="" id="russian">
+            <label for="russian">russian <small>(6)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="japanese" value="" id="japanese">
+            <label for="japanese">japanese <small>(68)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="punjabi" value="" id="punjabi">
+            <label for="punjabi">punjabi <small>(13)</small></label>
+          </li>
+        </ul>
+      </div>
+      <div class="filter-status">
+        <h3>status</h3>
+        <ul>
+          <li>
+            <input type="checkbox" name="draft" value="" id="draft">
+            <label for="draft">draft <small>(35)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="active" value="" id="active">
+            <label for="active">active <small>(43)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="locked" value="" id="locked">
+            <label for="locked">locked <small>(48)</small></label>
+          </li>
+        </ul>
+      </div>
+      <div class="filter-keywords">
+        <h3>keywords</h3>
+        <ul>
+          <li>
+            <input type="checkbox" name="first" value="" id="first">
+            <label for="first">first term <small>(3)</small></label>
+          </li>
+          <li>
+            <input type="checkbox" name="second" value="" id="second">
+            <label for="second">second term <small>(6)</small></label>
+          </li>
+        </ul>
+      </div>
+      {% block more-filters %}{% endblock more-filters %}
+    </div>
+  </div>
+
+</form>
