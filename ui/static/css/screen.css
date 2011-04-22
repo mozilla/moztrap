@@ -310,7 +310,7 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filters .visual.expanded .long { overflow: hidden; height: 8.75em; min-height: 8.75em; max-height: 42em; border-bottom: 1px solid #eeeeee; resize: vertical; }
 #filters .visual.expanded .long:hover { overflow-y: auto; }
 #filters .visual.expanded .more { clear: both; width: 100%; }
-#filters .visual.expanded .more summary { text-align: right; }
+#filters .visual.expanded .more summary { clear: both; text-align: right; }
 #filters .visual.expanded .more summary::after { content: " more »"; }
 #filters .visual.expanded .more[open] summary::after { content: " less"; }
 #filters .visual.expanded .more[open] summary::before { content: "« "; }
