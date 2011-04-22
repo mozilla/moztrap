@@ -62,18 +62,6 @@ body
 ::selection
   +selection
 
-=placeholder
-  color: #ccc
-  font-weight: normal
-
-input, textarea
-  &::-webkit-input-placeholder
-    +placeholder
-  &:-moz-placeholder
-    +placeholder
-  &.placeholder
-    +placeholder
-
 /* Links --------------------------------------------------------------
 
 $link   :   "&:link, &:visited"
@@ -273,6 +261,18 @@ caption
 
 /* Forms --------------------------------------------------------------
 
+=placeholder
+  color: #ccc
+  font-weight: normal
+
+=apply-placeholder
+  &::-webkit-input-placeholder
+    +placeholder
+  &:-moz-placeholder
+    +placeholder
+  &.placeholder
+    +placeholder
+
 form
   > ul, > ol
     +no-style-list
@@ -318,6 +318,7 @@ optgroup
   font-weight: normal
 
 .textinput
+  +apply-placeholder
   +sans-family
   +rhythm-borders(1px,.25)
   +trailer(.5)
