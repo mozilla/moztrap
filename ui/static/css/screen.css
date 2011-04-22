@@ -258,13 +258,14 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filters .content input:checked + label:hover, #filters .closed input:checked + label:hover { background-image: url('../images/ui/x.png?1299276461'); }
 #filters .content .long { overflow-y: hidden; height: 8.75em; min-height: 8.75em; border-bottom: 1px solid #eeeeee; resize: vertical; }
 #filters .content .long:hover { overflow-y: auto; }
-#filters .visual[open] + .closed { display: none; }
-#filters .closed li { display: inline; float: left; }
-#filters .closed li + li { margin-left: 0.5em; }
-#filters .closed label { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; display: none; padding: 0.188em 0.375em; background: #e5f5d2; }
-#filters .closed label:hover { background: #f5d2d4; }
-#filters .closed input:checked + label { display: block; }
-#filters .closed input:checked + label, #filters .closed input:checked + label:hover { background-image: none; }
+#filters .visual.small { *zoom: 1; margin-bottom: 0.75em; }
+#filters .visual.small:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#filters .visual.small div { width: auto; margin: 0; }
+#filters .visual.small h3, #filters .visual.small label { display: none; }
+#filters .visual.small li { display: inline; float: left; }
+#filters .visual.small .long { height: auto; min-height: 0; overflow: auto; border: 0; resize: none; }
+#filters .visual.small input:checked + label { display: inline; float: left; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; margin-right: 0.5em; padding: 0.188em 0.375em; background: #e5f5d2; background-image: none; }
+#filters .visual.small input:checked + label:hover { background: #f5d2d4; }
 
 #filterlist { list-style: none; margin: 0; padding: 0; border: 0; clear: both; }
 #filterlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }

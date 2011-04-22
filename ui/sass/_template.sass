@@ -180,25 +180,31 @@
       &:hover
         overflow-y: auto
 
-  .visual[open] + .closed
-    display: none
-
-  .closed
+  .visual.small
+    +pie-clearfix
+    +trailer(.5)
+    div
+      width: auto
+      margin: 0
+    h3, label
+      display: none
     li
       +float(left)
-      + li
-        margin-left: .5em
-    label
+    .long
+      height: auto
+      min-height: 0
+      overflow: auto
+      border: 0
+      resize: none
+    input:checked + label
+      +float(left)
       +border-radius(.25em)
-      display: none
+      margin-right: .5em
       padding: rhythm(.125) rhythm(.25)
       background: $green-lightest
+        image: none
       &:hover
         background: $red-lightest
-    input:checked + label
-      display: block
-      &, &:hover
-        background-image: none
 
 #filterlist
   +no-style-list

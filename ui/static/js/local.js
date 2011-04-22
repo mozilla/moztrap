@@ -16,4 +16,12 @@ $(
                 // prevent it from triggering the summary/details
                 event.stopPropagation();
             });
-    });
+    }
+);
+
+$('#filters .summary a').click(
+    function() {
+      $('#filters .visual').toggleClass('small');
+      return false;
+    }
+);
