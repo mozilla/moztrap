@@ -81,6 +81,13 @@
 
 /* filtering --------------------------------------------------------------
 
+=colorwheel($select)
+  @for $i from 1 to 25
+    &:nth-child(24n-#{$i})
+      #{$select}
+        $deg: ($i - 1)*15deg
+        background-color: adjust-hue($green-lightest,$deg)
+
 #filters
   +full(21)
   ul
@@ -88,20 +95,21 @@
   h3
     @extend .smallcaps
     margin: 0
+    padding: 0 .25em
     font-weight: normal
   .textual
     +columns(12,21)
     +trailer(.5)
     position: relative
     label
-      +columns(1,12)
+      +gone
     input
-      +columns(11,12)
-      +omega(12)
+      +full(12)
+      margin: 0
   .suggest
     display: none
     position: absolute
-    left: columns(1,12) + gutter(12)
+    left: 0
     right: 0
     top: rhythm(1.5)
     background: #fff
@@ -117,10 +125,13 @@
         border: 1px solid $light
           color: transparent $mid $light
           width: 0 1px 1px
-    li:first-child
-      a
-        #{$link}
-          background: $yellow-light
+      #{$focus}
+        background: $yellow-light
+    &:not(:hover)
+      li:first-child
+        a
+          #{$link}
+            background: $yellow-light
     li:last-child
       a
         #{$link}
@@ -144,12 +155,12 @@
     +full(21)
     +adjust-font-size-to(12px,.75)
     +pie-clearfix
-    +trailer(.5)
 
   .visual
     &.compact
-      +pie-clearfix
-      +trailer(.5)
+      .content
+        div
+          +colorwheel(label)
       .long
         height: auto !important
       h3, input, label
@@ -157,16 +168,18 @@
       li
         +float(left)
       input:checked + label
+        +trailer(.5,12px)
         +border-radius(.25em)
         display: block
         margin-right: .5em
-        padding: rhythm(.125) rhythm(.25)
+        padding: rhythm(.125,12px) rhythm(.25,12px)
         background: $green-lightest
         &:hover
           background: $red-lightest
 
     &.expanded
       .content
+        +trailer(.5,12px)
         div
           +columns(3,21)
           +trailer(.5)
@@ -174,8 +187,9 @@
             +omega(21)
           &:nth-of-type(7n+1)
             clear: left
+          +colorwheel(h3)
       .long
-        overflow-y: hidden
+        overflow: hidden
         height: rhythm(5,12px)
         min-height: rhythm(5,12px)
         max-height: rhythm(24,12px)
@@ -189,27 +203,14 @@
         +opacity(.375)
         display: block
         padding: rhythm(.125) rhythm(.25)
-          left: image-width('ui/check_circle.png') + 6px
-        background: image-url('ui/plus.png') no-repeat scroll 3px
+          left: image-width('ui/check_sm.png') + 6px
+        background: image-url('ui/plus_sm.png') no-repeat scroll 3px
         font-weight: normal
         &:hover
           font-weight: bold
       input:checked + label
         +opacity(1)
-        background-image: image-url('ui/check.png')
+        background-image: image-url('ui/check_sm.png')
         font-weight: bold
         &:hover
-          background-image: image-url('ui/x.png')
-
-#filterlist
-  +no-style-list
-  +full(21)
-  li
-    +leading-border(1px,.25)
-    +padding-trailer(.25)
-    +hpadding(.5em)
-    border-color: $mid
-    &:last-child
-      +trailing-border(1px,.5)
-    &:nth-child(odd)
-      background: $light
+          background-image: image-url('ui/x_sm.png')
