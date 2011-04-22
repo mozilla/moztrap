@@ -83,7 +83,7 @@
 
 =colorwheel($select)
   @for $i from 1 to 25
-    &:nth-child(24n-#{$i})
+    &:nth-of-type(24n-#{$i})
       #{$select}
         $deg: ($i - 1)*15deg
         background-color: adjust-hue($green-lightest,$deg)
@@ -155,15 +155,17 @@
     +full(21)
     +adjust-font-size-to(12px,.75)
     +pie-clearfix
+  small
+    color: $mid
 
   .visual
     &.compact
       .content
-        div
+        div[class^="filter-"]
           +colorwheel(label)
       .long
         height: auto !important
-      h3, input, label
+      h3, input, label, .more
         display: none
       li
         +float(left)
@@ -180,7 +182,7 @@
     &.expanded
       .content
         +trailer(.5,12px)
-        div
+        div[class^="filter-"]
           +columns(3,21)
           +trailer(.5)
           &:nth-of-type(7n)
@@ -197,6 +199,14 @@
         resize: vertical
         &:hover
           overflow-y: auto
+      .more
+        clear: both
+        width: 100%
+        summary
+          text-align: right
+        &[open]
+          summary
+            display: none
       input
         display: none
       label
@@ -208,6 +218,8 @@
         font-weight: normal
         &:hover
           font-weight: bold
+      small
+        +float(right)
       input:checked + label
         +opacity(1)
         background-image: image-url('ui/check_sm.png')

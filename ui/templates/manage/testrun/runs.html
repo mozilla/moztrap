@@ -7,6 +7,9 @@
 <section id="manageruns">
   <h2>Manage Test Runs</h2>
   <a href="{% url manage_testrun_add %}" class="create">create test run</a>
+
+  {% include "includes/more-filters.html" %}
+
   <form method="POST">
     {% csrf_token %}
 
