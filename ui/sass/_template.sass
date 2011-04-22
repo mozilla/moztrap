@@ -140,71 +140,66 @@
     &:focus
       outline: 0
       color: $blue
-  .content, .closed
+  .content
     +full(21)
     +adjust-font-size-to(12px,.75)
     +pie-clearfix
     +trailer(.5)
-    div
-      +columns(3,21)
+
+  .visual
+    &.compact
+      +pie-clearfix
       +trailer(.5)
-      &:nth-of-type(7n)
-        +omega(21)
-      &:nth-of-type(7n+1)
-        clear: left
-    input
-      display: none
-    label
-      +opacity(.375)
-      display: block
-      padding: rhythm(.125) rhythm(.25)
-        left: image-width('ui/check_circle.png') + 6px
-      background: image-url('ui/plus.png') no-repeat scroll 3px
-      font-weight: normal
-      &:hover
+      .long
+        height: auto !important
+      h3, input, label
+        display: none
+      li
+        +float(left)
+      input:checked + label
+        +border-radius(.25em)
+        display: block
+        margin-right: .5em
+        padding: rhythm(.125) rhythm(.25)
+        background: $green-lightest
+        &:hover
+          background: $red-lightest
+
+    &.expanded
+      .content
+        div
+          +columns(3,21)
+          +trailer(.5)
+          &:nth-of-type(7n)
+            +omega(21)
+          &:nth-of-type(7n+1)
+            clear: left
+      .long
+        overflow-y: hidden
+        height: rhythm(5,12px)
+        min-height: rhythm(5,12px)
+        max-height: rhythm(24,12px)
+        border-bottom: 1px solid $light
+        resize: vertical
+        &:hover
+          overflow-y: auto
+      input
+        display: none
+      label
+        +opacity(.375)
+        display: block
+        padding: rhythm(.125) rhythm(.25)
+          left: image-width('ui/check_circle.png') + 6px
+        background: image-url('ui/plus.png') no-repeat scroll 3px
+        font-weight: normal
+        &:hover
+          font-weight: bold
+      input:checked + label
+        +opacity(1)
+        background-image: image-url('ui/check.png')
         font-weight: bold
-    input:checked + label
-      +opacity(1)
-      background-image: image-url('ui/check.png')
-      font-weight: bold
-      &:hover
-        background-image: image-url('ui/x.png')
-
-  .content
-    .long
-      overflow-y: hidden
-      height: rhythm(5,12px)
-      min-height: rhythm(5,12px)
-      border-bottom: 1px solid $light
-      resize: vertical
-      &:hover
-        overflow-y: auto
-
-  .visual.small
-    +pie-clearfix
-    +trailer(.5)
-    div
-      width: auto
-      margin: 0
-    h3, label
-      display: none
-    li
-      +float(left)
-    .long
-      height: auto
-      min-height: 0
-      overflow: auto
-      border: 0
-      resize: none
-    input:checked + label
-      +float(left)
-      +border-radius(.25em)
-      margin-right: .5em
-      padding: rhythm(.125) rhythm(.25)
-      background: $green-lightest
-        image: none
-      &:hover
-        background: $red-lightest
+        &:hover
+          background-image: image-url('ui/x.png')
 
 #filterlist
   +no-style-list

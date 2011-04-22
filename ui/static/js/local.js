@@ -21,7 +21,7 @@ $(
 
 $('#filters .summary a').click(
     function() {
-      $('#filters .visual').toggleClass('small');
+      $('#filters .visual').toggleClass('compact').toggleClass('expanded');
       return false;
     }
 );
