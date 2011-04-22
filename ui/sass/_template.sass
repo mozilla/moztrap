@@ -6,7 +6,7 @@
 .full
   +full
   +pie-clearfix
-  
+
 .simple
   +full(24)
   +pad(6,6,24)
@@ -24,7 +24,7 @@
     left: 1em
     bottom: 0.5em
 
-.no-details 
+.no-details
   details
     > *
       display: none
@@ -78,3 +78,119 @@
     font-weight: bold
     text-align: center
     z-index: 50
+
+/* filtering --------------------------------------------------------------
+
+#filters
+  +full
+  +prefix(3,24)
+  ul
+    +no-style-list
+  h3
+    @extend .smallcaps
+    margin: 0
+    font-weight: normal
+  .textual
+    +columns(12,21)
+    +trailer(.5)
+    position: relative
+    label
+      +columns(1,12)
+    input
+      +columns(11,12)
+      +omega(12)
+  .suggest
+    display: none
+    position: absolute
+    left: columns(1,12) + gutter(12)
+    right: 0
+    top: rhythm(1.5)
+    background: #fff
+    z-index: 900
+    a
+      #{$link}
+        +padding-leader(.5)
+        +trailing-border(1px,.5)
+        +clearfix
+        display: block
+        border: 1px solid $light
+          color: transparent $mid $light
+          width: 0 1px 1px
+    li:first-child
+      a
+        #{$link}
+          background: $yellow-light
+    li:last-child
+      a
+        #{$link}
+          border-bottom-color: $mid
+    i
+      +float(left)
+      padding-left: gutter(11)
+      margin-right: gutter(11)
+    b
+      color: $base
+  #filter:focus + .suggest
+    display: block
+  .summary
+    +columns(9,21)
+    +omega(21)
+    +leader(.25)
+    font-style: italic
+  .content, .closed
+    +full(21)
+    +adjust-font-size-to(12px,.75)
+    div
+      +columns(3,21)
+      +trailer(.5)
+      &:nth-of-type(7n)
+        +omega(21)
+      &:nth-of-type(7n+1)
+        clear: left
+    input
+      display: none
+    label
+      +opacity(.375)
+      display: block
+      padding: rhythm(.125) rhythm(.25)
+        left: image-width('ui/check_circle.png') + 6px
+      background: image-url('ui/plus.png') no-repeat scroll 3px
+      font-weight: normal
+      &:hover
+        font-weight: bold
+    input:checked + label
+      +opacity(1)
+      background-image: image-url('ui/check.png')
+      font-weight: bold
+      &:hover
+        background-image: image-url('ui/x.png')
+
+  .content
+    .long
+      overflow-y: hidden
+      height: rhythm(5,12px)
+      min-height: rhythm(5,12px)
+      border-bottom: 1px solid $light
+      resize: vertical
+      &:hover
+        overflow-y: auto
+
+  .visual[open] + .closed
+    display: none
+
+  .closed
+    li
+      +float(left)
+      + li
+        margin-left: .5em
+    label
+      +border-radius(.25em)
+      display: none
+      padding: rhythm(.125) rhythm(.25)
+      background: $green-lightest
+      &:hover
+        background: $red-lightest
+    input:checked + label
+      display: block
+      &, &:hover
+        background-image: none

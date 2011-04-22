@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>TCM List Page with Filtering</h2>
+  <form id="filters">
+    <div class="textual">
+      <label for="filter">filter</label>
+      <input type="text" name="filter" value="" id="filter" placeholder="operating system, language, status, keyword, etc.">
+      <ul class="suggest">
+        <li><a href="#"><i>language:</i> "<b>en</b>glish"</a></li>
+        <li><a href="#"><i>keyword:</i> "<b>en</b>titled"</a></li>
+        <li><a href="#"><i>keyword:</i> "<b>en</b>dangered"</a></li>
+      </ul>
+    </div>
+
+    <details class="visual" open="open">
+      <summary class="summary">advanced filtering &raquo;</summary>
+      <div class="content">
+        <div class="operating-system">
+          <h3>operating system</h3>
+          <ul>
+            <li>
+              <input type="checkbox" name="linux" value="" id="linux">
+              <label for="linux">linux</label>
+            </li>
+            <li>
+              <input type="checkbox" name="mac_os_x" value="" id="mac_os_x" checked="checked">
+              <label for="mac_os_x">mac os x</label>
+            </li>
+            <li>
+              <input type="checkbox" name="windows" value="" id="windows">
+              <label for="windows">windows</label>
+            </li>
+            <li>
+              <input type="checkbox" name="ios" value="" id="locked">
+              <label for="ios">ios</label>
+            </li>
+            <li>
+              <input type="checkbox" name="android" value="" id="locked">
+              <label for="android">android</label>
+            </li>
+          </ul>
+        </div>
+        <div class="language">
+          <h3>language</h3>
+          <ul class="long">
+            <li>
+              <input type="checkbox" name="en" value="" id="en">
+              <label for="en">english</label>
+            </li>
+            <li>
+              <input type="checkbox" name="sp" value="" id="sp">
+              <label for="sp">spanish</label>
+            </li>
+            <li>
+              <input type="checkbox" name="arabic" value="" id="arabic">
+              <label for="arabic">arabic</label>
+            </li>
+            <li>
+              <input type="checkbox" name="latin" value="" id="latin">
+              <label for="latin">latin</label>
+            </li>
+            <li>
+              <input type="checkbox" name="german" value="" id="german">
+              <label for="german">german</label>
+            </li>
+            <li>
+              <input type="checkbox" name="french" value="" id="french">
+              <label for="french">french</label>
+            </li>
+            <li>
+              <input type="checkbox" name="sesotho" value="" id="sesotho">
+              <label for="sesotho">sesotho</label>
+            </li>
+            <li>
+              <input type="checkbox" name="hindi" value="" id="hindi">
+              <label for="hindi">hindi</label>
+            </li>
+            <li>
+              <input type="checkbox" name="bengali" value="" id="bengali">
+              <label for="bengali">bengali</label>
+            </li>
+            <li>
+              <input type="checkbox" name="russian" value="" id="russian">
+              <label for="russian">russian</label>
+            </li>
+            <li>
+              <input type="checkbox" name="japanese" value="" id="japanese">
+              <label for="japanese">japanese</label>
+            </li>
+            <li>
+              <input type="checkbox" name="punjabi" value="" id="punjabi">
+              <label for="punjabi">punjabi</label>
+            </li>
+          </ul>
+        </div>
+        <div class="status">
+          <h3>status</h3>
+          <ul>
+            <li>
+              <input type="checkbox" name="draft" value="" id="draft" checked="checked">
+              <label for="draft">draft</label>
+            </li>
+            <li>
+              <input type="checkbox" name="active" value="" id="active">
+              <label for="active">active</label>
+            </li>
+            <li>
+              <input type="checkbox" name="locked" value="" id="locked">
+              <label for="locked">locked</label>
+            </li>
+          </ul>
+        </div>
+        <div class="keywords">
+          <h3>keywords</h3>
+          <ul>
+            <li>
+              <input type="checkbox" name="first" value="" id="first" checked="checked">
+              <label for="first">first term</label>
+            </li>
+            <li>
+              <input type="checkbox" name="second" value="" id="second">
+              <label for="second">second term</label>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <div class="closed">
+      <ul>
+        <li>
+          <input type="checkbox" name="cmac_os_x" value="" id="cmac_os_x" checked="checked">
+          <label for="cmac_os_x">mac os x</label>
+        </li>
+        <li>
+          <input type="checkbox" name="cdraft" value="" id="cdraft" checked="checked">
+          <label for="cdraft">draft</label>
+        </li>
+        <li>
+          <input type="checkbox" name="cfirst" value="" id="cfirst" checked="checked">
+          <label for="cfirst">first term</label>
+        </li>
+      </ul>
+    </div>
+
+  </form>
+{% endblock content %}

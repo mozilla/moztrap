@@ -26,11 +26,11 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .smallcaps, h4, #run .testinvalid summary { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .smallcaps, h4, #filters h3, #run .testinvalid summary { letter-spacing: 0.1em; }
 
 .allcaps, h1, h2, caption, .loading::before, #run .status p, #run .stepfail summary, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall { text-transform: uppercase; }
 
-.smallcaps, h4, #run .testinvalid summary { font-variant: small-caps; }
+.smallcaps, h4, #filters h3, #run .testinvalid summary { font-variant: small-caps; }
 
 /* Body -------------------------------------------------------------- */
 body { color: #444444; }
@@ -41,9 +41,9 @@ body { color: #444444; }
 
 ::selection { color: white; background: #5d7b7a; text-shadow: none; }
 
-::-webkit-input-placeholder { color: #999999; }
-
-:-moz-placeholder { color: #999999; }
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { color: #cccccc; font-weight: normal; }
+input:-moz-placeholder, textarea:-moz-placeholder { color: #cccccc; font-weight: normal; }
+input.placeholder, textarea.placeholder { color: #cccccc; font-weight: normal; }
 
 /* Links -------------------------------------------------------------- */
 a, a:link, a:visited { color: #5d7b7a; text-decoration: none; }
@@ -229,6 +229,41 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .loading { position: relative; }
 .loading > * { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)"; opacity: 0.25; }
 .loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; top: 0; right: 0; bottom: 0; left: 0; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; z-index: 50; }
+
+/* filtering -------------------------------------------------------------- */
+#filters { clear: both; margin-left: 1.176%; margin-right: 1.176%; padding-left: 12.651%; }
+#filters ul { list-style: none; margin: 0; padding: 0; border: 0; }
+#filters ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#filters h3 { margin: 0; font-weight: normal; }
+#filters .textual { display: inline; float: left; width: 56.552%; margin-right: 1.379%; margin-bottom: 0.75em; position: relative; }
+#filters .textual label { display: inline; float: left; width: 6.098%; margin-right: 2.439%; }
+#filters .textual input { display: inline; float: left; width: 91.463%; margin-right: 2.439%; display: inline; float: right; margin-right: 0; }
+#filters .suggest { display: none; position: absolute; left: 8.537%; right: 0; top: 2.25em; background: white; z-index: 900; }
+#filters .suggest a:link, #filters .suggest a:visited { padding-top: 0.75em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.679em; overflow: hidden; *zoom: 1; display: block; border: 1px solid #eeeeee; border-color: transparent #999999 #eeeeee; border-width: 0 1px 1px; }
+#filters .suggest li:first-child a:link, #filters .suggest li:first-child a:visited { background: #fef0bf; }
+#filters .suggest li:last-child a:link, #filters .suggest li:last-child a:visited { border-bottom-color: #999999; }
+#filters .suggest i { display: inline; float: left; padding-left: 2.667%; margin-right: 2.667%; }
+#filters .suggest b { color: #444444; }
+#filters #filter:focus + .suggest { display: block; }
+#filters .summary { display: inline; float: left; width: 42.069%; margin-right: 1.379%; display: inline; float: right; margin-right: 0; margin-top: 0.375em; font-style: italic; }
+#filters .content, #filters .closed { clear: both; font-size: 0.857em; line-height: 1.313em; }
+#filters .content div, #filters .closed div { display: inline; float: left; width: 13.103%; margin-right: 1.379%; margin-bottom: 0.75em; }
+#filters .content div:nth-of-type(7n), #filters .closed div:nth-of-type(7n) { display: inline; float: right; margin-right: 0; }
+#filters .content div:nth-of-type(7n+1), #filters .closed div:nth-of-type(7n+1) { clear: left; }
+#filters .content input, #filters .closed input { display: none; }
+#filters .content label, #filters .closed label { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=38)"; opacity: 0.375; display: block; padding: 0.188em 0.375em; padding-left: 22px; background: url('../images/ui/plus.png?1299181696') no-repeat scroll 3px; font-weight: normal; }
+#filters .content label:hover, #filters .closed label:hover { font-weight: bold; }
+#filters .content input:checked + label, #filters .closed input:checked + label { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; opacity: 1; background-image: url('../images/ui/check.png?1299276480'); font-weight: bold; }
+#filters .content input:checked + label:hover, #filters .closed input:checked + label:hover { background-image: url('../images/ui/x.png?1299276461'); }
+#filters .content .long { overflow-y: hidden; height: 8.75em; min-height: 8.75em; border-bottom: 1px solid #eeeeee; resize: vertical; }
+#filters .content .long:hover { overflow-y: auto; }
+#filters .visual[open] + .closed { display: none; }
+#filters .closed li { display: inline; float: left; }
+#filters .closed li + li { margin-left: 0.5em; }
+#filters .closed label { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; display: none; padding: 0.188em 0.375em; background: #e5f5d2; }
+#filters .closed label:hover { background: #f5d2d4; }
+#filters .closed input:checked + label { display: block; }
+#filters .closed input:checked + label, #filters .closed input:checked + label:hover { background-image: none; }
 
 /* Layout -------------------------------------------------------------- */
 body { font-size: 87.5%; line-height: 1.5em; }

@@ -63,13 +63,16 @@ body
   +selection
 
 =placeholder
-  color: #999
+  color: #ccc
+  font-weight: normal
 
-::-webkit-input-placeholder
-  +placeholder
-
-\:-moz-placeholder
-  +placeholder
+input, textarea
+  &::-webkit-input-placeholder
+    +placeholder
+  &:-moz-placeholder
+    +placeholder
+  &.placeholder
+    +placeholder
 
 /* Links --------------------------------------------------------------
 

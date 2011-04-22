@@ -26,4 +26,10 @@ urlpatterns = patterns(
 
     # manage
     url("^manage/", include("tcmui.manage.urls")),
+
+    # filter wireframe
+    url(r"^filter/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "filter.html"}),
+
 )
