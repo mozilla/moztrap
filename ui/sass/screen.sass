@@ -441,74 +441,22 @@ nav.manage
   padding-left: gutter(24)
   border-left: 1px solid $light
   min-height: $base-rhythm-unit*12
+  .create
+    @extend .button
+    +button-color($green,'ui/plus.png')
+    position: absolute
+    top: 0
+    right: 0
+    padding-left: $base-line-height + image-width('ui/plus.png')
+    background:
+      position: .75em, left
+      repeat: no-repeat
 
 /* manage lists --------------------------------------------------------------
 
-.listfilter
-  overflow: hidden
-  background: $blue-lighter
-  +padding-trailer
-  h3, h4
-    margin: 0
-    padding: 0
-      left: $gutter-width
-  h3
-    +h-borders(1px,.25)
-    background: $blue-light
-    border-color: $blue
-  h4
-    +padding-leader(.5)
-  a
-    #{$link}
-      +hpadding($gutter-width*.5)
-      display: block
-      margin: 0 $gutter-width*.5
-    #{$focus}
-      background: rgba($blue,.75)
-      color: white
-  .selected
-    +hpadding($gutter-width*.5)
-    display: block
-    margin: 0 $gutter-width*.5
-    font-weight: bold
-
-a.create
-  @extend .button
-  +button-color($green,'ui/plus.png')
-  position: absolute
-  top: 0
-  right: 0
-  padding-left: $base-line-height + image-width('ui/plus.png')
-  background:
-    position: .75em, left
-    repeat: no-repeat
-
-=bulk-color($value,$color,$back,$hover:$color)
-  &[value="#{$value}"]
-    background: $back
-    color: $color
-    &:hover
-      +text-shadow(rgba(black,.5) 1px 1px 0)
-      background: $hover
-      color: white
-
-.bulk
-  +pie-clearfix
-  +full(21)
-  +trailer(.5)
-  strong
-    +adjust-font-size-to(14px)
-    font-weight: normal
-  button
-    +button-reset
-    +text-shadow(rgba(white,.75) 1px 1px 0)
-    padding: 0 .4em
-    background: $blue-lightest
-    color: $blue
-    +bulk-color(suite,$green,$green-lightest)
-
 .managelist
-  +columns(18,21)
+  +full(21)
+  +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(2,21), rgba($blue-lightest,0) columns(2,21)))
   margin: 0
   button
     +button-reset
@@ -520,7 +468,7 @@ a.create
     +pie-clearfix
     +padding-leader(.25)
     +trailing-border(1px,.25)
-    border-color: $light
+    border-color: rgba($base,.125)
   .header
     p, h3
       margin-bottom: 0
@@ -534,9 +482,6 @@ a.create
     background: $light
   .id
     text-align: right
-  .bulkselect
-    label
-      +gone
 
 .status
   position: relative
@@ -604,56 +549,62 @@ a.create
         content: "."
 
 #managecycles
-  .status, .id, .controls
-    +columns(2,18)
-  .product, .start, .end
-    +columns(3,18)
-  .environments, .testers
-    +columns(4,18)
-  .title
-    +columns(5,18)
-  .description, .environments:last-child
-    +columns(8,18)
+  .status, .id, .controls, .start, .end, .bystart, .byend
+    +columns(2,21)
+  .product, .byproduct
+    +columns(5,21)
+  .testers
+    +columns(4,21)
+  .environments
+    +columns(7,21)
+    &:last-child
+      +columns(11,21)
+  .title, .bytitle
+    +columns(8,21)
+  .description
+    +columns(8,21)
   .controls, .testers, .environments:last-child
-    +omega(18)
-
+    +omega(21)
 
 #manageruns
-  .status, .product, .start, .end, .id, .controls
-    +columns(2,18)
-  .cycle
-    +columns(3,18)
-  .environments, .suites
-    +columns(4,18)
-  .title
-    +columns(5,18)
-  .description, .environments:last-child
-    +columns(8,18)
+  .status, .id, .controls, .start, .end, .bystart, .byend
+    +columns(2,21)
+  .cycle, .product, .bycycle, .byproduct
+    +columns(3,21)
+  .suites
+    +columns(4,21)
+  .title, .bytitle, .description
+    +columns(7,21)
+  .environments
+    +columns(8,21)
+    &:last-child
+      +columns(12,21)
   .controls, .suites, .environments:last-child
-    +omega(18)
+    +omega(21)
 
 #managesuites
-  .status, .id
-    +columns(2,18)
-  .product, .controls
-    +columns(4,18)
-  .title, .description, .environments
-    +columns(8,18)
+  .status, .id, .controls
+    +columns(2,21)
+  .product, .byproduct
+    +columns(8,21)
+  .environments
+    +columns(10,21)
+  .title, .description, .bytitle
+    +columns(9,21)
   .controls, .environments
-    +omega(18)
+    +omega(21)
 
 #managecases
-  .status, .id, .version
-    +columns(2,18)
-  .title, .tags, .byline, .environments
-    +columns(8,18)
-  .product, .controls
-    +columns(3,18)
-  .tags
-    +prefix(2,18)
-    clear: left
+  .status, .id, .controls
+    +columns(2,21)
+  .version, .byversion, .product, .byproduct
+    +columns(3,21)
+  .environments
+    +columns(9,21)
+  .title, .byline, .bytitle
+    +columns(10,21)
   .controls, .environments
-    +omega(18)
+    +omega(21)
 
 .sortlinks
   #{$link}
@@ -695,36 +646,10 @@ a.create
     @extend .sortlinks
 
   .bystatus
-    +columns(2,18)
+    +columns(2,21)
     a
       #{$link}
         padding-left: .375em
-
-  #managecycles &
-    .bytitle
-      +columns(5,18)
-    .byproduct, .bystart, .byend
-      +columns(3,18)
-
-  #manageruns &
-    .bytitle
-      +columns(5,18)
-    .bycycle
-      +columns(3,18)
-    .byproduct, .bystart, .byend
-      +columns(2,18)
-
-  #managesuites &
-    .bytitle
-      +columns(8,18)
-    .byproduct
-      +columns(4,18)
-
-  #managecases &
-    .bytitle
-      +columns(8,18)
-    .byproduct, .byversion
-      +columns(3,18)
 
 .listnav
   +pie-clearfix
