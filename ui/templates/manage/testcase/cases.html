@@ -7,6 +7,9 @@
 <section id="managecases">
   <h2>Manage Test Cases</h2>
   <a href="{% url manage_testcase_add %}" class="create">create a test case</a>
+
+  {% include "includes/filter.html" %}
+
   <form method="POST">
     {% csrf_token %}
 

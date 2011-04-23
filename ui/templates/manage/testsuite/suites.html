@@ -8,7 +8,7 @@
   <h2>Manage Test Suites</h2>
   <a href="{% url manage_testsuite_add %}" class="create">create test suite</a>
 
-  {% include "includes/even-more-filters.html" %}
+  {% include "includes/filter.html" %}
 
   <form method="POST">
     {% csrf_token %}

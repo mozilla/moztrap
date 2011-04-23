@@ -1,6 +1,3 @@
-// Imports -------------------------------------------------------------------
-
-
 /* Helpers -------------------------------------------------------------------
 
 .full
@@ -11,7 +8,6 @@
   +full(24)
   +pad(6,6,24)
 
-/* left and right floats for dynamic content */
 .left
   +float(left)
   margin:
@@ -24,12 +20,7 @@
     left: 1em
     bottom: 0.5em
 
-.no-details
-  details
-    > *
-      display: none
-    summary
-      display: block
+/* Table Helpers -------------------------------------------------------------
 
 .tdlink
   padding: 0
@@ -39,6 +30,8 @@
       display: block
       padding: $base-rhythm-unit * 0.25
       border-bottom: 1px solid #ccc
+
+/* Controls ------------------------------------------------------------------
 
 .controls
   text-align: right
@@ -58,6 +51,8 @@
     +button-reset
     +icon('[title="clone"]','ui/clone.png')
     +icon('[title="delete"]','ui/trash.png')
+
+/* Loading -------------------------------------------------------------------
 
 .loading
   position: relative
@@ -79,156 +74,6 @@
     text-align: center
     z-index: 50
 
-/* filtering --------------------------------------------------------------
+// Modules -------------------------------------------------------------------
 
-=colorwheel($select)
-  @for $i from 1 to 25
-    &:nth-of-type(24n-#{$i})
-      #{$select}
-        $deg: ($i - 1)*15deg
-        background-color: adjust-hue($green-lightest,$deg)
-
-#filters
-  +full(21)
-  ul
-    +no-style-list
-  h3
-    @extend .smallcaps
-    margin: 0
-    padding: 0 .25em
-    font-weight: normal
-  .textual
-    +columns(12,21)
-    +trailer(.5)
-    position: relative
-    label
-      +gone
-    input
-      +full(12)
-      margin: 0
-  .suggest
-    display: none
-    position: absolute
-    left: 0
-    right: 0
-    top: rhythm(1.5)
-    background: #fff
-    z-index: 900
-    a
-      #{$link}
-        +padding-leader(.25)
-        +trailing-border(1px,.25)
-        +clearfix
-        +hpadding(1em)
-        display: block
-        color: $base
-        border: 1px solid $light
-          color: transparent $mid $light
-          width: 0 1px 1px
-      #{$focus}
-        background: $yellow-light
-    &:not(:hover)
-      li:first-child
-        a
-          #{$link}
-            background: $yellow-light
-    li:last-child
-      a
-        #{$link}
-          border-bottom-color: $mid
-    i
-      +float(right)
-      padding-left: 1em
-      font-style: normal
-      color: $mid
-  #filter:focus + .suggest
-    display: block
-  .summary
-    +columns(9,21)
-    +omega(21)
-    +leader(.25)
-    font-style: italic
-    &:focus
-      outline: 0
-      color: $blue
-  .content
-    +full(21)
-    +adjust-font-size-to(12px,.75)
-    +pie-clearfix
-  small
-    color: $mid
-
-  .visual
-    &.compact
-      .content
-        div[class^="filter-"]
-          +colorwheel(label)
-      .long
-        height: auto !important
-      h3, input, label, .more
-        display: none
-      li
-        +float(left)
-      input:checked + label
-        +trailer(.5,12px)
-        +border-radius(.25em)
-        display: block
-        margin-right: .5em
-        padding: rhythm(.125,12px) rhythm(.25,12px)
-        background: $green-lightest
-        &:hover
-          background: $red-lightest
-
-    &.expanded
-      .content
-        +trailer(.5,12px)
-        div[class^="filter-"]
-          +columns(3,21)
-          +trailer(.5)
-          &:nth-of-type(7n)
-            +omega(21)
-          &:nth-of-type(7n+1)
-            clear: left
-          +colorwheel(h3)
-      .long
-        overflow: hidden
-        height: rhythm(5,12px)
-        min-height: rhythm(5,12px)
-        max-height: rhythm(24,12px)
-        border-bottom: 1px solid $light
-        resize: vertical
-        &:hover
-          overflow-y: auto
-      .more
-        clear: both
-        width: 100%
-        summary
-          clear: both
-          text-align: right
-          &::after
-            content: " more »"
-        &[open]
-          summary
-            &::after
-              content: " less"
-            &::before
-              content: "« "
-      input
-        display: none
-      label
-        +opacity(.375)
-        display: block
-        padding: rhythm(.125) rhythm(.25)
-          left: image-width('ui/check_sm.png') + 6px
-        background: image-url('ui/plus_sm.png') no-repeat scroll 3px
-        font-weight: normal
-        &:hover
-          font-weight: bold
-      small
-        +float(right)
-      input:checked + label
-        +opacity(1)
-        background-image: image-url('ui/check_sm.png')
-        font-weight: bold
-        &:hover
-          background-image: image-url('ui/x_sm.png')
+@import modules/filter
