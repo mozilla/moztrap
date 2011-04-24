@@ -122,9 +122,10 @@ def make_timeline(createDate=None, createdBy="1",
 
 def response(status, content, headers=None):
     headers = headers or {}
-    headers.setdefault("content-type", "application/json")
-    if headers["content-type"] == "application/json":
-        content = json.dumps(content)
+    if content:
+        headers.setdefault("content-type", "application/json")
+        if headers["content-type"] == "application/json":
+            content = json.dumps(content)
     return (FakeResponse(status, headers=headers), content)
 
 

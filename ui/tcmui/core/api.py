@@ -13,7 +13,7 @@ import urllib
 from django.core.cache import cache
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
-from remoteobjects.http import userAgent
+from remoteobjects import http
 
 from .conf import conf
 from . import fields
@@ -184,7 +184,7 @@ class ObjectMixin(StrAndUnicode):
             # then there's no content-type either, so we're done
             return
 
-        # check that the response body was json
+        # check that the response body is of an appropriate content type
         content_type = response.get('content-type', '').split(';', 1)[0].strip()
         if content_type not in cls.content_types:
             raise cls.BadResponse(
@@ -310,7 +310,7 @@ class ObjectMixin(StrAndUnicode):
 
         log.debug("Sending request %r", request)
 
-        response, content = userAgent.request(**request)
+        response, content = http.userAgent.request(**request)
 
         if update_from_response:
             log.debug("Got response %r, updating", response)

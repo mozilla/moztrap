@@ -299,6 +299,16 @@ class ResourceObjectTest(TestResourceTestCase):
             'http://fake.base/rest/testresources/3?_type=json: some error')
 
 
+    def test_no_content(self, http):
+        http.request.return_value = response(
+            httplib.NO_CONTENT, "")
+
+        c = self.resource_class.get("testresources/3")
+        c.delete()
+
+        self.assertEqual(c.name, None)
+
+
     def test_json_error(self, http):
         http.request.return_value = response(
             httplib.CONFLICT, {"errors":[{"error":"email.in.use"}]})
