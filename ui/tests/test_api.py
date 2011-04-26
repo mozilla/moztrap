@@ -194,6 +194,17 @@ class ResourceObjectTest(TestResourceTestCase):
             "http://fake.base/rest/testresources/3?_type=json")
 
 
+    def test_user_agent(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_class.get("testresources/3")
+        c.deliver()
+
+        self.assertEqual(
+            http.request.call_args[1]["headers"]["user-agent"], "TCMui/0.2")
+
+
     def test_get_id(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_one(
