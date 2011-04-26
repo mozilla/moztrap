@@ -119,6 +119,12 @@ def make_timeline(createDate=None, createdBy="1",
         }
 
 
+def make_boolean(val):
+    return {
+        "xsd.boolean":
+            [{"@xsi.type":"xsd:boolean","$":"true" if val else "false"}]
+        }
+
 
 def response(status, content, headers=None):
     headers = headers or {}

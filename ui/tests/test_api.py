@@ -4,7 +4,7 @@ import httplib
 from mock import patch, Mock
 from unittest2 import TestCase
 
-from .responses import response, make_identity, FakeResponse
+from .responses import response, make_identity, make_boolean, FakeResponse
 from .utils import ResourceTestCase
 
 
@@ -402,6 +402,64 @@ class ResourceObjectTest(TestResourceTestCase):
         mock.assert_called_with('testresources/3', http=cachedUserAgent)
 
 
+    def test_put(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_class.get("testresources/3")
+        c.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(
+                name="New name", resourceIdentity=make_identity(version=u"1")))
+
+        c.name = "New name"
+        c.put()
+
+        self.assertEqual(c.name, "New name")
+        self.assertEqual(c.identity["@version"], u"1")
+        request_kwargs = http.request.call_args_list[-1][1]
+        self.assertEqual(request_kwargs["method"], "PUT")
+        self.assertEqual(
+            request_kwargs["uri"], u"http://fake.base/rest/some/url?_type=json")
+        self.assertEqual(
+            request_kwargs["body"], "name=New+name&originalVersionId=0")
+        self.assertEqual(
+            request_kwargs["headers"]["content-type"],
+            "application/x-www-form-urlencoded")
+        self.assertEqual(
+            request_kwargs["headers"]["accept"],
+            "application/json")
+
+
+    def test_delete(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_class.get("testresources/3")
+        c.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, make_boolean(True))
+
+        c.delete()
+
+        self.assertEqual(c.identity, None)
+        self.assertEqual(c._location, None)
+        request_kwargs = http.request.call_args_list[-1][1]
+        self.assertEqual(request_kwargs["method"], "DELETE")
+        self.assertEqual(
+            request_kwargs["uri"], u"http://fake.base/rest/some/url?_type=json")
+        self.assertEqual(
+            request_kwargs["body"], "originalVersionId=0")
+        self.assertEqual(
+            request_kwargs["headers"]["content-type"],
+            "application/x-www-form-urlencoded")
+        self.assertEqual(
+            request_kwargs["headers"]["accept"],
+            "application/json")
+
+
 
 @patch("remoteobjects.http.userAgent")
 class ListObjectTest(TestResourceTestCase):
@@ -423,3 +481,31 @@ class ListObjectTest(TestResourceTestCase):
         c = self.resource_list_class.get()
 
         self.assertEqual(c[1].name, "Second Test")
+
+
+    def test_post(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_searchresult())
+
+        lst = self.resource_list_class.get()
+        lst.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="The Thing"))
+
+        new = self.resource_class(name="The Thing")
+
+        lst.post(new)
+
+        self.assertEqual(new.name, "The Thing")
+        self.assertEqual(new.id, u"1")
+        request_kwargs = http.request.call_args_list[-1][1]
+        self.assertEqual(request_kwargs["body"], "name=The+Thing")
+        self.assertEqual(
+            request_kwargs["uri"],
+            "http://fake.base/rest/testresources?_type=json")
+        self.assertEqual(request_kwargs["method"], "POST")
+        headers = request_kwargs["headers"]
+        self.assertEqual(headers["accept"], "application/json")
+        self.assertEqual(
+            headers["content-type"], "application/x-www-form-urlencoded")
