@@ -335,8 +335,7 @@ class ObjectMixin(StrAndUnicode):
         which you want to post an asset (`obj`).
 
         """
-        self._request(
-            "POST",
+        self._post(
             full_payload=obj,
             update_from_response=obj,
             **kwargs)

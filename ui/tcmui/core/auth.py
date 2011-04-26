@@ -36,5 +36,10 @@ class Credentials(object):
         return "<Credentials: %s>" % self.userid
 
 
+    def __eq__(self, other):
+        return ((self.userid, self.password, self.cookie) ==
+                (other.userid, other.password, other.cookie))
+
+
 
 admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)

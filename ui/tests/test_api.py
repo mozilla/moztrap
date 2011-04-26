@@ -124,6 +124,24 @@ class CredentialsTest(TestCase):
         self.assertEqual(repr(c), "<Credentials: user@example.com>")
 
 
+    def test_eq(self):
+        c = self.get_creds("user@example.com", password="yo")
+        d = self.get_creds("user@example.com", password="yo")
+        self.assertEqual(c, d)
+
+
+    def test_not_eq(self):
+        c = self.get_creds("user@example.com", password="yo")
+        d = self.get_creds("user@example.com", cookie="yo")
+        self.assertNotEqual(c, d)
+
+
+    def test_not_eq_same_cred(self):
+        c = self.get_creds("user@example.com", password="yo")
+        d = self.get_creds("user@example.com", password="hmm")
+        self.assertNotEqual(c, d)
+
+
 
 class TestResourceTestCase(ResourceTestCase):
     RESOURCE_DEFAULTS = {
@@ -499,7 +517,7 @@ class ListObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_searchresult({"name":"Test TestResource"}))
 
-        c = self.resource_list_class.get()
+        c = self.resource_list_class.get(auth=self.auth)
 
         self.assertEqual(c[0].name, "Test TestResource")
 
@@ -510,7 +528,7 @@ class ListObjectTest(TestResourceTestCase):
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
-        c = self.resource_list_class.get()
+        c = self.resource_list_class.get(auth=self.auth)
 
         self.assertEqual(c[1].name, "Second Test")
 
@@ -519,7 +537,7 @@ class ListObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_searchresult())
 
-        lst = self.resource_list_class.get()
+        lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
 
         http.request.return_value = response(
@@ -531,6 +549,7 @@ class ListObjectTest(TestResourceTestCase):
 
         self.assertEqual(new.name, "The Thing")
         self.assertEqual(new.id, u"1")
+        self.assertEqual(new.auth, self.auth)
         request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["body"], "name=The+Thing")
         self.assertEqual(
