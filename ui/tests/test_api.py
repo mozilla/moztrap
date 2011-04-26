@@ -306,7 +306,7 @@ class ResourceObjectTest(TestResourceTestCase):
             httplib.NO_CONTENT, "")
 
         c = self.resource_class.get("testresources/3")
-        c.delete()
+        c.deliver()
 
         self.assertEqual(c.name, None)
 
