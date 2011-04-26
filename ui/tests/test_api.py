@@ -158,6 +158,10 @@ class TestResourceTestCase(ResourceTestCase):
 
         class TestResource(RemoteObject):
             name = fields.Field()
+            submit_as = fields.Field(api_submit_name="filterAs")
+
+            def __unicode__(self):
+                return u"__unicode__ of %s" % self.name
 
         return TestResource
 
@@ -440,6 +444,48 @@ class ResourceObjectTest(TestResourceTestCase):
         self.assertEqual(mock.call_args[1]["http"], cachedUserAgent)
 
 
+    def test_delivered_repr(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(
+                name="Test Thing",
+                resourceIdentity=make_identity(
+                    url="testresources/1")))
+
+        c = self.resource_class.get("testresources/1", auth=self.auth)
+        c.deliver()
+
+        self.assertEqual(
+            repr(c), "<TestResource: __unicode__ of Test Thing>")
+
+
+    def test_undelivered_repr(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(
+                name="Test Thing",
+                resourceIdentity=make_identity(
+                    url="testresources/1")))
+
+        c = self.resource_class.get("testresources/1", auth=self.auth)
+
+        self.assertEqual(
+            repr(c), "<TestResource: testresources/1>")
+
+
+    def test_filterable_fields(self, http):
+        self.assertEqual(
+            self.resource_class.fields.keys(),
+            ["timeline", "submit_as", "name", "identity"])
+
+        self.assertEqual(
+            self.resource_class.filterable_fields().keys(),
+            ["name", "submit_as"])
+
+        # same result on second call
+        self.assertEqual(
+            self.resource_class.filterable_fields().keys(),
+            ["name", "submit_as"])
+
+
     def test_put(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_one(
@@ -476,6 +522,36 @@ class ResourceObjectTest(TestResourceTestCase):
         self.assertEqual(
             request_kwargs["headers"]["accept"],
             "application/json")
+
+
+    def test_refresh(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(
+                name="Test TestResource",
+                resourceIdentity=make_identity(
+                    version=u"0",
+                    url="testresources/1")))
+
+        c = self.resource_class.get("testresources/1", auth=self.auth)
+        c.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(
+                name="New name",
+                resourceIdentity=make_identity(
+                    version=u"1",
+                    url="testresources/1")))
+
+        c = c.refresh()
+
+        self.assertEqual(c.name, "New name")
+        self.assertEqual(c.identity["@version"], u"1")
+        request_kwargs = http.request.call_args[1]
+        self.assertEqual(request_kwargs.get("method", "GET"), "GET")
+        self.assertEqual(
+            request_kwargs["uri"],
+            u"http://fake.base/rest/testresources/1?_type=json")
+        self.assertEqual(request_kwargs["headers"]["cookie"], self.auth.cookie)
 
 
     def test_delete(self, http):
@@ -560,3 +636,21 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(headers["accept"], "application/json")
         self.assertEqual(
             headers["content-type"], "application/x-www-form-urlencoded")
+
+
+    def test_post_does_not_replace_auth(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_searchresult())
+
+        lst = self.resource_list_class.get(auth=self.auth)
+        lst.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing"))
+
+        new = self.resource_class(name="New Thing")
+        new.auth = new_auth = self.creds("other@example.com", password="other")
+
+        lst.post(new)
+
+        self.assertEqual(new.auth, new_auth)

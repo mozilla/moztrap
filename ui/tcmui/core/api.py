@@ -386,38 +386,6 @@ class ObjectMixin(StrAndUnicode):
         return cls._filterable_fields
 
 
-    def filter(self, **kwargs):
-        """
-        Returns a new instance with filter parameters added as parameters to
-        the instance's query string.
-
-        Resolves Python field names to correct API names, and ignores any
-        requested filters that don't map to an actual field.
-
-        """
-        auth = kwargs.pop("auth", self.auth)
-
-        valid_fieldnames = set(self.filterable_fields().keys())
-        filters = {}
-        for (k, v) in kwargs.iteritems():
-            if k == "sortfield" and v in valid_fieldnames:
-                filters[k] = self.filterable_fields()[v].api_filter_name
-            elif k == "sortdirection" and v in sort.DIRECTIONS:
-                filters[k] = v
-            elif k == "pagesize":
-                filters[k] = pagination.positive_integer(
-                    v, pagination.DEFAULT_PAGESIZE)
-            elif k == "pagenumber":
-                filters[k] = pagination.positive_integer(
-                    v, 1)
-            elif k in valid_fieldnames:
-                filters[self.filterable_fields()[k].api_filter_name] = v
-
-        newurl = util.add_to_querystring(self._location, **filters)
-
-        return self.get(newurl, auth=auth)
-
-
     def refresh(self):
         return self.__class__.get(self._location, auth=self.auth)
 
@@ -614,6 +582,38 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
     @classmethod
     def filterable_fields(cls):
         return cls.entryclass.filterable_fields()
+
+
+    def filter(self, **kwargs):
+        """
+        Returns a new instance with filter parameters added as parameters to
+        the instance's query string.
+
+        Resolves Python field names to correct API names, and ignores any
+        requested filters that don't map to an actual field.
+
+        """
+        auth = kwargs.pop("auth", self.auth)
+
+        valid_fieldnames = set(self.filterable_fields().keys())
+        filters = {}
+        for (k, v) in kwargs.iteritems():
+            if k == "sortfield" and v in valid_fieldnames:
+                filters[k] = self.filterable_fields()[v].api_filter_name
+            elif k == "sortdirection" and v in sort.DIRECTIONS:
+                filters[k] = v
+            elif k == "pagesize":
+                filters[k] = pagination.positive_integer(
+                    v, pagination.DEFAULT_PAGESIZE)
+            elif k == "pagenumber":
+                filters[k] = pagination.positive_integer(
+                    v, 1)
+            elif k in valid_fieldnames:
+                filters[self.filterable_fields()[k].api_filter_name] = v
+
+        newurl = util.add_to_querystring(self._location, **filters)
+
+        return self.get(newurl, auth=auth)
 
 
     def sort(self, field, direction=sort.DEFAULT):
