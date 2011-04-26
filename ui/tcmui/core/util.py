@@ -27,6 +27,8 @@ def id_for_object(val):
 
     """
     try:
+        if val.identity is None:
+            return None
         return val.identity["@id"]
     except (AttributeError, KeyError):
         pass

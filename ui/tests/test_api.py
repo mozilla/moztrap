@@ -31,8 +31,6 @@ class CachedHttpTest(TestCase):
             cache.set.assert_called_with("/uri/", ret, 600)
 
 
-
-
     def _test_doesnt_cache(self, method):
         with patch("tcmui.core.api.cache") as cache:
             self.make_request(method=method, uri="/uri/")
@@ -179,6 +177,10 @@ class ResourceObjectTest(TestResourceTestCase):
 
         self.assertEqual(type(c.name), unicode)
 
+
+    def test_no_id(self, http):
+        c = self.resource_class(name="No id yet")
+        self.assertEqual(c.id, None)
 
     def test_get_url(self, http):
         http.request.return_value = response(
