@@ -164,7 +164,7 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
 
         self.assertEqual(c.name, "Test TestResource")
 
@@ -173,7 +173,7 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
 
         self.assertEqual(type(c.name), unicode)
 
@@ -182,23 +182,24 @@ class ResourceObjectTest(TestResourceTestCase):
         c = self.resource_class(name="No id yet")
         self.assertEqual(c.id, None)
 
+
     def test_get_url(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
 
         self.assertEqual(
             http.request.call_args[1]["uri"],
-            "http://fake.base/rest/testresources/3?_type=json")
+            "http://fake.base/rest/testresources/1?_type=json")
 
 
     def test_user_agent(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
 
         self.assertEqual(
@@ -211,7 +212,7 @@ class ResourceObjectTest(TestResourceTestCase):
                 name="Test TestResource",
                 resourceIdentity=make_identity(id="3")))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/3", auth=self.auth)
 
         self.assertEqual(c.id, "3")
 
@@ -222,7 +223,7 @@ class ResourceObjectTest(TestResourceTestCase):
                 name="Test TestResource",
                 resourceIdentity=make_identity(url="testresources/3/")))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/3", auth=self.auth)
         c.deliver()
 
         self.assertEqual(c._location, "http://fake.base/rest/testresources/3/")
@@ -238,7 +239,7 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1")
         c.deliver()
 
         headers = http.request.call_args[1]["headers"]
@@ -251,7 +252,7 @@ class ResourceObjectTest(TestResourceTestCase):
             httplib.OK, self.make_one(name="Test TestResource"))
 
         c = self.resource_class.get(
-            "testresources/3",
+            "testresources/1",
             auth=self.creds("user@example.com", password="blah"))
         c.deliver()
 
@@ -265,13 +266,13 @@ class ResourceObjectTest(TestResourceTestCase):
             httplib.OK, self.make_one(name="Test TestResource"))
 
         c = self.resource_class.get(
-            "testresources/3",
+            "testresources/1",
             auth=self.creds("user@example.com", cookie="USERTOKEN: blah"))
         c.deliver()
 
         headers = http.request.call_args[1]["headers"]
         self.assertFalse("authorization" in headers)
-        self.assertTrue("cookie" in headers)
+        self.assertEqual(headers["cookie"], "USERTOKEN: blah")
 
 
     def test_get_persists_auth(self, http):
@@ -280,43 +281,61 @@ class ResourceObjectTest(TestResourceTestCase):
 
         creds = self.creds("user@example.com", cookie="USERTOKEN: blah")
 
-        c = self.resource_class.get("testresources/3", auth=creds)
+        c = self.resource_class.get("testresources/1", auth=creds)
         c.deliver()
 
         self.assertEqual(c.auth, creds)
+
+
+    def test_persisted_auth_used(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_class.get(
+            "testresources/1",
+            auth=self.creds("user@example.com", cookie="USERTOKEN: blah"))
+        c.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, make_boolean(True))
+
+        c.delete()
+
+        headers = http.request.call_args[1]["headers"]
+        self.assertEqual(headers["cookie"], "USERTOKEN: blah")
 
 
     def test_get_full_url(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_one(name="Test TestResource"))
 
-        c = self.resource_class.get("http://some.other.url/testresources/3")
+        c = self.resource_class.get("http://some.other.url/testresources/1")
         c.deliver()
 
         self.assertEqual(
             http.request.call_args[1]["uri"],
-            "http://some.other.url/testresources/3?_type=json")
+            "http://some.other.url/testresources/1?_type=json")
 
 
     def test_unauthorized(self, http):
         http.request.return_value = response(
             httplib.UNAUTHORIZED, "some error", {"content-type": "text/plain"})
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         with self.assertRaises(self.resource_class.Unauthorized) as cm:
             c.deliver()
 
         self.assertEqual(
             cm.exception.args[0],
             "401  requesting TestResource "
-            'http://fake.base/rest/testresources/3?_type=json: some error')
+            'http://fake.base/rest/testresources/1?_type=json: some error')
 
 
     def test_no_content(self, http):
         http.request.return_value = response(
             httplib.NO_CONTENT, "")
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
 
         self.assertEqual(c.name, None)
@@ -326,56 +345,57 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.CONFLICT, {"errors":[{"error":"email.in.use"}]})
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         with self.assertRaises(self.resource_class.Conflict) as cm:
             c.deliver()
 
         self.assertEqual(
             cm.exception.args[0],
             "409  requesting TestResource "
-            "http://fake.base/rest/testresources/3?_type=json: email.in.use")
+            "http://fake.base/rest/testresources/1?_type=json: email.in.use")
+        self.assertEqual(cm.exception.response_error, "email.in.use")
 
 
     def test_bad_response(self, http):
         http.request.return_value = response(
             777, "Something is very wrong.")
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         with self.assertRaises(self.resource_class.BadResponse) as cm:
             c.deliver()
 
         self.assertEqual(
             cm.exception.args[0],
             "Unexpected response requesting TestResource "
-            "http://fake.base/rest/testresources/3?_type=json: 777 ")
+            "http://fake.base/rest/testresources/1?_type=json: 777 ")
 
 
     def test_missing_location_header(self, http):
         http.request.return_value = response(
             302, "")
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         with self.assertRaises(self.resource_class.BadResponse) as cm:
             c.deliver()
 
         self.assertEqual(
             cm.exception.args[0],
             "'Location' header missing from 302  response requesting TestResource "
-            "http://fake.base/rest/testresources/3?_type=json")
+            "http://fake.base/rest/testresources/1?_type=json")
 
 
     def test_bad_content_type(self, http):
         http.request.return_value = response(
             httplib.OK, "blah", {"content-type": "text/plain"})
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         with self.assertRaises(self.resource_class.BadResponse) as cm:
             c.deliver()
 
         self.assertEqual(
             cm.exception.args[0],
             "Bad response fetching TestResource "
-            "http://fake.base/rest/testresources/3?_type=json: "
+            "http://fake.base/rest/testresources/1?_type=json: "
             "content-type text/plain is not an expected type")
 
 
@@ -387,7 +407,7 @@ class ResourceObjectTest(TestResourceTestCase):
             unicode(json.dumps(self.make_one(name="Test TestResource")))
             )
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
 
         self.assertEqual(type(c.name), unicode)
 
@@ -395,33 +415,41 @@ class ResourceObjectTest(TestResourceTestCase):
     def test_cache_attribute(self, http):
         with patch.object(self.resource_class, "cache", True):
             with patch("remoteobjects.RemoteObject.get") as mock:
-                self.resource_class.get("testresources/3")
+                self.resource_class.get("testresources/1", auth=self.auth)
 
         from tcmui.core.api import cachedUserAgent
 
-        mock.assert_called_with('testresources/3', http=cachedUserAgent)
+        self.assertEqual(mock.call_args[1]["http"], cachedUserAgent)
 
 
     def test_put(self, http):
         http.request.return_value = response(
-            httplib.OK, self.make_one(name="Test TestResource"))
+            httplib.OK, self.make_one(
+                name="Test TestResource",
+                resourceIdentity=make_identity(
+                    version=u"0",
+                    url="testresources/1")))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
 
         http.request.return_value = response(
             httplib.OK, self.make_one(
-                name="New name", resourceIdentity=make_identity(version=u"1")))
+                name="New name",
+                resourceIdentity=make_identity(
+                    version=u"1",
+                    url="testresources/1")))
 
         c.name = "New name"
         c.put()
 
         self.assertEqual(c.name, "New name")
         self.assertEqual(c.identity["@version"], u"1")
-        request_kwargs = http.request.call_args_list[-1][1]
+        request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["method"], "PUT")
         self.assertEqual(
-            request_kwargs["uri"], u"http://fake.base/rest/some/url?_type=json")
+            request_kwargs["uri"],
+            u"http://fake.base/rest/testresources/1?_type=json")
         self.assertEqual(
             request_kwargs["body"], "name=New+name&originalVersionId=0")
         self.assertEqual(
@@ -434,9 +462,12 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_delete(self, http):
         http.request.return_value = response(
-            httplib.OK, self.make_one(name="Test TestResource"))
+            httplib.OK, self.make_one(
+                name="Test TestResource",
+                resourceIdentity=make_identity(
+                    url="testresources/1")))
 
-        c = self.resource_class.get("testresources/3")
+        c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
 
         http.request.return_value = response(
@@ -446,10 +477,11 @@ class ResourceObjectTest(TestResourceTestCase):
 
         self.assertEqual(c.identity, None)
         self.assertEqual(c._location, None)
-        request_kwargs = http.request.call_args_list[-1][1]
+        request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["method"], "DELETE")
         self.assertEqual(
-            request_kwargs["uri"], u"http://fake.base/rest/some/url?_type=json")
+            request_kwargs["uri"],
+            u"http://fake.base/rest/testresources/1?_type=json")
         self.assertEqual(
             request_kwargs["body"], "originalVersionId=0")
         self.assertEqual(
@@ -499,7 +531,7 @@ class ListObjectTest(TestResourceTestCase):
 
         self.assertEqual(new.name, "The Thing")
         self.assertEqual(new.id, u"1")
-        request_kwargs = http.request.call_args_list[-1][1]
+        request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["body"], "name=The+Thing")
         self.assertEqual(
             request_kwargs["uri"],

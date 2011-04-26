@@ -62,3 +62,14 @@ class ResourceTestCase(TestCase):
     def creds(self, *args, **kwargs):
         from tcmui.core.auth import Credentials
         return Credentials(*args, **kwargs)
+
+
+    @property
+    def auth(self):
+        """
+        Since the server responses are mocked, we could just ignore auth when
+        not testing it specifically, but we include it for all requests to more
+        closely match real usage.
+
+        """
+        return self.creds("admin@example.com", cookie="USERTOKEN: authcookie")
