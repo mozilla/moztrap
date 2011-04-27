@@ -1,15 +1,26 @@
 from unittest2 import TestCase
 
-from .responses import make_one, make_searchresult
+from .responses import make_one, make_searchresult, make_array
 
 
 
 class ResourceTestCase(TestCase):
     RESOURCE_DEFAULTS = {}
 
-    RESOURCE_TYPE = ""
 
-    RESOURCE_TYPE_PLURAL = ""
+    @property
+    def RESOURCE_NAME(self):
+        return self.resource_class().api_name
+
+
+    @property
+    def RESOURCE_NAME_PLURAL(self):
+        return self.resource_list_class().api_name
+
+
+    @property
+    def RESOURCE_NAME_ARRAY(self):
+        return self.resource_list_class().array_name
 
 
     @property
@@ -26,9 +37,9 @@ class ResourceTestCase(TestCase):
 
     def make_one(self, **kwargs):
         return {
-            "ns1.%s" % self.RESOURCE_TYPE: [
+            "ns1.%s" % self.RESOURCE_NAME: [
                 make_one(
-                    self.RESOURCE_TYPE,
+                    self.RESOURCE_NAME,
                     defaults=self.RESOURCE_DEFAULTS,
                     **kwargs)
                 ]
@@ -49,14 +60,25 @@ class ResourceTestCase(TestCase):
 
     def make_searchresult(self, *dicts):
         return make_searchresult(
-            self.RESOURCE_TYPE,
-            self.RESOURCE_TYPE_PLURAL,
-            *[
-                make_one(
-                    self.RESOURCE_TYPE, defaults=self.RESOURCE_DEFAULTS, **info)
-                for info in dicts
-                ]
+            self.RESOURCE_NAME,
+            self.RESOURCE_NAME_PLURAL,
+            *self._make_list(*dicts)
             )
+
+
+    def make_array(self, *dicts):
+        return make_array(
+            self.RESOURCE_NAME,
+            self.RESOURCE_NAME_ARRAY,
+            *self._make_list(*dicts))
+
+
+    def _make_list(self, *dicts):
+        return [
+            make_one(
+                self.RESOURCE_NAME, defaults=self.RESOURCE_DEFAULTS, **info)
+            for info in dicts
+            ]
 
 
     def creds(self, *args, **kwargs):

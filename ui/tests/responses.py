@@ -45,20 +45,21 @@ CODEVALUE_DEFAULTS = {
 def make_codevalues(*codevalue_dicts):
     return make_array(
         "CodeValue",
+        "CodeValue",
         *[make_one("CodeValue", defaults=CODEVALUE_DEFAULTS, **cv_info)
           for cv_info in codevalue_dicts])
 
 
-def make_array(single_type, *args):
+def make_array(single_type, array_type, *args):
     objects = list(args)
     total = len(objects)
     if total == 1:
         # simulate broken length-1 lists from BadgerFish XML translation
         objects = objects[0]
     return {
-        "ns1.ArrayOf%s" % single_type: [
+        "ns1.ArrayOf%s" % array_type: [
             {
-                "@xsi.type": "ns1.ArrayOf%s" % single_type,
+                "@xsi.type": "ns1.ArrayOf%s" % array_type,
                 "ns1.%s" % single_type: objects
                 }
             ]

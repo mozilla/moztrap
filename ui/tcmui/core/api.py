@@ -499,7 +499,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         """
         outer_key = None
         for candidate_key in [
-            "ns1.ArrayOf%s" % self.array_name.title(),
+            "ns1.ArrayOf%s" % self.array_name,
             "ns1.searchResult"
             ]:
             if candidate_key in data:
@@ -510,10 +510,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if outer_key == "ns1.searchResult":
                 self._totalResults = int(data["ns1.totalResults"])
                 data = data["ns1.%s" % self.api_name]
-            try:
-                data = data["ns1.%s" % self.entryclass().api_name]
-            except (KeyError, TypeError):
-                data = []
+            data = data["ns1.%s" % self.entryclass().api_name]
             # Because this JSON is BadgerFish-translated XML
             # (http://ajaxian.com/archives/badgerfish-translating-xml-to-json)
             # length-1 lists are not sent as lists, so we re-listify.
@@ -555,7 +552,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     @property
     def array_name(self):
-        return self.entryclass.__name__.lower()
+        return self.entryclass.__name__.title()
 
 
     def put(self, **kwargs):

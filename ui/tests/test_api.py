@@ -148,10 +148,6 @@ class TestResourceTestCase(ResourceTestCase):
         "name": "Default name",
         }
 
-    RESOURCE_TYPE = "testresource"
-
-    RESOURCE_TYPE_PLURAL = "testresources"
-
 
     def get_resource_class(self):
         from tcmui.core.api import RemoteObject, fields
@@ -171,8 +167,9 @@ class TestResourceTestCase(ResourceTestCase):
 
         class TestResourceList(ListObject):
             entryclass = self.resource_class
-            api_name = self.RESOURCE_TYPE_PLURAL
-            default_url = self.RESOURCE_TYPE_PLURAL
+            api_name = "testresources"
+            array_name = "Testresource"
+            default_url = "testresources"
 
             entries = fields.List(fields.Object(self.resource_class))
 
@@ -589,7 +586,16 @@ class ResourceObjectTest(TestResourceTestCase):
 
 @patch("remoteobjects.http.userAgent")
 class ListObjectTest(TestResourceTestCase):
-    def test_get_data_one(self, http):
+    def test_get_searchresult_empty(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_searchresult())
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(len(c), 0)
+
+
+    def test_get_searchresult_one(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_searchresult({"name":"Test TestResource"}))
 
@@ -598,9 +604,38 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(c[0].name, "Test TestResource")
 
 
-    def test_get_data_multiple(self, http):
+    def test_get_searchresult_multiple(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_searchresult(
+                {"name": "Test TestResource"},
+                {"name": "Second Test"}))
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(c[1].name, "Second Test")
+
+
+    def test_get_array_empty(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array())
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(len(c), 0)
+
+
+    def test_get_array_one(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(c[0].name, "Test TestResource")
+
+
+    def test_get_array_multiple(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -654,3 +689,10 @@ class ListObjectTest(TestResourceTestCase):
         lst.post(new)
 
         self.assertEqual(new.auth, new_auth)
+
+
+    def test_update_from_raw_list(self, http):
+        c = self.resource_list_class()
+        c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
+
+        self.assertEqual([e.name for e in c], ["First", "Second"])
