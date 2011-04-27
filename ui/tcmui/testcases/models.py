@@ -231,6 +231,6 @@ class TestSuiteIncludedTestCase(RemoteObject):
 class TestSuiteIncludedTestCaseList(ListObject):
     entryclass = TestSuiteIncludedTestCase
     api_name = "includedtestcases"
-    array_name = "includedtestcase"
+    array_name = "Includedtestcase"
 
     entries = fields.List(fields.Object(TestSuiteIncludedTestCase))
