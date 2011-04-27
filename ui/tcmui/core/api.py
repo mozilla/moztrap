@@ -499,7 +499,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         """
         outer_key = None
         for candidate_key in [
-            "ns1.ArrayOf%s" % self.array_name.title(),
+            "ns1.ArrayOf%s" % self.array_name,
             "ns1.searchResult"
             ]:
             if candidate_key in data:
@@ -555,7 +555,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     @property
     def array_name(self):
-        return self.entryclass.__name__.lower()
+        return self.entryclass.__name__.title()
 
 
     def put(self, **kwargs):

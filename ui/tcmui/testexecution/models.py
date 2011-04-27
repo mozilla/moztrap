@@ -194,7 +194,7 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
 class TestRunIncludedTestCaseList(ListObject):
     entryclass = TestRunIncludedTestCase
     api_name = "includedtestcases"
-    array_name = "includedtestcase"
+    array_name = "Includedtestcase"
     default_url = "testruns/includedtestcases"
 
     entries = fields.List(fields.Object(TestRunIncludedTestCase))

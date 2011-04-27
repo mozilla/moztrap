@@ -56,14 +56,11 @@ def make_array(single_type, array_type, *args):
     if total == 1:
         # simulate broken length-1 lists from BadgerFish XML translation
         objects = objects[0]
-    return {
-        "ns1.ArrayOf%s" % array_type: [
-            {
-                "@xsi.type": "ns1.ArrayOf%s" % array_type,
-                "ns1.%s" % single_type: objects
-                }
-            ]
-        }
+    data = {"@xsi.type": "ns1.ArrayOf%s" % array_type}
+    # when there are no objects, platform omits the key entirely
+    if objects:
+        data["ns1.%s" % single_type] = objects
+    return {"ns1.ArrayOf%s" % array_type: [data]}
 
 
 def make_searchresult(single_type, plural_type, *args):
@@ -72,11 +69,16 @@ def make_searchresult(single_type, plural_type, *args):
     if total == 1:
         # simulate broken length-1 lists from BadgerFish XML translation
         objects = objects[0]
+    # when there are no objects, platform sends empty string in place of dict
+    if objects:
+        data = {"ns1.%s" % single_type: objects}
+    else:
+        data = ""
     return {
         "ns1.searchResult": [
             {
                 "@xsi.type": "ns1.searchResult",
-                "ns1.%s" % plural_type: {"ns1.%s" % single_type: objects},
+                "ns1.%s" % plural_type: data,
                 "ns1.totalResults": total
                 }
             ]
