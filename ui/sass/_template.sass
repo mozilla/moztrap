@@ -1,24 +1,8 @@
-/* Helpers -------------------------------------------------------------------
+// Modules -------------------------------------------------------------------
 
-.full
-  +full
-  +pie-clearfix
-
-.simple
-  +full(24)
-  +pad(6,6,24)
-
-.left
-  +float(left)
-  margin:
-    right: 1em
-    bottom: 0.5em
-
-.right
-  +float(right)
-  margin:
-    left: 1em
-    bottom: 0.5em
+@import modules/icons
+@import modules/controls
+@import modules/filter
 
 /* Table Helpers -------------------------------------------------------------
 
@@ -30,27 +14,6 @@
       display: block
       padding: $base-rhythm-unit * 0.25
       border-bottom: 1px solid #ccc
-
-/* Controls ------------------------------------------------------------------
-
-.controls
-  text-align: right
-  white-space: nowrap
-  *:last-child
-    margin-right: .375em
-  thead &
-    +hide-text
-  a
-    #{$link}
-      +inline-block
-      +icon('[title="edit"]','ui/pencil.png')
-      +opacity(.5)
-    #{$focus}
-      +opacity(1)
-  button
-    +button-reset
-    +icon('[title="clone"]','ui/clone.png')
-    +icon('[title="delete"]','ui/trash.png')
 
 /* Loading -------------------------------------------------------------------
 
@@ -73,7 +36,3 @@
     font-weight: bold
     text-align: center
     z-index: 50
-
-// Modules -------------------------------------------------------------------
-
-@import modules/filter

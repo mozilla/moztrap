@@ -4,25 +4,31 @@
 
 @import compass/reset
 
-// Imports --------------------------------------------------------------*/
+// Imports --------------------------------------------------------------
 
 @import defaults
 @import template
 
 /* Layout --------------------------------------------------------------
 
-+establish-baseline
-
 .container
   +container
+  +susy-grid-background
   min-width: 800px
-  //+show-grid
+
+.fullwidth
+  +full
+  +pie-clearfix
+
+.simple
+  +full(24)
+  +pad(6,6,24)
 
 body > div
   @extend .container
 
 header[role="banner"]
-  @extend .full
+  @extend .fullwidth
   +trailing-border(1px,.5)
   border-color: #ccc
 
@@ -91,7 +97,7 @@ nav.crumb
         +no-style-link
 
 div[role="main"]
-  @extend .full
+  @extend .fullwidth
   +pie-clearfix
   +h-borders(1px,1)
   border-color: #ccc
@@ -123,7 +129,7 @@ div[role="main"]
       +leader(.5)
 
 footer[role="contentinfo"]
-  @extend .full
+  @extend .fullwidth
   +adjust-font-size-to(12px)
   +trailer(1,12px)
   .author, .credit
@@ -139,7 +145,6 @@ footer[role="contentinfo"]
     font-size: 1em
 
 /* login --------------------------------------------------------------
-
 
 .simpleform
   +inline-form(4,8,12)
@@ -219,7 +224,7 @@ footer[role="contentinfo"]
     &:hover
       color: $accent
   form
-    @extend .full
+    @extend .fullwidth
     +prefix(12)
     +leading-border(1px)
     +padding-trailer(.5)

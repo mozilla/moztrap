@@ -1,30 +1,37 @@
-//**
-//  Susy: Un-obtrusive grids for designers
-//  By: Eric A. Meyer and OddBird
-//  Site: www.oddbird.net/susy/
-//**
+// Imports -------------------------------------------------------------------
 
-// Settings --------------------------------------------------------------*/
+@import compass
+@import compass/layout
+@import susy
+
+// Support -------------------------------------------------------------------
 
 $legacy-support-for-ie6 : false
 $legacy-support-for-ie7 : false
 
-// Font Sizes --------------------------------------------------------------
+// Grid Backgrounds ----------------------------------------------------------
+
+$grid-background-baseline-color : rgba(0,0,0,.125)
+$grid-background-column-color   : rgba(120, 120, 225, 0.125)
+$grid-background-gutter-color   : rgba(0, 0, 0, 0)
+
+$show-column-grid-backgrounds   : true
+$show-baseline-grid-backgrounds : false
+$show-grid-backgrounds          : false
+
+// Font Sizes ----------------------------------------------------------------
 
 $base-font-size: 14px
 $base-line-height: 21px
 
-// Grid --------------------------------------------------------------
+// Grid ----------------------------------------------------------------------
 
 $total-cols: 24
 $col-width: 2.5em
 $gutter-width: 1em
 $side-gutter-width: $gutter-width
 
-// Don't move this @import above the GRID and FONT-SIZE variables.
-@import susy/susy
-
-// Colors --------------------------------------------------------------
+// Colors --------------------------------------------------------------------
 
 $light: #eee
 $dark: #444
@@ -60,7 +67,7 @@ $base: $dark
 $alt: $blue
 $accent: $red
 
-// Fonts --------------------------------------------------------------
+// Fonts ---------------------------------------------------------------------
 
 =sans-family
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
@@ -71,9 +78,7 @@ $accent: $red
 =monospace-family
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif
 
-// OTHER MIXINS --------------------------------------------------------------
-// Mixins set here will be available in defaults, screen, print and IE
-// Or anywhere you import either base.sass or defaults.sass
+// MIXINS --------------------------------------------------------------------
 
 =hpadding($l:$gutter-width,$r:$l)
   padding:
@@ -81,42 +86,21 @@ $accent: $red
     right: $r
 
 =gone
-  +hide-text
   position: absolute
-  height: 0
-  width: 0
+  clip: rect(0 0 0 0)
+  overflow: hidden
+  margin: -1px
+  padding: 0
+  height: 1px
+  width: 1px
+  border: 0
 
-=icon-hover()
-  +opacity(.675)
-  #{$focus}
-    +opacity(1)
-
-=icon-back($back:false)
-  @if $back
-    +border-radius(.25em)
-    background-color: $back
-
-=icon-style($img,$back:false,$text:false)
-  +icon-back($back)
-  +icon-hover
-  @if $text
-    +box-sizing('border-box')
-    background:
-      image: image-url($img)
-      repeat: no-repeat
-      position: .25em
-    padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
-    text-align: left
-  @else
-    +box-sizing('content-box')
-    +replace-text($img)
-    min-width: image-width($img)
-    min-height: image-height($img)
-    padding: 0 .125em
-
-=icon($select,$img,$back:false,$text:false)
-  @if $select
-    &#{$select}
-      +icon-style($img,$back,$text)
-  @else
-    +icon-style($img,$back,$text)
+=oncall
+  +gone
+  &:active, &:focus
+    position: static
+    clip: auto
+    overflow: visible
+    height: auto
+    margin: 0
+    width: auto

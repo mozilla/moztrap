@@ -1,0 +1,20 @@
+/* Controls ------------------------------------------------------------------
+
+.controls
+  text-align: right
+  white-space: nowrap
+  *:last-child
+    margin-right: .375em
+  thead &
+    +hide-text
+  a
+    #{$link}
+      +inline-block
+      +icon('[title="edit"]','ui/pencil.png')
+      +opacity(.5)
+    #{$focus}
+      +opacity(1)
+  button
+    +button-reset
+    +icon('[title="clone"]','ui/clone.png')
+    +icon('[title="delete"]','ui/trash.png')

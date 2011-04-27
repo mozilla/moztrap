@@ -16,10 +16,7 @@ a img { border: none; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
 
-/* Typography -------------------------------------------------------------- */
-/* The following classes are for use with @extend. */
-html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
-
+/* Typography ---------------------------------------------------------------- */
 .serif { font-family: Cambria, Georgia, serif; }
 
 .sans, body, .message, #messages { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -32,11 +29,25 @@ html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; 
 
 .smallcaps, h4, #filters h3, #run .testinvalid summary { font-variant: small-caps; }
 
-/* Body -------------------------------------------------------------- */
+/* Helpers ------------------------------------------------------------------- */
+.full { display: block; float: none; width: auto; }
+
+.half { max-width: 50%; }
+
+.left { display: inline; float: left; margin-right: 1em; margin-bottom: 0.5em; }
+
+.right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
+
+/* Root ---------------------------------------------------------------------- */
+body { font-size: 87.5%; line-height: 1.5em; }
+
+html > body { font-size: 14px; }
+
+html { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
 body { color: #444444; }
 
-/* Selected Text -------------------------------------------------------------- */
-/* -moz- must be declared separately */
+/* Selected Text ------------------------------------------------------------- */
 ::-moz-selection { color: white; background: #5d7b7a; text-shadow: none; }
 
 ::selection { color: white; background: #5d7b7a; text-shadow: none; }
@@ -197,20 +208,6 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .errorlist { list-style: none; margin: 0; padding: 0; border: 0; color: #b9292f; }
 .errorlist li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 
-/* Helpers ------------------------------------------------------------------- */
-.full, header[role="banner"], div[role="main"], footer[role="contentinfo"], .environment form { clear: both; margin-left: 1.176%; margin-right: 1.176%; *zoom: 1; }
-.full:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after, .environment form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-
-.simple, #login, #register, #products, #environment, #cycles, #testruns { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
-
-.left { display: inline; float: left; margin-right: 1em; margin-bottom: 0.5em; }
-
-.right { display: inline; float: right; margin-left: 1em; margin-bottom: 0.5em; }
-
-/* Table Helpers ------------------------------------------------------------- */
-.tdlink, #cycles td:first-child, #testruns td:first-child { padding: 0; border: 0; }
-.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
-
 /* Controls ------------------------------------------------------------------ */
 .controls { text-align: right; white-space: nowrap; }
 .controls *:last-child { margin-right: 0.375em; }
@@ -226,17 +223,12 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .controls button[title="delete"] { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)"; opacity: 0.675; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; text-indent: -119988px; overflow: hidden; text-align: left; background-image: url('../images/ui/trash.png?1299181339'); background-repeat: no-repeat; background-position: 50% 50%; min-width: 14px; min-height: 14px; padding: 0 0.125em; }
 .controls button[title="delete"]:focus, .controls button[title="delete"]:hover, .controls button[title="delete"]:active { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; opacity: 1; }
 
-/* Loading ------------------------------------------------------------------- */
-.loading { position: relative; }
-.loading > * { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)"; opacity: 0.25; }
-.loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; top: 0; right: 0; bottom: 0; left: 0; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; z-index: 50; }
-
 /* Filtering ----------------------------------------------------------------- */
 #filters { clear: both; }
 #filters ul { list-style: none; margin: 0; padding: 0; border: 0; }
 #filters ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #filters .textual { display: inline; float: left; width: 56.552%; margin-right: 1.379%; margin-bottom: 0.75em; position: relative; }
-#filters .textual label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; width: 0; }
+#filters .textual label { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 #filters .textual input { clear: both; margin: 0; }
 #filters .suggest { display: none; position: absolute; left: 0; right: 0; top: 2.25em; background: white; z-index: 900; }
 #filters .suggest a:link, #filters .suggest a:visited { padding-top: 0.375em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; overflow: hidden; *zoom: 1; padding-left: 1em; padding-right: 1em; display: block; color: #444444; border: 1px solid #eeeeee; border-color: transparent #999999 #eeeeee; border-width: 0 1px 1px; }
@@ -320,13 +312,23 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filters .visual.expanded input:checked + label { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; opacity: 1; background-image: url('../images/ui/check_sm.png?1303498520'); font-weight: bold; }
 #filters .visual.expanded input:checked + label:hover { background-image: url('../images/ui/x_sm.png?1303498631'); }
 
+/* Table Helpers ------------------------------------------------------------- */
+.tdlink, #cycles td:first-child, #testruns td:first-child { padding: 0; border: 0; }
+.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited { display: block; padding: 0.375em; border-bottom: 1px solid #cccccc; }
+
+/* Loading ------------------------------------------------------------------- */
+.loading { position: relative; }
+.loading > * { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)"; opacity: 0.25; }
+.loading::before { text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0; display: block; position: absolute; content: "loading..."; top: 0; right: 0; bottom: 0; left: 0; color: rgba(238, 238, 238, 0.95); background-color: rgba(68, 68, 68, 0.25); font-weight: bold; text-align: center; z-index: 50; }
+
 /* Layout -------------------------------------------------------------- */
-body { font-size: 87.5%; line-height: 1.5em; }
-
-html > body { font-size: 14px; }
-
 .container, body > div { *zoom: 1; margin: auto; width: 85em; max-width: 100%; min-width: 800px; }
 .container:after, body > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+.fullwidth, header[role="banner"], div[role="main"], footer[role="contentinfo"], .environment form { clear: both; margin-left: 1.176%; margin-right: 1.176%; *zoom: 1; }
+.fullwidth:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after, .environment form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+
+.simple, #login, #register, #products, #environment, #cycles, #testruns { clear: both; padding-left: 25.301%; padding-right: 25.301%; }
 
 header[role="banner"] { border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.679em; border-color: #cccccc; }
 header[role="banner"] h1 { display: inline; float: left; width: 11.446%; margin-right: 1.205%; margin-bottom: 0em; }
@@ -380,7 +382,7 @@ footer[role="contentinfo"] small { font-size: 1em; }
 #login .logo { clear: both; padding-left: 25.61%; padding-right: 25.61%; margin-bottom: 1.5em; }
 #login h2 { margin: 0; }
 #login form li .errorlist { position: absolute; left: 102.439%; top: 0.375em; width: 48.78%; margin: 0; }
-#login label { text-indent: -119988px; overflow: hidden; text-align: left; position: absolute; height: 0; width: 0; }
+#login label { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 
 /* products -------------------------------------------------------------- */
 #products .list { list-style: none; margin: 0; padding: 0; border: 0; }

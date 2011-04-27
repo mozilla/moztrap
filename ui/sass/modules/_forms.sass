@@ -1,0 +1,208 @@
+=placeholder
+  color: #ccc
+  font-weight: normal
+
+=apply-placeholder
+  &::-webkit-input-placeholder
+    +placeholder
+  &:-moz-placeholder
+    +placeholder
+  &.placeholder
+    +placeholder
+
+form
+  > ul, > ol
+    +no-style-list
+  li
+    position: relative
+
+::-moz-focus-inner
+  border: 0
+
+fieldset
+  +trailer
+  +rhythm-borders(1px)
+
+legend
+  +adjust-font-size-to(18px)
+  font-weight: bold
+
+label
+  +inline-block
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  font-weight: bold
+
+label, input[type=button], input[type=submit], button
+  cursor: pointer
+
+input[type="radio"], input[type="checkbox"]
+  vertical-align: baseline
+
+input, button, textarea, select
+  +border-radius(0)
+  vertical-align: middle
+  &:focus, &:active
+    +box-shadow($blue-light 0 0 .25em)
+    +box-shadow(inset $blue-light 0 0 .25em)
+    z-index: 1
+  &, optgroup
+    +reset-box-model
+
+optgroup
+  color: $base
+  font-style: normal
+  font-weight: normal
+
+.textinput
+  +apply-placeholder
+  +sans-family
+  +rhythm-borders(1px,.25)
+  +trailer(.5)
+  +box-sizing(border-box)
+  font-size: inherit
+  line-height: inherit
+  width: 100%
+  background-color: #fff
+  color: $base
+  border-color: $base
+  outline: 0
+  .ie7 &
+    height: auto
+  [disabled]
+    background-color: $light
+    color: lighten($base,15)
+
+input, textarea
+  &:valid
+    +box-shadow($blue-lighter 0 0 .375em)
+    +box-shadow(inset $blue-lighter 0 0 .375em)
+    &:focus, &.hadfocus
+      +box-shadow($green 0 0 .375em)
+      +box-shadow(inset $green 0 0 .375em)
+  &:invalid
+    +box-shadow($blue 0 0 .375em)
+    +box-shadow(inset $blue 0 0 .375em)
+    &:focus, &.hadfocus
+      +border-radius(1px)
+      +box-shadow($red 0 0 .375em)
+      +box-shadow(inset $red 0 0 .375em)
+      .no-boxshadow &
+        background-color: $yellow-light
+
+textarea, select
+  @extend .textinput
+
+textarea
+  height: auto
+  overflow: auto
+  resize: vertical
+
+select
+  height: $base-rhythm-unit*1.5
+  &[multiple]
+    height: auto
+
+input
+  vertical-align: middle
+  &[type="text"], &[type="password"], &[type="email"], &[type="url"], &[type="tel"],
+  &[type="date"], &[type="datetime"], &[type="datetime-local"], &[type="month"], &[type="week"], &[type="time"],
+  &[type="number"], &[type="search"], &[type="color"]
+    @extend .textinput
+  &[type="range"]
+    width: 100%
+  &[type="reset"], &[type="submit"], &[type="button"]
+    @extend .button
+  &[type="search"]
+    -webkit-appearance: none
+    +border-radius(2em)
+    padding-left: 2em
+    background:
+      image: image-url('ui/search.png')
+      position: .5em
+      repeat: no-repeat
+    &::-webkit-search-decoration
+      display: none
+
+.form-actions
+  clear: both
+  text-align: right
+
+=button-color($c:$green,$icon:false)
+  @if $icon
+    +background-image(image-url($icon))
+    +background-image(image-url($icon), linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+  @else
+    +background-image(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+  border-color: desaturate($c,25)
+
+=button
+  +border-radius(1em)
+  +background(#ddd image-url('forms/button.png') repeat-x)
+  +button-color
+  +rhythm-borders(1px,.25)
+  +hpadding(1em)
+  +text-shadow(#fff 0 1px 1px)
+  +trailer(.25)
+  cursor: pointer
+  color: #111
+  font: inherit
+  outline: 0
+  overflow: visible
+  width: auto
+  vertical-align: baseline
+  &[disabled]
+    +background(#ddd image-url('forms/button.png') repeat-x)
+    color: #888
+
+=button-reset
+  +border-radius(0)
+  +text-shadow(none)
+  display: inline
+  background: none
+  color: inherit
+  padding: 0
+  margin: 0
+  border: 0
+
+button
+  +button
+  &.sub
+    +button-reset
+    color: $alt
+    #{$focus}
+      color: $accent
+
+.button
+  +button
+
+.redbutton
+  +button-color(lighten($red,20))
+
+.yellowbutton
+  +button-color($yellow-dark)
+
+.bluebutton
+  +button-color($blue-light)
+
+.errorlist
+  +no-style-list
+  color: $red
+
+=side-errors($n,$c,$s:'right')
+  li
+    .errorlist
+      position: absolute
+      left: 100% + gutter($c)
+      top: $base-rhythm-unit*.25
+      width: columns($n,$c)
+      margin: 0
+
+=inline-form($nl,$ni,$c)
+  li
+    +pie-clearfix
+  label
+    +columns($nl,$c)
+  input, select, textarea
+    +columns($ni,$c)
+    +omega($c)

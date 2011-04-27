@@ -1,0 +1,34 @@
+=icon-hover()
+  +opacity(.675)
+  #{$focus}
+    +opacity(1)
+
+=icon-back($back:false)
+  @if $back
+    +border-radius(.25em)
+    background-color: $back
+
+=icon-style($img,$back:false,$text:false)
+  +icon-back($back)
+  +icon-hover
+  @if $text
+    +box-sizing('border-box')
+    background:
+      image: image-url($img)
+      repeat: no-repeat
+      position: .25em
+    padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
+    text-align: left
+  @else
+    +box-sizing('content-box')
+    +replace-text($img)
+    min-width: image-width($img)
+    min-height: image-height($img)
+    padding: 0 .125em
+
+=icon($select,$img,$back:false,$text:false)
+  @if $select
+    &#{$select}
+      +icon-style($img,$back,$text)
+  @else
+    +icon-style($img,$back,$text)
