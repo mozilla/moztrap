@@ -1,0 +1,26 @@
+/* Login/Register ------------------------------------------------------------
+
+.simpleform
+  +inline-form(4,8,12)
+  +side-errors(6,12)
+
+#login, #register
+  @extend .simple
+
+#login
+  +padding-leader
+  +padding-trailer
+  .logo
+    +full(12)
+    +pad(3,3,12)
+    +trailer
+  h2
+    margin: 0
+  form
+    +side-errors(6,12)
+  label
+    +gone
+
+#register
+  form
+    @extend .simpleform

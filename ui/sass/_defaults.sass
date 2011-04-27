@@ -243,48 +243,6 @@ nav
   ul, ol
     +no-style-list
 
-/* Tables --------------------------------------------------------------
-
-table
-  +trailer
-  width: 100%
-  border-collapse: separate
-  border-spacing: 0
-
-td
-  +trailing-border(1px, 0.25)
-  border-color: #ccc
-
-table, td, th
-  vertical-align: top
-
-th, thead th
-  +leading-border(1px,.25)
-  white-space: nowrap
-  font-weight: bold
-  background: $light
-
-th, td, caption
-  padding: $base-rhythm-unit * 0.25
-  text-align: left
-  font-weight: normal
-
-th
-  +padding-leader(.75)
-  +trailing-border(1px, 0.25)
-  border-color: #ccc
-
-tr
-  &:nth-child(even)
-    td
-      background: $blue-hint
-  &:hover
-    td
-      background: $green-lightest
-
-caption
-  @extend .allcaps
-
-/* Forms --------------------------------------------------------------
-
+// Default Modules -----------------------------------------------------------
+@import modules/tables
 @import modules/forms

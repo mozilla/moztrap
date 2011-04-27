@@ -1,0 +1,249 @@
+/* products --------------------------------------------------------------
+
+#products
+  @extend .simple
+  .list
+    +no-style-list
+    li
+      +trailer(.5)
+      +columns(4,12)
+      a
+        #{$link}
+          +text-shadow($green-lightest 1px 1px 0)
+          display: block
+          padding: $base-rhythm-unit*.5
+          color: $green-dark
+          background: $blue-lighter
+        #{$focus}
+          background: $green-light
+      &:nth-child(3n)
+        +omega(12)
+      &:first-child:last-child
+        +un-column
+        +full(12)
+      &:first-child
+        &:nth-last-child(2), &:nth-last-child(4), &:nth-last-child(7)
+          &, & ~ li
+            +columns(6,12)
+            &:nth-child(3n)
+              +float(left)
+              margin-right: gutter(12)
+            &:nth-child(2n)
+              +omega(12)
+      &:first-child
+        &:nth-last-child(3n), &:nth-last-child(5n)
+          &, & ~ li
+            +columns(4,12)
+            &:nth-child(3n)
+              +omega(12)
+
+/* environment --------------------------------------------------------------
+
+.environment
+  summary
+    +columns(6)
+    +omega
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    text-align: right
+    color: $alt
+    text-transform: capitalize
+    &:hover
+      color: $accent
+  form
+    @extend .fullwidth
+    +prefix(12)
+    +leading-border(1px)
+    +padding-trailer(.5)
+    padding-right: gutter(24)
+    border-color: #ccc
+    background: $yellow-light
+  +inline-form(4,8,12)
+
+#environment
+  @extend .simple
+  +inline-form(4,8,12)
+
+/* cycles + testruns --------------------------------------------------------------
+
+#cycles, #testruns
+  @extend .simple
+  .date
+    width: columns(4,12)
+  .start, .end
+    width: columns(3,12)
+
+  td:first-child
+    @extend .tdlink
+
+  .note
+    +leader(-.5)
+    +trailer(1.5)
+    text-align: right
+    font-style: italic
+
+/* run tests --------------------------------------------------------------
+
+#run
+  .test, .content
+    +full(24)
+  .test
+    +pie-clearfix
+    &[open], &.open, .header
+      +trailing-border(1px,.5)
+      border-color: #ccc
+    &:first-of-type
+      &, &[open], &.open
+        padding-top: 0
+        .header
+          +leading-border(1px,.5)
+  .header
+    +pie-clearfix
+    +padding-leader(.5)
+  header
+    +columns(20,24)
+    +leader(.25)
+    +trailer(.25)
+    h3
+      +columns(14,20)
+      +adjust-font-size-to(16px)
+      margin: 0
+    small
+      +columns(2,20)
+      vertical-align: top
+      font-weight: bold
+      text-align: right
+
+  .status
+    +columns(4,24)
+    +omega(24)
+    text-align: center
+    p
+      @extend .allcaps
+      +adjust-font-size-to(12px)
+      +border-radius(1.5em)
+      +padding-leader(.25,12px)
+      +padding-trailer(.25,12px)
+      +hpadding(1em)
+      margin: 0 gutter(4)
+      color: $light
+      font-weight: bold
+    button
+      width: 100% - gutter(4)*2
+      margin: 0 gutter(4)
+    .passed
+      +text-shadow(rgba($green-dark,.75) 1px 1px 0)
+      background: $green image-url('ui/check.png') no-repeat scroll gutter(4)
+    .invalidated
+      +text-shadow(rgba($red,.75) 1px 1px 0)
+      background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
+    .failed
+      +text-shadow(rgba($red-dark,.75) 1px 1px 0)
+      background: $red image-url('ui/x.png') no-repeat scroll gutter(4)
+
+  .start
+    @extend .bluebutton
+  .invalid
+    @extend .yellowbutton
+  .fail
+    @extend .redbutton
+  .invalid, .fail
+    +trailer
+    width: columns(4,18)
+
+  .steps
+    +pad(2,4,24)
+    +padding-leader
+    clear: both
+    margin: 0
+    counter-reset: step
+    > li
+      +pie-clearfix
+      +trailer
+      position: relative
+      padding: $base-rhythm-unit*.5
+        bottom: 0
+      background: $light
+      list-style: none
+      counter-increment: step
+      &::before
+        +adjust-font-size-to(48px)
+        content: counter(step, decimal) "."
+        position: absolute
+        right: 100% + gutter(18)
+        top: 0
+    h4
+      +trailer(0)
+    .step
+      overflow: hidden
+
+  .stepfail
+    +full(18)
+    position: relative
+    margin: 0 0 - $base-rhythm-unit*.5
+    border-top: $base-rhythm-unit solid $yellow-light
+    summary
+      @extend .allcaps
+      +transition(all,300ms)
+      position: absolute
+      top: - $base-rhythm-unit
+      right: 0
+      padding: 0 gutter(18)
+      width: columns(2,18)
+      background: $red-light
+      color: $light
+      text-align: center
+      &:hover
+        background: $red
+    &[open], &.open, &.failed
+      summary
+        width: 100%
+        padding: 0
+        background: $red
+
+  .failform, .invalidform
+    textarea
+      min-height: $base-rhythm-unit*6
+  .failform, .faildesc
+    padding: $base-rhythm-unit*.5
+    background: $red-lightest
+  .invalidform, .invaliddesc
+    +float('left')
+    +padding-leader
+    +hpadding(gutter(24))
+    +border-bottom-radius(1em)
+    width: columns(18,24) - gutter(24)*2
+    margin-left: columns(2,24) + gutter(24)
+    background: $yellow
+
+  .testinvalid
+    position: relative
+    summary
+      @extend .smallcaps
+      +text-shadow(rgba($yellow-light,.75) 1px 1px 0)
+      +border-bottom-radius(1em)
+      position: absolute
+      top: 0
+      right: 0
+      width: columns(4,24) - gutter(24)*2
+      padding: $base-rhythm-unit*.5 gutter(24)
+      background: $yellow-light
+      text-align: center
+      &:hover
+        background: $yellow
+    &[open], &.open, &.invalidated
+      summary
+        background: $yellow
+
+  .started
+    .header
+      background: $blue-lighter
+  .passed
+    .header
+      background: $green-lighter
+  .invalidated
+    .header
+      background: $yellow-light
+  .failed
+    .header
+      background: $red-lighter

@@ -1,0 +1,332 @@
+/* Create --------------------------------------------------------------------
+
+.removefields
+  +replace-text('ui/x_circle.png')
+  display: block
+  height: $base-rhythm-unit
+
+.addfields
+  &, #{$link}
+    display: block
+    padding: 0 $base-rhythm-unit*.5
+    color: $green-dark
+    background: $green-lightest
+    font-style: italic
+    text-align: right
+    &:first-child:last-child, h3 + &
+      +padding-leader(.25)
+      +padding-trailer(.25)
+  #{$focus}
+    color: $base
+    background: $green
+
+// The Basic Form ------------------------------------------------------------
+
+.addform
+  .meta
+    +columns(11,21)
+    +inline-form(2,9,11)
+    +trailer
+    li
+      clear: both
+    .date
+      +columns(5,11)
+      clear: none
+      + .date
+        +omega(11)
+      label
+        +columns(2,5)
+      input
+        +columns(3,5)
+        +omega(5)
+      .errorlist
+        padding: 0
+    .errorlist
+      +full(11)
+      +prefix(2,11)
+
+  .env
+    +columns(10,21)
+    +omega(21)
+    +trailer
+    h3
+      padding: $base-rhythm-unit*.25
+      background: darken($light,5)
+      margin: 0
+    ul
+      +no-style-list
+    label
+      +hide-text
+      position: absolute
+      height: 0
+    .remove
+      +columns(1,10)
+      +omega(10)
+
+  .env-form
+    +pie-clearfix
+    +leading-border(1px,.5)
+    border-color: darken($light,10)
+    background: $light
+    li
+      +columns(4,10)
+      &:first-child
+        +prefix(1,10)
+
+// SuperSelect! --------------------------------------------------------------
+
+.superselect
+  p
+    margin: 0
+  nav
+    padding-right: 1em
+    border: 1px solid #ccc
+      width: 0px 1px
+
+  .unselected, .selected
+    +columns(9,19)
+    h3, h4
+      @extend .allcaps
+      +hpadding(1.5em)
+      margin: 0
+      color: $light
+      background: $blue
+      font-weight: normal
+  .selected
+    +omega(19)
+  label[for="search"]
+    +hide-text
+    position: absolute
+    height: 0
+  input[type="search"]
+    width: columns(9,19)
+  .select
+    +no-style-list
+    height: $base-rhythm-unit*8
+    border: 1px solid #ccc
+    background: $blue-lightest
+    overflow-y: scroll
+    input
+      position: absolute
+      left: -9999px
+      top: -9999px
+      z-index: -1
+    label
+      +adjust-font-size-to(12px)
+      +clearfix
+      +padding-leader(.25,12px)
+      +trailing-border(1px,.25,12px)
+      display: block
+      background: $blue-lightest no-repeat scroll 1em
+      border-color: $light
+      font-weight: normal
+  .unselected
+    label
+      #{$focus}, &.mark
+        background:
+          color: $green-light
+          image: image-url('ui/arrow_right.png')
+
+  .selected
+    label
+      #{$focus}, &.mark
+        background:
+          color: $red-lighter
+          image: image-url('ui/arrow_left.png')
+
+  .addremove
+    +columns(1,19)
+    +leader(3)
+    button
+      +trailer(.5)
+      display: block
+      padding: 0
+      border: 0
+      width: 100%
+      +icon('[title^="add"]','ui/arrow_right.png',$green-light)
+      +icon('[title^="update"]','ui/arrow_leftright_21.png',$blue-light)
+      +icon('[title^="remove"]','ui/arrow_left.png',$red-light)
+      &[title^="update"]
+        +padding-leader
+        +padding-trailer
+  .addall, .removeall
+    @extend .allcaps
+    +button-reset
+    +adjust-font-size-to(12px)
+    +hpadding($base-rhythm-unit)
+    display: block
+    width: 100%
+    text-align: left
+    font-weight: bold
+  .addall
+    color: $green-lightest
+    background: $green
+    text-align: right
+    &:hover
+      background-color: $green-dark
+  .removeall
+    color: $red-lightest
+    background: $red-light
+    &:hover
+      background-color: $red
+
+.mainselect
+  @extend .superselect
+  +clearfix
+  +trailer
+  +trailing-border(1px,1)
+  clear: both
+  background: $light
+  border-color: #ccc
+  h3
+    +padding-leader(.5)
+    +padding-trailer(.5)
+    background: #ccc
+  h3, > div
+    +full(21)
+    +pad(1,1,21)
+
+/* Create Cycle --------------------------------------------------------------
+
+#addcycle
+  @extend .addform
+  @extend .managelists
+
+  .list
+    clear: both
+    margin-bottom: 0
+
+  .addrun
+    padding: 0
+    button
+      @extend .addfields
+      +border-radius(0)
+      display: block
+      margin: 0
+      width: 100%
+      border: 0
+
+.assignto
+  clear: both
+  +leader
+  p
+    margin: 0
+  label
+    font-weight: normal
+    &[for="communal"]
+      margin-left: .4em
+
+.userselect
+  @extend .superselect
+  summary
+    +link
+    width: columns(10,21)
+    font-style: italic
+  > div
+    +pie-clearfix
+    +full(21)
+    +pad(1,1,21)
+    +leader
+    +trailer
+    +leading-border(1px,1)
+    +trailing-border(1px,1)
+    position: relative
+    background: $light
+    border-color: #ccc
+    overflow: visible !important
+    &::before
+      content: " "
+      display: block
+      position: absolute
+      bottom: 100%
+      left: columns(1,21) + gutter(21)
+      width: 0
+      height: 0
+      border: 1em solid rgba(#ccc,0)
+        width: $base-rhythm-unit*.5
+      border-bottom-color: #ccc
+  .nickname
+    +columns(3,9)
+    +prefix(1,9)
+  .fn
+    +columns(5,9)
+    +omega(9)
+
+/* Create Run --------------------------------------------------------------
+
+#addrun
+  @extend .addform
+
+.suiteselect
+  @extend .mainselect
+  .id
+    +columns(2,9)
+    +prefix(1,9)
+  .title
+    +columns(6,9)
+    +omega(9)
+
+/* Create Suite --------------------------------------------------------------
+
+#addsuite
+  @extend .addform
+
+.caseselect
+  @extend .mainselect
+  .id
+    +columns(2,9)
+    +prefix(1,9)
+  .title, .author
+    +columns(3,9)
+  .author
+    +omega(9)
+
+/* Create Case --------------------------------------------------------------
+
+#addcase
+  @extend .addform
+  li
+    +pie-clearfix
+  .form-actions
+    +leader
+
+  .steps
+    +full(21)
+    +clearfix
+    .addfields
+      margin-left: columns(2,21) + gutter(21)
+  .steplist
+    +no-style-list
+    +full(21)
+    +prefix(2,21)
+    counter-reset: step
+  .steps-form
+    +full(19)
+    +prefix(1,19)
+    +leading-border(1px,.25)
+    position: relative
+    border-color: darken($light,10)
+    background: $light
+    counter-increment: step
+    &::before
+      +adjust-font-size-to(48px)
+      content: counter(step, decimal) "."
+      position: absolute
+      right: 100% + gutter(18)
+      top: 0
+    .action
+      +columns(8,18)
+    .result
+      +columns(9,18)
+    .remove
+      +columns(1,18)
+      +omega(18)
+      +leader(.25)
+    .add
+      margin-left: columns(2,21) + gutter(21)
+    textarea
+      min-height: $base-rhythm-unit*6
+    .errorlist
+      +float('right')
+      +padding-leader(.25)
+      +padding-trailer(.25)
