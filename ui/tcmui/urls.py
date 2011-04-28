@@ -26,4 +26,10 @@ urlpatterns = patterns(
 
     # manage
     url("^manage/", include("tcmui.manage.urls")),
+
+    # results (wireframed)
+    url(r"^results/testruns/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "results/testrun/runs.html"}),
+
 )

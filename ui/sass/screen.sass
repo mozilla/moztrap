@@ -20,6 +20,7 @@
 
 body > div
   @extend .container
+  position: relative
 
 header[role="banner"]
   @extend .fullwidth
@@ -28,7 +29,6 @@ header[role="banner"]
 
   h1
     +columns(3,24)
-    +trailer(0)
     a
       #{$link}
         +padding-leader(.5,21px)
@@ -147,5 +147,7 @@ footer[role="contentinfo"]
 
 @import modules/login
 @import modules/create
+@import modules/managelists
 @import modules/manage
 @import modules/test
+@import modules/results

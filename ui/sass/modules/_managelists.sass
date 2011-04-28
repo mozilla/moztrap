@@ -1,0 +1,224 @@
+/* List Pages --------------------------------------------------------------
+
+nav
+  &.manage, &.results
+    +float(left)
+    width: columns(3,24)
+    min-height: rhythm(1)
+    a
+      #{$link}
+        +adjust-leading-to(1.5)
+        display: block
+        padding: 0 1em
+      #{$focus}
+        background: $light
+      &.active
+        #{$link}, #{$focus}
+          background: $blue-lightest
+          color: $blue-dark
+
+#listcontent
+  +padding-leader(.25)
+  position: relative
+  overflow: hidden
+  padding-left: gutter(24)
+  border-left: 1px solid $light
+  min-height: $base-rhythm-unit*12
+  .create
+    @extend .button
+    +button-color($green,'ui/plus.png')
+    position: absolute
+    top: 0
+    right: 0
+    padding-left: $base-line-height + image-width('ui/plus.png')
+    background:
+      position: .75em, left
+      repeat: no-repeat
+
+/* Lists ---------------------------------------------------------------------
+
+.managelist
+  +full(21)
+  margin: 0
+  .manage &
+    +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) 100%))
+  //.results &
+    +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(5,21)+(gutter(21)*.5), rgba($blue-lightest,0) columns(5,21)+(gutter(21)*.5), rgba($blue-lightest,0) 100%))
+  button
+    +button-reset
+  .item
+    +clearfix
+    clear: both
+
+  .header, .content
+    +pie-clearfix
+    +padding-leader(.25)
+    +trailing-border(1px,.25)
+    border-color: rgba($base,.125)
+  .header
+    p, h3
+      margin-bottom: 0
+    #{$focus}
+      outline: 0
+      background: $green-lightest
+  .open
+    .header
+      background: $green-lightest
+  .content
+    background: $light
+  .id
+    text-align: right
+
+.status
+  position: relative
+  .pending
+    +border-radius(.25em)
+    display: block
+    button
+      +icon('[title="approve"]','ui/check.png',$light)
+      +icon('[title="reject"]','ui/x.png',$light)
+      &[title="approve"], &[title="reject"]
+        +columns(1,2)
+        +opacity(.5)
+        padding: 0
+      &[title="reject"]
+        +omega(2)
+        #{$focus}
+          background:
+            image: image-url('ui/x.png')
+            color: $red-lighter
+      &[title="approve"]
+        #{$focus}
+          background:
+            image: image-url('ui/check.png')
+            color: $green-light
+
+  span
+    +inline-block
+
+  button, span
+    +icon('.rejected','ui/x.png',$red-lighter,text)
+    +icon('.draft','ui/power.png',$blue-lighter,text)
+    +icon('.active','ui/power.png',$green-light,text)
+    +icon('.locked','ui/lock.png',$yellow,text)
+    vertical-align: top
+    &.rejected, &.draft, &.active, &.locked
+      width: 100%
+
+  button
+    #{$focus}
+      +icon('.rejected','ui/check.png',$green-light,text)
+      +icon('.draft','ui/power.png',$green-light,text)
+      +icon('.active','ui/lock.png',$yellow,text)
+      +icon('.locked','ui/unlock.png',$green-light,text)
+      &.rejected, &.draft, &.active, &.locked
+        +hide-text
+        &::after
+          content: attr(title)
+          position: absolute
+          left: 1.5em
+          text-indent: 0
+
+.byline
+  text-transform: none
+  font-variant: normal
+
+.environments
+  h5
+    margin: 0
+    display: inline
+    font-style: normal
+    &::after
+      content: ": "
+  > ul
+    +no-style-list
+    +trailer
+    > li
+      +trailer(.5)
+    ul
+      +comma-delimited-list
+      font-style: italic
+      li:last-child::after
+        content: "."
+
+.sortlinks
+  #{$link}
+    display: block
+    position: relative
+    &::after
+      +replace-text-with-dimensions('ui/angle_up.png')
+      +inline-block
+      content: " "
+      margin-left: .4em
+      background-image: none
+      vertical-align: baseline
+  #{$focus}
+    &::after
+      background-image: image-url('ui/angle_up.png')
+  &.asc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+  &.desc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+
+.listordering
+  +clearfix
+  +h-borders(1px,.25)
+  background: $light
+  border-color: #ccc
+  ul
+    +no-style-list
+  a
+    @extend .sortlinks
+
+  .bystatus
+    +columns(2,21)
+    a
+      #{$link}
+        padding-left: .375em
+
+.listnav
+  +pie-clearfix
+  +adjust-font-size-to(12px)
+  +trailer(.5,12px)
+  +padding-leader(.25,12px)
+  +trailing-border(1px,.25,12px)
+  +hpadding(.5em)
+  clear: both
+  margin-top: -1px
+  background: $light
+  border-top: 1px solid
+  border-color: #ccc
+  white-space: nowrap
+  p, ul
+    +reset-box-model
+  .location, .perpage
+    +columns(6,21)
+  .perpage
+    +omega(21)
+    text-align: right
+    strong
+      font-weight: normal
+  .perpage ul, .pagination
+    +inline-block-list
+    display: inline
+    font-style: normal
+    li
+      vertical-align: baseline
+      + li::before
+        content: "| "
+        color: #ccc
+  .pagination
+    +columns(9,21)
+    text-align: center
+  .current
+    font-weight: bold

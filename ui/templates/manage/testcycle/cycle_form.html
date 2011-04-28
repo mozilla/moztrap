@@ -1,6 +1,6 @@
 {% extends 'manage/testcycle/base.html' %}
 
-{% block managecontent %}
+{% block listcontent %}
 <section id="addcycle">
   <h2>{% block formtitle %}{% endblock %}</h2>
   <form method="POST">
@@ -65,7 +65,7 @@
   </form>
 
 </section>
-{% endblock managecontent %}
+{% endblock listcontent %}
 
 {% block extrajs %}
 {% include "manage/_env_formset_js.html" with formset=form.env_formset %}

@@ -60,22 +60,24 @@
 <div>
 {% block page %}
 
+  <a href="#main">skip to main content</a>
+
   <header role="banner">
     <h1><a href="/" rel="home">TCM</a></h1>
 
     <nav role="navigation">
+      <h2>Primary Navigation</h2>
       <ul>
           <li class="test"><a {% if request.user %}href="{% url products %}"{% endif %} class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
         {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
           <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
         {% endif %}
-        {% comment %}
           <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
-        {% endcomment %}
       </ul>
     </nav>
 
     <nav class="meta">
+      <h2>Account Navigation</h2>
       <ul>
         {% block meta-user %}
           {% if request.user %}
@@ -101,6 +103,7 @@
 
   {% block bread %}
     <nav class="crumb">
+      <h2>Breadcrumb Navigation</h2>
       <ol>
         {% block crumb %}{% endblock crumb %}
       </ol>
@@ -110,7 +113,7 @@
   {% block submeta %}
   {% endblock %}
 
-  <div role="main">
+  <div id="main" role="main">
     {% block content %}
 
     {% endblock %}

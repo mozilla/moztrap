@@ -46,6 +46,16 @@
     left: 1em
     bottom: 0.5em
 
+.oncall
+  +gone
+  &:active, &:focus
+    position: static
+    clip: auto
+    overflow: visible
+    height: auto
+    margin: 0
+    width: auto
+
 /* Root ----------------------------------------------------------------------
 
 +establish-baseline
@@ -108,6 +118,9 @@ $focus  :   "&:focus, &:hover, &:active"
 a
   +link
 
+.linkcontext
+  +gone
+
 =no-style-link
   color: inherit
 
@@ -118,7 +131,6 @@ h2, h3, h4, h5, h6
 
 h1
   +adjust-font-size-to(21px)
-  +trailer(1,21px)
 
 h1, h2
   @extend .allcaps
@@ -239,9 +251,29 @@ dt
 dd
   padding-left: $base-rhythm-unit
 
+/* Navigation ----------------------------------------------------------------
+
 nav
+  h2, h3
+    +gone
   ul, ol
     +no-style-list
+
+a[href="#main"]
+  @extend .oncall
+  +rhythm-borders(1px,.25)
+  +border-bottom-radius(.5em)
+  +text-shadow($blue-dark 1px 1px 0)
+  +hpadding(1em)
+  color: $light
+  background: $blue
+  border-color: $blue-dark
+  font-weight: bold
+  &:focus, &:active
+    position: absolute
+    top: 0
+    right: 0
+    left: auto
 
 // Default Modules -----------------------------------------------------------
 @import modules/tables

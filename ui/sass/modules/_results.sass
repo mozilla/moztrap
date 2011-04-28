@@ -1,0 +1,62 @@
+/* Results -------------------------------------------------------------------
+
+.managelist
+  .results
+    +inline-block-list
+    text-align: right
+    li
+      margin-left: .5em
+      vertical-align: top
+      +icon('.pass','ui/check_sm.png',$green-lighter,true)
+      +icon('.invalid','ui/warning_sm.png',$yellow,true)
+      +icon('.fail','ui/x_sm.png',$red-lighter,true)
+      +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
+
+  .completion
+    +border-radius(.25em)
+    position: relative
+    background: $yellow-light
+    b
+      +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
+      position: relative
+      padding-left: .5em
+      z-index: 2
+    .graph
+      +border-left-radius(.25em)
+      display: block
+      position: absolute
+      left: 0
+      top: 0
+      bottom: 0
+      background: $blue-lightest
+
+  .details
+    +no-style-list
+    +leader
+    a
+      #{$link}
+        @extend .button
+        @extend .bluebutton
+        +inline-block
+        +box-sizing('border-box')
+        width: 100% - gutter(5)
+        text-align: center
+        &::after
+          content: " »"
+
+/* Result Types --------------------------------------------------------------
+
+#runresults
+  .status, .id, .end,
+  .bystatus, .byend
+    +columns(2,21)
+  .product, .byproduct, .completion, .bycompletion
+    +columns(3,21)
+  .results, .details
+    +columns(5,21)
+  .title, .bytitle
+    +columns(6,21)
+  .testers
+    +columns(14,21)
+  .results, .details
+    +omega(21)
