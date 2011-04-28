@@ -8,9 +8,10 @@
     +border-radius(.25em)
     background-color: $back
 
-=icon-style($img,$back:false,$text:false)
+=icon-style($img,$back:false,$text:false,$hover:false)
   +icon-back($back)
-  +icon-hover
+  @if $hover
+    +icon-hover
   @if $text
     +box-sizing('border-box')
     background:

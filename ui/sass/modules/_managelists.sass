@@ -42,8 +42,6 @@ nav
   margin: 0
   .manage &
     +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) 100%))
-  //.results &
-    +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(5,21)+(gutter(21)*.5), rgba($blue-lightest,0) columns(5,21)+(gutter(21)*.5), rgba($blue-lightest,0) 100%))
   button
     +button-reset
   .item
@@ -60,12 +58,12 @@ nav
       margin-bottom: 0
     #{$focus}
       outline: 0
-      background: $green-lightest
+      background: rgba($green-lightest,.5)
   .open
     .header
-      background: $green-lightest
+      background: rgba($green-lightest,.5)
   .content
-    background: $light
+    background: $lighter
   .id
     text-align: right
 
@@ -94,6 +92,7 @@ nav
             color: $green-light
 
   span
+    +opacity(.5)
     +inline-block
 
   button, span
