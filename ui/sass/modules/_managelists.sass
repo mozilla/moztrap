@@ -119,26 +119,57 @@ nav
           text-indent: 0
 
 .byline
+  margin: 0
   text-transform: none
   font-variant: normal
 
 .environments
+  +adjust-font-size-to(12px)
+  h4
+    +gone
   h5
+    @extend .smallcaps
     margin: 0
-    display: inline
+    padding: 0 .25em
+    background: rgba($light,.5)
+    font-weight: bold
     font-style: normal
-    &::after
-      content: ": "
+    text-transform: lowercase
   > ul
-    +no-style-list
-    +trailer
-    > li
-      +trailer(.5)
-    ul
-      +comma-delimited-list
-      font-style: italic
-      li:last-child::after
-        content: "."
+    +reset-box-model
+    list-style: none
+  .envgroup
+    color: $mid-dark
+    li
+      list-style-type: disc
+
+.envgroup
+  +columns(3,15)
+  &:nth-child(7n)
+    +omega(15)
+
+.environments
+  +columns(15,21)
+  +prefix(2,21)
+  &:last-child
+    +reset-column
+    +full(21)
+    +pad(2,1,21)
+    clear: both
+    .envgroup
+      +columns(3,18)
+      &:nth-child(9n)
+        +omega(18)
+
+.testers, .suites
+  +adjust-font-size-to(12px)
+  color: $mid-dark
+  h4
+    margin: 0
+
+.description
+  +columns(19,21)
+  +omega(21)
 
 .sortlinks
   #{$link}

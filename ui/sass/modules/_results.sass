@@ -30,20 +30,6 @@
       bottom: 0
       background: $blue-lightest
 
-  .details
-    +no-style-list
-    +leader
-    a
-      #{$link}
-        @extend .button
-        @extend .bluebutton
-        +inline-block
-        +box-sizing('border-box')
-        width: 100% - gutter(5)
-        text-align: center
-        &::after
-          content: " »"
-
 /* Result Types --------------------------------------------------------------
 
 #runresults
@@ -52,11 +38,13 @@
     +columns(2,21)
   .product, .byproduct, .completion, .bycompletion
     +columns(3,21)
-  .results, .details
+  .testers,
+    +columns(4,21)
+  .results
     +columns(5,21)
   .title, .bytitle
     +columns(6,21)
-  .testers
-    +columns(14,21)
-  .results, .details
+  .details
+    +columns(19,21)
+  .results, .details, .testers
     +omega(21)

@@ -69,7 +69,6 @@
                 Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
                 on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
               </h4>
-
               <p>{{ cycle.description }}</p>
             </div>
             <div class="environments">
@@ -77,7 +76,7 @@
               <ul>
                 {% regroup cycle.environmentgroups.environments by typename as type_list %}
                 {% for type in type_list %}
-                <li>
+                <li class="envgroup">
                   <h5>{{ type.grouper }}</h5>
                   <ul>
                     {% for env in type.list %}

@@ -69,7 +69,7 @@
               <ul>
                 {% regroup suite.environmentgroups.environments by typename as type_list %}
                 {% for type in type_list %}
-                <li>
+                <li class="envgroup">
                   <h5>{{ type.grouper }}</h5>
                   <ul>
                     {% for env in type.list %}
