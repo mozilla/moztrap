@@ -1,6 +1,6 @@
 from unittest2 import TestCase
 
-from .responses import make_one, make_searchresult, make_array
+from .responses import make_one, make_list, make_searchresult, make_array
 
 
 
@@ -74,11 +74,8 @@ class ResourceTestCase(TestCase):
 
 
     def _make_list(self, *dicts):
-        return [
-            make_one(
-                self.RESOURCE_NAME, defaults=self.RESOURCE_DEFAULTS, **info)
-            for info in dicts
-            ]
+        return make_list(
+            self.RESOURCE_NAME, self.RESOURCE_DEFAULTS, *dicts)
 
 
     def creds(self, *args, **kwargs):
