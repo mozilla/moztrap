@@ -101,11 +101,19 @@ def make_one(resource_type, defaults=None, **kwargs):
 
 
 
+def make_list(resource_type, defaults=None, *dicts):
+    ret = []
+    for i, info in enumerate(dicts):
+        info.setdefault("resourceIdentity", make_identity(id=i+1))
+        ret.append(make_one(resource_type, defaults=defaults, **info))
+    return ret
+
+
 def make_identity(id="1", url="some/url", version="0"):
     return {
-        "@id": id,
+        "@id": str(id),
         "@url": join(conf.TCM_API_BASE, url),
-        "@version": version,
+        "@version": str(version),
         "@xsi.type": "ns1:resourceIdentity",
         }
 

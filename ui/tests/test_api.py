@@ -168,7 +168,6 @@ class TestResourceTestCase(ResourceTestCase):
         class TestResourceList(ListObject):
             entryclass = self.resource_class
             api_name = "testresources"
-            array_name = "Testresource"
             default_url = "testresources"
 
             entries = fields.List(fields.Object(self.resource_class))
@@ -615,6 +614,19 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(c[1].name, "Second Test")
 
 
+    def test_totalResults(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_searchresult(
+                {"name": "Test TestResource"},
+                {"name": "Second Test"}))
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(c.totalResults, 2)
+        # test the second access, after delivery
+        self.assertEqual(c.totalResults, 2)
+
+
     def test_get_array_empty(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_array())
@@ -642,6 +654,35 @@ class ListObjectTest(TestResourceTestCase):
         c = self.resource_list_class.get(auth=self.auth)
 
         self.assertEqual(c[1].name, "Second Test")
+
+
+    def test_get_with_url(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get("/alt-testresources/", auth=self.auth)
+
+        self.assertEqual(c[0].name, "Test TestResource")
+
+
+    def test_get_no_default_url(self, http):
+        cls = self.get_resource_list_class()
+        delattr(cls, "default_url")
+
+        with self.assertRaises(ValueError):
+            cls.get(auth=self.auth)
+
+
+    def test_iteration_assigns_auth(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array(
+                {"name": "Test TestResource"},
+                {"name": "Second Test"}))
+
+        auth = self.auth
+        c = self.resource_list_class.get(auth=auth)
+
+        self.assertTrue(all([i.auth is auth for i in c]))
 
 
     def test_post(self, http):
@@ -691,8 +732,41 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(new.auth, new_auth)
 
 
+    def test_put(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_array(
+                {"name": "Test TestResource"},
+                {"name": "Second Test"}))
+
+        lst = self.resource_list_class.get(auth=self.auth)
+        lst.deliver()
+
+        http.request.return_value = response(
+            httplib.OK, make_boolean(True))
+
+        lst.put()
+
+        request_kwargs = http.request.call_args[1]
+        self.assertEqual(
+            request_kwargs["body"], "testResourceIds=1&testResourceIds=2")
+
     def test_update_from_raw_list(self, http):
         c = self.resource_list_class()
         c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
 
         self.assertEqual([e.name for e in c], ["First", "Second"])
+
+
+    def test_default_array_name(self, http):
+        self.assertEqual(self.resource_list_class().array_name, "Testresource")
+
+
+    def test_default_submit_ids_name(self, http):
+        self.assertEqual(
+            self.resource_list_class().submit_ids_name, "testResourceIds")
+
+
+    def test_filterable_fields(self, http):
+        self.assertEqual(
+            self.resource_list_class.filterable_fields().keys(),
+            ["name", "submit_as"])
