@@ -86,81 +86,82 @@
   small
     color: $mid
 
-  .visual
+  .compact
+    .summary
+      a
+        #{$link}
+          &::before
+            content: "show "
+          &::after
+            content: " »"
+    div[class^="filter-"]
+      +colorwheel(label)
+    .long
+      height: auto !important
+    h3, input, label
+      display: none
+    li
+      +float(left)
+    input:checked + label
+      +trailer(.5,12px)
+      +border-radius(.25em)
+      display: block
+      margin-right: .5em
+      padding: rhythm(.125,12px) rhythm(.25,12px)
+      background: $green-lightest
+      &:hover
+        small
+          +inline-block
+          min-width: image-width('ui/x_sm.png')
+          color: rgba(0,0,0,0)
+          background: image-url('ui/x_sm.png') no-repeat scroll center
+          vertical-align: baseline
 
-    // Compact ---------------------------------------------------------------
+  // Expanded --------------------------------------------------------------
 
-    &.compact
-      .summary
-        a
-          #{$link}
-            &::before
-              content: "show "
-            &::after
-              content: " »"
+  .expanded
+    .summary
+      a
+        #{$link}
+          &::before
+            content: "« hide "
+          &::after
+            content: ""
+    .content
+      +trailer(.5,12px)
       div[class^="filter-"]
-        +colorwheel(label)
-      .long
-        height: auto !important
-      h3, input, label
-        display: none
-      li
-        +float(left)
-      input:checked + label
-        +trailer(.5,12px)
-        +border-radius(.25em)
-        display: block
-        margin-right: .5em
-        padding: rhythm(.125,12px) rhythm(.25,12px)
-        background: $green-lightest
-        &:hover
-          background: $red-lightest
-
-    // Expanded --------------------------------------------------------------
-
-    &.expanded
-      .summary
-        a
-          #{$link}
-            &::before
-              content: "« hide "
-            &::after
-              content: ""
-      .content
-        +trailer(.5,12px)
-        div[class^="filter-"]
-          +columns(3,21)
-          +trailer(.5)
-          &:nth-of-type(7n)
-            +omega(21)
-          &:nth-of-type(7n+1)
-            clear: left
-          +colorwheel(h3)
-      .long
-        overflow: hidden
-        height: rhythm(5,12px)
-        min-height: rhythm(5,12px)
-        max-height: rhythm(24,12px)
-        border-bottom: 1px solid $light
-        resize: vertical
-        &:hover
-          overflow-y: auto
-      input
-        display: none
-      label
-        +opacity(.375)
-        display: block
-        padding: rhythm(.125) rhythm(.25)
-          left: image-width('ui/check_sm.png') + 6px
-        background: image-url('ui/plus_sm.png') no-repeat scroll 3px
-        font-weight: normal
-        &:hover
-          font-weight: bold
-      small
-        +float(right)
-      input:checked + label
-        +opacity(1)
-        background-image: image-url('ui/check_sm.png')
+        +columns(3,21)
+        +trailer(.5)
+        &:nth-of-type(7n)
+          +omega(21)
+        &:nth-of-type(7n+1)
+          clear: left
+        +colorwheel(h3)
+    .long
+      overflow: hidden
+      height: rhythm(5,12px)
+      min-height: rhythm(5,12px)
+      max-height: rhythm(24,12px)
+      border-bottom: 1px solid $light
+      resize: vertical
+      &:hover
+        overflow-y: auto
+    input
+      display: none
+    label
+      +opacity(.375)
+      display: block
+      padding: rhythm(.125) rhythm(.25)
+        left: image-width('ui/check_sm.png') + 6px
+      background: image-url('ui/plus_sm.png') no-repeat scroll 3px
+      font-weight: normal
+      &:hover
         font-weight: bold
-        &:hover
-          background-image: image-url('ui/x_sm.png')
+    small
+      +float(right)
+    input:checked + label
+      +opacity(1)
+      background-image: image-url('ui/check_sm.png')
+      font-weight: bold
+      &:hover
+        background-image: image-url('ui/x_sm.png')
