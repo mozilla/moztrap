@@ -14,7 +14,7 @@ from unittest2.main import main as unittest_main
 def main():
     cov = coverage.coverage(branch=True)
     cov.start()
-    ut = unittest_main(exit=False)
+    ut = unittest_main(module=None, exit=False)
     cov.stop()
     cov.html_report(include=["tcmui/*"], directory="coverage")
 
@@ -24,6 +24,9 @@ if __name__ == "__main__":
     if os.environ.get("DJANGO_SETTINGS_MODULE", None) is None:
         os.environ["DJANGO_SETTINGS_MODULE"] = "tests.settings"
 
-    sys.argv[1:1] = ["discover"]
+    # if a particular test module / suite / case is not specified,
+    # do discovery by default
+    if not [a for a in sys.argv[1:] if not a.startswith("-")]:
+        sys.argv[1:1] = ["discover"]
 
     main()
