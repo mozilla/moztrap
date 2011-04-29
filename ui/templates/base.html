@@ -72,7 +72,7 @@
         {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
           <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
         {% endif %}
-          <li class="results"><a href="#" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
+          <li class="results"><a href="{# @@@ #}/results/testruns/" class="{% block results-active-nav %}{% endblock results-active-nav %}">Results</a></li>
       </ul>
     </nav>
 
