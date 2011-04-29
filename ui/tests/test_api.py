@@ -804,3 +804,65 @@ class ListObjectTest(TestResourceTestCase):
             unicode(c),
             u"[<TestResource: __unicode__ of First>, "
             "<TestResource: __unicode__ of Second>]")
+
+
+
+@patch("remoteobjects.http.userAgent")
+class ActivatableResourceTest(ResourceTestCase):
+    RESOURCE_DEFAULTS = {
+        "name": "Default name",
+        "active": False
+        }
+
+
+    def get_resource_class(self):
+        from tcmui.core.api import Activatable, RemoteObject, fields
+
+        class ActivatableResource(Activatable, RemoteObject):
+            name = fields.Field()
+            active = fields.Field()
+
+            def __unicode__(self):
+                return u"__unicode__ of %s" % self.name
+
+        return ActivatableResource
+
+
+    def test_activate(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=False))
+
+        a = self.resource_class.get("activatableresources/1", auth=self.auth)
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=True))
+
+        a.activate()
+
+        self.assertTrue(a.active)
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(
+            req["uri"],
+            "http://fake.base/rest/activatableresources/1/activate?_type=json")
+
+
+
+    def test_deactivate(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=True))
+
+        a = self.resource_class.get("activatableresources/1", auth=self.auth)
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=False))
+
+        a.deactivate()
+
+        self.assertFalse(a.active)
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(
+            req["uri"],
+            "http://fake.base/rest/activatableresources/1/deactivate?_type=json")
+
