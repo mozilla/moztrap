@@ -660,9 +660,24 @@ class ListObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_array({"name":"Test TestResource"}))
 
-        c = self.resource_list_class.get("/alt-testresources/", auth=self.auth)
+        c = self.resource_list_class.get("alt-testresources/", auth=self.auth)
 
         self.assertEqual(c[0].name, "Test TestResource")
+        self.assertEqual(
+            http.request.call_args[1]["uri"],
+            "http://fake.base/rest/alt-testresources/?_type=json")
+
+
+    def test_get_by_id(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_list_class.get_by_id(1, auth=self.auth)
+
+        self.assertEqual(c.name, "Test TestResource")
+        self.assertEqual(
+            http.request.call_args[1]["uri"],
+            "http://fake.base/rest/testresources/1?_type=json")
 
 
     def test_get_no_default_url(self, http):
@@ -671,6 +686,14 @@ class ListObjectTest(TestResourceTestCase):
 
         with self.assertRaises(ValueError):
             cls.get(auth=self.auth)
+
+
+    def test_get_by_id_no_default_url(self, http):
+        cls = self.get_resource_list_class()
+        delattr(cls, "default_url")
+
+        with self.assertRaises(ValueError):
+            cls.get_by_id(1, auth=self.auth)
 
 
     def test_iteration_assigns_auth(self, http):
@@ -683,6 +706,12 @@ class ListObjectTest(TestResourceTestCase):
         c = self.resource_list_class.get(auth=auth)
 
         self.assertTrue(all([i.auth is auth for i in c]))
+
+
+    def test_iteration_with_non_remoteobject(self, http):
+        c = self.resource_list_class(entries=[1, 2])
+
+        self.assertEqual(list(c), [1, 2])
 
 
     def test_post(self, http):
@@ -750,6 +779,7 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             request_kwargs["body"], "testResourceIds=1&testResourceIds=2")
 
+
     def test_update_from_raw_list(self, http):
         c = self.resource_list_class()
         c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
@@ -770,3 +800,142 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             self.resource_list_class.filterable_fields().keys(),
             ["name", "submit_as"])
+
+
+    def test_unicode(self, http):
+        c = self.resource_list_class()
+        c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
+
+        self.assertEqual(
+            unicode(c),
+            u"[<TestResource: __unicode__ of First>, "
+            "<TestResource: __unicode__ of Second>]")
+
+
+    def test_ours(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls.ours(auth=self.auth)
+
+        mock_filter.assert_called_with(company=21)
+
+
+    def test_paginate_noop(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate()
+
+        mock_filter.assert_not_called()
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_pagenumber(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagenumber=2)
+
+        mock_filter.assert_called_with(pagesize=10, pagenumber=2)
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_pagesize(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagesize=5)
+
+        mock_filter.assert_called_with(pagesize=5, pagenumber=1)
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_both(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagesize=5, pagenumber=2)
+
+        mock_filter.assert_called_with(pagesize=5, pagenumber=2)
+
+
+    def test_sort_no_field(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort(None)
+
+        mock_filter.assert_not_called()
+
+
+    def test_sort_default(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort("name")
+
+        mock_filter.assert_called_with(sortfield="name", sortdirection="asc")
+
+
+    def test_sort_direction(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort("name", "desc")
+
+        mock_filter.assert_called_with(sortfield="name", sortdirection="desc")
+
+
+
+@patch("remoteobjects.http.userAgent")
+class ActivatableResourceTest(ResourceTestCase):
+    RESOURCE_DEFAULTS = {
+        "name": "Default name",
+        "active": False
+        }
+
+
+    def get_resource_class(self):
+        from tcmui.core.api import Activatable, RemoteObject, fields
+
+        class ActivatableResource(Activatable, RemoteObject):
+            name = fields.Field()
+            active = fields.Field()
+
+            def __unicode__(self):
+                return u"__unicode__ of %s" % self.name
+
+        return ActivatableResource
+
+
+    def test_activate(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=False))
+
+        a = self.resource_class.get("activatableresources/1", auth=self.auth)
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=True))
+
+        a.activate()
+
+        self.assertTrue(a.active)
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(
+            req["uri"],
+            "http://fake.base/rest/activatableresources/1/activate?_type=json")
+
+
+
+    def test_deactivate(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=True))
+
+        a = self.resource_class.get("activatableresources/1", auth=self.auth)
+
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="New Thing", active=False))
+
+        a.deactivate()
+
+        self.assertFalse(a.active)
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(
+            req["uri"],
+            "http://fake.base/rest/activatableresources/1/deactivate?_type=json")
+

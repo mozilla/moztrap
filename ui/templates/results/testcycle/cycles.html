@@ -1,0 +1,109 @@
+{% extends 'results/testcycle/base.html' %}
+
+{% load sort staticdata %}
+
+{% block listcontent %}
+
+<section id="runresults">
+  <h2>Test Cycle Results</h2>
+
+  {% include "includes/filter.html" %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <section class="managelist">
+      <nav class="listordering">
+        <ul>
+          <li class="bystatus">
+            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
+          </li>
+          <li class="bycompletion">
+            <a href="#">completion</a>
+          </li>
+          <li class="bytitle">
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+          </li>
+          <li class="byproduct">
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+          <li class="byend">
+            <a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a>
+          </li>
+        </ul>
+      </nav>
+      <article id="run-id-01" class="item draft">
+        <details>
+          <summary class="header">
+            <p class="status">
+              <span class="draft">draft</span>
+            </p>
+            <p class="completion">
+              <b>75%</b><span class="graph" style="width:75%;"></span>
+            </p>
+            <h3 class="title">run name</h3>
+            <p class="product">product name </p>
+            <time class="end">endDate</time>
+            <ul class="results">
+              <li class="pass">120</li>
+              <li class="invalid">304</li>
+              <li class="fail">140</li>
+              <li class="pending">605</li>
+            </ul>
+          </summary>
+          <div class="content">
+            <p class="id">#234</p>
+            <p class="drill">
+              See related <a href="#" title="test suites related to run name">test suites</a>
+              or <a href="#" title="test cases related to run name">test cases</a>.
+            </p>
+            <div class="environments">
+              <h4>environments</h4>
+              <ul>
+                <li class="envgroup">
+                  <h5>Browser</h5>
+                  <ul>
+                    <li>IE 7</li>
+                    <li>Firefox 4</li>
+                    <li>Chrome</li>
+                    <li>IE 8</li>
+                    <li>Firefox 3</li>
+                  </ul>
+                </li>
+                <li class="envgroup">
+                  <h5>Language</h5>
+                  <ul>
+                    <li>French</li>
+                    <li>German</li>
+                    <li>English</li>
+                    <li>Spanish</li>
+                  </ul>
+                </li>
+                <li class="envgroup">
+                  <h5>Operating System</h5>
+                  <ul>
+                    <li>Linux</li>
+                    <li>Windows 7</li>
+                    <li>OS X</li>
+                    <li>Windows XP</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="testers">
+              <h4>testers</h4>
+              <ul>
+                <li>tester</li>
+                <li>screenName</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </article>
+    </section>
+
+    {% include "manage/_listnav.html" %}
+
+  </form>
+</section>
+{% endblock listcontent %}
