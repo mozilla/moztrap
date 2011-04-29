@@ -708,6 +708,12 @@ class ListObjectTest(TestResourceTestCase):
         self.assertTrue(all([i.auth is auth for i in c]))
 
 
+    def test_iteration_with_non_remoteobject(self, http):
+        c = self.resource_list_class(entries=[1, 2])
+
+        self.assertEqual(list(c), [1, 2])
+
+
     def test_post(self, http):
         http.request.return_value = response(
             httplib.OK, self.make_searchresult())
@@ -804,6 +810,73 @@ class ListObjectTest(TestResourceTestCase):
             unicode(c),
             u"[<TestResource: __unicode__ of First>, "
             "<TestResource: __unicode__ of Second>]")
+
+
+    def test_ours(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls.ours(auth=self.auth)
+
+        mock_filter.assert_called_with(company=21)
+
+
+    def test_paginate_noop(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate()
+
+        mock_filter.assert_not_called()
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_pagenumber(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagenumber=2)
+
+        mock_filter.assert_called_with(pagesize=10, pagenumber=2)
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_pagesize(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagesize=5)
+
+        mock_filter.assert_called_with(pagesize=5, pagenumber=1)
+
+
+    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    def test_paginate_both(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().paginate(pagesize=5, pagenumber=2)
+
+        mock_filter.assert_called_with(pagesize=5, pagenumber=2)
+
+
+    def test_sort_no_field(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort(None)
+
+        mock_filter.assert_not_called()
+
+
+    def test_sort_default(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort("name")
+
+        mock_filter.assert_called_with(sortfield="name", sortdirection="asc")
+
+
+    def test_sort_direction(self, http):
+        cls = self.get_resource_list_class()
+        with patch.object(cls, "filter") as mock_filter:
+            cls().sort("name", "desc")
+
+        mock_filter.assert_called_with(sortfield="name", sortdirection="desc")
 
 
 

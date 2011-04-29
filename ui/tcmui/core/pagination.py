@@ -97,7 +97,7 @@ class Pager(object):
 def positive_integer(val, default):
     try:
         val = int(val)
-    except AttributeError:
+    except (AttributeError, TypeError, ValueError):
         val = default
 
     if val < 1:
