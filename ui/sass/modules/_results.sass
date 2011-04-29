@@ -5,7 +5,8 @@
     +inline-block-list
     text-align: right
     li
-      margin-left: .5em
+      +adjust-font-size-to(12px)
+      margin-right: .5em
       vertical-align: top
       +icon('.pass','ui/check_sm.png',$green-lighter,true)
       +icon('.invalid','ui/warning_sm.png',$yellow,true)
@@ -13,38 +14,40 @@
       +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
 
   .completion
+    +adjust-font-size-to(12px)
     +border-radius(.25em)
-    position: relative
-    background: $yellow-light
-    b
-      +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
-      position: relative
-      padding-left: .5em
-      z-index: 2
-    .graph
-      +border-left-radius(.25em)
-      display: block
-      position: absolute
-      left: 0
-      top: 0
-      bottom: 0
-      background: $blue-lightest
+    +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
+    font-weight: bold
+    text-align: center
+
+  .time
+    p
+      margin: 0
+      padding-right: .5em
+      text-align: right
+
+@for $i from 1 to 101
+  $n      : .9deg*$i
+  $color  : adjust-hue($red-lighter,$n)
+  .completion[data-perc="#{$i}"]
+    background: $color
 
 /* Result Types --------------------------------------------------------------
 
 #runresults
-  .status, .id, .end,
-  .bystatus, .byend
+  .completion, .bycompletion
+    +columns(1,21)
+  .status, .id, .bystatus
     +columns(2,21)
-  .product, .byproduct, .completion, .bycompletion
+  .product, .byproduct
     +columns(3,21)
-  .testers,
+  .testers, .cycle, .bycycle
     +columns(4,21)
-  .results
+  .results, .time
     +columns(5,21)
   .title, .bytitle
     +columns(6,21)
-  .details
-    +columns(19,21)
-  .results, .details, .testers
+  .drill
+    +columns(14,21)
+  .results, .details, .testers, .time
     +omega(21)
