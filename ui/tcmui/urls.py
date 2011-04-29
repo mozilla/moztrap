@@ -31,5 +31,8 @@ urlpatterns = patterns(
     url(r"^results/testruns/$",
         "django.views.generic.simple.direct_to_template",
         {"template": "results/testrun/runs.html"}),
+    url(r"^results/testcycles/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "results/testcycle/cycles.html"}),
 
 )
