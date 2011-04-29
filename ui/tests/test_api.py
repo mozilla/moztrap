@@ -660,9 +660,24 @@ class ListObjectTest(TestResourceTestCase):
         http.request.return_value = response(
             httplib.OK, self.make_array({"name":"Test TestResource"}))
 
-        c = self.resource_list_class.get("/alt-testresources/", auth=self.auth)
+        c = self.resource_list_class.get("alt-testresources/", auth=self.auth)
 
         self.assertEqual(c[0].name, "Test TestResource")
+        self.assertEqual(
+            http.request.call_args[1]["uri"],
+            "http://fake.base/rest/alt-testresources/?_type=json")
+
+
+    def test_get_by_id(self, http):
+        http.request.return_value = response(
+            httplib.OK, self.make_one(name="Test TestResource"))
+
+        c = self.resource_list_class.get_by_id(1, auth=self.auth)
+
+        self.assertEqual(c.name, "Test TestResource")
+        self.assertEqual(
+            http.request.call_args[1]["uri"],
+            "http://fake.base/rest/testresources/1?_type=json")
 
 
     def test_get_no_default_url(self, http):
@@ -671,6 +686,14 @@ class ListObjectTest(TestResourceTestCase):
 
         with self.assertRaises(ValueError):
             cls.get(auth=self.auth)
+
+
+    def test_get_by_id_no_default_url(self, http):
+        cls = self.get_resource_list_class()
+        delattr(cls, "default_url")
+
+        with self.assertRaises(ValueError):
+            cls.get_by_id(1, auth=self.auth)
 
 
     def test_iteration_assigns_auth(self, http):
@@ -750,6 +773,7 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             request_kwargs["body"], "testResourceIds=1&testResourceIds=2")
 
+
     def test_update_from_raw_list(self, http):
         c = self.resource_list_class()
         c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
@@ -770,3 +794,13 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             self.resource_list_class.filterable_fields().keys(),
             ["name", "submit_as"])
+
+
+    def test_unicode(self, http):
+        c = self.resource_list_class()
+        c.update_from_dict([{"ns1.name": "First"}, {"ns1.name": "Second"}])
+
+        self.assertEqual(
+            unicode(c),
+            u"[<TestResource: __unicode__ of First>, "
+            "<TestResource: __unicode__ of Second>]")
