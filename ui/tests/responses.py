@@ -2,6 +2,7 @@
 Fake JSON response generators for stubbing out API responses in tests.
 
 """
+import httplib
 import json
 from posixpath import join
 
@@ -128,7 +129,7 @@ def make_boolean(val):
 
 
 
-def response(status, content, headers=None):
+def response(content="", status=httplib.OK, headers=None):
     headers = headers or {}
     if content:
         headers.setdefault("content-type", "application/json")

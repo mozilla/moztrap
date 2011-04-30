@@ -42,7 +42,7 @@ class StaticDataTest(ResourceTestCase):
 
     def _setup_get_uncached(self, http, cache):
         http.request.return_value = response(
-            httplib.OK, self.make_array(
+            self.make_array(
                 {"id": 1, "description": "Draft"},
                 {"id": 2, "description": "Active"}))
 
