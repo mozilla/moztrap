@@ -10,33 +10,6 @@ from tcmui.core.conf import conf
 
 
 
-COMPANY_DEFAULTS = {
-    "name": "Default company name",
-    "address": "Default company address",
-    "city": "Default company city",
-    "country": 239,
-    "phone": "123-456-7890",
-    "url": "www.example.com",
-    "zip": "12345",
-    }
-
-
-
-def make_company(**kwargs):
-    return {"ns1.company": [make_one(
-                "company", defaults=COMPANY_DEFAULTS, **kwargs)]}
-
-
-
-def make_companies(*company_dicts):
-    return make_searchresult(
-        "company",
-        "companies",
-        *[make_one("company", defaults=COMPANY_DEFAULTS, **company_info)
-          for company_info in company_dicts])
-
-
-
 def make_array(single_type, array_type, *args):
     objects = list(args)
     total = len(objects)

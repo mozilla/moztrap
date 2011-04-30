@@ -92,3 +92,12 @@ class ResourceTestCase(TestCase):
 
         """
         return self.creds("admin@example.com", cookie="USERTOKEN: authcookie")
+
+
+
+class BaseResourceTest(object):
+    """
+    Generic smoke tests that will be run for all resource types.
+
+    """
+    pass
