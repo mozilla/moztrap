@@ -43,15 +43,15 @@ class StatusValue(object):
 
 
     def __repr__(self):
-        return "<StatusValue: %s>" % repr(self.status)
+        return "StatusValue(%s)" % repr(self.status)
 
 
 
 class StaticData(Field):
     """
     A Field whose value is a key to a staticData lookup table. Attribute access
-    returns the full CodeValue instance (with id, description, and sortOrder
-    attributes.)
+    returns a StatusValue instance (or falls back to a CodeValue instance if
+    the given ``key`` is not found in the status-enums lookup table.)
 
     """
     def __init__(self, key, api_name=None, default=None, api_submit_name=None):

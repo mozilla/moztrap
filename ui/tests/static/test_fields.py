@@ -27,3 +27,17 @@ class StatusValueTest(TestCase):
     def test_error(self):
         with self.assertRaises(AttributeError):
             self._make(SomeStatus.DRAFT).BLAH
+
+
+    def test_repr(self):
+        self.assertEqual(
+            repr(self._make(SomeStatus.DRAFT)),
+            "StatusValue(<EnumValue: SomeStatus.DRAFT [int=1]>)")
+
+
+    def test_str(self):
+        self.assertEqual(str(self._make(SomeStatus.DRAFT)), "Draft")
+
+
+    def test_unicode(self):
+        self.assertEqual(unicode(self._make(SomeStatus.DRAFT)), u"Draft")
