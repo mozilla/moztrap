@@ -8,7 +8,7 @@ from mock import patch
 from tcmui.static.data import get_codevalue
 from tcmui.static.models import CodeValue
 
-from .responses import response, make_codevalues
+from ..responses import response, make_codevalues
 
 
 
