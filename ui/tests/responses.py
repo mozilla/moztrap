@@ -7,6 +7,8 @@ from posixpath import join
 
 from tcmui.core.conf import conf
 
+
+
 COMPANY_DEFAULTS = {
     "name": "Default company name",
     "address": "Default company address",
@@ -24,6 +26,7 @@ def make_company(**kwargs):
                 "company", defaults=COMPANY_DEFAULTS, **kwargs)]}
 
 
+
 def make_companies(*company_dicts):
     return make_searchresult(
         "company",
@@ -31,23 +34,6 @@ def make_companies(*company_dicts):
         *[make_one("company", defaults=COMPANY_DEFAULTS, **company_info)
           for company_info in company_dicts])
 
-
-CODEVALUE_DEFAULTS = {
-    "description": "Draft",
-    "id": 1,
-    "sortOrder": 0,
-
-    "add_identity": False,
-    "add_timeline": False,
-    }
-
-
-def make_codevalues(*codevalue_dicts):
-    return make_array(
-        "CodeValue",
-        "CodeValue",
-        *[make_one("CodeValue", defaults=CODEVALUE_DEFAULTS, **cv_info)
-          for cv_info in codevalue_dicts])
 
 
 def make_array(single_type, array_type, *args):
@@ -61,6 +47,7 @@ def make_array(single_type, array_type, *args):
     if objects:
         data["ns1.%s" % single_type] = objects
     return {"ns1.ArrayOf%s" % array_type: [data]}
+
 
 
 def make_searchresult(single_type, plural_type, *args):
@@ -83,6 +70,7 @@ def make_searchresult(single_type, plural_type, *args):
                 }
             ]
         }
+
 
 
 def make_one(resource_type, defaults=None, **kwargs):
@@ -109,6 +97,7 @@ def make_list(resource_type, defaults=None, *dicts):
     return ret
 
 
+
 def make_identity(id="1", url="some/url", version="0"):
     return {
         "@id": str(id),
@@ -130,11 +119,13 @@ def make_timeline(createDate=None, createdBy="1",
         }
 
 
+
 def make_boolean(val):
     return {
         "xsd.boolean":
             [{"@xsi.type":"xsd:boolean","$":"true" if val else "false"}]
         }
+
 
 
 def response(status, content, headers=None):
