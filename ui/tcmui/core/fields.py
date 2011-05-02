@@ -46,10 +46,10 @@ class Field(remoteobjects.fields.Field):
         value = getattr(obj, self.attrname, None)
         if value is None:
             return {}
-        value = self.encode(value)
-        if isinstance(value, dict):
-            return value
-        return {self.api_submit_name: value}
+        encoded = self.encode(value)
+        if isinstance(encoded, dict) and encoded != value:
+            return encoded
+        return {self.api_submit_name: encoded}
 
 
 
@@ -60,11 +60,14 @@ class Date(Field):
 
     """
     def encode(self, value):
-        return value.strftime("%Y/%m/%d")
+        return super(Date, self).encode(value.strftime("%Y/%m/%d"))
 
 
     def decode(self, value):
-        return parser.parse(value).date()
+        decoded = super(Date, self).decode(value)
+        if decoded:
+            return parser.parse(decoded).date()
+        return decoded
 
 
 
