@@ -13,8 +13,9 @@
   <form method="POST">
     {% csrf_token %}
 
-    <section class="managelist">
+    <div class="managelist">
       <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">
             <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
@@ -28,63 +29,61 @@
         </ul>
       </nav>
       {% for suite in suites %}
-      <article id="suite-id-{{ suite.id }}" class="item {{ suite.status|status_class }}">
-        <details>
-          <summary class="header">
-            <p class="status">
-              {% if suite.status.DRAFT %}
-              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
-              {% endif %}
-              {% if suite.status.ACTIVE %}
-              <button title="lock" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
-              {% endif %}
-              {% if suite.status.LOCKED %}
-              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
-              {% endif %}
-            </p>
-            <h3 class="title">{{ suite.name }}</h3>
-            <p class="product">{{ suite.product.name }}</p>
-            <div class="controls">
-              {% if suite.status.DRAFT %}
-              <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
-              {% endif %}
-              <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
-              {% if suite.status.DRAFT %}
-              <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
-              {% endif %}
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#{{ suite.id }}</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ suite.timeline.createDate|date }}</time>
-              </h4>
-
-              <p>{{ suite.description }}</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                {% regroup suite.environmentgroups.environments by typename as type_list %}
-                {% for type in type_list %}
-                <li class="envgroup">
-                  <h5>{{ type.grouper }}</h5>
-                  <ul>
-                    {% for env in type.list %}
-                    <li>{{ env.name }}</li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
+      <details id="suite-id-{{ suite.id }}" class="item {{ suite.status|status_class }}">
+        <summary class="header">
+          <p class="status">
+            {% if suite.status.DRAFT %}
+            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
+            {% endif %}
+            {% if suite.status.ACTIVE %}
+            <button title="lock" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
+            {% endif %}
+            {% if suite.status.LOCKED %}
+            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
+            {% endif %}
+          </p>
+          <h3 class="title">{{ suite.name }}</h3>
+          <p class="product">{{ suite.product.name }}</p>
+          <div class="controls">
+            {% if suite.status.DRAFT %}
+            <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+            {% endif %}
+            <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
+            {% if suite.status.DRAFT %}
+            <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+            {% endif %}
           </div>
-        </details>
-      </article>
+        </summary>
+        <div class="content">
+          <p class="id">#{{ suite.id }}</p>
+          <div class="description">
+            <h4 class="byline hcard">
+              Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
+              on <time pubdate>{{ suite.timeline.createDate|date }}</time>
+            </h4>
+
+            <p>{{ suite.description }}</p>
+          </div>
+          <div class="environments">
+            <h4>environments</h4>
+            <ul>
+              {% regroup suite.environmentgroups.environments by typename as type_list %}
+              {% for type in type_list %}
+              <li class="envgroup">
+                <h5>{{ type.grouper }}</h5>
+                <ul>
+                  {% for env in type.list %}
+                  <li>{{ env.name }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </details>
       {% endfor %}
-    </section>
+    </div>
 
     {% include "manage/_listnav.html" %}
 

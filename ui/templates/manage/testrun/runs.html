@@ -13,8 +13,9 @@
   <form method="POST">
     {% csrf_token %}
 
-    <section class="managelist">
+    <div class="managelist">
       <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">
             <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
@@ -37,87 +38,85 @@
         </ul>
       </nav>
       {% for run in runs %}
-      <article id="run-id-{{ run.id }}" class="item {{ run.status|status_class }}">
-        <details>
-          <summary class="header">
-            <p class="status">
-              {% if run.status.DRAFT %}
-              <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
-              {% endif %}
-              {% if run.status.ACTIVE %}
-              <button title="lock" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
-              {% endif %}
-              {% if run.status.LOCKED %}
-              <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">locked</button>
-              {% endif %}
-            </p>
-            <h3 class="title">{{ run.name }}</h3>
-            <p class="cycle">{{ run.testCycle.name }}</p>
-            <p class="product">{{ run.product.name }}</p>
-            <time class="start">{{ run.startDate|date }}</time>
-            <time class="end">{{ run.endDate|date }}</time>
-            <div class="controls">
-              {% if run.status.DRAFT %}
-              <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
-              {% endif %}
-              <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
-              {% if run.status.DRAFT %}
-              <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
-              {% endif %}
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#{{ run.id }}</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ run.timeline.createDate|date }}</time>
-              </h4>
-
-              <p>{{ run.description }}</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                {% regroup run.environmentgroups.environments by typename as type_list %}
-                {% for type in type_list %}
-                <li class="envgroup">
-                  <h5>{{ type.grouper }}</h5>
-                  <ul>
-                    {% for env in type.list %}
-                    <li>{{ env.name }}</li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% if run.testsuites|length %}
-            <div class="suites">
-              <h4>suites</h4>
-              <ul>
-                {% for suite in run.testsuites %}
-                <li>{{ suite.name }}</li>
-                {% endfor %}
-              </ul>
-            </div>
+      <details id="run-id-{{ run.id }}" class="item {{ run.status|status_class }}">
+        <summary class="header">
+          <p class="status">
+            {% if run.status.DRAFT %}
+            <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
             {% endif %}
-
-            {% if run.team|length %}
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                {% for tester in run.team %}
-                <li>{{ tester.screenName }}</li>
-                {% endfor %}
-              </ul>
-            </div>
+            {% if run.status.ACTIVE %}
+            <button title="lock" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
+            {% endif %}
+            {% if run.status.LOCKED %}
+            <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">locked</button>
+            {% endif %}
+          </p>
+          <h3 class="title">{{ run.name }}</h3>
+          <p class="cycle">{{ run.testCycle.name }}</p>
+          <p class="product">{{ run.product.name }}</p>
+          <time class="start">{{ run.startDate|date }}</time>
+          <time class="end">{{ run.endDate|date }}</time>
+          <div class="controls">
+            {% if run.status.DRAFT %}
+            <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
+            {% endif %}
+            <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
+            {% if run.status.DRAFT %}
+            <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
             {% endif %}
           </div>
-        </details>
-      </article>
-      {% endfor %}
-    </section>
+        </summary>
+        <div class="content">
+          <p class="id">#{{ run.id }}</p>
+          <div class="description">
+            <h4 class="byline hcard">
+              Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
+              on <time pubdate>{{ run.timeline.createDate|date }}</time>
+            </h4>
+
+            <p>{{ run.description }}</p>
+          </div>
+          <div class="environments">
+            <h4>environments</h4>
+            <ul>
+              {% regroup run.environmentgroups.environments by typename as type_list %}
+              {% for type in type_list %}
+              <li class="envgroup">
+                <h5>{{ type.grouper }}</h5>
+                <ul>
+                  {% for env in type.list %}
+                  <li>{{ env.name }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% if run.testsuites|length %}
+          <div class="suites">
+            <h4>suites</h4>
+            <ul>
+              {% for suite in run.testsuites %}
+              <li>{{ suite.name }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          {% if run.team|length %}
+          <div class="testers">
+            <h4>testers</h4>
+            <ul>
+              {% for tester in run.team %}
+              <li>{{ tester.screenName }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </details>
+    {% endfor %}
+    </div>
 
     {% include "manage/_listnav.html" %}
 

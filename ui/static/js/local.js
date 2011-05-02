@@ -19,9 +19,9 @@ $(
     }
 );
 
-$('#filters .summary a').click(
+$('#filter .summary a').click(
     function() {
-      $('#filters .visual').toggleClass('compact').toggleClass('expanded');
+      $('#filter .visual').toggleClass('compact').toggleClass('expanded');
       return false;
     }
 );

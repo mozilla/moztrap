@@ -13,8 +13,9 @@
   <form method="POST">
     {% csrf_token %}
 
-    <section class="managelist">
+    <div class="managelist">
       <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">
             <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
@@ -34,75 +35,72 @@
         </ul>
       </nav>
       {% for cycle in cycles %}
-      <article id="cycle-id-{{ cycle.id }}" class="item {{ cycle.status|status_class }}">
-        <details>
-          <summary class="header">
-            <p class="status">
-              {% if cycle.status.DRAFT %}
-              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
-              {% endif %}
-              {% if cycle.status.ACTIVE %}
-              <button title="lock" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
-              {% endif %}
-              {% if cycle.status.LOCKED %}
-              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
-              {% endif %}
-            </p>
-            <h3 class="title">{{ cycle.name }}</h3>
-            <p class="product">{{ cycle.product.name }}</p>
-            <time class="start">{{ cycle.startDate|date }}</time>
-            <time class="end">{{ cycle.endDate|date }}</time>
-            <div class="controls">
-              {% if cycle.status.DRAFT %}
-              <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
-              {% endif %}
-              <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
-              {% if cycle.status.DRAFT %}
-              <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
-              {% endif %}
-            </div>
-          </summary>
-          <div class="content">
-            <p class="id">#{{ cycle.id }}</p>
-            <div class="description">
-              <h4 class="byline hcard">
-                Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
-              </h4>
-              <p>{{ cycle.description }}</p>
-            </div>
-            <div class="environments">
-              <h4>environments</h4>
-              <ul>
-                {% regroup cycle.environmentgroups.environments by typename as type_list %}
-                {% for type in type_list %}
-                <li class="envgroup">
-                  <h5>{{ type.grouper }}</h5>
-                  <ul>
-                    {% for env in type.list %}
-                    <li>{{ env.name }}</li>
-                    {% endfor %}
-                  </ul>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% if cycle.team|length %}
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                {% for tester in cycle.team %}
-                <li>{{ tester.screenName }}</li>
-                {% endfor %}
-              </ul>
-            </div>
+      <details id="cycle-id-{{ cycle.id }}" class="item {{ cycle.status|status_class }}">
+        <summary class="header">
+          <p class="status">
+            {% if cycle.status.DRAFT %}
+            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
+            {% endif %}
+            {% if cycle.status.ACTIVE %}
+            <button title="lock" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+            {% endif %}
+            {% if cycle.status.LOCKED %}
+            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
+            {% endif %}
+          </p>
+          <h3 class="title">{{ cycle.name }}</h3>
+          <p class="product">{{ cycle.product.name }}</p>
+          <time class="start">{{ cycle.startDate|date }}</time>
+          <time class="end">{{ cycle.endDate|date }}</time>
+          <div class="controls">
+            {% if cycle.status.DRAFT %}
+            <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
+            {% endif %}
+            <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
+            {% if cycle.status.DRAFT %}
+            <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
             {% endif %}
           </div>
-        </details>
-      </article>
+        </summary>
+        <div class="content">
+          <p class="id">#{{ cycle.id }}</p>
+          <div class="description">
+            <h4 class="byline hcard">
+              Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
+              on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
+            </h4>
+            <p>{{ cycle.description }}</p>
+          </div>
+          <div class="environments">
+            <h4>environments</h4>
+            <ul>
+              {% regroup cycle.environmentgroups.environments by typename as type_list %}
+              {% for type in type_list %}
+              <li class="envgroup">
+                <h5>{{ type.grouper }}</h5>
+                <ul>
+                  {% for env in type.list %}
+                  <li>{{ env.name }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% if cycle.team|length %}
+          <div class="testers">
+            <h4>testers</h4>
+            <ul>
+              {% for tester in cycle.team %}
+              <li>{{ tester.screenName }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
+      </details>
       {% endfor %}
-
-    </section>
+    </div>
 
     {% include "manage/_listnav.html" %}
 

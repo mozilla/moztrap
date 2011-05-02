@@ -1,4 +1,4 @@
-<form id="filters">
+<form id="filter">
   <div class="textual">
     <label for="filter">filter</label>
     <input type="text" name="filter" value="" id="filter" placeholder="filter by operating system, language, status, keyword, etc.">
@@ -9,11 +9,11 @@
     </ul>
   </div>
 
-  <div class="visual compact">
-    <p class="summary"><a href="#">advanced filtering</a></p>
+  <nav class="visual compact">
+    <h3 class="summary"><a href="#">Advanced Filtering</a></h3>
     <div class="content">
       <div class="filter-operating-system">
-        <h3>operating system</h3>
+        <h4>operating system</h4>
         <ul>
           <li>
             <input type="checkbox" name="linux" value="" id="linux">
@@ -38,7 +38,7 @@
         </ul>
       </div>
       <div class="filter-language">
-        <h3>language</h3>
+        <h4>language</h4>
         <ul class="long">
           <li>
             <input type="checkbox" name="en" value="" id="en">
@@ -91,7 +91,7 @@
         </ul>
       </div>
       <div class="filter-status">
-        <h3>status</h3>
+        <h4>status</h4>
         <ul>
           <li>
             <input type="checkbox" name="draft" value="" id="draft">
@@ -108,7 +108,7 @@
         </ul>
       </div>
       <div class="filter-keywords">
-        <h3>keywords</h3>
+        <h4>keywords</h4>
         <ul>
           <li>
             <input type="checkbox" name="first" value="" id="first">
@@ -122,6 +122,6 @@
       </div>
       {% block more-filters %}{% endblock more-filters %}
     </div>
-  </div>
+  </nav>
 
 </form>

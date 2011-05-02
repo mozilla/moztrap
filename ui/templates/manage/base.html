@@ -9,7 +9,7 @@
 
 {% block content %}
   <nav class="manage">
-    <h2>Management Navigation</h2>
+    <h2 class="navhead">Management Navigation</h2>
     <ul>
       {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
       <li><a href="{% url manage_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>

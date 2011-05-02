@@ -9,7 +9,7 @@
 
 /* Filtering -----------------------------------------------------------------
 
-#filters
+#filter
   +full(21)
   ul
     +no-style-list
@@ -66,7 +66,7 @@
 
   // Visual ------------------------------------------------------------------
 
-  h3
+  h4
     @extend .smallcaps
     margin: 0
     padding: 0 .25em
@@ -77,6 +77,7 @@
     +omega(21)
     +leader(.25)
     font-style: italic
+    text-transform: lowercase
 
   .content
     +full(21)
@@ -98,7 +99,7 @@
       +colorwheel(label)
     .long
       height: auto !important
-    h3, input, label
+    h4, input, label
       display: none
     li
       +float(left)
