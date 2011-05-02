@@ -28,11 +28,14 @@ urlpatterns = patterns(
     url("^manage/", include("tcmui.manage.urls")),
 
     # results (wireframed)
-    url(r"^results/testruns/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testrun/runs.html"}),
     url(r"^results/testcycles/$",
         "django.views.generic.simple.direct_to_template",
         {"template": "results/testcycle/cycles.html"}),
+    url(r"^results/testruns/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "results/testrun/runs.html"}),
+    url(r"^results/testsuites/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "results/testsuite/suites.html"}),
 
 )

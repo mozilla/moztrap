@@ -1,0 +1,101 @@
+{% extends 'results/testsuite/base.html' %}
+
+{% load sort staticdata %}
+
+{% block listcontent %}
+
+<section id="suiteresults">
+  <h2>Test Suite Results</h2>
+
+  {% include "includes/filter.html" %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="managelist">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="bystatus">
+            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
+          </li>
+          <li class="bycompletion">
+            <a href="#">%</a>
+          </li>
+          <li class="bytitle">
+            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+          </li>
+          <li class="byproduct">
+            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+        </ul>
+      </nav>
+      <details id="run-id-01" class="item draft">
+        <summary class="header">
+          <p class="status">
+            <span class="draft">draft</span>
+          </p>
+          <p class="completion" data-perc="75">75%</p>
+          <h3 class="title">suite name</h3>
+          <p class="product">product name </p>
+          <ul class="results">
+            <li class="pass">120</li>
+            <li class="invalid">304</li>
+            <li class="fail">140</li>
+            <li class="pending">605</li>
+          </ul>
+        </summary>
+        <div class="content">
+          <p class="id">#234</p>
+          <p class="drill">
+            See related <a href="#" title="test cases related to suite name">test cases</a>.
+          </p>
+          <section class="environments">
+            <h4>environments</h4>
+            <ul>
+              <li class="envgroup">
+                <h5>Browser</h5>
+                <ul>
+                  <li>IE 7</li>
+                  <li>Firefox 4</li>
+                  <li>Chrome</li>
+                  <li>IE 8</li>
+                  <li>Firefox 3</li>
+                </ul>
+              </li>
+              <li class="envgroup">
+                <h5>Language</h5>
+                <ul>
+                  <li>French</li>
+                  <li>German</li>
+                  <li>English</li>
+                  <li>Spanish</li>
+                </ul>
+              </li>
+              <li class="envgroup">
+                <h5>Operating System</h5>
+                <ul>
+                  <li>Linux</li>
+                  <li>Windows 7</li>
+                  <li>OS X</li>
+                  <li>Windows XP</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+          <section class="testers">
+            <h4>testers</h4>
+            <ul>
+              <li>tester</li>
+              <li>screenName</li>
+            </ul>
+          </section>
+        </div>
+      </details>
+    </div>
+
+    {% include "manage/_listnav.html" %}
+
+  </form>
+</section>
+{% endblock listcontent %}
