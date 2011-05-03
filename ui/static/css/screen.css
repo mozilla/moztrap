@@ -712,7 +712,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .managelist .time p { margin: 0; padding-right: 0.5em; text-align: right; }
 .managelist .multi { background: rgba(254, 240, 191, 0.25); }
 .managelist .multi > .header { position: relative; background: url('../images/ui/angle_right.png?1299180924') no-repeat 99% center; }
-.managelist .multi > .header .title::after { content: " [multiple]"; color: rgba(68, 68, 68, 0.5); font-weight: normal; }
+.managelist .multi > .header .run { color: #999999; }
 .managelist .multi.open > .header { background-color: rgba(205, 236, 169, 0.5); background-image: url('../images/ui/angle_down.png?1299180970'); }
 .managelist .multi h4 { font: inherit; text-transform: inherit; letter-spacing: inherit; }
 
@@ -943,7 +943,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #suiteresults .title, #suiteresults .bytitle { display: inline; float: left; width: 32.53%; margin-right: 1.205%; }
 #suiteresults .drill { display: inline; float: left; width: 90.361%; margin-right: 1.205%; }
 #suiteresults .results, #suiteresults .testers, #suiteresults .drill { display: inline; float: right; margin-right: 0; }
-#suiteresults .multi > .header .title { padding-left: 4.819%; padding-right: 14.458%; }
+#suiteresults .multi > .header .title { padding-left: 4.819%; }
 #suiteresults .instances .run { padding-left: 33.735%; }
 #suiteresults .instances .completion { margin-left: 9.639%; }
 
