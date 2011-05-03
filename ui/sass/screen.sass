@@ -151,3 +151,40 @@ footer[role="contentinfo"]
 @import modules/manage
 @import modules/test
 @import modules/results
+
+// Dev -----------------------------------------------------------------------
+
+#page-status
+  +opacity(.5)
+  position: fixed
+  top: 100%
+  right: 0
+  bottom: 0
+  left: 0
+  padding: rhythm(.5) rhythm(1)
+  background: $light
+  p
+    margin: 0
+  &::before
+    @extend .allcaps
+    +border-top-radius(.5em)
+    content: attr(title)
+    display: block
+    position: absolute
+    bottom: 100%
+    left: rhythm(1)
+    padding: rhythm(.25) rhythm(1)
+    background: $light
+    font-weight: bold
+  &:hover
+    +opacity(1)
+    top: auto
+
+  &[title*="wireframe"]
+    background: $yellow-light
+    &::before
+      background: $yellow-light
+  &[title*="incomplete"]
+    background: $red-lighter
+    &::before
+      background: $red-lighter

@@ -1,9 +1,14 @@
 {% extends 'results/testsuite/base.html' %}
-
 {% load sort staticdata %}
 
-{% block listcontent %}
+{% block page-status %}incomplete{% endblock page-status %}
 
+{% block page-notes %}
+  <p>Need example of multi-instance suites.</p>
+  <p>Need run name included in each instance.</p>
+{% endblock page-notes %}
+
+{% block listcontent %}
 <section id="suiteresults">
   <h2>Test Suite Results</h2>
 

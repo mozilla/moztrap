@@ -134,6 +134,12 @@
 
 {% endblock page %}
 </div>
+
+<aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
+  {% block page-notes %}
+
+  {% endblock page-notes %}
+</aside>
 {% endblock body %}
 
 <!-- JavaScript -->
