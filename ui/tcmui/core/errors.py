@@ -14,6 +14,8 @@ MESSAGES = {
             "TestRun": "Activate or unlock parent test cycle first.",
          },
         []),
+    "including.not.activated.entity": (
+        "Can't include a not-active test case in a test run.", [])
     }
 
 
