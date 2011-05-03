@@ -6,7 +6,6 @@
     text-align: right
     li
       +adjust-font-size-to(12px)
-      margin-right: .5em
       vertical-align: top
       +icon('.pass','ui/check_sm.png',$green-lighter,true)
       +icon('.invalid','ui/warning_sm.png',$yellow,true)
@@ -25,6 +24,26 @@
       margin: 0
       padding-right: .5em
       text-align: right
+
+  .multi
+    background: rgba($yellow-light,.25)
+    > .header
+      position: relative
+      background: image-url('ui/angle_right.png') no-repeat 99% center
+      .title::after
+        content: " [multiple]"
+        color: rgba($base,.5)
+        font-weight: normal
+    &.open
+      > .header
+        background:
+          color: rgba($green-lighter,.5)
+          image: image-url('ui/angle_down.png')
+
+    h4
+      font: inherit
+      text-transform: inherit
+      letter-spacing: inherit
 
 @for $i from 1 to 101
   $n      : .9deg*$i
@@ -75,15 +94,27 @@
     +columns(1,21)
   .status, .id, .bystatus
     +columns(2,21)
-  .product, .byproduct
-    +columns(4,21)
+  .product, .byproduct, .run, .byrun
+    +columns(3,21)
   .testers
     +columns(4,21)
   .results
     +columns(5,21)
   .title, .bytitle
-    +columns(9,21)
+    +columns(7,21)
   .drill
     +columns(19,21)
   .results, .testers, .drill
     +omega(21)
+
+  .multi
+    > .header
+      .title
+        +pad(1,3,21)
+
+  .instances
+    .run
+      +prefix(7,21)
+    .completion
+      margin-left: columns(2,21) + gutter(21)
+
