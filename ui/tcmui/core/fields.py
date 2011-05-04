@@ -153,6 +153,9 @@ class UserID(remoteobjects.fields.AcceptsStringCls, Field):
 
         data = super(UserID, self).__get__(obj, cls)
 
+        if isinstance(data, self.cls):
+            return data
+
         try:
             # @@@ PERMISSION_USER_ACCOUNT_VIEW doesn't work, using admin
             value = self.cls.get(join("users", str(int(data))), auth=admin)
@@ -183,7 +186,10 @@ class TimelineField(Field):
 
 
     def decode(self, value):
-        return Timeline.from_dict(value)
+        value = super(TimelineField, self).decode(value)
+        if value:
+            return Timeline.from_dict(value)
+        return value
 
 
     def __get__(self, obj, cls):
