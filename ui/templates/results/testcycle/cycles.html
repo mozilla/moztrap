@@ -1,9 +1,11 @@
 {% extends 'results/testcycle/base.html' %}
-
 {% load sort staticdata %}
 
-{% block listcontent %}
+{% block page-notes %}
+  <p>This page will be pre-filtered by 'active' status by default.</p>
+{% endblock page-notes %}
 
+{% block listcontent %}
 <section id="cycleresults">
   <h2>Test Cycle Results</h2>
 
