@@ -35,8 +35,8 @@
         </ul>
       </nav>
       {% for cycle in cycles %}
-      <details id="cycle-id-{{ cycle.id }}" class="item {{ cycle.status|status_class }}">
-        <summary class="header">
+      <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}">
+        <header class="summary">
           <p class="status">
             {% if cycle.status.DRAFT %}
             <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
@@ -61,7 +61,7 @@
             <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
             {% endif %}
           </div>
-        </summary>
+        </header>
         <div class="content">
           <p class="id">#{{ cycle.id }}</p>
           <div class="description">
@@ -98,7 +98,7 @@
           </div>
           {% endif %}
         </div>
-      </details>
+      </article>
       {% endfor %}
     </div>
 

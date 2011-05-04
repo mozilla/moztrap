@@ -29,8 +29,8 @@
         </ul>
       </nav>
       {% for suite in suites %}
-      <details id="suite-id-{{ suite.id }}" class="item {{ suite.status|status_class }}">
-        <summary class="header">
+      <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}">
+        <header class="summary">
           <p class="status">
             {% if suite.status.DRAFT %}
             <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
@@ -53,7 +53,7 @@
             <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
             {% endif %}
           </div>
-        </summary>
+        </header>
         <div class="content">
           <p class="id">#{{ suite.id }}</p>
           <div class="description">
@@ -81,7 +81,7 @@
             </ul>
           </div>
         </div>
-      </details>
+      </article>
       {% endfor %}
     </div>
 

@@ -30,8 +30,8 @@
       </nav>
 
       {% for case in cases %}
-      <details id="case-id-{{ case.id }}" class="item {{ case.status|status_class }}">
-        <summary class="header">
+      <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}">
+        <header class="summary">
           <p class="status">
             {% if case.approval.PENDING %}
             <span class="pending">
@@ -62,7 +62,7 @@
             <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
             {% endif %}
           </div>
-        </summary>
+        </header>
         <div class="content">
           <p class="id">#{{ case.testCaseId }}</p>
           <h4 class="byline hcard">
@@ -97,7 +97,7 @@
             </ul>
           </div>
         </div>
-      </details>
+      </article>
       {% endfor %}
     </div>
 

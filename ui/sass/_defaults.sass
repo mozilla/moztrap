@@ -206,18 +206,22 @@ blockquote
   margin: $base-rhythm-unit
   font-style: italic
 
-summary
+summary, .summary
   display: block
   cursor: pointer
   &:focus
     outline: thin dotted $green
 
+.details
+  > *
+    display: none
+  > .summary, > summary
+    display: block
+
 .no-details
   details
-    > *
-      display: none
-    summary
-      display: block
+    @extend .details
+
 
 /* Replaced --------------------------------------------------------------
 

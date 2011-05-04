@@ -27,13 +27,13 @@
 
   .multi
     background: rgba($yellow-light,.25)
-    > .header
+    > .summary
       position: relative
       background: image-url('ui/angle_right.png') no-repeat 99% center
       .run
         color: $mid
     &.open
-      > .header
+      > .summary
         background:
           color: rgba($green-lighter,.5)
           image: image-url('ui/angle_down.png')
@@ -106,7 +106,7 @@
     +omega(21)
 
   .multi
-    > .header
+    > .summary
       .title
         +prefix(1,21)
 

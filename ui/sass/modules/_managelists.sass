@@ -48,19 +48,19 @@ nav
     +clearfix
     clear: both
 
-  .header, .content
+  .summary, .content
     +pie-clearfix
     +padding-leader(.25)
     +trailing-border(1px,.25)
     border-color: rgba($base,.125)
-  .header
+  .summary
     p, h3, h4
       margin-bottom: 0
     #{$focus}
       outline: 0
       background: rgba($green-lightest,.5)
   .open
-    > .header
+    > .summary
       background: rgba($green-lightest,.5)
   .content
     background: $lighter

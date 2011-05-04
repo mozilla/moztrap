@@ -38,8 +38,8 @@
         </ul>
       </nav>
       {% for run in runs %}
-      <details id="run-id-{{ run.id }}" class="item {{ run.status|status_class }}">
-        <summary class="header">
+      <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}">
+        <header class="summary">
           <p class="status">
             {% if run.status.DRAFT %}
             <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
@@ -65,7 +65,7 @@
             <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
             {% endif %}
           </div>
-        </summary>
+        </header>
         <div class="content">
           <p class="id">#{{ run.id }}</p>
           <div class="description">
@@ -114,7 +114,7 @@
           </div>
           {% endif %}
         </div>
-      </details>
+      </article>
     {% endfor %}
     </div>
 
