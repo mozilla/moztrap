@@ -4,20 +4,20 @@ function summaryDetails(context) {
     // if (!('open' in document.createElement('details'))) {
         var all;
         if ($(context).is("details")) {
-                all = $(context).find("details").andSelf();
+                all = $(context).find("details, .details").andSelf();
             } else {
-                all = $(context).find("details");
+                all = $(context).find("details, .details");
             }
 
             all.each(function() {
    // Store a reference to the current `details` element in a variable
    var $details = $(this),
        // Store a reference to the `summary` element of the current `details` element (if any) in a variable
-       $detailsSummary = $('summary:first', $details),
+       $detailsSummary = $('summary:first, .summary:first', $details),
        // Do the same for the info within the `details` element
-       $detailsNotSummary = $details.children(':not(summary:first)'),
+       $detailsNotSummary = $details.children(':not(summary:first, .summary:first)'),
        // This will be used later to look for direct child text nodes
-       $detailsNotSummaryContents = $details.contents(':not(summary:first)');
+       $detailsNotSummaryContents = $details.contents(':not(summary:first, .summary:first)');
 
    // If there is no `summary` in the current `details` element…
    if (!$detailsSummary.length) {
@@ -33,7 +33,7 @@ function summaryDetails(context) {
      return (this.nodeType === 3) && (/[^\t\n\r ]/.test(this.data));
     }).wrap('<span>');
     // There are now no direct child text nodes anymore — they’re wrapped in `span` elements
-    $detailsNotSummary = $details.children(':not(summary:first)');
+    $detailsNotSummary = $details.children(':not(summary:first, .summary:first)');
    }
 
    // Hide content unless the `open` attribute is truthy
