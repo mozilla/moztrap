@@ -19,7 +19,7 @@ $(
     }
 );
 
-$('#filter .summary a').click(
+$('#filter .toggle a').click(
     function() {
       $('#filter .visual').toggleClass('compact').toggleClass('expanded');
       return false;

@@ -72,7 +72,7 @@
     padding: 0 .25em
     font-weight: normal
 
-  .summary
+  .toggle
     +columns(9,21)
     +omega(21)
     +leader(.25)
@@ -88,7 +88,7 @@
     color: $mid
 
   .compact
-    .summary
+    .toggle
       a
         #{$link}
           &::before
@@ -121,7 +121,7 @@
   // Expanded --------------------------------------------------------------
 
   .expanded
-    .summary
+    .toggle
       a
         #{$link}
           &::before
