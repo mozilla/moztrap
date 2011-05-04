@@ -931,17 +931,17 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #runresults .drill { display: inline; float: left; width: 66.265%; margin-right: 1.205%; }
 #runresults .results, #runresults .testers, #runresults .time { display: inline; float: right; margin-right: 0; }
 
-#suiteresults .completion, #suiteresults .bycompletion { display: inline; float: left; width: 3.614%; margin-right: 1.205%; }
-#suiteresults .status, #suiteresults .id, #suiteresults .bystatus { display: inline; float: left; width: 8.434%; margin-right: 1.205%; }
-#suiteresults .product, #suiteresults .byproduct, #suiteresults .run, #suiteresults .byrun { display: inline; float: left; width: 13.253%; margin-right: 1.205%; }
-#suiteresults .testers { display: inline; float: left; width: 18.072%; margin-right: 1.205%; }
-#suiteresults .results { display: inline; float: left; width: 22.892%; margin-right: 1.205%; }
-#suiteresults .title, #suiteresults .bytitle { display: inline; float: left; width: 32.53%; margin-right: 1.205%; }
-#suiteresults .drill { display: inline; float: left; width: 90.361%; margin-right: 1.205%; }
-#suiteresults .results, #suiteresults .testers, #suiteresults .drill { display: inline; float: right; margin-right: 0; }
-#suiteresults .multi > .summary .title { padding-left: 4.819%; }
-#suiteresults .instances .run { padding-left: 33.735%; }
-#suiteresults .instances .completion { margin-left: 9.639%; }
+#suiteresults .completion, #suiteresults .bycompletion, #caseresults .completion, #caseresults .bycompletion { display: inline; float: left; width: 3.614%; margin-right: 1.205%; }
+#suiteresults .status, #suiteresults .id, #suiteresults .bystatus, #caseresults .status, #caseresults .id, #caseresults .bystatus { display: inline; float: left; width: 8.434%; margin-right: 1.205%; }
+#suiteresults .product, #suiteresults .byproduct, #suiteresults .run, #suiteresults .byrun, #caseresults .product, #caseresults .byproduct, #caseresults .run, #caseresults .byrun { display: inline; float: left; width: 13.253%; margin-right: 1.205%; }
+#suiteresults .testers, #caseresults .testers { display: inline; float: left; width: 18.072%; margin-right: 1.205%; }
+#suiteresults .results, #caseresults .results { display: inline; float: left; width: 22.892%; margin-right: 1.205%; }
+#suiteresults .title, #suiteresults .bytitle, #caseresults .title, #caseresults .bytitle { display: inline; float: left; width: 32.53%; margin-right: 1.205%; }
+#suiteresults .drill, #caseresults .drill { display: inline; float: left; width: 90.361%; margin-right: 1.205%; }
+#suiteresults .results, #suiteresults .testers, #suiteresults .drill, #caseresults .results, #caseresults .testers, #caseresults .drill { display: inline; float: right; margin-right: 0; }
+#suiteresults .multi > .summary .title, #caseresults .multi > .summary .title { padding-left: 4.819%; }
+#suiteresults .instances .run, #caseresults .instances .run { padding-left: 33.735%; }
+#suiteresults .instances .completion, #caseresults .instances .completion { margin-left: 9.639%; }
 
 #page-status { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; opacity: 0.5; position: fixed; top: 100%; right: 0; bottom: 0; left: 0; padding: 0.75em 1.5em; background: #eeeeee; }
 #page-status h2 { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
