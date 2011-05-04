@@ -22,11 +22,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
-.caps, .allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, h4, #filter h4, .environments h5, #run .testinvalid summary { letter-spacing: 0.1em; }
+.caps, .allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #filter h5, .environments h5, #run .testinvalid summary { letter-spacing: 0.1em; }
 
 .allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before { text-transform: uppercase; }
 
-.smallcaps, h4, #filter h4, .environments h5, #run .testinvalid summary { font-variant: small-caps; }
+.smallcaps, #filter h5, .environments h5, #run .testinvalid summary { font-variant: small-caps; }
 
 /* Helpers ------------------------------------------------------------------- */
 .full { display: block; float: none; width: auto; }
@@ -69,11 +69,7 @@ h1 { font-size: 1.5em; line-height: 1em; }
 
 h1, h2 { font-weight: bold; }
 
-h3, h4 { font-weight: bold; }
-
-h4 { text-transform: lowercase; }
-
-h5, h6 { font-style: italic; }
+h3, h4, h5, h6 { font-weight: bold; }
 
 /* Inline -------------------------------------------------------------- */
 cite, em, dfn, address, i { font-style: italic; }
@@ -306,7 +302,7 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filter .suggest li:last-child a:link, #filter .suggest li:last-child a:visited { border-bottom-color: #999999; }
 #filter .suggest i { display: inline; float: right; padding-left: 1em; font-style: normal; color: #999999; }
 #filter #filter:focus + .suggest { display: block; }
-#filter h4 { margin: 0; padding: 0 0.25em; font-weight: normal; }
+#filter h5 { margin: 0; padding: 0 0.25em; font-weight: normal; }
 #filter .toggle { display: inline; float: left; width: 42.169%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; margin-top: 0.375em; font-style: italic; text-transform: lowercase; }
 #filter .content { clear: both; font-size: 0.857em; line-height: 1.313em; *zoom: 1; }
 #filter .content:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
@@ -338,7 +334,7 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filter .compact div[class^="filter-"]:nth-of-type(24n-23) label { background-color: #f5f4d2; }
 #filter .compact div[class^="filter-"]:nth-of-type(24n-24) label { background-color: #eef5d2; }
 #filter .compact .long { height: auto !important; }
-#filter .compact h4, #filter .compact input, #filter .compact label { display: none; }
+#filter .compact h5, #filter .compact input, #filter .compact label { display: none; }
 #filter .compact li { display: inline; float: left; }
 #filter .compact input:checked + label { margin-bottom: 0.875em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; display: block; margin-right: 0.5em; padding: 0.219em 0.438em; background: #e5f5d2; }
 #filter .compact input:checked + label:hover small { display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; min-width: 12px; color: rgba(0, 0, 0, 0); background: url('../images/ui/x_sm.png?1303975078') no-repeat scroll center; vertical-align: baseline; }
@@ -346,33 +342,33 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before { content: "« hide "; }
 #filter .expanded .toggle a:link::after, #filter .expanded .toggle a:visited::after { content: ""; }
 #filter .expanded .content { margin-bottom: 0.875em; }
-#filter .expanded .content div[class^="filter-"] { display: inline; float: left; width: 13.253%; margin-right: 1.205%; margin-bottom: 0.75em; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(7n) { display: inline; float: right; margin-right: 0; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(7n+1) { clear: left; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-1) h3 { background-color: #e5f5d2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-2) h3 { background-color: #ddf5d2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-3) h3 { background-color: #d4f5d2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-4) h3 { background-color: #d2f5da; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-5) h3 { background-color: #d2f5e2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-6) h3 { background-color: #d2f5eb; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-7) h3 { background-color: #d2f5f4; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-8) h3 { background-color: #d2eef5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-9) h3 { background-color: #d2e5f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-10) h3 { background-color: #d2ddf5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-11) h3 { background-color: #d2d4f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-12) h3 { background-color: #dad2f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-13) h3 { background-color: #e2d2f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-14) h3 { background-color: #ebd2f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-15) h3 { background-color: #f4d2f5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-16) h3 { background-color: #f5d2ee; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-17) h3 { background-color: #f5d2e5; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-18) h3 { background-color: #f5d2dd; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-19) h3 { background-color: #f5d2d4; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-20) h3 { background-color: #f5dad2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-21) h3 { background-color: #f5e2d2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-22) h3 { background-color: #f5ebd2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-23) h3 { background-color: #f5f4d2; }
-#filter .expanded .content div[class^="filter-"]:nth-of-type(24n-24) h3 { background-color: #eef5d2; }
+#filter .expanded .content [class^="filter-"] { display: inline; float: left; width: 13.253%; margin-right: 1.205%; margin-bottom: 0.75em; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(7n) { display: inline; float: right; margin-right: 0; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(7n+1) { clear: left; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-1) h3 { background-color: #e5f5d2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-2) h3 { background-color: #ddf5d2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-3) h3 { background-color: #d4f5d2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-4) h3 { background-color: #d2f5da; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-5) h3 { background-color: #d2f5e2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-6) h3 { background-color: #d2f5eb; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-7) h3 { background-color: #d2f5f4; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-8) h3 { background-color: #d2eef5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-9) h3 { background-color: #d2e5f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-10) h3 { background-color: #d2ddf5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-11) h3 { background-color: #d2d4f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-12) h3 { background-color: #dad2f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-13) h3 { background-color: #e2d2f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-14) h3 { background-color: #ebd2f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-15) h3 { background-color: #f4d2f5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-16) h3 { background-color: #f5d2ee; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-17) h3 { background-color: #f5d2e5; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-18) h3 { background-color: #f5d2dd; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-19) h3 { background-color: #f5d2d4; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-20) h3 { background-color: #f5dad2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-21) h3 { background-color: #f5e2d2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-22) h3 { background-color: #f5ebd2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-23) h3 { background-color: #f5f4d2; }
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-24) h3 { background-color: #eef5d2; }
 #filter .expanded .long { overflow: hidden; height: 8.75em; min-height: 8.75em; max-height: 42em; border-bottom: 1px solid #eeeeee; resize: vertical; }
 #filter .expanded .long:hover { overflow-y: auto; }
 #filter .expanded input { display: none; }
@@ -551,11 +547,11 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .status button:focus.rejected, .status button:focus.draft, .status button:focus.active, .status button:focus.locked, .status button:hover.rejected, .status button:hover.draft, .status button:hover.active, .status button:hover.locked, .status button:active.rejected, .status button:active.draft, .status button:active.active, .status button:active.locked { text-indent: -119988px; overflow: hidden; text-align: left; }
 .status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after { content: attr(title); position: absolute; left: 1.5em; text-indent: 0; }
 
-.byline { margin: 0; text-transform: none; font-variant: normal; }
+.byline { margin: 0; }
 
 .environments { font-size: 0.857em; line-height: 1.75em; }
 .environments h4 { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
-.environments h5 { margin: 0; padding: 0 0.25em; background: rgba(238, 238, 238, 0.5); font-weight: bold; font-style: normal; text-transform: lowercase; }
+.environments h5 { margin: 0; padding: 0 0.25em; background: rgba(238, 238, 238, 0.5); font-weight: bold; text-transform: lowercase; }
 .environments > ul { margin: 0; padding: 0; border: 0; list-style: none; }
 .environments .envgroup { color: #6e6e6e; }
 .environments .envgroup li { list-style-type: disc; }
@@ -714,7 +710,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .managelist .multi > .summary { position: relative; background: url('../images/ui/angle_right.png?1299180924') no-repeat 99% center; }
 .managelist .multi > .summary .run { color: #999999; }
 .managelist .multi.open > .summary { background-color: rgba(205, 236, 169, 0.5); background-image: url('../images/ui/angle_down.png?1299180970'); }
-.managelist .multi h4 { font: inherit; text-transform: inherit; letter-spacing: inherit; }
+.managelist .run { font: inherit; }
 
 .completion[data-perc="1"] { background: #eca9aa; }
 
@@ -948,6 +944,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #suiteresults .instances .completion { margin-left: 9.639%; }
 
 #page-status { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; opacity: 0.5; position: fixed; top: 100%; right: 0; bottom: 0; left: 0; padding: 0.75em 1.5em; background: #eeeeee; }
+#page-status h2 { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 #page-status p { margin: 0; }
 #page-status::before { -moz-border-radius-topleft: 0.5em; -webkit-border-top-left-radius: 0.5em; -o-border-top-left-radius: 0.5em; -ms-border-top-left-radius: 0.5em; -khtml-border-top-left-radius: 0.5em; border-top-left-radius: 0.5em; -moz-border-radius-topright: 0.5em; -webkit-border-top-right-radius: 0.5em; -o-border-top-right-radius: 0.5em; -ms-border-top-right-radius: 0.5em; -khtml-border-top-right-radius: 0.5em; border-top-right-radius: 0.5em; content: attr(title); display: block; position: absolute; bottom: 100%; left: 1.5em; padding: 0.375em 1.5em; background: #eeeeee; font-weight: bold; }
 #page-status:hover { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; opacity: 1; top: auto; }

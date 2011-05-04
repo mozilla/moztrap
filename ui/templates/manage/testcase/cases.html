@@ -64,11 +64,11 @@
           </div>
         </header>
         <div class="content">
-          <p class="id">#{{ case.testCaseId }}</p>
-          <h4 class="byline hcard">
+          <p class="id">#{{ case.testCase.id }}</p>
+          <p class="byline hcard">
             Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
             on <time pubdate>{{ case.timeline.createDate|date }}</time>
-          </h4>
+          </p>
           {% comment %} @@@
           <div class="tags">
             <h4>tags</h4>

@@ -69,11 +69,10 @@
         <div class="content">
           <p class="id">#{{ run.id }}</p>
           <div class="description">
-            <h4 class="byline hcard">
+            <p class="byline hcard">
               Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
               on <time pubdate>{{ run.timeline.createDate|date }}</time>
-            </h4>
-
+            </p>
             <p>{{ run.description }}</p>
           </div>
           <div class="environments">

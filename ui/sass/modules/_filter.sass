@@ -66,7 +66,7 @@
 
   // Visual ------------------------------------------------------------------
 
-  h4
+  h5
     @extend .smallcaps
     margin: 0
     padding: 0 .25em
@@ -99,7 +99,7 @@
       +colorwheel(label)
     .long
       height: auto !important
-    h4, input, label
+    h5, input, label
       display: none
     li
       +float(left)
@@ -130,7 +130,7 @@
             content: ""
     .content
       +trailer(.5,12px)
-      div[class^="filter-"]
+      [class^="filter-"]
         +columns(3,21)
         +trailer(.5)
         &:nth-of-type(7n)
