@@ -1,5 +1,3 @@
-import httplib
-
 from mock import patch
 
 from ..responses import response
@@ -8,7 +6,7 @@ from ..utils import ResourceTestCase
 
 
 @patch("tcmui.static.data.cache")
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class StaticDataTest(ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "description": "Draft",

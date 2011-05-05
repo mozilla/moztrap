@@ -13,7 +13,6 @@ import urllib
 from django.core.cache import cache
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
-from remoteobjects import http
 
 from .conf import conf
 from . import fields
@@ -27,7 +26,19 @@ log = logging.getLogger('tcmui.core.api')
 
 
 
-class CachedHttp(httplib2.Http):
+class Http(httplib2.Http):
+    def request(self, **kwargs):
+        kwargs.setdefault("method", "GET")
+        log.debug("%(method)s - %(uri)s" % kwargs)
+        return super(Http, self).request(**kwargs)
+
+
+
+userAgent = Http()
+
+
+
+class CachedHttp(Http):
     def request(self, **kwargs):
         method = kwargs.get("method", "GET").upper()
         if method == "GET":
@@ -208,6 +219,8 @@ class ObjectMixin(StrAndUnicode):
     def get(cls, url, **kwargs):
         if "http" not in kwargs and kwargs.pop("cache", cls.cache):
             kwargs["http"] = cachedUserAgent
+        else:
+            kwargs["http"] = userAgent
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj
@@ -310,7 +323,7 @@ class ObjectMixin(StrAndUnicode):
 
         log.debug("Sending request %r", request)
 
-        response, content = http.userAgent.request(**request)
+        response, content = userAgent.request(**request)
 
         if update_from_response:
             log.debug("Got response %r, updating", response)

@@ -256,7 +256,7 @@ class LocatorFieldTest(BaseFieldTests):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class LocatorFunctionalTest(AuthTestCase):
     @property
     def subject_and_target(self):
@@ -400,7 +400,7 @@ class ResourceIdentityFieldTest(BaseFieldTests):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class UserIDFunctionalTest(AuthTestCase):
     @property
     def subject_and_user(self):
@@ -545,7 +545,7 @@ class TimelineFieldTest(BaseFieldTests):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class TimelineFieldFunctionalTest(AuthTestCase):
     @property
     def subject_timeline_and_user(self):
@@ -595,7 +595,7 @@ class TimelineFieldFunctionalTest(AuthTestCase):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class LinkFunctionalTest(AuthTestCase):
     @property
     def subject_and_target(self):

@@ -105,7 +105,7 @@ class TestResourceTestCase(ResourceTestCase):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class ResourceObjectTest(TestResourceTestCase):
     def test_get_data(self, http):
         http.request.return_value = response(
@@ -578,7 +578,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class ListObjectTest(TestResourceTestCase):
     def test_get_searchresult_empty(self, http):
         http.request.return_value = response(
@@ -934,7 +934,7 @@ class ListObjectTest(TestResourceTestCase):
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class ActivatableResourceTest(ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "name": "Default name",
