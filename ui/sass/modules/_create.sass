@@ -223,6 +223,7 @@
     width: columns(10,21)
     font-style: italic
   > div
+    @extend .toparrow
     +pie-clearfix
     +full(21)
     +pad(1,1,21)
@@ -234,17 +235,6 @@
     background: $light
     border-color: #ccc
     overflow: visible !important
-    &::before
-      content: " "
-      display: block
-      position: absolute
-      bottom: 100%
-      left: columns(1,21) + gutter(21)
-      width: 0
-      height: 0
-      border: 1em solid rgba(#ccc,0)
-        width: $base-rhythm-unit*.5
-      border-bottom-color: #ccc
   .nickname
     +columns(3,9)
     +prefix(1,9)
