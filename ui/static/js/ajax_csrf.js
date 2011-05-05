@@ -1,7 +1,7 @@
 // from http://docs.djangoproject.com/en/1.3/ref/contrib/csrf/#ajax
 $('html').ajaxSend(
     function(event, xhr, settings) {
-        function getCookie(name) {
+        var getCookie = function(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
                 var cookies = document.cookie.split(';');
@@ -15,9 +15,10 @@ $('html').ajaxSend(
                 }
             }
             return cookieValue;
-        }
+        };
         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
             // Only send the token to relative URLs i.e. locally.
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
-    });
+    }
+);

@@ -1,6 +1,10 @@
 import datetime
 
+from mock import patch
 from unittest2 import TestCase
+
+from ..responses import response, make_one, make_identity, make_boolean
+from ..utils import AuthTestCase
 
 
 
@@ -18,12 +22,18 @@ class BaseFieldTests(TestCase):
                 for k, v in kw.items():
                     setattr(self, k, v)
 
+
+            @classmethod
+            def get(cls, *args, **kwargs):
+                return cls(*args, **kwargs)
+
         return Bag
 
 
     def field_and_cls(self, *args, **kwargs):
         f = self.field_cls(*(self.prepend_args + args), **kwargs)
         cls = self.cls
+        setattr(cls, "attname", f)
         f.install("attname", cls)
         return f, cls
 
@@ -182,6 +192,7 @@ class LocatorFieldTest(BaseFieldTests):
         target = self.target_cls
         f = self.field_cls(target, *args, **kwargs)
         cls = self.cls
+        setattr(cls, "attname", f)
         f.install("attname", cls)
         return f, cls, target
 
@@ -237,3 +248,435 @@ class LocatorFieldTest(BaseFieldTests):
         self.assertEqual(
             f.submit_data(cls(attname=target_cls(identity={"@id": 1}))),
             {"attnameId": 1})
+
+
+    def test_descriptor_class_access(self):
+        f, cls = self.field_and_cls()
+        self.assertIs(cls.attname, f)
+
+
+
+@patch("tcmui.core.api.userAgent")
+class LocatorFunctionalTest(AuthTestCase):
+    @property
+    def subject_and_target(self):
+        from tcmui.core.api import RemoteObject
+        from tcmui.core.fields import Locator
+
+        class TheTarget(RemoteObject):
+            pass
+
+        class TheSubject(RemoteObject):
+            target = Locator(TheTarget)
+
+        return TheSubject, TheTarget
+
+
+    def test_descriptor_lookup(self, http):
+        TheSubject, TheTarget = self.subject_and_target
+
+        target_data = {
+            "@url": "http://some.base/thetargets/1",
+            "@id": "1"}
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                targetLocator=target_data))
+
+        subj = TheSubject.get("thesubjects/1", auth=self.auth)
+
+        target = subj.target
+
+        self.assertIsInstance(target, TheTarget)
+        self.assertEqual(target.auth, self.auth)
+        self.assertEqual(target.id, "1")
+        self.assertEqual(target._location, "http://some.base/thetargets/1")
+        # getting target id and location didn't trigger delivery
+        self.assertFalse(target._delivered)
+
+        # accessing attribute a second time returns cached instance
+        self.assertIs(target, subj.target)
+
+
+    def test_descriptor_lookup_none(self, http):
+        TheSubject, TheTarget = self.subject_and_target
+
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                targetLocator={"@xsi.nil":"true"}))
+
+        subj = TheSubject.get("thesubjects/1")
+
+        target = subj.target
+
+        self.assertEqual(target, None)
+
+
+    def test_descriptor_lookup_no_url(self, http):
+        TheSubject, TheTarget = self.subject_and_target
+
+        target_data = {
+            "@id": "1"}
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                targetLocator=target_data))
+
+        subj = TheSubject.get("thesubjects/1")
+
+        self.assertEqual(subj.target, target_data)
+
+
+    def test_descriptor_lookup_no_id(self, http):
+        TheSubject, TheTarget = self.subject_and_target
+
+        target_data = {
+            "@url": "http://some.base/thetargets/1",
+            }
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                targetLocator=target_data))
+
+        subj = TheSubject.get("thesubjects/1")
+
+        self.assertEqual(subj.target, None)
+
+
+
+class ResourceIdentityFieldTest(BaseFieldTests):
+    @property
+    def field_cls(self):
+        from tcmui.core.fields import ResourceIdentity
+        return ResourceIdentity
+
+
+    def test_default_names(self):
+        f = self.field()
+
+        self.assertEqual(f.api_name, "ns1.resourceIdentity")
+        self.assertEqual(f.api_filter_name, False)
+        self.assertEqual(f.api_submit_name, "resourceIdentity")
+
+
+    def test_set_api_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_name="apiname")
+
+
+    def test_set_api_submit_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_submit_name="apisubmitname")
+
+
+    def test_set_api_name_and_api_submit_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_name="apiname", api_submit_name="apisubmitname")
+
+
+    def test_encode(self):
+        f = self.field()
+        self.assertEqual(
+            f.encode({"@version": "2"}), {"originalVersionId": "2"})
+
+
+    def test_encode_no_version(self):
+        f = self.field()
+        self.assertEqual(
+            f.encode("blah"), {})
+
+
+    def test_no_submit_data(self):
+        with self.assertRaises(TypeError):
+            self.field_and_cls(api_submit_name=False)
+
+
+    def test_submit(self):
+        f, cls = self.field_and_cls()
+        self.assertEqual(
+            f.submit_data(
+                cls(attname={"@version": "3"})), {"originalVersionId": "3"})
+
+
+
+@patch("tcmui.core.api.userAgent")
+class UserIDFunctionalTest(AuthTestCase):
+    @property
+    def subject_and_user(self):
+        from tcmui.core.api import RemoteObject
+        from tcmui.core.fields import UserID
+
+        class User(RemoteObject):
+            pass
+
+        class TheSubject(RemoteObject):
+            user = UserID()
+
+        return TheSubject, User
+
+
+    def test_descriptor_lookup(self, http):
+        from tcmui.core.auth import admin
+        TheSubject, User = self.subject_and_user
+
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                user="4"))
+
+        subj = TheSubject.get("thesubjects/1", auth=self.auth)
+
+        user = subj.user
+
+        self.assertIsInstance(user, User)
+
+        # @@@ uses admin auth for now since user view perms don't work
+        self.assertEqual(user.auth, admin)
+        self.assertEqual(user._location, "users/4")
+
+        # accessing attribute a second time returns cached instance
+        self.assertIs(user, subj.user)
+
+
+    def test_descriptor_lookup_invalid(self, http):
+        TheSubject, User = self.subject_and_user
+
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                user="blah"))
+
+        subj = TheSubject.get("thesubjects/1", auth=self.auth)
+
+        user = subj.user
+
+        self.assertEqual(user, "blah")
+
+
+    def test_descriptor_class_access(self, http):
+        TheSubject, User = self.subject_and_user
+        self.assertIs(TheSubject.user, TheSubject.__dict__["user"])
+
+
+
+class TimelineFieldTest(BaseFieldTests):
+    @property
+    def field_cls(self):
+        from tcmui.core.fields import TimelineField
+        return TimelineField
+
+
+    @property
+    def result_cls(self):
+        from tcmui.core.fields import Timeline
+        return Timeline
+
+
+    @property
+    def user_cls(self):
+        from tcmui.core.api import RemoteObject
+
+        class User(RemoteObject):
+            pass
+
+        return User
+
+
+    def test_default_names(self):
+        f = self.field()
+
+        self.assertEqual(f.api_name, "ns1.timeline")
+        self.assertEqual(f.api_filter_name, False)
+        self.assertEqual(f.api_submit_name, False)
+
+
+    def test_set_api_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_name="apiname")
+
+
+    def test_set_api_submit_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_submit_name="apisubmitname")
+
+
+    def test_set_api_name_and_api_submit_name(self):
+        with self.assertRaises(TypeError):
+            self.field(api_name="apiname", api_submit_name="apisubmitname")
+
+
+    def test_no_submit_data(self):
+        with self.assertRaises(TypeError):
+            self.field_and_cls(api_submit_name=False)
+
+
+    def test_submit(self):
+        f, cls = self.field_and_cls()
+        self.assertEqual(
+            f.submit_data(
+                cls(attname="blah")), {})
+
+
+    def test_decode(self):
+        User = self.user_cls
+        f = self.field()
+        t = f.decode(
+            {
+                "@createDate":"2011-05-04T18:24:11Z",
+                "@createdBy":"1",
+                "@lastChangeDate":"2011-05-05T18:24:11Z",
+                "@lastChangedBy":"2",
+                "@xsi.type":"ns1:Timeline"
+                }
+            )
+        self.assertIsInstance(t, self.result_cls)
+        self.assertEqual(t.createDate, datetime.date(2011, 5, 4))
+        self.assertEqual(t.lastChangeDate, datetime.date(2011, 5, 5))
+        self.assertIsInstance(t.createdBy, User)
+        self.assertEqual(t.createdBy._location, "users/1")
+        self.assertIsInstance(t.lastChangedBy, User)
+        self.assertEqual(t.lastChangedBy._location, "users/2")
+
+
+    def test_descriptor_class_access(self):
+        f, cls = self.field_and_cls()
+        self.assertIs(cls.attname, f)
+
+
+
+@patch("tcmui.core.api.userAgent")
+class TimelineFieldFunctionalTest(AuthTestCase):
+    @property
+    def subject_timeline_and_user(self):
+        from tcmui.core.api import RemoteObject
+        from tcmui.core.fields import TimelineField, Timeline
+
+        class User(RemoteObject):
+            pass
+
+        class TheSubject(RemoteObject):
+            timeline = TimelineField()
+
+        return TheSubject, Timeline, User
+
+
+    def test_descriptor_lookup(self, http):
+        TheSubject, Timeline, User = self.subject_timeline_and_user
+
+        http.request.return_value = response(
+            make_one(
+                "thesubject",
+                timeline={
+                    "@createDate":"2011-05-04T18:24:11Z",
+                    "@createdBy":"1",
+                    "@lastChangeDate":"2011-05-05T18:24:11Z",
+                    "@lastChangedBy":"2",
+                    "@xsi.type":"ns1:Timeline"
+                    }
+                ))
+
+        subj = TheSubject.get("thesubjects/1", auth=self.auth)
+
+        timeline = subj.timeline
+
+        self.assertIsInstance(timeline, Timeline)
+        self.assertEqual(timeline.auth, self.auth)
+
+        self.assertEqual(timeline.createDate, datetime.date(2011, 5, 4))
+        self.assertEqual(timeline.lastChangeDate, datetime.date(2011, 5, 5))
+        self.assertIsInstance(timeline.createdBy, User)
+        self.assertEqual(timeline.createdBy._location, "users/1")
+        self.assertIsInstance(timeline.lastChangedBy, User)
+        self.assertEqual(timeline.lastChangedBy._location, "users/2")
+
+        # accessing attribute a second time returns cached instance
+        self.assertIs(timeline, subj.timeline)
+
+
+
+@patch("tcmui.core.api.userAgent")
+class LinkFunctionalTest(AuthTestCase):
+    @property
+    def subject_and_target(self):
+        from tcmui.core.api import RemoteObject, ListObject
+        from tcmui.core.fields import Link, List, Object
+
+        class TheTarget(RemoteObject):
+            pass
+
+        class TargetList(ListObject):
+            entryclass = TheTarget
+
+            entries = List(Object(TheTarget))
+
+        class TheSubject(RemoteObject):
+            targets = Link(TargetList)
+
+        return TheSubject, TargetList
+
+
+    def test_descriptor_lookup(self, http):
+        TheSubject, TargetList = self.subject_and_target
+
+        http.request.return_value = response(make_one("thesubject"))
+
+        subj = TheSubject.get("some/url", auth=self.auth)
+
+        targets = subj.targets
+
+        self.assertIsInstance(targets, TargetList)
+        self.assertEqual(targets.auth, self.auth)
+        self.assertIs(targets.linked_from, subj)
+        self.assertEqual(
+            targets._location, "some/url/targets")
+        # getting target location didn't trigger delivery
+        self.assertFalse(targets._delivered)
+
+
+    def test_descriptor_lookup_no_location(self, http):
+        TheSubject, TargetList = self.subject_and_target
+
+        subj = TheSubject()
+
+        with self.assertRaises(AttributeError):
+            subj.targets
+
+
+    def test_descriptor_set(self, http):
+        TheSubject, TargetList = self.subject_and_target
+        TheTarget = TargetList.entryclass
+
+        subj = TheSubject.get("some/url", auth=self.auth)
+
+        http.request.return_value = response(make_boolean(True))
+
+        subj.targets = [
+            TheTarget(identity=make_identity(id=1)),
+            TheTarget(identity=make_identity(id=2))]
+
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(req["body"], "theTargetIds=1&theTargetIds=2")
+        self.assertEqual(
+            req["uri"], "http://fake.base/rest/some/url/targets?_type=json")
+
+
+    def test_descriptor_set_with_list(self, http):
+        TheSubject, TargetList = self.subject_and_target
+        TheTarget = TargetList.entryclass
+
+        subj = TheSubject.get("some/url", auth=self.auth)
+
+        http.request.return_value = response(make_boolean(True))
+
+        subj.targets = TargetList(
+            entries=[
+                TheTarget(identity=make_identity(id=1)),
+                TheTarget(identity=make_identity(id=2))])
+
+        req = http.request.call_args[1]
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(req["body"], "theTargetIds=1&theTargetIds=2")
+        self.assertEqual(
+            req["uri"], "http://fake.base/rest/some/url/targets?_type=json")

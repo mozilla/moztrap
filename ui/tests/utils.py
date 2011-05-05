@@ -3,8 +3,25 @@ from unittest2 import TestCase
 from .responses import make_one, make_list, make_searchresult, make_array
 
 
+class AuthTestCase(TestCase):
+    def creds(self, *args, **kwargs):
+        from tcmui.core.auth import Credentials
+        return Credentials(*args, **kwargs)
 
-class ResourceTestCase(TestCase):
+
+    @property
+    def auth(self):
+        """
+        Since the server responses are mocked, we could just ignore auth when
+        not testing it specifically, but we include it for all requests to more
+        closely match real usage.
+
+        """
+        return self.creds("admin@example.com", cookie="USERTOKEN: authcookie")
+
+
+
+class ResourceTestCase(AuthTestCase):
     RESOURCE_DEFAULTS = {}
 
 
@@ -76,22 +93,6 @@ class ResourceTestCase(TestCase):
     def _make_list(self, *dicts):
         return make_list(
             self.RESOURCE_NAME, self.RESOURCE_DEFAULTS, *dicts)
-
-
-    def creds(self, *args, **kwargs):
-        from tcmui.core.auth import Credentials
-        return Credentials(*args, **kwargs)
-
-
-    @property
-    def auth(self):
-        """
-        Since the server responses are mocked, we could just ignore auth when
-        not testing it specifically, but we include it for all requests to more
-        closely match real usage.
-
-        """
-        return self.creds("admin@example.com", cookie="USERTOKEN: authcookie")
 
 
 

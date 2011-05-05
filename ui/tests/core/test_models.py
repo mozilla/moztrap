@@ -5,7 +5,7 @@ from ..utils import ResourceTestCase, BaseResourceTest
 
 
 
-@patch("remoteobjects.http.userAgent")
+@patch("tcmui.core.api.userAgent")
 class CompanyTest(BaseResourceTest, ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "name": "Default company name",

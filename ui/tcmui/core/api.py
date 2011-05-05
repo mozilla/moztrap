@@ -10,11 +10,10 @@ from posixpath import join
 import simplejson as json
 import urllib
 
-from django.core.cache import cache
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
-from remoteobjects import http
 
+from .cache import CachingHttpWrapper
 from .conf import conf
 from . import fields
 from . import sort, pagination
@@ -27,26 +26,15 @@ log = logging.getLogger('tcmui.core.api')
 
 
 
-class CachedHttp(httplib2.Http):
+class Http(httplib2.Http):
     def request(self, **kwargs):
-        method = kwargs.get("method", "GET").upper()
-        if method == "GET":
-            cache_key = kwargs["uri"]
-            cached = cache.get(cache_key)
-            if cached is not None:
-                return cached
-
-        response, content = super(CachedHttp, self).request(**kwargs)
-
-        # only cache 200 OK responses
-        if method == "GET" and response.status == httplib.OK:
-            cache.set(cache_key, (response, content), conf.TCM_CACHE_SECONDS)
-
-        return (response, content)
+        kwargs.setdefault("method", "GET")
+        log.debug("%(method)s - %(uri)s" % kwargs)
+        return super(Http, self).request(**kwargs)
 
 
 
-cachedUserAgent = CachedHttp()
+userAgent = Http()
 
 
 
@@ -206,8 +194,9 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
-        if "http" not in kwargs and kwargs.pop("cache", cls.cache):
-            kwargs["http"] = cachedUserAgent
+        kwargs.setdefault("http", userAgent)
+        if kwargs.pop("cache", cls.cache):
+            kwargs["http"] = CachingHttpWrapper(kwargs["http"])
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj
@@ -310,7 +299,7 @@ class ObjectMixin(StrAndUnicode):
 
         log.debug("Sending request %r", request)
 
-        response, content = http.userAgent.request(**request)
+        response, content = userAgent.request(**request)
 
         if update_from_response:
             log.debug("Got response %r, updating", response)
