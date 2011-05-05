@@ -1,16 +1,33 @@
 /* Results -------------------------------------------------------------------
 
+.chicklist
+  +inline-block-list
+  +adjust-font-size-to(12px,1)
+  li
+    +border-radius(.25em)
+    margin-right: .5em
+    padding: rhythm(.125,12px) rhythm(.5,12px)
+    background: $blue-lightest
+
+.resulticons
+  +adjust-font-size-to(12px)
+  vertical-align: top
+  +icon('.pass','ui/check_sm.png',$green-lighter,true)
+  +icon('.invalid','ui/warning_sm.png',$yellow,true)
+  +icon('.fail','ui/x_sm.png',$red-lighter,true)
+  +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
+
+.resultslist
+  +inline-block-list
+  text-align: right
+  span
+    +gone
+  li
+    @extend .resulticons
+
 .managelist
   .results
-    +inline-block-list
-    text-align: right
-    li
-      +adjust-font-size-to(12px)
-      vertical-align: top
-      +icon('.pass','ui/check_sm.png',$green-lighter,true)
-      +icon('.invalid','ui/warning_sm.png',$yellow,true)
-      +icon('.fail','ui/x_sm.png',$red-lighter,true)
-      +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
+    @extend .resultslist
 
   .completion
     +adjust-font-size-to(12px)
@@ -114,3 +131,92 @@
     .completion
       margin-left: columns(2,21) + gutter(21)
 
+// Included Case Details -----------------------------------------------------
+
+.case-details
+  @extend .toparrow
+  +trailer(2)
+  position: relative
+  background: rgba($light,.5)
+
+  .summary
+    +clearfix
+    +full(21)
+    +rhythm-borders(1px,.5)
+    +pad(1,1,21)
+    border-color: $mid
+    background: transparent no-repeat scroll rhythm(1) center
+    #{$focus}
+      background-color: rgba(white,.5)
+      outline: 0
+    p
+      margin-bottom: 0
+    .results
+      @extend .resultslist
+
+  &.draft
+    background: rgba($blue-lighter,.25)
+  &.active
+    background: rgba($green-lighter,.25)
+  &.draft, &.active
+    .summary
+      background-image: image-url('ui/power.png')
+  &.locked
+    background: rgba($red-lighter,.25)
+    .summary
+      background-image: image-url('ui/lock.png')
+
+  &.open
+    .summary
+      background-color: $green-lightest
+      border-bottom-color: $mid-light
+
+  .content
+    +full(21)
+    +rhythm-borders(1px,.5)
+    +padding-leader(.5)
+    +pad(1,1,21)
+    border-top-width: 0
+    border-color: $mid
+
+  .status, .id
+    +columns(2,19)
+  .run, .product, .results
+    +columns(5,19)
+  .steps
+    +reset-box-model
+    +columns(17,19)
+  .results, .steps
+    +omega(21)
+
+#results
+  .managelist
+    .result, .results, .byresult, .failed-step
+      +columns(3,21)
+    .tester, .bytester, .comment
+      +columns(12,21)
+    .approval, .byapproval
+      +columns(4,21)
+      +omega(21)
+
+    .results
+      text-align: left
+
+    .result
+      @extend .resulticons
+
+  h4
+    +gone
+    + .comment
+      +prefix(3,21)
+
+  .environment
+    +full(21)
+    +prefix(3,21)
+    ul
+      +leader(.5)
+      +trailer(.5)
+      @extend .chicklist
+
+  .failed-step
+    text-align: right

@@ -40,5 +40,8 @@ urlpatterns = patterns(
     url(r"^results/testcases/$",
         "django.views.generic.simple.direct_to_template",
         {"template": "results/testcase/cases.html"}),
+    url(r"^results/testcase/detail/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "results/testcase/included_case_detail.html"}),
 
 )

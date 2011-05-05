@@ -40,6 +40,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 .oncall, a[href="#main"] { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 .oncall:active, a[href="#main"]:active, .oncall:focus, a[href="#main"]:focus { position: static; clip: auto; overflow: visible; height: auto; margin: 0; width: auto; }
 
+.toparrow::before, .userselect > div::before, .case-details::before { content: " "; display: block; position: absolute; bottom: 100%; left: 4.819%; width: 0; height: 0; border: 1em solid rgba(153, 153, 153, 0); border-width: 0.75em; border-bottom-color: #999999; }
+
 /* Root ---------------------------------------------------------------------- */
 body { font-size: 87.5%; line-height: 1.5em; }
 
@@ -100,7 +102,7 @@ p { margin-bottom: 1.5em; }
 
 pre { margin: 1.5em; white-space: pre; white-space: pre-wrap; white-space: pre-line; word-wrap: break-word; }
 
-blockquote { margin: 1.5em; font-style: italic; }
+blockquote { font-style: italic; }
 
 summary, .summary { display: block; cursor: pointer; }
 summary:focus, .summary:focus { outline: thin dotted #77b929; }
@@ -472,7 +474,6 @@ thead .controls { text-indent: -119988px; overflow: hidden; text-align: left; }
 .userselect summary:focus { outline: thin dotted #77b929; }
 .userselect > div { *zoom: 1; clear: both; padding-left: 4.819%; padding-right: 4.819%; margin-top: 1.5em; margin-bottom: 1.5em; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; position: relative; background: #eeeeee; border-color: #cccccc; overflow: visible !important; }
 .userselect > div:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-.userselect > div::before { content: " "; display: block; position: absolute; bottom: 100%; left: 4.819%; width: 0; height: 0; border: 1em solid rgba(204, 204, 204, 0); border-width: 0.75em; border-bottom-color: #cccccc; }
 .userselect .nickname { display: inline; float: left; width: 31.429%; margin-right: 2.857%; padding-left: 11.429%; }
 .userselect .fn { display: inline; float: left; width: 54.286%; margin-right: 2.857%; display: inline; float: right; margin-right: 0; }
 
@@ -696,14 +697,22 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #run .failed .header { background: #eca9ab; }
 
 /* Results ------------------------------------------------------------------- */
-.managelist .results { margin: 0; padding: 0; border: 0; overflow: hidden; *zoom: 1; text-align: right; }
-.managelist .results li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
-.managelist .results li { *display: inline; }
-.managelist .results li { font-size: 0.857em; line-height: 1.75em; vertical-align: top; }
-.managelist .results li.pass { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #cdeca9; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/check_sm.png?1303498520'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 16px; text-align: left; }
-.managelist .results li.invalid { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #fee58c; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/warning_sm.png?1303975038'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
-.managelist .results li.fail { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eca9ab; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/x_sm.png?1303975078'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
-.managelist .results li.pending { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #accbc9; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/clock_sm.png?1303975056'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
+.chicklist, #results .environment ul { margin: 0; padding: 0; border: 0; overflow: hidden; *zoom: 1; font-size: 0.857em; line-height: 1.75em; }
+.chicklist li, #results .environment ul li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
+.chicklist li, #results .environment ul li { *display: inline; }
+.chicklist li, #results .environment ul li { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; margin-right: 0.5em; padding: 0.219em 0.875em; background: #cddcdb; }
+
+.resulticons, .resultslist li, .managelist .results li, .case-details .summary .results li, #results .managelist .result { font-size: 0.857em; line-height: 1.75em; vertical-align: top; }
+.resulticons.pass, .resultslist li.pass, .managelist .results li.pass, .case-details .summary .results li.pass, #results .managelist .pass.result { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #cdeca9; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/check_sm.png?1303498520'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 16px; text-align: left; }
+.resulticons.invalid, .resultslist li.invalid, .managelist .results li.invalid, .case-details .summary .results li.invalid, #results .managelist .invalid.result { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #fee58c; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/warning_sm.png?1303975038'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
+.resulticons.fail, .resultslist li.fail, .managelist .results li.fail, .case-details .summary .results li.fail, #results .managelist .fail.result { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #eca9ab; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/x_sm.png?1303975078'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
+.resulticons.pending, .resultslist li.pending, .managelist .results li.pending, .case-details .summary .results li.pending, #results .managelist .pending.result { -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; background-color: #accbc9; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; background-image: url('../images/ui/clock_sm.png?1303975056'); background-repeat: no-repeat; background-position: 0.25em; padding: 0 0.25em 0 19px; text-align: left; }
+
+.resultslist, .managelist .results, .case-details .summary .results { margin: 0; padding: 0; border: 0; overflow: hidden; *zoom: 1; text-align: right; }
+.resultslist li, .managelist .results li, .case-details .summary .results li { list-style-image: none; list-style-type: none; margin-left: 0px; display: -moz-inline-box; -moz-box-orient: vertical; display: inline-block; vertical-align: middle; *vertical-align: auto; white-space: nowrap; }
+.resultslist li, .managelist .results li, .case-details .summary .results li { *display: inline; }
+.resultslist span, .managelist .results span, .case-details .summary .results span { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
+
 .managelist .completion { font-size: 0.857em; line-height: 1.75em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; text-shadow: rgba(172, 203, 201, 0.5) 1px 1px 0; font-weight: bold; text-align: center; }
 .managelist .time p { margin: 0; padding-right: 0.5em; text-align: right; }
 .managelist .multi { background: rgba(254, 240, 191, 0.25); }
@@ -942,6 +951,32 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #suiteresults .multi > .summary .title, #caseresults .multi > .summary .title { padding-left: 4.819%; }
 #suiteresults .instances .run, #caseresults .instances .run { padding-left: 33.735%; }
 #suiteresults .instances .completion, #caseresults .instances .completion { margin-left: 9.639%; }
+
+.case-details { margin-bottom: 3em; position: relative; background: rgba(238, 238, 238, 0.5); }
+.case-details .summary { overflow: hidden; *zoom: 1; clear: both; border-style: solid; border-width: 0.071em; padding: 0.679em; padding-left: 4.819%; padding-right: 4.819%; border-color: #999999; background: transparent no-repeat scroll 1.5em center; }
+.case-details .summary:focus, .case-details .summary:hover, .case-details .summary:active { background-color: rgba(255, 255, 255, 0.5); outline: 0; }
+.case-details .summary p { margin-bottom: 0; }
+.case-details.draft { background: rgba(172, 203, 201, 0.25); }
+.case-details.active { background: rgba(205, 236, 169, 0.25); }
+.case-details.draft .summary, .case-details.active .summary { background-image: url('../images/ui/power.png?1299181459'); }
+.case-details.locked { background: rgba(236, 169, 171, 0.25); }
+.case-details.locked .summary { background-image: url('../images/ui/lock.png?1299181435'); }
+.case-details.open .summary { background-color: #e5f5d2; border-bottom-color: #c3c3c3; }
+.case-details .content { clear: both; border-style: solid; border-width: 0.071em; padding: 0.679em; padding-top: 0.75em; padding-left: 4.819%; padding-right: 4.819%; border-top-width: 0; border-color: #999999; }
+.case-details .status, .case-details .id { display: inline; float: left; width: 9.333%; margin-right: 1.333%; }
+.case-details .run, .case-details .product, .case-details .results { display: inline; float: left; width: 25.333%; margin-right: 1.333%; }
+.case-details .steps { margin: 0; padding: 0; border: 0; display: inline; float: left; width: 89.333%; margin-right: 1.333%; }
+.case-details .results, .case-details .steps { display: inline; float: right; margin-right: 0; }
+
+#results .managelist .result, #results .managelist .results, #results .managelist .byresult, #results .managelist .failed-step { display: inline; float: left; width: 13.253%; margin-right: 1.205%; }
+#results .managelist .tester, #results .managelist .bytester, #results .managelist .comment { display: inline; float: left; width: 56.627%; margin-right: 1.205%; }
+#results .managelist .approval, #results .managelist .byapproval { display: inline; float: left; width: 18.072%; margin-right: 1.205%; display: inline; float: right; margin-right: 0; }
+#results .managelist .results { text-align: left; }
+#results h4 { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
+#results h4 + .comment { padding-left: 14.458%; }
+#results .environment { clear: both; padding-left: 14.458%; }
+#results .environment ul { margin-top: 0.75em; margin-bottom: 0.75em; }
+#results .failed-step { text-align: right; }
 
 #page-status { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; opacity: 0.5; position: fixed; top: 100%; right: 0; bottom: 0; left: 0; padding: 0.75em 1.5em; background: #eeeeee; }
 #page-status h2 { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }

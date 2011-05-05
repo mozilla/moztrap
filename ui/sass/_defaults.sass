@@ -56,6 +56,19 @@
     margin: 0
     width: auto
 
+.toparrow
+  &::before
+    content: " "
+    display: block
+    position: absolute
+    bottom: 100%
+    left: columns(1,21) + gutter(21)
+    width: 0
+    height: 0
+    border: 1em solid rgba($mid,0)
+      width: $base-rhythm-unit*.5
+    border-bottom-color: $mid
+
 /* Root ----------------------------------------------------------------------
 
 +establish-baseline
@@ -196,7 +209,6 @@ pre
   word-wrap: break-word
 
 blockquote
-  margin: $base-rhythm-unit
   font-style: italic
 
 summary, .summary
