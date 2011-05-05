@@ -1,8 +1,6 @@
-var TCM = TCM || {};
-
 (function($) {
 
-    TCM.testCaseButtons = function(context) {
+    var testCaseButtons = function(context) {
         $(context).find("button").click(
             function(event) {
                 event.preventDefault();
@@ -55,7 +53,7 @@ var TCM = TCM || {};
         );
     };
 
-    TCM.autoFocus = function(trigger) {
+    var autoFocus = function(trigger) {
         $(trigger).click(function() {
             if ($(this).parent().hasClass('open')) {
                 $(this).parent().find('textarea').focus();
@@ -63,19 +61,19 @@ var TCM = TCM || {};
         });
     };
 
-})(jQuery);
+    $(function() {
+        autoFocus('details.stepfail > summary');
+        autoFocus('details.testinvalid > summary');
+        testCaseButtons("details.test");
+        $("div[role=main]").ajaxError(
+            function(event, request, settings) {
+                $(this).prepend(
+                    '<aside class="error">' + request.responseText + '</aside>'
+                );
+                $('.loadingCSS').detach();
+                $('.loading').removeClass("loading");
+            }
+        );
+    });
 
-$(function() {
-    TCM.autoFocus('details.stepfail > summary');
-    TCM.autoFocus('details.testinvalid > summary');
-    TCM.testCaseButtons("details.test");
-    $("div[role=main]").ajaxError(
-        function(event, request, settings) {
-            $(this).prepend(
-                '<aside class="error">' + request.responseText + '</aside>'
-            );
-            $('.loadingCSS').detach();
-            $('.loading').removeClass("loading");
-        }
-    );
-});
+})(jQuery);
