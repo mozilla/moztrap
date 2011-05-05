@@ -1,8 +1,6 @@
-var TCM = TCM || {};
-
 (function($) {
 
-    TCM.summaryDetails = function(context) {
+    var summaryDetails = function(context) {
         // Execute the fallback only if there’s no native `details` support
         // Chrome 10 beta passes this test, but there's no functionality there
         // if (!('open' in document.createElement('details'))) {
@@ -74,8 +72,8 @@ var TCM = TCM || {};
     // }
     };
 
-})(jQuery);
+    $(function() {
+        summaryDetails("body");
+    });
 
-$(function() {
-    TCM.summaryDetails("body");
-});
+})(jQuery);

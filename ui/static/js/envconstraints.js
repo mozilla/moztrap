@@ -1,8 +1,6 @@
-var TCM = TCM || {};
-
 (function($) {
 
-    TCM.filterEnvironments = function(template, forms) {
+    var filterEnvironments = function(template, forms) {
         var allopts = $(template).find("select.environments option").clone(),
 
             doFilter = function(form) {
@@ -26,8 +24,8 @@ var TCM = TCM || {};
         );
     };
 
-})(jQuery);
+    $(function() {
+        filterEnvironments("#empty-env-form > li", "ul.envlist > li");
+    });
 
-$(function() {
-    TCM.filterEnvironments("#empty-env-form > li", "ul.envlist > li");
-});
+})(jQuery);
