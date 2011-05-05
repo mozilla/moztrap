@@ -3,7 +3,7 @@ $('html').ajaxSend(
     function(event, xhr, settings) {
         var getCookie = function(name) {
             var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
+            if (document.cookie && document.cookie !== '') {
                 var cookies = document.cookie.split(';');
                 for (var i = 0; i < cookies.length; i++) {
                     var cookie = $.trim(cookies[i]);

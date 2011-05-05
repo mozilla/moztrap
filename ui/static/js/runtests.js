@@ -34,7 +34,8 @@
                         testcase.attr("data-action-url"),
                         data,
                         function(data) {
-                            var id = testcase.attr("id");
+                            var id = testcase.attr("id"),
+                                testCaseButtons;
                             testcase.replaceWith(data);
                             var newCase = $("#" + id);
                             summaryDetails(newCase);
@@ -44,7 +45,7 @@
                     );
                 }
                 var addLoadingCSS = function() {
-                    var vertHeight = (parseInt(testcase.css('height')) - parseInt(testcase.css('line-height'))) / 2 + 'px',
+                    var vertHeight = (parseInt(testcase.css('height'), 10) - parseInt(testcase.css('line-height'), 10)) / 2 + 'px',
                         style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
                     $('head').append(style);
                 };

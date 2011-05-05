@@ -7,7 +7,7 @@
                 var typeid = $(form).find("select.env_type").val(),
                     envselect = $(form).find("select.environments").empty();
                 allopts.each(function() {
-                    if ($(this).val().split(":")[0] == typeid) {
+                    if ($(this).val().split(":")[0] === typeid) {
                         var newopt = $(this).clone();
                         newopt.appendTo(envselect);
                     }
