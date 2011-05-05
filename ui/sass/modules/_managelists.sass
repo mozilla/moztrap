@@ -18,18 +18,18 @@ nav
           color: $blue-dark
 
 #listcontent
-  +padding-leader(.25)
   position: relative
   overflow: hidden
   padding-left: gutter(24)
   border-left: 1px solid $light
   min-height: $base-rhythm-unit*12
+  h2
+    +columns(12,21)
   .create
     @extend .button
+    +float(right)
+    +trailer
     +button-color($green,'ui/plus.png')
-    position: absolute
-    top: 0
-    right: 0
     padding-left: $base-line-height + image-width('ui/plus.png')
     background:
       position: .75em, left

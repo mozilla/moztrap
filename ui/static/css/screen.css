@@ -18,7 +18,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* Typography ---------------------------------------------------------------- */
 .serif { font-family: Cambria, Georgia, serif; }
 
-.sans, body, .message, #messages { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.sans, body, .message, #messages li { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
 .mono, pre, code, tt { font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif; }
 
@@ -262,9 +262,10 @@ nav.crumb li:last-child a { color: inherit; }
 div[role="main"] { *zoom: 1; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 1.429em; border-color: #cccccc; position: relative; }
 div[role="main"]:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.message, #messages { clear: both; margin-bottom: 0.75em; padding: 0.375em 0.75em; font-weight: bold; }
-.message, #messages, .message.success, .success#messages { text-shadow: #e5f5d2 1px 1px 0; background: #cdeca9; color: #4f7a1b; }
-.message.error, .error#messages { text-shadow: #f5d2d4 1px 1px 0; background: #eca9ab; color: #511214; }
+.message, #messages li { clear: both; padding-left: 4.211%; margin-top: 0em; padding-top: 0.75em; padding-bottom: 0.75em; margin-bottom: 0.75em; text-shadow: #cddcdb 1px 1px 0; font-weight: bold; background: #accbc9 url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.5em center; color: #2e3e3d; }
+.message.success, #messages li.success { text-shadow: #e5f5d2 1px 1px 0; background-color: #cdeca9; background-image: url('../images/ui/check.png?1299276480'); color: #4f7a1b; }
+.message.error, #messages li.error { text-shadow: #f5d2d4 1px 1px 0; background-color: #eca9ab; background-image: url('../images/ui/x.png?1299276461'); color: #511214; }
+.message.warning, #messages li.warning { text-shadow: #fef0bf 1px 1px 0; background-color: #fee58c; background-image: url('../images/ui/warning.png?1303974218'); color: #a38001; }
 
 #messages ul { list-style: none; margin: 0; padding: 0; border: 0; }
 #messages ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
@@ -509,8 +510,9 @@ nav.manage a:link, nav.manage a:visited, nav.results a:link, nav.results a:visit
 nav.manage a:focus, nav.manage a:hover, nav.manage a:active, nav.results a:focus, nav.results a:hover, nav.results a:active { background: #eeeeee; }
 nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus, nav.manage a.active:hover, nav.manage a.active:active, nav.results a.active:link, nav.results a.active:visited, nav.results a.active:focus, nav.results a.active:hover, nav.results a.active:active { background: #cddcdb; color: #2e3e3d; }
 
-#listcontent { padding-top: 0.375em; position: relative; overflow: hidden; padding-left: 1.053%; border-left: 1px solid #eeeeee; min-height: 18em; }
-#listcontent .create { background-image: url('../images/ui/plus.png?1299181696'); background-image: url('../images/ui/plus.png?1299181696'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background-image: url('../images/ui/plus.png?1299181696'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; position: absolute; top: 0; right: 0; padding-left: 35px; background-position: 0.75em, left; background-repeat: no-repeat; }
+#listcontent { position: relative; overflow: hidden; padding-left: 1.053%; border-left: 1px solid #eeeeee; min-height: 18em; }
+#listcontent h2 { display: inline; float: left; width: 56.627%; margin-right: 1.205%; }
+#listcontent .create { display: inline; float: right; margin-bottom: 1.5em; background-image: url('../images/ui/plus.png?1299181696'); background-image: url('../images/ui/plus.png?1299181696'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929)); background-image: url('../images/ui/plus.png?1299181696'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%); background-image: url('../images/ui/plus.png?1299181696'), linear-gradient(top center, #b5e37f 0%, #77b929 100%); border-color: #759d45; padding-left: 35px; background-position: 0.75em, left; background-repeat: no-repeat; }
 
 /* Lists --------------------------------------------------------------------- */
 .managelist { clear: both; margin: 0; }
