@@ -10,10 +10,10 @@ from posixpath import join
 import simplejson as json
 import urllib
 
-from django.core.cache import cache
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
 
+from .cache import CachingHttpWrapper
 from .conf import conf
 from . import fields
 from . import sort, pagination
@@ -35,29 +35,6 @@ class Http(httplib2.Http):
 
 
 userAgent = Http()
-
-
-
-class CachedHttp(Http):
-    def request(self, **kwargs):
-        method = kwargs.get("method", "GET").upper()
-        if method == "GET":
-            cache_key = kwargs["uri"]
-            cached = cache.get(cache_key)
-            if cached is not None:
-                return cached
-
-        response, content = super(CachedHttp, self).request(**kwargs)
-
-        # only cache 200 OK responses
-        if method == "GET" and response.status == httplib.OK:
-            cache.set(cache_key, (response, content), conf.TCM_CACHE_SECONDS)
-
-        return (response, content)
-
-
-
-cachedUserAgent = CachedHttp()
 
 
 
@@ -217,10 +194,9 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
-        if "http" not in kwargs and kwargs.pop("cache", cls.cache):
-            kwargs["http"] = cachedUserAgent
-        else:
-            kwargs["http"] = userAgent
+        kwargs.setdefault("http", userAgent)
+        if kwargs.pop("cache", cls.cache):
+            kwargs["http"] = CachingHttpWrapper(kwargs["http"])
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj
