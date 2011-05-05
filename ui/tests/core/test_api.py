@@ -1,11 +1,27 @@
 import json
-
 import httplib
+
 from mock import patch
+from unittest2 import TestCase
 
 from ..responses import response, make_identity, make_boolean, FakeResponse
 from ..utils import ResourceTestCase
 
+
+
+class HttpTestCase(TestCase):
+    @property
+    def agent(self):
+        from tcmui.core.api import Http
+        return Http
+
+    def test_request_logging(self):
+        http = self.agent()
+        with patch("httplib2.Http.request"):
+            with patch("tcmui.core.api.log") as mock_log:
+                http.request(uri="/blah")
+
+        mock_log.debug.assert_called_with("GET - /blah")
 
 
 class TestResourceTestCase(ResourceTestCase):
@@ -301,6 +317,17 @@ class ResourceObjectTest(TestResourceTestCase):
         from tcmui.core.cache import CachingHttpWrapper
 
         self.assertIsInstance(mock.call_args[1]["http"], CachingHttpWrapper)
+
+
+    def test_cache_attribute_non_GET(self, http):
+        http.request.return_value = response(self.make_one())
+        obj = self.resource_class.get("/testresources/1", auth=self.auth)
+        with patch.object(self.resource_class, "cache", True):
+            with patch("tcmui.core.cache.CachingHttpWrapper.request") as mock:
+                mock.return_value = http.request.return_value
+                obj.put()
+
+        mock.assert_called()
 
 
     def test_delivered_repr(self, http):
