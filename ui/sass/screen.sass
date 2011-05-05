@@ -100,25 +100,39 @@ div[role="main"]
 .message
   @extend .sans
   +full(24)
-  +trailer(.5)
-  padding: $base-rhythm-unit*.25 $base-rhythm-unit*.5
+  +prefix(1,24)
+  +rhythm(0,.5,.5,.5)
+  +text-shadow($blue-lightest 1px 1px 0)
   font-weight: bold
+  background: $blue-lighter image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
+  color: $blue-dark
 
-  &, &.success
+  &.success
     +text-shadow($green-lightest 1px 1px 0)
-    background: $green-lighter
+    background:
+      color: $green-lighter
+      image: image-url('ui/check.png')
     color: $green-dark
 
   &.error
     +text-shadow($red-lightest 1px 1px 0)
-    background: $red-lighter
+    background:
+      color: $red-lighter
+      image: image-url('ui/x.png')
     color: $red-dark
 
+  &.warning
+    +text-shadow($yellow-light 1px 1px 0)
+    background:
+      color: $yellow
+      image: image-url('ui/warning.png')
+    color: $yellow-darkest
+
 #messages
-  @extend .message
   ul
     +no-style-list
   li
+    @extend .message
     + li
       +leader(.5)
 
