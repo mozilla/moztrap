@@ -232,7 +232,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .fullwidth, header[role="banner"], div[role="main"], footer[role="contentinfo"], .environment form { clear: both; margin-left: 1.031%; margin-right: 1.031%; *zoom: 1; }
 .fullwidth:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after, .environment form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.simple, #login, #register, #products, #environment, #cycles, #testruns { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
+.simple, #login, #register, #products, #cycles, #testruns, #environment form { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
 
 body > div { position: relative; }
 
@@ -638,20 +638,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #products .list li:first-child:nth-last-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li, #products .list li:first-child:nth-last-child(5n), #products .list li:first-child:nth-last-child(5n) ~ li { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
 #products .list li:first-child:nth-last-child(3n):nth-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(5n):nth-child(3n), #products .list li:first-child:nth-last-child(5n) ~ li:nth-child(3n) { display: inline; float: right; margin-right: 0; }
 
-/* environment -------------------------------------------------------------- */
-.environment summary { display: inline; float: left; width: 23.711%; margin-right: 1.031%; display: inline; float: right; margin-right: 1.031%; padding-top: 0.375em; padding-bottom: 0.375em; text-align: right; color: #5d7b7a; text-transform: capitalize; }
-.environment summary:hover { color: #b9292f; }
-.environment form { padding-left: 49.485%; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; padding-bottom: 0.75em; padding-right: 1.053%; border-color: #cccccc; background: #fef0bf; }
-.environment li { *zoom: 1; }
-.environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-.environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
-.environment input, .environment select, .environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }
-
-#environment li { *zoom: 1; }
-#environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
-#environment input, #environment select, #environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }
-
 /* cycles + testruns -------------------------------------------------------------- */
 #cycles .date, #testruns .date { width: 31.915%; }
 #cycles .start, #cycles .end, #testruns .start, #testruns .end { width: 23.404%; }
@@ -989,3 +975,42 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #page-status[title*="wireframe"]::before { background: #fef0bf; }
 #page-status[title*="incomplete"] { background: #eca9ab; }
 #page-status[title*="incomplete"]::before { background: #eca9ab; }
+
+#selectruns { clear: both; }
+#selectruns label { overflow: hidden; *zoom: 1; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; padding-top: 0.375em; padding-left: 0.75em; padding-right: 0.75em; border-color: #eeeeee; display: block; font-weight: normal; }
+#selectruns input { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
+#selectruns input:checked + label { font-weight: bold; background: rgba(139, 185, 183, 0.5); }
+#selectruns .finder { *zoom: 1; clear: both; margin-bottom: 1.5em; position: relative; border: 1px solid #999999; background: #eeeeee; }
+#selectruns .finder:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#selectruns section { display: inline; float: left; position: relative; top: 0; bottom: 0; left: 0; width: 25%; height: 13.5em; }
+#selectruns section.focus { width: 50%; }
+#selectruns .listordering { position: absolute; top: 0; right: 15px; left: 0; padding: 0.375em 0.75em; margin: 0; background: #eeeeee; z-index: 2; }
+#selectruns h3, #selectruns p { margin-bottom: 0; }
+#selectruns .completion, #selectruns .start, #selectruns .end, #selectruns .bycompletion, #selectruns .bystart, #selectruns .byend, #selectruns .end, #selectruns .byend { display: none; }
+#selectruns .focus .completion, #selectruns .focus .start, #selectruns .focus .end, #selectruns .focus .bycompletion, #selectruns .focus .bystart, #selectruns .focus .byend, #selectruns .focus .end, #selectruns .focus .byend { display: block; }
+#selectruns .focus .completion, #selectruns .focus .bycompletion { display: inline; float: left; width: 6.383%; margin-right: 2.128%; }
+#selectruns .focus .title, #selectruns .focus .bytitle { display: inline; float: left; width: 57.447%; margin-right: 2.128%; }
+#selectruns .focus .title:first-child, #selectruns .focus .bytitle:first-child { display: inline; float: left; width: 65.957%; margin-right: 2.128%; }
+#selectruns .focus .start, #selectruns .focus .end, #selectruns .focus .bystart, #selectruns .focus .byend { display: inline; float: left; width: 14.894%; margin-right: 2.128%; }
+#selectruns .focus .end, #selectruns .focus .byend { display: inline; float: right; margin-right: 0; }
+#selectruns .bystart, #selectruns .byend, #selectruns .bycompletion { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; opacity: 0.75; }
+#selectruns .start, #selectruns .end, #selectruns .completion { font-weight: normal; }
+#selectruns .start, #selectruns .end { color: #999999; }
+#selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; position: absolute; top: 0; right: 0; bottom: 0; left: 0; padding-top: 3em; overflow-y: scroll; background: white; }
+#selectruns ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
+#selectruns li:last-child label { padding-bottom: 0.375em; border-bottom: 0; }
+
+/* environment -------------------------------------------------------------- */
+.environment summary { display: inline; float: left; width: 23.711%; margin-right: 1.031%; display: inline; float: right; margin-right: 1.031%; padding-top: 0.375em; padding-bottom: 0.375em; text-align: right; color: #5d7b7a; text-transform: capitalize; }
+.environment summary:hover { color: #b9292f; }
+.environment form { padding-left: 49.485%; border-top-style: solid; border-top-width: 0.071em; padding-top: 1.429em; padding-bottom: 0.75em; padding-right: 1.053%; border-color: #cccccc; background: #fef0bf; }
+.environment li { *zoom: 1; }
+.environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+.environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
+.environment input, .environment select, .environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }
+
+#environment { clear: both; }
+#environment li { *zoom: 1; }
+#environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
+#environment input, #environment select, #environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }

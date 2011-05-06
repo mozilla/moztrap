@@ -44,4 +44,8 @@ urlpatterns = patterns(
         "django.views.generic.simple.direct_to_template",
         {"template": "results/testcase/included_case_detail.html"}),
 
+    # new runtest nav (wireframed)
+    url(r"^wire/run/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "test/wireframe.html"}),
 )

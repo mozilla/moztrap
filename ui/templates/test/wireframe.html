@@ -1,0 +1,110 @@
+{% extends 'test/base.html' %}
+
+{% block testcontent %}
+<section id="selectruns">
+  <h2>Select a product, cycle and run</h2>
+  <form class="finder">
+    <section class="products focus">
+      <header class="listordering">
+        <h3 class="bytitle"><a href="#">Products</a></h3>
+        <p class="bystart"><a href="#">start</a></p>
+        <p class="byend"><a href="#">end</a></p>
+      </header>
+      <ul>
+        <li>
+          <input type="radio" name="product" value="" id="product-tcm">
+          <label for="product-tcm">
+            <span class="title">tcm</span>
+            <time class="start">01/07/2011</time>
+            <time class="end">11/10/2011</time>
+          </label>
+        </li>
+      </ul>
+    </section>
+    <section class="cycles">
+      <header class="listordering">
+        <p class="bycompletion"><a href="#">%</a></p>
+        <h3 class="bytitle"><a href="#">Cycles</a></h3>
+        <p class="bystart"><a href="#">start</a></p>
+        <p class="byend"><a href="#">end</a></p>
+      </header>
+      <ul>
+        <li>
+          <input type="radio" name="cycle" value="" id="tcm_cycle_name">
+          <label for="tcm_cycle_name">
+            <span class="completion" data-perc="75">75%</span>
+            <span class="title">tcm cycle name 01</span>
+            <time class="start">01/07/2011</time>
+            <time class="end">11/10/2011</time>
+          </label>
+        </li>
+        <li>
+          <input type="radio" name="cycle" value="" id="tcm_cycle_name_02">
+          <label for="tcm_cycle_name_02">
+            <span class="completion" data-perc="75">75%</span>
+            <span class="title">tcm cycle name 02</span>
+            <time class="start">01/07/2011</time>
+            <time class="end">11/10/2011</time>
+          </label>
+        </li>
+      </ul>
+    </section>
+    <section class="runs">
+      <header class="listordering">
+        <h3 class="bytitle"><a href="#">Runs</a></h3>
+        <p class="bystart"><a href="#">start</a></p>
+        <p class="byend"><a href="#">end</a></p>
+      </header>
+      <ul>
+        <li>
+          <input type="radio" name="run" value="" id="tcm_run_01">
+          <label for="tcm_run_01">
+            <span class="title">tcm run 01</span>
+            <time class="start">01/07/2011</time>
+            <time class="end">11/10/2011</time>
+          </label>
+        </li>
+        <li>
+          <input type="radio" name="run" value="" id="tcm_run_02">
+          <label for="tcm_run_02">
+            <span class="title">tcm run 02</span>
+            <time class="start">01/07/2011</time>
+            <time class="end">11/10/2011</time>
+          </label>
+        </li>
+      </ul>
+    </section>
+  </form>
+</section>
+
+<section id="environment">
+  <h2>Set your environment</h2>
+  <form method="POST">
+    <input type="hidden" name="next" value="/run/2/">
+    <div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='3f384940cef8720e735b2df5f8412c28' /></div>
+    <ul>
+      <li>
+        <label for="id_type_2">Language</label>
+        <select name="type_2" id="id_type_2">
+        	<option value="5">English</option>
+        	<option value="8">French</option>
+        	<option value="6">German</option>
+        	<option value="7">Spanish</option>
+        </select>
+      </li>
+      <li>
+        <label for="id_type_1">Operating System</label>
+        <select name="type_1" id="id_type_1">
+        	<option value="4">Windows 7</option>
+        	<option value="3">Windows XP</option>
+        </select>
+      </li>
+    </ul>
+  </form>
+</section>
+
+<div class="form-actions">
+  <button type="submit">run some tests!</button>
+</div>
+
+{% endblock testcontent %}

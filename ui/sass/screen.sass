@@ -204,3 +204,123 @@ footer[role="contentinfo"]
     background: $red-lighter
     &::before
       background: $red-lighter
+
+// Select Runs (wireframe) ---------------------------------------------------
+
+#selectruns
+  +full(24)
+  label
+    +clearfix
+    +trailing-border(1px,.25)
+    +padding-leader(.25)
+    +hpadding(rhythm(.5))
+    border-color: $light
+    display: block
+    font-weight: normal
+  input
+    +gone
+    &:checked
+      + label
+        font-weight: bold
+        background: rgba($blue-light,.5)
+  .finder
+    +pie-clearfix
+    +full(24)
+    +trailer
+    position: relative
+    border: 1px solid $mid
+    background: $light
+  section
+    +float(left)
+    position: relative
+    top: 0
+    bottom: 0
+    left: 0
+    width: 25%
+    height: rhythm(9)
+    &.focus
+      width: 50%
+
+  .listordering
+    position: absolute
+    top: 0
+    right: 15px
+    left: 0
+    padding: rhythm(.25) rhythm(.5)
+    margin: 0
+    background: $light
+    z-index: 2
+
+  h3, p
+    margin-bottom: 0
+
+  .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
+    display: none
+
+  .focus
+    .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
+      display: block
+    .completion, .bycompletion
+      +columns(1,12)
+    .title, .bytitle
+      +columns(7,12)
+      &:first-child
+        +columns(8,12)
+    .start, .end, .bystart, .byend
+      +columns(2,12)
+    .end, .byend
+      +omega(12)
+
+  .bystart, .byend, .bycompletion
+    +opacity(.75)
+
+  .start, .end, .completion
+    font-weight: normal
+
+  .start, .end
+    color: $mid
+
+  ul
+    +no-style-list
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    left: 0
+    padding-top: rhythm(2)
+    overflow-y: scroll
+    background: #fff
+
+  li:last-child
+    label
+      +padding-trailer(.25)
+      border-bottom: 0
+
+/* environment --------------------------------------------------------------
+
+.environment
+  summary
+    +columns(6)
+    +omega
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    text-align: right
+    color: $alt
+    text-transform: capitalize
+    &:hover
+      color: $accent
+  form
+    @extend .fullwidth
+    +prefix(12)
+    +leading-border(1px)
+    +padding-trailer(.5)
+    padding-right: gutter(24)
+    border-color: #ccc
+    background: $yellow-light
+  +inline-form(4,8,12)
+
+#environment
+  +full(24)
+  +inline-form(4,8,12)
+  form
+    @extend .simple
