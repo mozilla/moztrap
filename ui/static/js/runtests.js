@@ -34,11 +34,10 @@
                         testcase.attr("data-action-url"),
                         data,
                         function(data) {
-                            var id = testcase.attr("id"),
-                                testCaseButtons;
+                            var id = testcase.attr("id");
                             testcase.replaceWith(data);
                             var newCase = $("#" + id);
-                            summaryDetails(newCase);
+                            newCase.find('details').andSelf().html5accordion('summary');
                             testCaseButtons(newCase);
                             $('.loadingCSS').detach();
                         }

@@ -1,25 +1,24 @@
+/**
+ * jQuery html5accordion 0.1
+ *
+ * Copyright (c) 2011, Jonny Gerig Meyer
+ * All rights reserved.
+ *
+ * Licensed under the New BSD License
+ * See: http://www.opensource.org/licenses/bsd-license.php
+ */
 (function($) {
+    $.fn.html5accordion = function(summary) {
 
-    var summaryDetails = function(context) {
-        // Execute the fallback only if there’s no native `details` support
-        // Chrome 10 beta passes this test, but there's no functionality there
-        // if (!('open' in document.createElement('details'))) {
-        var all;
-        if ($(context).is("details")) {
-            all = $(context).find("details, .details").andSelf();
-        } else {
-            all = $(context).find("details, .details");
-        }
-
-        all.each(function() {
+        return this.each(function() {
             // Store a reference to the current `details` element in a variable
             var $details = $(this),
                 // Store a reference to the `summary` element of the current `details` element (if any) in a variable
-                $detailsSummary = $('summary:first, .summary:first', $details),
+                $detailsSummary = $(summary + ':first', $details),
                 // Do the same for the info within the `details` element
-                $detailsNotSummary = $details.children(':not(summary:first, .summary:first)'),
+                $detailsNotSummary = $details.children(':not(' + summary + ':first)'),
                 // This will be used later to look for direct child text nodes
-                $detailsNotSummaryContents = $details.contents(':not(summary:first, .summary:first)');
+                $detailsNotSummaryContents = $details.contents(':not(' + summary + ':first)');
 
             // If there is no `summary` in the current `details` element…
             if (!$detailsSummary.length) {
@@ -35,7 +34,7 @@
                     return (this.nodeType === 3) && (/[^\t\n\r ]/.test(this.data));
                 }).wrap('<span>');
                 // There are now no direct child text nodes anymore — they’re wrapped in `span` elements
-                $detailsNotSummary = $details.children(':not(summary:first, .summary:first)');
+                $detailsNotSummary = $details.children(':not(' + summary + ':first)');
             }
 
             // Hide content unless the `open` attribute is truthy
@@ -68,12 +67,17 @@
             });
         });
 
-    // end "if no native support"
-    // }
+        $(summary + ' button').click(
+            function(event) {
+                // prevent it from triggering the html5accordion
+                event.stopPropagation();
+                $(this).closest(summary).addClass('loading');
+            });
+        $(summary + ' a').click(
+            function(event) {
+                // prevent it from triggering the html5accordion
+                event.stopPropagation();
+            }
+        );
     };
-
-    $(function() {
-        summaryDetails("body");
-    });
-
 })(jQuery);
