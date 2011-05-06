@@ -11,8 +11,6 @@ from . import util
 
 
 class EnvironmentType(RemoteObject):
-    cache = True
-
     company = fields.Locator(Company)
     name = fields.Field()
     groupType = fields.Field()
@@ -26,8 +24,6 @@ class EnvironmentType(RemoteObject):
 
 
 class EnvironmentTypeList(ListObject):
-    cache = True
-
     entryclass = EnvironmentType
     api_name = "environmenttypes"
     default_url = "environmenttypes"
@@ -37,8 +33,6 @@ class EnvironmentTypeList(ListObject):
 
 
 class Environment(RemoteObject):
-    cache = True
-
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
@@ -50,8 +44,6 @@ class Environment(RemoteObject):
 
 
 class EnvironmentList(ListObject):
-    cache = True
-
     entryclass = Environment
     api_name = "environments"
     default_url = "environments"
@@ -78,8 +70,6 @@ class EnvironmentList(ListObject):
 
 
 class EnvironmentGroup(RemoteObject):
-    cache = True
-
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()

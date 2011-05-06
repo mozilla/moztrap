@@ -33,12 +33,15 @@ class CachingHttpWrapper(object):
 
 
     def next_generation(self):
-        cache.add(self.generation_key, 1)
-        return cache.incr(self.generation_key)
+        try:
+            return cache.incr(self.generation_key)
+        except ValueError:
+            cache.add(self.generation_key, 1)
+            return 1
 
 
     def cache_key(self, uri):
-        generation = cache.get(self.generation_key, 1)
+        generation = cache.get(self.generation_key, 0)
         return "%s-%s-%s" % (self.bucket_name, generation, uri)
 
 

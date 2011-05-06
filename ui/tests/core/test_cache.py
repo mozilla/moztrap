@@ -32,10 +32,12 @@ class CachingHttpWrapperTest(TestCase):
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.set.assert_called_with("BucketName-1-/uri/", ret, 600)
+        cache.set.assert_called_with("BucketName-0-/uri/", ret, 600)
 
 
     def _check_increments_generation(self, method, cache):
+        cache.incr.side_effect = ValueError
+
         self.make_request(method=method, uri="/uri/")
 
         cache.add.assert_called_once_with("BucketName:generation", 1)
@@ -75,11 +77,11 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_returns_cached_for_get(self, cache):
-        self.fill_cache(cache, {"BucketName-1-/uri/": "cached"})
+        self.fill_cache(cache, {"BucketName-0-/uri/": "cached"})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.get.assert_called_with("BucketName-1-/uri/")
+        cache.get.assert_called_with("BucketName-0-/uri/")
         self.assertEqual(ret, "cached")
 
 

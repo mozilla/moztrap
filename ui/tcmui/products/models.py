@@ -13,8 +13,6 @@ from ..users.models import Team
 
 
 class Product(RemoteObject):
-    cache = True
-
     company = fields.Locator(Company)
     description = fields.Field()
     name = fields.Field()
@@ -53,8 +51,6 @@ class Product(RemoteObject):
 
 
 class ProductList(ListObject):
-    cache = True
-
     entryclass = Product
     api_name = "products"
     default_url = "products"

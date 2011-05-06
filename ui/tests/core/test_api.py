@@ -37,6 +37,8 @@ class TestResourceTestCase(ResourceTestCase):
             name = fields.Field()
             submit_as = fields.Field(api_name="submitAs")
 
+            cache = False
+
             def __unicode__(self):
                 return u"__unicode__ of %s" % self.name
 
@@ -52,6 +54,8 @@ class TestResourceTestCase(ResourceTestCase):
             default_url = "testresources"
 
             entries = fields.List(fields.Object(self.resource_class))
+
+            cache = False
 
         return TestResourceList
 

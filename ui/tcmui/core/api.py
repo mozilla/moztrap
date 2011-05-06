@@ -40,7 +40,7 @@ userAgent = Http()
 
 class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
-    cache = False
+    cache = True
     _filterable_fields = None
 
 
@@ -54,6 +54,7 @@ class ObjectMixin(StrAndUnicode):
         self.auth = None
         for k, v in kwargs.items():
             setattr(self, k, v)
+
 
     def get_request(self, *args, **kwargs):
         """
