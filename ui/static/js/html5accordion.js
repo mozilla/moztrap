@@ -72,7 +72,8 @@
                 // prevent it from triggering the html5accordion
                 event.stopPropagation();
                 $(this).closest(summary).addClass('loading');
-            });
+            }
+        );
         $(summary + ' a').click(
             function(event) {
                 // prevent it from triggering the html5accordion
