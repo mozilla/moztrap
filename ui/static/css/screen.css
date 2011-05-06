@@ -998,7 +998,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns .bystart, #selectruns .byend, #selectruns .bycompletion { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; opacity: 0.75; }
 #selectruns .start, #selectruns .end, #selectruns .completion { font-weight: normal; }
 #selectruns .start, #selectruns .end { color: #999999; }
-#selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; padding-top: 3em; background: white; }
+#selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; padding-top: 3em; }
 #selectruns ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #selectruns li:last-child label { padding-bottom: 0.375em; border-bottom: 0; }
 
@@ -1016,3 +1016,4 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
 #environment input, #environment select, #environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }
+#environment form { margin-top: 0em; padding-top: 2.25em; padding-bottom: 1.5em; margin-bottom: 1.5em; background: #eeeeee; }
