@@ -982,7 +982,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns input:checked + label { font-weight: bold; background: rgba(139, 185, 183, 0.5); }
 #selectruns .finder { *zoom: 1; clear: both; margin-bottom: 1.5em; position: relative; border: 1px solid #999999; background: #eeeeee; }
 #selectruns .finder:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#selectruns section { display: inline; float: left; position: relative; top: 0; bottom: 0; left: 0; width: 25%; height: 13.5em; }
+#selectruns section { -moz-transition-property: width 300ms; -webkit-transition-property: width 300ms; -o-transition-property: width 300ms; transition-property: width 300ms; -moz-transition-duration: 1s; -webkit-transition-duration: 1s; -o-transition-duration: 1s; transition-duration: 1s; display: inline; float: left; position: relative; top: 0; bottom: 0; left: 0; width: 25%; height: 13.5em; }
 #selectruns section.focus { width: 50%; }
 #selectruns .listordering { position: absolute; top: 0; right: 15px; left: 0; padding: 0.375em 0.75em; margin: 0; background: #eeeeee; z-index: 2; }
 #selectruns h3, #selectruns p { margin-bottom: 0; }
