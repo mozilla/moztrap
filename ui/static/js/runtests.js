@@ -25,6 +25,8 @@
                                     "This field is required." +
                                     "</li></ul>"
                             );
+                            $('.loadingCSS').detach();
+                            $('.loading').removeClass("loading");
                             post = false;
                         }
                     }
