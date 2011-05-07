@@ -18,9 +18,11 @@ class CachingHttpWrapperTest(TestCase):
         res.status = kwargs.pop("response_status", httplib.OK)
         content = kwargs.pop("response_content", "content")
         bucket = kwargs.pop("cache_bucket", "BucketName")
+        dependent_buckets = kwargs.pop("cache_dependent_buckets", [])
         with patch("tcmui.core.api.Http") as http:
             http.request.return_value = (res, content)
-            return CachingHttpWrapper(http, bucket).request(**kwargs)
+            return CachingHttpWrapper(
+                http, bucket, dependent_buckets).request(**kwargs)
 
 
     def fill_cache(self, cache, values_dict):
@@ -57,6 +59,19 @@ class CachingHttpWrapperTest(TestCase):
 
     def test_delete_increments_generation(self, cache):
         self._check_increments_generation("DELETE", cache)
+
+
+    def test_dependent_buckets(self, cache):
+        cache.incr.side_effect = ValueError
+
+        self.make_request(method="PUT", uri="/uri/",
+                          cache_dependent_buckets=["DependentBucket"])
+
+        cache.add.assert_called_with("DependentBucket:generation", 1)
+        cache.incr.assert_called_with("DependentBucket:generation")
+
+        # no cached response was set
+        self.assertFalse(cache.set.called)
 
 
     def test_head_doesnt_cache_or_increment_generation(self, cache):
@@ -218,5 +233,30 @@ class CachingFunctionalTest(ResourceTestCase):
         obj2.deliver()
 
         self.assertEqual(obj2.name, "New name")
+        self.assertEqual(http.request.call_count, 3,
+                         http.request.call_args_list)
+
+
+    def test_put_clears_related_list_cache(self, http):
+        http.request.return_value = response(
+            self.make_array({"name": "One thing"}))
+
+        lst = self.resource_list_class.get(auth=self.auth)
+        lst.deliver()
+
+        http.request.return_value = response(
+            self.make_one(name="New thing"))
+
+        obj = lst[0]
+        obj.name = "New name"
+        obj.put()
+
+        http.request.return_value = response(
+            self.make_array({"name": "New name"}))
+
+        lst2 = self.resource_list_class.get(auth=self.auth)
+        lst2.deliver()
+
+        self.assertEqual(lst2[0].name, "New name")
         self.assertEqual(http.request.call_count, 3,
                          http.request.call_args_list)

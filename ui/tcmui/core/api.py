@@ -12,6 +12,7 @@ import urllib
 
 from django.utils.encoding import StrAndUnicode
 import remoteobjects
+from remoteobjects.dataobject import classes_by_name
 
 from .cache import CachingHttpWrapper
 from .conf import conf
@@ -197,7 +198,9 @@ class ObjectMixin(StrAndUnicode):
     def get(cls, url, **kwargs):
         kwargs.setdefault("http", userAgent)
         if kwargs.pop("cache", cls.cache):
-            kwargs["http"] = CachingHttpWrapper(kwargs["http"], cls.__name__)
+            kwargs["http"] = CachingHttpWrapper(
+                kwargs["http"], cls.__name__,
+                [c.__name__ for c in cls.listclasses()])
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj
@@ -302,7 +305,9 @@ class ObjectMixin(StrAndUnicode):
 
         http = kw.pop("http", userAgent)
         if kw.pop("cache", self.cache):
-            http = CachingHttpWrapper(http, self.__class__.__name__)
+            http = CachingHttpWrapper(
+                http, self.__class__.__name__,
+                [c.__name__ for c in self.__class__.listclasses()])
 
         response, content = http.request(**request)
 
@@ -389,6 +394,19 @@ class ObjectMixin(StrAndUnicode):
             return "<%s: %s>" % (self.__class__.__name__, self)
         else:
             return "<%s: %s>" % (self.__class__.__name__, self._location)
+
+
+    @classmethod
+    def listclasses(cls):
+        """
+        Return an iterator of any ListObject classes that have this
+        RemoteObject class as their "entryclass".
+
+        """
+        for candidate in classes_by_name.itervalues():
+            entryclass = getattr(candidate, "entryclass", None)
+            if entryclass is cls:
+                yield candidate
 
 
 

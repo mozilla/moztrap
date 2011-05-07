@@ -544,6 +544,12 @@ class ResourceObjectTest(TestResourceTestCase):
             one._request("PUT", default_content_type="text/plain")
 
 
+    def test_listclasses(self, http):
+        list_cls = self.resource_list_class
+        self.assertEqual(
+            list(self.resource_class.listclasses()), [list_cls])
+
+
 
 @patch("tcmui.core.api.userAgent")
 class ListObjectTest(TestResourceTestCase):
