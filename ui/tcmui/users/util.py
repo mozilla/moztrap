@@ -38,7 +38,7 @@ def get_user(userid, password=None, cookie=None):
     """
     auth = Credentials(userid, password=password, cookie=cookie)
     try:
-        user = User.current(auth=auth)
+        user = User.current(auth=auth, cache=False)
         user.deliver()
     except (User.Forbidden, User.Unauthorized, User.NotFound):
         user = None
