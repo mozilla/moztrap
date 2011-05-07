@@ -68,6 +68,24 @@
                     }
                 }
             });
+
+            var preventInternalButtons = function() {
+                $details.find("button, a").click(
+                    function(event) {
+                        // prevent it from triggering the html5accordion
+                        event.stopPropagation();
+                        var button = $(this),
+                            addLoadingCSS = function() {
+                                var vertHeight = (parseInt($details.css('height'), 10) - parseInt($details.css('line-height'), 10)) / 2 + 'px',
+                                    style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+                                $('head').append(style);
+                            };
+                        $details.addClass('loading');
+                        addLoadingCSS();
+                    }
+                );
+            };
+            preventInternalButtons();
         });
     };
 })(jQuery);
