@@ -6,6 +6,9 @@
  *
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
+ *
+ * Based on code by Mathias Bynens
+ * See: http://mathiasbynens.be/notes/html5-details-jquery
  */
 (function($) {
     $.fn.html5accordion = function(summary) {

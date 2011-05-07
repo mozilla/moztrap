@@ -1,12 +1,30 @@
 (function($) {
 
+    var accordionButtons = function(context) {
+        $(context).find("button, a").click(
+            function(event) {
+                // prevent it from triggering the html5accordion
+                event.stopPropagation();
+                var button = $(this),
+                    immediateContext = button.closest(context).addClass('loading');
+
+                var addLoadingCSS = function() {
+                    var vertHeight = (parseInt(immediateContext.css('height'), 10) - parseInt(immediateContext.css('line-height'), 10)) / 2 + 'px',
+                        style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+                    $('head').append(style);
+                };
+                addLoadingCSS();
+            }
+        );
+    };
+
     var testCaseButtons = function(context) {
         $(context).find("button").click(
             function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var button = $(this),
-                    testcase = button.closest("details.test").addClass('loading'),
+                    testcase = button.closest(context),
                     container = button.closest("div.form"),
                     data = {
                         action: button.attr("data-action")
@@ -38,19 +56,14 @@
                         function(data) {
                             var id = testcase.attr("id");
                             testcase.replaceWith(data);
-                            var newCase = $("#" + id);
-                            newCase.find('details').andSelf().html5accordion('summary');
+                            var newCase = "#" + id;
+                            $(newCase).find('details').andSelf().html5accordion('summary');
+                            accordionButtons(newCase);
                             testCaseButtons(newCase);
                             $('.loadingCSS').detach();
                         }
                     );
                 }
-                var addLoadingCSS = function() {
-                    var vertHeight = (parseInt(testcase.css('height'), 10) - parseInt(testcase.css('line-height'), 10)) / 2 + 'px',
-                        style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
-                    $('head').append(style);
-                };
-                addLoadingCSS();
             }
         );
     };
@@ -66,6 +79,8 @@
     $(function() {
         autoFocus('details.stepfail > summary');
         autoFocus('details.testinvalid > summary');
+        accordionButtons('details');
+        accordionButtons('.details');
         testCaseButtons("details.test");
         $("div[role=main]").ajaxError(
             function(event, request, settings) {
