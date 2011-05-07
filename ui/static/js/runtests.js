@@ -1,5 +1,13 @@
 (function($) {
 
+    var autoFocus = function(trigger) {
+        $(trigger).click(function() {
+            if ($(this).parent().hasClass('open')) {
+                $(this).parent().find('textarea').focus();
+            }
+        });
+    };
+
     var testCaseButtons = function(context) {
         $(context).find("button").click(
             function(event) {
@@ -42,19 +50,13 @@
                             $(newCase).find('details').andSelf().html5accordion('summary');
                             testCaseButtons(newCase);
                             $('.loadingCSS').detach();
+                            autoFocus('details.stepfail > summary');
+                            autoFocus('details.testinvalid > summary');
                         }
                     );
                 }
             }
         );
-    };
-
-    var autoFocus = function(trigger) {
-        $(trigger).click(function() {
-            if ($(this).parent().hasClass('open')) {
-                $(this).parent().find('textarea').focus();
-            }
-        });
     };
 
     $(function() {
