@@ -701,13 +701,14 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .resultslist li, .managelist .results li, .case-details .summary .results li { *display: inline; }
 .resultslist span, .managelist .results span, .case-details .summary .results span { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 
-.managelist .completion { font-size: 0.857em; line-height: 1.75em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; text-shadow: rgba(172, 203, 201, 0.5) 1px 1px 0; font-weight: bold; text-align: center; }
 .managelist .time p { margin: 0; padding-right: 0.5em; text-align: right; }
 .managelist .multi { background: rgba(254, 240, 191, 0.25); }
 .managelist .multi > .summary { position: relative; background: url('../images/ui/angle_right.png?1299180924') no-repeat 99% center; }
 .managelist .multi > .summary .run { color: #999999; }
 .managelist .multi.open > .summary { background-color: rgba(205, 236, 169, 0.5); background-image: url('../images/ui/angle_down.png?1299180970'); }
 .managelist .run { font: inherit; }
+
+.completion { font-size: 0.857em; line-height: 1.75em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; text-shadow: rgba(172, 203, 201, 0.5) 1px 1px 0; font-weight: bold; text-align: center; }
 
 .completion[data-perc="1"] { background: #eca9aa; }
 
@@ -996,7 +997,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns .focus .start, #selectruns .focus .end, #selectruns .focus .bystart, #selectruns .focus .byend { display: inline; float: left; width: 14.894%; margin-right: 2.128%; }
 #selectruns .focus .end, #selectruns .focus .byend { display: inline; float: right; margin-right: 0; }
 #selectruns .bystart, #selectruns .byend, #selectruns .bycompletion { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; opacity: 0.75; }
-#selectruns .start, #selectruns .end, #selectruns .completion { font-weight: normal; }
+#selectruns .start, #selectruns .end { font-weight: normal; }
 #selectruns .start, #selectruns .end { color: #999999; }
 #selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; padding-top: 3em; }
 #selectruns ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }

@@ -29,13 +29,6 @@
   .results
     @extend .resultslist
 
-  .completion
-    +adjust-font-size-to(12px)
-    +border-radius(.25em)
-    +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
-    font-weight: bold
-    text-align: center
-
   .time
     p
       margin: 0
@@ -57,6 +50,13 @@
 
   .run
     font: inherit
+
+.completion
+  +adjust-font-size-to(12px)
+  +border-radius(.25em)
+  +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
+  font-weight: bold
+  text-align: center
 
 @for $i from 1 to 101
   $n      : .9deg*$i
