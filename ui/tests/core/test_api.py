@@ -24,6 +24,25 @@ class HttpTestCase(TestCase):
         mock_log.debug.assert_called_with("GET - /blah")
 
 
+class UrlFinalIntegerTestCase(TestCase):
+    def check(self, url, expected):
+        from tcmui.core.api import url_final_integer
+        self.assertEqual(url_final_integer(url), expected)
+
+
+    def test_without_final_slash(self):
+        self.check("test/1", "1")
+
+
+    def test_with_final_slash(self):
+        self.check("test/1/", "1")
+
+
+    def test_no_match(self):
+        self.check("test/1/latest", None)
+
+
+
 class TestResourceTestCase(ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "name": "Default name",
@@ -548,6 +567,25 @@ class ResourceObjectTest(TestResourceTestCase):
         list_cls = self.resource_list_class
         self.assertEqual(
             list(self.resource_class.listclasses()), [list_cls])
+
+
+    def test_cache_dependent_buckets(self, http):
+        list_cls = self.resource_list_class
+        self.assertEqual(
+            list(self.resource_class.cache_dependent_buckets()),
+            [list_cls.__name__])
+
+
+    def test_cache_buckets_with_id(self, http):
+        self.assertEqual(
+            self.resource_class.cache_buckets("3"),
+            ["TestResource3", "TestResource"])
+
+
+    def test_cache_buckets_without_id(self, http):
+        self.assertEqual(
+            self.resource_class.cache_buckets(None),
+            ["TestResource"])
 
 
 

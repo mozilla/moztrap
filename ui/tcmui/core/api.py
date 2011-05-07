@@ -7,6 +7,7 @@ import httplib
 import httplib2
 import logging
 from posixpath import join
+import re
 import simplejson as json
 import urllib
 
@@ -24,6 +25,17 @@ from .. import __version__
 
 
 log = logging.getLogger('tcmui.core.api')
+
+
+
+URL_FINAL_INTEGER_RE = re.compile("/(\d+)/?$")
+
+
+def url_final_integer(url):
+    match = URL_FINAL_INTEGER_RE.search(url)
+    if match:
+        return match.group(1)
+    return None
 
 
 
@@ -199,8 +211,9 @@ class ObjectMixin(StrAndUnicode):
         kwargs.setdefault("http", userAgent)
         if kwargs.pop("cache", cls.cache):
             kwargs["http"] = CachingHttpWrapper(
-                kwargs["http"], cls.__name__,
-                [c.__name__ for c in cls.listclasses()])
+                kwargs["http"],
+                cls.cache_buckets(url_final_integer(url)),
+                cls.cache_dependent_buckets())
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = kwargs.get("auth")
         return obj
@@ -306,8 +319,9 @@ class ObjectMixin(StrAndUnicode):
         http = kw.pop("http", userAgent)
         if kw.pop("cache", self.cache):
             http = CachingHttpWrapper(
-                http, self.__class__.__name__,
-                [c.__name__ for c in self.__class__.listclasses()])
+                http,
+                self.cache_buckets(getattr(self, "id", None)),
+                self.cache_dependent_buckets())
 
         response, content = http.request(**request)
 
@@ -407,6 +421,18 @@ class ObjectMixin(StrAndUnicode):
             entryclass = getattr(candidate, "entryclass", None)
             if entryclass is cls:
                 yield candidate
+
+
+    @classmethod
+    def cache_buckets(cls, id=None):
+        if id is not None:
+            return [cls.__name__ + id, cls.__name__]
+        return [cls.__name__]
+
+
+    @classmethod
+    def cache_dependent_buckets(cls):
+        return [c.cache_buckets()[0] for c in cls.listclasses()]
 
 
 

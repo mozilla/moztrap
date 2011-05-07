@@ -4,7 +4,7 @@ from django.core.cache import get_cache
 from mock import patch, Mock
 from unittest2 import TestCase
 
-from ..responses import response
+from ..responses import response, make_identity
 from ..utils import ResourceTestCase
 
 
@@ -17,12 +17,12 @@ class CachingHttpWrapperTest(TestCase):
         res = Mock(["status"])
         res.status = kwargs.pop("response_status", httplib.OK)
         content = kwargs.pop("response_content", "content")
-        bucket = kwargs.pop("cache_bucket", "BucketName")
+        buckets = kwargs.pop("cache_buckets", ["BucketName"])
         dependent_buckets = kwargs.pop("cache_dependent_buckets", [])
         with patch("tcmui.core.api.Http") as http:
             http.request.return_value = (res, content)
             return CachingHttpWrapper(
-                http, bucket, dependent_buckets).request(**kwargs)
+                http, buckets, dependent_buckets).request(**kwargs)
 
 
     def fill_cache(self, cache, values_dict):
@@ -120,6 +120,49 @@ class CachingHttpWrapperTest(TestCase):
         self.assertEqual(ret, "result")
 
 
+    def test_multiple_buckets_both_filled(self, cache):
+        self.fill_cache(cache, {})
+
+        ret = self.make_request(method="GET", uri="/uri/",
+                                cache_buckets=["BucketName:1", "BucketName"])
+
+        self.assertEqual(
+            cache.set.call_args_list[0], (("BucketName:1-0-/uri/", ret, 600),))
+        self.assertEqual(
+            cache.set.call_args_list[1], (("BucketName-0-/uri/", ret, 600),))
+
+
+    def test_multiple_buckets_both_checked(self, cache):
+        self.fill_cache(cache, {"BucketName-0-/uri/": "cached"})
+
+        ret = self.make_request(method="GET", uri="/uri/",
+                                cache_buckets=["BucketName:1", "BucketName"])
+
+        self.assertEqual(
+            cache.get.call_args_list[-2:],
+            [(("BucketName:1-0-/uri/",),), (("BucketName-0-/uri/",),)])
+        self.assertEqual(ret, "cached")
+
+
+    def test_multiple_buckets_incremented(self, cache):
+        cache.incr.side_effect = ValueError
+
+        self.make_request(method="PUT", uri="/uri/",
+                          cache_buckets=["BucketName:1", "BucketName"])
+
+        self.assertEqual(
+            cache.add.call_args_list,
+            [(("BucketName:1:generation", 1),),
+             (("BucketName:generation", 1),)])
+        self.assertEqual(
+            cache.incr.call_args_list,
+            [(("BucketName:1:generation",),),
+             (("BucketName:generation",),)])
+
+        # no cached response was set
+        self.assertFalse(cache.set.called)
+
+
 
 @patch("tcmui.core.api.userAgent", spec=["request"])
 class CachingFunctionalTest(ResourceTestCase):
@@ -142,8 +185,6 @@ class CachingFunctionalTest(ResourceTestCase):
         class TestResource(RemoteObject):
             name = fields.Field()
 
-            cache = True
-
             def __unicode__(self):
                 return u"__unicode__ of %s" % self.name
 
@@ -157,7 +198,6 @@ class CachingFunctionalTest(ResourceTestCase):
             entryclass = self.resource_class
             api_name = "testresources"
             default_url = "testresources"
-            cache = True
 
             entries = fields.List(fields.Object(self.resource_class))
 
@@ -260,3 +300,35 @@ class CachingFunctionalTest(ResourceTestCase):
         self.assertEqual(lst2[0].name, "New name")
         self.assertEqual(http.request.call_count, 3,
                          http.request.call_args_list)
+
+
+    def test_update_one_single_doesnt_clear_another(self, http):
+        http.request.return_value = response(
+            self.make_one(
+                name="One thing",
+                resourceIdentity=make_identity(id=1, url="testresources/1")))
+
+        obj = self.resource_class.get("testresources/1", auth=self.auth)
+        obj.deliver()
+
+        http.request.return_value = response(
+            self.make_one(
+                name="Another thing",
+                resourceIdentity=make_identity(id=2, url="testresources/2")))
+
+        obj2 = self.resource_class.get("testresources/2", auth=self.auth)
+        obj2.deliver()
+
+        http.request.return_value = response(
+            self.make_one(
+                name="New name",
+                resourceIdentity=make_identity(id=2, url="testresources/2")))
+
+        obj2.name = "New name"
+        obj2.put()
+
+        first_again = self.resource_class.get("testresources/1", auth=self.auth)
+        first_again.deliver()
+
+        self.assertEqual(http.request.call_count, 3)
+        self.assertEqual(obj.api_data, first_again.api_data)
