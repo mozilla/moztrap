@@ -2,9 +2,9 @@ import httplib
 
 from mock import patch
 
-from ..core.test_cache import fill_cache
+from ..utils import fill_cache
 from ..responses import response
-from .test_models import UserTestCase
+from .base import UserTestCase
 
 
 @patch("tcmui.core.api.userAgent", spec=["request"])

@@ -5,16 +5,7 @@ from mock import patch, Mock
 from unittest2 import TestCase
 
 from ..responses import response, make_identity
-from ..utils import ResourceTestCase
-
-
-
-def fill_cache(cache, values_dict):
-    """
-    Fill a mock cache object with some keys and values.
-
-    """
-    cache.get.side_effect = lambda k, d=None: values_dict.get(k, d)
+from ..utils import ResourceTestCase, fill_cache
 
 
 
