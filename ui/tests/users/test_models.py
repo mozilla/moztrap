@@ -6,8 +6,7 @@ from ..utils import ResourceTestCase, BaseResourceTest
 
 
 
-@patch("tcmui.core.api.userAgent")
-class UserTest(CachingFunctionalTestMixin, BaseResourceTest, ResourceTestCase):
+class UserTestCase(ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "companyId": 1,
         "email": "test@example.com",
@@ -32,6 +31,9 @@ class UserTest(CachingFunctionalTestMixin, BaseResourceTest, ResourceTestCase):
         return UserList
 
 
+
+@patch("tcmui.core.api.userAgent")
+class UserTest(CachingFunctionalTestMixin, BaseResourceTest, UserTestCase):
     def test_current_caches_for_same_user(self, http):
         jane_auth = self.creds("jane@example.com")
         jim_auth = self.creds("jim@example.com")

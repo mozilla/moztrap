@@ -1,16 +1,15 @@
 import httplib
 
 from mock import patch
-from unittest2 import TestCase
 
 from ..core.test_cache import fill_cache
-from ..responses import response, make_one
-
+from ..responses import response
+from .test_models import UserTestCase
 
 
 @patch("tcmui.core.api.userAgent", spec=["request"])
 @patch("tcmui.core.cache.cache", spec=["get", "set", "incr", "add"])
-class GetUserTest(TestCase):
+class GetUserTest(UserTestCase):
     def call(self, *args, **kwargs):
         from tcmui.users.util import get_user
         return get_user(*args, **kwargs)
@@ -19,7 +18,7 @@ class GetUserTest(TestCase):
     def test_never_cached(self, cache, http):
         fill_cache(cache, {})
         http.request.return_value = response(
-            make_one("user", email="test@example.com"))
+            self.make_one(email="test@example.com"))
 
         u1 = self.call("test@example.com", password="testpw")
         u2 = self.call("test@example.com", password="testpw")

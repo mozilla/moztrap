@@ -70,6 +70,3 @@ class CredentialsTest(TestCase):
         c = self.get_creds("user@example.com", password="yo")
         d = self.get_creds("user@example.com", password="hmm")
         self.assertNotEqual(c, d)
-
-
-

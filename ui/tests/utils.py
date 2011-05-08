@@ -5,8 +5,8 @@ from .responses import make_one, make_list, make_searchresult, make_array
 
 class AuthTestCase(TestCase):
     def creds(self, *args, **kwargs):
-        from tcmui.core.auth import Credentials
-        return Credentials(*args, **kwargs)
+        from tcmui.users.auth import UserCredentials
+        return UserCredentials(*args, **kwargs)
 
 
     @property
