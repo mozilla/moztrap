@@ -70,17 +70,12 @@ var TCM = TCM || {};
                 context.find('section').removeClass('focus');
                 $(this).closest('section').addClass('focus');
             });
-        products.click(function() {
-            var product = $(this).attr('id').split('-')[1],
-                post = true;
-            $(this).closest('section.products').removeClass('focus');
-            context.find('section.runs').removeClass('focus');
-            context.find('section.cycles').addClass('focus');
-            if ( post ) {
-                var fakeAjaxCall = function(product, callback) {
+        products.live('click', function() {
+            var product = $(this).data('id'),
+                fakeAjaxCall = function(product, callback) {
                     var response =
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_01">' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_01" data-product="' + product + '" data-cycle="01">' +
                             '<label for="' + product + '_cycle_name_01">' +
                                 '<span class="completion" data-perc="75">75%</span>' +
                                 '<span class="title">' + product + ' cycle name 01</span>' +
@@ -89,7 +84,7 @@ var TCM = TCM || {};
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_02">' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_02" data-product="' + product + '" data-cycle="02">' +
                             '<label for="' + product + '_cycle_name_02">' +
                                 '<span class="completion" data-perc="100">100%</span>' +
                                 '<span class="title">' + product + ' cycle name 02</span>' +
@@ -98,7 +93,7 @@ var TCM = TCM || {};
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_03">' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_03" data-product="' + product + '" data-cycle="03">' +
                             '<label for="' + product + '_cycle_name_03">' +
                                 '<span class="completion" data-perc="25">25%</span>' +
                                 '<span class="title">' + product + ' cycle name 03</span>' +
@@ -108,61 +103,58 @@ var TCM = TCM || {};
                         '</li>';
                     callback(response);
                 };
-                fakeAjaxCall(
-                    product,
-                    function(data) {
-                        $('section.cycles ul').html(data);
-                        $('section.runs ul').html('');
-                        selectRuns('#selectruns');
-                    }
-                );
-            }
+            fakeAjaxCall(
+                product,
+                function(data) {
+                    $('section.cycles ul').html(data);
+                    $('section.runs ul').html('');
+                }
+            );
+            $(this).closest('section.products').removeClass('focus');
+            context.find('section.runs').removeClass('focus');
+            context.find('section.cycles').addClass('focus');
         });
-        cycles.click(function() {
-            var product = $(this).attr('id').split('_')[0],
-                cycleNumber = parseInt($(this).attr('id').split('_')[3], 10) + 1,
-                post = true;
-            $(this).closest('section.cycles').removeClass('focus');
-            context.find('section.products').removeClass('focus');
-            context.find('section.runs').addClass('focus');
-            if ( post ) {
-                var fakeAjaxCall = function(product, cycleNumber, callback) {
+        cycles.live('click', function() {
+            var product = $(this).data('product'),
+                cycleNumber = $(this).data('cycle'),
+                fakeAjaxCall = function(product, cycleNumber, callback) {
                     var response =
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '</span>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_01">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_01">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-01</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + parseInt(cycleNumber + 1, 10) + '">' +
-                            '<label for="' + product + '_run_0' + parseInt(cycleNumber + 1, 10) + '">' +
-                                '<span class="title">' + product + ' run 0' + parseInt(cycleNumber + 1, 10) + '</span>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_02">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_02">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-02</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + parseInt(cycleNumber + 2, 10) + '">' +
-                            '<label for="' + product + '_run_0' + parseInt(cycleNumber + 2, 10) + '">' +
-                                '<span class="title">' + product + ' run 0' + parseInt(cycleNumber + 2, 10) + '</span>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_03">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_03">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-03</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>';
                     callback(response);
                 };
-                fakeAjaxCall(
-                    product,
-                    cycleNumber,
-                    function(data) {
-                        $('section.runs ul').html(data);
-                        selectRuns('#selectruns');
-                    }
-                );
-            }
+            fakeAjaxCall(
+                product,
+                cycleNumber,
+                function(data) {
+                    $('section.runs ul').html(data);
+                }
+            );
+            $(this).closest('section.cycles').removeClass('focus');
+            context.find('section.products').removeClass('focus');
+            context.find('section.runs').addClass('focus');
         });
     };
 
