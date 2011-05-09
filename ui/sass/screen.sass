@@ -238,7 +238,6 @@ footer[role="contentinfo"]
     left: 0
     width: 25%
     height: rhythm(9)
-    overflow-y: scroll
     &:last-child
       +float(right)
     &.focus
@@ -249,10 +248,8 @@ footer[role="contentinfo"]
           display: none
 
   .listordering
-    position: absolute
-    top: 0
-    right: 0
-    left: 0
+    +stretch-x
+    right: 15px
     padding: rhythm(.25) rhythm(.5)
     margin: 0
     background: $light
@@ -292,7 +289,9 @@ footer[role="contentinfo"]
 
   ul
     +no-style-list
+    +stretch
     padding-top: rhythm(2)
+    overflow-y: scroll
 
   li:last-child
     label

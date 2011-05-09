@@ -983,11 +983,11 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns input:checked + label { font-weight: bold; background: rgba(139, 185, 183, 0.5); }
 #selectruns .finder { *zoom: 1; clear: both; margin-bottom: 1.5em; position: relative; border: 1px solid #999999; }
 #selectruns .finder:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
-#selectruns section { -moz-transition-property: width 300ms; -webkit-transition-property: width 300ms; -o-transition-property: width 300ms; transition-property: width 300ms; -moz-transition-duration: 1s; -webkit-transition-duration: 1s; -o-transition-duration: 1s; transition-duration: 1s; display: inline; float: left; position: relative; top: 0; bottom: 0; left: 0; width: 25%; height: 13.5em; overflow-y: scroll; }
+#selectruns section { -moz-transition-property: width 300ms; -webkit-transition-property: width 300ms; -o-transition-property: width 300ms; transition-property: width 300ms; -moz-transition-duration: 1s; -webkit-transition-duration: 1s; -o-transition-duration: 1s; transition-duration: 1s; display: inline; float: left; position: relative; top: 0; bottom: 0; left: 0; width: 25%; height: 13.5em; }
 #selectruns section:last-child { display: inline; float: right; }
 #selectruns section.focus { width: 50%; }
 #selectruns section:not([class*="focus"]) .listordering a::after { display: none; }
-#selectruns .listordering { position: absolute; top: 0; right: 0; left: 0; padding: 0.375em 0.75em; margin: 0; background: #eeeeee; z-index: 2; }
+#selectruns .listordering { position: absolute; left: 0; right: 0; right: 15px; padding: 0.375em 0.75em; margin: 0; background: #eeeeee; z-index: 2; }
 #selectruns .listordering a:link, #selectruns .listordering a:visited { white-space: nowrap; }
 #selectruns h3, #selectruns p { margin-bottom: 0; }
 #selectruns .completion, #selectruns .start, #selectruns .end, #selectruns .bycompletion, #selectruns .bystart, #selectruns .byend, #selectruns .end, #selectruns .byend { display: none; }
@@ -1000,7 +1000,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns .bystart, #selectruns .byend, #selectruns .bycompletion { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; opacity: 0.75; }
 #selectruns .start, #selectruns .end { font-weight: normal; }
 #selectruns .start, #selectruns .end { color: #999999; }
-#selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; padding-top: 3em; }
+#selectruns ul { list-style: none; margin: 0; padding: 0; border: 0; position: absolute; top: 0; bottom: 0; left: 0; right: 0; padding-top: 3em; overflow-y: scroll; }
 #selectruns ul li { list-style-image: none; list-style-type: none; margin-left: 0px; }
 #selectruns li:last-child label { padding-bottom: 0.375em; border-bottom: 0; }
 
