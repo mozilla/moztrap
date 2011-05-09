@@ -64,8 +64,10 @@ var TCM = TCM || {};
 
     var selectRuns = function(context) {
         var context = $(context),
+            environments = $('#environment').hide(),
             products = context.find('input[name="product"]'),
             cycles = context.find('input[name="cycle"]'),
+            runs = context.find('input[name="run"]'),
             headers = context.find('h3 > a').click(function() {
                 context.find('section').removeClass('focus');
                 $(this).closest('section').addClass('focus');
@@ -144,6 +146,7 @@ var TCM = TCM || {};
             $(this).closest('section.products').removeClass('focus');
             context.find('section.runs').removeClass('focus');
             context.find('section.cycles').addClass('focus');
+            environments.slideUp();
         });
         cycles.live('click', function() {
             var product = $(this).data('product'),
@@ -210,6 +213,10 @@ var TCM = TCM || {};
             $(this).closest('section.cycles').removeClass('focus');
             context.find('section.products').removeClass('focus');
             context.find('section.runs').addClass('focus');
+            environments.slideUp();
+        });
+        runs.live('click', function() {
+            environments.slideDown();
         });
     };
 
