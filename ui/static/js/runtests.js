@@ -100,6 +100,33 @@ var TCM = TCM || {};
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_04" data-product="' + product + '" data-cycle="04">' +
+                            '<label for="' + product + '_cycle_name_04">' +
+                                '<span class="completion" data-perc="17">17%</span>' +
+                                '<span class="title">' + product + ' cycle name 04</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_05" data-product="' + product + '" data-cycle="05">' +
+                            '<label for="' + product + '_cycle_name_05">' +
+                                '<span class="completion" data-perc="50">50%</span>' +
+                                '<span class="title">' + product + ' cycle name 05</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_06" data-product="' + product + '" data-cycle="06">' +
+                            '<label for="' + product + '_cycle_name_06">' +
+                                '<span class="completion" data-perc="83">83%</span>' +
+                                '<span class="title">' + product + ' cycle name 06</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
                         '</li>';
                     callback(response);
                 };
@@ -139,6 +166,30 @@ var TCM = TCM || {};
                             '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_03">' +
                             '<label for="' + product + '_run_0' + cycleNumber + '_03">' +
                                 '<span class="title">' + product + ' run 0' + cycleNumber + '-03</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_04">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_04">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-04</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_05">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_05">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-05</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_06">' +
+                            '<label for="' + product + '_run_0' + cycleNumber + '_06">' +
+                                '<span class="title">' + product + ' run 0' + cycleNumber + '-06</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
