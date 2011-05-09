@@ -941,7 +941,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #suiteresults .instances .run, #caseresults .instances .run { padding-left: 33.735%; }
 #suiteresults .instances .completion, #caseresults .instances .completion { margin-left: 9.639%; }
 
-.case-details { margin-bottom: 3em; position: relative; background: rgba(238, 238, 238, 0.5); }
+.case-details { overflow: hidden; *zoom: 1; margin-bottom: 3em; clear: both; position: relative; background: rgba(238, 238, 238, 0.5); }
 .case-details .summary { overflow: hidden; *zoom: 1; clear: both; border-style: solid; border-width: 0.071em; padding: 0.679em; padding-left: 4.819%; padding-right: 4.819%; border-color: #999999; background: transparent no-repeat scroll 1.5em center; }
 .case-details .summary:focus, .case-details .summary:hover, .case-details .summary:active { background-color: rgba(255, 255, 255, 0.5); outline: 0; }
 .case-details .summary p { margin-bottom: 0; }
