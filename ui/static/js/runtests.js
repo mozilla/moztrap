@@ -147,6 +147,8 @@ var TCM = TCM || {};
             context.find('section.runs').removeClass('focus');
             context.find('section.cycles').addClass('focus');
             environments.slideUp();
+            context.find('input:checked').addClass('selected');
+            context.find('input:not(:checked)').removeClass('selected');
         });
         cycles.live('click', function() {
             var productName = $(this).data('product'),
@@ -214,9 +216,17 @@ var TCM = TCM || {};
             context.find('section.products').removeClass('focus');
             context.find('section.runs').addClass('focus');
             environments.slideUp();
+            context.find('input:checked').addClass('selected');
+            context.find('input:not(:checked)').removeClass('selected');
         });
         runs.live('click', function() {
             environments.slideDown();
+            context.find('input:checked').addClass('selected');
+            context.find('input:not(:checked)').removeClass('selected');
+        });
+        $('input.selected').live('click', function() {
+            context.find('section').removeClass('focus');
+            $(this).closest('section').addClass('focus');
         });
     };
 
