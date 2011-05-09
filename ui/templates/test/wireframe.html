@@ -53,7 +53,7 @@
 
 <section id="environment">
   <h2>Set your environment</h2>
-  <form method="POST">
+  <form method="POST" id="env-form">
     <input type="hidden" name="next" value="/run/2/">
     <div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='3f384940cef8720e735b2df5f8412c28' /></div>
     <ul>
@@ -74,11 +74,11 @@
         </select>
       </li>
     </ul>
+    <div class="form-actions">
+      <button type="submit">run some tests!</button>
+    </div>
   </form>
 </section>
 
-<div class="form-actions">
-  <button type="submit">run some tests!</button>
-</div>
 
 {% endblock testcontent %}

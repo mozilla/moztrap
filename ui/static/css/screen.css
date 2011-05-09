@@ -232,7 +232,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .fullwidth, header[role="banner"], div[role="main"], footer[role="contentinfo"], .environment form { clear: both; margin-left: 1.031%; margin-right: 1.031%; *zoom: 1; }
 .fullwidth:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after, .environment form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.simple, #login, #register, #products, #cycles, #testruns, #environment form { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
+.simple, #login, #register, #products, #cycles, #testruns { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
 
 body > div { position: relative; }
 
@@ -1018,4 +1018,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #environment li:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 #environment label { display: inline; float: left; width: 31.915%; margin-right: 2.128%; }
 #environment input, #environment select, #environment textarea { display: inline; float: left; width: 65.957%; margin-right: 2.128%; display: inline; float: right; margin-right: 0; }
-#environment form { margin-top: 0em; padding-top: 2.25em; padding-bottom: 1.5em; margin-bottom: 1.5em; background: #eeeeee; }
+#environment h2, #environment form { display: inline; float: left; width: 49.474%; margin-right: 1.053%; }
+#environment h2 { padding-top: 0.375em; }
+#environment form { display: inline; float: right; margin-right: 0; }
