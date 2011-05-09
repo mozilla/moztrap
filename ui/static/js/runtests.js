@@ -70,6 +70,10 @@ var TCM = TCM || {};
                 context.find('section').removeClass('focus');
                 $(this).closest('section').addClass('focus');
             });
+            context.find('header').each(function() {
+                var scrollbarWidth = $(this).closest('section').css('width') - $(this).children('li').css('width');
+                $(this).css('right', scrollbarWidth);
+            });
         products.live('click', function() {
             var product = $(this).data('id'),
                 fakeAjaxCall = function(product, callback) {
