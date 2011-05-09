@@ -1,3 +1,5 @@
+var TCM = TCM || {};
+
 (function($) {
 
     var autoFocus = function(trigger) {
@@ -49,6 +51,7 @@
                             var newCase = "#" + id;
                             $(newCase).find('details').andSelf().html5accordion('summary');
                             testCaseButtons(newCase);
+                            TCM.addLoading('button, a', testcase);
                             $('.loadingCSS').detach();
                             autoFocus('details.stepfail > summary');
                             autoFocus('details.testinvalid > summary');

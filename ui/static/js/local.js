@@ -1,4 +1,19 @@
+var TCM = TCM || {};
+
 (function($) {
+
+    TCM.addLoading = function(trigger, context) {
+        $(context).find(trigger).click(function() {
+            var $container = $(this).closest(context),
+                addLoadingCSS = function() {
+                    var vertHeight = (parseInt($container.css('height'), 10) - parseInt($container.css('line-height'), 10)) / 2 + 'px',
+                        style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+                    $('head').append(style);
+                };
+            $container.addClass('loading');
+            addLoadingCSS();
+        });
+    };
 
     $(function() {
         $('input[placeholder], textarea[placeholder]').placeholder();
@@ -15,6 +30,8 @@
         );
         $('details').html5accordion('summary');
         $('.details').html5accordion('.summary');
+        TCM.addLoading('button, a', 'details');
+        TCM.addLoading('button, a', '.details');
     });
 
 })(jQuery);
