@@ -77,59 +77,59 @@ var TCM = TCM || {};
                 $(this).css('right', scrollbarWidth);
             });
         products.live('click', function() {
-            var product = $(this).data('id'),
-                fakeAjaxCall = function(product, callback) {
+            var productName = $(this).data('id'),
+                fakeAjaxCall = function(productName, callback) {
                     var response =
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_01" data-product="' + product + '" data-cycle="01">' +
-                            '<label for="' + product + '_cycle_name_01">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_01" data-product="' + productName + '" data-cycle="01">' +
+                            '<label for="' + productName + '_cycle_name_01">' +
                                 '<span class="completion" data-perc="75">75%</span>' +
-                                '<span class="title">' + product + ' cycle name 01</span>' +
+                                '<span class="title">' + productName + ' cycle name 01</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_02" data-product="' + product + '" data-cycle="02">' +
-                            '<label for="' + product + '_cycle_name_02">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_02" data-product="' + productName + '" data-cycle="02">' +
+                            '<label for="' + productName + '_cycle_name_02">' +
                                 '<span class="completion" data-perc="100">100%</span>' +
-                                '<span class="title">' + product + ' cycle name 02</span>' +
+                                '<span class="title">' + productName + ' cycle name 02</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_03" data-product="' + product + '" data-cycle="03">' +
-                            '<label for="' + product + '_cycle_name_03">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_03" data-product="' + productName + '" data-cycle="03">' +
+                            '<label for="' + productName + '_cycle_name_03">' +
                                 '<span class="completion" data-perc="25">25%</span>' +
-                                '<span class="title">' + product + ' cycle name 03</span>' +
+                                '<span class="title">' + productName + ' cycle name 03</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_04" data-product="' + product + '" data-cycle="04">' +
-                            '<label for="' + product + '_cycle_name_04">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_04" data-product="' + productName + '" data-cycle="04">' +
+                            '<label for="' + productName + '_cycle_name_04">' +
                                 '<span class="completion" data-perc="17">17%</span>' +
-                                '<span class="title">' + product + ' cycle name 04</span>' +
+                                '<span class="title">' + productName + ' cycle name 04</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_05" data-product="' + product + '" data-cycle="05">' +
-                            '<label for="' + product + '_cycle_name_05">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_05" data-product="' + productName + '" data-cycle="05">' +
+                            '<label for="' + productName + '_cycle_name_05">' +
                                 '<span class="completion" data-perc="50">50%</span>' +
-                                '<span class="title">' + product + ' cycle name 05</span>' +
+                                '<span class="title">' + productName + ' cycle name 05</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="cycle" value="" id="' + product + '_cycle_name_06" data-product="' + product + '" data-cycle="06">' +
-                            '<label for="' + product + '_cycle_name_06">' +
+                            '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_06" data-product="' + productName + '" data-cycle="06">' +
+                            '<label for="' + productName + '_cycle_name_06">' +
                                 '<span class="completion" data-perc="83">83%</span>' +
-                                '<span class="title">' + product + ' cycle name 06</span>' +
+                                '<span class="title">' + productName + ' cycle name 06</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
@@ -137,7 +137,7 @@ var TCM = TCM || {};
                     callback(response);
                 };
             fakeAjaxCall(
-                product,
+                productName,
                 function(data) {
                     $('section.cycles ul').html(data);
                     $('section.runs ul').html('');
@@ -149,54 +149,54 @@ var TCM = TCM || {};
             environments.slideUp();
         });
         cycles.live('click', function() {
-            var product = $(this).data('product'),
+            var productName = $(this).data('product'),
                 cycleNumber = $(this).data('cycle'),
-                fakeAjaxCall = function(product, cycleNumber, callback) {
+                fakeAjaxCall = function(productName, cycleNumber, callback) {
                     var response =
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_01">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_01">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-01</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_01">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_01">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-01</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_02">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_02">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-02</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_02">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_02">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-02</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_03">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_03">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-03</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_03">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_03">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-03</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_04">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_04">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-04</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_04">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_04">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-04</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_05">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_05">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-05</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_05">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_05">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-05</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
                         '</li>' +
                         '<li>' +
-                            '<input type="radio" name="run" value="" id="' + product + '_run_0' + cycleNumber + '_06">' +
-                            '<label for="' + product + '_run_0' + cycleNumber + '_06">' +
-                                '<span class="title">' + product + ' run 0' + cycleNumber + '-06</span>' +
+                            '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_06">' +
+                            '<label for="' + productName + '_run_0' + cycleNumber + '_06">' +
+                                '<span class="title">' + productName + ' run 0' + cycleNumber + '-06</span>' +
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
@@ -204,7 +204,7 @@ var TCM = TCM || {};
                     callback(response);
                 };
             fakeAjaxCall(
-                product,
+                productName,
                 cycleNumber,
                 function(data) {
                     $('section.runs ul').html(data);
