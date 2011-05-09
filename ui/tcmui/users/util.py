@@ -2,10 +2,8 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 
-from ..core.auth import Credentials
 from ..core.util import add_to_querystring
-
-from .models import User
+from .auth import UserCredentials
 
 
 
@@ -36,13 +34,8 @@ def get_user(userid, password=None, cookie=None):
     object if successful, otherwise None.
 
     """
-    auth = Credentials(userid, password=password, cookie=cookie)
-    try:
-        user = User.current(auth=auth)
-        user.deliver()
-    except (User.Forbidden, User.Unauthorized, User.NotFound):
-        user = None
-    return user
+    auth = UserCredentials(userid, password=password, cookie=cookie)
+    return auth.user
 
 
 def resolve_url(to, *args, **kwargs):

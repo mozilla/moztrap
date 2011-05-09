@@ -3,10 +3,20 @@ from unittest2 import TestCase
 from .responses import make_one, make_list, make_searchresult, make_array
 
 
+
+def fill_cache(cache, values_dict):
+    """
+    Fill a mock cache object with some keys and values.
+
+    """
+    cache.get.side_effect = lambda k, d=None: values_dict.get(k, d)
+
+
+
 class AuthTestCase(TestCase):
     def creds(self, *args, **kwargs):
-        from tcmui.core.auth import Credentials
-        return Credentials(*args, **kwargs)
+        from tcmui.users.auth import UserCredentials
+        return UserCredentials(*args, **kwargs)
 
 
     @property

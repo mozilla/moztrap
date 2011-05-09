@@ -5,6 +5,13 @@ from .conf import conf
 
 
 class Credentials(object):
+    """
+    Encapsulates credentials necessary to access the API; userid and either
+    password or cookie token. Capable of generating appropriate request headers
+    using either basic auth (if password is available) or cookie, if
+    available).
+
+    """
     def __init__(self, userid, password=None, cookie=None):
         self.userid, self.password, self.cookie = userid, password, cookie
 

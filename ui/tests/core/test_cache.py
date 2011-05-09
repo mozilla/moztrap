@@ -5,7 +5,7 @@ from mock import patch, Mock
 from unittest2 import TestCase
 
 from ..responses import response, make_identity
-from ..utils import ResourceTestCase
+from ..utils import ResourceTestCase, fill_cache
 
 
 
@@ -25,12 +25,8 @@ class CachingHttpWrapperTest(TestCase):
                 http, buckets, dependent_buckets).request(**kwargs)
 
 
-    def fill_cache(self, cache, values_dict):
-        cache.get.side_effect = lambda k, d=None: values_dict.get(k, d)
-
-
     def test_caches_get(self, cache):
-        self.fill_cache(cache, {})
+        fill_cache(cache, {})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
@@ -92,7 +88,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_returns_cached_for_get(self, cache):
-        self.fill_cache(cache, {"BucketName-0-/uri/": "cached"})
+        fill_cache(cache, {"BucketName-0-/uri/": "cached"})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
@@ -101,7 +97,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_cache_set_uses_generational_key(self, cache):
-        self.fill_cache(cache, {"BucketName:generation": 3})
+        fill_cache(cache, {"BucketName:generation": 3})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
@@ -109,7 +105,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_cache_get_uses_generational_key(self, cache):
-        self.fill_cache(cache, {
+        fill_cache(cache, {
                 "BucketName:generation": 4,
                 "BucketName-4-/uri/": "result"
                 })
@@ -121,7 +117,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_multiple_buckets_both_filled(self, cache):
-        self.fill_cache(cache, {})
+        fill_cache(cache, {})
 
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
@@ -133,7 +129,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_multiple_buckets_both_checked(self, cache):
-        self.fill_cache(cache, {"BucketName-0-/uri/": "cached"})
+        fill_cache(cache, {"BucketName-0-/uri/": "cached"})
 
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
@@ -164,8 +160,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
-class CachingFunctionalTest(ResourceTestCase):
+class CachingFunctionalTestMixin(object):
     def setUp(self):
         self.cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
         self.cache.clear()
@@ -174,6 +169,9 @@ class CachingFunctionalTest(ResourceTestCase):
         self.addCleanup(self.patcher.stop)
 
 
+
+@patch("tcmui.core.api.userAgent", spec=["request"])
+class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "name": "Default name",
         }

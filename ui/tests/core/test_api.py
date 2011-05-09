@@ -342,6 +342,15 @@ class ResourceObjectTest(TestResourceTestCase):
         self.assertIsInstance(mock.call_args[1]["http"], CachingHttpWrapper)
 
 
+    def test_cache_attribute_as_bucketname(self, http):
+        with patch.object(self.resource_class, "cache", "altbucket"):
+            with patch("remoteobjects.RemoteObject.get") as mock:
+                self.resource_class.get("testresources/1", auth=self.auth)
+
+        caching_wrapper = mock.call_args[1]["http"]
+        self.assertEqual(caching_wrapper.buckets, ["altbucket"])
+
+
     def test_cache_attribute_non_GET(self, http):
         http.request.return_value = response(self.make_one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
@@ -351,6 +360,17 @@ class ResourceObjectTest(TestResourceTestCase):
                 obj.put()
 
         mock.assert_called()
+
+
+    def test_cache_attribute_as_bucketname_non_GET(self, http):
+        http.request.return_value = response(self.make_one())
+        obj = self.resource_class.get("/testresources/1", auth=self.auth)
+        with patch.object(self.resource_class, "cache", "altbucket"):
+            with patch("tcmui.core.api.CachingHttpWrapper") as mock:
+                mock.return_value.request.return_value = http.request.return_value
+                obj.put()
+
+        self.assertEqual(mock.call_args[0][1], (["altbucket"]))
 
 
     def test_delivered_repr(self, http):
