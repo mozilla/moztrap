@@ -708,7 +708,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 .managelist .multi.open > .summary { background-color: rgba(205, 236, 169, 0.5); background-image: url('../images/ui/angle_down.png?1299180970'); }
 .managelist .run { font: inherit; }
 
-.completion { font-size: 0.857em; line-height: 1.75em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; text-shadow: rgba(172, 203, 201, 0.5) 1px 1px 0; font-weight: bold; text-align: center; }
+.completion { font-size: 0.714em; line-height: 2.1em; -moz-border-radius: 0.25em; -webkit-border-radius: 0.25em; -o-border-radius: 0.25em; -ms-border-radius: 0.25em; -khtml-border-radius: 0.25em; border-radius: 0.25em; text-shadow: rgba(172, 203, 201, 0.5) 1px 1px 0; font-weight: bold; text-align: center; }
 
 .completion[data-perc="1"] { background: #eca9aa; }
 
@@ -988,6 +988,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #selectruns section.focus { width: 50%; }
 #selectruns section:not([class*="focus"]) .listordering a::after { display: none; }
 #selectruns .listordering { position: absolute; top: 0; right: 0; left: 0; padding: 0.375em 0.75em; margin: 0; background: #eeeeee; z-index: 2; }
+#selectruns .listordering a:link, #selectruns .listordering a:visited { white-space: nowrap; }
 #selectruns h3, #selectruns p { margin-bottom: 0; }
 #selectruns .completion, #selectruns .start, #selectruns .end, #selectruns .bycompletion, #selectruns .bystart, #selectruns .byend, #selectruns .end, #selectruns .byend { display: none; }
 #selectruns .focus .completion, #selectruns .focus .start, #selectruns .focus .end, #selectruns .focus .bycompletion, #selectruns .focus .bystart, #selectruns .focus .byend, #selectruns .focus .end, #selectruns .focus .byend { display: block; }
