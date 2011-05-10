@@ -978,7 +978,10 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #page-status[title*="incomplete"]::before { background: #eca9ab; }
 
 #selectruns { clear: both; }
-#selectruns label { overflow: hidden; *zoom: 1; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; padding-top: 0.375em; padding-left: 0.75em; padding-right: 0.75em; border-color: #eeeeee; display: block; font-weight: normal; }
+#selectruns .logo { -moz-transition-property: all; -webkit-transition-property: all; -o-transition-property: all; transition-property: all; -moz-transition-duration: 300ms; -webkit-transition-duration: 300ms; -o-transition-duration: 300ms; transition-duration: 300ms; width: 1.5em; margin-right: 0.75em; }
+#selectruns label { *zoom: 1; border-bottom-style: solid; border-bottom-width: 0.071em; padding-bottom: 0.304em; padding-top: 0.375em; padding-left: 0.75em; padding-right: 0.75em; border-color: #eeeeee; display: block; font-weight: normal; }
+#selectruns label:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
+#selectruns label:focus .logo, #selectruns label:hover .logo, #selectruns label:active .logo { -moz-transform: scale(1.75, 1.75); -webkit-transform: scale(1.75, 1.75); -o-transform: scale(1.75, 1.75); -ms-transform: scale(1.75, 1.75); transform: scale(1.75, 1.75); -webkit-transform: scale3d(1.75, 1.75, 1.75); transform: scale3d(1.75, 1.75, 1.75); }
 #selectruns input { position: absolute; clip: rect(0 0 0 0); overflow: hidden; margin: -1px; padding: 0; height: 1px; width: 1px; border: 0; }
 #selectruns input:checked + label { font-weight: bold; background: rgba(139, 185, 183, 0.5); }
 #selectruns .finder { *zoom: 1; clear: both; margin-bottom: 1.5em; position: relative; border: 1px solid #999999; }

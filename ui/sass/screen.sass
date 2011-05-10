@@ -209,14 +209,22 @@ footer[role="contentinfo"]
 
 #selectruns
   +full(24)
+  .logo
+    +transition(all,300ms)
+    width: rhythm(1)
+    margin-right: rhythm(.5)
   label
-    +clearfix
+    +pie-clearfix
     +trailing-border(1px,.25)
     +padding-leader(.25)
     +hpadding(rhythm(.5))
     border-color: $light
     display: block
     font-weight: normal
+    #{$focus}
+      .logo
+        +scale(1.75)
+        +scale3d(1.75,1.75,1.75)
   input
     +gone
     &:checked
