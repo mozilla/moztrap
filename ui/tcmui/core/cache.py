@@ -94,7 +94,9 @@ class CachingHttpWrapper(object):
             for cache_key in cache_keys:
                 cached = cache.get(cache_key)
                 if cached is not None:
-                    return cached
+                    perms, response, content = cached
+                    if perms.issubset(self.permissions):
+                        return (response, content)
         elif method != "HEAD":
             self.next_generation()
 
@@ -104,6 +106,8 @@ class CachingHttpWrapper(object):
         if method == "GET" and response.status == httplib.OK:
             for cache_key in cache_keys:
                 cache.set(
-                    cache_key, (response, content), conf.TCM_CACHE_SECONDS)
+                    cache_key,
+                    (self.permissions, response, content),
+                    conf.TCM_CACHE_SECONDS)
 
         return (response, content)

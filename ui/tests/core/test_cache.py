@@ -31,7 +31,7 @@ class CachingHttpWrapperTest(TestCase):
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.set.assert_called_with("BucketName-0-/uri/", ret, 600)
+        cache.set.assert_called_with("BucketName-0-/uri/", (set(),) + ret, 600)
 
 
     def _check_increments_generation(self, method, cache):
@@ -89,12 +89,12 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_returns_cached_for_get(self, cache):
-        fill_cache(cache, {"BucketName-0-/uri/": "cached"})
+        fill_cache(cache, {"BucketName-0-/uri/": (set(), "res", "cached")})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
         cache.get.assert_called_with("BucketName-0-/uri/")
-        self.assertEqual(ret, "cached")
+        self.assertEqual(ret, ("res", "cached"))
 
 
     def test_cache_set_uses_generational_key(self, cache):
@@ -102,19 +102,19 @@ class CachingHttpWrapperTest(TestCase):
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.set.assert_called_with("BucketName-3-/uri/", ret, 600)
+        cache.set.assert_called_with("BucketName-3-/uri/", (set(),) + ret, 600)
 
 
     def test_cache_get_uses_generational_key(self, cache):
         fill_cache(cache, {
                 "BucketName:generation": 4,
-                "BucketName-4-/uri/": "result"
+                "BucketName-4-/uri/": (set(), "res", "result")
                 })
 
         ret = self.make_request(method="GET", uri="/uri/")
 
         cache.get.assert_called_with("BucketName-4-/uri/")
-        self.assertEqual(ret, "result")
+        self.assertEqual(ret, ("res", "result"))
 
 
     def test_multiple_buckets_both_filled(self, cache):
@@ -124,13 +124,15 @@ class CachingHttpWrapperTest(TestCase):
                                 cache_buckets=["BucketName:1", "BucketName"])
 
         self.assertEqual(
-            cache.set.call_args_list[0], (("BucketName:1-0-/uri/", ret, 600),))
+            cache.set.call_args_list[0],
+            (("BucketName:1-0-/uri/", (set(),) + ret, 600),))
         self.assertEqual(
-            cache.set.call_args_list[1], (("BucketName-0-/uri/", ret, 600),))
+            cache.set.call_args_list[1],
+            (("BucketName-0-/uri/", (set(),) + ret, 600),))
 
 
     def test_multiple_buckets_both_checked(self, cache):
-        fill_cache(cache, {"BucketName-0-/uri/": "cached"})
+        fill_cache(cache, {"BucketName-0-/uri/": (set(), "res", "cached")})
 
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
@@ -138,7 +140,7 @@ class CachingHttpWrapperTest(TestCase):
         self.assertEqual(
             cache.get.call_args_list[-2:],
             [(("BucketName:1-0-/uri/",),), (("BucketName-0-/uri/",),)])
-        self.assertEqual(ret, "cached")
+        self.assertEqual(ret, ("res", "cached"))
 
 
     def test_multiple_buckets_incremented(self, cache):
@@ -157,6 +159,76 @@ class CachingHttpWrapperTest(TestCase):
              (("BucketName:generation",),)])
 
         # no cached response was set
+        self.assertFalse(cache.set.called)
+
+
+    def test_cached_response_includes_permissions(self, cache):
+        fill_cache(cache, {})
+
+        ret = self.make_request(method="GET", uri="/uri/",
+                                permissions=["PERM_ONE"])
+
+        cache.set.assert_called_with(
+            "BucketName-0-/uri/", (set(["PERM_ONE"]),) + ret, 600)
+
+
+    def test_disjoint_permissions_cant_see_cached_result(self, cache):
+        fill_cache(
+            cache,
+            {"BucketName-0-/uri/": (set(["ONE_PERM"]), "response", "cached")})
+
+        res, content = self.make_request(
+            method="GET", uri="/uri/", permissions=["TWO_PERM"])
+
+        self.assertEqual(content, "content")
+        set_args = cache.set.call_args[0]
+        self.assertEqual(set_args[0], "BucketName-0-/uri/")
+        self.assertEqual(set_args[1][0], set(["TWO_PERM"]))
+        self.assertEqual(set_args[1][2], "content")
+
+
+    def test_subset_permissions_cant_see_cached_result(self, cache):
+        fill_cache(
+            cache,
+            {"BucketName-0-/uri/": (set(["ONE_PERM", "TWO_PERM"]),
+                                    "response",
+                                    "cached")})
+
+        res, content = self.make_request(
+            method="GET", uri="/uri/", permissions=["TWO_PERM"])
+
+        self.assertEqual(content, "content")
+        set_args = cache.set.call_args[0]
+        self.assertEqual(set_args[0], "BucketName-0-/uri/")
+        self.assertEqual(set_args[1][0], set(["TWO_PERM"]))
+        self.assertEqual(set_args[1][2], "content")
+
+
+    def test_superset_of_permissions_can_see_cached_result(self, cache):
+        fill_cache(
+            cache,
+            {"BucketName-0-/uri/": (set(["TWO_PERM"]),
+                                    "response",
+                                    "cached")})
+
+        res, content = self.make_request(
+            method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])
+
+        self.assertEqual(content, "cached")
+        self.assertFalse(cache.set.called)
+
+
+    def test_equal_permissions_can_see_cached_result(self, cache):
+        fill_cache(
+            cache,
+            {"BucketName-0-/uri/": (set(["TWO_PERM", "ONE_PERM"]),
+                                    "response",
+                                    "cached")})
+
+        res, content = self.make_request(
+            method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])
+
+        self.assertEqual(content, "cached")
         self.assertFalse(cache.set.called)
 
 
