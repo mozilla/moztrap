@@ -5,15 +5,18 @@ from .models import User
 
 class UserCredentials(Credentials):
     """
-    Expands the core Credentials object with a lazy ``user`` property.
+    Expands the core Credentials object with lazy ``user`` and
+    ``permission_codes`` properties.
 
     """
     def __init__(self, *args, **kwargs):
         super(UserCredentials, self).__init__(*args, **kwargs)
         self._user = None
+        self._permission_codes = None
 
 
-    def _get_user(self):
+    @property
+    def user(self):
         if self._user is None:
             try:
                 user = User.current(auth=self, cache=False)
@@ -23,4 +26,9 @@ class UserCredentials(Credentials):
             self._user = user
         return self._user
 
-    user = property(_get_user)
+
+    @property
+    def permission_codes(self):
+        if self._permission_codes is None:
+            self._permission_codes = self.user.permissionCodes
+        return self._permission_codes

@@ -17,12 +17,13 @@ class CachingHttpWrapperTest(TestCase):
         res = Mock(["status"])
         res.status = kwargs.pop("response_status", httplib.OK)
         content = kwargs.pop("response_content", "content")
+        permissions = kwargs.pop("permissions", [])
         buckets = kwargs.pop("cache_buckets", ["BucketName"])
         dependent_buckets = kwargs.pop("cache_dependent_buckets", [])
         with patch("tcmui.core.api.Http") as http:
             http.request.return_value = (res, content)
             return CachingHttpWrapper(
-                http, buckets, dependent_buckets).request(**kwargs)
+                http, permissions, buckets, dependent_buckets).request(**kwargs)
 
 
     def test_caches_get(self, cache):

@@ -9,27 +9,32 @@ from .conf import conf
 class CachingHttpWrapper(object):
     """
     Wraps an httplib2.Http-compatible object, providing a compatible
-    ``request`` method and wrapping it with some basic smart caching
-    behavior.
+    ``request`` method and wrapping it with some basic caching and cache
+    invalidation.
+
+    The cache invalidation approach taken here assumes that all clients of the
+    target API share the same cache.
 
     The wrapper is instantiated with a list of ``bucket`` names (strings). All
     200 OK responses to GET requests are cached with a key specific to each
     bucket, plus a "generation" integer specific to each bucket stored
-    separately in the cache. Anytime a non-safe request (anything but "GET" or
+    separately in the cache. When a non-safe request (anything but "GET" or
     "HEAD") passes through the wrapper, the "generation" integer for each
     bucket is incremented in the cache, effectively clearing the cache for
     those buckets.
 
     In the simplest case, a single bucket name would be passed in, representing
-    a particular resource type - so anytime a resource of that type is updated,
-    the entire cache for that resource type is cleared. In a more complex case,
-    the list of bucket names might include a more specific bucket
-    (e.g. resource type plus id) and then a more general one (just resource
-    type). Both buckets will be checked for cached responses (first one found
-    wins), and any newly-fetched response will be cached in both buckets (so
-    future requests that may not know the id in advance can still benefit from
-    the cache), but the id-specific bucket won't be cleared by unsafe requests
-    to resources with a different id, improving cache hit rate.
+    a particular resource type - so when a resource of that type is updated,
+    created, or deleted, the entire cache for that resource type is cleared.
+
+    In a more complex case, the list of bucket names might first include a more
+    specific bucket (e.g. resource type plus object id) and then a more general
+    one (just resource type). Both buckets will be checked for cached responses
+    (first one found wins), and any newly-fetched response will be cached in
+    both buckets (so future requests that may not know the id in advance can
+    still benefit from the cache), but the id-specific bucket won't be cleared
+    by unsafe requests to resources with a different id, improving cache hit
+    rate for requests where the id is known in advance.
 
     Wrapper accepts an optional iterable of ``dependent_buckets`` -- the
     wrapper won't cache anything in these buckets, but they will have their
@@ -37,11 +42,23 @@ class CachingHttpWrapper(object):
     e.g. clearing the cache of "list" resources when an individual resource is
     updated or deleted.
 
+    The wrapper also supports an abstract concept of permissions, to prevent
+    users from seeing cached data that would otherwise be unavailable to
+    them. The wrapper is instantiated with a set of permission ids for the
+    current user. Each cached response is cached along with the set of
+    permission ids of the user that successfully fetched that response. When
+    another user hits that cached response, if their permissions are not a
+    superset of the permissions that the response was cached with, it is
+    considered a cache miss (and then the response they get will be cached with
+    their lesser permissions, lowering the bar for future cache hits on that
+    URL.)
+
     """
-    def __init__(self, wrapped, buckets, dependent_buckets=None):
+    def __init__(self, wrapped, permissions, buckets, dependent_buckets=None):
         self.wrapped = wrapped
-        self.buckets = buckets
-        self.dependent_buckets = dependent_buckets or []
+        self.permissions = set(permissions)
+        self.buckets = list(buckets)
+        self.dependent_buckets = list(dependent_buckets or [])
 
 
     def generation_key(self, bucket):
@@ -49,7 +66,7 @@ class CachingHttpWrapper(object):
 
 
     def next_generation(self):
-        for bucket in list(self.buckets) + list(self.dependent_buckets):
+        for bucket in self.buckets + self.dependent_buckets:
             self._next_generation(bucket)
 
 

@@ -370,7 +370,7 @@ class ResourceObjectTest(TestResourceTestCase):
                 mock.return_value.request.return_value = http.request.return_value
                 obj.put()
 
-        self.assertEqual(mock.call_args[0][1], (["altbucket"]))
+        self.assertEqual(mock.call_args[0][2], (["altbucket"]))
 
 
     def test_delivered_repr(self, http):

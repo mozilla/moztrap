@@ -14,9 +14,13 @@ def fill_cache(cache, values_dict):
 
 
 class AuthTestCase(TestCase):
-    def creds(self, *args, **kwargs):
+    def creds(self, email, password=None, cookie=None):
         from tcmui.users.auth import UserCredentials
-        return UserCredentials(*args, **kwargs)
+        from tcmui.users.models import User
+        creds = UserCredentials(email, password=password, cookie=cookie)
+        creds._user = User(email=email)
+        creds._permission_codes = []
+        return creds
 
 
     @property

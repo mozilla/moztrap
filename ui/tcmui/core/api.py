@@ -208,6 +208,7 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def get(cls, url, **kwargs):
+        auth = kwargs.get("auth")
         kwargs.setdefault("http", userAgent)
         cache = kwargs.pop("cache", cls.cache)
         if cache:
@@ -217,10 +218,11 @@ class ObjectMixin(StrAndUnicode):
                 buckets = cls.cache_buckets(url_final_integer(url))
             kwargs["http"] = CachingHttpWrapper(
                 kwargs["http"],
+                getattr(auth, "permission_codes", []),
                 buckets,
                 cls.cache_dependent_buckets())
         obj = super(ObjectMixin, cls).get(url, **kwargs)
-        obj.auth = kwargs.get("auth")
+        obj.auth = auth
         return obj
 
 
@@ -330,6 +332,7 @@ class ObjectMixin(StrAndUnicode):
                 buckets = self.cache_buckets(getattr(self, "id", None))
             http = CachingHttpWrapper(
                 http,
+                getattr(kw.get("auth"), "permission_codes", []),
                 buckets,
                 self.cache_dependent_buckets())
 
