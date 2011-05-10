@@ -136,6 +136,38 @@ var TCM = TCM || {};
                                 '</label>' +
                             '</li>' +
                         '</ul>';
+                    if (productName === 'tcm') {
+                        var response =
+                            '<ul>' +
+                                '<li>' +
+                                    '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_01" data-product="' + productName + '" data-cycle="01">' +
+                                    '<label for="' + productName + '_cycle_name_01">' +
+                                        '<span class="completion" data-perc="75">75%</span>' +
+                                        '<span class="title">' + productName + ' cycle name 01</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                                '<li>' +
+                                    '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_02" data-product="' + productName + '" data-cycle="02">' +
+                                    '<label for="' + productName + '_cycle_name_02">' +
+                                        '<span class="completion" data-perc="100">100%</span>' +
+                                        '<span class="title">' + productName + ' cycle name 02</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                                '<li>' +
+                                    '<input type="radio" name="cycle" value="" id="' + productName + '_cycle_name_03" data-product="' + productName + '" data-cycle="03">' +
+                                    '<label for="' + productName + '_cycle_name_03">' +
+                                        '<span class="completion" data-perc="25">25%</span>' +
+                                        '<span class="title">' + productName + ' cycle name 03</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                            '</ul>';
+                    }
                     callback(response);
                 };
             fakeAjaxCall(
@@ -208,6 +240,43 @@ var TCM = TCM || {};
                                 '</label>' +
                             '</li>' +
                         '</ul>';
+                    if (cycleNumber === 1) {
+                        var response =
+                            '<ul>' +
+                                '<li>' +
+                                    '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_01">' +
+                                    '<label for="' + productName + '_run_0' + cycleNumber + '_01">' +
+                                        '<span class="title">' + productName + ' run 0' + cycleNumber + '-01</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                                '<li>' +
+                                    '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_02">' +
+                                    '<label for="' + productName + '_run_0' + cycleNumber + '_02">' +
+                                        '<span class="title">' + productName + ' run 0' + cycleNumber + '-02</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                                '<li>' +
+                                    '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_03">' +
+                                    '<label for="' + productName + '_run_0' + cycleNumber + '_03">' +
+                                        '<span class="title">' + productName + ' run 0' + cycleNumber + '-03</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                                '<li>' +
+                                    '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_04">' +
+                                    '<label for="' + productName + '_run_0' + cycleNumber + '_04">' +
+                                        '<span class="title">' + productName + ' run 0' + cycleNumber + '-04</span>' +
+                                        '<time class="start">01/07/2011</time>' +
+                                        '<time class="end">11/10/2011</time>' +
+                                    '</label>' +
+                                '</li>' +
+                            '</ul>';
+                    }
                     callback(response);
                 };
             fakeAjaxCall(
