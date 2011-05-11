@@ -48,4 +48,10 @@ urlpatterns = patterns(
     url(r"^wire/run/$",
         "django.views.generic.simple.direct_to_template",
         {"template": "test/wireframe.html"}),
+
+    # a sandbox for eric to work on design ideas
+    url(r"^wire/design/$",
+        "django.views.generic.simple.direct_to_template",
+        {"template": "design.html"}),
+
 )

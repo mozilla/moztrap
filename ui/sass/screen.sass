@@ -342,3 +342,46 @@ footer[role="contentinfo"]
     +padding-leader(.25)
   form
     +omega(24)
+
+/* sandbox -------------------------------------------------------------------
+
+.sandbox
+  +background(linear-gradient(top,rgba($blue,.25),rgba($blue,.25) rhythm(1.85),rgba($blue-dark,.25) rhythm(2),rgba($lighter,0) rhythm(2),rgba($lighter,0)) no-repeat scroll, linear-gradient(left,rgba($blue-lightest,.5),rgba($blue-lightest,.25),rgba($blue-lightest,.125),rgba($blue-lightest,.125),rgba($blue-lightest,.5)), $light image-url('noise.png'))
+  +text-shadow(rgba($lighter,.5) 0 1px 0)
+  color: rgba($blue-dark,.75)
+
+  a
+    #{$link}
+      color: saturate($blue,15)
+    #{$focus}
+      color: $red
+
+  header[role="banner"]
+    +padding-trailer(.5)
+    border: 0
+
+  div[role="main"]
+    +padding-leader
+    +padding-trailer
+    border: 0
+
+  .crumb
+    +border-radius(.25rem)
+    +box-shadow(rgba($base,.25) 0px 1px 1px inset, rgba($lighter,.75) 0px -1px 1px inset)
+    background: rgba($lighter,.25)
+    float: none
+    display: block
+    width: auto
+    margin: rhythm(.5)
+    padding: rhythm(.25) rhythm(1)
+    color: rgba($blue-dark,.5)
+
+  footer[role="contentinfo"]
+    +border-radius(.25rem)
+    +box-shadow(rgba($base,.25) 0px 1px 1px inset, rgba($lighter,.75) 0px -1px 1px inset)
+    background: rgba($lighter,.25)
+    padding: rhythm(.25,12px) rhythm(1,12px)
+    color: rgba($blue-dark,.375)
+
+#sandbox
+  @extend .simple

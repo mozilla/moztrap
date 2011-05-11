@@ -15,6 +15,43 @@ a img { border: none; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
 
+/* colors --- */
+/* */
+/* light     : #eeeeee */
+/* dark      : #444444 */
+/* lighter   : #fbfbfb */
+/* mid       : #999999 */
+/* mid-light : #c3c3c3 */
+/* mid-dark  : #6e6e6e */
+/* */
+/* blue            : #5d7b7a */
+/* blue-light      : #8bb9b7 */
+/* blue-lighter    : #accbc9 */
+/* blue-lightest   : #cddcdb */
+/* blue-hint       : #ebf1f1 */
+/* blue-dark       : #2e3e3d */
+/* */
+/* red           : #b9292f */
+/* red-light     : #e37f83 */
+/* red-lighter   : #eca9ab */
+/* red-lightest  : #f5d2d4 */
+/* red-dark      : #511214 */
+/* */
+/* green           : #77b929 */
+/* green-light     : #b5e37f */
+/* green-lighter   : #cdeca9 */
+/* green-lightest  : #e5f5d2 */
+/* green-dark      : #4f7a1b */
+/* */
+/* yellow          : #fee58c */
+/* yellow-light    : #fef0bf */
+/* yellow-dark     : #fdc80e */
+/* yellow-darker   : #d6a702 */
+/* yellow-darkest  : #a38001 */
+/* */
+/* base            : #444444 */
+/* alt             : #5d7b7a */
+/* accent          : #b9292f */
 /* Typography ---------------------------------------------------------------- */
 .serif { font-family: Cambria, Georgia, serif; }
 
@@ -232,7 +269,7 @@ button.sub:focus, button.sub:hover, button.sub:active { color: #b9292f; }
 .fullwidth, header[role="banner"], div[role="main"], footer[role="contentinfo"], .environment form { clear: both; margin-left: 1.031%; margin-right: 1.031%; *zoom: 1; }
 .fullwidth:after, header[role="banner"]:after, div[role="main"]:after, footer[role="contentinfo"]:after, .environment form:after { content: "\0020"; display: block; height: 0; clear: both; overflow: hidden; visibility: hidden; }
 
-.simple, #login, #register, #products, #cycles, #testruns { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
+.simple, #login, #register, #products, #cycles, #testruns, #sandbox { clear: both; padding-left: 25.263%; padding-right: 25.263%; }
 
 body > div { position: relative; }
 
@@ -1025,3 +1062,12 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #environment h2, #environment form { display: inline; float: left; width: 49.474%; margin-right: 1.053%; }
 #environment h2 { padding-top: 0.375em; }
 #environment form { display: inline; float: right; margin-right: 0; }
+
+/* sandbox ------------------------------------------------------------------- */
+.sandbox { background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(93, 123, 122, 0.25)), color-stop(2.775em, rgba(93, 123, 122, 0.25)), color-stop(3em, rgba(46, 62, 61, 0.25)), color-stop(3em, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0))) no-repeat scroll, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(205, 220, 219, 0.5)), color-stop(25%, rgba(205, 220, 219, 0.25)), color-stop(50%, rgba(205, 220, 219, 0.125)), color-stop(75%, rgba(205, 220, 219, 0.125)), color-stop(100%, rgba(205, 220, 219, 0.5))), #eeeeee url('../images/noise.png?1305073200'); background: -webkit-linear-gradient(top, rgba(93, 123, 122, 0.25), rgba(93, 123, 122, 0.25) 2.775em, rgba(46, 62, 61, 0.25) 3em, rgba(251, 251, 251, 0) 3em, rgba(251, 251, 251, 0)) no-repeat scroll, -webkit-linear-gradient(left, rgba(205, 220, 219, 0.5), rgba(205, 220, 219, 0.25), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.5)), #eeeeee url('../images/noise.png?1305073200'); background: -moz-linear-gradient(top, rgba(93, 123, 122, 0.25), rgba(93, 123, 122, 0.25) 2.775em, rgba(46, 62, 61, 0.25) 3em, rgba(251, 251, 251, 0) 3em, rgba(251, 251, 251, 0)) no-repeat scroll, -moz-linear-gradient(left, rgba(205, 220, 219, 0.5), rgba(205, 220, 219, 0.25), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.5)), #eeeeee url('../images/noise.png?1305073200'); background: -o-linear-gradient(top, rgba(93, 123, 122, 0.25), rgba(93, 123, 122, 0.25) 2.775em, rgba(46, 62, 61, 0.25) 3em, rgba(251, 251, 251, 0) 3em, rgba(251, 251, 251, 0)) no-repeat scroll, -o-linear-gradient(left, rgba(205, 220, 219, 0.5), rgba(205, 220, 219, 0.25), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.5)), #eeeeee url('../images/noise.png?1305073200'); background: linear-gradient(top, rgba(93, 123, 122, 0.25), rgba(93, 123, 122, 0.25) 2.775em, rgba(46, 62, 61, 0.25) 3em, rgba(251, 251, 251, 0) 3em, rgba(251, 251, 251, 0)) no-repeat scroll, linear-gradient(left, rgba(205, 220, 219, 0.5), rgba(205, 220, 219, 0.25), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.125), rgba(205, 220, 219, 0.5)), #eeeeee url('../images/noise.png?1305073200'); text-shadow: rgba(251, 251, 251, 0.5) 0 1px 0; color: rgba(46, 62, 61, 0.75); }
+.sandbox a:link, .sandbox a:visited { color: #4d8b89; }
+.sandbox a:focus, .sandbox a:hover, .sandbox a:active { color: #b9292f; }
+.sandbox header[role="banner"] { padding-bottom: 0.75em; border: 0; }
+.sandbox div[role="main"] { padding-top: 1.5em; padding-bottom: 1.5em; border: 0; }
+.sandbox .crumb { -moz-border-radius: 0.25rem; -webkit-border-radius: 0.25rem; -o-border-radius: 0.25rem; -ms-border-radius: 0.25rem; -khtml-border-radius: 0.25rem; border-radius: 0.25rem; -moz-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; -webkit-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; -o-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; background: rgba(251, 251, 251, 0.25); float: none; display: block; width: auto; margin: 0.75em; padding: 0.375em 1.5em; color: rgba(46, 62, 61, 0.5); }
+.sandbox footer[role="contentinfo"] { -moz-border-radius: 0.25rem; -webkit-border-radius: 0.25rem; -o-border-radius: 0.25rem; -ms-border-radius: 0.25rem; -khtml-border-radius: 0.25rem; border-radius: 0.25rem; -moz-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; -webkit-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; -o-box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; box-shadow: rgba(68, 68, 68, 0.25) 0px 1px 1px inset, rgba(251, 251, 251, 0.75) 0px -1px 1px inset; background: rgba(251, 251, 251, 0.25); padding: 0.438em 1.75em; color: rgba(46, 62, 61, 0.375); }

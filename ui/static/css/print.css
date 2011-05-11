@@ -1,3 +1,40 @@
+/* colors --- */
+/* */
+/* light     : #eeeeee */
+/* dark      : #444444 */
+/* lighter   : #fbfbfb */
+/* mid       : #999999 */
+/* mid-light : #c3c3c3 */
+/* mid-dark  : #6e6e6e */
+/* */
+/* blue            : #5d7b7a */
+/* blue-light      : #8bb9b7 */
+/* blue-lighter    : #accbc9 */
+/* blue-lightest   : #cddcdb */
+/* blue-hint       : #ebf1f1 */
+/* blue-dark       : #2e3e3d */
+/* */
+/* red           : #b9292f */
+/* red-light     : #e37f83 */
+/* red-lighter   : #eca9ab */
+/* red-lightest  : #f5d2d4 */
+/* red-dark      : #511214 */
+/* */
+/* green           : #77b929 */
+/* green-light     : #b5e37f */
+/* green-lighter   : #cdeca9 */
+/* green-lightest  : #e5f5d2 */
+/* green-dark      : #4f7a1b */
+/* */
+/* yellow          : #fee58c */
+/* yellow-light    : #fef0bf */
+/* yellow-dark     : #fdc80e */
+/* yellow-darker   : #d6a702 */
+/* yellow-darkest  : #a38001 */
+/* */
+/* base            : #444444 */
+/* alt             : #5d7b7a */
+/* accent          : #b9292f */
 /* Print Defaults -------------------------------------------------------------- */
 nav { display: none; }
 
