@@ -71,6 +71,7 @@ var TCM = TCM || {};
             headers = context.find('h3 > a').click(function() {
                 context.find('section').removeClass('focus');
                 $(this).closest('section').addClass('focus');
+                $(this).blur();
             });
             context.find('header').each(function() {
                 var scrollbarWidth = $(this).closest('section').css('width') - $(this).children('li').css('width');
