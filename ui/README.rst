@@ -58,9 +58,11 @@ Several other settings have reasonable defaults, but may need to be modified:
 Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
-.. _virtualenv: http://pypi.python.org/pypi/virtualenv
+.. _virtualenv: http://www.virtualenv.org
 
-To install the necessary Ruby Gems for Sass development, run ``bin/install-gems requirements/gems.txt``. Update ``requirements/gems.txt`` if newer gems should be used.
+To install the necessary Ruby Gems for Compass/Sass development, run
+``bin/install-gems requirements/gems.txt``.  Update
+``requirements/gems.txt`` if newer gems should be used.
 
 Deployment
 ----------
@@ -72,11 +74,11 @@ session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
 HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
 in ``settings_local.py`` when the app is being served over HTTPS.
 
-This app also uses the new `staticfiles contrib app`_ in Django 1.3 beta for
-collecting static assets from reusable components into a single directory for
-production serving. Run ``./manage.py collectstatic`` to collect all static
-assets into the ``collected-assets`` directory (or whatever ``STATIC_ROOT`` is
-set to in ``settings_local.py``), and make those collected assets available by
-HTTP at the ``STATIC_URL`` setting.
+This app also uses the new `staticfiles contrib app`_ in Django 1.3 for
+collecting static assets from reusable components into a single directory
+for production serving.  Run ``./manage.py collectstatic`` to collect all
+static assets into the ``collected-assets`` directory (or whatever
+``STATIC_ROOT`` is set to in ``settings_local.py``), and make those
+collected assets available by HTTP at the ``STATIC_URL`` setting.
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
