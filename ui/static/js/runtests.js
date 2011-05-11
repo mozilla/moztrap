@@ -173,9 +173,8 @@ var TCM = TCM || {};
             fakeAjaxCall(
                 productName,
                 function(data) {
-                    $('section.cycles ul').remove();
-                    $('section.cycles').append(data);
-                    $('section.runs ul').remove();
+                    $('section.cycles ul').html(data);
+                    $('section.runs ul').empty();
                 }
             );
             $(this).closest('section.products').removeClass('focus');
@@ -283,8 +282,7 @@ var TCM = TCM || {};
                 productName,
                 cycleNumber,
                 function(data) {
-                    $('section.runs ul').remove();
-                    $('section.runs').append(data);
+                    $('section.runs ul').html(data);
                 }
             );
             $(this).closest('section.cycles').removeClass('focus');
