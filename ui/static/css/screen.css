@@ -4323,13 +4323,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   -webkit-transition-duration: 300ms;
   -o-transition-duration: 300ms;
   transition-duration: 300ms;
-  -webkit-transform: scale3d(1, 1, 1);
-  transform: scale3d(1, 1, 1);
-  -moz-transform: scale(1, 1);
-  -webkit-transform: scale(1, 1);
-  -o-transform: scale(1, 1);
-  -ms-transform: scale(1, 1);
-  transform: scale(1, 1);
   width: 1.618em;
   margin-right: 0.809em;
 }
@@ -4354,8 +4347,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   visibility: hidden;
 }
 #selectruns label:focus .logo, #selectruns label:hover .logo, #selectruns label:active .logo {
-  -webkit-transform: scale3d(1.75, 1.75, 1.75);
-  transform: scale3d(1.75, 1.75, 1.75);
   -moz-transform: scale(1.75, 1.75);
   -webkit-transform: scale(1.75, 1.75);
   -o-transform: scale(1.75, 1.75);
@@ -4382,8 +4373,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   -o-transform: scale(1.75, 1.75);
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
-  -webkit-transform: scale3d(1.75, 1.75, 1.75);
-  transform: scale3d(1.75, 1.75, 1.75);
 }
 #selectruns .finder {
   overflow: hidden;
