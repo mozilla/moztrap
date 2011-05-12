@@ -26,12 +26,33 @@ class CachingHttpWrapperTest(TestCase):
                 http, permissions, buckets, dependent_buckets).request(**kwargs)
 
 
+    def check_cached(self, cache, key, response_data):
+        """
+        Verify that the given response data was cached under the given key,
+        ignoring the permissions it was cached with, and the cache timeout (so
+        not all tests have to depend on implementation of those factors).
+
+        Looks at all recorded calls to cache.set, not just the most recent.
+
+        """
+        found = False
+        for (used_key, cached_data, timeout), kw in cache.set.call_args_list:
+            cached_data_without_permissions = cached_data[1]
+            if (key == used_key and
+                response_data == cached_data_without_permissions):
+                found = True
+        self.assertTrue(
+            found,
+            "%s not cached as %s; calls: %s"
+            % (response_data, key, cache.set.call_args_list))
+
+
     def test_caches_get(self, cache):
         fill_cache(cache, {})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.set.assert_called_with("BucketName-0-/uri/", (set(),) + ret, 600)
+        self.check_cached(cache, "BucketName-0-/uri/", ret)
 
 
     def _check_increments_generation(self, method, cache):
@@ -89,7 +110,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_returns_cached_for_get(self, cache):
-        fill_cache(cache, {"BucketName-0-/uri/": (set(), "res", "cached")})
+        fill_cache(cache, {"BucketName-0-/uri/": (set(), ("res", "cached"))})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
@@ -102,13 +123,13 @@ class CachingHttpWrapperTest(TestCase):
 
         ret = self.make_request(method="GET", uri="/uri/")
 
-        cache.set.assert_called_with("BucketName-3-/uri/", (set(),) + ret, 600)
+        self.check_cached(cache, "BucketName-3-/uri/", ret)
 
 
     def test_cache_get_uses_generational_key(self, cache):
         fill_cache(cache, {
                 "BucketName:generation": 4,
-                "BucketName-4-/uri/": (set(), "res", "result")
+                "BucketName-4-/uri/": (set(), ("res", "result"))
                 })
 
         ret = self.make_request(method="GET", uri="/uri/")
@@ -123,16 +144,12 @@ class CachingHttpWrapperTest(TestCase):
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
 
-        self.assertEqual(
-            cache.set.call_args_list[0],
-            (("BucketName:1-0-/uri/", (set(),) + ret, 600),))
-        self.assertEqual(
-            cache.set.call_args_list[1],
-            (("BucketName-0-/uri/", (set(),) + ret, 600),))
+        self.check_cached(cache, "BucketName:1-0-/uri/", ret)
+        self.check_cached(cache, "BucketName-0-/uri/", ret)
 
 
     def test_multiple_buckets_both_checked(self, cache):
-        fill_cache(cache, {"BucketName-0-/uri/": (set(), "res", "cached")})
+        fill_cache(cache, {"BucketName-0-/uri/": (set(), ("res", "cached"))})
 
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
@@ -169,13 +186,14 @@ class CachingHttpWrapperTest(TestCase):
                                 permissions=["PERM_ONE"])
 
         cache.set.assert_called_with(
-            "BucketName-0-/uri/", (set(["PERM_ONE"]),) + ret, 600)
+            "BucketName-0-/uri/", (set(["PERM_ONE"]), ret), 600)
 
 
     def test_disjoint_permissions_cant_see_cached_result(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set(["ONE_PERM"]), "response", "cached")})
+            {"BucketName-0-/uri/":
+                 (set(["ONE_PERM"]), ("response", "cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -184,15 +202,14 @@ class CachingHttpWrapperTest(TestCase):
         set_args = cache.set.call_args[0]
         self.assertEqual(set_args[0], "BucketName-0-/uri/")
         self.assertEqual(set_args[1][0], set(["TWO_PERM"]))
-        self.assertEqual(set_args[1][2], "content")
+        self.assertEqual(set_args[1][1][1], "content")
 
 
     def test_subset_permissions_cant_see_cached_result(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set(["ONE_PERM", "TWO_PERM"]),
-                                    "response",
-                                    "cached")})
+            {"BucketName-0-/uri/":
+                 (set(["ONE_PERM", "TWO_PERM"]), ("response", "cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -201,15 +218,13 @@ class CachingHttpWrapperTest(TestCase):
         set_args = cache.set.call_args[0]
         self.assertEqual(set_args[0], "BucketName-0-/uri/")
         self.assertEqual(set_args[1][0], set(["TWO_PERM"]))
-        self.assertEqual(set_args[1][2], "content")
+        self.assertEqual(set_args[1][1][1], "content")
 
 
     def test_superset_of_permissions_can_see_cached_result(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set(["TWO_PERM"]),
-                                    "response",
-                                    "cached")})
+            {"BucketName-0-/uri/": (set(["TWO_PERM"]), ("response", "cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])
@@ -221,9 +236,8 @@ class CachingHttpWrapperTest(TestCase):
     def test_equal_permissions_can_see_cached_result(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set(["TWO_PERM", "ONE_PERM"]),
-                                    "response",
-                                    "cached")})
+            {"BucketName-0-/uri/":
+                 (set(["TWO_PERM", "ONE_PERM"]), ("response", "cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])

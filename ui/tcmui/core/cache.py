@@ -45,13 +45,13 @@ class CachingHttpWrapper(object):
     The wrapper also supports an abstract concept of permissions, to prevent
     users from seeing cached data that would otherwise be unavailable to
     them. The wrapper is instantiated with a set of permission ids for the
-    current user. Each cached response is cached along with the set of
-    permission ids of the user that successfully fetched that response. When
-    another user hits that cached response, if their permissions are not a
-    superset of the permissions that the response was cached with, it is
-    considered a cache miss (and then the response they get will be cached with
-    their lesser permissions, lowering the bar for future cache hits on that
-    URL.)
+    current user. Each cached response is cached along with a set of sets of
+    permission ids of the users that have successfully fetched that
+    response. When another user hits that cached response, if their permissions
+    are not a superset of one of the sets of permissions that the response was
+    cached with, it is considered a cache miss, and the response they get will
+    be re-cached with their permission set added, lowering the bar for future
+    cache hits.
 
     """
     def __init__(self, wrapped, permissions, buckets, dependent_buckets=None):
@@ -94,7 +94,7 @@ class CachingHttpWrapper(object):
             for cache_key in cache_keys:
                 cached = cache.get(cache_key)
                 if cached is not None:
-                    perms, response, content = cached
+                    perms, (response, content) = cached
                     if perms.issubset(self.permissions):
                         return (response, content)
         elif method != "HEAD":
@@ -107,7 +107,7 @@ class CachingHttpWrapper(object):
             for cache_key in cache_keys:
                 cache.set(
                     cache_key,
-                    (self.permissions, response, content),
+                    (self.permissions, (response, content)),
                     conf.TCM_CACHE_SECONDS)
 
         return (response, content)
