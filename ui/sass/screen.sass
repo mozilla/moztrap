@@ -236,66 +236,6 @@ footer[role="contentinfo"]
 
 #selectruns
   +full(24)
-  .logo
-    +transition(all,300ms)
-    width: rhythm(1)
-    margin-right: rhythm(.5)
-  label
-    +pie-clearfix
-    +trailing-border(1px,.25)
-    +padding-leader(.25)
-    +hpadding(rhythm(.5))
-    border-color: rgba($blue,$xxsmall)
-    display: block
-    font-weight: normal
-    #{$focus}
-      .logo
-        +scale(1.75)
-  input
-    +gone
-    &:checked
-      + label
-        font-weight: bold
-        background: rgba($blue-light,.5)
-        .logo
-          +scale(1.75)
-  .finder
-    +clearfix
-    +full(24)
-    +trailer
-    position: relative
-    border: 1px solid $mid
-  .col
-    +transition(width,300ms)
-    +float(left)
-    position: relative
-    top: 0
-    bottom: 0
-    left: 0
-    width: 25%
-    height: rhythm(9)
-    &:last-child
-      +float(right)
-    &.focus
-      width: 50%
-    &:not([class*="focus"])
-      .listordering
-        a::after
-          display: none
-
-  .listordering
-    +stretch-x
-    right: 15px
-    padding: rhythm(.25) rhythm(.5)
-    margin: 0
-    background: $light
-    z-index: 2
-    a
-      #{$link}
-        white-space: nowrap
-
-  h3, p
-    margin-bottom: 0
 
   .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
     display: none
@@ -323,17 +263,97 @@ footer[role="contentinfo"]
   .start, .end
     color: $mid
 
-  ul
-    +no-style-list
-    +stretch
-    padding-top: rhythm(2)
-    overflow-y: scroll
-    overflow-x: hidden
+// Finder --------------------------------------------------------------------
 
-  li:last-child
+.finder
+  +clearfix
+  +full(24)
+  +trailer
+  position: relative
+
+  &.expanded
+    border: 1px solid rgba($blue-light,$small)
+    background: $blue-hint
+
+    h3, p
+      margin-bottom: 0
+
+    .col
+      +transition(width,300ms)
+      +float(left)
+      position: relative
+      top: 0
+      bottom: 0
+      left: 0
+      width: 25%
+      height: rhythm(9)
+      &:last-child
+        +float(right)
+      &.focus
+        width: 50%
+      &:not([class*="focus"])
+        .listordering
+          a::after
+            display: none
+
+    .listordering
+      +stretch-x
+      right: 15px
+      padding: rhythm(.25) rhythm(.5)
+      margin: 0
+      background: rgba($blue-lightest,$small)
+      z-index: 2
+      a
+        #{$link}
+          white-space: nowrap
+
+    .colcontent
+      +no-style-list
+      +stretch
+      padding-top: rhythm(2)
+      overflow-y: scroll
+      overflow-x: hidden
+
+    .logo
+      +transition(all,300ms)
+      width: rhythm(1)
+      margin-right: rhythm(.5)
+
     label
-      +padding-trailer(.25)
-      border-bottom: 0
+      +pie-clearfix
+      +trailing-border(1px,.25)
+      +hpadding(rhythm(.5))
+      border-color: rgba($blue-light,$xxsmall)
+      display: block
+      font-weight: normal
+      #{$focus}
+        .logo
+          +scale(1.75)
+
+    li
+      &:first-child
+        label
+          +leading-border(1px,.25)
+
+    input
+      +gone
+      &:checked
+        + label
+          font-weight: bold
+          background: rgba($blue-light,.5)
+          .logo
+            +scale(1.75)
+
+    &.wide
+      overflow-y: hidden
+      overflow-x: scroll
+      .carousel[data-cols="5"]
+        width: 150%
+      .col
+        width: 25/150*100%
+        &.focus
+          width: 50/150*100%
+
 
 /* environment --------------------------------------------------------------
 
