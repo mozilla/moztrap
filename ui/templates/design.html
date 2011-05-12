@@ -10,55 +10,60 @@
 {% block content %}
 <section id="sandbox">
   <h2>a design playground for eric</h2>
-  <form class="finder expanded wide">
-    <div class="carousel" data-cols="5">
-      <section class="col products focus">
-        <header class="listordering">
-          <h3 class="bytitle"><a href="#">Products</a></h3>
-        </header>
-        <ul class="colcontent">
-          <li>
-            <input type="radio" name="product" value="" id="product-tcm" data-id="tcm">
-            <label for="product-tcm">
-              <img src="{{ STATIC_URL }}images/products/dino.png" class="logo" alt="">
-              tcm
-            </label>
-          </li>
-          <li>
-            <input type="radio" name="product" value="" id="product-firefox" data-id="firefox">
-            <label for="product-firefox">
-              <img src="{{ STATIC_URL }}images/products/firefox.png" class="logo" alt="">
-              firefox
-            </label>
-          </li>
-        </ul>
-      </section>
-      <section class="col cycles">
-        <header class="listordering">
-          <h3 class="bytitle"><a href="#">Test Cycles</a></h3>
-        </header>
-        <ul class="colcontent"></ul>
-      </section>
-      <section class="col runs">
-        <header class="listordering">
-          <h3 class="bytitle"><a href="#">Test Runs</a></h3>
-        </header>
-        <ul class="colcontent"></ul>
-      </section>
-      <section class="col cases">
-        <header class="listordering">
-          <h3 class="bytitle"><a href="#">Test Cases</a></h3>
-        </header>
-        <ul class="colcontent"></ul>
-      </section>
-      <section class="col results">
-        <header class="listordering">
-          <h3 class="bytitle"><a href="#">Test Results</a></h3>
-        </header>
-        <ul class="colcontent"></ul>
-      </section>
+  <form>
+    <a href="#" class="findertoggle expanded">toggle navigation view</a>
+    <div class="finder expanded wide" id="findernav">
+      <div class="carousel" data-cols="5">
+        <section class="col products focus">
+          <header class="listordering">
+            <h3 class="bytitle"><a href="#">Products</a></h3>
+          </header>
+          <ul class="colcontent">
+            <li>
+              <input type="radio" name="product" value="" id="product-tcm" data-id="tcm">
+              <label for="product-tcm">
+                <img src="{{ STATIC_URL }}images/products/dino.png" class="logo" alt="">
+                tcm
+              </label>
+            </li>
+            <li>
+              <input type="radio" name="product" value="" id="product-firefox" data-id="firefox">
+              <label for="product-firefox">
+                <img src="{{ STATIC_URL }}images/products/firefox.png" class="logo" alt="">
+                firefox
+              </label>
+            </li>
+          </ul>
+        </section>
+        <section class="col cycles">
+          <header class="listordering">
+            <h3 class="bytitle"><a href="#">Test Cycles</a></h3>
+          </header>
+          <ul class="colcontent"></ul>
+        </section>
+        <section class="col runs">
+          <header class="listordering">
+            <h3 class="bytitle"><a href="#">Test Runs</a></h3>
+          </header>
+          <ul class="colcontent"></ul>
+        </section>
+        <section class="col cases">
+          <header class="listordering">
+            <h3 class="bytitle"><a href="#">Test Cases</a></h3>
+          </header>
+          <ul class="colcontent"></ul>
+        </section>
+        <section class="col results">
+          <header class="listordering">
+            <h3 class="bytitle"><a href="#">Test Results</a></h3>
+          </header>
+          <ul class="colcontent"></ul>
+        </section>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button>see all [runs] in this [cycle] &raquo;</button>
     </div>
   </form>
-
 </section>
 {% endblock content %}

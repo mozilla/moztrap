@@ -4370,12 +4370,48 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   color: #999999;
 }
 
-.finder {
+.findertoggle {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  -moz-border-radius-bottomleft: 0.618em;
+  -webkit-border-bottom-left-radius: 0.618em;
+  -o-border-bottom-left-radius: 0.618em;
+  -ms-border-bottom-left-radius: 0.618em;
+  -khtml-border-bottom-left-radius: 0.618em;
+  border-bottom-left-radius: 0.618em;
+  text-indent: -119988px;
   overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/minus_circle.png?1299110065');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  right: 1.031%;
+  padding: 0.405em;
+  background-color: rgba(185, 41, 47, 0.618);
+  z-index: 10;
+}
+.findertoggle:focus, .findertoggle:hover, .findertoggle:active {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+
+.finder {
   *zoom: 1;
-  clear: both;
   margin-bottom: 1.618em;
+  clear: both;
+  overflow: visible;
   position: relative;
+}
+.finder:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
 .finder.expanded {
   border: 1px solid rgba(135, 169, 168, 0.618);

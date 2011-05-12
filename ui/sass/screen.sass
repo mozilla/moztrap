@@ -265,10 +265,23 @@ footer[role="contentinfo"]
 
 // Finder --------------------------------------------------------------------
 
+.findertoggle
+  +opacity(.5)
+  +border-bottom-left-radius($smallem)
+  +replace-text-with-dimensions('ui/minus_circle.png')
+  position: absolute
+  right: side-gutter()
+  padding: rhythm(.25)
+  background-color: rgba($red,$small)
+  z-index: 10
+  #{$focus}
+    +opacity(1)
+
 .finder
-  +clearfix
-  +full(24)
+  +pie-clearfix
   +trailer
+  clear: both
+  overflow: visible
   position: relative
 
   &.expanded
