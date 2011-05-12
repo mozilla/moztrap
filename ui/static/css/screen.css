@@ -4383,14 +4383,14 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   border: 1px solid #999999;
 }
 #selectruns .col {
-  -moz-transition-property: width 300ms;
-  -webkit-transition-property: width 300ms;
-  -o-transition-property: width 300ms;
-  transition-property: width 300ms;
-  -moz-transition-duration: 1s;
-  -webkit-transition-duration: 1s;
-  -o-transition-duration: 1s;
-  transition-duration: 1s;
+  -moz-transition-property: width;
+  -webkit-transition-property: width;
+  -o-transition-property: width;
+  transition-property: width;
+  -moz-transition-duration: 300ms;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
   display: inline;
   float: left;
   position: relative;
