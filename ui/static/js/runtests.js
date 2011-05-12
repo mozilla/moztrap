@@ -62,9 +62,9 @@ var TCM = TCM || {};
         );
     };
 
-    var selectRuns = function(context) {
+    var selectRuns = function(context, environments) {
         var context = $(context),
-            environments = $('#environment').hide(),
+            environments = $(environments).hide(),
             products = context.find('input[name="product"]'),
             cycles = context.find('input[name="cycle"]'),
             runs = context.find('input[name="run"]'),
@@ -73,10 +73,10 @@ var TCM = TCM || {};
                 $(this).closest('section').addClass('focus');
                 $(this).blur();
             });
-            context.find('header').each(function() {
-                var scrollbarWidth = $(this).closest('section').css('width') - $(this).children('li').css('width');
-                $(this).css('right', scrollbarWidth);
-            });
+        context.find('header').each(function() {
+            var scrollbarWidth = $(this).closest('section').css('width') - $(this).children('li').css('width');
+            $(this).css('right', scrollbarWidth);
+        });
         products.live('click', function() {
             var productName = $(this).data('id'),
                 fakeAjaxCall = function(productName, callback) {
@@ -309,7 +309,7 @@ var TCM = TCM || {};
                 $('.loading').removeClass("loading");
             }
         );
-        selectRuns('#selectruns');
+        selectRuns('#selectruns', '#selectruns + #environment');
     });
 
 })(jQuery);
