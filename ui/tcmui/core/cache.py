@@ -56,7 +56,7 @@ class CachingHttpWrapper(object):
     """
     def __init__(self, wrapped, permissions, buckets, dependent_buckets=None):
         self.wrapped = wrapped
-        self.permissions = set(permissions)
+        self.permissions = frozenset(permissions)
         self.buckets = list(buckets)
         self.dependent_buckets = list(dependent_buckets or [])
 
@@ -89,14 +89,29 @@ class CachingHttpWrapper(object):
 
     def request(self, **kwargs):
         method = kwargs.get("method", "GET").upper()
+        cache_keys = []
+
         if method == "GET":
+            # track all the permission sets that we may want to re-cache with
+            # later.
+            all_permsets = set([self.permissions])
             cache_keys = self.cache_keys(kwargs["uri"])
             for cache_key in cache_keys:
                 cached = cache.get(cache_key)
                 if cached is not None:
-                    perms, (response, content) = cached
-                    if perms.issubset(self.permissions):
-                        return (response, content)
+                    permsets, (response, content) = cached
+                    for permset in permsets:
+                        # if our permissions are a superset of any of the
+                        # permissions this was cached with, we can see the
+                        # cached response.
+                        if permset.issubset(self.permissions):
+                            return (response, content)
+
+                        # no need to include a permset that's a superset of our
+                        # permissions; anybody who'd pass the one test would be
+                        # guaranteed to pass the other
+                        if not self.permissions.issubset(permset):
+                            all_permsets.add(permset)
         elif method != "HEAD":
             self.next_generation()
 
@@ -107,7 +122,7 @@ class CachingHttpWrapper(object):
             for cache_key in cache_keys:
                 cache.set(
                     cache_key,
-                    (self.permissions, (response, content)),
+                    (all_permsets, (response, content)),
                     conf.TCM_CACHE_SECONDS)
 
         return (response, content)
