@@ -1,5 +1,11 @@
 {% extends 'test/base.html' %}
 
+{% block page-status %}wireframe{% endblock page-status %}
+
+{% block page-notes %}
+<p>This approach may be used on management/result pages as well as run test pages.</p>
+{% endblock page-notes %}
+
 {% block testcontent %}
 <section id="selectruns">
   <h2>Select a product, cycle and run</h2>
@@ -73,6 +79,4 @@
     </div>
   </form>
 </section>
-
-
 {% endblock testcontent %}

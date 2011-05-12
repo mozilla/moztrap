@@ -4258,6 +4258,16 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   padding: 0.809em 1.618em;
   background: #eeeeee;
 }
+#page-status[title=""] {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
 #page-status h2 {
   position: absolute;
   clip: rect(0 0 0 0);
