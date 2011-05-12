@@ -11,7 +11,7 @@
 
 .resulticons
   +adjust-font-size-to(12px)
-  vertical-align: top
+  +condensed
   +icon('.pass','ui/check_sm.png',$green-lighter,true)
   +icon('.invalid','ui/warning_sm.png',$yellow,true)
   +icon('.fail','ui/x_sm.png',$red-lighter,true)
@@ -52,9 +52,10 @@
     font: inherit
 
 .completion
-  +adjust-font-size-to(10px)
-  +border-radius(.25em)
-  +text-shadow(rgba($blue-lighter,.5) 1px 1px 0)
+  +condensed
+  +adjust-font-size-to(12px)
+  +border-radius($xsmallpx)
+  +text-shadow(rgba($blue-hint,$small) 0 1px 0)
   font-weight: bold
   text-align: center
 

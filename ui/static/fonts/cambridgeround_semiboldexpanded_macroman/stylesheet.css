@@ -1,0 +1,36 @@
+/*
+ * Web Fonts from fontspring.com
+ *
+ * All OpenType features and all extended glyphs have been removed.
+ * Fully installable fonts can be purchased at http://www.fontspring.com
+ *
+ * The fonts included in this stylesheet are subject to the End User License you purchased
+ * from Fontspring. The fonts are protected under domestic and international trademark and 
+ * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+ * distributing this font software.
+ *
+ * (c) 2010-2011 Fontspring
+ *
+ *
+ *
+ *
+ * The fonts included are copyrighted by the vendor listed below.
+ *
+ * Vendor:      Aviation Partners
+ * License URL: http://www.fontspring.com/fflicense/aviation-partners
+ *
+ *
+ */
+
+@font-face {
+    font-family: 'CambridgeRoundSBdExpanded';
+    src: url('cambridge_round_semibold_exp-webfont.eot');
+    src: url('cambridge_round_semibold_exp-webfont.eot?#iefix') format('embedded-opentype'),
+         url('cambridge_round_semibold_exp-webfont.woff') format('woff'),
+         url('cambridge_round_semibold_exp-webfont.ttf') format('truetype'),
+         url('cambridge_round_semibold_exp-webfont.svg#CambridgeRoundSBdExpanded') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

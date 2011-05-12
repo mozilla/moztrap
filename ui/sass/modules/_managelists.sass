@@ -3,25 +3,31 @@
 nav
   &.manage, &.results
     +float(left)
+    +leader(-1)
+    +padding-leader(.75)
+    +padding-trailer
     width: columns(3,24)
     min-height: rhythm(1)
     a
       #{$link}
         +adjust-leading-to(1.5)
         display: block
-        padding: 0 1em
       #{$focus}
-        background: $light
+        +background(linear-gradient(right,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
       &.active
         #{$link}, #{$focus}
-          background: $blue-lightest
+          +demi
+          +background(linear-gradient(right,rgba($blue-dark,0),rgba($blue-dark,$xxxsmall),rgba($blue-dark,0)))
           color: $blue-dark
 
 #listcontent
-  position: relative
-  overflow: hidden
+  +float(right)
+  +leader(-1)
+  +padding-leader
+  +box-shadow(rgba($blue-dark,$xxxsmall) 0-$largepx 0 $medpx 0-$medpx)
+  width: columns(21,24)
   padding-left: gutter(24)
-  border-left: 1px solid $light
+  position: relative
   min-height: $base-rhythm-unit*12
   h2
     +columns(12,21)
@@ -51,19 +57,18 @@ nav
   .summary, .content
     +pie-clearfix
     +padding-leader(.25)
-    +trailing-border(1px,.25)
-    border-color: rgba($base,.125)
+    +padding-trailer(.25)
   .summary
     p, h3, h4
       margin-bottom: 0
     #{$focus}
       outline: 0
-      background: rgba($green-lightest,.5)
+      background: rgba($blue-hint,$small)
   .open
     > .summary
-      background: rgba($green-lightest,.5)
+      background: rgba($blue-hint,$small)
   .content
-    background: $lighter
+    background: $blue-hint
   .id
     text-align: right
 
@@ -172,6 +177,7 @@ nav
   #{$link}
     display: block
     position: relative
+    color: $blue-dark
     &::after
       +replace-text-with-dimensions('ui/angle_up.png')
       +inline-block
@@ -180,6 +186,7 @@ nav
       background-image: none
       vertical-align: baseline
   #{$focus}
+    color: $accent
     &::after
       background-image: image-url('ui/angle_up.png')
   &.asc
@@ -198,10 +205,10 @@ nav
         background-image: image-url('ui/angle_up.png')
 
 .listordering
+  +bold
   +clearfix
-  +h-borders(1px,.25)
-  background: $light
-  border-color: #ccc
+  +rhythm(0,.25,.25,0)
+  background: rgba($blue,$xxsmall)
   ul
     +no-style-list
   a
@@ -211,20 +218,16 @@ nav
     +columns(2,21)
     a
       #{$link}
-        padding-left: .375em
+        padding-left: $smallem
 
 .listnav
+  +condensed
   +pie-clearfix
-  +adjust-font-size-to(12px)
-  +trailer(.5,12px)
-  +padding-leader(.25,12px)
-  +trailing-border(1px,.25,12px)
+  +rhythm(0,.25,.25,.5)
   +hpadding(.5em)
   clear: both
   margin-top: -1px
-  background: $light
-  border-top: 1px solid
-  border-color: #ccc
+  background: rgba($blue,$xxsmall)
   white-space: nowrap
   p, ul
     +reset-box-model

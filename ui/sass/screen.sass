@@ -1,13 +1,14 @@
-// Imports --------------------------------------------------------------
+// Imports -------------------------------------------------------------------
 
 @import compass/reset
 @import defaults
 
-/* Layout --------------------------------------------------------------
+/* Layout --------------------------------------------------------------------
 
 .container
   +container
   +susy-grid-background
+  position: relative
   min-width: 800px
 
 .fullwidth
@@ -18,48 +19,61 @@
   +full(24)
   +pad(6,6,24)
 
-body > div
+#page
   @extend .container
-  position: relative
 
-header[role="banner"]
-  @extend .fullwidth
-  +trailing-border(1px,.5)
-  border-color: #ccc
+// Banner --------------------------------------------------------------------
 
-  h1
-    +columns(3,24)
-    a
-      #{$link}
-        +padding-leader(.5,21px)
-        display: block
-        color: $base
-      #{$focus}
-        color: $accent
+[role="banner"]
+  background: rgba($blue,$xxsmall)
+  a
+    #{$link}
+      +demi
+      color: saturate(darken($alt,5),5)
+    #{$focus}
+      color: $accent
 
-nav[role="navigation"]
-  +columns(12,24)
+#brand
+  +columns(3)
+  +alpha
+  a
+    #{$link}
+      +padding-leader(.5,21px)
+      +padding-trailer(.5,21px)
+      display: block
+      color: inherit
+    #{$focus}
+      color: $accent
+
+// Navigations ---------------------------------------------------------------
+
+[role="navigation"]
+  +columns(12)
   +padding-leader(.5)
-  +text-shadow(rgba(white,.5) 1px 1px 0)
   li
     +float(left)
     margin-right: .5em
   a
     &:not([href])
-      +opacity(.5)
-      color: inherit
       cursor: default
+      color: $blue-light
     &, #{$link}
       +padding-leader(.25)
       +padding-trailer(.25)
-      +hpadding(1em)
-      +border-radius(.25em)
-    #{$focus}, &.active
-      background: rgba($base,.25)
+      +hpadding($normem)
+      +border-radius
+    #{$focus}
+      //+box-shadow(rgba($blue-hint,$xsmall) 0 -1px 0 inset)
+      //background: rgba($blue-dark,$xxsmall)
+    &.active
+      +box-shadow(rgba($blue-hint,$small) 0 -1px 0 inset)
+      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+      background: rgba($blue-dark,$xsmall)
+      color: $blue-hint
 
-nav.meta
-  +columns(9,24)
-  +omega(24)
+.meta
+  +columns(9)
+  +omega
   +padding-leader(.5)
   text-align: right
   li
@@ -71,14 +85,21 @@ nav.meta
       border: 0
       padding-right: 0
 
-nav.crumb
-  +columns(18)
-  +alpha
+.crumb
   +padding-leader(.25)
   +padding-trailer(.25)
-  clear: both
-  border-color: #ccc
+  background: rgba($blue-dark,$xsmall)
   text-transform: capitalize
+  .trail
+    @extend .fullwidth
+
+  a
+    #{$link}
+      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+      color: $blue-hint
+    #{$focus}
+      color: $accent
+
   li
     +inline-block
     vertical-align: baseline
@@ -88,14 +109,13 @@ nav.crumb
       &::after
         content: ""
       a
-        +no-style-link
+        #{$focus}
+          color: $blue-hint
 
-div[role="main"]
+[role="main"]
   @extend .fullwidth
   +pie-clearfix
-  +h-borders(1px,1)
-  border-color: #ccc
-  position: relative
+  +padding-leader
 
 .message
   @extend .sans
@@ -140,6 +160,11 @@ footer[role="contentinfo"]
   @extend .fullwidth
   +adjust-font-size-to(12px)
   +trailer(1,12px)
+  +border-radius($xsmallpx)
+  padding: rhythm(.25,12px) rhythm(1,12px)
+  background: rgba($lighter,.25)
+  color: rgba($blue-dark,$small)
+
   .author, .credit
     +columns(6, 12)
   .adr
@@ -211,6 +236,8 @@ footer[role="contentinfo"]
   +full(24)
   .logo
     +transition(all,300ms)
+    +scale3d(1,1,1)
+    +scale(1)
     width: rhythm(1)
     margin-right: rhythm(.5)
   label
@@ -218,13 +245,13 @@ footer[role="contentinfo"]
     +trailing-border(1px,.25)
     +padding-leader(.25)
     +hpadding(rhythm(.5))
-    border-color: $light
+    border-color: rgba($blue,$xxsmall)
     display: block
     font-weight: normal
     #{$focus}
       .logo
-        +scale(1.75)
         +scale3d(1.75,1.75,1.75)
+        +scale(1.75)
   input
     +gone
     &:checked
@@ -235,7 +262,7 @@ footer[role="contentinfo"]
           +scale(1.75)
           +scale3d(1.75,1.75,1.75)
   .finder
-    +pie-clearfix
+    +clearfix
     +full(24)
     +trailer
     position: relative
@@ -342,46 +369,3 @@ footer[role="contentinfo"]
     +padding-leader(.25)
   form
     +omega(24)
-
-/* sandbox -------------------------------------------------------------------
-
-.sandbox
-  +background(linear-gradient(top,rgba($blue,.25),rgba($blue,.25) rhythm(1.85),rgba($blue-dark,.25) rhythm(2),rgba($lighter,0) rhythm(2),rgba($lighter,0)) no-repeat scroll, linear-gradient(left,rgba($blue-lightest,.5),rgba($blue-lightest,.25),rgba($blue-lightest,.125),rgba($blue-lightest,.125),rgba($blue-lightest,.5)), $light image-url('noise.png'))
-  +text-shadow(rgba($lighter,.5) 0 1px 0)
-  color: rgba($blue-dark,.75)
-
-  a
-    #{$link}
-      color: saturate($blue,15)
-    #{$focus}
-      color: $red
-
-  header[role="banner"]
-    +padding-trailer(.5)
-    border: 0
-
-  div[role="main"]
-    +padding-leader
-    +padding-trailer
-    border: 0
-
-  .crumb
-    +border-radius(.25rem)
-    +box-shadow(rgba($base,.25) 0px 1px 1px inset, rgba($lighter,.75) 0px -1px 1px inset)
-    background: rgba($lighter,.25)
-    float: none
-    display: block
-    width: auto
-    margin: rhythm(.5)
-    padding: rhythm(.25) rhythm(1)
-    color: rgba($blue-dark,.5)
-
-  footer[role="contentinfo"]
-    +border-radius(.25rem)
-    +box-shadow(rgba($base,.25) 0px 1px 1px inset, rgba($lighter,.75) 0px -1px 1px inset)
-    background: rgba($lighter,.25)
-    padding: rhythm(.25,12px) rhythm(1,12px)
-    color: rgba($blue-dark,.375)
-
-#sandbox
-  @extend .simple

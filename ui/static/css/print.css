@@ -1,57 +1,106 @@
-/* colors --- */
-/* */
-/* light     : #eeeeee */
-/* dark      : #444444 */
-/* lighter   : #fbfbfb */
-/* mid       : #999999 */
-/* mid-light : #c3c3c3 */
-/* mid-dark  : #6e6e6e */
-/* */
-/* blue            : #5d7b7a */
-/* blue-light      : #8bb9b7 */
-/* blue-lighter    : #accbc9 */
-/* blue-lightest   : #cddcdb */
-/* blue-hint       : #ebf1f1 */
-/* blue-dark       : #2e3e3d */
-/* */
-/* red           : #b9292f */
-/* red-light     : #e37f83 */
-/* red-lighter   : #eca9ab */
-/* red-lightest  : #f5d2d4 */
-/* red-dark      : #511214 */
-/* */
-/* green           : #77b929 */
-/* green-light     : #b5e37f */
-/* green-lighter   : #cdeca9 */
-/* green-lightest  : #e5f5d2 */
-/* green-dark      : #4f7a1b */
-/* */
-/* yellow          : #fee58c */
-/* yellow-light    : #fef0bf */
-/* yellow-dark     : #fdc80e */
-/* yellow-darker   : #d6a702 */
-/* yellow-darkest  : #a38001 */
-/* */
-/* base            : #444444 */
-/* alt             : #5d7b7a */
-/* accent          : #b9292f */
+/* !
+ * Web Fonts from fontspring.com
+ *
+ * All OpenType features and all extended glyphs have been removed.
+ * Fully installable fonts can be purchased at http://www.fontspring.com
+ *
+ * The fonts included in this stylesheet are subject to the End User License you purchased
+ * from Fontspring. The fonts are protected under domestic and international trademark and
+ * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+ * distributing this font software.
+ *
+ * (c) 2010-2011 Fontspring
+ *
+ *
+ *
+ *
+ * The fonts included are copyrighted by the vendor listed below.
+ *
+ * Vendor:      Aviation Partners
+ * License URL: http://www.fontspring.com/fflicense/aviation-partners
+ *
+ *
+ */
+@font-face {
+  font-family: "CambridgeRoundRegular";
+  src: url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.woff') format('woff'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound') format('svg');
+}
+
+@font-face {
+  font-family: "CambridgeRoundLight";
+  src: url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.woff') format('woff'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight') format('svg');
+}
+
+@font-face {
+  font-family: "CambridgeRoundDemi";
+  src: url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff') format('woff'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold') format('svg');
+}
+
+@font-face {
+  font-family: "CambridgeRoundBold";
+  src: url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff') format('woff'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold') format('svg');
+}
+
+@font-face {
+  font-family: "CambridgeRoundItalic";
+  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.svg#CambridgeRoundItalic') format('svg');
+}
+
+@font-face {
+  font-family: "CambridgeRoundCond";
+  src: url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed') format('svg');
+}
+
 /* Print Defaults -------------------------------------------------------------- */
-nav { display: none; }
+nav {
+  display: none;
+}
 
-* { background: transparent !important; color: #444444 !important; float: none !important; text-shadow: none !important; }
+* {
+  background: transparent !important;
+  color: #444444 !important;
+  float: none !important;
+  text-shadow: none !important;
+}
 
-body { font-family: Cambria, Georgia, serif; font-size: 12pt; background: white; color: black; }
+body {
+  font-family: Cambria, Georgia, serif;
+  font-size: 12pt;
+  background: white;
+  color: black;
+}
 
-a:link, a:visited { color: #444444 !important; text-decoration: underline; }
-a:after { content: " (" attr(href) ") "; font-size: smaller; }
-a:after[href^="#"] { content: ""; display: none; }
+a:link, a:visited {
+  color: #444444 !important;
+  text-decoration: underline;
+}
+a:after {
+  content: " (" attr(href) ") ";
+  font-size: smaller;
+}
+a:after[href^="#"] {
+  content: "";
+  display: none;
+}
 
-abbr:after { content: " (" attr(title) ")"; font-size: smaller; }
+abbr:after {
+  content: " (" attr(title) ")";
+  font-size: smaller;
+}
 
-pre, blockquote, img { page-break-inside: avoid; }
+pre, blockquote, img {
+  page-break-inside: avoid;
+}
 
-@page { margin: 0.5cm; }
+@page {
+  margin: 0.5cm;
+}
 
-p, h2, h3 { orphans: 3; widows: 3; }
+p, h2, h3 {
+  orphans: 3;
+  widows: 3;
+}
 
-h2, h3 { page-break-after: avoid; }
+h2, h3 {
+  page-break-after: avoid;
+}

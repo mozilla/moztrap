@@ -55,20 +55,18 @@
 </head>
 
 <body id="client-url" class="{% block bodyclasses %}{% endblock %}">
-
 {% block body %}
-<div>
-{% block page %}
 
-  <a href="#main">skip to main content</a>
+<header role="banner">
+  <div class="container">
+    <a href="#main">skip to main content</a>
 
-  <header role="banner">
-    <h1><a href="/" rel="home">TCM</a></h1>
+    <h1 id="brand"><a href="/" rel="home">TCM</a></h1>
 
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
       <ul>
-          <li class="test"><a {% if request.user %}href="{% url products %}"{% endif %} class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+          <li class="test"><a {% if request.user %}href="{% url products %}"{% else %}href="/"{% endif %} class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
           <li class="results"><a href="{# @@@ #}/results/testcycles/" class="{% block results-active-nav %}{% endblock results-active-nav %}">View Results</a></li>
         {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
           <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
@@ -99,16 +97,24 @@
         {# @@@ <li><a href="#">Help</a></li> #}
       </ul>
     </nav>
-  </header>
+
+  </div>
 
   {% block bread %}
     <nav class="crumb">
-      <h2 class="navhead">Breadcrumb Navigation</h2>
-      <ol>
-        {% block crumb %}{% endblock crumb %}
-      </ol>
+      <div class="container">
+        <h2 class="navhead">Breadcrumb Navigation</h2>
+        <ol class="trail">
+          {% block crumb %}{% endblock crumb %}
+        </ol>
+      </div>
     </nav>
   {% endblock bread %}
+
+</header>
+
+<div id="page">
+{% block page %}
 
   {% block submeta %}
   {% endblock %}

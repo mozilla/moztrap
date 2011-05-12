@@ -82,11 +82,13 @@ html
 body
   @extend .sans
   +baseline-grid-background
+  +background(linear-gradient(left,rgba($blue-light,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xxsmall),rgba($blue,$xxsmall)), $light image-url('noise.png'))
+  +text-shadow(rgba($blue-hint,$small) 0 1px 1px)
   color: $base
 
 /* Selected Text -------------------------------------------------------------
 
-=accessible-color($background: #fff)
+=accessible-color($background: $light)
   @if lightness($background) >= 65%
     color: $base
   @else
@@ -118,6 +120,7 @@ $focus  :   "&:focus, &:hover, &:active"
 
 =link
   &, #{$link}
+    +transition((color, background-color),180ms)
     color: $alt
     text-decoration: none
   #{$link}, &:hover, &:active
@@ -139,18 +142,18 @@ a
 
 /* Headings --------------------------------------------------------------
 
-h2, h3, h4, h5, h6
-  +trailer
-
 h1
   +adjust-font-size-to(21px)
 
 h1, h2
   @extend .allcaps
-  font-weight: bold
+  +bold
+
+h2, h3, h4, h5, h6
+  +trailer
 
 h3, h4, h5, h6
-  font-weight: bold
+  +demi
 
 /* Inline --------------------------------------------------------------
 
@@ -287,3 +290,8 @@ a[href="#main"]
 // Default Modules -----------------------------------------------------------
 @import modules/tables
 @import modules/forms
+
+// Template ------------------------------------------------------------------
+
+
+

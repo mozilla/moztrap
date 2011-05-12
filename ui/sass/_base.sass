@@ -1,8 +1,46 @@
+// Sizes --------------------------------------------------------------------
+
+$ratio      : 1.618
+
+$norm       : 1
+$med        : $ratio
+$small      : $norm/$ratio
+$xsmall     : $small/$ratio
+$xxsmall    : $xsmall/$ratio
+$xxxsmall   : $xxsmall/$ratio
+$large      : $med*$ratio
+$xlarge     : $large*$ratio
+$xxlarge    : $xlarge*$ratio
+
+$normem       : 1em
+$medem        : $normem*$ratio
+$smallem      : $normem/$ratio
+$xsmallem     : $smallem/$ratio
+$xxsmallem    : $xsmallem/$ratio
+$xxxsmallem   : $xxsmallem/$ratio
+$largeem      : $medem*$ratio
+$xlargeem     : $largeem*$ratio
+$xxlargeem    : $xlargeem*$ratio
+
+$normpx       : 14px
+$medpx        : $normpx*$ratio
+$smallpx      : $normpx/$ratio
+$xsmallpx     : $smallpx/$ratio
+$xxsmallpx    : $xsmallpx/$ratio
+$xxxsmallpx   : $xxsmallpx/$ratio
+$largepx      : $medpx*$ratio
+$xlargepx     : $largepx*$ratio
+$xxlargepx    : $xlargepx*$ratio
+
+$base-font-size: $normpx
+$base-line-height: $medpx
+
 // Imports -------------------------------------------------------------------
 
 @import compass
 @import compass/layout
 @import susy
+//@import comments
 
 // Support -------------------------------------------------------------------
 
@@ -18,11 +56,6 @@ $grid-background-gutter-color   : rgba(0, 0, 0, 0)
 $show-column-grid-backgrounds   : true
 $show-baseline-grid-backgrounds : false
 $show-grid-backgrounds          : false
-
-// Font Sizes ----------------------------------------------------------------
-
-$base-font-size: 14px
-$base-line-height: 21px
 
 // Grid ----------------------------------------------------------------------
 
@@ -40,12 +73,13 @@ $mid: mix($light,$dark)
 $mid-light: mix($light,$dark,75%)
 $mid-dark: mix($light,$dark,25%)
 
-$blue: #5d7b7a
-$blue-light: #8bb9b7
-$blue-lighter: mix($blue-light,#eee,66%)
-$blue-lightest: mix($blue-light,#eee,33%)
+$blue: saturate(#5d7b7a,10)
+$blue-light: mix($blue,$light,66%)
+$blue-lighter: mix($blue-light,$light,66%)
+$blue-lightest: mix($blue-light,$light,33%)
 $blue-hint: lighten($blue-lightest,10)
-$blue-dark: #2e3e3d
+$blue-dark: mix($blue,$dark)
+$blue-darker: mix($blue-dark,$dark)
 
 $red: #b9292f
 $red-light: lighten($red,25)
@@ -67,50 +101,59 @@ $yellow-darkest: darken($yellow,45)
 
 $base: $dark
 $alt: $blue
-$accent: $red
-
-//! colors ---
-
-  light     : #{$light}
-  dark      : #{$dark}
-  lighter   : #{$lighter}
-  mid       : #{$mid}
-  mid-light : #{$mid-light}
-  mid-dark  : #{$mid-dark}
-
-  blue            : #{$blue}
-  blue-light      : #{$blue-light}
-  blue-lighter    : #{$blue-lighter}
-  blue-lightest   : #{$blue-lightest}
-  blue-hint       : #{$blue-hint}
-  blue-dark       : #{$blue-dark}
-
-  red           : #{$red}
-  red-light     : #{$red-light}
-  red-lighter   : #{$red-lighter}
-  red-lightest  : #{$red-lightest}
-  red-dark      : #{$red-dark}
-
-  green           : #{$green}
-  green-light     : #{$green-light}
-  green-lighter   : #{$green-lighter}
-  green-lightest  : #{$green-lightest}
-  green-dark      : #{$green-dark}
-
-  yellow          : #{$yellow}
-  yellow-light    : #{$yellow-light}
-  yellow-dark     : #{$yellow-dark}
-  yellow-darker   : #{$yellow-darker}
-  yellow-darkest  : #{$yellow-darkest}
-
-  base            : #{$dark}
-  alt             : #{$blue}
-  accent          : #{$red}
+$accent: $red-dark
 
 // Fonts ---------------------------------------------------------------------
+/* !
+ * Web Fonts from fontspring.com
+ *
+ * All OpenType features and all extended glyphs have been removed.
+ * Fully installable fonts can be purchased at http://www.fontspring.com
+ *
+ * The fonts included in this stylesheet are subject to the End User License you purchased
+ * from Fontspring. The fonts are protected under domestic and international trademark and
+ * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+ * distributing this font software.
+ *
+ * (c) 2010-2011 Fontspring
+ *
+ *
+ *
+ *
+ * The fonts included are copyrighted by the vendor listed below.
+ *
+ * Vendor:      Aviation Partners
+ * License URL: http://www.fontspring.com/fflicense/aviation-partners
+ *
+ *
+ */
+
++font-face('CambridgeRoundRegular', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg))
++font-face('CambridgeRoundLight', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg))
++font-face('CambridgeRoundDemi', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg))
++font-face('CambridgeRoundBold', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg))
++font-face('CambridgeRoundItalic', font-files('cambridgeround_italic_macroman/cambridge_round_italic-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_italic-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_italic-webfont.svg#CambridgeRoundItalic',svg))
++font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg))
+
+$sans-fallback: "Helvetica Neue", Helvetica, Arial, sans-serif
 
 =sans-family
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif
+  font-family: "CambridgeRoundRegular", $sans-fallback
+
+=light
+  font-family: "CambridgeRoundLight", $sans-fallback
+
+=bold
+  font-family: "CambridgeRoundBold", $sans-fallback
+
+=demi
+  font-family: "CambridgeRoundDemi", $sans-fallback
+
+=italic
+  font-family: "CambridgeRoundItalic", $sans-fallback
+
+=condensed
+  font-family: "CambridgeRoundCond", $sans-fallback
 
 =serif-family
   font-family: Cambria, Georgia, serif
@@ -118,7 +161,11 @@ $accent: $red
 =monospace-family
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif
 
-// MIXINS --------------------------------------------------------------------
+// Defaults ------------------------------------------------------------------
+
+$default-border-radius  : $xxsmallem
+
+// Mixins --------------------------------------------------------------------
 
 =hpadding($l:$gutter-width,$r:$l)
   padding:
@@ -134,3 +181,7 @@ $accent: $red
   height: 1px
   width: 1px
   border: 0
+
+=inlay
+  +border-radius
+  +box-shadow(rgba($blue-hint,.75) 0 -1px 1px 1px inset, rgba($blue-dark,.5) 0 1px 1px 1px inset)
