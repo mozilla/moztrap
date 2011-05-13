@@ -97,6 +97,8 @@ class TestRun(Activatable, RemoteObject):
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
     testsuites = fields.Link(TestSuiteList)
+    resultstatus = fields.Link(
+        CategoryValueInfoList, api_name="reports/coverage/resultstatus")
 
 
     def __unicode__(self):
@@ -169,6 +171,10 @@ class TestRun(Activatable, RemoteObject):
             update_from_response=obj,
             **kwargs)
         return obj
+
+
+    def resultsummary(self):
+        return self.resultstatus.to_dict(TestResultStatus)
 
 
 
