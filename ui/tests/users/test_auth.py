@@ -47,7 +47,6 @@ class UserCredentialsTest(CredentialsTest, UserTestCase):
                     "permission", "Permission",
                     *make_list(
                         "permission",
-                        None,
                         {
                             "assignable": True,
                             "name": "",

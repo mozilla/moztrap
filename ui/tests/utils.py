@@ -106,7 +106,7 @@ class ResourceTestCase(AuthTestCase):
 
     def _make_list(self, *dicts):
         return make_list(
-            self.RESOURCE_NAME, self.RESOURCE_DEFAULTS, *dicts)
+            self.RESOURCE_NAME, *dicts, defaults=self.RESOURCE_DEFAULTS)
 
 
 
