@@ -180,7 +180,7 @@ var TCM = TCM || {};
                     $('.loading').removeClass("loading");
                 }
             );
-            $('section.runs ul').empty();
+            $('section.runs ul, section.cycles ul').empty();
             environments.slideUp();
             context.find('section.products, section.runs').removeClass('focus');
             context.find('section.cycles').addClass('focus');
@@ -286,6 +286,7 @@ var TCM = TCM || {};
                     $('.loading').removeClass("loading");
                 }
             );
+            $('section.runs ul').empty();
             environments.slideUp();
             context.find('section.products, section.cycles').removeClass('focus');
             context.find('section.runs').addClass('focus');
