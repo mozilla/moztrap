@@ -81,6 +81,12 @@ def make_identity(id="1", url="some/url", version="0"):
         }
 
 
+def make_locator(id="1", url="some/url"):
+    return {
+        "@id": str(id),
+        "@url": join(conf.TCM_API_BASE, url),
+        "@xsi.type":"ns1:ResourceLocator"}
+
 
 def make_timeline(createDate=None, createdBy="1",
                   lastChangeDate=None, lastChangedBy="1"):

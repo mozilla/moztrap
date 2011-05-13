@@ -1,3 +1,4 @@
+from ..responses import make_locator
 from ..utils import ResourceTestCase
 
 
@@ -5,6 +6,7 @@ from ..utils import ResourceTestCase
 class UserTestCase(ResourceTestCase):
     RESOURCE_DEFAULTS = {
         "companyId": 1,
+        "companyLocator": make_locator(id=1, url="companies/1"),
         "email": "test@example.com",
         "firstName": "Test",
         "lastName": "Person",
