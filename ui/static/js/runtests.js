@@ -65,14 +65,18 @@ var TCM = TCM || {};
     var selectRuns = function(context, environments) {
         var context = $(context),
             environments = $(environments).hide(),
-            products = context.find('input[name="product"]'),
-            cycles = context.find('input[name="cycle"]'),
-            runs = context.find('input[name="run"]'),
+            products = context.find('input[name="product"]:not(".selected")'),
+            cycles = context.find('input[name="cycle"]:not(".selected")'),
+            runs = context.find('input[name="run"]:not(".selected")'),
             headers = context.find('h3 > a').click(function() {
                 context.find('section').removeClass('focus');
                 $(this).closest('section').addClass('focus');
                 $(this).blur();
-            });
+            }),
+            addSelectedClass = function() {
+                context.find('input:checked').addClass('selected');
+                context.find('input:not(:checked)').removeClass('selected');
+            };
         context.find('header').each(function() {
             var scrollbarWidth = $(this).closest('section').css('width') - $(this).children('li').css('width');
             $(this).css('right', scrollbarWidth);
@@ -165,21 +169,22 @@ var TCM = TCM || {};
                                 '</label>' +
                             '</li>';
                     }
-                    callback(response);
+                    function callbackfn() { callback(response); }
+                    window.setTimeout(callbackfn, 300);
                 };
             fakeAjaxCall(
                 productName,
                 function(data) {
                     $('section.cycles ul').html(data);
-                    $('section.runs ul').empty();
+                    $('.loadingCSS').detach();
+                    $('.loading').removeClass("loading");
                 }
             );
-            $(this).closest('section.products').removeClass('focus');
-            context.find('section.runs').removeClass('focus');
-            context.find('section.cycles').addClass('focus');
+            $('section.runs ul').empty();
             environments.slideUp();
-            context.find('input:checked').addClass('selected');
-            context.find('input:not(:checked)').removeClass('selected');
+            context.find('section.products, section.runs').removeClass('focus');
+            context.find('section.cycles').addClass('focus');
+            addSelectedClass();
         });
         cycles.live('click', function() {
             var productName = $(this).data('product'),
@@ -269,31 +274,44 @@ var TCM = TCM || {};
                                 '</label>' +
                             '</li>';
                     }
-                    callback(response);
+                    function callbackfn() { callback(response); }
+                    window.setTimeout(callbackfn, 300);
                 };
             fakeAjaxCall(
                 productName,
                 cycleNumber,
                 function(data) {
                     $('section.runs ul').html(data);
+                    $('.loadingCSS').detach();
+                    $('.loading').removeClass("loading");
                 }
             );
-            $(this).closest('section.cycles').removeClass('focus');
-            context.find('section.products').removeClass('focus');
-            context.find('section.runs').addClass('focus');
             environments.slideUp();
-            context.find('input:checked').addClass('selected');
-            context.find('input:not(:checked)').removeClass('selected');
+            context.find('section.products, section.cycles').removeClass('focus');
+            context.find('section.runs').addClass('focus');
+            addSelectedClass();
         });
         runs.live('click', function() {
             environments.slideDown();
-            context.find('input:checked').addClass('selected');
-            context.find('input:not(:checked)').removeClass('selected');
+            addSelectedClass();
         });
         $('input.selected').live('click', function() {
             context.find('section').removeClass('focus');
             $(this).closest('section').addClass('focus');
         });
+        var addLoading = function(trigger, target) {
+            $(trigger).live('click', function() {
+                var container = $(this).closest(target).next(target),
+                    addLoadingCSS = function() {
+                        var vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
+                            style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+                        $('head').append(style);
+                    };
+                container.addClass('loading');
+                addLoadingCSS();
+            });
+        };
+        addLoading('input[name="product"]:not(".selected"), input[name="cycle"]:not(".selected")', 'section.col');
     };
 
     $(function() {
