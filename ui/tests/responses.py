@@ -67,7 +67,9 @@ def make_list(resource_type, *dicts, **kwargs):
     defaults = kwargs.pop("defaults", None)
     ret = []
     for i, info in enumerate(dicts):
-        info.setdefault("resourceIdentity", make_identity(id=i+1))
+        if kwargs.get("add_identity", True):
+            info.setdefault("resourceIdentity", make_identity(id=i+1))
+        info.update(kwargs)
         ret.append(make_one(resource_type, defaults=defaults, **info))
     return ret
 

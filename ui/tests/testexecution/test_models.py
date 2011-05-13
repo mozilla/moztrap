@@ -1,6 +1,7 @@
 from mock import patch
 
-from ..responses import response, make_locator, make_identity, make_boolean
+from ..responses import (
+    response, make_locator, make_identity, make_boolean, make_array, make_one)
 from ..utils import BaseResourceTest, ResourceTestCase
 
 
@@ -106,3 +107,30 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
             req["uri"], "http://fake.base/rest/testcycles/1/clone?_type=json")
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=True")
+
+
+    def test_resultsummary(self, http):
+        http.request.return_value = response(self.make_one(
+                resourceIdentity=make_identity(url="testcycles/1")))
+
+        c = self.resource_class.get("testcycles/1")
+
+        http.request.return_value = response(
+            make_array(
+                "CategoryValueInfo",
+                "CategoryValueInfo",
+                make_one(
+                    "CategoryValueInfo", categoryName=1, categoryValue=159),
+                make_one(
+                    "CategoryValueInfo", categoryName=5, categoryValue=1)))
+
+        self.assertEqual(
+            c.resultsummary(),
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 0,
+                "PENDING": 159,
+                "STARTED": 1,
+                })

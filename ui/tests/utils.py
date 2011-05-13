@@ -37,6 +37,8 @@ class AuthTestCase(TestCase):
 
 class ResourceTestCase(AuthTestCase):
     RESOURCE_DEFAULTS = {}
+    RESOURCE_ADD_IDENTITY = True
+    RESOURCE_ADD_TIMELINE = True
 
 
     @property
@@ -67,6 +69,8 @@ class ResourceTestCase(AuthTestCase):
 
 
     def make_one(self, **kwargs):
+        kwargs.setdefault("add_identity", self.RESOURCE_ADD_IDENTITY)
+        kwargs.setdefault("add_timeline", self.RESOURCE_ADD_TIMELINE)
         return {
             "ns1.%s" % self.RESOURCE_NAME: [
                 make_one(
@@ -106,7 +110,11 @@ class ResourceTestCase(AuthTestCase):
 
     def _make_list(self, *dicts):
         return make_list(
-            self.RESOURCE_NAME, *dicts, defaults=self.RESOURCE_DEFAULTS)
+            self.RESOURCE_NAME,
+            *dicts,
+            defaults=self.RESOURCE_DEFAULTS,
+            add_identity=self.RESOURCE_ADD_IDENTITY,
+            add_timeline=self.RESOURCE_ADD_TIMELINE)
 
 
 

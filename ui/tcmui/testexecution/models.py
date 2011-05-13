@@ -6,9 +6,11 @@ testing.
 from django.core.urlresolvers import reverse
 
 from ..core.api import Activatable, RemoteObject, ListObject, fields
+from ..core.models import CategoryValueInfoList
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
+from ..static.status import TestResultStatus
 from ..testcases.models import (
     TestCase, TestCaseVersion, TestSuite, TestSuiteList,
     TestSuiteIncludedTestCase)
@@ -31,6 +33,8 @@ class TestCycle(Activatable, RemoteObject):
     environmentgroups = fields.Link(EnvironmentGroupList)
     testruns = fields.Link("TestRunList")
     team = fields.Link(Team, api_name="team/members")
+    resultstatus = fields.Link(
+        CategoryValueInfoList, api_name="reports/coverage/resultstatus")
 
 
     def __unicode__(self):
@@ -58,6 +62,10 @@ class TestCycle(Activatable, RemoteObject):
             update_from_response=obj,
             **kwargs)
         return obj
+
+
+    def resultsummary(self):
+        return self.resultstatus.to_dict(TestResultStatus)
 
 
 
