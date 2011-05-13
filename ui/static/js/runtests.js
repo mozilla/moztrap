@@ -329,6 +329,10 @@ var TCM = TCM || {};
             }
         );
         selectRuns('#selectruns', '#selectruns + #environment');
+        $('#sandbox a.findertoggle').click(function() {
+            $(this).add('#sandbox .finder').toggleClass('expanded').toggleClass('compact');
+            return false;
+        });
     });
 
 })(jQuery);
