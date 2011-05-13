@@ -27,6 +27,12 @@ def main(basedir, cover_all=False):
             py_files.extend([os.path.join(dirpath, fn)
                              for fn in filenames if fn.endswith(".py")])
         report_kw["morfs"] = py_files
+        report_kw["omit"] = [
+            # non-default settings files aren't exercised in tests
+            "tcmui/settings.py",
+            "tcmui/settings_local.py",
+            "tcmui/settings_local.sample.py"
+            ]
     else:
         report_kw["include"] = ["tcmui/*"]
     cov.html_report(**report_kw)
