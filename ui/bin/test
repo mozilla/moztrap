@@ -17,7 +17,9 @@ def main(basedir, cover_all=False):
     ut = unittest_main(module=None, exit=False)
     cov.stop()
 
-    report_kw = {"directory": "coverage"}
+    report_kw = {
+        "directory": "coverage",
+        "include": ["tests/responses.py", "tests/utils.py"]}
     if cover_all:
         # include all python modules under tcmui in report, including even those
         # the tests don't cause to be imported at all yet, so as to get a more
@@ -34,7 +36,7 @@ def main(basedir, cover_all=False):
             "tcmui/settings_local.sample.py"
             ]
     else:
-        report_kw["include"] = ["tcmui/*"]
+        report_kw["include"].append("tcmui/*")
     cov.html_report(**report_kw)
 
 

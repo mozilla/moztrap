@@ -27,6 +27,3 @@ class UserTestCase(ResourceTestCase):
     def get_resource_list_class(self):
         from tcmui.users.models import UserList
         return UserList
-
-
-
