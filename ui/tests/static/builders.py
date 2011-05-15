@@ -9,7 +9,6 @@ codevalues = ListBuilder(
         "description": "Draft",
         "id": 1,
         "sortOrder": 0,
-
-        "add_identity": False,
-        "add_timeline": False,
-        })
+        },
+    add_identity=False,
+    add_timeline=False)

@@ -192,6 +192,7 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
 
     assignments = fields.Link("TestCaseAssignmentList")
 
+
     def assign(self, tester, **kwargs):
         payload = {"testerId": tester.id}
         assignment = TestCaseAssignment()
@@ -202,6 +203,18 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
             **kwargs)
         assignment.auth = self.auth
         return assignment
+
+
+    def resultsummary(self):
+        # @@@ this would better be done platform-side
+        base = dict([(ev.enumname, 0) for ev in TestResultStatus])
+
+        results = TestResultList.get(auth=self.auth).filter(
+            testRun=self.testRun.id,
+            testCaseVersion=self.testCaseVersion.id)
+        for result in results:
+            base[result.status.status.enumname] += 1
+        return base
 
 
 

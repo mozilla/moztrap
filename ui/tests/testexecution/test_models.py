@@ -2,6 +2,7 @@ from mock import patch
 
 from ..core.builders import cvis
 from ..responses import make_identity, response, make_boolean
+from ..static.builders import codevalues
 from ..utils import BaseResourceTest, ResourceTestCase
 from .builders import testcycles, testruns, testrunitcs, testresults
 
@@ -220,5 +221,62 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
                 "INVALIDATED": 0,
                 "PASSED": 0,
                 "PENDING": 159,
+                "STARTED": 1,
+                })
+
+
+
+@patch("tcmui.core.api.userAgent")
+class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
+    def get_resource_class(self):
+        from tcmui.testexecution.models import TestRunIncludedTestCase
+        return TestRunIncludedTestCase
+
+
+    def get_resource_list_class(self):
+        from tcmui.testexecution.models import TestRunIncludedTestCaseList
+        return TestRunIncludedTestCaseList
+
+
+    def test_resultsummary(self, http):
+        http.request.return_value = response(testrunitcs.one(
+                resourceIdentity=make_identity(url="testruns/1")))
+
+        c = self.resource_class.get("testruns/1")
+        c.deliver()
+
+        # set up responses for both results list and result status static data
+        def request(*args, **kwargs):
+            uri = kwargs["uri"]
+            if "/results" in uri:
+                return response(
+                    testresults.searchresult(
+                        {"testRunResultStatusId": 1},
+                        {"testRunResultStatusId": 1},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 5},
+                        ))
+            return response(
+                codevalues.array(
+                    {"description": "PENDING", "id": 1},
+                    {"description": "PASSED", "id": 2},
+                    {"description": "FAILED", "id": 3},
+                    {"description": "BLOCKED", "id": 4},
+                    {"description": "STARTED", "id": 5},
+                    {"description": "INVALIDATED", "id": 6},
+                    ))
+
+        http.request.side_effect = request
+
+        self.assertEqual(
+            c.resultsummary(),
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 3,
+                "PENDING": 2,
                 "STARTED": 1,
                 })
