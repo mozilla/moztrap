@@ -104,6 +104,8 @@ def make_timeline(createDate=None, createdBy="1",
 
 
 def make_boolean(val):
+    if val is None:
+        return { "@xsi.nil": "true" }
     return {
         "xsd.boolean":
             [{"@xsi.type":"xsd:boolean","$":"true" if val else "false"}]

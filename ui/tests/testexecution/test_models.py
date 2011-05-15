@@ -1,30 +1,14 @@
 from mock import patch
 
-from ..responses import (
-    response, make_locator, make_identity, make_boolean, make_array, make_one)
+from ..core.builders import cvis
+from ..responses import make_identity, response, make_boolean
 from ..utils import BaseResourceTest, ResourceTestCase
+from .builders import testcycles, testruns, testrunitcs, testresults
 
 
 
 @patch("tcmui.core.api.userAgent")
 class TestCycleTest(BaseResourceTest, ResourceTestCase):
-    RESOURCE_DEFAULTS = {
-        "communityAccessAllowed": False,
-        "communityAuthoringAllowed": False,
-        "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
-        "description": "",
-        "name": "Default Test Cycle",
-        "productId": 1,
-        "productLocator": make_locator(id=1, url="products/1"),
-        "startDate": "2011-01-01T00:00:00Z",
-        "testCycleStatusId": 1,
-        }
-
-
-    RESOURCE_NAME = "testcycle"
-
-
     def get_resource_class(self):
         from tcmui.testexecution.models import TestCycle
         return TestCycle
@@ -37,20 +21,20 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
 
     def test_unicode(self, http):
         c = self.resource_class()
-        c.update_from_dict(self.make_one(name="The Test Cycle"))
+        c.update_from_dict(testcycles.one(name="The Test Cycle"))
 
         self.assertEqual(unicode(c), u"The Test Cycle")
 
 
     def test_get_absolute_url(self, http):
         c = self.resource_class()
-        c.update_from_dict(self.make_one(resourceIdentity=make_identity(id=2)))
+        c.update_from_dict(testcycles.one(resourceIdentity=make_identity(id=2)))
 
         self.assertEqual(c.get_absolute_url(), "/cycle/2/")
 
 
     def test_approveallresults(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
 
         c = self.resource_class.get("testcycles/1")
@@ -67,12 +51,12 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_clone(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
 
         c = self.resource_class.get("testcycles/1")
 
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 name="Cloned Test Cycle",
                 resourceIdentity=make_identity(id=2, url="testcycles/2")))
 
@@ -88,12 +72,12 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_clone_assignments(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
 
         c = self.resource_class.get("testcycles/1")
 
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 name="Cloned Test Cycle",
                 resourceIdentity=make_identity(id=2, url="testcycles/2")))
 
@@ -109,19 +93,15 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_resultsummary(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
 
         c = self.resource_class.get("testcycles/1")
 
         http.request.return_value = response(
-            make_array(
-                "CategoryValueInfo",
-                "CategoryValueInfo",
-                make_one(
-                    "CategoryValueInfo", categoryName=1, categoryValue=159),
-                make_one(
-                    "CategoryValueInfo", categoryName=5, categoryValue=1)))
+            cvis.array(
+                    {"categoryName": 1, "categoryValue": 159},
+                    {"categoryName": 5, "categoryValue": 1}))
 
         self.assertEqual(
             c.resultsummary(),
@@ -138,27 +118,6 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
 
 @patch("tcmui.core.api.userAgent")
 class TestRunTest(BaseResourceTest, ResourceTestCase):
-    RESOURCE_DEFAULTS = {
-        "autoAssignToTeam": True,
-        "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
-        "name": "Default Test Run",
-        "productId": 1,
-        "productLocator": make_locator(id=1, url="products/1"),
-        "selfAssignAllowed": True,
-        "selfAssignLimit": 0,
-        "selfAssignPerEnvironment": False,
-        "startDate": "2011-01-01T00:00:00Z",
-        "testCycleId": 1,
-        "testCycleLocator": make_locator(id=1, url="testcycles/1"),
-        "testRunStatusId": 1,
-        "useLatestVersions": False,
-        }
-
-
-    RESOURCE_NAME = "testrun"
-
-
     def get_resource_class(self):
         from tcmui.testexecution.models import TestRun
         return TestRun
@@ -171,20 +130,20 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
 
     def test_unicode(self, http):
         c = self.resource_class()
-        c.update_from_dict(self.make_one(name="The Test Run"))
+        c.update_from_dict(testruns.one(name="The Test Run"))
 
         self.assertEqual(unicode(c), u"The Test Run")
 
 
     def test_get_absolute_url(self, http):
         c = self.resource_class()
-        c.update_from_dict(self.make_one(resourceIdentity=make_identity(id=2)))
+        c.update_from_dict(testruns.one(resourceIdentity=make_identity(id=2)))
 
         self.assertEqual(c.get_absolute_url(), "/run/2/")
 
 
     def test_approveallresults(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 resourceIdentity=make_identity(url="testruns/1")))
 
         c = self.resource_class.get("testruns/1")
@@ -201,12 +160,12 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_clone(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 resourceIdentity=make_identity(url="testruns/1")))
 
         c = self.resource_class.get("testruns/1")
 
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 name="Cloned Test Run",
                 resourceIdentity=make_identity(id=2, url="testruns/2")))
 
@@ -222,12 +181,12 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_clone_assignments(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 resourceIdentity=make_identity(url="testruns/1")))
 
         c = self.resource_class.get("testruns/1")
 
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 name="Cloned Test Cycle",
                 resourceIdentity=make_identity(id=2, url="testruns/2")))
 
@@ -243,19 +202,15 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_resultsummary(self, http):
-        http.request.return_value = response(self.make_one(
+        http.request.return_value = response(testruns.one(
                 resourceIdentity=make_identity(url="testruns/1")))
 
         c = self.resource_class.get("testruns/1")
 
         http.request.return_value = response(
-            make_array(
-                "CategoryValueInfo",
-                "CategoryValueInfo",
-                make_one(
-                    "CategoryValueInfo", categoryName=1, categoryValue=159),
-                make_one(
-                    "CategoryValueInfo", categoryName=5, categoryValue=1)))
+            cvis.array(
+                    {"categoryName": 1, "categoryValue": 159},
+                    {"categoryName": 5, "categoryValue": 1}))
 
         self.assertEqual(
             c.resultsummary(),

@@ -2,25 +2,35 @@ from mock import patch
 
 from ..core.test_cache import CachingFunctionalTestMixin
 from ..responses import response
-from ..utils import BaseResourceTest
-from .base import UserTestCase
+from ..utils import ResourceTestCase, BaseResourceTest
+from .builders import users
 
 
 
 @patch("tcmui.core.api.userAgent")
-class UserTest(CachingFunctionalTestMixin, BaseResourceTest, UserTestCase):
+class UserTest(CachingFunctionalTestMixin, BaseResourceTest, ResourceTestCase):
+    def get_resource_class(self):
+        from tcmui.users.models import User
+        return User
+
+
+    def get_resource_list_class(self):
+        from tcmui.users.models import UserList
+        return UserList
+
+
     def test_current_caches_for_same_user(self, http):
         jane_auth = self.creds("jane@example.com")
         jim_auth = self.creds("jim@example.com")
 
         http.request.return_value = response(
-            self.make_one(email="jane@example.com"))
+            users.one(email="jane@example.com"))
 
         jane1 = self.resource_class.current(auth=jane_auth)
         jane1.deliver()
 
         http.request.return_value = response(
-            self.make_one(email="jim@example.com"))
+            users.one(email="jim@example.com"))
 
         jim = self.resource_class.current(auth=jim_auth)
         jim.deliver()
@@ -38,7 +48,7 @@ class UserTest(CachingFunctionalTestMixin, BaseResourceTest, UserTestCase):
         jane_auth = self.creds("jane@example.com")
 
         http.request.return_value = response(
-            self.make_one(email="jane@example.com"))
+            users.one(email="jane@example.com"))
 
         jane1 = self.resource_class.current(auth=jane_auth)
         jane1.deliver()

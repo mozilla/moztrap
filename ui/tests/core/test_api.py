@@ -4,6 +4,7 @@ import httplib
 from mock import patch
 from unittest2 import TestCase
 
+from ..builder import ListBuilder
 from ..responses import response, make_identity, make_boolean, FakeResponse
 from ..utils import ResourceTestCase
 
@@ -44,9 +45,11 @@ class UrlFinalIntegerTestCase(TestCase):
 
 
 class TestResourceTestCase(ResourceTestCase):
-    RESOURCE_DEFAULTS = {
-        "name": "Default name",
-        }
+    builder = ListBuilder(
+        "testresource",
+        "testresources",
+        "Testresource",
+        { "name": "Default name" })
 
 
     def get_resource_class(self):
@@ -84,7 +87,7 @@ class TestResourceTestCase(ResourceTestCase):
 class ResourceObjectTest(TestResourceTestCase):
     def test_get_data(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("testresources/1", auth=self.auth)
 
@@ -93,7 +96,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_unicode_conversion(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("testresources/1", auth=self.auth)
 
@@ -107,7 +110,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_get_url(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
@@ -119,7 +122,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_user_agent(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("testresources/1", auth=self.auth)
         c.deliver()
@@ -130,7 +133,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_get_id(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test TestResource",
                 resourceIdentity=make_identity(id="3")))
 
@@ -141,7 +144,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_get_location(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test TestResource",
                 resourceIdentity=make_identity(url="testresources/3/")))
 
@@ -159,7 +162,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_no_auth_no_auth_headers(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("testresources/1")
         c.deliver()
@@ -171,7 +174,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_auth_headers_password(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get(
             "testresources/1",
@@ -185,7 +188,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_auth_headers_cookie(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get(
             "testresources/1",
@@ -199,7 +202,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_get_persists_auth(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         creds = self.creds("user@example.com", cookie="USERTOKEN: blah")
 
@@ -211,7 +214,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_persisted_auth_used(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get(
             "testresources/1",
@@ -229,7 +232,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_get_full_url(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_class.get("http://some.other.url/testresources/1")
         c.deliver()
@@ -324,7 +327,7 @@ class ResourceObjectTest(TestResourceTestCase):
             FakeResponse(
                 httplib.OK,
                 headers={"content-type": "application/json"}),
-            unicode(json.dumps(self.make_one(name="Test TestResource")))
+            unicode(json.dumps(self.builder.one(name="Test TestResource")))
             )
 
         c = self.resource_class.get("testresources/1", auth=self.auth)
@@ -352,7 +355,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
 
     def test_cache_attribute_non_GET(self, http):
-        http.request.return_value = response(self.make_one())
+        http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
         with patch.object(self.resource_class, "cache", True):
             with patch("tcmui.core.cache.CachingHttpWrapper.request") as mock:
@@ -363,7 +366,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
 
     def test_cache_attribute_as_bucketname_non_GET(self, http):
-        http.request.return_value = response(self.make_one())
+        http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
         with patch.object(self.resource_class, "cache", "altbucket"):
             with patch("tcmui.core.api.CachingHttpWrapper") as mock:
@@ -375,7 +378,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_delivered_repr(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test Thing",
                 resourceIdentity=make_identity(
                     url="testresources/1")))
@@ -389,7 +392,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_undelivered_repr(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test Thing",
                 resourceIdentity=make_identity(
                     url="testresources/1")))
@@ -417,7 +420,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_put(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test TestResource",
                 resourceIdentity=make_identity(
                     version=u"0",
@@ -427,7 +430,7 @@ class ResourceObjectTest(TestResourceTestCase):
         c.deliver()
 
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="New name",
                 resourceIdentity=make_identity(
                     version=u"1",
@@ -455,7 +458,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_refresh(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test TestResource",
                 resourceIdentity=make_identity(
                     version=u"0",
@@ -465,7 +468,7 @@ class ResourceObjectTest(TestResourceTestCase):
         c.deliver()
 
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="New name",
                 resourceIdentity=make_identity(
                     version=u"1",
@@ -485,7 +488,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_delete(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test TestResource",
                 resourceIdentity=make_identity(
                     url="testresources/1")))
@@ -516,7 +519,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_request_with_url(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test name"))
+            self.builder.one(name="Test name"))
 
         c = self.resource_class.get("testresources/1")
         c._request("PUT", url="testresources/1/something")
@@ -536,14 +539,14 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_request_version_other_object(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Test two", resourceIdentity=make_identity(
                     id=2, version=1)))
         two = self.resource_class.get("testresources/2")
         two.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="Test one"))
+            self.builder.one(name="Test one"))
         one = self.resource_class.get("testresources/1")
 
         one._request("PUT", version_payload=two)
@@ -554,7 +557,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_request_no_version(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test one"))
+            self.builder.one(name="Test one"))
         one = self.resource_class.get("testresources/1")
 
         one._request("PUT", version_payload=False)
@@ -565,7 +568,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_request_json_body(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test one"))
+            self.builder.one(name="Test one"))
         one = self.resource_class.get("testresources/1")
 
         one._request("PUT", default_content_type="application/json")
@@ -576,7 +579,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_request_unsupported_content_type(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test one"))
+            self.builder.one(name="Test one"))
         one = self.resource_class.get("testresources/1")
 
         with self.assertRaises(ValueError):
@@ -613,7 +616,7 @@ class ResourceObjectTest(TestResourceTestCase):
 class ListObjectTest(TestResourceTestCase):
     def test_get_searchresult_empty(self, http):
         http.request.return_value = response(
-            self.make_searchresult())
+            self.builder.searchresult())
 
         c = self.resource_list_class.get(auth=self.auth)
 
@@ -622,7 +625,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_searchresult_one(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth)
 
@@ -631,7 +634,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_searchresult_multiple(self, http):
         http.request.return_value = response(
-            self.make_searchresult(
+            self.builder.searchresult(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -642,7 +645,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_totalResults(self, http):
         http.request.return_value = response(
-            self.make_searchresult(
+            self.builder.searchresult(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -655,7 +658,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_array_empty(self, http):
         http.request.return_value = response(
-            self.make_array())
+            self.builder.array())
 
         c = self.resource_list_class.get(auth=self.auth)
 
@@ -664,7 +667,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_array_one(self, http):
         http.request.return_value = response(
-            self.make_array({"name":"Test TestResource"}))
+            self.builder.array({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth)
 
@@ -673,7 +676,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_array_multiple(self, http):
         http.request.return_value = response(
-            self.make_array(
+            self.builder.array(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -684,7 +687,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_with_url(self, http):
         http.request.return_value = response(
-            self.make_array({"name":"Test TestResource"}))
+            self.builder.array({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get("alt-testresources/", auth=self.auth)
 
@@ -696,7 +699,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_get_by_id(self, http):
         http.request.return_value = response(
-            self.make_one(name="Test TestResource"))
+            self.builder.one(name="Test TestResource"))
 
         c = self.resource_list_class.get_by_id(1, auth=self.auth)
 
@@ -724,7 +727,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_iteration_assigns_auth(self, http):
         http.request.return_value = response(
-            self.make_array(
+            self.builder.array(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -742,13 +745,13 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_post(self, http):
         http.request.return_value = response(
-            self.make_searchresult())
+            self.builder.searchresult())
 
         lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="The Thing"))
+            self.builder.one(name="The Thing"))
 
         new = self.resource_class(name="The Thing")
 
@@ -771,13 +774,13 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_post_does_not_replace_auth(self, http):
         http.request.return_value = response(
-            self.make_searchresult())
+            self.builder.searchresult())
 
         lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="New Thing"))
+            self.builder.one(name="New Thing"))
 
         new = self.resource_class(name="New Thing")
         new.auth = new_auth = self.creds("other@example.com", password="other")
@@ -789,7 +792,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_put(self, http):
         http.request.return_value = response(
-            self.make_array(
+            self.builder.array(
                 {"name": "Test TestResource"},
                 {"name": "Second Test"}))
 
@@ -857,7 +860,7 @@ class ListObjectTest(TestResourceTestCase):
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_pagenumber(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).paginate(
             pagenumber=2)
@@ -872,7 +875,7 @@ class ListObjectTest(TestResourceTestCase):
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_pagesize(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).paginate(
             pagesize=5)
@@ -887,7 +890,7 @@ class ListObjectTest(TestResourceTestCase):
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_both(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).paginate(
             pagesize=5, pagenumber=2)
@@ -909,7 +912,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_sort_default(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).sort("name")
         c.deliver()
@@ -922,7 +925,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_sort_direction(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).sort("name", "desc")
         c.deliver()
@@ -935,7 +938,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_filter(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource",
+            self.builder.searchresult({"name":"Test TestResource",
                                                 "submitAs": "testval"}))
 
         c = self.resource_list_class.get(auth=self.auth).filter(
@@ -952,7 +955,7 @@ class ListObjectTest(TestResourceTestCase):
 
     def test_filter_invalid_field(self, http):
         http.request.return_value = response(
-            self.make_searchresult({"name":"Test TestResource"}))
+            self.builder.searchresult({"name":"Test TestResource"}))
 
         c = self.resource_list_class.get(auth=self.auth).filter(
             submitAs="testval")
@@ -967,10 +970,14 @@ class ListObjectTest(TestResourceTestCase):
 
 @patch("tcmui.core.api.userAgent")
 class ActivatableResourceTest(ResourceTestCase):
-    RESOURCE_DEFAULTS = {
-        "name": "Default name",
-        "active": False
-        }
+    builder = ListBuilder(
+        "activatableresource",
+        "activatableresources",
+        "Activatableresource",
+        {
+            "name": "Default name",
+            "active": False
+            })
 
 
     def get_resource_class(self):
@@ -988,12 +995,12 @@ class ActivatableResourceTest(ResourceTestCase):
 
     def test_activate(self, http):
         http.request.return_value = response(
-            self.make_one(name="New Thing", active=False))
+            self.builder.one(name="New Thing", active=False))
 
         a = self.resource_class.get("activatableresources/1", auth=self.auth)
 
         http.request.return_value = response(
-            self.make_one(name="New Thing", active=True))
+            self.builder.one(name="New Thing", active=True))
 
         a.activate()
 
@@ -1008,12 +1015,12 @@ class ActivatableResourceTest(ResourceTestCase):
 
     def test_deactivate(self, http):
         http.request.return_value = response(
-            self.make_one(name="New Thing", active=True))
+            self.builder.one(name="New Thing", active=True))
 
         a = self.resource_class.get("activatableresources/1", auth=self.auth)
 
         http.request.return_value = response(
-            self.make_one(name="New Thing", active=False))
+            self.builder.one(name="New Thing", active=False))
 
         a.deactivate()
 
@@ -1023,4 +1030,3 @@ class ActivatableResourceTest(ResourceTestCase):
         self.assertEqual(
             req["uri"],
             "http://fake.base/rest/activatableresources/1/deactivate?_type=json")
-

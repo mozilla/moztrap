@@ -2,26 +2,13 @@ from mock import patch
 
 from ..responses import response
 from ..utils import ResourceTestCase
+from .builders import codevalues
 
 
 
 @patch("tcmui.static.data.cache")
 @patch("tcmui.core.api.userAgent")
 class StaticDataTest(ResourceTestCase):
-    RESOURCE_DEFAULTS = {
-        "description": "Draft",
-        "id": 1,
-        "sortOrder": 0,
-
-        "add_identity": False,
-        "add_timeline": False,
-        }
-
-    RESOURCE_NAME = "CodeValue"
-
-    RESOURCE_NAME_ARRAY = "CodeValue"
-
-
     def get_resource_class(self):
         from tcmui.static.models import CodeValue
         return CodeValue
@@ -40,7 +27,7 @@ class StaticDataTest(ResourceTestCase):
 
     def _setup_get_uncached(self, http, cache):
         http.request.return_value = response(
-            self.make_array(
+            codevalues.array(
                 {"id": 1, "description": "Draft"},
                 {"id": 2, "description": "Active"}))
 

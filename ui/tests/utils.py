@@ -1,6 +1,6 @@
 from unittest2 import TestCase
 
-from .responses import make_one, make_list, make_searchresult, make_array
+from .builder import SingleBuilder, ListBuilder
 
 
 
@@ -36,26 +36,6 @@ class AuthTestCase(TestCase):
 
 
 class ResourceTestCase(AuthTestCase):
-    RESOURCE_DEFAULTS = {}
-    RESOURCE_ADD_IDENTITY = True
-    RESOURCE_ADD_TIMELINE = True
-
-
-    @property
-    def RESOURCE_NAME(self):
-        return self.resource_class().api_name
-
-
-    @property
-    def RESOURCE_NAME_PLURAL(self):
-        return self.resource_list_class().api_name
-
-
-    @property
-    def RESOURCE_NAME_ARRAY(self):
-        return self.resource_list_class().array_name
-
-
     @property
     def resource_class(self):
         if not hasattr(self, "_resource_class"):
@@ -68,19 +48,6 @@ class ResourceTestCase(AuthTestCase):
         raise NotImplementedError
 
 
-    def make_one(self, **kwargs):
-        kwargs.setdefault("add_identity", self.RESOURCE_ADD_IDENTITY)
-        kwargs.setdefault("add_timeline", self.RESOURCE_ADD_TIMELINE)
-        return {
-            "ns1.%s" % self.RESOURCE_NAME: [
-                make_one(
-                    self.RESOURCE_NAME,
-                    defaults=self.RESOURCE_DEFAULTS,
-                    **kwargs)
-                ]
-            }
-
-
     @property
     def resource_list_class(self):
         if not hasattr(self, "_resource_list_class"):
@@ -91,30 +58,6 @@ class ResourceTestCase(AuthTestCase):
 
     def get_resource_list_class(self):
         raise NotImplementedError
-
-
-    def make_searchresult(self, *dicts):
-        return make_searchresult(
-            self.RESOURCE_NAME,
-            self.RESOURCE_NAME_PLURAL,
-            *self._make_list(*dicts)
-            )
-
-
-    def make_array(self, *dicts):
-        return make_array(
-            self.RESOURCE_NAME,
-            self.RESOURCE_NAME_ARRAY,
-            *self._make_list(*dicts))
-
-
-    def _make_list(self, *dicts):
-        return make_list(
-            self.RESOURCE_NAME,
-            *dicts,
-            defaults=self.RESOURCE_DEFAULTS,
-            add_identity=self.RESOURCE_ADD_IDENTITY,
-            add_timeline=self.RESOURCE_ADD_TIMELINE)
 
 
 

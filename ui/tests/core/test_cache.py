@@ -4,6 +4,7 @@ from django.core.cache import get_cache
 from mock import patch, Mock
 from unittest2 import TestCase
 
+from ..builder import ListBuilder
 from ..responses import response, make_identity
 from ..utils import ResourceTestCase, fill_cache
 
@@ -315,9 +316,13 @@ class CachingFunctionalTestMixin(object):
 
 @patch("tcmui.core.api.userAgent", spec=["request"])
 class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
-    RESOURCE_DEFAULTS = {
+    builder = ListBuilder(
+        "testresource",
+        "testresources",
+        "Testresource",
+        {
         "name": "Default name",
-        }
+        })
 
 
     def get_resource_class(self):
@@ -347,7 +352,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_list_cache(self, http):
         http.request.return_value = response(
-            self.make_array({"name": "One thing"}))
+            self.builder.array({"name": "One thing"}))
 
         lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
@@ -361,7 +366,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_single_cache(self, http):
         http.request.return_value = response(
-            self.make_one(name="One thing"))
+            self.builder.one(name="One thing"))
 
         obj = self.resource_class.get("testresources/1", auth=self.auth)
         obj.deliver()
@@ -375,19 +380,19 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_post_clears_list_cache(self, http):
         http.request.return_value = response(
-            self.make_array({"name": "One thing"}))
+            self.builder.array({"name": "One thing"}))
 
         lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="New thing"))
+            self.builder.one(name="New thing"))
 
         new = self.resource_class(name="New thing")
         lst.post(new, auth=self.auth)
 
         http.request.return_value = response(
-            self.make_array({"name": "One thing"}, {"name": "New thing"}))
+            self.builder.array({"name": "One thing"}, {"name": "New thing"}))
 
         lst2 = self.resource_list_class.get(auth=self.auth)
         lst2.deliver()
@@ -399,13 +404,13 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_put_clears_single_cache(self, http):
         http.request.return_value = response(
-            self.make_one(name="One thing"))
+            self.builder.one(name="One thing"))
 
         obj = self.resource_class.get("testresources/1", auth=self.auth)
         obj.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="New name"))
+            self.builder.one(name="New name"))
 
         obj.name = "New name"
         obj.put()
@@ -420,20 +425,20 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_put_clears_related_list_cache(self, http):
         http.request.return_value = response(
-            self.make_array({"name": "One thing"}))
+            self.builder.array({"name": "One thing"}))
 
         lst = self.resource_list_class.get(auth=self.auth)
         lst.deliver()
 
         http.request.return_value = response(
-            self.make_one(name="New thing"))
+            self.builder.one(name="New thing"))
 
         obj = lst[0]
         obj.name = "New name"
         obj.put()
 
         http.request.return_value = response(
-            self.make_array({"name": "New name"}))
+            self.builder.array({"name": "New name"}))
 
         lst2 = self.resource_list_class.get(auth=self.auth)
         lst2.deliver()
@@ -445,7 +450,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
     def test_update_one_single_doesnt_clear_another(self, http):
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="One thing",
                 resourceIdentity=make_identity(id=1, url="testresources/1")))
 
@@ -453,7 +458,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
         obj.deliver()
 
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="Another thing",
                 resourceIdentity=make_identity(id=2, url="testresources/2")))
 
@@ -461,7 +466,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
         obj2.deliver()
 
         http.request.return_value = response(
-            self.make_one(
+            self.builder.one(
                 name="New name",
                 resourceIdentity=make_identity(id=2, url="testresources/2")))
 

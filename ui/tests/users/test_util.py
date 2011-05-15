@@ -2,14 +2,25 @@ import httplib
 
 from mock import patch
 
-from ..utils import fill_cache
+from ..utils import ResourceTestCase, fill_cache
 from ..responses import response
-from .base import UserTestCase
+from .builders import users
+
 
 
 @patch("tcmui.core.api.userAgent", spec=["request"])
 @patch("tcmui.core.cache.cache", spec=["get", "set", "incr", "add"])
-class GetUserTest(UserTestCase):
+class GetUserTest(ResourceTestCase):
+    def get_resource_class(self):
+        from tcmui.users.models import User
+        return User
+
+
+    def get_resource_list_class(self):
+        from tcmui.users.models import UserList
+        return UserList
+
+
     def call(self, *args, **kwargs):
         from tcmui.users.util import get_user
         return get_user(*args, **kwargs)
@@ -18,7 +29,7 @@ class GetUserTest(UserTestCase):
     def test_never_cached(self, cache, http):
         fill_cache(cache, {})
         http.request.return_value = response(
-            self.make_one(email="test@example.com"))
+            users.one(email="test@example.com"))
 
         u1 = self.call("test@example.com", password="testpw")
         u2 = self.call("test@example.com", password="testpw")
