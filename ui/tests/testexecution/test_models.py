@@ -258,15 +258,17 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                         {"testRunResultStatusId": 2},
                         {"testRunResultStatusId": 5},
                         ))
-            return response(
-                codevalues.array(
-                    {"description": "PENDING", "id": 1},
-                    {"description": "PASSED", "id": 2},
-                    {"description": "FAILED", "id": 3},
-                    {"description": "BLOCKED", "id": 4},
-                    {"description": "STARTED", "id": 5},
-                    {"description": "INVALIDATED", "id": 6},
-                    ))
+            elif "TESTRUNRESULTSTATUS" in uri:
+                return response(
+                    codevalues.array(
+                        {"description": "PENDING", "id": 1},
+                        {"description": "PASSED", "id": 2},
+                        {"description": "FAILED", "id": 3},
+                        {"description": "BLOCKED", "id": 4},
+                        {"description": "STARTED", "id": 5},
+                        {"description": "INVALIDATED", "id": 6},
+                        ))
+            return response(500, "Unexpected request")
 
         http.request.side_effect = request
 
