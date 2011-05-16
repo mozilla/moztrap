@@ -27,22 +27,8 @@ urlpatterns = patterns(
     # manage
     url("^manage/", include("tcmui.manage.urls")),
 
-    # results (wireframed)
-    url(r"^results/testcycles/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testcycle/cycles.html"}),
-    url(r"^results/testruns/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testrun/runs.html"}),
-    url(r"^results/testsuites/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testsuite/suites.html"}),
-    url(r"^results/testcases/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testcase/cases.html"}),
-    url(r"^results/testcase/detail/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "results/testcase/included_case_detail.html"}),
+    # results
+    url("^results/", include("tcmui.results.urls")),
 
     # new runtest nav (wireframed)
     url(r"^wire/run/$",
