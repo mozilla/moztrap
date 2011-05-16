@@ -282,3 +282,8 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                 "PENDING": 2,
                 "STARTED": 1,
                 })
+        self.assertEqual(
+            [req["uri"] for _, req in http.request.call_args_list[:3]],
+            ["http://fake.base/rest/testruns/1?_type=json",
+             "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1",
+             "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json"])
