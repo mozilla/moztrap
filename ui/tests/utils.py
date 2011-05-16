@@ -1,6 +1,11 @@
+from functools import partial
+
+from django.test.signals import template_rendered
+from django.test.client import RequestFactory, store_rendered_templates
 from unittest2 import TestCase
 
-from .responses import response
+from .core.builders import companies
+from .responses import response, make_identity
 
 
 
@@ -18,15 +23,37 @@ def setup_responses(http, response_dict):
     Setup a mock http object with some responses to given
     URLs. ``response_dict`` should map full URLs (including query string) to
     the (response, content) tuple that will be returned (equivalent to the
-    return value of the httplib2.Http.request method)."""
+    return value of the httplib2.Http.request method).
+
+    """
     def request(*args, **kwargs):
         uri = kwargs["uri"]
         try:
             return response_dict[uri]
         except KeyError:
-            return response(500, "Mock got unexpected request URI: %s" % uri)
+            return response(
+                {"errors": [
+                        {"error": "Mock got unexpected request URI: %s" % uri}
+                        ]
+                 }
+                , 500)
 
     http.request.side_effect = request
+
+
+def setup_view_responses(http, response_dict):
+    """
+    A version of ``setup_responses`` intended for end-to-end request-response
+    testing. Automatically knows how to respond to the StaticCompanyMiddleware
+    query for the current company.
+
+    """
+    response_dict.setdefault(
+        "http://fake.base/rest/companies/1?_type=json",
+        response(companies.one(
+                resourceIdentity=make_identity(id=1, url="companies/1")))
+        )
+    return setup_responses(http, response_dict)
 
 
 
@@ -49,6 +76,33 @@ class AuthTestCase(TestCase):
 
         """
         return self.creds("admin@example.com", cookie="USERTOKEN: authcookie")
+
+
+
+class ViewTestCase(AuthTestCase):
+    factory = RequestFactory()
+
+
+    def setUp(self):
+        self.rendered = {}
+        on_template_render = partial(store_rendered_templates, self.rendered)
+        template_rendered.connect(on_template_render)
+        self.addCleanup(template_rendered.disconnect, on_template_render)
+
+
+    def setup_responses(self, http, response_dict):
+        setup_view_responses(http, response_dict)
+
+
+    @property
+    def view(self):
+        raise NotImplementedError
+
+
+    def get(self, *args, **kwargs):
+        req = self.factory.get(*args, **kwargs)
+        req.auth = self.auth
+        return self.view(req)
 
 
 
