@@ -1,6 +1,6 @@
 from unittest2 import TestCase
 
-from .builder import SingleBuilder, ListBuilder
+from .responses import response
 
 
 
@@ -10,6 +10,23 @@ def fill_cache(cache, values_dict):
 
     """
     cache.get.side_effect = lambda k, d=None: values_dict.get(k, d)
+
+
+
+def setup_responses(http, response_dict):
+    """
+    Setup a mock http object with some responses to given
+    URLs. ``response_dict`` should map full URLs (including query string) to
+    the (response, content) tuple that will be returned (equivalent to the
+    return value of the httplib2.Http.request method)."""
+    def request(*args, **kwargs):
+        uri = kwargs["uri"]
+        try:
+            return response_dict[uri]
+        except KeyError:
+            return response(500, "Mock got unexpected request URI: %s" % uri)
+
+    http.request.side_effect = request
 
 
 

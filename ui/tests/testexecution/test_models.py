@@ -3,7 +3,7 @@ from mock import patch
 from ..core.builders import cvis
 from ..responses import make_identity, response, make_boolean
 from ..static.builders import codevalues
-from ..utils import BaseResourceTest, ResourceTestCase
+from ..utils import BaseResourceTest, ResourceTestCase, setup_responses
 from .builders import testcycles, testruns, testrunitcs, testresults
 
 
@@ -239,17 +239,12 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_resultsummary(self, http):
-        http.request.return_value = response(testrunitcs.one(
-                resourceIdentity=make_identity(url="testruns/1")))
+        setup_responses(http, {
+                "http://fake.base/rest/testruns/1?_type=json": response(
+                    testrunitcs.one(
+                        resourceIdentity=make_identity(url="testruns/1"))),
 
-        c = self.resource_class.get("testruns/1")
-        c.deliver()
-
-        # set up responses for both results list and result status static data
-        def request(*args, **kwargs):
-            uri = kwargs["uri"]
-            if "/results" in uri:
-                return response(
+                "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1": response(
                     testresults.searchresult(
                         {"testRunResultStatusId": 1},
                         {"testRunResultStatusId": 1},
@@ -257,9 +252,9 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                         {"testRunResultStatusId": 2},
                         {"testRunResultStatusId": 2},
                         {"testRunResultStatusId": 5},
-                        ))
-            elif "TESTRUNRESULTSTATUS" in uri:
-                return response(
+                        )),
+
+                "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json": response(
                     codevalues.array(
                         {"description": "PENDING", "id": 1},
                         {"description": "PASSED", "id": 2},
@@ -268,9 +263,10 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                         {"description": "STARTED", "id": 5},
                         {"description": "INVALIDATED", "id": 6},
                         ))
-            return response(500, "Unexpected request")
+            })
 
-        http.request.side_effect = request
+
+        c = self.resource_class.get("testruns/1")
 
         self.assertEqual(
             c.resultsummary(),
@@ -282,8 +278,3 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                 "PENDING": 2,
                 "STARTED": 1,
                 })
-        self.assertEqual(
-            [req["uri"] for _, req in http.request.call_args_list[:3]],
-            ["http://fake.base/rest/testruns/1?_type=json",
-             "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1",
-             "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json"])
