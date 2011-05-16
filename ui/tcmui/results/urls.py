@@ -7,10 +7,7 @@ urlpatterns = patterns(
     "tcmui.results.views",
     url("^$", "home", name="results"),
 
-    url(r"^testcycles/$",
-        direct_to_template,
-        {"template": "results/testcycle/cycles.html"},
-        name="results_testcycles"),
+    url(r"^testcycles/$", "testcycles", name="results_testcycles"),
     url(r"^testruns/$",
         direct_to_template,
         {"template": "results/testrun/runs.html"},

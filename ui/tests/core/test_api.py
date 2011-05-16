@@ -846,7 +846,7 @@ class ListObjectTest(TestResourceTestCase):
         with patch.object(cls, "filter") as mock_filter:
             cls.ours(auth=self.auth)
 
-        mock_filter.assert_called_with(company=21)
+        mock_filter.assert_called_with(company=1)
 
 
     def test_paginate_noop(self, http):

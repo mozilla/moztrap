@@ -2,7 +2,7 @@ from tcmui.default_settings import *
 
 TCM_API_BASE = "http://fake.base/rest"
 
-TCM_COMPANY_ID = 21
+TCM_COMPANY_ID = 1
 
 CACHES = {
     'default': {
@@ -10,3 +10,5 @@ CACHES = {
     }
 }
 
+MEDIA_URL = "/media/"
+COMPRESS_URL = "/static/"

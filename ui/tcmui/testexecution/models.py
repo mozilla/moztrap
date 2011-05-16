@@ -6,7 +6,7 @@ testing.
 from django.core.urlresolvers import reverse
 
 from ..core.api import Activatable, RemoteObject, ListObject, fields
-from ..core.models import CategoryValueInfoList
+from ..core.models import CategoryValueInfoList, Company
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
 from ..static.fields import StaticData
@@ -20,6 +20,7 @@ from ..users.models import User, Team
 
 
 class TestCycle(Activatable, RemoteObject):
+    company = fields.Locator(Company)
     product = fields.Locator(Product)
     name = fields.Field()
     description = fields.Field()
