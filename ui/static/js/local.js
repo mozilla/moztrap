@@ -34,6 +34,7 @@ var TCM = TCM || {};
         TCM.addLoading('button, a', '.details');
         $('#sandbox').html5finder( {
             loading: true,
+            updateButton: true,
             section1class: 'products',
             section1item: 'input[name="product"]',
             section2class: 'cycles',

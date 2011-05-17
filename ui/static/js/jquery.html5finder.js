@@ -367,7 +367,18 @@
                     addLoadingCSS();
                 });
             };
-            addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected"), ' + options.section3item + ':not(".selected"), ' + options.section4item + ':not(".selected"), ', options.section);
+            addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected"), ' + options.section3item + ':not(".selected"), ' + options.section4item + ':not(".selected")', options.section);
+        }
+        if (options.updateButton === true) {
+            $(options.section1item + ', ' + options.section2item + ', ' + options.section3item + ', ' + options.section4item).live('click', function() {
+                var thisType = $(this).attr('name'),
+                    nextTypes = $(this).closest(options.section).next(options.section).attr('name');
+                context.find(options.button).html('see all ' + nextTypes + ' in this ' + thisType + ' &raquo;');
+            });
+            $(options.section5item).live('click', function() {
+                var thisType = $(this).attr('name');
+                context.find(options.button).html('see this ' + thisType + ' &raquo;');
+            });
         }
     };
 
@@ -375,6 +386,8 @@
     $.fn.html5finder.defaults = {
         expand: null,
         expandTrigger: null,
+        updateButton: false,
+        button: '.form-actions button',
         loading: false,
         horizontalScroll: false,
         selected: 'input:checked',
