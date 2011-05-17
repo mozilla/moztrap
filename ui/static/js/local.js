@@ -32,6 +32,19 @@ var TCM = TCM || {};
         $('.details').html5accordion('.summary');
         TCM.addLoading('button, a', 'details');
         TCM.addLoading('button, a', '.details');
+        $('#sandbox').html5finder( {
+            loading: true,
+            section1class: 'products',
+            section1item: 'input[name="product"]',
+            section2class: 'cycles',
+            section2item: 'input[name="cycle"]',
+            section3class: 'runs',
+            section3item: 'input[name="run"]',
+            section4class: 'cases',
+            section4item: 'input[name="case"]',
+            section5class: 'results',
+            section5item: 'input[name="result"]'
+        });
     });
 
 })(jQuery);

@@ -251,6 +251,96 @@
             addSelectedClass();
         });
         section3item.live('click', function() {
+            var fakeAjaxCall = function(callback) {
+                    var response =
+                        '<li>' +
+                            '<input type="radio" name="case" value="" id="tcm_case_01">' +
+                            '<label for="tcm_case_01">' +
+                                '<span class="title">tcm case 01</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="case" value="" id="tcm_case_02">' +
+                            '<label for="tcm_case_02">' +
+                                '<span class="title">tcm case 02</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="case" value="" id="tcm_case_03">' +
+                            '<label for="tcm_case_03">' +
+                                '<span class="title">tcm case 03</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>';
+                    function callbackfn() { callback(response); }
+                    window.setTimeout(callbackfn, 300);
+                };
+            fakeAjaxCall(
+                function(data) {
+                    section4.children('ul').html(data);
+                    $('.loadingCSS').detach();
+                    $('.loading').removeClass("loading");
+                }
+            );
+            section1.removeClass('focus');
+            section2.removeClass('focus');
+            section3.removeClass('focus');
+            section4.addClass('focus').children('ul').empty();
+            section5.removeClass('focus').children('ul').empty();
+            expand.slideUp();
+            addSelectedClass();
+        });
+        section4item.live('click', function() {
+            var fakeAjaxCall = function(callback) {
+                    var response =
+                        '<li>' +
+                            '<input type="radio" name="result" value="" id="tcm_result_01">' +
+                            '<label for="tcm_result_01">' +
+                                '<span class="title">tcm result 01</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="result" value="" id="tcm_result_02">' +
+                            '<label for="tcm_result_02">' +
+                                '<span class="title">tcm result 02</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>' +
+                        '<li>' +
+                            '<input type="radio" name="result" value="" id="tcm_result_03">' +
+                            '<label for="tcm_result_03">' +
+                                '<span class="title">tcm result 03</span>' +
+                                '<time class="start">01/07/2011</time>' +
+                                '<time class="end">11/10/2011</time>' +
+                            '</label>' +
+                        '</li>';
+                    function callbackfn() { callback(response); }
+                    window.setTimeout(callbackfn, 300);
+                };
+            fakeAjaxCall(
+                function(data) {
+                    section5.children('ul').html(data);
+                    $('.loadingCSS').detach();
+                    $('.loading').removeClass("loading");
+                }
+            );
+            section1.removeClass('focus');
+            section2.removeClass('focus');
+            section3.removeClass('focus');
+            section4.removeClass('focus');
+            section5.addClass('focus').children('ul').empty();
+            expand.slideUp();
+            addSelectedClass();
+        });
+        section5item.live('click', function() {
             addSelectedClass();
         });
         $(options.expandTrigger).live('click', function() {
@@ -277,7 +367,7 @@
                     addLoadingCSS();
                 });
             };
-            addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected")', options.section);
+            addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected"), ' + options.section3item + ':not(".selected"), ' + options.section4item + ':not(".selected"), ', options.section);
         }
     };
 
