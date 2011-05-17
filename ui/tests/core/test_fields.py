@@ -3,8 +3,9 @@ import datetime
 from mock import patch
 from unittest2 import TestCase
 
-from ..responses import response, make_one, make_identity, make_boolean
-from ..utils import AuthTestCase
+from ..responses import (
+    response, make_one, make_identity, make_boolean, make_array)
+from ..utils import AuthTestCase, fill_cache
 
 
 
@@ -597,8 +598,7 @@ class TimelineFieldFunctionalTest(AuthTestCase):
 
 @patch("tcmui.core.api.userAgent")
 class LinkFunctionalTest(AuthTestCase):
-    @property
-    def subject_and_target(self):
+    def subject_and_target(self, cache=None):
         from tcmui.core.api import RemoteObject, ListObject
         from tcmui.core.fields import Link, List, Object
 
@@ -610,14 +610,18 @@ class LinkFunctionalTest(AuthTestCase):
 
             entries = List(Object(TheTarget))
 
+        kwargs = {}
+        if cache is not None:
+            kwargs["cache"] = cache
+
         class TheSubject(RemoteObject):
-            targets = Link(TargetList)
+            targets = Link(TargetList, **kwargs)
 
         return TheSubject, TargetList
 
 
     def test_descriptor_lookup(self, http):
-        TheSubject, TargetList = self.subject_and_target
+        TheSubject, TargetList = self.subject_and_target()
 
         http.request.return_value = response(make_one("thesubject"))
 
@@ -634,8 +638,26 @@ class LinkFunctionalTest(AuthTestCase):
         self.assertFalse(targets._delivered)
 
 
+    def test_descriptor_lookup_cache_bucket_specified(self, http):
+        TheSubject, TargetList = self.subject_and_target(cache="OtherBucket")
+
+        http.request.return_value = response(make_one("thesubject"))
+
+        subj = TheSubject.get("some/url", auth=self.auth)
+
+        http.request.return_value = response(make_array(
+                "thetarget", "Thetarget", {}))
+
+        with patch("tcmui.core.cache.cache") as cache:
+            fill_cache(cache, {})
+            list(subj.targets)
+
+        cache.get.assert_called_with(
+            "OtherBucket-0-http://fake.base/rest/some/url/targets?_type=json")
+
+
     def test_descriptor_lookup_no_location(self, http):
-        TheSubject, TargetList = self.subject_and_target
+        TheSubject, TargetList = self.subject_and_target()
 
         subj = TheSubject()
 
@@ -644,7 +666,7 @@ class LinkFunctionalTest(AuthTestCase):
 
 
     def test_descriptor_set(self, http):
-        TheSubject, TargetList = self.subject_and_target
+        TheSubject, TargetList = self.subject_and_target()
         TheTarget = TargetList.entryclass
 
         subj = TheSubject.get("some/url", auth=self.auth)
@@ -663,7 +685,7 @@ class LinkFunctionalTest(AuthTestCase):
 
 
     def test_descriptor_set_with_list(self, http):
-        TheSubject, TargetList = self.subject_and_target
+        TheSubject, TargetList = self.subject_and_target()
         TheTarget = TargetList.entryclass
 
         subj = TheSubject.get("some/url", auth=self.auth)

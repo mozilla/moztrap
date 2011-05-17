@@ -204,6 +204,11 @@ class TimelineField(Field):
 
 
 class Link(remoteobjects.fields.Link):
+    def __init__(self, *args, **kwargs):
+        self.cache = kwargs.pop("cache", None)
+        super(Link, self).__init__(*args, **kwargs)
+
+
     def __get__(self, instance, owner):
         """
         Generates the RemoteObject for the target resource of this Link.
@@ -212,7 +217,10 @@ class Link(remoteobjects.fields.Link):
         if instance._location is None:
             raise AttributeError('Cannot find URL of %s relative to URL-less %s' % (self.cls.__name__, owner.__name__))
         newurl = join(instance._location, self.api_name)
-        obj = self.cls.get(newurl, auth=instance.auth)
+        kwargs = {"auth": instance.auth}
+        if self.cache is not None:
+            kwargs["cache"] = self.cache
+        obj = self.cls.get(newurl, **kwargs)
         obj.auth = instance.auth
         obj.linked_from = instance
         return obj
