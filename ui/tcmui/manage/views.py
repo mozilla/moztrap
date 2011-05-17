@@ -9,7 +9,7 @@ from ..testcases.models import TestSuiteList, TestCaseVersionList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
-from . import decorators as dec
+from ..core import decorators as dec
 from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
