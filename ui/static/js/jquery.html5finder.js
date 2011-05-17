@@ -7,9 +7,9 @@
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
-(function($) {
+;(function($) {
     $.fn.html5finder = function(opts) {
-        var options = $.extend({}, $.fn.formset.defaults, opts),
+        var options = $.extend({}, $.fn.html5finder.defaults, opts),
             context = this,
             section1 = context.find(options.section + '.' + options.section1class),
             section2 = context.find(options.section + '.' + options.section2class),
