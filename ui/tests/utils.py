@@ -1,7 +1,10 @@
+from contextlib import contextmanager
 from functools import partial
 
+from django.core.cache import get_cache
 from django.test.signals import template_rendered
 from django.test.client import RequestFactory, store_rendered_templates
+from mock import patch
 from unittest2 import TestCase
 
 from .core.builders import companies
@@ -54,6 +57,27 @@ def setup_view_responses(http, response_dict):
                 resourceIdentity=make_identity(id=1, url="companies/1")))
         )
     return setup_responses(http, response_dict)
+
+
+
+@contextmanager
+def locmem_cache():
+    cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
+    cache.clear()
+    patcher = patch("tcmui.core.cache.cache", cache)
+    patcher.start()
+    yield cache
+    patcher.stop()
+
+
+
+class CachingFunctionalTestMixin(object):
+    def setUp(self):
+        self.cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
+        self.cache.clear()
+        self.patcher = patch("tcmui.core.cache.cache", self.cache)
+        self.patcher.start()
+        self.addCleanup(self.patcher.stop)
 
 
 

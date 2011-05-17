@@ -1,12 +1,11 @@
 import httplib
 
-from django.core.cache import get_cache
 from mock import patch, Mock
 from unittest2 import TestCase
 
 from ..builder import ListBuilder
 from ..responses import response, make_identity
-from ..utils import ResourceTestCase, fill_cache
+from ..utils import ResourceTestCase, fill_cache, CachingFunctionalTestMixin
 
 
 
@@ -301,16 +300,6 @@ class CachingHttpWrapperTest(TestCase):
 
         self.assertEqual(content, "cached")
         self.assertFalse(cache.set.called)
-
-
-
-class CachingFunctionalTestMixin(object):
-    def setUp(self):
-        self.cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
-        self.cache.clear()
-        self.patcher = patch("tcmui.core.cache.cache", self.cache)
-        self.patcher.start()
-        self.addCleanup(self.patcher.stop)
 
 
 

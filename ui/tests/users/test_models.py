@@ -1,8 +1,8 @@
 from mock import patch
 
-from ..core.test_cache import CachingFunctionalTestMixin
 from ..responses import response
-from ..utils import ResourceTestCase, BaseResourceTest
+from ..utils import (
+    ResourceTestCase, BaseResourceTest, CachingFunctionalTestMixin)
 from .builders import users
 
 
