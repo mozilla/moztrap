@@ -52,6 +52,7 @@ class ListBuilder(SingleBuilder):
     def _list(self, *dicts):
         return make_list(
             self.name,
+            self.plural_name,
             *dicts,
             defaults=self.defaults,
             add_identity=self.add_identity,

@@ -59,6 +59,7 @@ class UserCredentialsTest(CredentialsTest, ResourceTestCase):
                     "permission", "Permission",
                     *make_list(
                         "permission",
+                        "permissions",
                         {
                             "assignable": True,
                             "name": "",

@@ -63,12 +63,14 @@ def make_one(resource_type, defaults=None, **kwargs):
 
 
 
-def make_list(resource_type, *dicts, **kwargs):
+def make_list(resource_type, plural_type, *dicts, **kwargs):
     defaults = kwargs.pop("defaults", None)
     ret = []
     for i, info in enumerate(dicts):
         if kwargs.get("add_identity", True):
-            info.setdefault("resourceIdentity", make_identity(id=i+1))
+            info.setdefault(
+                "resourceIdentity",
+                make_identity(id=i+1, url="%s/%s" % (plural_type, i+1)))
         info.update(kwargs)
         ret.append(make_one(resource_type, defaults=defaults, **info))
     return ret
