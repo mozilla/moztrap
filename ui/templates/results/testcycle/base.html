@@ -2,7 +2,7 @@
 
 {% block crumb %}
   {{ block.super }}
-  <li><a href="/results/testcycles/">test cycles</a></li>
+  <li><a href="{% url results_testcycles %}">test cycles</a></li>
 {% endblock crumb %}
 
 {% block cycles-active-nav %}active{% endblock cycles-active-nav %}

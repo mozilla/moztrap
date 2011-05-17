@@ -1,10 +1,6 @@
 {% extends 'results/testcycle/base.html' %}
 {% load sort staticdata %}
 
-{% block page-notes %}
-  <p>This page will be pre-filtered by 'active' status by default.</p>
-{% endblock page-notes %}
-
 {% block listcontent %}
 <section id="cycleresults">
   <h2>Test Cycle Results</h2>
@@ -22,7 +18,7 @@
             <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
           </li>
           <li class="bycompletion">
-            <a href="#">%</a>
+            <a>%</a> {# @@@ should be sortable #}
           </li>
           <li class="bytitle">
             <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
@@ -38,72 +34,49 @@
           </li>
         </ul>
       </nav>
-      <article id="run-id-01" class="details item draft">
+      {% for cycle in cycles %}
+      <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}">
         <header class="summary">
           <p class="status">
-            <span class="draft">draft</span>
+            <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
           </p>
-          <p class="completion" data-perc="75">75%</p>
-          <h3 class="title">cycle name</h3>
-          <p class="product">product name </p>
-          <time class="start">startDate</time>
-          <time class="end">endDate</time>
+          <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+          <h3 class="title">{{ cycle.name }}</h3>
+          <p class="product">{{ cycle.product.name }}</p>
+          <time class="start">{{ cycle.startDate|date }}</time>
+          <time class="end">{{ cycle.endDate|date }}</time>
+          {% with cycle.resultsummary as results %}
           <ul class="results">
-            <li class="pass">120 <span>passed</span></li>
-            <li class="invalid">304 <span>invalid</span></li>
-            <li class="fail">140 <span>failed</span></li>
-            <li class="pending">605 <span>pending</span></li>
+            <li class="pass">{{ results.PASSED }} <span>passed</span></li>
+            <li class="invalid">{{ results.INVALIDATED }} <span>invalid</span></li>
+            <li class="fail">{{ results.FAILED }} <span>failed</span></li>
+            <li class="pending">{{ results.PENDING|add:results.STARTED }} <span>pending</span></li>
           </ul>
+          {% endwith %}
         </header>
         <div class="content">
-          <p class="id">#234</p>
+          <p class="id">#{{ cycle.id }}</p>
           <p class="drill">
-            See related <a href="#" title="test runs related to cycle name">test runs</a>,
-            <a href="#" title="test suites related to cycle name">test suites</a>
-            or <a href="#" title="test cases related to cycle name">test cases</a>.
+            See related <a href="#{# @@@ #}" title="test runs related to {{ cycle.name }}">test runs</a>,
+            <a href="#{# @@@ #}" title="test suites related to {{ cycle.name }}">test suites</a>
+            or <a href="#{# @@@ #}" title="test cases related to {{ cycle.name }}">test cases</a>.
           </p>
           <section class="environments">
-            <h4>environments</h4>
-            <ul>
-              <li class="envgroup">
-                <h5>Browser</h5>
-                <ul>
-                  <li>IE 7</li>
-                  <li>Firefox 4</li>
-                  <li>Chrome</li>
-                  <li>IE 8</li>
-                  <li>Firefox 3</li>
-                </ul>
-              </li>
-              <li class="envgroup">
-                <h5>Language</h5>
-                <ul>
-                  <li>French</li>
-                  <li>German</li>
-                  <li>English</li>
-                  <li>Spanish</li>
-                </ul>
-              </li>
-              <li class="envgroup">
-                <h5>Operating System</h5>
-                <ul>
-                  <li>Linux</li>
-                  <li>Windows 7</li>
-                  <li>OS X</li>
-                  <li>Windows XP</li>
-                </ul>
-              </li>
-            </ul>
+            {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}
           </section>
+          {% if cycle.team|length %}
           <section class="testers">
             <h4>testers</h4>
             <ul>
-              <li>tester</li>
-              <li>screenName</li>
+              {% for tester in cycle.team %}
+              <li>{{ tester.screenName }}</li>
+              {% endfor %}
             </ul>
           </section>
+          {% endif %}
         </div>
       </article>
+      {% endfor %}
     </div>
 
     {% include "lists/_listnav.html" %}

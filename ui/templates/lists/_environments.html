@@ -1,0 +1,14 @@
+<h4>environments</h4>
+<ul>
+   {% regroup environments by typename as type_list %}
+  {% for type in type_list %}
+  <li class="envgroup">
+    <h5>{{ type.grouper }}</h5>
+    <ul>
+      {% for env in type.list %}
+      <li>{{ env.name }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+  {% endfor %}
+</ul>

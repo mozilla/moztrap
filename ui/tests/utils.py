@@ -9,6 +9,7 @@ from unittest2 import TestCase
 
 from .core.builders import companies
 from .responses import response, make_identity
+from .static.builders import codevalues
 
 
 
@@ -44,17 +45,40 @@ def setup_responses(http, response_dict):
     http.request.side_effect = request
 
 
-def setup_view_responses(http, response_dict):
+def setup_common_responses(http, response_dict):
     """
     A version of ``setup_responses`` intended for end-to-end request-response
     testing. Automatically knows how to respond to the StaticCompanyMiddleware
-    query for the current company.
+    query for the current company, and to static data requests.
 
     """
     response_dict.setdefault(
         "http://fake.base/rest/companies/1?_type=json",
         response(companies.one(
                 resourceIdentity=make_identity(id=1, url="companies/1")))
+        )
+    response_dict.setdefault(
+        "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json",
+        response(
+            codevalues.array(
+                {"description": "DRAFT", "id": 1},
+                {"description": "ACTIVE", "id": 2},
+                {"description": "LOCKED", "id": 3},
+                {"description": "CLOSED", "id": 4},
+                {"description": "DISCARDED", "id": 5},
+                ))
+        )
+    response_dict.setdefault(
+        "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json",
+        response(
+            codevalues.array(
+                {"description": "PENDING", "id": 1},
+                {"description": "PASSED", "id": 2},
+                {"description": "FAILED", "id": 3},
+                {"description": "BLOCKED", "id": 4},
+                {"description": "STARTED", "id": 5},
+                {"description": "INVALIDATED", "id": 6},
+                ))
         )
     return setup_responses(http, response_dict)
 
@@ -115,7 +139,7 @@ class ViewTestCase(AuthTestCase):
 
 
     def setup_responses(self, http, response_dict):
-        setup_view_responses(http, response_dict)
+        setup_common_responses(http, response_dict)
 
 
     @property

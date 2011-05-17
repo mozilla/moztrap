@@ -35,7 +35,9 @@ class TestCycle(Activatable, RemoteObject):
     testruns = fields.Link("TestRunList")
     team = fields.Link(Team, api_name="team/members")
     resultstatus = fields.Link(
-        CategoryValueInfoList, api_name="reports/coverage/resultstatus")
+        CategoryValueInfoList,
+        api_name="reports/coverage/resultstatus",
+        cache="TestResultList")
 
 
     def __unicode__(self):
@@ -99,7 +101,9 @@ class TestRun(Activatable, RemoteObject):
     team = fields.Link(Team, api_name="team/members")
     testsuites = fields.Link(TestSuiteList)
     resultstatus = fields.Link(
-        CategoryValueInfoList, api_name="reports/coverage/resultstatus")
+        CategoryValueInfoList,
+        api_name="reports/coverage/resultstatus",
+        cache="TestResultList")
 
 
     def __unicode__(self):

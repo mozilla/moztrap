@@ -2,14 +2,84 @@ from mock import patch
 
 from ..core.builders import cvis
 from ..responses import make_identity, response, make_boolean
-from ..static.builders import codevalues
-from ..utils import BaseResourceTest, ResourceTestCase, setup_responses
+from ..utils import (
+    BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache)
 from .builders import testcycles, testruns, testrunitcs, testresults
 
 
 
-@patch("tcmui.core.api.userAgent")
-class TestCycleTest(BaseResourceTest, ResourceTestCase):
+class ResultSummaryTest(object):
+    def get_one(self, http):
+        raise NotImplementedError
+
+
+    def test_resultsummary(self, http):
+        c = self.get_one(http)
+
+        http.request.return_value = response(
+            cvis.array(
+                    {"categoryName": 1, "categoryValue": 159},
+                    {"categoryName": 5, "categoryValue": 1}))
+
+        self.assertEqual(
+            c.resultsummary(),
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 0,
+                "PENDING": 159,
+                "STARTED": 1,
+                })
+
+
+    def test_resultsummary_caching(self, http):
+        """
+        Test that modifying a test result clears cached result summaries.
+
+        """
+        c = self.get_one(http)
+
+        http.request.return_value = response(testresults.one(
+                resourceIdentity=make_identity(url="testruns/results/1")))
+
+        from tcmui.testexecution.models import TestResult
+        result = TestResult.get("testruns/results/1")
+
+        with locmem_cache():
+            http.request.return_value = response(
+                cvis.array({"categoryName": 1, "categoryValue": 160}))
+
+            c.resultsummary()
+
+            http.request.return_value = response(testresults.one(
+                    resourceIdentity=make_identity(url="testruns/results/1")))
+
+            result.start()
+            result.finishsucceed()
+
+            http.request.return_value = response(
+                cvis.array(
+                        {"categoryName": 1, "categoryValue": 159},
+                        {"categoryName": 5, "categoryValue": 1}))
+
+            newsummary = c.resultsummary()
+
+        self.assertEqual(
+            newsummary,
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 0,
+                "PENDING": 159,
+                "STARTED": 1,
+                })
+
+
+
+@patch("tcmui.core.api.userAgent", spec=["request"])
+class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
     def get_resource_class(self):
         from tcmui.testexecution.models import TestCycle
         return TestCycle
@@ -18,6 +88,13 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
     def get_resource_list_class(self):
         from tcmui.testexecution.models import TestCycleList
         return TestCycleList
+
+
+    def get_one(self, http):
+        http.request.return_value = response(testcycles.one(
+                resourceIdentity=make_identity(url="testcycles/1")))
+
+        return self.resource_class.get("testcycles/1")
 
 
     def test_unicode(self, http):
@@ -93,32 +170,9 @@ class TestCycleTest(BaseResourceTest, ResourceTestCase):
         self.assertEqual(req["body"], "cloneAssignments=True")
 
 
-    def test_resultsummary(self, http):
-        http.request.return_value = response(testcycles.one(
-                resourceIdentity=make_identity(url="testcycles/1")))
-
-        c = self.resource_class.get("testcycles/1")
-
-        http.request.return_value = response(
-            cvis.array(
-                    {"categoryName": 1, "categoryValue": 159},
-                    {"categoryName": 5, "categoryValue": 1}))
-
-        self.assertEqual(
-            c.resultsummary(),
-            {
-                "BLOCKED": 0,
-                "FAILED": 0,
-                "INVALIDATED": 0,
-                "PASSED": 0,
-                "PENDING": 159,
-                "STARTED": 1,
-                })
-
-
 
 @patch("tcmui.core.api.userAgent")
-class TestRunTest(BaseResourceTest, ResourceTestCase):
+class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
     def get_resource_class(self):
         from tcmui.testexecution.models import TestRun
         return TestRun
@@ -127,6 +181,13 @@ class TestRunTest(BaseResourceTest, ResourceTestCase):
     def get_resource_list_class(self):
         from tcmui.testexecution.models import TestRunList
         return TestRunList
+
+
+    def get_one(self, http):
+        http.request.return_value = response(testruns.one(
+                resourceIdentity=make_identity(url="testruns/1")))
+
+        return self.resource_class.get("testruns/1")
 
 
     def test_unicode(self, http):
@@ -239,7 +300,7 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_resultsummary(self, http):
-        setup_responses(http, {
+        setup_common_responses(http, {
                 "http://fake.base/rest/testruns/1?_type=json": response(
                     testrunitcs.one(
                         resourceIdentity=make_identity(url="testruns/1"))),
@@ -253,16 +314,6 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                         {"testRunResultStatusId": 2},
                         {"testRunResultStatusId": 5},
                         )),
-
-                "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json": response(
-                    codevalues.array(
-                        {"description": "PENDING", "id": 1},
-                        {"description": "PASSED", "id": 2},
-                        {"description": "FAILED", "id": 3},
-                        {"description": "BLOCKED", "id": 4},
-                        {"description": "STARTED", "id": 5},
-                        {"description": "INVALIDATED", "id": 6},
-                        ))
             })
 
 

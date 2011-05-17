@@ -76,20 +76,7 @@
             <p>{{ run.description }}</p>
           </div>
           <div class="environments">
-            <h4>environments</h4>
-            <ul>
-              {% regroup run.environmentgroups.environments by typename as type_list %}
-              {% for type in type_list %}
-              <li class="envgroup">
-                <h5>{{ type.grouper }}</h5>
-                <ul>
-                  {% for env in type.list %}
-                  <li>{{ env.name }}</li>
-                  {% endfor %}
-                </ul>
-              </li>
-              {% endfor %}
-            </ul>
+            {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
           </div>
           {% if run.testsuites|length %}
           <div class="suites">

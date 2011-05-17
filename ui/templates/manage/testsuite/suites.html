@@ -64,20 +64,7 @@
             <p>{{ suite.description }}</p>
           </div>
           <div class="environments">
-            <h4>environments</h4>
-            <ul>
-              {% regroup suite.environmentgroups.environments by typename as type_list %}
-              {% for type in type_list %}
-              <li class="envgroup">
-                <h5>{{ type.grouper }}</h5>
-                <ul>
-                  {% for env in type.list %}
-                  <li>{{ env.name }}</li>
-                  {% endfor %}
-                </ul>
-              </li>
-              {% endfor %}
-            </ul>
+            {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
           </div>
         </div>
       </article>

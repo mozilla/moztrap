@@ -72,20 +72,7 @@
             <p>{{ cycle.description }}</p>
           </div>
           <div class="environments">
-            <h4>environments</h4>
-            <ul>
-              {% regroup cycle.environmentgroups.environments by typename as type_list %}
-              {% for type in type_list %}
-              <li class="envgroup">
-                <h5>{{ type.grouper }}</h5>
-                <ul>
-                  {% for env in type.list %}
-                  <li>{{ env.name }}</li>
-                  {% endfor %}
-                </ul>
-              </li>
-              {% endfor %}
-            </ul>
+            {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}
           </div>
           {% if cycle.team|length %}
           <div class="testers">
