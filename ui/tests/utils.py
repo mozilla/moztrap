@@ -45,6 +45,38 @@ def setup_responses(http, response_dict):
     http.request.side_effect = request
 
 
+COMMON_RESPONSES = {
+    "http://fake.base/rest/companies/1?_type=json":
+        response(companies.one(
+            resourceIdentity=make_identity(id=1, url="companies/1"))),
+    "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "DRAFT", "id": 1},
+            {"description": "ACTIVE", "id": 2},
+            {"description": "LOCKED", "id": 3},
+            {"description": "CLOSED", "id": 4},
+            {"description": "DISCARDED", "id": 5},
+            )),
+    "http://fake.base/staticData/values/TESTRUNSTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "DRAFT", "id": 1},
+            {"description": "ACTIVE", "id": 2},
+            {"description": "LOCKED", "id": 3},
+            {"description": "CLOSED", "id": 4},
+            {"description": "DISCARDED", "id": 5},
+            )),
+    "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "PENDING", "id": 1},
+            {"description": "PASSED", "id": 2},
+            {"description": "FAILED", "id": 3},
+            {"description": "BLOCKED", "id": 4},
+            {"description": "STARTED", "id": 5},
+            {"description": "INVALIDATED", "id": 6},
+            ))
+    }
+
+
 def setup_common_responses(http, response_dict):
     """
     A version of ``setup_responses`` intended for end-to-end request-response
@@ -52,35 +84,9 @@ def setup_common_responses(http, response_dict):
     query for the current company, and to static data requests.
 
     """
-    response_dict.setdefault(
-        "http://fake.base/rest/companies/1?_type=json",
-        response(companies.one(
-                resourceIdentity=make_identity(id=1, url="companies/1")))
-        )
-    response_dict.setdefault(
-        "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json",
-        response(
-            codevalues.array(
-                {"description": "DRAFT", "id": 1},
-                {"description": "ACTIVE", "id": 2},
-                {"description": "LOCKED", "id": 3},
-                {"description": "CLOSED", "id": 4},
-                {"description": "DISCARDED", "id": 5},
-                ))
-        )
-    response_dict.setdefault(
-        "http://fake.base/staticData/values/TESTRUNRESULTSTATUS?_type=json",
-        response(
-            codevalues.array(
-                {"description": "PENDING", "id": 1},
-                {"description": "PASSED", "id": 2},
-                {"description": "FAILED", "id": 3},
-                {"description": "BLOCKED", "id": 4},
-                {"description": "STARTED", "id": 5},
-                {"description": "INVALIDATED", "id": 6},
-                ))
-        )
-    return setup_responses(http, response_dict)
+    new_dict = COMMON_RESPONSES.copy()
+    new_dict.update(response_dict)
+    return setup_responses(http, new_dict)
 
 
 

@@ -82,6 +82,7 @@ class TestCycleList(ListObject):
 
 
 class TestRun(Activatable, RemoteObject):
+    company = fields.Locator(Company)
     product = fields.Locator(Product)
     testCycle = fields.Locator(TestCycle)
     name = fields.Field()

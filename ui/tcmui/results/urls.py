@@ -8,10 +8,8 @@ urlpatterns = patterns(
     url("^$", "home", name="results"),
 
     url(r"^testcycles/$", "testcycles", name="results_testcycles"),
-    url(r"^testruns/$",
-        direct_to_template,
-        {"template": "results/testrun/runs.html"},
-        name="results_testruns"),
+    url(r"^testruns/$", "testruns", name="results_testruns"),
+
     url(r"^testsuites/$",
         direct_to_template,
         {"template": "results/testsuite/suites.html"},
