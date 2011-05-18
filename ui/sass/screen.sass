@@ -183,13 +183,17 @@ footer[role="contentinfo"]
 @import modules/controls
 @import modules/filter
 @import modules/loading
-
-@import modules/login
-@import modules/create
+@import modules/finder
+@import modules/environment
 @import modules/managelists
-@import modules/manage
-@import modules/test
-@import modules/results
+
+// Sections ------------------------------------------------------------------
+
+@import sections/login
+@import sections/create
+@import sections/manage
+@import sections/test
+@import sections/results
 
 // Dev -----------------------------------------------------------------------
 
@@ -231,172 +235,3 @@ footer[role="contentinfo"]
     background: $red-lighter
     &::before
       background: $red-lighter
-
-// Select Runs (wireframe) ---------------------------------------------------
-
-#selectruns
-  +full(24)
-
-  .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
-    display: none
-
-  .focus
-    .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
-      display: block
-    .completion, .bycompletion
-      +columns(1,12)
-    .title, .bytitle
-      +columns(7,12)
-      &:first-child
-        +columns(8,12)
-    .start, .end, .bystart, .byend
-      +columns(2,12)
-    .end, .byend
-      +omega(12)
-
-  .bystart, .byend, .bycompletion
-    +opacity(.75)
-
-  .start, .end
-    font-weight: normal
-
-  .start, .end
-    color: $mid
-
-// Finder --------------------------------------------------------------------
-
-.findertoggle
-  +opacity(.5)
-  +border-bottom-left-radius($smallem)
-  +replace-text-with-dimensions('ui/minus_circle.png')
-  position: absolute
-  right: side-gutter()
-  padding: rhythm(.25)
-  background-color: rgba($red,$small)
-  z-index: 10
-  #{$focus}
-    +opacity(1)
-
-.finder
-  +pie-clearfix
-  +trailer
-  clear: both
-  overflow: visible
-  position: relative
-
-  &.expanded
-    border: 1px solid rgba($blue-light,$small)
-    background: $blue-hint
-
-    h3, p
-      margin-bottom: 0
-
-    .col
-      +transition(width,300ms)
-      +float(left)
-      position: relative
-      top: 0
-      bottom: 0
-      left: 0
-      width: 25%
-      height: rhythm(9)
-      &:last-child
-        +float(right)
-      &.focus
-        width: 50%
-      &:not([class*="focus"])
-        .listordering
-          a::after
-            display: none
-
-    .listordering
-      +stretch-x
-      right: 15px
-      padding: rhythm(.25) rhythm(.5)
-      margin: 0
-      background: rgba($blue-lightest,$small)
-      z-index: 2
-      a
-        #{$link}
-          white-space: nowrap
-
-    .colcontent
-      +no-style-list
-      +stretch
-      padding-top: rhythm(1.5)
-      overflow-y: scroll
-      overflow-x: hidden
-
-    .logo
-      +transition(all,300ms)
-      width: rhythm(1)
-      margin-right: rhythm(.5)
-
-    label
-      +pie-clearfix
-      +trailing-border(1px,.25)
-      +hpadding(rhythm(.5))
-      border-color: rgba($blue-light,$xxsmall)
-      display: block
-      font-weight: normal
-      #{$focus}
-        .logo
-          +scale(1.75)
-
-    li
-      &:first-child
-        label
-          +leading-border(1px,.25)
-
-    input
-      +gone
-      &:checked
-        + label
-          +bold
-          background: rgba($blue-light,.5)
-          .logo
-            +scale(1.75)
-
-    &.wide
-      overflow-y: hidden
-      overflow-x: scroll
-      .carousel[data-cols="5"]
-        width: 150%
-      .col
-        width: 25/150*100%
-        &.focus
-          width: 50/150*100%
-
-
-/* environment --------------------------------------------------------------
-
-.environment
-  summary
-    +columns(6)
-    +omega
-    +padding-leader(.25)
-    +padding-trailer(.25)
-    text-align: right
-    color: $alt
-    text-transform: capitalize
-    &:hover
-      color: $accent
-  form
-    @extend .fullwidth
-    +prefix(12)
-    +leading-border(1px)
-    +padding-trailer(.5)
-    padding-right: gutter(24)
-    border-color: #ccc
-    background: $yellow-light
-  +inline-form(4,8,12)
-
-#environment
-  +full(24)
-  +inline-form(4,8,12)
-  h2, form
-    +columns(12,24)
-  h2
-    +padding-leader(.25)
-  form
-    +omega(24)
