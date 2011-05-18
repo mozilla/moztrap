@@ -5,5 +5,7 @@ try:
 except ImportError:
     pass
 
+CACHES["default"]["VERSION"] = 3
+
 COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_URL = STATIC_URL
