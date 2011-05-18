@@ -46,12 +46,7 @@
           <time class="start">{{ cycle.startDate|date }}</time>
           <time class="end">{{ cycle.endDate|date }}</time>
           {% with cycle.resultsummary as results %}
-          <ul class="results">
-            <li class="pass">{{ results.PASSED }} <span>passed</span></li>
-            <li class="invalid">{{ results.INVALIDATED }} <span>invalid</span></li>
-            <li class="fail">{{ results.FAILED }} <span>failed</span></li>
-            <li class="pending">{{ results.PENDING|add:results.STARTED }} <span>pending</span></li>
-          </ul>
+            {% include "results/_results_summary.html" %}
           {% endwith %}
         </header>
         <div class="content">
