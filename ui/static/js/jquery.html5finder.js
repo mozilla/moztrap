@@ -21,15 +21,20 @@
             section3item = context.find(options.section3item + ':not(".selected")'),
             section4item = context.find(options.section4item + ':not(".selected")'),
             section5item = context.find(options.section5item + ':not(".selected")'),
+            // Set the width of each section to account for vertical scroll-bars
             headers = context.find(options.header).each(function() {
                 var scrollbarWidth = $(this).closest(options.section).css('width') - $(this).children('li').css('width');
                 $(this).css('right', scrollbarWidth);
             }),
+            // We want to be able to treat already-selected items differently
             addSelectedClass = function() {
                 context.find(options.selected).addClass('selected');
                 context.find(options.notSelected).removeClass('selected');
             },
+            // Hide form-actions
             expand = $(options.expand).hide(),
+            // Define the function for horizontal scrolling (requires jquery.scrollTo.js plugin):
+            // Scrolls to the previous section (so that the active section is centered)
             horzScroll = function() {
                 if (options.horizontalScroll === true) {
                     var scrollTarget;
@@ -41,6 +46,7 @@
                     $(options.scrollContainer).scrollTo(scrollTarget, {duration: 500, axis: 'x'});
                 }
             };
+        // Enable headers to engage section focus
         headers.find('a').click(function() {
             context.find(options.section).removeClass('focus');
             $(this).closest(options.section).addClass('focus');
@@ -49,6 +55,7 @@
         });
         section1item.live('click', function() {
             var itemName = $(this).data('id'),
+                // This function mimics an ajax call with a delay of 300ms
                 fakeAjaxCall = function(itemName, callback) {
                     var response =
                         '<li>' +
@@ -138,6 +145,7 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
+            // Add returned data to the next section unless this is the last-child
             if (!$(this).closest(options.section).is(options.section + ':last-child')) {
                 fakeAjaxCall(
                     itemName,
@@ -159,6 +167,7 @@
         section2item.live('click', function() {
             var productName = $(this).data('product'),
                 cycleNumber = $(this).data('cycle'),
+                // This function mimics an ajax call with a delay of 300ms
                 fakeAjaxCall = function(productName, cycleNumber, callback) {
                     var response =
                         '<li>' +
@@ -247,6 +256,7 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
+            // Add returned data to the next section unless this is the last-child
             if (!$(this).closest(options.section).is(options.section + ':last-child')) {
                 fakeAjaxCall(
                     productName,
@@ -267,6 +277,7 @@
             addSelectedClass();
         });
         section3item.live('click', function() {
+            // This function mimics an ajax call with a delay of 300ms
             var fakeAjaxCall = function(callback) {
                     var response =
                         '<li>' +
@@ -296,6 +307,7 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
+            // Add returned data to the next section unless this is the last-child
             if (!$(this).closest(options.section).is(options.section + ':last-child')) {
                 fakeAjaxCall(
                     function(data) {
@@ -314,6 +326,7 @@
             addSelectedClass();
         });
         section4item.live('click', function() {
+            // This function mimics an ajax call with a delay of 300ms
             var fakeAjaxCall = function(callback) {
                     var response =
                         '<li>' +
@@ -343,6 +356,7 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
+            // Add returned data to the next section unless this is the last-child
             if (!$(this).closest(options.section).is(options.section + ':last-child')) {
                 fakeAjaxCall(
                     function(data) {
@@ -360,21 +374,26 @@
             }
             addSelectedClass();
         });
+        // Last-child section only receives focus on-click by default
         section5item.live('click', function() {
             addSelectedClass();
         });
+        // Make the form-actions accessible when applicable
         $(options.expandTrigger).live('click', function() {
             expand.slideDown();
         });
+        // Hide the form-actions when not desired
+        $('input:not("' + options.expandTrigger + '")').live('click', function() {
+            expand.slideUp();
+        });
+        // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
         $('input.selected').live('click', function() {
             $(this).closest(options.section).addClass('focus').siblings(options.section).removeClass('focus');
             $(this).closest(options.section).next(options.section).find('input:checked').removeClass('selected').removeAttr('checked');
             $(this).closest(options.section).next(options.section).nextAll(options.section).children('ul').empty();
             horzScroll();
         });
-        $('input:not("' + options.expandTrigger + '")').live('click', function() {
-            expand.slideUp();
-        });
+        // Add a loading screen while waiting for the Ajax call to return data
         if (options.loading === true) {
             var addLoading = function(trigger, target) {
                 $(trigger).live('click', function() {
@@ -390,6 +409,7 @@
             };
             addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected"), ' + options.section3item + ':not(".selected"), ' + options.section4item + ':not(".selected")', options.section);
         }
+        // Update the text of the form-action button, if desired
         if (options.updateButton === true) {
             $(options.section1item + ', ' + options.section2item + ', ' + options.section3item + ', ' + options.section4item).live('click', function() {
                 var thisType = $(this).attr('name'),
@@ -405,17 +425,18 @@
 
     /* Setup plugin defaults */
     $.fn.html5finder.defaults = {
-        expand: null,
-        expandTrigger: null,
-        updateButton: false,
-        button: '.form-actions button',
-        loading: false,
-        horizontalScroll: false,
-        scrollContainer: null,
-        selected: 'input:checked',
-        notSelected: 'input:not(:checked)',
-        header: 'header',
-        section: 'section',
+        expand: '.form-actions',                // The element to be hidden/shown as necessary
+        expandTrigger: null,                    // The trigger for showing/hiding the 'expand' element
+        updateButton: false,                    // If true, button text will be updated live
+        button: '.form-actions button',         // The button to be updated, if updateButton is 'true'
+        loading: false,                         // If true, adds a loading overlay while waiting for Ajax response
+        horizontalScroll: false,                // If true, automatically scrolls to center the active section
+                                                // This requires the jquery.scrollTo.js plugin by default
+        scrollContainer: null,                  // The container (window) to be automatically scrolled
+        selected: 'input:checked',              // A selected element
+        notSelected: 'input:not(:checked)',     // An unselected element
+        header: 'header',                       // Section headers
+        section: 'section',                     // Sections
         section1class: 'section1',
         section1item: 'input[name="section1"]',
         section2class: 'section2',
