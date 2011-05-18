@@ -71,14 +71,16 @@
           <section class="environments">
             {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
           </section>
-          <section class="testers">
-            <h4>testers</h4>
-            <ul>
-              {% for tester in run.team %}
-              <li>{{ tester.screenName }}</li>
-              {% endfor %}
-            </ul>
-          </section>
+          {% if run.team|length %}
+            <section class="testers">
+              <h4>testers</h4>
+              <ul>
+                {% for tester in run.team %}
+                <li>{{ tester.screenName }}</li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endif %}
         </div>
       </article>
       {% endfor %}
