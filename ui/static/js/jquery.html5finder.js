@@ -126,20 +126,22 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
-            fakeAjaxCall(
-                itemName,
-                function(data) {
-                    section2.children('ul').html(data);
-                    $('.loadingCSS').detach();
-                    $('.loading').removeClass("loading");
-                }
-            );
-            section1.removeClass('focus');
-            section2.addClass('focus').children('ul').empty();
-            section3.removeClass('focus').children('ul').empty();
-            section4.removeClass('focus').children('ul').empty();
-            section5.removeClass('focus').children('ul').empty();
-            expand.slideUp();
+            if (!$(this).closest(options.section).is(options.section + ':last-child')) {
+                fakeAjaxCall(
+                    itemName,
+                    function(data) {
+                        section2.children('ul').html(data);
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass("loading");
+                    }
+                );
+                section1.removeClass('focus');
+                section2.addClass('focus').children('ul').empty();
+                section3.removeClass('focus').children('ul').empty();
+                section4.removeClass('focus').children('ul').empty();
+                section5.removeClass('focus').children('ul').empty();
+                expand.slideUp();
+            }
             addSelectedClass();
         });
         section2item.live('click', function() {
@@ -233,21 +235,23 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
-            fakeAjaxCall(
-                productName,
-                cycleNumber,
-                function(data) {
-                    section3.children('ul').html(data);
-                    $('.loadingCSS').detach();
-                    $('.loading').removeClass("loading");
-                }
-            );
-            section1.removeClass('focus');
-            section2.removeClass('focus');
-            section3.addClass('focus').children('ul').empty();
-            section4.removeClass('focus').children('ul').empty();
-            section5.removeClass('focus').children('ul').empty();
-            expand.slideUp();
+            if (!$(this).closest(options.section).is(options.section + ':last-child')) {
+                fakeAjaxCall(
+                    productName,
+                    cycleNumber,
+                    function(data) {
+                        section3.children('ul').html(data);
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass("loading");
+                    }
+                );
+                section1.removeClass('focus');
+                section2.removeClass('focus');
+                section3.addClass('focus').children('ul').empty();
+                section4.removeClass('focus').children('ul').empty();
+                section5.removeClass('focus').children('ul').empty();
+                expand.slideUp();
+            }
             addSelectedClass();
         });
         section3item.live('click', function() {
@@ -280,19 +284,21 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
-            fakeAjaxCall(
-                function(data) {
-                    section4.children('ul').html(data);
-                    $('.loadingCSS').detach();
-                    $('.loading').removeClass("loading");
-                }
-            );
-            section1.removeClass('focus');
-            section2.removeClass('focus');
-            section3.removeClass('focus');
-            section4.addClass('focus').children('ul').empty();
-            section5.removeClass('focus').children('ul').empty();
-            expand.slideUp();
+            if (!$(this).closest(options.section).is(options.section + ':last-child')) {
+                fakeAjaxCall(
+                    function(data) {
+                        section4.children('ul').html(data);
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass("loading");
+                    }
+                );
+                section1.removeClass('focus');
+                section2.removeClass('focus');
+                section3.removeClass('focus');
+                section4.addClass('focus').children('ul').empty();
+                section5.removeClass('focus').children('ul').empty();
+                expand.slideUp();
+            }
             addSelectedClass();
         });
         section4item.live('click', function() {
@@ -325,19 +331,21 @@
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
                 };
-            fakeAjaxCall(
-                function(data) {
-                    section5.children('ul').html(data);
-                    $('.loadingCSS').detach();
-                    $('.loading').removeClass("loading");
-                }
-            );
-            section1.removeClass('focus');
-            section2.removeClass('focus');
-            section3.removeClass('focus');
-            section4.removeClass('focus');
-            section5.addClass('focus').children('ul').empty();
-            expand.slideUp();
+            if (!$(this).closest(options.section).is(options.section + ':last-child')) {
+                fakeAjaxCall(
+                    function(data) {
+                        section5.children('ul').html(data);
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass("loading");
+                    }
+                );
+                section1.removeClass('focus');
+                section2.removeClass('focus');
+                section3.removeClass('focus');
+                section4.removeClass('focus');
+                section5.addClass('focus').children('ul').empty();
+                expand.slideUp();
+            }
             addSelectedClass();
         });
         section5item.live('click', function() {
