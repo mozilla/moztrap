@@ -1689,17 +1689,17 @@ thead .controls {
   background: #77b929;
 }
 
-.addform .meta, #addcycle .meta, #addrun .meta, #addsuite .meta, #addcase .meta {
+.addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #addcase .basic {
   display: inline;
   float: left;
   width: 51.807%;
   margin-right: 1.205%;
   margin-bottom: 1.618em;
 }
-.addform .meta li, #addcycle .meta li, #addrun .meta li, #addsuite .meta li, #addcase .meta li {
+.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
   *zoom: 1;
 }
-.addform .meta li:after, #addcycle .meta li:after, #addrun .meta li:after, #addsuite .meta li:after, #addcase .meta li:after {
+.addform .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #addcase .basic li:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -1707,13 +1707,13 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-.addform .meta label, #addcycle .meta label, #addrun .meta label, #addsuite .meta label, #addcase .meta label {
+.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #addcase .basic label {
   display: inline;
   float: left;
   width: 16.279%;
   margin-right: 2.326%;
 }
-.addform .meta input, #addcycle .meta input, #addrun .meta input, #addsuite .meta input, #addcase .meta input, .addform .meta select, #addcycle .meta select, #addrun .meta select, #addsuite .meta select, #addcase .meta select, .addform .meta textarea, #addcycle .meta textarea, #addrun .meta textarea, #addsuite .meta textarea, #addcase .meta textarea {
+.addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #addcase .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #addcase .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #addcase .basic textarea {
   display: inline;
   float: left;
   width: 81.395%;
@@ -1722,28 +1722,28 @@ thead .controls {
   float: right;
   margin-right: 0;
 }
-.addform .meta li, #addcycle .meta li, #addrun .meta li, #addsuite .meta li, #addcase .meta li {
+.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
   clear: both;
 }
-.addform .meta .date, #addcycle .meta .date, #addrun .meta .date, #addsuite .meta .date, #addcase .meta .date {
+.addform .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #addcase .basic .date {
   display: inline;
   float: left;
   width: 44.186%;
   margin-right: 2.326%;
   clear: none;
 }
-.addform .meta .date + .date, #addcycle .meta .date + .date, #addrun .meta .date + .date, #addsuite .meta .date + .date, #addcase .meta .date + .date {
+.addform .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #addcase .basic .date + .date {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.addform .meta .date label, #addcycle .meta .date label, #addrun .meta .date label, #addsuite .meta .date label, #addcase .meta .date label {
+.addform .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #addcase .basic .date label {
   display: inline;
   float: left;
   width: 36.842%;
   margin-right: 5.263%;
 }
-.addform .meta .date input, #addcycle .meta .date input, #addrun .meta .date input, #addsuite .meta .date input, #addcase .meta .date input {
+.addform .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #addcase .basic .date input {
   display: inline;
   float: left;
   width: 57.895%;
@@ -1752,10 +1752,10 @@ thead .controls {
   float: right;
   margin-right: 0;
 }
-.addform .meta .date .errorlist, #addcycle .meta .date .errorlist, #addrun .meta .date .errorlist, #addsuite .meta .date .errorlist, #addcase .meta .date .errorlist {
+.addform .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #addcase .basic .date .errorlist {
   padding: 0;
 }
-.addform .meta .errorlist, #addcycle .meta .errorlist, #addrun .meta .errorlist, #addsuite .meta .errorlist, #addcase .meta .errorlist {
+.addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #addcase .basic .errorlist {
   clear: both;
   padding-left: 18.605%;
 }
@@ -2503,9 +2503,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 }
 .status span {
   *display: inline;
-}
-.status button, .status span {
-  vertical-align: top;
 }
 .status button.rejected, .status span.rejected {
   -moz-border-radius: 0.25em;
