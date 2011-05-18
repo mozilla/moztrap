@@ -157,12 +157,12 @@
       background: image-url('ui/plus_sm.png') no-repeat scroll 3px
       font-weight: normal
       &:hover
-        font-weight: bold
+        +bold
     small
       +float(right)
     input:checked + label
       +opacity(1)
+      +bold
       background-image: image-url('ui/check_sm.png')
-      font-weight: bold
       &:hover
         background-image: image-url('ui/x_sm.png')

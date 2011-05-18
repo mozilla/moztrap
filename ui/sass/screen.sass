@@ -123,7 +123,7 @@
   +prefix(1,24)
   +rhythm(0,.5,.5,.5)
   +text-shadow($blue-lightest 1px 1px 0)
-  font-weight: bold
+  +bold
   background: $blue-lighter image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
   color: $blue-dark
 
@@ -211,6 +211,7 @@ footer[role="contentinfo"]
   &::before
     @extend .allcaps
     +border-top-radius(.5em)
+    +bold
     content: attr(title)
     display: block
     position: absolute
@@ -218,7 +219,6 @@ footer[role="contentinfo"]
     left: rhythm(1)
     padding: rhythm(.25) rhythm(1)
     background: $light
-    font-weight: bold
   &:hover
     +opacity(1)
     top: auto
@@ -352,7 +352,7 @@ footer[role="contentinfo"]
       +gone
       &:checked
         + label
-          font-weight: bold
+          +bold
           background: rgba($blue-light,.5)
           .logo
             +scale(1.75)

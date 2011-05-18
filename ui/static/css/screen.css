@@ -289,7 +289,7 @@ cite, em, dfn, address, i {
 }
 
 strong, dfn, b {
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 sup, sub {
@@ -443,10 +443,10 @@ a[href="#main"] {
   text-shadow: #4b6564 1px 1px 0;
   padding-left: 1em;
   padding-right: 1em;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #eeeeee;
   background: #528684;
   border-color: #4b6564;
-  font-weight: bold;
 }
 a[href="#main"]:focus, a[href="#main"]:active {
   position: absolute;
@@ -588,7 +588,7 @@ label {
   *vertical-align: auto;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 label {
   *display: inline;
@@ -1036,7 +1036,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-bottom: 0.809em;
   margin-bottom: 0.809em;
   text-shadow: #ccd7d6 1px 1px 0;
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #aac0bf url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.618em center;
   color: #4b6564;
 }
@@ -1555,7 +1555,7 @@ thead .controls {
   font-weight: normal;
 }
 #filter .expanded label:hover {
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #filter .expanded small {
   display: inline;
@@ -1564,8 +1564,8 @@ thead .controls {
 #filter .expanded input:checked + label {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-image: url('../images/ui/check_sm.png?1303498520');
-  font-weight: bold;
 }
 #filter .expanded input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1303975078');
@@ -1581,6 +1581,7 @@ thead .controls {
 }
 .loading::before {
   text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
   position: absolute;
   content: "loading...";
@@ -1590,7 +1591,6 @@ thead .controls {
   left: 0;
   color: rgba(238, 238, 238, 0.95);
   background-color: rgba(68, 68, 68, 0.25);
-  font-weight: bold;
   text-align: center;
   z-index: 50;
 }
@@ -2009,10 +2009,10 @@ thead .controls {
   line-height: 1.888em;
   padding-left: 1.618em;
   padding-right: 1.618em;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
   width: 100%;
   text-align: left;
-  font-weight: bold;
 }
 .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall {
   color: #e5f5d2;
@@ -2682,10 +2682,10 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   border: 0;
 }
 .environments h5 {
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0 0.25em;
   background: rgba(238, 238, 238, 0.5);
-  font-weight: bold;
   text-transform: lowercase;
 }
 .environments > ul {
@@ -2918,7 +2918,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   text-align: center;
 }
 .listnav .current {
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* Manage Types -------------------------------------------------------------- */
@@ -3176,8 +3176,8 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   float: left;
   width: 8.861%;
   margin-right: 1.266%;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   vertical-align: top;
-  font-weight: bold;
   text-align: right;
 }
 #run .status {
@@ -3203,9 +3203,9 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   padding-bottom: 0.472em;
   padding-left: 1em;
   padding-right: 1em;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0 6.667%;
   color: #eeeeee;
-  font-weight: bold;
 }
 #run .status button {
   width: 86.667%;
@@ -3553,7 +3553,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   -khtml-border-radius: 5.348px;
   border-radius: 5.348px;
   text-shadow: rgba(233, 237, 237, 0.618) 0 1px 0;
-  font-weight: bold;
   text-align: center;
 }
 
@@ -4291,6 +4290,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   -ms-border-top-right-radius: 0.5em;
   -khtml-border-top-right-radius: 0.5em;
   border-top-right-radius: 0.5em;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   content: attr(title);
   display: block;
   position: absolute;
@@ -4298,7 +4298,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   left: 1.618em;
   padding: 0.405em 1.618em;
   background: #eeeeee;
-  font-weight: bold;
 }
 #page-status:hover {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -4531,7 +4530,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   border: 0;
 }
 .finder.expanded input:checked + label {
-  font-weight: bold;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: rgba(135, 169, 168, 0.5);
 }
 .finder.expanded input:checked + label .logo {
