@@ -69,7 +69,9 @@
               Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
               on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
             </p>
-            <p>{{ cycle.description }}</p>
+            {% if cycle.description %}
+              <p>{{ cycle.description }}</p>
+            {% endif %}
           </div>
           <div class="environments">
             {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}

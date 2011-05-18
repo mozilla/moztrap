@@ -51,6 +51,11 @@
   src: url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed') format('svg');
 }
 
+@font-face {
+  font-family: "CambridgeRoundBoldCond";
+  src: url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
+}
+
 /* Print Defaults -------------------------------------------------------------- */
 nav {
   display: none;

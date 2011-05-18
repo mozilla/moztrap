@@ -108,6 +108,11 @@ footer, header, hgroup, menu, nav, section {
   src: url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed') format('svg');
 }
 
+@font-face {
+  font-family: "CambridgeRoundBoldCond";
+  src: url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
+}
+
 /* Typography ---------------------------------------------------------------- */
 .serif {
   font-family: Cambria, Georgia, serif;
@@ -121,15 +126,15 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #filter h5, .environments h5, #run .testinvalid summary {
+.caps, .allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .environments h5, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #filter h5, #run .testinvalid summary {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
+.allcaps, h1, h2, caption, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .environments h5, #run .status p, #run .stepfail summary, #page-status::before {
   text-transform: uppercase;
 }
 
-.smallcaps, #filter h5, .environments h5, #run .testinvalid summary {
+.smallcaps, #filter h5, #run .testinvalid summary {
   font-variant: small-caps;
 }
 
@@ -2475,8 +2480,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   float: left;
   width: 42.857%;
   margin-right: 14.286%;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
   padding: 0;
 }
 .status .pending button[title="reject"] {
@@ -2493,8 +2496,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   background-color: #b5e37f;
 }
 .status span {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
   display: -moz-inline-box;
   -moz-box-orient: vertical;
   display: inline-block;
@@ -2682,11 +2683,10 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   border: 0;
 }
 .environments h5 {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0 0.25em;
   background: rgba(238, 238, 238, 0.5);
-  text-transform: lowercase;
 }
 .environments > ul {
   margin: 0;
@@ -2877,9 +2877,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   margin-right: 0;
   text-align: right;
 }
-.listnav .perpage strong {
-  font-weight: normal;
-}
 .listnav .perpage ul, .listnav .pagination {
   margin: 0;
   padding: 0;
@@ -2908,7 +2905,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 }
 .listnav .perpage ul li + li::before, .listnav .pagination li + li::before {
   content: "| ";
-  color: #cccccc;
 }
 .listnav .pagination {
   display: inline;
@@ -2917,8 +2913,14 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   margin-right: 1.205%;
   text-align: center;
 }
-.listnav .current {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.listnav .current, .listnav strong {
+  font-family: "CambridgeRoundBoldCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.listnav a:link, .listnav a:visited {
+  color: #4b6564;
+}
+.listnav a:focus, .listnav a:hover, .listnav a:active {
+  color: #511214;
 }
 
 /* Manage Types -------------------------------------------------------------- */

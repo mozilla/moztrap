@@ -61,7 +61,9 @@
               Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
               on <time pubdate>{{ suite.timeline.createDate|date }}</time>
             </p>
-            <p>{{ suite.description }}</p>
+            {% if suite.description %}
+              <p>{{ suite.description }}</p>
+            {% endif %}
           </div>
           <div class="environments">
             {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}

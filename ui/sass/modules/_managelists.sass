@@ -82,7 +82,6 @@ nav
       +icon('[title="reject"]','ui/x.png',$light)
       &[title="approve"], &[title="reject"]
         +columns(1,2)
-        +opacity(.5)
         padding: 0
       &[title="reject"]
         +omega(2)
@@ -97,7 +96,6 @@ nav
             color: $green-light
 
   span
-    +opacity(.5)
     +inline-block
 
   button, span
@@ -130,12 +128,11 @@ nav
   h4
     +gone
   h5
-    @extend .smallcaps
-    +bold
+    @extend .allcaps
+    +condensed
     margin: 0
     padding: 0 .25em
     background: rgba($light,.5)
-    text-transform: lowercase
   > ul
     +reset-box-model
     list-style: none
@@ -235,8 +232,6 @@ nav
   .perpage
     +omega(21)
     text-align: right
-    strong
-      font-weight: normal
   .perpage ul, .pagination
     +inline-block-list
     display: inline
@@ -245,10 +240,13 @@ nav
       vertical-align: baseline
       + li::before
         content: "| "
-        color: #ccc
   .pagination
     +columns(9,21)
     text-align: center
-  .current
-    +bold
-
+  .current, strong
+    +boldcond
+  a
+    #{$link}
+      color: $blue-dark
+    #{$focus}
+      color: $red-dark

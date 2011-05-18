@@ -73,7 +73,9 @@
               Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
               on <time pubdate>{{ run.timeline.createDate|date }}</time>
             </p>
-            <p>{{ run.description }}</p>
+            {% if run.description %}
+              <p>{{ run.description }}</p>
+            {% endif %}
           </div>
           <div class="environments">
             {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
