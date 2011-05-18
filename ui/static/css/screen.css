@@ -478,8 +478,8 @@ th, thead th {
   border-top-style: solid;
   border-top-width: 0.071em;
   padding-top: 0.333em;
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   white-space: nowrap;
-  font-weight: bold;
   background: #eeeeee;
 }
 
