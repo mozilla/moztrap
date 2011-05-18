@@ -32,12 +32,13 @@
             expand = $(options.expand).hide(),
             horzScroll = function() {
                 if (options.horizontalScroll === true) {
+                    var scrollTarget;
                     if ($(options.section + '.focus').is(options.section + ':first-child')) {
-                        var target = $(options.section + '.focus');
+                        scrollTarget = $(options.section + '.focus');
                     } else {
-                        var target = $(options.section + '.focus').prev(options.section);
+                        scrollTarget = $(options.section + '.focus').prev(options.section);
                     }
-                    $(options.scrollContainer).scrollTo(target, {duration: 500, axis: 'x'});
+                    $(options.scrollContainer).scrollTo(scrollTarget, {duration: 500, axis: 'x'});
                 }
             };
         headers.find('a').click(function() {
@@ -105,7 +106,7 @@
                             '</label>' +
                         '</li>';
                     if (itemName === 'tcm') {
-                        var response =
+                        response =
                             '<li>' +
                                 '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_01" data-product="' + itemName + '" data-cycle="01">' +
                                 '<label for="' + itemName + '_cycle_name_01">' +
@@ -209,7 +210,7 @@
                             '</label>' +
                         '</li>';
                     if (cycleNumber === 1) {
-                        var response =
+                        response =
                             '<li>' +
                                 '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_01">' +
                                 '<label for="' + productName + '_run_0' + cycleNumber + '_01">' +
