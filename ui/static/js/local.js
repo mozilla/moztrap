@@ -33,8 +33,12 @@ var TCM = TCM || {};
         TCM.addLoading('button, a', 'details');
         TCM.addLoading('button, a', '.details');
         $('#sandbox').html5finder( {
+            expand: '#sandbox .form-actions',
+            expandTrigger: '#sandbox input',
             loading: true,
             updateButton: true,
+            horizontalScroll: true,
+            scrollContainer: '#findernav.expanded',
             section1class: 'products',
             section1item: 'input[name="product"]',
             section2class: 'cycles',

@@ -7,7 +7,7 @@
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
-;(function($) {
+(function($) {
     $.fn.html5finder = function(opts) {
         var options = $.extend({}, $.fn.html5finder.defaults, opts),
             context = this,
@@ -29,11 +29,22 @@
                 context.find(options.selected).addClass('selected');
                 context.find(options.notSelected).removeClass('selected');
             },
-            expand = $(options.expand).hide();
+            expand = $(options.expand).hide(),
+            horzScroll = function() {
+                if (options.horizontalScroll === true) {
+                    if ($(options.section + '.focus').is(options.section + ':first-child')) {
+                        var target = $(options.section + '.focus');
+                    } else {
+                        var target = $(options.section + '.focus').prev(options.section);
+                    }
+                    $(options.scrollContainer).scrollTo(target, {duration: 500, axis: 'x'});
+                }
+            };
         headers.find('a').click(function() {
             context.find(options.section).removeClass('focus');
             $(this).closest(options.section).addClass('focus');
             $(this).blur();
+            horzScroll();
         });
         section1item.live('click', function() {
             var itemName = $(this).data('id'),
@@ -140,7 +151,7 @@
                 section3.removeClass('focus').children('ul').empty();
                 section4.removeClass('focus').children('ul').empty();
                 section5.removeClass('focus').children('ul').empty();
-                expand.slideUp();
+                horzScroll();
             }
             addSelectedClass();
         });
@@ -250,7 +261,7 @@
                 section3.addClass('focus').children('ul').empty();
                 section4.removeClass('focus').children('ul').empty();
                 section5.removeClass('focus').children('ul').empty();
-                expand.slideUp();
+                horzScroll();
             }
             addSelectedClass();
         });
@@ -297,7 +308,7 @@
                 section3.removeClass('focus');
                 section4.addClass('focus').children('ul').empty();
                 section5.removeClass('focus').children('ul').empty();
-                expand.slideUp();
+                horzScroll();
             }
             addSelectedClass();
         });
@@ -344,7 +355,7 @@
                 section3.removeClass('focus');
                 section4.removeClass('focus');
                 section5.addClass('focus').children('ul').empty();
-                expand.slideUp();
+                horzScroll();
             }
             addSelectedClass();
         });
@@ -354,12 +365,14 @@
         $(options.expandTrigger).live('click', function() {
             expand.slideDown();
         });
+        $()
         $('input.selected').live('click', function() {
             $(this).closest(options.section).addClass('focus').siblings(options.section).removeClass('focus');
             $(this).closest(options.section).next(options.section).find('input:checked').removeClass('selected').removeAttr('checked');
             $(this).closest(options.section).next(options.section).nextAll(options.section).children('ul').empty();
+            horzScroll();
         });
-        $('input.selected:not("' + options.expandTrigger + '")').live('click', function() {
+        $('input:not("' + options.expandTrigger + '")').live('click', function() {
             expand.slideUp();
         });
         if (options.loading === true) {
@@ -398,6 +411,7 @@
         button: '.form-actions button',
         loading: false,
         horizontalScroll: false,
+        scrollContainer: null,
         selected: 'input:checked',
         notSelected: 'input:not(:checked)',
         header: 'header',
