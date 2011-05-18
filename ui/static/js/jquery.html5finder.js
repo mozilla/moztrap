@@ -365,7 +365,6 @@
         $(options.expandTrigger).live('click', function() {
             expand.slideDown();
         });
-        $()
         $('input.selected').live('click', function() {
             $(this).closest(options.section).addClass('focus').siblings(options.section).removeClass('focus');
             $(this).closest(options.section).next(options.section).find('input:checked').removeClass('selected').removeAttr('checked');
