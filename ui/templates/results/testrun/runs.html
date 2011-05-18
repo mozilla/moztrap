@@ -58,10 +58,16 @@
             See related <a href="#{# @@@ #}" title="test suites related to {{ run.name }}">test suites</a>
             or <a href="#{# @@@ #}" title="test cases related to {{ run.name }}">test cases</a>.
           </p>
-          <div class="time">
-            <p class="start">start date: <time>{{ run.startDate|date }}</time></p>
-            <p class="end">end date: <time>{{ run.endDate|date }}</time></p>
-          </div>
+          {% if run.startDate or run.endDate %}
+            <div class="time">
+              {% if run.startDate %}
+                <p class="start">start date: <time>{{ run.startDate|date }}</time></p>
+              {% endif %}
+              {% if run.endDate %}
+                <p class="end">end date: <time>{{ run.endDate|date }}</time></p>
+              {% endif %}
+            </div>
+          {% endif %}
           <section class="environments">
             {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
           </section>
