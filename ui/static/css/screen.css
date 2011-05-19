@@ -1914,6 +1914,9 @@ thead .controls {
   border: 0;
   padding-left: 1.618em;
 }
+.finder.compact.wide {
+  overflow: hidden;
+}
 
 /* environment -------------------------------------------------------------- */
 .environment summary {
