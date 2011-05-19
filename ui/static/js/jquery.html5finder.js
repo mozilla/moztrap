@@ -32,7 +32,7 @@
                 context.find(options.notSelected).removeClass('selected');
             },
             // Hide form-actions
-            expand = $(options.expand).hide(),
+            expand = context.find(options.expand).hide(),
             // Define the function for horizontal scrolling (requires jquery.scrollTo.js plugin):
             // Scrolls to the previous section (so that the active section is centered)
             horzScroll = function() {
