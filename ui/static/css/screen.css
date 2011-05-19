@@ -1328,7 +1328,17 @@ thead .controls {
   visibility: hidden;
 }
 #filter small {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  min-width: 10px;
   color: #999999;
+  vertical-align: baseline;
+}
+#filter small {
+  *display: inline;
 }
 #filter .compact .toggle a:link::before, #filter .compact .toggle a:visited::before {
   content: "show ";
@@ -1336,76 +1346,76 @@ thead .controls {
 #filter .compact .toggle a:link::after, #filter .compact .toggle a:visited::after {
   content: " »";
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-1) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-1) label {
   background-color: #e5f5d2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-2) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-2) label {
   background-color: #ddf5d2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-3) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-3) label {
   background-color: #d4f5d2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-4) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-4) label {
   background-color: #d2f5da;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-5) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-5) label {
   background-color: #d2f5e2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-6) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-6) label {
   background-color: #d2f5eb;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-7) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-7) label {
   background-color: #d2f5f4;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-8) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-8) label {
   background-color: #d2eef5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-9) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-9) label {
   background-color: #d2e5f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-10) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-10) label {
   background-color: #d2ddf5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-11) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-11) label {
   background-color: #d2d4f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-12) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-12) label {
   background-color: #dad2f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-13) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-13) label {
   background-color: #e2d2f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-14) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-14) label {
   background-color: #ebd2f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-15) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-15) label {
   background-color: #f4d2f5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-16) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-16) label {
   background-color: #f5d2ee;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-17) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-17) label {
   background-color: #f5d2e5;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-18) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-18) label {
   background-color: #f5d2dd;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-19) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-19) label {
   background-color: #f5d2d4;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-20) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-20) label {
   background-color: #f5dad2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-21) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-21) label {
   background-color: #f5e2d2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-22) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-22) label {
   background-color: #f5ebd2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-23) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-23) label {
   background-color: #f5f4d2;
 }
-#filter .compact div[class^="filter-"]:nth-of-type(24n-24) label {
+#filter .compact [class^="filter-"]:nth-of-type(24n-24) label {
   background-color: #eef5d2;
 }
 #filter .compact .long {
@@ -1426,24 +1436,18 @@ thead .controls {
   -ms-border-radius: 0.25em;
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
+  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
   display: block;
   margin-right: 0.5em;
   padding: 0.236em 0.472em;
   background: #e5f5d2;
 }
 #filter .compact input:checked + label:hover small {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  min-width: 10px;
-  color: rgba(0, 0, 0, 0);
+  color: rgba(153, 153, 153, 0);
   background: url('../images/ui/x_sm.png?1305758084') no-repeat scroll center;
-  vertical-align: baseline;
-}
-#filter .compact input:checked + label:hover small {
-  *display: inline;
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";

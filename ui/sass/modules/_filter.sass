@@ -87,7 +87,10 @@
     +pie-clearfix
 
   small
+    +inline-block
+    min-width: image-width('ui/x_sm.png')
     color: $mid
+    vertical-align: baseline
 
   .compact
     .toggle
@@ -97,7 +100,7 @@
             content: "show "
           &::after
             content: " »"
-    div[class^="filter-"]
+    [class^="filter-"]
       +colorwheel(label)
     .long
       height: auto !important
@@ -108,17 +111,15 @@
     input:checked + label
       +trailer(.5,12px)
       +border-radius(.25em)
+      +box-shadow(rgba($blue,$xxsmall) 0 1px 1px)
       display: block
       margin-right: .5em
       padding: rhythm(.125,12px) rhythm(.25,12px)
       background: $green-lightest
       &:hover
         small
-          +inline-block
-          min-width: image-width('ui/x_sm.png')
-          color: rgba(0,0,0,0)
+          color: rgba($mid,0)
           background: image-url('ui/x_sm.png') no-repeat scroll center
-          vertical-align: baseline
 
   // Expanded --------------------------------------------------------------
 
