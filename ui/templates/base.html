@@ -47,7 +47,7 @@
   <!-- Modernizr -->
   {% compress js %}
   <script src="{{ STATIC_URL }}js/modernizr.js"></script>
-  <script>if(!('open' in document.createElement('details')))document.documentElement.className+=' no-details'</script>
+  <script src="{{ STATIC_URL }}js/elem-details.js"></script>
   {% endcompress %}
 
   <!-- Page-Specific Head -->
