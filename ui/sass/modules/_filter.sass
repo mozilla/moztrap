@@ -80,6 +80,9 @@
     +leader(.25)
     font-style: italic
     text-transform: lowercase
+    a
+      #{$link}
+        display: block
 
   .content
     +full(21)
@@ -112,6 +115,7 @@
       +trailer(.5,12px)
       +border-radius(.25em)
       +box-shadow(rgba($blue,$xxsmall) 0 1px 1px)
+      +demi
       display: block
       margin-right: .5em
       padding: rhythm(.125,12px) rhythm(.25,12px)
@@ -140,7 +144,7 @@
           +omega(21)
         &:nth-of-type(7n+1)
           clear: left
-        +colorwheel(h3)
+        +colorwheel(h5)
     .long
       overflow: hidden
       height: rhythm(5,12px)
@@ -161,12 +165,12 @@
       background: image-url('ui/plus_sm.png') no-repeat scroll 3px
       font-weight: normal
       &:hover
-        +bold
+        +demi
     small
       +float(right)
     input:checked + label
       +opacity(1)
-      +bold
+      +demi
       background-image: image-url('ui/check_sm.png')
       &:hover
         background-image: image-url('ui/x_sm.png')

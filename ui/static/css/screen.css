@@ -1313,6 +1313,9 @@ thead .controls {
   font-style: italic;
   text-transform: lowercase;
 }
+#filter .toggle a:link, #filter .toggle a:visited {
+  display: block;
+}
 #filter .content {
   clear: both;
   font-size: 0.857em;
@@ -1440,6 +1443,7 @@ thead .controls {
   -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
   -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
   box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
   margin-right: 0.5em;
   padding: 0.236em 0.472em;
@@ -1473,76 +1477,76 @@ thead .controls {
 #filter .expanded .content [class^="filter-"]:nth-of-type(7n+1) {
   clear: left;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-1) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-1) h5 {
   background-color: #e5f5d2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-2) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-2) h5 {
   background-color: #ddf5d2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-3) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-3) h5 {
   background-color: #d4f5d2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-4) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-4) h5 {
   background-color: #d2f5da;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-5) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-5) h5 {
   background-color: #d2f5e2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-6) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-6) h5 {
   background-color: #d2f5eb;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-7) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-7) h5 {
   background-color: #d2f5f4;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-8) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-8) h5 {
   background-color: #d2eef5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-9) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-9) h5 {
   background-color: #d2e5f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-10) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-10) h5 {
   background-color: #d2ddf5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-11) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-11) h5 {
   background-color: #d2d4f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-12) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-12) h5 {
   background-color: #dad2f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-13) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-13) h5 {
   background-color: #e2d2f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-14) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-14) h5 {
   background-color: #ebd2f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-15) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-15) h5 {
   background-color: #f4d2f5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-16) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-16) h5 {
   background-color: #f5d2ee;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-17) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-17) h5 {
   background-color: #f5d2e5;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-18) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-18) h5 {
   background-color: #f5d2dd;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-19) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-19) h5 {
   background-color: #f5d2d4;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-20) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-20) h5 {
   background-color: #f5dad2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-21) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-21) h5 {
   background-color: #f5e2d2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-22) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-22) h5 {
   background-color: #f5ebd2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-23) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-23) h5 {
   background-color: #f5f4d2;
 }
-#filter .expanded .content [class^="filter-"]:nth-of-type(24n-24) h3 {
+#filter .expanded .content [class^="filter-"]:nth-of-type(24n-24) h5 {
   background-color: #eef5d2;
 }
 #filter .expanded .long {
@@ -1570,7 +1574,7 @@ thead .controls {
   font-weight: normal;
 }
 #filter .expanded label:hover {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #filter .expanded small {
   display: inline;
@@ -1579,7 +1583,7 @@ thead .controls {
 #filter .expanded input:checked + label {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-image: url('../images/ui/check_sm.png?1303498520');
 }
 #filter .expanded input:checked + label:hover {
