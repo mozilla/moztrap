@@ -54,3 +54,73 @@ Feature: Environment Object Business Rules
         Then that testrun has the following environmentgroups:
             | name |
             | EnvGrp1 |
+
+    Scenario: Modify a test run's environment groups twice
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        And when I create the following new testcycles:
+            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
+        And when I create a new testrun with name "Running Man" with testcycle "Baroque Cycle"
+        And I create a new environmenttype with name "EnvType1"
+        And I create a new environment with name "Env1" of type "EnvType1"
+        And I create a new group environmenttype with name "GrpEnvType1"
+        And I create a new environmentgroup with name "EnvGrp1" of type "GrpEnvType1"
+        And I add the following environments to the environmentgroup with that name:
+            | name |
+            | Env1 |
+        And I add the following environmentgroups to the testrun with that name:
+            | name    |
+            | EnvGrp1 |
+        When I add the following environmentgroups to the testrun with that name:
+            | name    |
+            | EnvGrp1 |
+        Then that testrun has the following environmentgroups:
+            | name |
+            | EnvGrp1 |
+
+    Scenario: Modify a test cycle's environment groups twice
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        And when I create the following new testcycles:
+            | name          | description               | product name | startDate  | endDate    | communityAuthoringAllowed | communityAccessAllowed |
+            | Baroque Cycle | Ahh, the cycle of life... | Cortexiphan  | 2011/02/02 | 2012/02/02 | true                      | true                   |
+        And I create a new environmenttype with name "EnvType1"
+        And I create a new environment with name "Env1" of type "EnvType1"
+        And I create a new group environmenttype with name "GrpEnvType1"
+        And I create a new environmentgroup with name "EnvGrp1" of type "GrpEnvType1"
+        And I add the following environments to the environmentgroup with that name:
+            | name |
+            | Env1 |
+        And I add the following environmentgroups to the testcycle with name "Baroque Cycle":
+            | name    |
+            | EnvGrp1 |
+        When I add the following environmentgroups to the testcycle with that name:
+            | name    |
+            | EnvGrp1 |
+        Then that testcycle has the following environmentgroups:
+            | name |
+            | EnvGrp1 |
+
+    Scenario: Modify a product's environment groups twice
+        Given I create the seed company and product with these names:
+            | company name    | product name  |
+            | Massive Dynamic | Cortexiphan   |
+        And I create a new environmenttype with name "EnvType1"
+        And I create a new environment with name "Env1" of type "EnvType1"
+        And I create a new group environmenttype with name "GrpEnvType1"
+        And I create a new environmentgroup with name "EnvGrp1" of type "GrpEnvType1"
+        And I add the following environments to the environmentgroup with that name:
+            | name |
+            | Env1 |
+        And I add the following environmentgroups to the product with name "Cortexiphan":
+            | name    |
+            | EnvGrp1 |
+        When I add the following environmentgroups to the product with that name:
+            | name    |
+            | EnvGrp1 |
+        Then that product has the following environmentgroups:
+            | name |
+            | EnvGrp1 |
