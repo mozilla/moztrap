@@ -1745,7 +1745,6 @@ thead .controls {
   padding-right: 0.809em;
   font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
-  color: #444444;
   border-color: rgba(135, 169, 168, 0.236);
   font-weight: normal;
   cursor: pointer;
@@ -1854,6 +1853,9 @@ thead .controls {
 }
 .finder.expanded .col.products li a {
   padding-left: 3.438em;
+}
+.finder.expanded .col.cycles li a {
+  padding-left: 10.106%;
 }
 .finder.compact {
   background: #ccd7d6;

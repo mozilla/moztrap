@@ -79,7 +79,6 @@
         +hpadding(rhythm(.5))
         +bold
         display: block
-        color: $base
         border-color: rgba($blue-light,$xxsmall)
         font-weight: normal
         cursor: pointer
@@ -142,10 +141,15 @@
     .start, .end
       color: $mid
 
-    .col.products
-      li
-        a
-          padding-left: rhythm(2.125)
+    .col
+      &.products
+        li
+          a
+            padding-left: rhythm(2.125)
+      &.cycles
+        li
+          a
+            padding-left: columns(1,12) + gutter(12)*1.75
 
   // Compact ----------------------------------------------------------------
 
