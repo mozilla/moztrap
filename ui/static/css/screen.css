@@ -2089,13 +2089,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   clear: both;
   margin: 0;
 }
-.manage .managelist {
-  background-image: -webkit-gradient(linear, 100% 50%, 0% 50%, color-stop(0%, rgba(204, 215, 214, 0.5)), color-stop(9.036%, rgba(204, 215, 214, 0.5)), color-stop(9.036%, rgba(204, 215, 214, 0)), color-stop(100%, rgba(204, 215, 214, 0)));
-  background-image: -webkit-linear-gradient(right, rgba(204, 215, 214, 0.5) 0%, rgba(204, 215, 214, 0.5) 9.036%, rgba(204, 215, 214, 0) 9.036%, rgba(204, 215, 214, 0) 100%);
-  background-image: -moz-linear-gradient(right, rgba(204, 215, 214, 0.5) 0%, rgba(204, 215, 214, 0.5) 9.036%, rgba(204, 215, 214, 0) 9.036%, rgba(204, 215, 214, 0) 100%);
-  background-image: -o-linear-gradient(right, rgba(204, 215, 214, 0.5) 0%, rgba(204, 215, 214, 0.5) 9.036%, rgba(204, 215, 214, 0) 9.036%, rgba(204, 215, 214, 0) 100%);
-  background-image: linear-gradient(right, rgba(204, 215, 214, 0.5) 0%, rgba(204, 215, 214, 0.5) 9.036%, rgba(204, 215, 214, 0) 9.036%, rgba(204, 215, 214, 0) 100%);
-}
 .managelist button {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
@@ -2133,14 +2126,26 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   margin-bottom: 0;
 }
 .managelist .summary:focus, .managelist .summary:hover, .managelist .summary:active {
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.382)), color-stop(66.667%, rgba(233, 237, 237, 0.382)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
+  background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
+  background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
+  background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   outline: 0;
-  background: rgba(233, 237, 237, 0.618);
 }
 .managelist .open > .summary {
-  background: rgba(233, 237, 237, 0.618);
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.618)), color-stop(66.667%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
 }
 .managelist .content {
-  background: #e9eded;
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(204, 215, 214, 0)), color-stop(33.333%, rgba(204, 215, 214, 0.382)), color-stop(66.667%, rgba(204, 215, 214, 0.382)), color-stop(100%, rgba(204, 215, 214, 0)));
+  background-image: -webkit-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
+  background-image: -moz-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
+  background-image: -o-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
+  background-image: linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
 }
 .managelist .id {
   text-align: right;

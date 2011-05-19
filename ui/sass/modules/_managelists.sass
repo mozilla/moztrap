@@ -46,8 +46,6 @@ nav
 .managelist
   +full(21)
   margin: 0
-  .manage &
-    +background-image(linear-gradient(right, rgba($blue-lightest,.5) 0, rgba($blue-lightest,.5) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) columns(2,21)+(gutter(21)*.5), rgba($blue-lightest,0) 100%))
   button
     +button-reset
   .item
@@ -62,13 +60,13 @@ nav
     p, h3, h4
       margin-bottom: 0
     #{$focus}
+      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
       outline: 0
-      background: rgba($blue-hint,$small)
   .open
     > .summary
-      background: rgba($blue-hint,$small)
+      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
   .content
-    background: $blue-hint
+    +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
   .id
     text-align: right
 
