@@ -72,20 +72,27 @@
       width: rhythm(1)
       margin-right: rhythm(.5)
 
-    label
-      +pie-clearfix
-      +trailing-border(1px,.25)
-      +hpadding(rhythm(.5))
-      border-color: rgba($blue-light,$xxsmall)
-      display: block
-      font-weight: normal
-      #{$focus}
-        .logo
-          +scale(1.75)
-
     li
+      label, a
+        +pie-clearfix
+        +trailing-border(1px,.25)
+        +hpadding(rhythm(.5))
+        +bold
+        display: block
+        color: $base
+        border-color: rgba($blue-light,$xxsmall)
+        font-weight: normal
+        cursor: pointer
+        #{$focus}
+          .logo
+            +scale(1.75)
+
+      a
+        #{$focus}
+          background: rgba($green,$xsmall) image-url('ui/angle_right.png') no-repeat scroll 98%
+
       &:first-child
-        label
+        label, a
           +leading-border(1px,.25)
 
     input
@@ -93,7 +100,7 @@
       &:checked
         + label
           +bold
-          background: rgba($blue-light,.5)
+          background: rgba($blue-light,$small)
           .logo
             +scale(1.75)
 
@@ -134,6 +141,11 @@
 
     .start, .end
       color: $mid
+
+    .col.products
+      li
+        a
+          padding-left: rhythm(2.125)
 
   // Compact ----------------------------------------------------------------
 

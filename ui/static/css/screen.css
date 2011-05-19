@@ -1736,18 +1736,21 @@ thead .controls {
   width: 1.618em;
   margin-right: 0.809em;
 }
-.finder.expanded label {
+.finder.expanded li label, .finder.expanded li a {
   *zoom: 1;
   border-bottom-style: solid;
   border-bottom-width: 0.071em;
   padding-bottom: 0.333em;
   padding-left: 0.809em;
   padding-right: 0.809em;
-  border-color: rgba(135, 169, 168, 0.236);
+  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
+  color: #444444;
+  border-color: rgba(135, 169, 168, 0.236);
   font-weight: normal;
+  cursor: pointer;
 }
-.finder.expanded label:after {
+.finder.expanded li label:after, .finder.expanded li a:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -1755,14 +1758,17 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-.finder.expanded label:focus .logo, .finder.expanded label:hover .logo, .finder.expanded label:active .logo {
+.finder.expanded li label:focus .logo, .finder.expanded li label:hover .logo, .finder.expanded li label:active .logo, .finder.expanded li a:focus .logo, .finder.expanded li a:hover .logo, .finder.expanded li a:active .logo {
   -moz-transform: scale(1.75, 1.75);
   -webkit-transform: scale(1.75, 1.75);
   -o-transform: scale(1.75, 1.75);
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
 }
-.finder.expanded li:first-child label {
+.finder.expanded li a:focus, .finder.expanded li a:hover, .finder.expanded li a:active {
+  background: rgba(119, 185, 41, 0.382) url('../images/ui/angle_right.png?1299180924') no-repeat scroll 98%;
+}
+.finder.expanded li:first-child label, .finder.expanded li:first-child a {
   border-top-style: solid;
   border-top-width: 0.071em;
   padding-top: 0.333em;
@@ -1779,7 +1785,7 @@ thead .controls {
 }
 .finder.expanded input:checked + label {
   font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: rgba(135, 169, 168, 0.5);
+  background: rgba(135, 169, 168, 0.618);
 }
 .finder.expanded input:checked + label .logo {
   -moz-transform: scale(1.75, 1.75);
@@ -1845,6 +1851,9 @@ thead .controls {
 }
 .finder.expanded .start, .finder.expanded .end {
   color: #999999;
+}
+.finder.expanded .col.products li a {
+  padding-left: 3.438em;
 }
 .finder.compact {
   background: #ccd7d6;
