@@ -28,7 +28,9 @@ var TCM = TCM || {};
                 return false;
             }
         );
-        $('details').html5accordion('summary');
+        if ($('html').hasClass('no-details')) {
+            $('details').html5accordion('summary');
+        }
         $('.details:not(html)').html5accordion('.summary');
         TCM.addLoading('button, a', 'details');
         TCM.addLoading('button, a', '.details');
