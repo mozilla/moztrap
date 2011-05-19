@@ -366,10 +366,10 @@ summary:focus, .summary:focus {
   outline: thin dotted #77b929;
 }
 
-.details > *, .no-details details > * {
+.accordion > *, html .details > *, .no-details details > * {
   display: none;
 }
-.details > .summary, .no-details details > .summary, .details > summary, .no-details details > summary {
+.accordion > .summary, html .details > .summary, .no-details details > .summary, .accordion > summary, html .details > summary, .no-details details > summary {
   display: block;
 }
 

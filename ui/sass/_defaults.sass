@@ -220,15 +220,19 @@ summary, .summary
   &:focus
     outline: thin dotted $green
 
-.details
+.accordion
   > *
     display: none
   > .summary, > summary
     display: block
 
+html
+  .details
+    @extend .accordion
+
 .no-details
   details
-    @extend .details
+    @extend .accordion
 
 
 /* Replaced --------------------------------------------------------------
