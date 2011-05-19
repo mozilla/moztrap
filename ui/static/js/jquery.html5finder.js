@@ -58,6 +58,7 @@
                 // This function mimics an ajax call with a delay of 300ms
                 fakeAjaxCall = function(itemName, callback) {
                     var response =
+                        '<li><a href="#">manage this set of cycles</a></li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_01" data-product="' + itemName + '" data-cycle="01">' +
                             '<label for="' + itemName + '_cycle_name_01">' +
@@ -114,6 +115,7 @@
                         '</li>';
                     if (itemName === 'tcm') {
                         response =
+                            '<li><a href="#">manage this set of cycles</a></li>' +
                             '<li>' +
                                 '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_01" data-product="' + itemName + '" data-cycle="01">' +
                                 '<label for="' + itemName + '_cycle_name_01">' +
@@ -170,6 +172,7 @@
                 // This function mimics an ajax call with a delay of 300ms
                 fakeAjaxCall = function(productName, cycleNumber, callback) {
                     var response =
+                        '<li><a href="#">manage this set of runs</a></li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_01">' +
                             '<label for="' + productName + '_run_0' + cycleNumber + '_01">' +
@@ -220,6 +223,7 @@
                         '</li>';
                     if (cycleNumber === 1) {
                         response =
+                            '<li><a href="#">manage this set of runs</a></li>' +
                             '<li>' +
                                 '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_01">' +
                                 '<label for="' + productName + '_run_0' + cycleNumber + '_01">' +
@@ -280,6 +284,7 @@
             // This function mimics an ajax call with a delay of 300ms
             var fakeAjaxCall = function(callback) {
                     var response =
+                        '<li><a href="#">manage this set of cases</a></li>' +
                         '<li>' +
                             '<input type="radio" name="case" value="" id="tcm_case_01">' +
                             '<label for="tcm_case_01">' +
@@ -329,6 +334,7 @@
             // This function mimics an ajax call with a delay of 300ms
             var fakeAjaxCall = function(callback) {
                     var response =
+                        '<li><a href="#">manage this set of results</a></li>' +
                         '<li>' +
                             '<input type="radio" name="result" value="" id="tcm_result_01">' +
                             '<label for="tcm_result_01">' +
@@ -409,26 +415,12 @@
             };
             addLoading(options.section1item + ':not(".selected"), ' + options.section2item + ':not(".selected"), ' + options.section3item + ':not(".selected"), ' + options.section4item + ':not(".selected")', options.section);
         }
-        // Update the text of the form-action button, if desired
-        if (options.updateButton === true) {
-            $(options.section1item + ', ' + options.section2item + ', ' + options.section3item + ', ' + options.section4item).live('click', function() {
-                var thisType = $(this).attr('name'),
-                    nextTypes = $(this).closest(options.section).next(options.section).attr('name');
-                context.find(options.button).html('see all ' + nextTypes + ' in this ' + thisType + ' &raquo;');
-            });
-            $(options.section5item).live('click', function() {
-                var thisType = $(this).attr('name');
-                context.find(options.button).html('see this ' + thisType + ' &raquo;');
-            });
-        }
     };
 
     /* Setup plugin defaults */
     $.fn.html5finder.defaults = {
         expand: '.form-actions',                // The element to be hidden/shown as necessary
         expandTrigger: null,                    // The trigger for showing/hiding the 'expand' element
-        updateButton: false,                    // If true, button text will be updated live
-        button: '.form-actions button',         // The button to be updated, if updateButton is 'true'
         loading: false,                         // If true, adds a loading overlay while waiting for Ajax response
         horizontalScroll: false,                // If true, automatically scrolls to center the active section
                                                 // This requires the jquery.scrollTo.js plugin by default

@@ -48,10 +48,7 @@ var TCM = TCM || {};
             section3item: 'input[name="run"]'
         });
         $('#sandbox').html5finder( {
-            expand: '#sandbox .form-actions',
-            expandTrigger: '#sandbox input',
             loading: true,
-            updateButton: true,
             horizontalScroll: true,
             scrollContainer: '#findernav.expanded',
             section1class: 'products',
