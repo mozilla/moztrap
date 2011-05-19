@@ -43,12 +43,12 @@ class ListViewTests(object):
         return {}
 
 
-    def item_data(self):
+    def list_item_data(self):
         return [{"name": "Thing 1"}, {"name": "Thing 2"}]
 
 
-    def test_list_view(self, http):
-        item_data = self.item_data()
+    def test_results_list_view(self, http):
+        item_data = self.list_item_data()
         responses = {
             "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1" % self.list_class.default_url:
                 response(self.builder.searchresult(*item_data)),
@@ -182,8 +182,8 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
             }
 
 
-    def item_data(self):
-        data = super(TestCaseResultsViewTest, self).item_data()
+    def list_item_data(self):
+        data = super(TestCaseResultsViewTest, self).list_item_data()
         # give the first item a test suite
         data[0]["testSuiteId"] = 1
         data[0]["testSuiteLocator"] = make_locator(id=1, url="testsuites/1")
