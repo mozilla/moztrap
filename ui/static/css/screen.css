@@ -613,7 +613,7 @@ label {
   font-size: inherit;
   line-height: inherit;
   width: 100%;
-  background-color: rgba(233, 237, 237, 0.618);
+  background: rgba(233, 237, 237, 0.618) no-repeat scroll 98% 0.809em;
   color: #444444;
   border-color: rgba(75, 101, 100, 0.618);
   outline: 0;
@@ -997,6 +997,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   color: #e9eded;
 }
 .crumb a:focus, .crumb a:hover, .crumb a:active {
+  text-shadow: rgba(204, 215, 214, 0.618) 0 1px 0;
   color: #511214;
 }
 .crumb li {
@@ -1017,6 +1018,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   content: "";
 }
 .crumb li:last-child a:focus, .crumb li:last-child a:hover, .crumb li:last-child a:active {
+  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
   color: #e9eded;
 }
 
