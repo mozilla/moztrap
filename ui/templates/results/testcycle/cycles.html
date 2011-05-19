@@ -45,16 +45,13 @@
           <p class="product">{{ cycle.product.name }}</p>
           <time class="start">{{ cycle.startDate|date }}</time>
           <time class="end">{{ cycle.endDate|date }}</time>
-          {% with cycle.resultsummary as results %}
-            {% include "results/_results_summary.html" %}
-          {% endwith %}
+          {% include "results/_results_summary.html" with results=cycle.resultsummary %}
         </header>
         <div class="content">
           <p class="id">#{{ cycle.id }}</p>
           <p class="drill">
-            See related <a href="#{# @@@ #}" title="test runs related to {{ cycle.name }}">test runs</a>,
-            <a href="#{# @@@ #}" title="test suites related to {{ cycle.name }}">test suites</a>
-            or <a href="#{# @@@ #}" title="test cases related to {{ cycle.name }}">test cases</a>.
+            See related <a href="{% url results_testruns %}?testCycle={{ cycle.id }}" title="test runs related to {{ cycle.name }}">test runs</a>
+            or <a href="{% url results_testcases %}?testCycle={{ cycle.id }}" title="test cases related to {{ cycle.name }}">test cases</a>.
           </p>
           <section class="environments">
             {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}

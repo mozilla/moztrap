@@ -4,7 +4,9 @@ from ..core.builders import cvis
 from ..environments.builders import environmentgroups
 from ..products.builders import products
 from ..responses import response
-from ..testexecution.builders import testcycles, testruns
+from ..testcases.builders import testcases, testcaseversions
+from ..testexecution.builders import (
+    testcycles, testruns, testrunitcs, testresults, assignments)
 from ..utils import ViewTestCase, COMMON_RESPONSES
 from ..users.builders import users
 
@@ -37,9 +39,13 @@ class ListViewTests(object):
         return {}
 
 
+    def per_item_responses(self, item_id):
+        return {}
+
+
     def test_list_view(self, http):
         responses = {
-            "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1" % self.builder.plural_name:
+            "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1" % self.list_class.default_url:
                 response(self.builder.searchresult(
                     {"name": "Thing 1"},
                     {"name": "Thing 2"},
@@ -50,14 +56,10 @@ class ListViewTests(object):
         responses.update(self.extra_responses())
         for i in range(2):
             responses.update({
-                    "http://fake.base/rest/%s/%s/reports/coverage/resultstatus?_type=json" % (self.builder.plural_name, str(i + 1)):
-                        response(
-                        cvis.array({"categoryName": 1, "categoryValue": 160})),
                     "http://fake.base/rest/%s/%s/environmentgroups?_type=json" % (self.builder.plural_name, str(i + 1)):
                         response(environmentgroups.array()),
-                    "http://fake.base/rest/%s/%s/team/members?_type=json" % (self.builder.plural_name, str(i + 1)):
-                        response(users.array())
                     })
+            responses.update(self.per_item_responses(str(i + 1)))
         self.setup_responses(http, responses)
 
         res = self.get("/results/%s/" % self.builder.plural_name)
@@ -83,6 +85,15 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
     builder = testcycles
 
     ctx_var = "cycles"
+
+
+    def per_item_responses(self, item_id):
+        return {
+            "http://fake.base/rest/testcycles/%s/reports/coverage/resultstatus?_type=json" % item_id:
+                response(cvis.array({"categoryName": 1, "categoryValue": 160})),
+            "http://fake.base/rest/testcycles/%s/team/members?_type=json" % item_id:
+                response(users.array())
+            }
 
 
     @property
@@ -112,6 +123,15 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
             }
 
 
+    def per_item_responses(self, item_id):
+        return {
+            "http://fake.base/rest/testruns/%s/reports/coverage/resultstatus?_type=json" % item_id:
+                response(cvis.array({"categoryName": 1, "categoryValue": 160})),
+            "http://fake.base/rest/testruns/%s/team/members?_type=json" % item_id:
+                response(users.array())
+            }
+
+
     @property
     def view(self):
         from tcmui.results.views import testruns as view
@@ -122,3 +142,45 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
     def list_class(self):
         from tcmui.testexecution.models import TestRunList
         return TestRunList
+
+
+
+@patch("tcmui.core.api.userAgent")
+class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
+    builder = testrunitcs
+
+    ctx_var = "includedcases"
+
+
+    def extra_responses(self):
+        return {
+            "http://fake.base/rest/testcases/versions/1?_type=json":
+                response(testcaseversions.one()),
+            "http://fake.base/rest/testcases/1?_type=json":
+                response(testcases.one()),
+            "http://fake.base/rest/testruns/1?_type=json":
+                response(testruns.one()),
+            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
+                response(testresults.searchresult({})),
+            "http://fake.base/rest/users/1?_type=json":
+                response(users.one()),
+            }
+
+
+    def per_item_responses(self, item_id):
+        return {
+            "http://fake.base/rest/includedtestcases/%s/assignments?_type=json" % item_id:
+                response(assignments.array({}))
+            }
+
+
+    @property
+    def view(self):
+        from tcmui.results.views import testcases as view
+        return view
+
+
+    @property
+    def list_class(self):
+        from tcmui.testexecution.models import TestRunIncludedTestCaseList
+        return TestRunIncludedTestCaseList

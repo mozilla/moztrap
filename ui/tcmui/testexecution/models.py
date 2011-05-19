@@ -195,6 +195,7 @@ class TestRunList(ListObject):
 
 class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
     testRun = fields.Locator(TestRun)
+    testCycle = fields.Locator(TestCycle)
 
     assignments = fields.Link("TestCaseAssignmentList")
 

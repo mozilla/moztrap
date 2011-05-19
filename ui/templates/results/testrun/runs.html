@@ -43,15 +43,12 @@
           <h3 class="title">{{ run.name }}</h3>
           <p class="cycle">{{ run.testCycle.name }}</p>
           <p class="product">{{ run.product.name }}</p>
-          {% with run.resultsummary as results %}
-            {% include "results/_results_summary.html" %}
-          {% endwith %}
+          {% include "results/_results_summary.html" with results=run.resultsummary %}
         </header>
         <div class="content">
           <p class="id">#{{ run.id }}</p>
           <p class="drill">
-            See related <a href="#{# @@@ #}" title="test suites related to {{ run.name }}">test suites</a>
-            or <a href="#{# @@@ #}" title="test cases related to {{ run.name }}">test cases</a>.
+            See related <a href="{% url results_testcases %}?testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
           </p>
           {% if run.startDate or run.endDate %}
             <div class="time">

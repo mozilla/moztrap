@@ -37,7 +37,9 @@ def setup_responses(http, response_dict):
         except KeyError:
             return response(
                 {"errors": [
-                        {"error": "Mock got unexpected request URI: %s" % uri}
+                        {"error":
+                             "Mock got unexpected request URI: %s \n"
+                         " -- Options are %s --" % (uri, response_dict.keys())}
                         ]
                  }
                 , 500)
@@ -58,6 +60,14 @@ COMMON_RESPONSES = {
             {"description": "DISCARDED", "id": 5},
             )),
     "http://fake.base/staticData/values/TESTRUNSTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "DRAFT", "id": 1},
+            {"description": "ACTIVE", "id": 2},
+            {"description": "LOCKED", "id": 3},
+            {"description": "CLOSED", "id": 4},
+            {"description": "DISCARDED", "id": 5},
+            )),
+    "http://fake.base/staticData/values/TESTCASESTATUS?_type=json":
         response(codevalues.array(
             {"description": "DRAFT", "id": 1},
             {"description": "ACTIVE", "id": 2},

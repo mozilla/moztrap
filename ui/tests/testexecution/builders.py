@@ -90,8 +90,7 @@ testresults = ListBuilder(
     "productId": 1,
     "productLocator": make_locator(id=1, url="products/1"),
     "testCaseId": 1,
-    "testCaseLocator":
-        make_locator(id=1, url="testcases/1"),
+    "testCaseLocator": make_locator(id=1, url="testcases/1"),
     "testCaseVersionId": 1,
     "testCaseVersionLocator":
         make_locator(id=1, url="testcases/versions/1"),
@@ -106,3 +105,31 @@ testresults = ListBuilder(
     "testerId": 1,
     "testerLocator": "users/1",
     })
+
+
+
+assignments = ListBuilder(
+    "testcaseassignment",
+    "testcaseassignments",
+    "Testcaseassignment",
+    {
+    "companyId": 1,
+    "companyLocator": make_locator(id=1, url="companies/1"),
+    "productId": 1,
+    "productLocator": make_locator(id=1, url="products/1"),
+    "testCaseId": 1,
+    "testCaseLocator": make_locator(id=1, url="testcases/1"),
+    "testCaseVersionId": 1,
+    "testCaseVersionLocator":
+        make_locator(id=1, url="testcases/versions/1"),
+    "testCycleId": 1,
+    "testCycleLocator":
+        make_locator(id=1, url="testcycles/1"),
+    "testRunId": 1,
+    "testRunLocator": make_locator(id=1, url="testruns/1"),
+    "testSuiteId": make_boolean(None),
+    "testSuiteLocator": make_boolean(None),
+    "testerId": 1,
+    "testerLocator": make_locator(id=1, url="users/1"),
+        }
+    )

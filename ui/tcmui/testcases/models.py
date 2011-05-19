@@ -215,6 +215,8 @@ class TestSuiteList(ListObject):
 class TestSuiteIncludedTestCase(RemoteObject):
     api_name = "includedtestcase"
 
+    company = fields.Locator(Company)
+    product = fields.Locator(Product)
     blocking = fields.Field()
     priorityId = fields.Field()
     runOrder = fields.Field()

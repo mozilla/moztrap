@@ -14,168 +14,58 @@
       <nav class="listordering">
         <h3 class="navhead">List Ordering</h3>
         <ul>
-          <li class="bystatus">
-            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
-          </li>
-          <li class="bycompletion">%</li>
+          <li class="bystatus">status</li> {# @@@ can't sort on this #}
+          <li class="bycompletion">%</li> {# @@@ should be sortable #}
           <li class="bytitle">
-            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+            <a href="{{ request|sort_url:"testCase" }}" class="{{ request|sort_status:"testCase" }}">name</a>
           </li>
-          <li class="byrun">run</li>
+          <li class="byrun">
+            <a href="{{ request|sort_url:"testRun" }}" class="{{ request|sort_status:"testRun" }}">run</a>
+          </li>
+          <li class="bysuite">
+            <a href="{{ request|sort_url:"testSuite" }}" class="{{ request|sort_status:"testSuite" }}">suite</a>
+          </li>
           <li class="byproduct">
             <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
           </li>
         </ul>
       </nav>
-      <article id="run-id-01" class="details item draft">
+      {% for itc in includedcases %}
+      <article id="includedtestcase-id-{{ itc.id }}" class="details item {{ itc.testCaseVersion.status|status_class }}">
         <header class="summary">
           <p class="status">
-            <span class="draft">draft</span>
+            <span class="{{ itc.testCaseVersion.status|status_class }}">{{ itc.testCaseVersion.status|lower }}</span>
           </p>
-          <p class="completion" data-perc="75">75%</p>
+          <p class="completion" data-perc="75">75%</p> {# @@@ inactive #}
           <hgroup>
-            <h3 class="title">case name</h3>
-            <h4 class="run">run name</h4>
+            <h3 class="title">{{ itc.testCase.name }}</h3>
+            <h4 class="run">{{ itc.testRun.name }}</h4>
+            <h4 class="suite">{{ itc.testSuite.name }}</h4>
           </hgroup>
-          <p class="product">product name </p>
-          <ul class="results">
-            <li class="pass">120 <span>passed</span></li>
-            <li class="invalid">304 <span>invalid</span></li>
-            <li class="fail">140 <span>failed</span></li>
-            <li class="pending">605 <span>pending</span></li>
-          </ul>
+          <p class="product">{{ itc.product.name }}</p>
+          {% include "results/_results_summary.html" with results=itc.resultsummary %}
         </header>
         <div class="content">
-          <p class="id">#234</p>
+          <p class="id">#{{ itc.testCase.id }}</p>
           <p class="drill">
-            See related <a href="/results/testcase/detail/" title="test results related to case name">test results</a>.
+            See related <a href="/results/testcase/detail/" title="test results related to {{ itc.testCase.name }}">test results</a>.
           </p>
           <section class="environments">
-            <h4>environments</h4>
-            <ul>
-              <li class="envgroup">
-                <h5>Browser</h5>
-                <ul><li>IE 7</li><li>Firefox 4</li><li>Chrome</li><li>IE 8</li><li>Firefox 3</li></ul>
-              </li>
-              <li class="envgroup">
-                <h5>Language</h5>
-                <ul><li>French</li><li>German</li><li>English</li><li>Spanish</li></ul>
-              </li>
-              <li class="envgroup">
-                <h5>Operating System</h5>
-                <ul><li>Linux</li><li>Windows 7</li><li>OS X</li><li>Windows XP</li></ul>
-              </li>
-            </ul>
+            {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
           </section>
+          {% if itc.assignments|length %}
           <section class="testers">
             <h4>testers</h4>
             <ul>
-              <li>tester</li>
-              <li>screenName</li>
+              {% for assignment in itc.assignments %}
+              <li>{{ assignment.tester.screenName }}</li>
+              {% endfor %}
             </ul>
           </section>
+          {% endif %}
         </div>
       </article>
-
-      <section class="details item draft multi">
-        <header class="summary">
-          <p class="status">
-            <span class="draft">draft</span>
-          </p>
-          <h3 class="title">case name</h3>
-          <p class="run">[multiple]</p>
-          <p class="product">product name </p>
-        </header>
-        <div class="instances">
-
-          <article id="run-id-02" class="details item draft">
-            <header class="summary">
-              <p class="completion" data-perc="75">75%</p>
-              <h4 class="run">run name</h4>
-              <ul class="results">
-                <li class="pass">120</li>
-                <li class="invalid">304</li>
-                <li class="fail">140</li>
-                <li class="pending">605</li>
-              </ul>
-            </header>
-            <div class="content">
-              <p class="id">#234</p>
-              <p class="drill">
-                See related <a href="/results/testcase/detail/" title="test results related to case name">test results</a>.
-              </p>
-              <section class="environments">
-                <h4>environments</h4>
-                <ul>
-                  <li class="envgroup">
-                    <h5>Browser</h5>
-                    <ul><li>IE 7</li><li>Firefox 4</li><li>Chrome</li><li>IE 8</li><li>Firefox 3</li></ul>
-                  </li>
-                  <li class="envgroup">
-                    <h5>Language</h5>
-                    <ul><li>French</li><li>German</li><li>English</li><li>Spanish</li></ul>
-                  </li>
-                  <li class="envgroup">
-                    <h5>Operating System</h5>
-                    <ul><li>Linux</li><li>Windows 7</li><li>OS X</li><li>Windows XP</li></ul>
-                  </li>
-                </ul>
-              </section>
-              <section class="testers">
-                <h4>testers</h4>
-                <ul>
-                  <li>tester</li>
-                  <li>screenName</li>
-                </ul>
-              </section>
-            </div>
-          </article>
-
-          <article id="run-id-03" class="details item draft">
-            <header class="summary">
-              <p class="completion" data-perc="75">75%</p>
-              <h4 class="run">run name</h4>
-              <ul class="results">
-                <li class="pass">120</li>
-                <li class="invalid">304</li>
-                <li class="fail">140</li>
-                <li class="pending">605</li>
-              </ul>
-            </header>
-            <div class="content">
-              <p class="id">#234</p>
-              <p class="drill">
-                See related <a href="/results/testcase/detail/" title="test results related to case name">test results</a>.
-              </p>
-              <section class="environments">
-                <h4>environments</h4>
-                <ul>
-                  <li class="envgroup">
-                    <h5>Browser</h5>
-                    <ul><li>IE 7</li><li>Firefox 4</li><li>Chrome</li><li>IE 8</li><li>Firefox 3</li></ul>
-                  </li>
-                  <li class="envgroup">
-                    <h5>Language</h5>
-                    <ul><li>French</li><li>German</li><li>English</li><li>Spanish</li></ul>
-                  </li>
-                  <li class="envgroup">
-                    <h5>Operating System</h5>
-                    <ul><li>Linux</li><li>Windows 7</li><li>OS X</li><li>Windows XP</li></ul>
-                  </li>
-                </ul>
-              </section>
-              <section class="testers">
-                <h4>testers</h4>
-                <ul>
-                  <li>tester</li>
-                  <li>screenName</li>
-                </ul>
-              </section>
-            </div>
-          </article>
-
-        </div>
-      </section>
+      {% endfor %}
 
     </div>
 
