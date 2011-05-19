@@ -122,15 +122,11 @@ nav
   margin: 0
 
 .environments
-  +adjust-font-size-to(12px)
+  +adjust-font-size-to(12px,.75)
   h4
     +gone
   h5
-    @extend .allcaps
-    +condensed
-    margin: 0
-    padding: 0 .25em
-    background: rgba($light,.5)
+    @extend .groupheader
   > ul
     +reset-box-model
     list-style: none
@@ -141,7 +137,7 @@ nav
 
 .envgroup
   +columns(3,15)
-  &:nth-child(7n)
+  &:nth-child(5n)
     +omega(15)
 
 .environments
@@ -154,7 +150,7 @@ nav
     clear: both
     .envgroup
       +columns(3,18)
-      &:nth-child(9n)
+      &:nth-child(6n)
         +omega(18)
 
 .testers, .suites

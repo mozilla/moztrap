@@ -9,6 +9,13 @@
 
 /* Filtering -----------------------------------------------------------------
 
+.groupheader
+  @extend .allcaps
+  +condensed
+  margin: 0
+  padding: 0 .25em
+  background: rgba($light,.5)
+
 #filter
   +full(21)
   ul
@@ -67,10 +74,7 @@
   // Visual ------------------------------------------------------------------
 
   h5
-    @extend .smallcaps
-    margin: 0
-    padding: 0 .25em
-    font-weight: normal
+    @extend .groupheader
 
   .toggle
     +columns(9,21)
@@ -143,14 +147,15 @@
       height: rhythm(5,12px)
       min-height: rhythm(5,12px)
       max-height: rhythm(24,12px)
-      border-bottom: 1px solid $light
+      border-bottom: 1px solid rgba($blue,$small)
       resize: vertical
       &:hover
         overflow-y: auto
     input
       display: none
     label
-      +opacity(.375)
+      +sans-family
+      +opacity($small)
       display: block
       padding: rhythm(.125) rhythm(.25)
         left: image-width('ui/check_sm.png') + 6px
