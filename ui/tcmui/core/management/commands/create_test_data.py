@@ -12,7 +12,8 @@ from ....products.models import Product, ProductList
 from ....testexecution.models import (
     TestCycle, TestCycleList, TestRun, TestRunList
     )
-from ....testcases.models import TestCaseVersion, TestCaseList, TestCaseStep
+from ....testcases.models import (
+    TestSuite, TestSuiteList, TestCaseVersion, TestCaseList, TestCaseStep)
 from ....users.models import User, UserList
 
 
@@ -76,28 +77,34 @@ PRODUCTS = {
                         "selfAssignAllowed": True,
                         "selfAssignLimit": 0,
                         "autoAssignToTeam": True,
-                        "testcases": {
-                            "Can register": {
-                                "description": "",
-                                "maxAttachmentSizeInMbytes": 0,
-                                "maxNumberOfAttachments": 0,
-                                "steps": [
-                                    ("Click 'register.'",
-                                     "See registration form."),
-                                    ("Fill all fields and submit.",
-                                     "See success message and login form."),
-                                    ],
-                                },
-                            "Can login": {
-                                "description": "",
-                                "maxAttachmentSizeInMbytes": 0,
-                                "maxNumberOfAttachments": 0,
-                                "steps": [
-                                    ("Click 'login.'",
-                                     "See login form."),
-                                    ("Fill username and password and submit.",
-                                     "See welcome message with name."),
-                                    ],
+                        "testsuites": {
+                            "Signup": {
+                                "description": "tests for user signup",
+                                "useLatestVersions": False,
+                                "testcases": {
+                                    "Can register": {
+                                        "description": "",
+                                        "maxAttachmentSizeInMbytes": 0,
+                                        "maxNumberOfAttachments": 0,
+                                        "steps": [
+                                            ("Click 'register.'",
+                                             "See registration form."),
+                                            ("Fill all fields and submit.",
+                                             "See message and login form."),
+                                            ],
+                                        },
+                                    "Can login": {
+                                        "description": "",
+                                        "maxAttachmentSizeInMbytes": 0,
+                                        "maxNumberOfAttachments": 0,
+                                        "steps": [
+                                            ("Click 'login.'",
+                                             "See login form."),
+                                            ("Fill username/pw and submit.",
+                                             "See welcome message with name."),
+                                            ],
+                                        },
+                                    },
                                 },
                             },
                         },
@@ -221,29 +228,39 @@ class Command(BaseCommand):
                 tc.activate()
 
                 for name, data in testruns.items():
-                    cases = data.pop("testcases")
+                    suites = data.pop("testsuites")
                     tr = TestRun(testCycle=tc, name=name, **data)
                     TestRunList.get(auth=admin).post(tr)
                     print "Created test run '%s.'" % name
 
-                    for name, data in cases.items():
-                        steps = data.pop("steps")
-                        case = TestCaseVersion(product=p, name=name, **data)
-                        TestCaseList.get(auth=cc).post(case)
-                        print "Created test case '%s.'" % name
+                    for name, data in suites.items():
+                        cases = data.pop("testcases")
+                        ts = TestSuite(
+                            name=name, company=company, product=p, **data)
+                        TestSuiteList.get(auth=admin).post(ts)
+                        print "Created test suite '%s.'" % name
 
-                        for (i, (instruction, result)) in enumerate(steps):
-                            step = TestCaseStep(
-                                name="step %s" % i,
-                                testCaseVersion=case,
-                                instruction=instruction,
-                                expectedResult=result,
-                                stepNumber=i+1,
-                                estimatedTimeInMin=0)
-                            case.steps.post(step)
+                        for name, data in cases.items():
+                            steps = data.pop("steps")
+                            case = TestCaseVersion(product=p, name=name, **data)
+                            TestCaseList.get(auth=cc).post(case)
+                            print "Created test case '%s.'" % name
 
-                        case.approve(auth=admin)
-                        case.activate(auth=admin)
-                        tr.addcase(case)
+                            for (i, (instruction, result)) in enumerate(steps):
+                                step = TestCaseStep(
+                                    name="step %s" % i,
+                                    testCaseVersion=case,
+                                    instruction=instruction,
+                                    expectedResult=result,
+                                    stepNumber=i+1,
+                                    estimatedTimeInMin=0)
+                                case.steps.post(step)
+
+                            case.approve(auth=admin)
+                            case.activate(auth=admin)
+                            ts.addcase(case)
+
+                        ts.activate()
+                        tr.addsuite(ts)
 
                     tr.activate()
