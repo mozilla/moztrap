@@ -9,8 +9,6 @@
 
 {% block content %}
 <section id="sandbox">
-  <h2>a design playground for eric</h2>
-
   <nav class="drilldown">
     <h3 class="navhead">Test Case Navigation</h3>
     <a href="#" class="findertoggle expanded">toggle navigation view</a>
@@ -22,14 +20,12 @@
           </header>
           <ul class="colcontent">
             <li>
-              <a href="#">manage all product cycles</a>
-            </li>
-            <li>
               <input type="radio" name="product" value="" id="product-tcm" data-id="tcm">
               <label for="product-tcm">
                 <img src="{{ STATIC_URL }}images/products/dino.png" class="logo" alt="">
                 tcm
               </label>
+              <a href="#" class="open">open all the [tcm] [cycles]</a>
             </li>
             <li>
               <input type="radio" name="product" value="" id="product-firefox" data-id="firefox">
@@ -37,6 +33,7 @@
                 <img src="{{ STATIC_URL }}images/products/firefox.png" class="logo" alt="">
                 firefox
               </label>
+              <a href="#" class="open">open all the [firefox] [cycles]</a>
             </li>
           </ul>
         </section>

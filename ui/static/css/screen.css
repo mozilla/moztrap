@@ -1681,7 +1681,7 @@ thead .controls {
   bottom: 0;
   left: 0;
   width: 25%;
-  height: 14.562em;
+  height: 22.652em;
 }
 .finder.expanded .col:last-child {
   display: inline;
@@ -1736,11 +1736,11 @@ thead .controls {
   width: 1.618em;
   margin-right: 0.809em;
 }
-.finder.expanded li label, .finder.expanded li a {
+.finder.expanded label {
   *zoom: 1;
   border-bottom-style: solid;
   border-bottom-width: 0.071em;
-  padding-bottom: 0.333em;
+  padding-bottom: 0.131em;
   padding-left: 0.809em;
   padding-right: 0.809em;
   font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1749,7 +1749,7 @@ thead .controls {
   font-weight: normal;
   cursor: pointer;
 }
-.finder.expanded li label:after, .finder.expanded li a:after {
+.finder.expanded label:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -1757,20 +1757,39 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-.finder.expanded li label:focus .logo, .finder.expanded li label:hover .logo, .finder.expanded li label:active .logo, .finder.expanded li a:focus .logo, .finder.expanded li a:hover .logo, .finder.expanded li a:active .logo {
+.finder.expanded li {
+  position: relative;
+}
+.finder.expanded li:first-child label {
+  border-top-style: solid;
+  border-top-width: 0.071em;
+  padding-top: 0.131em;
+}
+.finder.expanded li:focus .logo, .finder.expanded li:hover .logo, .finder.expanded li:active .logo {
   -moz-transform: scale(1.75, 1.75);
   -webkit-transform: scale(1.75, 1.75);
   -o-transform: scale(1.75, 1.75);
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
 }
-.finder.expanded li a:focus, .finder.expanded li a:hover, .finder.expanded li a:active {
-  background: rgba(119, 185, 41, 0.382) url('../images/ui/angle_right.png?1299180924') no-repeat scroll 98%;
+.finder.expanded .open:link, .finder.expanded .open:visited {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/open.png?1305840247');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  position: absolute;
+  top: 0.405em;
+  right: 0.809em;
+  min-width: 22.653px;
+  height: 1.618em;
 }
-.finder.expanded li:first-child label, .finder.expanded li:first-child a {
-  border-top-style: solid;
-  border-top-width: 0.071em;
-  padding-top: 0.333em;
+.finder.expanded .open:focus, .finder.expanded .open:hover, .finder.expanded .open:active {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 .finder.expanded input {
   position: absolute;
@@ -1830,6 +1849,12 @@ thead .controls {
   width: 65.957%;
   margin-right: 2.128%;
 }
+.finder.expanded .focus .title:first-child:last-child, .finder.expanded .focus .bytitle:first-child:last-child {
+  float: none;
+  display: block;
+  width: auto;
+  margin-right: auto;
+}
 .finder.expanded .focus .start, .finder.expanded .focus .end, .finder.expanded .focus .bystart, .finder.expanded .focus .byend {
   display: inline;
   float: left;
@@ -1850,12 +1875,6 @@ thead .controls {
 }
 .finder.expanded .start, .finder.expanded .end {
   color: #999999;
-}
-.finder.expanded .col.products li a {
-  padding-left: 3.438em;
-}
-.finder.expanded .col.cycles.focus li a {
-  padding-left: 10.106%;
 }
 .finder.compact {
   background: #ccd7d6;
