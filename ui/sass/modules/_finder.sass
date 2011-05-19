@@ -1,9 +1,9 @@
-// Finder --------------------------------------------------------------------
+/* Finder --------------------------------------------------------------------
 
 .findertoggle
   +opacity(.5)
   +border-bottom-left-radius($smallem)
-  +replace-text-with-dimensions('ui/minus_circle.png')
+  +replace-text-with-dimensions('ui/minus.png')
   position: absolute
   right: side-gutter()
   padding: rhythm(.25)
@@ -11,6 +11,8 @@
   z-index: 10
   #{$focus}
     +opacity(1)
+  &.compact
+    background-image: image-url('ui/plus.png')
 
 .finder
   +pie-clearfix
@@ -47,7 +49,7 @@
             display: none
 
     .listordering
-      +stretch-x
+      left: 0
       right: 15px
       padding: rhythm(.25) rhythm(.5)
       margin: 0
@@ -104,30 +106,89 @@
         &.focus
           width: 50/150*100%
 
-  // layout of specific elements ---------------------------------------------
+    // layout of specific elements ---------------------------------------------
 
-  .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
-    display: none
-
-  .focus
     .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
-      display: block
-    .completion, .bycompletion
-      +columns(1,12)
-    .title, .bytitle
-      +columns(7,12)
+      display: none
+
+    .focus
+      .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
+        display: block
+      .completion, .bycompletion
+        +columns(1,12)
+      .title, .bytitle
+        +columns(7,12)
+        &:first-child
+          +columns(8,12)
+      .start, .end, .bystart, .byend
+        +columns(2,12)
+      .end, .byend
+        +omega(12)
+
+    .bystart, .byend, .bycompletion
+      +opacity(.75)
+
+    .start, .end
+      +condensed
+
+    .start, .end
+      color: $mid
+
+  // Compact ----------------------------------------------------------------
+
+  &.compact
+    background: $blue-lightest
+
+    ul, p
+      display: none
+
+    .listordering
+      +columns(3,24)
+      margin-right: columns(1,24) + gutter(24)*2
+      background: $blue-lighter
+      position: relative
+      overflow: visible
+      white-space: nowrap
+      &::before, &::after
+        content: "\0020"
+        position: absolute
+        top: 0
+        bottom: 0
+        width: columns(1,3) + gutter(3)*2
+      &::before
+        +background-image(linear-gradient(60deg, rgba($blue-light,0) 74.5%, $blue-lighter 75%, $blue-lighter), linear-gradient(-60deg, rgba($blue-light,0) 74.5%, $blue-lighter 75%, $blue-lighter))
+        right: 100%
+      &::after
+        +background-image(linear-gradient(-60deg, rgba($blue-light,0) 64.5%, $blue-lightest 65%, $blue-lightest), linear-gradient(60deg, $blue-lighter 64.5%, rgba($blue-light,0) 65%, rgba($blue-light,0)))
+        left: 100%
+      a
+        #{$link}
+          position: relative
+          z-index: 2
+        #{$focus}
+          &::after
+            content: ""
+            display: none
+
+    .col
       &:first-child
-        +columns(8,12)
-    .start, .end, .bystart, .byend
-      +columns(2,12)
-    .end, .byend
-      +omega(12)
+        .listordering
+          display: none
+      &:nth-child(2)
+        .listordering
+          &::before
+            display: none
 
-  .bystart, .byend, .bycompletion
-    +opacity(.75)
+    .focus
+      .listordering
+        background: $blue-light
+        &::before
+          +background-image(linear-gradient(60deg, rgba($blue-light,0) 74.5%, $blue-light 75%, $blue-light), linear-gradient(-60deg, rgba($blue-light,0) 74.5%, $blue-light 75%, $blue-light))
+          right: 100%
+        &::after
+          +background-image(linear-gradient(-60deg, rgba($blue-light,0) 64.5%, $blue-lightest 65%, $blue-lightest), linear-gradient(60deg, $blue-light 64.5%, rgba($blue-light,0) 65%, rgba($blue-light,0)))
+          left: 100%
 
-  .start, .end
-    +condensed
-
-  .start, .end
-    color: $mid
+    .bytitle
+      +reset-box-model
+      padding-left: rhythm(1)
