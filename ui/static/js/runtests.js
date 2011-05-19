@@ -11,6 +11,7 @@ var TCM = TCM || {};
     };
 
     var testCaseButtons = function(context) {
+        TCM.addLoading('button', context);
         $(context).find("button").click(
             function(event) {
                 event.preventDefault();
@@ -51,7 +52,7 @@ var TCM = TCM || {};
                             var newCase = "#" + id;
                             $(newCase).find('details').andSelf().html5accordion('summary');
                             testCaseButtons(newCase);
-                            TCM.addLoading('button, a', testcase);
+                            TCM.addLoading('button', testcase);
                             $('.loadingCSS').detach();
                             autoFocus('details.stepfail > summary');
                             autoFocus('details.testinvalid > summary');

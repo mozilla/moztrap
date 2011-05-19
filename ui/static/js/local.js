@@ -32,8 +32,6 @@ var TCM = TCM || {};
             $('details').html5accordion('summary');
         }
         $('.details:not(html)').html5accordion('.summary');
-        TCM.addLoading('button, a', 'details');
-        TCM.addLoading('button, a', '.details');
         $('#sandbox').html5finder( {
             expand: '#sandbox .form-actions',
             expandTrigger: '#sandbox input',
