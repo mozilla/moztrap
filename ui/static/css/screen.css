@@ -1040,26 +1040,32 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-top: 0.809em;
   padding-bottom: 0.809em;
   margin-bottom: 0.809em;
-  text-shadow: #ccd7d6 1px 1px 0;
   font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background: #aac0bf url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.618em center;
+  text-shadow: rgba(204, 215, 214, 0.618) 1px 1px 0;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.618em center;
   color: #4b6564;
 }
 .message.success, #messages li.success {
-  text-shadow: #e5f5d2 1px 1px 0;
-  background-color: #cdeca9;
+  text-shadow: rgba(229, 245, 210, 0.618) 1px 1px 0;
+  background-color: rgba(119, 185, 41, 0.382);
   background-image: url('../images/ui/check.png?1299276480');
   color: #4f7a1b;
 }
 .message.error, #messages li.error {
-  text-shadow: #f5d2d4 1px 1px 0;
-  background-color: #eca9ab;
+  text-shadow: rgba(245, 210, 212, 0.618) 1px 1px 0;
+  background-color: rgba(227, 127, 131, 0.382);
   background-image: url('../images/ui/x.png?1299276461');
   color: #511214;
 }
 .message.warning, #messages li.warning {
-  text-shadow: #fef0bf 1px 1px 0;
-  background-color: #fee58c;
+  text-shadow: rgba(254, 240, 191, 0.618) 1px 1px 0;
+  background-color: rgba(254, 229, 140, 0.618);
   background-image: url('../images/ui/warning.png?1303974218');
   color: #a38001;
 }

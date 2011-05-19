@@ -122,29 +122,30 @@
   +full(24)
   +prefix(1,24)
   +rhythm(0,.5,.5,.5)
-  +text-shadow($blue-lightest 1px 1px 0)
   +bold
-  background: $blue-lighter image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
+  +text-shadow(rgba($blue-lightest,$small) 1px 1px 0)
+  +border-radius($xxsmallem)
+  background: rgba($blue,$xxxsmall) image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
   color: $blue-dark
 
   &.success
-    +text-shadow($green-lightest 1px 1px 0)
+    +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
     background:
-      color: $green-lighter
+      color: rgba($green,$xsmall)
       image: image-url('ui/check.png')
     color: $green-dark
 
   &.error
-    +text-shadow($red-lightest 1px 1px 0)
+    +text-shadow(rgba($red-lightest,$small) 1px 1px 0)
     background:
-      color: $red-lighter
+      color: rgba($red-light,$xsmall)
       image: image-url('ui/x.png')
     color: $red-dark
 
   &.warning
-    +text-shadow($yellow-light 1px 1px 0)
+    +text-shadow(rgba($yellow-light,$small) 1px 1px 0)
     background:
-      color: $yellow
+      color: rgba($yellow,$small)
       image: image-url('ui/warning.png')
     color: $yellow-darkest
 
