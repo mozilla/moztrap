@@ -2,7 +2,7 @@
 
 .nestednav
   +clearfix
-  +trailer
+  +trailer(1.5)
   +demi
   background: $blue-lightest
   a
@@ -41,25 +41,22 @@
 
 
 #listcontent
-  +float(right)
-  +leader(-1)
-  +padding-leader
-  +box-shadow(rgba($blue-dark,$xxxsmall) 0-$largepx 0 $medpx 0-$medpx)
-  width: columns(21,24)
-  padding-left: gutter(24)
+  +full(24)
+  +pad(1,2,24)
   position: relative
-  min-height: $base-rhythm-unit*12
   h2
-    +columns(12,21)
+    +gone
   .create
     @extend .button
     +float(right)
+    +box-sizing(border-box)
     +button-color($green,'ui/plus.png')
-    margin-top: - rhythm(.25)
-    padding-left: $base-line-height + image-width('ui/plus.png')
+    padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
+    max-width: columns(4,21)
     background:
-      position: .75em, left
+      position: $smallpx, left
       repeat: no-repeat
+    white-space: nowrap
 
 /* Lists ---------------------------------------------------------------------
 

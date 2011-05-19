@@ -62,6 +62,27 @@ var TCM = TCM || {};
             section5class: 'results',
             section5item: 'input[name="result"]'
         });
+
+        // @@@ added the following for wireframing the results pages. eam.
+        $('.subnav .findertoggle').click(function() {
+            $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
+            return false;
+        });
+        $('.subnav').html5finder( {
+            loading: true,
+            horizontalScroll: true,
+            scrollContainer: '.finder.expanded',
+            section1class: 'products',
+            section1item: 'input[name="product"]',
+            section2class: 'cycles',
+            section2item: 'input[name="cycle"]',
+            section3class: 'runs',
+            section3item: 'input[name="run"]',
+            section4class: 'cases',
+            section4item: 'input[name="case"]',
+            section5class: 'results',
+            section5item: 'input[name="result"]'
+        });
     });
 
 })(jQuery);

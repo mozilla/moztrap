@@ -3,7 +3,9 @@
 {% block page-status %}incomplete{% endblock %}
 
 {% block page-notes %}
-Completion percentages are inactive (no API in platform). Filtering is not yet active.
+  <p>Completion percentages are inactive (no API in platform).</p>
+  <p>The expanded drilldown navigation is not active yet.</p>
+  <p>Filtering is not yet active.</p>
 {% endblock %}
 
 {% block results-active-nav %}active{% endblock results-active-nav %}
@@ -14,10 +16,10 @@ Completion percentages are inactive (no API in platform). Filtering is not yet a
 {% endblock crumb %}
 
 {% block content %}
-  <nav>
+  <nav class="subnav">
     <h2 class="navhead">Results Navigation</h2>
 
-    {% include "includes/_finder.html" %}
+    {% include "includes/finder.html" %}
 
     <ul class="nestednav">
       <li><a href="{% url results_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>

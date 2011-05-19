@@ -8,8 +8,11 @@
 {% endblock crumb %}
 
 {% block content %}
-  <nav>
+  <nav class="subnav">
     <h2 class="navhead">Management Navigation</h2>
+
+    {% include "includes/finder.html" %}
+
     <ul class="nestednav">
       {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
       <li><a href="{% url manage_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
@@ -42,5 +45,6 @@
 
 {% block page-status %}incomplete{% endblock %}
 {% block page-notes %}
-  <p>Filtering UI is still just wireframe, not active yet.</p>
+  <p>The expanded drilldown navigation is not active yet.</p>
+  <p>Filtering is not yet active.</p>
 {% endblock %}

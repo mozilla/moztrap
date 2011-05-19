@@ -1024,7 +1024,8 @@ button.sub:focus, button.sub:hover, button.sub:active {
 
 [role="main"] {
   *zoom: 1;
-  padding-top: 0.809em;
+  padding-top: 2.427em;
+  padding-bottom: 2.427em;
 }
 [role="main"]:after {
   content: "\0020";
@@ -1227,9 +1228,6 @@ thead .controls {
   background: rgba(238, 238, 238, 0.5);
 }
 
-#filter {
-  clear: both;
-}
 #filter ul {
   list-style: none;
   margin: 0;
@@ -1309,11 +1307,8 @@ thead .controls {
 #filter .toggle {
   display: inline;
   float: left;
-  width: 42.169%;
+  width: 22.892%;
   margin-right: 1.205%;
-  display: inline;
-  float: right;
-  margin-right: 0;
   margin-top: 0.405em;
   font-style: italic;
   text-transform: lowercase;
@@ -1645,7 +1640,7 @@ thead .controls {
 
 .finder {
   *zoom: 1;
-  margin-bottom: 1.618em;
+  margin-bottom: 2.427em;
   clear: both;
   overflow: visible;
   position: relative;
@@ -1661,6 +1656,9 @@ thead .controls {
 .finder.expanded {
   border: 1px solid rgba(135, 169, 168, 0.618);
   background: #e9eded;
+}
+.finder.expanded + .nestednav {
+  display: none;
 }
 .finder.expanded h3, .finder.expanded h4, .finder.expanded h5, .finder.expanded p {
   margin-bottom: 0;
@@ -1876,13 +1874,10 @@ thead .controls {
 .finder.expanded .start, .finder.expanded .end {
   color: #999999;
 }
-.finder.expanded + .simplenav {
-  display: none;
-}
 .finder.compact {
   display: none;
 }
-.finder.compact + .simplenav {
+.finder.compact + .nestednav {
   display: block;
 }
 
@@ -1989,7 +1984,7 @@ thead .controls {
 .nestednav {
   overflow: hidden;
   *zoom: 1;
-  margin-bottom: 1.618em;
+  margin-bottom: 2.427em;
   font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: #ccd7d6;
 }
@@ -2052,28 +2047,28 @@ thead .controls {
 }
 
 #listcontent {
-  display: inline;
-  float: right;
-  margin-top: -1.618em;
-  padding-top: 1.618em;
-  -moz-box-shadow: rgba(75, 101, 100, 0.146) -36.651px 0 22.652px -22.652px;
-  -webkit-box-shadow: rgba(75, 101, 100, 0.146) -36.651px 0 22.652px -22.652px;
-  -o-box-shadow: rgba(75, 101, 100, 0.146) -36.651px 0 22.652px -22.652px;
-  box-shadow: rgba(75, 101, 100, 0.146) -36.651px 0 22.652px -22.652px;
-  width: 87.368%;
-  padding-left: 1.053%;
+  clear: both;
+  padding-left: 4.211%;
+  padding-right: 8.421%;
   position: relative;
-  min-height: 19.416em;
 }
 #listcontent h2 {
-  display: inline;
-  float: left;
-  width: 56.627%;
-  margin-right: 1.205%;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 #listcontent .create {
   display: inline;
   float: right;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   background-image: url('../images/ui/plus.png?1299181696');
   background-image: url('../images/ui/plus.png?1299181696'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
   background-image: url('../images/ui/plus.png?1299181696'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
@@ -2081,10 +2076,11 @@ thead .controls {
   background-image: url('../images/ui/plus.png?1299181696'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/plus.png?1299181696'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   border-color: #759d45;
-  margin-top: -0.405em;
-  padding-left: 36.652px;
-  background-position: 0.75em, left;
+  padding-left: 28.0px;
+  max-width: 18.072%;
+  background-position: 8.653px, left;
   background-repeat: no-repeat;
+  white-space: nowrap;
 }
 
 /* Lists --------------------------------------------------------------------- */

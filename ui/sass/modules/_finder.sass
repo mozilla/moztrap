@@ -16,7 +16,7 @@
 
 .finder
   +pie-clearfix
-  +trailer
+  +trailer(1.5)
   clear: both
   overflow: visible
   position: relative
@@ -26,6 +26,8 @@
   &.expanded
     border: 1px solid rgba($blue-light,$small)
     background: $blue-hint
+    + .nestednav
+      display: none
 
     h3, h4, h5, p
       margin-bottom: 0
@@ -152,12 +154,9 @@
     .start, .end
       color: $mid
 
-    + .simplenav
-      display: none
-
   // Compact ----------------------------------------------------------------
 
   &.compact
     display: none
-    + .simplenav
+    + .nestednav
       display: block
