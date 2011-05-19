@@ -38,8 +38,8 @@
   +alpha
   a
     #{$link}
-      +padding-leader(.5,21px)
-      +padding-trailer(.5,21px)
+      +padding-leader(.5,$medpx)
+      +padding-trailer(.5,$medpx)
       display: block
       color: inherit
     #{$focus}
@@ -114,10 +114,12 @@
           +text-shadow(rgba($blue-dark,$small) 0 1px 0)
           color: $blue-hint
 
+// Content --------------------------------------------------------------------
+
 [role="main"]
   @extend .fullwidth
   +pie-clearfix
-  +padding-leader
+  +padding-leader(1.5)
 
 .message
   @extend .sans

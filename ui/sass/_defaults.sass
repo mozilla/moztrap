@@ -81,9 +81,9 @@ html
 
 body
   @extend .sans
-  +baseline-grid-background
   +background(linear-gradient(left,rgba($blue-light,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xxsmall),rgba($blue,$xxsmall)), $light image-url('noise.png'))
   +text-shadow(rgba($blue-hint,$small) 0 1px 1px)
+  +baseline-grid-background
   color: $base
 
 /* Selected Text -------------------------------------------------------------
@@ -143,7 +143,7 @@ a
 /* Headings --------------------------------------------------------------
 
 h1
-  +adjust-font-size-to(21px)
+  +adjust-font-size-to($medpx)
 
 h1, h2
   @extend .allcaps

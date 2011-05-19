@@ -272,8 +272,8 @@ a:focus {
 
 /* Headings -------------------------------------------------------------- */
 h1 {
-  font-size: 1.5em;
-  line-height: 1.079em;
+  font-size: 1.618em;
+  line-height: 1em;
 }
 
 h1, h2 {
@@ -910,8 +910,8 @@ button.sub:focus, button.sub:hover, button.sub:active {
   margin-left: 1.031%;
 }
 #brand a:link, #brand a:visited {
-  padding-top: 0.539em;
-  padding-bottom: 0.539em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   display: block;
   color: inherit;
 }
@@ -1024,7 +1024,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 
 [role="main"] {
   *zoom: 1;
-  padding-top: 1.618em;
+  padding-top: 2.427em;
 }
 [role="main"]:after {
   content: "\0020";
@@ -2082,7 +2082,6 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
 #listcontent .create {
   display: inline;
   float: right;
-  margin-bottom: 1.618em;
   background-image: url('../images/ui/plus.png?1299181696');
   background-image: url('../images/ui/plus.png?1299181696'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
   background-image: url('../images/ui/plus.png?1299181696'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
@@ -2090,6 +2089,7 @@ nav.manage a.active:link, nav.manage a.active:visited, nav.manage a.active:focus
   background-image: url('../images/ui/plus.png?1299181696'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/plus.png?1299181696'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   border-color: #759d45;
+  margin-top: -0.405em;
   padding-left: 36.652px;
   background-position: 0.75em, left;
   background-repeat: no-repeat;
