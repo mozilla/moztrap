@@ -1854,7 +1854,7 @@ thead .controls {
 .finder.expanded .col.products li a {
   padding-left: 3.438em;
 }
-.finder.expanded .col.cycles li a {
+.finder.expanded .col.cycles.focus li a {
   padding-left: 10.106%;
 }
 .finder.compact {
