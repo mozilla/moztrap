@@ -1783,8 +1783,8 @@ thead .controls {
   background-position: 50% 50%;
   position: absolute;
   top: 0.405em;
-  right: 0.809em;
-  min-width: 22.653px;
+  right: 0;
+  width: 22.653px;
   height: 1.618em;
 }
 .finder.expanded .open:focus, .finder.expanded .open:hover, .finder.expanded .open:active {
