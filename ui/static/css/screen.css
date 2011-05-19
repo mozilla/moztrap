@@ -1683,11 +1683,12 @@ thead .controls {
   display: none;
 }
 .finder.expanded .listordering {
+  position: absolute;
   left: 0;
   right: 15px;
   padding: 0.405em 0.809em;
   margin: 0;
-  background: rgba(204, 215, 214, 0.618);
+  background: rgba(204, 215, 214, 0.95);
   z-index: 2;
 }
 .finder.expanded .listordering a:link, .finder.expanded .listordering a:visited {
