@@ -3,6 +3,24 @@ from ..responses import make_locator, make_boolean
 
 
 
+testsuites = ListBuilder(
+    "testsuite",
+    "testsuites",
+    "Testsuite",
+    {
+        "companyId": 1,
+        "companyLocator": make_locator(id=1, url="companies/1"),
+        "description": "the default test suite",
+        "name": "Default Test Suite",
+        "productId": 1,
+        "productLocator": make_locator(id=1, url="products/1"),
+        "testSuiteStatusId": 1,
+        "useLatestVersions": False,
+        }
+    )
+
+
+
 testcases = ListBuilder(
     "testcase",
     "testcases",

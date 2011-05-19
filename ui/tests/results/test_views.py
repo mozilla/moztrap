@@ -3,8 +3,8 @@ from mock import patch
 from ..core.builders import cvis
 from ..environments.builders import environmentgroups
 from ..products.builders import products
-from ..responses import response
-from ..testcases.builders import testcases, testcaseversions
+from ..responses import response, make_locator
+from ..testcases.builders import testsuites, testcases, testcaseversions
 from ..testexecution.builders import (
     testcycles, testruns, testrunitcs, testresults, assignments)
 from ..utils import ViewTestCase, COMMON_RESPONSES
@@ -43,18 +43,20 @@ class ListViewTests(object):
         return {}
 
 
+    def item_data(self):
+        return [{"name": "Thing 1"}, {"name": "Thing 2"}]
+
+
     def test_list_view(self, http):
+        item_data = self.item_data()
         responses = {
             "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1" % self.list_class.default_url:
-                response(self.builder.searchresult(
-                    {"name": "Thing 1"},
-                    {"name": "Thing 2"},
-                    )),
+                response(self.builder.searchresult(*item_data)),
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one(name="A Product")),
             }
         responses.update(self.extra_responses())
-        for i in range(2):
+        for i in range(len(item_data)):
             responses.update({
                     "http://fake.base/rest/%s/%s/environmentgroups?_type=json" % (self.builder.plural_name, str(i + 1)):
                         response(environmentgroups.array()),
@@ -160,10 +162,16 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
                 response(testcases.one()),
             "http://fake.base/rest/testruns/1?_type=json":
                 response(testruns.one()),
-            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
-                response(testresults.searchresult({})),
             "http://fake.base/rest/users/1?_type=json":
                 response(users.one()),
+            "http://fake.base/rest/testsuites/1?_type=json":
+                response(testsuites.one()),
+            # summary results for included test case
+            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
+                response(testresults.searchresult({})),
+            # summary results for test suite
+            "http://fake.base/rest/testruns/results?_type=json&testSuiteId=1&testRunId=1":
+                response(testresults.searchresult({})),
             }
 
 
@@ -172,6 +180,14 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
             "http://fake.base/rest/includedtestcases/%s/assignments?_type=json" % item_id:
                 response(assignments.array({}))
             }
+
+
+    def item_data(self):
+        data = super(TestCaseResultsViewTest, self).item_data()
+        # give the first item a test suite
+        data[0]["testSuiteId"] = 1
+        data[0]["testSuiteLocator"] = make_locator(id=1, url="testsuites/1")
+        return data
 
 
     @property

@@ -1,7 +1,7 @@
 from mock import patch
 
 from ..core.builders import cvis
-from ..responses import make_identity, response, make_boolean
+from ..responses import make_identity, response, make_boolean, make_locator
 from ..utils import (
     BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache)
 from .builders import testcycles, testruns, testrunitcs, testresults
@@ -263,29 +263,6 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(req["body"], "cloneAssignments=True")
 
 
-    def test_resultsummary(self, http):
-        http.request.return_value = response(testruns.one(
-                resourceIdentity=make_identity(url="testruns/1")))
-
-        c = self.resource_class.get("testruns/1")
-
-        http.request.return_value = response(
-            cvis.array(
-                    {"categoryName": 1, "categoryValue": 159},
-                    {"categoryName": 5, "categoryValue": 1}))
-
-        self.assertEqual(
-            c.resultsummary(),
-            {
-                "BLOCKED": 0,
-                "FAILED": 0,
-                "INVALIDATED": 0,
-                "PASSED": 0,
-                "PENDING": 159,
-                "STARTED": 1,
-                })
-
-
 
 @patch("tcmui.core.api.userAgent")
 class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
@@ -301,11 +278,44 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
 
     def test_resultsummary(self, http):
         setup_common_responses(http, {
-                "http://fake.base/rest/testruns/1?_type=json": response(
-                    testrunitcs.one(
-                        resourceIdentity=make_identity(url="testruns/1"))),
+                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
+                    response(testrunitcs.one()),
 
-                "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1": response(
+                "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
+                    response(testresults.searchresult(
+                        {"testRunResultStatusId": 1},
+                        {"testRunResultStatusId": 1},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 2},
+                        {"testRunResultStatusId": 5},
+                        )),
+            })
+
+
+        c = self.resource_class.get("testruns/includedtestcases/1")
+
+        self.assertEqual(
+            c.resultsummary(),
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 3,
+                "PENDING": 2,
+                "STARTED": 1,
+                })
+
+
+    def test_suite_resultsummary(self, http):
+        setup_common_responses(http, {
+                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
+                    response(testrunitcs.one(
+                        testSuiteId=1,
+                        testSuiteLocator=make_locator(
+                            id=1, url="testsuites/1"))),
+
+                "http://fake.base/rest/testruns/results?_type=json&testSuiteId=1&testRunId=1": response(
                     testresults.searchresult(
                         {"testRunResultStatusId": 1},
                         {"testRunResultStatusId": 1},
@@ -317,10 +327,10 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
             })
 
 
-        c = self.resource_class.get("testruns/1")
+        c = self.resource_class.get("testruns/includedtestcases/1")
 
         self.assertEqual(
-            c.resultsummary(),
+            c.suite_resultsummary(),
             {
                 "BLOCKED": 0,
                 "FAILED": 0,
@@ -328,4 +338,25 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
                 "PASSED": 3,
                 "PENDING": 2,
                 "STARTED": 1,
+                })
+
+
+    def test_suite_resultsummary_no_suite(self, http):
+        setup_common_responses(http, {
+                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
+                    response(testrunitcs.one()),
+            })
+
+
+        c = self.resource_class.get("testruns/includedtestcases/1")
+
+        self.assertEqual(
+            c.suite_resultsummary(),
+            {
+                "BLOCKED": 0,
+                "FAILED": 0,
+                "INVALIDATED": 0,
+                "PASSED": 0,
+                "PENDING": 0,
+                "STARTED": 0,
                 })

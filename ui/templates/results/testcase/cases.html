@@ -50,10 +50,18 @@
           <p class="drill">
             See related <a href="/results/testcase/detail/" title="test results related to {{ itc.testCase.name }}">test results</a>.
           </p>
+
+          {% if itc.testSuite %}
+          <section class="suiteresults">
+          {% include "results/_results_summary.html" with results=itc.suite_resultsummary %}
+          </section>
+          {% endif %}
+
           <section class="environments">
             {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
           </section>
           {% if itc.assignments|length %}
+
           <section class="testers">
             <h4>testers</h4>
             <ul>
