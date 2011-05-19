@@ -8,9 +8,9 @@
 {% endblock crumb %}
 
 {% block content %}
-  <nav class="manage">
+  <nav>
     <h2 class="navhead">Management Navigation</h2>
-    <ul>
+    <ul class="nestednav">
       {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
       <li><a href="{% url manage_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
       {% endif %}

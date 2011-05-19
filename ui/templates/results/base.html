@@ -14,9 +14,12 @@ Completion percentages are inactive (no API in platform). Filtering is not yet a
 {% endblock crumb %}
 
 {% block content %}
-  <nav class="results">
+  <nav>
     <h2 class="navhead">Results Navigation</h2>
-    <ul>
+
+    {% include "includes/_finder.html" %}
+
+    <ul class="nestednav">
       <li><a href="{% url results_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
       <li><a href="{% url results_testruns %}" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
       <li><a href="{% url results_testcases %}" class="{% block cases-active-nav %}{% endblock cases-active-nav %}">Test Cases</a></li>

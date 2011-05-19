@@ -152,64 +152,12 @@
     .start, .end
       color: $mid
 
+    + .simplenav
+      display: none
+
   // Compact ----------------------------------------------------------------
 
   &.compact
-    background: $blue-lightest
-
-    ul, p
-      display: none
-
-    .listordering
-      +columns(3,24)
-      margin-right: columns(1,24) + gutter(24)*2
-      background: $blue-lighter
-      position: relative
-      overflow: visible
-      white-space: nowrap
-      &::before, &::after
-        content: "\0020"
-        position: absolute
-        top: 0
-        bottom: 0
-        width: columns(1,3) + gutter(3)*2
-      &::before
-        +background-image(linear-gradient(60deg, rgba($blue-light,0) 74.5%, $blue-lighter 75%, $blue-lighter), linear-gradient(-60deg, rgba($blue-light,0) 74.5%, $blue-lighter 75%, $blue-lighter))
-        right: 100%
-      &::after
-        +background-image(linear-gradient(-60deg, rgba($blue-light,0) 64.5%, $blue-lightest 65%, $blue-lightest), linear-gradient(60deg, $blue-lighter 64.5%, rgba($blue-light,0) 65%, rgba($blue-light,0)))
-        left: 100%
-      a
-        #{$link}
-          position: relative
-          z-index: 2
-        #{$focus}
-          &::after
-            content: ""
-            display: none
-
-    .col
-      &:first-child
-        .listordering
-          display: none
-      &:nth-child(2)
-        .listordering
-          &::before
-            display: none
-
-    .focus
-      .listordering
-        background: $blue-light
-        &::before
-          +background-image(linear-gradient(60deg, rgba($blue-light,0) 74.5%, $blue-light 75%, $blue-light), linear-gradient(-60deg, rgba($blue-light,0) 74.5%, $blue-light 75%, $blue-light))
-          right: 100%
-        &::after
-          +background-image(linear-gradient(-60deg, rgba($blue-light,0) 64.5%, $blue-lightest 65%, $blue-lightest), linear-gradient(60deg, $blue-light 64.5%, rgba($blue-light,0) 65%, rgba($blue-light,0)))
-          left: 100%
-
-    .bytitle
-      +reset-box-model
-      padding-left: rhythm(1)
-
-    &.wide
-      overflow: hidden
+    display: none
+    + .simplenav
+      display: block
