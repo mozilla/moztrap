@@ -1651,7 +1651,7 @@ thead .controls {
   border: 1px solid rgba(135, 169, 168, 0.618);
   background: #e9eded;
 }
-.finder.expanded h3, .finder.expanded p {
+.finder.expanded h4, .finder.expanded p {
   margin-bottom: 0;
 }
 .finder.expanded .col {
