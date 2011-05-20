@@ -150,52 +150,45 @@
 // Included Case Details -----------------------------------------------------
 
 .case-details
-  @extend .toparrow
   +clearfix
-  +trailer(2)
+  +trailer
   clear: both
   position: relative
-  background: rgba($light,.5)
+  background: rgba($blue-hint,$xsmall)
 
   .summary
     +clearfix
     +full(21)
-    +rhythm-borders(1px,.5)
     +pad(1,1,21)
+    +padding-leader(.5)
+    +padding-trailer(.5)
     border-color: $mid
     background: transparent no-repeat scroll rhythm(1) center
     #{$focus}
-      background-color: rgba(white,.5)
+      background-color: rgba($blue-hint,$small)
       outline: 0
     p
       margin-bottom: 0
     .results
       @extend .resultslist
 
-  &.draft
-    background: rgba($blue-lighter,.25)
-  &.active
-    background: rgba($green-lighter,.25)
   &.draft, &.active
     .summary
       background-image: image-url('ui/power.png')
   &.locked
-    background: rgba($red-lighter,.25)
     .summary
       background-image: image-url('ui/lock.png')
 
   &.open
     .summary
-      background-color: $green-lightest
-      border-bottom-color: $mid-light
+      background-color: rgba($base,$xxxsmall)
 
   .content
     +full(21)
-    +rhythm-borders(1px,.5)
-    +padding-leader(.5)
+    +clearfix
     +pad(1,1,21)
-    border-top-width: 0
-    border-color: $mid
+    +padding-leader(.5)
+    +padding-trailer(.5)
 
   .status, .id
     +columns(2,19)
@@ -223,14 +216,13 @@
     .result
       @extend .resulticons
 
-  h4
-    +gone
-    + .comment
-      +prefix(3,21)
-
   .environment
     +full(21)
     +prefix(3,21)
+    h4
+      +gone
+      + .comment
+        +prefix(3,21)
     ul
       +leader(.5)
       +trailer(.5)

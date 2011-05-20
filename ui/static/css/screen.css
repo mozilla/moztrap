@@ -182,7 +182,7 @@ footer, header, hgroup, menu, nav, section {
   width: auto;
 }
 
-.toparrow::before, .userselect > div::before, .case-details::before {
+.toparrow::before, .userselect > div::before {
   content: " ";
   display: block;
   position: absolute;
@@ -2131,16 +2131,6 @@ thead .controls {
   padding-left: 4.211%;
   padding-right: 4.211%;
   position: relative;
-}
-#listcontent h2 {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
 }
 #listcontent .create {
   display: inline;
@@ -4627,59 +4617,46 @@ thead .controls {
 .case-details {
   overflow: hidden;
   *zoom: 1;
-  margin-bottom: 3.236em;
+  margin-bottom: 1.618em;
   clear: both;
   position: relative;
-  background: rgba(238, 238, 238, 0.5);
+  background: rgba(233, 237, 237, 0.382);
 }
 .case-details .summary {
   overflow: hidden;
   *zoom: 1;
   clear: both;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.738em;
   padding-left: 4.819%;
   padding-right: 4.819%;
+  padding-top: 0.809em;
+  padding-bottom: 0.809em;
   border-color: #999999;
   background: transparent no-repeat scroll 1.618em center;
 }
 .case-details .summary:focus, .case-details .summary:hover, .case-details .summary:active {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(233, 237, 237, 0.618);
   outline: 0;
 }
 .case-details .summary p {
   margin-bottom: 0;
 }
-.case-details.draft {
-  background: rgba(170, 192, 191, 0.25);
-}
-.case-details.active {
-  background: rgba(205, 236, 169, 0.25);
-}
 .case-details.draft .summary, .case-details.active .summary {
   background-image: url('../images/ui/power.png?1299181459');
-}
-.case-details.locked {
-  background: rgba(236, 169, 171, 0.25);
 }
 .case-details.locked .summary {
   background-image: url('../images/ui/lock.png?1299181435');
 }
 .case-details.open .summary {
-  background-color: #e5f5d2;
-  border-bottom-color: #c3c3c3;
+  background-color: rgba(68, 68, 68, 0.146);
 }
 .case-details .content {
   clear: both;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.738em;
-  padding-top: 0.809em;
+  overflow: hidden;
+  *zoom: 1;
   padding-left: 4.819%;
   padding-right: 4.819%;
-  border-top-width: 0;
-  border-color: #999999;
+  padding-top: 0.809em;
+  padding-bottom: 0.809em;
 }
 .case-details .status, .case-details .id {
   display: inline;
@@ -4732,7 +4709,11 @@ thead .controls {
 #results .managelist .results {
   text-align: left;
 }
-#results h4 {
+#results .environment {
+  clear: both;
+  padding-left: 14.458%;
+}
+#results .environment h4 {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4742,11 +4723,7 @@ thead .controls {
   width: 1px;
   border: 0;
 }
-#results h4 + .comment {
-  padding-left: 14.458%;
-}
-#results .environment {
-  clear: both;
+#results .environment h4 + .comment {
   padding-left: 14.458%;
 }
 #results .environment ul {
