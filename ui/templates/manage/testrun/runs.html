@@ -77,7 +77,7 @@
               <p>{{ run.description }}</p>
             {% endif %}
           </div>
-          <div class="environments">
+          <div class="envgroups">
             {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
           </div>
           {% if run.testsuites|length %}

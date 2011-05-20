@@ -9,22 +9,24 @@
   &, #{$link}
     +italic
     display: block
-    padding: 0 $base-rhythm-unit*.5
+    padding: 0 rhythm(.5)
     color: $green-dark
-    background: $green-lightest
+    background: rgba($green-lighter,$small)
     text-align: right
     &:first-child:last-child, h3 + &
       +padding-leader(.25)
       +padding-trailer(.25)
   #{$focus}
     color: $base
-    background: $green
+    background: rgba($green-light,$small)
 
 // The Basic Form ------------------------------------------------------------
 
 .addform
+  h2
+    +trailer
   .basic
-    +columns(11,21)
+    +columns(11,22)
     +inline-form(2,9,11)
     +trailer
     li
@@ -46,12 +48,12 @@
       +prefix(2,11)
 
   .env
-    +columns(10,21)
-    +omega(21)
+    +columns(11,22)
+    +omega(22)
     +trailer
     h3
       padding: $base-rhythm-unit*.25
-      background: darken($light,5)
+      background: rgba($blue,$xxxsmall)
       margin: 0
     ul
       +no-style-list
@@ -60,18 +62,19 @@
       position: absolute
       height: 0
     .remove
-      +columns(1,10)
-      +omega(10)
+      +columns(1,11)
+      +omega(11)
 
   .env-form
     +pie-clearfix
-    +leading-border(1px,.5)
-    border-color: darken($light,10)
-    background: $light
+    +padding-leader(.5)
+    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
     li
-      +columns(4,10)
+      +columns(4,11)
       &:first-child
-        +prefix(1,10)
+        +prefix(1,11)
+      &:nth-child(2n)
+        +columns(5,11)
 
 // SuperSelect! --------------------------------------------------------------
 
@@ -84,7 +87,7 @@
       width: 0px 1px
 
   .unselected, .selected
-    +columns(9,19)
+    +columns(9,20)
     h3, h4
       @extend .allcaps
       +hpadding(1.5em)
@@ -93,13 +96,13 @@
       background: $blue
       font-weight: normal
   .selected
-    +omega(19)
+    +omega(20)
   label[for="search"]
     +hide-text
     position: absolute
     height: 0
   input[type="search"]
-    width: columns(9,19)
+    width: columns(9,20)
   .select
     +no-style-list
     height: $base-rhythm-unit*8
@@ -135,7 +138,7 @@
           image: image-url('ui/arrow_left.png')
 
   .addremove
-    +columns(1,19)
+    +columns(2,20)
     +leader(3)
     button
       +trailer(.5)
@@ -174,17 +177,16 @@
   @extend .superselect
   +clearfix
   +trailer
-  +trailing-border(1px,1)
+  +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
   clear: both
-  background: $light
-  border-color: #ccc
   h3
-    +padding-leader(.5)
-    +padding-trailer(.5)
-    background: #ccc
-  h3, > div
-    +full(21)
-    +pad(1,1,21)
+    padding: rhythm(.25)
+    background: rgba($blue,$xxxsmall)
+    margin: 0
+    text-transform: capitalize
+  > div
+    +full(22)
+    +pad(1,1,22)
 
 /* Create Cycle --------------------------------------------------------------
 
@@ -221,18 +223,15 @@
   summary
     +link
     +italic
-    width: columns(10,21)
+    width: columns(10,22)
   > div
     @extend .toparrow
     +pie-clearfix
-    +full(21)
-    +pad(1,1,21)
-    +leader
-    +trailer
-    +leading-border(1px,1)
-    +trailing-border(1px,1)
+    +full(22)
+    +pad(1,1,22)
+    +rhythm(1,1,1,1)
     position: relative
-    background: $light
+    background: rgba($blue-hint,$xsmall)
     border-color: #ccc
     overflow: visible !important
   .nickname
@@ -281,41 +280,37 @@
     +leader
 
   .steps
-    +full(21)
+    +full(22)
     +clearfix
     .addfields
-      margin-left: columns(2,21) + gutter(21)
+      margin-left: columns(2,22) + gutter(22)
   .steplist
     +no-style-list
-    +full(21)
-    +prefix(2,21)
+    +full(22)
+    +prefix(2,22)
     counter-reset: step
   .steps-form
-    +full(19)
-    +prefix(1,19)
-    +leading-border(1px,.25)
+    +full(20)
+    +prefix(1,20)
+    +padding-leader(.25)
+    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
     position: relative
-    border-color: darken($light,10)
-    background: $light
     counter-increment: step
     &::before
-      +adjust-font-size-to(48px)
+      +adjust-font-size-to($xlargepx,6)
+      +light
       content: counter(step, decimal) "."
       position: absolute
-      right: 100% + gutter(18)
+      right: 100% + gutter(19)
       top: 0
     .action
-      +columns(8,18)
+      +columns(8,19)
     .result
-      +columns(9,18)
+      +columns(10,19)
     .remove
-      +columns(1,18)
+      +columns(1,19)
       +omega(18)
       +leader(.25)
-    .add
-      margin-left: columns(2,21) + gutter(21)
-    textarea
-      min-height: $base-rhythm-unit*6
     .errorlist
       +float('right')
       +padding-leader(.25)

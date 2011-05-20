@@ -91,7 +91,7 @@ label
   font-size: inherit
   line-height: inherit
   width: 100%
-  background: rgba($blue-hint,$small) no-repeat scroll 98% rhythm(.5)
+  background: rgba($blue-hint,$small)
   color: $base
   border-color: rgba($blue-dark,$small)
   outline: 0
@@ -133,7 +133,15 @@ textarea
 select
   height: $base-rhythm-unit*1.5
   &[multiple]
+    +sans-family
+    +adjust-font-size-to(12px)
+    +trailer
     height: auto
+    width: 100%
+    padding: rhythm(.25)
+    background: rgba($blue-hint,$small)
+    color: $base
+    border-color: rgba($blue-dark,$xsmall)
 
 input
   &[type="text"], &[type="password"],

@@ -126,11 +126,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #run .testinvalid summary {
+.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #run .testinvalid summary {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
+.allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -192,7 +192,7 @@ footer, header, hgroup, menu, nav, section {
   height: 0;
   border: 1em solid rgba(153, 153, 153, 0);
   border-width: 0.809em;
-  border-bottom-color: #999999;
+  border-bottom-color: rgba(233, 237, 237, 0.382);
 }
 
 /* Root ---------------------------------------------------------------------- */
@@ -280,7 +280,11 @@ h1, h2 {
   font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-h2, h3, h4, h5, h6 {
+h2 {
+  color: rgba(75, 101, 100, 0.618);
+}
+
+h3, h4, h5, h6 {
   margin-bottom: 1.618em;
 }
 
@@ -613,7 +617,7 @@ label {
   font-size: inherit;
   line-height: inherit;
   width: 100%;
-  background: rgba(233, 237, 237, 0.618) no-repeat scroll 98% 0.809em;
+  background: rgba(233, 237, 237, 0.618);
   color: #444444;
   border-color: rgba(75, 101, 100, 0.618);
   outline: 0;
@@ -693,7 +697,16 @@ select {
   height: 2.427em;
 }
 select[multiple] {
+  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.857em;
+  line-height: 1.888em;
+  margin-bottom: 1.618em;
   height: auto;
+  width: 100%;
+  padding: 0.405em;
+  background: rgba(233, 237, 237, 0.618);
+  color: #444444;
+  border-color: rgba(75, 101, 100, 0.382);
 }
 
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
@@ -1224,7 +1237,7 @@ thead .controls {
 }
 
 /* Filtering ----------------------------------------------------------------- */
-.groupheader, #filter h5, .environments h5, .testers h4, .suites h4 {
+.groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0 0.25em;
@@ -2476,33 +2489,6 @@ thead .controls {
   margin: 0;
 }
 
-.environments {
-  font-size: 0.857em;
-  line-height: 1.416em;
-}
-.environments h4 {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.environments > ul {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-.environments .envgroup {
-  color: #6e6e6e;
-}
-.environments .envgroup li {
-  list-style-type: disc;
-}
-
 .envgroup {
   display: inline;
   float: left;
@@ -2515,14 +2501,38 @@ thead .controls {
   margin-right: 0;
 }
 
-.environments {
+.envgroups {
+  font-size: 0.857em;
+  line-height: 1.416em;
   display: inline;
   float: left;
   width: 67.816%;
   margin-right: 1.149%;
   padding-left: 9.195%;
 }
-.environments:last-child {
+.envgroups h4 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.envgroups > ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.envgroups .envgroup {
+  color: #6e6e6e;
+}
+.envgroups .envgroup li {
+  list-style-type: disc;
+}
+.envgroups:last-child {
   float: none;
   display: block;
   width: auto;
@@ -2532,13 +2542,13 @@ thead .controls {
   padding-right: 9.195%;
   clear: both;
 }
-.environments:last-child .envgroup {
+.envgroups:last-child .envgroup {
   display: inline;
   float: left;
   width: 15.493%;
   margin-right: 1.408%;
 }
-.environments:last-child .envgroup:nth-child(6n) {
+.envgroups:last-child .envgroup:nth-child(6n) {
   display: inline;
   float: right;
   margin-right: 0;
@@ -2809,7 +2819,7 @@ thead .controls {
   display: block;
   padding: 0 0.809em;
   color: #4f7a1b;
-  background: #e5f5d2;
+  background: rgba(205, 236, 169, 0.618);
   text-align: right;
 }
 .addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited {
@@ -2818,14 +2828,17 @@ thead .controls {
 }
 .addfields:focus, #addcycle .addrun button:focus, .addfields:hover, #addcycle .addrun button:hover, .addfields:active, #addcycle .addrun button:active {
   color: #444444;
-  background: #77b929;
+  background: rgba(181, 227, 127, 0.618);
 }
 
+.addform h2, #addcycle h2, #addrun h2, #addsuite h2, #addcase h2 {
+  margin-bottom: 1.618em;
+}
 .addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #addcase .basic {
   display: inline;
   float: left;
-  width: 51.807%;
-  margin-right: 1.205%;
+  width: 49.425%;
+  margin-right: 1.149%;
   margin-bottom: 1.618em;
 }
 .addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
@@ -2894,8 +2907,8 @@ thead .controls {
 .addform .env, #addcycle .env, #addrun .env, #addsuite .env, #addcase .env {
   display: inline;
   float: left;
-  width: 46.988%;
-  margin-right: 1.205%;
+  width: 49.425%;
+  margin-right: 1.149%;
   display: inline;
   float: right;
   margin-right: 0;
@@ -2903,7 +2916,7 @@ thead .controls {
 }
 .addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 {
   padding: 0.405em;
-  background: #e1e1e1;
+  background: rgba(82, 134, 132, 0.146);
   margin: 0;
 }
 .addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul {
@@ -2927,19 +2940,20 @@ thead .controls {
 .addform .env .remove, #addcycle .env .remove, #addrun .env .remove, #addsuite .env .remove, #addcase .env .remove {
   display: inline;
   float: left;
-  width: 7.692%;
-  margin-right: 2.564%;
+  width: 6.977%;
+  margin-right: 2.326%;
   display: inline;
   float: right;
   margin-right: 0;
 }
 .addform .env-form, #addcycle .env-form, #addrun .env-form, #addsuite .env-form, #addcase .env-form {
   *zoom: 1;
-  border-top-style: solid;
-  border-top-width: 0.071em;
-  padding-top: 0.738em;
-  border-color: #d4d4d4;
-  background: #eeeeee;
+  padding-top: 0.809em;
+  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
 }
 .addform .env-form:after, #addcycle .env-form:after, #addrun .env-form:after, #addsuite .env-form:after, #addcase .env-form:after {
   content: "\0020";
@@ -2952,11 +2966,17 @@ thead .controls {
 .addform .env-form li, #addcycle .env-form li, #addrun .env-form li, #addsuite .env-form li, #addcase .env-form li {
   display: inline;
   float: left;
-  width: 38.462%;
-  margin-right: 2.564%;
+  width: 34.884%;
+  margin-right: 2.326%;
 }
 .addform .env-form li:first-child, #addcycle .env-form li:first-child, #addrun .env-form li:first-child, #addsuite .env-form li:first-child, #addcase .env-form li:first-child {
-  padding-left: 10.256%;
+  padding-left: 9.302%;
+}
+.addform .env-form li:nth-child(2n), #addcycle .env-form li:nth-child(2n), #addrun .env-form li:nth-child(2n), #addsuite .env-form li:nth-child(2n), #addcase .env-form li:nth-child(2n) {
+  display: inline;
+  float: left;
+  width: 44.186%;
+  margin-right: 2.326%;
 }
 
 .superselect p, .mainselect p, .suiteselect p, .caseselect p, .userselect p {
@@ -2970,8 +2990,8 @@ thead .controls {
 .superselect .unselected, .mainselect .unselected, .suiteselect .unselected, .caseselect .unselected, .userselect .unselected, .superselect .selected, .mainselect .selected, .suiteselect .selected, .caseselect .selected, .userselect .selected {
   display: inline;
   float: left;
-  width: 46.667%;
-  margin-right: 1.333%;
+  width: 44.304%;
+  margin-right: 1.266%;
 }
 .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4 {
   padding-left: 1.5em;
@@ -2994,7 +3014,7 @@ thead .controls {
   height: 0;
 }
 .superselect input[type="search"], .mainselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"], .userselect input[type="search"] {
-  width: 46.667%;
+  width: 44.304%;
 }
 .superselect .select, .mainselect .select, .suiteselect .select, .caseselect .select, .userselect .select {
   list-style: none;
@@ -3042,8 +3062,8 @@ thead .controls {
 .superselect .addremove, .mainselect .addremove, .suiteselect .addremove, .caseselect .addremove, .userselect .addremove {
   display: inline;
   float: left;
-  width: 4%;
-  margin-right: 1.333%;
+  width: 8.861%;
+  margin-right: 1.266%;
   margin-top: 4.854em;
 }
 .superselect .addremove button, .mainselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button, .userselect .addremove button {
@@ -3166,22 +3186,23 @@ thead .controls {
   overflow: hidden;
   *zoom: 1;
   margin-bottom: 1.618em;
-  border-bottom-style: solid;
-  border-bottom-width: 0.071em;
-  padding-bottom: 1.547em;
+  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   clear: both;
-  background: #eeeeee;
-  border-color: #cccccc;
 }
 .mainselect h3, .suiteselect h3, .caseselect h3 {
-  padding-top: 0.809em;
-  padding-bottom: 0.809em;
-  background: #cccccc;
+  padding: 0.405em;
+  background: rgba(82, 134, 132, 0.146);
+  margin: 0;
+  text-transform: capitalize;
 }
-.mainselect h3, .suiteselect h3, .caseselect h3, .mainselect > div, .suiteselect > div, .caseselect > div {
+.mainselect > div, .suiteselect > div, .caseselect > div {
   clear: both;
-  padding-left: 4.819%;
-  padding-right: 4.819%;
+  padding-left: 4.598%;
+  padding-right: 4.598%;
 }
 
 /* Create Cycle -------------------------------------------------------------- */
@@ -3221,7 +3242,7 @@ thead .controls {
 
 .userselect summary {
   font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 46.988%;
+  width: 44.828%;
 }
 .userselect summary, .userselect summary:link, .userselect summary:visited {
   -moz-transition-property: color, background-color;
@@ -3248,18 +3269,14 @@ thead .controls {
 .userselect > div {
   *zoom: 1;
   clear: both;
-  padding-left: 4.819%;
-  padding-right: 4.819%;
+  padding-left: 4.598%;
+  padding-right: 4.598%;
   margin-top: 1.618em;
+  padding-top: 1.618em;
+  padding-bottom: 1.618em;
   margin-bottom: 1.618em;
-  border-top-style: solid;
-  border-top-width: 0.071em;
-  padding-top: 1.547em;
-  border-bottom-style: solid;
-  border-bottom-width: 0.071em;
-  padding-bottom: 1.547em;
   position: relative;
-  background: #eeeeee;
+  background: rgba(233, 237, 237, 0.382);
   border-color: #cccccc;
   overflow: visible !important;
 }
@@ -3347,7 +3364,7 @@ thead .controls {
   *zoom: 1;
 }
 #addcase .steps .addfields, #addcase .steps #addcycle .addrun button, #addcycle .addrun #addcase .steps button {
-  margin-left: 9.639%;
+  margin-left: 9.195%;
 }
 #addcase .steplist {
   list-style: none;
@@ -3355,7 +3372,7 @@ thead .controls {
   padding: 0;
   border: 0;
   clear: both;
-  padding-left: 9.639%;
+  padding-left: 9.195%;
   counter-reset: step;
 }
 #addcase .steplist li {
@@ -3365,50 +3382,46 @@ thead .controls {
 }
 #addcase .steps-form {
   clear: both;
-  padding-left: 5.333%;
-  border-top-style: solid;
-  border-top-width: 0.071em;
-  padding-top: 0.333em;
+  padding-left: 5.063%;
+  padding-top: 0.405em;
+  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   position: relative;
-  border-color: #d4d4d4;
-  background: #eeeeee;
   counter-increment: step;
 }
 #addcase .steps-form::before {
-  font-size: 3.429em;
-  line-height: 1.416em;
+  font-size: 4.236em;
+  line-height: 2.292em;
+  font-family: "CambridgeRoundLight", "Helvetica Neue", Helvetica, Arial, sans-serif;
   content: counter(step, decimal) ".";
   position: absolute;
-  right: 101.408%;
+  right: 101.333%;
   top: 0;
 }
 #addcase .steps-form .action {
   display: inline;
   float: left;
-  width: 43.662%;
-  margin-right: 1.408%;
+  width: 41.333%;
+  margin-right: 1.333%;
 }
 #addcase .steps-form .result {
   display: inline;
   float: left;
-  width: 49.296%;
-  margin-right: 1.408%;
+  width: 52%;
+  margin-right: 1.333%;
 }
 #addcase .steps-form .remove {
   display: inline;
   float: left;
-  width: 4.225%;
-  margin-right: 1.408%;
+  width: 4%;
+  margin-right: 1.333%;
   display: inline;
   float: right;
   margin-right: 0;
   margin-top: 0.405em;
-}
-#addcase .steps-form .add {
-  margin-left: 9.639%;
-}
-#addcase .steps-form textarea {
-  min-height: 9.708em;
 }
 #addcase .steps-form .errorlist {
   display: inline;

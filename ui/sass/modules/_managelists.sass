@@ -154,8 +154,15 @@
 .byline
   margin: 0
 
-.environments
+.envgroup
+  +columns(3,15)
+  &:nth-child(5n)
+    +omega(15)
+
+.envgroups
   +adjust-font-size-to(12px,.75)
+  +columns(15,22)
+  +prefix(2,22)
   h4
     +gone
   h5
@@ -167,15 +174,6 @@
     color: $mid-dark
     li
       list-style-type: disc
-
-.envgroup
-  +columns(3,15)
-  &:nth-child(5n)
-    +omega(15)
-
-.environments
-  +columns(15,22)
-  +prefix(2,22)
   &:last-child
     +reset-column
     +full(22)

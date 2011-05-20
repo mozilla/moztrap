@@ -67,7 +67,7 @@
     height: 0
     border: 1em solid rgba($mid,0)
       width: $base-rhythm-unit*.5
-    border-bottom-color: $mid
+    border-bottom-color: rgba($blue-hint,$xsmall)
 
 /* Root ----------------------------------------------------------------------
 
@@ -149,7 +149,10 @@ h1, h2
   @extend .allcaps
   +bold
 
-h2, h3, h4, h5, h6
+h2
+  color: rgba($blue-dark,$small)
+
+h3, h4, h5, h6
   +trailer
 
 h3, h4, h5, h6
