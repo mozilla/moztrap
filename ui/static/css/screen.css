@@ -126,11 +126,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #run .testinvalid summary {
+.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #run .testinvalid summary {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .loading::before, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
+.allcaps, h1, h2, caption, .groupheader, #filter h5, .environments h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -1595,21 +1595,22 @@ thead .controls {
   position: relative;
 }
 .loading > * {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
-  opacity: 0.25;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=24)";
+  opacity: 0.236;
 }
 .loading::before {
-  text-shadow: rgba(68, 68, 68, 0.675) 1px 1px 0;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  display: block;
   position: absolute;
-  content: "loading...";
   top: 0;
-  right: 0;
   bottom: 0;
   left: 0;
-  color: rgba(238, 238, 238, 0.95);
-  background-color: rgba(68, 68, 68, 0.25);
+  right: 0;
+  font-family: "CambridgeRoundBoldCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding-top: 0.405em;
+  text-shadow: #e9eded 0 1px 0;
+  display: block;
+  content: "Loading...";
+  color: rgba(82, 134, 132, 0.618);
+  background: rgba(233, 237, 237, 0.618);
   text-align: center;
   z-index: 50;
 }

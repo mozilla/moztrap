@@ -1,21 +1,16 @@
 /* Loading -------------------------------------------------------------------
-
 .loading
   position: relative
   > *
-    +opacity(.25)
+    +opacity($xxsmall)
   &::before
-    @extend .allcaps
-    +text-shadow(rgba($base,.675) 1px 1px 0)
-    +bold
+    +stretch
+    +boldcond
+    +padding-leader(.25)
+    +text-shadow($blue-hint 0 1px 0)
     display: block
-    position: absolute
-    content: "loading..."
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
-    color: rgba($light,.95)
-    background-color: rgba($base,.25)
+    content: "Loading..."
+    color: rgba($blue,$small)
+    background: rgba($blue-hint,$small)
     text-align: center
     z-index: 50
