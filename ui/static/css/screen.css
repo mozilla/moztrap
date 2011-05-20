@@ -1654,6 +1654,11 @@ thead .controls {
   height: 1.618em;
 }
 
+.widefinder, .finder.expanded[data-cols="4"], .finder.expanded[data-cols="5"], .finder.expanded[data-cols="6"], .finder.expanded[data-cols="7"], .finder.expanded[data-cols="8"], .finder.expanded[data-cols="9"] {
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
 .finder {
   *zoom: 1;
   margin-bottom: 2.427em;
@@ -1678,6 +1683,24 @@ thead .controls {
 }
 .finder.expanded h3, .finder.expanded h4, .finder.expanded h5, .finder.expanded p {
   margin-bottom: 0;
+}
+.finder.expanded[data-cols="4"] .carousel {
+  width: 125%;
+}
+.finder.expanded[data-cols="5"] .carousel {
+  width: 150%;
+}
+.finder.expanded[data-cols="6"] .carousel {
+  width: 175%;
+}
+.finder.expanded[data-cols="7"] .carousel {
+  width: 200%;
+}
+.finder.expanded[data-cols="8"] .carousel {
+  width: 225%;
+}
+.finder.expanded[data-cols="9"] .carousel {
+  width: 250%;
 }
 .finder.expanded .col {
   -moz-transition-property: width;
@@ -1857,28 +1880,6 @@ thead .controls {
   -o-transform: scale(1.75, 1.75);
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
-}
-.finder.expanded.wide {
-  overflow-y: hidden;
-  overflow-x: scroll;
-}
-.finder.expanded .carousel[data-cols="4"] {
-  width: 125%;
-}
-.finder.expanded .carousel[data-cols="5"] {
-  width: 150%;
-}
-.finder.expanded .carousel[data-cols="6"] {
-  width: 175%;
-}
-.finder.expanded .carousel[data-cols="7"] {
-  width: 200%;
-}
-.finder.expanded .carousel[data-cols="8"] {
-  width: 225%;
-}
-.finder.expanded .carousel[data-cols="9"] {
-  width: 250%;
 }
 .finder.expanded .completion, .finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
   display: none;

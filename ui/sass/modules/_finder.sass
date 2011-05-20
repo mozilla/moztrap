@@ -17,6 +17,10 @@
     background-color: rgba($green,$small)
     height: rhythm(1)
 
+.widefinder
+  overflow-y: hidden
+  overflow-x: scroll
+
 .finder
   +pie-clearfix
   +trailer(1.5)
@@ -34,6 +38,12 @@
 
     h3, h4, h5, p
       margin-bottom: 0
+
+    @for $n from 4 to 10
+      &[data-cols="#{$n}"]
+        @extend .widefinder
+        .carousel
+          width: ($n+1)*25%
 
     .col
       +transition(width,300ms)
@@ -115,14 +125,6 @@
           background: rgba($blue-light,$small)
           .logo
             +scale(1.75)
-
-    &.wide
-      overflow-y: hidden
-      overflow-x: scroll
-
-    @for $n from 4 to 10
-      .carousel[data-cols="#{$n}"]
-        width: ($n+1)*25%
 
     // layout of specific elements ---------------------------------------------
 
