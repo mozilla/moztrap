@@ -22,11 +22,11 @@
           <li class="byrun">
             <a href="{{ request|sort_url:"testRun" }}" class="{{ request|sort_status:"testRun" }}">run</a>
           </li>
-          <li class="bysuite">
-            <a href="{{ request|sort_url:"testSuite" }}" class="{{ request|sort_status:"testSuite" }}">suite</a>
-          </li>
           <li class="byproduct">
             <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+          </li>
+          <li class="bysuite">
+            <a href="{{ request|sort_url:"testSuite" }}" class="{{ request|sort_status:"testSuite" }}">suite</a>
           </li>
         </ul>
       </nav>
@@ -40,9 +40,9 @@
           <hgroup>
             <h3 class="title">{{ itc.testCase.name }}</h3>
             <h4 class="run">{{ itc.testRun.name }}</h4>
-            <h4 class="suite">{{ itc.testSuite.name }}</h4>
           </hgroup>
           <p class="product">{{ itc.product.name }}</p>
+          <p class="suite">{{ itc.testSuite.name }}</p>
           {% include "results/_results_summary.html" with results=itc.resultsummary %}
         </header>
         <div class="content">

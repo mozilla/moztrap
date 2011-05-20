@@ -42,7 +42,7 @@
 
 #listcontent
   +full(24)
-  +pad(1,2,24)
+  +pad(1,1,24)
   position: relative
   h2
     +gone
@@ -52,7 +52,7 @@
     +box-sizing(border-box)
     +button-color($green,'ui/plus.png')
     padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
-    max-width: columns(4,21)
+    max-width: columns(4,22)
     background:
       position: $smallpx, left
       repeat: no-repeat
@@ -61,7 +61,7 @@
 /* Lists ---------------------------------------------------------------------
 
 .managelist
-  +full(21)
+  +full(22)
   margin: 0
   button
     +button-reset
@@ -158,12 +158,12 @@
     +omega(15)
 
 .environments
-  +columns(15,21)
-  +prefix(2,21)
+  +columns(15,22)
+  +prefix(2,22)
   &:last-child
     +reset-column
-    +full(21)
-    +pad(2,1,21)
+    +full(22)
+    +pad(2,2,22)
     clear: both
     .envgroup
       +columns(3,18)
@@ -171,14 +171,16 @@
         +omega(18)
 
 .testers, .suites
-  +adjust-font-size-to(12px)
+  +adjust-font-size-to(12px,.75)
   color: $mid-dark
   h4
+    @extend .groupheader
+    background-color: transparent
     margin: 0
 
 .description
-  +columns(19,21)
-  +omega(21)
+  +columns(20,22)
+  +omega(22)
 
 .sortlinks
   #{$link}
@@ -212,10 +214,11 @@
         background-image: image-url('ui/angle_up.png')
 
 .listordering
-  +bold
+  +boldcond
   +clearfix
   +rhythm(0,.25,.25,0)
   background: rgba($blue,$xxsmall)
+  text-transform: capitalize
   ul
     +no-style-list
   a
@@ -239,9 +242,9 @@
   p, ul
     +reset-box-model
   .location, .perpage
-    +columns(6,21)
+    +columns(6,22)
   .perpage
-    +omega(21)
+    +omega(22)
     text-align: right
   .perpage ul, .pagination
     +inline-block-list
@@ -252,7 +255,7 @@
       + li::before
         content: "| "
   .pagination
-    +columns(9,21)
+    +columns(10,22)
     text-align: center
   .current, strong
     +boldcond

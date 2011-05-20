@@ -1,45 +1,41 @@
 /* Manage Types --------------------------------------------------------------
 
 #managecycles
-  .status, .id, .controls, .start, .end, .bystart, .byend
-    +columns(2,21)
+  .status, .bystatus, .id, .controls
+    +columns(2,22)
+  .start, .end, .bystart, .byend
+    +columns(3,22)
   .testers
-    +columns(4,21)
+    +columns(4,22)
   .product, .byproduct
-    +columns(5,21)
+    +columns(4,22)
   .title, .bytitle
-    +columns(8,21)
+    +columns(8,22)
   .controls, .testers
-    +omega(21)
+    +omega(22)
 
 #manageruns
-  .status, .id, .controls, .start, .end, .bystart, .byend
-    +columns(2,21)
-  .cycle, .product, .bycycle, .byproduct
-    +columns(3,21)
-  .suites
-    +columns(4,21)
+  .status, .bystatus, .id, .controls, .start, .end, .bystart, .byend
+    +columns(2,22)
+  .cycle, .product, .bycycle, .byproduct, .suites
+    +columns(4,22)
   .title, .bytitle
-    +columns(7,21)
+    +columns(6,22)
   .controls, .suites
-    +omega(21)
+    +omega(22)
 
 #managesuites
-  .status, .id, .controls
-    +columns(2,21)
-  .product, .byproduct
-    +columns(8,21)
-  .title, .bytitle
-    +columns(9,21)
+  .status, .bystatus, .id, .controls
+    +columns(2,22)
+  .product, .byproduct, .title, .bytitle
+    +columns(9,22)
   .controls
-    +omega(21)
+    +omega(22)
 
 #managecases
-  .status, .id, .controls
-    +columns(2,21)
-  .version, .byversion, .product, .byproduct
-    +columns(3,21)
-  .title, .byline, .bytitle
-    +columns(10,21)
+  .status, .bystatus, .id, .controls
+    +columns(2,22)
+  .product, .byproduct, .title, .byline, .bytitle
+    +columns(9,22)
   .controls
-    +omega(21)
+    +omega(22)

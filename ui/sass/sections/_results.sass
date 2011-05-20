@@ -12,6 +12,7 @@
 .resulticons
   +adjust-font-size-to(12px)
   +condensed
+  min-width: rhythm(2.25)
   +icon('.pass','ui/check_sm.png',$green-lighter,true)
   +icon('.invalid','ui/warning_sm.png',$yellow,true)
   +icon('.fail','ui/x_sm.png',$red-lighter,true)
@@ -68,68 +69,51 @@
 
 #cycleresults
   .completion, .bycompletion
-    +columns(1,21)
+    +columns(1,22)
   .status, .id, .start, .end, .bystatus, .bystart, .byend
-    +columns(2,21)
-  .product, .byproduct
-    +columns(3,21)
-  .testers
-    +columns(4,21)
+    +columns(2,22)
+  .product, .byproduct, .testers
+    +columns(4,22)
   .results
-    +columns(5,21)
+    +columns(5,22)
   .title, .bytitle
-    +columns(6,21)
+    +columns(6,22)
   .drill
-    +columns(19,21)
+    +columns(19,22)
   .results, .testers, .drill
-    +omega(21)
+    +omega(22)
 
 #runresults
   .completion, .bycompletion
-    +columns(1,21)
+    +columns(1,22)
   .status, .id, .bystatus
-    +columns(2,21)
-  .product, .byproduct
-    +columns(3,21)
-  .testers, .cycle, .bycycle
-    +columns(4,21)
+    +columns(2,22)
+  .product, .byproduct, .testers, .cycle, .bycycle
+    +columns(4,22)
   .results, .time
-    +columns(5,21)
+    +columns(5,22)
   .title, .bytitle
-    +columns(6,21)
+    +columns(6,22)
   .drill
-    +columns(14,21)
+    +columns(15,22)
   .results, .testers, .time
-    +omega(21)
+    +omega(22)
 
-#suiteresults, #caseresults
+#caseresults
   .completion, .bycompletion
-    +columns(1,21)
+    +columns(1,22)
   .status, .id, .bystatus
-    +columns(2,21)
-  .product, .byproduct, .run, .byrun
-    +columns(3,21)
+    +columns(2,22)
+  .product, .byproduct, .run, .byrun, .suite, .bysuite
+    +columns(3,22)
   .testers
-    +columns(4,21)
-  .results
-    +columns(5,21)
-  .title, .bytitle
-    +columns(7,21)
+    +columns(4,22)
+  .results, .title, .bytitle
+    +columns(5,22)
   .drill
-    +columns(19,21)
+    +columns(20,22)
   .results, .testers, .drill
-    +omega(21)
-
-  .multi
-    > .summary
-      .title
-        +prefix(1,21)
-
-  .instances
-    .run
-      +prefix(7,21)
-    .completion
-      margin-left: columns(2,21) + gutter(21)
+    +omega(22)
 
 // Included Case Details -----------------------------------------------------
 
