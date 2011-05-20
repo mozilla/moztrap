@@ -48,6 +48,15 @@ class TestCase(RemoteObject):
         return self.name
 
 
+    @classmethod
+    def cache_dependent_buckets(cls, id=None):
+        # modifying a TestCase will modify its TestCaseVersion
+        return (
+            TestCaseList.cache_buckets(id) +
+            TestCaseVersion.cache_buckets(id) +
+            TestCaseVersionList.cache_buckets(id))
+
+
 
 class TestCaseList(ListObject):
     entryclass = TestCase
@@ -55,6 +64,15 @@ class TestCaseList(ListObject):
     default_url = "testcases"
 
     entries = fields.List(fields.Object(TestCase))
+
+
+    @classmethod
+    def cache_dependent_buckets(cls, id=None):
+        # POSTing a new TestCase to TestCaseList will also create a new
+        # TestCaseVersion (thus invalidating the cache for TestCaseVersionList)
+        return (
+            super(TestCaseList, cls).cache_dependent_buckets() +
+            TestCaseVersionList.cache_buckets(id))
 
 
 
