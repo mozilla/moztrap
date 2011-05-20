@@ -36,17 +36,6 @@ var TCM = TCM || {};
             $(this).add('#sandbox .finder').toggleClass('expanded').toggleClass('compact');
             return false;
         });
-        $('#selectruns').html5finder( {
-            expand: '#selectruns + #environment',
-            expandTrigger: '#selectruns input[name="run"]',
-            loading: true,
-            section1class: 'products',
-            section1item: 'input[name="product"]',
-            section2class: 'cycles',
-            section2item: 'input[name="cycle"]',
-            section3class: 'runs',
-            section3item: 'input[name="run"]'
-        });
         $('#sandbox').html5finder( {
             loading: true,
             horizontalScroll: true,

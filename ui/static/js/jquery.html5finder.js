@@ -31,8 +31,6 @@
                 context.find(options.selected).addClass('selected');
                 context.find(options.notSelected).removeClass('selected');
             },
-            // Hide form-actions
-            expand = context.find(options.expand).hide(),
             // Define the function for horizontal scrolling (requires jquery.scrollTo.js plugin):
             // Scrolls to the previous section (so that the active section is centered)
             horzScroll = function() {
@@ -384,14 +382,6 @@
         section5item.live('click', function() {
             addSelectedClass();
         });
-        // Make the form-actions accessible when applicable
-        $(options.expandTrigger).live('click', function() {
-            expand.slideDown();
-        });
-        // Hide the form-actions when not desired
-        $('input:not("' + options.expandTrigger + '")').live('click', function() {
-            expand.slideUp();
-        });
         // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
         $('input.selected').live('click', function() {
             $(this).closest(options.section).addClass('focus').siblings(options.section).removeClass('focus');
@@ -419,8 +409,6 @@
 
     /* Setup plugin defaults */
     $.fn.html5finder.defaults = {
-        expand: '.form-actions',                // The element to be hidden/shown as necessary
-        expandTrigger: null,                    // The trigger for showing/hiding the 'expand' element
         loading: false,                         // If true, adds a loading overlay while waiting for Ajax response
         horizontalScroll: false,                // If true, automatically scrolls to center the active section
                                                 // This requires the jquery.scrollTo.js plugin by default
