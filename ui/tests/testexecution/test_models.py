@@ -35,7 +35,8 @@ class ResultSummaryTest(object):
 
     def test_resultsummary_caching(self, http):
         """
-        Test that modifying a test result clears cached result summaries.
+        Test that result summaries are cached, and modifying a test result
+        clears cached result summaries.
 
         """
         c = self.get_one(http)
@@ -45,11 +46,13 @@ class ResultSummaryTest(object):
 
         from tcmui.testexecution.models import TestResult
         result = TestResult.get("testruns/results/1")
+        result.deliver()
 
         with locmem_cache():
             http.request.return_value = response(
                 cvis.array({"categoryName": 1, "categoryValue": 160}))
 
+            c.resultsummary()
             c.resultsummary()
 
             http.request.return_value = response(testresults.one(
@@ -75,6 +78,9 @@ class ResultSummaryTest(object):
                 "PENDING": 159,
                 "STARTED": 1,
                 })
+        # 5 requests: get result, get summary (next one cached), start,
+        # finishsucceed, newsummary
+        self.assertEqual(http.request.call_count, 5)
 
 
 
