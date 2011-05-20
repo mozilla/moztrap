@@ -64,7 +64,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 01 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 01 runs">open all the ' + itemName + ' cycle name 01 runs</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_02" data-product="' + itemName + '" data-cycle="02">' +
@@ -74,7 +74,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 02 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 02 runs">open all the ' + itemName + ' cycle name 02 runs</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_03" data-product="' + itemName + '" data-cycle="03">' +
@@ -84,7 +84,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 03 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 03 runs">open all the ' + itemName + ' cycle name 03 runs</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_04" data-product="' + itemName + '" data-cycle="04">' +
@@ -94,7 +94,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 04 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 04 runs">open all the ' + itemName + ' cycle name 04 runs</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_05" data-product="' + itemName + '" data-cycle="05">' +
@@ -104,7 +104,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 05 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 05 runs">open all the ' + itemName + ' cycle name 05 runs</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_06" data-product="' + itemName + '" data-cycle="06">' +
@@ -114,7 +114,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + itemName + ' cycle name 06 runs</a>' +
+                            '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 06 runs">open all the ' + itemName + ' cycle name 06 runs</a>' +
                         '</li>';
                     if (itemName === 'tcm') {
                         response =
@@ -126,7 +126,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + itemName + ' cycle name 01 runs</a>' +
+                                '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 01 runs">open all the ' + itemName + ' cycle name 01 runs</a>' +
                             '</li>' +
                             '<li>' +
                                 '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_02" data-product="' + itemName + '" data-cycle="02">' +
@@ -136,7 +136,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + itemName + ' cycle name 02 runs</a>' +
+                                '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 02 runs">open all the ' + itemName + ' cycle name 02 runs</a>' +
                             '</li>' +
                             '<li>' +
                                 '<input type="radio" name="cycle" value="" id="' + itemName + '_cycle_name_03" data-product="' + itemName + '" data-cycle="03">' +
@@ -146,7 +146,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + itemName + ' cycle name 03 runs</a>' +
+                                '<a href="#" class="open" title="open all the ' + itemName + ' cycle name 03 runs">open all the ' + itemName + ' cycle name 03 runs</a>' +
                             '</li>';
                     }
                     function callbackfn() { callback(response); }
@@ -184,7 +184,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-01 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-01 cases">open all the ' + productName + ' run 0' + cycleNumber + '-01 cases</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_02">' +
@@ -193,7 +193,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-02 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-02 cases">open all the ' + productName + ' run 0' + cycleNumber + '-02 cases</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_03">' +
@@ -202,7 +202,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-03 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-03 cases">open all the ' + productName + ' run 0' + cycleNumber + '-03 cases</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_04">' +
@@ -211,7 +211,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-04 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-04 cases">open all the ' + productName + ' run 0' + cycleNumber + '-04 cases</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_05">' +
@@ -220,7 +220,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-05 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-05 cases">open all the ' + productName + ' run 0' + cycleNumber + '-05 cases</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_06">' +
@@ -229,7 +229,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-06 cases</a>' +
+                            '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-06 cases">open all the ' + productName + ' run 0' + cycleNumber + '-06 cases</a>' +
                         '</li>';
                     if (cycleNumber === 1) {
                         response =
@@ -240,7 +240,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-01 cases</a>' +
+                                '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-01 cases">open all the ' + productName + ' run 0' + cycleNumber + '-01 cases</a>' +
                             '</li>' +
                             '<li>' +
                                 '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_02">' +
@@ -249,7 +249,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-02 cases</a>' +
+                                '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-02 cases">open all the ' + productName + ' run 0' + cycleNumber + '-02 cases</a>' +
                             '</li>' +
                             '<li>' +
                                 '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_03">' +
@@ -258,7 +258,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-03 cases</a>' +
+                                '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-03 cases">open all the ' + productName + ' run 0' + cycleNumber + '-03 cases</a>' +
                             '</li>' +
                             '<li>' +
                                 '<input type="radio" name="run" value="" id="' + productName + '_run_0' + cycleNumber + '_04">' +
@@ -267,7 +267,7 @@
                                     '<time class="start">01/07/2011</time>' +
                                     '<time class="end">11/10/2011</time>' +
                                 '</label>' +
-                                '<a href="#" class="open">open all the ' + productName + ' run 0' + cycleNumber + '-04 cases</a>' +
+                                '<a href="#" class="open" title="open all the ' + productName + ' run 0' + cycleNumber + '-04 cases">open all the ' + productName + ' run 0' + cycleNumber + '-04 cases</a>' +
                             '</li>';
                     }
                     function callbackfn() { callback(response); }
@@ -304,7 +304,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the tcm case 01 results</a>' +
+                            '<a href="#" class="open" title="open all the tcm case 01 results">open all the tcm case 01 results</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="case" value="" id="tcm_case_02">' +
@@ -313,7 +313,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the tcm case 02 results</a>' +
+                            '<a href="#" class="open" title="open all the tcm case 02 results">open all the tcm case 02 results</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="case" value="" id="tcm_case_03">' +
@@ -322,7 +322,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open all the tcm case 03 results</a>' +
+                            '<a href="#" class="open" title="open all the tcm case 03 results">open all the tcm case 03 results</a>' +
                         '</li>';
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
@@ -356,7 +356,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open this result</a>' +
+                            '<a href="#" class="open" title="open this result">open this result</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="result" value="" id="tcm_result_02">' +
@@ -365,7 +365,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open this result</a>' +
+                            '<a href="#" class="open" title="open this result">open this result</a>' +
                         '</li>' +
                         '<li>' +
                             '<input type="radio" name="result" value="" id="tcm_result_03">' +
@@ -374,7 +374,7 @@
                                 '<time class="start">01/07/2011</time>' +
                                 '<time class="end">11/10/2011</time>' +
                             '</label>' +
-                            '<a href="#" class="open">open this result</a>' +
+                            '<a href="#" class="open" title="open this result">open this result</a>' +
                         '</li>';
                     function callbackfn() { callback(response); }
                     window.setTimeout(callbackfn, 300);
