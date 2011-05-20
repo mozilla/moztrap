@@ -1,27 +1,6 @@
 /* environment --------------------------------------------------------------
 
 .environment
-  summary
-    +columns(6)
-    +omega
-    +padding-leader(.25)
-    +padding-trailer(.25)
-    text-align: right
-    color: $alt
-    text-transform: capitalize
-    &:hover
-      color: $accent
-  form
-    @extend .fullwidth
-    +prefix(12)
-    +leading-border(1px)
-    +padding-trailer(.5)
-    padding-right: gutter(24)
-    border-color: #ccc
-    background: $yellow-light
-  +inline-form(4,8,12)
-
-#environment
   +full(24)
   +inline-form(4,8,12)
   h2, form
@@ -30,3 +9,12 @@
     +padding-leader(.25)
   form
     +omega(24)
+
+  summary
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    text-align: right
+    color: $alt
+    text-transform: capitalize
+    &:hover
+      color: $accent
