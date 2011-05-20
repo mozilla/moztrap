@@ -1616,8 +1616,8 @@ thead .controls {
 
 /* Finder -------------------------------------------------------------------- */
 .findertoggle {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
+  opacity: 0.65;
   -moz-border-radius-bottomleft: 0.618em;
   -webkit-border-bottom-left-radius: 0.618em;
   -o-border-bottom-left-radius: 0.618em;
@@ -1635,15 +1635,23 @@ thead .controls {
   position: absolute;
   right: 1.031%;
   padding: 0.405em;
-  background-color: rgba(185, 41, 47, 0.618);
+  background-color: #fee58c;
   z-index: 10;
 }
 .findertoggle:focus, .findertoggle:hover, .findertoggle:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  opacity: 1;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+  opacity: 0.85;
 }
 .findertoggle.compact {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
   background-image: url('../images/ui/plus.png?1299181696');
+  background-color: rgba(119, 185, 41, 0.618);
+  height: 1.618em;
 }
 
 .finder {

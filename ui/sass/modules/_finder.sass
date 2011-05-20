@@ -1,18 +1,21 @@
 /* Finder --------------------------------------------------------------------
 
 .findertoggle
-  +opacity(.5)
+  +opacity(.65)
   +border-bottom-left-radius($smallem)
   +replace-text-with-dimensions('ui/minus.png')
   position: absolute
   right: side-gutter()
   padding: rhythm(.25)
-  background-color: rgba($red,$small)
+  background-color: $yellow
   z-index: 10
   #{$focus}
-    +opacity(1)
+    +opacity(.85)
   &.compact
+    +border-radius($xxsmallem)
     background-image: image-url('ui/plus.png')
+    background-color: rgba($green,$small)
+    height: rhythm(1)
 
 .finder
   +pie-clearfix
