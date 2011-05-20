@@ -2057,6 +2057,7 @@ thead .controls {
   white-space: nowrap;
 }
 .nestednav a:focus, .nestednav a:hover, .nestednav a:active {
+  outline: 0;
   color: rgba(81, 18, 20, 0.618);
 }
 .nestednav a::before, .nestednav a::after {
