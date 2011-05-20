@@ -158,7 +158,7 @@ h3, h4, h5, h6
 /* Inline --------------------------------------------------------------
 
 cite, em, dfn, address, i
-  font-style: italic
+  +italic
 
 strong, dfn, b
   +bold
@@ -192,9 +192,9 @@ small
   +adjust-font-size-to(12px)
 
 q
-  font-style: italic
+  +italic
   em
-    font-style: normal
+    +sans-family
 
 pre, code, tt
   @extend .mono
@@ -212,7 +212,7 @@ pre
   word-wrap: break-word
 
 blockquote
-  font-style: italic
+  +italic
 
 summary, .summary
   display: block
@@ -262,7 +262,7 @@ ul
 
 dt
   +leader
-  font-style: italic
+  +italic
 
 dd
   padding-left: $base-rhythm-unit

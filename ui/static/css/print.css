@@ -43,7 +43,7 @@
 
 @font-face {
   font-family: "CambridgeRoundItalic";
-  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.svg#CambridgeRoundItalic') format('svg');
+  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic') format('svg');
 }
 
 @font-face {

@@ -100,7 +100,7 @@ footer, header, hgroup, menu, nav, section {
 
 @font-face {
   font-family: "CambridgeRoundItalic";
-  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_italic-webfont.svg#CambridgeRoundItalic') format('svg');
+  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic') format('svg');
 }
 
 @font-face {
@@ -290,7 +290,7 @@ h3, h4, h5, h6 {
 
 /* Inline -------------------------------------------------------------- */
 cite, em, dfn, address, i {
-  font-style: italic;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 strong, dfn, b {
@@ -335,10 +335,10 @@ small {
 }
 
 q {
-  font-style: italic;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 q em {
-  font-style: normal;
+  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* Block -------------------------------------------------------------- */
@@ -355,7 +355,7 @@ pre {
 }
 
 blockquote {
-  font-style: italic;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 summary, .summary {
@@ -399,7 +399,7 @@ li ul {
 
 dt {
   margin-top: 1.618em;
-  font-style: italic;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 dd {
@@ -1310,7 +1310,7 @@ thead .controls {
   width: 22.892%;
   margin-right: 1.205%;
   margin-top: 0.405em;
-  font-style: italic;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: lowercase;
 }
 #filter .toggle a:link, #filter .toggle a:visited {
@@ -2787,11 +2787,11 @@ thead .controls {
 }
 
 .addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited {
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: block;
   padding: 0 0.809em;
   color: #4f7a1b;
   background: #e5f5d2;
-  font-style: italic;
   text-align: right;
 }
 .addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited {
@@ -3202,8 +3202,8 @@ thead .controls {
 }
 
 .userselect summary {
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 46.988%;
-  font-style: italic;
 }
 .userselect summary, .userselect summary:link, .userselect summary:visited {
   -moz-transition-property: color, background-color;
@@ -3575,8 +3575,8 @@ thead .controls {
 #cycles .note, #testruns .note {
   margin-top: -0.809em;
   margin-bottom: 2.427em;
+  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-align: right;
-  font-style: italic;
 }
 
 /* run tests -------------------------------------------------------------- */
