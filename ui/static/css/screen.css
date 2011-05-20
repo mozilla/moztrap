@@ -2802,6 +2802,10 @@ thead .controls {
   border: 0;
 }
 
+#register h2 {
+  margin-bottom: 1.618em;
+}
+
 /* Create -------------------------------------------------------------------- */
 .removefields {
   text-indent: -119988px;
