@@ -1778,25 +1778,6 @@ thead .controls {
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
 }
-.finder.expanded .open:link, .finder.expanded .open:visited {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  background-image: url('../images/ui/open.png?1305840247');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  position: absolute;
-  top: 0.405em;
-  right: 0;
-  width: 22.653px;
-  height: 1.618em;
-}
-.finder.expanded .open:focus, .finder.expanded .open:hover, .finder.expanded .open:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  opacity: 1;
-}
 .finder.expanded input {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -1834,10 +1815,34 @@ thead .controls {
 .finder.expanded .completion, .finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
   display: none;
 }
+.finder.expanded .open:link, .finder.expanded .open:visited {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/open.png?1305840247');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  position: absolute;
+  top: 0.202em;
+  right: 0;
+  width: 13.043%;
+}
+.finder.expanded .open:focus, .finder.expanded .open:hover, .finder.expanded .open:active {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+.finder.expanded .title {
+  display: inline;
+  float: left;
+  width: 82.609%;
+  margin-right: 4.348%;
+}
 .finder.expanded .focus .completion, .finder.expanded .focus .start, .finder.expanded .focus .end, .finder.expanded .focus .bycompletion, .finder.expanded .focus .bystart, .finder.expanded .focus .byend, .finder.expanded .focus .end, .finder.expanded .focus .byend {
   display: block;
 }
-.finder.expanded .focus .completion, .finder.expanded .focus .bycompletion {
+.finder.expanded .focus .completion, .finder.expanded .focus .bycompletion, .finder.expanded .focus .open {
   display: inline;
   float: left;
   width: 6.383%;
@@ -1846,13 +1851,13 @@ thead .controls {
 .finder.expanded .focus .title, .finder.expanded .focus .bytitle {
   display: inline;
   float: left;
-  width: 57.447%;
+  width: 48.936%;
   margin-right: 2.128%;
 }
 .finder.expanded .focus .title:first-child, .finder.expanded .focus .bytitle:first-child {
   display: inline;
   float: left;
-  width: 65.957%;
+  width: 57.447%;
   margin-right: 2.128%;
 }
 .finder.expanded .focus .title:first-child:last-child, .finder.expanded .focus .bytitle:first-child:last-child {
@@ -1867,7 +1872,8 @@ thead .controls {
   width: 14.894%;
   margin-right: 2.128%;
 }
-.finder.expanded .focus .end, .finder.expanded .focus .byend {
+.finder.expanded .focus .byend, .finder.expanded .focus .end {
+  padding-right: 8.511%;
   display: inline;
   float: right;
   margin-right: 0;

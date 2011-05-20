@@ -93,18 +93,6 @@
         .logo
           +scale(1.75)
 
-    .open
-      #{$link}
-        +opacity(.5)
-        +replace-text('ui/open.png')
-        position: absolute
-        top: rhythm(.25)
-        right: 0
-        width: image-width('ui/open.png') + $smallpx
-        height: rhythm(1)
-      #{$focus}
-        +opacity(1)
-
     input
       +gone
       &:checked
@@ -129,20 +117,35 @@
     .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
       display: none
 
+    .open
+      #{$link}
+        +opacity(.5)
+        +replace-text('ui/open.png')
+        position: absolute
+        top: rhythm(.125)
+        right: 0
+        width: columns(1,6)
+      #{$focus}
+        +opacity(1)
+
+    .title
+      +columns(5,6)
+
     .focus
       .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
         display: block
-      .completion, .bycompletion
+      .completion, .bycompletion, .open
         +columns(1,12)
       .title, .bytitle
-        +columns(7,12)
+        +columns(6,12)
         &:first-child
-          +columns(8,12)
+          +columns(7,12)
           &:last-child
             +un-column
       .start, .end, .bystart, .byend
         +columns(2,12)
-      .end, .byend
+      .byend, .end
+        +suffix(1,12)
         +omega(12)
 
     .bystart, .byend, .bycompletion
