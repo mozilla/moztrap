@@ -2184,9 +2184,16 @@ thead .controls {
   border: 0;
 }
 .managelist .item {
-  overflow: hidden;
   *zoom: 1;
   clear: both;
+}
+.managelist .item:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
 .managelist .summary, .managelist .content {
   *zoom: 1;
@@ -3980,7 +3987,9 @@ thead .controls {
   border: 0;
   overflow: hidden;
   *zoom: 1;
+  overflow: visible;
   text-align: right;
+  white-space: nowrap;
 }
 .resultslist li, .managelist .results li, .case-details .summary .results li {
   list-style-image: none;
@@ -4005,6 +4014,50 @@ thead .controls {
   height: 1px;
   width: 1px;
   border: 0;
+}
+
+.suite {
+  position: relative;
+}
+.suite:hover .suiteresults {
+  display: block;
+}
+
+.suiteresults {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(82, 134, 132, 0.618) 0 0 8.653px;
+  -webkit-box-shadow: rgba(82, 134, 132, 0.618) 0 0 8.653px;
+  -o-box-shadow: rgba(82, 134, 132, 0.618) 0 0 8.653px;
+  box-shadow: rgba(82, 134, 132, 0.618) 0 0 8.653px;
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 27.273%;
+  min-width: 172.727%;
+  padding: 0.526em 0.809em 1.092em;
+  background: #e9eded;
+  white-space: nowrap;
+}
+.suiteresults::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0.809em;
+  border: 0.809em solid rgba(82, 134, 132, 0);
+  border-top-color: #e9eded;
+}
+.suiteresults h4 {
+  font-size: 0.857em;
+  line-height: 1.888em;
+}
+.suiteresults .results {
+  text-align: left;
 }
 
 .managelist .time p {
@@ -4553,7 +4606,7 @@ thead .controls {
   width: 17.241%;
   margin-right: 1.149%;
 }
-#caseresults .results, #caseresults .title, #caseresults .bytitle {
+#caseresults .summary > .results, #caseresults .title, #caseresults .bytitle {
   display: inline;
   float: left;
   width: 21.839%;
@@ -4565,7 +4618,7 @@ thead .controls {
   width: 90.805%;
   margin-right: 1.149%;
 }
-#caseresults .results, #caseresults .testers, #caseresults .drill {
+#caseresults .summary > .results, #caseresults .testers, #caseresults .drill {
   display: inline;
   float: right;
   margin-right: 0;

@@ -42,7 +42,15 @@
             <h4 class="run">{{ itc.testRun.name }}</h4>
           </hgroup>
           <p class="product">{{ itc.product.name }}</p>
-          <p class="suite">{{ itc.testSuite.name }}</p>
+          {% if itc.testSuite %}
+          <div class="suite">
+            {{ itc.testSuite.name }}
+            <aside class="suiteresults" id="run-{{ itc.testRun.id }}-suite-{{ itc.testSuite.id }}">
+              <h4>Results for {{ itc.testSuite.name }} in {{ itc.testRun.name }}</h4>
+              {% include "results/_results_summary.html" with results=itc.suite_resultsummary %}
+            </aside>
+          </div>
+          {% endif %}
           {% include "results/_results_summary.html" with results=itc.resultsummary %}
         </header>
         <div class="content">
@@ -51,17 +59,11 @@
             See related <a href="/results/testcase/detail/" title="test results related to {{ itc.testCase.name }}">test results</a>.
           </p>
 
-          {% if itc.testSuite %}
-          <section class="suiteresults">
-          {% include "results/_results_summary.html" with results=itc.suite_resultsummary %}
-          </section>
-          {% endif %}
-
           <section class="environments">
-            {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
+          {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
           </section>
-          {% if itc.assignments|length %}
 
+          {% if itc.assignments|length %}
           <section class="testers">
             <h4>testers</h4>
             <ul>
