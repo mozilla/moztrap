@@ -212,15 +212,16 @@ class ObjectMixin(StrAndUnicode):
         kwargs.setdefault("http", userAgent)
         cache = kwargs.pop("cache", cls.cache)
         if cache:
+            url_id = url_final_integer(url)
             if cache is not True:
                 buckets = [cache]
             else:
-                buckets = cls.cache_buckets(url_final_integer(url))
+                buckets = cls.cache_buckets(url_id)
             kwargs["http"] = CachingHttpWrapper(
                 kwargs["http"],
                 getattr(auth, "permission_codes", []),
                 buckets,
-                cls.cache_dependent_buckets())
+                cls.cache_dependent_buckets(url_id))
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = auth
         return obj
@@ -326,15 +327,16 @@ class ObjectMixin(StrAndUnicode):
         http = kw.pop("http", userAgent)
         cache = kw.pop("cache", self.cache)
         if cache:
+            cache_id = getattr(self, "id", None)
             if cache is not True:
                 buckets = [cache]
             else:
-                buckets = self.cache_buckets(getattr(self, "id", None))
+                buckets = self.cache_buckets(cache_id)
             http = CachingHttpWrapper(
                 http,
                 getattr(kw.get("auth"), "permission_codes", []),
                 buckets,
-                self.cache_dependent_buckets())
+                self.cache_dependent_buckets(cache_id))
 
         response, content = http.request(**request)
 
@@ -438,14 +440,32 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def cache_buckets(cls, id=None):
+        """
+        Return the bucket names under which objects of this class should be
+        cached.
+
+        If an ID for this call is known, we cache under an ID-specific bucket
+        as well as the general class-level one.
+
+        """
+
         if id is not None:
             return [cls.__name__ + id, cls.__name__]
         return [cls.__name__]
 
 
     @classmethod
-    def cache_dependent_buckets(cls):
-        return [c.cache_buckets()[0] for c in cls.listclasses()]
+    def cache_dependent_buckets(cls, id=None):
+        """
+        Return the cache bucket names that are dependent upon objects of this
+        class; if an unsafe (non GET or HEAD) call is made via this resource
+        class, these buckets will be invalidated.
+
+        """
+        ret = []
+        for c in cls.listclasses():
+            ret.extend(c.cache_buckets(id))
+        return ret
 
 
 
@@ -694,6 +714,20 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     def __unicode__(self):
         return u"[%s]" % ", ".join([repr(e) for e in self])
+
+
+    @classmethod
+    def cache_buckets(cls, id=None):
+        """
+        Return the bucket names under which objects of this type should be
+        cached.
+
+        List objects don't have an id, but we still might get passed one here
+        if our buckets are going to be dependent buckets for some other call;
+        so we ignore the ``id`` argument.
+
+        """
+        return [cls.__name__]
 
 
 
