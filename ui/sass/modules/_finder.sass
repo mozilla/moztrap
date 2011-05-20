@@ -53,6 +53,17 @@
           a::after
             display: none
 
+      &:first-child
+        &:last-child
+          &, &.focus
+            width: 100%
+        @for $n from 2 to 10
+          &:nth-last-child(#{$n})
+            &, & ~ .col
+              width: 1/($n+1)*100%
+            &.focus, & ~ .col.focus
+              width: 2/($n+1)*100%
+
     .listordering
       position: absolute
       left: 0
@@ -108,12 +119,10 @@
     &.wide
       overflow-y: hidden
       overflow-x: scroll
-    .carousel[data-cols="5"]
-      width: 150%
-      .col
-        width: 25/150*100%
-        &.focus
-          width: 50/150*100%
+
+    @for $n from 4 to 10
+      .carousel[data-cols="#{$n}"]
+        width: ($n+1)*25%
 
     // layout of specific elements ---------------------------------------------
 

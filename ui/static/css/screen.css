@@ -1707,6 +1707,57 @@ thead .controls {
 .finder.expanded .col:not([class*="focus"]) .listordering a::after {
   display: none;
 }
+.finder.expanded .col:first-child:last-child, .finder.expanded .col:first-child:last-child.focus {
+  width: 100%;
+}
+.finder.expanded .col:first-child:nth-last-child(2), .finder.expanded .col:first-child:nth-last-child(2) ~ .col {
+  width: 33.333%;
+}
+.finder.expanded .col:first-child:nth-last-child(2).focus, .finder.expanded .col:first-child:nth-last-child(2) ~ .col.focus {
+  width: 66.667%;
+}
+.finder.expanded .col:first-child:nth-last-child(3), .finder.expanded .col:first-child:nth-last-child(3) ~ .col {
+  width: 25%;
+}
+.finder.expanded .col:first-child:nth-last-child(3).focus, .finder.expanded .col:first-child:nth-last-child(3) ~ .col.focus {
+  width: 50%;
+}
+.finder.expanded .col:first-child:nth-last-child(4), .finder.expanded .col:first-child:nth-last-child(4) ~ .col {
+  width: 20%;
+}
+.finder.expanded .col:first-child:nth-last-child(4).focus, .finder.expanded .col:first-child:nth-last-child(4) ~ .col.focus {
+  width: 40%;
+}
+.finder.expanded .col:first-child:nth-last-child(5), .finder.expanded .col:first-child:nth-last-child(5) ~ .col {
+  width: 16.667%;
+}
+.finder.expanded .col:first-child:nth-last-child(5).focus, .finder.expanded .col:first-child:nth-last-child(5) ~ .col.focus {
+  width: 33.333%;
+}
+.finder.expanded .col:first-child:nth-last-child(6), .finder.expanded .col:first-child:nth-last-child(6) ~ .col {
+  width: 14.286%;
+}
+.finder.expanded .col:first-child:nth-last-child(6).focus, .finder.expanded .col:first-child:nth-last-child(6) ~ .col.focus {
+  width: 28.571%;
+}
+.finder.expanded .col:first-child:nth-last-child(7), .finder.expanded .col:first-child:nth-last-child(7) ~ .col {
+  width: 12.5%;
+}
+.finder.expanded .col:first-child:nth-last-child(7).focus, .finder.expanded .col:first-child:nth-last-child(7) ~ .col.focus {
+  width: 25%;
+}
+.finder.expanded .col:first-child:nth-last-child(8), .finder.expanded .col:first-child:nth-last-child(8) ~ .col {
+  width: 11.111%;
+}
+.finder.expanded .col:first-child:nth-last-child(8).focus, .finder.expanded .col:first-child:nth-last-child(8) ~ .col.focus {
+  width: 22.222%;
+}
+.finder.expanded .col:first-child:nth-last-child(9), .finder.expanded .col:first-child:nth-last-child(9) ~ .col {
+  width: 10%;
+}
+.finder.expanded .col:first-child:nth-last-child(9).focus, .finder.expanded .col:first-child:nth-last-child(9) ~ .col.focus {
+  width: 20%;
+}
 .finder.expanded .listordering {
   position: absolute;
   left: 0;
@@ -1811,14 +1862,23 @@ thead .controls {
   overflow-y: hidden;
   overflow-x: scroll;
 }
+.finder.expanded .carousel[data-cols="4"] {
+  width: 125%;
+}
 .finder.expanded .carousel[data-cols="5"] {
   width: 150%;
 }
-.finder.expanded .carousel[data-cols="5"] .col {
-  width: 16.667%;
+.finder.expanded .carousel[data-cols="6"] {
+  width: 175%;
 }
-.finder.expanded .carousel[data-cols="5"] .col.focus {
-  width: 33.333%;
+.finder.expanded .carousel[data-cols="7"] {
+  width: 200%;
+}
+.finder.expanded .carousel[data-cols="8"] {
+  width: 225%;
+}
+.finder.expanded .carousel[data-cols="9"] {
+  width: 250%;
 }
 .finder.expanded .completion, .finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
   display: none;
