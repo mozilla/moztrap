@@ -13,6 +13,8 @@ NO_CHECK = object() # sentinel value
 
 
 
+@patch("tcmui.core.cache.zlib.compress", lambda x: "zlib:%s" % x)
+@patch("tcmui.core.cache.zlib.decompress", lambda x: x[5:])
 @patch("tcmui.core.cache.cache", spec=["get", "set", "incr", "add"])
 class CachingHttpWrapperTest(TestCase):
     def make_request(self, **kwargs):
@@ -43,6 +45,8 @@ class CachingHttpWrapperTest(TestCase):
         found = False
         for args, kwargs in cache.set.call_args_list:
             c_key, (c_perms, c_data), c_timeout = args
+            # undo the fake "compression"
+            c_data = (c_data[0], c_data[1][5:])
             if (c_key == key and
                 (data is NO_CHECK or c_data == data) and
                 (perms is NO_CHECK or c_perms == perms) and
@@ -126,7 +130,8 @@ class CachingHttpWrapperTest(TestCase):
     def test_returns_cached_for_get(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set([frozenset()]), ("res", "cached"))})
+            {"BucketName-0-/uri/": (
+                    set([frozenset()]), ("res", "zlib:cached"))})
 
         ret = self.make_request(method="GET", uri="/uri/")
 
@@ -145,7 +150,8 @@ class CachingHttpWrapperTest(TestCase):
     def test_cache_get_uses_generational_key(self, cache):
         fill_cache(cache, {
                 "BucketName:generation": 4,
-                "BucketName-4-/uri/": (set([frozenset()]), ("res", "result"))
+                "BucketName-4-/uri/": (
+                    set([frozenset()]), ("res", "zlib:result"))
                 })
 
         ret = self.make_request(method="GET", uri="/uri/")
@@ -167,7 +173,8 @@ class CachingHttpWrapperTest(TestCase):
     def test_multiple_buckets_both_checked(self, cache):
         fill_cache(
             cache,
-            {"BucketName-0-/uri/": (set([frozenset()]), ("res", "cached"))})
+            {"BucketName-0-/uri/": (
+                    set([frozenset()]), ("res", "zlib:cached"))})
 
         ret = self.make_request(method="GET", uri="/uri/",
                                 cache_buckets=["BucketName:1", "BucketName"])
@@ -211,7 +218,7 @@ class CachingHttpWrapperTest(TestCase):
         fill_cache(
             cache,
             {"BucketName-0-/uri/":
-                 (set([frozenset(["ONE PERM"])]), ("response", "cached"))})
+                 (set([frozenset(["ONE PERM"])]), ("response", "zlib:cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -223,7 +230,7 @@ class CachingHttpWrapperTest(TestCase):
         fill_cache(
             cache,
             {"BucketName-0-/uri/":
-                 (set([frozenset(["ONE PERM"])]), ("response", "cached"))})
+                 (set([frozenset(["ONE PERM"])]), ("response", "zlib:cached"))})
 
         ret = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -238,7 +245,7 @@ class CachingHttpWrapperTest(TestCase):
             cache,
             {"BucketName-0-/uri/":
                  (set([frozenset(["ONE_PERM", "TWO_PERM"])]),
-                  ("response", "cached"))})
+                  ("response", "zlib:cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -251,7 +258,7 @@ class CachingHttpWrapperTest(TestCase):
             cache,
             {"BucketName-0-/uri/":
                  (set([frozenset(["ONE_PERM", "TWO_PERM"])]),
-                  ("response", "cached"))})
+                  ("response", "zlib:cached"))})
 
         ret = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -266,7 +273,7 @@ class CachingHttpWrapperTest(TestCase):
             cache,
             {"BucketName-0-/uri/":
                  (set([frozenset(["ONE_PERM"]), frozenset(["TWO_PERM"])]),
-                  ("response", "cached"))})
+                  ("response", "zlib:cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["TWO_PERM"])
@@ -279,7 +286,7 @@ class CachingHttpWrapperTest(TestCase):
         fill_cache(
             cache,
             {"BucketName-0-/uri/":
-                 (set([frozenset(["TWO_PERM"])]), ("response", "cached"))})
+                 (set([frozenset(["TWO_PERM"])]), ("response", "zlib:cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])
@@ -293,7 +300,7 @@ class CachingHttpWrapperTest(TestCase):
             cache,
             {"BucketName-0-/uri/":
                  (set([frozenset(["TWO_PERM", "ONE_PERM"])]),
-                  ("response", "cached"))})
+                  ("response", "zlib:cached"))})
 
         res, content = self.make_request(
             method="GET", uri="/uri/", permissions=["ONE_PERM", "TWO_PERM"])

@@ -1,4 +1,5 @@
 import httplib
+import zlib
 
 from django.core.cache import cache
 
@@ -99,7 +100,8 @@ class CachingHttpWrapper(object):
             for cache_key in cache_keys:
                 cached = cache.get(cache_key)
                 if cached is not None:
-                    permsets, (response, content) = cached
+                    permsets, (response, compressed_content) = cached
+                    content = zlib.decompress(compressed_content)
                     for permset in permsets:
                         # if our permissions are a superset of any of the
                         # permissions this was cached with, we can see the
@@ -119,10 +121,11 @@ class CachingHttpWrapper(object):
 
         # only cache 200 OK responses to GET queries
         if method == "GET" and response.status == httplib.OK:
+            compressed_content = zlib.compress(content)
             for cache_key in cache_keys:
                 cache.set(
                     cache_key,
-                    (all_permsets, (response, content)),
+                    (all_permsets, (response, compressed_content)),
                     conf.TCM_CACHE_SECONDS)
 
         return (response, content)
