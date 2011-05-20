@@ -51,8 +51,6 @@ var TCM = TCM || {};
             section5class: 'results',
             section5item: 'input[name="result"]'
         });
-
-        // @@@ added the following for wireframing the results pages. eam.
         $('.subnav .findertoggle').click(function() {
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
             return false;
