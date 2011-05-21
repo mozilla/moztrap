@@ -954,6 +954,22 @@ class ListObjectTest(TestResourceTestCase):
             Url("http://fake.base/rest/testresources?submitAs=testval&_type=json"))
 
 
+    def test_filter_multiple(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "testval"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as=["testone", "testval"])
+
+        self.assertEqual(len(c), 1)
+        self.assertEqual(c[0].submit_as, "testval")
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=testone&submitAs=testval&_type=json"))
+
+
 
     def test_filter_invalid_field(self, http):
         http.request.return_value = response(
