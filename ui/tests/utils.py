@@ -224,8 +224,8 @@ class Url(object):
             parts.params,
             parts.fragment)
         # convert values from lists to tuples for hashability later
-        self.qs = dict((k, tuple(v)) for k, v
-                       in urlparse.parse_qs(parts.query).iteritems())
+        self.qs = tuple(sorted((k, tuple(v)) for k, v
+                               in urlparse.parse_qs(parts.query).iteritems()))
 
 
     def __eq__(self, other):
@@ -233,4 +233,4 @@ class Url(object):
 
 
     def __hash__(self):
-        return hash((self.non_qs, tuple(sorted(self.qs.iteritems()))))
+        return hash((self.non_qs, self.qs))
