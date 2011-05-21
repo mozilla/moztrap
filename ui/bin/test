@@ -22,14 +22,13 @@ def main(basedir, cover_all=False):
     ut = unittest_main(module=None, exit=False)
     cov.stop()
 
-    report_kw = {
-        "directory": "coverage",
-        "include": ["tests/responses.py", "tests/utils.py"]}
+    include = ["tests/responses.py", "tests/utils.py"]
+    report_kw = {"directory": "coverage"}
     if cover_all:
         # include all python modules under tcmui in report, including even those
         # the tests don't cause to be imported at all yet, so as to get a more
         # accurate overall coverage figure.
-        py_files = []
+        py_files = include
         for dirpath, dirs, filenames in os.walk(os.path.join(basedir, "tcmui")):
             py_files.extend([os.path.join(dirpath, fn)
                              for fn in filenames if fn.endswith(".py")])
@@ -41,7 +40,7 @@ def main(basedir, cover_all=False):
             "tcmui/settings_local.sample.py"
             ]
     else:
-        report_kw["include"].append("tcmui/*")
+        report_kw["include"] = include + ["tcmui/*"]
     cov.html_report(**report_kw)
 
     teardown_test_environment()
