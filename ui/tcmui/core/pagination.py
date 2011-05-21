@@ -33,7 +33,20 @@ def pagenumber_url(url, pagenumber):
 
 
 class Pager(object):
+    """
+    Given a total number of objects and a current page size and page number,
+    can calculate various bits of data handy for displaying pagination
+    controls.
+
+    """
     def __init__(self, total, pagesize, pagenumber):
+        """
+        The ``total`` argument can either be an integer, or a callable that
+        when called returns an integer (this is to allow for lazy total
+        calculation in cases when the Pager is constructed before the list of
+        results is fully ready.)
+
+        """
         self._total = total
         self._cached_total = None
         self.pagesize = pagesize
@@ -41,15 +54,30 @@ class Pager(object):
 
 
     def sizes(self):
+        """
+        Returns an ordered list of pagesize links to display. Includes all
+        default page sizes, plus the current page size.
+
+        """
         return sorted(set(PAGESIZES + [self.pagesize]))
 
 
     def pages(self):
+        """
+        Returns an iterable of valid page numbers.
+
+        """
         return xrange(1, self.num_pages + 1)
 
 
     @property
     def total(self):
+        """
+        The total number of objects. Handles calling the callable that may have
+        been passed in initially, and caching that result so the callable is
+        only called once.
+
+        """
         if self._cached_total is None:
             if callable(self._total):
                 self._cached_total = self._total()
@@ -60,25 +88,44 @@ class Pager(object):
 
     @property
     def num_pages(self):
-        return int(math.ceil(float(self.total) / self.pagesize))
+        """
+        Returns the total number of pages.
+
+        """
+        return max(1, int(math.ceil(float(self.total) / self.pagesize)))
 
 
     @property
     def low(self):
-        return self.constrain((self.pagesize * (self.pagenumber - 1)) + 1)
+        """
+        Returns the ordinal of the first object to be displayed on the current
+        page.
+
+        """
+        return self._constrain((self.pagesize * (self.pagenumber - 1)) + 1)
 
 
     @property
     def high(self):
-        return self.constrain(self.pagesize * self.pagenumber)
+        """
+        Returns the ordinal of the last object to be displayed on the current
+        page.
+
+        """
+        return self._constrain(self.pagesize * self.pagenumber)
 
 
-    def constrain(self, num):
+    def _constrain(self, num):
         return min(self.total, max(0, num))
 
 
     @property
     def prev(self):
+        """
+        The page number of the previous page, or None if there is no previous
+        page.
+
+        """
         prev = self.pagenumber - 1
         if prev < 1:
             return None
@@ -87,6 +134,10 @@ class Pager(object):
 
     @property
     def next(self):
+        """
+        The page number of the next page, or None if there is no next page.
+
+        """
         next = self.pagenumber + 1
         if next > self.num_pages:
             return None
