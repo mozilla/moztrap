@@ -3,7 +3,8 @@ from mock import patch
 from ..core.builders import cvis
 from ..responses import make_identity, response, make_boolean, make_locator
 from ..utils import (
-    BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache)
+    BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache,
+    Url)
 from .builders import testcycles, testruns, testrunitcs, testresults
 
 
@@ -129,8 +130,8 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testcycles/1/approveallresults?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testcycles/1/approveallresults?_type=json"))
         self.assertEqual(req["method"], "PUT")
 
 
@@ -150,7 +151,8 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertIsInstance(new, self.resource_class)
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/testcycles/1/clone?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testcycles/1/clone?_type=json"))
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=False")
 
@@ -171,7 +173,8 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertIsInstance(new, self.resource_class)
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/testcycles/1/clone?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testcycles/1/clone?_type=json"))
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=True")
 
@@ -222,8 +225,8 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testruns/1/approveallresults?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testruns/1/approveallresults?_type=json"))
         self.assertEqual(req["method"], "PUT")
 
 
@@ -243,7 +246,8 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertIsInstance(new, self.resource_class)
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/testruns/1/clone?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testruns/1/clone?_type=json"))
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=False")
 
@@ -264,7 +268,8 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertIsInstance(new, self.resource_class)
         req = http.request.call_args[1]
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/testruns/1/clone?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testruns/1/clone?_type=json"))
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=True")
 

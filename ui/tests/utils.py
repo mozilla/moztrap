@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from functools import partial
+import urlparse
 
 from django.core.cache import get_cache
 from django.test.signals import template_rendered
@@ -30,10 +31,11 @@ def setup_responses(http, response_dict):
     return value of the httplib2.Http.request method).
 
     """
+    url_dict = dict((Url(k), v) for k, v in response_dict.iteritems())
     def request(*args, **kwargs):
-        uri = kwargs["uri"]
+        uri = Url(kwargs["uri"])
         try:
-            return response_dict[uri]
+            return url_dict[uri]
         except KeyError:
             return response(
                 {"errors": [
@@ -202,3 +204,33 @@ class BaseResourceTest(object):
 
     """
     pass
+
+
+
+class Url(object):
+    """
+    A wrapper class for comparing urls with querystrings while avoiding
+    dict-ordering dependencies. Order of keys in querystring should not matter,
+    although order of multiple values for a single key does matter.
+
+    """
+    def __init__(self, url):
+        self.url = url
+        parts = urlparse.urlparse(url)
+        self.non_qs = (
+            parts.scheme,
+            parts.netloc,
+            parts.path,
+            parts.params,
+            parts.fragment)
+        # convert values from lists to tuples for hashability later
+        self.qs = dict((k, tuple(v)) for k, v
+                       in urlparse.parse_qs(parts.query).iteritems())
+
+
+    def __eq__(self, other):
+        return (self.non_qs == other.non_qs) and (self.qs == other.qs)
+
+
+    def __hash__(self):
+        return hash((self.non_qs, tuple(sorted(self.qs.iteritems()))))

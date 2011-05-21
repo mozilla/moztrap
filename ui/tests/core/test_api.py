@@ -6,7 +6,7 @@ from unittest2 import TestCase
 
 from ..builder import ListBuilder
 from ..responses import response, make_identity, make_boolean, FakeResponse
-from ..utils import ResourceTestCase
+from ..utils import ResourceTestCase, Url
 
 
 
@@ -116,8 +116,8 @@ class ResourceObjectTest(TestResourceTestCase):
         c.deliver()
 
         self.assertEqual(
-            http.request.call_args[1]["uri"],
-            "http://fake.base/rest/testresources/1?_type=json")
+            Url(http.request.call_args[1]["uri"]),
+            Url("http://fake.base/rest/testresources/1?_type=json"))
 
 
     def test_user_agent(self, http):
@@ -151,7 +151,9 @@ class ResourceObjectTest(TestResourceTestCase):
         c = self.resource_class.get("testresources/3", auth=self.auth)
         c.deliver()
 
-        self.assertEqual(c._location, "http://fake.base/rest/testresources/3/")
+        self.assertEqual(
+            Url(c._location),
+            Url("http://fake.base/rest/testresources/3/"))
 
 
     def test_create(self, http):
@@ -238,8 +240,8 @@ class ResourceObjectTest(TestResourceTestCase):
         c.deliver()
 
         self.assertEqual(
-            http.request.call_args[1]["uri"],
-            "http://some.other.url/testresources/1?_type=json")
+            Url(http.request.call_args[1]["uri"]),
+            Url("http://some.other.url/testresources/1?_type=json"))
 
 
     def test_unauthorized(self, http):
@@ -444,8 +446,8 @@ class ResourceObjectTest(TestResourceTestCase):
         request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["method"], "PUT")
         self.assertEqual(
-            request_kwargs["uri"],
-            u"http://fake.base/rest/testresources/1?_type=json")
+            Url(request_kwargs["uri"]),
+            Url("http://fake.base/rest/testresources/1?_type=json"))
         self.assertEqual(
             request_kwargs["body"], "name=New+name&originalVersionId=0")
         self.assertEqual(
@@ -481,8 +483,8 @@ class ResourceObjectTest(TestResourceTestCase):
         request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs.get("method", "GET"), "GET")
         self.assertEqual(
-            request_kwargs["uri"],
-            u"http://fake.base/rest/testresources/1?_type=json")
+            Url(request_kwargs["uri"]),
+            Url("http://fake.base/rest/testresources/1?_type=json"))
         self.assertEqual(request_kwargs["headers"]["cookie"], self.auth.cookie)
 
 
@@ -506,8 +508,8 @@ class ResourceObjectTest(TestResourceTestCase):
         request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["method"], "DELETE")
         self.assertEqual(
-            request_kwargs["uri"],
-            u"http://fake.base/rest/testresources/1?_type=json")
+            Url(request_kwargs["uri"]),
+            Url("http://fake.base/rest/testresources/1?_type=json"))
         self.assertEqual(
             request_kwargs["body"], "originalVersionId=0")
         self.assertEqual(
@@ -527,8 +529,8 @@ class ResourceObjectTest(TestResourceTestCase):
         req = http.request.call_args[1]
         self.assertEqual(req["method"], "PUT")
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources/1/something?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources/1/something?_type=json"))
 
 
     def test_request_no_location(self, http):
@@ -693,8 +695,8 @@ class ListObjectTest(TestResourceTestCase):
 
         self.assertEqual(c[0].name, "Test TestResource")
         self.assertEqual(
-            http.request.call_args[1]["uri"],
-            "http://fake.base/rest/alt-testresources/?_type=json")
+            Url(http.request.call_args[1]["uri"]),
+            Url("http://fake.base/rest/alt-testresources/?_type=json"))
 
 
     def test_get_by_id(self, http):
@@ -705,8 +707,8 @@ class ListObjectTest(TestResourceTestCase):
 
         self.assertEqual(c.name, "Test TestResource")
         self.assertEqual(
-            http.request.call_args[1]["uri"],
-            "http://fake.base/rest/testresources/1?_type=json")
+            Url(http.request.call_args[1]["uri"]),
+            Url("http://fake.base/rest/testresources/1?_type=json"))
 
 
     def test_get_no_default_url(self, http):
@@ -763,8 +765,8 @@ class ListObjectTest(TestResourceTestCase):
         request_kwargs = http.request.call_args[1]
         self.assertEqual(request_kwargs["body"], "name=The+Thing")
         self.assertEqual(
-            request_kwargs["uri"],
-            "http://fake.base/rest/testresources?_type=json")
+            Url(request_kwargs["uri"]),
+            Url("http://fake.base/rest/testresources?_type=json"))
         self.assertEqual(request_kwargs["method"], "POST")
         headers = request_kwargs["headers"]
         self.assertEqual(headers["accept"], "application/json")
@@ -868,8 +870,8 @@ class ListObjectTest(TestResourceTestCase):
 
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=10")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=10"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
@@ -883,8 +885,8 @@ class ListObjectTest(TestResourceTestCase):
 
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?_type=json&pagenumber=1&pagesize=5")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?_type=json&pagenumber=1&pagesize=5"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
@@ -898,8 +900,8 @@ class ListObjectTest(TestResourceTestCase):
 
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=5")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=5"))
 
 
     def test_sort_no_field(self, http):
@@ -919,8 +921,8 @@ class ListObjectTest(TestResourceTestCase):
 
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?sortfield=name&sortdirection=asc&_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?sortfield=name&sortdirection=asc&_type=json"))
 
 
     def test_sort_direction(self, http):
@@ -932,8 +934,8 @@ class ListObjectTest(TestResourceTestCase):
 
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?sortfield=name&sortdirection=desc&_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?sortfield=name&sortdirection=desc&_type=json"))
 
 
     def test_filter(self, http):
@@ -948,8 +950,8 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(c[0].submit_as, "testval")
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?submitAs=testval&_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=testval&_type=json"))
 
 
 
@@ -963,8 +965,8 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(len(c), 1)
         req = http.request.call_args[-1]
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/testresources?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?_type=json"))
 
 
 
@@ -1008,8 +1010,8 @@ class ActivatableResourceTest(ResourceTestCase):
         req = http.request.call_args[1]
         self.assertEqual(req["method"], "PUT")
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/activatableresources/1/activate?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/activatableresources/1/activate?_type=json"))
 
 
 
@@ -1028,5 +1030,5 @@ class ActivatableResourceTest(ResourceTestCase):
         req = http.request.call_args[1]
         self.assertEqual(req["method"], "PUT")
         self.assertEqual(
-            req["uri"],
-            "http://fake.base/rest/activatableresources/1/deactivate?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/activatableresources/1/deactivate?_type=json"))

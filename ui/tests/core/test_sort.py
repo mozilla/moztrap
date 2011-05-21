@@ -1,6 +1,8 @@
 from mock import Mock
 from unittest2 import TestCase
 
+from ..utils import Url
+
 
 
 class TestFromRequest(TestCase):
@@ -35,30 +37,30 @@ class TestUrl(TestCase):
 
     def test_basic(self):
         self.assertEqual(
-            self.func("http://fake.base/some/", "name", "asc"),
-            "http://fake.base/some/?sortfield=name&sortdirection=asc")
+            Url(self.func("http://fake.base/some/", "name", "asc")),
+            Url("http://fake.base/some/?sortfield=name&sortdirection=asc"))
 
 
     def test_override(self):
         self.assertEqual(
-            self.func(
+            Url(self.func(
                 "http://fake.base/some/?sortfield=status&sortdirection=desc",
-                "name", "asc"),
-            "http://fake.base/some/?sortfield=name&sortdirection=asc")
+                "name", "asc")),
+            Url("http://fake.base/some/?sortfield=name&sortdirection=asc"))
 
 
     def test_other(self):
         self.assertEqual(
-            self.func("http://fake.base/some/?blah=foo", "name", "asc"),
-            "http://fake.base/some/?blah=foo&sortdirection=asc&sortfield=name")
+            Url(self.func("http://fake.base/some/?blah=foo", "name", "asc")),
+            Url("http://fake.base/some/?blah=foo&sortdirection=asc&sortfield=name"))
 
 
     def test_override_with_other(self):
         self.assertEqual(
-            self.func(
+            Url(self.func(
                 "http://fake.base/?b=f&sortfield=status&sortdirection=desc",
-                "name", "asc"),
-            "http://fake.base/?sortfield=name&sortdirection=asc&b=f")
+                "name", "asc")),
+            Url("http://fake.base/?sortfield=name&sortdirection=asc&b=f"))
 
 
 

@@ -1,6 +1,7 @@
 from mock import Mock
 from unittest2 import TestCase
 
+from ..utils import Url
 
 
 class TestFromRequest(TestCase):
@@ -42,14 +43,14 @@ class TestPagesizeUrl(TestCase):
 
     def test_simple(self):
         self.assertEqual(
-            self.func("http://fake.base/", 10),
-            "http://fake.base/?pagenumber=1&pagesize=10")
+            Url(self.func("http://fake.base/", 10)),
+            Url("http://fake.base/?pagenumber=1&pagesize=10"))
 
 
     def test_override(self):
         self.assertEqual(
-            self.func("http://fake.base/?pagesize=40&pagenumber=3", 10),
-            "http://fake.base/?pagenumber=1&pagesize=10")
+            Url(self.func("http://fake.base/?pagesize=40&pagenumber=3", 10)),
+            Url("http://fake.base/?pagenumber=1&pagesize=10"))
 
 
 
@@ -62,14 +63,14 @@ class TestPagenumberUrl(TestCase):
 
     def test_simple(self):
         self.assertEqual(
-            self.func("http://fake.base/", 3),
-            "http://fake.base/?pagenumber=3")
+            Url(self.func("http://fake.base/", 3)),
+            Url("http://fake.base/?pagenumber=3"))
 
 
     def test_override(self):
         self.assertEqual(
-            self.func("http://fake.base/?pagesize=40&pagenumber=3", 5),
-            "http://fake.base/?pagenumber=5&pagesize=40")
+            Url(self.func("http://fake.base/?pagesize=40&pagenumber=3", 5)),
+            Url("http://fake.base/?pagenumber=5&pagesize=40"))
 
 
 

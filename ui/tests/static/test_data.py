@@ -1,7 +1,7 @@
 from mock import patch
 
 from ..responses import response
-from ..utils import ResourceTestCase
+from ..utils import ResourceTestCase, Url
 from .builders import codevalues
 
 
@@ -64,8 +64,8 @@ class StaticDataTest(ResourceTestCase):
         self.func("STATUS", 1)
 
         self.assertEqual(
-            http.request.call_args[1]["uri"],
-            "http://fake.base/staticData/values/STATUS?_type=json")
+            Url(http.request.call_args[1]["uri"]),
+            Url("http://fake.base/staticData/values/STATUS?_type=json"))
 
 
     def test_get_uncached_sets_cache(self, http, cache):

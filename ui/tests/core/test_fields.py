@@ -5,7 +5,7 @@ from unittest2 import TestCase
 
 from ..responses import (
     response, make_one, make_identity, make_boolean, make_array)
-from ..utils import AuthTestCase, fill_cache
+from ..utils import AuthTestCase, fill_cache, Url
 
 
 
@@ -681,7 +681,8 @@ class LinkFunctionalTest(AuthTestCase):
         self.assertEqual(req["method"], "PUT")
         self.assertEqual(req["body"], "theTargetIds=1&theTargetIds=2")
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/some/url/targets?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/some/url/targets?_type=json"))
 
 
     def test_descriptor_set_with_list(self, http):
@@ -701,4 +702,5 @@ class LinkFunctionalTest(AuthTestCase):
         self.assertEqual(req["method"], "PUT")
         self.assertEqual(req["body"], "theTargetIds=1&theTargetIds=2")
         self.assertEqual(
-            req["uri"], "http://fake.base/rest/some/url/targets?_type=json")
+            Url(req["uri"]),
+            Url("http://fake.base/rest/some/url/targets?_type=json"))
