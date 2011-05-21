@@ -41,3 +41,9 @@ class TestUrl(TestCase):
         self.assertNotEqual(
             self.url("http://fake.base/path/?foo=bar&foo=yo"),
             self.url("http://fake.base/path/?foo=yo&foo=bar"))
+
+
+    def test_repr(self):
+        self.assertEqual(
+            repr(self.url("http://fake.base/path/?foo=bar")),
+            "Url(http://fake.base/path/?foo=bar)")

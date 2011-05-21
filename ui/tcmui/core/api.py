@@ -12,6 +12,7 @@ import simplejson as json
 import urllib
 
 from django.utils.encoding import StrAndUnicode
+from flufl.enum._enum import EnumValue
 import remoteobjects
 from remoteobjects.dataobject import classes_by_name
 
@@ -680,6 +681,19 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
                 filters[k] = pagination.positive_integer(
                     v, 1)
             elif k in valid_fieldnames:
+                if isinstance(v, EnumValue):
+                    v = int(v)
+                elif not isinstance(v, basestring):
+                    newv = []
+                    try:
+                        for x in v:
+                            if isinstance(x, EnumValue):
+                                newv.append(int(x))
+                            else:
+                                newv.append(x)
+                        v = newv
+                    except TypeError:
+                        pass
                 filters[self.filterable_fields()[k].api_filter_name] = v
 
         newurl = util.update_querystring(self._location, **filters)

@@ -7,7 +7,7 @@ from ..responses import response, make_locator
 from ..testcases.builders import testsuites, testcases, testcaseversions
 from ..testexecution.builders import (
     testcycles, testruns, testrunitcs, testresults, assignments)
-from ..utils import ViewTestCase, COMMON_RESPONSES
+from ..utils import ViewTestCase, COMMON_RESPONSES, Url
 from ..users.builders import users
 
 
@@ -47,10 +47,14 @@ class ListViewTests(object):
         return [{"name": "Thing 1"}, {"name": "Thing 2"}]
 
 
+    def extra_querystring(self):
+        return ""
+
+
     def test_results_list_view(self, http):
         item_data = self.list_item_data()
         responses = {
-            "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1" % self.list_class.default_url:
+            "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1%s" % (self.list_class.default_url, self.extra_querystring()):
                 response(self.builder.searchresult(*item_data)),
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one(name="A Product")),
@@ -74,11 +78,11 @@ class ListViewTests(object):
 
         # all the expected API URLs were hit
         self.assertEqual(
-            set(responses.keys()),
-            set(args[1]["uri"]
+            set([Url(k) for k in responses.iterkeys()]),
+            set(Url(args[1]["uri"])
                 for args in http.request.call_args_list).difference(
                 # not concerned about common responses
-                set(COMMON_RESPONSES.keys())))
+                set([Url(k) for k in COMMON_RESPONSES.iterkeys()])))
 
 
 
@@ -87,6 +91,11 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
     builder = testcycles
 
     ctx_var = "cycles"
+
+
+    def extra_querystring(self):
+        # ACTIVE, LOCKED, and CLOSED status (not DRAFT or DISCARDED)
+        return "&testCycleStatusId=2&testCycleStatusId=3&testCycleStatusId=4"
 
 
     def per_item_responses(self, item_id):
@@ -116,6 +125,11 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
     builder = testruns
 
     ctx_var = "runs"
+
+
+    def extra_querystring(self):
+        # ACTIVE, LOCKED, and CLOSED status (not DRAFT or DISCARDED)
+        return "&testRunStatusId=2&testRunStatusId=3&testRunStatusId=4"
 
 
     def extra_responses(self):

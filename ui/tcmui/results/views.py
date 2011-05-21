@@ -4,6 +4,7 @@ from django.template.response import TemplateResponse
 from ..testexecution.models import (
     TestCycleList, TestRunList, TestRunIncludedTestCaseList)
 from ..core import decorators as dec
+from ..static.status import TestCycleStatus, TestRunStatus
 from ..users.decorators import login_redirect
 
 
@@ -18,7 +19,10 @@ def home(request):
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):
-    cycles = TestCycleList.ours(auth=request.auth)
+    cycles = TestCycleList.ours(auth=request.auth).filter(status=[
+            TestCycleStatus.ACTIVE,
+            TestCycleStatus.LOCKED,
+            TestCycleStatus.CLOSED])
     return TemplateResponse(
         request, "results/testcycle/cycles.html", {"cycles": cycles})
 
@@ -29,7 +33,10 @@ def testcycles(request):
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
-    runs = TestRunList.ours(auth=request.auth)
+    runs = TestRunList.ours(auth=request.auth).filter(status=[
+            TestRunStatus.ACTIVE,
+            TestRunStatus.LOCKED,
+            TestRunStatus.CLOSED])
     return TemplateResponse(
         request, "results/testrun/runs.html", {"runs": runs})
 

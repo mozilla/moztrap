@@ -234,3 +234,7 @@ class Url(object):
 
     def __hash__(self):
         return hash((self.non_qs, self.qs))
+
+
+    def __repr__(self):
+        return "Url(%s)" % self.url

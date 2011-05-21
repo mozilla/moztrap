@@ -1,6 +1,7 @@
 import json
 import httplib
 
+from flufl.enum import Enum
 from mock import patch
 from unittest2 import TestCase
 
@@ -961,13 +962,67 @@ class ListObjectTest(TestResourceTestCase):
 
         c = self.resource_list_class.get(auth=self.auth).filter(
             submit_as=["testone", "testval"])
+        c.deliver()
 
-        self.assertEqual(len(c), 1)
-        self.assertEqual(c[0].submit_as, "testval")
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
             Url("http://fake.base/rest/testresources?submitAs=testone&submitAs=testval&_type=json"))
+
+
+
+    def test_filter_int(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "1"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as=1)
+        c.deliver()
+
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
+
+
+
+    def test_filter_enum(self, http):
+        class MyEnum(Enum):
+            FOO = 1
+
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "1"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as=MyEnum.FOO)
+        c.deliver()
+
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
+
+
+
+    def test_filter_multiple_enum(self, http):
+        class MyEnum(Enum):
+            FOO = 1
+            BAR = 2
+
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "1"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as=[MyEnum.FOO, MyEnum.BAR])
+        c.deliver()
+
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=1&submitAs=2&_type=json"))
 
 
 
