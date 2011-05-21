@@ -1,4 +1,4 @@
-from .util import add_to_querystring
+from .util import update_querystring
 
 
 
@@ -19,7 +19,7 @@ def from_request(request):
 
 
 def url(url, field, direction):
-    return add_to_querystring(url, sortfield=field, sortdirection=direction)
+    return update_querystring(url, sortfield=field, sortdirection=direction)
 
 
 

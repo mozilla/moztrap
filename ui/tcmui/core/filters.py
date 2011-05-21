@@ -1,6 +1,6 @@
 from collections import defaultdict, namedtuple
 
-from .util import add_to_querystring
+from .util import update_querystring
 
 
 
@@ -18,7 +18,7 @@ def filter(list_obj, request):
 
 
 def filter_url(url, field, value=None):
-    return add_to_querystring(url, **{field: value, "pagenumber": 1})
+    return update_querystring(url, **{field: value, "pagenumber": 1})
 
 
 

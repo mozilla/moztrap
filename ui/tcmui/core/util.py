@@ -1,21 +1,48 @@
+import collections
 import urllib
 import urlparse
 
-def add_to_querystring(url, **kwargs):
-    """
-    Add keys/values in ``kwargs`` to the querystring of ``url``.
 
-    Based on code from remoteobjects' PromiseObject.filter method.
+
+def update_querystring(url, **kwargs):
+    """
+    Updates the querystring of ``url`` with keys/values in ``kwargs``,
+    replacing any existing values for those querystring keys, and removing any
+    keys set to None in ``kwargs``. Any values that are lists will be converted
+    to multiple querystring keys.
 
     """
     parts = list(urlparse.urlparse(url))
     queryargs = urlparse.parse_qs(parts[4], keep_blank_values=False)
-    queryargs = dict((k, v[0]) for k, v in queryargs.iteritems())
-    queryargs.update(kwargs)
-    # Remove any args we set to None
-    queryargs = dict((k, v) for k, v in queryargs.iteritems()
-                     if v is not None)
-    parts[4] = urllib.urlencode(queryargs)
+    for k, v in kwargs.iteritems():
+        if v is None:
+            del queryargs[k]
+        else:
+            queryargs[k] = v
+    parts[4] = urllib.urlencode(queryargs, doseq=True)
+    return urlparse.urlunparse(parts)
+
+
+
+def add_to_querystring(url, **kwargs):
+    """
+    Add keys/values in ``kwargs`` to querystring of ``url``, without removing
+    any existing values. Any values that are lists will be converted to
+    multiple querystring keys.
+
+    """
+    parts = list(urlparse.urlparse(url))
+    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=False)
+    for k, v in kwargs.iteritems():
+        if k in queryargs:
+            if (isinstance(v, basestring) or
+                not isinstance(v, collections.Iterable)):
+                queryargs[k].append(v)
+            else:
+                queryargs[k].extend(v)
+        else:
+            queryargs[k] = v
+    parts[4] = urllib.urlencode(queryargs, doseq=True)
     return urlparse.urlunparse(parts)
 
 
@@ -35,7 +62,7 @@ def id_for_object(val):
 
     try:
         return int(val)
-    except ValueError:
+    except (ValueError, TypeError):
         pass
 
     raise ValueError("Values must be RemoteObject instances or integer ids, "

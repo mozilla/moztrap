@@ -86,7 +86,7 @@ class ObjectMixin(StrAndUnicode):
             request["uri"] = join(self.api_base_url, request["uri"])
 
         # Request a JSON response.
-        request["uri"] = util.add_to_querystring(request["uri"], _type="json")
+        request["uri"] = util.update_querystring(request["uri"], _type="json")
 
         # Add authorization headers.
         if auth is not None:
@@ -682,7 +682,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             elif k in valid_fieldnames:
                 filters[self.filterable_fields()[k].api_filter_name] = v
 
-        newurl = util.add_to_querystring(self._location, **filters)
+        newurl = util.update_querystring(self._location, **filters)
 
         return self.get(newurl, auth=auth)
 

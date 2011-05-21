@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.http import HttpResponseRedirect
 
-from ..core.util import add_to_querystring
+from ..core.util import update_querystring
 from .auth import UserCredentials
 
 
@@ -59,7 +59,7 @@ def resolve_url(to, *args, **kwargs):
 
 
 def redirect_to_login(from_url, redirect_field_name=None, login_url=None):
-    redirect_to = add_to_querystring(
+    redirect_to = update_querystring(
         resolve_url(login_url or settings.LOGIN_URL),
         **{redirect_field_name: from_url}
         )

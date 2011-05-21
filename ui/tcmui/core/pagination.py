@@ -1,6 +1,6 @@
 import math
 
-from .util import add_to_querystring
+from .util import update_querystring
 
 
 
@@ -23,12 +23,12 @@ def from_request(request):
 
 
 def pagesize_url(url, pagesize):
-    return add_to_querystring(url, pagesize=pagesize, pagenumber=1)
+    return update_querystring(url, pagesize=pagesize, pagenumber=1)
 
 
 
 def pagenumber_url(url, pagenumber):
-    return add_to_querystring(url, pagenumber=pagenumber)
+    return update_querystring(url, pagenumber=pagenumber)
 
 
 
