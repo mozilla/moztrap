@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
 from ..testexecution.models import (
-    TestCycleList, TestRunList, TestRunIncludedTestCaseList)
+    TestCycleList, TestRunList, TestRunIncludedTestCaseList, TestResultList)
 from ..core import decorators as dec
 from ..static.status import TestCycleStatus, TestRunStatus
 from ..users.decorators import login_redirect
@@ -52,3 +52,19 @@ def testcases(request):
         request,
         "results/testcase/cases.html",
         {"includedcases": includedcases})
+
+
+
+@login_redirect
+@dec.filter("results")
+@dec.paginate("results")
+@dec.sort("results")
+def testresults(request, itc_id):
+    itc = TestRunIncludedTestCaseList.get_by_id(itc_id, auth=request.auth)
+    results = TestResultList.ours(auth=request.auth).filter(
+        testCaseVersion=itc.testCaseVersion.id,
+        testRun=itc.testRun.id)
+    return TemplateResponse(
+        request,
+        "results/testcase/included_case_detail.html",
+        {"includedcase": itc, "results": results})

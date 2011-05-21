@@ -1,10 +1,11 @@
 from mock import patch
 
 from ..core.builders import cvis
-from ..environments.builders import environmentgroups
+from ..environments.builders import environmentgroups, environments
 from ..products.builders import products
-from ..responses import response, make_locator
-from ..testcases.builders import testsuites, testcases, testcaseversions
+from ..responses import response, make_locator, make_identity
+from ..testcases.builders import (
+    testsuites, testcases, testcaseversions, testcasesteps)
 from ..testexecution.builders import (
     testcycles, testruns, testrunitcs, testresults, assignments)
 from ..utils import ViewTestCase, COMMON_RESPONSES, Url
@@ -34,6 +35,10 @@ class ListViewTests(object):
 
     ctx_var = None
 
+    @property
+    def url(self):
+        return "/results/%s/" % self.builder.plural_name
+
 
     def extra_responses(self):
         return {}
@@ -62,13 +67,11 @@ class ListViewTests(object):
         responses.update(self.extra_responses())
         for i in range(len(item_data)):
             responses.update({
-                    "http://fake.base/rest/%s/%s/environmentgroups?_type=json" % (self.builder.plural_name, str(i + 1)):
-                        response(environmentgroups.array()),
                     })
             responses.update(self.per_item_responses(str(i + 1)))
         self.setup_responses(http, responses)
 
-        res = self.get("/results/%s/" % self.builder.plural_name)
+        res = self.get(self.url)
         res.render()
 
         self.assertEqual(res.status_code, 200)
@@ -103,7 +106,9 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
             "http://fake.base/rest/testcycles/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
             "http://fake.base/rest/testcycles/%s/team/members?_type=json" % item_id:
-                response(users.array())
+                response(users.array()),
+            "http://fake.base/rest/testcycles/%s/environmentgroups?_type=json" % item_id:
+                response(environmentgroups.array()),
             }
 
 
@@ -144,7 +149,9 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
             "http://fake.base/rest/testruns/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
             "http://fake.base/rest/testruns/%s/team/members?_type=json" % item_id:
-                response(users.array())
+                response(users.array()),
+            "http://fake.base/rest/testruns/%s/environmentgroups?_type=json" % item_id:
+                response(environmentgroups.array()),
             }
 
 
@@ -192,7 +199,9 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
     def per_item_responses(self, item_id):
         return {
             "http://fake.base/rest/includedtestcases/%s/assignments?_type=json" % item_id:
-                response(assignments.array({}))
+                response(assignments.array({})),
+            "http://fake.base/rest/includedtestcases/%s/environmentgroups?_type=json" % item_id:
+                response(environmentgroups.array()),
             }
 
 
@@ -214,3 +223,61 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
     def list_class(self):
         from tcmui.testexecution.models import TestRunIncludedTestCaseList
         return TestRunIncludedTestCaseList
+
+
+
+@patch("tcmui.core.api.userAgent")
+class TestResultsViewTest(ViewTestCase, ListViewTests):
+    builder = testresults
+
+    ctx_var = "results"
+
+    url = "/testcases/1/"
+
+
+    @property
+    def view(self):
+        from tcmui.results.views import testresults as view
+        return view
+
+
+    @property
+    def list_class(self):
+        from tcmui.testexecution.models import TestResultList
+        return TestResultList
+
+
+    def extra_querystring(self):
+        return "&testCaseVersionId=1&testRunId=1"
+
+
+    def extra_responses(self):
+        return {
+            "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
+                response(testrunitcs.one()),
+            "http://fake.base/rest/testcases/1?_type=json":
+                response(testcases.one()),
+            "http://fake.base/rest/testcases/versions/1?_type=json":
+                response(testcaseversions.one(
+                    resourceIdentity=make_identity(
+                        id=1, url="testcases/versions/1"))),
+            "http://fake.base/rest/testruns/1?_type=json":
+                response(testruns.one()),
+            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
+                response(testresults.searchresult({})),
+            "http://fake.base/rest/testcases/versions/1/steps?_type=json":
+                response(testcasesteps.array({})),
+            }
+
+
+    def per_item_responses(self, item_id):
+        return {
+            "http://fake.base/rest/testresults/%s/environments?_type=json" % item_id:
+                response(environments.array({})),
+            }
+
+    def get(self, uri, *args, **kwargs):
+        req = self.factory.get(uri, *args, **kwargs)
+        req.auth = self.auth
+        from tcmui.core.api import url_final_integer
+        return self.view(req, url_final_integer(uri))

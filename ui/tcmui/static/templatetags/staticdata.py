@@ -11,6 +11,13 @@ def status(status1, status2):
     return status1 is status2
 
 
+STATUS_CLASS_OVERRIDES = {
+    "invalidated": "invalid",
+    "failed": "fail",
+    "passed": "pass",
+    }
+
 @register.filter
 def status_class(status):
-    return status.status.enumname.lower()
+    ret = status.status.enumname.lower()
+    return STATUS_CLASS_OVERRIDES.get(ret, ret)

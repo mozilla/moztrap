@@ -85,6 +85,12 @@ COMMON_RESPONSES = {
             {"description": "BLOCKED", "id": 4},
             {"description": "STARTED", "id": 5},
             {"description": "INVALIDATED", "id": 6},
+            )),
+    "http://fake.base/staticData/values/APPROVALSTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "PENDING", "id": 1},
+            {"description": "APPROVED", "id": 2},
+            {"description": "REJECTED", "id": 3},
             ))
     }
 

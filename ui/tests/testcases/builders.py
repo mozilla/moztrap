@@ -63,3 +63,19 @@ testcaseversions = ListBuilder(
         "testCycleId": make_boolean(None),
         "testCycleLocator": make_boolean(None),
         })
+
+
+testcasesteps = ListBuilder(
+    "testcasestep",
+    "testcasesteps",
+    "Testcasestep",
+    {
+        "name": "Default Test Case Step",
+        "testCaseVersionId": 1,
+        "testCaseVersionLocator":
+            make_locator(id=1, url="testcases/versions/1"),
+        "stepNumber": 1,
+        "instruction": "default instruction",
+        "expectedResult": "default expected result",
+        "estimatedTimeInMin": 3,
+        })

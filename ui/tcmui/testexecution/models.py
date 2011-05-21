@@ -274,6 +274,8 @@ class TestCaseAssignmentList(ListObject):
 
 
 class TestResult(RemoteObject):
+    company = fields.Locator(Company)
+    product = fields.Locator(Product)
     actualResult = fields.Field()
     actualTimeInMin = fields.Field()
     approval = StaticData(

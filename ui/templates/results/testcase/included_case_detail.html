@@ -3,26 +3,22 @@
 
 {% block listcontent %}
 <section id="results">
-  <h2>Results for [Included Test Case Name]</h2>
+  <h2>Results for &ldquo;{{ includedcase.testCase.name }}&rdquo;</h2>
 
-  <div class="details case-details draft">
+  <div class="details case-details {{ includedcase.testCaseVersion.status|status_class }}">
     <div class="summary">
-      <p class="status">draft</p>
-      <p class="run"><b>run:</b> run name</p>
-      <p class="product"><b>product:</b> product name </p>
-      <ul class="results">
-        <li class="pass">120 <span>passed</span></li>
-        <li class="invalid">304 <span>invalid</span></li>
-        <li class="fail">140 <span>failed</span></li>
-        <li class="pending">605 <span>pending</span></li>
-      </ul>
+      <p class="status {{ includedcase.testCaseVersion.status|status_class }}">{{ includedcase.testCaseVersion.status|lower }}</p>
+      <p class="run"><b>run:</b> {{ includedcase.testRun.name }}</p>
+      <p class="product"><b>product:</b> {{ includedcase.product.name }}</p>
+      {% include "results/_results_summary.html" with results=includedcase.resultsummary %}
     </div>
     <div class="content">
-      <p class="id">#234</p>
+      <p class="id">#{{ includedcase.testCase.id }}</p>
       <ol class="steps">
-        <li>instructions for the first step.</li>
-        <li>instructions for the second step.</li>
-        <li>instructions for the third step.</li>
+        {% for step in includedcase.testCaseVersion.steps %}
+        {# @@@ this should use better markup #}
+        <li>{{ step.instruction }} - {{ step.expectedResult }}</li>
+        {% endfor %}
       </ol>
     </div>
   </div>
@@ -37,7 +33,7 @@
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="byresult">
-            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"result" }}">result</a>
+            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">result</a>
           </li>
           <li class="bytester">
             <a href="{{ request|sort_url:"tester" }}" class="{{ request|sort_status:"tester" }}">tester</a>
@@ -47,83 +43,42 @@
           </li>
         </ul>
       </nav>
-      <article id="result-id-01" class="details item passed">
+      {% for result in results %}
+      <article id="result-id-{{ result.id }}" class="details item {{ result.status|status_class }}">
         <header class="summary">
-          <p class="result pass">passed</p>
-          <h3 class="tester">tester name</h3>
-          <p class="approval">approved by soandso</p>
+          <p class="result {{ result.status|status_class }}">{{ result.status|lower }}</p>
+          <h3 class="tester">{{ result.tester.screenName }}</h3>
+          <p class="approval {{ result.approval|status_class }}">
+            {{ result.approval|lower }}
+            {% if result.approvedBy %}
+            by {{ result.approvedBy.screenName }}
+            {% endif %}
+          </p>
         </header>
         <div class="content">
           <section class="environment">
             <h4>environment</h4>
             <ul>
-              <li>Firefox 4</li>
-              <li>French</li>
-              <li>Linux</li>
+              {% for environment in result.environments %}
+              <li>{{ environment }}</li>
+              {% endfor %}
             </ul>
           </section>
+          {% if not result.status.PASSED %}
+          <section class="notes">
+            <h4>notes</h4>
+            {% if result.status.FAILED %}
+            <p class="failed-step">step {{ result.failedStepNumber }}</p>
+            {% endif %}
+            <blockquote class="comment">
+              {% if result.actualResult %}{{ result.actualResult }}{% endif %}
+              {% if result.comment %}{{ result.comment }}{% endif %}
+            </blockquote>
+          </section>
+          {% endif %}
         </div>
       </article>
-
-      <section class="details item multi">
-        <header class="summary">
-          <ul class="results">
-            <li class="invalid">1 <span>invalid</span></li>
-            <li class="fail">1 <span>failed</span></li>
-          </ul>
-          <h3 class="tester">tester name</h3>
-        </header>
-        <div class="instances">
-
-          <article id="result-id-02" class="details item failed">
-            <header class="summary">
-              <p class="result fail">failed</p>
-              <p class="approval">approved by soandso</p>
-            </header>
-            <div class="content">
-              <section class="environment">
-                <h4>environment</h4>
-                <ul>
-                  <li>Firefox 4</li>
-                  <li>French</li>
-                  <li>Linux</li>
-                </ul>
-              </section>
-              <section class="notes">
-                <h4>notes</h4>
-                {# @@@ if failed #}
-                <p class="failed-step">step 3</p>
-                {# @@@ if comment #}
-                <blockquote class="comment">comment left by tester.</blockquote>
-              </section>
-            </div>
-          </article>
-
-          <article id="result-id-03" class="details item invalid">
-            <header class="summary">
-              <p class="result invalid">invalid</p>
-              <p class="approval">approved by soandso</p>
-            </header>
-            <div class="content">
-              <section class="environment">
-                <h4>environment</h4>
-                <ul>
-                  <li>Firefox 4</li>
-                  <li>French</li>
-                  <li>Linux</li>
-                </ul>
-              </section>
-              <section class="notes">
-                <h4>notes</h4>
-                {# @@@ if comment #}
-                <blockquote class="comment">comment left by tester.</blockquote>
-              </section>
-            </div>
-          </article>
-
-        </div>
-      </section>
-
+      {% endfor %}
     </div>
 
     {% include "lists/_listnav.html" %}

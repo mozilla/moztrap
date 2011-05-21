@@ -16,3 +16,18 @@ environmentgroups = ListBuilder(
         "name": "Default Environmentgroup",
         }
     )
+
+
+
+environments = ListBuilder(
+    "environment",
+    "environments",
+    "Environment",
+    {
+        "companyId": 1,
+        "companyLocator": make_locator(id=1, url="companies/1"),
+        "environmentTypeId": 1,
+        "environmentTypeLocator": make_locator(id=1, url="environmenttypes/1"),
+        "name": "Default Environment",
+        }
+    )

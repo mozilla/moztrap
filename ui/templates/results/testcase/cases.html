@@ -56,7 +56,7 @@
         <div class="content">
           <p class="id">#{{ itc.testCase.id }}</p>
           <p class="drill">
-            See related <a href="/results/testcase/detail/" title="test results related to {{ itc.testCase.name }}">test results</a>.
+            See related <a href="{% url results_testcase_detail itc.id %}" title="test results related to {{ itc.testCase.name }}">test results</a>.
           </p>
 
           <section class="envgroups">
