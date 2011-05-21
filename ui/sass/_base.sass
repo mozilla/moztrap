@@ -128,36 +128,51 @@ $accent: $red-dark
  *
  */
 
-+font-face('CambridgeRoundRegular', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg))
-+font-face('CambridgeRoundLight', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg))
-+font-face('CambridgeRoundDemi', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg))
-+font-face('CambridgeRoundBold', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg))
-+font-face('CambridgeRoundItalic', font-files('cambridgeround_italic_macroman/cambridge_round_it-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic',svg))
-+font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg))
-+font-face('CambridgeRoundBoldCond', font-files('cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff',woff,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf',truetype,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg))
+=font-face($name, $font-files, $eot: false, $weight: false, $style: false)
+  $iefont: unquote("#{$eot}?iefix")
+  @font-face
+    font-family: quote($name)
+    @if $eot
+      src: font-url($eot)
+      $font-files: font-url($iefont) unquote("format('eot')"), $font-files
+    src: $font-files
+    @if $weight
+      font-weight: $weight
+    @if $style
+      font-style: $style
+
++font-face('CambridgeRound', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg),false,normal,normal)
++font-face('CambridgeRound', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg),false,200,normal)
++font-face('CambridgeRound', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg),false,500,normal)
++font-face('CambridgeRound', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg),false,700,normal)
++font-face('CambridgeRound', font-files('cambridgeround_italic_macroman/cambridge_round_it-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic',svg),false,normal,italic)
+
++font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg),false,normal,normal)
++font-face('CambridgeRoundCond', font-files('cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff',woff,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf',truetype,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg),false,700,normal)
 
 $sans-fallback: "Helvetica Neue", Helvetica, Arial, sans-serif
 
 =sans-family
-  font-family: "CambridgeRoundRegular", $sans-fallback
+  font-family: "CambridgeRound", $sans-fallback
 
 =light
-  font-family: "CambridgeRoundLight", $sans-fallback
-
-=bold
-  font-family: "CambridgeRoundBold", $sans-fallback
-
-=boldcond
-  font-family: "CambridgeRoundBoldCond", $sans-fallback
+  font-weight: 200
 
 =demi
-  font-family: "CambridgeRoundDemi", $sans-fallback
+  font-weight: 500
+
+=bold
+  font-weight: 700
 
 =italic
-  font-family: "CambridgeRoundItalic", $sans-fallback
+  font-style: italic
 
-=condensed
+=cond
   font-family: "CambridgeRoundCond", $sans-fallback
+
+=boldcond
+  +cond
+  +bold
 
 =serif-family
   font-family: Cambria, Georgia, serif

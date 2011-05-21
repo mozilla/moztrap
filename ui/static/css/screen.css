@@ -79,38 +79,52 @@ footer, header, hgroup, menu, nav, section {
  *
  */
 @font-face {
-  font-family: "CambridgeRoundRegular";
+  font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.woff') format('woff'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "CambridgeRoundLight";
+  font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.woff') format('woff'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight') format('svg');
+  font-weight: 200;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "CambridgeRoundDemi";
+  font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff') format('woff'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold') format('svg');
+  font-weight: 500;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "CambridgeRoundBold";
+  font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff') format('woff'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold') format('svg');
+  font-weight: 700;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "CambridgeRoundItalic";
+  font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic') format('svg');
+  font-weight: normal;
+  font-style: italic;
 }
 
 @font-face {
   font-family: "CambridgeRoundCond";
   src: url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "CambridgeRoundBoldCond";
+  font-family: "CambridgeRoundCond";
   src: url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
+  font-weight: 700;
+  font-style: normal;
 }
 
 /* Typography ---------------------------------------------------------------- */
@@ -119,7 +133,7 @@ footer, header, hgroup, menu, nav, section {
 }
 
 .sans, body, .message, #messages li {
-  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .mono, pre, code, tt {
@@ -277,7 +291,7 @@ h1 {
 }
 
 h1, h2 {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
 }
 
 h2 {
@@ -289,16 +303,16 @@ h3, h4, h5, h6 {
 }
 
 h3, h4, h5, h6 {
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
 }
 
 /* Inline -------------------------------------------------------------- */
 cite, em, dfn, address, i {
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
 }
 
 strong, dfn, b {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
 }
 
 sup, sub {
@@ -339,10 +353,10 @@ small {
 }
 
 q {
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
 }
 q em {
-  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* Block -------------------------------------------------------------- */
@@ -359,7 +373,7 @@ pre {
 }
 
 blockquote {
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
 }
 
 summary, .summary {
@@ -403,7 +417,7 @@ li ul {
 
 dt {
   margin-top: 1.618em;
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
 }
 
 dd {
@@ -452,7 +466,7 @@ a[href="#main"] {
   text-shadow: #4b6564 1px 1px 0;
   padding-left: 1em;
   padding-right: 1em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   color: #eeeeee;
   background: #528684;
   border-color: #4b6564;
@@ -487,7 +501,7 @@ th, thead th {
   border-top-style: solid;
   border-top-width: 0.071em;
   padding-top: 0.333em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   white-space: nowrap;
   background: #eeeeee;
 }
@@ -597,7 +611,7 @@ label {
   *vertical-align: auto;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
 }
 label {
   *display: inline;
@@ -605,7 +619,7 @@ label {
 
 /* Text Inputs --------------------------------------------------------------- */
 .textinput, textarea, select:not([multiple]), input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
-  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-style: solid;
   border-width: 0.071em;
   padding: 0.333em;
@@ -697,7 +711,7 @@ select {
   height: 2.427em;
 }
 select[multiple] {
-  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 0.857em;
   line-height: 1.888em;
   margin-bottom: 1.618em;
@@ -911,7 +925,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background: rgba(82, 134, 132, 0.236);
 }
 [role="banner"] a:link, [role="banner"] a:visited {
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   color: #447b79;
 }
 [role="banner"] a:focus, [role="banner"] a:hover, [role="banner"] a:active {
@@ -1059,7 +1073,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-top: 0.809em;
   padding-bottom: 0.809em;
   margin-bottom: 0.809em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   text-shadow: rgba(204, 215, 214, 0.618) 1px 1px 0;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
@@ -1326,7 +1340,7 @@ thead .controls {
   width: 22.892%;
   margin-right: 1.205%;
   margin-top: 0.405em;
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
   text-transform: lowercase;
 }
 #filter .toggle a:link, #filter .toggle a:visited {
@@ -1459,7 +1473,7 @@ thead .controls {
   -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
   -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
   box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   display: block;
   margin-right: 0.5em;
   padding: 0.236em 0.472em;
@@ -1580,7 +1594,7 @@ thead .controls {
   display: none;
 }
 #filter .expanded label {
-  font-family: "CambridgeRoundRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=62)";
   opacity: 0.618;
   display: block;
@@ -1590,7 +1604,7 @@ thead .controls {
   font-weight: normal;
 }
 #filter .expanded label:hover {
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
 }
 #filter .expanded small {
   display: inline;
@@ -1599,7 +1613,7 @@ thead .controls {
 #filter .expanded input:checked + label {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   background-image: url('../images/ui/check_sm.png?1303498520');
 }
 #filter .expanded input:checked + label:hover {
@@ -1620,7 +1634,8 @@ thead .controls {
   bottom: 0;
   left: 0;
   right: 0;
-  font-family: "CambridgeRoundBoldCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   padding-top: 0.405em;
   text-shadow: #e9eded 0 1px 0;
   display: block;
@@ -1848,7 +1863,7 @@ thead .controls {
   padding-bottom: 0.131em;
   padding-left: 0.809em;
   padding-right: 0.809em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   display: block;
   border-color: rgba(135, 169, 168, 0.236);
   font-weight: normal;
@@ -1888,7 +1903,7 @@ thead .controls {
   border: 0;
 }
 .finder.expanded input:checked + label {
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   background: rgba(135, 169, 168, 0.618);
 }
 .finder.expanded input:checked + label .logo {
@@ -2090,7 +2105,7 @@ thead .controls {
   margin-right: 1.053%;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
-  font-family: "CambridgeRoundDemi", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
   margin-right: 5.263%;
   position: relative;
   overflow: visible;
@@ -2575,6 +2590,8 @@ thead .controls {
 }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   display: block;
   position: relative;
   color: #4b6564;
@@ -2621,7 +2638,6 @@ thead .controls {
 }
 
 .listordering {
-  font-family: "CambridgeRoundBoldCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   overflow: hidden;
   *zoom: 1;
   margin-top: 0em;
@@ -2653,7 +2669,6 @@ thead .controls {
 }
 
 .listnav {
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   *zoom: 1;
   margin-top: 0em;
   padding-top: 0.405em;
@@ -2728,7 +2743,8 @@ thead .controls {
   text-align: center;
 }
 .listnav .current, .listnav strong {
-  font-family: "CambridgeRoundBoldCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
 }
 .listnav a:link, .listnav a:visited {
   color: #4b6564;
@@ -2819,7 +2835,7 @@ thead .controls {
 }
 
 .addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited {
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
   display: block;
   padding: 0 0.809em;
   color: #4f7a1b;
@@ -3165,7 +3181,7 @@ thead .controls {
   line-height: 1.888em;
   padding-left: 1.618em;
   padding-right: 1.618em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   display: block;
   width: 100%;
   text-align: left;
@@ -3245,7 +3261,7 @@ thead .controls {
 }
 
 .userselect summary {
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
   width: 44.828%;
 }
 .userselect summary, .userselect summary:link, .userselect summary:visited {
@@ -3399,7 +3415,7 @@ thead .controls {
 #addcase .steps-form::before {
   font-size: 4.236em;
   line-height: 2.292em;
-  font-family: "CambridgeRoundLight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 200;
   content: counter(step, decimal) ".";
   position: absolute;
   right: 101.333%;
@@ -3610,7 +3626,7 @@ thead .controls {
 #cycles .note, #testruns .note {
   margin-top: -0.809em;
   margin-bottom: 2.427em;
-  font-family: "CambridgeRoundItalic", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-style: italic;
   text-align: right;
 }
 
@@ -3677,7 +3693,7 @@ thead .controls {
   float: left;
   width: 8.861%;
   margin-right: 1.266%;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   vertical-align: top;
   text-align: right;
 }
@@ -3704,7 +3720,7 @@ thead .controls {
   padding-bottom: 0.472em;
   padding-left: 1em;
   padding-right: 1em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   margin: 0 6.667%;
   color: #eeeeee;
 }
@@ -4798,7 +4814,7 @@ thead .controls {
   -ms-border-top-right-radius: 0.5em;
   -khtml-border-top-right-radius: 0.5em;
   border-top-right-radius: 0.5em;
-  font-family: "CambridgeRoundBold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   content: attr(title);
   display: block;
   position: absolute;

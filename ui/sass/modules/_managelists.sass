@@ -198,6 +198,7 @@
 
 .sortlinks
   #{$link}
+    +boldcond
     display: block
     position: relative
     color: $blue-dark
@@ -228,7 +229,6 @@
         background-image: image-url('ui/angle_up.png')
 
 .listordering
-  +boldcond
   +clearfix
   +rhythm(0,.25,.25,0)
   background: rgba($blue,$xxsmall)
@@ -245,7 +245,6 @@
         padding-left: $smallem
 
 .listnav
-  +condensed
   +pie-clearfix
   +rhythm(0,.25,.25,.5)
   +hpadding(.5em)
