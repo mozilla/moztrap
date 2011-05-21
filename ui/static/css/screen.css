@@ -55,29 +55,68 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
-/* !
- * Web Fonts from fontspring.com
- *
- * All OpenType features and all extended glyphs have been removed.
- * Fully installable fonts can be purchased at http://www.fontspring.com
- *
- * The fonts included in this stylesheet are subject to the End User License you purchased
- * from Fontspring. The fonts are protected under domestic and international trademark and
- * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
- * distributing this font software.
- *
- * (c) 2010-2011 Fontspring
- *
- *
- *
- *
- * The fonts included are copyrighted by the vendor listed below.
- *
- * Vendor:      Aviation Partners
- * License URL: http://www.fontspring.com/fflicense/aviation-partners
- *
- *
- */
+/* Sizes --------------------------------------------------------------------- */
+/* */
+/* norm    : 1 */
+/* small   : 0.618 */
+/* xsmall  : 0.382 */
+/* xxsmall : 0.236 */
+/* med     : 1.618 */
+/* large   : 2.618 */
+/* xlarge  : 4.236 */
+/* */
+/* normem    : 1em */
+/* smallem   : 0.618em */
+/* xsmallem  : 0.382em */
+/* xxsmallem : 0.236em */
+/* medem     : 1.618em */
+/* largeem   : 2.618em */
+/* xlargeem  : 4.236em */
+/* */
+/* normpx    : 14px */
+/* smallpx   : 8.653px */
+/* xsmallpx  : 5.348px */
+/* xxsmallpx : 3.305px */
+/* medpx     : 22.652px */
+/* largepx   : 36.651px */
+/* xlargepx  : 59.301px */
+/* colors -------------------------------------------------------------------- */
+/* */
+/* light     : #eeeeee */
+/* dark      : #444444 */
+/* lighter   : #fbfbfb */
+/* mid       : #999999 */
+/* mid-light : #c3c3c3 */
+/* mid-dark  : #6e6e6e */
+/* */
+/* blue            : #528684 */
+/* blue-light      : #87a9a8 */
+/* blue-lighter    : #aac0bf */
+/* blue-lightest   : #ccd7d6 */
+/* blue-hint       : #e9eded */
+/* blue-dark       : #4b6564 */
+/* */
+/* red           : #b9292f */
+/* red-light     : #e37f83 */
+/* red-lighter   : #eca9ab */
+/* red-lightest  : #f5d2d4 */
+/* red-dark      : #511214 */
+/* */
+/* green           : #77b929 */
+/* green-light     : #b5e37f */
+/* green-lighter   : #cdeca9 */
+/* green-lightest  : #e5f5d2 */
+/* green-dark      : #4f7a1b */
+/* */
+/* yellow          : #fee58c */
+/* yellow-light    : #fef0bf */
+/* yellow-dark     : #fdc80e */
+/* yellow-darker   : #d6a702 */
+/* yellow-darkest  : #a38001 */
+/* */
+/* base            : #444444 */
+/* alt             : #528684 */
+/* accent          : #b9292f */
 @font-face {
   font-family: "CambridgeRound";
   src: url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.woff') format('woff'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound') format('svg');
@@ -127,6 +166,36 @@ footer, header, hgroup, menu, nav, section {
   font-style: normal;
 }
 
+@font-face {
+  font-family: "CambridgeRoundCond";
+  src: url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* !
+ * Web Fonts from fontspring.com
+ *
+ * All OpenType features and all extended glyphs have been removed.
+ * Fully installable fonts can be purchased at http://www.fontspring.com
+ *
+ * The fonts included in this stylesheet are subject to the End User License you purchased
+ * from Fontspring. The fonts are protected under domestic and international trademark and
+ * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+ * distributing this font software.
+ *
+ * (c) 2010-2011 Fontspring
+ *
+ *
+ *
+ *
+ * The fonts included are copyrighted by the vendor listed below.
+ *
+ * Vendor:      Aviation Partners
+ * License URL: http://www.fontspring.com/fflicense/aviation-partners
+ *
+ *
+ */
 /* Typography ---------------------------------------------------------------- */
 .serif {
   font-family: Cambria, Georgia, serif;
@@ -2504,6 +2573,10 @@ thead .controls {
   margin: 0;
 }
 
+.start, .end {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .envgroup {
   display: inline;
   float: left;
@@ -2669,6 +2742,7 @@ thead .controls {
 }
 
 .listnav {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   *zoom: 1;
   margin-top: 0em;
   padding-top: 0.405em;
@@ -2743,8 +2817,7 @@ thead .controls {
   text-align: center;
 }
 .listnav .current, .listnav strong {
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 500;
 }
 .listnav a:link, .listnav a:visited {
   color: #4b6564;

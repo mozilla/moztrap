@@ -154,6 +154,9 @@
 .byline
   margin: 0
 
+.start, .end
+  +cond
+
 .envgroup
   +columns(3,15)
   &:nth-child(5n)
@@ -245,6 +248,7 @@
         padding-left: $smallem
 
 .listnav
+  +cond
   +pie-clearfix
   +rhythm(0,.25,.25,.5)
   +hpadding(.5em)
@@ -271,7 +275,7 @@
     +columns(10,22)
     text-align: center
   .current, strong
-    +boldcond
+    +demi
   a
     #{$link}
       color: $blue-dark
