@@ -1,22 +1,14 @@
 /* Results -------------------------------------------------------------------
 
-.chicklist
-  +inline-block-list
-  +adjust-font-size-to(12px,1)
-  li
-    +border-radius(.25em)
-    margin-right: .5em
-    padding: rhythm(.125,12px) rhythm(.5,12px)
-    background: $blue-lightest
-
 .resulticons
   +adjust-font-size-to(12px)
   +cond
   min-width: rhythm(2.25)
-  +icon('.pass','ui/check_sm.png',$green-lighter,true)
-  +icon('.invalid','ui/warning_sm.png',$yellow,true)
-  +icon('.fail','ui/x_sm.png',$red-lighter,true)
+  +icon('.passed','ui/check_sm.png',$green-lighter,true)
+  +icon('.invalidated','ui/warning_sm.png',$yellow,true)
+  +icon('.failed','ui/x_sm.png',$red-lighter,true)
   +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
+  +icon('.started','ui/clock_sm.png',$blue-lighter,true)
 
 .resultslist
   +inline-block-list
@@ -158,8 +150,8 @@
 
   .summary
     +clearfix
-    +full(21)
-    +pad(1,1,21)
+    +full(22)
+    +pad(1,1,22)
     +padding-leader(.5)
     +padding-trailer(.5)
     border-color: $mid
@@ -184,49 +176,56 @@
       background-color: rgba($base,$xxxsmall)
 
   .content
-    +full(21)
+    +full(22)
     +clearfix
-    +pad(1,1,21)
+    +pad(1,1,22)
     +padding-leader(.5)
     +padding-trailer(.5)
 
+  .instruction
+    +trailer(0)
+    +demi
+  .outcome
+    +trailer(.5)
+    +italic
+
   .status, .id
-    +columns(2,19)
+    +columns(2,20)
   .run, .product, .results
-    +columns(5,19)
+    +columns(6,20)
   .steps
     +reset-box-model
-    +columns(17,19)
+    +columns(18,20)
   .results, .steps
-    +omega(21)
+    +omega(20)
 
 #results
   .managelist
-    .result, .results, .byresult, .failed-step
-      +columns(3,21)
-    .tester, .bytester, .comment
-      +columns(12,21)
+    .result, .byresult, .failed-step
+      +columns(2,22)
+    .tester, .bytester, .approval, .byapproval
+      +columns(4,22)
+    .envlist, .byenvlist
+      +columns(12)
     .approval, .byapproval
-      +columns(4,21)
-      +omega(21)
-
-    .results
-      text-align: left
+      +omega(22)
 
     .result
       @extend .resulticons
 
-  .environment
-    +full(21)
-    +prefix(3,21)
+  .notes
     h4
       +gone
-      + .comment
-        +prefix(3,21)
-    ul
-      +leader(.5)
-      +trailer(.5)
-      @extend .chicklist
+
+  .comment
+    +columns(20,22)
+    +omega(22)
+
+  .envlist
+    +delimited-list(', ')
 
   .failed-step
+    +demi
     text-align: right
+    &::after
+      content: ":"

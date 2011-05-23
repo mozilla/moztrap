@@ -92,9 +92,12 @@
   .summary
     p, h3, h4
       margin-bottom: 0
-    #{$focus}
-      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
-      outline: 0
+
+  .details
+    .summary
+      #{$focus}
+        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
+        outline: 0
   .open
     > .summary
       +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
@@ -201,7 +204,6 @@
 
 .sortlinks
   #{$link}
-    +boldcond
     display: block
     position: relative
     color: $blue-dark
@@ -234,7 +236,9 @@
 .listordering
   +clearfix
   +rhythm(0,.25,.25,0)
+  +boldcond
   background: rgba($blue,$xxsmall)
+  color: rgba($base,$small)
   text-transform: capitalize
   ul
     +no-style-list
@@ -243,6 +247,8 @@
 
   .bystatus
     +columns(2,21)
+
+  li:first-child
     a
       #{$link}
         padding-left: $smallem

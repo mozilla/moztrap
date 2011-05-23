@@ -16,8 +16,10 @@
       <p class="id">#{{ includedcase.testCase.id }}</p>
       <ol class="steps">
         {% for step in includedcase.testCaseVersion.steps %}
-        {# @@@ this should use better markup #}
-        <li>{{ step.instruction }} - {{ step.expectedResult }}</li>
+        <li>
+          <p class="instruction">{{ step.instruction }}</p>
+          <p class="outcome">{{ step.expectedResult }}</p>
+        </li>
         {% endfor %}
       </ol>
     </div>
@@ -38,16 +40,24 @@
           <li class="bytester">
             <a href="{{ request|sort_url:"tester" }}" class="{{ request|sort_status:"tester" }}">tester</a>
           </li>
+          <li class="byenvlist">
+            environment
+          </li>
           <li class="byapproval">
             <a href="{{ request|sort_url:"approval" }}" class="{{ request|sort_status:"approval" }}">approval</a>
           </li>
         </ul>
       </nav>
       {% for result in results %}
-      <article id="result-id-{{ result.id }}" class="details item {{ result.status|status_class }}">
+      <article id="result-id-{{ result.id }}" class="{% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}details{% endif %} item {{ result.status|status_class }}">
         <header class="summary">
           <p class="result {{ result.status|status_class }}">{{ result.status|lower }}</p>
           <h3 class="tester">{{ result.tester.screenName }}</h3>
+          <ul class="envlist">
+            {% for environment in result.environments %}
+            <li>{{ environment }}</li>
+            {% endfor %}
+          </ul>
           <p class="approval {{ result.approval|status_class }}">
             {{ result.approval|lower }}
             {% if result.approvedBy %}
@@ -55,28 +65,18 @@
             {% endif %}
           </p>
         </header>
-        <div class="content">
-          <section class="environment">
-            <h4>environment</h4>
-            <ul>
-              {% for environment in result.environments %}
-              <li>{{ environment }}</li>
-              {% endfor %}
-            </ul>
-          </section>
-          {% if not result.status.PASSED %}
-          <section class="notes">
-            <h4>notes</h4>
-            {% if result.status.FAILED %}
-            <p class="failed-step">step {{ result.failedStepNumber }}</p>
-            {% endif %}
-            <blockquote class="comment">
-              {% if result.actualResult %}{{ result.actualResult }}{% endif %}
-              {% if result.comment %}{{ result.comment }}{% endif %}
-            </blockquote>
-          </section>
+        {% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}
+        <section class="notes content">
+          <h4>notes</h4>
+          {% if result.status.FAILED %}
+          <p class="failed-step">step {{ result.failedStepNumber }}</p>
           {% endif %}
-        </div>
+          <blockquote class="comment">
+            {% if result.actualResult %}{{ result.actualResult }}{% endif %}
+            {% if result.comment %}{{ result.comment }}{% endif %}
+          </blockquote>
+        </section>
+        {% endif %}
       </article>
       {% endfor %}
     </div>

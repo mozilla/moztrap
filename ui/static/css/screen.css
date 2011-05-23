@@ -2298,7 +2298,7 @@ thead .controls {
 .managelist .summary p, .managelist .summary h3, .managelist .summary h4 {
   margin-bottom: 0;
 }
-.managelist .summary:focus, .managelist .summary:hover, .managelist .summary:active {
+.managelist .details .summary:focus, .managelist .details .summary:hover, .managelist .details .summary:active {
   background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.382)), color-stop(66.667%, rgba(233, 237, 237, 0.382)), color-stop(100%, rgba(233, 237, 237, 0)));
   background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
@@ -2663,8 +2663,6 @@ thead .controls {
 }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited {
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
   display: block;
   position: relative;
   color: #4b6564;
@@ -2717,7 +2715,10 @@ thead .controls {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
   margin-bottom: 0em;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 700;
   background: rgba(82, 134, 132, 0.236);
+  color: rgba(68, 68, 68, 0.618);
   text-transform: capitalize;
 }
 .listordering ul {
@@ -2737,7 +2738,7 @@ thead .controls {
   width: 8.434%;
   margin-right: 1.205%;
 }
-.listordering .bystatus a:link, .listordering .bystatus a:visited {
+.listordering li:first-child a:link, .listordering li:first-child a:visited {
   padding-left: 0.618em;
 }
 
@@ -3963,48 +3964,13 @@ thead .controls {
 }
 
 /* Results ------------------------------------------------------------------- */
-.chicklist, #results .environment ul {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  *zoom: 1;
-  font-size: 0.857em;
-  line-height: 1.888em;
-}
-.chicklist li, #results .environment ul li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  white-space: nowrap;
-}
-.chicklist li, #results .environment ul li {
-  *display: inline;
-}
-.chicklist li, #results .environment ul li {
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  margin-right: 0.5em;
-  padding: 0.236em 0.944em;
-  background: #ccd7d6;
-}
-
 .resulticons, .resultslist li, .managelist .results li, .case-details .summary .results li, #results .managelist .result {
   font-size: 0.857em;
   line-height: 1.888em;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   min-width: 3.641em;
 }
-.resulticons.pass, .resultslist li.pass, .managelist .results li.pass, .case-details .summary .results li.pass, #results .managelist .pass.result {
+.resulticons.passed, .resultslist li.passed, .managelist .results li.passed, .case-details .summary .results li.passed, #results .managelist .passed.result {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -4022,7 +3988,7 @@ thead .controls {
   padding: 0 0.25em 0 16px;
   text-align: left;
 }
-.resulticons.invalid, .resultslist li.invalid, .managelist .results li.invalid, .case-details .summary .results li.invalid, #results .managelist .invalid.result {
+.resulticons.invalidated, .resultslist li.invalidated, .managelist .results li.invalidated, .case-details .summary .results li.invalidated, #results .managelist .invalidated.result {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -4040,7 +4006,7 @@ thead .controls {
   padding: 0 0.25em 0 19px;
   text-align: left;
 }
-.resulticons.fail, .resultslist li.fail, .managelist .results li.fail, .case-details .summary .results li.fail, #results .managelist .fail.result {
+.resulticons.failed, .resultslist li.failed, .managelist .results li.failed, .case-details .summary .results li.failed, #results .managelist .failed.result {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -4059,6 +4025,24 @@ thead .controls {
   text-align: left;
 }
 .resulticons.pending, .resultslist li.pending, .managelist .results li.pending, .case-details .summary .results li.pending, #results .managelist .pending.result {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #aac0bf;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/clock_sm.png?1303975056');
+  background-repeat: no-repeat;
+  background-position: 0.25em;
+  padding: 0 0.25em 0 19px;
+  text-align: left;
+}
+.resulticons.started, .resultslist li.started, .managelist .results li.started, .case-details .summary .results li.started, #results .managelist .started.result {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -4732,8 +4716,8 @@ thead .controls {
   overflow: hidden;
   *zoom: 1;
   clear: both;
-  padding-left: 4.819%;
-  padding-right: 4.819%;
+  padding-left: 4.598%;
+  padding-right: 4.598%;
   padding-top: 0.809em;
   padding-bottom: 0.809em;
   border-color: #999999;
@@ -4759,22 +4743,30 @@ thead .controls {
   clear: both;
   overflow: hidden;
   *zoom: 1;
-  padding-left: 4.819%;
-  padding-right: 4.819%;
+  padding-left: 4.598%;
+  padding-right: 4.598%;
   padding-top: 0.809em;
   padding-bottom: 0.809em;
+}
+.case-details .instruction {
+  margin-bottom: 0em;
+  font-weight: 500;
+}
+.case-details .outcome {
+  margin-bottom: 0.809em;
+  font-style: italic;
 }
 .case-details .status, .case-details .id {
   display: inline;
   float: left;
-  width: 9.333%;
-  margin-right: 1.333%;
+  width: 8.861%;
+  margin-right: 1.266%;
 }
 .case-details .run, .case-details .product, .case-details .results {
   display: inline;
   float: left;
-  width: 25.333%;
-  margin-right: 1.333%;
+  width: 29.114%;
+  margin-right: 1.266%;
 }
 .case-details .steps {
   margin: 0;
@@ -4782,8 +4774,8 @@ thead .controls {
   border: 0;
   display: inline;
   float: left;
-  width: 89.333%;
-  margin-right: 1.333%;
+  width: 89.873%;
+  margin-right: 1.266%;
 }
 .case-details .results, .case-details .steps {
   display: inline;
@@ -4791,35 +4783,30 @@ thead .controls {
   margin-right: 0;
 }
 
-#results .managelist .result, #results .managelist .results, #results .managelist .byresult, #results .managelist .failed-step {
+#results .managelist .result, #results .managelist .byresult, #results .managelist .failed-step {
   display: inline;
   float: left;
-  width: 13.253%;
-  margin-right: 1.205%;
+  width: 8.046%;
+  margin-right: 1.149%;
 }
-#results .managelist .tester, #results .managelist .bytester, #results .managelist .comment {
+#results .managelist .tester, #results .managelist .bytester, #results .managelist .approval, #results .managelist .byapproval {
   display: inline;
   float: left;
-  width: 56.627%;
-  margin-right: 1.205%;
+  width: 17.241%;
+  margin-right: 1.149%;
+}
+#results .managelist .envlist, #results .managelist .byenvlist {
+  display: inline;
+  float: left;
+  width: 48.454%;
+  margin-right: 1.031%;
 }
 #results .managelist .approval, #results .managelist .byapproval {
-  display: inline;
-  float: left;
-  width: 18.072%;
-  margin-right: 1.205%;
   display: inline;
   float: right;
   margin-right: 0;
 }
-#results .managelist .results {
-  text-align: left;
-}
-#results .environment {
-  clear: both;
-  padding-left: 14.458%;
-}
-#results .environment h4 {
+#results .notes h4 {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4829,15 +4816,38 @@ thead .controls {
   width: 1px;
   border: 0;
 }
-#results .environment h4 + .comment {
-  padding-left: 14.458%;
+#results .comment {
+  display: inline;
+  float: left;
+  width: 90.805%;
+  margin-right: 1.149%;
+  display: inline;
+  float: right;
+  margin-right: 0;
 }
-#results .environment ul {
-  margin-top: 0.809em;
-  margin-bottom: 0.809em;
+#results .envlist {
+  list-style-type: none;
+}
+#results .envlist, #results .envlist li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#results .envlist li:after {
+  content: ", ";
+}
+#results .envlist li:last-child:after {
+  content: "";
+}
+#results .envlist li.last:after {
+  content: "";
 }
 #results .failed-step {
+  font-weight: 500;
   text-align: right;
+}
+#results .failed-step::after {
+  content: ":";
 }
 
 #page-status {
