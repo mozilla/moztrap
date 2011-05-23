@@ -56,6 +56,9 @@
                 // Last-child section only receives focus on-click by default
                 if (container.is(':last-child')) {
                     addSelectedClass();
+                    if (options.lastChildCallback) {
+                        options.lastChildCallback();
+                    }
                 } else {
                     var response;
                     if (container.index() === 0) {
@@ -333,16 +336,29 @@
                     container.next(options.sectionSelector).nextAll(options.sectionSelector).removeClass('focus').children('ul').empty();
                     horzScroll();
                     addSelectedClass();
+                    if (options.callback) {
+                        options.callback();
+                    }
                 }
             });
         }
 
         // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
         context.find('.selected').live('click', function() {
-            $(this).closest(options.sectionSelector).addClass('focus').siblings(options.sectionSelector).removeClass('focus');
-            $(this).closest(options.sectionSelector).next(options.sectionSelector).find('input:checked').removeClass('selected').removeAttr('checked');
-            $(this).closest(options.sectionSelector).next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
+            var container = $(this).closest(options.sectionSelector);
+            container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
+            container.next(options.sectionSelector).find('input:checked').removeClass('selected').removeAttr('checked');
+            container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
             horzScroll();
+            if (container.is(':last-child')) {
+                if (options.lastChildCallback) {
+                    options.lastChildCallback();
+                }
+            } else {
+                if (options.callback) {
+                    options.callback();
+                }
+            }
         });
 
         // Add a loading screen while waiting for the Ajax call to return data
@@ -386,6 +402,8 @@
             'input[name="section1"]',
             'input[name="section2"]',
             'input[name="section3"]'
-        ]
+        ],
+        callback: null,                     // Callback function, currently runs after input in any section (except lastChild) is selected
+        lastChildCallback: null             // Callback function, currently runs after input in last section is selected
     };
 })(jQuery);

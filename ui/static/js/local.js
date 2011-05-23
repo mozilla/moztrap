@@ -84,6 +84,29 @@ var TCM = TCM || {};
                 'input[name="result"]'
             ]
         });
+        $('#selectruns').html5finder( {
+            loading: true,
+            headerSelector: 'header.listordering',
+            sectionSelector: 'section.col',
+            sectionContentSelector: 'ul.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="cycle"]',
+                'input[name="run"]'
+            ],
+            callback: function() {
+                $('#selectruns + #environment').slideUp();
+            },
+            lastChildCallback: function() {
+                $('#selectruns + #environment').slideDown();
+            }
+        });
+        $('#selectruns + #environment').hide();
     });
 
 })(jQuery);
