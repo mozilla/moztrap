@@ -12,9 +12,6 @@ def status(status1, status2):
 
 
 STATUS_CLASS_OVERRIDES = {
-    "invalidated": "invalid",
-    "failed": "fail",
-    "passed": "pass",
     }
 
 @register.filter
