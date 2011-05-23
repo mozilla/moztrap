@@ -4,8 +4,10 @@ from django.template.response import TemplateResponse
 
 from ..core import decorators as dec
 from ..core import sort
+from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
-from ..static.filters import TestCycleStatusFilter
+from ..static import filters as status_filters
+from ..testexecution.filters import TestCycleFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..testcases.models import TestSuiteList, TestCaseVersionList
 from ..users.decorators import login_redirect
@@ -22,7 +24,9 @@ def home(request):
 
 @login_redirect
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
-@dec.filter("cycles", status=TestCycleStatusFilter)
+@dec.filter("cycles",
+            status=status_filters.TestCycleStatusFilter,
+            product=ProductFieldFilter)
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):
@@ -90,7 +94,10 @@ def edit_testcycle(request, cycle_id):
 
 @login_redirect
 @dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
-@dec.filter("runs")
+@dec.filter("runs",
+            status=status_filters.TestRunStatusFilter,
+            product=ProductFieldFilter,
+            testCycle=TestCycleFieldFilter)
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -162,7 +169,9 @@ def edit_testrun(request, run_id):
 
 @login_redirect
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
-@dec.filter("suites")
+@dec.filter("suites",
+            status=status_filters.TestSuiteStatusFilter,
+            product=ProductFieldFilter)
 @dec.paginate("suites")
 @dec.sort("suites")
 def testsuites(request):
@@ -228,7 +237,10 @@ def edit_testsuite(request, suite_id):
 @dec.actions(
     TestCaseVersionList,
     ["approve", "reject", "activate", "deactivate", "delete"])
-@dec.filter("cases")
+@dec.filter("cases",
+            status=status_filters.TestCaseStatusFilter,
+            approval=status_filters.ApprovalStatusFilter,
+            product=ProductFieldFilter)
 @dec.paginate("cases")
 @dec.sort("cases")
 def testcases(request):

@@ -46,7 +46,7 @@ def filter(ctx_name, **fields):
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
             ctx = response.context_data
-            flt = filters.Filter(request.GET, **fields)
+            flt = filters.Filter(request.GET, request.auth, **fields)
             ctx[ctx_name] = flt.filter(ctx[ctx_name])
             ctx["filter"] = flt
             return response
