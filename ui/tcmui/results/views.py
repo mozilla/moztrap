@@ -4,8 +4,13 @@ from django.template.response import TemplateResponse
 from ..testexecution.models import (
     TestCycleList, TestRunList, TestRunIncludedTestCaseList, TestResultList)
 from ..core import decorators as dec
+from ..products.filters import ProductFieldFilter
+from ..static.filters import TestResultStatusFilter
 from ..static.status import TestCycleStatus, TestRunStatus
 from ..users.decorators import login_redirect
+from ..users.filters import UserFieldFilter
+
+from . import filters
 
 
 
@@ -15,7 +20,9 @@ def home(request):
 
 
 @login_redirect
-@dec.filter("cycles")
+@dec.filter("cycles",
+            status=filters.NonDraftTestCycleStatusFilter,
+            product=ProductFieldFilter)
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):
@@ -29,7 +36,10 @@ def testcycles(request):
 
 
 @login_redirect
-@dec.filter("runs")
+@dec.filter("runs",
+            status=filters.NonDraftTestRunStatusFilter,
+            product=ProductFieldFilter,
+            testCycle=filters.NonDraftTestCycleFieldFilter)
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -43,7 +53,10 @@ def testruns(request):
 
 
 @login_redirect
-@dec.filter("includedcases")
+@dec.filter("includedcases",
+            testRun=filters.NonDraftTestRunFieldFilter,
+            product=ProductFieldFilter,
+            testSuite=filters.TestSuiteFieldFilter)
 @dec.paginate("includedcases")
 @dec.sort("includedcases")
 def testcases(request):
@@ -56,7 +69,9 @@ def testcases(request):
 
 
 @login_redirect
-@dec.filter("results")
+@dec.filter("results",
+            tester=UserFieldFilter,
+            status=TestResultStatusFilter)
 @dec.paginate("results")
 @dec.sort("results")
 def testresults(request, itc_id):

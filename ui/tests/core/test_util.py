@@ -59,6 +59,82 @@ class TestUpdateQueryString(TestCase):
 
 
 
+class TestNarrowQueryString(TestCase):
+    @property
+    def func(self):
+        from tcmui.core.util import narrow_querystring
+        return narrow_querystring
+
+
+    def test_basic(self):
+        self.assertEqual(
+            self.func("http://fake.base/", blah="foo"),
+            "http://fake.base/?blah=foo")
+
+
+    def test_list(self):
+        self.assertEqual(
+            self.func("http://fake.base/", blah=["foo", "yo"]),
+            "http://fake.base/?blah=foo&blah=yo")
+
+
+    def test_override(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=yo", blah="foo"),
+            "http://fake.base/?blah=__")
+
+
+    def test_override_same(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=yo", blah="yo"),
+            "http://fake.base/?blah=yo")
+
+
+    def test_basic_with_existing(self):
+        self.assertEqual(
+            self.func("http://fake.base/?arg=yo", blah="foo"),
+            "http://fake.base/?blah=foo&arg=yo")
+
+
+    def test_override_with_existing(self):
+        self.assertEqual(
+            self.func("http://fake.base/?arg=yo&blah=yo", blah="foo"),
+            "http://fake.base/?blah=__&arg=yo")
+
+
+    def test_override_multiple(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=one&blah=two", blah="foo"),
+            "http://fake.base/?blah=__")
+
+
+    def test_override_with_empty_list(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=one&blah=two", blah=[]),
+            "http://fake.base/?blah=one&blah=two")
+
+
+    def test_override_overlap(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=one&blah=two", blah="one"),
+            "http://fake.base/?blah=one")
+
+
+    def test_override_multiple_overlap(self):
+        self.assertEqual(
+            self.func(
+                "http://fake.base/?blah=one&blah=two&blah=three",
+                blah=["one", "three"]),
+            "http://fake.base/?blah=one&blah=three")
+
+
+    def test_existing_multiple(self):
+        self.assertEqual(
+            self.func("http://fake.base/?blah=one&blah=two", arg="foo"),
+            "http://fake.base/?blah=one&blah=two&arg=foo")
+
+
+
 class TestAddToQueryString(TestCase):
     @property
     def func(self):

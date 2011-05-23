@@ -9,8 +9,10 @@ from mock import patch
 from unittest2 import TestCase
 
 from .core.builders import companies
+from .products.builders import products
 from .responses import response, make_identity
 from .static.builders import codevalues
+from .users.builders import users
 
 
 
@@ -53,6 +55,10 @@ COMMON_RESPONSES = {
     "http://fake.base/rest/companies/1?_type=json":
         response(companies.one(
             resourceIdentity=make_identity(id=1, url="companies/1"))),
+    "http://fake.base/rest/users?_type=json":
+        response(users.searchresult({})),
+    "http://fake.base/rest/products?_type=json":
+        response(products.searchresult({})),
     "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json":
         response(codevalues.array(
             {"description": "DRAFT", "id": 1},

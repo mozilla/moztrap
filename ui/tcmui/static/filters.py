@@ -44,3 +44,14 @@ class ApprovalStatusFilter(FieldFilter):
         (2, "approved"),
         (3, "rejected"),
         ]
+
+
+
+class TestResultStatusFilter(FieldFilter):
+    options = [
+        (1, "pending"),
+        (2, "passed"),
+        (3, "failed"),
+        (5, "started"),
+        (6, "invalid"),
+        ]

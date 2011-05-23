@@ -24,6 +24,35 @@ def update_querystring(url, **kwargs):
 
 
 
+def narrow_querystring(url, **kwargs):
+    """
+    Updates the querystring of ``url`` with keys/values in ``kwargs``,
+    performing only updates that would further narrow the set of returned
+    objects if this querystring is used as a filter. In other words, only apply
+    the intersection of values for any given key, and if that intersection is
+    empty use the marker value ``__`` which should match nothing.
+
+
+    """
+    parts = list(urlparse.urlparse(url))
+    queryargs = urlparse.parse_qs(parts[4], keep_blank_values=False)
+    for k, v in kwargs.iteritems():
+        new = convert_to_list(v)
+        if k in queryargs:
+            existing = convert_to_list(queryargs[k])
+            if new:
+                # no use of sets here, order matters
+                new = [o for o in new if o in existing]
+                if not new:
+                    new = str("__")
+            else:
+                new = existing
+        queryargs[k] = new
+    parts[4] = urllib.urlencode(queryargs, doseq=True)
+    return urlparse.urlunparse(parts)
+
+
+
 def add_to_querystring(url, **kwargs):
     """
     Add keys/values in ``kwargs`` to querystring of ``url``, without removing
@@ -35,11 +64,7 @@ def add_to_querystring(url, **kwargs):
     queryargs = urlparse.parse_qs(parts[4], keep_blank_values=False)
     for k, v in kwargs.iteritems():
         if k in queryargs:
-            if (isinstance(v, basestring) or
-                not isinstance(v, collections.Iterable)):
-                queryargs[k].append(v)
-            else:
-                queryargs[k].extend(v)
+            queryargs[k].extend(convert_to_list(v))
         else:
             queryargs[k] = v
     parts[4] = urllib.urlencode(queryargs, doseq=True)
@@ -72,3 +97,14 @@ def id_for_object(val):
 
 def lc_first(s):
     return s[0].lower() + s[1:]
+
+
+def is_iterable(v):
+    return ((not isinstance(v, basestring) and
+             isinstance(v, collections.Iterable)))
+
+
+def convert_to_list(v):
+    if not is_iterable(v):
+        return [v]
+    return list(v)

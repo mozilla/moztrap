@@ -670,17 +670,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         valid_fieldnames = set(self.filterable_fields().keys())
         filters = {}
         for (k, v) in kwargs.iteritems():
-            if k == "sortfield" and v in valid_fieldnames:
-                filters[k] = self.filterable_fields()[v].api_filter_name
-            elif k == "sortdirection" and v in sort.DIRECTIONS:
-                filters[k] = v
-            elif k == "pagesize":
-                filters[k] = pagination.positive_integer(
-                    v, pagination.DEFAULT_PAGESIZE)
-            elif k == "pagenumber":
-                filters[k] = pagination.positive_integer(
-                    v, 1)
-            elif k in valid_fieldnames:
+            if k in valid_fieldnames:
                 if isinstance(v, EnumValue):
                     v = int(v)
                 elif not isinstance(v, basestring):
@@ -696,25 +686,33 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
                         pass
                 filters[self.filterable_fields()[k].api_filter_name] = v
 
-        newurl = util.update_querystring(self._location, **filters)
+        newurl = util.narrow_querystring(self._location, **filters)
 
         return self.get(newurl, auth=auth)
 
 
     def sort(self, field, direction=sort.DEFAULT):
-        if field is None:
-            return self
-        return self.filter(sortfield=field, sortdirection=direction)
+        sortable = self.filterable_fields()
+        if field in sortable and direction in sort.DIRECTIONS:
+            newurl = util.update_querystring(
+                self._location,
+                sortfield=sortable[field].api_filter_name,
+                sortdirection=direction)
+            return self.get(newurl, auth=self.auth)
+        return self
 
 
     def paginate(self, pagesize=None, pagenumber=None):
-        if pagesize == None and pagenumber == None:
-            return self
-
-        return self.filter(
-            pagesize=pagination.positive_integer(
-                pagesize, pagination.DEFAULT_PAGESIZE),
-            pagenumber=pagination.positive_integer(pagenumber, 1))
+        qs = {}
+        if pagesize is not None:
+            qs["pagesize"] = pagination.positive_integer(
+                pagesize, pagination.DEFAULT_PAGESIZE)
+        if pagenumber is not None:
+            qs["pagenumber"] = pagination.positive_integer(pagenumber, 1)
+        if qs:
+            newurl = util.update_querystring(self._location, **qs)
+            return self.get(newurl, auth=self.auth)
+        return self
 
 
     @classmethod

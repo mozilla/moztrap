@@ -872,7 +872,7 @@ class ListObjectTest(TestResourceTestCase):
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=10"))
+            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
@@ -887,7 +887,7 @@ class ListObjectTest(TestResourceTestCase):
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?_type=json&pagenumber=1&pagesize=5"))
+            Url("http://fake.base/rest/testresources?_type=json&pagesize=5"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
@@ -1024,6 +1024,25 @@ class ListObjectTest(TestResourceTestCase):
             Url(req["uri"]),
             Url("http://fake.base/rest/testresources?submitAs=1&submitAs=2&_type=json"))
 
+
+
+    def test_double_filter(self, http):
+        """
+        Successive calls to filter should only further narrow, not overwrite
+        or add to previous calls.
+
+        """
+        http.request.return_value = response(
+            self.builder.searchresult())
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as="testval").filter(submit_as=["otherval"])
+
+        self.assertEqual(len(c), 0)
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=__&_type=json"))
 
 
     def test_filter_invalid_field(self, http):

@@ -140,7 +140,9 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
     def extra_responses(self):
         return {
             "http://fake.base/rest/testcycles/1?_type=json":
-                response(testcycles.one(name="A Cycle"))
+                response(testcycles.one(name="A Cycle")),
+            "http://fake.base/rest/testcycles?testCycleStatusId=2&testCycleStatusId=3&_type=json":
+                response(testcycles.searchresult({})),
             }
 
 
@@ -193,6 +195,12 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
             # summary results for test suite
             "http://fake.base/rest/testruns/results?_type=json&testSuiteId=1&testRunId=1":
                 response(testresults.searchresult({})),
+            # suites for filtering on
+            "http://fake.base/rest/testsuites/?_type=json":
+                response(testsuites.searchresult({})),
+            # runs for filtering on
+            "http://fake.base/rest/testruns?_type=json&testRunStatusId=2&testRunStatusId=3":
+                response(testruns.searchresult({}))
             }
 
 
