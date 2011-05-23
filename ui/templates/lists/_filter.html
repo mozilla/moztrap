@@ -27,13 +27,13 @@
           {% endif %}
 
           {% for field in filter %}
-          <section>
+          <section class="filter-group">
             <h5>{{ field.name }}</h5>
             <ul>
               {% for option in field %}
               <li>
                 <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ option.value }}"{% if option.selected %} checked{% endif %}>
-                <label for="id-{{ field.name }}-{{ option.value }}">{{ option.label }} <small>0</small></label>
+                <label for="id-{{ field.name }}-{{ option.value }}">{{ option.label }}</label>
               </li>
               {% endfor %}
           </section>
