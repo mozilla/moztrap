@@ -1,7 +1,7 @@
 // Mixins --------------------------------------------------------------------
 
 =colorwheel($select)
-  @for $i from 1 to 25
+  @for $i from 1 through 24
     &:nth-of-type(24n-#{$i})
       #{$select}
         $deg: ($i - 1)*15deg

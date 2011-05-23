@@ -83,7 +83,7 @@
   +text-shadow(rgba($blue-hint,$small) 0 1px 0)
   text-align: center
 
-@for $i from 1 to 101
+@for $i from 1 through 100
   $n      : .9deg*$i
   $color  : adjust-hue($red-lighter,$n)
   .completion[data-perc="#{$i}"]

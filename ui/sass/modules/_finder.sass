@@ -39,7 +39,7 @@
     h3, h4, h5, p
       margin-bottom: 0
 
-    @for $n from 4 to 10
+    @for $n from 4 through 10
       &[data-cols="#{$n}"]
         @extend .widefinder
         .carousel
@@ -67,7 +67,7 @@
         &:last-child
           &, &.focus
             width: 100%
-        @for $n from 2 to 10
+        @for $n from 2 through 10
           &:nth-last-child(#{$n})
             &, & ~ .col
               width: 1/($n+1)*100%

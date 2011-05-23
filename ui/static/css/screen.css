@@ -1755,7 +1755,7 @@ thead .controls {
   height: 1.618em;
 }
 
-.widefinder, .finder.expanded[data-cols="4"], .finder.expanded[data-cols="5"], .finder.expanded[data-cols="6"], .finder.expanded[data-cols="7"], .finder.expanded[data-cols="8"], .finder.expanded[data-cols="9"] {
+.widefinder, .finder.expanded[data-cols="4"], .finder.expanded[data-cols="5"], .finder.expanded[data-cols="6"], .finder.expanded[data-cols="7"], .finder.expanded[data-cols="8"], .finder.expanded[data-cols="9"], .finder.expanded[data-cols="10"] {
   overflow-y: hidden;
   overflow-x: scroll;
 }
@@ -1802,6 +1802,9 @@ thead .controls {
 }
 .finder.expanded[data-cols="9"] .carousel {
   width: 250%;
+}
+.finder.expanded[data-cols="10"] .carousel {
+  width: 275%;
 }
 .finder.expanded .col {
   -moz-transition-property: width;
@@ -1881,6 +1884,12 @@ thead .controls {
 }
 .finder.expanded .col:first-child:nth-last-child(9).focus, .finder.expanded .col:first-child:nth-last-child(9) ~ .col.focus {
   width: 20%;
+}
+.finder.expanded .col:first-child:nth-last-child(10), .finder.expanded .col:first-child:nth-last-child(10) ~ .col {
+  width: 9.091%;
+}
+.finder.expanded .col:first-child:nth-last-child(10).focus, .finder.expanded .col:first-child:nth-last-child(10) ~ .col.focus {
+  width: 18.182%;
 }
 .finder.expanded .listordering {
   position: absolute;
