@@ -32,24 +32,31 @@ var TCM = TCM || {};
             $('details').html5accordion('summary');
         }
         $('.details:not(html)').html5accordion('.summary');
-        $('#sandbox a.findertoggle').click(function() {
+        $('#sandbox .findertoggle').click(function() {
             $(this).add('#sandbox .finder').toggleClass('expanded').toggleClass('compact');
             return false;
         });
         $('#sandbox').html5finder( {
             loading: true,
             horizontalScroll: true,
-            scrollContainer: '#findernav.expanded',
-            section1class: 'products',
-            section1item: 'input[name="product"]',
-            section2class: 'cycles',
-            section2item: 'input[name="cycle"]',
-            section3class: 'runs',
-            section3item: 'input[name="run"]',
-            section4class: 'cases',
-            section4item: 'input[name="case"]',
-            section5class: 'results',
-            section5item: 'input[name="result"]'
+            scrollContainer: '.finder.expanded',
+            headerSelector: 'header.listordering',
+            sectionSelector: 'section.col',
+            sectionContentSelector: 'ul.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs',
+                'cases',
+                'results'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="cycle"]',
+                'input[name="run"]',
+                'input[name="case"]',
+                'input[name="result"]'
+            ]
         });
         $('.subnav .findertoggle').click(function() {
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
@@ -59,16 +66,23 @@ var TCM = TCM || {};
             loading: true,
             horizontalScroll: true,
             scrollContainer: '.finder.expanded',
-            section1class: 'products',
-            section1item: 'input[name="product"]',
-            section2class: 'cycles',
-            section2item: 'input[name="cycle"]',
-            section3class: 'runs',
-            section3item: 'input[name="run"]',
-            section4class: 'cases',
-            section4item: 'input[name="case"]',
-            section5class: 'results',
-            section5item: 'input[name="result"]'
+            headerSelector: 'header.listordering',
+            sectionSelector: 'section.col',
+            sectionContentSelector: 'ul.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs',
+                'cases',
+                'results'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="cycle"]',
+                'input[name="run"]',
+                'input[name="case"]',
+                'input[name="result"]'
+            ]
         });
     });
 
