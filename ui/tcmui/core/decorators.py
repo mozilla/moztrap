@@ -21,7 +21,10 @@ def sort(ctx_name):
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
             ctx = response.context_data
-            ctx[ctx_name] = ctx[ctx_name].sort(*sort_util.from_request(request))
+            field, direction = sort_util.from_request(request)
+            ctx[ctx_name] = ctx[ctx_name].sort(field, direction)
+            if field:
+                ctx["sort"] = {"field": field, "direction": direction}
             return response
 
         return _wrapped_view
@@ -30,7 +33,7 @@ def sort(ctx_name):
 
 
 
-def filter(ctx_name):
+def filter(ctx_name, **fields):
     """
     View decorator that handles filtering of a ListObject. Expects to find it
     in the TemplateResponse context under the name ``ctx_name``.
@@ -43,7 +46,9 @@ def filter(ctx_name):
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
             ctx = response.context_data
-            ctx[ctx_name] = filters.filter(ctx[ctx_name], request)
+            flt = filters.Filter(request.GET, **fields)
+            ctx[ctx_name] = flt.filter(ctx[ctx_name])
+            ctx["filter"] = flt
             return response
 
         return _wrapped_view

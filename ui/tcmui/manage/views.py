@@ -2,14 +2,15 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
+from ..core import decorators as dec
 from ..core import sort
 from ..products.models import ProductList
+from ..static.filters import TestCycleStatusFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..testcases.models import TestSuiteList, TestCaseVersionList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
-from ..core import decorators as dec
 from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
@@ -21,7 +22,7 @@ def home(request):
 
 @login_redirect
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
-@dec.filter("cycles")
+@dec.filter("cycles", status=TestCycleStatusFilter)
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):

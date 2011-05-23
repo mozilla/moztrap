@@ -8,7 +8,7 @@
   <h2>Manage Test Cycles</h2>
   <a href="{% url manage_testcycle_add %}" class="create">create test cycle</a>
 
-  {% include "includes/filter.html" %}
+  {% include "lists/_filter.html" %}
 
   <form method="POST">
     {% csrf_token %}

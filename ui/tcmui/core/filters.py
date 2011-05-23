@@ -1,66 +1,68 @@
-from collections import defaultdict, namedtuple
-
-from .util import update_querystring
+from collections import namedtuple
 
 
 
-def filter(list_obj, request):
+class Filter(object):
     """
-    Given a ListObject and a request, return a clone of that ListObject,
-    filtered according to valid filters present in the request.
+    Encapsulates a set of possible filters on a ListObject and their current
+    state.
 
     """
-    fields = list_obj.filterable_fields().keys()
-    filters = dict((k, v) for (k, v) in request.GET.iteritems()
-                   if k in fields)
-    return list_obj.filter(**filters)
+    def __init__(self, GET, **fields):
+        """
+        ``GET`` is request.GET from the current request.
+
+        Remaining keyword arguments map field names to a FilterField class
+        containing the filtering options for that field.
+
+        """
+        self.fields = [
+            fieldfilter_cls(fieldname, GET.getlist(fieldname))
+            for fieldname, fieldfilter_cls in fields.iteritems()
+            ]
+
+
+    def __iter__(self):
+        for field in self.fields:
+            yield field
+
+
+    def filter(self, list_obj):
+        """
+        Return the given ListObject filtered according to the current values of
+        our filters.
+
+        """
+        filters = dict((field.name, field.values) for field in self.fields)
+        return list_obj.filter(**filters)
 
 
 
-def filter_url(url, field, value=None):
-    return update_querystring(url, **{field: value, "pagenumber": 1})
+class FieldFilter(object):
+    """
+    Encapsulates the state of filtering for a single field.
 
+    Subclasses should define an "options" attribute that is a list of tuples,
+    where each tuple consists of a filter value and label for that option.
 
-
-def filter_fields(list_obj, *args):
-    filterable = list_obj.filterable_fields()
-    valid_fields = set(filterable.keys())
-    fieldnames = [f for f in args if f in valid_fields]
-    ffields = dict(
-        (fname, (filterable[fname], FilterField(fname)))
-        for fname in fieldnames)
-
-    for obj in list_obj:
-        for fname, (field, ffield) in ffields.iteritems():
-            val = getattr(obj, fname)
-            ffield.add((unicode(val), field.encode(val)))
-
-    return sorted(
-        (i[1] for i in ffields.itervalues()),
-        key=lambda ff: fieldnames.index(ff.name))
-
-
-
-FilterOption = namedtuple("FilterOption", ["name", "value", "count"])
-
-
-class FilterField(object):
-    def __init__(self, name):
+    """
+    def __init__(self, name, current):
         self.name = name
-        self._options = defaultdict(lambda: 0)
+        self.values = set(current)
 
 
-    def add(self, option):
-        self._options[option] += 1
+    options = []
 
 
-    @property
-    def options(self):
-        return sorted(
-            [FilterOption(name=o[0], value=o[1], count=c)
-             for (o, c) in self._options.iteritems()],
-            key=lambda fo: fo.count, reverse=True)
+    def __iter__(self):
+        for o in self.options:
+            yield FilterOption(
+                value=o[0], label=o[1], selected=(str(o[0]) in self.values))
 
 
     def __repr__(self):
-        return "<FilterField: %r %r>" % (self.title, self.options)
+        return "%s(%r, %r)" % (self.__class__.__name__, self.name, self.values)
+
+
+
+FilterOption = namedtuple("FilterOption", ["value", "label", "selected"])
