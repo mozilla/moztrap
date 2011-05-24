@@ -43,13 +43,6 @@ var TCM = TCM || {};
             updateButton();
         });
 
-        filterOptions.each(function() {
-            var content = $(this).children('label').html(),
-                type = $(this).children('input').attr('name'),
-                initialHTML = '<li><a href="#">' + content + ' <i>[' + type + ']</i></a></li>';
-            suggestionList.append(initialHTML);
-        });
-
         textbox.keyup(function() {
             if ($(this).val() !== typedText) {
                 typedText = $(this).val();
