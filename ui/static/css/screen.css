@@ -1615,6 +1615,9 @@ thead .controls {
   margin-right: 1.205%;
   margin-bottom: 0.809em;
 }
+#filter .expanded .content .filter-group.empty {
+  display: none;
+}
 #filter .expanded .content .filter-group:nth-of-type(7n) {
   display: inline;
   float: right;
