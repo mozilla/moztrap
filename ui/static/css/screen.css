@@ -1426,11 +1426,19 @@ thead .controls {
   border-color: transparent #999999 #eeeeee;
   border-width: 0 1px 1px;
 }
-#filter .suggest a:focus, #filter .suggest a:hover, #filter .suggest a:active {
+#filter .suggest a:link:hover, #filter .suggest a:link:active, #filter .suggest a:visited:hover, #filter .suggest a:visited:active {
   background: #fef0bf;
 }
-#filter .suggest:not(:hover) li.selected a:link, #filter .suggest:not(:hover) li.selected a:visited {
+#filter .suggest a:link:focus, #filter .suggest a:visited:focus {
+  background: rgba(254, 240, 191, 0.382);
+  outline: 0;
+}
+#filter .suggest a:link:hover:focus, #filter .suggest a:visited:hover:focus {
   background: #fef0bf;
+}
+#filter .suggest:not(:hover) a:focus, #filter .suggest:not(:hover) a:hover, #filter .suggest:not(:hover) a:active {
+  background: #fef0bf;
+  outline: 0;
 }
 #filter .suggest li:last-child a:link, #filter .suggest li:last-child a:visited {
   border-bottom-color: #999999;

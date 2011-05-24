@@ -67,13 +67,18 @@
         border: 1px solid $light
           color: transparent $mid $light
           width: 0 1px 1px
-      #{$focus}
-        background: $yellow-light
+        &:hover, &:active
+          background: $yellow-light
+        &:focus
+          background: rgba($yellow-light,$xsmall)
+          outline: 0
+        &:hover:focus
+          background: $yellow-light
     &:not(:hover)
-      li.selected
-        a
-          #{$link}
-            background: $yellow-light
+      a
+        #{$focus}
+          background: $yellow-light
+          outline: 0
     li:last-child
       a
         #{$link}
