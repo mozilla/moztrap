@@ -75,6 +75,10 @@ class FieldFilter(object):
                 value=o[0], label=o[1], selected=(str(o[0]) in self.values))
 
 
+    def __len__(self):
+        return len(self.get_options())
+
+
     def __repr__(self):
         return "%s(%r, %r)" % (self.__class__.__name__, self.name, self.values)
 
@@ -96,10 +100,13 @@ class LocatorFieldFilter(FieldFilter):
 
 
     def get_options(self):
-        lst = self.target.get(auth=self.auth)
-        if self.target_filters is not None:
-            lst = lst.filter(**self.target_filters)
-        return [(obj.id, self.target_label(obj)) for obj in lst]
+        if not hasattr(self, "_cached_options"):
+            lst = self.target.get(auth=self.auth)
+            if self.target_filters is not None:
+                lst = lst.filter(**self.target_filters)
+            self._cached_options = [
+                (obj.id, self.target_label(obj)) for obj in lst]
+        return self._cached_options
 
 
 

@@ -76,6 +76,13 @@ class FieldFilterTest(FilterTestCase):
         self.assertEqual(
             [o.selected for o in options], [True, True, False])
 
+    def test_len(self):
+        ff = self.status_field_filter(
+            "status", ["1", "2"])
+
+        self.assertEqual(len(ff), 3)
+
+
     def test_repr(self):
         ff = self.status_field_filter(
             "status", ["draft", "active"])

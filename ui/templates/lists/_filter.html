@@ -25,7 +25,7 @@
           {% for field in filter %}
           <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
             <h5>{{ field.name|lower }}</h5>
-            <ul>
+            <ul class="{% if field|length > 6 %}long{% endif %}">
               {% for option in field %}
               <li>
                 <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ option.value }}"{% if option.selected %} checked{% endif %}>
