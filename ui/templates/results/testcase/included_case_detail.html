@@ -7,7 +7,7 @@
 
   <div class="details case-details {{ includedcase.testCaseVersion.status|status_class }}">
     <div class="summary">
-      <p class="status {{ includedcase.testCaseVersion.status|status_class }}"><span>{{ includedcase.testCaseVersion.status|lower }}</span></p>
+      <p class="status"><span class="{{ includedcase.testCaseVersion.status|status_class }}">{{ includedcase.testCaseVersion.status|lower }}</span></p>
       <p class="run" title="{{ includedcase.testRun.name }}"><b>run:</b> {{ includedcase.testRun.name }}</p>
       <p class="product"><b>product:</b> {{ includedcase.product.name }}</p>
       {% include "results/_results_summary.html" with results=includedcase.resultsummary %}
