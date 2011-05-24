@@ -23,7 +23,7 @@ var TCM = TCM || {};
             filterOptions = $('#filter .visual .filter-group li'),
             textbox = $('#filter .textual #text-filter'),
             typedText = textbox.val(),
-            suggestionList = $('#filter .textual ul.suggest'),
+            suggestionList = $('#filter .textual ul.suggest').hide(),
             updateButton = function() {
                 if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
                     return $(this).data('state') === 'changed';
@@ -60,6 +60,24 @@ var TCM = TCM || {};
             }
         });
 
+        textbox.focus(function() {
+            suggestionList.show();
+            textbox.data('clicked', false);
+        });
+
+        textbox.blur(function() {
+            function hideList() {
+                if (textbox.data('clicked') !== true) {
+                    suggestionList.hide();
+                }
+            }
+            window.setTimeout(hideList, 150);
+        });
+
+        suggestionList.find('a').live('mousedown', function() {
+            textbox.data('clicked', true);
+        });
+
         suggestionList.find('a').live('click', function() {
             var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id'));
             thisFilter.attr('checked', 'checked');
@@ -67,6 +85,8 @@ var TCM = TCM || {};
                 thisFilter.data('state', 'changed');
             }
             updateButton();
+            textbox.data('clicked', false);
+            suggestionList.hide();
             return false;
         });
     };
