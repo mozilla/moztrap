@@ -14,14 +14,14 @@
     <table>
       <thead>
         <tr class="listordering">
-          <th class="name {{ request|sort_status:"name" }}">
-            <a href="{{ request|sort_url:"name" }}" title="sort by name">name</a>
+          <th class="name {{ sort|dir:"name" }}">
+            <a href="{{ sort|url:"name" }}" title="sort by name">name</a>
           </th>
-          <th class="start {{ request|sort_status:"startDate" }}">
-            <a href="{{ request|sort_url:"startDate" }}" title="sort by start date">start date</a>
+          <th class="start {{ sort|dir:"startDate" }}">
+            <a href="{{ sort|url:"startDate" }}" title="sort by start date">start date</a>
           </th>
-          <th class="end {{ request|sort_status:"endDate" }}">
-            <a href="{{ request|sort_url:"endDate" }}" title="sort by end date">end date</a>
+          <th class="end {{ sort|dir:"endDate" }}">
+            <a href="{{ sort|url:"endDate" }}" title="sort by end date">end date</a>
           </th>
         </tr>
       </thead>

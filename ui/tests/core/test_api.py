@@ -872,7 +872,7 @@ class ListObjectTest(TestResourceTestCase):
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2"))
+            Url("http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=10"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
@@ -887,7 +887,7 @@ class ListObjectTest(TestResourceTestCase):
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?_type=json&pagesize=5"))
+            Url("http://fake.base/rest/testresources?_type=json&pagesize=5&pagenumber=1"))
 
 
     @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)

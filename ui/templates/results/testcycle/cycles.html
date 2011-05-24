@@ -15,22 +15,22 @@
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">
-            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a>
+            <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
           </li>
           <li class="bycompletion">
             <a href="#">%</a> {# @@@ should be sortable #}
           </li>
           <li class="bytitle">
-            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">name</a>
+            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
           </li>
           <li class="byproduct">
-            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+            <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
           </li>
           <li class="bystart">
-            <a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a>
+            <a href="{{ sort|url:"startDate" }}" class="{{ sort|dir:"startDate" }}">start date</a>
           </li>
           <li class="byend">
-            <a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a>
+            <a href="{{ sort|url:"endDate" }}" class="{{ sort|dir:"endDate" }}">end date</a>
           </li>
         </ul>
       </nav>

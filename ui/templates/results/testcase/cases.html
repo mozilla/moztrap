@@ -17,16 +17,16 @@
           <li class="bystatus">status</li> {# @@@ can't sort on this #}
           <li class="bycompletion">%</li> {# @@@ should be sortable #}
           <li class="bytitle">
-            <a href="{{ request|sort_url:"testCase" }}" class="{{ request|sort_status:"testCase" }}">name</a>
+            <a href="{{ sort|url:"testCase" }}" class="{{ sort|dir:"testCase" }}">name</a>
           </li>
           <li class="byrun">
-            <a href="{{ request|sort_url:"testRun" }}" class="{{ request|sort_status:"testRun" }}">run</a>
+            <a href="{{ sort|url:"testRun" }}" class="{{ sort|dir:"testRun" }}">run</a>
           </li>
           <li class="byproduct">
-            <a href="{{ request|sort_url:"product" }}" class="{{ request|sort_status:"product" }}">product</a>
+            <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
           </li>
           <li class="bysuite">
-            <a href="{{ request|sort_url:"testSuite" }}" class="{{ request|sort_status:"testSuite" }}">suite</a>
+            <a href="{{ sort|url:"testSuite" }}" class="{{ sort|dir:"testSuite" }}">suite</a>
           </li>
         </ul>
       </nav>

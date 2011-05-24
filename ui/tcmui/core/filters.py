@@ -8,7 +8,7 @@ class Filter(object):
     state.
 
     """
-    def __init__(self, GET, auth, **fields):
+    def __init__(self, GET, auth, *fields):
         """
         ``GET`` is request.GET from the current request.
 
@@ -21,7 +21,7 @@ class Filter(object):
         """
         self.fields = [
             fieldfilter_cls(fieldname, GET.getlist(fieldname), auth)
-            for fieldname, fieldfilter_cls in fields.iteritems()
+            for fieldname, fieldfilter_cls in fields
             ]
 
 

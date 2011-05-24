@@ -703,16 +703,15 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
 
     def paginate(self, pagesize=None, pagenumber=None):
-        qs = {}
-        if pagesize is not None:
-            qs["pagesize"] = pagination.positive_integer(
-                pagesize, pagination.DEFAULT_PAGESIZE)
-        if pagenumber is not None:
-            qs["pagenumber"] = pagination.positive_integer(pagenumber, 1)
-        if qs:
-            newurl = util.update_querystring(self._location, **qs)
-            return self.get(newurl, auth=self.auth)
-        return self
+        if pagesize is None and pagenumber is None:
+            return self
+        newurl = util.update_querystring(
+            self._location,
+            pagesize=pagination.positive_integer(
+                pagesize, pagination.DEFAULT_PAGESIZE),
+            pagenumber=pagination.positive_integer(pagenumber, 1)
+            )
+        return self.get(newurl, auth=self.auth)
 
 
     @classmethod

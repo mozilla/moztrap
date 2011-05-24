@@ -21,7 +21,7 @@
           <input type="hidden" name="pagenumber" value="1">
           <input type="hidden" name="pagesize" value="{{ pager.pagesize }}">
           {% endif %}
-          {% if sort %}
+          {% if sort.field %}
           <input type="hidden" name="sortfield" value="{{ sort.field }}">
           <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
           {% endif %}

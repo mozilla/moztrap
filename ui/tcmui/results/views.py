@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
@@ -15,16 +16,16 @@ from . import filters
 
 
 def home(request):
-    return redirect("results_testcycles")
+    return redirect(reverse("results_testcycles") + "?status=2")
 
 
 
 @login_redirect
 @dec.filter("cycles",
-            status=filters.NonDraftTestCycleStatusFilter,
-            product=ProductFieldFilter)
+            ("status", filters.NonDraftTestCycleStatusFilter),
+            ("product", ProductFieldFilter))
 @dec.paginate("cycles")
-@dec.sort("cycles")
+@dec.sort("cycles", "product")
 def testcycles(request):
     cycles = TestCycleList.ours(auth=request.auth).filter(status=[
             TestCycleStatus.ACTIVE,
@@ -37,9 +38,9 @@ def testcycles(request):
 
 @login_redirect
 @dec.filter("runs",
-            status=filters.NonDraftTestRunStatusFilter,
-            product=ProductFieldFilter,
-            testCycle=filters.NonDraftTestCycleFieldFilter)
+            ("status", filters.NonDraftTestRunStatusFilter),
+            ("product", ProductFieldFilter),
+            ("testCycle", filters.NonDraftTestCycleFieldFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -54,9 +55,9 @@ def testruns(request):
 
 @login_redirect
 @dec.filter("includedcases",
-            testRun=filters.NonDraftTestRunFieldFilter,
-            product=ProductFieldFilter,
-            testSuite=filters.TestSuiteFieldFilter)
+            ("testRun", filters.NonDraftTestRunFieldFilter),
+            ("product", ProductFieldFilter),
+            ("testSuite", filters.TestSuiteFieldFilter))
 @dec.paginate("includedcases")
 @dec.sort("includedcases")
 def testcases(request):
@@ -70,8 +71,8 @@ def testcases(request):
 
 @login_redirect
 @dec.filter("results",
-            tester=UserFieldFilter,
-            status=TestResultStatusFilter)
+            ("tester", UserFieldFilter),
+            ("status", TestResultStatusFilter))
 @dec.paginate("results")
 @dec.sort("results")
 def testresults(request, itc_id):

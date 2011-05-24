@@ -25,7 +25,7 @@ class DefaultResultsViewTest(ViewTestCase):
 
         self.assertEqual(res.status_code, 302)
         self.assertEqual(
-            res["Location"], "/results/testcycles/")
+            res["Location"], "/results/testcycles/?status=2")
 
 
 class ListViewTests(object):
@@ -97,8 +97,8 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
 
 
     def extra_querystring(self):
-        # ACTIVE, LOCKED, and CLOSED status (not DRAFT or DISCARDED)
-        return "&testCycleStatusId=2&testCycleStatusId=3&testCycleStatusId=4"
+        # ACTIVE/LOCKED/CLOSED, sorted by product
+        return "&testCycleStatusId=2&testCycleStatusId=3&testCycleStatusId=4&sortfield=productId&sortdirection=asc"
 
 
     def per_item_responses(self, item_id):

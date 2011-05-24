@@ -39,7 +39,7 @@ class TestFilter(FilterTestCase):
         f = self.filter_class(
             self.GET(status=["draft", "active"]),
             self.auth,
-            status=self.status_field_filter)
+            ("status", self.status_field_filter))
 
         fields = list(f)
         self.assertEqual(len(fields), 1)
@@ -52,8 +52,8 @@ class TestFilter(FilterTestCase):
     def test_filter(self):
         f = self.filter_class(
             self.GET(status=["draft", "active"]),
-            auth=self.auth,
-            status=self.status_field_filter)
+            self.auth,
+            ("status", self.status_field_filter))
 
         list_obj = Mock()
         f.filter(list_obj)

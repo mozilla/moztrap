@@ -14,11 +14,11 @@
       <thead>
         <tr class="listordering">
           <th class="title">
-            <a href="{{ request|sort_url:"name" }}" class="{{ request|sort_status:"name" }}">test runs</a>
+            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">test runs</a>
           </th>
-          <th class="start"><a href="{{ request|sort_url:"startDate" }}" class="{{ request|sort_status:"startDate" }}">start date</a></th>
-          <th class="end"><a href="{{ request|sort_url:"endDate" }}" class="{{ request|sort_status:"endDate" }}">end date</a></th>
-          <th class="state"><a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">status</a></th>
+          <th class="start"><a href="{{ sort|url:"startDate" }}" class="{{ sort|dir:"startDate" }}">start date</a></th>
+          <th class="end"><a href="{{ sort|url:"endDate" }}" class="{{ sort|dir:"endDate" }}">end date</a></th>
+          <th class="state"><a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a></th>
           <th class="controls">controls</th>
         </tr>
       </thead>

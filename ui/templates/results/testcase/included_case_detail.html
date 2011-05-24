@@ -35,16 +35,16 @@
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="byresult">
-            <a href="{{ request|sort_url:"status" }}" class="{{ request|sort_status:"status" }}">result</a>
+            <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">result</a>
           </li>
           <li class="bytester">
-            <a href="{{ request|sort_url:"tester" }}" class="{{ request|sort_status:"tester" }}">tester</a>
+            <a href="{{ sort|url:"tester" }}" class="{{ sort|dir:"tester" }}">tester</a>
           </li>
           <li class="byenvlist">
             environment
           </li>
           <li class="byapproval">
-            <a href="{{ request|sort_url:"approval" }}" class="{{ request|sort_status:"approval" }}">approval</a>
+            <a href="{{ sort|url:"approval" }}" class="{{ sort|dir:"approval" }}">approval</a>
           </li>
         </ul>
       </nav>

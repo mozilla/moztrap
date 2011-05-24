@@ -8,7 +8,7 @@ from .auth import admin
 
 
 
-def sort(ctx_name):
+def sort(ctx_name, defaultfield=None, defaultdirection=sort_util.DEFAULT):
     """
     View decorator that handles sorting of a ListObject. Expects to find it
     in the TemplateResponse context under the name ``ctx_name``.
@@ -21,10 +21,11 @@ def sort(ctx_name):
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
             ctx = response.context_data
-            field, direction = sort_util.from_request(request)
+            field, direction = sort_util.from_request(
+                request, defaultfield, defaultdirection)
             ctx[ctx_name] = ctx[ctx_name].sort(field, direction)
-            if field:
-                ctx["sort"] = {"field": field, "direction": direction}
+            ctx["sort"] = sort_util.Sort(
+                request.get_full_path(), field, direction)
             return response
 
         return _wrapped_view
@@ -33,7 +34,7 @@ def sort(ctx_name):
 
 
 
-def filter(ctx_name, **fields):
+def filter(ctx_name, *fields):
     """
     View decorator that handles filtering of a ListObject. Expects to find it
     in the TemplateResponse context under the name ``ctx_name``.
@@ -46,7 +47,10 @@ def filter(ctx_name, **fields):
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
             ctx = response.context_data
-            flt = filters.Filter(request.GET, request.auth, **fields)
+            flt = filters.Filter(
+                request.GET,
+                request.auth,
+                *fields)
             ctx[ctx_name] = flt.filter(ctx[ctx_name])
             ctx["filter"] = flt
             return response

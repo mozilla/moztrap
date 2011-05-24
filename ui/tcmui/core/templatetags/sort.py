@@ -1,7 +1,5 @@
 from django.template import Library
 
-from .. import sort
-
 
 
 register = Library()
@@ -9,20 +7,11 @@ register = Library()
 
 
 @register.filter
-def sort_url(request, field):
-    current_field, direction = sort.from_request(request)
-    if field == current_field:
-        direction = sort.toggle(direction)
-    else:
-        direction = sort.DEFAULT
-
-    return sort.url(request.get_full_path(), field, direction)
+def url(sort, field):
+    return sort.url(field)
 
 
 
 @register.filter
-def sort_status(request, field):
-    current_field, direction = sort.from_request(request)
-    if field == current_field:
-        return direction
-    return ""
+def dir(sort, field):
+    return sort.dir(field)

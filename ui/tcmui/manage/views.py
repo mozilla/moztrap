@@ -25,8 +25,8 @@ def home(request):
 @login_redirect
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("cycles",
-            status=status_filters.TestCycleStatusFilter,
-            product=ProductFieldFilter)
+            ("status", status_filters.TestCycleStatusFilter),
+            ("product", ProductFieldFilter))
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):
@@ -95,9 +95,9 @@ def edit_testcycle(request, cycle_id):
 @login_redirect
 @dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("runs",
-            status=status_filters.TestRunStatusFilter,
-            product=ProductFieldFilter,
-            testCycle=TestCycleFieldFilter)
+            ("status", status_filters.TestRunStatusFilter),
+            ("product", ProductFieldFilter),
+            ("testCycle", TestCycleFieldFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -170,8 +170,8 @@ def edit_testrun(request, run_id):
 @login_redirect
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("suites",
-            status=status_filters.TestSuiteStatusFilter,
-            product=ProductFieldFilter)
+            ("status", status_filters.TestSuiteStatusFilter),
+            ("product", ProductFieldFilter))
 @dec.paginate("suites")
 @dec.sort("suites")
 def testsuites(request):
@@ -238,9 +238,9 @@ def edit_testsuite(request, suite_id):
     TestCaseVersionList,
     ["approve", "reject", "activate", "deactivate", "delete"])
 @dec.filter("cases",
-            status=status_filters.TestCaseStatusFilter,
-            approval=status_filters.ApprovalStatusFilter,
-            product=ProductFieldFilter)
+            ("status", status_filters.TestCaseStatusFilter),
+            ("approval", status_filters.ApprovalStatusFilter),
+            ("product", ProductFieldFilter))
 @dec.paginate("cases")
 @dec.sort("cases")
 def testcases(request):
