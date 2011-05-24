@@ -15,7 +15,30 @@ var TCM = TCM || {};
         });
     };
 
+    var advancedFilter = function() {
+        var button = $('#filter .visual .content button[type="submit"]').hide(),
+            input = $('#filter .visual .content .filter-group input[type="checkbox"]').each(function() {
+                $(this).data('originallyChecked', $(this).is(':checked'));
+            }),
+            updateButton = function() {
+                if ($('#filter .visual .content .filter-group input[type="checkbox"].changed').length) {
+                    button.fadeIn();
+                } else {
+                    button.fadeOut();
+                }
+            };
+        input.change(function() {
+            if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
+                $(this).addClass('changed');
+            } else {
+                $(this).removeClass('changed');
+            }
+            updateButton();
+        });
+    };
+
     $(function() {
+        advancedFilter();
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input, textarea').blur(
             function() {
