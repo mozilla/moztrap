@@ -42,7 +42,7 @@
             <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
             {% endif %}
           </p>
-          <h3 class="title">{{ suite.name }}</h3>
+          <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
           <p class="product">{{ suite.product.name }}</p>
           <div class="controls">
             {% if suite.status.DRAFT %}

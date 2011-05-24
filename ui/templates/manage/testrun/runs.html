@@ -51,7 +51,7 @@
             <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">locked</button>
             {% endif %}
           </p>
-          <h3 class="title">{{ run.name }}</h3>
+          <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
           <p class="cycle">{{ run.testCycle.name }}</p>
           <p class="product">{{ run.product.name }}</p>
           <time class="start">{{ run.startDate|date }}</time>

@@ -77,6 +77,7 @@
 /* Lists ---------------------------------------------------------------------
 
 .managelist
+  +cond
   +full(22)
   margin: 0
   button
@@ -105,6 +106,14 @@
     +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
   .id
     text-align: right
+
+.title
+  overflow: hidden
+  max-height: rhythm(1)
+  white-space: nowrap
+  word-wrap: break-word
+  -o-text-overflow: ellipsis
+  text-overflow: ellipsis
 
 .status
   position: relative
@@ -157,9 +166,6 @@
 .byline
   margin: 0
 
-.start, .end
-  +cond
-
 .envgroup
   +columns(3,15)
   &:nth-child(5n)
@@ -169,6 +175,7 @@
   +adjust-font-size-to(12px,.75)
   +columns(15,22)
   +prefix(2,22)
+  clear: both
   h4
     +gone
   h5
@@ -236,7 +243,7 @@
 .listordering
   +clearfix
   +rhythm(0,.25,.25,0)
-  +boldcond
+  +bold
   background: rgba($blue,$xxsmall)
   color: rgba($base,$small)
   text-transform: capitalize

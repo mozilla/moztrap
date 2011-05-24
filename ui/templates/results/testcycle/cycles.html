@@ -41,7 +41,7 @@
             <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
           </p>
           <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
-          <h3 class="title">{{ cycle.name }}</h3>
+          <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
           <p class="product">{{ cycle.product.name }}</p>
           <time class="start">{{ cycle.startDate|date }}</time>
           <time class="end">{{ cycle.endDate|date }}</time>

@@ -2314,6 +2314,7 @@ thead .controls {
 
 /* Lists --------------------------------------------------------------------- */
 .managelist {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   clear: both;
   margin: 0;
 }
@@ -2384,6 +2385,15 @@ thead .controls {
 }
 .managelist .id {
   text-align: right;
+}
+
+.title {
+  overflow: hidden;
+  max-height: 1.618em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 
 .status {
@@ -2635,10 +2645,6 @@ thead .controls {
   margin: 0;
 }
 
-.start, .end {
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 .envgroup {
   display: inline;
   float: left;
@@ -2659,6 +2665,7 @@ thead .controls {
   width: 67.816%;
   margin-right: 1.149%;
   padding-left: 9.195%;
+  clear: both;
 }
 .envgroups h4 {
   position: absolute;
@@ -2777,7 +2784,6 @@ thead .controls {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
   margin-bottom: 0em;
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 700;
   background: rgba(82, 134, 132, 0.236);
   color: rgba(68, 68, 68, 0.618);

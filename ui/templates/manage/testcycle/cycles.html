@@ -48,7 +48,7 @@
             <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
             {% endif %}
           </p>
-          <h3 class="title">{{ cycle.name }}</h3>
+          <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
           <p class="product">{{ cycle.product.name }}</p>
           <time class="start">{{ cycle.startDate|date }}</time>
           <time class="end">{{ cycle.endDate|date }}</time>
