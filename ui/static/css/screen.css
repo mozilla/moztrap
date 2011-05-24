@@ -2386,8 +2386,7 @@ thead .controls {
 .managelist .id {
   text-align: right;
 }
-
-.title {
+.managelist .title, .managelist .run, .managelist .cycle, .managelist .product {
   overflow: hidden;
   max-height: 1.618em;
   white-space: nowrap;
@@ -4736,19 +4735,19 @@ thead .controls {
   width: 3.448%;
   margin-right: 1.149%;
 }
-#caseresults .status, #caseresults .id, #caseresults .bystatus {
+#caseresults .status, #caseresults .id, #caseresults .bystatus, #caseresults .suite, #caseresults .bysuite {
   display: inline;
   float: left;
   width: 8.046%;
   margin-right: 1.149%;
 }
-#caseresults .product, #caseresults .byproduct, #caseresults .run, #caseresults .byrun, #caseresults .suite, #caseresults .bysuite {
+#caseresults .product, #caseresults .byproduct {
   display: inline;
   float: left;
   width: 12.644%;
   margin-right: 1.149%;
 }
-#caseresults .testers {
+#caseresults .testers, #caseresults .run, #caseresults .byrun {
   display: inline;
   float: left;
   width: 17.241%;
@@ -4780,6 +4779,9 @@ thead .controls {
   position: relative;
   background: rgba(233, 237, 237, 0.382);
 }
+.case-details b {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 .case-details .summary {
   overflow: hidden;
   *zoom: 1;
@@ -4797,15 +4799,6 @@ thead .controls {
 }
 .case-details .summary p {
   margin-bottom: 0;
-}
-.case-details.draft .summary, .case-details.active .summary {
-  background-image: url('../images/ui/power.png?1299181459');
-}
-.case-details.locked .summary {
-  background-image: url('../images/ui/lock.png?1299181435');
-}
-.case-details.open .summary {
-  background-color: rgba(68, 68, 68, 0.146);
 }
 .case-details .content {
   clear: both;
@@ -4830,10 +4823,16 @@ thead .controls {
   width: 8.861%;
   margin-right: 1.266%;
 }
-.case-details .run, .case-details .product, .case-details .results {
+.case-details .product, .case-details .results {
   display: inline;
   float: left;
-  width: 29.114%;
+  width: 24.051%;
+  margin-right: 1.266%;
+}
+.case-details .run {
+  display: inline;
+  float: left;
+  width: 39.241%;
   margin-right: 1.266%;
 }
 .case-details .steps {
@@ -4849,6 +4848,14 @@ thead .controls {
   display: inline;
   float: right;
   margin-right: 0;
+}
+.case-details .run {
+  overflow: hidden;
+  max-height: 1.618em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 
 #results .managelist .result, #results .managelist .byresult, #results .managelist .failed-step {

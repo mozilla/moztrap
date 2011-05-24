@@ -52,7 +52,7 @@
             {% endif %}
           </p>
           <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
-          <p class="cycle">{{ run.testCycle.name }}</p>
+          <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
           <p class="product">{{ run.product.name }}</p>
           <time class="start">{{ run.startDate|date }}</time>
           <time class="end">{{ run.endDate|date }}</time>

@@ -126,11 +126,11 @@
 #caseresults
   .completion, .bycompletion
     +columns(1,22)
-  .status, .id, .bystatus
+  .status, .id, .bystatus, .suite, .bysuite
     +columns(2,22)
-  .product, .byproduct, .run, .byrun, .suite, .bysuite
+  .product, .byproduct
     +columns(3,22)
-  .testers
+  .testers, .run, .byrun
     +columns(4,22)
   .summary > .results, .title, .bytitle
     +columns(5,22)
@@ -148,6 +148,9 @@
   position: relative
   background: rgba($blue-hint,$xsmall)
 
+  b
+    +cond
+
   .summary
     +clearfix
     +full(22)
@@ -163,17 +166,6 @@
       margin-bottom: 0
     .results
       @extend .resultslist
-
-  &.draft, &.active
-    .summary
-      background-image: image-url('ui/power.png')
-  &.locked
-    .summary
-      background-image: image-url('ui/lock.png')
-
-  &.open
-    .summary
-      background-color: rgba($base,$xxxsmall)
 
   .content
     +full(22)
@@ -191,13 +183,18 @@
 
   .status, .id
     +columns(2,20)
-  .run, .product, .results
-    +columns(6,20)
+  .product, .results
+    +columns(5,20)
+  .run
+    +columns(8,20)
   .steps
     +reset-box-model
     +columns(18,20)
   .results, .steps
     +omega(20)
+
+  .run
+    +elippsis
 
 #results
   .managelist

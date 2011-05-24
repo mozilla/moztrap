@@ -56,3 +56,11 @@ $default-border-radius  : $xxsmallem
 =inlay
   +border-radius
   +box-shadow(rgba($blue-hint,.75) 0 -1px 1px 1px inset, rgba($blue-dark,.5) 0 1px 1px 1px inset)
+
+=elippsis($r:1)
+  overflow: hidden
+  max-height: rhythm($r)
+  white-space: nowrap
+  word-wrap: break-word
+  -o-text-overflow: ellipsis
+  text-overflow: ellipsis
