@@ -28,9 +28,9 @@ var TCM = TCM || {};
                 if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
                     return $(this).data('state') === 'changed';
                 }).length) {
-                    button.slideDown();
+                    button.fadeIn('fast');
                 } else {
-                    button.slideUp();
+                    button.fadeOut('fast');
                 }
             };
 
