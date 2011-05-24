@@ -1,6 +1,11 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
+{% block page-notes %}
+<p>Can't search on name yet, due to <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659224">platform limitations</a>.</p>
+{{ block.super }}
+{% endblock %}
+
 {% block listcontent %}
 <section id="caseresults">
   <h2>Test Case Results</h2>

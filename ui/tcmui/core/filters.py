@@ -53,6 +53,9 @@ class FieldFilter(object):
     where each tuple consists of a filter value and label for that option.
 
     """
+    cls = ""
+
+
     def __init__(self, name, values, auth=None):
         self.name = name
         self.values = set(values)
@@ -98,3 +101,16 @@ class LocatorFieldFilter(FieldFilter):
             lst = lst.filter(**self.target_filters)
         return [(obj.id, self.target_label(obj)) for obj in lst]
 
+
+
+class KeywordFilter(FieldFilter):
+    """
+    For filtering based on arbitrary keywords entered in the text box, rather
+    than a pre-set list of options.
+
+    """
+    cls = "keyword"
+
+
+    def get_options(self):
+        return [(v, v.replace("%", "*")) for v in self.values]

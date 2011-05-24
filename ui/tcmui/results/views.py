@@ -2,12 +2,13 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..testexecution.models import (
-    TestCycleList, TestRunList, TestRunIncludedTestCaseList, TestResultList)
 from ..core import decorators as dec
+from ..core.filters import KeywordFilter
 from ..products.filters import ProductFieldFilter
 from ..static.filters import TestResultStatusFilter
 from ..static.status import TestCycleStatus, TestRunStatus
+from ..testexecution.models import (
+    TestCycleList, TestRunList, TestRunIncludedTestCaseList, TestResultList)
 from ..users.decorators import login_redirect
 from ..users.filters import UserFieldFilter
 
@@ -23,7 +24,8 @@ def home(request):
 @login_redirect
 @dec.filter("cycles",
             ("status", filters.NonDraftTestCycleStatusFilter),
-            ("product", ProductFieldFilter))
+            ("product", ProductFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("cycles")
 @dec.sort("cycles", "product")
 def testcycles(request):
@@ -40,7 +42,8 @@ def testcycles(request):
 @dec.filter("runs",
             ("status", filters.NonDraftTestRunStatusFilter),
             ("product", ProductFieldFilter),
-            ("testCycle", filters.NonDraftTestCycleFieldFilter))
+            ("testCycle", filters.NonDraftTestCycleFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -72,7 +75,8 @@ def testcases(request):
 @login_redirect
 @dec.filter("results",
             ("tester", UserFieldFilter),
-            ("status", TestResultStatusFilter))
+            ("status", TestResultStatusFilter),
+            ("comment", KeywordFilter))
 @dec.paginate("results")
 @dec.sort("results")
 def testresults(request, itc_id):

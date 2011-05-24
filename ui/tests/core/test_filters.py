@@ -178,3 +178,25 @@ class LocatorFieldFilterTest(FilterTestCase):
 
         self.assertEqual(
             options, [(u"1", "1")])
+
+
+
+class KeywordFilterTest(FilterTestCase):
+    @property
+    def filter_cls(self):
+        from tcmui.core.filters import KeywordFilter
+        return KeywordFilter
+
+
+    def test_cls(self):
+        self.assertEqual(self.filter_cls.cls, "keyword")
+
+
+    def test_get_options(self):
+        self.assertEqual(
+            self.filter_cls(
+                "name", ["Sign%"]).get_options(), [("Sign%", "Sign*")])
+
+
+    def test_get_options_empty(self):
+        self.assertEqual(self.filter_cls("name", []).get_options(), [])

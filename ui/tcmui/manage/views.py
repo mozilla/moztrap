@@ -4,6 +4,8 @@ from django.template.response import TemplateResponse
 
 from ..core import decorators as dec
 from ..core import sort
+from ..core.conf import conf
+from ..core.filters import KeywordFilter
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -26,7 +28,8 @@ def home(request):
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("cycles",
             ("status", status_filters.TestCycleStatusFilter),
-            ("product", ProductFieldFilter))
+            ("product", ProductFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("cycles")
 @dec.sort("cycles")
 def testcycles(request):
@@ -97,7 +100,8 @@ def edit_testcycle(request, cycle_id):
 @dec.filter("runs",
             ("status", status_filters.TestRunStatusFilter),
             ("product", ProductFieldFilter),
-            ("testCycle", TestCycleFieldFilter))
+            ("testCycle", TestCycleFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -120,7 +124,7 @@ def add_testrun(request):
         request.POST or None,
         initial=tcid and {"test_cycle": tcid} or {},
         test_cycle_choices=TestCycleList.ours(auth=request.auth),
-        # @@@ should be narrowed by company, and dynamically by product
+        # @@@ should be narrowed dynamically by product
         suites_choices=suites,
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
@@ -171,7 +175,8 @@ def edit_testrun(request, run_id):
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("suites",
             ("status", status_filters.TestSuiteStatusFilter),
-            ("product", ProductFieldFilter))
+            ("product", ProductFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("suites")
 @dec.sort("suites")
 def testsuites(request):
@@ -188,8 +193,9 @@ def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
-        # @@@ should be narrowed by company, and dynamically by product
-        cases_choices=TestCaseVersionList.latest(auth=request.auth),
+        # @@@ should be narrowed dynamically by product
+        cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
+            company=conf.TCM_COMPANY_ID),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()
@@ -240,7 +246,9 @@ def edit_testsuite(request, suite_id):
 @dec.filter("cases",
             ("status", status_filters.TestCaseStatusFilter),
             ("approval", status_filters.ApprovalStatusFilter),
-            ("product", ProductFieldFilter))
+            ("product", ProductFieldFilter),
+# @@@ platform issue            ("name", KeywordFilter),
+            )
 @dec.paginate("cases")
 @dec.sort("cases")
 def testcases(request):

@@ -3,7 +3,7 @@
     <section class="textual">
       <h4 class="navhead">Basic Filtering</h4>
       <label for="filter">filter</label>
-      <input type="text" name="filter" value="" id="filter" placeholder="filter by operating system, language, status, keyword, etc.">
+      <input type="text" name="filter" value="" id="filter" placeholder="filter by {% for field in filter %}{% if forloop.last %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
       <ul class="suggest">
         <li><a href="#"><b>en</b>glish <i>[language]</i></a></li>
         <li><a href="#"><b>en</b>titled <i>[keyword]</i></a></li>
@@ -27,8 +27,8 @@
           {% endif %}
 
           {% for field in filter %}
-          <section class="filter-group">
-            <h5>{{ field.name }}</h5>
+          <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
+            <h5>{{ field.name|lower }}</h5>
             <ul>
               {% for option in field %}
               <li>
