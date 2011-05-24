@@ -2,8 +2,8 @@
   <h3 class="navhead">List Filtering</h3>
     <section class="textual">
       <h4 class="navhead">Basic Filtering</h4>
-      <label for="filter">filter</label>
-      <input type="text" name="filter" value="" id="filter" placeholder="filter by {% for field in filter %}{% if forloop.last %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
+      <label for="text-filter">filter</label>
+      <input type="text" name="text-filter" value="" id="text-filter" placeholder="filter by {% for field in filter %}{% if forloop.last %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
       <ul class="suggest">
         <li><a href="#"><b>tes</b>t Run 1A <i>[testrun]</i></a></li>
         <li><a href="#"><b>tes</b> <i>[name]</i></a></li>
@@ -37,7 +37,9 @@
               {% endfor %}
           </section>
           {% endfor %}
-          <button type="submit">update</button>
+          <div class="form-actions">
+            <button type="submit">update list</button>
+          </div>
         </form>
       </div>
     </section>

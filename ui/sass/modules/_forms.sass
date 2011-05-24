@@ -173,13 +173,16 @@ input
   @if $icon
     +background-image(image-url($icon))
     +background-image(image-url($icon), linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+    padding-left: image-width($icon) + $smallpx*1.5
+    background:
+      repeat: no-repeat
+      position: $smallpx, left
   @else
     +background-image(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
   border-color: desaturate($c,25)
 
 =button
   +border-radius(1em)
-  +background(#ddd image-url('forms/button.png') repeat-x)
   +button-color
   +rhythm-borders(1px,.25)
   +hpadding(1em)

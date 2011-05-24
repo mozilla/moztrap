@@ -20,6 +20,22 @@
   ul
     +no-style-list
 
+  .form-actions
+    clear: both
+    text-align: left
+  button
+    +button-reset
+    +adjust-font-size-to(14px,1,12px)
+    +message
+    +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
+    display: block
+    width: 100%
+    text-align: left
+    background:
+      color: rgba($green,$xsmall)
+      image: image-url('ui/refresh.png')
+    color: $green-dark
+
   // Textual -----------------------------------------------------------------
 
   .textual
@@ -67,7 +83,7 @@
       padding-left: 1em
       font-style: normal
       color: $mid
-  #filter:focus + .suggest
+  #text-filter:focus + .suggest
     display: block
 
   // Visual ------------------------------------------------------------------
@@ -95,6 +111,7 @@
     color: $mid
     vertical-align: baseline
 
+  // Compact --------------------------------------------------------------
   .compact
     .toggle
       a
@@ -103,7 +120,7 @@
             content: "show "
           &::after
             content: " »"
-    [class^="filter-"]
+    .filter-group
       +colorwheel(label)
     .long
       height: auto !important
@@ -119,11 +136,10 @@
       display: block
       margin-right: .5em
       padding: rhythm(.125,12px) rhythm(.25,12px)
-      background: $green-lightest
+        left: image-width('ui/check_sm.png') + 6px
+      background: $green-lightest image-url('ui/check_sm.png') no-repeat scroll 3px
       &:hover
-        small
-          color: rgba($mid,0)
-          background: image-url('ui/x_sm.png') no-repeat scroll center
+        background-image: image-url('ui/x_sm.png')
 
   // Expanded --------------------------------------------------------------
 
@@ -137,7 +153,7 @@
             content: ""
     .content
       +trailer(.5,12px)
-      [class^="filter-"]
+      .filter-group
         +columns(3,21)
         +trailer(.5)
         &:nth-of-type(7n)
