@@ -1429,7 +1429,7 @@ thead .controls {
 #filter .suggest a:focus, #filter .suggest a:hover, #filter .suggest a:active {
   background: #fef0bf;
 }
-#filter .suggest:not(:hover) li:first-child a:link, #filter .suggest:not(:hover) li:first-child a:visited {
+#filter .suggest:not(:hover) li.selected a:link, #filter .suggest:not(:hover) li.selected a:visited {
   background: #fef0bf;
 }
 #filter .suggest li:last-child a:link, #filter .suggest li:last-child a:visited {
@@ -1441,9 +1441,6 @@ thead .controls {
   padding-left: 1em;
   font-style: normal;
   color: #999999;
-}
-#filter #text-filter:focus + .suggest {
-  display: block;
 }
 #filter .toggle {
   display: inline;

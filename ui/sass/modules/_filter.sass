@@ -70,7 +70,7 @@
       #{$focus}
         background: $yellow-light
     &:not(:hover)
-      li:first-child
+      li.selected
         a
           #{$link}
             background: $yellow-light
@@ -83,8 +83,6 @@
       padding-left: 1em
       font-style: normal
       color: $mid
-  #text-filter:focus + .suggest
-    display: block
 
   // Visual ------------------------------------------------------------------
 
