@@ -34,66 +34,68 @@
         </ul>
       </nav>
 
-      {% for case in cases %}
-      <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}">
-        <header class="summary">
-          <p class="status">
-            {% if case.approval.PENDING %}
-            <span class="pending">
-              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
-              <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
-            </span>
-            {% endif %}
-            {% if case.approval.REJECTED %}
-            <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
-            {% endif %}
-            {% if case.approval.APPROVED %}
-            {% if case.status.DRAFT %}
-            <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
-            {% endif %}
-            {% if case.status.ACTIVE %}
-            <button title="lock" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
-            {% endif %}
-            {% if case.status.LOCKED %}
-            <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">locked</button>
-            {% endif %}
-            {% endif %}
-          </p>
-          <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
-          <p class="product">{{ case.product }}</p>
-          <div class="controls">
-            {% if case.status.DRAFT %}
-            <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
-            <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
-            {% endif %}
+      <div class="items {% if not cases %}empty{% endif %}">
+        {% for case in cases %}
+        <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}">
+          <header class="summary">
+            <p class="status">
+              {% if case.approval.PENDING %}
+              <span class="pending">
+                <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
+                <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
+              </span>
+              {% endif %}
+              {% if case.approval.REJECTED %}
+              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
+              {% endif %}
+              {% if case.approval.APPROVED %}
+              {% if case.status.DRAFT %}
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
+              {% endif %}
+              {% if case.status.ACTIVE %}
+              <button title="lock" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
+              {% endif %}
+              {% if case.status.LOCKED %}
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">locked</button>
+              {% endif %}
+              {% endif %}
+            </p>
+            <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
+            <p class="product">{{ case.product }}</p>
+            <div class="controls">
+              {% if case.status.DRAFT %}
+              <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
+              <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
+              {% endif %}
+            </div>
+          </header>
+          <div class="content">
+            <p class="id">#{{ case.testCaseId }}</p>
+            <p class="byline hcard">
+              Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
+              on <time pubdate>{{ case.timeline.createDate|date }}</time>
+            </p>
+            {% comment %} @@@
+            <div class="tags">
+              <h4>tags</h4>
+              <ul>
+                <li>tag 01</li>
+                <li>tag 02</li>
+                <li>tag 03</li>
+                <li>tag 04</li>
+              </ul>
+            </div>
+            {% endcomment %}
+            <div class="envgroups">
+              {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
+            </div>
           </div>
-        </header>
-        <div class="content">
-          <p class="id">#{{ case.testCaseId }}</p>
-          <p class="byline hcard">
-            Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
-            on <time pubdate>{{ case.timeline.createDate|date }}</time>
-          </p>
-          {% comment %} @@@
-          <div class="tags">
-            <h4>tags</h4>
-            <ul>
-              <li>tag 01</li>
-              <li>tag 02</li>
-              <li>tag 03</li>
-              <li>tag 04</li>
-            </ul>
-          </div>
-          {% endcomment %}
-          <div class="envgroups">
-            {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
+        </article>
+        {% endfor %}
+      </div>
 
-    {% include "lists/_listnav.html" %}
+      {% include "lists/_listnav.html" %}
+    </div>
 
   </form>
 </section>

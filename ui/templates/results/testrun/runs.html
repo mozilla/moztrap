@@ -33,52 +33,55 @@
           </li>
         </ul>
       </nav>
-      {% for run in runs %}
-      <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}">
-        <header class="summary">
-          <p class="status">
-            <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
-          </p>
-          <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
-          <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
-          <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
-          <p class="product">{{ run.product.name }}</p>
-          {% include "results/_results_summary.html" with results=run.resultsummary %}
-        </header>
-        <div class="content">
-          <p class="id">#{{ run.id }}</p>
-          <p class="drill">
-            See related <a href="{% url results_testcases %}?testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
-          </p>
-          {% if run.startDate or run.endDate %}
-            <div class="time">
-              {% if run.startDate %}
-                <p class="start">start date: <time>{{ run.startDate|date }}</time></p>
-              {% endif %}
-              {% if run.endDate %}
-                <p class="end">end date: <time>{{ run.endDate|date }}</time></p>
-              {% endif %}
-            </div>
-          {% endif %}
-          <section class="envgroups">
-            {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
-          </section>
-          {% if run.team|length %}
-            <section class="testers">
-              <h4>testers</h4>
-              <ul>
-                {% for tester in run.team %}
-                <li>{{ tester.screenName }}</li>
-                {% endfor %}
-              </ul>
-            </section>
-          {% endif %}
-        </div>
-      </article>
-      {% endfor %}
-    </div>
 
-    {% include "lists/_listnav.html" %}
+      <div class="items {% if not runs %}empty{% endif %}">
+        {% for run in runs %}
+        <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}">
+          <header class="summary">
+            <p class="status">
+              <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
+            </p>
+            <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+            <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+            <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
+            <p class="product">{{ run.product.name }}</p>
+            {% include "results/_results_summary.html" with results=run.resultsummary %}
+          </header>
+          <div class="content">
+            <p class="id">#{{ run.id }}</p>
+            <p class="drill">
+              See related <a href="{% url results_testcases %}?testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
+            </p>
+            {% if run.startDate or run.endDate %}
+              <div class="time">
+                {% if run.startDate %}
+                  <p class="start">start date: <time>{{ run.startDate|date }}</time></p>
+                {% endif %}
+                {% if run.endDate %}
+                  <p class="end">end date: <time>{{ run.endDate|date }}</time></p>
+                {% endif %}
+              </div>
+            {% endif %}
+            <section class="envgroups">
+              {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
+            </section>
+            {% if run.team|length %}
+              <section class="testers">
+                <h4>testers</h4>
+                <ul>
+                  {% for tester in run.team %}
+                  <li>{{ tester.screenName }}</li>
+                  {% endfor %}
+                </ul>
+              </section>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
 
   </form>
 </section>

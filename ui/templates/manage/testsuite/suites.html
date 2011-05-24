@@ -28,52 +28,55 @@
           </li>
         </ul>
       </nav>
-      {% for suite in suites %}
-      <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}">
-        <header class="summary">
-          <p class="status">
-            {% if suite.status.DRAFT %}
-            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
-            {% endif %}
-            {% if suite.status.ACTIVE %}
-            <button title="lock" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
-            {% endif %}
-            {% if suite.status.LOCKED %}
-            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
-            {% endif %}
-          </p>
-          <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
-          <p class="product">{{ suite.product.name }}</p>
-          <div class="controls">
-            {% if suite.status.DRAFT %}
-            <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
-            {% endif %}
-            <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
-            {% if suite.status.DRAFT %}
-            <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
-            {% endif %}
-          </div>
-        </header>
-        <div class="content">
-          <p class="id">#{{ suite.id }}</p>
-          <div class="description">
-            <p class="byline hcard">
-              Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
-              on <time pubdate>{{ suite.timeline.createDate|date }}</time>
-            </p>
-            {% if suite.description %}
-              <p>{{ suite.description }}</p>
-            {% endif %}
-          </div>
-          <div class="envgroups">
-            {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
-          </div>
-        </div>
-      </article>
-      {% endfor %}
-    </div>
 
-    {% include "lists/_listnav.html" %}
+      <div class="class="items {% if not suites %}empty{% endif %}"">
+        {% for suite in suites %}
+        <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}">
+          <header class="summary">
+            <p class="status">
+              {% if suite.status.DRAFT %}
+              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
+              {% endif %}
+              {% if suite.status.ACTIVE %}
+              <button title="lock" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
+              {% endif %}
+              {% if suite.status.LOCKED %}
+              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
+              {% endif %}
+            </p>
+            <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
+            <p class="product">{{ suite.product.name }}</p>
+            <div class="controls">
+              {% if suite.status.DRAFT %}
+              <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+              {% endif %}
+              <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
+              {% if suite.status.DRAFT %}
+              <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+              {% endif %}
+            </div>
+          </header>
+          <div class="content">
+            <p class="id">#{{ suite.id }}</p>
+            <div class="description">
+              <p class="byline hcard">
+                Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
+                on <time pubdate>{{ suite.timeline.createDate|date }}</time>
+              </p>
+              {% if suite.description %}
+                <p>{{ suite.description }}</p>
+              {% endif %}
+            </div>
+            <div class="envgroups">
+              {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
 
   </form>
 </section>
