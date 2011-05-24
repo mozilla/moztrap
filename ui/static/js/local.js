@@ -15,30 +15,71 @@ var TCM = TCM || {};
         });
     };
 
-    var advancedFilter = function() {
+    var filtering = function() {
         var button = $('#filter .visual .content button[type="submit"]').hide(),
-            input = $('#filter .visual .content .filter-group input[type="checkbox"]').each(function() {
+            input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
             }),
+            filterOptions = $('#filter .visual .filter-group li'),
+            textbox = $('#filter .textual #text-filter'),
+            typedText = textbox.val(),
+            suggestionList = $('#filter .textual ul.suggest'),
             updateButton = function() {
-                if ($('#filter .visual .content .filter-group input[type="checkbox"].changed').length) {
-                    button.fadeIn();
+                if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
+                    return $(this).data('state') === 'changed';
+                }).length) {
+                    button.slideDown();
                 } else {
-                    button.fadeOut();
+                    button.slideUp();
                 }
             };
+
         input.change(function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
-                $(this).addClass('changed');
+                $(this).data('state', 'changed');
             } else {
-                $(this).removeClass('changed');
+                $(this).data('state', null);
             }
             updateButton();
+        });
+
+        filterOptions.each(function() {
+            var content = $(this).children('label').html(),
+                type = $(this).children('input').attr('name'),
+                initialHTML = '<li><a href="#">' + content + ' <i>[' + type + ']</i></a></li>';
+            suggestionList.append(initialHTML);
+        });
+
+        textbox.keyup(function() {
+            if ($(this).val() !== typedText) {
+                typedText = $(this).val();
+                var relevantFilters = filterOptions.filter(function() {
+                        return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
+                    });
+                $('#filter .textual ul.suggest').empty();
+                relevantFilters.each(function() {
+                    var remainingText = $(this).children('label').html().substring(typedText.length),
+                        type = $(this).children('input').attr('name'),
+                        id = $(this).children('input').attr('id'),
+                        newHTML = '<li><a href="#" data-id="' + id + '"><b>' + typedText + '</b>'+ remainingText + ' <i>[' + type + ']</i></a></li>';
+                    suggestionList.append(newHTML);
+                });
+            }
+        });
+
+        suggestionList.find('a').live('click', function() {
+            var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id'));
+            thisFilter.attr('checked', 'checked');
+            if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
+                thisFilter.data('state', 'changed');
+            }
+            updateButton();
+            return false;
         });
     };
 
     $(function() {
-        advancedFilter();
+        filtering();
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input, textarea').blur(
             function() {

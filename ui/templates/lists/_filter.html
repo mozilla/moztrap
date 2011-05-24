@@ -4,10 +4,7 @@
       <h4 class="navhead">Basic Filtering</h4>
       <label for="text-filter">filter</label>
       <input type="text" name="text-filter" value="" id="text-filter" placeholder="filter by {% for field in filter %}{% if forloop.last %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
-      <ul class="suggest">
-        <li><a href="#"><b>tes</b>t Run 1A <i>[testrun]</i></a></li>
-        <li><a href="#"><b>tes</b> <i>[name]</i></a></li>
-      </ul>
+      <ul class="suggest"></ul>
     </section>
 
     <section class="visual compact">
