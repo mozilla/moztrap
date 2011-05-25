@@ -45,7 +45,7 @@ class TestFilter(FilterTestCase):
         self.assertEqual(len(fields), 1)
         field = fields[0]
         self.assertEqual(field.name, "status")
-        self.assertEqual(field.values, set(["draft", "active"]))
+        self.assertEqual(field.values, ["draft", "active"])
         self.assertEqual(field.auth, self.auth)
 
 
@@ -58,7 +58,7 @@ class TestFilter(FilterTestCase):
         list_obj = Mock()
         f.filter(list_obj)
 
-        list_obj.filter.assert_called_with(status=set(["active", "draft"]))
+        list_obj.filter.assert_called_with(status=["draft", "active"])
 
 
 
@@ -89,7 +89,7 @@ class FieldFilterTest(FilterTestCase):
 
         self.assertEqual(
             repr(ff),
-            "StatusFieldFilter('status', set(['active', 'draft']))")
+            "StatusFieldFilter('status', ['draft', 'active'])")
 
 
 
@@ -202,7 +202,13 @@ class KeywordFilterTest(FilterTestCase):
     def test_get_options(self):
         self.assertEqual(
             self.filter_cls(
-                "name", ["Sign%"]).get_options(), [("Sign%", "Sign*")])
+                "name",
+                ["Sign%", "Si%gn", "%Sign", "Sign", "%Sign%"]).get_options(),
+            [("Sign%", "^Sign"),
+             ("Si%gn", "^Si*gn$"),
+             ("%Sign", "Sign$"),
+             ("Sign", "^Sign$"),
+             ("%Sign%", "Sign")])
 
 
     def test_get_options_empty(self):

@@ -58,7 +58,7 @@ class FieldFilter(object):
 
     def __init__(self, name, values, auth=None):
         self.name = name
-        self.values = set(values)
+        self.values = values
         self.auth = auth
 
 
@@ -119,5 +119,17 @@ class KeywordFilter(FieldFilter):
     cls = "keyword"
 
 
+    def translate_for_user(self, text):
+        if text.startswith("%"):
+            text = text[1:]
+        else:
+            text = "^" + text
+        if text.endswith("%"):
+            text = text[:-1]
+        else:
+            text = text + "$"
+        return text.replace("%", "*")
+
+
     def get_options(self):
-        return [(v, v.replace("%", "*")) for v in self.values]
+        return [(v, self.translate_for_user(v)) for v in self.values]
