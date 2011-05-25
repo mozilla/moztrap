@@ -45,18 +45,23 @@ var TCM = TCM || {};
 
         textbox.keyup(function() {
             if ($(this).val() !== typedText) {
-                typedText = $(this).val();
-                var relevantFilters = filterOptions.filter(function() {
-                        return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
+                if ($(this).val().length) {
+                    typedText = $(this).val();
+                    var relevantFilters = input.not(':checked').parent('li').filter(function() {
+                            return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
+                        });
+                    suggestionList.empty();
+                    relevantFilters.each(function() {
+                        var remainingText = $(this).children('label').html().substring(typedText.length),
+                            type = $(this).children('input').attr('name'),
+                            id = $(this).children('input').attr('id'),
+                            newHTML = '<li><a href="#" data-id="' + id + '"><b>' + typedText + '</b>'+ remainingText + ' <i>[' + type + ']</i></a></li>';
+                        suggestionList.append(newHTML);
                     });
-                $('#filter .textual ul.suggest').empty();
-                relevantFilters.each(function() {
-                    var remainingText = $(this).children('label').html().substring(typedText.length),
-                        type = $(this).children('input').attr('name'),
-                        id = $(this).children('input').attr('id'),
-                        newHTML = '<li><a href="#" data-id="' + id + '"><b>' + typedText + '</b>'+ remainingText + ' <i>[' + type + ']</i></a></li>';
-                    suggestionList.append(newHTML);
-                });
+                } else {
+                    typedText = $(this).val();
+                    suggestionList.empty();
+                }
             }
         });
 
@@ -79,14 +84,14 @@ var TCM = TCM || {};
         });
 
         suggestionList.find('a').live('click', function() {
-            var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id'));
-            thisFilter.attr('checked', 'checked');
+            var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id')).attr('checked', 'checked');
             if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                 thisFilter.data('state', 'changed');
             }
             updateButton();
-            textbox.data('clicked', false);
-            suggestionList.hide();
+            textbox.data('clicked', false).val(null);
+            typedText = textbox.val();
+            suggestionList.empty().hide();
             return false;
         });
     };
