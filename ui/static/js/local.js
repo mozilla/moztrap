@@ -62,7 +62,7 @@ var TCM = TCM || {};
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
                             keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]').length) {
+                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]:checked').length) {
                             suggestionList.append(keywordHTML);
                         }
                     });
@@ -96,30 +96,34 @@ var TCM = TCM || {};
                 var name = $(this).data('name'),
                     thisGroup = keywordGroups.filter(function() {
                         return $(this).data('name') === name;
-                    }).removeClass('empty'),
+                    }),
                     typedText = textbox.val(),
+                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]'),
                     index = thisGroup.find('li').length + 1;
                     newHTML =
                         '<li>' +
                             '<input type="checkbox" name="' + name + '" value="' + typedText.replace(/\*/g,'%') + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
                             '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
                         '</li>';
-                thisGroup.children('ul').append(newHTML);
-                updateButton();
-                textbox.data('clicked', false).val(null);
-                suggestionList.empty().hide();
-                return false;
+                if (existingKeyword.length) {
+                    existingKeyword.attr('checked', 'checked');
+                    if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
+                        existingKeyword.data('state', 'changed');
+                    }
+                } else {
+                    thisGroup.removeClass('empty').children('ul').append(newHTML);
+                }
             } else {
                 var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id')).attr('checked', 'checked');
                 if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                     thisFilter.data('state', 'changed');
                 }
-                updateButton();
-                textbox.data('clicked', false).val(null);
-                typedText = textbox.val();
-                suggestionList.empty().hide();
-                return false;
             }
+            updateButton();
+            textbox.data('clicked', false).val(null);
+            typedText = null;
+            suggestionList.empty().hide();
+            return false;
         });
     };
 
