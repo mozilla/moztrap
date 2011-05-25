@@ -62,8 +62,19 @@ var TCM = TCM || {};
                     keywordGroups.each(function() {
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
-                            keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$(this).find('input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"]:checked').length) {
+                            keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>',
+                            valueText = typedText.replace(/\*/g,'%');
+                        if (valueText.substring(0, 1) === '^') {
+                            valueText = valueText.substring(1);
+                        } else {
+                            valueText = '%' + valueText;
+                        }
+                        if (/\$$/.test(valueText) === true) {
+                            valueText = valueText.substring(0, valueText.length - 1);
+                        } else {
+                            valueText = valueText + '%';
+                        }
+                        if (!$(this).find('input[type="checkbox"][value="' + valueText + '"]:checked').length) {
                             suggestionList.append(keywordHTML);
                         }
                     });
@@ -95,11 +106,22 @@ var TCM = TCM || {};
                     thisGroup = keywordGroups.filter(function() {
                         return $(this).data('name') === name;
                     }),
-                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]'),
+                    valueText = typedText.replace(/\*/g,'%');
+                if (valueText.substring(0, 1) === '^') {
+                    valueText = valueText.substring(1);
+                } else {
+                    valueText = '%' + valueText;
+                }
+                if (/\$$/.test(valueText) === true) {
+                    valueText = valueText.substring(0, valueText.length - 1);
+                } else {
+                    valueText = valueText + '%';
+                }
+                var existingKeyword = thisGroup.find('input[type="checkbox"][value="' + valueText + '"][name="' + name + '"]'),
                     index = thisGroup.find('li').length + 1;
                     newHTML =
                         '<li>' +
-                            '<input type="checkbox" name="' + name + '" value="' + typedText.replace(/\*/g,'%') + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
+                            '<input type="checkbox" name="' + name + '" value="' + valueText + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
                             '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
                         '</li>';
                 if (existingKeyword.length) {
