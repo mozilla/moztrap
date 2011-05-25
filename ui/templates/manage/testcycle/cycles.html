@@ -6,7 +6,9 @@
 
 <section id="managecycles">
   <h2>Manage Test Cycles</h2>
+  {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_testcycle_add %}" class="create">create test cycle</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 
@@ -55,12 +57,14 @@
             <time class="start">{{ cycle.startDate|date }}</time>
             <time class="end">{{ cycle.endDate|date }}</time>
             <div class="controls">
+              {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
               {% if cycle.status.DRAFT %}
               <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
               {% endif %}
               <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
               {% if cycle.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
+              {% endif %}
               {% endif %}
             </div>
           </header>

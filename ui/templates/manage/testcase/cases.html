@@ -11,7 +11,9 @@
 
 <section id="managecases">
   <h2>Manage Test Cases</h2>
+  {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_testcase_add %}" class="create">create a test case</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 
@@ -63,9 +65,11 @@
             <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
             <p class="product">{{ case.product }}</p>
             <div class="controls">
+              {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
               {% if case.status.DRAFT %}
               <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
               <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
+              {% endif %}
               {% endif %}
             </div>
           </header>

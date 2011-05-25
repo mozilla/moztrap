@@ -6,7 +6,9 @@
 
 <section id="manageruns">
   <h2>Manage Test Runs</h2>
+  {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_testrun_add %}" class="create">create test run</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 
@@ -59,12 +61,14 @@
             <time class="start">{{ run.startDate|date }}</time>
             <time class="end">{{ run.endDate|date }}</time>
             <div class="controls">
+              {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
               {% if run.status.DRAFT %}
               <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
               {% endif %}
               <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
               {% if run.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
+              {% endif %}
               {% endif %}
             </div>
           </header>

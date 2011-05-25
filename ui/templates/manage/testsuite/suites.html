@@ -6,7 +6,9 @@
 
 <section id="managesuites">
   <h2>Manage Test Suites</h2>
+  {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_testsuite_add %}" class="create">create test suite</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 
@@ -47,12 +49,14 @@
             <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
             <p class="product">{{ suite.product.name }}</p>
             <div class="controls">
+              {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
               {% if suite.status.DRAFT %}
               <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
               {% endif %}
               <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
               {% if suite.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+              {% endif %}
               {% endif %}
             </div>
           </header>
