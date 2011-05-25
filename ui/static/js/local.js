@@ -45,12 +45,12 @@ var TCM = TCM || {};
 
         textbox.keyup(function() {
             if ($(this).val() !== typedText) {
+                typedText = $(this).val();
+                suggestionList.empty();
                 if ($(this).val().length) {
-                    typedText = $(this).val();
                     var relevantFilters = $('#filter .visual .filter-group:not(.keyword) input[type="checkbox"]').not(':checked').parent('li').filter(function() {
                             return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
                         });
-                    suggestionList.empty();
                     relevantFilters.each(function() {
                         var remainingText = $(this).children('label').html().substring(typedText.length),
                             type = $(this).children('input').attr('name'),
@@ -66,9 +66,6 @@ var TCM = TCM || {};
                             suggestionList.append(keywordHTML);
                         }
                     });
-                } else {
-                    typedText = $(this).val();
-                    suggestionList.empty();
                 }
             }
         });
@@ -97,7 +94,6 @@ var TCM = TCM || {};
                     thisGroup = keywordGroups.filter(function() {
                         return $(this).data('name') === name;
                     }),
-                    typedText = textbox.val(),
                     existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]'),
                     index = thisGroup.find('li').length + 1;
                     newHTML =
