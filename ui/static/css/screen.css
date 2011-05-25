@@ -597,11 +597,11 @@ tr:hover td {
 }
 
 /* Table Helpers ------------------------------------------------------------- */
-.tdlink, #cycles td:first-child, #testruns td:first-child {
+.tdlink {
   padding: 0;
   border: 0;
 }
-.tdlink a:link, #cycles td:first-child a:link, #testruns td:first-child a:link, .tdlink a:visited, #cycles td:first-child a:visited, #testruns td:first-child a:visited {
+.tdlink a:link, .tdlink a:visited {
   display: block;
   padding: 0.405em;
   border-bottom: 1px solid #cccccc;
@@ -967,13 +967,13 @@ button.sub:focus, button.sub:hover, button.sub:active {
   visibility: hidden;
 }
 
-.fullwidth, .crumb .trail, [role="main"], footer[role="contentinfo"] {
+.fullwidth, .trail, .currentrun, [role="main"], footer[role="contentinfo"] {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;
   *zoom: 1;
 }
-.fullwidth:after, .crumb .trail:after, [role="main"]:after, footer[role="contentinfo"]:after {
+.fullwidth:after, .trail:after, .currentrun:after, [role="main"]:after, footer[role="contentinfo"]:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -982,7 +982,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   visibility: hidden;
 }
 
-.simple, #login, #register, #products, #cycles, #testruns {
+.simple, #login, #register {
   clear: both;
   padding-left: 25.263%;
   padding-right: 25.263%;
@@ -1083,21 +1083,38 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-right: 0;
 }
 
-.crumb {
+.crumb, .testnav .summary {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+  position: relative;
   background: rgba(75, 101, 100, 0.382);
+}
+.crumb::before, .testnav .summary::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: " ";
+  background: rgba(82, 134, 132, 0.236);
+}
+
+.trail, .currentrun {
   text-transform: capitalize;
 }
-.crumb a:link, .crumb a:visited {
+.trail span, .currentrun span {
   text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
   color: #e9eded;
 }
-.crumb a:focus, .crumb a:hover, .crumb a:active {
+.trail a:link, .currentrun a:link, .trail a:visited, .currentrun a:visited {
+  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
+  color: #e9eded;
+}
+.trail a:focus, .currentrun a:focus, .trail a:hover, .currentrun a:hover, .trail a:active, .currentrun a:active {
   text-shadow: rgba(204, 215, 214, 0.618) 0 1px 0;
   color: #511214;
 }
-.crumb li {
+.trail li, .currentrun li {
   display: -moz-inline-box;
   -moz-box-orient: vertical;
   display: inline-block;
@@ -1105,16 +1122,16 @@ button.sub:focus, button.sub:hover, button.sub:active {
   *vertical-align: auto;
   vertical-align: baseline;
 }
-.crumb li {
+.trail li, .currentrun li {
   *display: inline;
 }
-.crumb li::after {
+.trail li::after, .currentrun li::after {
   content: " »";
 }
-.crumb li:last-child::after {
+.trail li:last-child::after, .currentrun li:last-child::after {
   content: "";
 }
-.crumb li:last-child a:focus, .crumb li:last-child a:hover, .crumb li:last-child a:active {
+.trail li:last-child a:focus, .currentrun li:last-child a:focus, .trail li:last-child a:hover, .currentrun li:last-child a:hover, .trail li:last-child a:active, .currentrun li:last-child a:active {
   text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
   color: #e9eded;
 }
@@ -1812,7 +1829,6 @@ thead .controls {
 
 .finder {
   *zoom: 1;
-  margin-bottom: 2.427em;
   clear: both;
   overflow: visible;
   position: relative;
@@ -2177,6 +2193,9 @@ thead .controls {
 }
 .environment summary:hover {
   color: #511214;
+}
+.selectruns + .environment {
+  margin-top: 1.618em;
 }
 
 /* List Pages -------------------------------------------------------------- */
@@ -3711,87 +3730,59 @@ thead .controls {
   margin-right: 0;
 }
 
-/* products -------------------------------------------------------------- */
-#products .list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
+/* test nav -------------------------------------------------------------- */
+.testnav .summary:focus, .testnav .summary:hover, .testnav .summary:active {
+  background: rgba(75, 101, 100, 0.618);
+  outline: 0;
 }
-#products .list li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-}
-#products .list li {
-  margin-bottom: 0.809em;
-  display: inline;
-  float: left;
-  width: 31.915%;
-  margin-right: 2.128%;
-}
-#products .list li a:link, #products .list li a:visited {
-  text-shadow: #e5f5d2 1px 1px 0;
-  display: block;
-  padding: 0.809em;
-  color: #4f7a1b;
-  background: #aac0bf;
-}
-#products .list li a:focus, #products .list li a:hover, #products .list li a:active {
-  background: #b5e37f;
-}
-#products .list li:nth-child(3n) {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-#products .list li:first-child:last-child {
-  float: none;
-  display: block;
-  width: auto;
-  margin-right: auto;
+.testnav .selectruns {
   clear: both;
-}
-#products .list li:first-child:nth-last-child(2), #products .list li:first-child:nth-last-child(2) ~ li, #products .list li:first-child:nth-last-child(4), #products .list li:first-child:nth-last-child(4) ~ li, #products .list li:first-child:nth-last-child(7), #products .list li:first-child:nth-last-child(7) ~ li {
-  display: inline;
-  float: left;
-  width: 48.936%;
-  margin-right: 2.128%;
-}
-#products .list li:first-child:nth-last-child(2):nth-child(3n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(4):nth-child(3n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(7):nth-child(3n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(3n) {
-  display: inline;
-  float: left;
-  margin-right: 2.128%;
-}
-#products .list li:first-child:nth-last-child(2):nth-child(2n), #products .list li:first-child:nth-last-child(2) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(4):nth-child(2n), #products .list li:first-child:nth-last-child(4) ~ li:nth-child(2n), #products .list li:first-child:nth-last-child(7):nth-child(2n), #products .list li:first-child:nth-last-child(7) ~ li:nth-child(2n) {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-#products .list li:first-child:nth-last-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li, #products .list li:first-child:nth-last-child(5n), #products .list li:first-child:nth-last-child(5n) ~ li {
-  display: inline;
-  float: left;
-  width: 31.915%;
-  margin-right: 2.128%;
-}
-#products .list li:first-child:nth-last-child(3n):nth-child(3n), #products .list li:first-child:nth-last-child(3n) ~ li:nth-child(3n), #products .list li:first-child:nth-last-child(5n):nth-child(3n), #products .list li:first-child:nth-last-child(5n) ~ li:nth-child(3n) {
-  display: inline;
-  float: right;
-  margin-right: 0;
+  margin-left: 1.031%;
+  margin-right: 1.031%;
+  margin-top: 1.618em;
 }
 
-/* cycles + testruns -------------------------------------------------------------- */
-#cycles .date, #testruns .date {
-  width: 31.915%;
+.currentrun {
+  position: relative;
 }
-#cycles .start, #cycles .end, #testruns .start, #testruns .end {
-  width: 23.404%;
+.currentrun::after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
+  opacity: 0.65;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/plus.png?1299181696');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(71, 84, 84, 0.618) 0 0 5.348px;
+  -webkit-box-shadow: rgba(71, 84, 84, 0.618) 0 0 5.348px;
+  -o-box-shadow: rgba(71, 84, 84, 0.618) 0 0 5.348px;
+  box-shadow: rgba(71, 84, 84, 0.618) 0 0 5.348px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  content: " ";
+  right: 0;
+  width: 14px;
+  height: auto;
+  padding: 0.405em;
+  background-color: rgba(119, 185, 41, 0.618);
+  z-index: 10;
+  visibility: visible;
 }
-#cycles .note, #testruns .note {
-  margin-top: -0.809em;
-  margin-bottom: 2.427em;
-  font-style: italic;
-  text-align: right;
+.currentrun:focus::after, .currentrun:hover::after, .currentrun:active::after {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+  opacity: 0.85;
+}
+[open] .currentrun::after {
+  background-image: url('../images/ui/minus.png?1299109938');
+  background-color: #fee58c;
 }
 
 /* run tests -------------------------------------------------------------- */

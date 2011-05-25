@@ -1,59 +1,41 @@
-/* products --------------------------------------------------------------
+/* test nav --------------------------------------------------------------
 
-#products
-  @extend .simple
-  .list
-    +no-style-list
-    li
-      +trailer(.5)
-      +columns(4,12)
-      a
-        #{$link}
-          +text-shadow($green-lightest 1px 1px 0)
-          display: block
-          padding: $base-rhythm-unit*.5
-          color: $green-dark
-          background: $blue-lighter
-        #{$focus}
-          background: $green-light
-      &:nth-child(3n)
-        +omega(12)
-      &:first-child:last-child
-        +un-column
-        +full(12)
-      &:first-child
-        &:nth-last-child(2), &:nth-last-child(4), &:nth-last-child(7)
-          &, & ~ li
-            +columns(6,12)
-            &:nth-child(3n)
-              +float(left)
-              margin-right: gutter(12)
-            &:nth-child(2n)
-              +omega(12)
-      &:first-child
-        &:nth-last-child(3n), &:nth-last-child(5n)
-          &, & ~ li
-            +columns(4,12)
-            &:nth-child(3n)
-              +omega(12)
+.testnav
 
-/* cycles + testruns --------------------------------------------------------------
+  .summary
+    @extend .crumb
+    #{$focus}
+      background: rgba($blue-dark,$small)
+      outline: 0
 
-#cycles, #testruns
-  @extend .simple
-  .date
-    width: columns(4,12)
-  .start, .end
-    width: columns(3,12)
+  .selectruns
+    +full
+    +leader
 
-  td:first-child
-    @extend .tdlink
+.currentrun
+  @extend .trail
+  position: relative
+  &::after
+    +opacity(.65)
+    +replace-text('ui/plus.png')
+    +border-radius($xxsmallem)
+    +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallpx)
+    +stretch-y
+    content: " "
+    right: 0
+    width: image-width('ui/plus.png')
+    height: auto
+    padding: rhythm(.25)
+    background-color: rgba($green,$small)
+    z-index: 10
+    visibility: visible
+  #{$focus}
+    &::after
+      +opacity(.85)
+  [open] &::after
+    background-image: image-url('ui/minus.png')
+    background-color: $yellow
 
-  .note
-    +leader(-.5)
-    +trailer(1.5)
-    +italic
-    text-align: right
 
 /* run tests --------------------------------------------------------------
 

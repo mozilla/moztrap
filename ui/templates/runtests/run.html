@@ -2,12 +2,30 @@
 
 {% load execution %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
-  <li><a href="{{ cycle.get_absolute_url }}">{{ cycle }}</a></li>
-  <li><a href="{{ testrun.get_absolute_url }}">{{ testrun }}</a></li>
-{% endblock crumb %}
+{% block bread %}
+<nav class="testnav details">
+  <div class="summary">
+    <div class="container">
+      <ul class="currentrun">
+        <li><a href="{% url runtests %}">run tests</a></li>
+        <li><a href="#">{{ product }}</a></li>
+        <li><a href="#">{{ cycle }}</a></li>
+        <li><a href="#">{{ testrun }}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="selectruns">
+      <h2>Select a product, cycle and run</h2>
+      {% include "runtests/_picker.html" %}
+    </div>
+
+    <div class="environment">
+    </div>
+  </div>
+</nav>
+{% endblock bread %}
 
 {% block testcontent %}
   <section id="run">

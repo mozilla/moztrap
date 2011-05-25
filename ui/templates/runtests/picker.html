@@ -9,41 +9,14 @@
 {% endblock %}
 
 {% block testcontent %}
-<section id="selectruns">
+
+<section class="selectruns">
   <h2>Select a product, cycle and run</h2>
-  <form class="finder expanded">
-    <section class="col products focus">
-      <header class="listordering">
-        <h3 class="bytitle">
-          <a href="#" class="asc">Products</a>
-        </h3>
-      </header>
-      <ul class="colcontent">
-        {% for product in products %}
-        {% include "runtests/picker/_product.html" with object=product %}
-        {% endfor %}
-      </ul>
-    </section>
-    <section class="col cycles">
-      <header class="listordering">
-        <p class="bycompletion"><a href="#">%</a></p>
-        <h3 class="bytitle"><a href="#" class="asc">Cycles</a></h3>
-        <p class="bystart"><a href="#">start</a></p>
-        <p class="byend"><a href="#">end</a></p>
-      </header>
-      <ul class="colcontent"></ul>
-    </section>
-    <section class="col runs">
-      <header class="listordering">
-        <h3 class="bytitle"><a href="#" class="asc">Runs</a></h3>
-        <p class="bystart"><a href="#">start</a></p>
-        <p class="byend"><a href="#">end</a></p>
-      </header>
-      <ul class="colcontent"></ul>
-    </section>
-  </form>
+
+  {% include "runtests/_picker.html" %}
 </section>
 
 <section class="environment">
 </section>
+
 {% endblock testcontent %}

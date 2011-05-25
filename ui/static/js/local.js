@@ -145,32 +145,6 @@ var TCM = TCM || {};
             $('details').html5accordion('summary');
         }
         $('.details:not(html)').html5accordion('.summary');
-        $('#sandbox .findertoggle').click(function() {
-            $(this).add('#sandbox .finder').toggleClass('expanded').toggleClass('compact');
-            return false;
-        });
-        $('#sandbox').html5finder( {
-            loading: true,
-            horizontalScroll: true,
-            scrollContainer: '.finder.expanded',
-            headerSelector: 'header.listordering',
-            sectionSelector: 'section.col',
-            sectionContentSelector: 'ul.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases',
-                'results'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="cycle"]',
-                'input[name="run"]',
-                'input[name="case"]',
-                'input[name="result"]'
-            ]
-        });
         $('.subnav .findertoggle').click(function() {
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
             return false;
@@ -180,8 +154,8 @@ var TCM = TCM || {};
             horizontalScroll: true,
             scrollContainer: '.finder.expanded',
             headerSelector: 'header.listordering',
-            sectionSelector: 'section.col',
-            sectionContentSelector: 'ul.colcontent',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
             sectionClasses: [
                 'products',
                 'cycles',
@@ -197,11 +171,11 @@ var TCM = TCM || {};
                 'input[name="result"]'
             ]
         });
-        $('#selectruns').html5finder( {
+        $('.selectruns').html5finder( {
             loading: true,
-            headerSelector: 'header.listordering',
-            sectionSelector: 'section.col',
-            sectionContentSelector: 'ul.colcontent',
+            headerSelector: '.listordering',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
             sectionClasses: [
                 'products',
                 'cycles',
@@ -213,17 +187,17 @@ var TCM = TCM || {};
                 'input[name="testrun"]'
             ],
             callback: function() {
-                $('#selectruns + section.environment').slideUp();
+                $('.selectruns + .environment').slideUp();
             },
             lastChildCallback: function(choice) {
-                var environments = $('#selectruns + section.environment'),
+                var environments = $('.selectruns + .environment'),
                     ajaxUrl = $(choice).data("sub-url");
                 $.get(ajaxUrl, function(data) {
                           environments.html(data).slideDown();
                       });
             }
         });
-        $('#selectruns + .environment').hide();
+        $('.selectruns + .environment').hide();
     });
 
 })(jQuery);

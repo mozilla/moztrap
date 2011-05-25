@@ -88,11 +88,19 @@
 .crumb
   +padding-leader(.25)
   +padding-trailer(.25)
+  position: relative
   background: rgba($blue-dark,$xsmall)
-  text-transform: capitalize
-  .trail
-    @extend .fullwidth
+  &::before
+    +stretch
+    content: " "
+    background: rgba($blue,$xxsmall)
 
+.trail
+  @extend .fullwidth
+  text-transform: capitalize
+  span
+    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+    color: $blue-hint
   a
     #{$link}
       +text-shadow(rgba($blue-dark,$small) 0 1px 0)
@@ -100,7 +108,6 @@
     #{$focus}
       +text-shadow(rgba($blue-lightest,$small) 0 1px 0)
       color: $accent
-
   li
     +inline-block
     vertical-align: baseline

@@ -100,18 +100,18 @@
 
   </div>
 
-  {% block bread %}
-    <nav class="crumb">
-      <div class="container">
-        <h2 class="navhead">Breadcrumb Navigation</h2>
-        <ol class="trail">
-          {% block crumb %}{% endblock crumb %}
-        </ol>
-      </div>
-    </nav>
-  {% endblock bread %}
-
 </header>
+
+{% block bread %}
+  <nav class="crumb">
+    <div class="container">
+      <h2 class="navhead">Breadcrumb Navigation</h2>
+      <ol class="trail">
+        {% block crumb %}{% endblock crumb %}
+      </ol>
+    </div>
+  </nav>
+{% endblock bread %}
 
 <div id="page">
 {% block page %}
