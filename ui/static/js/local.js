@@ -24,6 +24,7 @@ var TCM = TCM || {};
             typedText = textbox.val(),
             suggestionList = $('#filter .textual ul.suggest').hide(),
             keywordGroups = $('#filter .visual .filter-group.keyword'),
+            notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
             updateButton = function() {
                 if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
                     return $(this).data('state') === 'changed';
@@ -48,7 +49,7 @@ var TCM = TCM || {};
                 typedText = $(this).val();
                 suggestionList.empty();
                 if ($(this).val().length) {
-                    var relevantFilters = $('#filter .visual .filter-group:not(.keyword) input[type="checkbox"]').not(':checked').parent('li').filter(function() {
+                    var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
                             return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
                         });
                     relevantFilters.each(function() {
@@ -62,7 +63,7 @@ var TCM = TCM || {};
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
                             keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]:checked').length) {
+                        if (!$(this).find('input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"]:checked').length) {
                             suggestionList.append(keywordHTML);
                         }
                     });
