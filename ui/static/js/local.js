@@ -26,7 +26,7 @@ var TCM = TCM || {};
             keywordGroups = $('#filter .visual .filter-group.keyword'),
             notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
             updateButton = function() {
-                if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
+                if (input.filter(function() {
                     return $(this).data('state') === 'changed';
                 }).length) {
                     button.fadeIn('fast');
@@ -109,9 +109,10 @@ var TCM = TCM || {};
                     }
                 } else {
                     thisGroup.removeClass('empty').children('ul').append(newHTML);
+                    input = input.add('#id-' + name + '-' + index);
                 }
             } else {
-                var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id')).attr('checked', 'checked');
+                var thisFilter = input.filter('#' + $(this).data('id')).attr('checked', 'checked');
                 if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                     thisFilter.data('state', 'changed');
                 }
