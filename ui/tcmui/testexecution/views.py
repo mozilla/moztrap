@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
 
-from ..core import sort
+from ..core import decorators as dec
 from ..environments.util import set_environment_url
 from ..products.models import Product
 from ..static.status import TestCycleStatus, TestRunStatus
@@ -14,12 +14,12 @@ from .models import TestCycle, TestCycleList, TestRun, TestRunList, TestResult
 
 
 @login_required
+@dec.sort("cycles")
 def cycles(request, product_id):
     product = Product.get("products/%s" % product_id, auth=request.auth)
 
     cycles = TestCycleList.get(auth=request.auth).filter(
-        product=product_id, status=int(TestCycleStatus.ACTIVE)).sort(
-        *sort.from_request(request))
+        product=product_id, status=int(TestCycleStatus.ACTIVE))
 
     return TemplateResponse(
         request,
@@ -32,6 +32,7 @@ def cycles(request, product_id):
 
 
 @login_required
+@dec.sort("testruns")
 def testruns(request, cycle_id):
     cycle = TestCycle.get("testcycles/%s" % cycle_id, auth=request.auth)
 
@@ -39,8 +40,7 @@ def testruns(request, cycle_id):
         testCycle=cycle_id,
         status=int(TestRunStatus.ACTIVE),
         selfAssignAllowed=True,
-        ).sort(
-        *sort.from_request(request))
+        )
 
     return TemplateResponse(
         request,
