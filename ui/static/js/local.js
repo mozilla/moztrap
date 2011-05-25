@@ -62,7 +62,7 @@ var TCM = TCM || {};
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
                             keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace('*','%') + '"][name="' + name + '"]').length) {
+                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace(/\*/g,'%') + '"][name="' + name + '"]').length) {
                             suggestionList.append(keywordHTML);
                         }
                     });
@@ -101,7 +101,7 @@ var TCM = TCM || {};
                     index = thisGroup.find('li').length + 1;
                     newHTML =
                         '<li>' +
-                            '<input type="checkbox" name="' + name + '" value="' + typedText.replace('*','%') + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
+                            '<input type="checkbox" name="' + name + '" value="' + typedText.replace(/\*/g,'%') + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
                             '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
                         '</li>';
                 thisGroup.children('ul').append(newHTML);
