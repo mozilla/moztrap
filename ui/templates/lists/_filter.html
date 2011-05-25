@@ -28,8 +28,8 @@
             <ul class="{% if field|length > 6 %}long{% endif %}">
               {% for option in field %}
               <li>
-                <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ option.value }}"{% if option.selected %} checked{% endif %}>
-                <label for="id-{{ field.name }}-{{ option.value }}">{{ option.label }}</label>
+                <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
+                <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
               </li>
               {% endfor %}
             </ul>

@@ -20,10 +20,10 @@ var TCM = TCM || {};
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
             }),
-            filterOptions = $('#filter .visual .filter-group li'),
             textbox = $('#filter .textual #text-filter'),
             typedText = textbox.val(),
             suggestionList = $('#filter .textual ul.suggest').hide(),
+            keywordGroups = $('#filter .visual .filter-group.keyword'),
             updateButton = function() {
                 if ($('#filter .visual .filter-group input[type="checkbox"]').filter(function() {
                     return $(this).data('state') === 'changed';
@@ -34,7 +34,7 @@ var TCM = TCM || {};
                 }
             };
 
-        input.change(function() {
+        input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                 $(this).data('state', 'changed');
             } else {
@@ -47,7 +47,7 @@ var TCM = TCM || {};
             if ($(this).val() !== typedText) {
                 if ($(this).val().length) {
                     typedText = $(this).val();
-                    var relevantFilters = input.not(':checked').parent('li').filter(function() {
+                    var relevantFilters = $('#filter .visual .filter-group:not(.keyword) input[type="checkbox"]').not(':checked').parent('li').filter(function() {
                             return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
                         });
                     suggestionList.empty();
@@ -57,6 +57,14 @@ var TCM = TCM || {};
                             id = $(this).children('input').attr('id'),
                             newHTML = '<li><a href="#" data-id="' + id + '"><b>' + typedText + '</b>'+ remainingText + ' <i>[' + type + ']</i></a></li>';
                         suggestionList.append(newHTML);
+                    });
+                    keywordGroups.each(function() {
+                        var type = $(this).children('h5').html(),
+                            name = $(this).data('name'),
+                            keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
+                        if (!$('#filter .visual .filter-group input[type="checkbox"][value="' + typedText.replace('*','%') + '"][name="' + name + '"]').length) {
+                            suggestionList.append(keywordHTML);
+                        }
                     });
                 } else {
                     typedText = $(this).val();
@@ -84,15 +92,34 @@ var TCM = TCM || {};
         });
 
         suggestionList.find('a').live('click', function() {
-            var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id')).attr('checked', 'checked');
-            if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
-                thisFilter.data('state', 'changed');
+            if ($(this).data('class') === 'keyword') {
+                var name = $(this).data('name'),
+                    thisGroup = keywordGroups.filter(function() {
+                        return $(this).data('name') === name;
+                    }).removeClass('empty'),
+                    typedText = textbox.val(),
+                    index = thisGroup.find('li').length + 1;
+                    newHTML =
+                        '<li>' +
+                            '<input type="checkbox" name="' + name + '" value="' + typedText.replace('*','%') + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
+                            '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
+                        '</li>';
+                thisGroup.children('ul').append(newHTML);
+                updateButton();
+                textbox.data('clicked', false).val(null);
+                suggestionList.empty().hide();
+                return false;
+            } else {
+                var thisFilter = $('#filter .visual .filter-group input#' + $(this).data('id')).attr('checked', 'checked');
+                if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
+                    thisFilter.data('state', 'changed');
+                }
+                updateButton();
+                textbox.data('clicked', false).val(null);
+                typedText = textbox.val();
+                suggestionList.empty().hide();
+                return false;
             }
-            updateButton();
-            textbox.data('clicked', false).val(null);
-            typedText = textbox.val();
-            suggestionList.empty().hide();
-            return false;
         });
     };
 
