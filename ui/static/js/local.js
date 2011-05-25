@@ -213,17 +213,17 @@ var TCM = TCM || {};
                 'input[name="testrun"]'
             ],
             callback: function() {
-                $('#selectruns + #environment').slideUp();
+                $('#selectruns + section.environment').slideUp();
             },
             lastChildCallback: function(choice) {
-                var environments = $('#selectruns + #environment'),
+                var environments = $('#selectruns + section.environment'),
                     ajaxUrl = $(choice).data("sub-url");
                 $.get(ajaxUrl, function(data) {
                           environments.html(data).slideDown();
                       });
             }
         });
-        $('#selectruns + #environment').hide();
+        $('#selectruns + .environment').hide();
     });
 
 })(jQuery);
