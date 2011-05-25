@@ -41,7 +41,7 @@ class RunCase(Tag):
             return u""
 
         return render_to_string(
-            "test/_run_case.html",
+            "runtests/_run_case.html",
             {"case": assignment.testCase,
              "caseversion": assignment.testCaseVersion,
              "result": result,

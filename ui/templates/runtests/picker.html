@@ -1,0 +1,49 @@
+{% extends 'runtests/base.html' %}
+
+{% load sort %}
+
+{% block page-status %}incomplete{% endblock %}
+
+{% block page-notes %}
+<p>Test cycle completion percentages are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no platform API</a>).</p>
+{% endblock %}
+
+{% block testcontent %}
+<section id="selectruns">
+  <h2>Select a product, cycle and run</h2>
+  <form class="finder expanded">
+    <section class="col products focus">
+      <header class="listordering">
+        <h3 class="bytitle">
+          <a href="#" class="asc">Products</a>
+        </h3>
+      </header>
+      <ul class="colcontent">
+        {% for product in products %}
+        {% include "runtests/picker/_product.html" with object=product %}
+        {% endfor %}
+      </ul>
+    </section>
+    <section class="col cycles">
+      <header class="listordering">
+        <p class="bycompletion"><a href="#">%</a></p>
+        <h3 class="bytitle"><a href="#" class="asc">Cycles</a></h3>
+        <p class="bystart"><a href="#">start</a></p>
+        <p class="byend"><a href="#">end</a></p>
+      </header>
+      <ul class="colcontent"></ul>
+    </section>
+    <section class="col runs">
+      <header class="listordering">
+        <h3 class="bytitle"><a href="#" class="asc">Runs</a></h3>
+        <p class="bystart"><a href="#">start</a></p>
+        <p class="byend"><a href="#">end</a></p>
+      </header>
+      <ul class="colcontent"></ul>
+    </section>
+  </form>
+</section>
+
+<section id="environment">
+</section>
+{% endblock testcontent %}

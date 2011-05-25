@@ -13,11 +13,11 @@ def set_environment(request):
     """
     Given a list of environment-group IDs (in the GET querystring), allow the
     user to choose a valid environment-group from among those, set that
-    environment-group ID in the user's session, and redirect to the list of
-    test cycles for that environment (or a "next" URL given in querystring).
+    environment-group ID in the user's session, and redirect to the test run
+    picker (or a "next" URL given in querystring or POST data).
 
     """
-    next = request.REQUEST.get("next", "products")
+    next = request.REQUEST.get("next", "runtests")
 
     groups = [
         EnvironmentGroup.get(
@@ -37,7 +37,7 @@ def set_environment(request):
 
     return TemplateResponse(
         request,
-        "test/environment.html",
+        "runtests/environment.html",
         {"form": form,
          "next": next
          })

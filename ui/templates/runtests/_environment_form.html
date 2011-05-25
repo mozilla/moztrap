@@ -1,0 +1,18 @@
+<h2>Set your environment</h2>
+<form method="POST"{% if action %} action="{{ action }}"{% endif %}>
+  <input type="hidden" name="next" value="{{ next }}">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <ul>
+    {% for field in form %}
+    <li>
+      {{ field.label_tag }}
+      {{ field.errors }}
+      {{ field }}
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="form-actions">
+    <button type="submit">save</button>
+  </div>
+</form>

@@ -129,7 +129,7 @@ class ResourceObjectTest(TestResourceTestCase):
         c.deliver()
 
         self.assertEqual(
-            http.request.call_args[1]["headers"]["user-agent"], "TCMui/0.2")
+            http.request.call_args[1]["headers"]["user-agent"], "TCMui/0.3")
 
 
     def test_get_id(self, http):

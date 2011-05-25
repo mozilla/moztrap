@@ -112,7 +112,7 @@ class TestRun(Activatable, RemoteObject):
 
 
     def get_absolute_url(self):
-        return reverse("runtests", kwargs={"testrun_id": self.id})
+        return reverse("runtests_run", kwargs={"testrun_id": self.id})
 
 
     def addcase(self, case, **kwargs):

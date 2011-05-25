@@ -150,4 +150,4 @@ TCM_ADMIN_USER = "admin@utest.com"
 TCM_ADMIN_PASS = "admin"
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "products"
+LOGIN_REDIRECT_URL = "runtests"

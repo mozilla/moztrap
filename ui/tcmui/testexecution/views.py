@@ -1,54 +1,74 @@
-from django.views.decorators.http import require_POST
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_POST
 
-from ..core import decorators as dec
+from ..environments.forms import EnvironmentSelectionForm
 from ..environments.util import set_environment_url
-from ..products.models import Product
-from ..static.status import TestCycleStatus, TestRunStatus
+from ..products.models import ProductList
+from ..static.status import TestRunStatus, TestCycleStatus
 from ..users.decorators import login_required
 
-from .models import TestCycle, TestCycleList, TestRun, TestRunList, TestResult
+from .models import TestCycleList, TestRun, TestRunList, TestResult
 
 
 
 @login_required
-@dec.sort("cycles")
-def cycles(request, product_id):
-    product = Product.get("products/%s" % product_id, auth=request.auth)
+def picker(request):
+    products = ProductList.ours(auth=request.auth).sort("name", "asc")
+    return TemplateResponse(
+        request,
+        "runtests/picker.html",
+        {
+            "products": products,
+            "picker_type": "runtests",
+            })
 
+
+
+@login_required
+def picker_cycles(request, parent_id):
     cycles = TestCycleList.get(auth=request.auth).filter(
-        product=product_id, status=int(TestCycleStatus.ACTIVE))
-
+        product=parent_id, status=TestCycleStatus.ACTIVE).sort("name", "asc")
     return TemplateResponse(
         request,
-        "test/cycles.html",
-        {"product": product,
-         "cycles": cycles,
-         "environmentgroups": product.environmentgroups,
-         })
+        "runtests/picker/_cycles.html",
+        {
+            "cycles": cycles,
+            "picker_type": "runtests",
+            })
 
 
 
 @login_required
-@dec.sort("testruns")
-def testruns(request, cycle_id):
-    cycle = TestCycle.get("testcycles/%s" % cycle_id, auth=request.auth)
+def picker_runs(request, parent_id):
+    runs = TestRunList.get(auth=request.auth).filter(
+        testCycle=parent_id, status=TestRunStatus.ACTIVE).sort("name", "asc")
+    return TemplateResponse(
+        request,
+        "runtests/picker/_runs.html",
+        {
+            "runs": runs,
+            "picker_type": "runtests",
+            })
 
-    testruns = TestRunList.get(auth=request.auth).filter(
-        testCycle=cycle_id,
-        status=int(TestRunStatus.ACTIVE),
-        selfAssignAllowed=True,
-        )
+
+
+@login_required
+def picker_environments(request, parent_id):
+    run = TestRunList.get_by_id(parent_id, auth=request.auth)
+
+    form = EnvironmentSelectionForm(
+        groups=run.environmentgroups,
+        current=request.session.get("environments", None))
 
     return TemplateResponse(
         request,
-        "test/testruns.html",
-        {"product": cycle.product,
-         "cycle": cycle,
-         "testruns": testruns,
-         "environmentgroups": cycle.environmentgroups,
+        "runtests/_environment_form.html",
+        {"form": form,
+         "action": set_environment_url(run.environmentgroups),
+         "next": reverse("runtests_run", kwargs={"testrun_id": parent_id}),
          })
 
 
@@ -68,7 +88,7 @@ def runtests(request, testrun_id):
 
     return TemplateResponse(
         request,
-        "test/run.html",
+        "runtests/run.html",
         {"product": product,
          "cycle": cycle,
          "testrun": testrun,
@@ -111,7 +131,7 @@ def result(request, result_id):
     getattr(result, action)(**kwargs)
 
     return render_to_response(
-        "test/_run_case.html",
+        "runtests/_run_case.html",
         {"case": result.testCase,
          "caseversion": result.testCaseVersion,
          "result": result,

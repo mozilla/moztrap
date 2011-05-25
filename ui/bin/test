@@ -12,14 +12,16 @@ from unittest2.main import main as unittest_main
 
 
 def main(basedir, cover_all=False):
+    cov = coverage.coverage(branch=True)
+    cov.start()
+
     from django.test.utils import (
         setup_test_environment, teardown_test_environment)
 
     setup_test_environment()
 
-    cov = coverage.coverage(branch=True)
-    cov.start()
     ut = unittest_main(module=None, exit=False)
+
     cov.stop()
 
     include = ["tests/responses.py", "tests/utils.py"]
@@ -34,6 +36,7 @@ def main(basedir, cover_all=False):
                              for fn in filenames if fn.endswith(".py")])
         report_kw["morfs"] = py_files
         report_kw["omit"] = [
+            "tcmui/compressor_filters.py",
             # non-default settings files aren't exercised in tests
             "tcmui/settings.py",
             "tcmui/settings_local.py",

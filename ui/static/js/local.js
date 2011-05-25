@@ -209,14 +209,18 @@ var TCM = TCM || {};
             ],
             sectionItemSelectors: [
                 'input[name="product"]',
-                'input[name="cycle"]',
-                'input[name="run"]'
+                'input[name="testcycle"]',
+                'input[name="testrun"]'
             ],
             callback: function() {
                 $('#selectruns + #environment').slideUp();
             },
-            lastChildCallback: function() {
-                $('#selectruns + #environment').slideDown();
+            lastChildCallback: function(choice) {
+                var environments = $('#selectruns + #environment'),
+                    ajaxUrl = $(choice).data("sub-url");
+                $.get(ajaxUrl, function(data) {
+                          environments.html(data).slideDown();
+                      });
             }
         });
         $('#selectruns + #environment').hide();

@@ -66,7 +66,7 @@
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
       <ul>
-          <li class="test"><a {% if request.user %}href="{% url products %}"{% else %}href="/"{% endif %} class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+          <li class="test"><a href="{% url runtests %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
         {% if request.user %} {# @@@ more specific perms check? #}
           <li class="results"><a href="{% url results %}" class="{% block results-active-nav %}{% endblock results-active-nav %}">View Results</a></li>
           <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>

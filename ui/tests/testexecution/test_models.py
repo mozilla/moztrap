@@ -111,13 +111,6 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(unicode(c), u"The Test Cycle")
 
 
-    def test_get_absolute_url(self, http):
-        c = self.resource_class()
-        c.update_from_dict(testcycles.one(resourceIdentity=make_identity(id=2)))
-
-        self.assertEqual(c.get_absolute_url(), "/cycle/2/")
-
-
     def test_approveallresults(self, http):
         http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
