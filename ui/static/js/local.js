@@ -50,13 +50,15 @@ var TCM = TCM || {};
                 suggestionList.empty();
                 if ($(this).val().length) {
                     var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
-                            return $(this).children('label').html().toLowerCase().substring(0, typedText.length) === typedText.toLowerCase();
+                            return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                         });
                     relevantFilters.each(function() {
-                        var remainingText = $(this).children('label').html().substring(typedText.length),
+                        var typedIndex = $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()),
+                            preText = $(this).children('label').html().substring(0, typedIndex),
+                            postText = $(this).children('label').html().substring(typedIndex + typedText.length),
                             type = $(this).children('input').attr('name'),
                             id = $(this).children('input').attr('id'),
-                            newHTML = '<li><a href="#" data-id="' + id + '"><b>' + typedText + '</b>'+ remainingText + ' <i>[' + type + ']</i></a></li>';
+                            newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
                         suggestionList.append(newHTML);
                     });
                     keywordGroups.each(function() {
