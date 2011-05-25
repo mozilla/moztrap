@@ -36,7 +36,7 @@ class Filter(object):
         our filters.
 
         """
-        filters = dict((field.name, field.values) for field in self.fields)
+        filters = dict(field.filters() for field in self.fields)
         return list_obj.filter(**filters)
 
 
@@ -67,6 +67,15 @@ class FieldFilter(object):
 
     def get_options(self):
         return self.options
+
+
+    def filters(self):
+        """
+        Return tuples (probably just one) of (fieldname, values) to filter the
+        API query on.
+
+        """
+        return (self.name, self.values)
 
 
     def __iter__(self):
@@ -119,17 +128,21 @@ class KeywordFilter(FieldFilter):
     cls = "keyword"
 
 
-    def translate_for_user(self, text):
-        if text.startswith("%"):
+    def to_platform(self, text):
+        if text.startswith("^"):
             text = text[1:]
         else:
-            text = "^" + text
-        if text.endswith("%"):
+            text = "%" + text
+        if text.endswith("$"):
             text = text[:-1]
         else:
-            text = text + "$"
-        return text.replace("%", "*")
+            text = text + "%"
+        return text.replace("*", "%")
 
 
     def get_options(self):
-        return [(v, self.translate_for_user(v)) for v in self.values]
+        return [(v, v) for v in self.values]
+
+
+    def filters(self):
+        return (self.name, [self.to_platform(v) for v in self.values])

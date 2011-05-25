@@ -142,6 +142,13 @@ class LocatorFieldFilterTest(FilterTestCase):
             http.request.call_args[1]["uri"],
             "http://fake.base/rest/products?_type=json")
 
+        # cached second time around
+
+        options2 = pff.get_options()
+
+        self.assertEqual(options, options2)
+        self.assertEqual(http.request.call_count, 1)
+
 
     @patch("tcmui.core.api.userAgent")
     def test_target_filters(self, http):
@@ -203,13 +210,18 @@ class KeywordFilterTest(FilterTestCase):
         self.assertEqual(
             self.filter_cls(
                 "name",
-                ["Sign%", "Si%gn", "%Sign", "Sign", "%Sign%"]).get_options(),
-            [("Sign%", "^Sign"),
-             ("Si%gn", "^Si*gn$"),
-             ("%Sign", "Sign$"),
-             ("Sign", "^Sign$"),
-             ("%Sign%", "Sign")])
+                ["^Sign"]).get_options(),
+            [("^Sign", "^Sign")])
+
 
 
     def test_get_options_empty(self):
         self.assertEqual(self.filter_cls("name", []).get_options(), [])
+
+
+    def test_filters(self):
+        self.assertEqual(
+            self.filter_cls(
+                "name",
+                ["^Sign", "^Si*gn$", "Sign$", "^Sign$", "Sign"]).filters(),
+            ("name", ["Sign%", "Si%gn", "%Sign", "Sign", "%Sign%"]))
