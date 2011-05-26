@@ -127,14 +127,8 @@
             container.next(options.sectionSelector).find('input:checked').removeClass('selected').removeAttr('checked');
             container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
             horzScroll();
-            if (container.is(':last-child')) {
-                if (options.lastChildCallback) {
-                    options.lastChildCallback(this);
-                }
-            } else {
-                if (options.callback) {
-                    options.callback();
-                }
+            if (!container.is(':last-child') && options.callback) {
+                options.callback();
             }
         });
 
