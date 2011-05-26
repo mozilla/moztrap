@@ -64,6 +64,7 @@ def add_testcycle(request):
 
 @login_redirect
 @dec.actions(TestRunList, ["delete"], fall_through=True)
+@dec.sort("testruns")
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
@@ -80,8 +81,7 @@ def edit_testcycle(request, cycle_id):
         return redirect("manage_testcycles")
 
     testruns = TestRunList.ours(auth=request.auth).filter(
-        testCycle=cycle.id).sort(
-        *sort.from_request(request))
+        testCycle=cycle.id)
 
     return TemplateResponse(
         request,

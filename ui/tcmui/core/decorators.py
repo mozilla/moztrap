@@ -20,7 +20,10 @@ def sort(ctx_name, defaultfield=None, defaultdirection=sort_util.DEFAULT):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
-            ctx = response.context_data
+            try:
+                ctx = response.context_data
+            except AttributeError:
+                return response
             field, direction = sort_util.from_request(
                 request, defaultfield, defaultdirection)
             ctx[ctx_name] = ctx[ctx_name].sort(field, direction)
@@ -46,7 +49,10 @@ def filter(ctx_name, *fields):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
-            ctx = response.context_data
+            try:
+                ctx = response.context_data
+            except AttributeError:
+                return response
             flt = filters.Filter(
                 request.GET,
                 request.auth,
@@ -73,7 +79,10 @@ def paginate(ctx_name):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
             response = view_func(request, *args, **kwargs)
-            ctx = response.context_data
+            try:
+                ctx = response.context_data
+            except AttributeError:
+                return response
             pagesize, pagenum = pagination.from_request(request)
             ctx[ctx_name] = ctx[ctx_name].paginate(pagesize, pagenum)
             # the lambda here makes Pager fetch the total result count
