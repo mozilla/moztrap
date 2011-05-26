@@ -1,13 +1,6 @@
 {% extends 'runtests/base.html' %}
 {% load execution %}
 
-{% block page-status %}incomplete{% endblock %}
-
-{% block page-notes %}
-{{ block.super }}
-<p>The breadcrumb navigation integrated with run and environment selection is only wireframed.</p>
-{% endblock %}
-
 {% block bread %}
 <nav class="testnav details">
   <div class="summary">
