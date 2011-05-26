@@ -1,5 +1,9 @@
 {% extends 'manage/testcase/base.html' %}
 
+{% block page-notes %}
+<p>"Environment constraints" UI under re-consideration; constraint changes may currently not be saved due to a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658258">platform bug</a>.</p>
+{% endblock %}
+
 {% block listcontent %}
 <section id="addcase">
   <h2>{% block formtitle %}{% endblock %}</h2>

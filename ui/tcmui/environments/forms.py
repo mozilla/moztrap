@@ -209,9 +209,12 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
         try:
             owner.environmentgroups = groups
         except EnvironmentGroupList.Conflict, e:
+            # @@@ platform always gives u.e.s on anything with cases added
             if e.response_error != "unsupported.environment.selection":
                 raise
-            # @@@ platform always gives u.e.s on test suite with cases
+        except EnvironmentGroupList.ServerError:
+            # @@@ workaround https://bugzilla.mozilla.org/show_bug.cgi?id=658258
+            pass
 
 
 
