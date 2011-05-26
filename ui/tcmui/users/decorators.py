@@ -1,7 +1,11 @@
 from functools import wraps
 
 from django.contrib import messages
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.template import TemplateSyntaxError
+
+import simplejson as json
 
 from ..core.api import RemoteObject
 
@@ -28,8 +32,12 @@ def login_redirect(function=None, redirect_field_name=None, login_url=None):
             try:
                 response = wrapped(request, *args, **kwargs)
             except RemoteObject.Unauthorized:
-                pass
+                error_status = 401
+                messages.info(
+                    request,
+                    "Please log in to view this page.")
             except RemoteObject.Forbidden:
+                error_status = 403
                 messages.warning(
                     request,
                     "Your account does not have sufficient permissions "
@@ -38,6 +46,10 @@ def login_redirect(function=None, redirect_field_name=None, login_url=None):
                     "administrator.")
             else:
                 return response
+
+            if request.is_ajax():
+                error_info = {"login_url": reverse("login")}
+                return HttpResponse(json.dumps(error_info), status=error_status)
 
             return redirect_to_login(
                 from_url=request.path,

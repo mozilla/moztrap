@@ -80,15 +80,6 @@ var TCM = TCM || {};
         autoFocus('.details.testinvalid > .summary');
         testCaseButtons("#run .details.test");
         breadcrumb();
-        $("div[role=main]").ajaxError(
-            function(event, request, settings) {
-                $(this).prepend(
-                    '<aside class="error">' + request.responseText + '</aside>'
-                );
-                $('.loadingCSS').detach();
-                $('.loading').removeClass("loading");
-            }
-        );
     });
 
 })(jQuery);
