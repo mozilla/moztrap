@@ -3733,8 +3733,15 @@ thead .controls {
 
 /* test nav -------------------------------------------------------------- */
 .testnav .summary:focus, .testnav .summary:hover, .testnav .summary:active {
-  background: rgba(75, 101, 100, 0.618);
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(50%, rgba(233, 237, 237, 0.236)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
+  background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
+  background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
+  background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
   outline: 0;
+}
+.testnav[open] .summary {
+  background: rgba(75, 101, 100, 0.618);
 }
 .testnav .selectruns {
   clear: both;

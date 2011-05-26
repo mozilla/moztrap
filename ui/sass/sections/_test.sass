@@ -5,8 +5,11 @@
   .summary
     @extend .crumb
     #{$focus}
-      background: rgba($blue-dark,$small)
+      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xxsmall),rgba($blue-hint,0)))
       outline: 0
+  &[open]
+    .summary
+      background: rgba($blue-dark,$small)
 
   .selectruns
     +full
