@@ -78,7 +78,7 @@ def testcases(request):
             ("status", TestResultStatusFilter),
             ("comment", KeywordFilter))
 @dec.paginate("results")
-@dec.sort("results")
+@dec.sort("results", "status", "desc")
 def testresults(request, itc_id):
     itc = TestRunIncludedTestCaseList.get_by_id(itc_id, auth=request.auth)
     results = TestResultList.ours(auth=request.auth).filter(
