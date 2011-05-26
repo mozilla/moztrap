@@ -17,10 +17,10 @@ var TCM = TCM || {};
                 event.preventDefault();
                 event.stopPropagation();
                 var button = $(this),
-                    testcase = button.closest(context),
+                    testcase = button.closest(".details.test"),
                     container = button.closest("div.form"),
                     data = {
-                        action: button.attr("data-action")
+                        action: button.data("action")
                     },
                     inputs = container.find("input"),
                     post = true;
@@ -44,18 +44,18 @@ var TCM = TCM || {};
                 );
                 if ( post ) {
                     $.post(
-                        testcase.attr("data-action-url"),
+                        testcase.data("action-url"),
                         data,
                         function(data) {
                             var id = testcase.attr("id");
                             testcase.replaceWith(data);
                             var newCase = "#" + id;
-                            $(newCase).find('details').andSelf().html5accordion('summary');
+                            $(newCase).find('.details').andSelf().html5accordion('.summary');
                             testCaseButtons(newCase);
                             TCM.addLoading('button', testcase);
                             $('.loadingCSS').detach();
-                            autoFocus('details.stepfail > summary');
-                            autoFocus('details.testinvalid > summary');
+                            autoFocus('.details.stepfail > .summary');
+                            autoFocus('.details.testinvalid > .summary');
                         }
                     );
                 }
@@ -64,9 +64,9 @@ var TCM = TCM || {};
     };
 
     $(function() {
-        autoFocus('details.stepfail > summary');
-        autoFocus('details.testinvalid > summary');
-        testCaseButtons("details.test");
+        autoFocus('.details.stepfail > .summary');
+        autoFocus('.details.testinvalid > .summary');
+        testCaseButtons("#run .details.test");
         $("div[role=main]").ajaxError(
             function(event, request, settings) {
                 $(this).prepend(

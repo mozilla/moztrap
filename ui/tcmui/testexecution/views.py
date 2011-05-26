@@ -10,7 +10,7 @@ from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..users.decorators import login_redirect
 
-from .models import TestCycleList, TestRunList, TestResult
+from .models import TestCycleList, TestRunList, TestResultList
 
 
 
@@ -117,9 +117,7 @@ ACTIONS = {
 @login_redirect
 @require_POST
 def result(request, result_id):
-    result = TestResult.get(
-        "testruns/results/%s" % result_id,
-        auth=request.auth)
+    result = TestResultList.get_by_id(result_id, auth=request.auth)
 
     action = request.POST.get("action", None)
     try:

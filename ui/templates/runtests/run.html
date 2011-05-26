@@ -17,7 +17,13 @@
         <li><a href="#">{{ product }}</a></li>
         <li><a href="#">{{ cycle }}</a></li>
         <li><a href="#">{{ testrun }}</a></li>
-        <li class="envsettings">[osx, chrome, english]</li>
+        <li class="envsettings">
+          [
+          {% for env in request.environments %}
+          {{ env.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+          ]
+        </li>
       </ul>
     </div>
   </div>
