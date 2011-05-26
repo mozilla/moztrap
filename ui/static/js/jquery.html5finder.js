@@ -114,7 +114,7 @@
                     horzScroll();
                     addSelectedClass();
                     if (options.callback) {
-                        options.callback(this);
+                        options.callback();
                     }
                 }
             });
@@ -129,7 +129,7 @@
             horzScroll();
             if (container.is(':last-child')) {
                 if (options.lastChildCallback) {
-                    options.lastChildCallback();
+                    options.lastChildCallback(this);
                 }
             } else {
                 if (options.callback) {
