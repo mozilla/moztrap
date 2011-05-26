@@ -2,16 +2,16 @@ var TCM = TCM || {};
 
 (function($) {
 
+    TCM.addLoadingCSS = function(container) {
+        var vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
+            style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
+        $('head').append(style);
+    };
+
     TCM.addLoading = function(trigger, context) {
         $(context).find(trigger).click(function() {
-            var $container = $(this).closest(context),
-                addLoadingCSS = function() {
-                    var vertHeight = (parseInt($container.css('height'), 10) - parseInt($container.css('line-height'), 10)) / 2 + 'px',
-                        style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
-                    $('head').append(style);
-                };
-            $container.addClass('loading');
-            addLoadingCSS();
+            var container = $(this).closest(context).addClass('loading');
+            addLoadingCSS(container);
         });
     };
 
@@ -187,40 +187,12 @@ var TCM = TCM || {};
                 'input[name="testrun"]'
             ],
             callback: function() {
-                $('.selectruns + .environment').slideUp();
+                $('.selectruns + .environment').slideUp('fast');
             },
             lastChildCallback: function(choice) {
-                var environments = $('.selectruns + .environment').html(
-                        '<h2>Set your environment</h2>' +
-                        '<form action="" method="POST">' +
-                          '<input type="hidden" value="" name="next">' +
-                          '<ul>' +
-                            '<li>' +
-                              '<label for="id_type_3">Browser</label>' +
-                              '<select id="id_type_3" name="type_3"></select>' +
-                            '</li>' +
-                            '<li>' +
-                              '<label for="id_type_2">Language</label>' +
-                              '<select id="id_type_2" name="type_2"></select>' +
-                            '</li>' +
-                            '<li>' +
-                              '<label for="id_type_1">Operating System</label>' +
-                              '<select id="id_type_1" name="type_1"></select>' +
-                            '</li>' +
-                          '</ul>' +
-                          '<div class="form-actions">' +
-                            '<button type="submit">run tests!</button>' +
-                          '</div>' +
-                        '</form>'
-                    ).slideDown(),
-                    ajaxUrl = $(choice).data("sub-url"),
-                    addLoadingCSS = function() {
-                        var vertHeight = (parseInt(environments.children('form').css('height'), 10) - parseInt(environments.children('form').css('line-height'), 10)) / 2 + 'px',
-                            style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
-                        $('head').append(style);
-                    };
-                addLoadingCSS();
-                environments.children('form').addClass('loading');
+                var environments = $('.selectruns + .environment').css('min-height', '169px').addClass('loading').slideDown('fast'),
+                    ajaxUrl = $(choice).data("sub-url");
+                TCM.addLoadingCSS(environments);
                 $.get(ajaxUrl, function(data) {
                     environments.html(data);
                     $('.loadingCSS').detach();

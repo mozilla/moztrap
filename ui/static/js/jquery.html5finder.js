@@ -43,7 +43,7 @@
         context.find('.finder').data('cols', numberCols);
 
         // Enable headers to engage section focus, and sort column if section already has focus
-        // This requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
+        // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
         headers.find('a').click(function() {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
@@ -142,14 +142,8 @@
         if (options.loading === true) {
             var addLoading = function(trigger, target) {
                 $(trigger).live('click', function() {
-                    var container = $(this).closest(target).next(target),
-                        addLoadingCSS = function() {
-                            var vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
-                                style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
-                            $('head').append(style);
-                        };
-                    container.addClass('loading');
-                    addLoadingCSS();
+                    var container = $(this).closest(target).next(target).addClass('loading');
+                    TCM.addLoadingCSS(container);
                 });
             };
             for (var i = 0; i < numberCols; i++) {
