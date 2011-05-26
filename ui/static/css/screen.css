@@ -209,15 +209,15 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before, .smallcaps, #run .testinvalid summary {
+.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail summary, #page-status::before {
+.allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
-.smallcaps, #run .testinvalid summary {
+.smallcaps {
   font-variant: small-caps;
 }
 
@@ -3798,6 +3798,11 @@ thead .controls {
 }
 
 /* run tests -------------------------------------------------------------- */
+#run {
+  clear: both;
+  padding-left: 4.211%;
+  padding-right: 4.211%;
+}
 #run .test, #run .content {
   clear: both;
 }
@@ -3812,54 +3817,28 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-#run .test[open], #run .test.open, #run .test .header {
-  border-bottom-style: solid;
-  border-bottom-width: 0.071em;
-  padding-bottom: 0.738em;
-  border-color: #cccccc;
-}
-#run .test:first-of-type, #run .test:first-of-type[open], #run .test:first-of-type.open {
-  padding-top: 0;
-}
-#run .test:first-of-type .header, #run .test:first-of-type[open] .header, #run .test:first-of-type.open .header {
-  border-top-style: solid;
-  border-top-width: 0.071em;
-  padding-top: 0.738em;
-}
 #run .header {
-  *zoom: 1;
-  padding-top: 0.809em;
-}
-#run .header:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-#run header {
   display: inline;
   float: left;
-  width: 83.158%;
-  margin-right: 1.053%;
+  width: 81.609%;
+  margin-right: 1.149%;
   margin-top: 0.405em;
   margin-bottom: 0.405em;
 }
-#run header h3 {
+#run .header h3 {
   display: inline;
   float: left;
-  width: 69.62%;
-  margin-right: 1.266%;
+  width: 71.831%;
+  margin-right: 1.408%;
   font-size: 1.143em;
   line-height: 1.416em;
   margin: 0;
 }
-#run header small {
+#run .header small {
   display: inline;
   float: left;
-  width: 8.861%;
-  margin-right: 1.266%;
+  width: 4.225%;
+  margin-right: 1.408%;
   font-weight: 700;
   vertical-align: top;
   text-align: right;
@@ -3867,8 +3846,8 @@ thead .controls {
 #run .status {
   display: inline;
   float: left;
-  width: 15.789%;
-  margin-right: 1.053%;
+  width: 17.241%;
+  margin-right: 1.149%;
   display: inline;
   float: right;
   margin-right: 0;
@@ -3877,12 +3856,12 @@ thead .controls {
 #run .status p {
   font-size: 0.857em;
   line-height: 1.888em;
-  -moz-border-radius: 1.5em;
-  -webkit-border-radius: 1.5em;
-  -o-border-radius: 1.5em;
-  -ms-border-radius: 1.5em;
-  -khtml-border-radius: 1.5em;
-  border-radius: 1.5em;
+  -moz-border-radius: 0.382em;
+  -webkit-border-radius: 0.382em;
+  -o-border-radius: 0.382em;
+  -ms-border-radius: 0.382em;
+  -khtml-border-radius: 0.382em;
+  border-radius: 0.382em;
   padding-top: 0.472em;
   padding-bottom: 0.472em;
   padding-left: 1em;
@@ -3912,8 +3891,8 @@ thead .controls {
   width: 21.127%;
 }
 #run .steps {
-  padding-left: 8.421%;
-  padding-right: 16.842%;
+  padding-left: 13.793%;
+  padding-right: 18.391%;
   padding-top: 1.618em;
   clear: both;
   margin: 0;
@@ -3925,7 +3904,7 @@ thead .controls {
   position: relative;
   padding: 0.809em;
   padding-bottom: 0;
-  background: #eeeeee;
+  background: rgba(233, 237, 237, 0.618);
   list-style: none;
   counter-increment: step;
 }
@@ -3942,7 +3921,7 @@ thead .controls {
   line-height: 1.416em;
   content: counter(step, decimal) ".";
   position: absolute;
-  right: 101.408%;
+  right: 101.695%;
   top: 0;
 }
 #run .steps h4 {
@@ -3955,9 +3934,10 @@ thead .controls {
   clear: both;
   position: relative;
   margin: 0 -0.809em;
-  border-top: 1.618em solid #fef0bf;
+  border-top: 1.618em solid rgba(170, 192, 191, 0.236);
 }
-#run .stepfail summary {
+#run .stepfail .summary {
+  font-weight: 700;
   -moz-transition-property: all;
   -webkit-transition-property: all;
   -o-transition-property: all;
@@ -3966,19 +3946,20 @@ thead .controls {
   -webkit-transition-duration: 300ms;
   -o-transition-duration: 300ms;
   transition-duration: 300ms;
+  text-shadow: rgba(185, 41, 47, 0.382) 0 1px 0;
   position: absolute;
   top: -1.618em;
   right: 0;
-  padding: 0 1.408%;
-  width: 9.859%;
+  padding: 0 1.695%;
+  width: 11.864%;
   background: #e37f83;
-  color: #eeeeee;
+  color: rgba(238, 238, 238, 0.618);
   text-align: center;
 }
-#run .stepfail summary:hover {
+#run .stepfail .summary:hover {
   background: #b9292f;
 }
-#run .stepfail[open] summary, #run .stepfail.open summary, #run .stepfail.failed summary {
+#run .stepfail[open] .summary, #run .stepfail.failed .summary {
   width: 100%;
   padding: 0;
   background: #b9292f;
@@ -3994,8 +3975,8 @@ thead .controls {
   display: inline;
   float: left;
   padding-top: 1.618em;
-  padding-left: 1.053%;
-  padding-right: 1.053%;
+  padding-left: 1.149%;
+  padding-right: 1.149%;
   -moz-border-radius-bottomleft: 1em;
   -webkit-border-bottom-left-radius: 1em;
   -o-border-bottom-left-radius: 1em;
@@ -4008,15 +3989,16 @@ thead .controls {
   -ms-border-bottom-right-radius: 1em;
   -khtml-border-bottom-right-radius: 1em;
   border-bottom-right-radius: 1em;
-  width: 72.632%;
-  margin-left: 8.421%;
+  width: 65.517%;
+  margin-left: 13.793%;
   background: #fee58c;
 }
 #run .testinvalid {
   position: relative;
 }
-#run .testinvalid summary {
-  text-shadow: rgba(254, 240, 191, 0.75) 1px 1px 0;
+#run .testinvalid .summary {
+  font-weight: 500;
+  text-shadow: rgba(238, 238, 238, 0.618) 0 1px 0;
   -moz-border-radius-bottomleft: 1em;
   -webkit-border-bottom-left-radius: 1em;
   -o-border-bottom-left-radius: 1em;
@@ -4032,28 +4014,63 @@ thead .controls {
   position: absolute;
   top: 0;
   right: 0;
-  width: 13.684%;
-  padding: 0.809em 1.053%;
+  width: 14.943%;
+  padding: 0.405em 1.149%;
   background: #fef0bf;
+  color: rgba(163, 128, 1, 0.618);
   text-align: center;
 }
-#run .testinvalid summary:hover {
+#run .testinvalid .summary:hover {
   background: #fee58c;
 }
-#run .testinvalid[open] summary, #run .testinvalid.open summary, #run .testinvalid.invalidated summary {
+#run .testinvalid[open] .summary, #run .testinvalid.invalidated .summary {
   background: #fee58c;
 }
-#run .started .header {
-  background: #aac0bf;
+
+.testsummary {
+  *zoom: 1;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  -moz-border-radius: 0.382em;
+  -webkit-border-radius: 0.382em;
+  -o-border-radius: 0.382em;
+  -ms-border-radius: 0.382em;
+  -khtml-border-radius: 0.382em;
+  border-radius: 0.382em;
 }
-#run .passed .header {
-  background: #cdeca9;
+.testsummary:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
-#run .invalidated .header {
-  background: #fef0bf;
+.testsummary:focus, .testsummary:hover, .testsummary:active {
+  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.618)), color-stop(66.667%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
 }
-#run .failed .header {
-  background: #eca9ab;
+.test[open] .testsummary {
+  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(135, 169, 168, 0)), color-stop(33.333%, rgba(135, 169, 168, 0.382)), color-stop(66.667%, rgba(135, 169, 168, 0.382)), color-stop(100%, rgba(135, 169, 168, 0)));
+  background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
+  background: -moz-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
+  background: -o-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
+  background: linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
+}
+.started .testsummary, .started[open] .testsummary {
+  background: rgba(170, 192, 191, 0.618);
+}
+.passed .testsummary, .passed[open] .testsummary {
+  background: rgba(205, 236, 169, 0.618);
+}
+.invalidated .testsummary, .invalidated[open] .testsummary {
+  background: rgba(254, 240, 191, 0.618);
+}
+.failed .testsummary {
+  background: rgba(236, 169, 171, 0.618);
 }
 
 /* Results ------------------------------------------------------------------- */

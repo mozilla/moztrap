@@ -47,43 +47,34 @@
 /* run tests --------------------------------------------------------------
 
 #run
+  +full(24)
+  +pad(1,1,24)
   .test, .content
-    +full(24)
+    +full(22)
   .test
     +pie-clearfix
-    &[open], &.open, .header
-      +trailing-border(1px,.5)
-      border-color: #ccc
-    &:first-of-type
-      &, &[open], &.open
-        padding-top: 0
-        .header
-          +leading-border(1px,.5)
   .header
-    +pie-clearfix
-    +padding-leader(.5)
-  header
-    +columns(20,24)
+    +columns(18,22)
     +leader(.25)
     +trailer(.25)
     h3
-      +columns(14,20)
+      +columns(13,18)
       +adjust-font-size-to(16px)
       margin: 0
     small
-      +columns(2,20)
+      +columns(1,18)
       +bold
       vertical-align: top
       text-align: right
 
   .status
-    +columns(4,24)
-    +omega(24)
+    +columns(4,22)
+    +omega(22)
     text-align: center
     p
       @extend .allcaps
       +adjust-font-size-to(12px)
-      +border-radius(1.5em)
+      +border-radius($xsmallem)
       +padding-leader(.25,12px)
       +padding-trailer(.25,12px)
       +hpadding(1em)
@@ -114,7 +105,7 @@
     width: columns(4,18)
 
   .steps
-    +pad(2,4,24)
+    +pad(3,4,22)
     +padding-leader
     clear: both
     margin: 0
@@ -125,14 +116,14 @@
       position: relative
       padding: $base-rhythm-unit*.5
         bottom: 0
-      background: $light
+      background: rgba($blue-hint,$small)
       list-style: none
       counter-increment: step
       &::before
         +adjust-font-size-to(48px)
         content: counter(step, decimal) "."
         position: absolute
-        right: 100% + gutter(18)
+        right: 100% + gutter(15)
         top: 0
     h4
       +trailer(0)
@@ -140,25 +131,27 @@
       overflow: hidden
 
   .stepfail
-    +full(18)
+    +full(15)
     position: relative
     margin: 0 0 - $base-rhythm-unit*.5
-    border-top: $base-rhythm-unit solid $yellow-light
-    summary
+    border-top: $base-rhythm-unit solid rgba($blue-lighter,$xxsmall)
+    .summary
       @extend .allcaps
+      +bold
       +transition(all,300ms)
+      +text-shadow(rgba($red,$xsmall) 0 1px 0)
       position: absolute
       top: - $base-rhythm-unit
       right: 0
-      padding: 0 gutter(18)
-      width: columns(2,18)
+      padding: 0 gutter(15)
+      width: columns(2,15)
       background: $red-light
-      color: $light
+      color: rgba($light,$small)
       text-align: center
       &:hover
         background: $red
-    &[open], &.open, &.failed
-      summary
+    &[open], &.failed
+      .summary
         width: 100%
         padding: 0
         background: $red
@@ -172,40 +165,47 @@
   .invalidform, .invaliddesc
     +float('left')
     +padding-leader
-    +hpadding(gutter(24))
+    +hpadding(gutter(22))
     +border-bottom-radius(1em)
-    width: columns(18,24) - gutter(24)*2
-    margin-left: columns(2,24) + gutter(24)
+    width: columns(15,22) - gutter(22)*2
+    margin-left: columns(3,22) + gutter(22)
     background: $yellow
 
   .testinvalid
     position: relative
-    summary
-      @extend .smallcaps
-      +text-shadow(rgba($yellow-light,.75) 1px 1px 0)
+    .summary
+      @extend .allcaps
+      +demi
+      +text-shadow(rgba($light,$small) 0 1px 0)
       +border-bottom-radius(1em)
       position: absolute
       top: 0
       right: 0
-      width: columns(4,24) - gutter(24)*2
-      padding: $base-rhythm-unit*.5 gutter(24)
+      width: columns(4,22) - gutter(22)*2
+      padding: rhythm(.25) gutter(22)
       background: $yellow-light
+      color: rgba($yellow-darkest,$small)
       text-align: center
       &:hover
         background: $yellow
-    &[open], &.open, &.invalidated
-      summary
+    &[open], &.invalidated
+      .summary
         background: $yellow
 
-  .started
-    .header
-      background: $blue-lighter
-  .passed
-    .header
-      background: $green-lighter
-  .invalidated
-    .header
-      background: $yellow-light
-  .failed
-    .header
-      background: $red-lighter
+.testsummary
+  +pie-clearfix
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  +border-radius($xsmallem)
+  #{$focus}
+    +background(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+  .test[open] &
+    +background(linear-gradient(left,rgba($blue-light,0),rgba($blue-light,$xsmall),rgba($blue-light,$xsmall),rgba($blue-light,0)))
+  .started &, .started[open] &
+    background: rgba($blue-lighter,$small)
+  .passed &, .passed[open] &
+    background: rgba($green-lighter,$small)
+  .invalidated &, .invalidated[open] &
+    background: rgba($yellow-light,$small)
+  .failed &
+    background: rgba($red-lighter,$small)

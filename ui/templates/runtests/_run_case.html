@@ -1,12 +1,12 @@
 {% load execution staticdata %}
 
-    <details id="result-{{ result.id }}" class="test {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
+    <article id="result-{{ result.id }}" class="test details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
 
-      <summary class="header">
-        <header>
+      <header class="summary testsummary">
+        <div class="header">
           <small>#{{ case.id }}</small>
           <h3>{{ case.name }}</h3>
-        </header>
+        </div>
 
         <div class="status">
           {% if result.status.PENDING %}
@@ -27,12 +27,12 @@
             <p class="failed">Failed</p>
           {% endif %}
         </div>
-      </summary>
+      </header>
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <details class="testinvalid{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} open="open"{% endif %}>
-            <summary>invalid</summary>
+          <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} open="open"{% endif %}>
+            <p class="summary">invalid?</p>
             {% if result.status.INVALIDATED %}
               <div class="invaliddesc">
                 <h4>Invalid because:</h4>
@@ -47,7 +47,7 @@
                 </div>
               </div>
             {% endif %}
-          </details>
+          </div>
         {% endif %}
 
         <ol class="steps">
@@ -60,8 +60,8 @@
               <p>{{ step.expectedResult }}</p>
             </div>
             {% if result.status.STARTED %}
-              <details class="stepfail">
-                <summary>fail</summary>
+              <div class="stepfail details">
+                <p class="summary">fail</p>
                 <div class="failform form">
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <label for="{{ step.id }}-actualResult">actual result:</label>
@@ -70,18 +70,18 @@
                     <button class="fail" data-action="finishfail">submit failure</button>
                   </div>
                 </div>
-              </details>
+              </div>
             {% endif %}
             {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
-              <details class="stepfail failed" open="open">
-                <summary>failed</summary>
+              <div class="stepfail details failed" open="open">
+                <p class="summary">failed</p>
                 <div class="faildesc">
                   <p>{{ result.actualResult }}</p>
                 </div>
-              </details>
+              </div>
             {% endif %}
           </li>
           {% endfor %}
         </ol>
       </div>
-    </details>
+    </article>
