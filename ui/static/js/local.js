@@ -130,7 +130,7 @@ var TCM = TCM || {};
     $(function() {
         filtering();
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('input, textarea').blur(
+        $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {
                 $(this).addClass('hadfocus');
             }

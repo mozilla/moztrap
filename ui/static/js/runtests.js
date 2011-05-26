@@ -10,6 +10,18 @@ var TCM = TCM || {};
         });
     };
 
+    var breadcrumb = function() {
+        var originalFinderHTML = $('.selectruns').html();
+        $('.testnav .currentrun .breadcrumb').click(function() {
+            if (!$(this).closest('.details').hasClass('open')) {
+                $(this).closest('.summary').click();
+            }
+            $('.selectruns').html(originalFinderHTML);
+            $('#' + $(this).data('id')).click();
+            return false;
+        });
+    };
+
     var testCaseButtons = function(context) {
         TCM.addLoading('button', context);
         $(context).find("button").click(
@@ -67,6 +79,7 @@ var TCM = TCM || {};
         autoFocus('.details.stepfail > .summary');
         autoFocus('.details.testinvalid > .summary');
         testCaseButtons("#run .details.test");
+        breadcrumb();
         $("div[role=main]").ajaxError(
             function(event, request, settings) {
                 $(this).prepend(

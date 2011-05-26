@@ -7,9 +7,9 @@
     <div class="container">
       <ul class="currentrun">
         <li><a href="{% url runtests %}">run tests</a></li>
-        <li><a href="#">{{ product }}</a></li>
-        <li><a href="#">{{ cycle }}</a></li>
-        <li><a href="#">{{ testrun }}</a></li>
+        <li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
+        <li><a href="#" class="breadcrumb" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
+        <li><a href="#" class="breadcrumb" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
         <li class="envsettings">
           [
           {% for env in request.environments %}
