@@ -673,6 +673,8 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
             if k in valid_fieldnames:
                 if isinstance(v, EnumValue):
                     v = int(v)
+                elif isinstance(v, RemoteObject):
+                    v = util.id_for_object(v)
                 elif not isinstance(v, basestring):
                     newv = []
                     try:

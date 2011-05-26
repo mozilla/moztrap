@@ -10,7 +10,7 @@ from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..users.decorators import login_redirect
 
-from .models import TestCycleList, TestRun, TestRunList, TestResult
+from .models import TestCycleList, TestRunList, TestResult
 
 
 
@@ -19,10 +19,9 @@ def picker(request):
     products = ProductList.ours(auth=request.auth).sort("name", "asc")
     return TemplateResponse(
         request,
-        "runtests/picker.html",
+        "runtests/home.html",
         {
             "products": products,
-            "picker_type": "runtests",
             })
 
 
@@ -75,7 +74,7 @@ def picker_environments(request, parent_id):
 
 @login_redirect
 def runtests(request, testrun_id):
-    testrun = TestRun.get("testruns/%s" % testrun_id, auth=request.auth)
+    testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
     if not testrun.environmentgroups.match(request.environments):
         return HttpResponseRedirect("%s&next=%s" % (
@@ -86,12 +85,22 @@ def runtests(request, testrun_id):
     cycle = testrun.testCycle
     product = cycle.product
 
+    # for prepopulating picker
+    products = ProductList.ours(auth=request.auth).sort("name", "asc")
+    cycles = TestCycleList.ours(auth=request.auth).sort("name", "asc").filter(
+        product=product, status=TestCycleStatus.ACTIVE)
+    runs = TestRunList.ours(auth=request.auth).sort("name", "asc").filter(
+        testCycle=cycle, status=TestRunStatus.ACTIVE)
+
     return TemplateResponse(
         request,
         "runtests/run.html",
         {"product": product,
          "cycle": cycle,
          "testrun": testrun,
+         "products": products,
+         "cycles": cycles,
+         "runs": runs,
          "environmentgroups": testrun.environmentgroups,
          })
 

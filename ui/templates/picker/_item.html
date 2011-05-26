@@ -1,7 +1,7 @@
 {% load picker %}
 
 <li>
-  <input type="radio" name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ object|picker_sub_url:picker_type }}">
+  <input type="radio"{% if active.id == object.id %} checked{% endif %} name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ object|picker_sub_url:picker_type }}">
   <label for="{{ object.api_name }}-{{ object.id }}">
     {% block columns %}{% endblock %}
   </label>
