@@ -256,7 +256,7 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
 
 
     def extra_querystring(self):
-        return "&testCaseVersionId=1&testRunId=1"
+        return "&testCaseVersionId=1&testRunId=1&sortfield=testRunResultStatusId&sortdirection=desc"
 
 
     def extra_responses(self):
@@ -271,6 +271,7 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
                         id=1, url="testcases/versions/1"))),
             "http://fake.base/rest/testruns/1?_type=json":
                 response(testruns.one()),
+            # calculating summary results for included-case header
             "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
                 response(testresults.searchresult({})),
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
