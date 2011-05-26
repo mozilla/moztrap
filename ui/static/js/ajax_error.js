@@ -7,7 +7,7 @@
             window.location = data.login_url + "?next=" + window.location.pathname;
         } else {
             // @@@ do something nicer than an alert()?
-            alert("An unexpected error occurred. Try reloading the page.");
+            alert("Halp! Something broke, and we're not sure just what. Try reloading the page.");
         }
     });
  })(jQuery);
