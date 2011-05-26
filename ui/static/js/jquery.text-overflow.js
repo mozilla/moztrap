@@ -34,13 +34,13 @@
 
 					if(enableUpdating == true){
 						var oldW = el.width();
-						setInterval(function(){
+						$(window).resize(function(){
 							if(el.width() != oldW){
 								oldW = el.width();
 								el.html(originalText);
 								el.ellipsis();
 							}
-						}, 200);
+						});
 					}
 				}
 			});
