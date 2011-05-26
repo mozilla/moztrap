@@ -42,12 +42,50 @@
 
         context.find('.finder').data('cols', numberCols);
 
-        // Enable headers to engage section focus
+        // Enable headers to engage section focus, and sort column if section already has focus
+        // This requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
         headers.find('a').click(function() {
-            context.find(options.sectionSelector).removeClass('focus');
-            $(this).closest(options.sectionSelector).addClass('focus');
+            var container = $(this).closest(options.sectionSelector),
+                list = container.find(options.sectionContentSelector),
+                selectorClass = $(this).parent().attr('class').substring(2),
+                type = $(this).parent().data('sort'),
+                direction;
+            if (container.hasClass('focus')) {
+                if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
+                    $(this).toggleClass('asc').toggleClass('desc');
+                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
+                } else {
+                    $(this).addClass('asc');
+                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
+                }
+                if ($(this).hasClass('asc')) {
+                    direction = 'asc';
+                }
+                if ($(this).hasClass('desc')) {
+                    direction = 'desc';
+                }
+                if (type === 'number') {
+                    selectorClass = selectorClass + ' .number';
+                }
+                if (type === 'date') {
+                    list.sort({
+                        sortOn: '.' + selectorClass,
+                        direction: direction,
+                        sortType: 'string'
+                    });
+                }
+                list.sort({
+                    sortOn: '.' + selectorClass,
+                    direction: direction,
+                    sortType: type
+                });
+            } else {
+                context.find(options.sectionSelector).removeClass('focus');
+                container.addClass('focus');
+                horzScroll();
+            }
             $(this).blur();
-            horzScroll();
+            return false;
         });
 
         for (var i = 0; i < numberCols; i++) {
