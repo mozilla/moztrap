@@ -1784,6 +1784,7 @@ thead .controls {
 
 /* Finder -------------------------------------------------------------------- */
 .findertoggle {
+  display: none;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
   opacity: 0.65;
   -moz-border-radius-bottomleft: 0.618em;
