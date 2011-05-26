@@ -1,5 +1,5 @@
 {% extends 'runtests/base.html' %}
-{% load execution %}
+{% load execution environment %}
 
 {% block bread %}
 <nav class="testnav details">
@@ -28,6 +28,8 @@
     </div>
 
     <div class="environment">
+      {% get_environment_selection_form for testrun.environmentgroups as env_form %}
+      {% include "runtests/_environment_form.html" with form=env_form %}
     </div>
   </div>
 </nav>

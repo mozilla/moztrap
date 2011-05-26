@@ -228,7 +228,7 @@ var TCM = TCM || {};
                 });
             }
         });
-        $('.selectruns + .environment').hide();
+        $('.selectruns + .environment.empty').hide();
     });
 
     $(window).load(function() {
