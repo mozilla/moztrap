@@ -21,9 +21,9 @@
             }),
 
             // We want to be able to treat already-selected items differently
-            addSelectedClass = function() {
-                context.find(options.selected).addClass('selected');
-                context.find(options.notSelected).removeClass('selected');
+            markSelected = function() {
+                context.find(options.selected).data('selected', true);
+                context.find(options.notSelected).data('selected', false);
             },
 
             // Define the function for horizontal scrolling (requires jquery.scrollTo plugin):
@@ -41,6 +41,7 @@
             };
 
         context.find('.finder').data('cols', numberCols);
+        markSelected();
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
@@ -89,60 +90,50 @@
         });
 
         for (var i = 0; i < numberCols; i++) {
-            context.find(options.sectionItemSelectors[i] + ':not(.selected)').live('click', function() {
-                var container = $(this).closest(options.sectionSelector),
-                    ajaxUrl = $(this).data("sub-url");
-                // Last-child section only receives focus on-click by default
-                if (container.is(':last-child')) {
-                    addSelectedClass();
-                    if (options.lastChildCallback) {
-                        options.lastChildCallback(this);
-                    }
-                } else {
-                    // Add returned data to the next section
-                    $.get(
-                        ajaxUrl,
-                        function(data) {
-                            container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
-                            $('.loadingCSS').detach();
-                            $('.loading').removeClass("loading");
-                        }
-                    );
-                    container.removeClass('focus').prevAll(options.sectionSelector).removeClass('focus');
-                    container.next(options.sectionSelector).addClass('focus').children('ul').empty();
-                    container.next(options.sectionSelector).nextAll(options.sectionSelector).removeClass('focus').children('ul').empty();
+            context.find(options.sectionItemSelectors[i]).live('click', function() {
+                var container = $(this).closest(options.sectionSelector);
+                // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
+                if ($(this).data('selected') === true) {
+                    container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
+                    container.next(options.sectionSelector).find('input:checked').removeAttr('checked').data('selected', false);
+                    container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
                     horzScroll();
-                    addSelectedClass();
-                    if (options.callback) {
+                    if (!container.is(':last-child') && options.callback) {
                         options.callback();
                     }
+                } else {
+                    var ajaxUrl = $(this).data("sub-url");
+                    // Last-child section only receives focus on-click by default
+                    if (container.is(':last-child')) {
+                        if (options.lastChildCallback) {
+                            options.lastChildCallback(this);
+                        }
+                    } else {
+                        // Add a loading screen while waiting for the Ajax call to return data
+                        if (options.loading === true) {
+                            var target = container.next(options.sectionSelector).addClass('loading');
+                            TCM.addLoadingCSS(target);
+                        }
+                        // Add returned data to the next section
+                        $.get(
+                            ajaxUrl,
+                            function(data) {
+                                container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
+                                $('.loadingCSS').detach();
+                                $('.loading').removeClass('loading');
+                            }
+                        );
+                        container.removeClass('focus').prevAll(options.sectionSelector).removeClass('focus');
+                        container.next(options.sectionSelector).addClass('focus').children('ul').empty();
+                        container.next(options.sectionSelector).nextAll(options.sectionSelector).removeClass('focus').children('ul').empty();
+                        horzScroll();
+                        if (options.callback) {
+                            options.callback();
+                        }
+                    }
+                    markSelected();
                 }
             });
-        }
-
-        // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
-        context.find('.selected').live('click', function() {
-            var container = $(this).closest(options.sectionSelector);
-            container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
-            container.next(options.sectionSelector).find('input:checked').removeClass('selected').removeAttr('checked');
-            container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
-            horzScroll();
-            if (!container.is(':last-child') && options.callback) {
-                options.callback();
-            }
-        });
-
-        // Add a loading screen while waiting for the Ajax call to return data
-        if (options.loading === true) {
-            var addLoading = function(trigger, target) {
-                $(trigger).live('click', function() {
-                    var container = $(this).closest(target).next(target).addClass('loading');
-                    TCM.addLoadingCSS(container);
-                });
-            };
-            for (var i = 0; i < numberCols; i++) {
-                addLoading(options.sectionItemSelectors[i] + ':not(.selected)', options.sectionSelector);
-            }
         }
     };
 
