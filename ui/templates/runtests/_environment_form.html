@@ -1,6 +1,10 @@
+{% load environment %}
+
+{% get_environment_selection_form for object.environmentgroups as form %}
+
 <h2>Set your environment</h2>
-<form method="POST"{% if action %} action="{{ action }}"{% endif %}>
-  <input type="hidden" name="next" value="{{ next }}">
+<form method="POST" action="{{ object.environmentgroups|set_environment_url }}"%}>
+  <input type="hidden" name="next" value="{{ next|default:request.path }}">
   {% csrf_token %}
   {{ form.non_field_errors }}
   <ul>
@@ -13,6 +17,6 @@
     {% endfor %}
   </ul>
   <div class="form-actions">
-    <button type="submit">run tests!</button>
+    <button type="submit">run tests in {{ object }}!</button>
   </div>
 </form>

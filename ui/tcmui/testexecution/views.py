@@ -58,15 +58,10 @@ def picker_runs(request, parent_id):
 def picker_environments(request, parent_id):
     run = TestRunList.get_by_id(parent_id, auth=request.auth)
 
-    form = EnvironmentSelectionForm(
-        groups=run.environmentgroups,
-        current=request.session.get("environments", None))
-
     return TemplateResponse(
         request,
         "runtests/_environment_form.html",
-        {"form": form,
-         "action": set_environment_url(run.environmentgroups),
+        {"object": run,
          "next": reverse("runtests_run", kwargs={"testrun_id": parent_id}),
          })
 

@@ -28,8 +28,7 @@
     </div>
 
     <div class="environment">
-      {% get_environment_selection_form for testrun.environmentgroups as env_form %}
-      {% include "runtests/_environment_form.html" with form=env_form %}
+      {% include "runtests/_environment_form.html" with object=testrun %}
     </div>
   </div>
 </nav>
