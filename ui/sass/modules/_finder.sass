@@ -96,6 +96,7 @@
       overflow-x: hidden
 
     .logo
+      +float(left)
       +transition(all,300ms)
       width: rhythm(1)
       margin-right: rhythm(.5)
@@ -172,6 +173,10 @@
 
     .start, .end
       color: $mid
+
+    .products
+      .title
+        +un-column
 
   // Compact ----------------------------------------------------------------
 

@@ -1990,6 +1990,8 @@ thead .controls {
   margin-left: 0px;
 }
 .finder.expanded .logo {
+  display: inline;
+  float: left;
   -moz-transition-property: all;
   -webkit-transition-property: all;
   -o-transition-property: all;
@@ -2133,6 +2135,12 @@ thead .controls {
 }
 .finder.expanded .start, .finder.expanded .end {
   color: #999999;
+}
+.finder.expanded .products .title {
+  float: none;
+  display: block;
+  width: auto;
+  margin-right: auto;
 }
 .finder.compact {
   display: none;
