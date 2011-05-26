@@ -3749,6 +3749,10 @@ thead .controls {
   margin-right: 1.031%;
   margin-top: 1.618em;
 }
+.testnav .envsettings {
+  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
+  color: #e9eded;
+}
 
 .currentrun {
   position: relative;
