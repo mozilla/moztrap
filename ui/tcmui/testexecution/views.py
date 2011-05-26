@@ -8,13 +8,13 @@ from ..environments.forms import EnvironmentSelectionForm
 from ..environments.util import set_environment_url
 from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
-from ..users.decorators import login_required
+from ..users.decorators import login_redirect
 
 from .models import TestCycleList, TestRun, TestRunList, TestResult
 
 
 
-@login_required
+@login_redirect
 def picker(request):
     products = ProductList.ours(auth=request.auth).sort("name", "asc")
     return TemplateResponse(
@@ -27,7 +27,7 @@ def picker(request):
 
 
 
-@login_required
+@login_redirect
 def picker_cycles(request, parent_id):
     cycles = TestCycleList.get(auth=request.auth).filter(
         product=parent_id, status=TestCycleStatus.ACTIVE).sort("name", "asc")
@@ -41,7 +41,7 @@ def picker_cycles(request, parent_id):
 
 
 
-@login_required
+@login_redirect
 def picker_runs(request, parent_id):
     runs = TestRunList.get(auth=request.auth).filter(
         testCycle=parent_id, status=TestRunStatus.ACTIVE).sort("name", "asc")
@@ -55,7 +55,7 @@ def picker_runs(request, parent_id):
 
 
 
-@login_required
+@login_redirect
 def picker_environments(request, parent_id):
     run = TestRunList.get_by_id(parent_id, auth=request.auth)
 
@@ -73,7 +73,7 @@ def picker_environments(request, parent_id):
 
 
 
-@login_required
+@login_redirect
 def runtests(request, testrun_id):
     testrun = TestRun.get("testruns/%s" % testrun_id, auth=request.auth)
 
@@ -105,7 +105,7 @@ ACTIONS = {
     }
 
 
-@login_required
+@login_redirect
 @require_POST
 def result(request, result_id):
     result = TestResult.get(

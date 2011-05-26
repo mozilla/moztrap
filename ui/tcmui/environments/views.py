@@ -1,14 +1,14 @@
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from ..users.decorators import login_required
+from ..users.decorators import login_redirect
 
 from .forms import EnvironmentSelectionForm
 from .models import EnvironmentGroup
 
 
 
-@login_required
+@login_redirect
 def set_environment(request):
     """
     Given a list of environment-group IDs (in the GET querystring), allow the
