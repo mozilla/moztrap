@@ -2,6 +2,13 @@
 
 {% block test-active-nav %}active{% endblock test-active-nav %}
 
+{% block page-status %}incomplete{% endblock %}
+
+{% block page-notes %}
+<p>Test cycle completion percentages are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no platform API</a>).</p>
+<p>Product icons are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=656687">no platform API</a>).</p>
+{% endblock %}
+
 {% block crumb %}
   {{ block.super }}
   <li><a href="{% url runtests %}">run tests</a></li>
