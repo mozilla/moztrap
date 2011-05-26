@@ -11,7 +11,7 @@ var TCM = TCM || {};
     TCM.addLoading = function(trigger, context) {
         $(context).find(trigger).click(function() {
             var container = $(this).closest(context).addClass('loading');
-            addLoadingCSS(container);
+            TCM.addLoadingCSS(container);
         });
     };
 
