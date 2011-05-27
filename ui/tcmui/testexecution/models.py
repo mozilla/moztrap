@@ -265,6 +265,9 @@ class TestCaseAssignment(RemoteObject):
 
 
 class TestCaseAssignmentList(ListObject):
+    # don't cache assignment lists, assignments get auto-generated
+    cache = False
+
     entryclass = TestCaseAssignment
     api_name = "testcaseassignments"
     default_url = "testruns/assignments"
