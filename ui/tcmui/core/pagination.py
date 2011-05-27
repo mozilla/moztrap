@@ -70,6 +70,32 @@ class Pager(object):
         return xrange(1, self.num_pages + 1)
 
 
+    def display_pages(self):
+        """
+        Returns an iterable of page numbers to display, eliding some ranges of
+        page numbers with None in long lists.
+
+        """
+        MIN_SKIP = 3 # don't bother eliding just one or two pages
+        FROM_CURRENT = 2 # always show two to either side of current page
+        FROM_END = 2 # always show two from each end
+
+        skip = []
+        ret = []
+        for p in self.pages():
+            if (abs(p - self.pagenumber) > FROM_CURRENT and
+                p > FROM_END and (self.num_pages - p) > (FROM_END - 1)):
+                skip.append(p)
+                continue
+            if len(skip) < MIN_SKIP:
+                ret.extend(skip)
+            else:
+                ret.append(None)
+            ret.append(p)
+            skip = []
+        return ret
+
+
     @property
     def total(self):
         """

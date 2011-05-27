@@ -111,6 +111,51 @@ class TestPager(TestCase):
         self.assertEqual(list(p.pages()), [1, 2])
 
 
+    def test_display_pages_empty(self):
+        p = self.pager(0, 20, 1)
+        self.assertEqual(list(p.display_pages()), [1])
+
+
+    def test_display_pages_less_than_size(self):
+        p = self.pager(10, 20, 1)
+        self.assertEqual(list(p.display_pages()), [1])
+
+
+    def test_display_pages_equal_to_size(self):
+        p = self.pager(20, 20, 1)
+        self.assertEqual(list(p.display_pages()), [1])
+
+
+    def test_display_pages_more_than_size(self):
+        p = self.pager(21, 20, 1)
+        self.assertEqual(list(p.display_pages()), [1, 2])
+
+
+    def test_display_pages_long_on_first(self):
+        p = self.pager(120, 10, 1)
+        self.assertEqual(list(p.display_pages()), [1, 2, 3, None, 11, 12])
+
+
+    def test_display_pages_long_on_last(self):
+        p = self.pager(120, 10, 12)
+        self.assertEqual(list(p.display_pages()), [1, 2, None, 10, 11, 12])
+
+
+    def test_display_pages_long_near_one_end(self):
+        p = self.pager(120, 10, 5)
+        self.assertEqual(list(p.display_pages()), [1, 2, 3, 4, 5, 6, 7, None, 11, 12])
+
+
+    def test_display_pages_long_near_other_end(self):
+        p = self.pager(120, 10, 9)
+        self.assertEqual(list(p.display_pages()), [1, 2, None, 7, 8, 9, 10, 11, 12])
+
+
+    def test_display_pages_long_in_middle(self):
+        p = self.pager(150, 10, 8)
+        self.assertEqual(list(p.display_pages()), [1, 2, None, 6, 7, 8, 9, 10, None, 14, 15])
+
+
     def test_total_simple(self):
         p = self.pager(10, 20, 1)
         self.assertEqual(p.total, 10)

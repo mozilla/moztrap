@@ -10,12 +10,16 @@
           &laquo; previous
           {% endif %}
         </li>
-        {% for num in pager.pages %}
+        {% for num in pager.display_pages %}
         <li>
           {% if num == pager.pagenumber %}
           <span class="current page">{{ num }}</span>
           {% else %}
-          <a href="{{ request|pagenumber_url:num }}" class="page">{{ num }}</a>
+           {% if num %}
+           <a href="{{ request|pagenumber_url:num }}" class="page">{{ num }}</a>
+           {% else %}
+           &hellip;
+           {% endif %}
           {% endif %}
         </li>
         {% endfor %}
