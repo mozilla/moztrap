@@ -2064,7 +2064,7 @@ thead .controls {
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
 }
-.finder.expanded .completion, .finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
+.finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
   display: none;
 }
 .finder.expanded .open:link, .finder.expanded .open:visited {
@@ -2085,13 +2085,19 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
 }
-.finder.expanded .title {
-  display: inline;
-  float: left;
-  width: 82.609%;
-  margin-right: 4.348%;
+.finder.expanded .completion {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }
-.finder.expanded .focus .completion, .finder.expanded .focus .start, .finder.expanded .focus .end, .finder.expanded .focus .bycompletion, .finder.expanded .focus .bystart, .finder.expanded .focus .byend, .finder.expanded .focus .end, .finder.expanded .focus .byend {
+.finder.expanded .focus .completion {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+  position: static;
+  z-index: auto;
+}
+.finder.expanded .focus .start, .finder.expanded .focus .end, .finder.expanded .focus .bycompletion, .finder.expanded .focus .bystart, .finder.expanded .focus .byend, .finder.expanded .focus .end, .finder.expanded .focus .byend {
   display: block;
 }
 .finder.expanded .focus .completion, .finder.expanded .focus .bycompletion, .finder.expanded .focus .open {
@@ -2139,12 +2145,6 @@ thead .controls {
 }
 .finder.expanded .start, .finder.expanded .end {
   color: #999999;
-}
-.finder.expanded .products .title {
-  float: none;
-  display: block;
-  width: auto;
-  margin-right: auto;
 }
 .finder.compact {
   display: none;

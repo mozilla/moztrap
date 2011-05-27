@@ -131,7 +131,7 @@
 
     // layout of specific elements ---------------------------------------------
 
-    .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
+    .start, .end, .bycompletion, .bystart, .byend, .end, .byend
       display: none
 
     .open
@@ -145,11 +145,17 @@
       #{$focus}
         +opacity(1)
 
-    .title
-      +columns(5,6)
+    .completion
+      +opacity(0)
+      position: absolute
+      z-index: -1
 
     .focus
-      .completion, .start, .end, .bycompletion, .bystart, .byend, .end, .byend
+      .completion
+        +opacity(1)
+        position: static
+        z-index: auto
+      .start, .end, .bycompletion, .bystart, .byend, .end, .byend
         display: block
       .completion, .bycompletion, .open
         +columns(1,12)
@@ -173,10 +179,6 @@
 
     .start, .end
       color: $mid
-
-    .products
-      .title
-        +un-column
 
   // Compact ----------------------------------------------------------------
 
