@@ -3,7 +3,7 @@
 {% load sort staticdata %}
 
 {% block page-notes %}
-<p>Can't search on name yet, due to <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659224">platform limitations</a>.</p>
+<p>Can't search or sort on name yet (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659224">platform limitation</a>).</p>
 {{ block.super }}
 {% endblock %}
 
@@ -28,7 +28,8 @@
             <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
           </li>
           <li class="bytitle">
-            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
+{# @@@            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a> #}
+            name
           </li>
           <li class="byproduct">
             <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
