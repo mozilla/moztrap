@@ -1446,11 +1446,11 @@ thead .controls {
 #filter .suggest a:link:hover, #filter .suggest a:link:active, #filter .suggest a:visited:hover, #filter .suggest a:visited:active {
   background: #fef0bf;
 }
-#filter .suggest a:link:focus, #filter .suggest a:visited:focus {
+#filter .suggest a:link:focus, #filter .suggest a:link.selected, #filter .suggest a:visited:focus, #filter .suggest a:visited.selected {
   background: rgba(254, 240, 191, 0.382);
   outline: 0;
 }
-#filter .suggest a:link:hover:focus, #filter .suggest a:visited:hover:focus {
+#filter .suggest a:link:hover:focus, #filter .suggest a:link.selected:hover, #filter .suggest a:visited:hover:focus, #filter .suggest a:visited.selected:hover {
   background: #fef0bf;
 }
 #filter .suggest:not(:hover) a:focus, #filter .suggest:not(:hover) a:hover, #filter .suggest:not(:hover) a:active {
@@ -2179,16 +2179,18 @@ thead .controls {
   float: right;
   margin-right: 0;
 }
-.environment h2, .environment form {
+.environment h2 {
   display: inline;
   float: left;
   width: 49.474%;
   margin-right: 1.053%;
-}
-.environment h2 {
   padding-top: 0.405em;
 }
 .environment form {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
   display: inline;
   float: right;
   margin-right: 0;
@@ -3748,10 +3750,18 @@ thead .controls {
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
   outline: 0;
 }
+.testnav[open] {
+  padding-bottom: 1.618em;
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
+  background-image: -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+}
 .testnav[open] .summary {
   background: rgba(75, 101, 100, 0.618);
 }
-.testnav .selectruns {
+.testnav .selectruns, .testnav .environment {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;

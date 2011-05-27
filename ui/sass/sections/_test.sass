@@ -7,11 +7,14 @@
     #{$focus}
       +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xxsmall),rgba($blue-hint,0)))
       outline: 0
+
   &[open]
+    +padding-trailer
+    +background-image(linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0)))
     .summary
       background: rgba($blue-dark,$small)
 
-  .selectruns
+  .selectruns, .environment
     +full
     +leader
 
