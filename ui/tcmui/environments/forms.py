@@ -164,9 +164,6 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
         kwargs["environments"] = self.environments
         # the template form needs all options; no filtering.
         kwargs["filtered"] = False
-        # @@@ work around http://code.djangoproject.com/ticket/15349
-        kwargs["data"] = None
-        kwargs["files"] = None
         return super(BaseEnvironmentConstraintFormSet, self)._get_empty_form(
             **kwargs)
     empty_form = property(_get_empty_form)
@@ -212,9 +209,6 @@ class BaseEnvironmentConstraintFormSet(BaseFormSet):
             # @@@ platform always gives u.e.s on anything with cases added
             if e.response_error != "unsupported.environment.selection":
                 raise
-        except EnvironmentGroupList.ServerError:
-            # @@@ workaround https://bugzilla.mozilla.org/show_bug.cgi?id=658258
-            pass
 
 
 
