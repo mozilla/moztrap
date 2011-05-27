@@ -2,9 +2,9 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from ..environments.forms import EnvironmentSelectionForm
 from ..environments.util import set_environment_url
 from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
@@ -67,6 +67,7 @@ def picker_environments(request, parent_id):
 
 
 
+@never_cache
 @login_redirect
 def runtests(request, testrun_id):
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
