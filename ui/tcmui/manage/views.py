@@ -3,7 +3,6 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
 from ..core import decorators as dec
-from ..core import sort
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
 from ..products.filters import ProductFieldFilter
