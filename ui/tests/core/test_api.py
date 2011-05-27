@@ -7,7 +7,7 @@ from unittest2 import TestCase
 
 from ..builder import ListBuilder
 from ..responses import response, make_identity, make_boolean, FakeResponse
-from ..utils import ResourceTestCase, Url
+from ..utils import ResourceTestCase, TestResourceTestCase, Url
 
 
 
@@ -42,45 +42,6 @@ class UrlFinalIntegerTestCase(TestCase):
 
     def test_no_match(self):
         self.check("test/1/latest", None)
-
-
-
-class TestResourceTestCase(ResourceTestCase):
-    builder = ListBuilder(
-        "testresource",
-        "testresources",
-        "Testresource",
-        { "name": "Default name" })
-
-
-    def get_resource_class(self):
-        from tcmui.core.api import RemoteObject, fields
-
-        class TestResource(RemoteObject):
-            name = fields.Field()
-            submit_as = fields.Field(api_name="submitAs")
-
-            cache = False
-
-            def __unicode__(self):
-                return u"__unicode__ of %s" % self.name
-
-        return TestResource
-
-
-    def get_resource_list_class(self):
-        from tcmui.core.api import ListObject, fields
-
-        class TestResourceList(ListObject):
-            entryclass = self.resource_class
-            api_name = "testresources"
-            default_url = "testresources"
-
-            entries = fields.List(fields.Object(self.resource_class))
-
-            cache = False
-
-        return TestResourceList
 
 
 
@@ -997,6 +958,25 @@ class ListObjectTest(TestResourceTestCase):
 
         c = self.resource_list_class.get(auth=self.auth).filter(
             submit_as=MyEnum.FOO)
+        c.deliver()
+
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
+
+
+
+    def test_filter_obj(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "1"}))
+
+        one = self.resource_class()
+        one.update_from_dict(self.builder.one(
+                resourceIdentity=make_identity(id=1)))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(submit_as=one)
         c.deliver()
 
         req = http.request.call_args[-1]

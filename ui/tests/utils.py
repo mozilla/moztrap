@@ -8,6 +8,7 @@ from django.test.client import RequestFactory, store_rendered_templates
 from mock import patch
 from unittest2 import TestCase
 
+from .builder import ListBuilder
 from .core.builders import companies
 from .products.builders import products
 from .responses import response, make_identity
@@ -207,6 +208,45 @@ class ResourceTestCase(AuthTestCase):
 
     def get_resource_list_class(self):
         raise NotImplementedError
+
+
+
+class TestResourceTestCase(ResourceTestCase):
+    builder = ListBuilder(
+        "testresource",
+        "testresources",
+        "Testresource",
+        { "name": "Default name" })
+
+
+    def get_resource_class(self):
+        from tcmui.core.api import RemoteObject, fields
+
+        class TestResource(RemoteObject):
+            name = fields.Field()
+            submit_as = fields.Field(api_name="submitAs")
+
+            cache = False
+
+            def __unicode__(self):
+                return u"__unicode__ of %s" % self.name
+
+        return TestResource
+
+
+    def get_resource_list_class(self):
+        from tcmui.core.api import ListObject, fields
+
+        class TestResourceList(ListObject):
+            entryclass = self.resource_class
+            api_name = "testresources"
+            default_url = "testresources"
+
+            entries = fields.List(fields.Object(self.resource_class))
+
+            cache = False
+
+        return TestResourceList
 
 
 

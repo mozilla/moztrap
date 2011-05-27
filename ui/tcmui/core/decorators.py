@@ -87,8 +87,8 @@ def paginate(ctx_name):
             ctx[ctx_name] = ctx[ctx_name].paginate(pagesize, pagenum)
             # the lambda here makes Pager fetch the total result count
             # lazily; another decorator might modify the result set yet.
-            ctx["pager"] = pagination.Pager(
-                lambda: ctx[ctx_name].totalResults, pagesize, pagenum)
+            total = lambda: ctx[ctx_name].totalResults
+            ctx["pager"] = pagination.Pager(total, pagesize, pagenum)
             return response
 
         return _wrapped_view
