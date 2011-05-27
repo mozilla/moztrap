@@ -1397,6 +1397,10 @@ thead .controls {
   background-image: url('../images/ui/refresh.png?1306253956');
   color: #4f7a1b;
 }
+#filter button:focus, #filter button:hover, #filter button:active {
+  background-color: rgba(119, 185, 41, 0.618);
+  outline: 0;
+}
 #filter .textual {
   display: inline;
   float: left;
