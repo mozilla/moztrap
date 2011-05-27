@@ -72,17 +72,27 @@ var TCM = TCM || {};
                     suggestionList.find('li:first-child a').addClass('selected');
                 }
             }
-            if (event.keyCode === 38 && !suggestionList.find('.selected').parent().is(':first-child')) {
-                suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+        }).keydown(function(event) {
+            if (event.keyCode === 38) {
+                event.preventDefault();
+                if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                    suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                }
+                return false;
             }
-            if (event.keyCode === 40 && !suggestionList.find('.selected').parent().is(':last-child')) {
-                suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+            if (event.keyCode === 40) {
+                event.preventDefault();
+                if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                    suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                }
+                return false;
             }
             if (event.keyCode === 13) {
+                event.preventDefault();
                 suggestionList.find('.selected').click();
                 suggestionList.show();
+                return false;
             }
-        }).keydown(function(event) {
             if (event.keyCode === 9) {
                 event.preventDefault();
                 var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
