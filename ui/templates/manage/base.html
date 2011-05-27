@@ -7,6 +7,12 @@
   <li><a href="{% url manage %}">manage</a></li>
 {% endblock crumb %}
 
+{% block page-status %}incomplete{% endblock %}
+{% block page-notes %}
+  <p>Can't pair multiple name searches, unless they are all exact, e.g. &ldquo;^Full Name$&rdquo; (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform limitation</a>).</p>
+<p>No <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659228">keyword search across multiple fields</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">environment</a>, or <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659073">team member</a> filtering (platform limitations).</p>
+{% endblock %}
+
 {% block content %}
   <nav class="subnav">
     <h2 class="navhead">Management Navigation</h2>
@@ -34,10 +40,3 @@
   </div>
 
 {% endblock content %}
-
-{% block page-status %}incomplete{% endblock %}
-{% block page-notes %}
-  <p>Can't pair multiple name searches (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform bug</a>).</p>
-<p>No <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659228">keyword search across multiple fields</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">environment</a>, or <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659073">team member</a> filtering (platform limitations).</p>
-  <p>Expanded drilldown navigation is not active yet.</p>
-{% endblock %}
