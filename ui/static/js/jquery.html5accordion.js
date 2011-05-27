@@ -69,7 +69,7 @@
             });
 
             var preventInternalButtons = function() {
-                $details.find("button, a").click(
+                $detailsSummary.find("button, a").click(
                     function(event) {
                         // prevent it from triggering the html5accordion
                         event.stopPropagation();
