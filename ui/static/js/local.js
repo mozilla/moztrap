@@ -25,6 +25,7 @@ var TCM = TCM || {};
             suggestionList = $('#filter .textual .suggest').hide(),
             keywordGroups = $('#filter .visual .filter-group.keyword'),
             notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
+            selected,
             updateButton = function() {
                 if (input.filter(function() {
                     return $(this).data('state') === 'changed';
@@ -34,6 +35,8 @@ var TCM = TCM || {};
                     button.fadeOut('fast');
                 }
             };
+
+        // $('head').append('<style type="text/css">.selected { background: none repeat scroll 0 0 #FEF0BF; }</style>');
 
         input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
@@ -113,6 +116,12 @@ var TCM = TCM || {};
                 }
             }
             window.setTimeout(hideList, 150);
+        });
+
+        suggestionList.hover(function() {
+            selected = $(this).find('.selected').removeClass('selected');
+        }, function() {
+            selected.addClass('selected');
         });
 
         suggestionList.find('a').live('mousedown', function() {
