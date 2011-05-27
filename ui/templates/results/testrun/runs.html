@@ -41,7 +41,7 @@
             <p class="status">
               <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
             </p>
-            <p class="completion perc-75">75%</p> {# @@@ faked #}
+            <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
             <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
             <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
             <p class="product">{{ run.product.name }}</p>
