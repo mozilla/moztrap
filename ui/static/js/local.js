@@ -22,7 +22,7 @@ var TCM = TCM || {};
             }),
             textbox = $('#filter .textual #text-filter'),
             typedText = textbox.val(),
-            suggestionList = $('#filter .textual ul.suggest').hide(),
+            suggestionList = $('#filter .textual .suggest').hide(),
             keywordGroups = $('#filter .visual .filter-group.keyword'),
             notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
             updateButton = function() {
@@ -44,7 +44,7 @@ var TCM = TCM || {};
             updateButton();
         });
 
-        textbox.keyup(function() {
+        textbox.keyup(function(event) {
             if ($(this).val() !== typedText) {
                 typedText = $(this).val();
                 suggestionList.empty();
@@ -69,16 +69,34 @@ var TCM = TCM || {};
                             suggestionList.append(keywordHTML);
                         }
                     });
+                    suggestionList.find('li:first-child a').addClass('selected');
                 }
+            }
+            if (event.keyCode === 38 && !suggestionList.find('.selected').parent().is(':first-child')) {
+                suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+            }
+            if (event.keyCode === 40 && !suggestionList.find('.selected').parent().is(':last-child')) {
+                suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+            }
+            if (event.keyCode === 13) {
+                suggestionList.find('.selected').click();
+                suggestionList.show();
+            }
+        }).keydown(function(event) {
+            if (event.keyCode === 9) {
+                event.preventDefault();
+                var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
+                if (thisFilterName) {
+                    textbox.val(thisFilterName);
+                }
+                return false;
             }
         });
 
         textbox.focus(function() {
             suggestionList.show();
             textbox.data('clicked', false);
-        });
-
-        textbox.blur(function() {
+        }).blur(function() {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
                     suggestionList.hide();
@@ -89,9 +107,7 @@ var TCM = TCM || {};
 
         suggestionList.find('a').live('mousedown', function() {
             textbox.data('clicked', true);
-        });
-
-        suggestionList.find('a').live('click', function() {
+        }).live('click', function() {
             if ($(this).data('class') === 'keyword') {
                 var name = $(this).data('name'),
                     thisGroup = keywordGroups.filter(function() {
