@@ -36,8 +36,6 @@ var TCM = TCM || {};
                 }
             };
 
-        // $('head').append('<style type="text/css">.selected { background: none repeat scroll 0 0 #FEF0BF; }</style>');
-
         input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                 $(this).data('state', 'changed');

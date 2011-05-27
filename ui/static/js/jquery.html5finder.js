@@ -45,7 +45,7 @@
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.find('a').click(function() {
+        headers.find('a').live('click', function() {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
                 selectorClass = $(this).parent().attr('class').substring(2),

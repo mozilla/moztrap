@@ -10,14 +10,18 @@ var TCM = TCM || {};
         });
     };
 
-    var breadcrumb = function() {
-        var originalFinderHTML = $('.selectruns').html();
+    var breadcrumb = function(context) {
+        $(context).find('.colcontent').each(function() {
+            $(this).data('originalHTML', $(this).html());
+        });
         $('.testnav .currentrun .breadcrumb').click(function() {
             if (!$(this).closest('.details').hasClass('open')) {
                 $(this).closest('.summary').click();
             }
-            $('.selectruns').html(originalFinderHTML);
-            $('#' + $(this).data('id')).click();
+            $(context).find('.colcontent').each(function() {
+                $(this).html($(this).data('originalHTML'));
+            });
+            $(context).find('#' + $(this).data('id')).click();
             return false;
         });
     };
@@ -79,7 +83,7 @@ var TCM = TCM || {};
         autoFocus('.details.stepfail > .summary');
         autoFocus('.details.testinvalid > .summary');
         testCaseButtons("#run .details.test");
-        breadcrumb();
+        breadcrumb('.selectruns');
     });
 
 })(jQuery);
