@@ -2064,6 +2064,15 @@ thead .controls {
   -ms-transform: scale(1.75, 1.75);
   transform: scale(1.75, 1.75);
 }
+.finder.expanded .title {
+  overflow: hidden;
+  max-height: 1.618em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  display: block;
+}
 .finder.expanded .start, .finder.expanded .end, .finder.expanded .bycompletion, .finder.expanded .bystart, .finder.expanded .byend, .finder.expanded .end, .finder.expanded .byend {
   display: none;
 }
