@@ -102,6 +102,7 @@ var TCM = TCM || {};
                     return false;
                 }
             }
+            return true;
         });
 
         textbox.focus(function() {
