@@ -4309,403 +4309,403 @@ thead .controls {
   text-align: center;
 }
 
-.completion[data-perc="1"] {
+.completion.perc-1 {
   background: #eca9aa;
 }
 
-.completion[data-perc="2"] {
+.completion.perc-2 {
   background: #eca9a9;
 }
 
-.completion[data-perc="3"] {
+.completion.perc-3 {
   background: #eca9a9;
 }
 
-.completion[data-perc="4"] {
+.completion.perc-4 {
   background: #ecaaa9;
 }
 
-.completion[data-perc="5"] {
+.completion.perc-5 {
   background: #ecaba9;
 }
 
-.completion[data-perc="6"] {
+.completion.perc-6 {
   background: #ecaca9;
 }
 
-.completion[data-perc="7"] {
+.completion.perc-7 {
   background: #ecada9;
 }
 
-.completion[data-perc="8"] {
+.completion.perc-8 {
   background: #ecaea9;
 }
 
-.completion[data-perc="9"] {
+.completion.perc-9 {
   background: #ecafa9;
 }
 
-.completion[data-perc="10"] {
+.completion.perc-10 {
   background: #ecb0a9;
 }
 
-.completion[data-perc="11"] {
+.completion.perc-11 {
   background: #ecb1a9;
 }
 
-.completion[data-perc="12"] {
+.completion.perc-12 {
   background: #ecb2a9;
 }
 
-.completion[data-perc="13"] {
+.completion.perc-13 {
   background: #ecb3a9;
 }
 
-.completion[data-perc="14"] {
+.completion.perc-14 {
   background: #ecb4a9;
 }
 
-.completion[data-perc="15"] {
+.completion.perc-15 {
   background: #ecb5a9;
 }
 
-.completion[data-perc="16"] {
+.completion.perc-16 {
   background: #ecb6a9;
 }
 
-.completion[data-perc="17"] {
+.completion.perc-17 {
   background: #ecb7a9;
 }
 
-.completion[data-perc="18"] {
+.completion.perc-18 {
   background: #ecb8a9;
 }
 
-.completion[data-perc="19"] {
+.completion.perc-19 {
   background: #ecb9a9;
 }
 
-.completion[data-perc="20"] {
+.completion.perc-20 {
   background: #ecbaa9;
 }
 
-.completion[data-perc="21"] {
+.completion.perc-21 {
   background: #ecbba9;
 }
 
-.completion[data-perc="22"] {
+.completion.perc-22 {
   background: #ecbca9;
 }
 
-.completion[data-perc="23"] {
+.completion.perc-23 {
   background: #ecbda9;
 }
 
-.completion[data-perc="24"] {
+.completion.perc-24 {
   background: #ecbea9;
 }
 
-.completion[data-perc="25"] {
+.completion.perc-25 {
   background: #ecbfa9;
 }
 
-.completion[data-perc="26"] {
+.completion.perc-26 {
   background: #ecc0a9;
 }
 
-.completion[data-perc="27"] {
+.completion.perc-27 {
   background: #ecc1a9;
 }
 
-.completion[data-perc="28"] {
+.completion.perc-28 {
   background: #ecc2a9;
 }
 
-.completion[data-perc="29"] {
+.completion.perc-29 {
   background: #ecc3a9;
 }
 
-.completion[data-perc="30"] {
+.completion.perc-30 {
   background: #ecc4a9;
 }
 
-.completion[data-perc="31"] {
+.completion.perc-31 {
   background: #ecc5a9;
 }
 
-.completion[data-perc="32"] {
+.completion.perc-32 {
   background: #ecc6a9;
 }
 
-.completion[data-perc="33"] {
+.completion.perc-33 {
   background: #ecc7a9;
 }
 
-.completion[data-perc="34"] {
+.completion.perc-34 {
   background: #ecc8a9;
 }
 
-.completion[data-perc="35"] {
+.completion.perc-35 {
   background: #ecc9a9;
 }
 
-.completion[data-perc="36"] {
+.completion.perc-36 {
   background: #eccaa9;
 }
 
-.completion[data-perc="37"] {
+.completion.perc-37 {
   background: #eccba9;
 }
 
-.completion[data-perc="38"] {
+.completion.perc-38 {
   background: #eccca9;
 }
 
-.completion[data-perc="39"] {
+.completion.perc-39 {
   background: #eccda9;
 }
 
-.completion[data-perc="40"] {
+.completion.perc-40 {
   background: #eccea9;
 }
 
-.completion[data-perc="41"] {
+.completion.perc-41 {
   background: #eccfa9;
 }
 
-.completion[data-perc="42"] {
+.completion.perc-42 {
   background: #ecd0a9;
 }
 
-.completion[data-perc="43"] {
+.completion.perc-43 {
   background: #ecd1a9;
 }
 
-.completion[data-perc="44"] {
+.completion.perc-44 {
   background: #ecd2a9;
 }
 
-.completion[data-perc="45"] {
+.completion.perc-45 {
   background: #ecd3a9;
 }
 
-.completion[data-perc="46"] {
+.completion.perc-46 {
   background: #ecd4a9;
 }
 
-.completion[data-perc="47"] {
+.completion.perc-47 {
   background: #ecd5a9;
 }
 
-.completion[data-perc="48"] {
+.completion.perc-48 {
   background: #ecd6a9;
 }
 
-.completion[data-perc="49"] {
+.completion.perc-49 {
   background: #ecd7a9;
 }
 
-.completion[data-perc="50"] {
+.completion.perc-50 {
   background: #ecd8a9;
 }
 
-.completion[data-perc="51"] {
+.completion.perc-51 {
   background: #ecd9a9;
 }
 
-.completion[data-perc="52"] {
+.completion.perc-52 {
   background: #ecdaa9;
 }
 
-.completion[data-perc="53"] {
+.completion.perc-53 {
   background: #ecdba9;
 }
 
-.completion[data-perc="54"] {
+.completion.perc-54 {
   background: #ecdca9;
 }
 
-.completion[data-perc="55"] {
+.completion.perc-55 {
   background: #ecdda9;
 }
 
-.completion[data-perc="56"] {
+.completion.perc-56 {
   background: #ecdea9;
 }
 
-.completion[data-perc="57"] {
+.completion.perc-57 {
   background: #ecdfa9;
 }
 
-.completion[data-perc="58"] {
+.completion.perc-58 {
   background: #ece0a9;
 }
 
-.completion[data-perc="59"] {
+.completion.perc-59 {
   background: #ece1a9;
 }
 
-.completion[data-perc="60"] {
+.completion.perc-60 {
   background: #ece2a9;
 }
 
-.completion[data-perc="61"] {
+.completion.perc-61 {
   background: #ece3a9;
 }
 
-.completion[data-perc="62"] {
+.completion.perc-62 {
   background: #ece4a9;
 }
 
-.completion[data-perc="63"] {
+.completion.perc-63 {
   background: #ece5a9;
 }
 
-.completion[data-perc="64"] {
+.completion.perc-64 {
   background: #ece6a9;
 }
 
-.completion[data-perc="65"] {
+.completion.perc-65 {
   background: #ece7a9;
 }
 
-.completion[data-perc="66"] {
+.completion.perc-66 {
   background: #ece8a9;
 }
 
-.completion[data-perc="67"] {
+.completion.perc-67 {
   background: #ece9a9;
 }
 
-.completion[data-perc="68"] {
+.completion.perc-68 {
   background: #eceaa9;
 }
 
-.completion[data-perc="69"] {
+.completion.perc-69 {
   background: #eceba9;
 }
 
-.completion[data-perc="70"] {
+.completion.perc-70 {
   background: #ebeca9;
 }
 
-.completion[data-perc="71"] {
+.completion.perc-71 {
   background: #eaeca9;
 }
 
-.completion[data-perc="72"] {
+.completion.perc-72 {
   background: #e9eca9;
 }
 
-.completion[data-perc="73"] {
+.completion.perc-73 {
   background: #e8eca9;
 }
 
-.completion[data-perc="74"] {
+.completion.perc-74 {
   background: #e7eca9;
 }
 
-.completion[data-perc="75"] {
+.completion.perc-75 {
   background: #e6eca9;
 }
 
-.completion[data-perc="76"] {
+.completion.perc-76 {
   background: #e5eca9;
 }
 
-.completion[data-perc="77"] {
+.completion.perc-77 {
   background: #e4eca9;
 }
 
-.completion[data-perc="78"] {
+.completion.perc-78 {
   background: #e3eca9;
 }
 
-.completion[data-perc="79"] {
+.completion.perc-79 {
   background: #e2eca9;
 }
 
-.completion[data-perc="80"] {
+.completion.perc-80 {
   background: #e1eca9;
 }
 
-.completion[data-perc="81"] {
+.completion.perc-81 {
   background: #e0eca9;
 }
 
-.completion[data-perc="82"] {
+.completion.perc-82 {
   background: #dfeca9;
 }
 
-.completion[data-perc="83"] {
+.completion.perc-83 {
   background: #deeca9;
 }
 
-.completion[data-perc="84"] {
+.completion.perc-84 {
   background: #ddeca9;
 }
 
-.completion[data-perc="85"] {
+.completion.perc-85 {
   background: #dceca9;
 }
 
-.completion[data-perc="86"] {
+.completion.perc-86 {
   background: #dbeca9;
 }
 
-.completion[data-perc="87"] {
+.completion.perc-87 {
   background: #daeca9;
 }
 
-.completion[data-perc="88"] {
+.completion.perc-88 {
   background: #d9eca9;
 }
 
-.completion[data-perc="89"] {
+.completion.perc-89 {
   background: #d8eca9;
 }
 
-.completion[data-perc="90"] {
+.completion.perc-90 {
   background: #d7eca9;
 }
 
-.completion[data-perc="91"] {
+.completion.perc-91 {
   background: #d6eca9;
 }
 
-.completion[data-perc="92"] {
+.completion.perc-92 {
   background: #d5eca9;
 }
 
-.completion[data-perc="93"] {
+.completion.perc-93 {
   background: #d4eca9;
 }
 
-.completion[data-perc="94"] {
+.completion.perc-94 {
   background: #d3eca9;
 }
 
-.completion[data-perc="95"] {
+.completion.perc-95 {
   background: #d2eca9;
 }
 
-.completion[data-perc="96"] {
+.completion.perc-96 {
   background: #d1eca9;
 }
 
-.completion[data-perc="97"] {
+.completion.perc-97 {
   background: #d0eca9;
 }
 
-.completion[data-perc="98"] {
+.completion.perc-98 {
   background: #cfeca9;
 }
 
-.completion[data-perc="99"] {
+.completion.perc-99 {
   background: #ceeca9;
 }
 
-.completion[data-perc="100"] {
+.completion.perc-100 {
   background: #cdeca9;
 }
 

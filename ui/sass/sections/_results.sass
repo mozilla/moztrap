@@ -86,7 +86,7 @@
 @for $i from 1 through 100
   $n      : .9deg*$i
   $color  : adjust-hue($red-lighter,$n)
-  .completion[data-perc="#{$i}"]
+  .completion.perc-#{$i}
     background: $color
 
 /* Result Types --------------------------------------------------------------
