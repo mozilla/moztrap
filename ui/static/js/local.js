@@ -95,12 +95,12 @@ var TCM = TCM || {};
                 return false;
             }
             if (event.keyCode === 9) {
-                event.preventDefault();
                 var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                 if (thisFilterName) {
+                    event.preventDefault();
                     textbox.val(thisFilterName);
+                    return false;
                 }
-                return false;
             }
         });
 
