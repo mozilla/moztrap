@@ -2826,13 +2826,15 @@ thead .controls {
   background-image: url('../images/ui/angle_up.png?1299180949');
 }
 .sortlinks.asc:focus::after, .listordering a.asc:focus::after, .sortlinks.asc:hover::after, .listordering a.asc:hover::after, .sortlinks.asc:active::after, .listordering a.asc:active::after {
-  background-image: url('../images/ui/angle_down.png?1299180970');
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 .sortlinks.desc:link::after, .listordering a.desc:link::after, .sortlinks.desc:visited::after, .listordering a.desc:visited::after {
   background-image: url('../images/ui/angle_down.png?1299180970');
 }
 .sortlinks.desc:focus::after, .listordering a.desc:focus::after, .sortlinks.desc:hover::after, .listordering a.desc:hover::after, .sortlinks.desc:active::after, .listordering a.desc:active::after {
-  background-image: url('../images/ui/angle_up.png?1299180949');
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 
 .listordering {

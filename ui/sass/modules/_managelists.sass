@@ -241,14 +241,16 @@
         background-image: image-url('ui/angle_up.png')
     #{$focus}
       &::after
-        background-image: image-url('ui/angle_down.png')
+        +opacity(1)
+        //background-image: image-url('ui/angle_down.png')
   &.desc
     #{$link}
       &::after
         background-image: image-url('ui/angle_down.png')
     #{$focus}
       &::after
-        background-image: image-url('ui/angle_up.png')
+        +opacity(1)
+        //background-image: image-url('ui/angle_up.png')
 
 .listordering
   +clearfix
