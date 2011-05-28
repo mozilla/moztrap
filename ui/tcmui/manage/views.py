@@ -246,7 +246,7 @@ def edit_testsuite(request, suite_id):
             ("status", status_filters.TestCaseStatusFilter),
             ("approval", status_filters.ApprovalStatusFilter),
             ("product", ProductFieldFilter),
-# @@@ platform issue            ("name", KeywordFilter),
+            ("name", KeywordFilter),
             )
 @dec.paginate("cases")
 @dec.sort("cases")
