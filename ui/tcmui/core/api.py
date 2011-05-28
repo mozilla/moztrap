@@ -648,6 +648,10 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         for obj in super(ListObject, self).__iter__(*args, **kwargs):
             if isinstance(obj, RemoteObject):
                 obj.auth = self.auth
+                if (obj._location is None and
+                    getattr(self, "default_url", None) is not None and
+                    obj.id is not None):
+                    obj._location = join(self.default_url, str(obj.id))
             yield obj
 
 
