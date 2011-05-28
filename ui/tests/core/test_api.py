@@ -701,6 +701,26 @@ class ListObjectTest(TestResourceTestCase):
         self.assertTrue(all([i.auth is auth for i in c]))
 
 
+    def test_iteration_ensures_location(self, http):
+        """
+        Even if some resourceIdentity values are missing URL, location is
+        always set for objects in a ListObject.
+
+        """
+        http.request.return_value = response(
+            self.builder.array(
+                {"name": "Test TestResource",
+                 "resourceIdentity": {"@id": 1, "@version": 1}},
+                {"name": "Second Test",
+                 "resourceIdentity": {"@id": 2, "@version": 1}}))
+
+        c = self.resource_list_class.get(auth=self.auth)
+
+        self.assertEqual(
+            [i._location for i in c],
+            ["testresources/1", "testresources/2"])
+
+
     def test_iteration_with_non_remoteobject(self, http):
         c = self.resource_list_class(entries=[1, 2])
 
