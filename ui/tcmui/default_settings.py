@@ -77,7 +77,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "tcmui.core.middleware.SecurityMiddleware",
+    "djangosecure.middleware.SecurityMiddleware",
     "tcmui.core.middleware.StaticCompanyMiddleware",
     "tcmui.users.middleware.AuthenticationMiddleware",
     "tcmui.environments.middleware.EnvironmentsMiddleware",
@@ -143,7 +143,9 @@ COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
 
 INSTALLED_APPS += ["floppyforms"]
 
+INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
+SECURE_FRAME_DENY = True
 
 TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"
