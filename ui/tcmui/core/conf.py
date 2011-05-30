@@ -18,7 +18,6 @@ class Configuration(object):
 
 
 conf = Configuration(
-    HTTPS_STS_SECONDS=0,
     TCM_CACHE_SECONDS=600,
     TCM_STATICDATA_CACHE_SECONDS=0
     )
