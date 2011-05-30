@@ -47,7 +47,7 @@ TCM_NEW_USER_ROLE_ID = 0
 # production deployment to avoid session hijacking):
 #SESSION_COOKIE_SECURE = True
 # http://en.wikipedia.org/wiki/Strict_Transport_Security
-#HTTPS_STS_SECONDS = 86400
+#SECURE_HSTS_SECONDS = 86400
 
 # A unique (and secret) key for this deployment.
 #SECRET_KEY = ""
