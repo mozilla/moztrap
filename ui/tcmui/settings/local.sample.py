@@ -4,7 +4,7 @@ required settings at the top, the defaults should be suitable for local
 development; other settings below are likely to need adjustment for a staging
 or production deployment.
 
-Copy settings_local.sample.py to settings_local.py and modify as needed.
+Copy local.sample.py to local.py and modify as needed.
 
 """
 

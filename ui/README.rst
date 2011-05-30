@@ -18,9 +18,9 @@ Python projects on your system, create the virtualenv and activate it. Then run
 ``bin/install-reqs`` to install the dependencies for this project into your
 Python environment.
 
-You'll need to create a ``tcmui/settings_local.py`` file with some details of
-your local configuration. See ``tcmui/settings_local.sample.py`` for a sample
-that can be copied to ``tcmui/settings_local.py`` and modified.
+You'll need to create a ``tcmui/settings/local.py`` file with some details of
+your local configuration. See ``tcmui/settings/local.sample.py`` for a sample
+that can be copied to ``tcmui/settings/local.py`` and modified.
 
 Two settings are required:
 
@@ -72,13 +72,13 @@ entire app should be served exclusively over HTTPS (since almost all use of the
 site is authenticated, and serving authenticated pages over HTTP invites
 session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
 HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
-in ``settings_local.py`` when the app is being served over HTTPS.
+in ``settings/local.py`` when the app is being served over HTTPS.
 
 This app also uses the new `staticfiles contrib app`_ in Django 1.3 for
 collecting static assets from reusable components into a single directory
 for production serving.  Run ``./manage.py collectstatic`` to collect all
 static assets into the ``collected-assets`` directory (or whatever
-``STATIC_ROOT`` is set to in ``settings_local.py``), and make those
+``STATIC_ROOT`` is set to in ``settings/local.py``), and make those
 collected assets available by HTTP at the ``STATIC_URL`` setting.
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
