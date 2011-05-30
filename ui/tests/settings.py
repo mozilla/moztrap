@@ -1,4 +1,4 @@
-from tcmui.default_settings import *
+from tcmui.settings.base import *
 
 TCM_API_BASE = "http://fake.base/rest"
 
