@@ -5,4 +5,10 @@
   <li><a href="/manage/testsuites/">test suites</a></li>
 {% endblock crumb %}
 
-{% block suites-active-nav %}active{% endblock suites-active-nav %}
+{% block manageshortnav %}
+{% include "manage/_nav.html" with activenav="managesuites" %}
+{% endblock manageshortnav %}
+
+{% block nestednav %}
+{% include "manage/_nav.html" with activenav="managesuites" %}
+{% endblock nestednav %}

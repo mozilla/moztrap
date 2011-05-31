@@ -1,0 +1,17 @@
+<li>
+  <a href="{% url results_testcycles %}?status=2" {% if activenav == "resultcycles" %}class="active"{% endif %}>
+    Test Cycles
+  </a>
+</li>
+
+<li>
+  <a href="{% url results_testruns %}" {% if activenav == "resultruns" %}class="active"{% endif %}>
+    Test Runs
+  </a>
+</li>
+
+<li>
+  <a href="{% url results_testcases %}" {% if activenav == "resultcases" %}class="active"{% endif %}>
+    Test Cases
+  </a>
+</li>

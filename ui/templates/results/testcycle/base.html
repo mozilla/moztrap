@@ -5,4 +5,10 @@
   <li><a href="{% url results_testcycles %}">test cycles</a></li>
 {% endblock crumb %}
 
-{% block cycles-active-nav %}active{% endblock cycles-active-nav %}
+{% block resultshortnav %}
+{% include "results/_nav.html" with activenav="resultcycles" %}
+{% endblock resultshortnav %}
+
+{% block nestednav %}
+{% include "results/_nav.html" with activenav="resultcycles" %}
+{% endblock nestednav %}

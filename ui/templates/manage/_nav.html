@@ -1,0 +1,25 @@
+<li>
+  <a href="{% url manage_testcycles %}" {% if activenav == "managecycles" %}class="active"{% endif %}>
+    Test Cycles
+  </a>
+</li>
+
+<li>
+  <a href="{% url manage_testruns %}" {% if activenav == "manageruns" %}class="active"{% endif %}>
+    Test Runs
+  </a>
+</li>
+
+<li>
+  <a href="{% url manage_testsuites %}" {% if activenav == "managesuites" %}class="active"{% endif %}>
+    Test Suites
+  </a>
+</li>
+
+<li>
+  <a href="{% url manage_testcases %}" {% if activenav == "managecases" %}class="active"{% endif %}>
+    Test Cases
+  </a>
+</li>
+
+{# @@@ /manage/users/ #}
