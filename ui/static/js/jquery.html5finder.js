@@ -26,6 +26,20 @@
                 context.find(options.notSelected).data('selected', false);
             },
 
+            updateEllipsis = function() {
+                if (options.ellipsis === true) {
+                    var target = context.find(options.sectionContentSelector + ' ' + options.ellipsisTarget);
+                    target.each(function() {
+                        if ($(this).data('originalText')) {
+                            $(this).html($(this).data('originalText'));
+                        }
+                    });
+                    $.doTimeout('updateEllipsis', 250, function(){
+                        target.ellipsis(true, 250);
+                    });
+                }
+            },
+
             // Define the function for horizontal scrolling (requires jquery.scrollTo plugin):
             // Scrolls to the previous section (so that the active section is centered)
             horzScroll = function() {
@@ -42,6 +56,7 @@
 
         context.find('.finder').data('cols', numberCols);
         markSelected();
+        updateEllipsis();
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
@@ -83,6 +98,7 @@
             } else {
                 context.find(options.sectionSelector).removeClass('focus');
                 container.addClass('focus');
+                updateEllipsis();
                 horzScroll();
             }
             $(this).blur();
@@ -98,6 +114,7 @@
                     container.next(options.sectionSelector).find('input:checked').removeAttr('checked').data('selected', false);
                     container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
                     horzScroll();
+                    updateEllipsis();
                     if (!container.is(':last-child') && options.callback) {
                         options.callback();
                     }
@@ -121,6 +138,7 @@
                                 container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
                                 $('.loadingCSS').detach();
                                 $('.loading').removeClass('loading');
+                                updateEllipsis();
                             }
                         );
                         container.removeClass('focus').prevAll(options.sectionSelector).removeClass('focus');
@@ -144,6 +162,9 @@
                                                 // [This requires the jquery.scrollTo plugin by default]
         scrollContainer: null,              // The container (window) to be automatically scrolled
         scrollSpeed: 500,                   // Speed of the scroll (in ms)
+        ellipsis: false,                    // If true, adds ellipsis to long text
+                                                // [This requires the jquery.text-overflow.js plugin by default]
+        ellipsisTarget: '.title',           // The target text to be shortened
         selected: 'input:checked',          // A selected element
         notSelected: 'input:not(:checked)', // An unselected element
         headerSelector: 'header',           // Section headers

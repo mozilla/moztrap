@@ -6,13 +6,16 @@
  */
 
 (function($) {
-	$.fn.ellipsis = function(enableUpdating){
+	$.fn.ellipsis = function(windowResize, delay){
 		var s = document.documentElement.style;
 		if (!('textOverflow' in s || 'OTextOverflow' in s)) {
 			return this.each(function(){
 				var el = $(this);
 				if(el.css("overflow") == "hidden"){
 					var originalText = el.html();
+					if (!el.data('originalText')){
+                        el.data('originalText', originalText);
+					}
 					var w = el.width();
 
 					var t = $(this.cloneNode(true)).hide().css({
@@ -32,16 +35,26 @@
 
 					t.remove();
 
-					if(enableUpdating == true){
-						var oldW = el.width();
-						$(window).resize(function(){
-							if(el.width() != oldW){
-								oldW = el.width();
-								el.html(originalText);
-								el.ellipsis();
-							}
-						});
-					}
+                    if(windowResize === true){
+                        var oldW = el.width();
+                        $(window).resize(function(){
+                            if (delay){
+                                $.doTimeout(delay, function(){
+                                    if(el.width() !== oldW){
+                                        oldW = el.width();
+                                        el.html(originalText);
+                                        el.ellipsis();
+                                    }
+                                });
+                            } else {
+                                if(el.width() !== oldW){
+                                    oldW = el.width();
+                                    el.html(originalText);
+                                    el.ellipsis();
+                                }
+                            }
+                        });
+                    }
 				}
 			});
 		} else return this;

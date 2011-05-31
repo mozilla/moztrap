@@ -179,34 +179,35 @@ var TCM = TCM || {};
             $('details').html5accordion('summary');
         }
         $('.details:not(html)').html5accordion('.summary');
-        $('.subnav .findertoggle').click(function() {
-            $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
-            return false;
-        });
-        $('.subnav').html5finder( {
-            loading: true,
-            horizontalScroll: true,
-            scrollContainer: '.finder.expanded',
-            headerSelector: 'header.listordering',
-            sectionSelector: '.col',
-            sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases',
-                'results'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="cycle"]',
-                'input[name="run"]',
-                'input[name="case"]',
-                'input[name="result"]'
-            ]
-        });
+        // $('.subnav .findertoggle').click(function() {
+        //     $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
+        //     return false;
+        // });
+        // $('.subnav').html5finder( {
+        //     loading: true,
+        //     horizontalScroll: true,
+        //     scrollContainer: '.finder.expanded',
+        //     headerSelector: 'header.listordering',
+        //     sectionSelector: '.col',
+        //     sectionContentSelector: '.colcontent',
+        //     sectionClasses: [
+        //         'products',
+        //         'cycles',
+        //         'runs',
+        //         'cases',
+        //         'results'
+        //     ],
+        //     sectionItemSelectors: [
+        //         'input[name="product"]',
+        //         'input[name="cycle"]',
+        //         'input[name="run"]',
+        //         'input[name="case"]',
+        //         'input[name="result"]'
+        //     ]
+        // });
         $('.selectruns').html5finder( {
             loading: true,
+            ellipsis: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
@@ -238,7 +239,7 @@ var TCM = TCM || {};
     });
 
     $(window).load(function() {
-        $('#listcontent .items .summary .title').ellipsis(true);
+        $('#listcontent .items .title').ellipsis(true, 250);
     });
 
 })(jQuery);
