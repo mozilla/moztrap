@@ -66,11 +66,38 @@
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
       <ul>
-          <li class="test"><a href="{% url runtests %}" class="{% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a></li>
+          <li class="test">
+            <a href="{% url runtests %}" class="mainlink {% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a>
+          </li>
+
         {% if request.user %} {# @@@ more specific perms check? #}
-          <li class="results"><a href="{% url results %}" class="{% block results-active-nav %}{% endblock results-active-nav %}">View Results</a></li>
-          <li class="manage"><a href="{% url manage %}" class="{% block manage-active-nav %}{% endblock manage-active-nav %}">Manage</a></li>
+          <li class="results hasmore">
+            <a href="{% url results %}" class="mainlink {% block results-active-nav %}{% endblock results-active-nav %}">
+              View Results
+            </a>
+            <div class="shortnav">
+              <ul class="wrap">
+                {% block resultshortnav %}
+                {% include "results/_nav.html" %}
+                {% endblock resultshortnav %}
+              </ul>
+            </div>
+          </li>
+
+          <li class="manage hasmore">
+            <a href="{% url manage %}" class="mainlink {% block manage-active-nav %}{% endblock manage-active-nav %}">
+              Manage
+            </a>
+            <div class="shortnav">
+              <ul class="wrap">
+                {% block manageshortnav %}
+                {% include "manage/_nav.html" %}
+                {% endblock manageshortnav %}
+              </ul>
+            </div>
+          </li>
         {% endif %}
+
       </ul>
     </nav>
 

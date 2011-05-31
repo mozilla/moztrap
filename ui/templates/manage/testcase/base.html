@@ -5,4 +5,10 @@
   <li><a href="{% url manage_testcases %}">test cases</a></li>
 {% endblock crumb %}
 
-{% block cases-active-nav %}active{% endblock cases-active-nav %}
+{% block manageshortnav %}
+{% include "manage/_nav.html" with activenav="managecases" %}
+{% endblock manageshortnav %}
+
+{% block nestednav %}
+{% include "manage/_nav.html" with activenav="managecases" %}
+{% endblock nestednav %}

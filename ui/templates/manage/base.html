@@ -20,15 +20,9 @@
     {% include "includes/finder.html" %}
 
     <ul class="nestednav">
-      <li><a href="{% url manage_testcycles %}" class="{% block cycles-active-nav %}{% endblock cycles-active-nav %}">Test Cycles</a></li>
-
-      <li><a href="{% url manage_testruns %}" class="{% block run-active-nav %}{% endblock run-active-nav %}">Test Runs</a></li>
-
-      <li><a href="{% url manage_testsuites %}" class="{% block suites-active-nav %}{% endblock suites-active-nav %}">Test Suites</a></li>
-
-      <li><a href="{% url manage_testcases %}" class="{% block cases-active-nav %}{% endblock cases-active-nav %}">Test Cases</a></li>
-
-      {# @@@ <li><a href="/manage/users/" class="{% block users-active-nav %}{% endblock users-active-nav %}">Users</a></li> #}
+      {% block nestednav %}
+      {% include "manage/_nav.html" %}
+      {% endblock nestednav %}
     </ul>
   </nav>
 

@@ -1028,6 +1028,21 @@ button.sub:focus, button.sub:hover, button.sub:active {
   float: left;
   margin-right: 0.5em;
 }
+[role="navigation"] .hasmore::after {
+  display: none;
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  height: 0;
+  width: 0;
+  margin-left: 2.618em;
+  border: 0.382em solid rgba(135, 169, 168, 0);
+  border-bottom-color: rgba(75, 101, 100, 0.382);
+  z-index: 15;
+}
+[role="navigation"] .hasmore:hover::after, [role="navigation"] .hasmore:hover .shortnav {
+  display: block;
+}
 [role="navigation"] a:not([href]) {
   cursor: default;
   color: #87a9a8;
@@ -1035,6 +1050,8 @@ button.sub:focus, button.sub:hover, button.sub:active {
 [role="navigation"] a, [role="navigation"] a:link, [role="navigation"] a:visited {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+}
+[role="navigation"] .mainlink {
   padding-left: 1em;
   padding-right: 1em;
   -moz-border-radius: 0.236em;
@@ -1044,7 +1061,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
 }
-[role="navigation"] a.active {
+[role="navigation"] .mainlink.active {
   -moz-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
   -webkit-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
   -o-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
@@ -1052,6 +1069,41 @@ button.sub:focus, button.sub:hover, button.sub:active {
   text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
   background: rgba(75, 101, 100, 0.382);
   color: #e9eded;
+}
+
+.shortnav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding-top: 0.809em;
+  z-index: 10;
+  display: none;
+}
+.shortnav .wrap {
+  overflow: hidden;
+  *zoom: 1;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  padding-left: 1.031%;
+  padding-right: 1.031%;
+  -moz-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
+  -webkit-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
+  -o-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
+  box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
+  background: #87a9a8;
+}
+.shortnav a:link, .shortnav a:visited {
+  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
+  margin-right: 1.618em;
+  color: #e9eded;
+}
+.shortnav a:focus, .shortnav a:hover, .shortnav a:active {
+  text-shadow: rgba(204, 215, 214, 0.618) 0 1px 0;
+  color: #511214;
+}
+.shortnav a.active {
+  text-shadow: rgba(204, 215, 214, 0.618) 0 1px 1px;
+  color: #4b6564;
 }
 
 .meta {
