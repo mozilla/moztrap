@@ -26,6 +26,7 @@
                 context.find(options.notSelected).data('selected', false);
             },
 
+            // Define the function for updating ellipses on long text
             updateEllipsis = function() {
                 if (options.ellipsis === true) {
                     var target = context.find(options.sectionContentSelector + ' ' + options.ellipsisTarget);
