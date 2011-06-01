@@ -34,7 +34,7 @@
                             $(this).html($(this).data('originalText'));
                         }
                     });
-                    $.doTimeout('updateEllipsis', 250, function(){
+                    $.doTimeout('updateEllipsis', 300, function(){
                         target.ellipsis(true, 250);
                     });
                 }
