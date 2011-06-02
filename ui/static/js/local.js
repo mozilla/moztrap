@@ -22,10 +22,17 @@ var TCM = TCM || {};
             }),
             textbox = $('#filter .textual #text-filter'),
             typedText = textbox.val(),
+            placeholder = textbox.attr('placeholder'),
             suggestionList = $('#filter .textual .suggest').hide(),
             keywordGroups = $('#filter .visual .filter-group.keyword'),
             notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
             selected,
+            removeFakePlaceholder = function() {
+                if (textbox.val() === placeholder) {
+                    textbox.val(null);
+                }
+                textbox.removeClass('placeholder');
+            },
             updateButton = function() {
                 if (input.filter(function() {
                     return $(this).data('state') === 'changed';
@@ -46,7 +53,7 @@ var TCM = TCM || {};
         });
 
         textbox.keyup(function(event) {
-            if ($(this).val() !== typedText) {
+            if ($(this).val() !== typedText && $(this).val() !== placeholder) {
                 typedText = $(this).val();
                 suggestionList.empty();
                 if ($(this).val().length) {
@@ -103,17 +110,32 @@ var TCM = TCM || {};
                 }
             }
             return true;
+        }).keypress(function(event) {
+            if (typeof event.which == "undefined" || event.which > 0) {
+                // IE returns undefined, but only fires keypress events for printable keys.
+                // In other browsers except old versions of WebKit, evt.which is
+                // only greater than zero if the keypress is a printable key.
+                // We also need to filter out backspace and ctrl/alt/meta key combinations:
+                if (!event.ctrlKey && !event.metaKey && !event.altKey && event.which !== 13) {
+                    removeFakePlaceholder();
+                }
+            }
         });
 
         textbox.focus(function() {
             suggestionList.show();
             textbox.data('clicked', false);
+            if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
+                textbox.val(placeholder);
+                textbox.get(0).setSelectionRange(0, 0);
+            }
         }).blur(function() {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
                     suggestionList.hide();
                 }
             }
+            removeFakePlaceholder();
             window.setTimeout(hideList, 150);
         });
 
@@ -159,6 +181,8 @@ var TCM = TCM || {};
             suggestionList.empty().hide();
             return false;
         });
+
+        textbox.addClass('placeholder').focus();
     };
 
     $(function() {
