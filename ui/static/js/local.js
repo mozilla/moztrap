@@ -2,12 +2,14 @@ var TCM = TCM || {};
 
 (function($) {
 
+    // Adds CSS to <head> for .loading
     TCM.addLoadingCSS = function(container) {
         var vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
             style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
         $('head').append(style);
     };
 
+    // On `trigger`, adds class `loading` to `context`, and calls TCM.addLoadingCSS()
     TCM.addLoading = function(trigger, context) {
         $(context).find(trigger).click(function() {
             var container = $(this).closest(context).addClass('loading');
@@ -15,6 +17,7 @@ var TCM = TCM || {};
         });
     };
 
+    // Filtering, autocomplete, and fake placeholder text for manage and results pages
     var filtering = function() {
         var button = $('#filter .visual .content button[type="submit"]').hide(),
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
@@ -28,7 +31,7 @@ var TCM = TCM || {};
             notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
             selected,
             removeFakePlaceholder = function() {
-                if (textbox.val() === placeholder) {
+                if (textbox.val().indexOf(placeholder) !== -1) {
                     textbox.val(null);
                 }
                 textbox.removeClass('placeholder');
@@ -81,44 +84,40 @@ var TCM = TCM || {};
                 }
             }
         }).keydown(function(event) {
-            if (event.keyCode === 38) {
-                event.preventDefault();
-                if (!suggestionList.find('.selected').parent().is(':first-child')) {
-                    suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
-                }
-                return false;
-            }
-            if (event.keyCode === 40) {
-                event.preventDefault();
-                if (!suggestionList.find('.selected').parent().is(':last-child')) {
-                    suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
-                }
-                return false;
-            }
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                suggestionList.find('.selected').click();
-                suggestionList.show();
-                return false;
-            }
-            if (event.keyCode === 9) {
-                var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                if (thisFilterName) {
-                    event.preventDefault();
-                    textbox.val(thisFilterName);
-                    return false;
-                }
-            }
-            return true;
-        }).keypress(function(event) {
-            if (typeof event.which == "undefined" || event.which > 0) {
-                // IE returns undefined, but only fires keypress events for printable keys.
-                // In other browsers except old versions of WebKit, evt.which is
-                // only greater than zero if the keypress is a printable key.
-                // We also need to filter out backspace and ctrl/alt/meta key combinations:
-                if (!event.ctrlKey && !event.metaKey && !event.altKey && event.which !== 13) {
+            if (textbox.hasClass('placeholder')) {
+                if (!event.metaKey && event.keyCode !== 16 && event.keyCode !== 17 && event.keyCode !== 18 && event.keyCode !== 20 && event.keyCode !== 27) {
                     removeFakePlaceholder();
                 }
+            } else {
+                if (event.keyCode === 38) {
+                    event.preventDefault();
+                    if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                        suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                    }
+                    return false;
+                }
+                if (event.keyCode === 40) {
+                    event.preventDefault();
+                    if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                        suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                    }
+                    return false;
+                }
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    suggestionList.find('.selected').click();
+                    suggestionList.show();
+                    return false;
+                }
+                if (event.keyCode === 9) {
+                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
+                    if (thisFilterName) {
+                        event.preventDefault();
+                        textbox.val(thisFilterName);
+                        return false;
+                    }
+                }
+                return true;
             }
         });
 
