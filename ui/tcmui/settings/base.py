@@ -2,9 +2,9 @@
 Default Django settings for tcmui project.
 
 """
-from os.path import dirname, join
+from os.path import dirname, join, abspath
 
-BASE_PATH = dirname(dirname(dirname(__file__)))
+BASE_PATH = dirname(dirname(dirname(abspath(__file__))))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
