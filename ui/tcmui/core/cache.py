@@ -1,9 +1,14 @@
 import httplib
+import logging
 import zlib
 
 from django.core.cache import cache
 
 from .conf import conf
+
+
+
+log = logging.getLogger("tcmui.core.cache")
 
 
 
@@ -60,6 +65,9 @@ class CachingHttpWrapper(object):
         self.permissions = frozenset(permissions)
         self.buckets = list(buckets)
         self.dependent_buckets = list(dependent_buckets or [])
+        log.debug(
+            "Instantiated CachingHttpWrapper for buckers %r and dependents %r"
+            % (self.buckets, self.dependent_buckets))
 
 
     def generation_key(self, bucket):
@@ -72,11 +80,21 @@ class CachingHttpWrapper(object):
 
 
     def _next_generation(self, bucket):
+        gen_key = self.generation_key(bucket)
+        log.debug("Trying to increment generation key %r" % gen_key)
         try:
-            return cache.incr(self.generation_key(bucket))
+            val = cache.incr(gen_key)
+            log.debug("Incremented generation key %r to %r" % (gen_key, val))
         except ValueError:
-            cache.add(self.generation_key(bucket), 1)
-            return 1
+            val = 1
+            added = cache.add(gen_key, val)
+            if not added:
+                # Someone else won the race, so we try again to increment.
+                log.warn(
+                    "Couldn't increment or add gen key %r, trying again"
+                    % gen_key)
+                val = cache.incr(gen_key)
+        return val
 
 
     def cache_key(self, bucket, uri):
@@ -97,9 +115,13 @@ class CachingHttpWrapper(object):
             # later.
             all_permsets = set([self.permissions])
             cache_keys = self.cache_keys(kwargs["uri"])
+            log.debug(
+                "Checking for cached %r in keys %r"
+                % (kwargs["uri"], cache_keys))
             for cache_key in cache_keys:
                 cached = cache.get(cache_key)
                 if cached is not None:
+                    log.debug("Found cached response")
                     permsets, (response, compressed_content) = cached
                     content = zlib.decompress(compressed_content)
                     for permset in permsets:
@@ -107,6 +129,7 @@ class CachingHttpWrapper(object):
                         # permissions this was cached with, we can see the
                         # cached response.
                         if permset.issubset(self.permissions):
+                            log.debug("Found acceptable permset, returning.")
                             return (response, content)
 
                         # no need to include a permset that's a superset of our
@@ -122,6 +145,7 @@ class CachingHttpWrapper(object):
         # only cache 200 OK responses to GET queries
         if method == "GET" and response.status == httplib.OK:
             compressed_content = zlib.compress(content)
+            log.debug("Caching response under keys %r" % (cache_keys,))
             for cache_key in cache_keys:
                 cache.set(
                     cache_key,

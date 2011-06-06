@@ -12,3 +12,20 @@ CACHES = {
 
 MEDIA_URL = "/media/"
 COMPRESS_URL = "/static/"
+
+# configure a null root handler to silence "no handler" warnings
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": True,
+    "handlers": {
+        "null": {
+            "level": "CRITICAL",
+            "class": "logging.StreamHandler",
+            }
+        },
+    "loggers": {
+        "": {
+            "handlers": ["null"],
+            }
+        }
+    }

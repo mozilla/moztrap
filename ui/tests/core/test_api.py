@@ -23,7 +23,7 @@ class HttpTestCase(TestCase):
             with patch("tcmui.core.api.log") as mock_log:
                 http.request(uri="/blah")
 
-        mock_log.debug.assert_called_with("GET - /blah")
+        mock_log.info.assert_called_with("GET - /blah")
 
 
 class UrlFinalIntegerTestCase(TestCase):

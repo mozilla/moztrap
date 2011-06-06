@@ -43,7 +43,7 @@ def url_final_integer(url):
 class Http(httplib2.Http):
     def request(self, **kwargs):
         kwargs.setdefault("method", "GET")
-        log.debug("%(method)s - %(uri)s" % kwargs)
+        log.info("%(method)s - %(uri)s" % kwargs)
         return super(Http, self).request(**kwargs)
 
 
@@ -341,15 +341,16 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = http.request(**request)
 
-        if update_from_response:
-            log.debug("Got response %r, updating", response)
+        log.debug("Got response %r" % response)
 
+        if update_from_response:
             if not hasattr(update_from_response, "update_from_response"):
                 update_from_response = self
 
+            log.debug("Updating %r instance from response." % update_from_response.__class__)
+
             update_from_response.update_from_response(None, response, content)
         else:
-            log.debug("Got response %r, raising", response)
             self.raise_for_response(self._location, response, content)
 
         return response
