@@ -202,32 +202,33 @@ var TCM = TCM || {};
             $('details').html5accordion('summary');
         }
         $('.details:not(html)').html5accordion('.summary');
-        // $('.subnav .findertoggle').click(function() {
-        //     $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
-        //     return false;
-        // });
-        // $('.subnav').html5finder( {
-        //     loading: true,
-        //     horizontalScroll: true,
-        //     scrollContainer: '.finder.expanded',
-        //     headerSelector: 'header.listordering',
-        //     sectionSelector: '.col',
-        //     sectionContentSelector: '.colcontent',
-        //     sectionClasses: [
-        //         'products',
-        //         'cycles',
-        //         'runs',
-        //         'cases',
-        //         'results'
-        //     ],
-        //     sectionItemSelectors: [
-        //         'input[name="product"]',
-        //         'input[name="cycle"]',
-        //         'input[name="run"]',
-        //         'input[name="case"]',
-        //         'input[name="result"]'
-        //     ]
-        // });
+        $('.subnav .findertoggle').click(function() {
+            $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
+            return false;
+        });
+        $('.subnav').html5finder( {
+            loading: true,
+            ellipsis: true,
+            horizontalScroll: true,
+            scrollContainer: '.finder.expanded',
+            headerSelector: '.listordering',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs',
+                'cases',
+                'results'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="testcycle"]',
+                'input[name="testrun"]',
+                'input[name="testcase"]',
+                'input[name="testresult"]'
+            ]
+        });
         $('.selectruns').html5finder( {
             loading: true,
             ellipsis: true,
