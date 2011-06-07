@@ -1076,8 +1076,10 @@ button.sub:focus, button.sub:hover, button.sub:active {
   left: 0;
   right: 0;
   padding-top: 0.809em;
+  text-shadow: rgba(204, 215, 214, 0.618) 0 1px 1px;
   z-index: 10;
   display: none;
+  color: #4b6564;
 }
 .shortnav .wrap {
   overflow: hidden;
@@ -1092,9 +1094,12 @@ button.sub:focus, button.sub:hover, button.sub:active {
   box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
   background: #87a9a8;
 }
+.shortnav li {
+  margin-right: 1.618em;
+}
 .shortnav a:link, .shortnav a:visited {
   text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
-  margin-right: 1.618em;
+  margin: 0;
   color: #e9eded;
 }
 .shortnav a:focus, .shortnav a:hover, .shortnav a:active {
@@ -1104,6 +1109,33 @@ button.sub:focus, button.sub:hover, button.sub:active {
 .shortnav a.active {
   text-shadow: rgba(204, 215, 214, 0.618) 0 1px 1px;
   color: #4b6564;
+}
+.shortnav .testlinks {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  -moz-transition-property: all;
+  -webkit-transition-property: all;
+  -o-transition-property: all;
+  transition-property: all;
+  -moz-transition-duration: 300ms;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+  margin-left: 0.809em;
+}
+.shortnav .testlinks::before {
+  content: "[";
+}
+.shortnav .testlinks::after {
+  content: "]";
+}
+.shortnav .testlinks a:link, .shortnav .testlinks a:visited {
+  padding-left: 0.809em;
+  padding-right: 0.809em;
+}
+.shortnav li:hover .testlinks {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 
 .meta {

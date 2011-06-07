@@ -87,8 +87,10 @@
 .shortnav
   +stretch-x
   +padding-leader(.5)
+  +text-shadow(rgba($blue-lightest,$small) 0 1px 1px)
   z-index: 10
   display: none
+  color: $blue-dark
   .wrap
     +clearfix
     +padding-leader(.25)
@@ -96,10 +98,12 @@
     +hpadding(side-gutter())
     +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallem inset)
     background: $blue-light
+  li
+    margin-right: rhythm(1)
   a
     #{$link}
       +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-      margin-right: rhythm(1)
+      margin: 0
       color: $blue-hint
     #{$focus}
       +text-shadow(rgba($blue-lightest,$small) 0 1px 0)
@@ -107,6 +111,24 @@
     &.active
       +text-shadow(rgba($blue-lightest,$small) 0 1px 1px)
       color: $blue-dark
+
+  .testlinks
+    +opacity(.5)
+    +transition(all, 300ms)
+    margin-left: rhythm(.5)
+    &::before
+      content: "["
+    &::after
+      content: "]"
+    a
+      #{$link}
+        +hpadding(rhythm(.5))
+
+  li
+    &:hover
+      .testlinks
+        +opacity(1)
+
 
 .meta
   +columns(9)
