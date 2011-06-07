@@ -1,30 +1,21 @@
 <li>
   {# @@@ /manage/users/ #}
-  <a href="#">Users</a>
+  <a href="#" {% if activenav == "manageusers" %}class="active"{% endif %}>
+    Users
+  </a>
 </li>
 
 <li>
-  <a href="/manage/environments/">Environments</a>
+  <a href="/manage/environments/" {% if activenav == "manageenvs" %}class="active"{% endif %}>
+    Environments
+  </a>
 </li>
 
 <li>
   <a href="{% url manage_testcycles %}" {% if activenav == "managecycles" %}class="active"{% endif %}>
     Products
   </a>
-  <span class="testlinks">
-    <a href="{% url manage_testcycles %}" {% if activenav == "managecycles" %}class="active"{% endif %}>
-      Cycles
-    </a>
-    <a href="{% url manage_testruns %}" {% if activenav == "manageruns" %}class="active"{% endif %}>
-      Runs
-    </a>
-    <a href="{% url manage_testsuites %}" {% if activenav == "managesuites" %}class="active"{% endif %}>
-      Suites
-    </a>
-    <a href="{% url manage_testcases %}" {% if activenav == "managecases" %}class="active"{% endif %}>
-      Cases
-    </a>
-  </span>
+  <ul class="sublinks">
+    {% include "manage/products/_nav.html" %}
+  </ul>
 </li>
-
-{# @@@ /manage/users/ #}

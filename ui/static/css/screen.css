@@ -1094,7 +1094,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
   background: #87a9a8;
 }
-.shortnav li {
+.shortnav .wrap > li {
   margin-right: 1.618em;
 }
 .shortnav a:link, .shortnav a:visited {
@@ -1110,7 +1110,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   text-shadow: rgba(204, 215, 214, 0.618) 0 1px 1px;
   color: #4b6564;
 }
-.shortnav .testlinks {
+.shortnav .sublinks {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   opacity: 0.5;
   -moz-transition-property: all;
@@ -1121,19 +1121,23 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -webkit-transition-duration: 300ms;
   -o-transition-duration: 300ms;
   transition-duration: 300ms;
+  display: inline;
   margin-left: 0.809em;
 }
-.shortnav .testlinks::before {
+.shortnav .sublinks::before {
   content: "[";
 }
-.shortnav .testlinks::after {
+.shortnav .sublinks::after {
   content: "]";
 }
-.shortnav .testlinks a:link, .shortnav .testlinks a:visited {
+.shortnav .sublinks li {
+  float: none;
+}
+.shortnav .sublinks a:link, .shortnav .sublinks a:visited {
   padding-left: 0.809em;
   padding-right: 0.809em;
 }
-.shortnav li:hover .testlinks {
+.shortnav li:hover .sublinks {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
 }
