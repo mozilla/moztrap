@@ -20,13 +20,20 @@
 .subnav
   +trailer(1.5)
 
+=nav-item-width($c)
+  a
+    #{$link}
+      width: columns($c,24)
+    &::before, &::after
+      width: columns(1,$c) + gutter($c)*2
+
 .nestednav
   +clearfix
   +border-radius($xxsmallem)
   +navbackground(mix(lighten($blue-lightest,2),$blue-hint),$blue-hint,lighten($blue-lightest,2))
   a
     #{$link}
-      +columns(3,24)
+      +columns(2,24)
       +padding-leader(.25)
       +padding-trailer(.25)
       +demi
@@ -36,6 +43,7 @@
       color: rgba($alt,$small)
       text-indent: rhythm(1)
       white-space: nowrap
+      z-index: 10
     #{$focus}
       outline: 0
       color: rgba($accent,$small)
@@ -44,7 +52,8 @@
       position: absolute
       top: 0
       bottom: 0
-      width: columns(1,3) + gutter(3)*2
+      width: columns(1,2) + gutter(2)*2
+      z-index: -1
     &::before
       right: 100%
     &::after
@@ -59,6 +68,9 @@
   li:first-child
     a
       +border-left-radius($xxsmallem)
+
+  .results &
+    +nav-item-width(3)
 
 #listcontent
   +full(24)

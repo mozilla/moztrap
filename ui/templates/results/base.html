@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block bodyclasses %}{{ block.super }} results{% endblock bodyclasses %}
+
 {% block page-status %}incomplete{% endblock %}
 
 {% block page-notes %}

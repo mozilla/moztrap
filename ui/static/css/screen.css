@@ -2350,7 +2350,7 @@ thead .controls {
 .nestednav a:link, .nestednav a:visited {
   display: inline;
   float: left;
-  width: 11.579%;
+  width: 7.368%;
   margin-right: 1.053%;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
@@ -2361,6 +2361,7 @@ thead .controls {
   color: rgba(82, 134, 132, 0.618);
   text-indent: 1.618em;
   white-space: nowrap;
+  z-index: 10;
 }
 .nestednav a:focus, .nestednav a:hover, .nestednav a:active {
   outline: 0;
@@ -2371,7 +2372,8 @@ thead .controls {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 45.455%;
+  width: 71.429%;
+  z-index: -1;
 }
 .nestednav a::before {
   right: 100%;
@@ -2401,6 +2403,12 @@ thead .controls {
   -ms-border-bottom-left-radius: 0.236em;
   -khtml-border-bottom-left-radius: 0.236em;
   border-bottom-left-radius: 0.236em;
+}
+.results .nestednav a:link, .results .nestednav a:visited {
+  width: 11.579%;
+}
+.results .nestednav a::before, .results .nestednav a::after {
+  width: 45.455%;
 }
 
 #listcontent {
