@@ -1,4 +1,4 @@
-{% extends 'manage/testcase/base.html' %}
+{% extends 'manage/product/testcase/base.html' %}
 
 {% block page-notes %}
 <p>"Environment constraints" UI under re-consideration.</p>
@@ -44,7 +44,7 @@
       {{ form.steps_formset.management_form }}
       <ol class="steplist">
         {% for form in form.steps_formset %}
-        {% include "manage/testcase/_step_form.html" %}
+        {% include "manage/product/testcase/_step_form.html" %}
         {% endfor %}
       </ol>
     </div>
@@ -81,7 +81,7 @@
 <div style="display: none;">
   {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
   <ul id="empty-step-form" class="empty-form">
-    {% include "manage/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
+    {% include "manage/product/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
   </ul>
 </div>
 {% endblock %}

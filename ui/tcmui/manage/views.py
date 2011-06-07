@@ -34,7 +34,7 @@ def home(request):
 def testcycles(request):
     return TemplateResponse(
         request,
-        "manage/testcycle/cycles.html",
+        "manage/product/testcycle/cycles.html",
         {"cycles": TestCycleList.ours(auth=request.auth)}
         )
 
@@ -55,7 +55,7 @@ def add_testcycle(request):
         return redirect("manage_testcycles")
     return TemplateResponse(
         request,
-        "manage/testcycle/add_cycle.html",
+        "manage/product/testcycle/add_cycle.html",
         {"form": form}
         )
 
@@ -84,7 +84,7 @@ def edit_testcycle(request, cycle_id):
 
     return TemplateResponse(
         request,
-        "manage/testcycle/edit_cycle.html",
+        "manage/product/testcycle/edit_cycle.html",
         {
             "form": form,
             "cycle": cycle,
@@ -106,7 +106,7 @@ def edit_testcycle(request, cycle_id):
 def testruns(request):
     return TemplateResponse(
         request,
-        "manage/testrun/runs.html",
+        "manage/product/testrun/runs.html",
         {"runs": TestRunList.ours(auth=request.auth)}
         )
 
@@ -135,7 +135,7 @@ def add_testrun(request):
         return redirect("manage_testruns")
     return TemplateResponse(
         request,
-        "manage/testrun/add_run.html",
+        "manage/product/testrun/add_run.html",
         {"form": form}
         )
 
@@ -161,7 +161,7 @@ def edit_testrun(request, run_id):
 
     return TemplateResponse(
         request,
-        "manage/testrun/edit_run.html",
+        "manage/product/testrun/edit_run.html",
         {
             "form": form,
             "run": run,
@@ -181,7 +181,7 @@ def edit_testrun(request, run_id):
 def testsuites(request):
     return TemplateResponse(
         request,
-        "manage/testsuite/suites.html",
+        "manage/product/testsuite/suites.html",
         {"suites": TestSuiteList.ours(auth=request.auth)}
         )
 
@@ -204,7 +204,7 @@ def add_testsuite(request):
         return redirect("manage_testsuites")
     return TemplateResponse(
         request,
-        "manage/testsuite/add_suite.html",
+        "manage/product/testsuite/add_suite.html",
         {"form": form}
         )
 
@@ -229,7 +229,7 @@ def edit_testsuite(request, suite_id):
 
     return TemplateResponse(
         request,
-        "manage/testsuite/edit_suite.html",
+        "manage/product/testsuite/edit_suite.html",
         {
             "form": form,
             "suite": suite,
@@ -253,7 +253,7 @@ def edit_testsuite(request, suite_id):
 def testcases(request):
     return TemplateResponse(
         request,
-        "manage/testcase/cases.html",
+        "manage/product/testcase/cases.html",
         {"cases": TestCaseVersionList.ours(
                 url="testcases/latestversions", auth=request.auth)}
         )
@@ -276,7 +276,7 @@ def add_testcase(request):
 
     return TemplateResponse(
         request,
-        "manage/testcase/add_case.html",
+        "manage/product/testcase/add_case.html",
         {"form": form })
 
 
@@ -298,7 +298,7 @@ def edit_testcase(request, case_id):
 
     return TemplateResponse(
         request,
-        "manage/testcase/edit_case.html",
+        "manage/product/testcase/edit_case.html",
         {
             "form": form,
             "case": case,

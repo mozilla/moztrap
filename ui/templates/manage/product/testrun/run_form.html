@@ -1,12 +1,12 @@
-{% extends 'manage/testcycle/base.html' %}
+{% extends 'manage/product/testrun/base.html' %}
 
 {% block page-notes %}
-<p>"Environment constraints" UI under re-consideration.</p>
-<p>"Assign specific users" has a richer UI on the way, with search.</p>
+<p>"Environment constraints" UI under re-consideration; constraint changes to a test run with included tests won't be saved.</p>
+<p>"Assign specific users" and "add test suites" have a richer UI on the way, with search, ordering, etc.</p>
 {% endblock %}
 
 {% block listcontent %}
-<section id="addcycle">
+<section id="addrun">
   <h2>{% block formtitle %}{% endblock %}</h2>
   <form method="POST">
     {% csrf_token %}
@@ -18,9 +18,9 @@
         {{ form.name }}
       </li>
       <li>
-        {{ form.product.errors }}
-        {{ form.product.label_tag }}
-        {{ form.product }}
+        {{ form.test_cycle.errors }}
+        {{ form.test_cycle.label_tag }}
+        {{ form.test_cycle }}
       </li>
       <li>
         {{ form.description.errors }}
@@ -49,11 +49,19 @@
       </ul>
     </div>
 
-    {% block midform %}{% endblock %}
+    <section class="suiteselect">
+      <h3>add test suites to your test run</h3>
+      <div>
+        {# @@@ needs the slick multiple-select widget #}
+        {{ form.suites.errors }}
+        {{ form.suites.label_tag }}
+        {{ form.suites }}
+      </div>
+    </section>
 
     <div class="assignto">
       <details class="userselect"{% if form.team.errors or form.team.value %} open="open"{% endif %}>
-        <summary>assign specific users to this test cycle &raquo;</summary>
+        <summary>assign specific users to this test run &raquo;</summary>
         <div>
           {# @@@ needs the slick multiple-select widget #}
           {{ form.team.errors }}
@@ -64,7 +72,7 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit">save test cycle</button>
+      <button type="submit">save test run</button>
     </div>
 
   </form>
