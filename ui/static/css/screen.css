@@ -2274,10 +2274,13 @@ thead .controls {
 }
 
 /* List Pages -------------------------------------------------------------- */
+.subnav {
+  margin-bottom: 2.427em;
+}
+
 .nestednav {
   overflow: hidden;
   *zoom: 1;
-  margin-bottom: 2.427em;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
   -o-border-radius: 0.236em;

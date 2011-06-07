@@ -17,9 +17,11 @@
       &::after
         +background-image(linear-gradient(-60deg, rgba($field,0) 64.5%, $field 65%, $field), linear-gradient(60deg, $active 64.5%, rgba($active,0) 65%, rgba($active,0)))
 
+.subnav
+  +trailer(1.5)
+
 .nestednav
   +clearfix
-  +trailer(1.5)
   +border-radius($xxsmallem)
   +navbackground(mix(lighten($blue-lightest,2),$blue-hint),$blue-hint,lighten($blue-lightest,2))
   a
