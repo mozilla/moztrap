@@ -1,8 +1,3 @@
 {% extends 'manage/product/testrun/run_form.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{% url manage_testrun_edit run_id=run.id %}">edit {{ run.name }}</a></li>
-{% endblock crumb %}
-
 {% block formtitle %}Edit "{{ run.name }}"{% endblock %}

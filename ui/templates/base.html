@@ -65,35 +65,39 @@
 
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
-      <ul>
-          <li class="test">
-            <a href="{% url runtests %}" class="mainlink {% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a>
+      <ul class="topnav">
+          <li class="test {% block test-active-nav %}{% endblock test-active-nav %}">
+            <a href="{% url runtests %}" class="mainlink">Run Tests</a>
           </li>
 
         {% if request.user %} {# @@@ more specific perms check? #}
-          <li class="results hasmore">
-            <a href="{% url results %}" class="mainlink {% block results-active-nav %}{% endblock results-active-nav %}">
+          <li class="results {% block results-active-nav %}{% endblock results-active-nav %}">
+            <a href="{% url results %}" class="mainlink">
               View Results
             </a>
             <div class="shortnav">
-              <ul class="wrap">
+              <div class="wrap">
+              <ul class="secondnav">
                 {% block resultshortnav %}
                 {% include "results/_nav.html" %}
                 {% endblock resultshortnav %}
               </ul>
+              </div>
             </div>
           </li>
 
-          <li class="manage hasmore">
-            <a href="{% url manage %}" class="mainlink {% block manage-active-nav %}{% endblock manage-active-nav %}">
+          <li class="manage {% block manage-active-nav %}{% endblock manage-active-nav %}">
+            <a href="{% url manage %}" class="mainlink">
               Manage
             </a>
             <div class="shortnav">
-              <ul class="wrap">
+              <div class="wrap">
+              <ul class="secondnav">
                 {% block manageshortnav %}
                 {% include "manage/_nav.html" %}
                 {% endblock manageshortnav %}
               </ul>
+              </div>
             </div>
           </li>
         {% endif %}
@@ -129,16 +133,7 @@
 
 </header>
 
-{% block bread %}
-  <nav class="crumb">
-    <div class="container">
-      <h2 class="navhead">Breadcrumb Navigation</h2>
-      <ol class="trail">
-        {% block crumb %}{% endblock crumb %}
-      </ol>
-    </div>
-  </nav>
-{% endblock bread %}
+{% block bread %}{% endblock bread %}
 
 <div id="page">
 {% block page %}

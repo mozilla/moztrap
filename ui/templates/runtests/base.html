@@ -9,11 +9,6 @@
 <p>Product icons are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=656687">no platform API</a>).</p>
 {% endblock %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{% url runtests %}">run tests</a></li>
-{% endblock crumb %}
-
 {% block content %}
 
   {% include "_messages.html" %}

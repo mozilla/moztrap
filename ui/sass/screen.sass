@@ -8,7 +8,6 @@
 .container
   +container
   +susy-grid-background
-  position: relative
   min-width: 800px
 
 .fullwidth
@@ -26,6 +25,7 @@
 
 [role="banner"]
   background: rgba($blue,$xxsmall)
+  border-bottom: rhythm(1.5) solid $blue-light
   a
     #{$link}
       +demi
@@ -48,26 +48,9 @@
 // Navigations ---------------------------------------------------------------
 
 [role="navigation"]
-  +columns(12)
+  +float(left)
   +padding-leader(.5)
-  li
-    +float(left)
-    margin-right: .5em
-  .hasmore
-    &::after
-      display: none
-      content: " "
-      position: absolute
-      bottom: 0
-      height: 0
-      width: 0
-      margin-left: rhythm($med)
-      border: $xsmallem solid rgba($blue-light,0)
-      border-bottom-color: rgba($blue-dark,$xsmall)
-      z-index: 15
-    &:hover
-      &::after, .shortnav
-        display: block
+  height: 0
   a
     &:not([href])
       cursor: default
@@ -75,14 +58,46 @@
     &, #{$link}
       +padding-leader(.25)
       +padding-trailer(.25)
+  li
+    +float(left)
+
+.topnav
+  > li
+    &.active
+      .mainlink
+        +box-shadow(rgba($blue-hint,$small) 0 -1px 0 inset)
+        +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+        background: rgba($blue-dark,$xsmall)
+        color: $blue-hint
+      &::after, .shortnav
+        display: block
+
+    &::after
+      display: none
+      content: " "
+      position: absolute
+      top: rhythm(1.75)
+      height: 0
+      width: 0
+      margin-left: rhythm($med)
+      border: $xsmallem solid rgba($blue-light,0)
+      border-top: 0
+      border-bottom-color: $blue-light
+      z-index: 15
+    &:hover
+      &::after, .shortnav
+        display: block
   .mainlink
     +hpadding($normem)
     +border-radius
-    &.active
-      +box-shadow(rgba($blue-hint,$small) 0 -1px 0 inset)
-      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-      background: rgba($blue-dark,$xsmall)
-      color: $blue-hint
+
+  &:hover
+    > .active
+      &::after, .shortnav
+        display: none
+      &:hover
+        &::after, .shortnav
+          display: block
 
 .shortnav
   +stretch-x
@@ -90,16 +105,17 @@
   +text-shadow(rgba($blue-lightest,$small) 0 1px 1px)
   z-index: 10
   display: none
-  color: $blue-dark
   .wrap
-    +clearfix
     +padding-leader(.25)
     +padding-trailer(.25)
-    +hpadding(side-gutter())
-    +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallem inset)
+    color: $blue-dark
     background: $blue-light
+  .secondnav
+    @extend .container
     > li
       margin-right: rhythm(1)
+      &:first-child
+        margin-left: side-gutter()
   a
     #{$link}
       +text-shadow(rgba($blue-dark,$small) 0 1px 0)
@@ -147,18 +163,7 @@
       border: 0
       padding-right: 0
 
-.crumb
-  +padding-leader(.25)
-  +padding-trailer(.25)
-  position: relative
-  background: rgba($blue-dark,$xsmall)
-  &::before
-    +stretch
-    content: " "
-    background: rgba($blue,$xxsmall)
-
 .trail
-  @extend .fullwidth
   text-transform: capitalize
   span
     +text-shadow(rgba($blue-dark,$small) 0 1px 0)

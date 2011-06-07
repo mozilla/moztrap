@@ -1,8 +1,3 @@
 {% extends 'manage/product/testcase/case_form.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{% url manage_testcase_edit case_id=case.id %}">edit {{ case.name }}</a></li>
-{% endblock crumb %}
-
 {% block formtitle %}Edit "{{ case.name }}"{% endblock %}

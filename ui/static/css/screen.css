@@ -950,15 +950,14 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 /* Layout -------------------------------------------------------------------- */
-.container, #page {
+.container, #page, .shortnav .secondnav {
   *zoom: 1;
   margin: auto;
   width: 97em;
   max-width: 100%;
-  position: relative;
   min-width: 800px;
 }
-.container:after, #page:after {
+.container:after, #page:after, .shortnav .secondnav:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -967,13 +966,13 @@ button.sub:focus, button.sub:hover, button.sub:active {
   visibility: hidden;
 }
 
-.fullwidth, .trail, .currentrun, [role="main"], footer[role="contentinfo"] {
+.fullwidth, [role="main"], footer[role="contentinfo"] {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;
   *zoom: 1;
 }
-.fullwidth:after, .trail:after, .currentrun:after, [role="main"]:after, footer[role="contentinfo"]:after {
+.fullwidth:after, [role="main"]:after, footer[role="contentinfo"]:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -990,6 +989,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 
 [role="banner"] {
   background: rgba(82, 134, 132, 0.236);
+  border-bottom: 2.427em solid #87a9a8;
 }
 [role="banner"] a:link, [role="banner"] a:visited {
   font-weight: 500;
@@ -1019,29 +1019,8 @@ button.sub:focus, button.sub:hover, button.sub:active {
 [role="navigation"] {
   display: inline;
   float: left;
-  width: 48.454%;
-  margin-right: 1.031%;
   padding-top: 0.809em;
-}
-[role="navigation"] li {
-  display: inline;
-  float: left;
-  margin-right: 0.5em;
-}
-[role="navigation"] .hasmore::after {
-  display: none;
-  content: " ";
-  position: absolute;
-  bottom: 0;
   height: 0;
-  width: 0;
-  margin-left: 2.618em;
-  border: 0.382em solid rgba(135, 169, 168, 0);
-  border-bottom-color: rgba(75, 101, 100, 0.382);
-  z-index: 15;
-}
-[role="navigation"] .hasmore:hover::after, [role="navigation"] .hasmore:hover .shortnav {
-  display: block;
 }
 [role="navigation"] a:not([href]) {
   cursor: default;
@@ -1051,7 +1030,40 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
 }
-[role="navigation"] .mainlink {
+[role="navigation"] li {
+  display: inline;
+  float: left;
+}
+
+.topnav > li.active .mainlink {
+  -moz-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
+  -webkit-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
+  -o-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
+  box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
+  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
+  background: rgba(75, 101, 100, 0.382);
+  color: #e9eded;
+}
+.topnav > li.active::after, .topnav > li.active .shortnav {
+  display: block;
+}
+.topnav > li::after {
+  display: none;
+  content: " ";
+  position: absolute;
+  top: 2.832em;
+  height: 0;
+  width: 0;
+  margin-left: 2.618em;
+  border: 0.382em solid rgba(135, 169, 168, 0);
+  border-top: 0;
+  border-bottom-color: #87a9a8;
+  z-index: 15;
+}
+.topnav > li:hover::after, .topnav > li:hover .shortnav {
+  display: block;
+}
+.topnav .mainlink {
   padding-left: 1em;
   padding-right: 1em;
   -moz-border-radius: 0.236em;
@@ -1061,14 +1073,11 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
 }
-[role="navigation"] .mainlink.active {
-  -moz-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
-  -webkit-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
-  -o-box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
-  box-shadow: rgba(233, 237, 237, 0.618) 0 -1px 0 inset;
-  text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
-  background: rgba(75, 101, 100, 0.382);
-  color: #e9eded;
+.topnav:hover > .active::after, .topnav:hover > .active .shortnav {
+  display: none;
+}
+.topnav:hover > .active:hover::after, .topnav:hover > .active:hover .shortnav {
+  display: block;
 }
 
 .shortnav {
@@ -1079,23 +1088,18 @@ button.sub:focus, button.sub:hover, button.sub:active {
   text-shadow: rgba(204, 215, 214, 0.618) 0 1px 1px;
   z-index: 10;
   display: none;
-  color: #4b6564;
 }
 .shortnav .wrap {
-  overflow: hidden;
-  *zoom: 1;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
-  padding-left: 1.031%;
-  padding-right: 1.031%;
-  -moz-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
-  -webkit-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
-  -o-box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
-  box-shadow: rgba(71, 84, 84, 0.618) 0 0 0.382em inset;
+  color: #4b6564;
   background: #87a9a8;
 }
-.shortnav .wrap > li {
+.shortnav .secondnav > li {
   margin-right: 1.618em;
+}
+.shortnav .secondnav > li:first-child {
+  margin-left: 1.031%;
 }
 .shortnav a:link, .shortnav a:visited {
   text-shadow: rgba(75, 101, 100, 0.618) 0 1px 0;
@@ -1169,22 +1173,6 @@ button.sub:focus, button.sub:hover, button.sub:active {
 .meta li:last-child {
   border: 0;
   padding-right: 0;
-}
-
-.crumb, .testnav .summary {
-  padding-top: 0.405em;
-  padding-bottom: 0.405em;
-  position: relative;
-  background: rgba(75, 101, 100, 0.382);
-}
-.crumb::before, .testnav .summary::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  content: " ";
-  background: rgba(82, 134, 132, 0.236);
 }
 
 .trail, .currentrun {
@@ -3847,6 +3835,14 @@ thead .controls {
 }
 
 /* test nav -------------------------------------------------------------- */
+.testnav .summary {
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-weight: 500;
+  top: 3.236em;
+  padding: 0.405em 0;
+}
 .testnav .summary:focus, .testnav .summary:hover, .testnav .summary:active {
   background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(50%, rgba(233, 237, 237, 0.236)), color-stop(100%, rgba(233, 237, 237, 0)));
   background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.236), rgba(233, 237, 237, 0));
@@ -3864,7 +3860,7 @@ thead .controls {
   background-image: linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
 }
 .testnav[open] .summary {
-  background: rgba(75, 101, 100, 0.618);
+  background: rgba(82, 134, 132, 0.236);
 }
 .testnav .selectruns, .testnav .environment {
   clear: both;
@@ -3879,6 +3875,8 @@ thead .controls {
 
 .currentrun {
   position: relative;
+  padding-left: 1.031%;
+  padding-right: 1.031%;
 }
 .currentrun::after {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
@@ -3903,7 +3901,7 @@ thead .controls {
   top: 0;
   bottom: 0;
   content: " ";
-  right: 0;
+  right: 1.031%;
   width: 14px;
   height: auto;
   padding: 0.405em;

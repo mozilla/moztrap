@@ -1,10 +1,5 @@
 {% extends 'results/base.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="/results/testcases/">test cases</a></li>
-{% endblock crumb %}
-
 {% block resultshortnav %}
 {% include "results/_nav.html" with activenav="resultcases" %}
 {% endblock resultshortnav %}

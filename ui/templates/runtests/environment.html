@@ -1,10 +1,5 @@
 {% extends 'runtests/base.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li>Environment</li>
-{% endblock crumb %}
-
 {% block testcontent %}
 <section class="environment">
   {% include "runtests/_environment_form.html" %}

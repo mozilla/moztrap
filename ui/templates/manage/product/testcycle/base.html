@@ -1,10 +1,5 @@
 {% extends 'manage/product/base.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="/manage/product/testcycles/">test cycles</a></li>
-{% endblock crumb %}
-
 {% block manageshortnav %}
 {% include "manage/_nav.html" with activenav="managecycles" %}
 {% endblock manageshortnav %}

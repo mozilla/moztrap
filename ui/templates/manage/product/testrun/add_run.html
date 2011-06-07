@@ -1,10 +1,5 @@
 {% extends 'manage/product/testrun/run_form.html' %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{% url manage_testrun_add %}">add test run</a></li>
-{% endblock crumb %}
-
 {% block formtitle %}create a new test run{% endblock %}
 
 {% block page-notes %}

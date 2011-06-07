@@ -3,7 +3,10 @@
 .testnav
 
   .summary
-    @extend .crumb
+    +stretch-x
+    +demi
+    top: rhythm(2)
+    padding: rhythm(.25) 0
     #{$focus}
       +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xxsmall),rgba($blue-hint,0)))
       outline: 0
@@ -12,7 +15,7 @@
     +padding-trailer
     +background-image(linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0)))
     .summary
-      background: rgba($blue-dark,$small)
+      background: rgba($blue,$xxsmall)
 
   .selectruns, .environment
     +full
@@ -25,6 +28,7 @@
 .currentrun
   @extend .trail
   position: relative
+  +hpadding(side-gutter())
   &::after
     +opacity(.65)
     +replace-text('ui/plus.png')
@@ -32,7 +36,7 @@
     +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallpx)
     +stretch-y
     content: " "
-    right: 0
+    right: side-gutter()
     width: image-width('ui/plus.png')
     height: auto
     padding: rhythm(.25)
