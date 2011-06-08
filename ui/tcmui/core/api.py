@@ -12,7 +12,6 @@ import simplejson as json
 import urllib
 
 from django.utils.encoding import StrAndUnicode
-from flufl.enum._enum import EnumValue
 import remoteobjects
 from remoteobjects.dataobject import classes_by_name
 
@@ -672,26 +671,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         """
         auth = kwargs.pop("auth", self.auth)
 
-        valid_fieldnames = set(self.filterable_fields().keys())
+        valid_fields = self.filterable_fields()
         filters = {}
         for (k, v) in kwargs.iteritems():
-            if k in valid_fieldnames:
-                if isinstance(v, EnumValue):
-                    v = int(v)
-                elif isinstance(v, RemoteObject):
-                    v = util.id_for_object(v)
-                elif not isinstance(v, basestring):
-                    newv = []
-                    try:
-                        for x in v:
-                            if isinstance(x, EnumValue):
-                                newv.append(int(x))
-                            else:
-                                newv.append(x)
-                        v = newv
-                    except TypeError:
-                        pass
-                filters[self.filterable_fields()[k].api_filter_name] = v
+            if k in valid_fields:
+                filters[valid_fields[k].api_filter_name] = util.as_string(v)
 
         newurl = util.narrow_querystring(self._location, **filters)
 
