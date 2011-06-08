@@ -309,6 +309,41 @@ class CachingHttpWrapperTest(TestCase):
         self.assertFalse(cache.set.called)
 
 
+    def test_generation_increment_success(self, cache):
+        from tcmui.core.cache import CachingHttpWrapper
+
+        wrapper = CachingHttpWrapper("wrapped", ["perms"], ["BucketName"])
+
+        cache.incr.return_value = 3
+
+        self.assertEqual(wrapper._next_generation("BucketName"), 3)
+
+
+    def test_generation_increment_race(self, cache):
+        """
+        If two caching wrappers try to increment the same nonexistent
+        generation key at the same time, it should end up at 2, not 1.
+
+        """
+        from tcmui.core.cache import CachingHttpWrapper
+
+        wrapper = CachingHttpWrapper("wrapped", ["perms"], ["BucketName"])
+
+        # Simulate a second wrapper having won the race between failed incr and
+        # add by setting up the incr method to raise ValueError on first call
+        # and return 2 on second call, and the add method to return False (not
+        # added).
+        cache.add.return_value = False
+        def _incr(key, called=[]):
+            # intentionally using mutable default as collector
+            if called:
+                return 2
+            called.append(True)
+            raise ValueError("Key %r not found" % key)
+        cache.incr.side_effect = _incr
+
+        self.assertEqual(wrapper._next_generation("BucketName"), 2)
+
 
 @patch("tcmui.core.api.userAgent", spec=["request"])
 class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):

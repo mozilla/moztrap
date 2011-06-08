@@ -95,13 +95,42 @@ def id_for_object(val):
 
 
 
+def prep_for_query(val, accept_iterables=True):
+    """
+    Convert a value (or list of values, if ``accept_iterables`` is True) to a
+    value (or list of values) suitable for submission to the API in a
+    querystring. ``accept_iterables`` is not recursive; nested iterables are
+    never valid.
+
+    Converts EnumValue instances to string representation of their integer
+    value, and RemoteObject instances to string representation of their integer
+    id. Converts all other values to string.
+
+    Does not do url-encoding; returned value is suitable as argument to
+    ``narrow_querystring`` or ``update_querystring`` or ``add_to_querystring``,
+    which will use urllib.urlencode.
+
+    """
+    try:
+        ret = id_for_object(val)
+    except ValueError:
+        if accept_iterables and is_iterable(val):
+            return [prep_for_query(elem, False) for elem in val]
+        ret = val
+
+    return str(ret)
+
+
+
 def lc_first(s):
     return s[0].lower() + s[1:]
+
 
 
 def is_iterable(v):
     return ((not isinstance(v, basestring) and
              isinstance(v, collections.Iterable)))
+
 
 
 def convert_to_list(v):

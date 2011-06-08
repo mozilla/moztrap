@@ -91,6 +91,13 @@ class TestCaseVersion(Activatable, TestCase):
     environmentgroups = fields.Link(EnvironmentGroupList)
     steps = fields.Link("TestCaseStepList")
 
+
+    non_field_filters = {
+        "step": "instruction",
+        "result": "expectedResult",
+        }
+
+
     def __unicode__(self):
         return u"%s v%s.%s (%s)" % (
             super(TestCaseVersion, self).__unicode__(),

@@ -23,7 +23,7 @@ class HttpTestCase(TestCase):
             with patch("tcmui.core.api.log") as mock_log:
                 http.request(uri="/blah")
 
-        mock_log.debug.assert_called_with("GET - /blah")
+        mock_log.info.assert_called_with("GET - /blah")
 
 
 class UrlFinalIntegerTestCase(TestCase):
@@ -1003,6 +1003,30 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             Url(req["uri"]),
             Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
+
+
+
+    def test_filter_multiple_obj(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource",
+                                                "submitAs": "1"}))
+
+        one = self.resource_class()
+        one.update_from_dict(self.builder.one(
+                resourceIdentity=make_identity(id=1)))
+
+        two = self.resource_class()
+        two.update_from_dict(self.builder.one(
+                resourceIdentity=make_identity(id=2)))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            submit_as=[one, two])
+        c.deliver()
+
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?submitAs=1&submitAs=2&_type=json"))
 
 
 

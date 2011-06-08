@@ -12,7 +12,6 @@ import simplejson as json
 import urllib
 
 from django.utils.encoding import StrAndUnicode
-from flufl.enum._enum import EnumValue
 import remoteobjects
 from remoteobjects.dataobject import classes_by_name
 
@@ -43,7 +42,7 @@ def url_final_integer(url):
 class Http(httplib2.Http):
     def request(self, **kwargs):
         kwargs.setdefault("method", "GET")
-        log.debug("%(method)s - %(uri)s" % kwargs)
+        log.info("%(method)s - %(uri)s" % kwargs)
         return super(Http, self).request(**kwargs)
 
 
@@ -56,6 +55,7 @@ class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = True
     _filterable_fields = None
+    non_field_filters = {}
 
 
     def __init__(self, **kwargs):
@@ -341,15 +341,16 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = http.request(**request)
 
-        if update_from_response:
-            log.debug("Got response %r, updating", response)
+        log.debug("Got response %r" % response)
 
+        if update_from_response:
             if not hasattr(update_from_response, "update_from_response"):
                 update_from_response = self
 
+            log.debug("Updating %r instance from response." % update_from_response.__class__)
+
             update_from_response.update_from_response(None, response, content)
         else:
-            log.debug("Got response %r, raising", response)
             self.raise_for_response(self._location, response, content)
 
         return response
@@ -408,10 +409,16 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def filterable_fields(cls):
+        """
+        Returns a dictionary mapping filterable field names to the name that
+        should be used in submitting to the API.
+
+        """
         if cls._filterable_fields is None:
             cls._filterable_fields = dict(
-                (n, f) for (n, f) in cls.fields.iteritems()
-                if getattr(f, "api_filter_name", False))
+                ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
+                if getattr(f, "api_filter_name", False)),
+                **cls.non_field_filters)
         return cls._filterable_fields
 
 
@@ -671,26 +678,11 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         """
         auth = kwargs.pop("auth", self.auth)
 
-        valid_fieldnames = set(self.filterable_fields().keys())
+        valid_fields = self.filterable_fields()
         filters = {}
         for (k, v) in kwargs.iteritems():
-            if k in valid_fieldnames:
-                if isinstance(v, EnumValue):
-                    v = int(v)
-                elif isinstance(v, RemoteObject):
-                    v = util.id_for_object(v)
-                elif not isinstance(v, basestring):
-                    newv = []
-                    try:
-                        for x in v:
-                            if isinstance(x, EnumValue):
-                                newv.append(int(x))
-                            else:
-                                newv.append(x)
-                        v = newv
-                    except TypeError:
-                        pass
-                filters[self.filterable_fields()[k].api_filter_name] = v
+            if k in valid_fields:
+                filters[valid_fields[k]] = util.prep_for_query(v)
 
         newurl = util.narrow_querystring(self._location, **filters)
 
@@ -702,7 +694,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         if field in sortable and direction in sort.DIRECTIONS:
             newurl = util.update_querystring(
                 self._location,
-                sortfield=sortable[field].api_filter_name,
+                sortfield=sortable[field],
                 sortdirection=direction)
             return self.get(newurl, auth=self.auth)
         return self
