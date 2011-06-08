@@ -55,6 +55,7 @@ class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = True
     _filterable_fields = None
+    non_field_filters = {}
 
 
     def __init__(self, **kwargs):
@@ -408,10 +409,16 @@ class ObjectMixin(StrAndUnicode):
 
     @classmethod
     def filterable_fields(cls):
+        """
+        Returns a dictionary mapping filterable field names to the name that
+        should be used in submitting to the API.
+
+        """
         if cls._filterable_fields is None:
             cls._filterable_fields = dict(
-                (n, f) for (n, f) in cls.fields.iteritems()
-                if getattr(f, "api_filter_name", False))
+                ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
+                if getattr(f, "api_filter_name", False)),
+                **cls.non_field_filters)
         return cls._filterable_fields
 
 
@@ -675,7 +682,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k in valid_fields:
-                filters[valid_fields[k].api_filter_name] = util.prep_for_query(v)
+                filters[valid_fields[k]] = util.prep_for_query(v)
 
         newurl = util.narrow_querystring(self._location, **filters)
 
@@ -687,7 +694,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         if field in sortable and direction in sort.DIRECTIONS:
             newurl = util.update_querystring(
                 self._location,
-                sortfield=sortable[field].api_filter_name,
+                sortfield=sortable[field],
                 sortdirection=direction)
             return self.get(newurl, auth=self.auth)
         return self

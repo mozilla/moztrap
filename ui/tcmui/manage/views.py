@@ -247,6 +247,8 @@ def edit_testsuite(request, suite_id):
             ("approval", status_filters.ApprovalStatusFilter),
             ("product", ProductFieldFilter),
             ("name", KeywordFilter),
+            ("step", KeywordFilter),
+            ("result", KeywordFilter),
             )
 @dec.paginate("cases")
 @dec.sort("cases")
