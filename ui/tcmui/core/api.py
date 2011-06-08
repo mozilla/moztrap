@@ -675,7 +675,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k in valid_fields:
-                filters[valid_fields[k].api_filter_name] = util.as_string(v)
+                filters[valid_fields[k].api_filter_name] = util.prep_for_query(v)
 
         newurl = util.narrow_querystring(self._location, **filters)
 

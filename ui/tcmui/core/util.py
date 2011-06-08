@@ -95,7 +95,7 @@ def id_for_object(val):
 
 
 
-def as_string(val, accept_iterables=True):
+def prep_for_query(val, accept_iterables=True):
     """
     Convert a value (or list of values, if ``accept_iterables`` is True) to a
     value (or list of values) suitable for submission to the API in a
@@ -106,12 +106,16 @@ def as_string(val, accept_iterables=True):
     value, and RemoteObject instances to string representation of their integer
     id. Converts all other values to string.
 
+    Does not do url-encoding; returned value is suitable as argument to
+    ``narrow_querystring`` or ``update_querystring`` or ``add_to_querystring``,
+    which will use urllib.urlencode.
+
     """
     try:
         ret = id_for_object(val)
     except ValueError:
         if accept_iterables and is_iterable(val):
-            return [as_string(elem, False) for elem in val]
+            return [prep_for_query(elem, False) for elem in val]
         ret = val
 
     return str(ret)
