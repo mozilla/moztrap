@@ -1,3 +1,7 @@
+from django.forms.forms import NON_FIELD_ERRORS
+from django.forms.util import ErrorList
+from django.utils.encoding import force_unicode
+from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 import floppyforms as forms
@@ -6,7 +10,25 @@ from . import errors
 
 
 
-class RemoteObjectForm(forms.Form):
+class NonFieldErrorList(ErrorList):
+    def as_ul(self):
+        if not self: return u''
+        return mark_safe(u'<ul class="errorlist nonfield">%s</ul>'
+                % ''.join([u'<li>%s</li>' % conditional_escape(force_unicode(e)) for e in self]))
+
+
+
+class NonFieldErrorsClassFormMixin(object):
+    def _clean_form(self):
+        try:
+            self.cleaned_data = self.clean()
+        except forms.ValidationError, e:
+            self._errors[NON_FIELD_ERRORS] = NonFieldErrorList(e.messages)
+
+
+
+
+class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
     pass
 
 

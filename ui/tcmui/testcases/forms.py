@@ -8,7 +8,7 @@ from .models import TestCaseStep
 
 
 
-class StepForm(forms.Form):
+class StepForm(tcmforms.NonFieldErrorsClassFormMixin, forms.Form):
     instruction = forms.CharField(widget=tcmforms.BareTextarea)
     expected_result = forms.CharField(widget=tcmforms.BareTextarea)
 

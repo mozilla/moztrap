@@ -8,7 +8,8 @@ from ..core.util import id_for_object
 from .models import EnvironmentGroupList
 from .util import environments_of
 
-class EnvironmentSelectionForm(forms.Form):
+class EnvironmentSelectionForm(tcmforms.NonFieldErrorsClassFormMixin,
+                               forms.Form):
     """
     A form for selecting an environment group from a set of possible
     environment groups, in the form of a dropdown for each environment type
@@ -84,7 +85,8 @@ class EnvironmentSelectionForm(forms.Form):
 
 
 
-class EnvironmentConstraintForm(forms.Form):
+class EnvironmentConstraintForm(tcmforms.NonFieldErrorsClassFormMixin,
+                                forms.Form):
     """
     Form for selecting multiple options for a single environment type, given a
     set of environment groups.
