@@ -55,116 +55,17 @@
 </head>
 
 <body id="client-url" class="{% block bodyclasses %}{% endblock %}">
+
 {% block body %}
+  {% block site %}
+  {% endblock site %}
 
-<header role="banner">
-  <div class="container">
-    <a href="#main">skip to main content</a>
+  <aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
+    <h2>Page Status</h2>
+    {% block page-notes %}
 
-    <h1 id="brand"><a href="/" rel="home">TCM</a></h1>
-
-    <nav role="navigation">
-      <h2 class="navhead">Primary Navigation</h2>
-      <ul class="topnav">
-          <li class="test {% block test-active-nav %}{% endblock test-active-nav %}">
-            <a href="{% url runtests %}" class="mainlink">Run Tests</a>
-          </li>
-
-        {% if request.user %} {# @@@ more specific perms check? #}
-          <li class="results {% block results-active-nav %}{% endblock results-active-nav %}">
-            <a href="{% url results %}" class="mainlink">
-              View Results
-            </a>
-            <div class="shortnav">
-              <div class="wrap">
-              <ul class="secondnav">
-                {% block resultshortnav %}
-                {% include "results/_nav.html" %}
-                {% endblock resultshortnav %}
-              </ul>
-              </div>
-            </div>
-          </li>
-
-          <li class="manage {% block manage-active-nav %}{% endblock manage-active-nav %}">
-            <a href="{% url manage %}" class="mainlink">
-              Manage
-            </a>
-            <div class="shortnav">
-              <div class="wrap">
-              <ul class="secondnav">
-                {% block manageshortnav %}
-                {% include "manage/_nav.html" %}
-                {% endblock manageshortnav %}
-              </ul>
-              </div>
-            </div>
-          </li>
-        {% endif %}
-
-      </ul>
-    </nav>
-
-    <nav class="meta">
-      <h2 class="navhead">Account Navigation</h2>
-      <ul>
-        {% block meta-user %}
-          {% if request.user %}
-            <li>
-              Welcome {{ request.user.firstName }}
-              [<a href="{% url logout %}">Sign Out</a>]
-            </li>
-          {% else %}
-            <li>
-              [
-              <a href="{% url login %}">Sign in</a>
-              or
-              <a href="{% url register %}">Register</a>
-              ]
-            </li>
-          {% endif %}
-          {# @@@ <li><a href="#">Account Settings</a></li> #}
-        {% endblock %}
-        {# @@@ <li><a href="#">Help</a></li> #}
-      </ul>
-    </nav>
-
-  </div>
-
-</header>
-
-{% block bread %}{% endblock bread %}
-
-<div id="page">
-{% block page %}
-
-  <div id="main" role="main">
-    {% block content %}
-    {% endblock %}
-  </div><!-- /~main -->
-
-  <footer role="contentinfo">
-    <div id="hcard-client-name" class="author vcard">
-      <small>copyright &copy; 2011</small>
-      <strong class="fn org">Mozilla</strong>
-      <div class="adr">
-        <span class="street-address">650 Castro St, Suite 300</span>,
-        <span class="locality">Mountain View</span>,
-        <span class="region">CA</span>
-        <span class="postal-code">94041-2021</span>
-      </div>
-    </div>
-  </footer>
-
-{% endblock page %}
-</div>
-
-<aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
-  <h2>Page Status</h2>
-  {% block page-notes %}
-
-  {% endblock page-notes %}
-</aside>
+    {% endblock page-notes %}
+  </aside>
 {% endblock body %}
 
 <!-- JavaScript -->

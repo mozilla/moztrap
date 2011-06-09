@@ -1,34 +1,29 @@
-{% extends 'base.html' %}
-
-{% block bodyclasses %}{{ block.super }} results{% endblock bodyclasses %}
+{% extends 'base_site.html' %}
 
 {% block page-status %}incomplete{% endblock %}
 
 {% block page-notes %}
   <p>Completion percentages are inactive (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no API in platform</a>).</p>
-  <p>Can't pair multiple name searches, unless they are all exact, e.g. &ldquo;^Full Name$&rdquo; (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform limitation</a>).</p>
+  <p>Can't pair multiple name searches (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform bug</a>).</p>
   <p>No <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659228">keyword search across multiple fields</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">environment</a>, or <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659073">team member</a> filtering (platform limitations).</p>
+  <p>Expanded drilldown navigation is not active yet.</p>
 {% endblock %}
 
-{% block results-active-nav %}active{% endblock results-active-nav %}
+{% block result-active-nav %}active{% endblock result-active-nav %}
+
+{% block drilldown %}
+  <nav class="drilldown details" open="open">
+    <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
+    <div class="content">
+      {% include "includes/finder.html" %}
+    </div>
+  </nav>
+{% endblock drilldown %}
 
 {% block content %}
-  <nav class="subnav">
-    <h2 class="navhead">Results Navigation</h2>
-
-    {% include "includes/finder.html" %}
-
-    <ul class="nestednav">
-      {% block nestednav %}
-      {% include "results/_nav.html" %}
-      {% endblock nestednav %}
-    </ul>
-  </nav>
-
   <div id="listcontent" class="results">
     {% include "_messages.html" %}
     {% block listcontent %}
-
     {% endblock listcontent %}
   </div>
 {% endblock content %}

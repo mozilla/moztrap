@@ -1,33 +1,28 @@
-{% extends 'base.html' %}
-
-{% block manage-active-nav %}active{% endblock manage-active-nav %}
-{% block bodyclasses %}{{ block.super }} manage{% endblock bodyclasses %}
+{% extends 'base_site.html' %}
 
 {% block page-status %}incomplete{% endblock %}
+
 {% block page-notes %}
   <p>Can't pair multiple name searches, unless they are all exact, e.g. &ldquo;^Full Name$&rdquo; (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform limitation</a>).</p>
-<p>No <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659228">keyword search across multiple fields</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">environment</a>, or <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659073">team member</a> filtering (platform limitations).</p>
+  <p>No <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659228">keyword search across multiple fields</a>, <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">environment</a>, or <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659073">team member</a> filtering (platform limitations).</p>
 {% endblock %}
 
-{% block content %}
-  <nav class="subnav">
-    <h2 class="navhead">Management Navigation</h2>
+{% block manage-active-nav %}active{% endblock manage-active-nav %}
 
-    {% include "includes/finder.html" %}
-
-    <ul class="nestednav">
-      <li><a href="#" class="{% block productsactivenav %}{% endblock productsactivenav %}">Products</a></li>
-      {% block nestednav %}
-      {% include "manage/product/_nav.html" %}
-      {% endblock nestednav %}
-    </ul>
+{% block drilldown %}
+  <nav class="drilldown details" open="open">
+    <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
+    <div class="content">
+      {% include "includes/finder.html" %}
+    </div>
   </nav>
+{% endblock drilldown %}
 
+{% block content %}
   <div id="listcontent" class="manage">
     {% include "_messages.html" %}
     {% block listcontent %}
 
     {% endblock listcontent %}
   </div>
-
 {% endblock content %}

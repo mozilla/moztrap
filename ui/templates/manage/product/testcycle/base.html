@@ -1,9 +1,3 @@
 {% extends 'manage/product/base.html' %}
 
-{% block manageshortnav %}
-{% include "manage/_nav.html" with activenav="managecycles" %}
-{% endblock manageshortnav %}
-
-{% block nestednav %}
-{% include "manage/product/_nav.html" with activenav="managecycles" %}
-{% endblock nestednav %}
+{% block managecycle-active-nav %}active{% endblock managecycle-active-nav %}

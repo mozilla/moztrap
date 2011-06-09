@@ -1,55 +1,5 @@
 /* test nav --------------------------------------------------------------
 
-.testnav
-
-  .summary
-    +stretch-x
-    +demi
-    top: rhythm(2)
-    padding: rhythm(.25) 0
-    #{$focus}
-      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xxsmall),rgba($blue-hint,0)))
-      outline: 0
-
-  &[open]
-    +padding-trailer
-    +background-image(linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0)))
-    .summary
-      background: rgba($blue,$xxsmall)
-
-  .selectruns, .environment
-    +full
-    +leader
-
-  .envsettings
-    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-    color: $blue-hint
-
-.currentrun
-  @extend .trail
-  position: relative
-  +hpadding(side-gutter())
-  &::after
-    +opacity(.65)
-    +replace-text('ui/plus.png')
-    +border-radius($xxsmallem)
-    +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallpx)
-    +stretch-y
-    content: " "
-    right: side-gutter()
-    width: image-width('ui/plus.png')
-    height: auto
-    padding: rhythm(.25)
-    background-color: rgba($green,$small)
-    z-index: 10
-    visibility: visible
-  #{$focus}
-    &::after
-      +opacity(.85)
-  [open] &::after
-    background-image: image-url('ui/minus.png')
-    background-color: $yellow
-
 
 /* run tests --------------------------------------------------------------
 

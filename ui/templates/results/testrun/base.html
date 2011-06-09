@@ -1,9 +1,3 @@
 {% extends 'results/base.html' %}
 
-{% block resultshortnav %}
-{% include "results/_nav.html" with activenav="resultruns" %}
-{% endblock resultshortnav %}
-
-{% block nestednav %}
-{% include "results/_nav.html" with activenav="resultruns" %}
-{% endblock nestednav %}
+{% block resultrun-active-nav %}active{% endblock resultrun-active-nav %}
