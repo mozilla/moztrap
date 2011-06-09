@@ -1,24 +1,29 @@
-{% extends 'base.html' %}
-
-{% block test-active-nav %}active{% endblock test-active-nav %}
+{% extends 'base_site.html' %}
 
 {% block page-status %}incomplete{% endblock %}
 
 {% block page-notes %}
-<p>Test cycle completion percentages are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no platform API</a>).</p>
-<p>Product icons are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=656687">no platform API</a>).</p>
+  <p>Test cycle completion percentages are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no platform API</a>).</p>
+  <p>Product icons are faked (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=656687">no platform API</a>).</p>
 {% endblock %}
 
-{% block crumb %}
-  {{ block.super }}
-  <li><a href="{% url runtests %}">run tests</a></li>
-{% endblock crumb %}
+{% block run-active-nav %}active{% endblock run-active-nav %}
 
 {% block content %}
 
   {% include "_messages.html" %}
 
   {% block testcontent %}
+  <nav class="drilldown">
+    <h2 class="navhead">Run Test Navigation</h2>
+    <section class="selectruns">
+      <h3>Select a product, cycle and run</h3>
+      {% include "runtests/_picker.html" %}
+    </section>
+
+    <section class="environment empty">
+    </section>
+  </nav>
   {% endblock %}
 
 {% endblock %}

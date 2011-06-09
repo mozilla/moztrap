@@ -55,121 +55,16 @@
 </head>
 
 <body id="client-url" class="{% block bodyclasses %}{% endblock %}">
+
 {% block body %}
+  {% block site %}
+  {% endblock site %}
 
-<header role="banner">
-  <div class="container">
-    <a href="#main">skip to main content</a>
-
-    <h1 id="brand"><a href="/" rel="home">TCM</a></h1>
-
-    <nav role="navigation">
-      <h2 class="navhead">Primary Navigation</h2>
-      <ul>
-          <li class="test">
-            <a href="{% url runtests %}" class="mainlink {% block test-active-nav %}{% endblock test-active-nav %}">Run Tests</a>
-          </li>
-
-        {% if request.user %} {# @@@ more specific perms check? #}
-          <li class="results hasmore">
-            <a href="{% url results %}" class="mainlink {% block results-active-nav %}{% endblock results-active-nav %}">
-              View Results
-            </a>
-            <div class="shortnav">
-              <ul class="wrap">
-                {% block resultshortnav %}
-                {% include "results/_nav.html" %}
-                {% endblock resultshortnav %}
-              </ul>
-            </div>
-          </li>
-
-          <li class="manage hasmore">
-            <a href="{% url manage %}" class="mainlink {% block manage-active-nav %}{% endblock manage-active-nav %}">
-              Manage
-            </a>
-            <div class="shortnav">
-              <ul class="wrap">
-                {% block manageshortnav %}
-                {% include "manage/_nav.html" %}
-                {% endblock manageshortnav %}
-              </ul>
-            </div>
-          </li>
-        {% endif %}
-
-      </ul>
-    </nav>
-
-    <nav class="meta">
-      <h2 class="navhead">Account Navigation</h2>
-      <ul>
-        {% block meta-user %}
-          {% if request.user %}
-            <li>
-              Welcome {{ request.user.firstName }}
-              [<a href="{% url logout %}">Sign Out</a>]
-            </li>
-          {% else %}
-            <li>
-              [
-              <a href="{% url login %}">Sign in</a>
-              or
-              <a href="{% url register %}">Register</a>
-              ]
-            </li>
-          {% endif %}
-          {# @@@ <li><a href="#">Account Settings</a></li> #}
-        {% endblock %}
-        {# @@@ <li><a href="#">Help</a></li> #}
-      </ul>
-    </nav>
-
-  </div>
-
-</header>
-
-{% block bread %}
-  <nav class="crumb">
-    <div class="container">
-      <h2 class="navhead">Breadcrumb Navigation</h2>
-      <ol class="trail">
-        {% block crumb %}{% endblock crumb %}
-      </ol>
-    </div>
-  </nav>
-{% endblock bread %}
-
-<div id="page">
-{% block page %}
-
-  <div id="main" role="main">
-    {% block content %}
-    {% endblock %}
-  </div><!-- /~main -->
-
-  <footer role="contentinfo">
-    <div id="hcard-client-name" class="author vcard">
-      <small>copyright &copy; 2011</small>
-      <strong class="fn org">Mozilla</strong>
-      <div class="adr">
-        <span class="street-address">650 Castro St, Suite 300</span>,
-        <span class="locality">Mountain View</span>,
-        <span class="region">CA</span>
-        <span class="postal-code">94041-2021</span>
-      </div>
-    </div>
-  </footer>
-
-{% endblock page %}
-</div>
-
-<aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
-  <h2>Page Status</h2>
-  {% block page-notes %}
-
-  {% endblock page-notes %}
-</aside>
+  <aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
+    <h2>Page Status</h2>
+    {% block page-notes %}
+    {% endblock page-notes %}
+  </aside>
 {% endblock body %}
 
 <!-- JavaScript -->

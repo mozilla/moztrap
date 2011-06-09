@@ -25,6 +25,7 @@
 // Banner --------------------------------------------------------------------
 
 [role="banner"]
+  min-height: rhythm(3.5)
   background: rgba($blue,$xxsmall)
   a
     #{$link}
@@ -45,68 +46,9 @@
     #{$focus}
       color: $accent
 
-// Navigations ---------------------------------------------------------------
-
 [role="navigation"]
   +columns(12)
   +padding-leader(.5)
-  li
-    +float(left)
-    margin-right: .5em
-  .hasmore
-    &::after
-      display: none
-      content: " "
-      position: absolute
-      bottom: 0
-      height: 0
-      width: 0
-      margin-left: rhythm($med)
-      border: $xsmallem solid rgba($blue-light,0)
-      border-bottom-color: rgba($blue-dark,$xsmall)
-      z-index: 15
-    &:hover
-      &::after, .shortnav
-        display: block
-  a
-    &:not([href])
-      cursor: default
-      color: $blue-light
-    &, #{$link}
-      +padding-leader(.25)
-      +padding-trailer(.25)
-  .mainlink
-    +hpadding($normem)
-    +border-radius
-    &.active
-      +box-shadow(rgba($blue-hint,$small) 0 -1px 0 inset)
-      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-      background: rgba($blue-dark,$xsmall)
-      color: $blue-hint
-
-.shortnav
-  +stretch-x
-  +padding-leader(.5)
-  z-index: 10
-  display: none
-  .wrap
-    +clearfix
-    +padding-leader(.25)
-    +padding-trailer(.25)
-    +hpadding(side-gutter())
-    +box-shadow(rgba($blue-darker,$small) 0 0 $xsmallem inset)
-    background: $blue-light
-  a
-    #{$link}
-      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-      margin-right: rhythm(1)
-      color: $blue-hint
-    #{$focus}
-      +text-shadow(rgba($blue-lightest,$small) 0 1px 0)
-      color: $accent
-    &.active
-      +text-shadow(rgba($blue-lightest,$small) 0 1px 1px)
-      color: $blue-dark
 
 .meta
   +columns(9)
@@ -122,41 +64,36 @@
       border: 0
       padding-right: 0
 
-.crumb
+.drilldown.details
+  +clearfix
   +padding-leader(.25)
   +padding-trailer(.25)
-  position: relative
-  background: rgba($blue-dark,$xsmall)
-  &::before
-    +stretch
-    content: " "
-    background: rgba($blue,$xxsmall)
-
-.trail
-  @extend .fullwidth
-  text-transform: capitalize
-  span
-    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-    color: $blue-hint
-  a
-    #{$link}
-      +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-      color: $blue-hint
+  clear: both
+  min-height: rhythm(1)
+  .summary
+    +opacity(.75)
+    +border-radius
+    +box-shadow(rgba($blue-dark,$small) 0 1px 0)
+    +replace-text('ui/plus.png')
+    +float(right)
+    position: relative
+    margin-right: side-gutter()
+    width: image-width('ui/plus.png') + $xsmallpx*2
+    background-color: rgba($green-light,.95)
+    z-index: 50
     #{$focus}
-      +text-shadow(rgba($blue-lightest,$small) 0 1px 0)
-      color: $accent
-  li
-    +inline-block
-    vertical-align: baseline
-    &::after
-      content: " »"
-    &:last-child
-      &::after
-        content: ""
-      a
-        #{$focus}
-          +text-shadow(rgba($blue-dark,$small) 0 1px 0)
-          color: $blue-hint
+      +opacity(1)
+
+  &[open]
+    +background(linear-gradient(top, rgba($blue-lightest,0), rgba($blue-lightest,0) rhythm(1.5), rgba($blue-lightest,$small) rhythm(1.5)))
+    .summary
+      background-image: image-url('ui/minus.png')
+      background-color: rgba($yellow,.95)
+
+  .content
+    +full
+    +padding-leader
+    +padding-trailer
 
 // Content --------------------------------------------------------------------
 
@@ -233,6 +170,7 @@ footer[role="contentinfo"]
 // Modules -------------------------------------------------------------------
 
 @import modules/icons
+@import modules/navigation
 @import modules/controls
 @import modules/filter
 @import modules/loading

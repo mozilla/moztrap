@@ -1,46 +1,42 @@
 {% extends 'runtests/base.html' %}
-{% load execution environment %}
+{% load execution environment sort %}
 
-{% block bread %}
-<nav class="testnav details">
-  <div class="summary">
-    <div class="container">
-      <ul class="currentrun">
-        <li><a href="{% url runtests %}">run tests</a></li>
-        <li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
-        <li><a href="#" class="breadcrumb" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
-        <li><a href="#" class="breadcrumb" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
-        <li class="envsettings">
-          [
-          {% for env in request.environments %}
-          {{ env.name }}{% if not forloop.last %}, {% endif %}
-          {% endfor %}
-          ]
-        </li>
-      </ul>
-    </div>
-  </div>
+{% block test-subnav %}
+<li><a href="{% url runtests %}">Run Tests</a></li>
+<li><a href="#" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
+<li><a href="#" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
+<li><a href="#" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
+<li>
+  <ul class="envsettings">
+    {% for env in request.environments %}
+    <li>{{ env.name }}</li>
+    {% endfor %}
+  </ul>
+</li>
+{% endblock test-subnav %}
 
-  <div class="container">
-    <div class="selectruns">
-      <h2>Select a product, cycle and run</h2>
-      {% include "runtests/_picker.html" %}
-    </div>
+{% block drilldown %}
+  <nav class="drilldown details">
+    <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
+    <div class="content">
+      <section class="selectruns">
+        <h3>Select a product, cycle and run</h3>
+        {% include "runtests/_picker.html" %}
+      </section>
 
-    <div class="environment">
-      {% include "runtests/_environment_form.html" with object=testrun %}
+      <section class="environment">
+        {% include "runtests/_environment_form.html" with object=testrun %}
+      </section>
     </div>
-  </div>
-</nav>
-{% endblock bread %}
+  </nav>
+{% endblock drilldown %}
+
 
 {% block testcontent %}
   <section id="run">
     <h2>Run Tests:</h2>
-
     {% for includedtestcase in testrun.includedtestcases %}
       {% run_case includedtestcase request.user request.environments %}
     {% endfor %}
-
   </section>
 {% endblock testcontent %}
