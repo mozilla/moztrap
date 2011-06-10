@@ -198,7 +198,7 @@ def add_testsuite(request):
         product_choices=ProductList.ours(auth=request.auth),
         # @@@ should be narrowed dynamically by product
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
-            company=conf.TCM_COMPANY_ID),
+            company=conf.TCM_COMPANY_ID, status=TestCaseStatus.ACTIVE),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()
