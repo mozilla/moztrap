@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from ..core import decorators as dec
 from ..core.conf import conf
@@ -8,6 +9,7 @@ from ..core.filters import KeywordFilter
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
+from ..static.status import TestCaseStatus
 from ..testexecution.filters import TestCycleFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..testcases.models import TestSuiteList, TestCaseVersionList
@@ -61,6 +63,7 @@ def add_testcycle(request):
 
 
 
+@never_cache
 @login_redirect
 @dec.actions(TestRunList, ["delete"], fall_through=True)
 @dec.sort("testruns")
@@ -141,6 +144,7 @@ def add_testrun(request):
 
 
 
+@never_cache
 @login_redirect
 def edit_testrun(request, run_id):
     run = TestRunList.get_by_id(run_id, auth=request.auth)
@@ -210,6 +214,7 @@ def add_testsuite(request):
 
 
 
+@never_cache
 @login_redirect
 def edit_testsuite(request, suite_id):
     suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
@@ -218,7 +223,7 @@ def edit_testsuite(request, suite_id):
         instance=suite,
         product_choices=[suite.product],
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
-            product=suite.product.id),
+            product=suite.product.id, status=TestCaseStatus.ACTIVE),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()
@@ -283,6 +288,7 @@ def add_testcase(request):
 
 
 
+@never_cache
 @login_redirect
 def edit_testcase(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
