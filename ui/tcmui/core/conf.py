@@ -19,5 +19,5 @@ class Configuration(object):
 
 conf = Configuration(
     TCM_CACHE_SECONDS=600,
-    TCM_STATICDATA_CACHE_SECONDS=0
+    TCM_STATICDATA_CACHE_SECONDS=1200
     )

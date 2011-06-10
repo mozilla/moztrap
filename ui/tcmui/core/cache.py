@@ -87,7 +87,7 @@ class CachingHttpWrapper(object):
             log.debug("Incremented generation key %r to %r" % (gen_key, val))
         except ValueError:
             val = 1
-            added = cache.add(gen_key, val)
+            added = cache.add(gen_key, val, conf.TCM_CACHE_SECONDS * 2)
             if not added:
                 # Someone else won the race, so we try again to increment.
                 log.warn(
