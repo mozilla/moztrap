@@ -4135,6 +4135,11 @@ thead .controls {
   padding: 0 0.25em 0 19px;
   text-align: left;
 }
+.resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  background-color: #aac0bf;
+}
 
 .resultslist, .managelist .results, .case-details .summary .results {
   margin: 0;
