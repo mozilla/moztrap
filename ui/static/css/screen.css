@@ -1087,6 +1087,13 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 .drilldown.details {
+  display: none;
+}
+.section-runtest .drilldown.details {
+  display: block;
+}
+
+.drilldown.details {
   overflow: hidden;
   *zoom: 1;
   padding-top: 0.405em;
@@ -2311,7 +2318,7 @@ thead .controls {
   float: right;
   margin-right: 0;
 }
-.environment h2 {
+.environment h3 {
   display: inline;
   float: left;
   width: 49.474%;
