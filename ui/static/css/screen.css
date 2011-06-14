@@ -1985,7 +1985,7 @@ thead .controls {
 .finder + .nestednav {
   display: none;
 }
-.finder h3, .finder h4, .finder h5, .finder p {
+.finder p {
   margin-bottom: 0;
 }
 .finder[data-cols="4"] .carousel {
@@ -2423,7 +2423,7 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-.managelist .summary p, .managelist .summary h3, .managelist .summary h4 {
+.managelist .summary p {
   margin-bottom: 0;
 }
 .managelist .details .summary:focus, .managelist .details .summary:hover, .managelist .details .summary:active {
@@ -3162,7 +3162,6 @@ thead .controls {
 .addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
-  margin: 0;
 }
 .addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul {
   list-style: none;
@@ -3241,7 +3240,6 @@ thead .controls {
 .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4 {
   padding-left: 1.5em;
   padding-right: 1.5em;
-  margin: 0;
   color: #eeeeee;
   background: #528684;
   font-weight: normal;
@@ -3441,7 +3439,6 @@ thead .controls {
 .mainselect h3, .suiteselect h3, .caseselect h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
-  margin: 0;
   text-transform: capitalize;
 }
 .mainselect > div, .suiteselect > div, .caseselect > div {
@@ -3800,7 +3797,6 @@ thead .controls {
   margin-right: 1.266%;
   font-size: 1.143em;
   line-height: 1.416em;
-  margin: 0;
 }
 #run .header small {
   display: inline;
