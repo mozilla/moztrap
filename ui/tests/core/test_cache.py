@@ -78,7 +78,7 @@ class CachingHttpWrapperTest(TestCase):
 
         self.make_request(method=method, uri="/uri/")
 
-        cache.add.assert_called_once_with("BucketName:generation", 1)
+        cache.add.assert_called_once_with("BucketName:generation", 1, 1200)
         cache.incr.assert_called_once_with("BucketName:generation")
 
         # no cached response was set
@@ -103,7 +103,7 @@ class CachingHttpWrapperTest(TestCase):
         self.make_request(method="PUT", uri="/uri/",
                           cache_dependent_buckets=["DependentBucket"])
 
-        cache.add.assert_called_with("DependentBucket:generation", 1)
+        cache.add.assert_called_with("DependentBucket:generation", 1, 1200)
         cache.incr.assert_called_with("DependentBucket:generation")
 
         # no cached response was set
@@ -193,8 +193,8 @@ class CachingHttpWrapperTest(TestCase):
 
         self.assertEqual(
             cache.add.call_args_list,
-            [(("BucketName:1:generation", 1),),
-             (("BucketName:generation", 1),)])
+            [(("BucketName:1:generation", 1, 1200),),
+             (("BucketName:generation", 1, 1200),)])
         self.assertEqual(
             cache.incr.call_args_list,
             [(("BucketName:1:generation",),),
