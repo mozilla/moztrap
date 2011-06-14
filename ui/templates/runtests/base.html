@@ -1,5 +1,7 @@
 {% extends 'base_site.html' %}
 
+{% block bodyclasses %}{{ block.super }} section-runtest{% endblock bodyclasses %}
+
 {% block page-status %}incomplete{% endblock %}
 
 {% block page-notes %}
