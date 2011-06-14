@@ -83,7 +83,7 @@ class StaticDataTest(ResourceTestCase):
 
         self.func("STATUS", 1)
 
-        self.assertEqual(cache.set_many.call_args[0][1], 1200)
+        self.assertEqual(cache.set_many.call_args[0][1], 1800)
 
 
     def test_get_cached_returns_from_cache(self, http, cache):
