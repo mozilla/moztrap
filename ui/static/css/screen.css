@@ -1097,7 +1097,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   overflow: hidden;
   *zoom: 1;
   padding-top: 0.405em;
-  padding-bottom: 1.214em;
+  padding-bottom: 0.405em;
   clear: both;
   min-height: 1.618em;
 }
