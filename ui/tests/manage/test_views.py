@@ -14,8 +14,10 @@ class DefaultManageViewTest(ViewTestCase):
 
 
     def test_redirect(self, http):
-        res = self.get("/manage/")
+        self.setup_responses(http)
+        res = self.app.get("/manage/")
 
-        self.assertEqual(res.status_code, 302)
+        self.assertEqual(res.status_int, 302)
         self.assertEqual(
-            res["Location"], "/manage/testcycles/")
+            res.headers["location"],
+            "http://localhost:80/manage/testcycles/")

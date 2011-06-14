@@ -14,18 +14,14 @@ from ..users.builders import users
 
 @patch("tcmui.core.api.userAgent")
 class DefaultResultsViewTest(ViewTestCase):
-    @property
-    def view(self):
-        from tcmui.results.views import home
-        return home
-
-
     def test_redirect(self, http):
-        res = self.get("/results/")
+        self.setup_responses(http)
+        res = self.app.get("/results/")
 
-        self.assertEqual(res.status_code, 302)
+        self.assertEqual(res.status_int, 302)
         self.assertEqual(
-            res["Location"], "/results/testcycles/?status=2")
+            res.headers["location"],
+            "http://localhost:80/results/testcycles/?status=2")
 
 
 class ListViewTests(object):
@@ -71,10 +67,9 @@ class ListViewTests(object):
             responses.update(self.per_item_responses(str(i + 1)))
         self.setup_responses(http, responses)
 
-        res = self.get(self.url)
-        res.render()
+        res = self.app.get(self.url)
 
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_int, 200)
         ctx = self.rendered["context"]
         self.assertIsInstance(ctx[self.ctx_var], self.list_class)
         self.assertEqual(len(ctx[self.ctx_var]), 2)
@@ -110,12 +105,6 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
             "http://fake.base/rest/testcycles/%s/environmentgroups?_type=json" % item_id:
                 response(environmentgroups.array()),
             }
-
-
-    @property
-    def view(self):
-        from tcmui.results.views import testcycles as view
-        return view
 
 
     @property
@@ -158,12 +147,6 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
 
 
     @property
-    def view(self):
-        from tcmui.results.views import testruns as view
-        return view
-
-
-    @property
     def list_class(self):
         from tcmui.testexecution.models import TestRunList
         return TestRunList
@@ -175,6 +158,8 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
     builder = testrunitcs
 
     ctx_var = "includedcases"
+
+    url = "/results/testcases/"
 
 
     def extra_responses(self):
@@ -222,12 +207,6 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
 
 
     @property
-    def view(self):
-        from tcmui.results.views import testcases as view
-        return view
-
-
-    @property
     def list_class(self):
         from tcmui.testexecution.models import TestRunIncludedTestCaseList
         return TestRunIncludedTestCaseList
@@ -240,13 +219,7 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
 
     ctx_var = "results"
 
-    url = "/testcases/1/"
-
-
-    @property
-    def view(self):
-        from tcmui.results.views import testresults as view
-        return view
+    url = "/results/testcase/1/"
 
 
     @property

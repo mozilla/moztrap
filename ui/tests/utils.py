@@ -3,10 +3,12 @@ from functools import partial
 import urlparse
 
 from django.core.cache import get_cache
+from django.core.handlers.wsgi import WSGIHandler
 from django.test.signals import template_rendered
 from django.test.client import RequestFactory, store_rendered_templates
 from mock import patch
 from unittest2 import TestCase
+from webtest import TestApp
 
 from .builder import ListBuilder
 from .core.builders import companies
@@ -172,10 +174,13 @@ class ViewTestCase(AuthTestCase):
         self.addCleanup(template_rendered.disconnect, on_template_render)
 
 
-    def setup_responses(self, http, response_dict, user=None):
+    def setup_responses(self, http, response_dict=None, user=None):
         if user is None:
             user = self.auth.user
-        response_dict = response_dict.copy()
+        if response_dict is None:
+            response_dict = {}
+        else:
+            response_dict = response_dict.copy()
         response_dict.setdefault(
             "http://fake.base/rest/users/current?_type=json",
             response(
@@ -191,14 +196,8 @@ class ViewTestCase(AuthTestCase):
 
 
     @property
-    def view(self):
-        raise NotImplementedError
-
-
-    def get(self, *args, **kwargs):
-        req = self.factory.get(*args, **kwargs)
-        req.auth = self.auth
-        return self.view(req)
+    def app(self):
+        return TestApp(WSGIHandler())
 
 
 
