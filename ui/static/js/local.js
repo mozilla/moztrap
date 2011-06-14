@@ -76,7 +76,13 @@ var TCM = TCM || {};
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
                             keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) {
+                        if ($(this).find('input[type="checkbox"]:checked').length) {
+                            if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
+                                if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
+                                    suggestionList.append(keywordHTML);
+                                }
+                            }
+                        } else {
                             suggestionList.append(keywordHTML);
                         }
                     });
@@ -119,9 +125,11 @@ var TCM = TCM || {};
                 }
                 return true;
             }
-        });
-
-        textbox.focus(function() {
+        }).click(function() {
+            if (textbox.hasClass('placeholder')) {
+                removeFakePlaceholder();
+            }
+        }).focus(function() {
             suggestionList.show();
             textbox.data('clicked', false);
             if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
@@ -136,52 +144,51 @@ var TCM = TCM || {};
             }
             removeFakePlaceholder();
             window.setTimeout(hideList, 150);
-        });
+        }).addClass('placeholder').focus();
 
         suggestionList.hover(function() {
             selected = $(this).find('.selected').removeClass('selected');
         }, function() {
             selected.addClass('selected');
-        });
-
-        suggestionList.find('a').live('mousedown', function() {
-            textbox.data('clicked', true);
-        }).live('click', function() {
-            if ($(this).data('class') === 'keyword') {
-                var name = $(this).data('name'),
-                    thisGroup = keywordGroups.filter(function() {
-                        return $(this).data('name') === name;
-                    }),
-                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
-                    index = thisGroup.find('li').length + 1,
-                    newHTML =
-                        '<li>' +
-                            '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
-                            '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
-                        '</li>';
-                if (existingKeyword.length) {
-                    existingKeyword.attr('checked', 'checked');
-                    if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
-                        existingKeyword.data('state', 'changed');
+        }).find('a').live({
+            mousedown: function() {
+                textbox.data('clicked', true);
+            },
+            click: function() {
+                if ($(this).data('class') === 'keyword') {
+                    var name = $(this).data('name'),
+                        thisGroup = keywordGroups.filter(function() {
+                            return $(this).data('name') === name;
+                        }),
+                        existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
+                        index = thisGroup.find('li').length + 1,
+                        newHTML =
+                            '<li>' +
+                                '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
+                                '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
+                            '</li>';
+                    if (existingKeyword.length) {
+                        existingKeyword.attr('checked', 'checked');
+                        if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
+                            existingKeyword.data('state', 'changed');
+                        }
+                    } else {
+                        thisGroup.removeClass('empty').children('ul').append(newHTML);
+                        input = input.add('#id-' + name + '-' + index);
                     }
                 } else {
-                    thisGroup.removeClass('empty').children('ul').append(newHTML);
-                    input = input.add('#id-' + name + '-' + index);
+                    var thisFilter = input.filter('#' + $(this).data('id')).attr('checked', 'checked');
+                    if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
+                        thisFilter.data('state', 'changed');
+                    }
                 }
-            } else {
-                var thisFilter = input.filter('#' + $(this).data('id')).attr('checked', 'checked');
-                if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
-                    thisFilter.data('state', 'changed');
-                }
+                updateButton();
+                textbox.data('clicked', false).val(null);
+                typedText = null;
+                suggestionList.empty().hide();
+                return false;
             }
-            updateButton();
-            textbox.data('clicked', false).val(null);
-            typedText = null;
-            suggestionList.empty().hide();
-            return false;
         });
-
-        textbox.addClass('placeholder').focus();
     };
 
     $(function() {
