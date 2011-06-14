@@ -76,7 +76,13 @@ var TCM = TCM || {};
                         var type = $(this).children('h5').html(),
                             name = $(this).data('name'),
                             keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if (!$(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) {
+                        if ($(this).find('input[type="checkbox"]:checked').length) {
+                            if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
+                                if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
+                                    suggestionList.append(keywordHTML);
+                                }
+                            }
+                        } else {
                             suggestionList.append(keywordHTML);
                         }
                     });
