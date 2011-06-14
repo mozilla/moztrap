@@ -11,7 +11,7 @@
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
-        <li class="{% block run-active-nav %}{% endblock run-active-nav %}">
+        <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
           <a href="{% url runtests %}">Run Tests</a>
           <div class="secondary">
             <ol>
@@ -23,7 +23,7 @@
         </li>
 
         {% if request.user %} {# @@@ more specific perms check? #}
-        <li class="{% block result-active-nav %}{% endblock result-active-nav %}">
+        <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
           <a href="{% url results %}">View Results</a>
           <div class="secondary">
             <ol>
@@ -40,7 +40,7 @@
           </div>
         </li>
 
-        <li class="{% block manage-active-nav %}{% endblock manage-active-nav %}">
+        <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %}">
           <a href="{% url manage %}">Manage</a>
           <div class="secondary">
             <ul>

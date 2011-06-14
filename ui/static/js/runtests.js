@@ -14,9 +14,9 @@ var TCM = TCM || {};
         $(context).find('.colcontent').each(function() {
             $(this).data('originalHTML', $(this).html());
         });
-        $('.testnav .currentrun .breadcrumb').click(function() {
-            if (!$(this).closest('.details').hasClass('open')) {
-                $(this).closest('.summary').click();
+        $('.runtests-nav .secondary .breadcrumb').click(function() {
+            if (!$('.drilldown.details').hasClass('open')) {
+                $('.drilldown.details > .summary').click();
             }
             $(context).find('.colcontent').each(function() {
                 $(this).html($(this).data('originalHTML'));
