@@ -78,12 +78,12 @@ class StaticDataTest(ResourceTestCase):
             ["staticdata-STATUS-1", "staticdata-STATUS-2"])
 
 
-    def test_get_uncached_sets_no_cache_timeout(self, http, cache):
+    def test_get_uncached_sets_staticdata_timeout(self, http, cache):
         self._setup_get_uncached(http, cache)
 
         self.func("STATUS", 1)
 
-        self.assertEqual(cache.set_many.call_args[0][1], 0)
+        self.assertEqual(cache.set_many.call_args[0][1], 1200)
 
 
     def test_get_cached_returns_from_cache(self, http, cache):

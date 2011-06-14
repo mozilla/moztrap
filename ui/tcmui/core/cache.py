@@ -87,6 +87,9 @@ class CachingHttpWrapper(object):
             log.debug("Incremented generation key %r to %r" % (gen_key, val))
         except ValueError:
             val = 1
+            # Cache for twice as long as a regular cache key - ensures that a
+            # cached item from a previous generation can never outlive its
+            # bucket generation key.
             added = cache.add(gen_key, val, conf.TCM_CACHE_SECONDS * 2)
             if not added:
                 # Someone else won the race, so we try again to increment.
