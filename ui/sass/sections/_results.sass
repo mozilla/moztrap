@@ -94,51 +94,43 @@
 #cycleresults
   .completion, .bycompletion
     +columns(1,24)
-  .status, .id, .bystatus
-    +columns(2,24)
   .start, .end, .bystart, .byend
     +columns(3,24)
   .product, .byproduct, .testers
     +columns(4,24)
-  .results
-    +columns(5,24)
   .title, .bytitle
     +columns(6,24)
   .drill
     +columns(22,24)
-  .results, .testers, .drill
+  .testers, .drill
     +omega(24)
 
 #runresults
   .completion, .bycompletion
     +columns(1,24)
-  .status, .id, .bystatus
-    +columns(2,24)
   .product, .byproduct, .testers, .cycle, .bycycle
     +columns(4,24)
-  .results, .time
+  .time
     +columns(5,24)
   .title, .bytitle
     +columns(6,24)
   .drill
     +columns(17,24)
-  .results, .testers, .time
+  .testers, .time
     +omega(24)
 
 #caseresults
   .completion, .bycompletion
     +columns(1,24)
-  .status, .id, .bystatus
-    +columns(2,24)
   .product, .byproduct, .suite, .bysuite
     +columns(3,24)
   .testers
     +columns(4,24)
-  .summary > .results, .title, .bytitle, .run, .byrun
+  .title, .bytitle, .run, .byrun
     +columns(5,24)
   .drill
     +columns(22,24)
-  .summary > .results, .testers, .drill
+  .testers, .drill
     +omega(24)
 
 // Included Case Details -----------------------------------------------------

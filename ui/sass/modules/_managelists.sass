@@ -202,11 +202,33 @@
     +no-style-list
   a
     @extend .sortlinks
+  span
+    display: block
 
-  li:first-child
-    a
-      #{$link}
+  li
+    &:first-child
+      a
+        #{$link}
+          padding-left: $smallem
+      span
         padding-left: $smallem
+    &:last-child
+      text-align: right
+      a
+        #{$link}
+          padding-right: $smallem
+      span
+        padding-right: $smallem
+
+
+.status, .bystatus, .id, .controls, .bycontrols
+  +columns(2,24)
+
+.controls, .bycontrols, .summary > .results, .summary > .byresults
+  +omega(24)
+
+.summary > .results, .summary > .byresults
+  +columns(5,24)
 
 .listnav
   +cond

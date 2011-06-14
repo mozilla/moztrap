@@ -2889,8 +2889,43 @@ thead .controls {
   list-style-type: none;
   margin-left: 0px;
 }
+.listordering span {
+  display: block;
+}
 .listordering li:first-child a:link, .listordering li:first-child a:visited {
   padding-left: 0.618em;
+}
+.listordering li:first-child span {
+  padding-left: 0.618em;
+}
+.listordering li:last-child {
+  text-align: right;
+}
+.listordering li:last-child a:link, .listordering li:last-child a:visited {
+  padding-right: 0.618em;
+}
+.listordering li:last-child span {
+  padding-right: 0.618em;
+}
+
+.status, .bystatus, .id, .controls, .bycontrols {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+}
+
+.controls, .bycontrols, .summary > .results, .summary > .byresults {
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+
+.summary > .results, .summary > .byresults {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
 }
 
 .listnav {
@@ -3673,12 +3708,6 @@ thead .controls {
 }
 
 /* Manage Types -------------------------------------------------------------- */
-#managecycles .status, #managecycles .bystatus, #managecycles .id, #managecycles .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend, #managecycles .testers, #managecycles .product, #managecycles .byproduct {
   display: inline;
   float: left;
@@ -3691,18 +3720,12 @@ thead .controls {
   width: 32.632%;
   margin-right: 1.053%;
 }
-#managecycles .controls, #managecycles .testers {
+#managecycles .testers {
   display: inline;
   float: right;
   margin-right: 0;
 }
 
-#manageruns .status, #manageruns .bystatus, #manageruns .id, #manageruns .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #manageruns .start, #manageruns .end, #manageruns .bystart, #manageruns .byend {
   display: inline;
   float: left;
@@ -3721,46 +3744,24 @@ thead .controls {
   width: 24.211%;
   margin-right: 1.053%;
 }
-#manageruns .controls, #manageruns .suites {
+#manageruns .suites {
   display: inline;
   float: right;
   margin-right: 0;
 }
 
-#managesuites .status, #managesuites .bystatus, #managesuites .id, #managesuites .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managesuites .product, #managesuites .byproduct, #managesuites .title, #managesuites .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
 }
-#managesuites .controls {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
 
-#managecases .status, #managecases .bystatus, #managecases .id, #managecases .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managecases .product, #managecases .byproduct, #managecases .title, #managecases .byline, #managecases .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
-}
-#managecases .controls {
-  display: inline;
-  float: right;
-  margin-right: 0;
 }
 
 /* test nav -------------------------------------------------------------- */
@@ -4658,12 +4659,6 @@ thead .controls {
   width: 3.158%;
   margin-right: 1.053%;
 }
-#cycleresults .status, #cycleresults .id, #cycleresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #cycleresults .start, #cycleresults .end, #cycleresults .bystart, #cycleresults .byend {
   display: inline;
   float: left;
@@ -4674,12 +4669,6 @@ thead .controls {
   display: inline;
   float: left;
   width: 15.789%;
-  margin-right: 1.053%;
-}
-#cycleresults .results {
-  display: inline;
-  float: left;
-  width: 20%;
   margin-right: 1.053%;
 }
 #cycleresults .title, #cycleresults .bytitle {
@@ -4694,7 +4683,7 @@ thead .controls {
   width: 91.579%;
   margin-right: 1.053%;
 }
-#cycleresults .results, #cycleresults .testers, #cycleresults .drill {
+#cycleresults .testers, #cycleresults .drill {
   display: inline;
   float: right;
   margin-right: 0;
@@ -4706,19 +4695,13 @@ thead .controls {
   width: 3.158%;
   margin-right: 1.053%;
 }
-#runresults .status, #runresults .id, #runresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #runresults .product, #runresults .byproduct, #runresults .testers, #runresults .cycle, #runresults .bycycle {
   display: inline;
   float: left;
   width: 15.789%;
   margin-right: 1.053%;
 }
-#runresults .results, #runresults .time {
+#runresults .time {
   display: inline;
   float: left;
   width: 20%;
@@ -4736,7 +4719,7 @@ thead .controls {
   width: 70.526%;
   margin-right: 1.053%;
 }
-#runresults .results, #runresults .testers, #runresults .time {
+#runresults .testers, #runresults .time {
   display: inline;
   float: right;
   margin-right: 0;
@@ -4746,12 +4729,6 @@ thead .controls {
   display: inline;
   float: left;
   width: 3.158%;
-  margin-right: 1.053%;
-}
-#caseresults .status, #caseresults .id, #caseresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
   margin-right: 1.053%;
 }
 #caseresults .product, #caseresults .byproduct, #caseresults .suite, #caseresults .bysuite {
@@ -4766,7 +4743,7 @@ thead .controls {
   width: 15.789%;
   margin-right: 1.053%;
 }
-#caseresults .summary > .results, #caseresults .title, #caseresults .bytitle, #caseresults .run, #caseresults .byrun {
+#caseresults .title, #caseresults .bytitle, #caseresults .run, #caseresults .byrun {
   display: inline;
   float: left;
   width: 20%;
@@ -4778,7 +4755,7 @@ thead .controls {
   width: 91.579%;
   margin-right: 1.053%;
 }
-#caseresults .summary > .results, #caseresults .testers, #caseresults .drill {
+#caseresults .testers, #caseresults .drill {
   display: inline;
   float: right;
   margin-right: 0;
