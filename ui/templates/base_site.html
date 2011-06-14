@@ -43,33 +43,20 @@
         <li class="{% block manage-active-nav %}{% endblock manage-active-nav %}">
           <a href="{% url manage %}">Manage</a>
           <div class="secondary">
-            <ul>
-              <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %}">
-                <a href="#">Users</a> {# @@@ Needs URL #}
+            <ol>
+              <li class="{% block managecycle-active-nav %}{% endblock managecycle-active-nav %}">
+                <a href="{% url manage_testcycles %}">Cycles</a>
               </li>
-              <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %}">
-                <a href="#">Environments</a> {# @@@ Needs URL #}
+              <li class="{% block managerun-active-nav %}{% endblock managerun-active-nav %}">
+                <a href="{% url manage_testruns %}">Runs</a>
               </li>
-              <li>
-                <ol class="tertiary">
-                  <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
-                    <a href="{% url manage_testcycles %}">Products</a>
-                  </li>
-                  <li class="{% block managecycle-active-nav %}{% endblock managecycle-active-nav %}">
-                    <a href="{% url manage_testcycles %}">Cycles</a>
-                  </li>
-                  <li class="{% block managerun-active-nav %}{% endblock managerun-active-nav %}">
-                    <a href="{% url manage_testruns %}">Runs</a>
-                  </li>
-                  <li class="{% block managesuite-active-nav %}{% endblock managesuite-active-nav %}">
-                    <a href="{% url manage_testsuites %}">Suites</a>
-                  </li>
-                  <li class="{% block managecase-active-nav %}{% endblock managecase-active-nav %}">
-                    <a href="{% url manage_testcases %}">Cases</a>
-                  </li>
-                </ol>
+              <li class="{% block managesuite-active-nav %}{% endblock managesuite-active-nav %}">
+                <a href="{% url manage_testsuites %}">Suites</a>
               </li>
-            </ul>
+              <li class="{% block managecase-active-nav %}{% endblock managecase-active-nav %}">
+                <a href="{% url manage_testcases %}">Cases</a>
+              </li>
+            </ol>
           </div>
         </li>
         {% endif %}
