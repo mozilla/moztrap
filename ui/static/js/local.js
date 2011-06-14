@@ -117,10 +117,17 @@ var TCM = TCM || {};
                 }
                 if (event.keyCode === 9) {
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                    if (thisFilterName) {
+                    if (thisFilterName && textbox.val() !== thisFilterName) {
                         event.preventDefault();
                         textbox.val(thisFilterName);
                         return false;
+                    } else {
+                        if (suggestionList.find('.selected').length) {
+                            event.preventDefault();
+                            suggestionList.find('.selected').click();
+                            suggestionList.show();
+                            return false;
+                        }
                     }
                 }
                 return true;
