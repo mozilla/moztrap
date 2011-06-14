@@ -816,6 +816,39 @@ input[type="search"] {
   background-position: 0.5em;
   background-repeat: no-repeat;
 }
+input:focus + .fieldnote {
+  display: block;
+}
+
+.fieldnote {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(75, 101, 100, 0.618) 0 0 0.382em;
+  -webkit-box-shadow: rgba(75, 101, 100, 0.618) 0 0 0.382em;
+  -o-box-shadow: rgba(75, 101, 100, 0.618) 0 0 0.382em;
+  box-shadow: rgba(75, 101, 100, 0.618) 0 0 0.382em;
+  font-weight: 500;
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 0.405em 1.618em;
+  color: rgba(75, 101, 100, 0.618);
+  background: rgba(233, 237, 237, 0.85);
+  z-index: 100;
+}
+.fieldnote::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 1.618em;
+  border: 0.405em solid rgba(233, 237, 237, 0);
+  border-bottom-color: rgba(233, 237, 237, 0.85);
+}
 
 /* Buttons ------------------------------------------------------------------- */
 .form-actions {

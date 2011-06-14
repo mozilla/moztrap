@@ -162,6 +162,29 @@ input
       image: image-url('ui/search.png')
       position: .5em
       repeat: no-repeat
+  &:focus
+    + .fieldnote
+      display: block
+
+.fieldnote
+  +border-radius
+  +box-shadow(rgba($blue-dark,$small) 0 0 $xsmallem)
+  +demi
+  display: none
+  position: absolute
+  top: 100%
+  right: 0
+  padding: rhythm(.25) rhythm(1)
+  color: rgba($blue-dark,$small)
+  background: rgba($blue-hint,.85)
+  z-index: 100
+  &::after
+    content: " "
+    position: absolute
+    bottom: 100%
+    left: rhythm(1)
+    border: rhythm(.25) solid rgba($blue-hint,0)
+    border-bottom-color: rgba($blue-hint,.85)
 
 /* Buttons -------------------------------------------------------------------
 
