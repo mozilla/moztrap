@@ -2,7 +2,7 @@
 
 {% get_environment_selection_form for object.environmentgroups as form %}
 
-<h3>Set your environment</h3>
+<h3 class="sectionhead">Set your environment</h3>
 <form method="POST" action="{{ object.environmentgroups|set_environment_url }}"%}>
   <input type="hidden" name="next" value="{{ next|default:request.path }}">
   {% csrf_token %}
