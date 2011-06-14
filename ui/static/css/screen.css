@@ -2915,17 +2915,17 @@ thead .controls {
   margin-right: 1.053%;
 }
 
-.controls, .bycontrols, .summary > .results, .summary > .byresults {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-
-.summary > .results, .summary > .byresults {
+.summary > .results, .byresults {
   display: inline;
   float: left;
   width: 20%;
   margin-right: 1.053%;
+}
+
+.controls, .bycontrols, .summary > .results, .byresults {
+  display: inline;
+  float: right;
+  margin-right: 0;
 }
 
 .listnav {
