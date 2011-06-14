@@ -5,28 +5,27 @@
 
 #run
   +full(24)
-  +pad(1,1,24)
   .test, .content
-    +full(22)
+    +full(24)
   .test
     +pie-clearfix
   .header
-    +columns(18,22)
+    +columns(20,24)
     +leader(.25)
     +trailer(.25)
     h3
-      +columns(13,18)
+      +columns(13,20)
       +adjust-font-size-to(16px)
       margin: 0
     small
-      +columns(1,18)
+      +columns(1,20)
       +bold
       vertical-align: top
       text-align: right
 
   .status
-    +columns(4,22)
-    +omega(22)
+    +columns(4,24)
+    +omega(24)
     text-align: center
     p
       @extend .allcaps
@@ -59,10 +58,10 @@
     @extend .redbutton
   .invalid, .fail
     +trailer
-    width: columns(4,18)
+    width: columns(4,20)
 
   .steps
-    +pad(3,4,22)
+    +pad(3,4,24)
     +padding-leader
     clear: both
     margin: 0
@@ -88,7 +87,7 @@
       overflow: hidden
 
   .stepfail
-    +full(15)
+    +full(17)
     position: relative
     margin: 0 0 - $base-rhythm-unit*.5
     border-top: $base-rhythm-unit solid rgba($blue-lighter,$xxsmall)
@@ -100,8 +99,8 @@
       position: absolute
       top: - $base-rhythm-unit
       right: 0
-      padding: 0 gutter(15)
-      width: columns(2,15)
+      padding: 0 gutter(17)
+      width: columns(2,17)
       background: $red-light
       color: rgba($light,$small)
       text-align: center
@@ -122,10 +121,10 @@
   .invalidform, .invaliddesc
     +float('left')
     +padding-leader
-    +hpadding(gutter(22))
+    +hpadding(gutter(24))
     +border-bottom-radius(1em)
-    width: columns(15,22) - gutter(22)*2
-    margin-left: columns(3,22) + gutter(22)
+    width: columns(15,24) - gutter(24)*2
+    margin-left: columns(3,24) + gutter(24)
     background: $yellow
 
   .testinvalid
@@ -138,8 +137,8 @@
       position: absolute
       top: 0
       right: 0
-      width: columns(4,22) - gutter(22)*2
-      padding: rhythm(.25) gutter(22)
+      width: columns(4,24) - gutter(24)*2
+      padding: rhythm(.25) gutter(24)
       background: $yellow-light
       color: rgba($yellow-darkest,$small)
       text-align: center

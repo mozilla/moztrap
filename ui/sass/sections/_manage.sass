@@ -2,40 +2,38 @@
 
 #managecycles
   .status, .bystatus, .id, .controls
-    +columns(2,22)
-  .start, .end, .bystart, .byend
-    +columns(3,22)
-  .testers
-    +columns(4,22)
-  .product, .byproduct
-    +columns(4,22)
+    +columns(2,24)
+  .start, .end, .bystart, .byend, .testers, .product, .byproduct
+    +columns(4,24)
   .title, .bytitle
-    +columns(8,22)
+    +columns(8,24)
   .controls, .testers
-    +omega(22)
+    +omega(24)
 
 #manageruns
-  .status, .bystatus, .id, .controls, .start, .end, .bystart, .byend
-    +columns(2,22)
+  .status, .bystatus, .id, .controls
+    +columns(2,24)
+  .start, .end, .bystart, .byend
+    +columns(3,24)
   .cycle, .product, .bycycle, .byproduct, .suites
-    +columns(4,22)
+    +columns(4,24)
   .title, .bytitle
-    +columns(6,22)
+    +columns(6,24)
   .controls, .suites
-    +omega(22)
+    +omega(24)
 
 #managesuites
   .status, .bystatus, .id, .controls
-    +columns(2,22)
+    +columns(2,24)
   .product, .byproduct, .title, .bytitle
-    +columns(9,22)
+    +columns(10,24)
   .controls
-    +omega(22)
+    +omega(24)
 
 #managecases
   .status, .bystatus, .id, .controls
-    +columns(2,22)
+    +columns(2,24)
   .product, .byproduct, .title, .byline, .bytitle
-    +columns(9,22)
+    +columns(10,24)
   .controls
-    +omega(22)
+    +omega(24)

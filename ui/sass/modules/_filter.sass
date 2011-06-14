@@ -42,7 +42,7 @@
   // Textual -----------------------------------------------------------------
 
   .textual
-    +columns(12,21)
+    +columns(12,24)
     +trailer(.5)
     position: relative
     label
@@ -98,7 +98,7 @@
     @extend .groupheader
 
   .toggle
-    +columns(5,21)
+    +columns(6,24)
     +leader(.25)
     +italic
     text-transform: lowercase
@@ -107,7 +107,7 @@
         display: block
 
   .content
-    +full(21)
+    +full(24)
     +adjust-font-size-to(12px,.75)
     +pie-clearfix
 
@@ -160,13 +160,13 @@
     .content
       +trailer(.5,12px)
       .filter-group
-        +columns(3,21)
+        +columns(3,24)
         +trailer(.5)
         &.empty
           display: none
-        &:nth-of-type(7n)
-          +omega(21)
-        &:nth-of-type(7n+1)
+        &:nth-of-type(8n)
+          +omega(24)
+        &:nth-of-type(8n+1)
           clear: left
         +colorwheel(h5)
     .long

@@ -1,80 +1,7 @@
 /* List Pages --------------------------------------------------------------
 
-=navbackground($basic,$active,$field)
-  background: $field
-  a
-    #{$link}
-      background: $basic
-    &::before
-      +background-image(linear-gradient(60deg, rgba($basic,0) 74.5%, $basic 75%, $basic), linear-gradient(-60deg, rgba($basic,0) 74.5%, $basic 75%, $basic))
-    &::after
-      +background-image(linear-gradient(-60deg, rgba($field,0) 64.5%, $field 65%, $field), linear-gradient(60deg, $basic 64.5%, rgba($basic,0) 65%, rgba($basic,0)))
-    &.active
-      #{$link}
-        background: $active
-      &::before
-        +background-image(linear-gradient(60deg, rgba($active,0) 74.5%, $active 75%, $active), linear-gradient(-60deg, rgba($active,0) 74.5%, $active 75%, $active))
-      &::after
-        +background-image(linear-gradient(-60deg, rgba($field,0) 64.5%, $field 65%, $field), linear-gradient(60deg, $active 64.5%, rgba($active,0) 65%, rgba($active,0)))
-
-.subnav
-  +trailer(1.5)
-
-=nav-item-width($c)
-  a
-    #{$link}
-      width: columns($c,24)
-    &::before, &::after
-      width: columns(1,$c) + gutter($c)*2
-
-.nestednav
-  +clearfix
-  +border-radius($xxsmallem)
-  +navbackground(mix(lighten($blue-lightest,2),$blue-hint),$blue-hint,lighten($blue-lightest,2))
-  a
-    #{$link}
-      +columns(2,24)
-      +padding-leader(.25)
-      +padding-trailer(.25)
-      +demi
-      margin-right: columns(1,24) + gutter(24)*2
-      position: relative
-      overflow: visible
-      color: rgba($alt,$small)
-      text-indent: rhythm(1)
-      white-space: nowrap
-      z-index: 10
-    #{$focus}
-      outline: 0
-      color: rgba($accent,$small)
-    &::before, &::after
-      content: "\0020"
-      position: absolute
-      top: 0
-      bottom: 0
-      width: columns(1,2) + gutter(2)*2
-      z-index: -1
-    &::before
-      right: 100%
-    &::after
-      left: 100%
-    &.active
-      #{$link}
-        color: $blue
-      &::before
-        right: 100%
-      &::after
-        left: 100%
-  li:first-child
-    a
-      +border-left-radius($xxsmallem)
-
-  .results &
-    +nav-item-width(3)
-
 #listcontent
   +full(24)
-  +pad(1,1,24)
   position: relative
   .create
     @extend .button
@@ -82,7 +9,7 @@
     +box-sizing(border-box)
     +button-color($green,'ui/plus.png')
     padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
-    max-width: columns(4,22)
+    max-width: columns(4,24)
     background:
       position: $smallpx, left
       repeat: no-repeat
@@ -92,7 +19,7 @@
 
 .managelist
   +cond
-  +full(22)
+  +full(24)
   margin: 0
   button
     +button-reset
@@ -190,14 +117,14 @@
   margin: 0
 
 .envgroup
-  +columns(3,15)
-  &:nth-child(5n)
-    +omega(15)
+  +columns(3,18)
+  &:nth-child(6n)
+    +omega(18)
 
 .envgroups
   +adjust-font-size-to(12px,.75)
-  +columns(15,22)
-  +prefix(2,22)
+  +columns(18,24)
+  +prefix(2,24)
   clear: both
   h4
     +gone
@@ -212,13 +139,13 @@
       list-style-type: disc
   &:last-child
     +reset-column
-    +full(22)
-    +pad(2,2,22)
+    +full(24)
+    +pad(2,1,24)
     clear: both
     .envgroup
-      +columns(3,18)
-      &:nth-child(6n)
-        +omega(18)
+      +columns(3,21)
+      &:nth-child(7n)
+        +omega(21)
 
 .testers, .suites
   +adjust-font-size-to(12px,.75)
@@ -229,8 +156,8 @@
     margin: 0
 
 .description
-  +columns(20,22)
-  +omega(22)
+  +columns(22,24)
+  +omega(24)
 
 .sortlinks
   #{$link}
@@ -276,9 +203,6 @@
   a
     @extend .sortlinks
 
-  .bystatus
-    +columns(2,21)
-
   li:first-child
     a
       #{$link}
@@ -296,9 +220,9 @@
   p, ul
     +reset-box-model
   .location, .perpage
-    +columns(6,22)
+    +columns(6,24)
   .perpage
-    +omega(22)
+    +omega(24)
     text-align: right
   .perpage ul, .pagination
     +inline-block-list
@@ -309,7 +233,7 @@
       + li::before
         content: "| "
   .pagination
-    +columns(10,22)
+    +columns(12,24)
     text-align: center
   .current, strong
     +demi

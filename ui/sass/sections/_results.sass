@@ -93,51 +93,53 @@
 
 #cycleresults
   .completion, .bycompletion
-    +columns(1,22)
-  .status, .id, .start, .end, .bystatus, .bystart, .byend
-    +columns(2,22)
+    +columns(1,24)
+  .status, .id, .bystatus
+    +columns(2,24)
+  .start, .end, .bystart, .byend
+    +columns(3,24)
   .product, .byproduct, .testers
-    +columns(4,22)
+    +columns(4,24)
   .results
-    +columns(5,22)
+    +columns(5,24)
   .title, .bytitle
-    +columns(6,22)
+    +columns(6,24)
   .drill
-    +columns(19,22)
+    +columns(22,24)
   .results, .testers, .drill
-    +omega(22)
+    +omega(24)
 
 #runresults
   .completion, .bycompletion
-    +columns(1,22)
+    +columns(1,24)
   .status, .id, .bystatus
-    +columns(2,22)
+    +columns(2,24)
   .product, .byproduct, .testers, .cycle, .bycycle
-    +columns(4,22)
+    +columns(4,24)
   .results, .time
-    +columns(5,22)
+    +columns(5,24)
   .title, .bytitle
-    +columns(6,22)
+    +columns(6,24)
   .drill
-    +columns(15,22)
+    +columns(17,24)
   .results, .testers, .time
-    +omega(22)
+    +omega(24)
 
 #caseresults
   .completion, .bycompletion
-    +columns(1,22)
-  .status, .id, .bystatus, .suite, .bysuite
-    +columns(2,22)
-  .product, .byproduct
-    +columns(3,22)
-  .testers, .run, .byrun
-    +columns(4,22)
-  .summary > .results, .title, .bytitle
-    +columns(5,22)
+    +columns(1,24)
+  .status, .id, .bystatus
+    +columns(2,24)
+  .product, .byproduct, .suite, .bysuite
+    +columns(3,24)
+  .testers
+    +columns(4,24)
+  .summary > .results, .title, .bytitle, .run, .byrun
+    +columns(5,24)
   .drill
-    +columns(20,22)
+    +columns(22,24)
   .summary > .results, .testers, .drill
-    +omega(22)
+    +omega(24)
 
 // Included Case Details -----------------------------------------------------
 
@@ -153,8 +155,8 @@
 
   .summary
     +clearfix
-    +full(22)
-    +pad(1,1,22)
+    +full(24)
+    +pad(1,1,24)
     +padding-leader(.5)
     +padding-trailer(.5)
     border-color: $mid
@@ -168,9 +170,9 @@
       @extend .resultslist
 
   .content
-    +full(22)
+    +full(24)
     +clearfix
-    +pad(1,1,22)
+    +pad(1,1,24)
     +padding-leader(.5)
     +padding-trailer(.5)
 
@@ -182,16 +184,18 @@
     +italic
 
   .status, .id
-    +columns(2,20)
-  .product, .results
-    +columns(5,20)
+    +columns(2,22)
+  .results
+    +columns(5,22)
+  .product
+    +columns(7,22)
   .run
-    +columns(8,20)
+    +columns(8,22)
   .steps
     +reset-box-model
-    +columns(18,20)
+    +columns(20,22)
   .results, .steps
-    +omega(20)
+    +omega(22)
 
   .run
     +ellipsis
@@ -199,13 +203,13 @@
 #results
   .managelist
     .result, .byresult, .failed-step
-      +columns(2,22)
+      +columns(2,24)
     .tester, .bytester, .approval, .byapproval
-      +columns(4,22)
+      +columns(4,24)
     .envlist, .byenvlist
-      +columns(12)
+      +columns(14,24)
     .approval, .byapproval
-      +omega(22)
+      +omega(24)
 
     .result
       @extend .resulticons
@@ -215,8 +219,8 @@
       +gone
 
   .comment
-    +columns(20,22)
-    +omega(22)
+    +columns(22,24)
+    +omega(24)
 
   .envlist
     +delimited-list(', ')
