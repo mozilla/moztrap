@@ -125,6 +125,10 @@ var TCM = TCM || {};
                 }
                 return true;
             }
+        }).click(function() {
+            if (textbox.hasClass('placeholder')) {
+                removeFakePlaceholder();
+            }
         });
 
         textbox.focus(function() {
