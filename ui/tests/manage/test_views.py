@@ -18,4 +18,4 @@ class DefaultManageViewTest(ViewTestCase):
 
         self.assertEqual(res.status_code, 302)
         self.assertEqual(
-            res["Location"], "/manage/testcycles/")
+            res["Location"], "/manage/testcycles/?finder=1")

@@ -17,7 +17,7 @@ from . import filters
 
 
 def home(request):
-    return redirect(reverse("results_testcycles") + "?status=2")
+    return redirect(reverse("results_testcycles") + "?finder=1&status=2")
 
 
 

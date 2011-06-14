@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
@@ -21,7 +22,7 @@ from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
 def home(request):
-    return redirect("manage_testcycles")
+    return redirect(reverse("manage_testcycles") + "?finder=1")
 
 
 

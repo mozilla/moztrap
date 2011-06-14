@@ -25,7 +25,7 @@ class DefaultResultsViewTest(ViewTestCase):
 
         self.assertEqual(res.status_code, 302)
         self.assertEqual(
-            res["Location"], "/results/testcycles/?status=2")
+            res["Location"], "/results/testcycles/?finder=1&status=2")
 
 
 class ListViewTests(object):
