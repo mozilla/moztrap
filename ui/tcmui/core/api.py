@@ -17,6 +17,7 @@ from remoteobjects.dataobject import classes_by_name
 
 from .cache import CachingHttpWrapper
 from .conf import conf
+from .log.api import log_api_call
 from . import fields
 from . import sort, pagination
 from . import util
@@ -24,7 +25,7 @@ from .. import __version__
 
 
 
-log = logging.getLogger('tcmui.core.api')
+log = logging.getLogger("tcmui.core.api")
 
 
 
@@ -41,9 +42,9 @@ def url_final_integer(url):
 
 class Http(httplib2.Http):
     def request(self, **kwargs):
-        kwargs.setdefault("method", "GET")
-        log.info("%(method)s - %(uri)s" % kwargs)
-        return super(Http, self).request(**kwargs)
+        response, content = super(Http, self).request(**kwargs)
+        log_api_call(kwargs, response, content)
+        return response, content
 
 
 
@@ -323,8 +324,6 @@ class ObjectMixin(StrAndUnicode):
 
         request = self.get_request(**kw)
 
-        log.debug("Sending request %r", request)
-
         http = kw.pop("http", userAgent)
         cache = kw.pop("cache", self.cache)
         if cache:
@@ -341,13 +340,9 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = http.request(**request)
 
-        log.debug("Got response %r" % response)
-
         if update_from_response:
             if not hasattr(update_from_response, "update_from_response"):
                 update_from_response = self
-
-            log.debug("Updating %r instance from response." % update_from_response.__class__)
 
             update_from_response.update_from_response(None, response, content)
         else:
