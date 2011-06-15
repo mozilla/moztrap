@@ -79,3 +79,31 @@ testcasesteps = ListBuilder(
         "expectedResult": "default expected result",
         "estimatedTimeInMin": 3,
         })
+
+
+
+testsuiteincludedtestcases = ListBuilder(
+    "includedtestcase",
+    "includedtestcases",
+    "Includedtestcase",
+    {
+        "blocking": False,
+        "runOrder": 0,
+        "testCaseId": 1,
+        "testCaseLocator": make_locator(id=1, url="testcases/1"),
+        "testCaseVersionId": 1,
+        "testCaseVersionLocator":
+            make_locator(id=1, url="testcases/versions/1"),
+        "testSuiteId": 1,
+        "testSuiteLocator": make_locator(id=1, url="testsuites/1"),
+        # @@@ these values are not used
+        "testCycleId": make_boolean(None),
+        "testCycleLocator": make_boolean(None),
+        "testRunId": make_boolean(None),
+        "testRunLocator": make_boolean(None),
+        # @@@ below values probably indicate a platform bug
+        "companyId": make_boolean(None),
+        "companyLocator": make_boolean(None),
+        "productId": make_boolean(None),
+        "productLocator": make_boolean(None),
+        })

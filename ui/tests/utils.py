@@ -3,10 +3,12 @@ from functools import partial
 import urlparse
 
 from django.core.cache import get_cache
+from django.core.handlers.wsgi import WSGIHandler
 from django.test.signals import template_rendered
 from django.test.client import RequestFactory, store_rendered_templates
 from mock import patch
 from unittest2 import TestCase
+from webtest import TestApp
 
 from .builder import ListBuilder
 from .core.builders import companies
@@ -58,6 +60,8 @@ COMMON_RESPONSES = {
             resourceIdentity=make_identity(id=1, url="companies/1"))),
     "http://fake.base/rest/users?_type=json":
         response(users.searchresult({})),
+    "http://fake.base/rest/users/current?_type=json":
+        response(users.one()),
     "http://fake.base/rest/products?_type=json":
         response(products.searchresult({})),
     "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json":
@@ -142,6 +146,7 @@ class AuthTestCase(TestCase):
         from tcmui.users.models import User
         creds = UserCredentials(email, password=password, cookie=cookie)
         creds._user = User(email=email)
+        creds._user.auth = creds
         creds._permission_codes = []
         return creds
 
@@ -169,19 +174,30 @@ class ViewTestCase(AuthTestCase):
         self.addCleanup(template_rendered.disconnect, on_template_render)
 
 
-    def setup_responses(self, http, response_dict):
+    def setup_responses(self, http, response_dict=None, user=None):
+        if user is None:
+            user = self.auth.user
+        if response_dict is None:
+            response_dict = {}
+        else:
+            response_dict = response_dict.copy()
+        response_dict.setdefault(
+            "http://fake.base/rest/users/current?_type=json",
+            response(
+                users.one(
+                    email=user.email,
+                    firstName=user.firstName,
+                    lastName=user.lastName,
+                    screenName=user.screenName
+                    )
+                )
+            )
         setup_common_responses(http, response_dict)
 
 
     @property
-    def view(self):
-        raise NotImplementedError
-
-
-    def get(self, *args, **kwargs):
-        req = self.factory.get(*args, **kwargs)
-        req.auth = self.auth
-        return self.view(req)
+    def app(self):
+        return TestApp(WSGIHandler())
 
 
 

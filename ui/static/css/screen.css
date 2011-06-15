@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -368,11 +368,11 @@ h2 {
 }
 
 h3, h4, h5, h6 {
-  margin-bottom: 1.618em;
+  font-weight: 500;
 }
 
-h3, h4, h5, h6 {
-  font-weight: 500;
+.sectionhead {
+  font-weight: normal;
 }
 
 /* Inline -------------------------------------------------------------- */
@@ -1978,7 +1978,7 @@ thead .controls {
 .finder + .nestednav {
   display: none;
 }
-.finder h3, .finder h4, .finder h5, .finder p {
+.finder p {
   margin-bottom: 0;
 }
 .finder[data-cols="4"] .carousel {
@@ -2416,7 +2416,7 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
-.managelist .summary p, .managelist .summary h3, .managelist .summary h4 {
+.managelist .summary p {
   margin-bottom: 0;
 }
 .managelist .details .summary:focus, .managelist .details .summary:hover, .managelist .details .summary:active {
@@ -2882,8 +2882,43 @@ thead .controls {
   list-style-type: none;
   margin-left: 0px;
 }
+.listordering span {
+  display: block;
+}
 .listordering li:first-child a:link, .listordering li:first-child a:visited {
   padding-left: 0.618em;
+}
+.listordering li:first-child span {
+  padding-left: 0.618em;
+}
+.listordering li:last-child {
+  text-align: right;
+}
+.listordering li:last-child a:link, .listordering li:last-child a:visited {
+  padding-right: 0.618em;
+}
+.listordering li:last-child span {
+  padding-right: 0.618em;
+}
+
+.status, .bystatus, .id, .controls, .bycontrols {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+}
+
+.summary > .results, .byresults {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
+}
+
+.controls, .bycontrols, .summary > .results, .byresults {
+  display: inline;
+  float: right;
+  margin-right: 0;
 }
 
 .listnav {
@@ -3155,7 +3190,6 @@ thead .controls {
 .addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
-  margin: 0;
 }
 .addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul {
   list-style: none;
@@ -3234,7 +3268,6 @@ thead .controls {
 .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4 {
   padding-left: 1.5em;
   padding-right: 1.5em;
-  margin: 0;
   color: #eeeeee;
   background: #528684;
   font-weight: normal;
@@ -3434,7 +3467,6 @@ thead .controls {
 .mainselect h3, .suiteselect h3, .caseselect h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
-  margin: 0;
   text-transform: capitalize;
 }
 .mainselect > div, .suiteselect > div, .caseselect > div {
@@ -3669,12 +3701,6 @@ thead .controls {
 }
 
 /* Manage Types -------------------------------------------------------------- */
-#managecycles .status, #managecycles .bystatus, #managecycles .id, #managecycles .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend, #managecycles .testers, #managecycles .product, #managecycles .byproduct {
   display: inline;
   float: left;
@@ -3687,18 +3713,12 @@ thead .controls {
   width: 32.632%;
   margin-right: 1.053%;
 }
-#managecycles .controls, #managecycles .testers {
+#managecycles .testers {
   display: inline;
   float: right;
   margin-right: 0;
 }
 
-#manageruns .status, #manageruns .bystatus, #manageruns .id, #manageruns .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #manageruns .start, #manageruns .end, #manageruns .bystart, #manageruns .byend {
   display: inline;
   float: left;
@@ -3717,46 +3737,24 @@ thead .controls {
   width: 24.211%;
   margin-right: 1.053%;
 }
-#manageruns .controls, #manageruns .suites {
+#manageruns .suites {
   display: inline;
   float: right;
   margin-right: 0;
 }
 
-#managesuites .status, #managesuites .bystatus, #managesuites .id, #managesuites .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managesuites .product, #managesuites .byproduct, #managesuites .title, #managesuites .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
 }
-#managesuites .controls {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
 
-#managecases .status, #managecases .bystatus, #managecases .id, #managecases .controls {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #managecases .product, #managecases .byproduct, #managecases .title, #managecases .byline, #managecases .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
-}
-#managecases .controls {
-  display: inline;
-  float: right;
-  margin-right: 0;
 }
 
 /* test nav -------------------------------------------------------------- */
@@ -3793,7 +3791,6 @@ thead .controls {
   margin-right: 1.266%;
   font-size: 1.143em;
   line-height: 1.416em;
-  margin: 0;
 }
 #run .header small {
   display: inline;
@@ -4130,6 +4127,11 @@ thead .controls {
   background-position: 0.25em;
   padding: 0 0.25em 0 19px;
   text-align: left;
+}
+.resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  opacity: 0.5;
+  background-color: #aac0bf;
 }
 
 .resultslist, .managelist .results, .case-details .summary .results {
@@ -4655,12 +4657,6 @@ thead .controls {
   width: 3.158%;
   margin-right: 1.053%;
 }
-#cycleresults .status, #cycleresults .id, #cycleresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #cycleresults .start, #cycleresults .end, #cycleresults .bystart, #cycleresults .byend {
   display: inline;
   float: left;
@@ -4671,12 +4667,6 @@ thead .controls {
   display: inline;
   float: left;
   width: 15.789%;
-  margin-right: 1.053%;
-}
-#cycleresults .results {
-  display: inline;
-  float: left;
-  width: 20%;
   margin-right: 1.053%;
 }
 #cycleresults .title, #cycleresults .bytitle {
@@ -4691,7 +4681,7 @@ thead .controls {
   width: 91.579%;
   margin-right: 1.053%;
 }
-#cycleresults .results, #cycleresults .testers, #cycleresults .drill {
+#cycleresults .testers, #cycleresults .drill {
   display: inline;
   float: right;
   margin-right: 0;
@@ -4703,19 +4693,13 @@ thead .controls {
   width: 3.158%;
   margin-right: 1.053%;
 }
-#runresults .status, #runresults .id, #runresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
-}
 #runresults .product, #runresults .byproduct, #runresults .testers, #runresults .cycle, #runresults .bycycle {
   display: inline;
   float: left;
   width: 15.789%;
   margin-right: 1.053%;
 }
-#runresults .results, #runresults .time {
+#runresults .time {
   display: inline;
   float: left;
   width: 20%;
@@ -4733,7 +4717,7 @@ thead .controls {
   width: 70.526%;
   margin-right: 1.053%;
 }
-#runresults .results, #runresults .testers, #runresults .time {
+#runresults .testers, #runresults .time {
   display: inline;
   float: right;
   margin-right: 0;
@@ -4743,12 +4727,6 @@ thead .controls {
   display: inline;
   float: left;
   width: 3.158%;
-  margin-right: 1.053%;
-}
-#caseresults .status, #caseresults .id, #caseresults .bystatus {
-  display: inline;
-  float: left;
-  width: 7.368%;
   margin-right: 1.053%;
 }
 #caseresults .product, #caseresults .byproduct, #caseresults .suite, #caseresults .bysuite {
@@ -4763,7 +4741,7 @@ thead .controls {
   width: 15.789%;
   margin-right: 1.053%;
 }
-#caseresults .summary > .results, #caseresults .title, #caseresults .bytitle, #caseresults .run, #caseresults .byrun {
+#caseresults .title, #caseresults .bytitle, #caseresults .run, #caseresults .byrun {
   display: inline;
   float: left;
   width: 20%;
@@ -4775,7 +4753,7 @@ thead .controls {
   width: 91.579%;
   margin-right: 1.053%;
 }
-#caseresults .summary > .results, #caseresults .testers, #caseresults .drill {
+#caseresults .testers, #caseresults .drill {
   display: inline;
   float: right;
   margin-right: 0;
