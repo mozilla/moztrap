@@ -5,6 +5,7 @@ import zlib
 from django.core.cache import cache
 
 from .conf import conf
+from .log.api import log_api_call
 
 
 
@@ -66,7 +67,7 @@ class CachingHttpWrapper(object):
         self.buckets = list(buckets)
         self.dependent_buckets = list(dependent_buckets or [])
         log.debug(
-            "Instantiated CachingHttpWrapper for buckers %r and dependents %r"
+            "Instantiated CachingHttpWrapper for buckets %r and dependents %r"
             % (self.buckets, self.dependent_buckets))
 
 
@@ -110,7 +111,7 @@ class CachingHttpWrapper(object):
 
 
     def request(self, **kwargs):
-        method = kwargs.get("method", "GET").upper()
+        method = kwargs.setdefault("method", "GET").upper()
         cache_keys = []
 
         if method == "GET":
@@ -133,6 +134,7 @@ class CachingHttpWrapper(object):
                         # cached response.
                         if permset.issubset(self.permissions):
                             log.debug("Found acceptable permset, returning.")
+                            log_api_call(kwargs, response, content, cache_key)
                             return (response, content)
 
                         # no need to include a permset that's a superset of our

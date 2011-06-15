@@ -1,22 +1,5 @@
 /* Finder --------------------------------------------------------------------
 
-.findertoggle
-  +opacity(.65)
-  +border-bottom-left-radius($smallem)
-  +replace-text-with-dimensions('ui/minus.png')
-  position: absolute
-  right: side-gutter()
-  padding: rhythm(.25)
-  background-color: $yellow
-  z-index: 10
-  #{$focus}
-    +opacity(.85)
-  &.compact
-    +border-radius($xxsmallem)
-    background-image: image-url('ui/plus.png')
-    background-color: rgba($green,$small)
-    height: rhythm(1)
-
 .widefinder
   overflow-y: hidden
   overflow-x: scroll
@@ -26,11 +9,8 @@
   clear: both
   overflow: visible
   position: relative
-
   border: 1px solid rgba($blue-light,$small)
   background: $blue-hint
-  + .nestednav
-    display: none
 
   p
     margin-bottom: 0
@@ -45,11 +25,8 @@
     +transition(width,300ms)
     +float(left)
     position: relative
-    top: 0
-    bottom: 0
-    left: 0
     width: 25%
-    height: rhythm(14)
+    min-height: rhythm(10)
     &:last-child
       +float(right)
     &.focus

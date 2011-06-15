@@ -1915,45 +1915,6 @@ thead .controls {
 }
 
 /* Finder -------------------------------------------------------------------- */
-.findertoggle {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=65)";
-  opacity: 0.65;
-  -moz-border-radius-bottomleft: 0.618em;
-  -webkit-border-bottom-left-radius: 0.618em;
-  -o-border-bottom-left-radius: 0.618em;
-  -ms-border-bottom-left-radius: 0.618em;
-  -khtml-border-bottom-left-radius: 0.618em;
-  border-bottom-left-radius: 0.618em;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  background-image: url('../images/ui/minus.png?1299109938');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  width: 16px;
-  height: 16px;
-  position: absolute;
-  right: 2.02%;
-  padding: 0.405em;
-  background-color: #fee58c;
-  z-index: 10;
-}
-.findertoggle:focus, .findertoggle:hover, .findertoggle:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
-  opacity: 0.85;
-}
-.findertoggle.compact {
-  -moz-border-radius: 0.236em;
-  -webkit-border-radius: 0.236em;
-  -o-border-radius: 0.236em;
-  -ms-border-radius: 0.236em;
-  -khtml-border-radius: 0.236em;
-  border-radius: 0.236em;
-  background-image: url('../images/ui/plus.png?1299181696');
-  background-color: rgba(119, 185, 41, 0.618);
-  height: 1.618em;
-}
-
 .widefinder, .finder[data-cols="4"], .finder[data-cols="5"], .finder[data-cols="6"], .finder[data-cols="7"], .finder[data-cols="8"], .finder[data-cols="9"], .finder[data-cols="10"] {
   overflow-y: hidden;
   overflow-x: scroll;
@@ -1974,9 +1935,6 @@ thead .controls {
   clear: both;
   overflow: hidden;
   visibility: hidden;
-}
-.finder + .nestednav {
-  display: none;
 }
 .finder p {
   margin-bottom: 0;
@@ -2014,11 +1972,8 @@ thead .controls {
   display: inline;
   float: left;
   position: relative;
-  top: 0;
-  bottom: 0;
-  left: 0;
   width: 25%;
-  height: 22.652em;
+  min-height: 16.18em;
 }
 .finder .col:last-child {
   display: inline;
