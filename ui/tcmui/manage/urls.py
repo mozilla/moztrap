@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, url
-
+from django.views.generic.simple import direct_to_template
 
 
 urlpatterns = patterns(
@@ -25,5 +25,10 @@ urlpatterns = patterns(
     url("^testcases/$", "testcases", name="manage_testcases"),
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
+
+    # environments (wireframed)
+    url(r"^environments/$", direct_to_template,
+        {"template": "manage/environment/profiles.html"}),
+
 )
 

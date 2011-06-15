@@ -2281,7 +2281,7 @@ thead .controls {
   color: #999999;
 }
 
-/* environment -------------------------------------------------------------- */
+/* environment select -------------------------------------------------------------- */
 .environment {
   clear: both;
 }
@@ -3700,7 +3700,7 @@ thead .controls {
   padding-bottom: 0.405em;
 }
 
-/* Manage Types -------------------------------------------------------------- */
+/* Manage Tests -------------------------------------------------------------- */
 #managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend, #managecycles .testers, #managecycles .product, #managecycles .byproduct {
   display: inline;
   float: left;
@@ -3755,6 +3755,36 @@ thead .controls {
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
+}
+
+/* Manage Environments -------------------------------------------------------------- */
+#manageprofiles .controls, #manageprofiles .bycontrols {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+  text-align: left;
+}
+#manageprofiles .title, #manageprofiles .bytitle {
+  display: inline;
+  float: left;
+  width: 91.579%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: left;
+}
+#manageprofiles .item {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  opacity: 0.75;
+}
+#manageprofiles .item:hover {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+#manageprofiles .title a:focus::after, #manageprofiles .title a:hover::after, #manageprofiles .title a:active::after {
+  content: " »";
 }
 
 /* test nav -------------------------------------------------------------- */

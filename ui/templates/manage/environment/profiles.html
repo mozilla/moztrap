@@ -1,0 +1,43 @@
+{% extends 'manage/environment/base.html' %}
+
+{% block listcontent %}
+<section id="manageprofiles">
+  <h2>Manage Environment Profiles</h2>
+
+  <a href="#" class="create">create a profile</a>
+
+  {% include "lists/_filter.html" %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="managelist">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="bycontrols">
+            <span>controls</span>
+          </li>
+          <li class="bytitle">
+            <a href="#">name</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="items">
+
+        {% include "manage/environment/_profile_list_item.html" with id="01" %}
+        {% include "manage/environment/_profile_list_item.html" with id="02" %}
+        {% include "manage/environment/_profile_list_item.html" with id="03" %}
+        {% include "manage/environment/_profile_list_item.html" with id="04" %}
+        {% include "manage/environment/_profile_list_item.html" with id="05" %}
+        {% include "manage/environment/_profile_list_item.html" with id="06" %}
+
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
+
+  </form>
+</section>
+{% endblock listcontent %}

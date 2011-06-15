@@ -1,4 +1,4 @@
-/* Manage Types --------------------------------------------------------------
+/* Manage Tests --------------------------------------------------------------
 
 #managecycles
   .start, .end, .bystart, .byend, .testers, .product, .byproduct
@@ -25,3 +25,25 @@
 #managecases
   .product, .byproduct, .title, .byline, .bytitle
     +columns(10,24)
+
+/* Manage Environments --------------------------------------------------------------
+
+#manageprofiles
+  .controls, .bycontrols
+    +columns(2,24)
+    text-align: left
+  .title, .bytitle
+    +columns(22,24)
+    +omega(24)
+    text-align: left
+
+  .item
+    +opacity(.75)
+    &:hover
+      +opacity(1)
+
+  .title
+    a
+      #{$focus}
+        &::after
+          content: " »"
