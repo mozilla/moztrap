@@ -34,10 +34,4 @@ urlpatterns = patterns(
 
     # results
     url("^results/", include("tcmui.results.urls")),
-
-    # a sandbox for eric to work on design ideas
-    url(r"^wire/design/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "design.html"}),
-
 )
