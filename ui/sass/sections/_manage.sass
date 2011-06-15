@@ -29,12 +29,17 @@
 /* Manage Environments --------------------------------------------------------------
 
 #manageprofiles
-  .controls, .bycontrols
-    +columns(2,24)
+  .bycontrols
+    +gone
+  .controls
+    +columns(1,24)
     text-align: left
-  .title, .bytitle
-    +columns(22,24)
+  .title
+    +columns(23,24)
     +omega(24)
+
+  .bytitle
+    padding-left: rhythm(.25)
     text-align: left
 
   .item
@@ -44,6 +49,8 @@
 
   .title
     a
+      #{$link}
+        display: block
       #{$focus}
         &::after
           content: " »"

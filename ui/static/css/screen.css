@@ -3713,21 +3713,34 @@ thead .controls {
 }
 
 /* Manage Environments -------------------------------------------------------------- */
-#manageprofiles .controls, #manageprofiles .bycontrols {
+#manageprofiles .bycontrols {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#manageprofiles .controls {
   display: inline;
   float: left;
-  width: 7.368%;
+  width: 3.158%;
   margin-right: 1.053%;
   text-align: left;
 }
-#manageprofiles .title, #manageprofiles .bytitle {
+#manageprofiles .title {
   display: inline;
   float: left;
-  width: 91.579%;
+  width: 95.789%;
   margin-right: 1.053%;
   display: inline;
   float: right;
   margin-right: 0;
+}
+#manageprofiles .bytitle {
+  padding-left: 0.405em;
   text-align: left;
 }
 #manageprofiles .item {
@@ -3737,6 +3750,9 @@ thead .controls {
 #manageprofiles .item:hover {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
+}
+#manageprofiles .title a:link, #manageprofiles .title a:visited {
+  display: block;
 }
 #manageprofiles .title a:focus::after, #manageprofiles .title a:hover::after, #manageprofiles .title a:active::after {
   content: " »";
