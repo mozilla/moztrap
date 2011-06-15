@@ -153,7 +153,7 @@ def edit_testrun(request, run_id):
         instance=run,
         test_cycle_choices=[run.testCycle],
         suites_choices=TestSuiteList.ours(auth=request.auth).filter(
-            product=run.testCycle.product.id),
+            product=run.product),
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
