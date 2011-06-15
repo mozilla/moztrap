@@ -9,7 +9,7 @@ from ..core.filters import KeywordFilter
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
-from ..static.status import TestCaseStatus
+from ..static.status import TestCaseStatus, TestSuiteStatus
 from ..testexecution.filters import TestCycleFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..testcases.models import TestSuiteList, TestCaseVersionList
@@ -153,7 +153,7 @@ def edit_testrun(request, run_id):
         instance=run,
         test_cycle_choices=[run.testCycle],
         suites_choices=TestSuiteList.ours(auth=request.auth).filter(
-            product=run.product),
+            product=run.product, status=TestSuiteStatus.ACTIVE),
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():

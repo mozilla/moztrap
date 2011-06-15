@@ -115,7 +115,7 @@ class TestRunEditViewTest(ViewTestCase, EditViewTests):
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/testsuites/?_type=json&productId=1":
+            "http://fake.base/rest/testsuites/?_type=json&testSuiteStatusId=2&productId=1":
                 response(testsuites.searchresult({})),
             "http://fake.base/rest/testcycles/1/environmentgroups?_type=json":
                 response(environmentgroups.array({})),
