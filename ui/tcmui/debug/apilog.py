@@ -76,7 +76,8 @@ class APILogHTMLFormatter(Formatter):
             "debug/apilog/_uirequest.html",
             {
                 "time": self.formatTime(record),
-                "message": record.getMessage(),
+                "method": request.method,
+                "uri": request.get_full_path(),
                 "headers": request.META,
                 "body": request.raw_post_data,
             })
