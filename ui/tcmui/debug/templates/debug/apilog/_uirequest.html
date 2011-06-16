@@ -6,16 +6,14 @@
       <span class="uri" title="{{ uri }}">{{ uri }}</span>
     </div>
   </summary>
-  {% if request_headers.iteritems %}
   <details class="headers">
     <summary>META</summary>
     <dl class="headers">
-      {% for header, value in request_headers.iteritems %}
+      {% for header, value in headers.iteritems %}
       <dt>{{ header }}</dt><dd>{{ value }}</dd>
       {% endfor %}
     </dl>
   </details>
-  {% endif %}
   {% if body %}
   <pre class="content">{{ body }}</pre>
   {% endif %}

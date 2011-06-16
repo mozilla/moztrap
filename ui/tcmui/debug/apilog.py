@@ -97,7 +97,10 @@ class APILogHTMLFormatter(Formatter):
 
     def _format_body(self, content, content_type):
         if content_type.endswith("json"):
-            return json.dumps(json.loads(content), indent=4)
+            try:
+                return json.dumps(json.loads(content), indent=4)
+            except ValueError:
+                pass
         return content
 
 
