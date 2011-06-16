@@ -1,5 +1,11 @@
 <details class="ui request">
-  <summary>{{ message }}</summary>
+  <summary>
+    <div id="wrap">
+      <time>{{ time }}</time>
+      <span class="method">{{ method }}</span>
+      <span class="uri" title="{{ uri }}">{{ uri }}</span>
+    </div>
+  </summary>
   <details class="headers">
     <summary>META</summary>
     <dl class="headers">
