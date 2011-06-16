@@ -15,8 +15,10 @@ log = logging.getLogger("tcmui.core.log.api")
 handler = MemoryHandler(capacity=conf.TCM_DEBUG_API_LOG_RECORDS)
 
 if conf.TCM_DEBUG_API_LOG:
+    log.setLevel(logging.DEBUG)
     log.addHandler(handler)
     ui_req_log = logging.getLogger("tcmui.core.middleware.RequestLogMiddleware")
+    ui_req_log.setLevel(logging.DEBUG)
     ui_req_log.addHandler(handler)
 
 
