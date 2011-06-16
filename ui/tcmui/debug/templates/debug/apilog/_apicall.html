@@ -1,8 +1,9 @@
 <details class="apicall {% if cachekey %}cached{% endif %}">
   <summary>
     <div class="wrap">
+      <time>{{ time }}</time>
       <span class="method">{{ method }}</span>
-      <span class="uri">{{ uri }}</span>
+      <span class="uri" title="{{ uri }}">{{ uri }}</span>
       <span class="status_code">{{ status_code }}</span>
       <span class="status">{{ status }}</span>
     </div>

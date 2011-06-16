@@ -132,3 +132,7 @@ dd {
   float: left;
   width: 75%;
 }
+
+time {
+  float: right;
+}

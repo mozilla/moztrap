@@ -37,6 +37,14 @@ class APILogHTMLFormatter(Formatter):
         return self.format_other(record)
 
 
+    def formatTime(self, record, datefmt=None):
+        if datefmt is None:
+            datefmt = "%H:%M:%S"
+        ret = Formatter.formatTime(self, record, datefmt)
+        ret = "%s.%03d" % (ret, record.msecs)
+        return ret
+
+
     def format_apicall(self, record):
         cachekey = record.args.get("cache_key") or ""
         request = record.args["request"]
@@ -46,6 +54,7 @@ class APILogHTMLFormatter(Formatter):
         return render_to_string(
             "debug/apilog/_apicall.html",
             {
+                "time": self.formatTime(record),
                 "cachekey": cachekey,
                 "method": record.args["method"],
                 "uri": record.args["uri"],
@@ -66,6 +75,7 @@ class APILogHTMLFormatter(Formatter):
         return render_to_string(
             "debug/apilog/_uirequest.html",
             {
+                "time": self.formatTime(record),
                 "message": record.getMessage(),
                 "headers": request.META,
                 "body": request.raw_post_data,
@@ -74,7 +84,12 @@ class APILogHTMLFormatter(Formatter):
 
     def format_other(self, record):
         return render_to_string(
-            "debug/apilog/_other.html", {"message": record.getMessage()})
+            "debug/apilog/_other.html",
+            {
+                "time": self.formatTime(record),
+                "message": record.getMessage()
+                }
+            )
 
 
     def _format_body(self, content, content_type):
