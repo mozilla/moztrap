@@ -1,11 +1,12 @@
 <details class="ui request">
   <summary>
-    <div id="wrap">
+    <div class="wrap">
       <time>{{ time }}</time>
       <span class="method">{{ method }}</span>
       <span class="uri" title="{{ uri }}">{{ uri }}</span>
     </div>
   </summary>
+  {% if request_headers.iteritems %}
   <details class="headers">
     <summary>META</summary>
     <dl class="headers">
@@ -14,5 +15,8 @@
       {% endfor %}
     </dl>
   </details>
+  {% endif %}
+  {% if body %}
   <pre class="content">{{ body }}</pre>
+  {% endif %}
 </details>

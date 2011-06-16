@@ -1,8 +1,7 @@
-
 body {
   padding: 1.5em;
   margin: 0;
-  font: 87.5%/1.5em sans-serif;
+  font: 75%/1.5em sans-serif;
   color: #000;
 }
 
@@ -12,7 +11,9 @@ dl, dd, dt, p {
 }
 
 summary {
+  position: relative;
   display: block;
+  height: 1.5em;
 }
 
 body > details > summary {
@@ -62,8 +63,19 @@ summary:hover, summary:focus {
 }
 
 .wrap {
-  float: right;
+  position: absolute;
+  right: 0;
+  top: .5em;
   width: 98%;
+}
+
+.wrap > * {
+  overflow: hidden;
+  max-height: 1.5em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 
 .method, .status_code, .status, .uri {
@@ -79,7 +91,14 @@ summary:hover, summary:focus {
 }
 
 .uri {
-  width: 75%;
+  width: 65%;
+}
+
+time {
+  float: right;
+  width: 9.5%;
+  padding-right: .5%;
+  text-align: right;
 }
 
 .status_code {
@@ -93,23 +112,22 @@ summary:hover, summary:focus {
   color: hsl(240,50%,60%);
 }
 
-body > details > *:not(summary) {
-  padding-left: 7.8%;
+body > details > :not(summary) {
+  padding-left: 7.5%;
   color: #444;
 }
 
-body > details > *:last-child {
+body > details > :last-child:not(summary) {
   margin-bottom: .5em;
 }
 
 .cachekey {
   position: relative;
-  top: -.58em;
   font-size: .857em;
   color: hsla(0,0%,50%,.5);
 }
 
-details > details > *:not(summary) {
+details > details > :not(summary) {
   padding-left: 2%;
 }
 
@@ -131,8 +149,4 @@ dt::after {
 dd {
   float: left;
   width: 75%;
-}
-
-time {
-  float: right;
 }
