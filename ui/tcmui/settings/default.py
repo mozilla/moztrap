@@ -13,3 +13,5 @@ COMPRESS_URL = STATIC_URL
 
 if DEBUG:
     MIDDLEWARE_CLASSES.insert(0, "tcmui.core.middleware.RequestLogMiddleware")
+    INSTALLED_APPS += ["tcmui.debug"]
+    TCM_DEBUG_API_LOG = True

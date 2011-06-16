@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+
+  <title>API Log Viewer | Mozilla TCM</title>
+
+  <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" />
+
+  <link rel="stylesheet" href="{{ STATIC_URL }}debug/apilog.css">
+
+</head>
+
+<body>
+
+{% include "debug/apilog/_records.html" %}
+
+<script src="{{ STATIC_URL }}js/jquery-1.5.2.js"></script>
+<script src="{{ STATIC_URL }}debug/apilog.js"></script>
+
+</body>
+</html>

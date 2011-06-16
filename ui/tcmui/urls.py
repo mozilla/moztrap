@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, url, include
+from django.conf import settings
 
 
 
@@ -41,3 +42,8 @@ urlpatterns = patterns(
         {"template": "design.html"}),
 
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns(
+        "",
+        url("^debug/", include("tcmui.debug.urls")))

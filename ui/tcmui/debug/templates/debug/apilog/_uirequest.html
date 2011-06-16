@@ -1,0 +1,12 @@
+<details class="ui request">
+  <summary>{{ message }}</summary>
+  <details class="headers">
+    <summary>META</summary>
+    <dl class="headers">
+      {% for header, value in request_headers.iteritems %}
+      <dt>{{ header }}</dt><dd>{{ value }}</dd>
+      {% endfor %}
+    </dl>
+  </details>
+  <pre class="content">{{ body }}</pre>
+</details>
