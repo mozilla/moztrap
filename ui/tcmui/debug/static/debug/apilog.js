@@ -1,11 +1,13 @@
 (function($) {
      var getMore = function() {
-         var last = parseInt($("input[name=count]").last().val()) + 1,
+         var last = parseInt($("input[name=count]").last().val()),
          qs = window.location.search ? window.location.search + "&" : "?",
-         url = window.location.pathname + qs + "start=" + last;
-         $.get(url, function(data) {
-                   $("body").append(data);
-               });
+         url = window.location.pathname + qs + "last=" + last;
+         if (last) {
+             $.get(url, function(data) {
+                       $("body").append(data);
+                   });
+         }
      };
 
      $(window).scroll(

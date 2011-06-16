@@ -1,8 +1,8 @@
 import httplib
+from itertools import ifilter
 import json
-
 import logging
-from logging import Formatter
+from logging import Formatter, Filter
 from logging.handlers import MemoryHandler
 
 from django.template.loader import render_to_string
@@ -14,17 +14,37 @@ log = logging.getLogger("tcmui.core.log.api")
 
 handler = MemoryHandler(capacity=conf.TCM_DEBUG_API_LOG_RECORDS)
 
+
+
+class NoDebugFilter(Filter):
+    def filter(self, record):
+        if record.args.get("url", "").startswith("/debug/"):
+            return False
+        return True
+
+
+
 if conf.TCM_DEBUG_API_LOG:
     log.setLevel(logging.DEBUG)
     log.addHandler(handler)
     ui_req_log = logging.getLogger("tcmui.core.middleware.RequestLogMiddleware")
     ui_req_log.setLevel(logging.DEBUG)
+    ui_req_log.addFilter(NoDebugFilter())
     ui_req_log.addHandler(handler)
 
 
 
 def get_records():
-    return reversed(handler.buffer)
+    """
+    Yields records, beginning with most recent, enumerated in reverse order
+    from ``len(handler.buffer) - 1`` to ``0``.
+
+    """
+    total = len(handler.buffer)
+    return (
+        (total - (i + 1), r) for i, r in
+        enumerate(reversed(handler.buffer))
+        )
 
 
 
