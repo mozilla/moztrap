@@ -1,5 +1,5 @@
 """
-This package contains logging helpers aimed at easing debugging of TCM platform API calls.
+Debug helpers, including apilog view.
 
 To log details of all UI requests and platform API calls to an HTML file (in
 this example, "/home/carljm/projects/mozilla/logs/apilog.html"), use a logging
@@ -9,7 +9,7 @@ config in your ``settings/local.py`` similar to this::
         "version": 1,
         "formatters": {
             "html": {
-                "()": "tcmui.core.log.formatters.HTMLRequestFormatter"
+                "()": "tcmui.debug.apilog.APILogHTMLFormatter"
                 }
             },
         "handlers": {

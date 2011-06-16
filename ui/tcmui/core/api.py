@@ -17,7 +17,7 @@ from remoteobjects.dataobject import classes_by_name
 
 from .cache import CachingHttpWrapper
 from .conf import conf
-from .log.api import log_api_call
+from .log import log_api_call
 from . import fields
 from . import sort, pagination
 from . import util

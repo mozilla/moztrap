@@ -5,7 +5,7 @@ import zlib
 from django.core.cache import cache
 
 from .conf import conf
-from .log.api import log_api_call
+from .log import log_api_call
 
 
 
