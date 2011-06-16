@@ -21,7 +21,9 @@
         {% endfor %}
       </dl>
     </details>
+    {% if request_body %}
     <pre>{{ request_body }}</pre>
+    {% endif %}
   </details>
   <details class="response">
     <summary>Response</summary>
@@ -33,6 +35,8 @@
         {% endfor %}
       </dl>
     </details>
+    {% if response_body %}
     <pre>{{ response_body }}</pre>
+    {% endif %}
   </details>
 </details>
