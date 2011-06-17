@@ -199,10 +199,10 @@ var TCM = TCM || {};
     };
 
     var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
-        var context = $(context_sel);
-        if (context.length) {
-            var trigger = context.find(trigger_sel),
-            target = context.find(target_sel),
+        var context = $(context_sel),
+        trigger = context.find(trigger_sel);
+        if (context.length && trigger.is("select")) {
+            var target = context.find(target_sel),
             allopts = target.find("option").clone();
 
             var doFilter = function() {
