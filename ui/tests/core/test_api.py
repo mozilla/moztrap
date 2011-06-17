@@ -19,11 +19,22 @@ class HttpTestCase(TestCase):
 
     def test_request_logging(self):
         http = self.agent()
-        with patch("httplib2.Http.request"):
-            with patch("tcmui.core.api.log") as mock_log:
+        with patch("httplib2.Http.request") as req:
+            req.return_value = ("the response", "the content")
+            with patch("tcmui.core.log.log") as mock_log:
                 http.request(uri="/blah")
 
-        mock_log.info.assert_called_with("GET - /blah")
+        mock_log.info.assert_called_with(
+            "%(method)s %(uri)s",
+            {
+                "request": {"uri": "/blah"},
+                "uri": "/blah",
+                "method": "GET",
+                "content": "the content",
+                "cache_key": None,
+                "response": "the response"
+                }
+            )
 
 
 class UrlFinalIntegerTestCase(TestCase):

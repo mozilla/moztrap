@@ -1,9 +1,48 @@
 from mock import patch
 
-from ..responses import response
+from ..responses import response, make_boolean
 from ..utils import (
     BaseResourceTest, ResourceTestCase, locmem_cache)
-from .builders import testcases, testcaseversions
+from .builders import (
+    testsuites, testcases, testcaseversions, testsuiteincludedtestcases)
+
+
+
+@patch("tcmui.core.api.userAgent", spec=["request"])
+class TestSuiteTest(BaseResourceTest, ResourceTestCase):
+    def get_resource_class(self):
+        from tcmui.testcases.models import TestSuite
+        return TestSuite
+
+
+    def get_resource_list_class(self):
+        from tcmui.testcases.models import TestSuiteList
+        return TestSuiteList
+
+
+    def test_addcase_invalidates_cache(self, http):
+        from tcmui.testcases.models import TestCaseVersion
+
+        s = self.resource_class()
+        s.update_from_dict(testsuites.one())
+
+        c = TestCaseVersion()
+        c.update_from_dict(testcaseversions.one())
+
+        with locmem_cache():
+            http.request.return_value = response(
+                testsuiteincludedtestcases.array())
+            cases1 = list(s.cases)
+
+            http.request.return_value = response(make_boolean(True))
+            s.addcase(c)
+
+            http.request.return_value = response(
+                    testsuiteincludedtestcases.array({}))
+            cases2 = list(s.cases)
+
+        self.assertEqual(len(cases1), 0)
+        self.assertEqual(len(cases2), 1)
 
 
 
