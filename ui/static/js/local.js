@@ -198,6 +198,30 @@ var TCM = TCM || {};
         });
     };
 
+    var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
+        var context = $(context_sel);
+        if (context.length) {
+            var trigger = context.find(trigger_sel),
+            target = context.find(target_sel),
+            allopts = target.find("option").clone();
+
+            var doFilter = function() {
+                var key = trigger.find("option:selected").data(data_attr);
+                target.empty();
+                allopts.each(function() {
+                    if ($(this).data(data_attr) === key) {
+                        var newopt = $(this).clone();
+                        newopt.appendTo(target);
+                    }
+                });
+            };
+
+            doFilter();
+
+            trigger.change(doFilter);
+        }
+    };
+
     $(function() {
         filtering();
         $('input[placeholder], textarea[placeholder]').placeholder();
@@ -220,6 +244,8 @@ var TCM = TCM || {};
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
             return false;
         });
+        formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
+        formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
         $('.subnav').html5finder( {
             loading: true,
             ellipsis: true,

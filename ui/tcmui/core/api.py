@@ -55,7 +55,7 @@ userAgent = Http()
 class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = True
-    _filterable_fields = None
+    _filterable_fields = {}
     non_field_filters = {}
 
 
@@ -415,12 +415,14 @@ class ObjectMixin(StrAndUnicode):
         should be used in submitting to the API.
 
         """
-        if cls._filterable_fields is None:
-            cls._filterable_fields = dict(
+        # filterable fields on subclasses can be different from parent class,
+        # so we cache by class name
+        if cls._filterable_fields.get(cls.__name__) is None:
+            cls._filterable_fields[cls.__name__] = dict(
                 ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
                 if getattr(f, "api_filter_name", False)),
                 **cls.non_field_filters)
-        return cls._filterable_fields
+        return cls._filterable_fields.get(cls.__name__)
 
 
     def refresh(self):

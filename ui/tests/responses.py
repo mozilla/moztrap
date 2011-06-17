@@ -115,6 +115,11 @@ def make_boolean(val):
 
 
 
+def make_error(message):
+    return {"errors": [{"error": message }]}
+
+
+
 def response(content="", status=httplib.OK, headers=None):
     headers = headers or {}
     if content:

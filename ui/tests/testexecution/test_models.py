@@ -268,6 +268,28 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(req["body"], "cloneAssignments=True")
 
 
+    def test_addsuite(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one(
+                resourceIdentity=make_identity(
+                    id=1, url="testruns/1", version=2)))
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one())
+
+        http.request.return_value = response(make_boolean(True))
+        r.addsuite(s)
+
+        req = http.request.call_args[1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testruns/1/includedtestcases/testsuite/1/?_type=json"))
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["body"], "originalVersionId=2")
+
+
     def test_addsuite_invalidates_cache(self, http):
         from tcmui.testcases.models import TestSuite
 
@@ -289,6 +311,63 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
         self.assertEqual(len(suites1), 0)
         self.assertEqual(len(suites2), 1)
+
+
+    def test_removesuite(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one(
+                resourceIdentity=make_identity(id=2, url="testruns/2")))
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one(
+                resourceIdentity=make_identity(id=3, url="testsuites/3")))
+
+        http.request.return_value = response(
+            testrunitcs.array(
+                {
+                    "resourceIdentity": make_identity(
+                        id=1, url="testruns/includedtestcases/1", version=3)
+                    }
+                )
+            )
+        r.removesuite(s)
+
+        reqs = [ca[1] for ca in http.request.call_args_list]
+        self.assertEqual(
+            [r["uri"] for r in reqs],
+            ["http://fake.base/rest/testruns/includedtestcases?_type=json&testSuiteId=3&testRunId=2",
+             "http://fake.base/rest/testruns/includedtestcases/1?_type=json"])
+        self.assertEqual(
+            [r["method"] for r in reqs],
+            ["GET", "DELETE"])
+        self.assertEqual(
+            [r.get("body", None) for r in reqs],
+            [None, "originalVersionId=3"])
+
+
+    def test_removesuite_invalidates_cache(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one())
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one())
+
+        with locmem_cache():
+            http.request.return_value = response(testsuites.array(s.api_data))
+            suites1 = list(r.suites)
+
+            http.request.return_value = response(testrunitcs.array({}))
+            r.removesuite(s)
+
+            http.request.return_value = response(testsuites.array())
+            suites2 = list(r.suites)
+
+        self.assertEqual(len(suites1), 1)
+        self.assertEqual(len(suites2), 0)
 
 
     def test_addcase_invalidates_suitecache(self, http):

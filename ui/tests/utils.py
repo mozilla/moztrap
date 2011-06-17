@@ -13,7 +13,7 @@ from webtest import TestApp
 from .builder import ListBuilder
 from .core.builders import companies
 from .products.builders import products
-from .responses import response, make_identity
+from .responses import response, make_identity, make_error
 from .static.builders import codevalues
 from .users.builders import users
 
@@ -43,13 +43,11 @@ def setup_responses(http, response_dict):
             return url_dict[uri]
         except KeyError:
             return response(
-                {"errors": [
-                        {"error":
-                             "Mock got unexpected request URI: %s \n"
-                         " -- Options are %s --" % (uri, response_dict.keys())}
-                        ]
-                 }
-                , 500)
+                make_error(
+                    "Mock got unexpected request URI: %s \n"
+                    " -- Options are %s --" % (uri, response_dict.keys())
+                    ),
+                500)
 
     http.request.side_effect = request
 
