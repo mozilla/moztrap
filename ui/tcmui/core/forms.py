@@ -157,8 +157,8 @@ class AddEditForm(RemoteObjectForm):
             if fname in self.fields:
                 self._errors[fname] = self.error_class(
                     [message])
-            else:
-                raise forms.ValidationError(message)
+                return
+        raise forms.ValidationError(message)
 
 
     def add_clean(self):

@@ -1,3 +1,4 @@
+from mock import patch
 from unittest2 import TestCase
 
 
@@ -60,3 +61,25 @@ class RemoteObjectFormTest(TestCase):
         self.assertEqual(
             self.form_class().fields["birthday"].widget.attrs["placeholder"],
             "mm/dd/yyyy")
+
+
+
+class AddEditFormTest(TestCase):
+    @property
+    def form_class(self):
+        from tcmui.core.forms import AddEditForm
+        return AddEditForm
+
+
+    @patch("tcmui.core.forms.errors.error_message_and_fields")
+    def test_non_field_errors_dont_pass_silently(self, emaf):
+        emaf.return_value = ("unknown error", [])
+        obj, err = ("fake obj", "fake err")
+
+        f = self.form_class(auth="auth")
+
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError):
+            f.handle_error(obj, err)
+
+        emaf.assert_called_once_with(obj, err)
