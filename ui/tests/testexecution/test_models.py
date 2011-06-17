@@ -2,6 +2,7 @@ from mock import patch
 
 from ..core.builders import cvis
 from ..responses import make_identity, response, make_boolean, make_locator
+from ..testcases.builders import testsuites, testcaseversions
 from ..utils import (
     BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache,
     Url)
@@ -266,6 +267,74 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["body"], "cloneAssignments=True")
 
+
+    def test_addsuite_invalidates_cache(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one())
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one())
+
+        with locmem_cache():
+            http.request.return_value = response(testsuites.array())
+            suites1 = list(r.suites)
+
+            http.request.return_value = response(make_boolean(True))
+            r.addsuite(s)
+
+            http.request.return_value = response(testsuites.array({}))
+            suites2 = list(r.suites)
+
+        self.assertEqual(len(suites1), 0)
+        self.assertEqual(len(suites2), 1)
+
+
+    def test_addcase_invalidates_suitecache(self, http):
+        from tcmui.testcases.models import TestCaseVersion
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one())
+
+        c = TestCaseVersion()
+        c.update_from_dict(testcaseversions.one())
+
+        with locmem_cache():
+            http.request.return_value = response(testsuites.array())
+            suites1 = list(r.suites)
+
+            http.request.return_value = response(make_boolean(True))
+            r.addcase(c)
+
+            http.request.return_value = response(testsuites.array({}))
+            suites2 = list(r.suites)
+
+        self.assertEqual(len(suites1), 0)
+        self.assertEqual(len(suites2), 1)
+
+
+    def test_addcase_invalidates_includedcase_cache(self, http):
+        from tcmui.testcases.models import TestCaseVersion
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one())
+
+        c = TestCaseVersion()
+        c.update_from_dict(testcaseversions.one())
+
+        with locmem_cache():
+            http.request.return_value = response(testrunitcs.array())
+            cases1 = list(r.includedtestcases)
+
+            http.request.return_value = response(make_boolean(True))
+            r.addcase(c)
+
+            http.request.return_value = response(testrunitcs.array({}))
+            cases2 = list(r.includedtestcases)
+
+        self.assertEqual(len(cases1), 0)
+        self.assertEqual(len(cases2), 1)
 
 
 @patch("tcmui.core.api.userAgent")

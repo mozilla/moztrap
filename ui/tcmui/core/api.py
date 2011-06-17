@@ -322,21 +322,27 @@ class ObjectMixin(StrAndUnicode):
                 raise ValueError("content type '%s' is not supported"
                                  % headers["content-type"])
 
-        request = self.get_request(**kw)
-
         http = kw.pop("http", userAgent)
         cache = kw.pop("cache", self.cache)
-        if cache:
+        invalidate_cache = kw.pop("invalidate_cache", [])
+
+        request = self.get_request(**kw)
+
+        if cache or invalidate_cache:
             cache_id = getattr(self, "id", None)
-            if cache is not True:
+            if not cache:
+                buckets = []
+            elif cache is not True:
                 buckets = [cache]
             else:
                 buckets = self.cache_buckets(cache_id)
+            if not invalidate_cache:
+                invalidate_cache = self.cache_dependent_buckets(cache_id)
             http = CachingHttpWrapper(
                 http,
                 getattr(kw.get("auth"), "permission_codes", []),
                 buckets,
-                self.cache_dependent_buckets(cache_id))
+                invalidate_cache)
 
         response, content = http.request(**request)
 

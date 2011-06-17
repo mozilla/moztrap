@@ -187,6 +187,7 @@ class TestSuite(Activatable, RemoteObject):
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,
+            invalidate_cache=["TestSuiteIncludedTestCaseList"],
             **kwargs)
 
 

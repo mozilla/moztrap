@@ -100,7 +100,7 @@ class TestRun(Activatable, RemoteObject):
     environmentgroups = fields.Link(EnvironmentGroupList)
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
-    testsuites = fields.Link(TestSuiteList)
+    testsuites = fields.Link(TestSuiteList, cache="IncludedTestSuiteList")
     resultstatus = fields.Link(
         CategoryValueInfoList,
         api_name="reports/coverage/resultstatus",
@@ -124,12 +124,15 @@ class TestRun(Activatable, RemoteObject):
         self._post(
             relative_url="includedtestcases",
             extra_payload=payload,
+            invalidate_cache=[
+                "TestRunIncludedTestCaseList", "IncludedTestSuiteList"],
             **kwargs)
 
 
     def addsuite(self, suite, **kwargs):
         self._post(
             relative_url="includedtestcases/testsuite/%s/" % suite.id,
+            invalidate_cache=["IncludedTestSuiteList"],
             **kwargs)
 
 
