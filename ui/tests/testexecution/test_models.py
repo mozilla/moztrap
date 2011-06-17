@@ -268,6 +268,29 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(req["body"], "cloneAssignments=True")
 
 
+    def test_addsuite(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one(
+                resourceIdentity=make_identity(
+                    id=1, url="testruns/1", version=2)))
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one())
+
+        http.request.return_value = response(make_boolean(True))
+        r.addsuite(s)
+
+        req = http.request.call_args[1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testruns/1/includedtestcases/testsuite/1/?_type=json"))
+        self.assertEqual(req["method"], "POST")
+        self.assertEqual(req["body"], "originalVersionId=2")
+
+
+
     def test_addsuite_invalidates_cache(self, http):
         from tcmui.testcases.models import TestSuite
 
