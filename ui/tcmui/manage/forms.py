@@ -11,6 +11,11 @@ from ..testexecution.models import (
 
 
 
+def product_id_attrs(obj):
+    return {"data-product-id": obj.product.id}
+
+
+
 class TestCycleForm(EnvConstrainedAddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
@@ -38,11 +43,13 @@ class TestCycleForm(EnvConstrainedAddEditForm):
 class TestRunForm(EnvConstrainedAddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
-    test_cycle = tcmforms.ModelChoiceField()
+    test_cycle = tcmforms.ModelChoiceField(
+        option_attrs=product_id_attrs)
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
     team = tcmforms.ModelMultipleChoiceField(required=False)
-    suites = tcmforms.ModelMultipleChoiceField(required=False)
+    suites = tcmforms.ModelMultipleChoiceField(
+        required=False, option_attrs=product_id_attrs)
 
 
     no_edit_fields = ["test_cycle"]
@@ -64,9 +71,12 @@ class TestRunForm(EnvConstrainedAddEditForm):
 class TestSuiteForm(EnvConstrainedAddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
-    product = tcmforms.ModelChoiceField()
+    product = tcmforms.ModelChoiceField(
+        option_attrs=lambda p: {"data-product-id": p.id})
     cases = tcmforms.ModelMultipleChoiceField(
-        required=False, label_from_instance=lambda c: c.name)
+        required=False,
+        label_from_instance=lambda c: c.name,
+        option_attrs=product_id_attrs)
 
 
     no_edit_fields = ["product"]

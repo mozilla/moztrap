@@ -213,6 +213,28 @@ class ReadOnlyWidget(forms.Widget):
 
 
 
+class OptionAttrsSelect(forms.Select):
+    """
+    A SelectMultiple widget rendered by a template that expects each choice
+    option to have a third tuple element (in addition to value and label): a
+    dictionary of arbitrary attributes to be assigned to the <option> element.
+
+    """
+    template_name = "forms/_select_with_option_attrs.html"
+
+
+
+class OptionAttrsSelectMultiple(forms.SelectMultiple):
+    """
+    A SelectMultiple widget rendered by a template that expects each choice
+    option to have a third tuple element (in addition to value and label): a
+    dictionary of arbitrary attributes to be assigned to the <option> element.
+
+    """
+    template_name = "forms/_select_with_option_attrs.html"
+
+
+
 class ModelChoiceIterator(object):
     def __init__(self, field):
         self.field = field
@@ -237,17 +259,19 @@ class ModelChoiceIterator(object):
 
     def choice(self, obj):
         return (self.field.prepare_value(obj),
-                self.field.label_from_instance(obj))
+                self.field.label_from_instance(obj),
+                self.field.option_attrs(obj))
 
 
 
 class ModelChoiceField(forms.Field):
-    widget = forms.Select
+    widget = OptionAttrsSelect
 
     default_error_messages = {
         "invalid_choice": u"Select a valid choice. That choice is not one of"
                           u" the available choices.",
     }
+
 
     def __init__(self, empty_label=u"---------", cache_choices=False,
                  required=True, widget=None, label=None, initial=None,
@@ -261,14 +285,18 @@ class ModelChoiceField(forms.Field):
         self.custom_label_from_instance = kwargs.pop(
             "label_from_instance", None)
 
+        self.custom_option_attrs = kwargs.pop("option_attrs", None)
+
         super(ModelChoiceField, self).__init__(
             required, widget, label, initial, help_text, *args, **kwargs)
 
         self.obj_list = []
         self.choice_cache = None
 
+
     def _get_obj_list(self):
         return self._obj_list
+
 
     def _set_obj_list(self, obj_list):
         self._obj_list = obj_list
@@ -277,12 +305,15 @@ class ModelChoiceField(forms.Field):
             self._obj_map[obj.id] = obj
         self.widget.choices = self.choices
 
+
     obj_list = property(_get_obj_list, _set_obj_list)
+
 
     def label_from_instance(self, obj):
         if self.custom_label_from_instance is not None:
             return self.custom_label_from_instance(obj)
         return unicode(obj)
+
 
     def _get_choices(self):
         # If self._choices is set, then somebody must have manually set
@@ -296,13 +327,22 @@ class ModelChoiceField(forms.Field):
         # lazy evaluation of the object list.
         return ModelChoiceIterator(self)
 
+
     choices = property(_get_choices, forms.ChoiceField._set_choices)
+
 
     def prepare_value(self, value):
         try:
             return value.id
         except AttributeError:
             return super(ModelChoiceField, self).prepare_value(value)
+
+
+    def option_attrs(self, obj):
+        if self.custom_option_attrs is not None:
+            return self.custom_option_attrs(obj)
+        return {}
+
 
     def to_python(self, value):
         if value in [None, "", [], (), {}]:
@@ -313,12 +353,13 @@ class ModelChoiceField(forms.Field):
             raise forms.ValidationError(self.error_messages['invalid_choice'])
         return value
 
+
     def validate(self, value):
         return forms.Field.validate(self, value)
 
 
 class ModelMultipleChoiceField(ModelChoiceField):
-    widget = forms.SelectMultiple
+    widget = OptionAttrsSelectMultiple
     hidden_widget = forms.MultipleHiddenInput
     default_error_messages = {
         "list": u"Enter a list of values.",
