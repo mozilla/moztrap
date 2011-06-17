@@ -207,7 +207,8 @@ class BareTextarea(forms.Textarea):
 class ReadOnlyWidget(forms.Widget):
     def render(self, name, value, attrs=None):
         # If choices is set, use the display label
-        displayed = dict(getattr(self, "choices", [])).get(value, value)
+        displayed = dict((o[:2] for o in getattr(self, "choices", []))).get(
+            value, value)
         return mark_safe(
             displayed + forms.HiddenInput().render(name, value, attrs))
 
