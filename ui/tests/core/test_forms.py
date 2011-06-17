@@ -40,3 +40,23 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
 
         self.assertTrue('class="' in fe)
         self.assertFalse("nonfield" in fe)
+
+
+
+class RemoteObjectFormTest(TestCase):
+    @property
+    def form_class(self):
+        import floppyforms as forms
+        from tcmui.core.forms import RemoteObjectForm
+
+        class PersonForm(RemoteObjectForm):
+            name = forms.CharField()
+            birthday = forms.DateField()
+
+        return PersonForm
+
+
+    def test_datefield_placeholder(self):
+        self.assertEqual(
+            self.form_class().fields["birthday"].widget.attrs["placeholder"],
+            "mm/dd/yyyy")
