@@ -8,18 +8,25 @@ MESSAGES = {
         "The %(name)s is in use and cannot be deleted.", []),
     "invalid.user": (
         "You created this; someone else must approve or reject it.", []),
-    "activating.incomplete.entity": (
-        {
-            "TestSuite": "Test suite is empty; add some test cases.",
-            "TestRun": "Activate or unlock parent test cycle first.",
+    "activating.incomplete.entity": {
+        "TestSuite": ("Test suite is empty; add some test cases.", []),
+        "TestRun": ("Activate or unlock parent test cycle first.", [])
          },
-        []),
     "including.not.activated.entity": (
         "Can't include a not-active test case in a test run.", []),
     "including.multiple.testcase.versions": (
         "Selected test suites contain conflicting test case versions.",
         ["suites"]
-        )
+        ),
+    # @@@ made-up error code, replace with real one when these are fixed:
+    # https://bugzilla.mozilla.org/show_bug.cgi?id=665102
+    # https://bugzilla.mozilla.org/show_bug.cgi?id=665135
+    "wrong.product": {
+        "TestSuite": (
+            "Selected test case is for the wrong product.", ["cases"]),
+        "TestRun": (
+            "Selected test suite is for the wrong product.", ["suites"]),
+        },
     }
 
 
@@ -31,9 +38,10 @@ def error_message_and_fields(obj, err):
 
     """
     try:
-        message, fields = MESSAGES[err.response_error]
-        if isinstance(message, dict):
-            message = message[obj.__class__.__name__]
+        data = MESSAGES[err.response_error]
+        if isinstance(data, dict):
+            data = data[obj.__class__.__name__]
+        message, fields = data
         return (message % {"name": unicode(obj)}, fields)
     except KeyError:
         return (

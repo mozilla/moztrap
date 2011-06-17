@@ -116,6 +116,13 @@ class TestRun(Activatable, RemoteObject):
 
 
     def addcase(self, case, **kwargs):
+        # @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=665102
+        if case.product.id != self.product.id:
+            e = self.Conflict(
+                "Can't add case %s from product %s to run %s from product %s"
+                % (case, case.product.id, self, self.product.id))
+            e.response_error = "wrong.product"
+            raise e
         payload = {
             "testCaseVersionId": case.id,
             "priorityId": 0, # @@@
@@ -130,6 +137,13 @@ class TestRun(Activatable, RemoteObject):
 
 
     def addsuite(self, suite, **kwargs):
+        # @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=665102
+        if suite.product.id != self.product.id:
+            e = self.Conflict(
+                "Can't add suite %s from product %s to run %s from product %s"
+                % (suite, suite.product.id, self, self.product.id))
+            e.response_error = "wrong.product"
+            raise e
         self._post(
             relative_url="includedtestcases/testsuite/%s/" % suite.id,
             invalidate_cache=["IncludedTestSuiteList"],
