@@ -290,7 +290,6 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(req["body"], "originalVersionId=2")
 
 
-
     def test_addsuite_invalidates_cache(self, http):
         from tcmui.testcases.models import TestSuite
 
@@ -312,6 +311,29 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
         self.assertEqual(len(suites1), 0)
         self.assertEqual(len(suites2), 1)
+
+
+    def test_removesuite_invalidates_cache(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one())
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one())
+
+        with locmem_cache():
+            http.request.return_value = response(testsuites.array(s.api_data))
+            suites1 = list(r.suites)
+
+            http.request.return_value = response(testrunitcs.array({}))
+            r.removesuite(s)
+
+            http.request.return_value = response(testsuites.array())
+            suites2 = list(r.suites)
+
+        self.assertEqual(len(suites1), 1)
+        self.assertEqual(len(suites2), 0)
 
 
     def test_addcase_invalidates_suitecache(self, http):

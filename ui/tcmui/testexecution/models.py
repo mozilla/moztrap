@@ -137,14 +137,9 @@ class TestRun(Activatable, RemoteObject):
 
 
     def removesuite(self, suite):
-        # @@@ This doesn't work because filtering/searching ITC's is broken in
-        # the platform; if it worked, we wouldn't need the conditional inside
-        # the loop.
-        # for itc in TestRunIncludedTestCase.get(auth=self.auth).filter(
-        #     testRun=self, testSuite=suite):
-        for itc in self.includedtestcases:
-            if itc.testSuite and itc.testSuite.id == suite.id:
-                itc.delete()
+        for itc in TestRunIncludedTestCaseList.get(auth=self.auth).filter(
+            testRun=self, testSuite=suite):
+            itc.delete(invalidate_cache=["IncludedTestSuiteList"])
 
 
     def _get_suites(self):
