@@ -43,6 +43,12 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
         self.assertFalse("nonfield" in fe)
 
 
+    def test_no_nonfield_errors(self):
+        form = self.form_class({"name": "Joe", "age": "25"})
+
+        self.assertEqual(unicode(form.non_field_errors()), u"")
+
+
 
 class RemoteObjectFormTest(TestCase):
     @property
@@ -83,3 +89,68 @@ class AddEditFormTest(TestCase):
             f.handle_error(obj, err)
 
         emaf.assert_called_once_with(obj, err)
+
+
+
+class BareTextareaTest(TestCase):
+    def test_no_attrs(self):
+        from tcmui.core.forms import BareTextarea
+        self.assertEqual(BareTextarea().attrs, {})
+
+
+
+class ReadOnlyWidgetTest(TestCase):
+    @property
+    def widget(self):
+        from tcmui.core.forms import ReadOnlyWidget
+        return ReadOnlyWidget
+
+
+    def test_simple(self):
+        self.assertEqual(
+            self.widget().render("name", "value"),
+            u'value<input type="hidden" name="name" value="value">\n'
+            )
+
+
+    def test_attrs(self):
+        self.assertEqual(
+            self.widget().render("name", "value", {"attr": "val"}),
+            u'value<input type="hidden" name="name" value="value" attr="val">\n'
+            )
+
+
+    def test_choices(self):
+        widget = self.widget()
+        widget.choices = [(1, "one"), (2, "two")]
+        self.assertEqual(
+            widget.render("name", 1),
+            u'one<input type="hidden" name="name" value="1">\n'
+            )
+
+
+    def test_choices_bad_choice(self):
+        widget = self.widget()
+        widget.choices = [(1, "one"), (2, "two")]
+        self.assertEqual(
+            widget.render("name", 3),
+            u'3<input type="hidden" name="name" value="3">\n'
+            )
+
+
+    def test_choices_iterator(self):
+        widget = self.widget()
+        widget.choices = (i for i in [(1, "one"), (2, "two")])
+        self.assertEqual(
+            widget.render("name", 2),
+            u'two<input type="hidden" name="name" value="2">\n'
+            )
+
+
+    def test_choices_extra_data(self):
+        widget = self.widget()
+        widget.choices = [(1, "one", "extra"), (2, "two", "extra")]
+        self.assertEqual(
+            widget.render("name", 1),
+            u'one<input type="hidden" name="name" value="1">\n'
+            )

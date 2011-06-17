@@ -26,6 +26,9 @@ class NonFieldErrorsClassFormMixin(object):
             self._errors[NON_FIELD_ERRORS] = NonFieldErrorList(e.messages)
 
 
+    def non_field_errors(self):
+        return self.errors.get(NON_FIELD_ERRORS, NonFieldErrorList())
+
 
 
 class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
@@ -206,9 +209,12 @@ class BareTextarea(forms.Textarea):
 
 class ReadOnlyWidget(forms.Widget):
     def render(self, name, value, attrs=None):
+        # work around floppyforms bug with no attrs:
+        if attrs is None:
+            attrs = {}
         # If choices is set, use the display label
-        displayed = dict((o[:2] for o in getattr(self, "choices", []))).get(
-            value, value)
+        displayed = str(dict((o[:2] for o in getattr(self, "choices", []))).get(
+            value, value))
         return mark_safe(
             displayed + forms.HiddenInput().render(name, value, attrs))
 
