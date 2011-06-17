@@ -313,6 +313,40 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(len(suites2), 1)
 
 
+    def test_removesuite(self, http):
+        from tcmui.testcases.models import TestSuite
+
+        r = self.resource_class()
+        r.update_from_dict(testruns.one(
+                resourceIdentity=make_identity(id=2, url="testruns/2")))
+
+        s = TestSuite()
+        s.update_from_dict(testsuites.one(
+                resourceIdentity=make_identity(id=3, url="testsuites/3")))
+
+        http.request.return_value = response(
+            testrunitcs.array(
+                {
+                    "resourceIdentity": make_identity(
+                        id=1, url="testruns/includedtestcases/1", version=3)
+                    }
+                )
+            )
+        r.removesuite(s)
+
+        reqs = [ca[1] for ca in http.request.call_args_list]
+        self.assertEqual(
+            [r["uri"] for r in reqs],
+            ["http://fake.base/rest/testruns/includedtestcases?_type=json&testSuiteId=3&testRunId=2",
+             "http://fake.base/rest/testruns/includedtestcases/1?_type=json"])
+        self.assertEqual(
+            [r["method"] for r in reqs],
+            ["GET", "DELETE"])
+        self.assertEqual(
+            [r.get("body", None) for r in reqs],
+            [None, "originalVersionId=3"])
+
+
     def test_removesuite_invalidates_cache(self, http):
         from tcmui.testcases.models import TestSuite
 
