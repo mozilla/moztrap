@@ -15,7 +15,11 @@ MESSAGES = {
          },
         []),
     "including.not.activated.entity": (
-        "Can't include a not-active test case in a test run.", [])
+        "Can't include a not-active test case in a test run.", []),
+    "including.multiple.testcase.versions": (
+        "Selected test suites contain conflicting test case versions.",
+        ["suites"]
+        )
     }
 
 
