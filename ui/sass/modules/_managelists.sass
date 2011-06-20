@@ -21,6 +21,7 @@
   +cond
   +full(24)
   margin: 0
+
   button
     +button-reset
   .item
@@ -198,6 +199,8 @@
   background: rgba($blue,$xxsmall)
   color: rgba($base,$small)
   text-transform: capitalize
+  .expired &
+    background: rgba($yellow-dark,$small)
   ul
     +no-style-list
   a
@@ -239,6 +242,8 @@
   margin-top: -1px
   background: rgba($blue,$xxsmall)
   white-space: nowrap
+  .expired &
+    background: rgba($yellow-dark,$small)
   p, ul
     +reset-box-model
   .location, .perpage

@@ -113,29 +113,41 @@
   background: rgba($blue,$xxxsmall) image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
   color: $blue-dark
 
-.message
+.messagestyle
   +message
 
+.successmessage
+  @extend .messagestyle
+  +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
+  background:
+    color: rgba($green,$xsmall)
+    image: image-url('ui/check.png')
+  color: $green-dark
+
+.errormessage
+  @extend .messagestyle
+  +text-shadow(rgba($red-lightest,$small) 1px 1px 0)
+  background:
+    color: rgba($red-light,$xsmall)
+    image: image-url('ui/x.png')
+  color: $red-dark
+
+.warningmessage
+  @extend .messagestyle
+  +text-shadow(rgba($yellow-light,$small) 1px 1px 0)
+  background:
+    color: rgba($yellow,$small)
+    image: image-url('ui/warning.png')
+  color: $yellow-darkest
+
+.message
+  @extend .messagestyle
   &.success
-    +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
-    background:
-      color: rgba($green,$xsmall)
-      image: image-url('ui/check.png')
-    color: $green-dark
-
+    @extend .successmessage
   &.error
-    +text-shadow(rgba($red-lightest,$small) 1px 1px 0)
-    background:
-      color: rgba($red-light,$xsmall)
-      image: image-url('ui/x.png')
-    color: $red-dark
-
+    @extend .errormessage
   &.warning
-    +text-shadow(rgba($yellow-light,$small) 1px 1px 0)
-    background:
-      color: rgba($yellow,$small)
-      image: image-url('ui/warning.png')
-    color: $yellow-darkest
+    @extend .warningmessage
 
 #messages
   ul
