@@ -1,0 +1,19 @@
+<p class="id">#{{ itc.testCase.id }}</p>
+<p class="drill">
+  See related <a href="{% url results_testcase_detail itc.id %}" title="test results related to {{ itc.testCase.name }}">test results</a>.
+</p>
+
+<section class="envgroups">
+{% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
+</section>
+
+{% if itc.assignments|length %}
+<section class="testers">
+  <h4>testers</h4>
+  <ul>
+    {% for assignment in itc.assignments %}
+    <li>{{ assignment.tester.screenName }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

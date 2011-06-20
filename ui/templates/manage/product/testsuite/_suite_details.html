@@ -1,0 +1,13 @@
+<p class="id">#{{ suite.id }}</p>
+<div class="description">
+  <p class="byline hcard">
+    Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
+    on <time pubdate>{{ suite.timeline.createDate|date }}</time>
+  </p>
+  {% if suite.description %}
+    <p>{{ suite.description }}</p>
+  {% endif %}
+</div>
+<div class="envgroups">
+  {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
+</div>

@@ -98,6 +98,16 @@ def edit_testcycle(request, cycle_id):
 
 
 @login_redirect
+def testcycle_details(request, cycle_id):
+    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "manage/product/testcycle/_cycle_details.html",
+        {"cycle": cycle})
+
+
+
+@login_redirect
 @dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("runs",
             ("status", status_filters.TestRunStatusFilter),
@@ -175,6 +185,16 @@ def edit_testrun(request, run_id):
 
 
 @login_redirect
+def testrun_details(request, run_id):
+    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "manage/product/testrun/_run_details.html",
+        {"run": run})
+
+
+
+@login_redirect
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("suites",
             ("status", status_filters.TestSuiteStatusFilter),
@@ -240,6 +260,16 @@ def edit_testsuite(request, suite_id):
             "suite": suite,
             }
         )
+
+
+
+@login_redirect
+def testsuite_details(request, suite_id):
+    suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "manage/product/testsuite/_suite_details.html",
+        {"suite": suite})
 
 
 
@@ -312,3 +342,13 @@ def edit_testcase(request, case_id):
             "case": case,
             }
         )
+
+
+
+@login_redirect
+def testcase_details(request, case_id):
+    case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/_case_details.html",
+        {"case": case})

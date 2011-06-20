@@ -39,6 +39,16 @@ def testcycles(request):
 
 
 @login_redirect
+def testcycle_details(request, cycle_id):
+    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "results/testcycle/_cycle_details.html",
+        {"cycle": cycle})
+
+
+
+@login_redirect
 @dec.filter("runs",
             ("status", filters.NonDraftTestRunStatusFilter),
             ("product", ProductFieldFilter),
@@ -57,6 +67,16 @@ def testruns(request):
 
 
 @login_redirect
+def testrun_details(request, run_id):
+    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "results/testrun/_run_details.html",
+        {"run": run})
+
+
+
+@login_redirect
 @dec.filter("includedcases",
             ("testRun", filters.NonDraftTestRunFieldFilter),
             ("product", ProductFieldFilter),
@@ -69,6 +89,16 @@ def testcases(request):
         request,
         "results/testcase/cases.html",
         {"includedcases": includedcases})
+
+
+
+@login_redirect
+def testcase_details(request, itc_id):
+    itc = TestRunIncludedTestCaseList.get_by_id(itc_id, auth=request.auth)
+    return TemplateResponse(
+        request,
+        "results/testcase/_case_details.html",
+        {"itc": itc})
 
 
 

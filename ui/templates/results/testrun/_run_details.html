@@ -1,0 +1,27 @@
+<p class="id">#{{ run.id }}</p>
+<p class="drill">
+  See related <a href="{% url results_testcases %}?testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
+</p>
+{% if run.startDate or run.endDate %}
+  <div class="time">
+    {% if run.startDate %}
+      <p class="start">start date: <time>{{ run.startDate|date }}</time></p>
+    {% endif %}
+    {% if run.endDate %}
+      <p class="end">end date: <time>{{ run.endDate|date }}</time></p>
+    {% endif %}
+  </div>
+{% endif %}
+<section class="envgroups">
+  {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
+</section>
+{% if run.team|length %}
+  <section class="testers">
+    <h4>testers</h4>
+    <ul>
+      {% for tester in run.team %}
+      <li>{{ tester.screenName }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
