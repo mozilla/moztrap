@@ -1750,9 +1750,6 @@ thead .controls {
 #filter .expanded .toggle a:link::after, #filter .expanded .toggle a:visited::after {
   content: "";
 }
-#filter .expanded .content {
-  margin-bottom: 0.944em;
-}
 #filter .expanded .content .filter-group {
   display: inline;
   float: left;

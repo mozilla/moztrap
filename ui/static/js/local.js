@@ -41,8 +41,10 @@ var TCM = TCM || {};
                     return $(this).data('state') === 'changed';
                 }).length) {
                     button.fadeIn('fast');
+                    $('.managelist').addClass('expired');
                 } else {
                     button.fadeOut('fast');
+                    $('.managelist').removeClass('expired');
                 }
             };
 
