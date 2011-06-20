@@ -2424,6 +2424,40 @@ thead .controls {
   content: "there are currently no items in this list...";
   text-align: center;
 }
+.managelist .steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  margin-bottom: 1.618em;
+  counter-reset: steps;
+}
+.managelist .steps li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.managelist .steps li {
+  padding-left: 10.127%;
+  position: relative;
+  counter-increment: steps;
+}
+.managelist .steps li::before {
+  content: counter(steps, decimal) ".";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8.861%;
+  text-align: right;
+}
+.managelist .steps .instruction {
+  font-weight: 500;
+  margin: 0;
+}
+.managelist .steps .outcome {
+  font-style: italic;
+  margin: 0;
+}
 
 .status {
   position: relative;
@@ -3705,11 +3739,27 @@ thead .controls {
   margin-right: 1.053%;
 }
 
-#managecases .product, #managecases .byproduct, #managecases .title, #managecases .byline, #managecases .bytitle {
+#managecases .product, #managecases .byproduct, #managecases .title, #managecases .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
+}
+#managecases .steps {
+  display: inline;
+  float: left;
+  width: 83.158%;
+  margin-right: 1.053%;
+}
+#managecases .byline {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: right;
 }
 
 /* test nav -------------------------------------------------------------- */
@@ -4695,7 +4745,7 @@ thead .controls {
   width: 11.579%;
   margin-right: 1.053%;
 }
-#caseresults .testers {
+#caseresults .testers, #caseresults .drill {
   display: inline;
   float: left;
   width: 15.789%;
@@ -4707,16 +4757,19 @@ thead .controls {
   width: 20%;
   margin-right: 1.053%;
 }
-#caseresults .drill {
+#caseresults .steps {
   display: inline;
   float: left;
-  width: 91.579%;
+  width: 83.158%;
   margin-right: 1.053%;
 }
 #caseresults .testers, #caseresults .drill {
   display: inline;
   float: right;
   margin-right: 0;
+}
+#caseresults .drill {
+  text-align: right;
 }
 
 .case-details {

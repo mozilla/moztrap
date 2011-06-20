@@ -1,19 +1,17 @@
-<p class="id">#{{ case.testCaseId }}</p>
+<ol class="steps">
+  {% for step in case.steps %}
+  <li>
+    <p class="instruction">{{ step.instruction }}</p>
+    <p class="outcome">{{ step.expectedResult }}</p>
+  </li>
+  {% endfor %}
+</ol>
+
 <p class="byline hcard">
   Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
   on <time pubdate>{{ case.timeline.createDate|date }}</time>
 </p>
-{% comment %} @@@
-<div class="tags">
-  <h4>tags</h4>
-  <ul>
-    <li>tag 01</li>
-    <li>tag 02</li>
-    <li>tag 03</li>
-    <li>tag 04</li>
-  </ul>
-</div>
-{% endcomment %}
+
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
 </div>

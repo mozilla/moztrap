@@ -66,6 +66,28 @@
       content: "there are currently no items in this list..."
       text-align: center
 
+  .steps
+    +no-style-list
+    +trailer
+    counter-reset: steps
+    li
+      +prefix(2,20)
+      position: relative
+      counter-increment: steps
+      &::before
+        content: counter(steps,decimal) "."
+        position: absolute
+        top: 0
+        left: 0
+        width: columns(2,20)
+        text-align: right
+    .instruction
+      +demi
+      margin: 0
+    .outcome
+      +italic
+      margin: 0
+
 .status
   position: relative
   .pending

@@ -1,4 +1,12 @@
-<p class="id">#{{ itc.testCase.id }}</p>
+<ol class="steps">
+  {% for step in itc.testCaseVersion.steps %}
+  <li>
+    <p class="instruction">{{ step.instruction }}</p>
+    <p class="outcome">{{ step.expectedResult }}</p>
+  </li>
+  {% endfor %}
+</ol>
+
 <p class="drill">
   See related <a href="{% url results_testcase_detail itc.id %}" title="test results related to {{ itc.testCase.name }}">test results</a>.
 </p>
