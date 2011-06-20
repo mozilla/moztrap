@@ -21,23 +21,17 @@
     +no-style-list
 
   .form-actions
+    @extend .warningmessage
+    +adjust-font-size-to(14px,1,12px)
+    +border-bottom-radius(0)
     clear: both
     text-align: left
+    margin: 0
+    p
+      margin: 0
+
   button
-    +button-reset
-    +adjust-font-size-to(14px,1,12px)
-    +message
-    +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
-    display: block
-    width: 100%
-    text-align: left
-    background:
-      color: rgba($green,$xsmall)
-      image: image-url('ui/refresh.png')
-    color: $green-dark
-    #{$focus}
-      background-color: rgba($green,$small)
-      outline: 0
+    +button-color($green,'ui/refresh.png')
 
   // Textual -----------------------------------------------------------------
 
