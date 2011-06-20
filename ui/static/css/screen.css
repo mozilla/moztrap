@@ -4084,9 +4084,14 @@ thead .controls {
   text-align: left;
 }
 .resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-  opacity: 0.5;
-  background-color: #aac0bf;
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 
 .resultslist, .managelist .results, .case-details .summary .results {
