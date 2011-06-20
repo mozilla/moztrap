@@ -19,7 +19,7 @@ var TCM = TCM || {};
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
     var filtering = function() {
-        var button = $('#filter .visual .content button[type="submit"]').hide(),
+        var button = $('#filter .form-actions').hide(),
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
             }),
