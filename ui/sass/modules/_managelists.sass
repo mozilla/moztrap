@@ -46,8 +46,6 @@
       +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
   .content
     +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
-  .id
-    text-align: right
 
   .title, .run, .cycle, .product
     +ellipsis
@@ -179,8 +177,11 @@
     margin: 0
 
 .description
-  +columns(22,24)
-  +omega(24)
+  +full(24)
+  +prefix(2,24)
+  +trailer
+  .note
+    +italic
 
 .sortlinks
   #{$link}
@@ -246,7 +247,7 @@
         padding-right: $smallem
 
 
-.status, .bystatus, .id, .controls, .bycontrols
+.status, .bystatus, .controls, .bycontrols
   +columns(2,24)
 
 .summary > .results, .byresults

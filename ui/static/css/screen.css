@@ -2390,9 +2390,6 @@ thead .controls {
   background-image: -o-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
   background-image: linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
 }
-.managelist .id {
-  text-align: right;
-}
 .managelist .title, .managelist .run, .managelist .cycle, .managelist .product {
   overflow: hidden;
   max-height: 1.618em;
@@ -2785,13 +2782,12 @@ thead .controls {
 }
 
 .description {
-  display: inline;
-  float: left;
-  width: 91.579%;
-  margin-right: 1.053%;
-  display: inline;
-  float: right;
-  margin-right: 0;
+  clear: both;
+  padding-left: 8.421%;
+  margin-bottom: 1.618em;
+}
+.description .note {
+  font-style: italic;
 }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited {
@@ -2887,7 +2883,7 @@ thead .controls {
   padding-right: 0.618em;
 }
 
-.status, .bystatus, .id, .controls, .bycontrols {
+.status, .bystatus, .controls, .bycontrols {
   display: inline;
   float: left;
   width: 7.368%;
@@ -4690,6 +4686,7 @@ thead .controls {
   float: left;
   width: 91.579%;
   margin-right: 1.053%;
+  padding-left: 8.421%;
 }
 #cycleresults .testers, #cycleresults .drill {
   display: inline;
@@ -4726,6 +4723,7 @@ thead .controls {
   float: left;
   width: 70.526%;
   margin-right: 1.053%;
+  padding-left: 8.421%;
 }
 #runresults .testers, #runresults .time {
   display: inline;

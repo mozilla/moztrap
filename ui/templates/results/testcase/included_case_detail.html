@@ -13,7 +13,6 @@
       {% include "results/_results_summary.html" with results=includedcase.resultsummary %}
     </div>
     <div class="content">
-      <p class="id">#{{ includedcase.testCase.id }}</p>
       <ol class="steps">
         {% for step in includedcase.testCaseVersion.steps %}
         <li>
