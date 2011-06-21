@@ -1905,7 +1905,7 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=24)";
   opacity: 0.236;
 }
-.loading::before {
+.loading .overlay {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1916,7 +1916,6 @@ thead .controls {
   padding-top: 0.405em;
   text-shadow: #e9eded 0 1px 0;
   display: block;
-  content: "Loading...";
   color: rgba(82, 134, 132, 0.618);
   background: rgba(233, 237, 237, 0.618);
   text-align: center;
