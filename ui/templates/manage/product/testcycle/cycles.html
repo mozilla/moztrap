@@ -68,7 +68,9 @@
               {% if cycle.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
               {% endif %}
-              <a href="#" title="create new test run in this cycle">create new test run in this cycle</a>
+              {% endif %}
+              {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
+              <a href="{% url manage_testrun_add %}?cycle={{ cycle.id }}" title="create new test run in this cycle">create new test run in this cycle</a>
               {% endif %}
             </div>
           </header>

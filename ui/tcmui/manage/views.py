@@ -129,14 +129,10 @@ def testruns(request):
 def add_testrun(request):
     tcid = request.GET.get("cycle")
     suites = TestSuiteList.ours(auth=request.auth)
-    if tcid is not None:
-        cycle = TestCycleList.get_by_id(tcid, auth=request.auth)
-        suites = suites.filter(product=cycle.product.id)
     form = TestRunForm(
         request.POST or None,
         initial=tcid and {"test_cycle": tcid} or {},
         test_cycle_choices=TestCycleList.ours(auth=request.auth),
-        # @@@ should be narrowed dynamically by product
         suites_choices=suites,
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
@@ -216,7 +212,6 @@ def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
-        # @@@ should be narrowed dynamically by product
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
             company=conf.TCM_COMPANY_ID, status=TestCaseStatus.ACTIVE),
         auth=request.auth)
