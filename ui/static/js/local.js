@@ -44,7 +44,7 @@ var TCM = TCM || {};
     },
 
     filtering = function() {
-        var button = $('#filter .form-actions').hide(),
+        var formActions = $('#filter .form-actions').hide(),
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
             }),
@@ -61,14 +61,14 @@ var TCM = TCM || {};
                 }
                 textbox.removeClass('placeholder');
             },
-            updateButton = function() {
+            updateFormActions = function() {
                 if (input.filter(function() {
                     return $(this).data('state') === 'changed';
                 }).length) {
-                    button.fadeIn('fast');
+                    formActions.fadeIn('fast');
                     $('.managelist').addClass('expired');
                 } else {
-                    button.fadeOut('fast');
+                    formActions.fadeOut('fast');
                     $('.managelist').removeClass('expired');
                 }
             };
@@ -79,7 +79,7 @@ var TCM = TCM || {};
             } else {
                 $(this).data('state', null);
             }
-            updateButton();
+            updateFormActions();
         });
 
         textbox.keyup(function(event) {
@@ -138,8 +138,12 @@ var TCM = TCM || {};
                 }
                 if (event.keyCode === 13) {
                     event.preventDefault();
-                    suggestionList.find('.selected').click();
-                    suggestionList.show();
+                    if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
+                        formActions.find('button[type="submit"]').click();
+                    } else {
+                        suggestionList.find('.selected').click();
+                        suggestionList.show();
+                    }
                     return false;
                 }
                 if (event.keyCode === 9) {
@@ -216,7 +220,7 @@ var TCM = TCM || {};
                         thisFilter.data('state', 'changed');
                     }
                 }
-                updateButton();
+                updateFormActions();
                 textbox.data('clicked', false).val(null);
                 typedText = null;
                 suggestionList.empty().hide();
