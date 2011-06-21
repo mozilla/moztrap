@@ -68,7 +68,7 @@
               {% if cycle.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
               {% endif %}
-              <button title="create new test run in this cycle" type="submit" name="action-addchild" value="{{ suite.id }}">create new test run in this cycle</button>
+              <a href="#" title="create new test run in this cycle">create new test run in this cycle</a>
               {% endif %}
             </div>
           </header>

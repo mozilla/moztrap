@@ -1416,6 +1416,21 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
+.controls a:link[title^="create"], .controls a:visited[title^="create"] {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/paper_plus.png?1308686962');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0 0.125em;
+}
 .controls a:focus, .controls a:hover, .controls a:active {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
@@ -1461,21 +1476,6 @@ thead .controls {
   overflow: hidden;
   text-align: left;
   background-image: url('../images/ui/trash.png?1299181339');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  min-width: 14px;
-  min-height: 14px;
-  padding: 0 0.125em;
-}
-.controls button[name="action-addchild"] {
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box;
-  -ms-box-sizing: content-box;
-  box-sizing: content-box;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  background-image: url('../images/ui/paper_plus.png?1308686962');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
