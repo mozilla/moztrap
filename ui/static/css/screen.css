@@ -1437,7 +1437,7 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
   opacity: 0.675;
 }
-.controls button[title="clone"] {
+.controls button[name="action-clone"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1452,7 +1452,7 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls button[title="delete"] {
+.controls button[name="action-delete"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1461,6 +1461,21 @@ thead .controls {
   overflow: hidden;
   text-align: left;
   background-image: url('../images/ui/trash.png?1299181339');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0 0.125em;
+}
+.controls button[name="action-addchild"] {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/paper_plus.png?1308686962');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;

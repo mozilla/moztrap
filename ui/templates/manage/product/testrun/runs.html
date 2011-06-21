@@ -72,6 +72,7 @@
               {% if run.status.DRAFT %}
               <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
               {% endif %}
+              <button title="create new test suite in this run" type="submit" name="action-addchild" value="{{ suite.id }}">create new test suite in this run</button>
               {% endif %}
             </div>
           </header>
