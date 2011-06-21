@@ -224,15 +224,20 @@ var TCM = TCM || {};
             }
         });
     },
+
     listDetails = function() {
-        $(".items .item.details").click(
+        $('#listcontent .items .item.details').click(
             function() {
                 var item = $(this),
-                content = item.find(".content"),
-                url = item.data("details-url");
-                if (url && !content.hasClass("loaded")) {
-                    content.load(url);
-                    content.addClass("loaded");
+                content = item.find('.content'),
+                url = item.data('details-url');
+                if (url && !content.hasClass('loaded')) {
+                    content.css('min-height', '168px').addClass('loading loaded');
+                    TCM.addLoadingCSS(content);
+                    content.load(url, function() {
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass('loading');
+                    });
                 }
             });
     };
