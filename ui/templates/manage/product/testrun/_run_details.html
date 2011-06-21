@@ -10,10 +10,10 @@
 
 {% if run.testsuites|length %}
 <section class="components">
-  <h4><a href="#">Suites in this run:</a></h4>
+  <h4><a href="{% url manage_testsuites %}?{% for suite in run.testsuites %}name=^{{ suite.name }}${% if not forloop.last %}&amp;{% endif %}{% endfor %}">Suites in this run:</a></h4>
   <ul>
     {% for suite in run.testsuites %}
-    <li><a href="#">{{ suite.name }}</a></li>
+    <li><a href="{% url manage_testsuites %}?{% for suite in run.testsuites %}name=^{{ suite.name }}${% if not forloop.last %}&amp;{% endif %}{% endfor %}#suite-id-{{ suite.id }}">{{ suite.name }}</a></li>
     {% endfor %}
   </ul>
 </section>
