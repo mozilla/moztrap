@@ -36,7 +36,7 @@
 
       <div class="items {% if not cases %}empty{% endif %}">
         {% for case in cases %}
-        <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}">
+        <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}" data-details-url="{% url manage_testcase_details case.id %}">
           <header class="summary">
             <p class="status">
               {% if case.approval.PENDING %}
@@ -72,25 +72,6 @@
             </div>
           </header>
           <div class="content">
-            <p class="id">#{{ case.testCaseId }}</p>
-            <p class="byline hcard">
-              Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
-              on <time pubdate>{{ case.timeline.createDate|date }}</time>
-            </p>
-            {% comment %} @@@
-            <div class="tags">
-              <h4>tags</h4>
-              <ul>
-                <li>tag 01</li>
-                <li>tag 02</li>
-                <li>tag 03</li>
-                <li>tag 04</li>
-              </ul>
-            </div>
-            {% endcomment %}
-            <div class="envgroups">
-              {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
-            </div>
           </div>
         </article>
         {% endfor %}

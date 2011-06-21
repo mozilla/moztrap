@@ -18,7 +18,32 @@ var TCM = TCM || {};
     };
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
-    var filtering = function() {
+
+    var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
+        var context = $(context_sel),
+        trigger = context.find(trigger_sel);
+        if (context.length && trigger.is("select")) {
+            var target = context.find(target_sel),
+            allopts = target.find("option").clone();
+
+            var doFilter = function() {
+                var key = trigger.find("option:selected").data(data_attr);
+                target.empty();
+                allopts.each(function() {
+                    if ($(this).data(data_attr) === key) {
+                        var newopt = $(this).clone();
+                        newopt.appendTo(target);
+                    }
+                });
+            };
+
+            doFilter();
+
+            trigger.change(doFilter);
+        }
+    },
+
+    filtering = function() {
         var button = $('#filter .form-actions').hide(),
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
@@ -198,34 +223,23 @@ var TCM = TCM || {};
                 return false;
             }
         });
-    };
-
-    var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
-        var context = $(context_sel),
-        trigger = context.find(trigger_sel);
-        if (context.length && trigger.is("select")) {
-            var target = context.find(target_sel),
-            allopts = target.find("option").clone();
-
-            var doFilter = function() {
-                var key = trigger.find("option:selected").data(data_attr);
-                target.empty();
-                allopts.each(function() {
-                    if ($(this).data(data_attr) === key) {
-                        var newopt = $(this).clone();
-                        newopt.appendTo(target);
-                    }
-                });
-            };
-
-            doFilter();
-
-            trigger.change(doFilter);
-        }
+    },
+    listDetails = function() {
+        $(".items .item.details").click(
+            function() {
+                var item = $(this),
+                content = item.find(".content"),
+                url = item.data("details-url");
+                if (url && !content.hasClass("loaded")) {
+                    content.load(url);
+                    content.addClass("loaded");
+                }
+            });
     };
 
     $(function() {
         filtering();
+        listDetails();
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {

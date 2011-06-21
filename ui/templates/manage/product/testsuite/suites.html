@@ -34,9 +34,9 @@
         </ul>
       </nav>
 
-      <div class="class="items {% if not suites %}empty{% endif %}"">
+      <div class="items {% if not suites %}empty{% endif %}">
         {% for suite in suites %}
-        <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}">
+        <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}" data-details-url="{% url manage_testsuite_details suite.id %}">
           <header class="summary">
             <p class="status">
               {% if suite.status.DRAFT %}
@@ -64,19 +64,6 @@
             </div>
           </header>
           <div class="content">
-            <p class="id">#{{ suite.id }}</p>
-            <div class="description">
-              <p class="byline hcard">
-                Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ suite.timeline.createDate|date }}</time>
-              </p>
-              {% if suite.description %}
-                <p>{{ suite.description }}</p>
-              {% endif %}
-            </div>
-            <div class="envgroups">
-              {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
-            </div>
           </div>
         </article>
         {% endfor %}

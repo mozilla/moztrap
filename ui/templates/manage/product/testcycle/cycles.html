@@ -42,7 +42,7 @@
 
       <div class="items {% if not cycles %}empty{% endif %}">
         {% for cycle in cycles %}
-        <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}">
+        <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url manage_testcycle_details cycle.id %}">
           <header class="summary">
             <p class="status">
               {% if cycle.status.DRAFT %}
@@ -72,29 +72,6 @@
             </div>
           </header>
           <div class="content">
-            <p class="id">#{{ cycle.id }}</p>
-            <div class="description">
-              <p class="byline hcard">
-                Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
-                on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
-              </p>
-              {% if cycle.description %}
-                <p>{{ cycle.description }}</p>
-              {% endif %}
-            </div>
-            <div class="envgroups">
-              {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}
-            </div>
-            {% if cycle.team|length %}
-            <div class="testers">
-              <h4>testers</h4>
-              <ul>
-                {% for tester in cycle.team %}
-                <li>{{ tester.screenName }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% endif %}
           </div>
         </article>
         {% endfor %}

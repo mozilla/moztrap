@@ -104,6 +104,7 @@
     +columns(6,24)
   .drill
     +columns(22,24)
+    +prefix(2,24)
   .testers, .drill
     +omega(24)
 
@@ -118,6 +119,7 @@
     +columns(6,24)
   .drill
     +columns(17,24)
+    +prefix(2,24)
   .testers, .time
     +omega(24)
 
@@ -126,14 +128,16 @@
     +columns(1,24)
   .product, .byproduct, .suite, .bysuite
     +columns(3,24)
-  .testers
+  .testers, .drill
     +columns(4,24)
   .title, .bytitle, .run, .byrun
     +columns(5,24)
-  .drill
-    +columns(22,24)
+  .steps
+    +columns(20,24)
   .testers, .drill
     +omega(24)
+  .drill
+    text-align: right
 
 // Included Case Details -----------------------------------------------------
 

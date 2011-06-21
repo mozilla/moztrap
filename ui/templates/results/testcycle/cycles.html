@@ -40,7 +40,7 @@
 
       <div class="items {% if not cycles %}empty{% endif %}">
         {% for cycle in cycles %}
-        <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}">
+        <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url results_testcycle_details cycle.id %}">
           <header class="summary">
             <p class="status">
               <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
@@ -53,24 +53,6 @@
             {% include "results/_results_summary.html" with results=cycle.resultsummary %}
           </header>
           <div class="content">
-            <p class="id">#{{ cycle.id }}</p>
-            <p class="drill">
-              See related <a href="{% url results_testruns %}?testCycle={{ cycle.id }}" title="test runs related to {{ cycle.name }}">test runs</a>
-              or <a href="{% url results_testcases %}?testCycle={{ cycle.id }}" title="test cases related to {{ cycle.name }}">test cases</a>.
-            </p>
-            <section class="envgroups">
-              {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}
-            </section>
-            {% if cycle.team|length %}
-              <section class="testers">
-                <h4>testers</h4>
-                <ul>
-                  {% for tester in cycle.team %}
-                  <li>{{ tester.screenName }}</li>
-                  {% endfor %}
-                </ul>
-              </section>
-            {% endif %}
           </div>
         </article>
         {% endfor %}
