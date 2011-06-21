@@ -62,9 +62,7 @@ var TCM = TCM || {};
                 textbox.removeClass('placeholder');
             },
             updateFormActions = function() {
-                if (input.filter(function() {
-                    return $(this).data('state') === 'changed';
-                }).length) {
+                if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
                     formActions.fadeIn('fast');
                     $('.managelist').addClass('expired');
                 } else {
@@ -72,6 +70,16 @@ var TCM = TCM || {};
                     $('.managelist').removeClass('expired');
                 }
             };
+
+        formActions.find('.reset').click(function() {
+            formActions.fadeOut('fast');
+            $('.managelist').removeClass('expired');
+            input.each(function() {
+                $(this).data('state', null);
+                $(this).attr('checked', $(this).data('originallyChecked'));
+            });
+            return false;
+        });
 
         input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
