@@ -44,7 +44,7 @@ var TCM = TCM || {};
     },
 
     filtering = function() {
-        var button = $('#filter .form-actions').hide(),
+        var formActions = $('#filter .form-actions').hide(),
             input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
                 $(this).data('originallyChecked', $(this).is(':checked'));
             }),
@@ -61,17 +61,25 @@ var TCM = TCM || {};
                 }
                 textbox.removeClass('placeholder');
             },
-            updateButton = function() {
-                if (input.filter(function() {
-                    return $(this).data('state') === 'changed';
-                }).length) {
-                    button.fadeIn('fast');
+            updateFormActions = function() {
+                if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
+                    formActions.fadeIn('fast');
                     $('.managelist').addClass('expired');
                 } else {
-                    button.fadeOut('fast');
+                    formActions.fadeOut('fast');
                     $('.managelist').removeClass('expired');
                 }
             };
+
+        formActions.find('.reset').click(function() {
+            formActions.fadeOut('fast');
+            $('.managelist').removeClass('expired');
+            input.each(function() {
+                $(this).data('state', null);
+                $(this).attr('checked', $(this).data('originallyChecked'));
+            });
+            return false;
+        });
 
         input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
@@ -79,7 +87,7 @@ var TCM = TCM || {};
             } else {
                 $(this).data('state', null);
             }
-            updateButton();
+            updateFormActions();
         });
 
         textbox.keyup(function(event) {
@@ -138,8 +146,12 @@ var TCM = TCM || {};
                 }
                 if (event.keyCode === 13) {
                     event.preventDefault();
-                    suggestionList.find('.selected').click();
-                    suggestionList.show();
+                    if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
+                        formActions.find('button[type="submit"]').click();
+                    } else {
+                        suggestionList.find('.selected').click();
+                        suggestionList.show();
+                    }
                     return false;
                 }
                 if (event.keyCode === 9) {
@@ -216,7 +228,7 @@ var TCM = TCM || {};
                         thisFilter.data('state', 'changed');
                     }
                 }
-                updateButton();
+                updateFormActions();
                 textbox.data('clicked', false).val(null);
                 typedText = null;
                 suggestionList.empty().hide();
@@ -224,15 +236,20 @@ var TCM = TCM || {};
             }
         });
     },
+
     listDetails = function() {
-        $(".items .item.details").click(
+        $('#listcontent .items .item.details').click(
             function() {
                 var item = $(this),
-                content = item.find(".content"),
-                url = item.data("details-url");
-                if (url && !content.hasClass("loaded")) {
-                    content.load(url);
-                    content.addClass("loaded");
+                content = item.find('.content'),
+                url = item.data('details-url');
+                if (url && !content.hasClass('loaded')) {
+                    content.css('min-height', '168px').addClass('loading loaded');
+                    TCM.addLoadingCSS(content);
+                    content.load(url, function() {
+                        $('.loadingCSS').detach();
+                        $('.loading').removeClass('loading');
+                    });
                 }
             });
     };
