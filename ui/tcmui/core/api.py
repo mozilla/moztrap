@@ -418,10 +418,13 @@ class ObjectMixin(StrAndUnicode):
         # filterable fields on subclasses can be different from parent class,
         # so we cache by class name
         if cls._filterable_fields.get(cls.__name__) is None:
-            cls._filterable_fields[cls.__name__] = dict(
+            d = dict(
                 ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
                 if getattr(f, "api_filter_name", False)),
                 **cls.non_field_filters)
+            # Can always filter by id
+            d["id"] = "id"
+            cls._filterable_fields[cls.__name__] = d
         return cls._filterable_fields.get(cls.__name__)
 
 
