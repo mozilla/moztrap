@@ -1,12 +1,15 @@
-<div class="description">
+<div class="info">
   <p class="byline hcard">
     Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
     on <time pubdate>{{ suite.timeline.createDate|date }}</time>
   </p>
   {% if suite.description %}
-    <p class="note">{{ suite.description }}</p>
+    <p class="description">{{ suite.description }}</p>
   {% endif %}
 </div>
+
+<p class="components"><a href="#">Manage all cases in this suite &raquo;</a></p>
+
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
 </div>
