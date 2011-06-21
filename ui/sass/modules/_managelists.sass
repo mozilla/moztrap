@@ -176,12 +176,19 @@
     background-color: transparent
     margin: 0
 
-.description
-  +full(24)
-  +prefix(2,24)
-  +trailer
-  .note
+.info
+  +columns(6,24)
+  +omega(24)
+  text-align: right
+  p
+    margin: 0
+  .description
     +italic
+
+.components
+  +columns(16,24)
+  +prefix(2,24)
+  +pie-clearfix
 
 .sortlinks
   #{$link}

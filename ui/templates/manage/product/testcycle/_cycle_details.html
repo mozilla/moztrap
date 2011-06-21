@@ -1,15 +1,27 @@
-<div class="description">
+<div class="info">
   <p class="byline hcard">
     Created by <span class="fn">{{ cycle.timeline.createdBy.screenName }}</span>
     on <time pubdate>{{ cycle.timeline.createDate|date }}</time>
   </p>
+
   {% if cycle.description %}
-    <p>{{ cycle.description }}</p>
+    <p class="description">{{ cycle.description }}</p>
   {% endif %}
 </div>
+
+<section class="components">
+  <h4><a href="#">Runs in this cycle:</a></h4>
+  <ul>
+    <li><a href="#">run name</a></li>
+    <li><a href="#">another named run</a></li>
+    <li><a href="#">and so on</a></li>
+  </ul>
+</section>
+
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=cycle.environmentgroups.environments %}
 </div>
+
 {% if cycle.team|length %}
 <div class="testers">
   <h4>testers</h4>

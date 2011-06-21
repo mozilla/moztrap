@@ -11,11 +11,12 @@
     #{$link}
       +inline-block
       +icon('[title="edit"]','ui/pencil.png')
+      +icon('[title^="create"]','ui/paper_plus.png')
       +opacity(.675)
     #{$focus}
       +opacity(1)
   button
     +button-reset
-    +icon('[title="clone"]','ui/clone.png')
-    +icon('[title="delete"]','ui/trash.png')
+    +icon('[name="action-clone"]','ui/clone.png')
+    +icon('[name="action-delete"]','ui/trash.png')
     +icon-hover
