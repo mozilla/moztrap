@@ -2,19 +2,12 @@ var TCM = TCM || {};
 
 (function($) {
 
-    // Adds CSS to <head> for .loading
-    TCM.addLoadingCSS = function(container) {
-        var vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
-            style = '<style type="text/css" class="loadingCSS">.loading::before { padding-top: ' + vertHeight + '; }</style>';
-        $('head').append(style);
-    };
-
-    // On `trigger`, adds class `loading` to `context`, and calls TCM.addLoadingCSS()
-    TCM.addLoading = function(trigger, context) {
-        $(context).find(trigger).click(function() {
-            var container = $(this).closest(context).addClass('loading');
-            TCM.addLoadingCSS(container);
-        });
+    // Adds class `loading` to `target`, and adds loading `.overlay`
+    TCM.addLoading = function(target) {
+        var container = $(target).addClass('loading'),
+        vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
+        overlay = '<span class="overlay" style="padding-top: ' + vertHeight + ';">loading...</span>';
+        container.prepend(overlay);
     };
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
@@ -248,10 +241,10 @@ var TCM = TCM || {};
                 content = item.find('.content'),
                 url = item.data('details-url');
                 if (url && !content.hasClass('loaded')) {
-                    content.css('min-height', '168px').addClass('loading loaded');
-                    TCM.addLoadingCSS(content);
+                    content.css('min-height', '168px').addClass('loaded');
+                    TCM.addLoading(content);
                     content.load(url, function() {
-                        $('.loadingCSS').detach();
+                        $('.overlay').detach();
                         $('.loading').removeClass('loading');
                     });
                 }
@@ -356,12 +349,12 @@ var TCM = TCM || {};
                 $('.selectruns + .environment').slideUp('fast');
             },
             lastChildCallback: function(choice) {
-                var environments = $('.selectruns + .environment').css('min-height', '169px').addClass('loading').slideDown('fast'),
+                var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data("sub-url");
-                TCM.addLoadingCSS(environments);
+                TCM.addLoading(environments);
                 $.get(ajaxUrl, function(data) {
                     environments.html(data);
-                    $('.loadingCSS').detach();
+                    $('.overlay').detach();
                     $('.loading').removeClass('loading');
                 });
             }
