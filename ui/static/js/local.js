@@ -252,7 +252,7 @@ var TCM = TCM || {};
     },
 
     manageActionsAjax = function() {
-        $('button[name^=action-]').live(
+        $('.manage button[name^=action-]').live(
             'click',
             function() {
                 var button = $(this),
@@ -265,10 +265,13 @@ var TCM = TCM || {};
                     var replacement = $(data);
                     replace.replaceWith(replacement);
                     replacement.find('.details').html5accordion('.summary');
+                    $('.overlay').detach();
+                    $('.loading').removeClass('loading');
                 },
                 data = {};
                 data[button.attr('name')] = button.val();
                 data['csrfmiddlewaretoken'] = token.val();
+                TCM.addLoading(replace);
                 $.ajax(url, {
                            type: method,
                            data: data,
