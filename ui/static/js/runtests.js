@@ -27,9 +27,9 @@ var TCM = TCM || {};
     };
 
     var testCaseButtons = function(context) {
-        TCM.addLoading('button', context);
         $(context).find("button").click(
             function(event) {
+                TCM.addLoading($(this).closest(context));
                 event.preventDefault();
                 event.stopPropagation();
                 var button = $(this),
@@ -52,8 +52,8 @@ var TCM = TCM || {};
                                     "This field is required." +
                                     "</li></ul>"
                             );
-                            $('.loadingCSS').detach();
-                            $('.loading').removeClass("loading");
+                            $('.overlay').detach();
+                            $('.loading').removeClass('loading');
                             post = false;
                         }
                     }
@@ -68,8 +68,7 @@ var TCM = TCM || {};
                             var newCase = "#" + id;
                             $(newCase).find('.details').andSelf().html5accordion('.summary');
                             testCaseButtons(newCase);
-                            TCM.addLoading('button', testcase);
-                            $('.loadingCSS').detach();
+                            $('.overlay').detach();
                             autoFocus('.details.stepfail > .summary');
                             autoFocus('.details.testinvalid > .summary');
                         }

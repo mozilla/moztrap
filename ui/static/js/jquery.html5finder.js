@@ -129,15 +129,15 @@
                     } else {
                         // Add a loading screen while waiting for the Ajax call to return data
                         if (options.loading === true) {
-                            var target = container.next(options.sectionSelector).addClass('loading');
-                            TCM.addLoadingCSS(target);
+                            var target = container.next(options.sectionSelector);
+                            TCM.addLoading(target);
                         }
                         // Add returned data to the next section
                         $.get(
                             ajaxUrl,
                             function(data) {
                                 container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
-                                $('.loadingCSS').detach();
+                                $('.overlay').detach();
                                 $('.loading').removeClass('loading');
                                 updateEllipsis();
                             }
