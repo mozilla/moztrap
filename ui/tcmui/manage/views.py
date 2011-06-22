@@ -33,6 +33,7 @@ def home(request):
             ("name", KeywordFilter))
 @dec.paginate("cycles")
 @dec.sort("cycles")
+@dec.ajax("manage/product/testcycle/_cycles_list.html")
 def testcycles(request):
     return TemplateResponse(
         request,
@@ -65,8 +66,9 @@ def add_testcycle(request):
 
 @never_cache
 @login_redirect
-@dec.actions(TestRunList, ["delete"], fall_through=True)
+@dec.actions(TestRunList, ["clone", "delete"], fall_through=True)
 @dec.sort("testruns")
+@dec.ajax("manage/product/testcycle/_runs_list.html")
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
@@ -116,6 +118,7 @@ def testcycle_details(request, cycle_id):
             ("name", KeywordFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
+@dec.ajax("manage/product/testrun/_runs_list.html")
 def testruns(request):
     return TemplateResponse(
         request,
@@ -198,6 +201,7 @@ def testrun_details(request, run_id):
             ("name", KeywordFilter))
 @dec.paginate("suites")
 @dec.sort("suites")
+@dec.ajax("manage/product/testsuite/_suites_list.html")
 def testsuites(request):
     return TemplateResponse(
         request,
@@ -282,6 +286,7 @@ def testsuite_details(request, suite_id):
             )
 @dec.paginate("cases")
 @dec.sort("cases")
+@dec.ajax("manage/product/testcase/_cases_list.html")
 def testcases(request):
     return TemplateResponse(
         request,

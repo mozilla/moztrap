@@ -103,10 +103,13 @@ def actions(list_model, allowed_actions, fall_through=False):
     ID of ``list_model``, and "method" will be called on it, with any errors
     handled.
 
-    By default, any "POST" request will be redirected back to the same URL. If
-    ``fall_through`` is set to True, the redirect will only occur if an action
-    was found in the POST data (allowing this decorator to be used with views
-    that also do normal form handling.)
+    By default, any "POST" request will be redirected back to the same URL
+    (unless it's an AJAX request, in which case it sets the request method to
+    GET and clears POST data, which has a similar effect without actually doing
+    a redirect). If ``fall_through`` is set to True, the redirect/method-switch
+    will only occur if an action was found in the POST data (allowing this
+    decorator to be used with views that also do normal non-actions form
+    handling.)
 
     """
     def decorator(view_func):
@@ -128,13 +131,35 @@ def actions(list_model, allowed_actions, fall_through=False):
                                 request, errors.error_message(obj, e))
                         action_taken = True
                 if action_taken or not fall_through:
-                    return redirect(request.get_full_path())
+                    if request.is_ajax():
+                        request.method = "GET"
+                        request.POST = {}
+                    else:
+                        return redirect(request.get_full_path())
             return view_func(request, *args, **kwargs)
 
         return _wrapped_view
 
     return decorator
 
+
+def ajax(template_name):
+    """
+    A view decorator that will swap in an alternative template name for any
+    TemplateResponse to an ajax request.
+
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            response = view_func(request, *args, **kwargs)
+            if request.is_ajax() and hasattr(response, "template_name"):
+                response.template_name = template_name
+            return response
+
+        return _wrapped_view
+
+    return decorator
 
 
 def as_admin(method):

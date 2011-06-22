@@ -1,7 +1,5 @@
 {% extends 'manage/product/testcase/base.html' %}
 
-{% load sort staticdata %}
-
 {% block listcontent %}
 
 <section id="managecases">
@@ -15,72 +13,9 @@
   <form method="POST">
     {% csrf_token %}
 
-    <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bystatus">
-            <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
-          </li>
-          <li class="bytitle">
-            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
-          </li>
-          <li class="byproduct">
-            <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
-          </li>
-          <li class="bycontrols">
-            <span>controls</span>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="items {% if not cases %}empty{% endif %}">
-        {% for case in cases %}
-        <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}" data-details-url="{% url manage_testcase_details case.id %}">
-          <header class="summary">
-            <p class="status">
-              {% if case.approval.PENDING %}
-              <span class="pending">
-                <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
-                <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
-              </span>
-              {% endif %}
-              {% if case.approval.REJECTED %}
-              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
-              {% endif %}
-              {% if case.approval.APPROVED %}
-              {% if case.status.DRAFT %}
-              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
-              {% endif %}
-              {% if case.status.ACTIVE %}
-              <button title="lock" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
-              {% endif %}
-              {% if case.status.LOCKED %}
-              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">locked</button>
-              {% endif %}
-              {% endif %}
-            </p>
-            <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
-            <p class="product">{{ case.product }}</p>
-            <div class="controls">
-              {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
-              {% if case.status.DRAFT %}
-              <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
-              <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
-              {% endif %}
-              {% endif %}
-            </div>
-          </header>
-          <div class="content">
-            {# _case_details.html loaded via ajax #}
-          </div>
-        </article>
-        {% endfor %}
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
+    {% include "manage/product/testcase/_cases_list.html" %}
 
   </form>
+
 </section>
 {% endblock listcontent %}

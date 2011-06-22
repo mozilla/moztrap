@@ -1,0 +1,70 @@
+{% load sort staticdata %}
+
+<div class="managelist action-ajax-replace">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bystatus">
+        <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
+      </li>
+      <li class="bytitle">
+        <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
+      </li>
+      <li class="byproduct">
+        <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
+      </li>
+      <li class="bystart">
+        <a href="{{ sort|url:"startDate" }}" class="{{ sort|dir:"startDate" }}">start date</a>
+      </li>
+      <li class="byend">
+        <a href="{{ sort|url:"endDate" }}" class="{{ sort|dir:"endDate" }}">end date</a>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items {% if not cycles %}empty{% endif %}">
+    {% for cycle in cycles %}
+    <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url manage_testcycle_details cycle.id %}">
+      <header class="summary">
+        <p class="status">
+          {% if cycle.status.DRAFT %}
+          <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
+          {% endif %}
+          {% if cycle.status.ACTIVE %}
+          <button title="lock" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+          {% endif %}
+          {% if cycle.status.LOCKED %}
+          <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
+          {% endif %}
+        </p>
+        <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
+        <p class="product">{{ cycle.product.name }}</p>
+        <time class="start">{{ cycle.startDate|date }}</time>
+        <time class="end">{{ cycle.endDate|date }}</time>
+        <div class="controls">
+          {% if "PERMISSION_TEST_CYCLE_EDIT" in request.user.permissionCodes %}
+          {% if cycle.status.DRAFT %}
+          <a href="{% url manage_testcycle_edit cycle_id=cycle.id %}" title="edit">edit</a>
+          {% endif %}
+          <button title="clone" type="submit" name="action-clone" value="{{ cycle.id }}">clone</button>
+          {% if cycle.status.DRAFT %}
+          <button title="delete" type="submit" name="action-delete" value="{{ cycle.id }}">delete</button>
+          {% endif %}
+          {% endif %}
+          {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
+          <a href="{% url manage_testrun_add %}?cycle={{ cycle.id }}" title="create new test run in this cycle">create new test run in this cycle</a>
+          {% endif %}
+        </div>
+      </header>
+      <div class="content">
+        {# _cycle_details.html loaded via ajax #}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

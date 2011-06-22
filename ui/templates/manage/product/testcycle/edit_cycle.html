@@ -1,41 +1,7 @@
 {% extends 'manage/product/testcycle/cycle_form.html' %}
 
-{% load sort staticdata %}
-
 {% block formtitle %}Edit "{{ cycle.name }}"{% endblock %}
 
 {% block midform %}
-    <table class="list">
-      <thead>
-        <tr class="listordering">
-          <th class="title">
-            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">test runs</a>
-          </th>
-          <th class="start"><a href="{{ sort|url:"startDate" }}" class="{{ sort|dir:"startDate" }}">start date</a></th>
-          <th class="end"><a href="{{ sort|url:"endDate" }}" class="{{ sort|dir:"endDate" }}">end date</a></th>
-          <th class="state"><a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a></th>
-          <th class="controls">controls</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for testrun in testruns %}
-        <tr class="{{ testrun.status|status_class }}">
-          <td class="title"><a href="{% url manage_testrun_edit run_id=testrun.id %}">{{ testrun.name }}</a></td>
-          <td>{{ testrun.startDate|date }}</td>
-          <td>{{ testrun.endDate|date }}</td>
-          <td>{{ testrun.status }}</td>
-          <td class="controls">
-            {% if testrun.status.DRAFT %}
-            <button title="delete" type="submit" value="{{ testrun.id }}" name="action-delete">remove</button>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td class="addrun" colspan="5"><a href="{% url manage_testrun_add %}?cycle={{ cycle.id }}">add test run &raquo;</a></td>
-        </tr>
-      </tfoot>
-    </table>
+{% include "manage/product/testcycle/_runs_list.html" %}
 {% endblock midform %}
