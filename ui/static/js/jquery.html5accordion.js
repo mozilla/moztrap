@@ -49,7 +49,11 @@
             }
 
             // Set the `tabindex` attribute of the `summary` element to 0 to make it keyboard accessible
-            $detailsSummary.attr('tabindex', 0).click(function() {
+            $detailsSummary.attr('tabindex', 0).click(function(event) {
+                if($(event.target).is("button, a")) {
+                    // prevent clicks on summary-internal buttons or links from triggering accordion
+                    return;
+                }
                 // Focus on the `summary` element
                 $detailsSummary.focus();
                 // Toggle the `open` attribute of the `details` element
@@ -67,16 +71,6 @@
                     }
                 }
             });
-
-            var preventInternalButtons = function() {
-                $detailsSummary.find("button, a").click(
-                    function(event) {
-                        // prevent it from triggering the html5accordion
-                        event.stopPropagation();
-                    }
-                );
-            };
-            preventInternalButtons();
         });
     };
 })(jQuery);
