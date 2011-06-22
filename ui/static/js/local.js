@@ -1,4 +1,4 @@
-var TCM = TCM = TCM || {};
+var TCM = TCM || {};
 
 (function($) {
 
@@ -369,6 +369,10 @@ var TCM = TCM = TCM || {};
 
     $(window).load(function() {
         $('#listcontent .items .title').ellipsis(true, 250);
+        if ($('.manage').length && window.location.hash) {
+            var hash = window.location.hash;
+            $(hash).children('.summary').click();
+        }
     });
 
 })(jQuery);
