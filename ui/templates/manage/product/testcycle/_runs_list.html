@@ -27,7 +27,19 @@
     {% for testrun in testruns %}
     <article class="item {{ testrun.status|status_class }}">
       <p class="status">
-        <span class="{{ testrun.status|status_class }}">{{ testrun.status }}</span>
+          {% if testrun.status.DRAFT %}
+          {% if cycle.status.ACTIVE %}
+          <button title="activate" type="submit" name="action-activate" value="{{ testrun.id }}" class="draft">draft</button>
+          {% else %}
+          <span class="draft">draft</span>
+          {% endif %}
+          {% endif %}
+          {% if testrun.status.ACTIVE %}
+          <button title="lock" name="action-deactivate" value="{{ testrun.id }}" class="active">active</button>
+          {% endif %}
+          {% if testrun.status.LOCKED %}
+          <button title="activate" name="action-activate" value="{{ testrun.id }}" class="locked">locked</button>
+          {% endif %}
       </p>
       <h3 class="title"><a href="{% url manage_testrun_edit run_id=testrun.id %}">{{ testrun.name }}</a></h3>
       <time class="start">{{ testrun.startDate|date }}</time>
