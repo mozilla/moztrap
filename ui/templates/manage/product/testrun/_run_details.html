@@ -1,33 +1,35 @@
-<div class="description">
+<div class="info">
   <p class="byline hcard">
     Created by <span class="fn">{{ run.timeline.createdBy.screenName }}</span>
     on <time pubdate>{{ run.timeline.createDate|date }}</time>
   </p>
   {% if run.description %}
-    <p>{{ run.description }}</p>
+    <p class="details">{{ run.description }}</p>
   {% endif %}
 </div>
+
+{% if run.testsuites|length %}
+<section class="components">
+  <h4><a href="{% url manage_testsuites %}?{% for suite in run.testsuites %}name=^{{ suite.name }}${% if not forloop.last %}&amp;{% endif %}{% endfor %}">Suites in this run:</a></h4>
+  <ul>
+    {% for suite in run.testsuites %}
+    <li><a href="{% url manage_testsuites %}?{% for suite in run.testsuites %}name=^{{ suite.name }}${% if not forloop.last %}&amp;{% endif %}{% endfor %}#suite-id-{{ suite.id }}">{{ suite.name }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=run.environmentgroups.environments %}
 </div>
-{% if run.testsuites|length %}
-<div class="suites">
-  <h4>suites</h4>
-  <ul>
-    {% for suite in run.testsuites %}
-    <li>{{ suite.name }}</li>
-    {% endfor %}
-  </ul>
-</div>
-{% endif %}
 
 {% if run.team|length %}
-<div class="testers">
+<section class="testers">
   <h4>testers</h4>
   <ul>
     {% for tester in run.team %}
     <li>{{ tester.screenName }}</li>
     {% endfor %}
   </ul>
-</div>
+</section>
 {% endif %}

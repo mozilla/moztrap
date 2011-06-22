@@ -1,0 +1,60 @@
+{% load sort staticdata %}
+
+<div class="managelist action-ajax-replace">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bystatus">
+        <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
+      </li>
+      <li class="bytitle">
+        <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
+      </li>
+      <li class="byproduct">
+        <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items {% if not suites %}empty{% endif %}">
+    {% for suite in suites %}
+    <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}" data-details-url="{% url manage_testsuite_details suite.id %}">
+      <header class="summary">
+        <p class="status">
+          {% if suite.status.DRAFT %}
+          <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
+          {% endif %}
+          {% if suite.status.ACTIVE %}
+          <button title="lock" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
+          {% endif %}
+          {% if suite.status.LOCKED %}
+          <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">locked</button>
+          {% endif %}
+        </p>
+        <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
+        <p class="product">{{ suite.product.name }}</p>
+        <div class="controls">
+          {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
+          {% if suite.status.DRAFT %}
+          <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+          {% endif %}
+          <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
+          {% if suite.status.DRAFT %}
+          <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+          {% endif %}
+          {# @@@ requires modifications to case form <a href="#" title="create new test case in this suite">create new test case in this suite</a> #}
+          {% endif %}
+        </div>
+      </header>
+      <div class="content">
+        {# _suite_details.html loaded via ajax #}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

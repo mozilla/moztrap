@@ -1409,6 +1409,21 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
+.controls a:link[title^="create"], .controls a:visited[title^="create"] {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/paper_plus.png?1308686962');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0 0.125em;
+}
 .controls a:focus, .controls a:hover, .controls a:active {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
@@ -1430,7 +1445,7 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
   opacity: 0.675;
 }
-.controls button[title="clone"] {
+.controls button[name="action-clone"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1445,7 +1460,7 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls button[title="delete"] {
+.controls button[name="action-delete"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1883,7 +1898,7 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=24)";
   opacity: 0.236;
 }
-.loading::before {
+.loading .overlay {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1894,7 +1909,6 @@ thead .controls {
   padding-top: 0.405em;
   text-shadow: #e9eded 0 1px 0;
   display: block;
-  content: "Loading...";
   color: rgba(82, 134, 132, 0.618);
   background: rgba(233, 237, 237, 0.618);
   text-align: center;
@@ -2774,13 +2788,38 @@ thead .controls {
   margin: 0;
 }
 
-.description {
-  clear: both;
-  padding-left: 8.421%;
-  margin-bottom: 1.618em;
+.info {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: right;
 }
-.description .note {
+.info p {
+  margin: 0;
+}
+.info .description {
   font-style: italic;
+}
+
+.components {
+  display: inline;
+  float: left;
+  width: 66.316%;
+  margin-right: 1.053%;
+  padding-left: 8.421%;
+  *zoom: 1;
+}
+.components:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited {
@@ -3703,7 +3742,7 @@ thead .controls {
   width: 11.579%;
   margin-right: 1.053%;
 }
-#manageruns .cycle, #manageruns .product, #manageruns .bycycle, #manageruns .byproduct, #manageruns .suites {
+#manageruns .cycle, #manageruns .product, #manageruns .bycycle, #manageruns .byproduct, #manageruns .testers {
   display: inline;
   float: left;
   width: 15.789%;
@@ -3714,11 +3753,6 @@ thead .controls {
   float: left;
   width: 24.211%;
   margin-right: 1.053%;
-}
-#manageruns .suites {
-  display: inline;
-  float: right;
-  margin-right: 0;
 }
 
 #managesuites .product, #managesuites .byproduct, #managesuites .title, #managesuites .bytitle {

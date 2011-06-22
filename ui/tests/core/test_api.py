@@ -385,12 +385,12 @@ class ResourceObjectTest(TestResourceTestCase):
 
         self.assertEqual(
             self.resource_class.filterable_fields().keys(),
-            ["name", "submit_as"])
+            ["name", "submit_as", "id"])
 
         # same result on second call
         self.assertEqual(
             self.resource_class.filterable_fields().keys(),
-            ["name", "submit_as"])
+            ["name", "submit_as", "id"])
 
 
     def test_put(self, http):
@@ -823,7 +823,7 @@ class ListObjectTest(TestResourceTestCase):
     def test_filterable_fields(self, http):
         self.assertEqual(
             self.resource_list_class.filterable_fields().keys(),
-            ["name", "submit_as"])
+            ["name", "submit_as", "id"])
 
 
     def test_unicode(self, http):

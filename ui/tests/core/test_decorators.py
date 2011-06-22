@@ -59,6 +59,10 @@ class TemplateResponseDecoratorTestCase(TestResourceTestCase):
 
         @decorator
         def view(request):
+            try:
+                response.request = request
+            except AttributeError:
+                pass
             return response
 
         return view(request)
@@ -117,9 +121,8 @@ class TemplateResponseDecoratorBaseTests(object):
 
 class ListDecoratorBaseTests(TemplateResponseDecoratorBaseTests):
     """
-    Common tests for decorators whose factory function first argument specifies
-    a template context name in which a ListObject subclass instance is found
-    that the decorator operates on.
+    Common tests for decorators that operate on views including a ListObject
+    subclass in the template context.
 
     """
     @property
@@ -314,6 +317,46 @@ class ActionsTest(ListDecoratorBaseTests, TemplateResponseDecoratorTestCase):
         self.assertEqual(res["Location"], "/the/url")
 
 
+    def test_action_redirects_with_querystring(self):
+        req = self.req(
+            "POST", "/the/url?filter=value", data={"action-doit": "3"})
+        res = self.on_listobject_response(
+            response(self.builder.one(resourceIdentity=make_identity(id=3))),
+            request=req)
+
+        self.assertEqual(res.status_code, 302)
+        self.assertEqual(res["Location"], "/the/url?filter=value")
+
+
+    def test_ajax_no_redirect(self):
+        req = self.req(
+            "POST", "/the/url?filter=value", data={"action-doit": "3"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        res = self.on_listobject_response(
+            response(self.builder.one(resourceIdentity=make_identity(id=3))),
+            request=req)
+
+        self.assertEqual(res.status_code, 200)
+
+
+    def test_ajax_fall_through_method(self):
+        """
+        Without fall_through set, an ajax request that performs an action
+        continues on and returns the view, but changes the request method to
+        "GET" and clears POST data.
+
+        """
+        req = self.req(
+            "POST", "/the/url?filter=value", data={"action-doit": "3"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        res = self.on_listobject_response(
+            response(self.builder.one(resourceIdentity=make_identity(id=3))),
+            request=req)
+
+        self.assertEqual(res.request.method, "GET")
+        self.assertEqual(res.request.POST, {})
+
+
     def test_action_called(self):
         req = self.req("POST", "/the/url", data={"action-doit": "3"})
         self.on_listobject_response(
@@ -362,9 +405,34 @@ class ActionsTest(ListDecoratorBaseTests, TemplateResponseDecoratorTestCase):
 
         self.assertEqual(res.status_code, 302)
         error.assert_called_with(req, "an error message")
-        self.assertIsInstance(error_message.call_args[0][0], self.resource_class)
+        self.assertIsInstance(
+            error_message.call_args[0][0], self.resource_class)
         self.assertEqual(error_message.call_args[0][1], exc)
 
+
+
+class AjaxTest(TemplateResponseDecoratorBaseTests,
+               TemplateResponseDecoratorTestCase):
+    @property
+    def factory(self):
+        from tcmui.core.decorators import ajax
+        return ajax
+
+
+    factory_args = ("ajax/_template.html",)
+
+
+    def test_ajax(self):
+        req = self.req(HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        res = self.on_template_response({}, request=req)
+
+        self.assertEqual(res.template_name, "ajax/_template.html")
+
+
+    def test_no_ajax(self):
+        res = self.on_template_response({})
+
+        self.assertEqual(res.template_name, "some/template.html")
 
 
 

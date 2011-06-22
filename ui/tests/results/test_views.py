@@ -31,9 +31,15 @@ class ListViewTests(object):
 
     ctx_var = None
 
+    ctx_var_single = None
+
     @property
     def url(self):
         return "/results/%s/" % self.builder.plural_name
+
+
+    def ajax_detail_url(self, item_id):
+        return "%s_detail/%s/" % (self.url, item_id)
 
 
     def extra_responses(self):
@@ -44,8 +50,26 @@ class ListViewTests(object):
         return {}
 
 
+    def per_item_ajax_detail_responses(self, item_id):
+        return {}
+
+
     def list_item_data(self):
-        return [{"name": "Thing 1"}, {"name": "Thing 2"}]
+        return [
+            {
+                "name": "Thing 1",
+                "resourceIdentity": make_identity(
+                    id=1, url="%s/1/" % self.list_class.default_url)
+                },
+            {
+                "name": "Thing 2",
+                "resourceIdentity": make_identity(
+                    id=2, url="%s/2/" % self.list_class.default_url)
+                },
+            ]
+
+
+    item_data_check_attr = "name"
 
 
     def extra_querystring(self):
@@ -83,12 +107,46 @@ class ListViewTests(object):
                 set([Url(k) for k in COMMON_RESPONSES.iterkeys()])))
 
 
+    def test_ajax_detail_view(self, http):
+        item_data = self.list_item_data()[0]
+        responses = {
+            "http://fake.base/rest/%s/1?_type=json" % self.list_class.default_url:
+                response(self.builder.one(**item_data))
+            }
+        responses.update(self.per_item_ajax_detail_responses("1"))
+        self.setup_responses(http, responses)
+
+        res = self.app.get(self.ajax_detail_url("1"))
+
+        self.assertEqual(res.status_int, 200)
+        ctx = self.rendered["context"]
+        obj = ctx[self.ctx_var_single]
+        self.assertIsInstance(obj, self.list_class.entryclass)
+
+        if self.item_data_check_attr.endswith("Id"):
+            attr = getattr(obj, self.item_data_check_attr[:-2])
+            attr = attr.id
+        else:
+            attr = getattr(obj, self.item_data_check_attr)
+        self.assertEqual(str(attr), str(item_data[self.item_data_check_attr]))
+
+        # all the expected API URLs were hit
+        self.assertEqual(
+            set([Url(k) for k in responses.iterkeys()]),
+            set(Url(args[1]["uri"])
+                for args in http.request.call_args_list).difference(
+                # not concerned about common responses
+                set([Url(k) for k in COMMON_RESPONSES.iterkeys()])))
+
+
 
 @patch("tcmui.core.api.userAgent")
 class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
     builder = testcycles
 
     ctx_var = "cycles"
+
+    ctx_var_single = "cycle"
 
 
     def extra_querystring(self):
@@ -100,6 +158,11 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testcycles/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
+            }
+
+
+    def per_item_ajax_detail_responses(self, item_id):
+        return {
             "http://fake.base/rest/testcycles/%s/team/members?_type=json" % item_id:
                 response(users.array()),
             "http://fake.base/rest/testcycles/%s/environmentgroups?_type=json" % item_id:
@@ -120,6 +183,7 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
 
     ctx_var = "runs"
 
+    ctx_var_single = "run"
 
     def extra_querystring(self):
         # ACTIVE, LOCKED, and CLOSED status (not DRAFT or DISCARDED)
@@ -139,6 +203,11 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testruns/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
+            }
+
+
+    def per_item_ajax_detail_responses(self, item_id):
+        return {
             "http://fake.base/rest/testruns/%s/team/members?_type=json" % item_id:
                 response(users.array()),
             "http://fake.base/rest/testruns/%s/environmentgroups?_type=json" % item_id:
@@ -159,19 +228,21 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
 
     ctx_var = "includedcases"
 
+    ctx_var_single = "itc"
+
     url = "/results/testcases/"
+
+
+    def ajax_detail_url(self, item_id):
+        return "%s_detail/%s/" % (self.url, item_id)
 
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/testcases/versions/1?_type=json":
-                response(testcaseversions.one()),
             "http://fake.base/rest/testcases/1?_type=json":
                 response(testcases.one()),
             "http://fake.base/rest/testruns/1?_type=json":
                 response(testruns.one()),
-            "http://fake.base/rest/users/1?_type=json":
-                response(users.one()),
             "http://fake.base/rest/testsuites/1?_type=json":
                 response(testsuites.one()),
             # summary results for included test case
@@ -185,25 +256,58 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
                 response(testsuites.searchresult({})),
             # runs for filtering on
             "http://fake.base/rest/testruns?_type=json&testRunStatusId=2&testRunStatusId=3":
-                response(testruns.searchresult({}))
+                response(testruns.searchresult({})),
             }
 
 
     def per_item_responses(self, item_id):
         return {
-            "http://fake.base/rest/includedtestcases/%s/assignments?_type=json" % item_id:
+            "http://fake.base/rest/testcases/versions/%s?_type=json" % item_id:
+                response(testcaseversions.one()),
+            }
+
+
+    def per_item_ajax_detail_responses(self, item_id):
+        return {
+            "http://fake.base/rest/testruns/includedtestcases/%s/assignments?_type=json" % item_id:
                 response(assignments.array({})),
-            "http://fake.base/rest/includedtestcases/%s/environmentgroups?_type=json" % item_id:
+            "http://fake.base/rest/testruns/includedtestcases/%s/environmentgroups?_type=json" % item_id:
                 response(environmentgroups.array()),
+            "http://fake.base/rest/testcases/versions/%s/steps?_type=json" % item_id:
+                response(testcasesteps.array({})),
+            "http://fake.base/rest/testcases/%s?_type=json" % item_id:
+                response(testcases.one()),
+            "http://fake.base/rest/users/1?_type=json":
+                response(users.one()),
             }
 
 
     def list_item_data(self):
-        data = super(TestCaseResultsViewTest, self).list_item_data()
-        # give the first item a test suite
-        data[0]["testSuiteId"] = 1
-        data[0]["testSuiteLocator"] = make_locator(id=1, url="testsuites/1")
-        return data
+        return [
+            {
+                "testCaseId": 1,
+                "testCaseLocator": make_locator(id=1, url="testcases/1"),
+                "testCaseVersionId": 1,
+                "testCaseVersionLocator": make_locator(
+                    id=1, url="testcases/versions/1"),
+                "testSuiteId": 1,
+                "testSuiteLocator": make_locator(id=1, url="testsuites/1"),
+                "resourceIdentity": make_identity(
+                    id=1, url="%s/1/" % self.list_class.default_url)
+                },
+            {
+                "testCaseId": 2,
+                "testCaseLocator": make_locator(id=2, url="testcases/1"),
+                "testCaseVersionId": 2,
+                "testCaseVersionLocator": make_locator(
+                    id=2, url="testcases/versions/2"),
+                "resourceIdentity": make_identity(
+                    id=2, url="%s/2/" % self.list_class.default_url)
+                },
+            ]
+
+
+    item_data_check_attr = "testCaseVersionId"
 
 
     @property
@@ -254,12 +358,17 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
 
     def per_item_responses(self, item_id):
         return {
-            "http://fake.base/rest/testresults/%s/environments?_type=json" % item_id:
+            "http://fake.base/rest/testruns/results/%s/environments?_type=json" % item_id:
                 response(environments.array({})),
             }
+
 
     def get(self, uri, *args, **kwargs):
         req = self.factory.get(uri, *args, **kwargs)
         req.auth = self.auth
         from tcmui.core.api import url_final_integer
         return self.view(req, url_final_integer(uri))
+
+
+    def test_ajax_detail_view(self, http):
+        pass

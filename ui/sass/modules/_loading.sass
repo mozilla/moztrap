@@ -3,13 +3,12 @@
   position: relative
   > *
     +opacity($xxsmall)
-  &::before
+  .overlay
     +stretch
     +boldcond
     +padding-leader(.25)
     +text-shadow($blue-hint 0 1px 0)
     display: block
-    content: "Loading..."
     color: rgba($blue,$small)
     background: rgba($blue-hint,$small)
     text-align: center

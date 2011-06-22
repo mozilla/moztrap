@@ -34,6 +34,7 @@ def home(request):
             ("name", KeywordFilter))
 @dec.paginate("cycles")
 @dec.sort("cycles")
+@dec.ajax("manage/product/testcycle/_cycles_list.html")
 def testcycles(request):
     return TemplateResponse(
         request,
@@ -66,8 +67,9 @@ def add_testcycle(request):
 
 @never_cache
 @login_redirect
-@dec.actions(TestRunList, ["delete"], fall_through=True)
+@dec.actions(TestRunList, ["clone", "delete"], fall_through=True)
 @dec.sort("testruns")
+@dec.ajax("manage/product/testcycle/_runs_list.html")
 def edit_testcycle(request, cycle_id):
     cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
     form = TestCycleForm(
@@ -117,6 +119,7 @@ def testcycle_details(request, cycle_id):
             ("name", KeywordFilter))
 @dec.paginate("runs")
 @dec.sort("runs")
+@dec.ajax("manage/product/testrun/_runs_list.html")
 def testruns(request):
     return TemplateResponse(
         request,
@@ -130,14 +133,10 @@ def testruns(request):
 def add_testrun(request):
     tcid = request.GET.get("cycle")
     suites = TestSuiteList.ours(auth=request.auth)
-    if tcid is not None:
-        cycle = TestCycleList.get_by_id(tcid, auth=request.auth)
-        suites = suites.filter(product=cycle.product.id)
     form = TestRunForm(
         request.POST or None,
         initial=tcid and {"test_cycle": tcid} or {},
         test_cycle_choices=TestCycleList.ours(auth=request.auth),
-        # @@@ should be narrowed dynamically by product
         suites_choices=suites,
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
@@ -203,6 +202,7 @@ def testrun_details(request, run_id):
             ("name", KeywordFilter))
 @dec.paginate("suites")
 @dec.sort("suites")
+@dec.ajax("manage/product/testsuite/_suites_list.html")
 def testsuites(request):
     return TemplateResponse(
         request,
@@ -217,7 +217,6 @@ def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
-        # @@@ should be narrowed dynamically by product
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
             company=conf.TCM_COMPANY_ID, status=TestCaseStatus.ACTIVE),
         auth=request.auth)
@@ -288,6 +287,7 @@ def testsuite_details(request, suite_id):
             )
 @dec.paginate("cases")
 @dec.sort("cases")
+@dec.ajax("manage/product/testcase/_cases_list.html")
 def testcases(request):
     return TemplateResponse(
         request,

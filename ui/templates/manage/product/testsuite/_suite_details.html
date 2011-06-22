@@ -1,12 +1,20 @@
-<div class="description">
+<div class="info">
   <p class="byline hcard">
     Created by <span class="fn">{{ suite.timeline.createdBy.screenName }}</span>
     on <time pubdate>{{ suite.timeline.createDate|date }}</time>
   </p>
   {% if suite.description %}
-    <p class="note">{{ suite.description }}</p>
+    <p class="description">{{ suite.description }}</p>
   {% endif %}
 </div>
+
+{# @@@ currently no way to do this filter reasonably @@@ #}
+{% comment %}
+<p class="components">
+  <a href="{% url manage_testcases %}">Manage all cases in this suite &raquo;</a>
+</p>
+{% endcomment %}
+
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}
 </div>
