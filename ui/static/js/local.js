@@ -10,6 +10,11 @@ var TCM = TCM || {};
         container.prepend(overlay);
     };
 
+    TCM.removeLoading = function() {
+        $('.overlay').detach();
+        $('.loading').removeClass('loading');
+    };
+
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
 
     var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
@@ -244,8 +249,7 @@ var TCM = TCM || {};
                     content.css('min-height', '168px').addClass('loaded');
                     TCM.addLoading(content);
                     content.load(url, function() {
-                        $('.overlay').detach();
-                        $('.loading').removeClass('loading');
+                        TCM.removeLoading();
                     });
                 }
             });
@@ -265,8 +269,7 @@ var TCM = TCM || {};
                     var replacement = $(data);
                     replace.replaceWith(replacement);
                     replacement.find('.details').html5accordion('.summary');
-                    $('.overlay').detach();
-                    $('.loading').removeClass('loading');
+                    TCM.removeLoading();
                 },
                 data = {};
                 data[button.attr('name')] = button.val();
@@ -357,8 +360,7 @@ var TCM = TCM || {};
                 TCM.addLoading(environments);
                 $.get(ajaxUrl, function(data) {
                     environments.html(data);
-                    $('.overlay').detach();
-                    $('.loading').removeClass('loading');
+                    TCM.removeLoading();
                 });
             }
         });
@@ -367,6 +369,10 @@ var TCM = TCM || {};
 
     $(window).load(function() {
         $('#listcontent .items .title').ellipsis(true, 250);
+        if ($('.manage').length && window.location.hash) {
+            var hash = window.location.hash;
+            $(hash).children('.summary').click();
+        }
     });
 
 })(jQuery);

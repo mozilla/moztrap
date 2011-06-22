@@ -1,7 +1,6 @@
 (function($) {
     $("body").ajaxError(function(event, request, settings, error) {
-        $('.overlay').detach();
-        $('.loading').removeClass('loading');
+        TCM.removeLoading();
         var data = $.parseJSON(request.responseText);
         if(error === "UNAUTHORIZED" || error === "FORBIDDEN") {
             window.location = data.login_url + "?next=" + window.location.pathname;

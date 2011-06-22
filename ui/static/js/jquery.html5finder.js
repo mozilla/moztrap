@@ -137,8 +137,7 @@
                             ajaxUrl,
                             function(data) {
                                 container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
-                                $('.overlay').detach();
-                                $('.loading').removeClass('loading');
+                                TCM.removeLoading();
                                 updateEllipsis();
                             }
                         );

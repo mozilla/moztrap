@@ -1,5 +1,3 @@
-var TCM = TCM || {};
-
 (function($) {
 
     var autoFocus = function(trigger) {
@@ -52,8 +50,7 @@ var TCM = TCM || {};
                                     "This field is required." +
                                     "</li></ul>"
                             );
-                            $('.overlay').detach();
-                            $('.loading').removeClass('loading');
+                            TCM.removeLoading();
                             post = false;
                         }
                     }
@@ -68,7 +65,7 @@ var TCM = TCM || {};
                             var newCase = "#" + id;
                             $(newCase).find('.details').andSelf().html5accordion('.summary');
                             testCaseButtons(newCase);
-                            $('.overlay').detach();
+                            TCM.removeLoading();
                             autoFocus('.details.stepfail > .summary');
                             autoFocus('.details.testinvalid > .summary');
                         }
