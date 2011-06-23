@@ -48,8 +48,16 @@ def login_redirect(function=None, redirect_field_name=None, login_url=None):
                 return response
 
             if request.is_ajax():
-                error_info = {"login_url": reverse("login")}
-                return HttpResponse(json.dumps(error_info), status=error_status)
+                error_info = {
+                    "login_url": reverse("login"),
+                    # prevent ajax messages middleware from reading messages,
+                    # client will redirect to login form and see them there.
+                    "no_messages": True,
+                    }
+                return HttpResponse(
+                    json.dumps(error_info),
+                    status=error_status,
+                    content_type="application/json")
 
             return redirect_to_login(
                 from_url=request.path,

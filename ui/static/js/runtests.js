@@ -61,7 +61,7 @@
                         data,
                         function(data) {
                             var id = testcase.attr("id");
-                            testcase.replaceWith(data);
+                            testcase.replaceWith(data.html);
                             var newCase = "#" + id;
                             $(newCase).find('.details').andSelf().html5accordion('.summary');
                             testCaseButtons(newCase);

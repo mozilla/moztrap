@@ -86,6 +86,16 @@
       +italic
       margin: 0
 
+.item
+  .info
+    +columns(6,24)
+    +omega(24)
+    text-align: right
+    p
+      margin: 0
+    .description
+      +italic
+
 .status
   position: relative
   .pending
@@ -175,15 +185,6 @@
     @extend .groupheader
     background-color: transparent
     margin: 0
-
-.info
-  +columns(6,24)
-  +omega(24)
-  text-align: right
-  p
-    margin: 0
-  .description
-    +italic
 
 .components
   +columns(16,24)

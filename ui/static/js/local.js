@@ -248,9 +248,11 @@ var TCM = TCM || {};
                 if (url && !content.hasClass('loaded')) {
                     content.css('min-height', '168px').addClass('loaded');
                     TCM.addLoading(content);
-                    content.load(url, function() {
-                        TCM.removeLoading();
-                    });
+                    $.get(url,
+                          function(data) {
+                              TCM.removeLoading();
+                              content.html(data.html);
+                          });
                 }
             });
     },
@@ -266,7 +268,7 @@ var TCM = TCM || {};
                 method = form.attr('method'),
                 replace = button.closest('.action-ajax-replace'),
                 success = function(data) {
-                    var replacement = $(data);
+                    var replacement = $(data.html);
                     replace.replaceWith(replacement);
                     replacement.find('.details').html5accordion('.summary');
                     TCM.removeLoading();
@@ -359,7 +361,7 @@ var TCM = TCM || {};
                     ajaxUrl = $(choice).data("sub-url");
                 TCM.addLoading(environments);
                 $.get(ajaxUrl, function(data) {
-                    environments.html(data);
+                    environments.html(data.html);
                     TCM.removeLoading();
                 });
             }

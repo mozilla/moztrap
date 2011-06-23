@@ -11,3 +11,4 @@ django-classy-tags==0.3.0
 python-dateutil==1.5
 flufl.enum==3.1
 django-secure==0.1.0
+django-icanhaz==0.1.0

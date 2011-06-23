@@ -67,7 +67,8 @@ def add_testcycle(request):
 
 @never_cache
 @login_redirect
-@dec.actions(TestRunList, ["clone", "delete"], fall_through=True)
+@dec.actions(TestRunList, ["clone", "delete", "activate", "deactivate"],
+             fall_through=True)
 @dec.sort("testruns")
 @dec.ajax("manage/product/testcycle/_runs_list.html")
 def edit_testcycle(request, cycle_id):

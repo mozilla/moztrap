@@ -1,4 +1,7 @@
-    {% if messages %}
+{% load icanhaz %}
+
+{% icanhaz "message" %}
+
     <aside id="messages">
       <ul>
         {% for message in messages %}
@@ -6,4 +9,3 @@
         {% endfor %}
       </ul>
     </aside>
-    {% endif %}

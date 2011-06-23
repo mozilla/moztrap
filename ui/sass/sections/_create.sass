@@ -7,11 +7,12 @@
 
 .addfields
   &, #{$link}
+    +demi
     +italic
     display: block
-    padding: 0 rhythm(.5)
+    padding: rhythm(.25) rhythm(.5)
     color: $green-dark
-    background: rgba($green-lighter,$small)
+    background: rgba($green,$xsmall)
     text-align: right
     &:first-child:last-child, h3 + &
       +padding-leader(.25)
@@ -185,25 +186,36 @@
     +full(22)
     +pad(1,1,22)
 
-/* Create Cycle --------------------------------------------------------------
+/* Create/Edit Cycle --------------------------------------------------------------
 
 #addcycle
   @extend .addform
   @extend .managelists
 
-  .list
-    clear: both
-    margin-bottom: 0
-
+  .item
+    +padding-leader(.25)
+    +padding-trailer(.25)
+  .status, .controls
+    +trailer(0)
+  .start, .end, .bystart, .byend
+    +columns(3,24)
+  .title, .bytitle
+    +columns(14,24)
   .addrun
-    padding: 0
-    button
-      @extend .addfields
-      +border-radius(0)
-      display: block
-      margin: 0
-      width: 100%
-      border: 0
+    a
+      #{$link}
+        +full(24)
+        +demi
+        +italic
+        +border-radius
+        display: block
+        padding: rhythm(.25) rhythm(.5)
+        background: rgba($green,$xsmall)
+        color: $green-dark
+        text-align: right
+      #{$focus}
+        color: $base
+        background: rgba($green-light,$small)
 
 .assignto
   clear: both

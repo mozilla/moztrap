@@ -1417,7 +1417,7 @@ thead .controls {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/paper_plus.png?1308686962');
+  background-image: url('../images/ui/paper_plus.png?1308689432');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -2463,6 +2463,23 @@ thead .controls {
   margin: 0;
 }
 
+.item .info {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: right;
+}
+.item .info p {
+  margin: 0;
+}
+.item .info .description {
+  font-style: italic;
+}
+
 .status {
   position: relative;
 }
@@ -2788,23 +2805,6 @@ thead .controls {
   margin: 0;
 }
 
-.info {
-  display: inline;
-  float: left;
-  width: 24.211%;
-  margin-right: 1.053%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  text-align: right;
-}
-.info p {
-  margin: 0;
-}
-.info .description {
-  font-style: italic;
-}
-
 .components {
   display: inline;
   float: left;
@@ -3104,19 +3104,20 @@ thead .controls {
   height: 1.618em;
 }
 
-.addfields, #addcycle .addrun button, .addfields:link, #addcycle .addrun button:link, .addfields:visited, #addcycle .addrun button:visited {
+.addfields, .addfields:link, .addfields:visited {
+  font-weight: 500;
   font-style: italic;
   display: block;
-  padding: 0 0.809em;
+  padding: 0.405em 0.809em;
   color: #4f7a1b;
-  background: rgba(205, 236, 169, 0.618);
+  background: rgba(119, 185, 41, 0.382);
   text-align: right;
 }
-.addfields:first-child:last-child, #addcycle .addrun button:first-child:last-child, h3 + .addfields, h3 + #addcycle .addrun button, #addcycle .addrun h3 + button, .addfields:link:first-child:last-child, #addcycle .addrun button:link:first-child:last-child, h3 + .addfields:link, h3 + #addcycle .addrun button:link, #addcycle .addrun h3 + button:link, .addfields:visited:first-child:last-child, #addcycle .addrun button:visited:first-child:last-child, h3 + .addfields:visited, h3 + #addcycle .addrun button:visited, #addcycle .addrun h3 + button:visited {
+.addfields:first-child:last-child, h3 + .addfields, .addfields:link:first-child:last-child, h3 + .addfields:link, .addfields:visited:first-child:last-child, h3 + .addfields:visited {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
 }
-.addfields:focus, #addcycle .addrun button:focus, .addfields:hover, #addcycle .addrun button:hover, .addfields:active, #addcycle .addrun button:active {
+.addfields:focus, .addfields:hover, .addfields:active {
   color: #444444;
   background: rgba(181, 227, 127, 0.618);
 }
@@ -3492,25 +3493,45 @@ thead .controls {
   padding-right: 4.598%;
 }
 
-/* Create Cycle -------------------------------------------------------------- */
-#addcycle .list {
+/* Create/Edit Cycle -------------------------------------------------------------- */
+#addcycle .item {
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+}
+#addcycle .status, #addcycle .controls {
+  margin-bottom: 0em;
+}
+#addcycle .start, #addcycle .end, #addcycle .bystart, #addcycle .byend {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+#addcycle .title, #addcycle .bytitle {
+  display: inline;
+  float: left;
+  width: 57.895%;
+  margin-right: 1.053%;
+}
+#addcycle .addrun a:link, #addcycle .addrun a:visited {
   clear: both;
-  margin-bottom: 0;
-}
-#addcycle .addrun {
-  padding: 0;
-}
-#addcycle .addrun button {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  -o-border-radius: 0;
-  -ms-border-radius: 0;
-  -khtml-border-radius: 0;
-  border-radius: 0;
+  font-weight: 500;
+  font-style: italic;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
   display: block;
-  margin: 0;
-  width: 100%;
-  border: 0;
+  padding: 0.405em 0.809em;
+  background: rgba(119, 185, 41, 0.382);
+  color: #4f7a1b;
+  text-align: right;
+}
+#addcycle .addrun a:focus, #addcycle .addrun a:hover, #addcycle .addrun a:active {
+  color: #444444;
+  background: rgba(181, 227, 127, 0.618);
 }
 
 .assignto {
@@ -3650,7 +3671,7 @@ thead .controls {
   overflow: hidden;
   *zoom: 1;
 }
-#addcase .steps .addfields, #addcase .steps #addcycle .addrun button, #addcycle .addrun #addcase .steps button {
+#addcase .steps .addfields {
   margin-left: 9.195%;
 }
 #addcase .steplist {
