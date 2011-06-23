@@ -12,5 +12,8 @@ COMPRESS_ROOT = STATIC_ROOT
 COMPRESS_URL = STATIC_URL
 
 if DEBUG:
-    MIDDLEWARE_CLASSES.insert(0, "tcmui.core.middleware.RequestLogMiddleware")
+    MIDDLEWARE_CLASSES.insert(
+        0, "tcmui.debug.middleware.AjaxTracebackMiddleware")
+    MIDDLEWARE_CLASSES.insert(
+        0, "tcmui.debug.middleware.RequestLogMiddleware")
     INSTALLED_APPS += ["tcmui.debug"]

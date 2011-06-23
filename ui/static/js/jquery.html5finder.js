@@ -136,7 +136,7 @@
                         $.get(
                             ajaxUrl,
                             function(data) {
-                                container.next(options.sectionSelector).children(options.sectionContentSelector).html(data);
+                                container.next(options.sectionSelector).children(options.sectionContentSelector).html(data.html);
                                 TCM.removeLoading();
                                 updateEllipsis();
                             }
