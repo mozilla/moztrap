@@ -18,10 +18,7 @@ MESSAGES = {
         "Selected test suites contain conflicting test case versions.",
         ["suites"]
         ),
-    # @@@ made-up error code, replace with real one when these are fixed:
-    # https://bugzilla.mozilla.org/show_bug.cgi?id=665102
-    # https://bugzilla.mozilla.org/show_bug.cgi?id=665135
-    "wrong.product": {
+    "products.dont.match": {
         "TestSuite": (
             "Selected test case is for the wrong product.", ["cases"]),
         "TestRun": (
