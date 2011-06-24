@@ -99,6 +99,7 @@ class TestCaseForm(EnvConstrainedAddEditForm):
     extra_creation_data = {
         "maxAttachmentSizeInMbytes": 0,
         "maxNumberOfAttachments": 0,
+        "automationUri": "",
         "description": "",
         }
 

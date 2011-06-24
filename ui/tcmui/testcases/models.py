@@ -81,6 +81,8 @@ class TestCaseVersion(Activatable, TestCase):
     minorVersion = fields.Field()
     latestVersion = fields.Field()
     testCaseId = fields.Field()
+    automated = fields.Field()
+    automationUri = fields.Field()
     status = StaticData(
         "TESTCASESTATUS", "testCaseStatusId", api_submit_name=False)
     approval = StaticData(
