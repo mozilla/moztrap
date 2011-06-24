@@ -370,7 +370,7 @@ var TCM = TCM || {};
     });
 
     $(window).load(function() {
-        $('#listcontent .items .title').ellipsis(true, 250);
+        $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis(true, 300);
         if ($('.manage').length && window.location.hash) {
             var hash = window.location.hash;
             $(hash).children('.summary').click();
