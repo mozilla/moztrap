@@ -62,15 +62,15 @@
     </section>
 
     <div class="assignto">
-      <details class="userselect"{% if form.team.errors or form.team.value %} open="open"{% endif %}>
-        <summary>assign specific users to this test run &raquo;</summary>
+      <article class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+        <header class="summary">assign specific users to this test run &raquo;</header>
         <div>
           {# @@@ needs the slick multiple-select widget #}
           {{ form.team.errors }}
           {{ form.team.label_tag }}
           {{ form.team }}
         </div>
-      </details>
+      </article>
     </div>
 
     <div class="form-actions">

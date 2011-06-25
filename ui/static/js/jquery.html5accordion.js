@@ -40,8 +40,8 @@
                 $detailsNotSummary = $details.children(':not(' + summary + ':first)');
             }
 
-            // Hide content unless the `open` attribute is truthy
-            if ($details.attr('open')) {
+            // Hide content unless the `open` or `data-open` attribute is truthy
+            if ($details.prop('open') || $details.data('open')) {
                 $details.addClass('open');
                 $detailsNotSummary.slideDown('fast');
             } else {
