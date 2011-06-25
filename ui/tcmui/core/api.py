@@ -494,7 +494,10 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
 
 
     def _set_location(self, val):
-        self._location_fallback = val
+        try:
+            self._location_fallback = val.split("?")[0]
+        except AttributeError:
+            self._location_fallback = val
 
 
     def _get_location(self):
