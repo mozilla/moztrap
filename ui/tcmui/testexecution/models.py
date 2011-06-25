@@ -53,6 +53,7 @@ class TestCycle(Activatable, RemoteObject):
     def approveallresults(self, **kwargs):
         self._put(
             relative_url="approveallresults",
+            invalidate_cache=["TestResultList"],
             **kwargs)
 
 
@@ -181,6 +182,7 @@ class TestRun(Activatable, RemoteObject):
     def approveallresults(self, **kwargs):
         self._put(
             relative_url="approveallresults",
+            invalidate_cache=["TestResultList"],
             **kwargs)
 
 
