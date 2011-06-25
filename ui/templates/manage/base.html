@@ -11,7 +11,7 @@
 {% block manage-active-nav %}active{% endblock manage-active-nav %}
 
 {% block drilldown %}
-  <nav class="drilldown details" {% if request.GET.finder %}open="open"{% endif %}>
+  <nav class="drilldown details" {% if request.GET.finder %}data-open="open"{% endif %}>
     <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
     <div class="content">
       {% include "includes/finder.html" %}

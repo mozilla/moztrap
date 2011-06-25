@@ -1,6 +1,6 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="test details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} open="open"{% endif %}>
+    <article id="result-{{ result.id }}" class="test details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} data-open="open"{% endif %}>
 
       <header class="summary testsummary">
         <div class="header">
@@ -31,7 +31,7 @@
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} open="open"{% endif %}>
+          <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
             <p class="summary">invalid?</p>
             {% if result.status.INVALIDATED %}
               <div class="invaliddesc">
@@ -73,7 +73,7 @@
               </div>
             {% endif %}
             {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
-              <div class="stepfail details failed" open="open">
+              <div class="stepfail details failed" data-open="open">
                 <p class="summary">failed</p>
                 <div class="faildesc">
                   <p>{{ result.actualResult }}</p>
