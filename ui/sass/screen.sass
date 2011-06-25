@@ -2,6 +2,7 @@
 
 @import compass/reset
 @import defaults
+@import modules/icons
 
 /* Layout --------------------------------------------------------------------
 
@@ -110,7 +111,8 @@
   +bold
   +text-shadow(rgba($blue-lightest,$small) 1px 1px 0)
   +border-radius($xxsmallem)
-  background: rgba($blue,$xxxsmall) image-url('ui/info_circle.png') no-repeat scroll rhythm(1) center
+  position: relative
+  background: rgba($blue,$xxxsmall) image-url('ui/info_circle.png') no-repeat scroll rhythm(1) rhythm(.675)
   color: $blue-dark
 
 .messagestyle
@@ -142,6 +144,24 @@
 
 .message
   @extend .messagestyle
+  p
+    margin: 0
+  .close
+    +opacity(.25)
+    +transition(opacity,500ms)
+    #{$link}
+      +border-radius
+      +box-shadow(rgba($blue-hint,$small) 0 0 $xsmall)
+      +icon-style('ui/x.png',rgba($red,$xsmall))
+      position: absolute
+      top: 0
+      right: 0
+      width: rhythm(1)
+    #{$focus}
+      background-color: rgba($red,$small)
+  &:hover
+    .close
+      +opacity(1)
   &.success
     @extend .successmessage
   &.error
@@ -180,7 +200,6 @@ footer[role="contentinfo"]
 
 // Modules -------------------------------------------------------------------
 
-@import modules/icons
 @import modules/navigation
 @import modules/controls
 @import modules/filter
