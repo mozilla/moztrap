@@ -35,6 +35,8 @@
 
 					t.remove();
 
+                    // use of `delay` requires jQuery doTimeout
+                    // http://benalman.com/projects/jquery-dotimeout-plugin/
                     if(windowResize === true){
                         var oldW = el.width();
                         $(window).resize(function(){

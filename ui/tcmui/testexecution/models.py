@@ -146,14 +146,18 @@ class TestRun(Activatable, RemoteObject):
             raise e
         self._post(
             relative_url="includedtestcases/testsuite/%s/" % suite.id,
-            invalidate_cache=["IncludedTestSuiteList"],
+            invalidate_cache=[
+                "IncludedTestSuiteList",
+                "TestRunIncludedTestCaseList"],
             **kwargs)
 
 
     def removesuite(self, suite):
         for itc in TestRunIncludedTestCaseList.get(auth=self.auth).filter(
             testRun=self, testSuite=suite):
-            itc.delete(invalidate_cache=["IncludedTestSuiteList"])
+            itc.delete(invalidate_cache=[
+                    "IncludedTestSuiteList",
+                    "TestRunIncludedTestCaseList"])
 
 
     def _get_suites(self):

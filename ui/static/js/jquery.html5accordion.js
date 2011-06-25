@@ -1,5 +1,5 @@
 /**
- * jQuery html5accordion 0.1
+ * jQuery html5accordion 0.2
  *
  * Copyright (c) 2011, Jonny Gerig Meyer
  * All rights reserved.
