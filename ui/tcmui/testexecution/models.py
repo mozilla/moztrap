@@ -216,6 +216,13 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
         return assignment
 
 
+    def approveallresults(self, **kwargs):
+        self.testRun._put(
+            relative_url="approvetestcaseresults/%s" % self.testCase.id,
+            invalidate_cache=["TestResultList"],
+            **kwargs)
+
+
     def resultsummary(self):
         # @@@ this would better be done platform-side
         base = dict([(ev.enumname, 0) for ev in TestResultStatus])
