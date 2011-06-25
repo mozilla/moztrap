@@ -32,4 +32,4 @@ class AjaxTracebackMiddleware(object):
     def process_exception(self, request, *args, **kwargs):
         if request.is_ajax():
             import traceback
-            return HttpResponse(traceback.format_exc())
+            return HttpResponse(traceback.format_exc().replace("\n", "<br>\n"))
