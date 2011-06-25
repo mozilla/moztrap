@@ -327,9 +327,6 @@ var TCM = TCM || {};
                 return false;
             }
         );
-        if ($('html').hasClass('no-details')) {
-            $('details').html5accordion('summary');
-        }
         $('.details:not(html)').html5accordion('.summary');
         $('.subnav .findertoggle').click(function() {
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
