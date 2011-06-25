@@ -1180,7 +1180,8 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -ms-border-radius: 0.236em;
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
-  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.618em center;
+  position: relative;
+  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1299110153') no-repeat scroll 1.618em 1.092em;
   color: #4b6564;
 }
 
@@ -1203,6 +1204,65 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-color: rgba(254, 229, 140, 0.618);
   background-image: url('../images/ui/warning.png?1303974218');
   color: #a38001;
+}
+
+.message p, #messages li p {
+  margin: 0;
+}
+.message .close, #messages li .close {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+  opacity: 0.25;
+  -moz-transition-property: opacity;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -moz-transition-duration: 500ms;
+  -webkit-transition-duration: 500ms;
+  -o-transition-duration: 500ms;
+  transition-duration: 500ms;
+}
+.message .close:link, #messages li .close:link, .message .close:visited, #messages li .close:visited {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
+  -webkit-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
+  -o-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
+  box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: rgba(185, 41, 47, 0.382);
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/x.png?1299276461');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0 0.125em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.618em;
+}
+.message .close:focus, #messages li .close:focus, .message .close:hover, #messages li .close:hover, .message .close:active, #messages li .close:active {
+  background-color: rgba(185, 41, 47, 0.618);
+}
+.message:hover .close, #messages li:hover .close {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 
 #messages ul {
