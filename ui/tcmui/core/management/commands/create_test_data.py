@@ -86,6 +86,7 @@ PRODUCTS = {
                                         "description": "",
                                         "maxAttachmentSizeInMbytes": 0,
                                         "maxNumberOfAttachments": 0,
+                                        "automationUri": "",
                                         "steps": [
                                             ("Click 'register.'",
                                              "See registration form."),
@@ -97,6 +98,7 @@ PRODUCTS = {
                                         "description": "",
                                         "maxAttachmentSizeInMbytes": 0,
                                         "maxNumberOfAttachments": 0,
+                                        "automationUri": "",
                                         "steps": [
                                             ("Click 'login.'",
                                              "See login form."),

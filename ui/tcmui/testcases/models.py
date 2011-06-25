@@ -81,6 +81,8 @@ class TestCaseVersion(Activatable, TestCase):
     minorVersion = fields.Field()
     latestVersion = fields.Field()
     testCaseId = fields.Field()
+    automated = fields.Field()
+    automationUri = fields.Field()
     status = StaticData(
         "TESTCASESTATUS", "testCaseStatusId", api_submit_name=False)
     approval = StaticData(
@@ -179,13 +181,6 @@ class TestSuite(Activatable, RemoteObject):
 
 
     def addcase(self, case, **kwargs):
-        # @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=665135
-        if case.product.id != self.product.id:
-            e = self.Conflict(
-                "Can't add case %s from product %s to suite %s from product %s"
-                % (case, case.product.id, self, self.product.id))
-            e.response_error = "wrong.product"
-            raise e
         payload = {
             "testCaseVersionId": case.id,
             "priorityId": 0, # @@@
