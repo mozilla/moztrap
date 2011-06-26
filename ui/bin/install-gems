@@ -1,5 +1,10 @@
 #!/bin/bash
 vfile=$1
+
+if [ -n ${vfile} ]; then
+  vfile="requirements/gems.txt"
+fi
+
 for line in `cat ${vfile}`; do
     gem=${line%%=*}
     version=${line##*=}
