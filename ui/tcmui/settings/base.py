@@ -151,6 +151,8 @@ SECURE_FRAME_DENY = True
 INSTALLED_APPS += ["icanhaz"]
 ICANHAZ_DIR = join(BASE_PATH, "jstemplates")
 
+INSTALLED_APPS += ["html5accordion"]
+
 TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"
 TCM_ADMIN_PASS = "admin"
