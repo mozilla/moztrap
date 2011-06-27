@@ -224,7 +224,7 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
 
 
     def resultsummary(self):
-        # @@@ this would better be done platform-side
+        # @@@ this is too slow to be usable, should be done platform-side
         base = dict([(ev.enumname, 0) for ev in TestResultStatus])
 
         results = TestResultList.get(auth=self.auth).filter(
@@ -236,7 +236,7 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
 
 
     def suite_resultsummary(self):
-        # @@@ this would better be done platform-side
+        # @@@ this is too slow to be usable, should be done platform-side
         base = dict([(ev.enumname, 0) for ev in TestResultStatus])
 
         if self.testSuite is not None:

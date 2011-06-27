@@ -3,6 +3,7 @@
 
 {% block page-notes %}
 <p>Can't search on name yet, due to <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=660403">platform limitations</a>.</p>
+<p>Per-testcase and per-testsuite result summaries waiting on <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658706">platform support</a>.</p>
 {{ block.super }}
 {% endblock %}
 
@@ -52,6 +53,8 @@
               <h4 class="run" title="{{ itc.testRun.name }}">{{ itc.testRun.name }}</h4>
             </hgroup>
             <p class="product">{{ itc.product.name }}</p>
+            {% comment %}
+            {# @@@ Way too slow until the platform adds these calls. #}
             {% if itc.testSuite %}
             <div class="suite">
               {{ itc.testSuite.name }}
@@ -62,6 +65,7 @@
             </div>
             {% endif %}
             {% include "results/_results_summary.html" with results=itc.resultsummary %}
+            {% endcomment %}
           </header>
           <div class="content">
             {# _case_details.html loaded via ajax #}
