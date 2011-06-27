@@ -149,7 +149,7 @@ SESSION_COOKIE_HTTPONLY = True
 SECURE_FRAME_DENY = True
 
 INSTALLED_APPS += ["icanhaz"]
-ICANHAZ_DIR = join(BASE_PATH, "jstemplates")
+ICANHAZ_DIRS = [join(BASE_PATH, "jstemplates")]
 
 INSTALLED_APPS += ["html5accordion"]
 
