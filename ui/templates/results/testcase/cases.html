@@ -53,6 +53,11 @@
               <h4 class="run" title="{{ itc.testRun.name }}">{{ itc.testRun.name }}</h4>
             </hgroup>
             <p class="product">{{ itc.product.name }}</p>
+            {% if itc.testSuite %}
+            <div class="suite">
+              {{ itc.testSuite.name }}
+            </div>
+            {% endif %}
             {% comment %}
             {# @@@ Way too slow until the platform adds these calls. #}
             {% if itc.testSuite %}
