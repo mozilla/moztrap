@@ -233,7 +233,7 @@ var TCM = TCM || {};
                 content = item.find('.content'),
                 url = item.data('details-url');
                 if (url && !content.hasClass('loaded')) {
-                    content.css('min-height', '168px').addClass('loaded');
+                    content.css('min-height', '4.854em').addClass('loaded');
                     content.loadingOverlay();
                     $.get(url,
                           function(data) {
