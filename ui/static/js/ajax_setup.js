@@ -6,10 +6,7 @@
             if(error === "UNAUTHORIZED" || error === "FORBIDDEN") {
                 data = $.parseJSON(request.responseText);
                 window.location = data.login_url + "?next=" + window.location.pathname;
-            } else {
-                // @@@ do something nicer than an alert()?
-                alert("Help! Something broke, and we're not sure just what. Try reloading the page.");
-            }
+            } // @@@ any global default error handling needed?
         });
 
     $.ajaxSetup(
