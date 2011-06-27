@@ -153,6 +153,8 @@ ICANHAZ_DIR = join(BASE_PATH, "jstemplates")
 
 INSTALLED_APPS += ["html5accordion"]
 
+INSTALLED_APPS += ["messages_ui"]
+
 TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"
 TCM_ADMIN_PASS = "admin"

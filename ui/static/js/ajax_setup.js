@@ -23,7 +23,7 @@
                     messages.each(function() {
                         $(ich.message(this)).appendTo(messagelist);
                     });
-                    TCM.messages();
+                    $('#messages').messages();
                 }
                 return data;
             }
