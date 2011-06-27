@@ -149,9 +149,11 @@ SESSION_COOKIE_HTTPONLY = True
 SECURE_FRAME_DENY = True
 
 INSTALLED_APPS += ["icanhaz"]
-ICANHAZ_DIR = join(BASE_PATH, "jstemplates")
+ICANHAZ_DIRS = [join(BASE_PATH, "jstemplates")]
 
 INSTALLED_APPS += ["html5accordion"]
+
+INSTALLED_APPS += ["messages_ui"]
 
 TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
 TCM_ADMIN_USER = "admin@utest.com"

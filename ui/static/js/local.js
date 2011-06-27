@@ -287,34 +287,11 @@ var TCM = TCM || {};
         );
     };
 
-    TCM.messages = function() {
-        var messageList = $('#messages'),
-        messages = $('#messages .message'),
-        successMessages = messages.filter('.success'),
-        closeLink = $('#messages .close');
-        closeLink.click(function() {
-            $(this).closest('.message').fadeOut('fast', function() {
-                $(this).closest('.message').detach();
-            });
-            return false;
-        });
-        if (successMessages.length) {
-            $(document).bind('mousedown keydown', function(event) {
-                $.doTimeout(500, function() {
-                    successMessages.fadeOut(3000, function() {
-                        successMessages.detach();
-                    });
-                    $(this).unbind(event);
-                });
-            });
-        }
-    };
-
     $(function() {
         filtering();
         listDetails();
         manageActionsAjax();
-        TCM.messages();
+        $('#messages').messages();
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {
