@@ -204,6 +204,12 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
     assignments = fields.Link("TestCaseAssignmentList")
 
 
+    non_field_filters = {
+        "name": "name",
+        "status": "testCaseStatusId",
+        }
+
+
     def assign(self, tester, **kwargs):
         payload = {"testerId": tester.id}
         assignment = TestCaseAssignment()
