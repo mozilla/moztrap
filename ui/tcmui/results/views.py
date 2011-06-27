@@ -78,9 +78,11 @@ def testrun_details(request, run_id):
 
 @login_redirect
 @dec.filter("includedcases",
+            ("status", filters.NonDraftTestCaseStatusFilter),
             ("testRun", filters.NonDraftTestRunFieldFilter),
             ("product", ProductFieldFilter),
-            ("testSuite", filters.TestSuiteFieldFilter))
+            ("testSuite", filters.TestSuiteFieldFilter),
+            ("name", KeywordFilter))
 @dec.paginate("includedcases")
 @dec.sort("includedcases")
 def testcases(request):

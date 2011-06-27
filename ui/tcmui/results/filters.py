@@ -20,6 +20,14 @@ class NonDraftTestRunStatusFilter(status_filters.TestRunStatusFilter):
 
 
 
+class NonDraftTestCaseStatusFilter(status_filters.TestCaseStatusFilter):
+    options = [
+        (k, v) for k, v
+        in status_filters.TestCaseStatusFilter.options
+        if v != "draft"]
+
+
+
 class NonDraftTestCycleFieldFilter(TestCycleFieldFilter):
     target_filters = {"status": [2, 3]}
 
