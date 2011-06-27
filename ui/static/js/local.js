@@ -2,19 +2,6 @@ var TCM = TCM || {};
 
 (function($) {
 
-    // Adds class `loading` to `target`, and adds loading `.overlay`
-    TCM.addLoading = function(target) {
-        var container = $(target).addClass('loading'),
-        vertHeight = (parseInt(container.css('height'), 10) - parseInt(container.css('line-height'), 10)) / 2 + 'px',
-        overlay = '<span class="overlay" style="padding-top: ' + vertHeight + ';">loading...</span>';
-        container.prepend(overlay);
-    };
-
-    TCM.removeLoading = function() {
-        $('.overlay').detach();
-        $('.loading').removeClass('loading');
-    };
-
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
 
     var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
@@ -247,10 +234,10 @@ var TCM = TCM || {};
                 url = item.data('details-url');
                 if (url && !content.hasClass('loaded')) {
                     content.css('min-height', '168px').addClass('loaded');
-                    TCM.addLoading(content);
+                    content.loadingOverlay();
                     $.get(url,
                           function(data) {
-                              TCM.removeLoading();
+                              content.loadingOverlay('remove');
                               content.html(data.html);
                           });
                 }
@@ -271,12 +258,12 @@ var TCM = TCM || {};
                     var replacement = $(data.html);
                     replace.replaceWith(replacement);
                     replacement.find('.details').html5accordion('.summary');
-                    TCM.removeLoading();
+                    replace.loadingOverlay('remove');
                 },
                 data = {};
                 data[button.attr('name')] = button.val();
                 data['csrfmiddlewaretoken'] = token.val();
-                TCM.addLoading(replace);
+                replace.loadingOverlay();
                 $.ajax(url, {
                            type: method,
                            data: data,
@@ -356,10 +343,10 @@ var TCM = TCM || {};
             lastChildCallback: function(choice) {
                 var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data("sub-url");
-                TCM.addLoading(environments);
+                environments.loadingOverlay();
                 $.get(ajaxUrl, function(data) {
+                    environments.loadingOverlay('remove');
                     environments.html(data.html);
-                    TCM.removeLoading();
                 });
             }
         });

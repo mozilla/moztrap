@@ -130,14 +130,14 @@
                         // Add a loading screen while waiting for the Ajax call to return data
                         if (options.loading === true) {
                             var target = container.next(options.sectionSelector);
-                            TCM.addLoading(target);
+                            target.loadingOverlay();
                         }
                         // Add returned data to the next section
                         $.get(
                             ajaxUrl,
                             function(data) {
                                 container.next(options.sectionSelector).children(options.sectionContentSelector).html(data.html);
-                                TCM.removeLoading();
+                                container.next(options.sectionSelector).loadingOverlay('remove');
                                 updateEllipsis();
                             }
                         );
