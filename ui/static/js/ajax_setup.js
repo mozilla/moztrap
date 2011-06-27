@@ -14,7 +14,7 @@
             dataType: "json",
             dataFilter: function(data, type) {
                 if (type == "json") {
-                    var messagelist = $("#messages ul"),
+                    var messagelist = $("#messages"),
                     parsed = $.parseJSON(data),
                     messages = $(parsed.messages);
                     messages.each(function() {

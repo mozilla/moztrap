@@ -278,6 +278,7 @@ var TCM = TCM || {};
         filtering();
         listDetails();
         manageActionsAjax();
+        $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages();
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
@@ -291,7 +292,6 @@ var TCM = TCM || {};
                 return false;
             }
         );
-        $('.details:not(html)').html5accordion('.summary');
         $('.subnav .findertoggle').click(function() {
             $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
             return false;
