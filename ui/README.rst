@@ -5,6 +5,13 @@ This Django project is the user interface to the new Mozilla/uTest TCM. It
 lives at https://github.com/mozilla/tcm/, and is built to speak to the backend
 API at https://github.com/mozilla/tcmplatform.
 
+Platform version
+----------------
+
+This version of the UI expects to use git commit hash
+'28b1095066f11b5c824eb18ad2267f4ae74df095' of the platform.
+
+
 Development
 -----------
 
