@@ -23,13 +23,13 @@
         +opacity(1)
 
 .item.add-item
-  @extend .allcaps
+  +hpadding(rhythm(1))
   +demi
-  +background(image-url('ui/plus.png') no-repeat scroll left, linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
-  display: block
-  padding: rhythm(.25) rhythm(1)
-  &:hover
-    +background(image-url('ui/plus.png') no-repeat scroll left, linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
+  +background(image-url('ui/plus.png') no-repeat scroll left rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
+  .summary
+    @extend .allcaps
+  #{$focus}
+    +background(image-url('ui/plus.png') no-repeat scroll left rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
 /* Manage Tests --------------------------------------------------------------
 

@@ -39,8 +39,11 @@
         {% include "manage/environment/_category_list_item.html" with id="05" %}
         {% include "manage/environment/_category_list_item.html" with id="06" %}
         {% include "manage/environment/_category_list_item.html" with id="07" %}
-        <a href="#" class="item add-item">
-          add a category
+        <article href="#" class="item add-item details">
+          <h3 class="summary">add a category</h3>
+          <div class="content">
+            {% include "manage/environment/_category_list_item_content.html" with new='true' %}
+          </div>
         </a>
       </div>
 

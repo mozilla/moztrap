@@ -1,0 +1,30 @@
+<div class="content">
+  {% if new %}
+    <p class="name edit">
+      <label for="edit_name">give your new category a name</label>
+      <input type="text" name="edit_name" value="" id="edit_name" placeholder="new category name">
+    </p>
+  {% else %}
+    <p class="name">category name</p>
+  {% endif %}
+  <ul class="elements">
+    {% if not new %}
+    <li>
+      <input type="checkbox" name="{{ id }-elemslug1" value="" id="{{ id }-elemslug1">
+      <label for="{{ id }-elemslug1">element name</label>
+    </li>
+    <li>
+      <input type="checkbox" name="{{ id }-elemslug2" value="" id="{{ id }-elemslug2">
+      <label for="{{ id }-elemslug2">element name</label>
+    </li>
+    <li>
+      <input type="checkbox" name="{{ id }-elemslug3" value="" id="{{ id }-elemslug3">
+      <label for="{{ id }-elemslug3">element name</label>
+    </li>
+    <li class="add-element edit">
+      <label for="add_element">add element</label>
+      <input type="text" name="add_element" value="" id="add_element" placeholder="add an element">
+    </li>
+    {% endif %}
+  </ul>
+</div>
