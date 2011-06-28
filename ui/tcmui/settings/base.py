@@ -77,7 +77,6 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "tcmui.core.middleware.AjaxMessagesMiddleware",
     "djangosecure.middleware.SecurityMiddleware",
     "tcmui.core.middleware.StaticCompanyMiddleware",
     "tcmui.users.middleware.AuthenticationMiddleware",
@@ -154,6 +153,11 @@ ICANHAZ_DIRS = [join(BASE_PATH, "jstemplates")]
 INSTALLED_APPS += ["html5accordion"]
 
 INSTALLED_APPS += ["messages_ui"]
+MIDDLEWARE_CLASSES.insert(
+    MIDDLEWARE_CLASSES.index(
+        "django.contrib.messages.middleware.MessageMiddleware"
+        ) + 1,
+    "messages_ui.middleware.AjaxMessagesMiddleware")
 
 INSTALLED_APPS += ["ajax_loading_overlay"]
 

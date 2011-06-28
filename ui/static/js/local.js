@@ -279,7 +279,7 @@ var TCM = TCM || {};
         listDetails();
         manageActionsAjax();
         $('.details:not(html)').html5accordion('.summary');
-        $('#messages').messages();
+        $('#messages').messages({handleAjax: true});
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {
