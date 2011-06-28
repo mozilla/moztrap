@@ -38,9 +38,13 @@ urlpatterns = patterns(
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
-    # environments (wireframed)
+    # environment profile list (wireframed)
     url(r"^environments/$", direct_to_template,
         {"template": "manage/environment/profiles.html"}),
+
+    # environment profile create (wireframed)
+    url(r"^environment/add/$", direct_to_template,
+        {"template": "manage/environment/add_profile.html"}),
 
 )
 

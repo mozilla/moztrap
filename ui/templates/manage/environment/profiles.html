@@ -1,10 +1,11 @@
 {% extends 'manage/environment/base.html' %}
+{# @@@ full page wireframe #}
 
 {% block listcontent %}
 <section id="manageprofiles">
   <h2>Manage Environment Profiles</h2>
 
-  <a href="#" class="create">create a profile</a>
+  <a href="/manage/environment/add/" class="create">create a profile</a>
 
   {% include "lists/_filter.html" %}
 

@@ -1,0 +1,55 @@
+{% extends 'manage/environment/base.html' %}
+{# @@@ full page wireframe #}
+
+{% block listcontent %}
+<section id="addprofile">
+  <h2>Create An Environment Profile</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <p class="profile-name">
+      <label for="profile_name">profile name</label>
+      <input type="text" name="profile_name" value="" id="profile_name" placeholder="profile name">
+    </p>
+
+    {% include "lists/_filter.html" %}
+
+    <div class="managelist">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="bytitle">
+            <a href="#">name</a>
+          </li>
+          <li class="bypreview">
+            <span>preview</span>
+          </li>
+          <li class="bycontrols">
+            <span>controls</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="items">
+        {% include "manage/environment/_category_list_item.html" with id="01" %}
+        {% include "manage/environment/_category_list_item.html" with id="02" %}
+        {% include "manage/environment/_category_list_item.html" with id="03" %}
+        {% include "manage/environment/_category_list_item.html" with id="04" %}
+        {% include "manage/environment/_category_list_item.html" with id="05" %}
+        {% include "manage/environment/_category_list_item.html" with id="06" %}
+        {% include "manage/environment/_category_list_item.html" with id="07" %}
+        <a href="#" class="item add-item">
+          add a category
+        </a>
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">auto-generate environments</button>
+    </div>
+  </form>
+</section>
+{% endblock listcontent %}

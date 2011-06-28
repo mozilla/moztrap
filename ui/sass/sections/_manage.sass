@@ -1,3 +1,36 @@
+.preview
+  +ellipsis
+  +delimited-list(',')
+  +italic
+  color: rgba($blue-darker,$small)
+
+.editinline
+  position: relative
+  &::after
+    +opacity(0)
+    +stretch-y
+    +replace-text('ui/pencil.png')
+    content: "edit"
+    right: 0
+    width: image-width('ui/pencil.png')
+    background:
+      repeat: no-repeat
+      position: center
+  &:not(.edit)
+    &:hover
+      cursor: pointer
+      &::after
+        +opacity(1)
+
+.item.add-item
+  @extend .allcaps
+  +demi
+  +background(image-url('ui/plus.png') no-repeat scroll left, linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
+  display: block
+  padding: rhythm(.25) rhythm(1)
+  &:hover
+    +background(image-url('ui/plus.png') no-repeat scroll left, linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
+
 /* Manage Tests --------------------------------------------------------------
 
 #managecycles
@@ -58,3 +91,45 @@
       #{$focus}
         &::after
           content: " »"
+
+#addprofile
+  .profile-name
+    +full(24)
+    +suffix(12,24)
+    +pie-clearfix
+    +trailer(0)
+    label
+      +columns(2,12)
+    input
+      +columns(10,12)
+      +omega(12)
+
+  .bytitle, .title
+    +columns(6,24)
+  .bypreview, .preview
+    +columns(12,24)
+
+  .name
+    @extend .editinline
+    +bold
+    margin: 0 columns(6,24) + gutter(24)
+  .elements
+    +no-style-list
+    +full(24)
+    +pad(6,6,24)
+    counter-reset: elements
+    li
+      @extend .editinline
+      label
+        +demi
+        display: block
+      [type="checkbox"]
+        position: absolute
+        top: rhythm(.5)
+        right: 100% + gutter(12)
+      &.edit
+        +leader(.25)
+
+  .add-element
+    label
+      +gone

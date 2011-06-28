@@ -1,0 +1,38 @@
+<article id="category-id-{{ id }}" class="item details">
+  <header class="summary">
+    <h3 class="title">
+      <input type="checkbox" name="bulk-select-{{ id }}" value="" id="bulk-select-{{ id }}">
+      <label for="bulk-select-{{ id }}">category name</label>
+    </h3>
+    <ul class="preview">
+      <li>preview</li>
+      <li>list</li>
+      <li>of</li>
+      <li>elements</li>
+    </ul>
+    <div class="controls">
+      <button title="delete" type="submit" name="action-delete">delete</button>
+    </div>
+  </header>
+  <div class="content">
+    <p class="name">category name</p>
+    <ul class="elements">
+      <li>
+        <input type="checkbox" name="{{ id }-elemslug1" value="" id="{{ id }-elemslug1">
+        <label for="{{ id }-elemslug1">element name</label>
+      </li>
+      <li>
+        <input type="checkbox" name="{{ id }-elemslug2" value="" id="{{ id }-elemslug2">
+        <label for="{{ id }-elemslug2">element name</label>
+      </li>
+      <li>
+        <input type="checkbox" name="{{ id }-elemslug3" value="" id="{{ id }-elemslug3">
+        <label for="{{ id }-elemslug3">element name</label>
+      </li>
+      <li class="add-element edit">
+        <label for="add_element">add element</label>
+        <input type="text" name="add_element" value="" id="add_element" placeholder="add an element">
+      </li>
+    </ul>
+  </div>
+</article>
