@@ -1,4 +1,4 @@
-{% load sort staticdata %}
+{% load sort staticdata permissions %}
 
 <div class="managelist action-ajax-replace">
   <nav class="listordering">
@@ -48,11 +48,14 @@
         <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
         <p class="product">{{ case.product }}</p>
         <div class="controls">
-          {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
-          {% if case.status.DRAFT %}
+          {% if request.user|can_edit_case:case and case.status.DRAFT %}
           <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
-          <button title="delete" type="submit" name="action-delete" value="{{ case.id }}">delete</button>
           {% endif %}
+          {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
+          <button title="clone" type="submit" name="action-clone" value="{{ case.testCaseId }}">clone</button>
+          {% endif %}
+          {% if request.user|can_edit_case:case and case.status.DRAFT %}
+          <button title="delete" type="submit" name="action-delete" value="{{ case.testCaseId }}">delete</button>
           {% endif %}
         </div>
       </header>
