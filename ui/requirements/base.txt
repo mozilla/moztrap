@@ -13,4 +13,5 @@ flufl.enum==3.1
 django-secure==0.1.0
 django-icanhaz==0.2.0
 django-html5accordion==0.1.1
-django-messages-ui==0.1.0
+django-messages-ui==0.1.2
+django-ajax-loading-overlay==0.1.0

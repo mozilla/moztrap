@@ -2,7 +2,7 @@
     $("body").ajaxError(
         function(event, request, settings, error) {
             var data;
-            TCM.removeLoading();
+            $('body').loadingOverlay('remove');
             if(error === "UNAUTHORIZED" || error === "FORBIDDEN") {
                 data = $.parseJSON(request.responseText);
                 window.location = data.login_url + "?next=" + window.location.pathname;
@@ -14,7 +14,7 @@
             dataType: "json",
             dataFilter: function(data, type) {
                 if (type == "json") {
-                    var messagelist = $("#messages ul"),
+                    var messagelist = $("#messages"),
                     parsed = $.parseJSON(data),
                     messages = $(parsed.messages);
                     messages.each(function() {

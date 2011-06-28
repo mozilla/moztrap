@@ -27,7 +27,6 @@
     var testCaseButtons = function(context) {
         $(context).find("button").click(
             function(event) {
-                TCM.addLoading($(this).closest(context));
                 event.preventDefault();
                 event.stopPropagation();
                 var button = $(this),
@@ -38,6 +37,7 @@
                     },
                     inputs = container.find("input"),
                     post = true;
+                testcase.loadingOverlay();
                 container.find("textarea").add(inputs).each(
                     function() {
                         var val = $(this).val();
@@ -50,7 +50,7 @@
                                     "This field is required." +
                                     "</li></ul>"
                             );
-                            TCM.removeLoading();
+                            testcase.loadingOverlay('remove');
                             post = false;
                         }
                     }
@@ -65,7 +65,7 @@
                             var newCase = "#" + id;
                             $(newCase).find('.details').andSelf().html5accordion('.summary');
                             testCaseButtons(newCase);
-                            TCM.removeLoading();
+                            $(newCase).loadingOverlay('remove');
                             autoFocus('.details.stepfail > .summary');
                             autoFocus('.details.testinvalid > .summary');
                         }

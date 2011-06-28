@@ -1221,10 +1221,10 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -ms-border-radius: 0.236em;
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
-  -moz-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
-  -webkit-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
-  -o-box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
-  box-shadow: rgba(233, 237, 237, 0.382) 0 0 0.382;
+  -moz-box-shadow: rgba(233, 237, 237, 0.618) 0 0 0.382;
+  -webkit-box-shadow: rgba(233, 237, 237, 0.618) 0 0 0.382;
+  -o-box-shadow: rgba(233, 237, 237, 0.618) 0 0 0.382;
+  box-shadow: rgba(233, 237, 237, 0.618) 0 0 0.382;
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -1258,13 +1258,13 @@ button.sub:focus, button.sub:hover, button.sub:active {
   opacity: 1;
 }
 
-#messages ul {
+#messages {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-#messages ul li {
+#messages li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
