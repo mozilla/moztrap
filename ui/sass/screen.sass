@@ -149,30 +149,35 @@
 
 .message
   @extend .messagestyle
+  +box-shadow(rgba($base,0) 0 0 $xxsmallem $xxsmallem inset)
+  +transition(all,300ms)
   p
     margin: 0
-  .close
-    +opacity(.25)
-    +transition(opacity,500ms)
-    #{$link}
-      +border-radius
-      +box-shadow(rgba($blue-hint,$small) 0 0 $xsmall)
-      +icon-style('ui/x.png',rgba($red,$xsmall))
-      position: absolute
-      top: 0
-      right: 0
-      width: rhythm(1)
-    #{$focus}
-      background-color: rgba($red,$small)
-  &:hover
-    .close
-      +opacity(1)
   &.success
     @extend .successmessage
   &.error
     @extend .errormessage
   &.warning
     @extend .warningmessage
+
+  &::after
+    +opacity(0)
+    +transition(all,300ms)
+    content: "(dismiss)"
+    position: absolute
+    top: rhythm(.5)
+    right: rhythm(.5)
+
+  &:hover
+    +opacity(.75)
+    +box-shadow(rgba($base,$xsmall) 0 0 1px 1px inset)
+    cursor: pointer
+    &::after
+      +opacity(1)
+
+  // @@@ .close should go away entirely
+  .close
+    +gone
 
 #messages
   +no-style-list
