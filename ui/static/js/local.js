@@ -30,31 +30,37 @@ var TCM = TCM || {};
 
     filtering = function() {
         var formActions = $('#filter .form-actions').hide(),
-            input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
-                $(this).data('originallyChecked', $(this).is(':checked'));
-            }),
-            textbox = $('#filter .textual #text-filter'),
-            typedText = textbox.val(),
-            placeholder = textbox.attr('placeholder'),
-            suggestionList = $('#filter .textual .suggest').hide(),
-            keywordGroups = $('#filter .visual .filter-group.keyword'),
-            notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
-            selected,
-            removeFakePlaceholder = function() {
-                if (textbox.val().indexOf(placeholder) !== -1) {
-                    textbox.val(null);
-                }
-                textbox.removeClass('placeholder');
-            },
-            updateFormActions = function() {
-                if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
-                    formActions.fadeIn('fast');
-                    $('.managelist').addClass('expired');
-                } else {
-                    formActions.fadeOut('fast');
-                    $('.managelist').removeClass('expired');
-                }
-            };
+        toggle = $('#filter .toggle a'),
+        input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
+            $(this).data('originallyChecked', $(this).is(':checked'));
+        }),
+        textbox = $('#filter .textual #text-filter'),
+        typedText = textbox.val(),
+        placeholder = textbox.attr('placeholder'),
+        suggestionList = $('#filter .textual .suggest').hide(),
+        keywordGroups = $('#filter .visual .filter-group.keyword'),
+        notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
+        selected,
+        removeFakePlaceholder = function() {
+            if (textbox.val().indexOf(placeholder) !== -1) {
+                textbox.val(null);
+            }
+            textbox.removeClass('placeholder');
+        },
+        updateFormActions = function() {
+            if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
+                formActions.fadeIn('fast');
+                $('.managelist').addClass('expired');
+            } else {
+                formActions.fadeOut('fast');
+                $('.managelist').removeClass('expired');
+            }
+        };
+
+        toggle.click(function() {
+            $('#filter .visual').toggleClass('compact').toggleClass('expanded');
+            return false;
+        });
 
         formActions.find('.reset').click(function() {
             formActions.fadeOut('fast');
@@ -278,50 +284,15 @@ var TCM = TCM || {};
         filtering();
         listDetails();
         manageActionsAjax();
-        $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages({handleAjax: true});
+        $('.details:not(html)').html5accordion('.summary');
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('input:not([type=radio], [type=checkbox]), textarea').blur(
-            function() {
-                $(this).addClass('hadfocus');
-            }
-        );
-        $('#filter .toggle a').click(
-            function() {
-                $('#filter .visual').toggleClass('compact').toggleClass('expanded');
-                return false;
-            }
-        );
-        $('.subnav .findertoggle').click(function() {
-            $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
-            return false;
+        $('input:not([type=radio], [type=checkbox]), textarea').blur(function() {
+            $(this).addClass('hadfocus');
         });
         formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
-        $('.subnav').html5finder( {
-            loading: true,
-            ellipsis: true,
-            horizontalScroll: true,
-            scrollContainer: '.finder.expanded',
-            headerSelector: '.listordering',
-            sectionSelector: '.col',
-            sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases',
-                'results'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testcase"]',
-                'input[name="testresult"]'
-            ]
-        });
-        $('.selectruns').html5finder( {
+        $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,
             headerSelector: '.listordering',
@@ -351,6 +322,33 @@ var TCM = TCM || {};
             }
         });
         $('.selectruns + .environment.empty').hide();
+        // $('.subnav .findertoggle').click(function() {
+        //     $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
+        //     return false;
+        // });
+        // $('.subnav').html5finder( {
+        //     loading: true,
+        //     ellipsis: true,
+        //     horizontalScroll: true,
+        //     scrollContainer: '.finder.expanded',
+        //     headerSelector: '.listordering',
+        //     sectionSelector: '.col',
+        //     sectionContentSelector: '.colcontent',
+        //     sectionClasses: [
+        //         'products',
+        //         'cycles',
+        //         'runs',
+        //         'cases',
+        //         'results'
+        //     ],
+        //     sectionItemSelectors: [
+        //         'input[name="product"]',
+        //         'input[name="testcycle"]',
+        //         'input[name="testrun"]',
+        //         'input[name="testcase"]',
+        //         'input[name="testresult"]'
+        //     ]
+        // });
     });
 
     $(window).load(function() {
