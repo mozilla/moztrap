@@ -1,0 +1,11 @@
+{% load icanhaz %}
+
+{% icanhaz "message" %}
+
+<ul id="messages">
+  {% for message in messages %}
+  <li class="message{% if message.tags %} {{ message.tags }}{% endif %}">
+    <p>{{ message|safe }}</p>
+  </li>
+  {% endfor %}
+</ul>

@@ -48,6 +48,18 @@ class TestCase(RemoteObject):
         return self.name
 
 
+
+
+    def clone(self, **kwargs):
+        obj = self.__class__()
+        self._post(
+            relative_url="clone",
+            version_payload=False,
+            update_from_response=obj,
+            **kwargs)
+        return obj
+
+
     @classmethod
     def cache_dependent_buckets(cls, id=None):
         # modifying a TestCase will modify its TestCaseVersion

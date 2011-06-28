@@ -245,12 +245,6 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
                 response(testruns.one()),
             "http://fake.base/rest/testsuites/1?_type=json":
                 response(testsuites.one()),
-            # summary results for included test case
-            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
-                response(testresults.searchresult({})),
-            # summary results for test suite
-            "http://fake.base/rest/testruns/results?_type=json&testSuiteId=1&testRunId=1":
-                response(testresults.searchresult({})),
             # suites for filtering on
             "http://fake.base/rest/testsuites/?_type=json":
                 response(testsuites.searchresult({})),
