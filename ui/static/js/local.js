@@ -106,7 +106,7 @@ var TCM = TCM || {};
         };
 
         toggle.click(function() {
-            $('#filter .visual').toggleClass('compact').toggleClass('expanded');
+            $('#filter .visual').toggleClass('compact expanded');
             return false;
         });
 
