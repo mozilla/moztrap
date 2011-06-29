@@ -71,6 +71,26 @@ To install the necessary Ruby Gems for Compass/Sass development, run
 ``bin/install-gems requirements/gems.txt``.  Update
 ``requirements/gems.txt`` if newer gems should be used.
 
+Running the tests
+~~~~~~~~~~~~~~~~~
+
+The UI codebase has an automated test suite. The platform is mocked out in the
+test suite, so having the platform running is not a requirement for running the
+tests.
+
+To run the tests, after installing all Python requirements into your
+environment::
+
+    bin/test
+
+To view test coverage data, load ``coverage/index.html`` in your browser after
+running the tests.
+
+To run just a particular test module::
+
+    bin/test tests.core.test_api
+
+
 Deployment
 ----------
 

@@ -24,8 +24,11 @@ def main(basedir, cover_all=False):
 
     cov.stop()
 
-    include = ["tests/responses.py", "tests/utils.py"]
-    report_kw = {"directory": "coverage"}
+    include = [
+        os.path.join(basedir, "tests/responses.py"),
+        os.path.join(basedir, "tests/utils.py")
+        ]
+    report_kw = {"directory": os.path.join(basedir, "coverage")}
     if cover_all:
         # include all python modules under tcmui in report, including even those
         # the tests don't cause to be imported at all yet, so as to get a more
@@ -43,7 +46,7 @@ def main(basedir, cover_all=False):
             "tcmui/settings_local.sample.py"
             ]
     else:
-        report_kw["include"] = include + ["tcmui/*"]
+        report_kw["include"] = include + [os.path.join(basedir, "tcmui/*")]
     cov.html_report(**report_kw)
 
     teardown_test_environment()
@@ -58,7 +61,7 @@ if __name__ == "__main__":
     # if a particular test module / suite / case is not specified,
     # do discovery by default
     if not [a for a in sys.argv[1:] if not a.startswith("-")]:
-        sys.argv[1:1] = ["discover"]
+        sys.argv[1:1] = ["discover", "-s", basedir]
 
     # support an additional option, --cover-all, for a fuller coverage report
     cover_all = False
