@@ -340,35 +340,8 @@ var TCM = TCM || {};
                 $(this).addClass('hadfocus');
             }
         );
-        $('.subnav .findertoggle').click(function() {
-            $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
-            return false;
-        });
         formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
-        $('.subnav').html5finder( {
-            loading: true,
-            ellipsis: true,
-            horizontalScroll: true,
-            scrollContainer: '.finder.expanded',
-            headerSelector: '.listordering',
-            sectionSelector: '.col',
-            sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases',
-                'results'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testcase"]',
-                'input[name="testresult"]'
-            ]
-        });
         $('.selectruns').html5finder( {
             loading: true,
             ellipsis: true,
