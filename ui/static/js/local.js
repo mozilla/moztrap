@@ -319,7 +319,10 @@ var TCM = TCM || {};
         listDetails();
         manageActionsAjax();
         $('.details:not(html)').html5accordion('.summary');
-        $('#messages').messages({handleAjax: true});
+        $('#messages').messages({
+            handleAjax: true,
+            closeLink: '.message'
+        });
         $('input[placeholder], textarea[placeholder]').placeholder();
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {
