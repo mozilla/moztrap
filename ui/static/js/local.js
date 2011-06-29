@@ -106,7 +106,7 @@ var TCM = TCM || {};
         };
 
         toggle.click(function() {
-            $('#filter .visual').toggleClass('compact').toggleClass('expanded');
+            $('#filter .visual').toggleClass('compact expanded');
             return false;
         });
 
@@ -338,12 +338,6 @@ var TCM = TCM || {};
         $('input:not([type=radio], [type=checkbox]), textarea').blur(
             function() {
                 $(this).addClass('hadfocus');
-            }
-        );
-        $('#filter .toggle a').click(
-            function() {
-                $('#filter .visual').toggleClass('compact').toggleClass('expanded');
-                return false;
             }
         );
         $('.subnav .findertoggle').click(function() {
