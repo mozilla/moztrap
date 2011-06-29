@@ -160,11 +160,16 @@ var TCM = TCM || {};
                 }
                 if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
-                    if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
-                        formActions.find('button[type="submit"]').click();
+                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
+                    if (thisFilterName && textbox.val() !== thisFilterName) {
+                        textbox.val(thisFilterName);
                     } else {
-                        suggestionList.find('.selected').click();
-                        suggestionList.show();
+                        if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
+                            formActions.find('button[type="submit"]').click();
+                        } else {
+                            suggestionList.find('.selected').click();
+                            suggestionList.show();
+                        }
                     }
                     return false;
                 }
