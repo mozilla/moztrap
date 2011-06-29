@@ -335,11 +335,9 @@ var TCM = TCM || {};
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('input:not([type=radio], [type=checkbox]), textarea').blur(
-            function() {
-                $(this).addClass('hadfocus');
-            }
-        );
+        $('input:not([type=radio], [type=checkbox]), textarea').blur(function() {
+            $(this).addClass('hadfocus');
+        });
         formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
         $('.selectruns').html5finder( {
