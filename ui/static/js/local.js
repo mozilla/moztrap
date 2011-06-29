@@ -201,6 +201,10 @@ var TCM = TCM || {};
             }
         }).focus(function() {
             textbox.data('clicked', false);
+            if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
+                textbox.val(placeholder);
+                textbox.get(0).setSelectionRange(0, 0);
+            }
         }).blur(function() {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
@@ -210,7 +214,7 @@ var TCM = TCM || {};
             }
             removeFakePlaceholder();
             window.setTimeout(hideList, 150);
-        }).addClass('placeholder').focus().val(placeholder).get(0).setSelectionRange(0, 0);
+        }).addClass('placeholder').focus();
 
         suggestionList.hover(function() {
             selected = $(this).find('.selected').removeClass('selected');
