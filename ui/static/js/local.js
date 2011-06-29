@@ -227,11 +227,11 @@ var TCM = TCM || {};
             window.setTimeout(hideList, 150);
         }).addClass('placeholder').focus();
 
-        suggestionList.hover(function() {
-            selected = $(this).find('.selected').removeClass('selected');
-        }, function() {
-            selected.addClass('selected');
-        }).find('a').live({
+        suggestionList.find('a').live({
+            mouseenter: function() {
+                $(this).addClass('selected');
+                $(this).parent('li').siblings('li').find('a').removeClass('selected');
+            },
             mousedown: function() {
                 textbox.data('clicked', true);
             },
