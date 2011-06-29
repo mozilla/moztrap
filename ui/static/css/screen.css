@@ -1207,14 +1207,14 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 .message, #messages li {
-  -moz-box-shadow: rgba(68, 68, 68, 0) 0 0 0.236em 0.236em inset;
-  -webkit-box-shadow: rgba(68, 68, 68, 0) 0 0 0.236em 0.236em inset;
-  -o-box-shadow: rgba(68, 68, 68, 0) 0 0 0.236em 0.236em inset;
-  box-shadow: rgba(68, 68, 68, 0) 0 0 0.236em 0.236em inset;
-  -moz-transition-property: all;
-  -webkit-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
+  -moz-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
+  -webkit-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
+  -o-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
+  box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
+  -moz-transition-property: box-shadow;
+  -webkit-transition-property: box-shadow;
+  -o-transition-property: box-shadow;
+  transition-property: box-shadow;
   -moz-transition-duration: 300ms;
   -webkit-transition-duration: 300ms;
   -o-transition-duration: 300ms;

@@ -149,8 +149,8 @@
 
 .message
   @extend .messagestyle
-  +box-shadow(rgba($base,0) 0 0 $xxsmallem $xxsmallem inset)
-  +transition(all,300ms)
+  +box-shadow(rgba($base,0) 0 0 1px 1px inset)
+  +transition(box-shadow,300ms)
   p
     margin: 0
   &.success
