@@ -12,7 +12,7 @@ from ..static import filters as status_filters
 from ..static.status import TestCaseStatus, TestSuiteStatus
 from ..testexecution.filters import TestCycleFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
-from ..testcases.models import TestSuiteList, TestCaseVersionList
+from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
@@ -276,7 +276,11 @@ def testsuite_details(request, suite_id):
 @login_redirect
 @dec.actions(
     TestCaseVersionList,
-    ["approve", "reject", "activate", "deactivate", "delete"])
+    ["approve", "reject", "activate", "deactivate"],
+    fall_through=True)
+@dec.actions(
+    TestCaseList,
+    ["clone", "delete"])
 @dec.filter("cases",
             ("status", status_filters.TestCaseStatusFilter),
             ("approval", status_filters.ApprovalStatusFilter),

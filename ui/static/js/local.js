@@ -29,40 +29,96 @@ var TCM = TCM || {};
     },
 
     filtering = function() {
-        var formActions = $('#filter .form-actions').hide(),
-            input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
-                $(this).data('originallyChecked', $(this).is(':checked'));
-            }),
-            textbox = $('#filter .textual #text-filter'),
-            typedText = textbox.val(),
-            placeholder = textbox.attr('placeholder'),
-            suggestionList = $('#filter .textual .suggest').hide(),
-            keywordGroups = $('#filter .visual .filter-group.keyword'),
-            notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
-            selected,
-            removeFakePlaceholder = function() {
-                if (textbox.val().indexOf(placeholder) !== -1) {
-                    textbox.val(null);
-                }
-                textbox.removeClass('placeholder');
-            },
-            updateFormActions = function() {
-                if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
-                    formActions.fadeIn('fast');
-                    $('.managelist').addClass('expired');
-                } else {
-                    formActions.fadeOut('fast');
-                    $('.managelist').removeClass('expired');
-                }
-            };
+        var keycodes = {
+            SPACE: 32,
+            ENTER: 13,
+            TAB: 9,
+            ESC: 27,
+            BACKSPACE: 8,
+            SHIFT: 16,
+            CTRL: 17,
+            ALT: 18,
+            CAPS: 20,
+            LEFT: 37,
+            UP: 38,
+            RIGHT: 39,
+            DOWN: 40
+        },
+        formActions = $('#filter .form-actions').hide(),
+        toggle = $('#filter .toggle a'),
+        input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
+            $(this).data('originallyChecked', $(this).is(':checked'));
+        }),
+        textbox = $('#filter .textual #text-filter'),
+        typedText,
+        placeholder = textbox.attr('placeholder'),
+        suggestionList = $('#filter .textual .suggest').hide(),
+        keywordGroups = $('#filter .visual .filter-group.keyword'),
+        notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
+        selected,
+        removeFakePlaceholder = function() {
+            if (textbox.val().indexOf(placeholder) !== -1) {
+                textbox.val(null);
+            }
+            textbox.removeClass('placeholder');
+        },
+        updateFormActions = function() {
+            if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
+                formActions.fadeIn('fast');
+                $('.managelist').addClass('expired');
+            } else {
+                formActions.fadeOut('fast');
+                $('.managelist').removeClass('expired');
+            }
+        },
+        updateSuggestions = function() {
+            typedText = textbox.val();
+            suggestionList.empty();
+            if (textbox.val().length) {
+                var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
+                        return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                    });
+                relevantFilters.each(function() {
+                    var typedIndex = $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()),
+                        preText = $(this).children('label').html().substring(0, typedIndex),
+                        postText = $(this).children('label').html().substring(typedIndex + typedText.length),
+                        type = $(this).children('input').attr('name'),
+                        id = $(this).children('input').attr('id'),
+                        newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
+                    suggestionList.append(newHTML);
+                });
+                keywordGroups.each(function() {
+                    var type = $(this).children('h5').html(),
+                        name = $(this).data('name'),
+                        keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
+                    if ($(this).find('input[type="checkbox"]:checked').length) {
+                        if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
+                            if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
+                                suggestionList.append(keywordHTML);
+                            }
+                        }
+                    } else {
+                        suggestionList.append(keywordHTML);
+                    }
+                });
+                suggestionList.find('li:first-child a').addClass('selected');
+            }
+        };
+
+        toggle.click(function() {
+            $('#filter .visual').toggleClass('compact').toggleClass('expanded');
+            return false;
+        });
 
         formActions.find('.reset').click(function() {
             formActions.fadeOut('fast');
             $('.managelist').removeClass('expired');
             input.each(function() {
                 $(this).data('state', null);
-                $(this).attr('checked', $(this).data('originallyChecked'));
+                $(this).prop('checked', $(this).data('originallyChecked'));
             });
+            textbox.focus();
+            suggestionList.hide();
             return false;
         });
 
@@ -72,64 +128,37 @@ var TCM = TCM || {};
             } else {
                 $(this).data('state', null);
             }
+            textbox.focus();
+            suggestionList.hide();
             updateFormActions();
         });
 
         textbox.keyup(function(event) {
             if ($(this).val() !== typedText && $(this).val() !== placeholder) {
-                typedText = $(this).val();
-                suggestionList.empty();
-                if ($(this).val().length) {
-                    var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
-                            return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
-                        });
-                    relevantFilters.each(function() {
-                        var typedIndex = $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()),
-                            preText = $(this).children('label').html().substring(0, typedIndex),
-                            postText = $(this).children('label').html().substring(typedIndex + typedText.length),
-                            type = $(this).children('input').attr('name'),
-                            id = $(this).children('input').attr('id'),
-                            newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
-                        suggestionList.append(newHTML);
-                    });
-                    keywordGroups.each(function() {
-                        var type = $(this).children('h5').html(),
-                            name = $(this).data('name'),
-                            keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                        if ($(this).find('input[type="checkbox"]:checked').length) {
-                            if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
-                                if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
-                                    suggestionList.append(keywordHTML);
-                                }
-                            }
-                        } else {
-                            suggestionList.append(keywordHTML);
-                        }
-                    });
-                    suggestionList.find('li:first-child a').addClass('selected');
-                }
+                updateSuggestions();
             }
         }).keydown(function(event) {
             if (textbox.hasClass('placeholder')) {
-                if (!event.metaKey && event.keyCode !== 16 && event.keyCode !== 17 && event.keyCode !== 18 && event.keyCode !== 20 && event.keyCode !== 27) {
+                if (!event.metaKey && event.keyCode !== keycodes.SHIFT && event.keyCode !== keycodes.CTRL && event.keyCode !== keycodes.ALT && event.keyCode !== keycodes.CAPS && event.keyCode !== keycodes.ESC) {
                     removeFakePlaceholder();
                 }
-            } else {
-                if (event.keyCode === 38) {
+            }
+            if (suggestionList.is(':visible')) {
+                if (event.keyCode === keycodes.UP) {
                     event.preventDefault();
                     if (!suggestionList.find('.selected').parent().is(':first-child')) {
                         suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
                     }
                     return false;
                 }
-                if (event.keyCode === 40) {
+                if (event.keyCode === keycodes.DOWN) {
                     event.preventDefault();
                     if (!suggestionList.find('.selected').parent().is(':last-child')) {
                         suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
                     }
                     return false;
                 }
-                if (event.keyCode === 13) {
+                if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
                     if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
                         formActions.find('button[type="submit"]').click();
@@ -139,7 +168,7 @@ var TCM = TCM || {};
                     }
                     return false;
                 }
-                if (event.keyCode === 9) {
+                if (event.keyCode === keycodes.TAB) {
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                     if (thisFilterName && textbox.val() !== thisFilterName) {
                         event.preventDefault();
@@ -149,19 +178,28 @@ var TCM = TCM || {};
                         if (suggestionList.find('.selected').length) {
                             event.preventDefault();
                             suggestionList.find('.selected').click();
-                            suggestionList.show();
                             return false;
                         }
                     }
                 }
+                if (event.keyCode === keycodes.ESC) {
+                    event.preventDefault();
+                    suggestionList.hide();
+                    return false;
+                }
                 return true;
+            } else {
+                if (event.keyCode === keycodes.TAB) {
+                    event.preventDefault();
+                }
+                suggestionList.show();
+                updateSuggestions();
             }
         }).click(function() {
             if (textbox.hasClass('placeholder')) {
                 removeFakePlaceholder();
             }
         }).focus(function() {
-            suggestionList.show();
             textbox.data('clicked', false);
             if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
                 textbox.val(placeholder);
@@ -171,6 +209,7 @@ var TCM = TCM || {};
             function hideList() {
                 if (textbox.data('clicked') !== true) {
                     suggestionList.hide();
+                    textbox.data('clicked', false);
                 }
             }
             removeFakePlaceholder();
@@ -195,26 +234,27 @@ var TCM = TCM || {};
                         index = thisGroup.find('li').length + 1,
                         newHTML =
                             '<li>' +
-                                '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '" checked="checked" data-state="changed" data-originallyChecked="false">' +
+                                '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '">' +
                                 '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
                             '</li>';
                     if (existingKeyword.length) {
-                        existingKeyword.attr('checked', 'checked');
+                        existingKeyword.prop('checked', true);
                         if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
                             existingKeyword.data('state', 'changed');
                         }
                     } else {
                         thisGroup.removeClass('empty').children('ul').append(newHTML);
+                        $('#id-' + name + '-' + index).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                         input = input.add('#id-' + name + '-' + index);
                     }
                 } else {
-                    var thisFilter = input.filter('#' + $(this).data('id')).attr('checked', 'checked');
+                    var thisFilter = input.filter('#' + $(this).data('id')).prop('checked', true);
                     if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                         thisFilter.data('state', 'changed');
                     }
                 }
                 updateFormActions();
-                textbox.data('clicked', false).val(null);
+                textbox.val(null);
                 typedText = null;
                 suggestionList.empty().hide();
                 return false;
