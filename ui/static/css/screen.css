@@ -1622,6 +1622,22 @@ thead .controls {
   margin: 0;
 }
 #filter .suggest {
+  -moz-border-radius-bottomleft: 0.236em;
+  -webkit-border-bottom-left-radius: 0.236em;
+  -o-border-bottom-left-radius: 0.236em;
+  -ms-border-bottom-left-radius: 0.236em;
+  -khtml-border-bottom-left-radius: 0.236em;
+  border-bottom-left-radius: 0.236em;
+  -moz-border-radius-bottomright: 0.236em;
+  -webkit-border-bottom-right-radius: 0.236em;
+  -o-border-bottom-right-radius: 0.236em;
+  -ms-border-bottom-right-radius: 0.236em;
+  -khtml-border-bottom-right-radius: 0.236em;
+  border-bottom-right-radius: 0.236em;
+  -moz-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  -webkit-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  -o-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
   display: none;
   position: absolute;
   left: 0;
@@ -1629,6 +1645,8 @@ thead .controls {
   top: 2.427em;
   background: white;
   z-index: 900;
+  border: 1px solid #999999;
+  border-width: 0 1px 1px;
 }
 #filter .suggest a:link, #filter .suggest a:visited {
   padding-top: 0.405em;
@@ -1641,26 +1659,14 @@ thead .controls {
   padding-right: 1em;
   display: block;
   color: #444444;
-  border: 1px solid #eeeeee;
-  border-color: transparent #999999 #eeeeee;
-  border-width: 0 1px 1px;
+  border-bottom: 1px solid #eeeeee;
 }
-#filter .suggest a:link:hover, #filter .suggest a:link:active, #filter .suggest a:visited:hover, #filter .suggest a:visited:active {
-  background: #fef0bf;
-}
-#filter .suggest a:link:focus, #filter .suggest a:link.selected, #filter .suggest a:visited:focus, #filter .suggest a:visited.selected {
+#filter .suggest a:link.selected, #filter .suggest a:visited.selected {
   background: rgba(254, 240, 191, 0.382);
   outline: 0;
 }
-#filter .suggest a:link:hover:focus, #filter .suggest a:link.selected:hover, #filter .suggest a:visited:hover:focus, #filter .suggest a:visited.selected:hover {
-  background: #fef0bf;
-}
-#filter .suggest:not(:hover) a:focus, #filter .suggest:not(:hover) a:hover, #filter .suggest:not(:hover) a:active {
-  background: #fef0bf;
-  outline: 0;
-}
 #filter .suggest li:last-child a:link, #filter .suggest li:last-child a:visited {
-  border-bottom-color: #999999;
+  border-bottom: none;
 }
 #filter .suggest i {
   display: inline;
