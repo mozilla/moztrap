@@ -1,5 +1,6 @@
 (function($) {
 
+    // Add focus to ``invalid`` and ``fail`` textboxes when expanded
     var autoFocus = function(trigger) {
         $(trigger).click(function() {
             if ($(this).parent().hasClass('open')) {
@@ -8,6 +9,7 @@
         });
     };
 
+    // Open hierarchical navigation directly to clicked breadcrumb link
     var breadcrumb = function(context) {
         $(context).find('.colcontent').each(function() {
             $(this).data('originalHTML', $(this).html());
@@ -24,38 +26,35 @@
         });
     };
 
+    // Ajax submit runtest forms
     var testCaseButtons = function(context) {
         $(context).find("button").click(
             function(event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var button = $(this),
-                    testcase = button.closest(".details.test"),
-                    container = button.closest("div.form"),
-                    data = {
-                        action: button.data("action")
-                    },
-                    inputs = container.find("input"),
-                    post = true;
+                testcase = button.closest(".details.test"),
+                container = button.closest("div.form"),
+                data = { action: button.data("action") },
+                inputs = container.find("input"),
+                post = true;
                 testcase.loadingOverlay();
-                container.find("textarea").add(inputs).each(
-                    function() {
-                        var val = $(this).val();
-                        if (val) {
-                            data[$(this).attr("name")] = val;
-                        } else {
-                            $(this).siblings("ul.errorlist").remove();
-                            $(this).before(
-                                "<ul class=errorlist><li>" +
-                                    "This field is required." +
-                                    "</li></ul>"
-                            );
-                            testcase.loadingOverlay('remove');
-                            post = false;
-                        }
+                container.find("textarea").add(inputs).each(function() {
+                    var val = $(this).val();
+                    if (val) {
+                        data[$(this).attr("name")] = val;
+                    } else {
+                        $(this).siblings("ul.errorlist").remove();
+                        $(this).before(
+                            "<ul class=errorlist><li>" +
+                            "This field is required." +
+                            "</li></ul>"
+                        );
+                        testcase.loadingOverlay('remove');
+                        post = false;
                     }
-                );
-                if ( post ) {
+                });
+                if (post) {
                     $.post(
                         testcase.data("action-url"),
                         data,
