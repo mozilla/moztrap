@@ -2,8 +2,6 @@ var TCM = TCM || {};
 
 (function($) {
 
-    // Filtering, autocomplete, and fake placeholder text for manage and results pages
-
     var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
         var context = $(context_sel),
         trigger = context.find(trigger_sel);
@@ -28,7 +26,9 @@ var TCM = TCM || {};
         }
     },
 
+    // Filtering, autocomplete, and fake placeholder text for manage and results pages
     filtering = function() {
+        // Store keycode variables for easier readability
         var keycodes = {
             SPACE: 32,
             ENTER: 13,
@@ -227,11 +227,11 @@ var TCM = TCM || {};
             window.setTimeout(hideList, 150);
         }).addClass('placeholder').focus();
 
-        suggestionList.hover(function() {
-            selected = $(this).find('.selected').removeClass('selected');
-        }, function() {
-            selected.addClass('selected');
-        }).find('a').live({
+        suggestionList.find('a').live({
+            mouseenter: function() {
+                var thisSuggestion = $(this).addClass('selected'),
+                otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
+            },
             mousedown: function() {
                 textbox.data('clicked', true);
             },
