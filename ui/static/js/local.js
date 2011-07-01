@@ -28,6 +28,7 @@ var TCM = TCM || {};
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
     filtering = function() {
+
         // Store keycode variables for easier readability
         var keycodes = {
             SPACE: 32,
@@ -44,24 +45,32 @@ var TCM = TCM || {};
             RIGHT: 39,
             DOWN: 40
         },
+        // Hide the form-actions (submit, reset) initially
         formActions = $('#filter .form-actions').hide(),
         toggle = $('#filter .toggle a'),
+        // Set data-originallyChecked on each input to store original state
         input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
             $(this).data('originallyChecked', $(this).is(':checked'));
         }),
         textbox = $('#filter .textual #text-filter'),
         typedText,
         placeholder = textbox.attr('placeholder'),
+        // Hide the list of autocomplete suggestions initially
         suggestionList = $('#filter .textual .suggest').hide(),
         keywordGroups = $('#filter .visual .filter-group.keyword'),
         notKeywordGroups = $('#filter .visual .filter-group:not(.keyword)'),
         selected,
+
+        // Removes (faked) placeholder text from textbox
         removeFakePlaceholder = function() {
             if (textbox.val().indexOf(placeholder) !== -1) {
                 textbox.val(null);
             }
             textbox.removeClass('placeholder');
         },
+
+        // Checks if any inputs have changed from original-state,
+        // showing form-actions if any inputs have changed.
         updateFormActions = function() {
             if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
                 formActions.fadeIn('fast');
@@ -71,45 +80,58 @@ var TCM = TCM || {};
                 $('.managelist').removeClass('expired');
             }
         },
+
+        // Empties suggestion-list, looks for un-selected autocomplete
+        // suggestions based on typed-text (if there is typed-text) and appends
+        // them to suggestion-list.
         updateSuggestions = function() {
             typedText = textbox.val();
             suggestionList.empty();
             if (textbox.val().length) {
                 var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
-                        return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
-                    });
+                    return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                });
                 relevantFilters.each(function() {
                     var typedIndex = $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()),
-                        preText = $(this).children('label').html().substring(0, typedIndex),
-                        postText = $(this).children('label').html().substring(typedIndex + typedText.length),
-                        type = $(this).children('input').attr('name'),
-                        id = $(this).children('input').attr('id'),
-                        newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
+                    preText = $(this).children('label').html().substring(0, typedIndex),
+                    postText = $(this).children('label').html().substring(typedIndex + typedText.length),
+                    type = $(this).children('input').attr('name'),
+                    id = $(this).children('input').attr('id'),
+                    newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
                     suggestionList.append(newHTML);
                 });
                 keywordGroups.each(function() {
                     var type = $(this).children('h5').html(),
-                        name = $(this).data('name'),
-                        keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
+                    name = $(this).data('name'),
+                    keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
+                    // If the keyword group already has selected filter...
                     if ($(this).find('input[type="checkbox"]:checked').length) {
+                        // ...and if *all* of the selected filters begin with "^" and ends with "$"...
                         if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
+                            // ...and if the typed-text hasn't already been selected as a filter, and if the typed-text begins with "^" and ends with "$"...
                             if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
+                                // ...then append the keyword suggestion to the suggestion-list.
                                 suggestionList.append(keywordHTML);
                             }
                         }
+                    // If there are no other filters selected in the current keyword group, append the current suggestion
                     } else {
                         suggestionList.append(keywordHTML);
                     }
                 });
+                // Adds ``.selected`` to first autocomplete suggestion.
                 suggestionList.find('li:first-child a').addClass('selected');
             }
         };
 
+        // Shows/hides the advanced filtering
         toggle.click(function() {
             $('#filter .visual').toggleClass('compact expanded');
             return false;
         });
 
+        // Reset button sets each input to its original state, hides form-actions
+        // and suggestion-list, and returns focus to the textbox.
         formActions.find('.reset').click(function() {
             formActions.fadeOut('fast');
             $('.managelist').removeClass('expired');
@@ -122,6 +144,9 @@ var TCM = TCM || {};
             return false;
         });
 
+        // Selecting/unselecting an input returns focus to textbox, hides
+        // suggestion-list, sets data-state "changed" if input has changed from
+        // original state, and shows/hides form-actions as appropriate.
         input.live('change', function() {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                 $(this).data('state', 'changed');
@@ -134,28 +159,38 @@ var TCM = TCM || {};
         });
 
         textbox.keyup(function(event) {
+            // Updates suggestion-list if typed-text has changed
             if ($(this).val() !== typedText && $(this).val() !== placeholder) {
                 updateSuggestions();
             }
-        }).keydown(function(event) {
+        })
+        .keydown(function(event) {
+            // If textbox still has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
             if (textbox.hasClass('placeholder')) {
                 if (!event.metaKey && event.keyCode !== keycodes.SHIFT && event.keyCode !== keycodes.CTRL && event.keyCode !== keycodes.ALT && event.keyCode !== keycodes.CAPS && event.keyCode !== keycodes.ESC) {
                     removeFakePlaceholder();
                 }
             }
+            // If the suggestion list is not visible...
             if (!suggestionList.is(':visible')) {
+                // ...and if the keydown was a non-meta key other than shift, ctrl, alt, caps, or esc...
                 if (!event.metaKey && event.keyCode !== keycodes.SHIFT && event.keyCode !== keycodes.CTRL && event.keyCode !== keycodes.ALT && event.keyCode !== keycodes.CAPS && event.keyCode !== keycodes.ESC) {
+                    // ...prevent normal TAB function
                     if (event.keyCode === keycodes.TAB && textbox.val() !== '') {
                         event.preventDefault();
                     }
+                    // ...submit the form on ENTER if textbox is empty and inputs have changed
                     if (event.keyCode === keycodes.ENTER && textbox.val() === '' && $('.managelist').hasClass('expired')) {
                         formActions.find('button[type="submit"]').click();
                         return false;
                     }
+                    // ...update and show the suggestion list
                     updateSuggestions();
                     suggestionList.show();
                 }
+            // If the suggestion list is already visible...
             } else {
+                // UP and DOWN move "active" suggestion
                 if (event.keyCode === keycodes.UP) {
                     event.preventDefault();
                     if (!suggestionList.find('.selected').parent().is(':first-child')) {
@@ -170,14 +205,17 @@ var TCM = TCM || {};
                     }
                     return false;
                 }
+                // ENTER auto-completes the "active" suggestion if it isn't already completed
                 if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                     if (thisFilterName && textbox.val() !== thisFilterName) {
                         textbox.val(thisFilterName);
                     } else {
+                        // ENTER submits the form if textbox is empty and inputs have changed...
                         if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
                             formActions.find('button[type="submit"]').click();
+                        // ...otherwise, ENTER selects the "active" filter suggestion.
                         } else {
                             suggestionList.find('.selected').click();
                             suggestionList.show();
@@ -185,12 +223,14 @@ var TCM = TCM || {};
                     }
                     return false;
                 }
+                // TAB auto-completes the "active" suggestion if it isn't already completed...
                 if (event.keyCode === keycodes.TAB) {
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                     if (thisFilterName && textbox.val() !== thisFilterName) {
                         event.preventDefault();
                         textbox.val(thisFilterName);
                         return false;
+                    // ...otherwise, TAB selects the "active" filter suggestion (if exists)
                     } else {
                         if (suggestionList.find('.selected').length) {
                             event.preventDefault();
@@ -199,6 +239,7 @@ var TCM = TCM || {};
                         }
                     }
                 }
+                // ESC hides the suggestion list
                 if (event.keyCode === keycodes.ESC) {
                     event.preventDefault();
                     suggestionList.hide();
@@ -206,17 +247,25 @@ var TCM = TCM || {};
                 }
                 return true;
             }
-        }).click(function() {
+        })
+        // If textbox still has fake placeholder text, removes it on click
+        .click(function() {
             if (textbox.hasClass('placeholder')) {
                 removeFakePlaceholder();
             }
-        }).focus(function() {
+        })
+        .focus(function() {
+            // Resets textbox data-clicked to ``false`` (becomes ``true`` when an autocomplete suggestion is clicked)
             textbox.data('clicked', false);
+            // Adds fake placeholder on initial load (and moves cursor to start of textbox)
             if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
                 textbox.val(placeholder);
                 textbox.get(0).setSelectionRange(0, 0);
             }
-        }).blur(function() {
+        })
+        // On blur, removes fake placeholder text, and hides the suggestion
+        // list after 150 ms if textbox data-clicked is ``false``
+        .blur(function() {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
                     suggestionList.hide();
@@ -225,45 +274,54 @@ var TCM = TCM || {};
             }
             removeFakePlaceholder();
             window.setTimeout(hideList, 150);
-        }).addClass('placeholder').focus();
+        })
+        // Add initial ``placeholder`` class and focus to textbox
+        .addClass('placeholder').focus();
 
         suggestionList.find('a').live({
-            mouseenter: function() {
+            // Adds ``.selected`` to suggestion on mouseover, removing ``.selected`` from other suggestions
+            mouseover: function() {
                 var thisSuggestion = $(this).addClass('selected'),
                 otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
             },
+            // Prevent the suggestion list from being hidden (by textbox blur event) when clicking a suggestion
             mousedown: function() {
                 textbox.data('clicked', true);
             },
             click: function() {
+                // If keyword suggestion clicked...
                 if ($(this).data('class') === 'keyword') {
                     var name = $(this).data('name'),
-                        thisGroup = keywordGroups.filter(function() {
-                            return $(this).data('name') === name;
-                        }),
-                        existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
-                        index = thisGroup.find('li').length + 1,
-                        newHTML =
-                            '<li>' +
-                                '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '">' +
-                                '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
-                            '</li>';
+                    thisGroup = keywordGroups.filter(function() {
+                        return $(this).data('name') === name;
+                    }),
+                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
+                    index = thisGroup.find('li').length + 1,
+                    newHTML =
+                        '<li>' +
+                            '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '">' +
+                            '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
+                        '</li>';
+                    // ...select it if the filter already exists...
                     if (existingKeyword.length) {
                         existingKeyword.prop('checked', true);
                         if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
                             existingKeyword.data('state', 'changed');
                         }
+                    // ...otherwise, append it (selected) to the filters list.
                     } else {
                         thisGroup.removeClass('empty').children('ul').append(newHTML);
                         $('#id-' + name + '-' + index).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                         input = input.add('#id-' + name + '-' + index);
                     }
+                // If non-keyword suggestion clicked, select it
                 } else {
                     var thisFilter = input.filter('#' + $(this).data('id')).prop('checked', true);
                     if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                         thisFilter.data('state', 'changed');
                     }
                 }
+                // Show/hide the form-actions as necessary, reset the textbox, and reset and hide the suggestion list
                 updateFormActions();
                 textbox.val(null);
                 typedText = null;
@@ -273,28 +331,27 @@ var TCM = TCM || {};
         });
     },
 
+    // Ajax-load manage and results list item contents
     listDetails = function() {
-        $('#listcontent .items .item.details').live(
-            'click',
-            function(event) {
-                if ($(event.target).is("button, a")) {
-                    return;
-                }
-                var item = $(this),
-                content = item.find('.content'),
-                url = item.data('details-url');
-                if (url && !content.hasClass('loaded')) {
-                    content.css('min-height', '4.854em').addClass('loaded');
-                    content.loadingOverlay();
-                    $.get(url,
-                          function(data) {
-                              content.loadingOverlay('remove');
-                              content.html(data.html);
-                          });
-                }
-            });
+        $('#listcontent .items .item.details').live('click', function(event) {
+            if ($(event.target).is("button, a")) {
+                return;
+            }
+            var item = $(this),
+            content = item.find('.content'),
+            url = item.data('details-url');
+            if (url && !content.hasClass('loaded')) {
+                content.css('min-height', '4.854em').addClass('loaded');
+                content.loadingOverlay();
+                $.get(url, function(data) {
+                    content.loadingOverlay('remove');
+                    content.html(data.html);
+                });
+            }
+        });
     },
 
+    // Ajax for manage list actions (clone and delete)
     manageActionsAjax = function() {
         $('.manage button[name^=action-]').live(
             'click',
@@ -361,7 +418,7 @@ var TCM = TCM || {};
             },
             lastChildCallback: function(choice) {
                 var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
-                    ajaxUrl = $(choice).data("sub-url");
+                ajaxUrl = $(choice).data("sub-url");
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function(data) {
                     environments.loadingOverlay('remove');
@@ -401,6 +458,7 @@ var TCM = TCM || {};
 
     $(window).load(function() {
         $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis(true, 300);
+        // Expand list item details on direct hashtag links
         if ($('.manage').length && window.location.hash) {
             var hash = window.location.hash;
             $(hash).children('.summary').click();
