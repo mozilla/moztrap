@@ -5,22 +5,32 @@
       <input type="text" name="edit_name" value="" id="edit_name" placeholder="new category name">
     </p>
   {% else %}
-    <p class="name">category name</p>
+    <p class="name">{{ category }}</p>
   {% endif %}
   <ul class="elements">
     {% if not new %}
     <li>
-      <input type="checkbox" name="{{ id }-elemslug1" value="" id="{{ id }-elemslug1">
-      <label for="{{ id }-elemslug1">element name</label>
+      <input type="checkbox" name="1-elemslug1" value="" id="1-elemslug1">
+      <label for="1-elemslug1">{{ elem1 }}</label>
     </li>
+    {% if elem2 %}
     <li>
-      <input type="checkbox" name="{{ id }-elemslug2" value="" id="{{ id }-elemslug2">
-      <label for="{{ id }-elemslug2">element name</label>
+      <input type="checkbox" name="2-elemslug2" value="" id="2-elemslug2">
+      <label for="2-elemslug2">{{ elem2 }}</label>
     </li>
+    {% endif %}
+    {% if elem3 %}
     <li>
-      <input type="checkbox" name="{{ id }-elemslug3" value="" id="{{ id }-elemslug3">
-      <label for="{{ id }-elemslug3">element name</label>
+      <input type="checkbox" name="3-elemslug3" value="" id="3-elemslug3">
+      <label for="3-elemslug3">{{ elem3 }}</label>
     </li>
+    {% endif %}
+    {% if elem4 %}
+    <li>
+      <input type="checkbox" name="4-elemslug4" value="" id="4-elemslug4">
+      <label for="4-elemslug4">{{ elem4 }}</label>
+    </li>
+    {% endif %}
     <li class="add-element edit">
       <label for="add_element">add element</label>
       <input type="text" name="add_element" value="" id="add_element" placeholder="add an element">

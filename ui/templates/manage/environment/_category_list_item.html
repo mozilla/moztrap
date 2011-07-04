@@ -2,13 +2,13 @@
   <header class="summary">
     <h3 class="title">
       <input type="checkbox" name="bulk-select-{{ id }}" value="" id="bulk-select-{{ id }}">
-      <label for="bulk-select-{{ id }}">category name</label>
+      <label for="bulk-select-{{ id }}">{{ category }}</label>
     </h3>
     <ul class="preview">
-      <li>preview</li>
-      <li>list</li>
-      <li>of</li>
-      <li>elements</li>
+      <li>{{ elem1 }}</li>
+      {% if elem2 %}<li>{{ elem2 }}</li>{% endif %}
+      {% if elem3 %}<li>{{ elem3 }}</li>{% endif %}
+      {% if elem4 %}<li>{{ elem4 }}</li>{% endif %}
     </ul>
     <div class="controls">
       <button title="delete" type="submit" name="action-delete">delete</button>
