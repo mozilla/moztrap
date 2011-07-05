@@ -104,7 +104,7 @@ var TCM = TCM || {};
                     var type = $(this).children('h5').html(),
                     name = $(this).data('name'),
                     keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
-                    // If the keyword group already has selected filter...
+                    // If the keyword group already has selected filters...
                     if ($(this).find('input[type="checkbox"]:checked').length) {
                         // ...and if *all* of the selected filters begin with "^" and ends with "$"...
                         if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
@@ -209,7 +209,7 @@ var TCM = TCM || {};
                 if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                    if (thisFilterName && textbox.val() !== thisFilterName) {
+                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
                         textbox.val(thisFilterName);
                     } else {
                         // ENTER submits the form if textbox is empty and inputs have changed...
@@ -226,7 +226,7 @@ var TCM = TCM || {};
                 // TAB auto-completes the "active" suggestion if it isn't already completed...
                 if (event.keyCode === keycodes.TAB) {
                     var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                    if (thisFilterName && textbox.val() !== thisFilterName) {
+                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
                         event.preventDefault();
                         textbox.val(thisFilterName);
                         return false;
