@@ -1,10 +1,15 @@
+{% load icanhaz %}
+
 <nav id="filter">
   <h3 class="navhead">List Filtering</h3>
     <section class="textual">
       <h4 class="navhead">Basic Filtering</h4>
       <label for="text-filter">filter</label>
       <input type="text" name="text-filter" value="" id="text-filter" placeholder="filter by {% for field in filter %}{% if forloop.last %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
-      <ul class="suggest"></ul>
+      <ul class="suggest">
+        {% icanhaz "filter_suggestion" %}
+        {% icanhaz "keyword_filter_suggestion" %}
+      </ul>
     </section>
 
     <section class="visual compact">
@@ -22,6 +27,7 @@
           <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
           {% endif %}
 
+          {% icanhaz "keyword_filter" %}
           {% for field in filter %}
           <section class="filter-group {{ field.cls }}{% if field|length == 0 %} empty{% endif %}" data-name="{{ field.name }}">
             <h5>{{ field.name|lower }}</h5>

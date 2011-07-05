@@ -45,11 +45,7 @@
                         data[$(this).attr("name")] = val;
                     } else {
                         $(this).siblings("ul.errorlist").remove();
-                        $(this).before(
-                            "<ul class=errorlist><li>" +
-                            "This field is required." +
-                            "</li></ul>"
-                        );
+                        $(this).before(ich.runtests_form_error());
                         testcase.loadingOverlay('remove');
                         post = false;
                     }
