@@ -1,11 +1,11 @@
 <article id="profile-id-{{ id }}" class="item">
   <h3 class="title">
-    <a href="#" title="edit profile name">profile name</a>
+    <a href="#" title="edit {{ profile }}">{{ profile }}</a>
   </h3>
   <ul class="preview">
-    <li>preview list of</li>
-    <li>environments in this</li>
-    <li>environment profile</li>
+    <li>{{ cat1 }}</li>
+    {% if cat2 %}<li>{{ cat2 }}</li>{% endif %}
+    {% if cat3 %}<li>{{ cat3 }}</li>{% endif %}
   </ul>
   <div class="controls">
     <a href="#" title="edit">edit</a>
