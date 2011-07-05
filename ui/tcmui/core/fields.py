@@ -8,6 +8,7 @@ from dateutil import parser
 import remoteobjects
 
 from .auth import admin
+from . import util
 
 
 
@@ -60,7 +61,10 @@ class Date(Field):
 
     """
     def encode(self, value):
-        return super(Date, self).encode(value.strftime("%Y/%m/%d"))
+        try:
+            return super(Date, self).encode(value.strftime("%Y/%m/%d"))
+        except AttributeError:
+            return value
 
 
     def decode(self, value):
@@ -118,7 +122,7 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
 
 
     def encode(self, value):
-        return value.identity["@id"]
+        return util.id_for_object(value)
 
 
 

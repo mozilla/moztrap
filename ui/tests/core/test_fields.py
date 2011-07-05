@@ -168,6 +168,12 @@ class DateFieldTest(BaseFieldTests):
             f.encode(datetime.date(2011, 4, 28)), "2011/04/28")
 
 
+    def test_encode_string(self):
+        f = self.field()
+
+        self.assertEqual(f.encode("2011/04/28"), "2011/04/28")
+
+
     def test_submit(self):
         f, cls = self.field_and_cls()
 
@@ -242,6 +248,16 @@ class LocatorFieldTest(BaseFieldTests):
     def test_encode(self):
         f, cls, target_cls = self.field_cls_and_target()
         self.assertEqual(f.encode(target_cls(identity={"@id": 1})), 1)
+
+
+    def test_encode_string(self):
+        f, cls, target_cls = self.field_cls_and_target()
+        self.assertEqual(f.encode("1"), 1)
+
+
+    def test_encode_int(self):
+        f, cls, target_cls = self.field_cls_and_target()
+        self.assertEqual(f.encode(1), 1)
 
 
     def test_submit(self):

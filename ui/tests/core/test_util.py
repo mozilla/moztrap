@@ -241,45 +241,6 @@ class TestPrepForQuery(TestResourceTestCase):
         return prep_for_query
 
 
-    @property
-    def enum(self):
-        from flufl.enum import Enum
-
-        class MyEnum(Enum):
-            DRAFT = 1
-            ACTIVE = 2
-
-        return MyEnum
-
-
-    def test_single_remoteobject(self):
-        obj = self.resource_class()
-        obj.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=1)))
-
-        self.assertEqual(self.func(obj), "1")
-
-
-    def test_multiple_remoteobjects(self):
-        one = self.resource_class()
-        one.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=1)))
-        two = self.resource_class()
-        two.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=2)))
-
-        self.assertEqual(self.func([one, two]), ["1", "2"])
-
-
-    def test_single_enum(self):
-        self.assertEqual(self.func(self.enum.ACTIVE), "2")
-
-
-    def test_multiple_enums(self):
-        self.assertEqual(
-            self.func([self.enum.DRAFT, self.enum.ACTIVE]), ["1", "2"])
-
-
     def test_single_integer(self):
         self.assertEqual(self.func(1), "1")
 
@@ -294,6 +255,15 @@ class TestPrepForQuery(TestResourceTestCase):
 
     def test_multiple_strings(self):
         self.assertEqual(self.func(["foo", "bar"]), ["foo", "bar"])
+
+
+    def test_encode_callback(self):
+        self.assertEqual(self.func("foo", lambda x: x + "bar"), "foobar")
+
+
+    def test_encode_callback_multiple(self):
+        self.assertEqual(
+            self.func(["foo", "fu"], lambda x: x + "bar"), ["foobar", "fubar"])
 
 
 

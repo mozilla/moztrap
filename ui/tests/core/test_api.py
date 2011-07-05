@@ -339,6 +339,18 @@ class ResourceObjectTest(TestResourceTestCase):
         self.assertEqual(caching_wrapper.buckets, ["altbucket"])
 
 
+    def test_invalidate_cache(self, http):
+        http.request.return_value = response(self.builder.one())
+        obj = self.resource_class.get("/testresources/1", auth=self.auth)
+        with patch("tcmui.core.api.CachingHttpWrapper") as mock:
+            mock.return_value.request.return_value = http.request.return_value
+            obj.put(invalidate_cache=["SomeBucket"])
+
+        # third positional arg to caching wrapper is dependent buckets
+        self.assertEqual(mock.call_args[0][3], ["SomeBucket"])
+
+
+
     def test_cache_attribute_non_GET(self, http):
         http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
@@ -395,12 +407,12 @@ class ResourceObjectTest(TestResourceTestCase):
 
         self.assertEqual(
             self.resource_class.filterable_fields().keys(),
-            ["name", "submit_as", "id"])
+            ["non_field", "name", "submit_as", "id"])
 
         # same result on second call
         self.assertEqual(
             self.resource_class.filterable_fields().keys(),
-            ["name", "submit_as", "id"])
+            ["non_field", "name", "submit_as", "id"])
 
 
     def test_put(self, http):
@@ -833,7 +845,7 @@ class ListObjectTest(TestResourceTestCase):
     def test_filterable_fields(self, http):
         self.assertEqual(
             self.resource_list_class.filterable_fields().keys(),
-            ["name", "submit_as", "id"])
+            ["non_field", "name", "submit_as", "id"])
 
 
     def test_unicode(self, http):
@@ -957,6 +969,32 @@ class ListObjectTest(TestResourceTestCase):
             Url("http://fake.base/rest/testresources?submitAs=testval&_type=json"))
 
 
+    def test_non_field_filter(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(non_field="val")
+
+        self.assertEqual(len(c), 1)
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?nonField=val&_type=json"))
+
+
+    def test_filter_boolean(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(non_field=True)
+
+        self.assertEqual(len(c), 1)
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?nonField=True&_type=json"))
+
+
     def test_filter_multiple(self, http):
         http.request.return_value = response(
             self.builder.searchresult({"name":"Test TestResource",
@@ -986,89 +1024,6 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             Url(req["uri"]),
             Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
-
-
-
-    def test_filter_enum(self, http):
-        class MyEnum(Enum):
-            FOO = 1
-
-        http.request.return_value = response(
-            self.builder.searchresult({"name":"Test TestResource",
-                                                "submitAs": "1"}))
-
-        c = self.resource_list_class.get(auth=self.auth).filter(
-            submit_as=MyEnum.FOO)
-        c.deliver()
-
-        req = http.request.call_args[-1]
-        self.assertEqual(
-            Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
-
-
-
-    def test_filter_obj(self, http):
-        http.request.return_value = response(
-            self.builder.searchresult({"name":"Test TestResource",
-                                                "submitAs": "1"}))
-
-        one = self.resource_class()
-        one.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=1)))
-
-        c = self.resource_list_class.get(auth=self.auth).filter(submit_as=one)
-        c.deliver()
-
-        req = http.request.call_args[-1]
-        self.assertEqual(
-            Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?submitAs=1&_type=json"))
-
-
-
-    def test_filter_multiple_obj(self, http):
-        http.request.return_value = response(
-            self.builder.searchresult({"name":"Test TestResource",
-                                                "submitAs": "1"}))
-
-        one = self.resource_class()
-        one.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=1)))
-
-        two = self.resource_class()
-        two.update_from_dict(self.builder.one(
-                resourceIdentity=make_identity(id=2)))
-
-        c = self.resource_list_class.get(auth=self.auth).filter(
-            submit_as=[one, two])
-        c.deliver()
-
-        req = http.request.call_args[-1]
-        self.assertEqual(
-            Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?submitAs=1&submitAs=2&_type=json"))
-
-
-
-    def test_filter_multiple_enum(self, http):
-        class MyEnum(Enum):
-            FOO = 1
-            BAR = 2
-
-        http.request.return_value = response(
-            self.builder.searchresult({"name":"Test TestResource",
-                                                "submitAs": "1"}))
-
-        c = self.resource_list_class.get(auth=self.auth).filter(
-            submit_as=[MyEnum.FOO, MyEnum.BAR])
-        c.deliver()
-
-        req = http.request.call_args[-1]
-        self.assertEqual(
-            Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?submitAs=1&submitAs=2&_type=json"))
-
 
 
     def test_double_filter(self, http):
