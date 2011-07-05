@@ -97,13 +97,23 @@ var TCM = TCM || {};
                     postText = $(this).children('label').html().substring(typedIndex + typedText.length),
                     type = $(this).children('input').attr('name'),
                     id = $(this).children('input').attr('id'),
-                    newHTML = '<li><a href="#" data-id="' + id + '">' + preText + '<b>' + typedText + '</b>' + postText + ' <i>[' + type + ']</i></a></li>';
-                    suggestionList.append(newHTML);
+                    newSuggestion = ich.filter_suggestion({
+                        id: id,
+                        preText: preText,
+                        typedText: typedText,
+                        postText: postText,
+                        type: type
+                    });
+                    suggestionList.append(newSuggestion);
                 });
                 keywordGroups.each(function() {
                     var type = $(this).children('h5').html(),
                     name = $(this).data('name'),
-                    keywordHTML = '<li><a href="#" data-class="keyword" data-name="' + name + '"><b>' + typedText + '</b> <i>[' + type + ']</i></a></li>';
+                    keywordSuggestion = ich.keyword_filter_suggestion({
+                        name: name,
+                        typedText: typedText,
+                        type: type
+                    });
                     // If the keyword group already has selected filters...
                     if ($(this).find('input[type="checkbox"]:checked').length) {
                         // ...and if *all* of the selected filters begin with "^" and ends with "$"...
@@ -111,12 +121,12 @@ var TCM = TCM || {};
                             // ...and if the typed-text hasn't already been selected as a filter, and if the typed-text begins with "^" and ends with "$"...
                             if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
                                 // ...then append the keyword suggestion to the suggestion-list.
-                                suggestionList.append(keywordHTML);
+                                suggestionList.append(keywordSuggestion);
                             }
                         }
                     // If there are no other filters selected in the current keyword group, append the current suggestion
                     } else {
-                        suggestionList.append(keywordHTML);
+                        suggestionList.append(keywordSuggestion);
                     }
                 });
                 // Adds ``.selected`` to first autocomplete suggestion.
@@ -297,11 +307,11 @@ var TCM = TCM || {};
                     }),
                     existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
                     index = thisGroup.find('li').length + 1,
-                    newHTML =
-                        '<li>' +
-                            '<input type="checkbox" name="' + name + '" value="' + typedText + '" id="id-' + name + '-' + index + '">' +
-                            '<label for="id-' + name + '-' + index + '">' + typedText + '</label>' +
-                        '</li>';
+                    newKeywordFilter = ich.keyword_filter({
+                        name: name,
+                        typedText: typedText,
+                        index: index
+                    });
                     // ...select it if the filter already exists...
                     if (existingKeyword.length) {
                         existingKeyword.prop('checked', true);
@@ -310,7 +320,7 @@ var TCM = TCM || {};
                         }
                     // ...otherwise, append it (selected) to the filters list.
                     } else {
-                        thisGroup.removeClass('empty').children('ul').append(newHTML);
+                        thisGroup.removeClass('empty').children('ul').append(newKeywordFilter);
                         $('#id-' + name + '-' + index).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                         input = input.add('#id-' + name + '-' + index);
                     }
