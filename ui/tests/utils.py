@@ -240,6 +240,10 @@ class TestResourceTestCase(ResourceTestCase):
             name = fields.Field()
             submit_as = fields.Field(api_name="submitAs")
 
+            non_field_filters = {
+                "non_field": "nonField"
+                }
+
             cache = False
 
             def __unicode__(self):

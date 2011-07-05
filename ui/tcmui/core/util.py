@@ -2,6 +2,8 @@ import collections
 import urllib
 import urlparse
 
+import remoteobjects
+
 
 
 def update_querystring(url, **kwargs):
@@ -95,30 +97,30 @@ def id_for_object(val):
 
 
 
-def prep_for_query(val, accept_iterables=True):
+def prep_for_query(val, encode_callback=None, accept_iterables=True):
     """
     Convert a value (or list of values, if ``accept_iterables`` is True) to a
     value (or list of values) suitable for submission to the API in a
     querystring. ``accept_iterables`` is not recursive; nested iterables are
     never valid.
 
-    Converts EnumValue instances to string representation of their integer
-    value, and RemoteObject instances to string representation of their integer
-    id. Converts all other values to string.
+    ``encode_callback`` can be a callable that takes a single argument, each
+    value will be passed through this callable if it is given.
 
-    Does not do url-encoding; returned value is suitable as argument to
-    ``narrow_querystring`` or ``update_querystring`` or ``add_to_querystring``,
-    which will use urllib.urlencode.
+    Does not do url-encoding; returned value is string or list of strings
+    suitable as argument to ``narrow_querystring`` or ``update_querystring`` or
+    ``add_to_querystring``, which will use urllib.urlencode.
 
     """
-    try:
-        ret = id_for_object(val)
-    except ValueError:
-        if accept_iterables and is_iterable(val):
-            return [prep_for_query(elem, False) for elem in val]
-        ret = val
+    # RemoteObject instances are iterable but a single filter value
+    if (accept_iterables and is_iterable(val) and
+        not isinstance(val, remoteobjects.RemoteObject)):
+        return [prep_for_query(elem, encode_callback, False) for elem in val]
 
-    return str(ret)
+    if encode_callback is not None:
+        val = encode_callback(val)
+
+    return str(val)
 
 
 

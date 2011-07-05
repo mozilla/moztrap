@@ -691,7 +691,12 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k in valid_fields:
-                filters[valid_fields[k]] = util.prep_for_query(v)
+                try:
+                    field = self.entryclass.fields[k]
+                    encode = field.encode
+                except KeyError:
+                    encode = None
+                filters[valid_fields[k]] = util.prep_for_query(v, encode)
 
         newurl = util.narrow_querystring(self._location, **filters)
 
