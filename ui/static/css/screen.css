@@ -3827,6 +3827,13 @@ thead .controls {
 .preview li.last:after {
   content: "";
 }
+.preview label {
+  font-weight: normal;
+}
+.preview label.checked {
+  font-weight: 500;
+  color: #4b6564;
+}
 
 .editinline, #addprofile .name, #addprofile .elements li {
   position: relative;

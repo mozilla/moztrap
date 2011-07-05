@@ -10,25 +10,25 @@
   <ul class="elements">
     {% if not new %}
     <li>
-      <input type="checkbox" name="1-elemslug1" value="" id="1-elemslug1">
-      <label for="1-elemslug1">{{ elem1 }}</label>
+      <input type="checkbox" name="{{ id }}-elemslug1" value="" id="{{ id }}-elemslug1" checked>
+      <label for="{{ id }}-elemslug1" class="checked">{{ elem1 }}</label>
     </li>
     {% if elem2 %}
     <li>
-      <input type="checkbox" name="2-elemslug2" value="" id="2-elemslug2">
-      <label for="2-elemslug2">{{ elem2 }}</label>
+      <input type="checkbox" name="{{ id }}-elemslug2" value="" id="{{ id }}-elemslug2">
+      <label for="{{ id }}-elemslug2">{{ elem2 }}</label>
     </li>
     {% endif %}
     {% if elem3 %}
     <li>
-      <input type="checkbox" name="3-elemslug3" value="" id="3-elemslug3">
-      <label for="3-elemslug3">{{ elem3 }}</label>
+      <input type="checkbox" name="{{ id }}-elemslug3" value="" id="{{ id }}-elemslug3">
+      <label for="{{ id }}-elemslug3">{{ elem3 }}</label>
     </li>
     {% endif %}
     {% if elem4 %}
     <li>
-      <input type="checkbox" name="4-elemslug4" value="" id="4-elemslug4">
-      <label for="4-elemslug4">{{ elem4 }}</label>
+      <input type="checkbox" name="{{ id }}-elemslug4" value="" id="{{ id }}-elemslug4">
+      <label for="{{ id }}-elemslug4">{{ elem4 }}</label>
     </li>
     {% endif %}
     <li class="add-element edit">
