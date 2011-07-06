@@ -1,6 +1,6 @@
 <article id="profile-id-{{ id }}" class="item">
   <h3 class="title">
-    <a href="#" title="edit {{ profile }}">{{ profile }}</a>
+    <a href="/manage/environment/edit/" title="edit {{ profile }}">{{ profile }}</a>
   </h3>
   <ul class="preview">
     <li>{{ cat1 }}</li>
@@ -8,7 +8,7 @@
     {% if cat3 %}<li>{{ cat3 }}</li>{% endif %}
   </ul>
   <div class="controls">
-    <a href="#" title="edit">edit</a>
+    <a href="/manage/environment/edit/" title="edit">edit</a>
     <button title="delete" type="submit" name="action-delete">delete</button>
   </div>
 </article>
