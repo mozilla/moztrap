@@ -55,7 +55,7 @@ userAgent = Http()
 class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = True
-    _filterable_fields = {}
+    _filterables = {}
     non_field_filters = {}
 
 
@@ -409,23 +409,23 @@ class ObjectMixin(StrAndUnicode):
 
 
     @classmethod
-    def filterable_fields(cls):
+    def filterables(cls):
         """
-        Returns a dictionary mapping filterable field names to the name that
-        should be used in submitting to the API.
+        Returns a dictionary mapping filterable names to the name that should
+        be used in submitting to the API.
 
         """
         # filterable fields on subclasses can be different from parent class,
         # so we cache by class name
-        if cls._filterable_fields.get(cls.__name__) is None:
+        if cls._filterables.get(cls.__name__) is None:
             d = dict(
                 ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
                 if getattr(f, "api_filter_name", False)),
                 **cls.non_field_filters)
             # Can always filter by id
             d["id"] = "id"
-            cls._filterable_fields[cls.__name__] = d
-        return cls._filterable_fields.get(cls.__name__)
+            cls._filterables[cls.__name__] = d
+        return cls._filterables.get(cls.__name__)
 
 
     def refresh(self):
@@ -672,8 +672,8 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
 
     @classmethod
-    def filterable_fields(cls):
-        return cls.entryclass.filterable_fields()
+    def filterables(cls):
+        return cls.entryclass.filterables()
 
 
     def filter(self, **kwargs):
@@ -682,12 +682,12 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         the instance's query string.
 
         Resolves Python field names to correct API names, and ignores any
-        requested filters that don't map to an actual field.
+        requested filters that don't map to a filterable field name.
 
         """
         auth = kwargs.pop("auth", self.auth)
 
-        valid_fields = self.filterable_fields()
+        valid_fields = self.filterables()
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k in valid_fields:
@@ -704,7 +704,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
 
     def sort(self, field, direction=sort.DEFAULT):
-        sortable = self.filterable_fields()
+        sortable = self.filterables()
         if field in sortable and direction in sort.DIRECTIONS:
             newurl = util.update_querystring(
                 self._location,

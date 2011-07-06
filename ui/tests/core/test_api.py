@@ -1,7 +1,6 @@
 import json
 import httplib
 
-from flufl.enum import Enum
 from mock import patch
 from unittest2 import TestCase
 
@@ -400,18 +399,18 @@ class ResourceObjectTest(TestResourceTestCase):
             repr(c), "<TestResource: testresources/1>")
 
 
-    def test_filterable_fields(self, http):
+    def test_filterables(self, http):
         self.assertEqual(
             self.resource_class.fields.keys(),
             ["timeline", "submit_as", "name", "identity"])
 
         self.assertEqual(
-            self.resource_class.filterable_fields().keys(),
+            self.resource_class.filterables().keys(),
             ["non_field", "name", "submit_as", "id"])
 
         # same result on second call
         self.assertEqual(
-            self.resource_class.filterable_fields().keys(),
+            self.resource_class.filterables().keys(),
             ["non_field", "name", "submit_as", "id"])
 
 
@@ -842,9 +841,9 @@ class ListObjectTest(TestResourceTestCase):
             self.resource_list_class().submit_ids_name, "testResourceIds")
 
 
-    def test_filterable_fields(self, http):
+    def test_filterables(self, http):
         self.assertEqual(
-            self.resource_list_class.filterable_fields().keys(),
+            self.resource_list_class.filterables().keys(),
             ["non_field", "name", "submit_as", "id"])
 
 

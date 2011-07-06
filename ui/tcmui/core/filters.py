@@ -71,8 +71,7 @@ class FieldFilter(object):
 
     def filters(self):
         """
-        Return tuples (probably just one) of (fieldname, values) to filter the
-        API query on.
+        Return tuple of (fieldname, values) to filter the API query on.
 
         """
         return (self.name, self.values)
