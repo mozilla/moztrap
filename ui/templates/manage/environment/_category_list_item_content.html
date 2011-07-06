@@ -35,8 +35,15 @@
     </li>
     {% endif %}
     {% if elem3 %}
-    <li class="editing">
-      <input type="text" name="{{ id }}-elemslug3" value="{{ elem3 }}" id="{{ id }}-elemslug3">
+    <li>
+      <div class="element-select">
+        <input type="checkbox" name="{{ id }}-elemslug3" value="" id="{{ id }}-elemslug3">
+        <label for="{{ id }}-elemslug3">{{ elem3 }}</label>
+      </div>
+      <div class="element-controls">
+        <button name="action-edit">edit</button>
+        <button name="action-delete">delete</button>
+      </div>
     </li>
     {% endif %}
     {% if elem4 %}

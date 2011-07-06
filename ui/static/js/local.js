@@ -400,6 +400,8 @@ var TCM = TCM || {};
         addCategory = $('input#edit_name'),
         editElementButton = $('#addprofile .item .elements button[name="action-edit"]'),
         editElement = $('#addprofile .item .elements .editing input'),
+        deleteElement = $('#addprofile .element-controls button[name="action-delete"]'),
+        deleteCategory = $('#addprofile .item .controls button[name="action-delete"]'),
         updateLabels = function() {
             $('#addprofile .item .elements .element-select input').each(function() {
                 var thisID = $(this).attr('id');
@@ -507,6 +509,16 @@ var TCM = TCM || {};
                     updateLabels();
                 }
             }
+        });
+
+        deleteElement.live('click', function() {
+            var id = $(this).closest('li').find('input').attr('id');
+            $(this).closest('li').detach();
+            $('label[for="' + id + '"]').closest('li').detach();
+        });
+
+        deleteCategory.live('click', function() {
+            $(this).closest('.item').detach();
         });
     };
 
