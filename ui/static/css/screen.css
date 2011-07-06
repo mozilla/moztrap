@@ -3882,6 +3882,36 @@ button[name="action-edit"] {
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
 }
 
+.profile-name {
+  clear: both;
+  padding-right: 50.526%;
+  *zoom: 1;
+  margin-bottom: 0em;
+}
+.profile-name:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+.profile-name label {
+  display: inline;
+  float: left;
+  width: 14.894%;
+  margin-right: 2.128%;
+}
+.profile-name input {
+  display: inline;
+  float: left;
+  width: 82.979%;
+  margin-right: 2.128%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+
 /* Manage Tests -------------------------------------------------------------- */
 #managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend, #managecycles .testers, #managecycles .product, #managecycles .byproduct {
   display: inline;
@@ -3970,35 +4000,6 @@ button[name="action-edit"] {
   content: " »";
 }
 
-#addprofile .profile-name {
-  clear: both;
-  padding-right: 50.526%;
-  *zoom: 1;
-  margin-bottom: 0em;
-}
-#addprofile .profile-name:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-#addprofile .profile-name label {
-  display: inline;
-  float: left;
-  width: 14.894%;
-  margin-right: 2.128%;
-}
-#addprofile .profile-name input {
-  display: inline;
-  float: left;
-  width: 82.979%;
-  margin-right: 2.128%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
 #addprofile .bytitle, #addprofile .title {
   display: inline;
   float: left;

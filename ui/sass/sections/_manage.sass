@@ -33,6 +33,17 @@
   #{$focus}
     +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
+.profile-name
+  +full(24)
+  +suffix(12,24)
+  +pie-clearfix
+  +trailer(0)
+  label
+    +columns(2,12)
+  input
+    +columns(10,12)
+    +omega(12)
+
 /* Manage Tests --------------------------------------------------------------
 
 #managecycles
@@ -82,17 +93,6 @@
           content: " »"
 
 #addprofile
-  .profile-name
-    +full(24)
-    +suffix(12,24)
-    +pie-clearfix
-    +trailer(0)
-    label
-      +columns(2,12)
-    input
-      +columns(10,12)
-      +omega(12)
-
   .bytitle, .title
     +columns(6,24)
   .bytitle
