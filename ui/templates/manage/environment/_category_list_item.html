@@ -1,9 +1,10 @@
 <article id="category-id-{{ id }}" class="item details">
   <header class="summary">
-    <h3 class="title">
+    <p class="bulk">
       <input type="checkbox" name="bulk-select-{{ id }}" value="" id="bulk-select-{{ id }}">
-      <label for="bulk-select-{{ id }}">{{ category }}</label>
-    </h3>
+      <label for="bulk-select-{{ id }}">bulk select for {{ category }}</label>
+    </p>
+    <h3 class="title">{{ category }}</h3>
     <ul class="preview">
       <li><label for="{{ id }}-elemslug1" class="checked">{{ elem1 }}</label></li>
       {% if elem2 %}<li><label for="{{ id }}-elemslug2">{{ elem2 }}</label></li>{% endif %}

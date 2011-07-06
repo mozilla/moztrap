@@ -29,13 +29,13 @@
         +opacity(1)
 
 .item.add-item
-  +hpadding(rhythm(1))
   +demi
-  +background(image-url('ui/plus.png') no-repeat scroll left rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
+  +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
   .summary
     @extend .allcaps
+    +pad(1,1,24)
   #{$focus}
-    +background(image-url('ui/plus.png') no-repeat scroll left rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
+    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
 /* Manage Tests --------------------------------------------------------------
 
@@ -99,17 +99,27 @@
 
   .bytitle, .title
     +columns(6,24)
+  .bytitle
+    +prefix(1,24)
+    a
+      padding: 0
+  .bulk
+    +columns(1,24)
   .bypreview, .preview
-    +columns(12,24)
+    +columns(11,24)
+
+  .bulk
+    label
+      +gone
 
   .name
     @extend .editinline
     +bold
-    margin: 0 columns(6,24) + gutter(24)
+    margin: 0 columns(7,24) + gutter(24)
   .elements
     +no-style-list
     +full(24)
-    +pad(6,6,24)
+    +pad(7,7,24)
     counter-reset: elements
     li
       @extend .editinline

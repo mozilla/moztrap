@@ -3868,21 +3868,23 @@ thead .controls {
 }
 
 .item.add-item {
-  padding-left: 1.618em;
-  padding-right: 1.618em;
   font-weight: 500;
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+}
+.item.add-item .summary {
+  padding-left: 4.211%;
+  padding-right: 4.211%;
 }
 .item.add-item:focus, .item.add-item:hover, .item.add-item:active {
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll left 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
 }
 
 /* Manage Tests -------------------------------------------------------------- */
@@ -4008,15 +4010,37 @@ thead .controls {
   width: 24.211%;
   margin-right: 1.053%;
 }
+#addprofile .bytitle {
+  padding-left: 4.211%;
+}
+#addprofile .bytitle a {
+  padding: 0;
+}
+#addprofile .bulk {
+  display: inline;
+  float: left;
+  width: 3.158%;
+  margin-right: 1.053%;
+}
 #addprofile .bypreview, #addprofile .preview {
   display: inline;
   float: left;
-  width: 49.474%;
+  width: 45.263%;
   margin-right: 1.053%;
+}
+#addprofile .bulk label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 #addprofile .name {
   font-weight: 700;
-  margin: 0 25.263%;
+  margin: 0 29.474%;
 }
 #addprofile .elements {
   list-style: none;
@@ -4024,8 +4048,8 @@ thead .controls {
   padding: 0;
   border: 0;
   clear: both;
-  padding-left: 25.263%;
-  padding-right: 25.263%;
+  padding-left: 29.474%;
+  padding-right: 29.474%;
   counter-reset: elements;
 }
 #addprofile .elements li {
