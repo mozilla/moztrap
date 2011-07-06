@@ -2,7 +2,24 @@ var TCM = TCM || {};
 
 (function($) {
 
-    var formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
+    // Store keycode variables for easier readability
+    var keycodes = {
+        SPACE: 32,
+        ENTER: 13,
+        TAB: 9,
+        ESC: 27,
+        BACKSPACE: 8,
+        SHIFT: 16,
+        CTRL: 17,
+        ALT: 18,
+        CAPS: 20,
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40
+    },
+
+    formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
         var context = $(context_sel),
         trigger = context.find(trigger_sel);
         if (context.length && trigger.is("select")) {
@@ -29,24 +46,8 @@ var TCM = TCM || {};
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
     filtering = function() {
 
-        // Store keycode variables for easier readability
-        var keycodes = {
-            SPACE: 32,
-            ENTER: 13,
-            TAB: 9,
-            ESC: 27,
-            BACKSPACE: 8,
-            SHIFT: 16,
-            CTRL: 17,
-            ALT: 18,
-            CAPS: 20,
-            LEFT: 37,
-            UP: 38,
-            RIGHT: 39,
-            DOWN: 40
-        },
         // Hide the form-actions (submit, reset) initially
-        formActions = $('#filter .form-actions').hide(),
+        var formActions = $('#filter .form-actions').hide(),
         toggle = $('#filter .toggle a'),
         // Set data-originallyChecked on each input to store original state
         input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
@@ -393,8 +394,10 @@ var TCM = TCM || {};
     },
 
     manageEnvProfiles = function() {
-        var elements = $('#addprofile .item .elements input'),
-        categories = $('#addprofile .item .title input'),
+        var elements = $('#addprofile .item .elements .element-select input'),
+        categories = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
+        addElement = $('input[id$="-add-element"]'),
+        addCategory = $('input#edit_name'),
         updateLabels = function() {
             elements.each(function() {
                 var thisID = $(this).attr('id');
@@ -422,6 +425,48 @@ var TCM = TCM || {};
                 $(this).closest('.item').find('.elements input').prop('checked', false);
             }
             updateLabels();
+        });
+
+        addElement.live('keydown', function(event) {
+            if (event.keyCode === keycodes.ENTER) {
+                var name = $(this).val(),
+                externalIndex = $(this).closest('.items').children('[id^="category"]').length + 1,
+                internalIndex = $(this).closest('.elements').children('li').not('.add-element').length + 1;
+                if (externalIndex < 10) {
+                    externalIndex = '0' + externalIndex;
+                }
+                var newElement = ich.env_profile_element({
+                    name: name,
+                    external_index: externalIndex,
+                    internal_index: internalIndex
+                }),
+                newElementPreview = ich.env_profile_element_preview({
+                    name: name,
+                    external_index: externalIndex,
+                    internal_index: internalIndex
+                });
+                $(this).closest('.elements').children('li.add-element').before(newElement);
+                $(this).closest('.item').find('.preview').append(newElementPreview);
+                elements = $('#addprofile .item .elements .element-select input');
+                $(this).val(null);
+            }
+        });
+
+        addCategory.keydown(function(event) {
+            if (event.keyCode === keycodes.ENTER) {
+                var name = $(this).val(),
+                index = $(this).closest('.items').children('[id^="category"]').length + 1;
+                if (index < 10) {
+                    index = '0' + index;
+                }
+                var newCategory = ich.env_profile_category({
+                    name: name,
+                    index: index
+                });
+                $(this).closest('.items').children('.add-item').before(newCategory);
+                $('#category-id-' + index).find('.details').andSelf().html5accordion('.summary');
+                $(this).val(null);
+            }
         });
     };
 
