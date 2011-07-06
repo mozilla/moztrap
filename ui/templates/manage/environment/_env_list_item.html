@@ -1,6 +1,18 @@
-<article id="env-id-{{ id }}" class="item">
-  <h3 class="title">{{ title }}</h3>
-  <div class="controls">
-    <button title="delete" type="submit" name="action-delete">delete</button>
+<article id="env-id-{{ id }}" class="item details">
+  <header class="summary">
+    <h3 class="preview">
+      <ul>
+        <li>windows</li>
+        <li>english</li>
+        <li>firefox</li>
+      </ul>
+    </h3>
+    <div class="controls">
+      <button title="clone" type="submit" name="action-clone">clone</button>
+      <button title="delete" type="submit" name="action-delete">delete</button>
+    </div>
+  </header>
+  <div class="content">
+    {% include "manage/environment/_env_list_item_content.html" %}
   </div>
 </article>

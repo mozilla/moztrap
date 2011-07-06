@@ -19,8 +19,8 @@
       <nav class="listordering">
         <h3 class="navhead">List Ordering</h3>
         <ul>
-          <li class="bytitle">
-            <a href="#">environment</a>
+          <li class="bypreview">
+            <a href="#">environment preview</a>
           </li>
           <li class="bycontrols">
             <span>controls</span>
@@ -29,12 +29,10 @@
       </nav>
 
       <div class="items">
-        <article href="#" class="item add-item details">
-          <h3 class="summary">add an environment</h3>
-          <div class="content">
-            <p>filter-ish interface?</p>
-          </div>
-        </a>
+        {% include "manage/environment/_env_list_item.html" with id='01' %}
+        {% include "manage/environment/_env_list_item.html" with id='01' %}
+
+        <a href="#" class="item add-item">add an environment</a>
       </div>
 
       {% include "lists/_listnav.html" %}

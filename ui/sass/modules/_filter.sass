@@ -9,6 +9,40 @@
 
 /* Filtering -----------------------------------------------------------------
 
+.suggest
+  +border-bottom-radius
+  +box-shadow(rgba($blue-dark,$small) 0 .25em .5em)
+  display: none
+  position: absolute
+  left: 0
+  right: 0
+  top: rhythm(1.5)
+  background: #fff
+  z-index: 900
+  border: 1px solid $mid
+    width: 0 1px 1px
+  a
+    #{$link}
+      +padding-leader(.25)
+      +trailing-border(1px,.25)
+      +clearfix
+      +hpadding(1em)
+      display: block
+      color: $base
+      border-bottom: 1px solid $light
+      &.selected
+        background: rgba($yellow-light,$xsmall)
+        outline: 0
+  li:last-child
+    a
+      #{$link}
+        border-bottom: none
+  i
+    +float(right)
+    padding-left: 1em
+    font-style: normal
+    color: $mid
+
 .groupheader
   @extend .allcaps
   +cond
@@ -45,40 +79,6 @@
     input
       +full(12)
       margin: 0
-
-  .suggest
-    +border-bottom-radius
-    +box-shadow(rgba($blue-dark,$small) 0 .25em .5em)
-    display: none
-    position: absolute
-    left: 0
-    right: 0
-    top: rhythm(1.5)
-    background: #fff
-    z-index: 900
-    border: 1px solid $mid
-      width: 0 1px 1px
-    a
-      #{$link}
-        +padding-leader(.25)
-        +trailing-border(1px,.25)
-        +clearfix
-        +hpadding(1em)
-        display: block
-        color: $base
-        border-bottom: 1px solid $light
-        &.selected
-          background: rgba($yellow-light,$xsmall)
-          outline: 0
-    li:last-child
-      a
-        #{$link}
-          border-bottom: none
-    i
-      +float(right)
-      padding-left: 1em
-      font-style: normal
-      color: $mid
 
   // Visual ------------------------------------------------------------------
 

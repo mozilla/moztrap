@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -1553,6 +1553,61 @@ button[name="action-edit"] {
 }
 
 /* Filtering ----------------------------------------------------------------- */
+.suggest {
+  -moz-border-radius-bottomleft: 0.236em;
+  -webkit-border-bottom-left-radius: 0.236em;
+  -o-border-bottom-left-radius: 0.236em;
+  -ms-border-bottom-left-radius: 0.236em;
+  -khtml-border-bottom-left-radius: 0.236em;
+  border-bottom-left-radius: 0.236em;
+  -moz-border-radius-bottomright: 0.236em;
+  -webkit-border-bottom-right-radius: 0.236em;
+  -o-border-bottom-right-radius: 0.236em;
+  -ms-border-bottom-right-radius: 0.236em;
+  -khtml-border-bottom-right-radius: 0.236em;
+  border-bottom-right-radius: 0.236em;
+  -moz-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  -webkit-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  -o-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2.427em;
+  background: white;
+  z-index: 900;
+  border: 1px solid #999999;
+  border-width: 0 1px 1px;
+}
+.suggest a:link, .suggest a:visited {
+  padding-top: 0.405em;
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.333em;
+  overflow: hidden;
+  *zoom: 1;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: block;
+  color: #444444;
+  border-bottom: 1px solid #eeeeee;
+}
+.suggest a:link.selected, .suggest a:visited.selected {
+  background: rgba(254, 240, 191, 0.382);
+  outline: 0;
+}
+.suggest li:last-child a:link, .suggest li:last-child a:visited {
+  border-bottom: none;
+}
+.suggest i {
+  display: inline;
+  float: right;
+  padding-left: 1em;
+  font-style: normal;
+  color: #999999;
+}
+
 .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -1627,60 +1682,6 @@ button[name="action-edit"] {
 #filter .textual input {
   clear: both;
   margin: 0;
-}
-#filter .suggest {
-  -moz-border-radius-bottomleft: 0.236em;
-  -webkit-border-bottom-left-radius: 0.236em;
-  -o-border-bottom-left-radius: 0.236em;
-  -ms-border-bottom-left-radius: 0.236em;
-  -khtml-border-bottom-left-radius: 0.236em;
-  border-bottom-left-radius: 0.236em;
-  -moz-border-radius-bottomright: 0.236em;
-  -webkit-border-bottom-right-radius: 0.236em;
-  -o-border-bottom-right-radius: 0.236em;
-  -ms-border-bottom-right-radius: 0.236em;
-  -khtml-border-bottom-right-radius: 0.236em;
-  border-bottom-right-radius: 0.236em;
-  -moz-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
-  -webkit-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
-  -o-box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
-  box-shadow: rgba(75, 101, 100, 0.618) 0 0.25em 0.5em;
-  display: none;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 2.427em;
-  background: white;
-  z-index: 900;
-  border: 1px solid #999999;
-  border-width: 0 1px 1px;
-}
-#filter .suggest a:link, #filter .suggest a:visited {
-  padding-top: 0.405em;
-  border-bottom-style: solid;
-  border-bottom-width: 0.071em;
-  padding-bottom: 0.333em;
-  overflow: hidden;
-  *zoom: 1;
-  padding-left: 1em;
-  padding-right: 1em;
-  display: block;
-  color: #444444;
-  border-bottom: 1px solid #eeeeee;
-}
-#filter .suggest a:link.selected, #filter .suggest a:visited.selected {
-  background: rgba(254, 240, 191, 0.382);
-  outline: 0;
-}
-#filter .suggest li:last-child a:link, #filter .suggest li:last-child a:visited {
-  border-bottom: none;
-}
-#filter .suggest i {
-  display: inline;
-  float: right;
-  padding-left: 1em;
-  font-style: normal;
-  color: #999999;
 }
 #filter .toggle {
   display: inline;
@@ -3829,6 +3830,10 @@ button[name="action-edit"] {
 .preview li.last:after {
   content: "";
 }
+.preview ul {
+  margin: 0;
+  padding: 0;
+}
 .preview label {
   font-weight: normal;
 }
@@ -3869,6 +3874,10 @@ button[name="action-edit"] {
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+}
+.item.add-item:link, .item.add-item:visited {
+  display: block;
+  padding: 0.405em 1.618em;
 }
 .item.add-item .summary {
   padding-left: 4.211%;
@@ -4093,6 +4102,69 @@ button[name="action-edit"] {
   height: 1px;
   width: 1px;
   border: 0;
+}
+
+#editprofile .bypreview, #editprofile .preview {
+  display: inline;
+  float: left;
+  width: 91.579%;
+  margin-right: 1.053%;
+}
+#editprofile .content {
+  padding-left: 8.421%;
+  padding-right: 8.421%;
+}
+#editprofile .env-management {
+  margin-top: 0.809em;
+}
+#editprofile .env-management label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#editprofile .env-element-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  *zoom: 1;
+  margin-bottom: 0.809em;
+}
+#editprofile .env-element-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+#editprofile .env-element-list:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
+#editprofile .env-element-list li {
+  display: inline;
+  float: left;
+  font-weight: 500;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  background: rgba(119, 185, 41, 0.382);
+  padding: 0.202em 0.405em;
+  margin-right: 0.405em;
+  cursor: pointer;
+}
+#editprofile .env-element-list li:hover {
+  background: rgba(185, 41, 47, 0.382);
 }
 
 /* test nav -------------------------------------------------------------- */

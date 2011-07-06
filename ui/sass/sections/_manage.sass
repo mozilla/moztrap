@@ -3,6 +3,9 @@
   +delimited-list(',')
   +italic
   color: rgba($blue-darker,$small)
+  ul
+    margin: 0
+    padding: 0
 
   label
     +font-weight-normal
@@ -27,6 +30,10 @@
 .item.add-item
   +demi
   +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
+  #{$link}
+    @extend .allcaps
+    display: block
+    padding: rhythm(.25) rhythm(1)
   .summary
     @extend .allcaps
     +pad(1,1,24)
@@ -139,3 +146,29 @@
   .add-element
     label
       +gone
+
+#editprofile
+  .bypreview, .preview
+    +columns(22,24)
+  .content
+    +pad(2,2,24)
+
+  .env-management
+    +leader(.5)
+    label
+      +gone
+
+  .env-element-list
+    +no-style-list
+    +pie-clearfix
+    +trailer(.5)
+    li
+      +float(left)
+      +demi
+      +border-radius
+      background: rgba($green,$xsmall)
+      padding: rhythm(.125) rhythm(.25)
+      margin-right: rhythm(.25)
+      cursor: pointer
+      &:hover
+        background: rgba($red,$xsmall)
