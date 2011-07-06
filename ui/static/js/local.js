@@ -392,11 +392,36 @@ var TCM = TCM || {};
         );
     },
 
-    selectEnvElement = function() {
-        var input = $('#addprofile .elements input');
-        input.live('change', function() {
+    manageEnvProfiles = function() {
+        var elements = $('#addprofile .item .elements input'),
+        categories = $('#addprofile .item .title input'),
+        updateLabels = function() {
+            elements.each(function() {
+                var thisID = $(this).attr('id');
+                if ($(this).is(':checked')) {
+                    $('label[for=' + thisID + ']').addClass('checked');
+                } else {
+                    $('label[for=' + thisID + ']').removeClass('checked');
+                }
+            });
+        };
+
+        elements.live('change', function() {
             var thisID = $(this).attr('id');
-            $('label[for=' + thisID + ']').toggleClass('checked');
+            if ($(this).is(':checked')) {
+                $('label[for=' + thisID + ']').addClass('checked');
+            } else {
+                $('label[for=' + thisID + ']').removeClass('checked');
+            }
+        });
+
+        categories.live('change', function() {
+            if ($(this).is(':checked')) {
+                $(this).closest('.item').find('.elements input').prop('checked', true);
+            } else {
+                $(this).closest('.item').find('.elements input').prop('checked', false);
+            }
+            updateLabels();
         });
     };
 
@@ -404,7 +429,7 @@ var TCM = TCM || {};
         filtering();
         listDetails();
         manageActionsAjax();
-        selectEnvElement();
+        manageEnvProfiles();
         $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages({
             handleAjax: true,
