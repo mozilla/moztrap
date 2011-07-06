@@ -1,22 +1,36 @@
 /* Controls ------------------------------------------------------------------
 
-.controls
+.controls, .element-controls
   text-align: right
   white-space: nowrap
   *:last-child
     margin-right: .375em
-  thead &
-    +hide-text
-  a
-    #{$link}
-      +inline-block
-      +icon('[title="edit"]','ui/pencil.png')
-      +icon('[title^="create"]','ui/paper_plus.png')
-      +opacity(.675)
-    #{$focus}
-      +opacity(1)
-  button
+
+[title="edit"], [title^="create"]
+  #{$link}
+    +inline-block
+    +opacity(.675)
+  #{$focus}
+    +opacity(1)
+
+[title="edit"]
+  #{$link}
+    +icon(false,'ui/pencil.png')
+
+[title^="create"]
+  #{$link}
+    +icon(false,'ui/paper_plus.png')
+
+button
+  &[name^="action-"]
     +button-reset
-    +icon('[name="action-clone"]','ui/clone.png')
-    +icon('[name="action-delete"]','ui/trash.png')
     +icon-hover
+
+  &[name="action-clone"]
+    +icon(false,'ui/clone.png')
+
+  &[name="action-delete"]
+    +icon(false,'ui/trash.png')
+
+  &[name="action-edit"]
+    +icon(false,'ui/pencil.png')

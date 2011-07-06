@@ -12,21 +12,17 @@
 
 .editinline
   position: relative
-  &::after
-    +opacity(0)
-    +stretch-y
-    +replace-text('ui/pencil.png')
-    content: "edit"
-    right: 0
-    width: image-width('ui/pencil.png')
-    background:
-      repeat: no-repeat
-      position: center
-  &:not(.edit)
-    &:hover
-      cursor: pointer
-      &::after
-        +opacity(1)
+  &:hover
+    .element-controls
+      display: block
+
+.element-select
+  +columns(9,10)
+
+.element-controls
+  +columns(1,10)
+  +omega(10)
+  display: none
 
 .item.add-item
   +demi
@@ -116,6 +112,12 @@
     @extend .editinline
     +bold
     margin: 0 columns(7,24) + gutter(24)
+    button
+      +float(right)
+      display: none
+    &:hover
+      button
+        display: block
   .elements
     +no-style-list
     +full(24)
@@ -123,14 +125,15 @@
     counter-reset: elements
     li
       @extend .editinline
+      +pie-clearfix
       label
-        +demi
+        +font-weight-normal
         display: block
       [type="checkbox"]
         position: absolute
         top: rhythm(.5)
         right: 100% + gutter(12)
-      &.edit
+      &.editing
         +leader(.25)
 
   .add-element

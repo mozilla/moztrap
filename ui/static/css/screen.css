@@ -1428,19 +1428,15 @@ footer[role="contentinfo"] small {
 }
 
 /* Controls ------------------------------------------------------------------ */
-.controls {
+.controls, .element-controls {
   text-align: right;
   white-space: nowrap;
 }
-.controls *:last-child {
+.controls *:last-child, .element-controls *:last-child {
   margin-right: 0.375em;
 }
-thead .controls {
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-}
-.controls a:link, .controls a:visited {
+
+[title="edit"]:link, [title="edit"]:visited, [title^="create"]:link, [title^="create"]:visited {
   display: -moz-inline-box;
   -moz-box-orient: vertical;
   display: inline-block;
@@ -1449,10 +1445,15 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
   opacity: 0.675;
 }
-.controls a:link, .controls a:visited {
+[title="edit"]:link, [title="edit"]:visited, [title^="create"]:link, [title^="create"]:visited {
   *display: inline;
 }
-.controls a:link[title="edit"], .controls a:visited[title="edit"] {
+[title="edit"]:focus, [title="edit"]:hover, [title="edit"]:active, [title^="create"]:focus, [title^="create"]:hover, [title^="create"]:active {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+
+[title="edit"]:link, [title="edit"]:visited {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1467,7 +1468,8 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls a:link[title^="create"], .controls a:visited[title^="create"] {
+
+[title^="create"]:link, [title^="create"]:visited {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1482,11 +1484,8 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls a:focus, .controls a:hover, .controls a:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  opacity: 1;
-}
-.controls button {
+
+button[name^="action-"] {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   -o-border-radius: 0;
@@ -1503,7 +1502,11 @@ thead .controls {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
   opacity: 0.675;
 }
-.controls button[name="action-clone"] {
+button[name^="action-"]:focus, button[name^="action-"]:hover, button[name^="action-"]:active {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+button[name="action-clone"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1518,7 +1521,7 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls button[name="action-delete"] {
+button[name="action-delete"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1533,9 +1536,20 @@ thead .controls {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.controls button:focus, .controls button:hover, .controls button:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  opacity: 1;
+button[name="action-edit"] {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/pencil.png?1309283001');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  padding: 0 0.125em;
 }
 
 /* Filtering ----------------------------------------------------------------- */
@@ -2395,21 +2409,6 @@ thead .controls {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   clear: both;
   margin: 0;
-}
-.managelist button {
-  -moz-border-radius: 0;
-  -webkit-border-radius: 0;
-  -o-border-radius: 0;
-  -ms-border-radius: 0;
-  -khtml-border-radius: 0;
-  border-radius: 0;
-  text-shadow: none;
-  display: inline;
-  background: none;
-  color: inherit;
-  padding: 0;
-  margin: 0;
-  border: 0;
 }
 .managelist .item {
   *zoom: 1;
@@ -3841,30 +3840,26 @@ thead .controls {
 .editinline, #addprofile .name, #addprofile .elements li {
   position: relative;
 }
-.editinline::after, #addprofile .name::after, #addprofile .elements li::after {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  background-image: url('../images/ui/pencil.png?1309283001');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  content: "edit";
-  right: 0;
-  width: 14px;
-  background-repeat: no-repeat;
-  background-position: center;
+.editinline:hover .element-controls, #addprofile .name:hover .element-controls, #addprofile .elements li:hover .element-controls {
+  display: block;
 }
-.editinline:not(.edit):hover, #addprofile .name:not(.edit):hover, #addprofile .elements li:not(.edit):hover {
-  cursor: pointer;
+
+.element-select {
+  display: inline;
+  float: left;
+  width: 89.744%;
+  margin-right: 2.564%;
 }
-.editinline:not(.edit):hover::after, #addprofile .name:not(.edit):hover::after, #addprofile .elements li:not(.edit):hover::after {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  opacity: 1;
+
+.element-controls {
+  display: inline;
+  float: left;
+  width: 7.692%;
+  margin-right: 2.564%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  display: none;
 }
 
 .item.add-item {
@@ -4042,6 +4037,14 @@ thead .controls {
   font-weight: 700;
   margin: 0 29.474%;
 }
+#addprofile .name button {
+  display: inline;
+  float: right;
+  display: none;
+}
+#addprofile .name:hover button {
+  display: block;
+}
 #addprofile .elements {
   list-style: none;
   margin: 0;
@@ -4057,8 +4060,19 @@ thead .controls {
   list-style-type: none;
   margin-left: 0px;
 }
+#addprofile .elements li {
+  *zoom: 1;
+}
+#addprofile .elements li:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
+}
 #addprofile .elements li label {
-  font-weight: 500;
+  font-weight: normal;
   display: block;
 }
 #addprofile .elements li [type="checkbox"] {
@@ -4066,7 +4080,7 @@ thead .controls {
   top: 0.809em;
   right: 102.128%;
 }
-#addprofile .elements li.edit {
+#addprofile .elements li.editing {
   margin-top: 0.405em;
 }
 #addprofile .add-element label {

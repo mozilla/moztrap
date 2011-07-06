@@ -5,30 +5,50 @@
       <input type="text" name="edit_name" value="" id="edit_name" placeholder="new category name">
     </p>
   {% else %}
-    <p class="name">{{ category }}</p>
+    <p class="name">
+      {{ category }}
+      <button name="action-edit">edit</button>
+    </p>
   {% endif %}
   <ul class="elements">
     {% if not new %}
     <li>
-      <input type="checkbox" name="{{ id }}-elemslug1" value="" id="{{ id }}-elemslug1" checked>
-      <label for="{{ id }}-elemslug1" class="checked">{{ elem1 }}</label>
+      <div class="element-select">
+        <input type="checkbox" name="{{ id }}-elemslug1" value="" id="{{ id }}-elemslug1" checked>
+        <label for="{{ id }}-elemslug1" class="checked">{{ elem1 }}</label>
+      </div>
+      <div class="element-controls">
+        <button name="action-edit">edit</button>
+        <button name="action-delete">delete</button>
+      </div>
     </li>
     {% if elem2 %}
     <li>
-      <input type="checkbox" name="{{ id }}-elemslug2" value="" id="{{ id }}-elemslug2">
-      <label for="{{ id }}-elemslug2">{{ elem2 }}</label>
+      <div class="element-select">
+        <input type="checkbox" name="{{ id }}-elemslug2" value="" id="{{ id }}-elemslug2">
+        <label for="{{ id }}-elemslug2">{{ elem2 }}</label>
+      </div>
+      <div class="element-controls">
+        <button name="action-edit">edit</button>
+        <button name="action-delete">delete</button>
+      </div>
     </li>
     {% endif %}
     {% if elem3 %}
-    <li>
-      <input type="checkbox" name="{{ id }}-elemslug3" value="" id="{{ id }}-elemslug3">
-      <label for="{{ id }}-elemslug3">{{ elem3 }}</label>
+    <li class="editing">
+      <input type="text" name="{{ id }}-elemslug3" value="{{ elem3 }}" id="{{ id }}-elemslug3">
     </li>
     {% endif %}
     {% if elem4 %}
     <li>
-      <input type="checkbox" name="{{ id }}-elemslug4" value="" id="{{ id }}-elemslug4">
-      <label for="{{ id }}-elemslug4">{{ elem4 }}</label>
+      <div class="element-select">
+        <input type="checkbox" name="{{ id }}-elemslug4" value="" id="{{ id }}-elemslug4">
+        <label for="{{ id }}-elemslug4">{{ elem4 }}</label>
+      </div>
+      <div class="element-controls">
+        <button name="action-edit">edit</button>
+        <button name="action-delete">delete</button>
+      </div>
     </li>
     {% endif %}
     <li class="add-element edit">
