@@ -420,6 +420,11 @@ var TCM = TCM || {};
             } else {
                 $('label[for=' + thisID + ']').removeClass('checked');
             }
+            if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
+                $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', true);
+            } else {
+                $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', false);
+            }
         });
 
         categories.live('change', function() {
