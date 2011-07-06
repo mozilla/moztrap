@@ -398,8 +398,10 @@ var TCM = TCM || {};
         categories = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
         addElement = $('input[id$="-add-element"]'),
         addCategory = $('input#edit_name'),
+        editElementButton = $('#addprofile .item .elements button[name="action-edit"]'),
+        editElement = $('#addprofile .item .elements .editing input'),
         updateLabels = function() {
-            elements.each(function() {
+            $('#addprofile .item .elements .element-select input').each(function() {
                 var thisID = $(this).attr('id');
                 if ($(this).is(':checked')) {
                     $('label[for=' + thisID + ']').addClass('checked');
@@ -435,19 +437,17 @@ var TCM = TCM || {};
                 if (externalIndex < 10) {
                     externalIndex = '0' + externalIndex;
                 }
-                var newElement = ich.env_profile_element({
+                var id = externalIndex + '-elemslug' + internalIndex,
+                newElement = ich.env_profile_element({
                     name: name,
-                    external_index: externalIndex,
-                    internal_index: internalIndex
+                    id: id
                 }),
                 newElementPreview = ich.env_profile_element_preview({
                     name: name,
-                    external_index: externalIndex,
-                    internal_index: internalIndex
+                    id: id
                 });
                 $(this).closest('.elements').children('li.add-element').before(newElement);
                 $(this).closest('.item').find('.preview').append(newElementPreview);
-                elements = $('#addprofile .item .elements .element-select input');
                 $(this).val(null);
             }
         });
@@ -468,6 +468,46 @@ var TCM = TCM || {};
                 $(this).val(null);
             }
         });
+
+        editElementButton.live('click', function() {
+            var thisElement = $(this).closest('li'),
+            id = thisElement.find('input').attr('id'),
+            name = thisElement.find('label').html(),
+            checked = false;
+            if (thisElement.find('input').is(':checked')) {
+                checked = true;
+            }
+            editThisElement = ich.env_profile_element_edit({
+                id: id,
+                name: name,
+                checked: checked
+            });
+            thisElement.replaceWith(editThisElement);
+        });
+
+        editElement.live('keydown', function(event) {
+            if (event.keyCode === keycodes.ENTER) {
+                var thisElement = $(this).closest('.editing'),
+                name = $(this).val(),
+                id = $(this).attr('id'),
+                preview = $(this).closest('.item').find('.preview').find('label[for="' + id + '"]').closest('li'),
+                checked = $(this).data('checked'),
+                editedElement = ich.env_profile_element({
+                    name: name,
+                    id: id
+                }),
+                editedElementPreview = ich.env_profile_element_preview({
+                    name: name,
+                    id: id
+                });
+                thisElement.replaceWith(editedElement);
+                preview.replaceWith(editedElementPreview);
+                if (checked) {
+                    $('#' + id).prop('checked', checked);
+                    updateLabels();
+                }
+            }
+        });
     };
 
     $(function() {
@@ -481,7 +521,7 @@ var TCM = TCM || {};
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('input:not([type=radio], [type=checkbox]), textarea').blur(function() {
+        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function() {
             $(this).addClass('hadfocus');
         });
         formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
