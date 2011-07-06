@@ -143,9 +143,12 @@ a
 /* Headings --------------------------------------------------------------
 
 h1
-  +adjust-font-size-to($medpx)
+  +adjust-font-size-to($normpx+$xsmallpx)
+  +bold
+  +cond
+  text-transform: uppercase
 
-h1, h2
+h2
   @extend .allcaps
   +bold
 

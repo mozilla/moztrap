@@ -35,19 +35,21 @@
       color: $accent
 
 #brand
-  +columns(3)
+  +columns(4)
   +alpha
   a
     #{$link}
-      +padding-leader(.5,$medpx)
-      +padding-trailer(.5,$medpx)
+      +padding-leader(.5,$normpx+$xsmallpx)
+      +padding-trailer(.5,$normpx+$xsmallpx)
+      padding-left: image-width('lightning.png')
       display: block
       color: inherit
+      background: image-url('lightning.png') no-repeat scroll left
     #{$focus}
       color: $accent
 
 [role="navigation"]
-  +columns(12)
+  +columns(10)
   +padding-leader(.5)
 
 .meta

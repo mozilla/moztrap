@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -355,11 +355,14 @@ a:focus {
 
 /* Headings -------------------------------------------------------------- */
 h1 {
-  font-size: 1.618em;
-  line-height: 1em;
+  font-size: 1.382em;
+  line-height: 1.171em;
+  font-weight: 700;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
 }
 
-h1, h2 {
+h2 {
   font-weight: 700;
 }
 
@@ -1035,15 +1038,17 @@ button.sub:focus, button.sub:hover, button.sub:active {
 #brand {
   display: inline;
   float: left;
-  width: 11.111%;
+  width: 15.152%;
   margin-right: 1.01%;
   margin-left: 2.02%;
 }
 #brand a:link, #brand a:visited {
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
+  padding-top: 0.585em;
+  padding-bottom: 0.585em;
+  padding-left: 19px;
   display: block;
   color: inherit;
+  background: url('../images/lightning.png?1309993734') no-repeat scroll left;
 }
 #brand a:focus, #brand a:hover, #brand a:active {
   color: #511214;
@@ -1052,7 +1057,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 [role="navigation"] {
   display: inline;
   float: left;
-  width: 47.475%;
+  width: 39.394%;
   margin-right: 1.01%;
   padding-top: 0.809em;
 }
