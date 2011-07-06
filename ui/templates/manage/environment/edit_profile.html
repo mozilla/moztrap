@@ -1,0 +1,48 @@
+{% extends 'manage/environment/base.html' %}
+{# @@@ full page wireframe #}
+
+{% block listcontent %}
+<section id="addprofile">
+  <h2>Edit Environment Profile</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    <p class="profile-name">
+      <label for="profile_name">profile name</label>
+      <input type="text" name="profile_name" value="name of this profile" id="profile_name" placeholder="profile name" required>
+    </p>
+
+    {% include "lists/_filter.html" %}
+
+    <div class="managelist">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="bytitle">
+            <a href="#">environment</a>
+          </li>
+          <li class="bycontrols">
+            <span>controls</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="items">
+        <article href="#" class="item add-item details">
+          <h3 class="summary">add an environment</h3>
+          <div class="content">
+            <p>filter-ish interface?</p>
+          </div>
+        </a>
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">auto-generate environments</button>
+    </div>
+  </form>
+</section>
+{% endblock listcontent %}
