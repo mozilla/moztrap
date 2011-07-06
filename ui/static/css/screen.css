@@ -2436,6 +2436,9 @@ thead .controls {
   overflow: hidden;
   visibility: hidden;
 }
+.managelist .summary label {
+  padding: 0;
+}
 .managelist .summary p {
   margin-bottom: 0;
 }
