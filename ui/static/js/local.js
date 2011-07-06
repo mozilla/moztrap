@@ -390,12 +390,21 @@ var TCM = TCM || {};
                 return false;
             }
         );
+    },
+
+    selectEnvElement = function() {
+        var input = $('#addprofile .elements input');
+        input.live('change', function() {
+            var thisID = $(this).attr('id');
+            $('label[for=' + thisID + ']').toggleClass('checked');
+        });
     };
 
     $(function() {
         filtering();
         listDetails();
         manageActionsAjax();
+        selectEnvElement();
         $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages({
             handleAjax: true,
