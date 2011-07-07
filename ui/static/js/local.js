@@ -572,34 +572,26 @@ var TCM = TCM || {};
                 });
             }
         });
+        $('.managedrill').html5finder({
+            loading: true,
+            ellipsis: true,
+            headerSelector: '.listordering',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs',
+                'suites'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="testcycle"]',
+                'input[name="testrun"]',
+                'input[name="testsuite"]'
+            ]
+        });
         $('.selectruns + .environment.empty').hide();
-        // $('.subnav .findertoggle').click(function() {
-        //     $(this).add('.subnav .finder').toggleClass('expanded').toggleClass('compact');
-        //     return false;
-        // });
-        // $('.subnav').html5finder( {
-        //     loading: true,
-        //     ellipsis: true,
-        //     horizontalScroll: true,
-        //     scrollContainer: '.finder.expanded',
-        //     headerSelector: '.listordering',
-        //     sectionSelector: '.col',
-        //     sectionContentSelector: '.colcontent',
-        //     sectionClasses: [
-        //         'products',
-        //         'cycles',
-        //         'runs',
-        //         'cases',
-        //         'results'
-        //     ],
-        //     sectionItemSelectors: [
-        //         'input[name="product"]',
-        //         'input[name="testcycle"]',
-        //         'input[name="testrun"]',
-        //         'input[name="testcase"]',
-        //         'input[name="testresult"]'
-        //     ]
-        // });
     });
 
     $(window).load(function() {

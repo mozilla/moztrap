@@ -5,5 +5,7 @@
   <label for="{{ object.api_name }}-{{ object.id }}">
     {% block columns %}{% endblock %}
   </label>
-  {% block final %}{% endblock %}
+  {% block final %}
+  <a href="{{ object|picker_goto_url:picker_type }}" class="goto" title="open all the {{ object.name }} {{ object|picker_sub_name }}">open all the {{ object.name }} {{ object|picker_sub_name }}</a>
+  {% endblock %}
 </li>

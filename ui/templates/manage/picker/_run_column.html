@@ -1,0 +1,14 @@
+{% extends "picker/_column.html" %}
+
+{% block picker-section-classes %}runs{% endblock %}
+
+{% block picker-section-column-headers %}
+  {% include "picker/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Runs" %}
+  {% include "picker/_header.html" with tag="p" class="bystart" sort_type="date" header="start" %}
+  {% include "picker/_header.html" with tag="p" class="byend" sort_type="date" header="end" %}
+{% endblock %}
+
+
+{% block picker-section-column-content %}
+  {% include "manage/picker/_runs.html" %}
+{% endblock %}

@@ -17,16 +17,16 @@ urlpatterns = patterns(
         name="runtests_run"),
 
     # runtests ajax
-    url("^runtests/picker/cycles/(?P<parent_id>\d+)/",
+    url("^runtests/_picker/cycles/(?P<parent_id>\d+)/",
         "tcmui.testexecution.views.picker_cycles",
         name="runtests_picker_cycles"),
-    url("^runtests/picker/runs/(?P<parent_id>\d+)/",
+    url("^runtests/_picker/runs/(?P<parent_id>\d+)/",
         "tcmui.testexecution.views.picker_runs",
         name="runtests_picker_runs"),
-    url("^runtests/picker/environments/(?P<parent_id>\d+)/",
+    url("^runtests/_picker/environments/(?P<parent_id>\d+)/",
         "tcmui.testexecution.views.picker_environments",
         name="runtests_picker_environments"),
-    url("^result/(?P<result_id>\d+)/$",
+    url("^_result/(?P<result_id>\d+)/$",
         "tcmui.testexecution.views.result",
         name="result"),
 

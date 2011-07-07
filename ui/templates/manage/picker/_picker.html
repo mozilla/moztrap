@@ -1,0 +1,12 @@
+{% extends "picker/_picker.html" %}
+
+{% block picker-column-count %}4{% endblock %}
+
+{% block picker-columns %}
+  {% with "manage" as picker_type %}
+    {% include "manage/picker/_product_column.html" %}
+    {% include "manage/picker/_cycle_column.html" %}
+    {% include "manage/picker/_run_column.html" %}
+    {% include "manage/picker/_suite_column.html" %}
+  {% endwith %}
+{% endblock %}

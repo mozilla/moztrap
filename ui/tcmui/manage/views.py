@@ -40,7 +40,13 @@ def testcycles(request):
     return TemplateResponse(
         request,
         "manage/product/testcycle/cycles.html",
-        {"cycles": TestCycleList.ours(auth=request.auth)}
+        {
+            "cycles": TestCycleList.ours(auth=request.auth),
+            "picker": {
+                "products": ProductList.ours(auth=request.auth).sort(
+                    "name", "asc")
+                    }
+            }
         )
 
 
@@ -126,7 +132,13 @@ def testruns(request):
     return TemplateResponse(
         request,
         "manage/product/testrun/runs.html",
-        {"runs": TestRunList.ours(auth=request.auth)}
+        {
+            "runs": TestRunList.ours(auth=request.auth),
+            "picker": {
+                "products": ProductList.ours(auth=request.auth).sort(
+                    "name", "asc")
+                    }
+            }
         )
 
 
@@ -210,7 +222,13 @@ def testsuites(request):
     return TemplateResponse(
         request,
         "manage/product/testsuite/suites.html",
-        {"suites": TestSuiteList.ours(auth=request.auth)}
+        {
+            "suites": TestSuiteList.ours(auth=request.auth),
+            "picker": {
+                "products": ProductList.ours(auth=request.auth).sort(
+                    "name", "asc")
+                    }
+            }
         )
 
 
@@ -300,8 +318,14 @@ def testcases(request):
     return TemplateResponse(
         request,
         "manage/product/testcase/cases.html",
-        {"cases": TestCaseVersionList.ours(
-                url="testcases/latestversions", auth=request.auth)}
+        {
+            "cases": TestCaseVersionList.ours(
+                url="testcases/latestversions", auth=request.auth),
+            "picker": {
+                "products": ProductList.ours(auth=request.auth).sort(
+                    "name", "asc")
+                    }
+            }
         )
 
 
@@ -361,3 +385,48 @@ def testcase_details(request, case_id):
         request,
         "manage/product/testcase/_case_details.html",
         {"case": case})
+
+
+
+@login_redirect
+def picker_cycles(request, parent_id):
+    cycles = TestCycleList.get(auth=request.auth).filter(
+        product=parent_id).sort("name", "asc")
+    return TemplateResponse(
+        request,
+        "manage/picker/_cycles.html",
+        {
+            "picker": {"cycles": cycles},
+            "picker_type": "manage",
+            })
+
+
+
+@login_redirect
+def picker_runs(request, parent_id):
+    runs = TestRunList.get(auth=request.auth).filter(
+        testCycle=parent_id).sort("name", "asc")
+    return TemplateResponse(
+        request,
+        "manage/picker/_runs.html",
+        {
+            "picker": {"runs": runs},
+            "picker_type": "manage",
+            })
+
+
+
+@login_redirect
+def picker_suites(request, parent_id):
+    suites = TestSuiteList.get(auth=request.auth).filter(
+        run=parent_id).sort("name", "asc")
+    return TemplateResponse(
+        request,
+        "manage/picker/_suites.html",
+        {
+            "picker": {"suites": suites},
+            "picker_type": "manage",
+            })
+
+
+

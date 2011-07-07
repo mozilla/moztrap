@@ -1,0 +1,12 @@
+{% extends "picker/_column.html" %}
+
+{% block picker-section-classes %}suites{% endblock %}
+
+{% block picker-section-column-headers %}
+  {% include "picker/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Suites" %}
+{% endblock %}
+
+
+{% block picker-section-column-content %}
+  {% include "manage/picker/_suites.html" %}
+{% endblock %}
