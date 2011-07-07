@@ -11,9 +11,10 @@ from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
 from ..static.status import TestCaseStatus, TestSuiteStatus
-from ..testexecution.filters import TestCycleFieldFilter
-from ..testexecution.models import TestCycleList, TestRunList
+from ..testcases.filters import TestSuiteFieldFilter
 from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
+from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
+from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
@@ -200,6 +201,7 @@ def testrun_details(request, run_id):
 @dec.filter("suites",
             ("status", status_filters.TestSuiteStatusFilter),
             ("product", ProductFieldFilter),
+            ("run", TestRunFieldFilter),
             ("name", KeywordFilter))
 @dec.paginate("suites")
 @dec.sort("suites")
@@ -287,6 +289,7 @@ def testsuite_details(request, suite_id):
             ("approval", status_filters.ApprovalStatusFilter),
             ("product", ProductFieldFilter),
             ("name", KeywordFilter),
+            ("suite", TestSuiteFieldFilter),
             ("step", KeywordFilter),
             ("result", KeywordFilter),
             )

@@ -236,18 +236,22 @@ class TestResourceTestCase(ResourceTestCase):
     def get_resource_class(self):
         from tcmui.core.api import RemoteObject, fields
 
+        def filter_callable(vals):
+            return ("callableFilter", [v+"foo" for v in vals])
+
         class TestResource(RemoteObject):
             name = fields.Field()
             submit_as = fields.Field(api_name="submitAs")
 
             non_field_filters = {
-                "non_field": "nonField"
+                "non_field": "nonField",
+                "callable": filter_callable,
                 }
 
             cache = False
 
-            def __unicode__(self):
-                return u"__unicode__ of %s" % self.name
+            def __unicode__(self_):
+                return u"__unicode__ of %s" % self_.name
 
         return TestResource
 

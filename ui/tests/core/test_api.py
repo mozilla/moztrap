@@ -406,12 +406,12 @@ class ResourceObjectTest(TestResourceTestCase):
 
         self.assertEqual(
             self.resource_class.filterables().keys(),
-            ["non_field", "name", "submit_as", "id"])
+            ["callable", "non_field", "name", "submit_as", "id"])
 
         # same result on second call
         self.assertEqual(
             self.resource_class.filterables().keys(),
-            ["non_field", "name", "submit_as", "id"])
+            ["callable", "non_field", "name", "submit_as", "id"])
 
 
     def test_put(self, http):
@@ -844,7 +844,7 @@ class ListObjectTest(TestResourceTestCase):
     def test_filterables(self, http):
         self.assertEqual(
             self.resource_list_class.filterables().keys(),
-            ["non_field", "name", "submit_as", "id"])
+            ["callable", "non_field", "name", "submit_as", "id"])
 
 
     def test_unicode(self, http):
@@ -979,6 +979,33 @@ class ListObjectTest(TestResourceTestCase):
         self.assertEqual(
             Url(req["uri"]),
             Url("http://fake.base/rest/testresources?nonField=val&_type=json"))
+
+
+    def test_callable_non_field_filter(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(callable="1")
+
+        self.assertEqual(len(c), 1)
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?callableFilter=1foo&_type=json"))
+
+
+    def test_callable_non_field_filter_iterable(self, http):
+        http.request.return_value = response(
+            self.builder.searchresult({"name":"Test TestResource"}))
+
+        c = self.resource_list_class.get(auth=self.auth).filter(
+            callable=["2", "3"])
+
+        self.assertEqual(len(c), 1)
+        req = http.request.call_args[-1]
+        self.assertEqual(
+            Url(req["uri"]),
+            Url("http://fake.base/rest/testresources?callableFilter=2foo&callableFilter=3foo&_type=json"))
 
 
     def test_filter_boolean(self, http):

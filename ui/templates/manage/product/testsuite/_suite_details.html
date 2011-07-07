@@ -8,12 +8,9 @@
   {% endif %}
 </div>
 
-{# @@@ currently no way to do this filter reasonably @@@ #}
-{% comment %}
 <p class="components">
-  <a href="{% url manage_testcases %}">Manage all cases in this suite &raquo;</a>
+  <a href="{% url manage_testcases %}?suite={{ suite.id }}">Manage all cases in this suite &raquo;</a>
 </p>
-{% endcomment %}
 
 <div class="envgroups">
   {% include "lists/_environments.html" with environments=suite.environmentgroups.environments %}

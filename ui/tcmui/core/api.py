@@ -56,6 +56,10 @@ class ObjectMixin(StrAndUnicode):
     api_base_url = conf.TCM_API_BASE
     cache = True
     _filterables = {}
+
+    # a dictionary mapping public filter names to API-side filtering names, or
+    # a callable that takes an iterable of values and returns a tuple of
+    # ("API-side filter name", [list of values])
     non_field_filters = {}
 
 
@@ -691,16 +695,19 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         filters = {}
         for (k, v) in kwargs.iteritems():
             if k in valid_fields:
-                try:
-                    field = self.entryclass.fields[k]
-                    encode = field.encode
-                except KeyError:
+                submit = valid_fields[k]
+                if callable(submit):
+                    if not util.is_iterable(v):
+                        v = [v]
+                    submit, v = submit(v)
+                if k in self.entryclass.fields:
+                    encode = self.entryclass.fields[k].encode
+                else:
                     encode = None
-                filters[valid_fields[k]] = util.prep_for_query(v, encode)
+                filters[submit] = util.prep_for_query(v, encode)
 
-        newurl = util.narrow_querystring(self._location, **filters)
-
-        return self.get(newurl, auth=auth)
+        return self.get(
+            util.narrow_querystring(self._location, **filters), auth=auth)
 
 
     def sort(self, field, direction=sort.DEFAULT):
