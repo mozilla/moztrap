@@ -201,6 +201,7 @@ var TCM = TCM || {};
                 }
             // If the suggestion list is already visible...
             } else {
+                var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                 // UP and DOWN move "active" suggestion
                 if (event.keyCode === keycodes.UP) {
                     event.preventDefault();
@@ -216,18 +217,14 @@ var TCM = TCM || {};
                     }
                     return false;
                 }
-                // ENTER auto-completes the "active" suggestion if it isn't already completed
+                // ENTER submits the form if textbox is empty and inputs have changed...
                 if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
-                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
-                        textbox.val(thisFilterName);
+                    if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
+                        formActions.find('button[type="submit"]').click();
+                    // ...otherwise, ENTER selects the "active" filter suggestion.
                     } else {
-                        // ENTER submits the form if textbox is empty and inputs have changed...
-                        if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
-                            formActions.find('button[type="submit"]').click();
-                        // ...otherwise, ENTER selects the "active" filter suggestion.
-                        } else {
+                        if (suggestionList.find('.selected').length) {
                             suggestionList.find('.selected').click();
                             suggestionList.show();
                         }
@@ -236,7 +233,6 @@ var TCM = TCM || {};
                 }
                 // TAB auto-completes the "active" suggestion if it isn't already completed...
                 if (event.keyCode === keycodes.TAB) {
-                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                     if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
                         event.preventDefault();
                         textbox.val(thisFilterName);
@@ -246,8 +242,17 @@ var TCM = TCM || {};
                         if (suggestionList.find('.selected').length) {
                             event.preventDefault();
                             suggestionList.find('.selected').click();
+                            suggestionList.show();
                             return false;
                         }
+                    }
+                }
+                // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                if (event.keyCode === keycodes.RIGHT) {
+                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
+                        event.preventDefault();
+                        textbox.val(thisFilterName);
+                        return false;
                     }
                 }
                 // ESC hides the suggestion list
