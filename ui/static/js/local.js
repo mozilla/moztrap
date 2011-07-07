@@ -215,21 +215,15 @@ var TCM = TCM || {};
                     }
                     return false;
                 }
-                // ENTER auto-completes the "active" suggestion if it isn't already completed
+                // ENTER submits the form if textbox is empty and inputs have changed...
                 if (event.keyCode === keycodes.ENTER) {
                     event.preventDefault();
-                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
-                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
-                        textbox.val(thisFilterName);
+                    if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
+                        formActions.find('button[type="submit"]').click();
+                    // ...otherwise, ENTER selects the "active" filter suggestion.
                     } else {
-                        // ENTER submits the form if textbox is empty and inputs have changed...
-                        if (textbox.val() === '' && $('.managelist').hasClass('expired')) {
-                            formActions.find('button[type="submit"]').click();
-                        // ...otherwise, ENTER selects the "active" filter suggestion.
-                        } else {
-                            suggestionList.find('.selected').click();
-                            suggestionList.show();
-                        }
+                        suggestionList.find('.selected').click();
+                        suggestionList.show();
                     }
                     return false;
                 }
