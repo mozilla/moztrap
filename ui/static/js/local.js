@@ -200,6 +200,7 @@ var TCM = TCM || {};
                 }
             // If the suggestion list is already visible...
             } else {
+                var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                 // UP and DOWN move "active" suggestion
                 if (event.keyCode === keycodes.UP) {
                     event.preventDefault();
@@ -222,14 +223,15 @@ var TCM = TCM || {};
                         formActions.find('button[type="submit"]').click();
                     // ...otherwise, ENTER selects the "active" filter suggestion.
                     } else {
-                        suggestionList.find('.selected').click();
-                        suggestionList.show();
+                        if (suggestionList.find('.selected').length) {
+                            suggestionList.find('.selected').click();
+                            suggestionList.show();
+                        }
                     }
                     return false;
                 }
                 // TAB auto-completes the "active" suggestion if it isn't already completed...
                 if (event.keyCode === keycodes.TAB) {
-                    var thisFilterName = input.filter('#' + suggestionList.find('.selected').data('id')).siblings('label').html();
                     if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
                         event.preventDefault();
                         textbox.val(thisFilterName);
@@ -239,8 +241,17 @@ var TCM = TCM || {};
                         if (suggestionList.find('.selected').length) {
                             event.preventDefault();
                             suggestionList.find('.selected').click();
+                            suggestionList.show();
                             return false;
                         }
+                    }
+                }
+                // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                if (event.keyCode === keycodes.RIGHT) {
+                    if (thisFilterName && textbox.val().toLowerCase() !== thisFilterName.toLowerCase()) {
+                        event.preventDefault();
+                        textbox.val(thisFilterName);
+                        return false;
                     }
                 }
                 // ESC hides the suggestion list
