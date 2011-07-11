@@ -110,7 +110,7 @@
             context.find(options.sectionItemSelectors[i]).live('click', function() {
                 var container = $(this).closest(options.sectionSelector);
                 // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
-                if ($(this).data('selected') === true) {
+                if ($(this).data('selected') === true && !container.hasClass('focus')) {
                     container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
                     container.next(options.sectionSelector).find('input:checked').removeAttr('checked').data('selected', false);
                     container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
