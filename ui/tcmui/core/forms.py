@@ -40,6 +40,13 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
                 field.widget.attrs.setdefault("placeholder", "mm/dd/yyyy")
 
 
+    def __iter__(self):
+        for bf in super(RemoteObjectForm, self).__iter__():
+            if getattr(bf.field, "read_only", False):
+                bf.read_only = True
+            yield bf
+
+
 
 class AddEditForm(RemoteObjectForm):
     no_edit_fields = []
@@ -98,6 +105,7 @@ class AddEditForm(RemoteObjectForm):
         if self.instance is not None:
             for fname in self.no_edit_fields:
                 self.fields[fname].widget = ReadOnlyWidget()
+                self.fields[fname].read_only = True
 
         for fname, model_list in model_choices.iteritems():
             self.fields[fname].obj_list = model_list
