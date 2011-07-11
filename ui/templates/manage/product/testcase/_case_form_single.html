@@ -1,0 +1,37 @@
+<form method="POST">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <ul class="basic">
+    <li>
+      {{ form.name.errors }}
+      {{ form.name.label_tag }}
+      {{ form.name }}
+    </li>
+    <li>
+      {{ form.product.errors }}
+      {{ form.product.label_tag }}
+      {{ form.product }}
+    </li>
+    {% comment %} @@@
+    <li>
+      {{ form.tags.errors }}
+      {{ form.tags.label_tag }}
+      {{ form.tags }}
+    </li>
+    {% endcomment %}
+  </ul>
+
+  <div class="steps">
+    {{ form.steps_formset.management_form }}
+    <ol class="steplist">
+      {% for form in form.steps_formset %}
+      {% include "manage/product/testcase/_step_form.html" %}
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">save test case</button>
+  </div>
+
+</form>

@@ -238,12 +238,12 @@
     position: relative
     counter-increment: step
     &::before
-      +adjust-font-size-to($xlargepx)
+      +adjust-font-size-to($largepx)
       +light
       content: counter(step, decimal) "."
       position: absolute
       left: 0
-      top: rhythm(1.25,$xlargepx)
+      top: rhythm(1.75,$largepx)
       width: columns(2,22)
       text-align: right
     .action
@@ -252,10 +252,15 @@
       +columns(11,20)
       +omega(20)
     .removefields
+      +opacity(.25)
+      +transition(opacity,300ms)
       position: absolute
-      right: 0
-      top: rhythm(.5)
+      left: 0
+      top: rhythm(2.25)
       width: image-width('ui/x_circle.png')
+    &:hover
+      .removefields
+        +opacity(1)
     .errorlist
       +float('right')
       +padding-leader(.25)

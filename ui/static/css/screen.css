@@ -3629,13 +3629,13 @@ button[name="action-edit"] {
   counter-increment: step;
 }
 #addcase .steps-form::before {
-  font-size: 4.236em;
-  line-height: 1.146em;
+  font-size: 2.618em;
+  line-height: 1.236em;
   font-weight: 200;
   content: counter(step, decimal) ".";
   position: absolute;
   left: 0;
-  top: 0.477em;
+  top: 1.082em;
   width: 8.046%;
   text-align: right;
 }
@@ -3655,10 +3655,24 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 #addcase .steps-form .removefields {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+  opacity: 0.25;
+  -moz-transition-property: opacity;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -moz-transition-duration: 300ms;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
   position: absolute;
-  right: 0;
-  top: 0.809em;
+  left: 0;
+  top: 3.641em;
   width: 14px;
+}
+#addcase .steps-form:hover .removefields {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 #addcase .steps-form .errorlist {
   display: inline;

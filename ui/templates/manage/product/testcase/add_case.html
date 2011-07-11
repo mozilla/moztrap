@@ -1,3 +1,7 @@
 {% extends 'manage/product/testcase/case_form.html' %}
 
-{% block formtitle %}create a new test case{% endblock %}
+{% block formtitle %}create a new test case{% endblock formtitle %}
+
+{% block caseforms %}
+  {% include "manage/product/testcase/_case_form_single.html" %}
+{% endblock caseforms %}
