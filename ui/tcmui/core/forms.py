@@ -42,9 +42,19 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
 
     def __iter__(self):
         for bf in super(RemoteObjectForm, self).__iter__():
-            if getattr(bf.field, "read_only", False):
-                bf.read_only = True
-            yield bf
+            yield decorate_bound_field(bf)
+
+
+    def __getitem__(self, name):
+        bf = super(RemoteObjectForm, self).__getitem__(name)
+        return decorate_bound_field(bf)
+
+
+
+def decorate_bound_field(bf):
+    if getattr(bf.field, "read_only", False):
+        bf.read_only = True
+    return bf
 
 
 

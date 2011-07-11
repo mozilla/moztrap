@@ -7,6 +7,29 @@ register = template.Library()
 
 
 @register.filter
-def placeholder(field, value):
-    field.field.widget.attrs["placeholder"] = value
-    return field
+def placeholder(boundfield, value):
+    boundfield.field.widget.attrs["placeholder"] = value
+    return boundfield
+
+
+
+@register.filter
+def label(boundfield, contents=None):
+    return boundfield.label_tag(contents)
+
+
+
+@register.filter
+def label_text(boundfield):
+    return boundfield.label
+
+
+@register.filter
+def value(boundfield):
+    val = boundfield.value()
+    # If choices is set, use the display label
+    return str(dict((
+                o[:2] for o in
+                getattr(boundfield.field, "choices", [])
+                )).get(
+            val, val))
