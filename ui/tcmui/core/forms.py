@@ -195,6 +195,10 @@ class AddEditForm(RemoteObjectForm):
         return self.cleaned_data
 
 
+    def save(self):
+        return self.instance
+
+
 
 class BareTextarea(forms.Textarea):
     """
