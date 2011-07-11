@@ -1,5 +1,5 @@
 {% load tcmforms %}
-{% if field.read_only %}
+{% if field|read_only %}
   <dl class="readonly">
     <dt>{{ field|label_text }}</dt>
     <dd>{{ field|value_text }}</dd>

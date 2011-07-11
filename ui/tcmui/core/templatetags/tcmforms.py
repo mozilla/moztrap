@@ -33,3 +33,8 @@ def value_text(boundfield):
                 getattr(boundfield.field, "choices", [])
                 )).get(
             val, val))
+
+
+@register.filter
+def read_only(boundfield):
+    return getattr(boundfield.field, "read_only", False)

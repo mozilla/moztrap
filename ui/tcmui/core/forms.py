@@ -40,23 +40,6 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
                 field.widget.attrs.setdefault("placeholder", "mm/dd/yyyy")
 
 
-    def __iter__(self):
-        for bf in super(RemoteObjectForm, self).__iter__():
-            yield decorate_bound_field(bf)
-
-
-    def __getitem__(self, name):
-        bf = super(RemoteObjectForm, self).__getitem__(name)
-        return decorate_bound_field(bf)
-
-
-
-def decorate_bound_field(bf):
-    if getattr(bf.field, "read_only", False):
-        bf.read_only = True
-    return bf
-
-
 
 class AddEditForm(RemoteObjectForm):
     no_edit_fields = []
