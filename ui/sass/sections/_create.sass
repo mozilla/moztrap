@@ -13,7 +13,6 @@
   .basic
     +pie-clearfix
     +inline-form(2,9,11)
-    +trailer
     label
       text-align: right
     ul
@@ -25,6 +24,7 @@
     .date
       +columns(5,11)
       clear: none
+      position: relative
       + .date
         +omega(11)
       label
@@ -179,32 +179,8 @@
         color: $base
         background: rgba($green-light,$small)
 
-.assignto
-  clear: both
-  +leader
-  p
-    margin: 0
-  label
-    font-weight: normal
-    &[for="communal"]
-      margin-left: .4em
-
 .userselect
-  @extend .superselect
-  summary
-    +link
-    +italic
-    width: columns(10,22)
-  > div
-    @extend .toparrow
-    +pie-clearfix
-    +full(22)
-    +pad(1,1,22)
-    +rhythm(1,1,1,1)
-    position: relative
-    background: rgba($blue-hint,$xsmall)
-    border-color: #ccc
-    overflow: visible !important
+  @extend .mainselect
   .nickname
     +columns(3,9)
     +prefix(1,9)
@@ -259,27 +235,27 @@
   .steps-form
     +full(22)
     +prefix(2,22)
-    +padding-leader(.25)
-    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
     position: relative
     counter-increment: step
     &::before
-      +adjust-font-size-to($xlargepx,6)
+      +adjust-font-size-to($xlargepx)
       +light
       content: counter(step, decimal) "."
       position: absolute
       left: 0
-      top: 0
+      top: rhythm(1.25,$xlargepx)
       width: columns(2,22)
       text-align: right
     .action
       +columns(9,20)
     .result
-      +columns(10,20)
-    .remove
-      +columns(1,20)
+      +columns(11,20)
       +omega(20)
-      +leader(.25)
+    .removefields
+      position: absolute
+      right: 0
+      top: rhythm(.5)
+      width: image-width('ui/x_circle.png')
     .errorlist
       +float('right')
       +padding-leader(.25)
