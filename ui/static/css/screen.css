@@ -3263,7 +3263,7 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 .addform .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #addcase .basic .date .errorlist {
-  padding: 0;
+  padding-left: 42.105%;
 }
 .addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #addcase .basic .errorlist {
   clear: both;
