@@ -1,49 +1,13 @@
 {% extends 'manage/product/testcase/base.html' %}
 
-{% block page-notes %}
-<p>Missing new "Environment constraints" UI.</p>
-{% endblock %}
-
 {% block listcontent %}
 <section id="addcase">
-  <h2>{% block formtitle %}{% endblock %}</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    <ul class="basic">
-      <li>
-        {{ form.name.errors }}
-        {{ form.name.label_tag }}
-        {{ form.name }}
-      </li>
-      <li>
-        {{ form.product.errors }}
-        {{ form.product.label_tag }}
-        {{ form.product }}
-      </li>
-      {% comment %} @@@
-      <li>
-        {{ form.tags.errors }}
-        {{ form.tags.label_tag }}
-        {{ form.tags }}
-      </li>
-      {% endcomment %}
-    </ul>
+  <h2>{% block formtitle %}{% endblock formtitle %}</h2>
 
-    <div class="steps">
-      {{ form.steps_formset.management_form }}
-      <ol class="steplist">
-        {% for form in form.steps_formset %}
-        {% include "manage/product/testcase/_step_form.html" %}
-        {% endfor %}
-      </ol>
-    </div>
+  {% block caseforms %}
+    {% include "manage/product/testcase/_case_form_single.html" %}
+  {% endblock caseforms %}
 
-    <div class="form-actions">
-      <button type="submit">save test case</button>
-    </div>
-
-  </form>
 </section>
 {% endblock listcontent %}
 
