@@ -3,20 +3,14 @@
   {{ form.non_field_errors }}
   <ul class="basic">
     <li>
-      {{ form.name.errors }}
-      {{ form.name.label_tag }}
-      {{ form.name }}
+      {% include "forms/_field.html" with field=form.name %}
     </li>
     <li>
-      {{ form.product.errors }}
-      {{ form.product.label_tag }}
-      {{ form.product }}
+      {% include "forms/_field.html" with field=form.product %}
     </li>
     {% comment %} @@@
     <li>
-      {{ form.tags.errors }}
-      {{ form.tags.label_tag }}
-      {{ form.tags }}
+      {% include "forms/_field.html" with field=form.tags %}
     </li>
     {% endcomment %}
   </ul>

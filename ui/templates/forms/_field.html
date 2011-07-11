@@ -1,0 +1,12 @@
+{# @@@ need .read_only option #}
+{% if field.read_only %}
+  <dl class="readonly">
+    {# @@@ need template filters for field label and value #}
+    <dt>field label</dt>
+    <dd>field value</dd>
+  </dl>
+{% else %}
+  {{ field.errors }}
+  {{ field.label_tag }}
+  {{ field }}
+{% endif %}
