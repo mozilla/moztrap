@@ -38,25 +38,29 @@
         </ul>
       </nav>
 
-      <div class="items {% if not cycles %}empty{% endif %}">
-        {% for cycle in cycles %}
-        <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url results_testcycle_details cycle.id %}">
-          <header class="summary">
-            <p class="status">
-              <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
-            </p>
-            <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
-            <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
-            <p class="product">{{ cycle.product.name }}</p>
-            <time class="start">{{ cycle.startDate|date }}</time>
-            <time class="end">{{ cycle.endDate|date }}</time>
-            {% include "results/_results_summary.html" with results=cycle.resultsummary %}
-          </header>
-          <div class="content">
-            {# _cycle_details.html loaded via ajax #}
-          </div>
-        </article>
-        {% endfor %}
+      <div class="items">
+        {% if cycles %}
+          {% for cycle in cycles %}
+          <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url results_testcycle_details cycle.id %}">
+            <header class="summary">
+              <p class="status">
+                <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
+              </p>
+              <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+              <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
+              <p class="product">{{ cycle.product.name }}</p>
+              <time class="start">{{ cycle.startDate|date }}</time>
+              <time class="end">{{ cycle.endDate|date }}</time>
+              {% include "results/_results_summary.html" with results=cycle.resultsummary %}
+            </header>
+            <div class="content">
+              {# _cycle_details.html loaded via ajax #}
+            </div>
+          </article>
+          {% endfor %}
+        {% else %}
+          <p class="empty">There are currently no items in this list...</p>
+        {% endif %}
       </div>
 
       {% include "lists/_listnav.html" %}

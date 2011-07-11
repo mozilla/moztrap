@@ -46,38 +46,42 @@
         </ul>
       </nav>
 
-      <div class="items {% if not results %}empty{% endif %}">
-        {% for result in results %}
-        <article id="result-id-{{ result.id }}" class="{% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}details{% endif %} item {{ result.status|status_class }}">
-          <header class="summary">
-            <p class="result {{ result.status|status_class }}">{{ result.status|lower }}</p>
-            <h3 class="tester">{{ result.tester.screenName }}</h3>
-            <ul class="envlist">
-              {% for environment in result.environments %}
-              <li>{{ environment }}</li>
-              {% endfor %}
-            </ul>
-            <p class="approval {{ result.approval|status_class }}">
-              {{ result.approval|lower }}
-              {% if result.approvedBy %}
-              by {{ result.approvedBy.screenName }}
+      <div class="items">
+        {% if not results %}
+          {% for result in results %}
+          <article id="result-id-{{ result.id }}" class="{% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}details{% endif %} item {{ result.status|status_class }}">
+            <header class="summary">
+              <p class="result {{ result.status|status_class }}">{{ result.status|lower }}</p>
+              <h3 class="tester">{{ result.tester.screenName }}</h3>
+              <ul class="envlist">
+                {% for environment in result.environments %}
+                <li>{{ environment }}</li>
+                {% endfor %}
+              </ul>
+              <p class="approval {{ result.approval|status_class }}">
+                {{ result.approval|lower }}
+                {% if result.approvedBy %}
+                by {{ result.approvedBy.screenName }}
+                {% endif %}
+              </p>
+            </header>
+            {% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}
+            <section class="notes content">
+              <h4>notes</h4>
+              {% if result.status.FAILED %}
+              <p class="failed-step">step {{ result.failedStepNumber }}</p>
               {% endif %}
-            </p>
-          </header>
-          {% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}
-          <section class="notes content">
-            <h4>notes</h4>
-            {% if result.status.FAILED %}
-            <p class="failed-step">step {{ result.failedStepNumber }}</p>
+              <blockquote class="comment">
+                {% if result.actualResult %}{{ result.actualResult }}{% endif %}
+                {% if result.comment %}{{ result.comment }}{% endif %}
+              </blockquote>
+            </section>
             {% endif %}
-            <blockquote class="comment">
-              {% if result.actualResult %}{{ result.actualResult }}{% endif %}
-              {% if result.comment %}{{ result.comment }}{% endif %}
-            </blockquote>
-          </section>
-          {% endif %}
-        </article>
-        {% endfor %}
+          </article>
+          {% endfor %}
+        {% else %}
+          <p class="empty">There are currently no items in this list...</p>
+        {% endif %}
       </div>
 
       {% include "lists/_listnav.html" %}

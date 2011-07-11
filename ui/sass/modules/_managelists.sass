@@ -52,17 +52,15 @@
 
   .empty
     +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+    +padding-leader
+    +padding-trailer
+    +sans-family
+    +demi
+    +text-shadow(white 0 1px 0)
     position: relative
-    height: rhythm(3)
     color: rgba($blue,$small)
-    &::after
-      +sans-family
-      +demi
-      +stretch
-      +padding-leader(1)
-      +text-shadow(white 0 1px 0)
-      content: "there are currently no items in this list..."
-      text-align: center
+    margin: 0
+    text-align: center
 
   .steps
     +no-style-list

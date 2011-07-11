@@ -2483,21 +2483,14 @@ button[name="action-edit"] {
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-  position: relative;
-  height: 4.854em;
-  color: rgba(82, 134, 132, 0.618);
-}
-.managelist .empty::after {
+  padding-top: 1.618em;
+  padding-bottom: 1.618em;
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-top: 1.618em;
   text-shadow: white 0 1px 0;
-  content: "there are currently no items in this list...";
+  position: relative;
+  color: rgba(82, 134, 132, 0.618);
+  margin: 0;
   text-align: center;
 }
 .managelist .steps {
