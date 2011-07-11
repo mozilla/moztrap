@@ -579,6 +579,8 @@ var TCM = TCM || {};
         });
         $('.managedrill').html5finder({
             loading: true,
+            horizontalScroll: true,
+            scrollContainer: '.finder',
             ellipsis: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
