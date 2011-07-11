@@ -5,33 +5,23 @@
   display: block
   height: $base-rhythm-unit
 
-.addfields
-  &, #{$link}
-    +demi
-    +italic
-    display: block
-    padding: rhythm(.25) rhythm(.5)
-    color: $green-dark
-    background: rgba($green,$xsmall)
-    text-align: right
-    &:first-child:last-child, h3 + &
-      +padding-leader(.25)
-      +padding-trailer(.25)
-  #{$focus}
-    color: $base
-    background: rgba($green-light,$small)
-
 // The Basic Form ------------------------------------------------------------
 
 .addform
   h2
     +trailer
   .basic
-    +columns(11,22)
+    +pie-clearfix
     +inline-form(2,9,11)
     +trailer
-    li
-      clear: both
+    label
+      text-align: right
+    ul
+      +no-style-list
+    > li
+      +columns(11,22)
+      &:nth-child(even)
+        +omega(22)
     .date
       +columns(5,11)
       clear: none
@@ -47,34 +37,6 @@
     .errorlist
       +full(11)
       +prefix(2,11)
-
-  .env
-    +columns(11,22)
-    +omega(22)
-    +trailer
-    h3
-      padding: $base-rhythm-unit*.25
-      background: rgba($blue,$xxxsmall)
-    ul
-      +no-style-list
-    label
-      +hide-text
-      position: absolute
-      height: 0
-    .remove
-      +columns(1,11)
-      +omega(11)
-
-  .env-form
-    +pie-clearfix
-    +padding-leader(.5)
-    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
-    li
-      +columns(4,11)
-      &:first-child
-        +prefix(1,11)
-      &:nth-child(2n)
-        +columns(5,11)
 
 // SuperSelect! --------------------------------------------------------------
 
@@ -291,16 +253,12 @@
   .steps
     +full(22)
     +clearfix
-    .addfields
-      margin-left: columns(2,22) + gutter(22)
   .steplist
     +no-style-list
-    +full(22)
-    +prefix(2,22)
     counter-reset: step
   .steps-form
-    +full(20)
-    +prefix(1,20)
+    +full(22)
+    +prefix(2,22)
     +padding-leader(.25)
     +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
     position: relative
@@ -310,15 +268,17 @@
       +light
       content: counter(step, decimal) "."
       position: absolute
-      right: 100% + gutter(19)
+      left: 0
       top: 0
+      width: columns(2,22)
+      text-align: right
     .action
-      +columns(8,19)
+      +columns(9,20)
     .result
-      +columns(10,19)
+      +columns(10,20)
     .remove
-      +columns(1,19)
-      +omega(18)
+      +columns(1,20)
+      +omega(20)
       +leader(.25)
     .errorlist
       +float('right')

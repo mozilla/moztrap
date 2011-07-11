@@ -3176,33 +3176,20 @@ button[name="action-edit"] {
   height: 1.618em;
 }
 
-.addfields, .addfields:link, .addfields:visited {
-  font-weight: 500;
-  font-style: italic;
-  display: block;
-  padding: 0.405em 0.809em;
-  color: #4f7a1b;
-  background: rgba(119, 185, 41, 0.382);
-  text-align: right;
-}
-.addfields:first-child:last-child, h3 + .addfields, .addfields:link:first-child:last-child, h3 + .addfields:link, .addfields:visited:first-child:last-child, h3 + .addfields:visited {
-  padding-top: 0.405em;
-  padding-bottom: 0.405em;
-}
-.addfields:focus, .addfields:hover, .addfields:active {
-  color: #444444;
-  background: rgba(181, 227, 127, 0.618);
-}
-
 .addform h2, #addcycle h2, #addrun h2, #addsuite h2, #addcase h2 {
   margin-bottom: 1.618em;
 }
 .addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #addcase .basic {
-  display: inline;
-  float: left;
-  width: 49.425%;
-  margin-right: 1.149%;
+  *zoom: 1;
   margin-bottom: 1.618em;
+}
+.addform .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #addcase .basic:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
 .addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
   *zoom: 1;
@@ -3230,8 +3217,30 @@ button[name="action-edit"] {
   float: right;
   margin-right: 0;
 }
-.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
-  clear: both;
+.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #addcase .basic label {
+  text-align: right;
+}
+.addform .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #addcase .basic ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.addform .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #addcase .basic ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.addform .basic > li, #addcycle .basic > li, #addrun .basic > li, #addsuite .basic > li, #addcase .basic > li {
+  display: inline;
+  float: left;
+  width: 49.425%;
+  margin-right: 1.149%;
+}
+.addform .basic > li:nth-child(even), #addcycle .basic > li:nth-child(even), #addrun .basic > li:nth-child(even), #addsuite .basic > li:nth-child(even), #addcase .basic > li:nth-child(even) {
+  display: inline;
+  float: right;
+  margin-right: 0;
 }
 .addform .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #addcase .basic .date {
   display: inline;
@@ -3266,79 +3275,6 @@ button[name="action-edit"] {
 .addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #addcase .basic .errorlist {
   clear: both;
   padding-left: 18.605%;
-}
-.addform .env, #addcycle .env, #addrun .env, #addsuite .env, #addcase .env {
-  display: inline;
-  float: left;
-  width: 49.425%;
-  margin-right: 1.149%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  margin-bottom: 1.618em;
-}
-.addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 {
-  padding: 0.405em;
-  background: rgba(82, 134, 132, 0.146);
-}
-.addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.addform .env ul li, #addcycle .env ul li, #addrun .env ul li, #addsuite .env ul li, #addcase .env ul li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-}
-.addform .env label, #addcycle .env label, #addrun .env label, #addsuite .env label, #addcase .env label {
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  position: absolute;
-  height: 0;
-}
-.addform .env .remove, #addcycle .env .remove, #addrun .env .remove, #addsuite .env .remove, #addcase .env .remove {
-  display: inline;
-  float: left;
-  width: 6.977%;
-  margin-right: 2.326%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-.addform .env-form, #addcycle .env-form, #addrun .env-form, #addsuite .env-form, #addcase .env-form {
-  *zoom: 1;
-  padding-top: 0.809em;
-  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
-  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-}
-.addform .env-form:after, #addcycle .env-form:after, #addrun .env-form:after, #addsuite .env-form:after, #addcase .env-form:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-.addform .env-form li, #addcycle .env-form li, #addrun .env-form li, #addsuite .env-form li, #addcase .env-form li {
-  display: inline;
-  float: left;
-  width: 34.884%;
-  margin-right: 2.326%;
-}
-.addform .env-form li:first-child, #addcycle .env-form li:first-child, #addrun .env-form li:first-child, #addsuite .env-form li:first-child, #addcase .env-form li:first-child {
-  padding-left: 9.302%;
-}
-.addform .env-form li:nth-child(2n), #addcycle .env-form li:nth-child(2n), #addrun .env-form li:nth-child(2n), #addsuite .env-form li:nth-child(2n), #addcase .env-form li:nth-child(2n) {
-  display: inline;
-  float: left;
-  width: 44.186%;
-  margin-right: 2.326%;
 }
 
 .superselect p, .mainselect p, .suiteselect p, .caseselect p, .userselect p {
@@ -3743,16 +3679,11 @@ button[name="action-edit"] {
   overflow: hidden;
   *zoom: 1;
 }
-#addcase .steps .addfields {
-  margin-left: 9.195%;
-}
 #addcase .steplist {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
-  clear: both;
-  padding-left: 9.195%;
   counter-reset: step;
 }
 #addcase .steplist li {
@@ -3762,7 +3693,7 @@ button[name="action-edit"] {
 }
 #addcase .steps-form {
   clear: both;
-  padding-left: 5.063%;
+  padding-left: 9.195%;
   padding-top: 0.405em;
   background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
   background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
@@ -3778,26 +3709,28 @@ button[name="action-edit"] {
   font-weight: 200;
   content: counter(step, decimal) ".";
   position: absolute;
-  right: 101.333%;
+  left: 0;
   top: 0;
+  width: 8.046%;
+  text-align: right;
 }
 #addcase .steps-form .action {
   display: inline;
   float: left;
-  width: 41.333%;
-  margin-right: 1.333%;
+  width: 44.304%;
+  margin-right: 1.266%;
 }
 #addcase .steps-form .result {
   display: inline;
   float: left;
-  width: 52%;
-  margin-right: 1.333%;
+  width: 49.367%;
+  margin-right: 1.266%;
 }
 #addcase .steps-form .remove {
   display: inline;
   float: left;
-  width: 4%;
-  margin-right: 1.333%;
+  width: 3.797%;
+  margin-right: 1.266%;
   display: inline;
   float: right;
   margin-right: 0;

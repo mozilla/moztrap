@@ -1,9 +1,5 @@
 {% extends 'manage/product/testcase/base.html' %}
 
-{% block page-notes %}
-<p>"Environment constraints" UI under re-consideration.</p>
-{% endblock %}
-
 {% block listcontent %}
 <section id="addcase">
   <h2>{% block formtitle %}{% endblock %}</h2>
@@ -30,16 +26,6 @@
       {% endcomment %}
     </ul>
 
-    <div class="env">
-      <h3>Environment Constraints</h3>
-      {{ form.env_formset.management_form }}
-      <ul class="envlist">
-        {% for form in form.env_formset %}
-        {% include "manage/_env_form.html" %}
-        {% endfor %}
-      </ul>
-    </div>
-
     <div class="steps">
       {{ form.steps_formset.management_form }}
       <ol class="steplist">
@@ -58,7 +44,6 @@
 {% endblock listcontent %}
 
 {% block extrajs %}
-{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
 <script>
   $(
       function() {
@@ -79,7 +64,6 @@
 
 {% block last %}
 <div style="display: none;">
-  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
   <ul id="empty-step-form" class="empty-form">
     {% include "manage/product/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
   </ul>

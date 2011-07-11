@@ -87,7 +87,7 @@ class TestSuiteForm(EnvConstrainedAddEditForm):
 
 
 
-class TestCaseForm(EnvConstrainedAddEditForm):
+class TestCaseForm(tcmforms.AddEditForm):
     name = forms.CharField()
     product = tcmforms.ModelChoiceField()
     # @@@ tags = forms.CharField(required=False)
