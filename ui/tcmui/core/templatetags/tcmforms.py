@@ -25,7 +25,7 @@ def label_text(boundfield):
 
 
 @register.filter
-def value(boundfield):
+def value_text(boundfield):
     val = boundfield.value()
     # If choices is set, use the display label
     return str(dict((
