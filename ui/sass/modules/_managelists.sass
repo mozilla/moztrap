@@ -86,6 +86,14 @@
       +italic
       margin: 0
 
+  .testers, .suites
+    +adjust-font-size-to(12px,.75)
+    color: $mid-dark
+    h4
+      @extend .groupheader
+      background-color: transparent
+      margin: 0
+
 .item
   .info
     +columns(6,24)
@@ -177,14 +185,6 @@
       +columns(3,21)
       &:nth-child(7n)
         +omega(21)
-
-.testers, .suites
-  +adjust-font-size-to(12px,.75)
-  color: $mid-dark
-  h4
-    @extend .groupheader
-    background-color: transparent
-    margin: 0
 
 .components
   +columns(16,24)
