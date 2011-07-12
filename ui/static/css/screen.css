@@ -990,6 +990,10 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding: 0;
   border: 0;
 }
+.readonly dt, .readonly dd {
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+}
 .readonly dt {
   font-style: normal;
   font-weight: 700;
