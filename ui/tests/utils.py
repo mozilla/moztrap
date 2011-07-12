@@ -148,6 +148,7 @@ def creds(email, password=None, cookie=None):
     return creds
 
 
+
 class AuthTestCase(TestCase):
     def creds(self, email, password=None, cookie=None):
         return creds(email, password, cookie)
@@ -199,7 +200,12 @@ class ViewTestCase(AuthTestCase):
 
     @property
     def app(self):
-        return TestApp(WSGIHandler())
+        class AuthWSGIHandler(WSGIHandler):
+            def get_response(self_, request):
+                request._cached_user = self.auth.user
+                request._cached_auth = self.auth
+                return super(AuthWSGIHandler, self_).get_response(request)
+        return TestApp(AuthWSGIHandler())
 
 
 
