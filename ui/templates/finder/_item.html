@@ -1,11 +1,15 @@
 {% load finder %}
 
 <li>
-  <input type="radio"{% if active.id == object.id %} checked{% endif %} name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ object|finder_sub_url:finder_type }}">
+  <input type="radio"{% if active.id == object.id %} checked{% endif %} name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ finder.finder|child_query_url:object|default:'' }}">
   <label for="{{ object.api_name }}-{{ object.id }}">
     {% block columns %}{% endblock %}
   </label>
   {% block final %}
-  <a href="{{ object|finder_goto_url:finder_type }}" class="goto" title="open all the {{ object.name }} {{ object|finder_sub_name }}">open all the {{ object.name }} {{ object|finder_sub_name }}</a>
+  {% with finder.finder|goto_url:object as goto_url %}
+  {% if goto_url %}
+  <a href="{{ goto_url }}" class="goto" title="open all the {{ object.name }} {{ finder.finder|sub_name:object }}">open all the {{ object.name }} {{ finder.finder|sub_name:object }}</a>
+  {% endif %}
+  {% endwith %}
   {% endblock %}
 </li>

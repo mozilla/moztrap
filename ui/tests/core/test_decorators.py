@@ -3,7 +3,7 @@ Tests for core TCM decorators.
 
 """
 from unittest2 import TestCase
-from mock import patch
+from mock import Mock, patch
 
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
@@ -433,6 +433,74 @@ class AjaxTest(TemplateResponseDecoratorBaseTests,
         res = self.on_template_response({})
 
         self.assertEqual(res.template_name, "some/template.html")
+
+
+
+class FinderTest(TemplateResponseDecoratorBaseTests,
+                 TemplateResponseDecoratorTestCase):
+    @property
+    def factory(self):
+        from tcmui.core.decorators import finder
+        return finder
+
+
+    TopList = Mock(name="TopList")
+    MidList = Mock(name="MidList")
+    FinList = Mock(name="FinList")
+    Top = TopList.entryclass
+    Mid = MidList.entryclass
+    Fin = FinList.entryclass
+
+
+    @property
+    def finder(self):
+        try:
+            return self._cached_finder_cls
+        except AttributeError:
+            from tcmui.core.finder import Finder, Column
+
+            class AFinder(Finder):
+                template_base = "a/finder"
+
+                columns = [
+                    Column("top", "_tops.html", self.TopList, "theTop",
+                           goto="list_of_mids"),
+                    Column("mid", "_mids.html", self.MidList, "theMid"),
+                    Column("fin", "_fins.html", self.FinList, "theFin")
+                    ]
+
+            self._cached_finder_cls = AFinder
+
+        return self._cached_finder_cls
+
+
+    @property
+    def factory_args(self):
+        return (self.finder,)
+
+
+    @patch("tcmui.core.decorators.render")
+    def test_ajax(self, render):
+        render.return_value = "some HTML"
+
+        req = self.req(
+            "GET",
+            "/some/url",
+            {"finder": "1", "col": "mid", "id": "2"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        self.on_template_response({}, request=req)
+
+        self.assertEqual(render.call_args[0][1], "a/finder/_mids.html")
+
+
+    def test_no_ajax(self):
+        res = self.on_template_response({})
+
+        self.assertIsInstance(res.context_data["finder"]["finder"], self.finder)
+        self.assertIs(
+            res.context_data["finder"]["top"],
+            self.TopList.ours.return_value.filter.return_value.sort.return_value
+            )
 
 
 

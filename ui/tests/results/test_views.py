@@ -83,6 +83,9 @@ class ListViewTests(object):
                 response(self.builder.searchresult(*item_data)),
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one(name="A Product")),
+            # finder
+            "http://fake.base/rest/products?sortfield=name&sortdirection=asc&_type=json&companyId=1":
+                response(products.searchresult({})),
             }
         responses.update(self.extra_responses())
         for i in range(len(item_data)):

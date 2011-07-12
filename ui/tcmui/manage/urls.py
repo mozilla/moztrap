@@ -38,17 +38,6 @@ urlpatterns = patterns(
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
-    # finder ajax
-    url("^_finder/cycles/(?P<parent_id>\d+)/",
-        "finder_cycles",
-        name="manage_finder_cycles"),
-    url("^_finder/runs/(?P<parent_id>\d+)/",
-        "finder_runs",
-        name="manage_finder_runs"),
-    url("^_finder/suites/(?P<parent_id>\d+)/",
-        "finder_suites",
-        name="manage_finder_suites"),
-
     # environment profile list (wireframed)
     url(r"^environments/$", direct_to_template,
         {"template": "manage/environment/profiles.html"}),
@@ -60,4 +49,3 @@ urlpatterns = patterns(
         {"template": "manage/environment/edit_profile.html"}),
 
 )
-

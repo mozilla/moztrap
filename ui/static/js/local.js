@@ -577,6 +577,7 @@ var TCM = TCM || {};
                 });
             }
         });
+        $('.selectruns + .environment.empty').hide();
         $('.managedrill').html5finder({
             loading: true,
             horizontalScroll: true,
@@ -598,7 +599,27 @@ var TCM = TCM || {};
                 'input[name="testsuite"]'
             ]
         });
-        $('.selectruns + .environment.empty').hide();
+        $('.resultsdrill').html5finder({
+            loading: true,
+            horizontalScroll: true,
+            scrollContainer: '.finder',
+            ellipsis: true,
+            headerSelector: '.listordering',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
+            sectionClasses: [
+                'products',
+                'cycles',
+                'runs',
+                'cases'
+            ],
+            sectionItemSelectors: [
+                'input[name="product"]',
+                'input[name="testcycle"]',
+                'input[name="testrun"]',
+                'input[name="testrunincludedtestcase"]'
+            ]
+        });
     });
 
     $(window).load(function() {

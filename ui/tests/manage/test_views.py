@@ -49,6 +49,9 @@ class EditViewTests(object):
         responses = {
             "http://fake.base/rest/%s?_type=json" % self.api_url:
                 response(self.builder.one(id=1, url=self.api_url)),
+            # finder
+            "http://fake.base/rest/products?sortfield=name&sortdirection=asc&_type=json&companyId=1":
+                response(products.searchresult({})),
             }
         responses.update(self.extra_responses())
         return responses

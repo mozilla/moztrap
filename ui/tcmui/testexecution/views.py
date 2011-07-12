@@ -5,70 +5,44 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
+from ..core import decorators as dec
 from ..environments.util import set_environment_url
 from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..users.decorators import login_redirect
 
+from .finder import RunTestsFinder
 from .models import TestCycleList, TestRunList, TestResultList
 
 
 
 @login_redirect
-def finder(request):
-    products = ProductList.ours(auth=request.auth).sort("name", "asc")
+@dec.finder(RunTestsFinder)
+def home(request):
     return TemplateResponse(
         request,
         "runtests/home.html",
-        {
-            "products": products,
-            })
+        {}
+        )
 
 
 
 @login_redirect
-def finder_cycles(request, parent_id):
-    cycles = TestCycleList.get(auth=request.auth).filter(
-        product=parent_id, status=TestCycleStatus.ACTIVE).sort("name", "asc")
-    return TemplateResponse(
-        request,
-        "runtests/finder/_cycles.html",
-        {
-            "cycles": cycles,
-            "finder_type": "runtests",
-            })
-
-
-
-@login_redirect
-def finder_runs(request, parent_id):
-    runs = TestRunList.get(auth=request.auth).filter(
-        testCycle=parent_id, status=TestRunStatus.ACTIVE).sort("name", "asc")
-    return TemplateResponse(
-        request,
-        "runtests/finder/_runs.html",
-        {
-            "runs": runs,
-            "finder_type": "runtests",
-            })
-
-
-
-@login_redirect
-def finder_environments(request, parent_id):
-    run = TestRunList.get_by_id(parent_id, auth=request.auth)
+def finder_environments(request, run_id):
+    run = TestRunList.get_by_id(run_id, auth=request.auth)
 
     return TemplateResponse(
         request,
         "runtests/_environment_form.html",
         {"object": run,
-         "next": reverse("runtests_run", kwargs={"testrun_id": parent_id}),
+         "next": reverse("runtests_run", kwargs={"testrun_id": run_id}),
          })
 
 
 
 @never_cache
 @login_redirect
+@dec.finder(RunTestsFinder)
 def runtests(request, testrun_id):
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
@@ -82,7 +56,6 @@ def runtests(request, testrun_id):
     product = cycle.product
 
     # for prepopulating finder
-    products = ProductList.ours(auth=request.auth).sort("name", "asc")
     cycles = TestCycleList.ours(auth=request.auth).sort("name", "asc").filter(
         product=product, status=TestCycleStatus.ACTIVE)
     runs = TestRunList.ours(auth=request.auth).sort("name", "asc").filter(
@@ -94,10 +67,10 @@ def runtests(request, testrun_id):
         {"product": product,
          "cycle": cycle,
          "testrun": testrun,
-         "products": products,
-         "cycles": cycles,
-         "runs": runs,
-         "environmentgroups": testrun.environmentgroups,
+         "finder": {
+                "cycles": cycles,
+                "runs": runs,
+                },
          })
 
 

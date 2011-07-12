@@ -18,6 +18,7 @@ from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
+from .finder import ManageFinder
 from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
@@ -28,6 +29,7 @@ def home(request):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("cycles",
             ("status", status_filters.TestCycleStatusFilter),
@@ -42,16 +44,13 @@ def testcycles(request):
         "manage/product/testcycle/cycles.html",
         {
             "cycles": TestCycleList.ours(auth=request.auth),
-            "finder": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testcycle(request):
     form = TestCycleForm(
         request.POST or None,
@@ -74,6 +73,7 @@ def add_testcycle(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestRunList, ["clone", "delete", "activate", "deactivate"],
              fall_through=True)
 @dec.sort("testruns")
@@ -119,6 +119,7 @@ def testcycle_details(request, cycle_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("runs",
             ("status", status_filters.TestRunStatusFilter),
@@ -134,16 +135,13 @@ def testruns(request):
         "manage/product/testrun/runs.html",
         {
             "runs": TestRunList.ours(auth=request.auth),
-            "finder": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testrun(request):
     tcid = request.GET.get("cycle")
     suites = TestSuiteList.ours(auth=request.auth)
@@ -170,6 +168,7 @@ def add_testrun(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testrun(request, run_id):
     run = TestRunList.get_by_id(run_id, auth=request.auth)
     form = TestRunForm(
@@ -209,6 +208,7 @@ def testrun_details(request, run_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("suites",
             ("status", status_filters.TestSuiteStatusFilter),
@@ -224,16 +224,13 @@ def testsuites(request):
         "manage/product/testsuite/suites.html",
         {
             "suites": TestSuiteList.ours(auth=request.auth),
-            "finder": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
@@ -257,6 +254,7 @@ def add_testsuite(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testsuite(request, suite_id):
     suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
     form = TestSuiteForm(
@@ -295,6 +293,7 @@ def testsuite_details(request, suite_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(
     TestCaseVersionList,
     ["approve", "reject", "activate", "deactivate"],
@@ -321,16 +320,13 @@ def testcases(request):
         {
             "cases": TestCaseVersionList.ours(
                 url="testcases/latestversions", auth=request.auth),
-            "finder": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testcase(request):
     form = TestCaseForm(
         request.POST or None,
@@ -353,6 +349,7 @@ def add_testcase(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testcase(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
     form = TestCaseForm(
@@ -385,48 +382,3 @@ def testcase_details(request, case_id):
         request,
         "manage/product/testcase/_case_details.html",
         {"case": case})
-
-
-
-@login_redirect
-def finder_cycles(request, parent_id):
-    cycles = TestCycleList.get(auth=request.auth).filter(
-        product=parent_id).sort("name", "asc")
-    return TemplateResponse(
-        request,
-        "manage/finder/_cycles.html",
-        {
-            "finder": {"cycles": cycles},
-            "finder_type": "manage",
-            })
-
-
-
-@login_redirect
-def finder_runs(request, parent_id):
-    runs = TestRunList.get(auth=request.auth).filter(
-        testCycle=parent_id).sort("name", "asc")
-    return TemplateResponse(
-        request,
-        "manage/finder/_runs.html",
-        {
-            "finder": {"runs": runs},
-            "finder_type": "manage",
-            })
-
-
-
-@login_redirect
-def finder_suites(request, parent_id):
-    suites = TestSuiteList.get(auth=request.auth).filter(
-        run=parent_id).sort("name", "asc")
-    return TemplateResponse(
-        request,
-        "manage/finder/_suites.html",
-        {
-            "finder": {"suites": suites},
-            "finder_type": "manage",
-            })
-
-
-
