@@ -1,3 +1,5 @@
+@import modules/slideshow
+
 /* Create --------------------------------------------------------------------
 
 .removefields
@@ -12,31 +14,31 @@
     +trailer
   .basic
     +pie-clearfix
-    +inline-form(2,9,11)
+    +inline-form(2,10,12)
     label
       text-align: right
     ul
       +no-style-list
     > li
-      +columns(11,22)
+      +columns(12,24)
       &:nth-child(even)
-        +omega(22)
+        +omega(24)
     .date
-      +columns(5,11)
+      +columns(6,12)
       clear: none
       position: relative
       + .date
-        +omega(11)
+        +omega(12)
       label
-        +columns(2,5)
+        +columns(2,6)
       input
-        +columns(3,5)
-        +omega(5)
+        +columns(3,6)
+        +omega(6)
       .errorlist
-        +prefix(2,5)
+        +prefix(2,6)
     .errorlist
-      +full(11)
-      +prefix(2,11)
+      +full(12)
+      +prefix(2,12)
 
 // SuperSelect! --------------------------------------------------------------
 
@@ -219,22 +221,47 @@
 
 /* Create Case --------------------------------------------------------------
 
-#addcase
+#single-case-form, #bulk-case-form
   @extend .addform
+
+.formoptions
+  +slideshow(".forms", "> form")
+  +leader
+
+.formtoggle
+  position: absolute
+  top: 0
+  right: 0
+  width: columns(6,24)
+  ul
+    +inline-block-list
+    text-align: right
+  a
+    #{$link}
+      +demi
+      +padding-leader(.125)
+      +padding-trailer(.125)
+      +hpadding(rhythm(.5))
+      +border-radius($smallem)
+      display: block
+      &.active
+        background: rgba($blue-dark,$xxsmall)
+        color: $base
+
+#single-case-form
   li
     +pie-clearfix
-  .form-actions
-    +leader
 
   .steps
     +full(22)
     +clearfix
+    +leader(.25)
   .steplist
     +no-style-list
     counter-reset: step
   .steps-form
-    +full(22)
-    +prefix(2,22)
+    +full(24)
+    +prefix(2,24)
     position: relative
     counter-increment: step
     &::before
@@ -244,13 +271,13 @@
       position: absolute
       left: 0
       top: rhythm(1.75,$largepx)
-      width: columns(2,22)
+      width: columns(2,24)
       text-align: right
     .action
-      +columns(9,20)
+      +columns(10,22)
     .result
-      +columns(11,20)
-      +omega(20)
+      +columns(12,22)
+      +omega(22)
     .removefields
       +opacity(.25)
       +transition(opacity,300ms)
@@ -265,3 +292,18 @@
       +float('right')
       +padding-leader(.25)
       +padding-trailer(.25)
+
+#bulk-case-form
+  .bulk-field
+    +full(24)
+    label
+      +columns(2,24)
+      text-align: right
+    textarea
+      +columns(12,24)
+      min-height: rhythm(9)
+  .fieldhelp
+    +columns(10,24)
+    +omega(22)
+    +leader(.25)
+    color: rgba($base,$small)

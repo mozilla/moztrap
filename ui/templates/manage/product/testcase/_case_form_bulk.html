@@ -1,0 +1,33 @@
+<form id="bulk-case-form">
+  <ul class="basic">
+    <li class="product-field">
+      <label for="product-bulk">Product</label>
+      <select name="product-bulk" id="product-bulk" required>
+        <option value="option1">-------</option>
+        <option value="option2">firefox</option>
+      </select>
+    </li>
+    <li class="suite-field">
+      <label for="suite-bulk">Suite</label>
+      <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
+      {# @@@ this should be an autocomplete field #}
+    </li>
+  </ul>
+  <div class="bulk-field">
+    <label for="cases-bulk">Cases</label>
+    <textarea name="cases-bulk" id="cases-bulk" required></textarea>
+    <div class="fieldhelp">
+      <section class="keywords">
+        <h3>Keyword Instructions</h3>
+        <p>how to use given... for... etc.</p>
+      </section>
+      <section class="markdown">
+        <h3>Markdown Instructions</h3>
+        <p>how to use markdown.</p>
+      </section>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit">save test cases</button>
+  </div>
+</form>
