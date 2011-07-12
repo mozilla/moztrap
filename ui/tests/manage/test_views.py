@@ -2,9 +2,10 @@ from mock import patch
 
 from ..products.builders import products
 from ..testcases.builders import (
-    testsuites, testsuiteincludedtestcases, testcaseversions, testcasesteps)
+    testsuites, testsuiteincludedtestcases, testcases, testcaseversions,
+    testcasesteps)
 from ..testexecution.builders import testcycles, testruns
-from ..responses import response, make_identity
+from ..responses import response
 from ..users.builders import users
 from ..utils import ViewTestCase, Url, COMMON_RESPONSES
 
@@ -31,6 +32,7 @@ class DefaultManageViewTest(ViewTestCase):
 
 class EditViewTests(object):
     builder = None
+    edit_form_id = None
 
 
     @property
@@ -46,16 +48,31 @@ class EditViewTests(object):
     def responses(self):
         responses = {
             "http://fake.base/rest/%s?_type=json" % self.api_url:
-                response(self.builder.one(
-                    resourceIdentity=make_identity(
-                        id=1, url=self.api_url))),
+                response(self.builder.one(id=1, url=self.api_url)),
             }
         responses.update(self.extra_responses())
         return responses
 
 
+    def edit_responses(self):
+        responses = self.responses()
+        responses.update(self.extra_edit_responses())
+        return responses
+
+
     def extra_responses(self):
         return {}
+
+
+    def extra_edit_responses(self):
+        return {}
+
+
+    def edit_data(self):
+        return {
+            "name": "New name",
+            "description": "Newdesc"
+            }
 
 
     def test_no_cache(self, http):
@@ -78,10 +95,41 @@ class EditViewTests(object):
                 set([Url(k) for k in COMMON_RESPONSES.iterkeys()])))
 
 
+    def test_edit(self, http):
+        res = self._submit_edit_form(http)
+
+        self.assertEqual(
+            res.status_int, 302, res.html.findAll("ul", "errorlist"))
+
+
+    def test_all_edit_api_endpoints_hit(self, http):
+        self._submit_edit_form(http)
+
+        self.assertEqual(
+            set([Url(k) for k in self.edit_responses().iterkeys()]),
+            set(Url(args[1]["uri"])
+                for args in http.request.call_args_list).difference(
+                # not concerned about common responses
+                set([Url(k) for k in COMMON_RESPONSES.iterkeys()])))
+
+
+    def _submit_edit_form(self, http):
+        self.setup_responses(http, self.edit_responses())
+        res = self.app.get(self.url)
+        form = res.forms[self.edit_form_id]
+        response_data = {"id": 1, "url": self.api_url}
+        for k, v in self.edit_data().items():
+            form[k] = v
+            response_data[k] = v
+        http.request.return_value = response(self.builder.one(**response_data))
+        return form.submit()
+
+
 
 @patch("tcmui.core.api.userAgent")
 class TestCycleEditViewTest(ViewTestCase, EditViewTests):
     builder = testcycles
+    edit_form_id = "cycle-form"
 
 
     def extra_responses(self):
@@ -101,6 +149,8 @@ class TestCycleEditViewTest(ViewTestCase, EditViewTests):
 @patch("tcmui.core.api.userAgent")
 class TestRunEditViewTest(ViewTestCase, EditViewTests):
     builder = testruns
+
+    edit_form_id = "run-form"
 
 
     def extra_responses(self):
@@ -123,6 +173,8 @@ class TestRunEditViewTest(ViewTestCase, EditViewTests):
 class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
     builder = testsuites
 
+    edit_form_id = "suite-form"
+
 
     def extra_responses(self):
         return {
@@ -135,10 +187,19 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
             }
 
 
+    def extra_edit_responses(self):
+        return {
+            "http://fake.base/rest/testsuites/1/includedtestcases?_type=json":
+                response(testsuiteincludedtestcases.array({}))
+            }
+
+
 
 @patch("tcmui.core.api.userAgent")
 class TestCaseEditViewTest(ViewTestCase, EditViewTests):
     builder = testcaseversions
+
+    edit_form_id = "single-case-form"
 
     url = "/manage/testcase/1/"
 
@@ -152,3 +213,34 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             }
+
+
+    def extra_edit_responses(self):
+        return {
+            "http://fake.base/rest/testcasesteps/1?_type=json":
+                response(testcasesteps.one()),
+            # separate call to update the name
+            "http://fake.base/rest/testcases/1?_type=json":
+                response(testcases.one(id=1, url="testcases/1")),
+            }
+
+
+    def edit_data(self):
+        return {
+            "name": "New name",
+            }
+
+
+    def test_edit_name(self, http):
+        self._submit_edit_form(http)
+
+        # find the dedicated PUT call for setting the name
+        put = [
+            ca[1] for ca in http.request.call_args_list
+            if ca[1]["method"] == "PUT" and
+            ca[1]["uri"] == "http://fake.base/rest/testcases/1?_type=json"
+            ][0]
+
+        self.assertEqual(put["body"], "name=New+name&companyId=1&maxAttachmentSizeInMbytes=0&originalVersionId=0&maxNumberOfAttachments=0&productId=1")
+
+        self.assertEqual(put["headers"]["cookie"], "USERTOKEN: authcookie")

@@ -92,7 +92,7 @@ class TestCaseForm(tcmforms.AddEditForm):
     # @@@ tags = forms.CharField(required=False)
 
 
-    no_edit_fields = ["name", "product"]
+    no_edit_fields = ["product"]
     entryclass = TestCaseVersion
     listclass = TestCaseList
     extra_creation_data = {
@@ -114,6 +114,22 @@ class TestCaseForm(tcmforms.AddEditForm):
             self.steps_formset.is_valid() and
             super(TestCaseForm, self).is_valid()
             )
+
+
+    def edit_clean(self):
+        ret = super(TestCaseForm, self).edit_clean()
+
+        # Name field can't be edited via TestCaseVersion, so we do it via the
+        # TestCase proper
+        tc = TestCaseList.get_by_id(self.instance.testCaseId, auth=self.auth)
+        tc.name = self.instance.name = self.cleaned_data["name"]
+        try:
+            tc.put()
+        except self.instance.Conflict, e:
+            self.handle_error(self.instance, e)
+
+        return ret
+
 
 
     def save(self):

@@ -4,6 +4,7 @@
     <dt>{{ field|label_text }}</dt>
     <dd>{{ field|value_text }}</dd>
   </dl>
+  {{ field.as_hidden }}
 {% else %}
   {{ field.errors }}
   {{ field|label }}
