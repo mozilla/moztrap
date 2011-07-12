@@ -1,4 +1,4 @@
-from mock import patch
+from mock import patch, Mock
 from unittest2 import TestCase
 
 
@@ -89,6 +89,20 @@ class AddEditFormTest(TestCase):
             f.handle_error(obj, err)
 
         emaf.assert_called_once_with(obj, err)
+
+
+    def test_no_edit_fields(self):
+        import floppyforms as forms
+
+        class PersonForm(self.form_class):
+            name = forms.CharField()
+            age = forms.CharField()
+
+            no_edit_fields = ["age"]
+
+        f = PersonForm(instance=Mock(), auth=Mock())
+
+        self.assertEqual(f.fields["age"].read_only, True)
 
 
 
