@@ -47,5 +47,8 @@ urlpatterns = patterns(
     # environment profile create (wireframed)
     url(r"^environment/edit/$", direct_to_template,
         {"template": "manage/environment/edit_profile.html"}),
+    # environment narrowing (wireframed)
+    url(r"^type/id/environments/$", direct_to_template,
+        {"template": "manage/environment/narrowing.html"}),
 
 )

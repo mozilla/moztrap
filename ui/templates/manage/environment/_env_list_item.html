@@ -1,5 +1,11 @@
 <article id="env-id-{{ id }}" class="item details">
   <header class="summary">
+    {% if not edit %}
+      <span class="bulk">
+        <input type="checkbox" name="{{ id }}_bulk_select" value="" id="{{ id }}_bulk_select">
+        <label for="{{ id }}_bulk_select">{{ id }} bulk select</label>
+      </span>
+    {% endif %}
     <h3 class="preview">
       <ul>
         <li>windows</li>
@@ -7,10 +13,12 @@
         <li>firefox</li>
       </ul>
     </h3>
-    <div class="controls">
-      <button title="clone" type="submit" name="action-clone">clone</button>
-      <button title="delete" type="submit" name="action-delete">delete</button>
-    </div>
+    {% if edit %}
+      <div class="controls">
+        <button title="clone" type="submit" name="action-clone">clone</button>
+        <button title="delete" type="submit" name="action-delete">delete</button>
+      </div>
+    {% endif %}
   </header>
   <div class="content">
     {% include "manage/environment/_env_list_item_content.html" %}

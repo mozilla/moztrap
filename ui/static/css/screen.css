@@ -4138,7 +4138,7 @@ button[name="action-edit"] {
   padding-right: 8.421%;
 }
 #editprofile .env-management {
-  margin-top: 0.809em;
+  margin-top: 0.405em;
 }
 #editprofile .env-management label {
   position: absolute;
@@ -4150,20 +4150,25 @@ button[name="action-edit"] {
   width: 1px;
   border: 0;
 }
-#editprofile .env-element-list {
+#editprofile .env-management input {
+  margin-bottom: 0.405em;
+}
+
+.env-element-list {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
   *zoom: 1;
-  margin-bottom: 0.809em;
+  margin-top: 0.405em;
+  margin-bottom: 0.405em;
 }
-#editprofile .env-element-list li {
+.env-element-list li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-#editprofile .env-element-list:after {
+.env-element-list:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -4171,7 +4176,7 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-#editprofile .env-element-list li {
+.env-element-list li {
   display: inline;
   float: left;
   font-weight: 500;
@@ -4186,8 +4191,43 @@ button[name="action-edit"] {
   margin-right: 0.405em;
   cursor: pointer;
 }
-#editprofile .env-element-list li:hover {
+.env-element-list li:hover {
   background: rgba(185, 41, 47, 0.382);
+}
+
+/* narrow Environments ------------------------------------------------------- */
+#envnarrowing .bybulk, #envnarrowing .bulk {
+  display: inline;
+  float: left;
+  width: 3.158%;
+  margin-right: 1.053%;
+}
+#envnarrowing .bybulk label, #envnarrowing .bulk label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#envnarrowing .bybulk input, #envnarrowing .bulk input {
+  margin-left: 0.809em;
+}
+#envnarrowing .bypreview, #envnarrowing .preview {
+  display: inline;
+  float: left;
+  width: 95.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: left;
+}
+#envnarrowing .content {
+  padding-left: 4.211%;
+  padding-right: 4.211%;
 }
 
 /* test nav -------------------------------------------------------------- */

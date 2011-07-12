@@ -2,16 +2,11 @@
 {# @@@ full page wireframe #}
 
 {% block listcontent %}
-<section id="editprofile">
-  <h2>Edit Environment Profile</h2>
+<section id="envnarrowing">
+  <h2>Select Environments for Object</h2>
 
   <form method="POST">
     {% csrf_token %}
-
-    <p class="profile-name">
-      <label for="profile_name">profile name</label>
-      <input type="text" name="profile_name" value="name of this profile" id="profile_name" placeholder="profile name" required>
-    </p>
 
     {% include "lists/_filter.html" %}
 
@@ -19,20 +14,19 @@
       <nav class="listordering">
         <h3 class="navhead">List Ordering</h3>
         <ul>
+          <li class="bybulk">
+            <input type="checkbox" name="bulk_select" value="" id="bulk_select">
+            <label for="bulk_select">bulk select</label>
+          </li>
           <li class="bypreview">
             <a href="#">environment preview</a>
-          </li>
-          <li class="bycontrols">
-            <span>controls</span>
           </li>
         </ul>
       </nav>
 
       <div class="items">
-        {% include "manage/environment/_env_list_item.html" with id='01' edit='true' %}
-        {% include "manage/environment/_env_list_item.html" with id='02' edit='true' %}
-
-        <a href="#" class="item add-item">add an environment</a>
+        {% include "manage/environment/_env_list_item.html" with id='01' %}
+        {% include "manage/environment/_env_list_item.html" with id='02' %}
       </div>
 
       {% include "lists/_listnav.html" %}

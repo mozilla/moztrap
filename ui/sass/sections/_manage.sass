@@ -154,21 +154,40 @@
     +pad(2,2,24)
 
   .env-management
-    +leader(.5)
+    +leader(.25)
     label
       +gone
+    input
+      +trailer(.25)
 
-  .env-element-list
-    +no-style-list
-    +pie-clearfix
-    +trailer(.5)
-    li
-      +float(left)
-      +demi
-      +border-radius
-      background: rgba($green,$xsmall)
-      padding: rhythm(.125) rhythm(.25)
-      margin-right: rhythm(.25)
-      cursor: pointer
-      &:hover
-        background: rgba($red,$xsmall)
+.env-element-list
+  +no-style-list
+  +pie-clearfix
+  +leader(.25)
+  +trailer(.25)
+  li
+    +float(left)
+    +demi
+    +border-radius
+    background: rgba($green,$xsmall)
+    padding: rhythm(.125) rhythm(.25)
+    margin-right: rhythm(.25)
+    cursor: pointer
+    &:hover
+      background: rgba($red,$xsmall)
+
+/* narrow Environments -------------------------------------------------------
+
+#envnarrowing
+  .bybulk, .bulk
+    +columns(1,24)
+    label
+      +gone
+    input
+      margin-left: rhythm(.5)
+  .bypreview, .preview
+    +columns(23,24)
+    +omega(24)
+    text-align: left
+  .content
+    +pad(1,1,24)
