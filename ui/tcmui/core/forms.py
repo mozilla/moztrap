@@ -98,6 +98,7 @@ class AddEditForm(RemoteObjectForm):
         if self.instance is not None:
             for fname in self.no_edit_fields:
                 self.fields[fname].widget = ReadOnlyWidget()
+                self.fields[fname].read_only = True
 
         for fname, model_list in model_choices.iteritems():
             self.fields[fname].obj_list = model_list
@@ -193,6 +194,10 @@ class AddEditForm(RemoteObjectForm):
             self.handle_error(self.instance, e)
 
         return self.cleaned_data
+
+
+    def save(self):
+        return self.instance
 
 
 

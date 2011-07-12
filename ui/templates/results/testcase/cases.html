@@ -39,43 +39,47 @@
         </ul>
       </nav>
 
-      <div class="items {% if not includedcases %}empty{% endif %}">
-        {% for itc in includedcases %}
-        <article id="includedtestcase-id-{{ itc.id }}" class="details item {{ itc.testCaseVersion.status|status_class }}" data-details-url="{% url results_testcase_details itc.id %}">
-          <header class="summary">
-            <p class="status">
-              <span class="{{ itc.testCaseVersion.status|status_class }}">{{ itc.testCaseVersion.status|lower }}</span>
-            </p>
-            <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
-            <hgroup>
-              <h3 class="title" title="{{ itc.testCase.name }}">{{ itc.testCase.name }}</h3>
-              <h4 class="run" title="{{ itc.testRun.name }}">{{ itc.testRun.name }}</h4>
-            </hgroup>
-            <p class="product">{{ itc.product.name }}</p>
-            {% if itc.testSuite %}
-            <div class="suite">
-              {{ itc.testSuite.name }}
+      <div class="items">
+        {% if includedcases %}
+          {% for itc in includedcases %}
+          <article id="includedtestcase-id-{{ itc.id }}" class="details item {{ itc.testCaseVersion.status|status_class }}" data-details-url="{% url results_testcase_details itc.id %}">
+            <header class="summary">
+              <p class="status">
+                <span class="{{ itc.testCaseVersion.status|status_class }}">{{ itc.testCaseVersion.status|lower }}</span>
+              </p>
+              <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+              <hgroup>
+                <h3 class="title" title="{{ itc.testCase.name }}">{{ itc.testCase.name }}</h3>
+                <h4 class="run" title="{{ itc.testRun.name }}">{{ itc.testRun.name }}</h4>
+              </hgroup>
+              <p class="product">{{ itc.product.name }}</p>
+              {% if itc.testSuite %}
+              <div class="suite">
+                {{ itc.testSuite.name }}
+              </div>
+              {% endif %}
+              {% comment %}
+              {# @@@ Way too slow until the platform adds these calls. #}
+              {% if itc.testSuite %}
+              <div class="suite">
+                {{ itc.testSuite.name }}
+                <aside class="suiteresults" id="run-{{ itc.testRun.id }}-suite-{{ itc.testSuite.id }}">
+                  <h4>Results for {{ itc.testSuite.name }} in {{ itc.testRun.name }}</h4>
+                  {% include "results/_results_summary.html" with results=itc.suite_resultsummary %}
+                </aside>
+              </div>
+              {% endif %}
+              {% include "results/_results_summary.html" with results=itc.resultsummary %}
+              {% endcomment %}
+            </header>
+            <div class="content">
+              {# _case_details.html loaded via ajax #}
             </div>
-            {% endif %}
-            {% comment %}
-            {# @@@ Way too slow until the platform adds these calls. #}
-            {% if itc.testSuite %}
-            <div class="suite">
-              {{ itc.testSuite.name }}
-              <aside class="suiteresults" id="run-{{ itc.testRun.id }}-suite-{{ itc.testSuite.id }}">
-                <h4>Results for {{ itc.testSuite.name }} in {{ itc.testRun.name }}</h4>
-                {% include "results/_results_summary.html" with results=itc.suite_resultsummary %}
-              </aside>
-            </div>
-            {% endif %}
-            {% include "results/_results_summary.html" with results=itc.resultsummary %}
-            {% endcomment %}
-          </header>
-          <div class="content">
-            {# _case_details.html loaded via ajax #}
-          </div>
-        </article>
-        {% endfor %}
+          </article>
+          {% endfor %}
+        {% else %}
+          <p class="empty">There are currently no items in this list...</p>
+        {% endif %}
       </div>
 
       {% include "lists/_listnav.html" %}

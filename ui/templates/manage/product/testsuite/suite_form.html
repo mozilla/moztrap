@@ -1,7 +1,7 @@
 {% extends 'manage/product/testsuite/base.html' %}
 
 {% block page-notes %}
-<p>"Environment constraints" UI under re-consideration; constraint changes to a test suite with included test cases won't be saved.</p>
+<p>Missing new environment constraints UI.</p>
 <p>"Add test cases" has a richer UI on the way, with search, ordering, etc.</p>
 {% endblock %}
 
@@ -29,16 +29,6 @@
       </li>
     </ul>
 
-    <div class="env">
-      <h3>Environment Constraints</h3>
-      {{ form.env_formset.management_form }}
-      <ul class="envlist">
-        {% for form in form.env_formset %}
-        {% include "manage/_env_form.html" %}
-        {% endfor %}
-      </ul>
-    </div>
-
     <section class="caseselect">
       <h3>add test cases to your test suite</h3>
       <div>
@@ -57,13 +47,3 @@
 
 </section>
 {% endblock listcontent %}
-
-{% block extrajs %}
-{% include "manage/_env_formset_js.html" with formset=form.env_formset %}
-{% endblock %}
-
-{% block last %}
-<div style="display: none;">
-  {% include "manage/_empty_env_form.html" with form=form.env_formset.empty_form %}
-</div>
-{% endblock %}

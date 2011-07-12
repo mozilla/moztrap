@@ -1,7 +1,5 @@
 from mock import patch
 
-from ..environments.builders import (
-    environmentgroups, environmenttypes, environments)
 from ..products.builders import products
 from ..testcases.builders import (
     testsuites, testsuiteincludedtestcases, testcaseversions, testcasesteps)
@@ -51,12 +49,6 @@ class EditViewTests(object):
                 response(self.builder.one(
                     resourceIdentity=make_identity(
                         id=1, url=self.api_url))),
-            "http://fake.base/rest/environmentgroups/1/environments?_type=json":
-                response(environments.array({})),
-            "http://fake.base/rest/environmenttypes/1?_type=json":
-                response(environmenttypes.one()),
-            "http://fake.base/rest/%s/environmentgroups?_type=json" % self.api_url:
-                response(environmentgroups.array({})),
             }
         responses.update(self.extra_responses())
         return responses
@@ -96,8 +88,6 @@ class TestCycleEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one()),
-            "http://fake.base/rest/products/1/environmentgroups?_type=json":
-                response(environmentgroups.array({})),
             "http://fake.base/rest/testruns?_type=json&testCycleId=1&companyId=1":
                 response(testruns.searchresult({})),
             "http://fake.base/rest/users?_type=json&companyId=1":
@@ -117,8 +107,6 @@ class TestRunEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testsuites/?_type=json&testSuiteStatusId=2&productId=1":
                 response(testsuites.searchresult({})),
-            "http://fake.base/rest/testcycles/1/environmentgroups?_type=json":
-                response(environmentgroups.array({})),
             "http://fake.base/rest/testcycles/1?_type=json":
                 response(testcycles.one()),
             "http://fake.base/rest/testruns/1/testsuites?_type=json":
@@ -144,8 +132,6 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                 response(testcaseversions.searchresult({})),
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one()),
-            "http://fake.base/rest/products/1/environmentgroups?_type=json":
-                response(environmentgroups.array({})),
             }
 
 
@@ -163,8 +149,6 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/products/1?_type=json":
                 response(products.one()),
-            "http://fake.base/rest/products/1/environmentgroups?_type=json":
-                response(environmentgroups.array({})),
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             }

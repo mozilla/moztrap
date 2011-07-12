@@ -1,0 +1,31 @@
+<form method="POST" id="single-case-form">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <ul class="basic">
+    <li>
+      {% include "forms/_field.html" with field=form.name %}
+    </li>
+    <li>
+      {% include "forms/_field.html" with field=form.product %}
+    </li>
+    {% comment %} @@@
+    <li>
+      {% include "forms/_field.html" with field=form.tags %}
+    </li>
+    {% endcomment %}
+  </ul>
+
+  <div class="steps">
+    {{ form.steps_formset.management_form }}
+    <ol class="steplist">
+      {% for form in form.steps_formset %}
+      {% include "manage/product/testcase/_step_form.html" %}
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">save test case</button>
+  </div>
+
+</form>

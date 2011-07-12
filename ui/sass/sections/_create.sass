@@ -1,3 +1,5 @@
+@import modules/slideshow
+
 /* Create --------------------------------------------------------------------
 
 .removefields
@@ -5,76 +7,38 @@
   display: block
   height: $base-rhythm-unit
 
-.addfields
-  &, #{$link}
-    +demi
-    +italic
-    display: block
-    padding: rhythm(.25) rhythm(.5)
-    color: $green-dark
-    background: rgba($green,$xsmall)
-    text-align: right
-    &:first-child:last-child, h3 + &
-      +padding-leader(.25)
-      +padding-trailer(.25)
-  #{$focus}
-    color: $base
-    background: rgba($green-light,$small)
-
 // The Basic Form ------------------------------------------------------------
 
 .addform
   h2
     +trailer
   .basic
-    +columns(11,22)
-    +inline-form(2,9,11)
-    +trailer
-    li
-      clear: both
-    .date
-      +columns(5,11)
-      clear: none
-      + .date
-        +omega(11)
-      label
-        +columns(2,5)
-      input
-        +columns(3,5)
-        +omega(5)
-      .errorlist
-        padding: 0
-    .errorlist
-      +full(11)
-      +prefix(2,11)
-
-  .env
-    +columns(11,22)
-    +omega(22)
-    +trailer
-    h3
-      padding: $base-rhythm-unit*.25
-      background: rgba($blue,$xxxsmall)
+    +pie-clearfix
+    +inline-form(2,10,12)
+    label
+      text-align: right
     ul
       +no-style-list
-    label
-      +hide-text
-      position: absolute
-      height: 0
-    .remove
-      +columns(1,11)
-      +omega(11)
-
-  .env-form
-    +pie-clearfix
-    +padding-leader(.5)
-    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
-    li
-      +columns(4,11)
-      &:first-child
-        +prefix(1,11)
-      &:nth-child(2n)
-        +columns(5,11)
+    > li
+      +columns(12,24)
+      &:nth-child(even)
+        +omega(24)
+    .date
+      +columns(6,12)
+      clear: none
+      position: relative
+      + .date
+        +omega(12)
+      label
+        +columns(2,6)
+      input
+        +columns(3,6)
+        +omega(6)
+      .errorlist
+        +prefix(2,6)
+    .errorlist
+      +full(12)
+      +prefix(2,12)
 
 // SuperSelect! --------------------------------------------------------------
 
@@ -217,32 +181,8 @@
         color: $base
         background: rgba($green-light,$small)
 
-.assignto
-  clear: both
-  +leader
-  p
-    margin: 0
-  label
-    font-weight: normal
-    &[for="communal"]
-      margin-left: .4em
-
 .userselect
-  @extend .superselect
-  summary
-    +link
-    +italic
-    width: columns(10,22)
-  > div
-    @extend .toparrow
-    +pie-clearfix
-    +full(22)
-    +pad(1,1,22)
-    +rhythm(1,1,1,1)
-    position: relative
-    background: rgba($blue-hint,$xsmall)
-    border-color: #ccc
-    overflow: visible !important
+  @extend .mainselect
   .nickname
     +columns(3,9)
     +prefix(1,9)
@@ -281,46 +221,89 @@
 
 /* Create Case --------------------------------------------------------------
 
-#addcase
+#single-case-form, #bulk-case-form
   @extend .addform
+  +leader
+
+.formoptions
+  +slideshow(".forms", "> form")
+
+.formtoggle
+  position: absolute
+  top: 0
+  right: 0
+  width: columns(6,24)
+  ul
+    +inline-block-list
+    text-align: right
+  a
+    #{$link}
+      +demi
+      +padding-leader(.125)
+      +padding-trailer(.125)
+      +hpadding(rhythm(.5))
+      +border-radius($smallem)
+      display: block
+      &.active
+        background: rgba($blue-dark,$xxsmall)
+        color: $base
+
+#single-case-form
   li
     +pie-clearfix
-  .form-actions
-    +leader
 
   .steps
     +full(22)
     +clearfix
-    .addfields
-      margin-left: columns(2,22) + gutter(22)
+    +leader(.25)
   .steplist
     +no-style-list
-    +full(22)
-    +prefix(2,22)
     counter-reset: step
   .steps-form
-    +full(20)
-    +prefix(1,20)
-    +padding-leader(.25)
-    +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
+    +full(24)
+    +prefix(2,24)
     position: relative
     counter-increment: step
     &::before
-      +adjust-font-size-to($xlargepx,6)
+      +adjust-font-size-to($largepx)
       +light
       content: counter(step, decimal) "."
       position: absolute
-      right: 100% + gutter(19)
-      top: 0
+      left: 0
+      top: rhythm(1.75,$largepx)
+      width: columns(2,24)
+      text-align: right
     .action
-      +columns(8,19)
+      +columns(10,22)
     .result
-      +columns(10,19)
-    .remove
-      +columns(1,19)
-      +omega(18)
-      +leader(.25)
+      +columns(12,22)
+      +omega(22)
+    .removefields
+      +opacity(.25)
+      +transition(opacity,300ms)
+      position: absolute
+      left: 0
+      top: rhythm(2.25)
+      width: image-width('ui/x_circle.png')
+    &:hover
+      .removefields
+        +opacity(1)
     .errorlist
       +float('right')
       +padding-leader(.25)
       +padding-trailer(.25)
+
+#bulk-case-form
+  .bulk-field
+    +full(24)
+    label
+      +columns(2,24)
+      text-align: right
+    textarea
+      +columns(12,24)
+      min-height: rhythm(9)
+  .fieldhelp
+    +columns(10,24)
+    +omega(22)
+    +leader(.25)
+    color: rgba($base,$small)

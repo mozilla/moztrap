@@ -2,3 +2,4 @@ sass==3.1
 compass==0.11
 compass-susy-plugin==0.9
 compass-rgbapng==0.1.1
+css-slideshow==0.3.beta.2

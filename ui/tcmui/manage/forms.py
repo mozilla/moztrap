@@ -1,7 +1,6 @@
 import floppyforms as forms
 
 from ..core import forms as tcmforms
-from ..environments.forms import EnvConstrainedAddEditForm
 
 from ..testcases.forms import StepFormSet
 from ..testcases.models import (
@@ -16,7 +15,7 @@ def product_id_attrs(obj):
 
 
 
-class TestCycleForm(EnvConstrainedAddEditForm):
+class TestCycleForm(tcmforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
     product = tcmforms.ModelChoiceField()
@@ -40,7 +39,7 @@ class TestCycleForm(EnvConstrainedAddEditForm):
 
 
 
-class TestRunForm(EnvConstrainedAddEditForm):
+class TestRunForm(tcmforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
     test_cycle = tcmforms.ModelChoiceField(
@@ -68,7 +67,7 @@ class TestRunForm(EnvConstrainedAddEditForm):
 
 
 
-class TestSuiteForm(EnvConstrainedAddEditForm):
+class TestSuiteForm(tcmforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=tcmforms.BareTextarea)
     product = tcmforms.ModelChoiceField(
@@ -87,7 +86,7 @@ class TestSuiteForm(EnvConstrainedAddEditForm):
 
 
 
-class TestCaseForm(EnvConstrainedAddEditForm):
+class TestCaseForm(tcmforms.AddEditForm):
     name = forms.CharField()
     product = tcmforms.ModelChoiceField()
     # @@@ tags = forms.CharField(required=False)
@@ -119,6 +118,5 @@ class TestCaseForm(EnvConstrainedAddEditForm):
 
     def save(self):
         self.steps_formset.save(self.instance)
-        super(TestCaseForm, self).save()
 
-        return self.instance
+        return super(TestCaseForm, self).save()

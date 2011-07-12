@@ -37,24 +37,28 @@
         </ul>
       </nav>
 
-      <div class="items {% if not runs %}empty{% endif %}">
-        {% for run in runs %}
-        <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}" data-details-url="{% url results_testrun_details run.id %}">
-          <header class="summary">
-            <p class="status">
-              <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
-            </p>
-            <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
-            <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
-            <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
-            <p class="product">{{ run.product.name }}</p>
-            {% include "results/_results_summary.html" with results=run.resultsummary %}
-          </header>
-          <div class="content">
-            {# _run_details.html loaded via ajax #}
-          </div>
-        </article>
-        {% endfor %}
+      <div class="items">
+        {% if runs %}
+          {% for run in runs %}
+          <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}" data-details-url="{% url results_testrun_details run.id %}">
+            <header class="summary">
+              <p class="status">
+                <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
+              </p>
+              <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+              <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+              <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
+              <p class="product">{{ run.product.name }}</p>
+              {% include "results/_results_summary.html" with results=run.resultsummary %}
+            </header>
+            <div class="content">
+              {# _run_details.html loaded via ajax #}
+            </div>
+          </article>
+          {% endfor %}
+        {% else %}
+          <p class="empty">There are currently no items in this list...</p>
+        {% endif %}
       </div>
 
       {% include "lists/_listnav.html" %}
