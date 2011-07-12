@@ -985,6 +985,22 @@ button.sub:focus, button.sub:hover, button.sub:active {
   margin-left: 0px;
 }
 
+.readonly, .readonly dt, .readonly dd {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.readonly dt {
+  font-style: normal;
+  font-weight: 700;
+}
+.readonly dt::after {
+  content: ": ";
+}
+.readonly dd {
+  font-style: italic;
+}
+
 /* Layout -------------------------------------------------------------------- */
 .container, #page, .secondary > ul, .secondary > ol {
   *zoom: 1;
@@ -2336,13 +2352,13 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.environment label {
+.environment label, .environment .readonly dt {
   display: inline;
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
 }
-.environment input, .environment select, .environment textarea {
+.environment input, .environment select, .environment textarea, .environment .readonly dd {
   display: inline;
   float: left;
   width: 65.957%;
@@ -3100,13 +3116,13 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.simpleform label, #register form label {
+.simpleform label, #register form label, .simpleform .readonly dt, #register form .readonly dt {
   display: inline;
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
 }
-.simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea {
+.simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea, .simpleform .readonly dd, #register form .readonly dd {
   display: inline;
   float: left;
   width: 65.957%;
@@ -3218,13 +3234,13 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label {
+.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
   display: inline;
   float: left;
   width: 14.894%;
   margin-right: 2.128%;
 }
-.addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea {
+.addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
   display: inline;
   float: left;
   width: 82.979%;
@@ -3615,10 +3631,13 @@ button[name="action-edit"] {
 }
 
 /* Create Case -------------------------------------------------------------- */
+#single-case-form, #bulk-case-form {
+  margin-top: 1.618em;
+}
+
 .formoptions {
   width: 100%;
   overflow: hidden;
-  margin-top: 1.618em;
 }
 .formoptions .forms {
   margin: 0;

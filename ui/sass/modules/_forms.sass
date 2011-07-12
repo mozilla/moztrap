@@ -12,9 +12,9 @@
 =inline-form($nl,$ni,$c)
   li
     +pie-clearfix
-  label
+  label, .readonly dt
     +columns($nl,$c)
-  input, select, textarea
+  input, select, textarea, .readonly dd
     +columns($ni,$c)
     +omega($c)
 
@@ -257,3 +257,14 @@ button
 .errorlist
   +no-style-list
   color: $red
+
+.readonly
+  &, & dt, & dd
+    +reset-box-model
+  dt
+    +font-style-normal
+    +bold
+    &::after
+      content: ": "
+  dd
+    +italic
