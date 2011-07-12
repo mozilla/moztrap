@@ -38,16 +38,16 @@ urlpatterns = patterns(
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
-    # picker ajax
-    url("^_picker/cycles/(?P<parent_id>\d+)/",
-        "picker_cycles",
-        name="manage_picker_cycles"),
-    url("^_picker/runs/(?P<parent_id>\d+)/",
-        "picker_runs",
-        name="manage_picker_runs"),
-    url("^_picker/suites/(?P<parent_id>\d+)/",
-        "picker_suites",
-        name="manage_picker_suites"),
+    # finder ajax
+    url("^_finder/cycles/(?P<parent_id>\d+)/",
+        "finder_cycles",
+        name="manage_finder_cycles"),
+    url("^_finder/runs/(?P<parent_id>\d+)/",
+        "finder_runs",
+        name="manage_finder_runs"),
+    url("^_finder/suites/(?P<parent_id>\d+)/",
+        "finder_suites",
+        name="manage_finder_suites"),
 
     # environment profile list (wireframed)
     url(r"^environments/$", direct_to_template,

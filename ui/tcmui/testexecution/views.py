@@ -15,7 +15,7 @@ from .models import TestCycleList, TestRunList, TestResultList
 
 
 @login_redirect
-def picker(request):
+def finder(request):
     products = ProductList.ours(auth=request.auth).sort("name", "asc")
     return TemplateResponse(
         request,
@@ -27,35 +27,35 @@ def picker(request):
 
 
 @login_redirect
-def picker_cycles(request, parent_id):
+def finder_cycles(request, parent_id):
     cycles = TestCycleList.get(auth=request.auth).filter(
         product=parent_id, status=TestCycleStatus.ACTIVE).sort("name", "asc")
     return TemplateResponse(
         request,
-        "runtests/picker/_cycles.html",
+        "runtests/finder/_cycles.html",
         {
             "cycles": cycles,
-            "picker_type": "runtests",
+            "finder_type": "runtests",
             })
 
 
 
 @login_redirect
-def picker_runs(request, parent_id):
+def finder_runs(request, parent_id):
     runs = TestRunList.get(auth=request.auth).filter(
         testCycle=parent_id, status=TestRunStatus.ACTIVE).sort("name", "asc")
     return TemplateResponse(
         request,
-        "runtests/picker/_runs.html",
+        "runtests/finder/_runs.html",
         {
             "runs": runs,
-            "picker_type": "runtests",
+            "finder_type": "runtests",
             })
 
 
 
 @login_redirect
-def picker_environments(request, parent_id):
+def finder_environments(request, parent_id):
     run = TestRunList.get_by_id(parent_id, auth=request.auth)
 
     return TemplateResponse(
@@ -81,7 +81,7 @@ def runtests(request, testrun_id):
     cycle = testrun.testCycle
     product = cycle.product
 
-    # for prepopulating picker
+    # for prepopulating finder
     products = ProductList.ours(auth=request.auth).sort("name", "asc")
     cycles = TestCycleList.ours(auth=request.auth).sort("name", "asc").filter(
         product=product, status=TestCycleStatus.ACTIVE)

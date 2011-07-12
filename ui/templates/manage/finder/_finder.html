@@ -1,0 +1,12 @@
+{% extends "finder/_finder.html" %}
+
+{% block finder-column-count %}4{% endblock %}
+
+{% block finder-columns %}
+  {% with "manage" as finder_type %}
+    {% include "manage/finder/_product_column.html" %}
+    {% include "manage/finder/_cycle_column.html" %}
+    {% include "manage/finder/_run_column.html" %}
+    {% include "manage/finder/_suite_column.html" %}
+  {% endwith %}
+{% endblock %}

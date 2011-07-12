@@ -1,0 +1,12 @@
+{% extends "finder/_column.html" %}
+
+{% block finder-section-classes %}products focus{% endblock %}
+
+{% block finder-section-column-headers %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Products" %}
+{% endblock %}
+
+
+{% block finder-section-column-content %}
+  {% include "manage/finder/_products.html" %}
+{% endblock %}

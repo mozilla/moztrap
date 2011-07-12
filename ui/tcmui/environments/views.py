@@ -14,7 +14,7 @@ def set_environment(request):
     Given a list of environment-group IDs (in the GET querystring), allow the
     user to choose a valid environment-group from among those, set that
     environment-group ID in the user's session, and redirect to the test run
-    picker (or a "next" URL given in querystring or POST data).
+    finder (or a "next" URL given in querystring or POST data).
 
     """
     next = request.REQUEST.get("next", "runtests")

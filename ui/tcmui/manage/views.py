@@ -42,7 +42,7 @@ def testcycles(request):
         "manage/product/testcycle/cycles.html",
         {
             "cycles": TestCycleList.ours(auth=request.auth),
-            "picker": {
+            "finder": {
                 "products": ProductList.ours(auth=request.auth).sort(
                     "name", "asc")
                     }
@@ -134,7 +134,7 @@ def testruns(request):
         "manage/product/testrun/runs.html",
         {
             "runs": TestRunList.ours(auth=request.auth),
-            "picker": {
+            "finder": {
                 "products": ProductList.ours(auth=request.auth).sort(
                     "name", "asc")
                     }
@@ -224,7 +224,7 @@ def testsuites(request):
         "manage/product/testsuite/suites.html",
         {
             "suites": TestSuiteList.ours(auth=request.auth),
-            "picker": {
+            "finder": {
                 "products": ProductList.ours(auth=request.auth).sort(
                     "name", "asc")
                     }
@@ -321,7 +321,7 @@ def testcases(request):
         {
             "cases": TestCaseVersionList.ours(
                 url="testcases/latestversions", auth=request.auth),
-            "picker": {
+            "finder": {
                 "products": ProductList.ours(auth=request.auth).sort(
                     "name", "asc")
                     }
@@ -389,43 +389,43 @@ def testcase_details(request, case_id):
 
 
 @login_redirect
-def picker_cycles(request, parent_id):
+def finder_cycles(request, parent_id):
     cycles = TestCycleList.get(auth=request.auth).filter(
         product=parent_id).sort("name", "asc")
     return TemplateResponse(
         request,
-        "manage/picker/_cycles.html",
+        "manage/finder/_cycles.html",
         {
-            "picker": {"cycles": cycles},
-            "picker_type": "manage",
+            "finder": {"cycles": cycles},
+            "finder_type": "manage",
             })
 
 
 
 @login_redirect
-def picker_runs(request, parent_id):
+def finder_runs(request, parent_id):
     runs = TestRunList.get(auth=request.auth).filter(
         testCycle=parent_id).sort("name", "asc")
     return TemplateResponse(
         request,
-        "manage/picker/_runs.html",
+        "manage/finder/_runs.html",
         {
-            "picker": {"runs": runs},
-            "picker_type": "manage",
+            "finder": {"runs": runs},
+            "finder_type": "manage",
             })
 
 
 
 @login_redirect
-def picker_suites(request, parent_id):
+def finder_suites(request, parent_id):
     suites = TestSuiteList.get(auth=request.auth).filter(
         run=parent_id).sort("name", "asc")
     return TemplateResponse(
         request,
-        "manage/picker/_suites.html",
+        "manage/finder/_suites.html",
         {
-            "picker": {"suites": suites},
-            "picker_type": "manage",
+            "finder": {"suites": suites},
+            "finder_type": "manage",
             })
 
 
