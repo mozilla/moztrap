@@ -1,6 +1,7 @@
 from mock import Mock, patch
 
-from ..responses import make_searchresult, make_list, response
+from ..products.builders import products
+from ..responses import response
 from ..utils import AuthTestCase
 
 
@@ -127,12 +128,9 @@ class LocatorFieldFilterTest(FilterTestCase):
         pff = self.product_field_filter("product", self.GET(), self.auth)
 
         http.request.return_value = response(
-            make_searchresult(
-                "product", "products", *make_list(
-                    "product",
-                    "products",
-                    {"name": "Product One"},
-                    {"name": "Product Two"})))
+            products.searchresult(
+                {"name": "Product One"},
+                {"name": "Product Two"}))
 
         options = pff.get_options()
 
@@ -158,11 +156,7 @@ class LocatorFieldFilterTest(FilterTestCase):
         pff = ActiveProductFieldFilter("product", self.GET(), self.auth)
 
         http.request.return_value = response(
-            make_searchresult(
-                "product", "products", *make_list(
-                    "product",
-                    "products",
-                    {"name": "Product One"})))
+            products.searchresult({"name": "Product One"}))
 
         options = pff.get_options()
 
@@ -182,11 +176,7 @@ class LocatorFieldFilterTest(FilterTestCase):
         pff = IDProductFieldFilter("product", self.GET(), self.auth)
 
         http.request.return_value = response(
-            make_searchresult(
-                "product", "products", *make_list(
-                    "product",
-                    "products",
-                    {"name": "Product One"})))
+            products.searchresult({"name": "Product One"}))
 
         options = pff.get_options()
 

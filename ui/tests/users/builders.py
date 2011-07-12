@@ -15,4 +15,17 @@ users = ListBuilder(
         "lastName": "Person",
         "screenName": "test",
         "userStatusId": 1,
-        })
+        }
+    )
+
+
+permissions = ListBuilder(
+    "permission",
+    "permissions",
+    "Permission",
+    {
+        "assignable": True,
+        "name": "",
+        "permissionCode": "PERMISSION_MOCK"
+        }
+    )

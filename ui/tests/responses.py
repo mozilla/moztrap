@@ -11,6 +11,11 @@ from tcmui.core.conf import conf
 
 
 def make_array(single_type, array_type, *args):
+    """
+    Given a list of single objects (as returned by ``make_one``), return a
+    platform-style array.
+
+    """
     objects = list(args)
     total = len(objects)
     if total == 1:
@@ -25,6 +30,11 @@ def make_array(single_type, array_type, *args):
 
 
 def make_searchresult(single_type, plural_type, *args):
+    """
+    Given a list of single objects (as returned by ``make_one``), return a
+    platform-style search result.
+
+    """
     objects = list(args)
     total = len(objects)
     if total == 1:
@@ -47,33 +57,16 @@ def make_searchresult(single_type, plural_type, *args):
 
 
 
-def make_one(resource_type, defaults=None, **kwargs):
-    if defaults:
-        for k, v in defaults.items():
-            kwargs.setdefault(k, v)
+def make_one(resource_type, **kwargs):
+    """
+    Given a ``resource_type`` string and a dictionary of data, return a data
+    structure that matches the platform's representation of an object of that
+    type.
 
-    if kwargs.pop("add_identity", True):
-        kwargs.setdefault("resourceIdentity", make_identity())
-    if kwargs.pop("add_timeline", True):
-        kwargs.setdefault("timeline", make_timeline())
-
+    """
     data = dict(("ns1.%s" % k, v) for k, v in kwargs.items())
     data["@xsi.type"] = "ns1:%s" % resource_type
     return data
-
-
-
-def make_list(resource_type, plural_type, *dicts, **kwargs):
-    defaults = kwargs.pop("defaults", None)
-    ret = []
-    for i, info in enumerate(dicts):
-        if kwargs.get("add_identity", True):
-            info.setdefault(
-                "resourceIdentity",
-                make_identity(id=i+1, url="%s/%s" % (plural_type, i+1)))
-        info.update(kwargs)
-        ret.append(make_one(resource_type, defaults=defaults, **info))
-    return ret
 
 
 
@@ -86,11 +79,13 @@ def make_identity(id="1", url="some/url", version="0"):
         }
 
 
+
 def make_locator(id="1", url="some/url"):
     return {
         "@id": str(id),
         "@url": join(conf.TCM_API_BASE, url),
         "@xsi.type":"ns1:ResourceLocator"}
+
 
 
 def make_timeline(createDate=None, createdBy="1",

@@ -1,9 +1,9 @@
 from mock import patch
 
 from ..core.test_auth import CredentialsTest
-from ..responses import response, make_array, make_list
+from ..responses import response
 from ..utils import ResourceTestCase
-from .builders import users
+from .builders import users, permissions
 
 
 
@@ -55,16 +55,10 @@ class UserCredentialsTest(CredentialsTest, ResourceTestCase):
             self.assertEqual(http.request.call_count, 1)
 
             http.request.return_value = response(
-                make_array(
-                    "permission", "Permission",
-                    *make_list(
-                        "permission",
-                        "permissions",
-                        {
-                            "assignable": True,
-                            "name": "",
-                            "permissionCode": "PERMISSION_COMPANY_INFO_VIEW"}
-                        )))
+                permissions.array({
+                        "permissionCode": "PERMISSION_COMPANY_INFO_VIEW"
+                        })
+                )
 
             perms = auth.permission_codes
 

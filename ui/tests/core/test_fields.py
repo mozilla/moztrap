@@ -3,8 +3,9 @@ import datetime
 from mock import patch
 from unittest2 import TestCase
 
+from ..builder import ListBuilder
 from ..responses import (
-    response, make_one, make_identity, make_boolean, make_array)
+    response, make_identity, make_boolean, make_locator, make_timeline)
 from ..utils import AuthTestCase, fill_cache, Url
 
 
@@ -289,6 +290,18 @@ class LocatorFunctionalTest(AuthTestCase):
         return TheSubject, TheTarget
 
 
+    @property
+    def subjects(self):
+        return ListBuilder(
+            "thesubject",
+            "thesubjects",
+            "Thesubject",
+            {
+                "targetLocator": make_locator(id=1, url="thetargets/1")
+                }
+            )
+
+
     def test_descriptor_lookup(self, http):
         TheSubject, TheTarget = self.subject_and_target
 
@@ -296,9 +309,7 @@ class LocatorFunctionalTest(AuthTestCase):
             "@url": "http://some.base/thetargets/1",
             "@id": "1"}
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                targetLocator=target_data))
+            self.subjects.one(targetLocator=target_data))
 
         subj = TheSubject.get("thesubjects/1", auth=self.auth)
 
@@ -319,9 +330,7 @@ class LocatorFunctionalTest(AuthTestCase):
         TheSubject, TheTarget = self.subject_and_target
 
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                targetLocator={"@xsi.nil":"true"}))
+            self.subjects.one(targetLocator={"@xsi.nil":"true"}))
 
         subj = TheSubject.get("thesubjects/1")
 
@@ -336,9 +345,7 @@ class LocatorFunctionalTest(AuthTestCase):
         target_data = {
             "@id": "1"}
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                targetLocator=target_data))
+            self.subjects.one(targetLocator=target_data))
 
         subj = TheSubject.get("thesubjects/1")
 
@@ -352,9 +359,7 @@ class LocatorFunctionalTest(AuthTestCase):
             "@url": "http://some.base/thetargets/1",
             }
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                targetLocator=target_data))
+            self.subjects.one(targetLocator=target_data))
 
         subj = TheSubject.get("thesubjects/1")
 
@@ -433,14 +438,24 @@ class UserIDFunctionalTest(AuthTestCase):
         return TheSubject, User
 
 
+    @property
+    def subjects(self):
+        return ListBuilder(
+            "thesubject",
+            "thesubjects",
+            "Thesubject",
+            {
+                "user": "1"
+                }
+            )
+
+
     def test_descriptor_lookup(self, http):
         from tcmui.core.auth import admin
         TheSubject, User = self.subject_and_user
 
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                user="4"))
+            self.subjects.one(user="4"))
 
         subj = TheSubject.get("thesubjects/1", auth=self.auth)
 
@@ -460,9 +475,7 @@ class UserIDFunctionalTest(AuthTestCase):
         TheSubject, User = self.subject_and_user
 
         http.request.return_value = response(
-            make_one(
-                "thesubject",
-                user="blah"))
+            self.subjects.one(user="blah"))
 
         subj = TheSubject.get("thesubjects/1", auth=self.auth)
 
@@ -578,12 +591,23 @@ class TimelineFieldFunctionalTest(AuthTestCase):
         return TheSubject, Timeline, User
 
 
+    @property
+    def subjects(self):
+        return ListBuilder(
+            "thesubject",
+            "thesubjects",
+            "Thesubject",
+            {
+                "timeline": make_timeline()
+                }
+            )
+
+
     def test_descriptor_lookup(self, http):
         TheSubject, Timeline, User = self.subject_timeline_and_user
 
         http.request.return_value = response(
-            make_one(
-                "thesubject",
+            self.subjects.one(
                 timeline={
                     "@createDate":"2011-05-04T18:24:11Z",
                     "@createdBy":"1",
@@ -591,7 +615,8 @@ class TimelineFieldFunctionalTest(AuthTestCase):
                     "@lastChangedBy":"2",
                     "@xsi.type":"ns1:Timeline"
                     }
-                ))
+                )
+            )
 
         subj = TheSubject.get("thesubjects/1", auth=self.auth)
 
@@ -636,10 +661,31 @@ class LinkFunctionalTest(AuthTestCase):
         return TheSubject, TargetList
 
 
+    @property
+    def targets(self):
+        return ListBuilder(
+            "thetarget",
+            "thetargets",
+            "Thetarget",
+            )
+
+
+    @property
+    def subjects(self):
+        return ListBuilder(
+            "thesubject",
+            "thesubjects",
+            "Thesubject",
+            {
+                "targets": self.targets.array({})
+                }
+            )
+
+
     def test_descriptor_lookup(self, http):
         TheSubject, TargetList = self.subject_and_target()
 
-        http.request.return_value = response(make_one("thesubject"))
+        http.request.return_value = response(self.subjects.one())
 
         subj = TheSubject.get("some/url", auth=self.auth)
 
@@ -657,12 +703,11 @@ class LinkFunctionalTest(AuthTestCase):
     def test_descriptor_lookup_cache_bucket_specified(self, http):
         TheSubject, TargetList = self.subject_and_target(cache="OtherBucket")
 
-        http.request.return_value = response(make_one("thesubject"))
+        http.request.return_value = response(self.subjects.one())
 
         subj = TheSubject.get("some/url", auth=self.auth)
 
-        http.request.return_value = response(make_array(
-                "thetarget", "Thetarget", {}))
+        http.request.return_value = response(self.targets.array({}))
 
         with patch("tcmui.core.cache.cache") as cache:
             fill_cache(cache, {})
