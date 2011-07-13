@@ -11,9 +11,11 @@
 <section id="manageprofiles">
   <h2>Manage Environment Profiles</h2>
 
-  <a href="/manage/environment/add/ {# @@@ #}" class="create">create a profile</a>
+  {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
+  <a href="{% url manage_environments_add %}" class="create">create a profile</a>
+  {% endif %}
 
-  {% include "lists/_filter.html" %} {# @@@ #}
+  {% include "lists/_filter.html" %}
 
   <form method="POST">
     {% csrf_token %}
