@@ -1,6 +1,8 @@
+/*global window: false, ich: false, jQuery: false */
+
 var TCM = TCM || {};
 
-(function($) {
+(function ($) {
 
     // Store keycode variables for easier readability
     var keycodes = {
@@ -19,17 +21,20 @@ var TCM = TCM || {};
         DOWN: 40
     },
 
-    formOptionsFilter = function(context_sel, data_attr, trigger_sel, target_sel) {
+    formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel) {
         var context = $(context_sel),
-        trigger = context.find(trigger_sel);
+        trigger = context.find(trigger_sel),
+        target,
+        allopts,
+        doFilter;
         if (context.length && trigger.is("select")) {
-            var target = context.find(target_sel),
+            target = context.find(target_sel);
             allopts = target.find("option").clone();
 
-            var doFilter = function() {
+            doFilter = function () {
                 var key = trigger.find("option:selected").data(data_attr);
                 target.empty();
-                allopts.each(function() {
+                allopts.each(function () {
                     if ($(this).data(data_attr) === key) {
                         var newopt = $(this).clone();
                         newopt.appendTo(target);
@@ -44,13 +49,13 @@ var TCM = TCM || {};
     },
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
-    filtering = function() {
+    filtering = function () {
 
         // Hide the form-actions (submit, reset) initially
         var formActions = $('#filter .form-actions').hide(),
         toggle = $('#filter .toggle a'),
         // Set data-originallyChecked on each input to store original state
-        input = $('#filter .visual .filter-group input[type="checkbox"]').each(function() {
+        input = $('#filter .visual .filter-group input[type="checkbox"]').each(function () {
             $(this).data('originallyChecked', $(this).is(':checked'));
         }),
         textbox = $('#filter .textual #text-filter'),
@@ -63,7 +68,7 @@ var TCM = TCM || {};
         selected,
 
         // Removes (faked) placeholder text from textbox
-        removeFakePlaceholder = function() {
+        removeFakePlaceholder = function () {
             if (textbox.val().indexOf(placeholder) !== -1) {
                 textbox.val(null);
             }
@@ -72,8 +77,10 @@ var TCM = TCM || {};
 
         // Checks if any inputs have changed from original-state,
         // showing form-actions if any inputs have changed.
-        updateFormActions = function() {
-            if (input.filter(function() { return $(this).data('state') === 'changed'; }).length) {
+        updateFormActions = function () {
+            if (input.filter(function () {
+                return $(this).data('state') === 'changed';
+            }).length) {
                 formActions.fadeIn('fast');
                 $('.managelist').addClass('expired');
             } else {
@@ -85,14 +92,14 @@ var TCM = TCM || {};
         // Empties suggestion-list, looks for un-selected autocomplete
         // suggestions based on typed-text (if there is typed-text) and appends
         // them to suggestion-list.
-        updateSuggestions = function() {
+        updateSuggestions = function () {
             typedText = textbox.val();
             suggestionList.empty();
             if (textbox.val().length) {
-                var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function() {
+                var relevantFilters = notKeywordGroups.find('input[type="checkbox"]:not(:checked)').parent('li').filter(function () {
                     return $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                 });
-                relevantFilters.each(function() {
+                relevantFilters.each(function () {
                     var typedIndex = $(this).children('label').html().toLowerCase().indexOf(typedText.toLowerCase()),
                     preText = $(this).children('label').html().substring(0, typedIndex),
                     postText = $(this).children('label').html().substring(typedIndex + typedText.length),
@@ -107,7 +114,7 @@ var TCM = TCM || {};
                     });
                     suggestionList.append(newSuggestion);
                 });
-                keywordGroups.each(function() {
+                keywordGroups.each(function () {
                     var type = $(this).children('h5').html(),
                     name = $(this).data('name'),
                     keywordSuggestion = ich.keyword_filter_suggestion({
@@ -136,17 +143,17 @@ var TCM = TCM || {};
         };
 
         // Shows/hides the advanced filtering
-        toggle.click(function() {
+        toggle.click(function () {
             $('#filter .visual').toggleClass('compact expanded');
             return false;
         });
 
         // Reset button sets each input to its original state, hides form-actions
         // and suggestion-list, and returns focus to the textbox.
-        formActions.find('.reset').click(function() {
+        formActions.find('.reset').click(function () {
             formActions.fadeOut('fast');
             $('.managelist').removeClass('expired');
-            input.each(function() {
+            input.each(function () {
                 $(this).data('state', null);
                 $(this).prop('checked', $(this).data('originallyChecked'));
             });
@@ -158,7 +165,7 @@ var TCM = TCM || {};
         // Selecting/unselecting an input returns focus to textbox, hides
         // suggestion-list, sets data-state "changed" if input has changed from
         // original state, and shows/hides form-actions as appropriate.
-        input.live('change', function() {
+        input.live('change', function () {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                 $(this).data('state', 'changed');
             } else {
@@ -169,13 +176,13 @@ var TCM = TCM || {};
             updateFormActions();
         });
 
-        textbox.keyup(function(event) {
+        textbox.keyup(function (event) {
             // Updates suggestion-list if typed-text has changed
             if ($(this).val() !== typedText && $(this).val() !== placeholder) {
                 updateSuggestions();
             }
         })
-        .keydown(function(event) {
+        .keydown(function (event) {
             // If textbox still has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
             if (textbox.hasClass('placeholder')) {
                 if (!event.metaKey && event.keyCode !== keycodes.SHIFT && event.keyCode !== keycodes.CTRL && event.keyCode !== keycodes.ALT && event.keyCode !== keycodes.CAPS && event.keyCode !== keycodes.ESC) {
@@ -265,12 +272,12 @@ var TCM = TCM || {};
             }
         })
         // If textbox still has fake placeholder text, removes it on click
-        .click(function() {
+        .click(function () {
             if (textbox.hasClass('placeholder')) {
                 removeFakePlaceholder();
             }
         })
-        .focus(function() {
+        .focus(function () {
             // Resets textbox data-clicked to ``false`` (becomes ``true`` when an autocomplete suggestion is clicked)
             textbox.data('clicked', false);
             // Adds fake placeholder on initial load (and moves cursor to start of textbox)
@@ -281,7 +288,7 @@ var TCM = TCM || {};
         })
         // On blur, removes fake placeholder text, and hides the suggestion
         // list after 150 ms if textbox data-clicked is ``false``
-        .blur(function() {
+        .blur(function () {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
                     suggestionList.hide();
@@ -296,23 +303,24 @@ var TCM = TCM || {};
 
         suggestionList.find('a').live({
             // Adds ``.selected`` to suggestion on mouseover, removing ``.selected`` from other suggestions
-            mouseover: function() {
+            mouseover: function () {
                 var thisSuggestion = $(this).addClass('selected'),
                 otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
             },
             // Prevent the suggestion list from being hidden (by textbox blur event) when clicking a suggestion
-            mousedown: function() {
+            mousedown: function () {
                 textbox.data('clicked', true);
             },
-            click: function() {
+            click: function () {
+                var name, thisFilter, thisGroup, existingKeyword, index, newKeywordFilter;
                 // If keyword suggestion clicked...
                 if ($(this).data('class') === 'keyword') {
-                    var name = $(this).data('name'),
-                    thisGroup = keywordGroups.filter(function() {
+                    name = $(this).data('name');
+                    thisGroup = keywordGroups.filter(function () {
                         return $(this).data('name') === name;
-                    }),
-                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]'),
-                    index = thisGroup.find('li').length + 1,
+                    });
+                    existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]');
+                    index = thisGroup.find('li').length + 1;
                     newKeywordFilter = ich.keyword_filter({
                         name: name,
                         typedText: typedText,
@@ -332,7 +340,7 @@ var TCM = TCM || {};
                     }
                 // If non-keyword suggestion clicked, select it
                 } else {
-                    var thisFilter = input.filter('#' + $(this).data('id')).prop('checked', true);
+                    thisFilter = input.filter('#' + $(this).data('id')).prop('checked', true);
                     if (thisFilter.data('originallyChecked') !== thisFilter.is(':checked')) {
                         thisFilter.data('state', 'changed');
                     }
@@ -348,8 +356,8 @@ var TCM = TCM || {};
     },
 
     // Ajax-load manage and results list item contents
-    listDetails = function() {
-        $('#listcontent .items .item.details').live('click', function(event) {
+    listDetails = function () {
+        $('#listcontent .items .item.details').live('click', function (event) {
             if ($(event.target).is("button, a")) {
                 return;
             }
@@ -359,7 +367,7 @@ var TCM = TCM || {};
             if (url && !content.hasClass('loaded')) {
                 content.css('min-height', '4.854em').addClass('loaded');
                 content.loadingOverlay();
-                $.get(url, function(data) {
+                $.get(url, function (data) {
                     content.loadingOverlay('remove');
                     content.html(data.html);
                 });
@@ -368,17 +376,17 @@ var TCM = TCM || {};
     },
 
     // Ajax for manage list actions (clone and delete)
-    manageActionsAjax = function() {
+    manageActionsAjax = function () {
         $('.manage button[name^=action-]').live(
             'click',
-            function() {
+            function () {
                 var button = $(this),
                 form = button.closest('form'),
                 token = form.find('input[name=csrfmiddlewaretoken]'),
                 url = form.attr('action'),
                 method = form.attr('method'),
                 replace = button.closest('.action-ajax-replace'),
-                success = function(data) {
+                success = function (data) {
                     var replacement = $(data.html);
                     replace.replaceWith(replacement);
                     replacement.find('.details').html5accordion('.summary');
@@ -386,29 +394,29 @@ var TCM = TCM || {};
                 },
                 data = {};
                 data[button.attr('name')] = button.val();
-                data['csrfmiddlewaretoken'] = token.val();
+                data.csrfmiddlewaretoken = token.val();
                 replace.loadingOverlay();
                 $.ajax(url, {
-                           type: method,
-                           data: data,
-                           success: success
-                       });
+                    type: method,
+                    data: data,
+                    success: success
+                });
                 return false;
             }
         );
     },
 
-    manageEnvProfiles = function() {
+    manageEnvProfiles = function () {
         var elements = $('#addprofile .item .elements .element-select input'),
         categories = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
         addElement = $('input[id$="-add-element"]'),
-        addCategory = $('input#edit_name'),
+        addCategory = $('input#new-category-name'),
         editElementButton = $('#addprofile .item .elements button[name="action-edit"]'),
         editElement = $('#addprofile .item .elements .editing input'),
         deleteElement = $('#addprofile .element-controls button[name="action-delete"]'),
         deleteCategory = $('#addprofile .item .controls button[name="action-delete"]'),
-        updateLabels = function() {
-            $('#addprofile .item .elements .element-select input').each(function() {
+        updateLabels = function () {
+            $('#addprofile .item .elements .element-select input').each(function () {
                 var thisID = $(this).attr('id');
                 if ($(this).is(':checked')) {
                     $('label[for=' + thisID + ']').addClass('checked');
@@ -418,7 +426,7 @@ var TCM = TCM || {};
             });
         };
 
-        elements.live('change', function() {
+        elements.live('change', function () {
             var thisID = $(this).attr('id');
             if ($(this).is(':checked')) {
                 $('label[for=' + thisID + ']').addClass('checked');
@@ -432,7 +440,7 @@ var TCM = TCM || {};
             }
         });
 
-        categories.live('change', function() {
+        categories.live('change', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('.item').find('.elements input').prop('checked', true);
             } else {
@@ -441,15 +449,12 @@ var TCM = TCM || {};
             updateLabels();
         });
 
-        addElement.live('keydown', function(event) {
+        addElement.live('keydown', function (event) {
             if (event.keyCode === keycodes.ENTER) {
                 var name = $(this).val(),
                 externalIndex = $(this).closest('.items').children('[id^="category"]').length + 1,
-                internalIndex = $(this).closest('.elements').children('li').not('.add-element').length + 1;
-                if (externalIndex < 10) {
-                    externalIndex = '0' + externalIndex;
-                }
-                var id = externalIndex + '-elemslug' + internalIndex,
+                internalIndex = $(this).closest('.elements').children('li').not('.add-element').length + 1,
+                id = externalIndex + '-elemslug' + internalIndex,
                 newElement = ich.env_profile_element({
                     name: name,
                     id: id
@@ -464,14 +469,11 @@ var TCM = TCM || {};
             }
         });
 
-        addCategory.keydown(function(event) {
+        addCategory.keydown(function (event) {
             if (event.keyCode === keycodes.ENTER) {
                 var name = $(this).val(),
-                index = $(this).closest('.items').children('[id^="category"]').length + 1;
-                if (index < 10) {
-                    index = '0' + index;
-                }
-                var newCategory = ich.env_profile_category({
+                index = $(this).closest('.items').children('[id^="category"]').length + 1,
+                newCategory = ich.env_profile_category({
                     name: name,
                     index: index
                 });
@@ -481,11 +483,12 @@ var TCM = TCM || {};
             }
         });
 
-        editElementButton.live('click', function() {
+        editElementButton.live('click', function () {
             var thisElement = $(this).closest('li'),
             id = thisElement.find('input').attr('id'),
             name = thisElement.find('label').html(),
-            checked = false;
+            checked = false,
+            editThisElement;
             if (thisElement.find('input').is(':checked')) {
                 checked = true;
             }
@@ -497,7 +500,7 @@ var TCM = TCM || {};
             thisElement.replaceWith(editThisElement);
         });
 
-        editElement.live('keydown', function(event) {
+        editElement.live('keydown', function (event) {
             if (event.keyCode === keycodes.ENTER) {
                 var thisElement = $(this).closest('.editing'),
                 name = $(this).val(),
@@ -521,18 +524,18 @@ var TCM = TCM || {};
             }
         });
 
-        deleteElement.live('click', function() {
+        deleteElement.live('click', function () {
             var id = $(this).closest('li').find('input').attr('id');
             $(this).closest('li').detach();
             $('label[for="' + id + '"]').closest('li').detach();
         });
 
-        deleteCategory.live('click', function() {
+        deleteCategory.live('click', function () {
             $(this).closest('.item').detach();
         });
     };
 
-    $(function() {
+    $(function () {
         filtering();
         listDetails();
         manageActionsAjax();
@@ -543,7 +546,7 @@ var TCM = TCM || {};
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function() {
+        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function () {
             $(this).addClass('hadfocus');
         });
         formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
@@ -564,14 +567,14 @@ var TCM = TCM || {};
                 'input[name="testcycle"]',
                 'input[name="testrun"]'
             ],
-            callback: function() {
+            callback: function () {
                 $('.selectruns + .environment').slideUp('fast');
             },
-            lastChildCallback: function(choice) {
+            lastChildCallback: function (choice) {
                 var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
                 ajaxUrl = $(choice).data("sub-url");
                 environments.loadingOverlay();
-                $.get(ajaxUrl, function(data) {
+                $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
                     environments.html(data.html);
                 });
@@ -622,7 +625,7 @@ var TCM = TCM || {};
         });
     });
 
-    $(window).load(function() {
+    $(window).load(function () {
         $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis(true, 300);
         // Expand list item details on direct hashtag links
         if ($('.manage').length && window.location.hash) {
@@ -631,4 +634,4 @@ var TCM = TCM || {};
         }
     });
 
-})(jQuery);
+}(jQuery));
