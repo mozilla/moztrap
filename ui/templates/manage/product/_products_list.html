@@ -1,0 +1,26 @@
+{% load sort %}
+
+<div class="managelist">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bytitle">
+        <a href="#">name</a>
+      </li>
+      <li class="bypreview">
+        <span>preview</span>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items">
+    {% include "manage/product/_product_list_item.html" with id="01" name="firefox" %}
+    {% include "manage/product/_product_list_item.html" with id="02" name="fennec" %}
+    {% include "manage/product/_product_list_item.html" with id="03" name="case conductor" %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

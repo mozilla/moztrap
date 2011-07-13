@@ -41,6 +41,10 @@ urlpatterns = patterns(
     # environment profile list
     url(r"^environments/$", "environment_profiles", name="manage_environments"),
 
+    # product list (wireframed)
+    url(r"^products/$", direct_to_template,
+        {"template": "manage/product/products.html"}, name="manage_products"),
+
     # environment profile create (wireframed)
     url(r"^environment/add/$", direct_to_template,
         {"template": "manage/environment/add_profile.html"}),

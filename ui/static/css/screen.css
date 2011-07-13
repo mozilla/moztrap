@@ -3768,10 +3768,6 @@ button[name="action-edit"] {
   float: right;
   margin-right: 0;
 }
-#single-case-form .steps-form .addfields {
-  display: none;
-  text-align: right;
-}
 #single-case-form .steps-form .removefields {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
   opacity: 0.25;
@@ -3960,6 +3956,31 @@ button[name="action-edit"] {
   float: left;
   width: 82.979%;
   margin-right: 2.128%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+
+/* Manage Products -------------------------------------------------------------- */
+#manageproducts .testers {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+}
+#manageproducts .title, #manageproducts .bytitle {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
+}
+#manageproducts .preview, #manageproducts .bypreview {
+  display: inline;
+  float: left;
+  width: 62.105%;
+  margin-right: 1.053%;
+}
+#manageproducts .testers {
   display: inline;
   float: right;
   margin-right: 0;

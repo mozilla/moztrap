@@ -1,0 +1,20 @@
+{% extends 'manage/product/base.html' %}
+
+{% block manageproduct-active-nav %}active{% endblock manageproduct-active-nav %}
+
+{% block listcontent %}
+<section id="manageproducts">
+  <h2>Manage Products</h2>
+
+  <a href="#{# @@@ #}" class="create">create a product</a>
+
+  {% include "lists/_filter.html" %} {# @@@ #}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% include "manage/product/_products_list.html" %}
+
+  </form>
+</section>
+{% endblock listcontent %}
