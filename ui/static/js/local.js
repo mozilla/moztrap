@@ -1,8 +1,15 @@
-/*global ich: false, jQuery: false */
+/*jslint    browser:    true,
+            indent:     4
+*/
+/*global    ich,
+            jQuery
+*/
 
 var TCM = TCM || {};
 
 (function ($) {
+
+    'use strict';
 
     // Store keycode variables for easier readability
     var keycodes = {
@@ -328,8 +335,8 @@ var TCM = TCM || {};
                         // ...otherwise, append it (selected) to the filters list.
                         } else {
                             thisGroup.removeClass('empty').children('ul').append(newKeywordFilter);
-                            $('#id-' + name + '-' + index).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
-                            input = input.add('#id-' + name + '-' + index);
+                            $('#id-' + name + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
+                            input = input.add('#id-' + name + '-' + index.toString());
                         }
                     // If non-keyword suggestion clicked, select it
                     } else {
@@ -447,7 +454,7 @@ var TCM = TCM || {};
                     var name = $(this).val(),
                         externalIndex = $(this).closest('.items').children('[id^="category"]').length + 1,
                         internalIndex = $(this).closest('.elements').children('li').not('.add-element').length + 1,
-                        id = externalIndex + '-elemslug' + internalIndex,
+                        id = externalIndex.toString() + '-elemslug' + internalIndex.toString(),
                         newElement = ich.env_profile_element({
                             name: name,
                             id: id
@@ -471,7 +478,7 @@ var TCM = TCM || {};
                             index: index
                         });
                     $(this).closest('.items').children('.add-item').before(newCategory);
-                    $('#category-id-' + index).find('.details').andSelf().html5accordion('.summary');
+                    $('#category-id-' + index.toString()).find('.details').andSelf().html5accordion('.summary');
                     $(this).val(null);
                 }
             });
