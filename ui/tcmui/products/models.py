@@ -40,7 +40,15 @@ class Product(RemoteObject):
         extra_payload = {
             "environmentIds": [id_for_object(e) for e in environments]}
 
-        self._put(relative_url=url, extra_payload=extra_payload, **kwargs)
+        generated = EnvironmentGroupList()
+
+        self._put(
+            relative_url=url,
+            extra_payload=extra_payload,
+            update_from_response=generated,
+            **kwargs)
+
+        return generated
 
 
 

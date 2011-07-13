@@ -350,7 +350,7 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = http.request(**request)
 
-        if update_from_response:
+        if update_from_response not in (False, None):
             if not hasattr(update_from_response, "update_from_response"):
                 update_from_response = self
 

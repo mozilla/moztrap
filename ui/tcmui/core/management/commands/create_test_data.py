@@ -186,7 +186,8 @@ class Command(BaseCommand):
             for t in types:
                 envs.extend([environments[n] for n in ENVIRONMENTS["types"][t]])
 
-            grouptypelists[name] = envs
+            envgroups = company.autogenerate_env_groups(envs, egt)
+            grouptypelists[name] = envgroups
 
         users = []
         for data in USERS:
@@ -213,11 +214,10 @@ class Command(BaseCommand):
         for name, data in PRODUCTS.items():
             egt_name = data.pop("environments")
             cycles = data.pop("cycles", {})
-            egt = environmentgrouptypes[egt_name]
             envs = grouptypelists[egt_name]
             p = Product(name=name, company=company, **data)
             ProductList.get(auth=admin).post(p)
-            p.autogenerate_env_groups(envs, egt)
+            p.environmentgroups = envs
             print "Created product '%s.'" % name
             products[name] = p
 
