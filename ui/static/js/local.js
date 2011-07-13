@@ -466,6 +466,8 @@ var TCM = TCM || {};
                     $(this).closest('.elements').children('li.add-element').before(newElement);
                     $(this).closest('.item').find('.preview').append(newElementPreview);
                     $(this).val(null);
+
+                    event.preventDefault();
                 }
             });
 
@@ -480,6 +482,8 @@ var TCM = TCM || {};
                     $(this).closest('.items').children('.add-item').before(newCategory);
                     $('#category-id-' + index.toString()).find('.details').andSelf().html5accordion('.summary');
                     $(this).val(null);
+
+                    event.preventDefault();
                 }
             });
 
@@ -520,6 +524,8 @@ var TCM = TCM || {};
                     if (checked) {
                         $('#' + id).prop('checked', checked);
                         updateLabels();
+
+                    event.preventDefault();
                     }
                 }
             });

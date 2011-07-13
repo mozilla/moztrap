@@ -1,18 +1,21 @@
-<article id="category-id-{{ id }}" class="item details">
+<article id="category-id-{{ category.id }}" class="item details">
   <header class="summary">
     <p class="bulk">
-      <input type="checkbox" name="bulk-select-{{ id }}" value="" id="bulk-select-{{ id }}">
-      <label for="bulk-select-{{ id }}">bulk select for {{ category }}</label>
+      <input type="checkbox" name="bulk-select" value="category-{{ category.id }}" id="bulk-select-{{ category.id }}">
+      <label for="bulk-select-{{ category.id }}">bulk select for {{ category.name }}</label>
     </p>
-    <h3 class="title">{{ category }}</h3>
+    <h3 class="title">{{ category.name }}</h3>
     <ul class="preview">
-      <li><label for="{{ id }}-elemslug1">{{ elem1 }}</label></li>
-      {% if elem2 %}<li><label for="{{ id }}-elemslug2">{{ elem2 }}</label></li>{% endif %}
-      {% if elem3 %}<li><label for="{{ id }}-elemslug3">{{ elem3 }}</label></li>{% endif %}
-      {% if elem4 %}<li><label for="{{ id }}-elemslug4">{{ elem4 }}</label></li>{% endif %}
+      {% for element in category.environments %}
+      <li>
+        <label for="element-{{ element.id }}">
+          {{ element.name }}
+        </label>
+      </li>
+      {% endfor %}
     </ul>
     <div class="controls">
-      <button title="delete" type="submit" name="action-delete">delete</button>
+      <button title="delete" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
     </div>
   </header>
   {% include "manage/environment/_category_list_item_content.html" %}

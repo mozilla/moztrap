@@ -385,6 +385,7 @@ def testcase_details(request, case_id):
         {"case": case})
 
 
+
 @login_redirect
 @dec.actions(
     EnvironmentTypeList,
@@ -401,3 +402,14 @@ def environment_profiles(request):
         request,
         "manage/environment/profiles.html",
         {"profiles": profiles})
+
+
+
+@login_redirect
+def add_environment_profile(request):
+    categories = EnvironmentTypeList.get(auth=request.auth).filter(
+        groupType=False)
+    return TemplateResponse(
+        request,
+        "manage/environment/add_profile.html",
+        {"categories": categories})

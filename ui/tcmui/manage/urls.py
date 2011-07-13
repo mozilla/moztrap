@@ -38,17 +38,15 @@ urlpatterns = patterns(
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
-    # environment profile list
+    # environment profiles
     url(r"^environments/$", "environment_profiles", name="manage_environments"),
+    url(r"^environment/add/$", "add_environment_profile", name="manage_environments_add"),
 
     # product list (wireframed)
     url(r"^products/$", direct_to_template,
         {"template": "manage/product/products.html"}, name="manage_products"),
 
-    # environment profile create (wireframed)
-    url(r"^environment/add/$", direct_to_template,
-        {"template": "manage/environment/add_profile.html"}),
-    # environment profile create (wireframed)
+    # environment profile edit (wireframed)
     url(r"^environment/edit/$", direct_to_template,
         {"template": "manage/environment/edit_profile.html"}),
     # environment narrowing (wireframed)
