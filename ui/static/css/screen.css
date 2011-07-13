@@ -3768,6 +3768,10 @@ button[name="action-edit"] {
   float: right;
   margin-right: 0;
 }
+#single-case-form .steps-form .addfields {
+  display: none;
+  text-align: right;
+}
 #single-case-form .steps-form .removefields {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
   opacity: 0.25;
