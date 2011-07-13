@@ -48,7 +48,7 @@ class EditViewTests(object):
     def responses(self):
         responses = {
             "http://fake.base/rest/%s?_type=json" % self.api_url:
-                response(self.builder.one(id=1, url=self.api_url)),
+                response(self.builder.one(_id=1, _url=self.api_url)),
             # finder
             "http://fake.base/rest/products?sortfield=name&sortdirection=asc&_type=json&companyId=1":
                 response(products.searchresult({})),
@@ -224,7 +224,7 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
                 response(testcasesteps.one()),
             # separate call to update the name
             "http://fake.base/rest/testcases/1?_type=json":
-                response(testcases.one(id=1, url="testcases/1")),
+                response(testcases.one(_id=1, _url="testcases/1")),
             }
 
 

@@ -7,6 +7,7 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
+from ..environments.models import EnvironmentTypeList
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -382,3 +383,12 @@ def testcase_details(request, case_id):
         request,
         "manage/product/testcase/_case_details.html",
         {"case": case})
+
+
+@login_redirect
+def environment_profiles(request):
+    profiles = EnvironmentTypeList.get(auth=request.auth).filter(groupType=True)
+    return TemplateResponse(
+        request,
+        "manage/environment/profiles.html",
+        {"profiles": profiles})

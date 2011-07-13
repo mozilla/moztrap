@@ -26,9 +26,9 @@ class SingleBuilder(object):
 
         if self.add_identity:
             identity_data = {}
-            for name in ["id", "url", "version"]:
+            for name in ["_id", "_url", "_version"]:
                 if name in data:
-                    identity_data[name] = data.pop(name)
+                    identity_data[name.lstrip("_")] = data.pop(name)
 
             data.setdefault(
                 "resourceIdentity", make_identity(**identity_data))
@@ -65,8 +65,8 @@ class ListBuilder(SingleBuilder):
 
 
     def _one(self, **kwargs):
-        if self.add_identity and "id" in kwargs and "url" not in kwargs:
-            kwargs["url"] = "%s/%s" % (self.plural_name, kwargs["id"])
+        if self.add_identity and "_id" in kwargs and "_url" not in kwargs:
+            kwargs["_url"] = "%s/%s" % (self.plural_name, kwargs["_id"])
         return super(ListBuilder, self)._one(**kwargs)
 
 
@@ -74,6 +74,6 @@ class ListBuilder(SingleBuilder):
         ret = []
         for i, info in enumerate(dicts):
             if self.add_identity:
-                info.setdefault("id", i+1)
+                info.setdefault("_id", i+1)
             ret.append(self._one(**info))
         return ret
