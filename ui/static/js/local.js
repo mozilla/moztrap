@@ -533,6 +533,40 @@ var TCM = TCM || {};
         deleteCategory.live('click', function () {
             $(this).closest('.item').detach();
         });
+    },
+
+    slideshow = function (context, container, slides, slideLinks) {
+        var context = $(context),
+        container = context.find(container),
+        slides = context.find(slides),
+        slideLinks = context.find(slideLinks),
+        hash = false;
+
+        function showSlide(slide) {
+            var thisLink = slideLinks.filter('a[href="#' + $(slide).attr('id') + '"]');
+            $(slide).addClass('active-slide').removeClass('inactive-slide');
+            $(slide).siblings().removeClass('active-slide').addClass('inactive-slide').fadeOut('fast', function () {
+                $(slide).fadeIn('fast');
+            });
+            slideLinks.removeClass('active');
+            thisLink.addClass('active');
+        }
+
+        slideLinks.click(function() {
+            showSlide($(this).attr('href'));
+            $(this).blur();
+            return false;
+        });
+
+        slides.each(function () {
+            if (window.location.hash == '#' + $(this).attr('id')) {
+                hash = true;
+            }
+        });
+
+        if (hash) {
+            showSlide(window.location.hash);
+        }
     };
 
     $(function () {
@@ -540,6 +574,7 @@ var TCM = TCM || {};
         listDetails();
         manageActionsAjax();
         manageEnvProfiles();
+        slideshow('#addcase', '.forms', '.forms form', 'a[href^="#"][href$="-case-form"]');
         $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages({
             handleAjax: true,
