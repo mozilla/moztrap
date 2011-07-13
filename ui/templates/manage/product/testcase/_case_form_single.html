@@ -8,6 +8,7 @@
     <li>
       {% include "forms/_field.html" with field=form.product %}
     </li>
+    {% block caseversions %}{% endblock caseversions %}
     {% comment %} @@@
     <li>
       {% include "forms/_field.html" with field=form.tags %}
@@ -25,6 +26,7 @@
   </div>
 
   <div class="form-actions">
+    {% block versionactions %}{% endblock versionactions %}
     <button type="submit">save test case</button>
   </div>
 

@@ -3798,6 +3798,27 @@ button[name="action-edit"] {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
 }
+#single-case-form .form-actions {
+  clear: both;
+  padding-left: 50.526%;
+}
+#single-case-form .increment-select {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  margin-bottom: 0em;
+  position: relative;
+  width: 48.936%;
+  vertical-align: baseline;
+}
+#single-case-form .increment-select {
+  *display: inline;
+}
+#single-case-form .increment-select.warning {
+  color: #b9292f;
+}
 
 #bulk-case-form .bulk-field {
   clear: both;

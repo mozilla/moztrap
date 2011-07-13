@@ -293,6 +293,18 @@
       +padding-leader(.25)
       +padding-trailer(.25)
 
+  .form-actions
+    +full(24)
+    +prefix(12,24)
+  .increment-select
+    +inline-block
+    +trailer(0)
+    position: relative
+    width: columns(6,12)
+    vertical-align: baseline
+    &.warning
+      color: $red
+
 #bulk-case-form
   .bulk-field
     +full(24)
