@@ -46,10 +46,8 @@
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
                         if (options.removeAnimationSpeed) {
-                            row.animate({"opacity": 0}, options.removeAnimationSpeed, function () {
-                                $(this).slideUp(options.removeAnimationSpeed, function () {
-                                    $(this).remove();
-                                });
+                            row.animate({"height": "toggle", "opacity": "toggle"}, options.removeAnimationSpeed, function () {
+                                $(this).hide();
                             });
                         } else {
                             row.hide();
@@ -57,10 +55,8 @@
                         forms = parent.find(options.formSelector).not(':hidden');
                     } else {
                         if (options.removeAnimationSpeed) {
-                            row.animate({"opacity": 0}, options.removeAnimationSpeed, function () {
-                                $(this).slideUp(options.removeAnimationSpeed, function () {
-                                    $(this).remove();
-                                });
+                            row.animate({"height": "toggle", "opacity": "toggle"}, options.removeAnimationSpeed, function () {
+                                $(this).remove();
                             });
                         } else {
                             row.remove();
@@ -129,9 +125,7 @@
             var formCount = parseInt(totalForms.val()),
                 row = options.formTemplate.clone(true).addClass('new-row');
             if (options.addAnimationSpeed) {
-                row.hide().css('opacity', 0).appendTo($(this).prev()).animate({"height": "toggle"}, options.addAnimationSpeed, function () {
-                    $(this).animate({"opacity": 1}, options.addAnimationSpeed);
-                });
+                row.hide().appendTo($(this).prev()).animate({"height": "toggle", "opacity": "toggle"}, options.addAnimationSpeed);
             } else {
                 row.appendTo($(this).prev()).show();
             }
