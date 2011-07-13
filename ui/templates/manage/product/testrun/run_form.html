@@ -55,17 +55,15 @@
       </div>
     </section>
 
-    <div class="assignto">
-      <article class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
-        <header class="summary">assign specific users to this test run &raquo;</header>
-        <div>
-          {# @@@ needs the slick multiple-select widget #}
-          {{ form.team.errors }}
-          {{ form.team.label_tag }}
-          {{ form.team }}
-        </div>
-      </article>
-    </div>
+    <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+      <h3 class="summary">assign specific users to this test run &raquo;</h3>
+      <div>
+        {# @@@ needs the slick multiple-select widget #}
+        {{ form.team.errors }}
+        {{ form.team.label_tag }}
+        {{ form.team }}
+      </div>
+    </section>
 
     <div class="form-actions">
       <button type="submit">save test run</button>
