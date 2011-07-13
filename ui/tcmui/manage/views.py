@@ -386,6 +386,15 @@ def testcase_details(request, case_id):
 
 
 @login_redirect
+@dec.actions(
+    EnvironmentTypeList,
+    ["delete"])
+@dec.filter("profiles",
+            ("name", KeywordFilter),
+            )
+@dec.paginate("profiles")
+@dec.sort("profiles")
+@dec.ajax("manage/environment/_profiles_list.html")
 def environment_profiles(request):
     profiles = EnvironmentTypeList.get(auth=request.auth).filter(groupType=True)
     return TemplateResponse(

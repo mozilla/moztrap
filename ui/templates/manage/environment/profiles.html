@@ -1,42 +1,24 @@
 {% extends 'manage/environment/base.html' %}
-{# @@@ full page wireframe #}
+
+{% block page-status %}incomplete{% endblock %}
+
+{% block page-notes %}
+<li>Pagination and sorting do not work (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=671157">platform bug</a>).</li>
+<li>Deleting environment profiles does not work (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=671161">platform bug</a>).</li>
+{% endblock %}
 
 {% block listcontent %}
 <section id="manageprofiles">
   <h2>Manage Environment Profiles</h2>
 
-  <a href="/manage/environment/add/" class="create">create a profile</a>
+  <a href="/manage/environment/add/ {# @@@ #}" class="create">create a profile</a>
 
-  {% include "lists/_filter.html" %}
+  {% include "lists/_filter.html" %} {# @@@ #}
 
   <form method="POST">
     {% csrf_token %}
 
-    <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bytitle">
-            <a href="#">name</a>
-          </li>
-          <li class="bypreview">
-            <span>preview</span>
-          </li>
-          <li class="bycontrols">
-            <span>controls</span>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="items">
-
-        {% include "manage/environment/_profile_list_item.html" with id="01" profile="Browser Testing" cat1="Language" cat2="Operating System" %}
-        {% include "manage/environment/_profile_list_item.html" with id="02" profile="Website Testing" cat1="Language" cat2="Operating System" cat3="Browser" %}
-
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
+    {% include "manage/environment/_profiles_list.html" %}
 
   </form>
 </section>

@@ -1,14 +1,25 @@
-<article id="profile-id-{{ id }}" class="item">
+<article id="profile-id-{{ profile.id }}" class="item">
   <h3 class="title">
-    <a href="/manage/environment/edit/" title="edit {{ profile }}">{{ profile }}</a>
+    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
+    <a href="/manage/environment/edit/{# @@@ #}" title="edit {{ profile.name }}">
+      {{ profile.name }}
+    </a>
+    {% else %}
+    {{ profile.name }}
+    {% endif %}
   </h3>
   <ul class="preview">
-    <li>{{ cat1 }}</li>
-    {% if cat2 %}<li>{{ cat2 }}</li>{% endif %}
-    {% if cat3 %}<li>{{ cat3 }}</li>{% endif %}
+    {% for cat in profile.environmenttypes %}
+    <li>{{ cat.name }}</li>
+    {% endfor %}
   </ul>
   <div class="controls">
-    <a href="/manage/environment/edit/" title="edit">edit</a>
-    <button title="delete" type="submit" name="action-delete">delete</button>
+    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
+    <a href="/manage/environment/edit/{# @@@ #}" title="edit">edit</a>
+    {% comment %}
+    {# @@@ Platform doesn't allow deleting these. #}
+    <button title="delete" type="submit" name="action-delete" value="{{ profile.id }}">delete</button>
+    {% endcomment %}
+    {% endif %}
   </div>
 </article>

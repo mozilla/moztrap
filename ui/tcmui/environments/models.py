@@ -18,6 +18,30 @@ class EnvironmentType(RemoteObject):
     environments = fields.Link("EnvironmentList")
 
 
+    @property
+    def environmentgroups(self):
+        if not self.groupType:
+            return []
+        return EnvironmentGroupList.get(auth=self.auth).filter(
+            environmentType=self)
+
+
+    @property
+    def environmenttypes(self):
+        if not self.groupType:
+            return []
+        typeids = set()
+        types = {}
+        for group in self.environmentgroups:
+            for env in group.environments:
+                et = env.environmentType
+                typeids.add(et.id)
+                types.setdefault(et.id, et)
+
+        return [types[id] for id in typeids]
+
+
+
     def __unicode__(self):
         return u"%s%s" % (self.groupType and u"(Group Type) " or u"", self.name)
 
