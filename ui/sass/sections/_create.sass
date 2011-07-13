@@ -14,31 +14,28 @@
     +trailer
   .basic
     +pie-clearfix
-    +inline-form(2,10,12)
+    +suffix(11,24)
+    +inline-form(2,11,13)
     label
       text-align: right
     ul
       +no-style-list
-    > li
-      +columns(12,24)
-      &:nth-child(even)
-        +omega(24)
     .date
-      +columns(6,12)
+      +columns(6,13)
       clear: none
       position: relative
       + .date
-        +omega(12)
+        +omega(13)
       label
         +columns(2,6)
       input
-        +columns(3,6)
+        +columns(4,6)
         +omega(6)
       .errorlist
         +prefix(2,6)
     .errorlist
-      +full(12)
-      +prefix(2,12)
+      +full(13)
+      +prefix(2,13)
 
 // SuperSelect! --------------------------------------------------------------
 
@@ -274,9 +271,9 @@
       width: columns(2,24)
       text-align: right
     .action
-      +columns(10,22)
+      +columns(11,22)
     .result
-      +columns(12,22)
+      +columns(11,22)
       +omega(22)
     .removefields
       +opacity(.25)
@@ -312,10 +309,10 @@
       +columns(2,24)
       text-align: right
     textarea
-      +columns(10,24)
+      +columns(11,24)
       min-height: rhythm(9)
   .fieldhelp
-    +columns(12,24)
+    +columns(11,24)
     +omega(24)
     +leader(.25)
     color: rgba($base,$small)

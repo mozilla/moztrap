@@ -14,6 +14,7 @@
     +pie-clearfix
   label, .readonly dt
     +columns($nl,$c)
+    text-align: right
   input, select, textarea, .readonly dd
     +columns($ni,$c)
     +omega($c)
@@ -263,11 +264,10 @@ button
     +reset-box-model
   dt, dd
     +padding-leader(.25)
-    +padding-trailer(.25)
+    +padding-trailer(.75)
   dt
     +font-style-normal
     +bold
-    &::after
-      content: ": "
   dd
+    +demi
     +italic

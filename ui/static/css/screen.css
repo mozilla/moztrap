@@ -992,16 +992,14 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 .readonly dt, .readonly dd {
   padding-top: 0.405em;
-  padding-bottom: 0.405em;
+  padding-bottom: 1.214em;
 }
 .readonly dt {
   font-style: normal;
   font-weight: 700;
 }
-.readonly dt::after {
-  content: ": ";
-}
 .readonly dd {
+  font-weight: 500;
   font-style: italic;
 }
 
@@ -2363,6 +2361,7 @@ button[name="action-edit"] {
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
+  text-align: right;
 }
 .environment input, .environment select, .environment textarea, .environment .readonly dd {
   display: inline;
@@ -3126,6 +3125,7 @@ button[name="action-edit"] {
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
+  text-align: right;
 }
 .simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea, .simpleform .readonly dd, #register form .readonly dd {
   display: inline;
@@ -3219,6 +3219,7 @@ button[name="action-edit"] {
 }
 .addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic {
   *zoom: 1;
+  padding-right: 46.316%;
 }
 .addform .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #single-case-form .basic:after, #bulk-case-form .basic:after {
   content: "\0020";
@@ -3242,14 +3243,15 @@ button[name="action-edit"] {
 .addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
   display: inline;
   float: left;
-  width: 14.894%;
-  margin-right: 2.128%;
+  width: 13.725%;
+  margin-right: 1.961%;
+  text-align: right;
 }
 .addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
   display: inline;
   float: left;
-  width: 82.979%;
-  margin-right: 2.128%;
+  width: 84.314%;
+  margin-right: 1.961%;
   display: inline;
   float: right;
   margin-right: 0;
@@ -3268,22 +3270,11 @@ button[name="action-edit"] {
   list-style-type: none;
   margin-left: 0px;
 }
-.addform .basic > li, #addcycle .basic > li, #addrun .basic > li, #addsuite .basic > li, #single-case-form .basic > li, #bulk-case-form .basic > li {
-  display: inline;
-  float: left;
-  width: 49.474%;
-  margin-right: 1.053%;
-}
-.addform .basic > li:nth-child(even), #addcycle .basic > li:nth-child(even), #addrun .basic > li:nth-child(even), #addsuite .basic > li:nth-child(even), #single-case-form .basic > li:nth-child(even), #bulk-case-form .basic > li:nth-child(even) {
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
 .addform .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date {
   display: inline;
   float: left;
-  width: 48.936%;
-  margin-right: 2.128%;
+  width: 45.098%;
+  margin-right: 1.961%;
   clear: none;
   position: relative;
 }
@@ -3301,7 +3292,7 @@ button[name="action-edit"] {
 .addform .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input {
   display: inline;
   float: left;
-  width: 47.826%;
+  width: 65.217%;
   margin-right: 4.348%;
   display: inline;
   float: right;
@@ -3312,7 +3303,7 @@ button[name="action-edit"] {
 }
 .addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist {
   clear: both;
-  padding-left: 17.021%;
+  padding-left: 15.686%;
 }
 
 .superselect p, .mainselect p, .userselect p, .suiteselect p, .caseselect p {
@@ -3760,13 +3751,13 @@ button[name="action-edit"] {
 #single-case-form .steps-form .action {
   display: inline;
   float: left;
-  width: 44.828%;
+  width: 49.425%;
   margin-right: 1.149%;
 }
 #single-case-form .steps-form .result {
   display: inline;
   float: left;
-  width: 54.023%;
+  width: 49.425%;
   margin-right: 1.149%;
   display: inline;
   float: right;
@@ -3833,14 +3824,14 @@ button[name="action-edit"] {
 #bulk-case-form .bulk-field textarea {
   display: inline;
   float: left;
-  width: 41.053%;
+  width: 45.263%;
   margin-right: 1.053%;
   min-height: 14.562em;
 }
 #bulk-case-form .fieldhelp {
   display: inline;
   float: left;
-  width: 49.474%;
+  width: 45.263%;
   margin-right: 1.053%;
   display: inline;
   float: right;
