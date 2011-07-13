@@ -2439,6 +2439,8 @@ button[name="action-edit"] {
 }
 .managelist .item {
   *zoom: 1;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
   clear: both;
 }
 .managelist .item:after {
@@ -2448,6 +2450,9 @@ button[name="action-edit"] {
   clear: both;
   overflow: hidden;
   visibility: hidden;
+}
+.managelist .item.details {
+  padding: 0;
 }
 .managelist .summary, .managelist .content {
   *zoom: 1;
