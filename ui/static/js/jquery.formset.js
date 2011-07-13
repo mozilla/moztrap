@@ -45,10 +45,26 @@
                         // Rather than remove this form from the DOM, we'll mark it as deleted
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
-                        row.hide();
+                        if (options.removeAnimationSpeed) {
+                            row.animate({"opacity": 0}, options.removeAnimationSpeed, function () {
+                                $(this).slideUp(options.removeAnimationSpeed, function () {
+                                    $(this).remove();
+                                });
+                            });
+                        } else {
+                            row.hide();
+                        }
                         forms = parent.find(options.formSelector).not(':hidden');
                     } else {
-                        row.remove();
+                        if (options.removeAnimationSpeed) {
+                            row.animate({"opacity": 0}, options.removeAnimationSpeed, function () {
+                                $(this).slideUp(options.removeAnimationSpeed, function () {
+                                    $(this).remove();
+                                });
+                            });
+                        } else {
+                            row.remove();
+                        }
                         // Update the TOTAL_FORMS count:
                         forms = parent.find(options.formSelector);
                         totalForms.val(forms.length);
@@ -111,8 +127,14 @@
         if (hideAddButton) addButton.hide();
         addButton.click(function() {
             var formCount = parseInt(totalForms.val()),
-                row = options.formTemplate.clone(true);
-            row.appendTo($(this).prev()).show();
+                row = options.formTemplate.clone(true).addClass('new-row');
+            if (options.addAnimationSpeed) {
+                row.hide().css('opacity', 0).appendTo($(this).prev()).animate({"height": "toggle"}, options.addAnimationSpeed, function () {
+                    $(this).animate({"opacity": 1}, options.addAnimationSpeed);
+                });
+            } else {
+                row.appendTo($(this).prev()).show();
+            }
             row.find('input,select,textarea,label').each(function() {
                 updateElementIndex($(this), options.prefix, formCount);
             });
@@ -129,17 +151,21 @@
 
     /* Setup plugin defaults */
     $.fn.formset.defaults = {
-        prefix: 'form',                  // The form prefix for your django formset
-        formTemplate: null,              // The jQuery selection cloned to generate new form instances
-                                         // This empty-form must be outside the parent (element on which
-                                         // formset is called)
+        prefix: 'form',                 // The form prefix for your django formset
+        formTemplate: null,             // The jQuery selection cloned to generate new form instances
+                                        // This empty-form must be outside the parent (element on which
+                                        // formset is called)
         deleteLink: '<a class="delete-row" href="javascript:void(0)">remove</a>',
-                                         // The HTML "remove" link added to the end of each form-row
+                                        // The HTML "remove" link added to the end of each form-row
         addLink: '<a class="add-row" href="javascript:void(0)">add</a>',
-                                         // The HTML "add" link added to the end of all forms
-        deleteOnlyNew: false,            // If true, only newly-added rows can be deleted
-        formSelector: '.dynamic-form',   // jQuery selector used to match each form in a formset
-        added: null,                     // Function called each time a new form is added
-        removed: null                    // Function called each time a form is deleted
+                                        // The HTML "add" link added to the end of all forms
+        addAnimationSpeed: false,       // Speed (ms) to animate adding rows
+                                        // If false, new rows will appear without animation
+        removeAnimationSpeed: false,    // Speed (ms) to animate removing rows
+                                        // If false, new rows will disappear without animation
+        deleteOnlyNew: false,           // If true, only newly-added rows can be deleted
+        formSelector: '.dynamic-form',  // jQuery selector used to match each form in a formset
+        added: null,                    // Function called each time a new form is added
+        removed: null                   // Function called each time a form is deleted
     };
 })(jQuery);
