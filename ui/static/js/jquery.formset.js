@@ -117,28 +117,53 @@
         // FIXME: Perhaps using $.data would be a better idea?
         options.formTemplate = template;
 
-        // Insert the add-link immediately after the last form:
-        parent.after(options.addLink);
-        addButton = parent.next();
-        if (hideAddButton) addButton.hide();
-        addButton.click(function() {
-            var formCount = parseInt(totalForms.val()),
-                row = options.formTemplate.clone(true).addClass('new-row');
-            if (options.addAnimationSpeed) {
-                row.hide().appendTo($(this).prev()).animate({"height": "toggle", "opacity": "toggle"}, options.addAnimationSpeed);
-            } else {
-                row.appendTo($(this).prev()).show();
-            }
-            row.find('input,select,textarea,label').each(function() {
-                updateElementIndex($(this), options.prefix, formCount);
+        if (options.autoAdd) {
+            parent.find('input, select, textarea, label').live('keyup', function () {
+                if (showAddButton() && $(this).closest(options.formSelector).is(':last-child') && $(this).is($(this).closest(options.formSelector).find('input, select, textarea, label').last()) && $(this).val().length) {
+                    var formCount = parseInt(totalForms.val()),
+                        row = options.formTemplate.clone(true);
+                    if (options.addAnimationSpeed) {
+                        row.hide().css('opacity', 0).appendTo(parent).animate({"height": "toggle", "opacity": 0.5}, options.addAnimationSpeed).find('input, select, textarea, label').focus(function () {
+                            $(this).closest(options.formSelector).css('opacity', 1);
+                        });
+                    } else {
+                        row.css('opacity', 0.5).appendTo(parent).find('input, select, textarea, label').focus(function () {
+                            $(this).closest(options.formSelector).css('opacity', 1);
+                        });
+                    }
+                    row.find('input, select, textarea, label').each(function() {
+                        updateElementIndex($(this), options.prefix, formCount);
+                    });
+                    totalForms.val(formCount + 1);
+                    // If a post-add callback was supplied, call it with the added form:
+                    if (options.added) options.added(row);
+                    return false;
+                }
             });
-            totalForms.val(formCount + 1);
-            // Check if we've exceeded the maximum allowed number of forms:
-            if (!showAddButton()) $(this).hide();
-            // If a post-add callback was supplied, call it with the added form:
-            if (options.added) options.added(row);
-            return false;
-        });
+        } else {
+            // Insert the add-link immediately after the last form:
+            parent.after(options.addLink);
+            addButton = parent.next();
+            if (hideAddButton) addButton.hide();
+            addButton.click(function() {
+                var formCount = parseInt(totalForms.val()),
+                    row = options.formTemplate.clone(true).addClass('new-row');
+                if (options.addAnimationSpeed) {
+                    row.hide().appendTo(parent).animate({"height": "toggle", "opacity": "toggle"}, options.addAnimationSpeed);
+                } else {
+                    row.appendTo($(this).prev()).show();
+                }
+                row.find('input,select,textarea,label').each(function() {
+                    updateElementIndex($(this), options.prefix, formCount);
+                });
+                totalForms.val(formCount + 1);
+                // Check if we've exceeded the maximum allowed number of forms:
+                if (!showAddButton()) $(this).hide();
+                // If a post-add callback was supplied, call it with the added form:
+                if (options.added) options.added(row);
+                return false;
+            });
+        }
 
         return $$;
     };
@@ -153,6 +178,8 @@
                                         // The HTML "remove" link added to the end of each form-row
         addLink: '<a class="add-row" href="javascript:void(0)">add</a>',
                                         // The HTML "add" link added to the end of all forms
+        autoAdd: false,                 // If true, the "add" link will be removed, and a row will be automatically
+                                        // added when text is entered in the final textarea of the last row
         addAnimationSpeed: false,       // Speed (ms) to animate adding rows
                                         // If false, new rows will appear without animation
         removeAnimationSpeed: false,    // Speed (ms) to animate removing rows

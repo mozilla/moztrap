@@ -559,20 +559,6 @@ var TCM = TCM || {};
             if (hash) {
                 showSlide(window.location.hash);
             }
-        },
-
-        addCase = function () {
-            var context = $('#addcase');
-
-            context.find('textarea[name$="result"]').live('keyup', function () {
-                if ($(this).val().length && $(this).closest('.steps-form').is(':last-child')) {
-                    context.find('.addfields').click();
-                }
-            });
-
-            context.find('textarea[name$="instruction"], textarea[name$="result"]').live('focus', function () {
-                $(this).closest('.steps-form').removeClass('new-row');
-            });
         };
 
     $(function () {
@@ -580,7 +566,6 @@ var TCM = TCM || {};
         listDetails();
         manageActionsAjax();
         manageEnvProfiles();
-        addCase();
         slideshow('#addcase', '.forms', '.forms form', 'a[href^="#"][href$="-case-form"]');
         $('.details:not(html)').html5accordion('.summary');
         $('#messages').messages({
