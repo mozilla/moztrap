@@ -8,8 +8,10 @@
   </div>
 {% endif %}
 
-<ul class="env-element-list">
-  <li>windows</li>
-  <li>english</li>
-  <li>firefox</li>
-</ul>
+{% if not new %}
+  <ul class="env-element-list">
+    <li>windows</li>
+    <li>english</li>
+    <li>firefox</li>
+  </ul>
+{% endif %}

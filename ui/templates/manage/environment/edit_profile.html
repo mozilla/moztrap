@@ -32,7 +32,12 @@
         {% include "manage/environment/_env_list_item.html" with id='01' edit='true' %}
         {% include "manage/environment/_env_list_item.html" with id='02' edit='true' %}
 
-        <a href="#" class="item add-item">add an environment</a>
+        <article href="#" class="item add-item details">
+          <h3 class="summary">add an environment</h3>
+          <div class="content">
+            {% include "manage/environment/_env_list_item_content.html" with id='03' edit='true' new='new' %}
+          </div>
+        </article>
       </div>
 
       {% include "lists/_listnav.html" %}

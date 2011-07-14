@@ -156,27 +156,15 @@
   .item
     +padding-leader(.25)
     +padding-trailer(.25)
+    &.add-item
+      @extend .footeradditem
+
   .status, .controls
     +trailer(0)
   .start, .end, .bystart, .byend
     +columns(3,24)
   .title, .bytitle
     +columns(14,24)
-  .addrun
-    a
-      #{$link}
-        +full(24)
-        +demi
-        +italic
-        +border-radius
-        display: block
-        padding: rhythm(.25) rhythm(.5)
-        background: rgba($green,$xsmall)
-        color: $green-dark
-        text-align: right
-      #{$focus}
-        color: $base
-        background: rgba($green-light,$small)
 
 .userselect
   @extend .mainselect

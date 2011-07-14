@@ -1,17 +1,15 @@
-<div class="content">
-  <p class="name">
-    {{ category.name }}
-    <button name="action-edit" value="category-{{ category.id }}">edit</button>
-  </p>
-  <ul class="elements">
+<p class="name">
+  {{ category.name }}
+  <button name="action-edit" value="category-{{ category.id }}">edit</button>
+</p>
+<ul class="elements">
 
-    {% for element in category.environments %}
-    {% include "manage/environment/add_profile/_element_list_item.html" %}
-    {% endfor %}
+  {% for element in category.environments %}
+  {% include "manage/environment/add_profile/_element_list_item.html" %}
+  {% endfor %}
 
-    <li class="add-element edit">
-      <label for="{{ category.id }}-add-element">add element</label>
-      <input type="text" name="{{ category.id }}-add-element" value="" id="{{ category.id }}-add-element" placeholder="add an element">
-    </li>
-  </ul>
-</div>
+  <li class="add-element edit">
+    <label for="{{ category.id }}-add-element">add element</label>
+    <input type="text" name="{{ category.id }}-add-element" value="" id="{{ category.id }}-add-element" placeholder="add an element">
+  </li>
+</ul>

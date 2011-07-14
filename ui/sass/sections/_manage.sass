@@ -31,18 +31,25 @@
   +omega(10)
   display: none
 
+.footeradditem
+  +trailer
+  a, .summary
+    +border-radius
+    background: rgba($green,$xsmall) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+    color: $base
+    #{$focus}
+      background-color: rgba($green,$small)
+
 .item.add-item
   +demi
-  +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
-  #{$link}
+  a, .summary
     @extend .allcaps
+    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
     display: block
-    padding: rhythm(.25) rhythm(1)
-  .summary
-    @extend .allcaps
-    +pad(1,1,24)
-  #{$focus}
-    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
+    padding: rhythm(.25) rhythm(1.25)
+    color: $green-dark
+    #{$focus}
+      +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
 .profile-name
   +full(24)
@@ -129,7 +136,7 @@
     +columns(6,24)
   .bytitle
     +prefix(1,24)
-    a
+    a, span
       padding: 0
   .bulk
     +columns(1,24)
@@ -144,6 +151,8 @@
     @extend .editinline
     +bold
     margin: 0 columns(7,24) + gutter(24)
+    label
+      +gone
     button
       +float(right)
       display: none
@@ -171,6 +180,13 @@
   .add-element
     label
       +gone
+
+  .add-item
+    @extend .footeradditem
+    .name
+      margin: 0 columns(17,24) + gutter(24) 0 columns(1,24) + gutter(24)
+      input
+        margin: 0
 
 #editprofile
   .bypreview, .preview
