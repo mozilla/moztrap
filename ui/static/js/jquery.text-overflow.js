@@ -6,8 +6,9 @@
  */
 
 (function($) {
-	$.fn.ellipsis = function(windowResize, delay){
-		var s = document.documentElement.style;
+	$.fn.ellipsis = function(opts){
+        var options = $.extend({}, $.fn.ellipsis.defaults, opts),
+		s = document.documentElement.style;
 		if (!('textOverflow' in s || 'OTextOverflow' in s)) {
 			return this.each(function(){
 				var el = $(this);
@@ -37,11 +38,11 @@
 
                     // use of `delay` requires jQuery doTimeout
                     // http://benalman.com/projects/jquery-dotimeout-plugin/
-                    if(windowResize === true){
+                    if(options.windowResize === true){
                         var oldW = el.width();
                         $(window).resize(function(){
-                            if (delay){
-                                $.doTimeout(delay, function(){
+                            if (options.delay){
+                                $.doTimeout(options.delay, function(){
                                     if(el.width() !== oldW){
                                         oldW = el.width();
                                         el.html(originalText);
@@ -61,4 +62,12 @@
 			});
 		} else return this;
 	};
+
+	/* Setup plugin defaults */
+    $.fn.ellipsis.defaults = {
+        windowResize: false,        // If `true`, the function will run again on `$(window).resize`
+        delay: null,                // Delay (in ms) to debounce $(window).resize event (if windowResize: true)
+                                    // Requires jQuery doTimeout:
+                                    // http://benalman.com/projects/jquery-dotimeout-plugin/
+    };
 })(jQuery);

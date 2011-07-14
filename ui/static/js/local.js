@@ -387,8 +387,8 @@ var TCM = TCM || {};
                         url = form.attr('action'),
                         method = form.attr('method'),
                         replace = button.closest('.action-ajax-replace'),
-                        success = function (data) {
-                            var replacement = $(data.html);
+                        success = function (response) {
+                            var replacement = $(response.html);
                             replace.replaceWith(replacement);
                             replacement.find('.details').html5accordion('.summary');
                             replace.loadingOverlay('remove');
@@ -667,7 +667,10 @@ var TCM = TCM || {};
     });
 
     $(window).load(function () {
-        $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis(true, 300);
+        $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis({
+            windowResize: true,
+            delay: 300
+        });
         // Expand list item details on direct hashtag links
         if ($('.manage').length && window.location.hash) {
             var hash = window.location.hash;
