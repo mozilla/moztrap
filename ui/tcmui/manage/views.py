@@ -412,6 +412,7 @@ def add_environment_profile(request):
     etl = EnvironmentTypeList.get(auth=request.auth)
 
     element_ids = set()
+    name = ""
 
     if request.method == "POST":
         element_ids.update(request.POST.getlist("element"))
@@ -437,6 +438,7 @@ def add_environment_profile(request):
         "manage/environment/add_profile.html",
         {
             "categories": categories,
-            "selected_elements": element_ids
+            "selected_elements": element_ids,
+            "profile_name": name,
             }
         )
