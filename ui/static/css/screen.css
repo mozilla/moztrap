@@ -1962,7 +1962,7 @@ button[name="action-edit"] {
 #filter .expanded .long:hover {
   overflow-y: auto;
 }
-#filter .expanded input {
+#filter .expanded input[type='checkbox'] {
   display: none;
 }
 #filter .expanded label {
@@ -1990,6 +1990,13 @@ button[name="action-edit"] {
 }
 #filter .expanded input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1309283001');
+}
+#filter .expanded input[type="text"] {
+  border-style: solid;
+  border-width: 0.083em;
+  padding: 0.271em;
+  margin-bottom: 0.708em;
+  margin-top: 0.472em;
 }
 
 /* Loading ------------------------------------------------------------------- */

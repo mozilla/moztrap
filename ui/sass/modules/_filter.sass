@@ -165,7 +165,7 @@
       resize: vertical
       &:hover
         overflow-y: auto
-    input
+    input[type='checkbox']
       display: none
     label
       +sans-family
@@ -185,3 +185,6 @@
       background-image: image-url('ui/check_sm.png')
       &:hover
         background-image: image-url('ui/x_sm.png')
+    input[type="text"]
+      +adjust-input-size-to(12px,.75)
+      +leader(.25,12px)
