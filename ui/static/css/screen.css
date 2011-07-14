@@ -3845,6 +3845,14 @@ button[name="action-edit"] {
   color: rgba(68, 68, 68, 0.618);
 }
 
+.leftcolumnpadding, #manageproducts .title, #manageprofiles .title {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 0.618em;
+}
+
 .preview {
   overflow: hidden;
   max-height: 1.618em;
@@ -3962,7 +3970,7 @@ button[name="action-edit"] {
 }
 
 /* Manage Products -------------------------------------------------------------- */
-#manageproducts .testers {
+#manageproducts .testers, #manageproducts .byline {
   display: inline;
   float: left;
   width: 15.789%;
@@ -3980,10 +3988,21 @@ button[name="action-edit"] {
   width: 62.105%;
   margin-right: 1.053%;
 }
-#manageproducts .testers {
+#manageproducts .description {
+  display: inline;
+  float: left;
+  width: 74.737%;
+  margin-right: 1.053%;
+  padding-left: 8.421%;
+}
+#manageproducts .testers, #manageproducts .byline {
   display: inline;
   float: right;
   margin-right: 0;
+}
+#manageproducts .byline {
+  font-style: italic;
+  text-align: right;
 }
 
 /* Manage Tests -------------------------------------------------------------- */

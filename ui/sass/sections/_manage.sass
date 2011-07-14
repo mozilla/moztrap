@@ -1,3 +1,7 @@
+.leftcolumnpadding
+  +box-sizing('border-box')
+  padding-left: $smallem
+
 .preview
   +ellipsis
   +delimited-list(',')
@@ -54,14 +58,22 @@
 /* Manage Products --------------------------------------------------------------
 
 #manageproducts
-  .testers
+  .testers, .byline
     +columns(4,24)
   .title, .bytitle
     +columns(5,24)
   .preview, .bypreview
     +columns(15,24)
-  .testers
+  .description
+    +columns(18,24)
+    +prefix(2,24)
+  .testers, .byline
     +omega(24)
+  .title
+    @extend .leftcolumnpadding
+  .byline
+    +italic
+    text-align: right
 
 /* Manage Tests --------------------------------------------------------------
 
@@ -104,6 +116,7 @@
     +columns(12,24)
 
   .title
+    @extend .leftcolumnpadding
     a
       #{$link}
         display: block
