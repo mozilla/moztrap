@@ -48,24 +48,24 @@
       width: 0px 1px
 
   .unselected, .selected
-    +columns(9,20)
+    +columns(10,22)
     h3, h4
       @extend .allcaps
-      +hpadding(1.5em)
+      +hpadding($smallem)
       color: $light
       background: $blue
       font-weight: normal
   .selected
-    +omega(20)
+    +omega(22)
   label[for="search"]
     +hide-text
     position: absolute
     height: 0
   input[type="search"]
-    width: columns(9,20)
+    width: columns(10,22)
   .select
     +no-style-list
-    height: $base-rhythm-unit*8
+    height: rhythm(8)
     border: 1px solid #ccc
     background: $blue-lightest
     overflow-y: scroll
@@ -98,7 +98,7 @@
           image: image-url('ui/arrow_left.png')
 
   .addremove
-    +columns(2,20)
+    +columns(2,22)
     +leader(3)
     button
       +trailer(.5)
@@ -144,8 +144,16 @@
     background: rgba($blue,$xxxsmall)
     text-transform: capitalize
   > div
-    +full(22)
-    +pad(1,1,22)
+    +full(24)
+    +clearfix
+    +pad(1,1,24)
+    +padding-leader
+    +padding-trailer
+
+/* Create Product --------------------------------------------------------------
+
+#addproduct
+  @extend .addform
 
 /* Create/Edit Cycle --------------------------------------------------------------
 

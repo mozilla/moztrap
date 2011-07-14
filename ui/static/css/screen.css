@@ -3219,14 +3219,14 @@ button[name="action-edit"] {
   height: 1.618em;
 }
 
-.addform h2, #addcycle h2, #addrun h2, #addsuite h2, #single-case-form h2, #bulk-case-form h2 {
+.addform h2, #addproduct h2, #addcycle h2, #addrun h2, #addsuite h2, #single-case-form h2, #bulk-case-form h2 {
   margin-bottom: 1.618em;
 }
-.addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic {
+.addform .basic, #addproduct .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic {
   *zoom: 1;
   padding-right: 46.316%;
 }
-.addform .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #single-case-form .basic:after, #bulk-case-form .basic:after {
+.addform .basic:after, #addproduct .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #single-case-form .basic:after, #bulk-case-form .basic:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -3234,10 +3234,10 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li {
+.addform .basic li, #addproduct .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li {
   *zoom: 1;
 }
-.addform .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after {
+.addform .basic li:after, #addproduct .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -3245,14 +3245,14 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addproduct .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
   display: inline;
   float: left;
   width: 13.725%;
   margin-right: 1.961%;
   text-align: right;
 }
-.addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
+.addform .basic input, #addproduct .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addproduct .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addproduct .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addproduct .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
   display: inline;
   float: left;
   width: 84.314%;
@@ -3261,21 +3261,21 @@ button[name="action-edit"] {
   float: right;
   margin-right: 0;
 }
-.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label {
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label {
   text-align: right;
 }
-.addform .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #single-case-form .basic ul, #bulk-case-form .basic ul {
+.addform .basic ul, #addproduct .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #single-case-form .basic ul, #bulk-case-form .basic ul {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.addform .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #single-case-form .basic ul li, #bulk-case-form .basic ul li {
+.addform .basic ul li, #addproduct .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #single-case-form .basic ul li, #bulk-case-form .basic ul li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.addform .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date {
+.addform .basic .date, #addproduct .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date {
   display: inline;
   float: left;
   width: 45.098%;
@@ -3283,18 +3283,18 @@ button[name="action-edit"] {
   clear: none;
   position: relative;
 }
-.addform .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #single-case-form .basic .date + .date, #bulk-case-form .basic .date + .date {
+.addform .basic .date + .date, #addproduct .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #single-case-form .basic .date + .date, #bulk-case-form .basic .date + .date {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.addform .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #single-case-form .basic .date label, #bulk-case-form .basic .date label {
+.addform .basic .date label, #addproduct .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #single-case-form .basic .date label, #bulk-case-form .basic .date label {
   display: inline;
   float: left;
   width: 30.435%;
   margin-right: 4.348%;
 }
-.addform .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input {
+.addform .basic .date input, #addproduct .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input {
   display: inline;
   float: left;
   width: 65.217%;
@@ -3303,10 +3303,10 @@ button[name="action-edit"] {
   float: right;
   margin-right: 0;
 }
-.addform .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #single-case-form .basic .date .errorlist, #bulk-case-form .basic .date .errorlist {
+.addform .basic .date .errorlist, #addproduct .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #single-case-form .basic .date .errorlist, #bulk-case-form .basic .date .errorlist {
   padding-left: 34.783%;
 }
-.addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist {
+.addform .basic .errorlist, #addproduct .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist {
   clear: both;
   padding-left: 15.686%;
 }
@@ -3322,12 +3322,12 @@ button[name="action-edit"] {
 .superselect .unselected, .mainselect .unselected, .userselect .unselected, .suiteselect .unselected, .caseselect .unselected, .superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected {
   display: inline;
   float: left;
-  width: 44.304%;
-  margin-right: 1.266%;
+  width: 44.828%;
+  margin-right: 1.149%;
 }
 .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4 {
-  padding-left: 1.5em;
-  padding-right: 1.5em;
+  padding-left: 0.618em;
+  padding-right: 0.618em;
   color: #eeeeee;
   background: #528684;
   font-weight: normal;
@@ -3345,7 +3345,7 @@ button[name="action-edit"] {
   height: 0;
 }
 .superselect input[type="search"], .mainselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"] {
-  width: 44.304%;
+  width: 44.828%;
 }
 .superselect .select, .mainselect .select, .userselect .select, .suiteselect .select, .caseselect .select {
   list-style: none;
@@ -3393,8 +3393,8 @@ button[name="action-edit"] {
 .superselect .addremove, .mainselect .addremove, .userselect .addremove, .suiteselect .addremove, .caseselect .addremove {
   display: inline;
   float: left;
-  width: 8.861%;
-  margin-right: 1.266%;
+  width: 8.046%;
+  margin-right: 1.149%;
   margin-top: 4.854em;
 }
 .superselect .addremove button, .mainselect .addremove button, .userselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button {
@@ -3531,10 +3531,15 @@ button[name="action-edit"] {
 }
 .mainselect > div, .userselect > div, .suiteselect > div, .caseselect > div {
   clear: both;
-  padding-left: 4.598%;
-  padding-right: 4.598%;
+  overflow: hidden;
+  *zoom: 1;
+  padding-left: 4.211%;
+  padding-right: 4.211%;
+  padding-top: 1.618em;
+  padding-bottom: 1.618em;
 }
 
+/* Create Product -------------------------------------------------------------- */
 /* Create/Edit Cycle -------------------------------------------------------------- */
 #addcycle .item {
   padding-top: 0.405em;
