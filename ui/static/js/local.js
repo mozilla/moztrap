@@ -468,10 +468,12 @@ var TCM = TCM || {};
                         success = function (response) {
                             var newElem = $(response.elem),
                                 newPreview = $(response.preview);
-                            input.closest('.elements').children('li.add-element').before(newElem);
-                            input.closest('.item').find('.preview').append(newPreview);
+                            if (!response.no_replace) {
+                                input.closest('.elements').children('li.add-element').before(newElem);
+                                input.closest('.item').find('.preview').append(newPreview);
 
-                            input.val(null);
+                                input.val(null);
+                            }
                             loading.loadingOverlay('remove');
                         };
                     data['category-id'] = input.data('category-id');
@@ -496,10 +498,11 @@ var TCM = TCM || {};
                         data = {},
                         success = function (response) {
                             var newelem = $(response.html);
-                            input.closest('.items').children('.add-item').before(newelem);
-                            newelem.find('.details').andSelf().html5accordion();
-
-                            input.val(null);
+                            if (!response.no_replace) {
+                                input.closest('.items').children('.add-item').before(newelem);
+                                newelem.find('.details').andSelf().html5accordion();
+                                input.val(null);
+                            }
                             loading.loadingOverlay('remove');
                         };
                     data[input.attr('name')] = input.val();
@@ -547,15 +550,17 @@ var TCM = TCM || {};
                             var editedElem = $(response.elem),
                                 editedPreview = $(response.preview);
 
-                            thisElement.replaceWith(editedElem);
-                            preview.replaceWith(editedPreview);
+                            if (!response.no_replace) {
+                                thisElement.replaceWith(editedElem);
+                                preview.replaceWith(editedPreview);
 
-                            if (checked) {
-                                $('#' + inputId).prop('checked', checked);
-                                updateLabels();
+                                if (checked) {
+                                    $('#' + inputId).prop('checked', checked);
+                                    updateLabels();
+                                }
+                                input.val(null);
                             }
 
-                            input.val(null);
                             thisElement.loadingOverlay('remove');
                         };
 
