@@ -389,6 +389,7 @@ var TCM = TCM || {};
                         success = function (response) {
                             var replacement = $(response.html);
                             if (!response.no_replace) {
+                                replace.trigger('replace', [replacement]);
                                 replace.replaceWith(replacement);
                                 replacement.find('.details').html5accordion('.summary');
                             }
@@ -408,9 +409,10 @@ var TCM = TCM || {};
         },
 
         manageEnvProfiles = function () {
-            var elements = $('#addprofile .item .elements .element-select input'),
-                categories = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
-                addElement = $('input[id$="-add-element"]'),
+            var elements = $('#addprofile .item .elements'),
+                elementInputs = elements.find('.element-select input'),
+                categoryInputs = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
+                addElement = $('input[id$="-new-element-name"]'),
                 addCategory = $('input#new-category-name'),
                 editElementLink = $('#addprofile .item .elements a[title="edit"]'),
                 editElement = $('#addprofile .item .elements .editing input'),
@@ -425,7 +427,11 @@ var TCM = TCM || {};
                     });
                 };
 
-            elements.live('change', function () {
+            elements.bind('replace', function (event, replacement) {
+                // @@@ add code here to remove preview for this element
+            });
+
+            elementInputs.live('change', function () {
                 var thisID = $(this).attr('id');
                 if ($(this).is(':checked')) {
                     $('label[for=' + thisID + ']').addClass('checked');
@@ -439,7 +445,7 @@ var TCM = TCM || {};
                 }
             });
 
-            categories.live('change', function () {
+            categoryInputs.live('change', function () {
                 if ($(this).is(':checked')) {
                     $(this).closest('.item').find('.elements input').prop('checked', true);
                 } else {
