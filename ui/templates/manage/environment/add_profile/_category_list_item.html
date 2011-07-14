@@ -7,16 +7,12 @@
     <h3 class="title">{{ category.name }}</h3>
     <ul class="preview">
       {% for element in category.environments %}
-      <li>
-        <label for="element-{{ element.id }}">
-          {{ element.name }}
-        </label>
-      </li>
+      {% include "manage/environment/add_profile/_element_preview_list_item.html" %}
       {% endfor %}
     </ul>
     <div class="controls">
       <button title="delete" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
     </div>
   </header>
-  {% include "manage/environment/_category_list_item_content.html" %}
+  {% include "manage/environment/add_profile/_category_list_item_content.html" %}
 </article>

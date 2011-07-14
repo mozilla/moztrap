@@ -37,13 +37,13 @@
         {% icanhaz "env_profile_category" %}
 
         {% for category in categories %}
-        {% include "manage/environment/_category_list_item.html" %}
+        {% include "manage/environment/add_profile/_category_list_item.html" %}
         {% endfor %}
 
         <article href="#" class="item add-item details">
           <h3 class="summary">add a category</h3>
           <div class="content">
-            {% include "manage/environment/_category_list_item_content_new.html" %}
+            {% include "manage/environment/add_profile/_category_list_item_content_new.html" %}
           </div>
         </article>
       </div>

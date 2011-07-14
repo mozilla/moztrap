@@ -6,16 +6,7 @@
   <ul class="elements">
 
     {% for element in category.environments %}
-    <li>
-      <div class="element-select">
-        <input type="checkbox" name="element" value="{{ element.id }}" id="element-{{ element.id }}">
-        <label for="element-{{ element.id }}">{{ element.name }}</label>
-      </div>
-      <div class="element-controls">
-        <button name="action-edit" value="element-{{ element.id }}">edit</button>
-        <button name="action-delete" value="element-{{ element.id }}">delete</button>
-      </div>
-    </li>
+    {% include "manage/environment/add_profile/_element_list_item.html" %}
     {% endfor %}
 
     <li class="add-element edit">
