@@ -19,7 +19,7 @@ from . import filters
 
 @dec.finder(ResultsFinder)
 def home(request):
-    return redirect(reverse("results_testcycles") + "?finder=1&status=2")
+    return redirect(reverse("results_testcycles") + "?openfinder=1&status=2")
 
 
 

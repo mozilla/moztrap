@@ -25,7 +25,7 @@ from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
 
 
 def home(request):
-    return redirect(reverse("manage_testcycles") + "?finder=1")
+    return redirect(reverse("manage_testcycles") + "?openfinder=1")
 
 
 
