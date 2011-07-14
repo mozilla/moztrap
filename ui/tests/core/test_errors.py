@@ -27,7 +27,7 @@ class ErrorMessageAndFieldsTest(TestCase):
 
         self.assert_results(
             TestSuite(), "changing.used.entity",
-            ("The thinger is in use and cannot be modified.", []))
+            ("thinger is in use elsewhere and cannot be modified.", []))
 
 
     def test_classname_lookup(self):

@@ -26,7 +26,7 @@ class DefaultManageViewTest(ViewTestCase):
         self.assertEqual(res.status_int, 302)
         self.assertEqual(
             res.headers["location"],
-            "http://localhost:80/manage/testcycles/?finder=1")
+            "http://localhost:80/manage/testcycles/?openfinder=1")
 
 
 

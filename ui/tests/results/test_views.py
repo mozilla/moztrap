@@ -21,7 +21,7 @@ class DefaultResultsViewTest(ViewTestCase):
         self.assertEqual(res.status_int, 302)
         self.assertEqual(
             res.headers["location"],
-            "http://localhost:80/results/testcycles/?finder=1&status=2")
+            "http://localhost:80/results/testcycles/?openfinder=1&status=2")
 
 
 class ListViewTests(object):
