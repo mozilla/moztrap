@@ -7,7 +7,7 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
-from ..environments.models import EnvironmentTypeList
+from ..environments.models import EnvironmentTypeList, EnvironmentType
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -410,6 +410,17 @@ def environment_profiles(request):
 @environment_actions()
 def add_environment_profile(request):
     etl = EnvironmentTypeList.get(auth=request.auth)
+
+    if request.method == "POST":
+        element_ids = request.POST.getlist("element")
+        name = request.POST.get("profile_name")
+        egt = EnvironmentType(
+            name=name, company=request.company, groupType=True)
+        etl.post(egt)
+        request.company.autogenerate_env_groups(element_ids, egt)
+
+        return redirect("manage_environments") # @@@ should go to profile edit
+
     categories = etl.filter(groupType=False)
     return TemplateResponse(
         request,
