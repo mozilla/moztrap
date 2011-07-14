@@ -1,3 +1,9 @@
+/*jslint    browser:    true,
+            indent:     4,
+            confusion:  true
+*/
+/*global    ich, jQuery */
+
 /**
  * jQuery html5finder 0.1
  *
@@ -7,43 +13,50 @@
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
  */
-(function($) {
-    $.fn.html5finder = function(opts) {
+(function ($) {
+
+    'use strict';
+
+    $.fn.html5finder = function (opts) {
         var options = $.extend({}, $.fn.html5finder.defaults, opts),
             context = $(this),
             numberCols = options.sectionClasses.length,
             sections = context.find(options.sectionSelector),
+            i,
 
             // Set the width of each section to account for vertical scroll-bars
-            headers = context.find(options.headerSelector).each(function() {
+            headers = context.find(options.headerSelector).each(function () {
                 var scrollbarWidth = $(this).closest(options.sectionSelector).css('width') - $(this).children('li').css('width');
                 $(this).css('right', scrollbarWidth);
             }),
 
             // We want to be able to treat already-selected items differently
-            markSelected = function() {
+            markSelected = function () {
                 context.find(options.selected).data('selected', true);
                 context.find(options.notSelected).data('selected', false);
             },
 
             // Define the function for updating ellipses on long text
-            updateEllipsis = function() {
+            updateEllipsis = function () {
                 if (options.ellipsis === true) {
                     var target = context.find(options.sectionContentSelector + ' ' + options.ellipsisTarget);
-                    target.each(function() {
+                    target.each(function () {
                         if ($(this).data('originalText')) {
                             $(this).html($(this).data('originalText'));
                         }
                     });
-                    $.doTimeout('updateEllipsis', 300, function(){
-                        target.ellipsis(true, 250);
+                    $.doTimeout('updateEllipsis', 300, function () {
+                        target.ellipsis({
+                            windowResize: true,
+                            delay: 250
+                        });
                     });
                 }
             },
 
             // Define the function for horizontal scrolling (requires jquery.scrollTo plugin):
             // Scrolls to the previous section (so that the active section is centered)
-            horzScroll = function() {
+            horzScroll = function () {
                 if (options.horizontalScroll === true) {
                     var scrollTarget;
                     if (context.find(options.sectionSelector + '.focus').is(':first-child')) {
@@ -53,6 +66,55 @@
                     }
                     context.find(options.scrollContainer).scrollTo(scrollTarget, {duration: options.scrollSpeed, axis: 'x'});
                 }
+            },
+
+            itemClick = function (i) {
+                context.find(options.sectionItemSelectors[i]).live('click', function () {
+                    var thisItem = $(this),
+                        container = thisItem.closest(options.sectionSelector),
+                        ajaxUrl = thisItem.data('sub-url'),
+                        target = container.next(options.sectionSelector);
+                    // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
+                    if (thisItem.data('selected') === true && !container.hasClass('focus')) {
+                        container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
+                        container.next(options.sectionSelector).find('input:checked').removeAttr('checked').data('selected', false);
+                        container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
+                        horzScroll();
+                        updateEllipsis();
+                        if (!container.is(':last-child') && options.callback) {
+                            options.callback();
+                        }
+                    } else {
+                        // Last-child section only receives focus on-click by default
+                        if (container.is(':last-child')) {
+                            if (options.lastChildCallback) {
+                                options.lastChildCallback(this);
+                            }
+                        } else {
+                            // Add a loading screen while waiting for the Ajax call to return data
+                            if (options.loading === true) {
+                                target.loadingOverlay();
+                            }
+                            // Add returned data to the next section
+                            $.get(
+                                ajaxUrl,
+                                function (response) {
+                                    container.next(options.sectionSelector).children(options.sectionContentSelector).html(response.html);
+                                    container.next(options.sectionSelector).loadingOverlay('remove');
+                                    updateEllipsis();
+                                }
+                            );
+                            container.removeClass('focus').prevAll(options.sectionSelector).removeClass('focus');
+                            container.next(options.sectionSelector).addClass('focus').children('ul').empty();
+                            container.next(options.sectionSelector).nextAll(options.sectionSelector).removeClass('focus').children('ul').empty();
+                            horzScroll();
+                            if (options.callback) {
+                                options.callback();
+                            }
+                        }
+                        markSelected();
+                    }
+                });
             };
 
         context.find('.finder').data('cols', numberCols);
@@ -61,7 +123,7 @@
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.find('a').live('click', function() {
+        headers.find('a').live('click', function () {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
                 selectorClass = $(this).parent().attr('class').substring(2),
@@ -106,52 +168,8 @@
             return false;
         });
 
-        for (var i = 0; i < numberCols; i++) {
-            context.find(options.sectionItemSelectors[i]).live('click', function() {
-                var container = $(this).closest(options.sectionSelector);
-                // Clicking an already-selected input only scrolls (if applicable), adds focus, and empties subsequent sections
-                if ($(this).data('selected') === true && !container.hasClass('focus')) {
-                    container.addClass('focus').siblings(options.sectionSelector).removeClass('focus');
-                    container.next(options.sectionSelector).find('input:checked').removeAttr('checked').data('selected', false);
-                    container.next(options.sectionSelector).nextAll(options.sectionSelector).children('ul').empty();
-                    horzScroll();
-                    updateEllipsis();
-                    if (!container.is(':last-child') && options.callback) {
-                        options.callback();
-                    }
-                } else {
-                    var ajaxUrl = $(this).data("sub-url");
-                    // Last-child section only receives focus on-click by default
-                    if (container.is(':last-child')) {
-                        if (options.lastChildCallback) {
-                            options.lastChildCallback(this);
-                        }
-                    } else {
-                        // Add a loading screen while waiting for the Ajax call to return data
-                        if (options.loading === true) {
-                            var target = container.next(options.sectionSelector);
-                            target.loadingOverlay();
-                        }
-                        // Add returned data to the next section
-                        $.get(
-                            ajaxUrl,
-                            function(data) {
-                                container.next(options.sectionSelector).children(options.sectionContentSelector).html(data.html);
-                                container.next(options.sectionSelector).loadingOverlay('remove');
-                                updateEllipsis();
-                            }
-                        );
-                        container.removeClass('focus').prevAll(options.sectionSelector).removeClass('focus');
-                        container.next(options.sectionSelector).addClass('focus').children('ul').empty();
-                        container.next(options.sectionSelector).nextAll(options.sectionSelector).removeClass('focus').children('ul').empty();
-                        horzScroll();
-                        if (options.callback) {
-                            options.callback();
-                        }
-                    }
-                    markSelected();
-                }
-            });
+        for (i = 0; i < numberCols; i = i + 1) {
+            itemClick(i);
         }
     };
 
@@ -183,4 +201,4 @@
         callback: null,                     // Callback function, currently runs after input in any section (except lastChild) is selected
         lastChildCallback: null             // Callback function, currently runs after input in last section is selected
     };
-})(jQuery);
+}(jQuery));
