@@ -512,44 +512,59 @@ var TCM = TCM || {};
                 }
             });
 
-            editElementLink.live('click', function () {
+            editElementLink.live('click', function (event) {
                 var thisElement = $(this).closest('li'),
-                    id = thisElement.find('input').attr('id'),
+                    inputId = thisElement.find('input').attr('id'),
+                    elementId = thisElement.data('element-id'),
                     name = thisElement.find('label').html(),
-                    checked = false,
-                    editThisElement;
-                if (thisElement.find('input').is(':checked')) {
-                    checked = true;
-                }
-                editThisElement = ich.env_profile_element_edit({
-                    id: id,
-                    name: name,
-                    checked: checked
-                });
+                    checked = thisElement.find('input').is(':checked'),
+                    editThisElement = ich.env_profile_element_edit({
+                        inputId: inputId,
+                        elementId: elementId,
+                        name: name,
+                        checked: checked
+                    });
                 thisElement.replaceWith(editThisElement);
+
+                event.preventDefault();
             });
 
             editElement.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var thisElement = $(this).closest('.editing'),
-                        name = $(this).val(),
-                        id = $(this).attr('id'),
-                        preview = $(this).closest('.item').find('.preview').find('label[for="' + id + '"]').closest('li'),
-                        checked = $(this).data('checked'),
-                        editedElement = ich.env_profile_element({
-                            name: name,
-                            id: id
-                        }),
-                        editedElementPreview = ich.env_profile_element_preview({
-                            name: name,
-                            id: id
-                        });
-                    thisElement.replaceWith(editedElement);
-                    preview.replaceWith(editedElementPreview);
-                    if (checked) {
-                        $('#' + id).prop('checked', checked);
-                        updateLabels();
-                    }
+                    var input = $(this),
+                        thisElement = input.closest('.editing'),
+                        name = input.val(),
+                        inputId = input.attr('id'),
+                        elementId = input.data('element-id'),
+                        preview = input.closest('.item').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
+                        checked = input.data('checked'),
+                        url = '',
+                        data = {},
+                        success = function (response) {
+                            var editedElem = $(response.elem),
+                                editedPreview = $(response.preview);
+
+                            thisElement.replaceWith(editedElem);
+                            preview.replaceWith(editedPreview);
+
+                            if (checked) {
+                                $('#' + inputId).prop('checked', checked);
+                                updateLabels();
+                            }
+
+                            input.val(null);
+                            thisElement.loadingOverlay('remove');
+                        };
+
+                    data['element-id'] = elementId;
+                    data[input.attr('name')] = input.val();
+
+                    thisElement.loadingOverlay();
+                    $.ajax(url, {
+                        type: "POST",
+                        data: data,
+                        success: success
+                    });
 
                     event.preventDefault();
                 }

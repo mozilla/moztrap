@@ -78,12 +78,20 @@ def environment_actions():
                     preview_template_name = (
                         "manage/environment/add_profile/"
                         "_element_preview_list_item.html")
+                    new_element_name = request.POST.get("new-element-name")
 
-                    e = Environment(
-                        name=request.POST.get("new-element-name"),
-                        company=request.company,
-                        environmentType=request.POST.get("category-id"))
-                    EnvironmentList.get(auth=request.auth).post(e)
+                    if "element-id" in request.POST:
+                        e = EnvironmentList.get_by_id(
+                            request.POST.get("element-id"),
+                            auth=request.auth)
+                        e.name = new_element_name
+                        e.put()
+                    else:
+                        e = Environment(
+                            name=new_element_name,
+                            company=request.company,
+                            environmentType=request.POST.get("category-id"))
+                        EnvironmentList.get(auth=request.auth).post(e)
 
                     data["elem"] = render_to_string(
                         template_name,

@@ -31,10 +31,7 @@
       </nav>
 
       <div class="items">
-        {% icanhaz "env_profile_element" %}
-        {% icanhaz "env_profile_element_preview" %}
         {% icanhaz "env_profile_element_edit" %}
-        {% icanhaz "env_profile_category" %}
 
         {% for category in categories %}
         {% include "manage/environment/add_profile/_category_list_item.html" %}
