@@ -1,10 +1,7 @@
 /*jslint    browser:    true,
             indent:     4,
-            confusion:  true
-*/
-/*global    ich,
-            jQuery
-*/
+            confusion:  true */
+/*global    ich, jQuery */
 
 var TCM = TCM || {};
 
@@ -391,7 +388,7 @@ var TCM = TCM || {};
                             if (!response.no_replace) {
                                 replace.trigger('replace', [replacement]);
                                 replace.replaceWith(replacement);
-                                replacement.find('.details').html5accordion('.summary');
+                                replacement.find('.details').html5accordion();
                             }
                             replace.loadingOverlay('remove');
                         },
@@ -485,7 +482,7 @@ var TCM = TCM || {};
                             index: index
                         });
                     $(this).closest('.items').children('.add-item').before(newCategory);
-                    $('#category-id-' + index.toString()).find('.details').andSelf().html5accordion('.summary');
+                    $('#category-id-' + index.toString()).find('.details').andSelf().html5accordion();
                     $(this).val(null);
 
                     event.preventDefault();
@@ -575,7 +572,7 @@ var TCM = TCM || {};
         manageActionsAjax();
         manageEnvProfiles();
         slideshow('#addcase', '.forms', '.forms form', 'a[href^="#"][href$="-case-form"]');
-        $('.details:not(html)').html5accordion('.summary');
+        $('.details:not(html)').html5accordion();
         $('#messages').messages({
             handleAjax: true,
             closeLink: '.message'

@@ -1,10 +1,6 @@
 /*jslint    browser:    true,
-            indent:     4,
-            confusion:  true
-*/
-/*global    ich,
-            jQuery
-*/
+            indent:     4 */
+/*global    ich, jQuery */
 
 (function ($) {
 
@@ -69,7 +65,7 @@
                                     newCase;
                                 testcase.replaceWith(data.html);
                                 newCase = "#" + id;
-                                $(newCase).find('.details').andSelf().html5accordion('.summary');
+                                $(newCase).find('.details').andSelf().html5accordion();
                                 testCaseButtons(newCase);
                                 $(newCase).loadingOverlay('remove');
                                 autoFocus('.details.stepfail > .summary');

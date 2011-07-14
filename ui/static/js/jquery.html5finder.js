@@ -1,8 +1,7 @@
 /*jslint    browser:    true,
             indent:     4,
-            confusion:  true
-*/
-/*global    ich, jQuery */
+            confusion:  true */
+/*global    jQuery */
 
 /**
  * jQuery html5finder 0.1

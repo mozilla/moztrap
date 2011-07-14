@@ -1,10 +1,6 @@
 /*jslint    browser:    true,
-            indent:     4,
-            confusion:  true
-*/
-/*global    ich,
-            jQuery
-*/
+            indent:     4 */
+/*global    jQuery */
 
 (function ($) {
 

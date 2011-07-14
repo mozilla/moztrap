@@ -1,8 +1,6 @@
 /*jslint    browser:    true,
-            indent:     4,
-            confusion:  true
-*/
-/*global    ich, jQuery */
+            indent:     4 */
+/*global    jQuery */
 
 /**
  * jQuery SuperFormset 0.1
@@ -63,7 +61,7 @@
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
                         if (options.removeAnimationSpeed) {
-                            row.animate({"height": "toggle", "opacity": "toggle"}, options.removeAnimationSpeed, function () {
+                            row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
                                 $(this).hide();
                             });
                         } else {
@@ -72,7 +70,7 @@
                         forms = parent.find(options.formSelector).not(':hidden');
                     } else {
                         if (options.removeAnimationSpeed) {
-                            row.animate({"height": "toggle", "opacity": "toggle"}, options.removeAnimationSpeed, function () {
+                            row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
                                 $(this).remove();
                             });
                         } else {
@@ -140,7 +138,7 @@
                     var formCount = parseInt(totalForms.val(), 10),
                         row = options.formTemplate.clone(true);
                     if (options.addAnimationSpeed) {
-                        row.hide().css('opacity', 0).appendTo(parent).animate({"height": "toggle", "opacity": 0.5}, options.addAnimationSpeed).find('input, select, textarea, label').focus(function () {
+                        row.hide().css('opacity', 0).appendTo(parent).animate({'height': 'toggle', 'opacity': '0.5'}, options.addAnimationSpeed).find('input, select, textarea, label').focus(function () {
                             $(this).closest(options.formSelector).css('opacity', 1);
                         });
                     } else {
