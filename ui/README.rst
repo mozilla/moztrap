@@ -9,7 +9,7 @@ Platform version
 ----------------
 
 This version of the UI expects to use git commit hash
-'bb4da75f85218281a7167ebfc547260f59d837a0' of the platform.
+'197d45a878b0bce3cfcff32e0ffc5bef7f28f3ab' of the platform.
 
 
 Development
