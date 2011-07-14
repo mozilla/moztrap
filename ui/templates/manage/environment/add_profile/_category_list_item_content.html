@@ -9,7 +9,7 @@
   {% endfor %}
 
   <li class="add-element edit">
-    <label for="{{ category.id }}-add-element">add element</label>
-    <input type="text" name="{{ category.id }}-add-element" value="" id="{{ category.id }}-add-element" placeholder="add an element">
+    <label for="category-{{ category.id }}-new-element-name">add element</label>
+    <input type="text" name="new-element-name" value="" id="category-{{ category.id }}-new-element-name" placeholder="add an element" data-category-id="{{ category.id }}">
   </li>
 </ul>

@@ -424,8 +424,12 @@ var TCM = TCM || {};
                     });
                 };
 
-            elements.bind('replace', function (event, replacement) {
-                // @@@ add code here to remove preview for this element
+            elements.live('replace', function (event, replacement) {
+                // @@@ add code here to remove preview for this element, if
+                // replacement.html() is null (means its being deleted)
+
+                // other actions might also cause this to fire, with new HTML
+                // (already parsed into jQuery object) in "replacement"
             });
 
             elementInputs.live('change', function () {
@@ -453,37 +457,56 @@ var TCM = TCM || {};
 
             addElement.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var name = $(this).val(),
-                        externalIndex = $(this).closest('.items').children('[id^="category"]').length + 1,
-                        internalIndex = $(this).closest('.elements').children('li').not('.add-element').length + 1,
-                        id = externalIndex.toString() + '-elemslug' + internalIndex.toString(),
-                        newElement = ich.env_profile_element({
-                            name: name,
-                            id: id
-                        }),
-                        newElementPreview = ich.env_profile_element_preview({
-                            name: name,
-                            id: id
-                        });
-                    $(this).closest('.elements').children('li.add-element').before(newElement);
-                    $(this).closest('.item').find('.preview').append(newElementPreview);
-                    $(this).val(null);
+                    var input = $(this),
+                        name = input.val(),
+                        loading = input.closest('.content'),
+                        url = '',
+                        data = {},
+                        success = function (response) {
+                            var newElem = $(response.elem),
+                                newPreview = $(response.preview);
+                            input.closest('.elements').children('li.add-element').before(newElem);
+                            input.closest('.item').find('.preview').append(newPreview);
+
+                            input.val(null);
+                            loading.loadingOverlay('remove');
+                        };
+                    data['category-id'] = input.data('category-id');
+                    data[input.attr('name')] = input.val();
+
+                    loading.loadingOverlay();
+                    $.ajax(url, {
+                        type: "POST",
+                        data: data,
+                        success: success
+                    });
 
                     event.preventDefault();
                 }
             });
 
-            addCategory.keydown(function (event) {
+            addCategory.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var name = $(this).val(),
-                        index = $(this).closest('.items').children('[id^="category"]').length + 1,
-                        newCategory = ich.env_profile_category({
-                            name: name,
-                            index: index
-                        });
-                    $(this).closest('.items').children('.add-item').before(newCategory);
-                    $('#category-id-' + index.toString()).find('.details').andSelf().html5accordion();
-                    $(this).val(null);
+                    var input = $(this),
+                        loading = input.closest('.content'),
+                        url = '',
+                        data = {},
+                        success = function (response) {
+                            var newelem = $(response.html);
+                            input.closest('.items').children('.add-item').before(newelem);
+                            newelem.find('.details').andSelf().html5accordion();
+
+                            input.val(null);
+                            loading.loadingOverlay('remove');
+                        };
+                    data[input.attr('name')] = input.val();
+
+                    loading.loadingOverlay();
+                    $.ajax(url, {
+                        type: "POST",
+                        data: data,
+                        success: success
+                    });
 
                     event.preventDefault();
                 }
