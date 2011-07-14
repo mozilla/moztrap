@@ -4286,13 +4286,13 @@ button[name="action-edit"] {
 }
 
 /* narrow Environments ------------------------------------------------------- */
-.envnarrowing .bybulk, .envnarrowing .bulk {
+#envnarrowlist .bybulk, #envnarrowlist .bulk {
   display: inline;
   float: left;
   width: 3.158%;
   margin-right: 1.053%;
 }
-.envnarrowing .bybulk label, .envnarrowing .bulk label {
+#envnarrowlist .bybulk label, #envnarrowlist .bulk label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4302,10 +4302,10 @@ button[name="action-edit"] {
   width: 1px;
   border: 0;
 }
-.envnarrowing .bybulk input, .envnarrowing .bulk input {
+#envnarrowlist .bybulk input, #envnarrowlist .bulk input {
   margin-left: 0.809em;
 }
-.envnarrowing .bypreview, .envnarrowing .preview {
+#envnarrowlist .bypreview, #envnarrowlist .preview {
   display: inline;
   float: left;
   width: 95.789%;
@@ -4315,7 +4315,7 @@ button[name="action-edit"] {
   margin-right: 0;
   text-align: left;
 }
-.envnarrowing .content {
+#envnarrowlist .content {
   padding-left: 4.211%;
   padding-right: 4.211%;
 }
