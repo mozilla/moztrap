@@ -1,0 +1,32 @@
+{% extends 'manage/product/product_base.html' %}
+
+{% block listcontent %}
+<section id="editproduct">
+  <h2>edit product name</h2>
+  <form id="product-edit-form" method="POST">
+    <ul class="basic">
+      <li>
+        <label for="name">name</label>
+        <input type="text" name="name" value="product name" id="name">
+      </li>
+      <li>
+        <label for="description">description</label>
+        <textarea name="description" id="description">current description.</textarea>
+      </li>
+    </ul>
+
+    {% include "manage/environment/_narrow_list.html" %}
+
+    <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+      <h3 class="summary">assign specific users to this product &raquo;</h3>
+      <div>
+        {% include "manage/_team_select.html" %}
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <button type="submit">save product</button>
+    </div>
+  </form>
+</section>
+{% endblock listcontent %}

@@ -7,7 +7,7 @@
       a description of the product that can be truncated as needed.
     </p>
     <div class="controls">
-      <a href="#{# @@@ #}" title="edit">edit</a>
+      <a href="{% url manage_product_edit %}" title="edit">edit</a>
       <button title="clone" type="submit" name="action-clone" value="{{ id }}">clone</button>
       <button title="delete" type="submit" name="action-delete" value="{{ id }}">delete</button>
     </div>

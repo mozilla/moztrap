@@ -47,6 +47,8 @@ urlpatterns = patterns(
         {"template": "manage/product/products.html"}, name="manage_products"),
     url(r"^product/add/$", direct_to_template,
         {"template": "manage/product/add_product.html"}, name="manage_product_add"),
+    url(r"^product/edit/$", direct_to_template,
+        {"template": "manage/product/edit_product.html"}, name="manage_product_edit"),
 
     # environment profile edit (wireframed)
     url(r"^environment/edit/$", direct_to_template,

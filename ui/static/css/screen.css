@@ -3539,7 +3539,22 @@ button[name="action-edit"] {
   padding-bottom: 1.618em;
 }
 
-/* Create Product -------------------------------------------------------------- */
+/* Create/Edit Product -------------------------------------------------------------- */
+#editproduct .basic {
+  clear: both;
+  padding-right: 50.526%;
+}
+#editproduct .basic label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
 /* Create/Edit Cycle -------------------------------------------------------------- */
 #addcycle .item {
   padding-top: 0.405em;
@@ -4271,13 +4286,13 @@ button[name="action-edit"] {
 }
 
 /* narrow Environments ------------------------------------------------------- */
-#envnarrowing .bybulk, #envnarrowing .bulk {
+.envnarrowing .bybulk, .envnarrowing .bulk {
   display: inline;
   float: left;
   width: 3.158%;
   margin-right: 1.053%;
 }
-#envnarrowing .bybulk label, #envnarrowing .bulk label {
+.envnarrowing .bybulk label, .envnarrowing .bulk label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4287,10 +4302,10 @@ button[name="action-edit"] {
   width: 1px;
   border: 0;
 }
-#envnarrowing .bybulk input, #envnarrowing .bulk input {
+.envnarrowing .bybulk input, .envnarrowing .bulk input {
   margin-left: 0.809em;
 }
-#envnarrowing .bypreview, #envnarrowing .preview {
+.envnarrowing .bypreview, .envnarrowing .preview {
   display: inline;
   float: left;
   width: 95.789%;
@@ -4300,7 +4315,7 @@ button[name="action-edit"] {
   margin-right: 0;
   text-align: left;
 }
-#envnarrowing .content {
+.envnarrowing .content {
   padding-left: 4.211%;
   padding-right: 4.211%;
 }
