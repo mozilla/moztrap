@@ -12,7 +12,7 @@
   <h2>Manage Environment Profiles</h2>
 
   {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-  <a href="{% url manage_environments_add %}" class="create">create a profile</a>
+  <a href="{% url manage_environment_add %}" class="create">create a profile</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
