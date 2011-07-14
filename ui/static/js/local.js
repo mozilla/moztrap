@@ -383,8 +383,7 @@ var TCM = TCM || {};
                 function () {
                     var button = $(this),
                         form = button.closest('form'),
-                        token = form.find('input[name=csrfmiddlewaretoken]'),
-                        url = form.attr('action'),
+                        url = form.prop('action'),
                         method = form.attr('method'),
                         replace = button.closest('.action-ajax-replace'),
                         success = function (response) {
@@ -395,7 +394,6 @@ var TCM = TCM || {};
                         },
                         data = {};
                     data[button.attr('name')] = button.val();
-                    data.csrfmiddlewaretoken = token.val();
                     replace.loadingOverlay();
                     $.ajax(url, {
                         type: method,
