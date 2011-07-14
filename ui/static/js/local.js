@@ -1,5 +1,6 @@
 /*jslint    browser:    true,
-            indent:     4
+            indent:     4,
+            confusion:  true
 */
 /*global    ich,
             jQuery
@@ -524,9 +525,9 @@ var TCM = TCM || {};
                     if (checked) {
                         $('#' + id).prop('checked', checked);
                         updateLabels();
+                    }
 
                     event.preventDefault();
-                    }
                 }
             });
 
