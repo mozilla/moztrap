@@ -424,6 +424,9 @@ var TCM = TCM || {};
                     });
                 };
 
+            // some elements may load already checked
+            updateLabels();
+
             elements.live('replace', function (event, replacement) {
                 // @@@ add code here to remove preview for this element, if
                 // replacement.html() is null (means its being deleted)

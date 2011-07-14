@@ -1,6 +1,6 @@
 <li class="action-ajax-replace" data-element-id="{{ element.id }}">
   <div class="element-select">
-    <input type="checkbox" name="element" value="{{ element.id }}" id="element-{{ element.id }}">
+    <input type="checkbox" name="element" value="{{ element.id }}" id="element-{{ element.id }}"{% if element.id in selected_elements %} checked{% endif %}>
     <label for="element-{{ element.id }}">{{ element.name }}</label>
   </div>
   <div class="element-controls">

@@ -411,18 +411,32 @@ def environment_profiles(request):
 def add_environment_profile(request):
     etl = EnvironmentTypeList.get(auth=request.auth)
 
-    if request.method == "POST":
-        element_ids = request.POST.getlist("element")
-        name = request.POST.get("profile_name")
-        egt = EnvironmentType(
-            name=name, company=request.company, groupType=True)
-        etl.post(egt)
-        request.company.autogenerate_env_groups(element_ids, egt)
+    element_ids = set()
 
-        return redirect("manage_environments") # @@@ should go to profile edit
+    if request.method == "POST":
+        element_ids.update(request.POST.getlist("element"))
+        name = request.POST.get("profile_name")
+
+        if not name:
+            messages.error(request, "Please provide a profile name.")
+        elif not element_ids:
+            messages.error(
+                request, "At least one environment element must be selected.")
+        else:
+            egt = EnvironmentType(
+                name=name, company=request.company, groupType=True)
+            etl.post(egt)
+            request.company.autogenerate_env_groups(element_ids, egt)
+
+             # @@@ should go to profile edit instead
+            return redirect("manage_environments")
 
     categories = etl.filter(groupType=False)
     return TemplateResponse(
         request,
         "manage/environment/add_profile.html",
-        {"categories": categories})
+        {
+            "categories": categories,
+            "selected_elements": element_ids
+            }
+        )
