@@ -3,9 +3,9 @@
 MESSAGES = {
     "duplicate.name": ("This name is already in use.", ["name"]),
     "changing.used.entity": (
-        "The %(name)s is in use and cannot be modified.", []),
+        "%(name)s is in use elsewhere and cannot be modified.", []),
     "deleting.used.entity": (
-        "The %(name)s is in use and cannot be deleted.", []),
+        "%(name)s is in use elsewhere and cannot be deleted.", []),
     "invalid.user": (
         "You created this; someone else must approve or reject it.", []),
     "activating.incomplete.entity": {

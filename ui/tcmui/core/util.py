@@ -139,3 +139,22 @@ def convert_to_list(v):
     if not is_iterable(v):
         return [v]
     return list(v)
+
+
+
+def get_action(post_data):
+    """
+    Given a request.POST including e.g. {"action-delete": "3"}, return
+    ("delete", "3"). Doesn't care about the value, just looks for POST keys
+    beginning with "action-". Returns None if no action found.
+
+    If multiple actions are found, returns only the first.
+
+    """
+    actions = [
+        (k[len("action-"):], v) for k, v in post_data.iteritems()
+        if k.startswith("action-")
+        ]
+    if actions:
+        return actions[0]
+    return None

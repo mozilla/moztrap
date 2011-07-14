@@ -1,10 +1,10 @@
-<li>
+<li class="action-ajax-replace">
   <div class="element-select">
     <input type="checkbox" name="element" value="{{ element.id }}" id="element-{{ element.id }}">
     <label for="element-{{ element.id }}">{{ element.name }}</label>
   </div>
   <div class="element-controls">
-    <button name="action-edit" value="element-{{ element.id }}">edit</button>
+    <a href="#" title="edit">edit</a>
     <button name="action-delete" value="element-{{ element.id }}">delete</button>
   </div>
 </li>

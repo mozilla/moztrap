@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 
 from . import pagination, filters, errors, sort as sort_util
 from .auth import admin
+from .util import get_action
 
 
 
@@ -117,11 +118,9 @@ def actions(list_model, allowed_actions, fall_through=False):
         def _wrapped_view(request, *args, **kwargs):
             if request.method == "POST":
                 action_taken = False
-                actions = [(k, v) for k, v in request.POST.iteritems()
-                           if k.startswith("action-")]
-                if actions:
-                    action, obj_id = actions[0]
-                    action = action[len("action-"):]
+                action_data = get_action(request.POST)
+                if action_data:
+                    action, obj_id = action_data
                     if action in allowed_actions:
                         obj = list_model.get_by_id(obj_id, auth=request.auth)
                         try:

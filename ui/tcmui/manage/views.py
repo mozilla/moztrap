@@ -1,13 +1,20 @@
+import json
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
 from ..core import decorators as dec
+from ..core import errors
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
-from ..environments.models import EnvironmentTypeList
+from ..core.util import get_action
+from ..environments.models import EnvironmentTypeList, EnvironmentList
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -405,8 +412,51 @@ def environment_profiles(request):
 
 
 
+ACTION_TYPES = {
+    "category": (
+        EnvironmentTypeList,
+        "manage/environment/add_profile/_category_list_item.html",
+        ),
+    "element": (
+        EnvironmentList,
+        "manage/environment/add_profile/_element_list_item.html",
+        ),
+    }
+
+
 @login_redirect
 def add_environment_profile(request):
+    if request.is_ajax() and request.method == "POST":
+        action_data = get_action(request.POST)
+        if action_data:
+            action, obj_spec = action_data
+            if action in ["delete"]:
+                obj_type, obj_id = obj_spec.split("-")
+                list_obj, template_name = ACTION_TYPES[obj_type]
+                obj = list_obj.get_by_id(obj_id, auth=request.auth)
+                data = {}
+
+                try:
+                    getattr(obj, action)()
+                except obj.Conflict, e:
+                    messages.error(
+                        request, errors.error_message(obj, e))
+                    success = False
+                else:
+                    success = True
+
+                if action == "delete":
+                    if success:
+                        data["html"] = ""
+                    else:
+                        data["no_replace"] = True
+                else:
+                    data["html"] = render_to_string(
+                        template_name, {obj_type: obj}, RequestContext())
+
+                return HttpResponse(
+                    json.dumps(data), content_type="application/json")
+
     categories = EnvironmentTypeList.get(auth=request.auth).filter(
         groupType=False)
     return TemplateResponse(

@@ -388,8 +388,10 @@ var TCM = TCM || {};
                         replace = button.closest('.action-ajax-replace'),
                         success = function (response) {
                             var replacement = $(response.html);
-                            replace.replaceWith(replacement);
-                            replacement.find('.details').html5accordion('.summary');
+                            if (!response.no_replace) {
+                                replace.replaceWith(replacement);
+                                replacement.find('.details').html5accordion('.summary');
+                            }
                             replace.loadingOverlay('remove');
                         },
                         data = {};
@@ -410,10 +412,8 @@ var TCM = TCM || {};
                 categories = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
                 addElement = $('input[id$="-add-element"]'),
                 addCategory = $('input#new-category-name'),
-                editElementButton = $('#addprofile .item .elements button[name="action-edit"]'),
+                editElementLink = $('#addprofile .item .elements a[title="edit"]'),
                 editElement = $('#addprofile .item .elements .editing input'),
-                deleteElement = $('#addprofile .element-controls button[name="action-delete"]'),
-                deleteCategory = $('#addprofile .item .controls button[name="action-delete"]'),
                 updateLabels = function () {
                     $('#addprofile .item .elements .element-select input').each(function () {
                         var thisID = $(this).attr('id');
@@ -486,7 +486,7 @@ var TCM = TCM || {};
                 }
             });
 
-            editElementButton.live('click', function () {
+            editElementLink.live('click', function () {
                 var thisElement = $(this).closest('li'),
                     id = thisElement.find('input').attr('id'),
                     name = thisElement.find('label').html(),
@@ -527,16 +527,6 @@ var TCM = TCM || {};
 
                     event.preventDefault();
                 }
-            });
-
-            deleteElement.live('click', function () {
-                var id = $(this).closest('li').find('input').attr('id');
-                $(this).closest('li').detach();
-                $('label[for="' + id + '"]').closest('li').detach();
-            });
-
-            deleteCategory.live('click', function () {
-                $(this).closest('.item').detach();
             });
         },
 
