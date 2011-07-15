@@ -1,0 +1,17 @@
+{% extends 'manage/environment/_env_list_item.html' %}
+
+{% block env-select %}
+  <span class="bulk">
+    <input type="checkbox" name="bulk-select" value="{{ env.id }}" id="{{ env.id }}-bulk-select">
+    <label for="{{ env.id }}-bulk-select">{{ env.name }} bulk select</label>
+  </span>
+{% endblock %}
+
+
+{% block env-content %}
+  <ul class="env-element-list">
+    {% for element in env.elements %}
+    <li>{{ element.name }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

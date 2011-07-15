@@ -1,26 +1,19 @@
 <article id="env-id-{{ id }}" class="item details">
   <header class="summary">
-    {% if not edit %}
-      <span class="bulk">
-        <input type="checkbox" name="{{ id }}_bulk_select" value="" id="{{ id }}_bulk_select">
-        <label for="{{ id }}_bulk_select">{{ id }} bulk select</label>
-      </span>
-    {% endif %}
+    {% block env-select %}
+    {% endblock %}
     <h3 class="preview">
       <ul>
-        <li>windows</li>
-        <li>english</li>
-        <li>firefox</li>
+        {% for element in env.elements %}
+        <li>{{ element.name }}</li>
+        {% endfor %}
       </ul>
     </h3>
-    {% if edit %}
-      <div class="controls">
-        <button title="clone" type="submit" name="action-clone">clone</button>
-        <button title="delete" type="submit" name="action-delete">delete</button>
-      </div>
-    {% endif %}
+    {% block env-actions %}
+    {% endblock %}
   </header>
   <div class="content">
-    {% include "manage/environment/_env_list_item_content.html" %}
+    {% block env-content %}
+    {% endblock %}
   </div>
 </article>

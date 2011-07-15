@@ -1,6 +1,22 @@
 """
 Environment-related remote objects.
 
+The nomenclature here is a massive pile of confusion, because the platform
+follows one set of terminology that was determined to be too confusing for the
+UI to use, so the UI uses a different set of terms. The translation, more or
+less, takes place in this file and tcmui/manage/views.py. Templates should
+exclusively use UI terms.
+
+Here, for reference, is a translation table with examples:
+
+================================ ====================== ========================
+         Platform                   UI                      Example
+-------------------------------- ---------------------- ------------------------
+EnvironmentType(groupType=True)  environment profile    Website Testing Envs
+EnvironmentType(groupType=False) environment category   Operating System
+EnvironmentGroup                 environment            Linux, English, Chrome
+Environment                      environment element    Linux
+
 """
 from collections import namedtuple
 
@@ -11,6 +27,20 @@ from . import util
 
 
 class EnvironmentType(RemoteObject):
+    """
+    This resource conflates two objects that are really quite dissimilar into
+    one resource (because that's how the platform does it).
+
+    An EnvironmentType(groupType=True) is known in the UI as an "environment
+    profile", e.g. "Website Testing Environments", and contains
+    EnvironmentGroups (known in the UI as "environments"), e.g. "Linux,
+    English, Chrome".
+
+    An EnvironmentType(groupType=False) is known in the UI as an "environment
+    category" (e.g. "Operating System") and contains Environments (known in the
+    UI as "environment elements"), e.g. "Linux".
+
+    """
     company = fields.Locator(Company)
     name = fields.Field()
     groupType = fields.Field()
@@ -81,9 +111,23 @@ class EnvironmentTypeList(ListObject):
 
 
 class Environment(RemoteObject):
+    """
+    This is an individual environment characteristic (e.g. "Linux" or
+    "English"), known in the UI as an "environment element."
+
+    Its environmentType attribute should be an
+    EnvironmentType(groupType=False), or in UI terms an "environment category".
+
+    """
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
+
+
+    # UI nomenclature
+    @property
+    def category(self):
+        return self.environmentType
 
 
     def __unicode__(self):
@@ -118,6 +162,15 @@ class EnvironmentList(ListObject):
 
 
 class EnvironmentGroup(RemoteObject):
+    """
+    This is a set of characteristics (e.g. "Linux, English, Chrome") that make
+    up a full (in UI terms) "environment". It contains what the platform calls
+    Environments (in UI terms, "environment elements").
+
+    Its environmentType attribute should be an EnvironmentType(groupType=True),
+    or a "profile" in UI terms.
+
+    """
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
     name = fields.Field()
@@ -131,8 +184,13 @@ class EnvironmentGroup(RemoteObject):
         return self.environments
 
 
+    @property
+    def profile(self):
+        return self.environmentType
+
+
     def __unicode__(self):
-        return self.name
+        return ", ".join(e.name for e in self.environments)
 
 
     def match(self, environments):

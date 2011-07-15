@@ -1,13 +1,20 @@
+import json
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
-from ..environments.models import EnvironmentTypeList, EnvironmentType
+from ..environments.models import (
+    EnvironmentTypeList, EnvironmentType, EnvironmentGroupList, EnvironmentList,
+    EnvironmentGroup)
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -424,13 +431,12 @@ def add_environment_profile(request):
             messages.error(
                 request, "At least one environment element must be selected.")
         else:
-            egt = EnvironmentType(
+            profile = EnvironmentType(
                 name=name, company=request.company, groupType=True)
-            etl.post(egt)
-            request.company.autogenerate_env_groups(element_ids, egt)
+            etl.post(profile)
+            request.company.autogenerate_env_groups(element_ids, profile)
 
-             # @@@ should go to profile edit instead
-            return redirect("manage_environments")
+            return redirect("manage_environment_edit", profile_id=profile.id)
 
     categories = etl.filter(groupType=False)
     return TemplateResponse(
@@ -442,3 +448,63 @@ def add_environment_profile(request):
             "profile_name": name,
             }
         )
+
+
+@login_redirect
+@dec.actions(
+    EnvironmentGroupList,
+    ["delete"],
+    fall_through=True)
+@dec.paginate('environments')
+@dec.ajax("manage/environment/edit_profile/_envs_list.html")
+def edit_environment_profile(request, profile_id):
+    profile = EnvironmentTypeList.get_by_id(profile_id, auth=request.auth)
+
+    if request.is_ajax() and request.method == "POST":
+        if "save-profile-name" in request.POST:
+            new_name = request.POST.get("profile-name")
+            data = {}
+            if not new_name:
+                messages.error(request, "Please enter a profile name.")
+                data["success"] = False
+            else:
+                profile.name = new_name
+                profile.put()
+                data["success"] = True
+
+            return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+        elif "add-environment" in request.POST:
+            element_ids = request.POST.getlist("element")
+            if not element_ids:
+                messages.error(
+                    request, "Please select some environment elements.")
+            else:
+                env = EnvironmentGroup(
+                    company=request.company,
+                    name=str([int(i) for i in element_ids]),
+                    environmentType=profile,
+                    )
+                EnvironmentGroupList.get(auth=request.auth).post(env)
+                env.environments = element_ids
+
+    return TemplateResponse(
+        request,
+        "manage/environment/edit_profile.html",
+        {
+            "profile": profile,
+            "environments": profile.environments, # platform-speak: env groups
+            }
+        )
+
+
+
+def autocomplete_env_elements(request):
+    text = request.GET.get("text") + r"%"
+    elements = EnvironmentList.get(auth=request.auth).filter(name=text)
+
+    data = dict((e.id, e.name) for e in elements)
+
+    return HttpResponse(json.dumps(data), content_type="application/json")

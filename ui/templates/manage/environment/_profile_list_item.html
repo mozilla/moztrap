@@ -15,7 +15,7 @@
   </ul>
   <div class="controls">
     {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <a href="/manage/environment/edit/{# @@@ #}" title="edit">edit</a>
+    <a href="{% url manage_environment_edit profile_id=profile.id %}" title="edit">edit</a>
     <button title="delete" type="submit" name="action-delete" value="{{ profile.id }}">delete</button>
     {% endif %}
   </div>

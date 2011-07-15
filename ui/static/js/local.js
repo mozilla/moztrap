@@ -405,7 +405,7 @@ var TCM = TCM || {};
             );
         },
 
-        manageEnvProfiles = function () {
+        createEnvProfile = function () {
             var elements = $('#addprofile .item .elements'),
                 elementInputs = elements.find('.element-select input'),
                 categoryInputs = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
@@ -579,6 +579,23 @@ var TCM = TCM || {};
             });
         },
 
+        editEnvProfile = function () {
+            var replaceList = $('#editprofile .managelist.action-ajax-replace');
+            $('#editprofile #profile-name-form').ajaxForm({
+                success: function (response) {
+                    debugger;
+                }
+            });
+            $('#editprofile #add-environment-form').ajaxForm({
+                success: function (response) {
+                    var newList = $(response.html);
+                    if (response.html) {
+                        replaceList.replaceWith(newList);
+                    }
+                }
+            });
+        },
+
         slideshow = function (contextSelector, containerSelector, slidesSelector, slideLinksSelector) {
             var context = $(contextSelector),
                 container = context.find(containerSelector),
@@ -616,7 +633,8 @@ var TCM = TCM || {};
         filtering();
         listDetails();
         manageActionsAjax();
-        manageEnvProfiles();
+        createEnvProfile();
+        editEnvProfile();
         slideshow('#addcase', '.forms', '.forms form', 'a[href^="#"][href$="-case-form"]');
         $('.details:not(html)').html5accordion();
         $('#messages').messages({

@@ -41,6 +41,8 @@ urlpatterns = patterns(
     # environment profiles
     url(r"^environments/$", "environment_profiles", name="manage_environments"),
     url(r"^environment/add/$", "add_environment_profile", name="manage_environment_add"),
+    url(r"^environment/edit/(?P<profile_id>\d+)/$", "edit_environment_profile", name="manage_environment_edit"),
+    url(r"^environment/_elements/", "autocomplete_env_elements", name="manage_environment_autocomplete_elements"),
 
     # products (wireframed)
     url(r"^products/$", direct_to_template,
@@ -50,9 +52,6 @@ urlpatterns = patterns(
     url(r"^product/edit/$", direct_to_template,
         {"template": "manage/product/edit_product.html"}, name="manage_product_edit"),
 
-    # environment profile edit (wireframed)
-    url(r"^environment/edit/$", direct_to_template,
-        {"template": "manage/environment/edit_profile.html"}),
     # environment narrowing (wireframed)
     url(r"^type/id/environments/$", direct_to_template,
         {"template": "manage/environment/narrowing.html"}),
