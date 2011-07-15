@@ -92,7 +92,7 @@ TEMPLATE_DIRS = [
     join(BASE_PATH, "templates"),
 ]
 
-DATE_FORMAT = "m/d/Y"
+DATE_FORMAT = "Y-m-d"
 
 INSTALLED_APPS = [
     "django.contrib.sessions",

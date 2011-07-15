@@ -37,7 +37,7 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
 
         for field in self.fields.values():
             if isinstance(field, forms.DateField):
-                field.widget.attrs.setdefault("placeholder", "mm/dd/yyyy")
+                field.widget.attrs.setdefault("placeholder", "yyyy-mm-dd")
 
 
 
