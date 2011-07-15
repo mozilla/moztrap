@@ -6,7 +6,7 @@
 
   <a href="{% url manage_product_add %}" class="create">create a product</a>
 
-  {% include "lists/_filter.html" %} {# @@@ #}
+  {% include "lists/_filter.html" %}
 
   <form method="POST">
     {% csrf_token %}

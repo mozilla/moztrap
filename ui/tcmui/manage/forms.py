@@ -2,6 +2,7 @@ import floppyforms as forms
 
 from ..core import forms as tcmforms
 
+from ..products.models import Product, ProductList
 from ..testcases.forms import StepFormSet
 from ..testcases.models import (
     TestSuite, TestSuiteList, TestCaseVersion, TestCaseList)
@@ -12,6 +13,31 @@ from ..testexecution.models import (
 
 def product_id_attrs(obj):
     return {"data-product-id": obj.product.id}
+
+
+
+class ProductForm(tcmforms.AddEditForm):
+    name = forms.CharField()
+    description = forms.CharField(widget=tcmforms.BareTextarea)
+    team = tcmforms.ModelMultipleChoiceField(required=False)
+
+
+    assign_later = ["team"]
+    entryclass = Product
+    listclass = ProductList
+
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
+        if "instance" not in kwargs:
+            self.base_fields["profile"] = tcmforms.ModelChoiceField()
+
+        super(ProductForm, self).__init__(*args, **kwargs)
+
+
+    @property
+    def extra_creation_data(self):
+        return {"company": self.company}
 
 
 
@@ -31,7 +57,6 @@ class TestCycleForm(tcmforms.AddEditForm):
     assign_later = ["team"]
     entryclass = TestCycle
     listclass = TestCycleList
-    parent_name = "product"
     extra_creation_data = {
         "communityAccessAllowed": True,
         "communityAuthoringAllowed": True,
@@ -59,7 +84,6 @@ class TestRunForm(tcmforms.AddEditForm):
     assign_later = ["team", "suites"]
     entryclass = TestRun
     listclass = TestRunList
-    parent_name = "testCycle"
     extra_creation_data = {
         "selfAssignLimit": 0,
         "selfAssignAllowed": True,
@@ -82,7 +106,6 @@ class TestSuiteForm(tcmforms.AddEditForm):
     assign_later = ["cases"]
     entryclass = TestSuite
     listclass = TestSuiteList
-    parent_name = "product"
 
 
 

@@ -4,23 +4,24 @@
 <section id="editproduct">
   <h2>edit product name</h2>
   <form id="product-edit-form" method="POST">
+    {% csrf_token %}
     <ul class="basic">
       <li>
-        <label for="name">name</label>
-        <input type="text" name="name" value="product name" id="name">
+        {% include "forms/_field.html" with field=form.name %}
       </li>
       <li>
-        <label for="description">description</label>
-        <textarea name="description" id="description">current description.</textarea>
+        {% include "forms/_field.html" with field=form.description %}
       </li>
     </ul>
 
-    {% include "manage/environment/_narrow_list.html" %}
+    {# @@@ put this on a separate page #}
+    {# include "manage/environment/_narrow_list.html" #}
 
     <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
       <h3 class="summary">assign specific users to this product &raquo;</h3>
       <div>
-        {% include "manage/_team_select.html" %}
+        {# @@@ needs the slick multiple-select widget #}
+        {% include "forms/_field.html" with field=form.team %}
       </div>
     </section>
 

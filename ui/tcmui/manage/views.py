@@ -4,8 +4,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from django.template import RequestContext
-from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
@@ -28,12 +26,85 @@ from ..users.models import UserList
 
 from .decorators import environment_actions
 from .finder import ManageFinder
-from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
+from .forms import (
+    ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm)
 
 
 
 def home(request):
     return redirect(reverse("manage_testcycles") + "?openfinder=1")
+
+
+
+@login_redirect
+@dec.finder(ManageFinder)
+@dec.actions(ProductList, ["delete"])
+@dec.filter("products",
+            ("name", KeywordFilter))
+@dec.paginate("products")
+@dec.sort("products")
+@dec.ajax("manage/product/_products_list.html")
+def products(request):
+    return TemplateResponse(
+        request,
+        "manage/product/products.html",
+        {
+            "products": ProductList.ours(auth=request.auth),
+            }
+        )
+
+
+
+@login_redirect
+@dec.finder(ManageFinder)
+def add_product(request):
+    form = ProductForm(
+        request.POST or None,
+        company=request.company,
+        profile_choices=EnvironmentTypeList.get(auth=request.auth).filter(
+            groupType=True),
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        product = form.save()
+        messages.success(
+            request,
+            "The product '%s' has been created."  % product.name)
+        return redirect("manage_products")
+    return TemplateResponse(
+        request,
+        "manage/product/add_product.html",
+        {"form": form}
+        )
+
+
+
+@never_cache
+@login_redirect
+@dec.finder(ManageFinder)
+def edit_product(request, product_id):
+    product = ProductList.get_by_id(product_id, auth=request.auth)
+    form = ProductForm(
+        request.POST or None,
+        instance=product,
+        company=request.company,
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        product = form.save()
+        messages.success(
+            request,
+            "The product '%s' has been saved."  % product.name)
+        return redirect("manage_products")
+
+    return TemplateResponse(
+        request,
+        "manage/product/edit_product.html",
+        {
+            "form": form,
+            "product": product,
+            }
+        )
 
 
 

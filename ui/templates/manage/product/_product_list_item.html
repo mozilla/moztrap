@@ -1,41 +1,38 @@
-<article id="product-id-{{ id }}" class="item details">
+<article id="product-id-{{ product.id }}" class="item details">
   <header class="summary">
     <h3 class="title">
-      {{ name }}
+      {{ product.name }}
     </h3>
     <p class="preview">
-      a description of the product that can be truncated as needed.
+      {{ product.description }}
     </p>
     <div class="controls">
-      <a href="{% url manage_product_edit %}" title="edit">edit</a>
-      <button title="clone" type="submit" name="action-clone" value="{{ id }}">clone</button>
-      <button title="delete" type="submit" name="action-delete" value="{{ id }}">delete</button>
+      <a href="{% url manage_product_edit product_id=product.id %}" title="edit">edit</a>
+      <button title="delete" type="submit" name="action-delete" value="{{ product.id }}">delete</button>
     </div>
   </header>
   <div class="content">
-    <p class="byline">created by soandso on datetime.</p>
+    <p class="byline">
+      Created by <span class="fn">{{ product.timeline.createdBy.screenName }}</span>
+      on <time pubdate>{{ product.timeline.createDate|date }}</time>
+    </p>
     <p class="description">
-      a longer description of the product. I don't know how long these get but
-      I hear they can be longer than your average terminal window line length.
-      If a typographer has anything to say about it, you'll probably find 60-some
-      characters on a line, but TextMate is set to wrap at 70-some. Oh well.
+      {{ product.description }}
     </p>
     <section class="components">
-      <h4><a href="#">Cycles in this product:</a></h4>
+      <h4><a href="{% url manage_testcycles %}?product={{ product.id }}">Cycles in this product:</a></h4>
       <ul>
-        <li><a href="#">cycle name</a></li>
-        <li><a href="#">cycle name</a></li>
-        <li><a href="#">cycle name</a></li>
-        <li><a href="#">cycle name</a></li>
+        {% for cycle in product.testcycles %}
+        <li><a href="{% url manage_testcycles %}?product={{ product.id }}#cycle-id-{{ cycle.id }}">{{ cycle.name }}</a></li>
+        {% endfor %}
       </ul>
     </section>
     <div class="testers">
       <h4>testers</h4>
       <ul>
-        <li>tester screenName</li>
-        <li>tester screenName</li>
-        <li>tester screenName</li>
-        <li>tester screenName</li>
+        {% for tester in product.team %}
+        <li> {{ tester.screenName }}</li>
+        {% endfor %}
       </ul>
     </div>
   </div>

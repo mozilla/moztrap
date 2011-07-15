@@ -18,6 +18,12 @@ class Product(RemoteObject):
     environmentgroups = fields.Link(EnvironmentGroupList)
     team = fields.Link(Team, api_name="team/members")
 
+    @property
+    def testcycles(self):
+        from ..testexecution.models import TestCycleList
+
+        return TestCycleList.get(auth=self.auth).filter(product=self)
+
 
     def __unicode__(self):
         return self.name

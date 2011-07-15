@@ -1,11 +1,11 @@
 {% load sort %}
 
-<div class="managelist">
+<div class="managelist action-ajax-replace">
   <nav class="listordering">
     <h3 class="navhead">List Ordering</h3>
     <ul>
       <li class="bytitle">
-        <a href="#">name</a>
+        <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
       </li>
       <li class="bypreview">
         <span>preview</span>
@@ -17,9 +17,9 @@
   </nav>
 
   <div class="items">
-    {% include "manage/product/_product_list_item.html" with id="01" name="firefox" %}
-    {% include "manage/product/_product_list_item.html" with id="02" name="fennec" %}
-    {% include "manage/product/_product_list_item.html" with id="03" name="case conductor" %}
+    {% for product in products %}
+    {% include "manage/product/_product_list_item.html" %}
+    {% endfor %}
   </div>
 
   {% include "lists/_listnav.html" %}

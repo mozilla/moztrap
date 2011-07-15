@@ -6,6 +6,11 @@ urlpatterns = patterns(
     "tcmui.manage.views",
     url("^$", "home", name="manage"),
 
+    # products
+    url("^products/$", "products", name="manage_products"),
+    url("^product/add/$", "add_product", name="manage_product_add"),
+    url("^product/(?P<product_id>\d+)/$", "edit_product", name="manage_product_edit"),
+
     # test cycles
     url("^testcycles/$", "testcycles", name="manage_testcycles"),
     url("^testcycles/_detail/(?P<cycle_id>\d+)/$",
@@ -43,14 +48,6 @@ urlpatterns = patterns(
     url(r"^environment/add/$", "add_environment_profile", name="manage_environment_add"),
     url(r"^environment/edit/(?P<profile_id>\d+)/$", "edit_environment_profile", name="manage_environment_edit"),
     url(r"^environment/_elements/", "autocomplete_env_elements", name="manage_environment_autocomplete_elements"),
-
-    # products (wireframed)
-    url(r"^products/$", direct_to_template,
-        {"template": "manage/product/products.html"}, name="manage_products"),
-    url(r"^product/add/$", direct_to_template,
-        {"template": "manage/product/add_product.html"}, name="manage_product_add"),
-    url(r"^product/edit/$", direct_to_template,
-        {"template": "manage/product/edit_product.html"}, name="manage_product_edit"),
 
     # environment narrowing (wireframed)
     url(r"^type/id/environments/$", direct_to_template,

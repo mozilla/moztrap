@@ -4,28 +4,24 @@
 <section id="addproduct">
   <h2>create a new product</h2>
   <form id="product-add-form" method="POST">
+    {% csrf_token %}
     <ul class="basic">
       <li>
-        <label for="name">name</label>
-        <input type="text" name="name" value="" id="name">
+        {% include "forms/_field.html" with field=form.name %}
       </li>
       <li>
-        <label for="name">profile</label>
-        <select name="profile" id="profile">
-          <option value="option1">profile 1</option>
-          <option value="option2">profile 2</option>
-        </select>
+        {% include "forms/_field.html" with field=form.profile %}
       </li>
       <li>
-        <label for="description">description</label>
-        <textarea name="description" id="description"></textarea>
+        {% include "forms/_field.html" with field=form.description %}
       </li>
     </ul>
 
     <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
       <h3 class="summary">assign specific users to this product &raquo;</h3>
       <div>
-        {% include "manage/_team_select.html" %}
+        {# @@@ needs the slick multiple-select widget #}
+        {% include "forms/_field.html" with field=form.team %}
       </div>
     </section>
 
