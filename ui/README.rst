@@ -42,9 +42,9 @@ Two settings are required:
 
 The ``create_company`` management command is available to create an initial
 company and a default user role. Run ``./manage.py create_company "Company
-Name"``; a new company named "Company Name" and a role named "Company Name
-Tester" will be created, and the command will output their IDs, which can then
-be used for the above two settings.
+Name"``; a new company named "Company Name" and two roles, named "Company Name
+Tester" and "Company Name Admin" will be created, and the command will output
+their IDs, which can then be used for the above two settings.
 
 Several other settings have reasonable defaults, but may need to be modified:
 
@@ -65,11 +65,11 @@ Several other settings have reasonable defaults, but may need to be modified:
 Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
-.. _virtualenv: http://www.virtualenv.org
-
 To install the necessary Ruby Gems for Compass/Sass development, run
 ``bin/install-gems requirements/gems.txt``.  Update
 ``requirements/gems.txt`` if newer gems should be used.
+
+.. _virtualenv: http://www.virtualenv.org
 
 Running the tests
 ~~~~~~~~~~~~~~~~~
