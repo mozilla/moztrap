@@ -470,6 +470,7 @@ def edit_environment_profile(request, profile_id):
             else:
                 profile.name = new_name
                 profile.put()
+                messages.success(request, "Profile name saved!")
                 data["success"] = True
 
             return HttpResponse(

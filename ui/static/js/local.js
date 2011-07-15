@@ -583,7 +583,7 @@ var TCM = TCM || {};
             var replaceList = $('#editprofile .managelist.action-ajax-replace');
             $('#editprofile #profile-name-form').ajaxForm({
                 success: function (response) {
-                    debugger;
+                    // take any additional action here?
                 }
             });
             $('#editprofile #add-environment-form').ajaxForm({
