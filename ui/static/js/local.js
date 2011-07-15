@@ -129,12 +129,13 @@ var TCM = TCM || {};
                             // If the keyword group already has selected filters...
                             if ($(this).find('input[type="checkbox"]:checked').length) {
                                 // ...and if *all* of the selected filters begin with "^" and ends with "$"...
-                                if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length) {
-                                    // ...and if the typed-text hasn't already been selected as a filter, and if the typed-text begins with "^" and ends with "$"...
-                                    if (!($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length) && typedText.indexOf('^') === 0 && typedText.lastIndexOf('$') === typedText.length - 1) {
-                                        // ...then append the keyword suggestion to the suggestion-list.
-                                        suggestionList.append(keywordSuggestion);
-                                    }
+                                if ($(this).find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === $(this).find('input[type="checkbox"]:checked').length
+                                        // ...and if the typed-text hasn't already been selected as a filter, and if the typed-text begins with "^" and ends with "$"...
+                                        && !($(this).find('input[type="checkbox"][value="' + typedText + '"]:checked').length)
+                                        && typedText.indexOf('^') === 0
+                                        && typedText.lastIndexOf('$') === typedText.length - 1) {
+                                    // ...then append the keyword suggestion to the suggestion-list.
+                                    suggestionList.append(keywordSuggestion);
                                 }
                             // If there are no other filters selected in the current keyword group, append the current suggestion
                             } else {
@@ -320,7 +321,7 @@ var TCM = TCM || {};
                     }
                     if (thisText.length) {
                         // ...otherwise, if the filter already exists, ENTER selects it...
-                        if (existingKeyword.length && !existingKeyword.is(':checked')) {
+                        if (existingKeyword.length && !existingKeyword.is(':checked') && !thisGroup.find('input[type="checkbox"]:checked').length) {
                             existingKeyword.prop('checked', true);
                             if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
                                 existingKeyword.data('state', 'changed');
@@ -329,16 +330,28 @@ var TCM = TCM || {};
                             $(this).val(null);
                             thisText = null;
                             return false;
-                        } else {
-                            // ...otherwise, if the keyword group already has selected filters...
-                            if (thisGroup.find('input[type="checkbox"]:checked').length) {
-                                // ...and if *all* of the selected filters begin with "^" and end with "$"...
-                                if (thisGroup.find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === thisGroup.find('input[type="checkbox"]:checked').length
-                                        // ...and if the typed-text hasn't already been selected as a filter...
-                                        && !(thisGroup.find('input[type="checkbox"][value="' + thisText + '"]:checked').length)
-                                        // ...and if the typed-text begins with "^" and ends with "$"...
-                                        && thisText.indexOf('^') === 0
-                                        && thisText.lastIndexOf('$') === thisText.length - 1) {
+                        }
+                        // ...otherwise, if the keyword group already has selected filters...
+                        if (thisGroup.find('input[type="checkbox"]:checked').length) {
+                            // ...and if *all* of the selected filters begin with "^" and end with "$"...
+                            if (thisGroup.find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === thisGroup.find('input[type="checkbox"]:checked').length
+                                    // ...and if the typed-text hasn't already been selected as a filter...
+                                    && !(thisGroup.find('input[type="checkbox"][value="' + thisText + '"]:checked').length)
+                                    // ...and if the typed-text begins with "^" and ends with "$"...
+                                    && thisText.indexOf('^') === 0
+                                    && thisText.lastIndexOf('$') === thisText.length - 1) {
+                                if (existingKeyword.length) {
+                                    if (!existingKeyword.is(':checked')) {
+                                        existingKeyword.prop('checked', true);
+                                        if (existingKeyword.data('originallyChecked') !== existingKeyword.is(':checked')) {
+                                            existingKeyword.data('state', 'changed');
+                                        }
+                                        updateFormActions();
+                                        $(this).val(null);
+                                        thisText = null;
+                                        return false;
+                                    } else { return false; }
+                                } else {
                                     // ...then add the keyword filter (selected) to this group.
                                     $(this).before(newKeywordFilter);
                                     $('#id-' + groupName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
@@ -348,16 +361,16 @@ var TCM = TCM || {};
                                     thisText = null;
                                     return false;
                                 }
-                            // If there are no other selected filters in this group, just add the new filter.
-                            } else {
-                                $(this).before(newKeywordFilter);
-                                $('#id-' + groupName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
-                                input = input.add('#id-' + groupName + '-' + index.toString());
-                                updateFormActions();
-                                $(this).val(null);
-                                thisText = null;
-                                return false;
                             }
+                        // If there are no other selected filters in this group, just add the new filter.
+                        } else {
+                            $(this).before(newKeywordFilter);
+                            $('#id-' + groupName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
+                            input = input.add('#id-' + groupName + '-' + index.toString());
+                            updateFormActions();
+                            $(this).val(null);
+                            thisText = null;
+                            return false;
                         }
                     }
                 }
