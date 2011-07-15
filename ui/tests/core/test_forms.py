@@ -66,7 +66,7 @@ class RemoteObjectFormTest(TestCase):
     def test_datefield_placeholder(self):
         self.assertEqual(
             self.form_class().fields["birthday"].widget.attrs["placeholder"],
-            "mm/dd/yyyy")
+            "yyyy-mm-dd")
 
 
 

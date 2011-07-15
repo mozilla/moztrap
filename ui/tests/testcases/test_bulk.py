@@ -159,3 +159,124 @@ class ParseBulkTest(TestCase):
                     },
                 ]
             )
+
+
+    def test_early_end_begin(self):
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                """)
+                ),
+            [
+                {
+                    "error": (
+                        "Unexpected end of input, looking for 'Test That '"
+                        ),
+                    },
+                ]
+            )
+
+
+    def test_early_end_pre_description(self):
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test That a perfectly good name
+                """)
+                ),
+            [
+                {
+                    "name": "Test That a perfectly good name",
+                    "error": (
+                        "Unexpected end of input, looking for 'When ' or 'And When '"
+                        ),
+                    },
+                ]
+            )
+
+
+    def test_early_end_description(self):
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test That a perfectly good name
+                With some description
+                """)
+                ),
+            [
+                {
+                    "name": "Test That a perfectly good name",
+                    "description": [
+                        "With some description",
+                        ],
+                    "error": (
+                        "Unexpected end of input, looking for 'When ' or 'And When '"
+                        ),
+                    },
+                ]
+            )
+
+
+    def test_early_end_instruction(self):
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test That a perfectly good name
+                And a good description
+                When insufficiently assisted
+                """)
+                ),
+            [
+                {
+                    "name": "Test That a perfectly good name",
+                    "description": [
+                        "And a good description",
+                        ],
+                    "steps": [
+                        {
+                            "instruction": [
+                                "When insufficiently assisted"
+                                ],
+                            },
+                        ],
+                    "error": (
+                        "Unexpected end of input, looking for 'Then '"
+                        ),
+                    },
+                ]
+            )
+
+
+    def test_early_end_after_and(self):
+        self.assertEqual(
+            self.parser().parse(
+                textwrap.dedent("""
+                Test That a perfectly good name
+                And a good description
+                When insufficiently assisted
+                Then may not
+                And
+                """)
+                ),
+            [
+                {
+                    "name": "Test That a perfectly good name",
+                    "description": [
+                        "And a good description",
+                        ],
+                    "steps": [
+                        {
+                            "instruction": [
+                                "When insufficiently assisted"
+                                ],
+                            "expectedResult": [
+                                "Then may not"
+                                ],
+                            },
+                        ],
+                    "error": (
+                        "Unexpected end of input, looking for 'When '"
+                        ),
+                    },
+                ]
+            )

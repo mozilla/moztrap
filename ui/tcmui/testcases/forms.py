@@ -63,8 +63,11 @@ class BaseStepFormSet(BaseFormSet):
 
     def save(self, testcaseversion):
         for i, form in enumerate(self.forms):
-            if form.has_changed():
-                form.save(testcaseversion, i + 1)
+            if form.empty_permitted and not form.has_changed():
+                break
+            form.save(testcaseversion, i + 1)
+        for extra_step in self.instances[i+1:]:
+            extra_step.delete()
 
 
     def _construct_form(self, i, **kwargs):

@@ -40,6 +40,16 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
                 field.widget.attrs.setdefault("placeholder", "yyyy-mm-dd")
 
 
+    def handle_error(self, obj, err):
+        message, fields = errors.error_message_and_fields(obj, err)
+        for fname in fields:
+            if fname in self.fields:
+                self._errors[fname] = self.error_class(
+                    [message])
+                return
+        raise forms.ValidationError(message)
+
+
 
 class AddEditForm(RemoteObjectForm):
     no_edit_fields = []
@@ -153,16 +163,6 @@ class AddEditForm(RemoteObjectForm):
             dict((k, v) for k, v in data.iteritems() if k in self.assign_later),
             editing=editing,
             immediate=False)
-
-
-    def handle_error(self, obj, err):
-        message, fields = errors.error_message_and_fields(obj, err)
-        for fname in fields:
-            if fname in self.fields:
-                self._errors[fname] = self.error_class(
-                    [message])
-                return
-        raise forms.ValidationError(message)
 
 
     def add_clean(self):

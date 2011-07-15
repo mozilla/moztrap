@@ -1,4 +1,5 @@
 from unittest2 import TestCase
+from mock import Mock
 
 
 
@@ -17,7 +18,15 @@ class ErrorMessageAndFieldsTest(TestCase):
     def test_simple(self):
         self.assert_results(
             object(), "duplicate.name",
-            ("This name is already in use.", ["name"]))
+            ("The name  is already in use.", ["name", "cases"]))
+
+
+    def test_field_interpolation(self):
+        m = Mock()
+        m.name = "Some object"
+        self.assert_results(
+            m, "duplicate.name",
+            ("The name Some object is already in use.", ["name", "cases"]))
 
 
     def test_name_interpolation(self):

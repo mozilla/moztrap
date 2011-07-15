@@ -1,11 +1,14 @@
+from django.core.exceptions import ValidationError
+
 import floppyforms as forms
 
 from ..core import forms as tcmforms
 
 from ..products.models import Product, ProductList
+from ..testcases.bulk import BulkParser
 from ..testcases.forms import StepFormSet
 from ..testcases.models import (
-    TestSuite, TestSuiteList, TestCaseVersion, TestCaseList)
+    TestSuite, TestSuiteList, TestCaseVersion, TestCaseList, TestCaseStep)
 from ..testexecution.models import (
     TestCycle, TestCycleList, TestRun, TestRunList)
 
@@ -122,6 +125,63 @@ class BulkTestCaseForm(tcmforms.RemoteObjectForm):
         super(BulkTestCaseForm, self).__init__(*args, **kwargs)
 
         self.fields["product"].obj_list = product_choices
+
+
+    def clean_cases(self):
+        parser = BulkParser()
+        data = parser.parse(self.cleaned_data["cases"])
+
+        for d in data:
+            if "error" in d:
+                raise ValidationError(d["error"])
+
+        return data
+
+
+    def clean(self):
+        cases = []
+        tcl = TestCaseList.get(auth=self.auth)
+
+        for d in self.cleaned_data.get("cases", []):
+            tcdata = dict(
+                TestCaseForm.extra_creation_data,
+                product=self.cleaned_data["product"],
+                name=d["name"],
+                description="\r\n".join(d["description"]),
+                )
+
+            tcv = TestCaseVersion(**tcdata)
+            try:
+                tcl.post(tcv)
+            except TestCaseList.Conflict, e:
+                for case in cases:
+                    TestCaseList.get_by_id(
+                        case.testCaseId, auth=self.auth).delete()
+                self.handle_error(tcv, e)
+                break
+
+            cases.append(tcv)
+
+            for i, stepdata in enumerate(d["steps"]):
+                step = TestCaseStep(
+                    stepNumber=i+1,
+                    instruction="\n".join(stepdata["instruction"]),
+                    expectedResult="\n".join(stepdata["expectedResult"]),
+                    name="step %s" % str(i + 1),
+                    testCaseVersion=tcv,
+                    estimatedTimeInMin=0,
+                    )
+
+                tcv.steps.post(step)
+
+        self.cases = cases
+
+        return self.cleaned_data
+
+
+    def save(self):
+        return self.cases
+
 
 
 

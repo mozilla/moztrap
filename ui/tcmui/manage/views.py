@@ -409,32 +409,42 @@ def testcases(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def add_testcase(request):
-    single_form = TestCaseForm(
-        request.POST or None,
-        product_choices=ProductList.ours(auth=request.auth),
-        auth=request.auth)
-    bulk_form = BulkTestCaseForm(
-        request.POST or None,
-        product_choices=ProductList.ours(auth=request.auth),
-        auth=request.auth)
     open_bulk = False
+    single_form = bulk_form = None
 
     if request.method == "POST":
         if "bulk-save" in request.POST:
+            bulk_form = BulkTestCaseForm(
+                request.POST,
+                product_choices=ProductList.ours(auth=request.auth),
+                auth=request.auth)
             if bulk_form.is_valid():
-                testcase = bulk_form.save()
+                testcases = bulk_form.save()
                 messages.success(
                     request,
-                    "The test case '%s' has been created."  % testcase.name)
+                    "%s test cases have been created." % len(testcases))
                 return redirect("manage_testcases")
             open_bulk = True
         else:
+            single_form = TestCaseForm(
+                request.POST,
+                product_choices=ProductList.ours(auth=request.auth),
+                auth=request.auth)
             if single_form.is_valid():
                 testcase = single_form.save()
                 messages.success(
                     request,
                     "The test case '%s' has been created."  % testcase.name)
                 return redirect("manage_testcases")
+
+    if single_form is None:
+        single_form = TestCaseForm(
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
+    if bulk_form is None:
+        bulk_form = BulkTestCaseForm(
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
 
     return TemplateResponse(
         request,
