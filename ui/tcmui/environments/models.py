@@ -15,7 +15,7 @@ class EnvironmentType(RemoteObject):
     name = fields.Field()
     groupType = fields.Field()
 
-    environments = fields.Link("EnvironmentList")
+    _environments = fields.Link("EnvironmentList", "environments")
 
 
     @property
@@ -39,6 +39,30 @@ class EnvironmentType(RemoteObject):
                 types.setdefault(et.id, et)
 
         return [types[id] for id in typeids]
+
+
+    # translate between platform and UI nomenclature
+    @property
+    def environments(self):
+        # "environments" is a nomenclature collision, so we allow both uses
+        # where they make sense.
+        if self.groupType:
+            # in UI terms, environment groups are "environments" - only for
+            # group types ("profiles" in UI terms)
+            return self.environmentgroups
+        else:
+            # non-group-types have environments (in platform terms)
+            return self._environments
+
+
+    @property
+    def elements(self):
+        if self.groupType:
+            return []
+        return self._environments
+
+
+    categories = environmenttypes
 
 
 
@@ -101,6 +125,11 @@ class EnvironmentGroup(RemoteObject):
 
     environments = fields.Link(EnvironmentList)
 
+    # UI nomenclature
+    @property
+    def elements(self):
+        return self.environments
+
 
     def __unicode__(self):
         return self.name
@@ -159,3 +188,7 @@ class EnvironmentGroupList(ListObject):
                         name=env.name, typename=env.environmentType.name)
                     )
         return sorted(ret, key=lambda e: e.typename)
+
+
+    # UI nomenclature
+    elements = environments

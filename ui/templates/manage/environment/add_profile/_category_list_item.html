@@ -6,7 +6,7 @@
     </p>
     <h3 class="title">{{ category.name }}</h3>
     <ul class="preview">
-      {% for element in category.environments %}
+      {% for element in category.elements %}
       {% include "manage/environment/add_profile/_element_preview_list_item.html" %}
       {% endfor %}
     </ul>
