@@ -38,9 +38,9 @@
                 <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
               </li>
               {% endfor %}
-              {% if field.cls == "keyword" %}{# @@@ check this logic #}
+              {% if field.cls == "keyword" %}
                 <li>
-                  <input type="text" name="{{ field.name }}" value="" id="id-{{ field.name }}" placeholder="add {{ field.name }} filter">
+                  <input type="text" value="" id="id-{{ field.name }}" placeholder="add {{ field.name }} filter">
                 </li>
               {% endif %}
             </ul>
