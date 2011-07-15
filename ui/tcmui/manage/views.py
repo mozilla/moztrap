@@ -27,7 +27,8 @@ from ..users.models import UserList
 from .decorators import environment_actions
 from .finder import ManageFinder
 from .forms import (
-    ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm)
+    ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
+    BulkTestCaseForm)
 
 
 
@@ -408,22 +409,41 @@ def testcases(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def add_testcase(request):
-    form = TestCaseForm(
+    single_form = TestCaseForm(
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
         auth=request.auth)
+    bulk_form = BulkTestCaseForm(
+        request.POST or None,
+        product_choices=ProductList.ours(auth=request.auth),
+        auth=request.auth)
+    open_bulk = False
+
     if request.method == "POST":
-        if form.is_valid():
-            testcase = form.save()
-            messages.success(
-                request,
-                "The test case '%s' has been created."  % testcase.name)
-            return redirect("manage_testcases")
+        if "bulk-save" in request.POST:
+            if bulk_form.is_valid():
+                testcase = bulk_form.save()
+                messages.success(
+                    request,
+                    "The test case '%s' has been created."  % testcase.name)
+                return redirect("manage_testcases")
+            open_bulk = True
+        else:
+            if single_form.is_valid():
+                testcase = single_form.save()
+                messages.success(
+                    request,
+                    "The test case '%s' has been created."  % testcase.name)
+                return redirect("manage_testcases")
 
     return TemplateResponse(
         request,
         "manage/product/testcase/add_case.html",
-        {"form": form })
+        {
+            "single_form": single_form,
+            "bulk_form": bulk_form,
+            "open_bulk": open_bulk,
+            })
 
 
 
@@ -448,7 +468,7 @@ def edit_testcase(request, case_id):
         request,
         "manage/product/testcase/edit_case.html",
         {
-            "form": form,
+            "single_form": form,
             "case": case,
             }
         )

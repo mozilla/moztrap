@@ -1,30 +1,32 @@
 <form method="POST" id="single-case-form">
   {% csrf_token %}
-  {{ form.non_field_errors }}
+  {{ single_form.non_field_errors }}
   <ul class="basic">
     <li>
-      {% include "forms/_field.html" with field=form.product %}
+      {% include "forms/_field.html" with field=single_form.product %}
     </li>
+    {% comment %}
     <li class="suite-field">
       <label for="suite-bulk">Suite</label>
       <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
       {# @@@ this should be an autocomplete field #}
     </li>
+    {% endcomment %}
     <li>
-      {% include "forms/_field.html" with field=form.name %}
+      {% include "forms/_field.html" with field=single_form.name %}
     </li>
     {% block caseversions %}{% endblock caseversions %}
     {% comment %} @@@
     <li>
-      {% include "forms/_field.html" with field=form.tags %}
+      {% include "forms/_field.html" with field=single_form.tags %}
     </li>
     {% endcomment %}
   </ul>
 
   <div class="steps">
-    {{ form.steps_formset.management_form }}
+    {{ single_form.steps_formset.management_form }}
     <ol class="steplist">
-      {% for form in form.steps_formset %}
+      {% for form in single_form.steps_formset %}
       {% include "manage/product/testcase/_step_form.html" %}
       {% endfor %}
     </ol>
@@ -32,7 +34,7 @@
 
   <div class="form-actions">
     {% block versionactions %}{% endblock versionactions %}
-    <button type="submit">save test case</button>
+    <button type="submit" name="single-save" value="1">save test case</button>
   </div>
 
 </form>

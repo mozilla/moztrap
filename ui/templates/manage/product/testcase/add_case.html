@@ -11,7 +11,7 @@
         <li><a href="#bulk-case-form">Bulk</a></li>
       </ul>
     </nav>
-    <div class="forms">
+    <div class="forms" data-show="{% if open_bulk %}bulk{% else %}single{% endif %}">
       {% include "manage/product/testcase/_case_form_single.html" %}
       {% include "manage/product/testcase/_case_form_bulk.html" %}
     </div>

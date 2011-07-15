@@ -109,6 +109,22 @@ class TestSuiteForm(tcmforms.AddEditForm):
 
 
 
+class BulkTestCaseForm(tcmforms.RemoteObjectForm):
+    product = tcmforms.ModelChoiceField()
+    cases = forms.CharField(widget=tcmforms.BareTextarea)
+
+
+    def __init__(self, *args, **kwargs):
+        product_choices = kwargs.pop("product_choices")
+
+        self.auth = kwargs.pop("auth")
+
+        super(BulkTestCaseForm, self).__init__(*args, **kwargs)
+
+        self.fields["product"].obj_list = product_choices
+
+
+
 class TestCaseForm(tcmforms.AddEditForm):
     name = forms.CharField()
     product = tcmforms.ModelChoiceField()
@@ -133,10 +149,18 @@ class TestCaseForm(tcmforms.AddEditForm):
 
 
     def is_valid(self):
-        return (
-            self.steps_formset.is_valid() and
-            super(TestCaseForm, self).is_valid()
-            )
+        if self.steps_formset.is_valid():
+            self.steps_formset_clear = True
+            return super(TestCaseForm, self).is_valid()
+        return False
+
+
+    def clean(self):
+        # If the formset is not valid, we don't want to actually try saving the
+        # testcase.
+        if not getattr(self, "steps_formset_clear", False):
+            return self.cleaned_data
+        return super(TestCaseForm, self).clean()
 
 
     def edit_clean(self):

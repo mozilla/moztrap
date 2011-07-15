@@ -69,13 +69,8 @@
                         }
                         forms = parent.find(options.formSelector).not(':hidden');
                     } else {
-                        if (options.removeAnimationSpeed) {
-                            row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
-                                $(this).remove();
-                            });
-                        } else {
-                            row.remove();
-                        }
+                        row.remove();
+
                         // Update the TOTAL_FORMS count:
                         forms = parent.find(options.formSelector);
                         totalForms.val(forms.length);
