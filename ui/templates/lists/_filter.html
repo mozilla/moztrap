@@ -29,15 +29,20 @@
 
           {% icanhaz "keyword_filter" %}
           {% for field in filter %}
-          <section class="filter-group {{ field.cls }}{% if field|length == 0 %} empty{% endif %}" data-name="{{ field.name }}">
+          <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
             <h5>{{ field.name|lower }}</h5>
-            <ul class="{% if field|length > 6 %}long{% endif %}">
+            <ul {% if field|length > 6 %}class="long"{% endif %}>
               {% for option in field %}
               <li>
                 <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
                 <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
               </li>
               {% endfor %}
+              {% if field.cls == "keyword" %}
+                <li>
+                  <input type="text" value="" id="id-{{ field.name }}" placeholder="add {{ field.name }} filter">
+                </li>
+              {% endif %}
             </ul>
           </section>
           {% endfor %}
