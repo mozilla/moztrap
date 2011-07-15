@@ -91,6 +91,21 @@ To run just a particular test module::
     bin/test tests.core.test_api
 
 
+Creating sample data
+~~~~~~~~~~~~~~~~~~~~
+
+To quickly populate the platform with a small amount of sample data for
+development and manual testing, run ``./manage.py create_test_data``. This will
+create a user with email address ``tester@example.com`` with the default new
+user role and password ``testpw``, as well as several products, a test cycle,
+test run, and a couple test cases.
+
+You can optionally pass an argument to the ``create_test_data`` command, the
+integer ID of the admin role created by ``create_company`` (above). If given an
+admin role ID, ``create_test_data`` will also create an admin user
+``admin@example.com`` with that role and password ``testpw``.
+
+
 Deployment
 ----------
 
