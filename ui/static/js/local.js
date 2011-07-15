@@ -181,6 +181,22 @@ var TCM = TCM || {};
                 updateFormActions();
             });
 
+            keywordGroups.find('input[type="checkbox"]:not(:checked) + label').live('click', function (event) {
+                var thisGroup = $(this).closest('.filter-group.keyword'),
+                    thisFilterName = $(this).html();
+                if (thisGroup.find('input[type="checkbox"]:checked').length) {
+                    if (thisGroup.find('input[type="checkbox"][value^="^"][value$="$"]:checked').length === thisGroup.find('input[type="checkbox"]:checked').length
+                            && thisFilterName.indexOf('^') === 0
+                            && thisFilterName.lastIndexOf('$') === thisFilterName.length - 1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            });
+
             textbox.keyup(function (event) {
                 // Updates suggestion-list if typed-text has changed
                 if ($(this).val() !== typedText && $(this).val() !== placeholder) {
@@ -306,7 +322,7 @@ var TCM = TCM || {};
                     thisGroup = $(this).closest('.filter-group.keyword'),
                     existingKeyword = thisGroup.find('input[type="checkbox"][value="' + thisText + '"]'),
                     groupName = thisGroup.data('name'),
-                    index = thisGroup.find('li').length,
+                    index = thisGroup.find('input[type="checkbox"]').length + 1,
                     newKeywordFilter = ich.keyword_filter({
                         name: groupName,
                         typedText: thisText,
@@ -395,7 +411,7 @@ var TCM = TCM || {};
                             return $(this).data('name') === name;
                         });
                         existingKeyword = thisGroup.find('input[type="checkbox"][value="' + typedText + '"][name="' + name + '"]');
-                        index = thisGroup.find('li').length + 1;
+                        index = thisGroup.find('input[type="checkbox"]').length + 1;
                         newKeywordFilter = ich.keyword_filter({
                             name: name,
                             typedText: typedText,
@@ -409,7 +425,7 @@ var TCM = TCM || {};
                             }
                         // ...otherwise, append it (selected) to the filters list.
                         } else {
-                            thisGroup.removeClass('empty').children('ul').append(newKeywordFilter);
+                            thisGroup.removeClass('empty').find('input[type="text"]').before(newKeywordFilter);
                             $('#id-' + name + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                             input = input.add('#id-' + name + '-' + index.toString());
                         }
