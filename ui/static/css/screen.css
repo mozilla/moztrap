@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -945,7 +945,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 /* Form Helpers -------------------------------------------------------------- */
-.redbutton, #run .fail {
+.redbutton {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f5d2d4), color-stop(100%, #de6a6f));
   background-image: -webkit-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   background-image: -moz-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
@@ -954,7 +954,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   border-color: #c78184;
 }
 
-.yellowbutton, #run .invalid {
+.yellowbutton {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fee58c), color-stop(100%, #fdc80e));
   background-image: -webkit-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   background-image: -moz-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
@@ -963,7 +963,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   border-color: #deb72c;
 }
 
-.bluebutton, #run .start {
+.bluebutton {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1dede), color-stop(100%, #87a9a8));
   background-image: -webkit-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   background-image: -moz-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
@@ -4332,278 +4332,25 @@ button[name="action-edit"] {
   padding-right: 4.211%;
 }
 
-/* test nav -------------------------------------------------------------- */
 /* run tests -------------------------------------------------------------- */
-#run {
-  clear: both;
-}
-#run .test, #run .content {
-  clear: both;
-}
-#run .test {
-  *zoom: 1;
-}
-#run .test:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-#run .header {
+#run .title, #run .bytitle {
   display: inline;
   float: left;
-  width: 83.158%;
+  width: 66.316%;
   margin-right: 1.053%;
-  margin-top: 0.405em;
-  margin-bottom: 0.405em;
 }
-#run .header h3 {
+#run .byinvalid {
   display: inline;
   float: left;
-  width: 64.557%;
-  margin-right: 1.266%;
-  font-size: 1.143em;
-  line-height: 1.416em;
-}
-#run .header small {
-  display: inline;
-  float: left;
-  width: 3.797%;
-  margin-right: 1.266%;
-  font-weight: 700;
-  vertical-align: top;
-  text-align: right;
-}
-#run .status {
-  display: inline;
-  float: left;
-  width: 15.789%;
+  width: 24.211%;
   margin-right: 1.053%;
   display: inline;
   float: right;
   margin-right: 0;
-  text-align: center;
-}
-#run .status p {
-  font-size: 0.857em;
-  line-height: 1.888em;
-  -moz-border-radius: 0.382em;
-  -webkit-border-radius: 0.382em;
-  -o-border-radius: 0.382em;
-  -ms-border-radius: 0.382em;
-  -khtml-border-radius: 0.382em;
-  border-radius: 0.382em;
-  padding-top: 0.472em;
-  padding-bottom: 0.472em;
-  padding-left: 1em;
-  padding-right: 1em;
-  font-weight: 700;
-  margin: 0 6.667%;
-  color: #eeeeee;
-}
-#run .status button {
-  width: 86.667%;
-  margin: 0 6.667%;
-}
-#run .status .passed {
-  text-shadow: rgba(79, 122, 27, 0.75) 1px 1px 0;
-  background: #77b929 url('../images/ui/check.png?1309283000') no-repeat scroll 6.667%;
-}
-#run .status .invalidated {
-  text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0;
-  background: #d6a702 url('../images/ui/warning.png?1309283001') no-repeat scroll 6.667%;
-}
-#run .status .failed {
-  text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0;
-  background: #b9292f url('../images/ui/x.png?1309283001') no-repeat scroll 6.667%;
-}
-#run .invalid, #run .fail {
-  margin-bottom: 1.618em;
-  width: 18.987%;
-}
-#run .steps {
-  padding-left: 12.632%;
-  padding-right: 16.842%;
-  padding-top: 1.618em;
-  clear: both;
-  margin: 0;
-  counter-reset: step;
-}
-#run .steps > li {
-  *zoom: 1;
-  margin-bottom: 1.618em;
-  position: relative;
-  padding: 0.809em;
-  padding-bottom: 0;
-  background: rgba(233, 237, 237, 0.618);
-  list-style: none;
-  counter-increment: step;
-}
-#run .steps > li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-#run .steps > li::before {
-  font-size: 3.429em;
-  line-height: 1.416em;
-  content: counter(step, decimal) ".";
-  position: absolute;
-  right: 101.695%;
-  top: 0;
-}
-#run .steps h4 {
-  margin-bottom: 0em;
-}
-#run .steps .step {
-  overflow: hidden;
-}
-#run .stepfail {
-  clear: both;
-  position: relative;
-  margin: 0 -0.809em;
-  border-top: 1.618em solid rgba(170, 192, 191, 0.236);
-}
-#run .stepfail .summary {
-  font-weight: 700;
-  -moz-transition-property: all;
-  -webkit-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
-  text-shadow: rgba(185, 41, 47, 0.382) 0 1px 0;
-  position: absolute;
-  top: -1.618em;
-  right: 0;
-  padding: 0 1.493%;
-  width: 10.448%;
-  background: #e37f83;
-  color: rgba(238, 238, 238, 0.618);
-  text-align: center;
-}
-#run .stepfail .summary:hover {
-  background: #b9292f;
-}
-#run .stepfail.open .summary, #run .stepfail.failed .summary {
-  width: 100%;
-  padding: 0;
-  background: #b9292f;
-}
-#run .failform textarea, #run .invalidform textarea {
-  min-height: 9.708em;
-}
-#run .failform, #run .faildesc {
-  padding: 0.809em;
-  background: #f5d2d4;
-}
-#run .invalidform, #run .invaliddesc {
-  display: inline;
-  float: left;
-  padding-top: 1.618em;
-  padding-left: 1.053%;
-  padding-right: 1.053%;
-  -moz-border-radius-bottomleft: 1em;
-  -webkit-border-bottom-left-radius: 1em;
-  -o-border-bottom-left-radius: 1em;
-  -ms-border-bottom-left-radius: 1em;
-  -khtml-border-bottom-left-radius: 1em;
-  border-bottom-left-radius: 1em;
-  -moz-border-radius-bottomright: 1em;
-  -webkit-border-bottom-right-radius: 1em;
-  -o-border-bottom-right-radius: 1em;
-  -ms-border-bottom-right-radius: 1em;
-  -khtml-border-bottom-right-radius: 1em;
-  border-bottom-right-radius: 1em;
-  width: 60%;
-  margin-left: 12.632%;
-  background: #fee58c;
 }
 #run .testinvalid {
-  position: relative;
-}
-#run .testinvalid .summary {
-  font-weight: 500;
-  text-shadow: rgba(238, 238, 238, 0.618) 0 1px 0;
-  -moz-border-radius-bottomleft: 1em;
-  -webkit-border-bottom-left-radius: 1em;
-  -o-border-bottom-left-radius: 1em;
-  -ms-border-bottom-left-radius: 1em;
-  -khtml-border-bottom-left-radius: 1em;
-  border-bottom-left-radius: 1em;
-  -moz-border-radius-bottomright: 1em;
-  -webkit-border-bottom-right-radius: 1em;
-  -o-border-bottom-right-radius: 1em;
-  -ms-border-bottom-right-radius: 1em;
-  -khtml-border-bottom-right-radius: 1em;
-  border-bottom-right-radius: 1em;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 13.684%;
-  padding: 0.405em 1.053%;
-  background: #fef0bf;
-  color: rgba(163, 128, 1, 0.618);
-  text-align: center;
-}
-#run .testinvalid .summary:hover {
-  background: #fee58c;
-}
-#run .testinvalid[open] .summary, #run .testinvalid.invalidated .summary {
-  background: #fee58c;
-}
-
-.testsummary {
-  *zoom: 1;
-  padding-top: 0.405em;
-  padding-bottom: 0.405em;
-  -moz-border-radius: 0.382em;
-  -webkit-border-radius: 0.382em;
-  -o-border-radius: 0.382em;
-  -ms-border-radius: 0.382em;
-  -khtml-border-radius: 0.382em;
-  border-radius: 0.382em;
-}
-.testsummary:after {
-  content: "\0020";
-  display: block;
-  height: 0;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-.testsummary:focus, .testsummary:hover, .testsummary:active {
-  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.618)), color-stop(66.667%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
-  background: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-  background: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-  background: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-  background: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-}
-.test[open] .testsummary {
-  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(135, 169, 168, 0)), color-stop(33.333%, rgba(135, 169, 168, 0.382)), color-stop(66.667%, rgba(135, 169, 168, 0.382)), color-stop(100%, rgba(135, 169, 168, 0)));
-  background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
-  background: -moz-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
-  background: -o-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
-  background: linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
-}
-.started .testsummary, .started[open] .testsummary {
-  background: rgba(170, 192, 191, 0.618);
-}
-.passed .testsummary, .passed[open] .testsummary {
-  background: rgba(205, 236, 169, 0.618);
-}
-.invalidated .testsummary, .invalidated[open] .testsummary {
-  background: rgba(254, 240, 191, 0.618);
-}
-.failed .testsummary {
-  background: rgba(236, 169, 171, 0.618);
+  padding-left: 8.421%;
 }
 
 /* Results ------------------------------------------------------------------- */

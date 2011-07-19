@@ -1,21 +1,14 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="test details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} data-open="open"{% endif %}>
+    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} data-open="open"{% endif %}>
 
-      <header class="summary testsummary">
-        <div class="header">
-          <small>#{{ case.id }}</small>
-          <h3>{{ case.name }}</h3>
-        </div>
-
+      <header class="summary">
         <div class="status">
           {% if result.status.PENDING %}
             <button class="start" data-action="start">start</button>
           {% endif %}
           {% if result.status.STARTED %}
-            <button class="pass" data-action="finishsucceed">
-              pass
-            </button>
+            <button class="pass" data-action="finishsucceed">pass</button>
           {% endif %}
           {% if result.status.PASSED %}
             <p class="passed">Passed</p>
@@ -27,12 +20,13 @@
             <p class="failed">Failed</p>
           {% endif %}
         </div>
+        <h3 class="title">{{ case.name }}</h3>
       </header>
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
           <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
-            <p class="summary">invalid?</p>
+            <p class="summary">invalid or unclear?</p>
             {% if result.status.INVALIDATED %}
               <div class="invaliddesc">
                 <h4>Invalid because:</h4>
@@ -54,10 +48,8 @@
           {% for step in caseversion.steps %}
           <li>
             <div class="step">
-              <h4>Instructions:</h4>
-              <p>{{ step.instruction }}</p>
-              <h4>Expected Results:</h4>
-              <p>{{ step.expectedResult }}</p>
+              <p class="instruction">{{ step.instruction }}</p>
+              <p class="outcome">{{ step.expectedResult }}</p>
             </div>
             {% if result.status.STARTED %}
               <div class="stepfail details">
