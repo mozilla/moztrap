@@ -3840,6 +3840,11 @@ button[name="action-edit"] {
   margin-right: 1.053%;
   min-height: 14.562em;
 }
+#bulk-case-form .bulk-field .errorlist {
+  clear: both;
+  padding-left: 8.421%;
+  padding-right: 46.316%;
+}
 #bulk-case-form .fieldhelp {
   display: inline;
   float: left;
