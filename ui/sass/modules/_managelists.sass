@@ -112,40 +112,42 @@
     +border-radius(.25em)
     display: block
     button
-      +icon('[title="approve"]','ui/check.png',$light)
-      +icon('[title="reject"]','ui/x.png',$light)
+      +icon('[title="approve"]','ui/check.png',$light,$button:true)
+      +icon('[title="reject"]','ui/x.png',$light,$button:true)
       &[title="approve"], &[title="reject"]
         +columns(1,2)
         padding: 0
       &[title="reject"]
         +omega(2)
         #{$focus}
-          background:
-            image: image-url('ui/x.png')
-            color: $red-lighter
+          background-color: $red-lighter
       &[title="approve"]
         #{$focus}
-          background:
-            image: image-url('ui/check.png')
-            color: $green-light
+          background-color: $green-light
 
   span
     +inline-block
-
-  button, span
     +icon('.rejected','ui/x.png',$red-lighter,text)
     +icon('.draft','ui/power.png',$blue-lighter,text)
     +icon('.active','ui/power.png',$green-light,text)
     +icon('.locked','ui/lock.png',$yellow,text)
+
+  span, button
     &.rejected, &.draft, &.active, &.locked
       width: 100%
 
   button
+    +icon('.rejected','ui/x.png',$red-lighter,text,$button:true)
+    +icon('.draft','ui/power.png',$blue-lighter,text,$button:true)
+    +icon('.active','ui/power.png',$green-light,text,$button:true)
+    +icon('.locked','ui/lock.png',$yellow,text,$button:true)
+    +demi
+    text-transform: uppercase
     #{$focus}
-      +icon('.rejected','ui/check.png',$green-light,text)
-      +icon('.draft','ui/power.png',$green-light,text)
-      +icon('.active','ui/lock.png',$yellow,text)
-      +icon('.locked','ui/unlock.png',$green-light,text)
+      +icon('.rejected','ui/check.png',$green-light,text,$button:true)
+      +icon('.draft','ui/power.png',$green-light,text,$button:true)
+      +icon('.active','ui/lock.png',$yellow,text,$button:true)
+      +icon('.locked','ui/unlock.png',$green-light,text,$button:true)
       &.rejected, &.draft, &.active, &.locked
         +hide-text
         &::after

@@ -8,16 +8,21 @@
     +border-radius(.25em)
     background-color: $back
 
-=icon-style($img,$back:false,$text:false,$hover:false)
+=icon-style($img,$back:false,$text:false,$hover:false,$button:false)
   +icon-back($back)
   @if $hover
     +icon-hover
   @if $text
     +box-sizing('border-box')
-    background:
-      image: image-url($img)
-      repeat: no-repeat
-      position: .25em
+    @if $button
+      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($blue-dark 0 0 2px)
+      background-position: .25em, 0
+    @else
+      background:
+        image: image-url($img)
+        position: .25em
+    background-repeat: no-repeat
     padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
     text-align: left
   @else
@@ -26,10 +31,15 @@
     min-width: image-width($img)
     min-height: image-height($img)
     padding: 0 .125em
+    @if $button
+      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($blue-dark 0 0 2px)
+    @else
+      background-image: image-url($img)
 
-=icon($select,$img,$back:false,$text:false)
+=icon($select,$img,$back:false,$text:false,$hover:false,$button:false)
   @if $select
     &#{$select}
-      +icon-style($img,$back,$text)
+      +icon-style($img,$back,$text,$hover,$button)
   @else
-    +icon-style($img,$back,$text)
+    +icon-style($img,$back,$text,$hover,$button)

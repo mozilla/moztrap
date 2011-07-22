@@ -5,19 +5,19 @@
       <header class="summary">
         <div class="status">
           {% if result.status.PENDING %}
-            <button class="start" data-action="start">start</button>
+            <button class="start" data-action="start" name="action-start">start</button>
           {% endif %}
           {% if result.status.STARTED %}
-            <button class="pass" data-action="finishsucceed">pass</button>
+            <button class="pass" data-action="finishsucceed" name="action-pass">pass</button>
           {% endif %}
           {% if result.status.PASSED %}
-            <p class="passed">Passed</p>
+            <span class="passed">Passed</span>
           {% endif %}
           {% if result.status.INVALIDATED %}
-            <p class="invalidated">Invalid</p>
+            <span class="invalidated">Invalid</span>
           {% endif %}
           {% if result.status.FAILED %}
-            <p class="failed">Failed</p>
+            <span class="failed">Failed</span>
           {% endif %}
         </div>
         <h3 class="title">{{ case.name }}</h3>
@@ -25,15 +25,16 @@
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
-            <p class="summary">invalid or unclear?</p>
+          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
             {% if result.status.INVALIDATED %}
+              <h4 class="summary">invalid or unclear.</h4>
               <div class="invaliddesc">
-                <h4>Invalid because:</h4>
+                <h5>description of problem:</h5>
                 <p>{{ result.comment }}</p>
               </div>
             {% else %}
-              <div class="invalidform form">
+              <h4 class="summary">invalid or unclear?</h4>
+              <div class="invalidform">
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
                 <div class="form-actions">
@@ -41,7 +42,7 @@
                 </div>
               </div>
             {% endif %}
-          </div>
+          </section>
         {% endif %}
 
         <ol class="steps">

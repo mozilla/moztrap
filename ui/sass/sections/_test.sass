@@ -9,4 +9,34 @@
   .testinvalid
     +full(24)
     +prefix(2,24)
+    position: relative
+    .summary
+      position: absolute
+      top: - rhythm(1.5)
+      right: rhythm(.25)
 
+  .status
+    button, span
+      width: 100%
+    button
+      +icon('.start','ui/power.png',$blue-lighter,text,$button:true)
+      +icon('.pass','ui/check.png',$green-light,text,$button:true)
+
+  .steps
+    +padding-leader(.5)
+    li
+      +pad(2,2,24)
+      width: auto
+      &::before
+        width: columns(2,24)
+
+.stepfail
+  .summary
+    +opacity(0)
+    +transition(opacity,300ms)
+    position: absolute
+    top: 0
+    left: 0
+    padding: 0
+    .steps li:hover &
+      +opacity(.75)

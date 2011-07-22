@@ -1490,6 +1490,7 @@ footer[role="contentinfo"] small {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/pencil.png?1309283001');
 }
 
 [title^="create"]:link, [title^="create"]:visited {
@@ -1506,6 +1507,7 @@ footer[role="contentinfo"] small {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/paper_plus.png?1309283001');
 }
 
 button[name^="action-"] {
@@ -1543,6 +1545,7 @@ button[name="action-clone"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/clone.png?1309283001');
 }
 button[name="action-delete"] {
   -moz-box-sizing: content-box;
@@ -1558,6 +1561,7 @@ button[name="action-delete"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/trash.png?1309283001');
 }
 button[name="action-edit"] {
   -moz-box-sizing: content-box;
@@ -1573,6 +1577,7 @@ button[name="action-edit"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/pencil.png?1309283001');
 }
 
 /* Filtering ----------------------------------------------------------------- */
@@ -2620,6 +2625,15 @@ button[name="action-edit"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
 }
 .status .pending button[title="reject"] {
   -moz-border-radius: 0.25em;
@@ -2642,6 +2656,15 @@ button[name="action-edit"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/x.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/x.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
 }
 .status .pending button[title="approve"], .status .pending button[title="reject"] {
   display: inline;
@@ -2656,11 +2679,9 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 .status .pending button[title="reject"]:focus, .status .pending button[title="reject"]:hover, .status .pending button[title="reject"]:active {
-  background-image: url('../images/ui/x.png?1309283001');
   background-color: #eca9ab;
 }
 .status .pending button[title="approve"]:focus, .status .pending button[title="approve"]:hover, .status .pending button[title="approve"]:active {
-  background-image: url('../images/ui/check.png?1309283000');
   background-color: #b5e37f;
 }
 .status span {
@@ -2673,7 +2694,7 @@ button[name="action-edit"] {
 .status span {
   *display: inline;
 }
-.status button.rejected, .status span.rejected {
+.status span.rejected {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -2686,12 +2707,12 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/x.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
-.status button.draft, .status span.draft {
+.status span.draft {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -2704,12 +2725,12 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/power.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
-.status button.active, .status span.active {
+.status span.active {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -2722,12 +2743,12 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/power.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
-.status button.locked, .status span.locked {
+.status span.locked {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -2740,13 +2761,121 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/lock.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
-.status button.rejected, .status button.draft, .status button.active, .status button.locked, .status span.rejected, .status span.draft, .status span.active, .status span.locked {
+.status span.rejected, .status span.draft, .status span.active, .status span.locked, .status button.rejected, .status button.draft, .status button.active, .status button.locked {
   width: 100%;
+}
+.status button {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.status button.rejected {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #eca9ab;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/x.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/x.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
+}
+.status button.draft {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #aac0bf;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
+}
+.status button.active {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #b5e37f;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
+}
+.status button.locked {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #fee58c;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/lock.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/lock.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
 }
 .status button:focus.rejected, .status button:hover.rejected, .status button:active.rejected {
   -moz-border-radius: 0.25em;
@@ -2760,9 +2889,17 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/check.png?1309283000');
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
   background-repeat: no-repeat;
-  background-position: 0.25em;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
@@ -2778,9 +2915,17 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/power.png?1309283001');
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
   background-repeat: no-repeat;
-  background-position: 0.25em;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
@@ -2796,9 +2941,17 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/lock.png?1309283001');
+  background-image: url('../images/ui/lock.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/lock.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/lock.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
   background-repeat: no-repeat;
-  background-position: 0.25em;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
@@ -2814,9 +2967,17 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/unlock.png?1309283001');
+  background-image: url('../images/ui/unlock.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/unlock.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/unlock.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/unlock.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/unlock.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
   background-repeat: no-repeat;
-  background-position: 0.25em;
   padding: 0 0.25em 0 21px;
   text-align: left;
 }
@@ -3432,6 +3593,7 @@ button[name="action-edit"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/arrow_right.png?1309283000');
 }
 .superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .userselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"] {
   -moz-border-radius: 0.25em;
@@ -3454,6 +3616,7 @@ button[name="action-edit"] {
   min-width: 21px;
   min-height: 21px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/arrow_leftright_21.png?1309283000');
 }
 .superselect .addremove button[title^="remove"], .mainselect .addremove button[title^="remove"], .userselect .addremove button[title^="remove"], .suiteselect .addremove button[title^="remove"], .caseselect .addremove button[title^="remove"] {
   -moz-border-radius: 0.25em;
@@ -3476,6 +3639,7 @@ button[name="action-edit"] {
   min-width: 14px;
   min-height: 14px;
   padding: 0 0.125em;
+  background-image: url('../images/ui/arrow_left.png?1309283000');
 }
 .superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .userselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"] {
   padding-top: 1.618em;
@@ -4351,6 +4515,99 @@ button[name="action-edit"] {
 #run .testinvalid {
   clear: both;
   padding-left: 8.421%;
+  position: relative;
+}
+#run .testinvalid .summary {
+  position: absolute;
+  top: -2.427em;
+  right: 0.405em;
+}
+#run .status button, #run .status span {
+  width: 100%;
+}
+#run .status button.start {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #aac0bf;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/power.png?1309283001'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/power.png?1309283001'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
+}
+#run .status button.pass {
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: #b5e37f;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/check.png?1309283000'), -webkit-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -moz-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), -o-linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check.png?1309283000'), linear-gradient(bottom, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  -moz-box-shadow: #4b6564 0 0 2px;
+  -webkit-box-shadow: #4b6564 0 0 2px;
+  -o-box-shadow: #4b6564 0 0 2px;
+  box-shadow: #4b6564 0 0 2px;
+  background-position: 0.25em, 0;
+  background-repeat: no-repeat;
+  padding: 0 0.25em 0 21px;
+  text-align: left;
+}
+#run .steps {
+  padding-top: 0.809em;
+}
+#run .steps li {
+  padding-left: 8.421%;
+  padding-right: 8.421%;
+  width: auto;
+}
+#run .steps li::before {
+  width: 7.368%;
+}
+
+.stepfail .summary {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  opacity: 0;
+  -moz-transition-property: opacity;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -moz-transition-duration: 300ms;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+}
+.steps li:hover .stepfail .summary {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  opacity: 0.75;
 }
 
 /* Results ------------------------------------------------------------------- */
@@ -4373,8 +4630,8 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/check_sm.png?1309283000');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 16px;
   text-align: left;
 }
@@ -4391,8 +4648,8 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/warning_sm.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 19px;
   text-align: left;
 }
@@ -4409,8 +4666,8 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/x_sm.png?1309283001');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 17px;
   text-align: left;
 }
@@ -4427,8 +4684,8 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/clock_sm.png?1309283000');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 19px;
   text-align: left;
 }
@@ -4445,8 +4702,8 @@ button[name="action-edit"] {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   background-image: url('../images/ui/clock_sm.png?1309283000');
-  background-repeat: no-repeat;
   background-position: 0.25em;
+  background-repeat: no-repeat;
   padding: 0 0.25em 0 19px;
   text-align: left;
 }
