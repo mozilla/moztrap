@@ -2,25 +2,27 @@
 
 #run
   .title, .bytitle
-    +columns(16,24)
+    +columns(14,24)
   .byinvalid
     +columns(6,24)
     +omega(24)
   .testinvalid
-    +full(24)
-    +prefix(2,24)
-    position: relative
     .summary
-      position: absolute
-      top: - rhythm(1.5)
-      right: rhythm(.25)
+      +columns(4,24)
+      +omega(24)
+      padding: 0
+      text-align: right
+    .content
+      +full(24)
+      +prefix(2,24)
 
   .status
     button, span
       width: 100%
-    button
-      +icon('.start','ui/power.png',$blue-lighter,text,$button:true)
-      +icon('.pass','ui/check.png',$green-light,text,$button:true)
+    .start
+      +text-button('ui/power.png',$blue-lighter)
+    .pass
+      +text-button('ui/check.png',$green-light)
 
   .steps
     +padding-leader(.5)

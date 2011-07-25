@@ -106,12 +106,15 @@
       padding: 0
       border: 0
       width: 100%
-      +icon('[title^="add"]','ui/arrow_right.png',$green-light)
-      +icon('[title^="update"]','ui/arrow_leftright_21.png',$blue-light)
-      +icon('[title^="remove"]','ui/arrow_left.png',$red-light)
-      &[title^="update"]
-        +padding-leader
-        +padding-trailer
+    [title^="add"]
+      +icon-replace('ui/arrow_right.png',$green-light)
+    [title^="update"]
+      +icon-replace('ui/arrow_leftright_21.png',$blue-light)
+    [title^="remove"]
+      +icon-replace('ui/arrow_left.png',$red-light)
+    [title^="update"]
+      +padding-leader
+      +padding-trailer
   .addall, .removeall
     @extend .allcaps
     +button-reset

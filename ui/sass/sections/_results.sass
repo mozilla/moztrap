@@ -4,11 +4,16 @@
   +adjust-font-size-to(12px)
   +cond
   min-width: rhythm(2.25)
-  +icon('.passed','ui/check_sm.png',$green-lighter,true)
-  +icon('.invalidated','ui/warning_sm.png',$yellow,true)
-  +icon('.failed','ui/x_sm.png',$red-lighter,true)
-  +icon('.pending','ui/clock_sm.png',$blue-lighter,true)
-  +icon('.started','ui/clock_sm.png',$blue-lighter,true)
+  &.passed
+    +text-icon('ui/check_sm.png',$green-lighter)
+  &.invalidated
+    +text-icon('ui/warning_sm.png',$yellow)
+  &.failed
+    +text-icon('ui/x_sm.png',$red-lighter)
+  &.pending
+    +text-icon('ui/clock_sm.png',$blue-lighter)
+  &.started
+    +text-icon('ui/clock_sm.png',$blue-lighter)
   &.zip
     +gone
 

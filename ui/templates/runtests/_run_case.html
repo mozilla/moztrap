@@ -21,20 +21,17 @@
           {% endif %}
         </div>
         <h3 class="title">{{ case.name }}</h3>
-      </header>
-
-      <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
           <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
             {% if result.status.INVALIDATED %}
               <h4 class="summary">invalid or unclear.</h4>
-              <div class="invaliddesc">
+              <div class="invaliddesc content">
                 <h5>description of problem:</h5>
                 <p>{{ result.comment }}</p>
               </div>
             {% else %}
               <h4 class="summary">invalid or unclear?</h4>
-              <div class="invalidform">
+              <div class="invalidform content">
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
                 <div class="form-actions">
@@ -44,7 +41,9 @@
             {% endif %}
           </section>
         {% endif %}
+      </header>
 
+      <div>
         <ol class="steps">
           {% for step in caseversion.steps %}
           <li>

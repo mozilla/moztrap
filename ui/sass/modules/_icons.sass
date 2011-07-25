@@ -1,45 +1,56 @@
-=icon-hover()
-  +opacity(.675)
-  #{$focus}
-    +opacity(1)
+=icon-hover($color:false)
+  @if $color
+    #{$focus}
+      background-color: darken($color,10)
+  @else
+    +opacity(.675)
+    #{$focus}
+      +opacity(1)
 
 =icon-back($back:false)
   @if $back
     +border-radius(.25em)
     background-color: $back
 
-=icon-style($img,$back:false,$text:false,$hover:false,$button:false)
-  +icon-back($back)
+=icon-replace($img,$color:false,$hover:true,$button:false)
+  +box-sizing('content-box')
+  +replace-text($img)
+  min-width: image-width($img)
+  min-height: image-height($img)
+  margin: 0
+  padding: 0 .125em
+  border: 0
+  @if $color
+    +border-radius(.25em)
+    background-color: $color
   @if $hover
     +icon-hover
-  @if $text
-    +box-sizing('border-box')
-    @if $button
-      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
-      +box-shadow($blue-dark 0 0 2px)
-      background-position: .25em, 0
-    @else
-      background:
-        image: image-url($img)
-        position: .25em
-    background-repeat: no-repeat
-    padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
-    text-align: left
-  @else
-    +box-sizing('content-box')
-    +replace-text($img)
-    min-width: image-width($img)
-    min-height: image-height($img)
-    padding: 0 .125em
-    @if $button
-      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
-      +box-shadow($blue-dark 0 0 2px)
-    @else
-      background-image: image-url($img)
+  @if $button
+    +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+    +box-shadow($blue-dark 0 0 2px)
 
-=icon($select,$img,$back:false,$text:false,$hover:false,$button:false)
-  @if $select
-    &#{$select}
-      +icon-style($img,$back,$text,$hover,$button)
+=text-icon($img,$color:false,$hover:false,$button:false)
+  +box-sizing('border-box')
+  margin: 0
+  padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
+  border: 0
+  background-repeat: no-repeat
+  text-align: left
+  @if $color
+    +icon-back($color)
+  @if $hover
+    +icon-hover($color)
+  @if $button
+    +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+    +box-shadow($blue-dark 0 0 2px)
+    background-position: .25em, 0
   @else
-    +icon-style($img,$back,$text,$hover,$button)
+    background:
+      image: image-url($img)
+      position: .25em
+
+=text-button($img,$color:false)
+  +text-icon($img,$color,hover,true)
+
+
+
