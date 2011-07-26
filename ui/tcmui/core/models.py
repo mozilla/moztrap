@@ -2,7 +2,7 @@
 Core remote objects.
 
 """
-from .api import RemoteObject, ListObject, fields
+from .api import RemoteObject, ListObject, fields, Named
 from .util import id_for_object
 from ..static.fields import StaticData
 
@@ -13,7 +13,7 @@ SYSTEM_WIDE = -22222
 
 
 
-class Company(RemoteObject):
+class Company(Named, RemoteObject):
     address = fields.Field()
     city = fields.Field()
     country = StaticData("COUNTRY")

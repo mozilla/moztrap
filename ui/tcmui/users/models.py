@@ -5,7 +5,7 @@ User-related remote objects.
 import urllib
 from posixpath import join
 
-from ..core.api import RemoteObject, Activatable, ListObject, fields
+from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
 from ..core.decorators import as_admin
 from ..core.models import Company
 from ..core.util import id_for_object
@@ -13,7 +13,7 @@ from ..static.fields import StaticData
 
 
 
-class Permission(RemoteObject):
+class Permission(Named, RemoteObject):
     assignable = fields.Field()
     name = fields.Field()
     permissionCode = fields.Field()
@@ -33,7 +33,7 @@ class PermissionList(ListObject):
 
 
 
-class Role(RemoteObject):
+class Role(Named, RemoteObject):
     company = fields.Locator(Company)
     name = fields.Field()
 
@@ -77,6 +77,8 @@ class User(Activatable, RemoteObject):
 
     roles = fields.Link(RoleList)
     permissions = fields.Link(PermissionList)
+
+    name_field = "screenName"
 
     def __unicode__(self):
         return self.screenName

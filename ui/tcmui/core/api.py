@@ -491,6 +491,8 @@ class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     identity = fields.ResourceIdentity()
     timeline = fields.TimelineField()
 
+    name_field = None
+
 
     @property
     def api_name(self):
@@ -774,3 +776,8 @@ class Activatable(object):
             relative_url="deactivate",
             update_from_response=True,
             **kwargs)
+
+
+
+class Named(object):
+    name_field = "name"

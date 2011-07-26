@@ -114,9 +114,9 @@ class Locator(remoteobjects.fields.AcceptsStringCls, Field):
                 if linked_id and int(linked_id):
                     value = self.cls.get(data["@url"], auth=obj.auth)
                     value.__dict__["identity"] = data
-                    linked_name = data.get("@name", "")
-                    if linked_name:
-                        value.__dict__["name"] = linked_name
+                    linked_name = data.get("@name")
+                    if linked_name and value.name_field:
+                        value.__dict__[value.name_field] = linked_name
                 self.__set__(obj, value)
                 return value
         except TypeError:

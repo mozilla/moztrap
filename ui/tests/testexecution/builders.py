@@ -149,6 +149,6 @@ assignments = ListBuilder(
     "testSuiteLocator": make_boolean(None),
     "testerId": 1,
     "testerLocator": make_locator(
-            id=1, url="users/1", name=""), # https://bugzilla.mozilla.org/show_bug.cgi?id=674269
+            id=1, url="users/1", name="The Tester"),
         }
     )

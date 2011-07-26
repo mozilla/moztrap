@@ -3,7 +3,7 @@ Remote objects related to the "documentation" (as opposed to execution) side of
 testing.
 
 """
-from ..core.api import RemoteObject, Activatable, ListObject, fields
+from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
 from ..core.auth import admin
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
@@ -32,7 +32,7 @@ class TagList(ListObject):
 
 
 
-class TestCase(RemoteObject):
+class TestCase(Named, RemoteObject):
     name = fields.Field()
     description = fields.Field()
     maxAttachmentSizeInMbytes = fields.Field()
@@ -170,7 +170,7 @@ class TestCaseVersionList(ListObject):
 
 
 
-class TestCaseStep(RemoteObject):
+class TestCaseStep(Named, RemoteObject):
     name = fields.Field()
     testCaseVersion = fields.Locator(TestCaseVersion)
     stepNumber = fields.Field()
@@ -206,7 +206,7 @@ def filter_run(vals):
 
 
 
-class TestSuite(Activatable, RemoteObject):
+class TestSuite(Named, Activatable, RemoteObject):
     name = fields.Field()
     description = fields.Field()
     product = fields.Locator(Product)

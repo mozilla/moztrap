@@ -20,13 +20,13 @@ Environment                      environment element    Linux
 """
 from collections import namedtuple
 
-from ..core.api import RemoteObject, ListObject, fields
+from ..core.api import RemoteObject, ListObject, fields, Named
 from ..core.models import Company
 
 from . import util
 
 
-class EnvironmentType(RemoteObject):
+class EnvironmentType(Named, RemoteObject):
     """
     This resource conflates two objects that are really quite dissimilar into
     one resource (because that's how the platform does it).
@@ -110,7 +110,7 @@ class EnvironmentTypeList(ListObject):
 
 
 
-class Environment(RemoteObject):
+class Environment(Named, RemoteObject):
     """
     This is an individual environment characteristic (e.g. "Linux" or
     "English"), known in the UI as an "environment element."
@@ -161,7 +161,7 @@ class EnvironmentList(ListObject):
 
 
 
-class EnvironmentGroup(RemoteObject):
+class EnvironmentGroup(Named, RemoteObject):
     """
     This is a set of characteristics (e.g. "Linux, English, Chrome") that make
     up a full (in UI terms) "environment". It contains what the platform calls

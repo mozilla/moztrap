@@ -262,8 +262,6 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
                 response(environmentgroups.array()),
             "http://fake.base/rest/testcases/versions/%s/steps?_type=json" % item_id:
                 response(testcasesteps.array({})),
-            "http://fake.base/rest/users/1?_type=json":
-                response(users.one()),
             }
 
 

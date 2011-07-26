@@ -5,7 +5,7 @@ testing.
 """
 from django.core.urlresolvers import reverse
 
-from ..core.api import Activatable, RemoteObject, ListObject, fields
+from ..core.api import Activatable, RemoteObject, ListObject, Named, fields
 from ..core.models import CategoryValueInfoList, Company
 from ..environments.models import EnvironmentGroupList, EnvironmentList
 from ..products.models import Product
@@ -19,7 +19,7 @@ from ..users.models import User, Team
 
 
 
-class TestCycle(Activatable, RemoteObject):
+class TestCycle(Named, Activatable, RemoteObject):
     company = fields.Locator(Company)
     product = fields.Locator(Product)
     name = fields.Field()
@@ -82,7 +82,7 @@ class TestCycleList(ListObject):
 
 
 
-class TestRun(Activatable, RemoteObject):
+class TestRun(Named, Activatable, RemoteObject):
     company = fields.Locator(Company)
     product = fields.Locator(Product)
     testCycle = fields.Locator(TestCycle)
