@@ -9,11 +9,13 @@ testsuites = ListBuilder(
     "Testsuite",
     {
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "description": "the default test suite",
         "name": "Default Test Suite",
         "productId": 1,
-        "productLocator": make_locator(id=1, url="products/1"),
+        "productLocator": make_locator(
+            id=1, url="products/1", name="The Product"),
         "testSuiteStatusId": 1,
         "useLatestVersions": False,
         }
@@ -27,12 +29,14 @@ testcases = ListBuilder(
     "Testcase",
     {
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "maxAttachmentSizeInMbytes": 0,
         "maxNumberOfAttachments": 0,
         "name": "Default Test Case",
         "productId": 1,
-        "productLocator": make_locator(id=1, url="products/1"),
+        "productLocator": make_locator(
+            id=1, url="products/1", name="The Product"),
         "testCycleId": make_boolean(None),
         "testCycleLocator": make_boolean(None),
         })
@@ -48,7 +52,8 @@ testcaseversions = ListBuilder(
         "approvedBy": make_boolean(None),
         "approvedByLocator": make_boolean(None),
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "description": "",
         "latestVersion": True,
         "majorVersion": 0,
@@ -57,7 +62,8 @@ testcaseversions = ListBuilder(
         "maxNumberOfAttachments": 0,
         "name": "Default Test Case Version",
         "productId": 1,
-        "productLocator": make_locator(id=1, url="products/1"),
+        "productLocator": make_locator(
+            id=1, url="products/1", name="The Product"),
         "testCaseId": 1,
         "testCaseStatusId": 1,
         "testCycleId": make_boolean(None),
@@ -72,8 +78,8 @@ testcasesteps = ListBuilder(
     {
         "name": "Default Test Case Step",
         "testCaseVersionId": 1,
-        "testCaseVersionLocator":
-            make_locator(id=1, url="testcases/versions/1"),
+        "testCaseVersionLocator": make_locator(
+            id=1, url="testcases/versions/1", name="The Test Case Version"),
         "stepNumber": 1,
         "instruction": "default instruction",
         "expectedResult": "default expected result",
@@ -90,12 +96,14 @@ testsuiteincludedtestcases = ListBuilder(
         "blocking": False,
         "runOrder": 0,
         "testCaseId": 1,
-        "testCaseLocator": make_locator(id=1, url="testcases/1"),
+        "testCaseLocator": make_locator(
+            id=1, url="testcases/1", name="The Test Case"),
         "testCaseVersionId": 1,
-        "testCaseVersionLocator":
-            make_locator(id=1, url="testcases/versions/1"),
+        "testCaseVersionLocator": make_locator(
+            id=1, url="testcases/versions/1", name="The Test Case Version"),
         "testSuiteId": 1,
-        "testSuiteLocator": make_locator(id=1, url="testsuites/1"),
+        "testSuiteLocator": make_locator(
+            id=1, url="testsuites/1", name="The Test Suite"),
         # @@@ these values are not used
         "testCycleId": make_boolean(None),
         "testCycleLocator": make_boolean(None),

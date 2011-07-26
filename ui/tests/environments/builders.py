@@ -9,9 +9,11 @@ environmentgroups = ListBuilder(
     "Environmentgroup",
     {
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "environmentTypeId": 1,
-        "environmentTypeLocator": make_locator(id=1, url="environmenttypes/1"),
+        "environmentTypeLocator": make_locator(
+            id=1, url="environmenttypes/1", name="The Environment Type"),
         "description": "",
         "name": "Default Environmentgroup",
         }
@@ -25,7 +27,8 @@ environmenttypes = ListBuilder(
     "Environmenttype",
     {
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "groupType": False,
         "parentEnvironmentTypeId": make_boolean(None),
         "parentEnvironmentTypeLocator": make_boolean(None),
@@ -42,9 +45,11 @@ environments = ListBuilder(
     "Environment",
     {
         "companyId": 1,
-        "companyLocator": make_locator(id=1, url="companies/1"),
+        "companyLocator": make_locator(
+            id=1, url="companies/1", name="The Company"),
         "environmentTypeId": 1,
-        "environmentTypeLocator": make_locator(id=1, url="environmenttypes/1"),
+        "environmentTypeLocator": make_locator(
+            id=1, url="environmenttypes/1", name="The Environment Type"),
         "name": "Default Environment",
         }
     )

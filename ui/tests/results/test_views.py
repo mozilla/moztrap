@@ -283,21 +283,28 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
         return [
             {
                 "testCaseId": 1,
-                "testCaseLocator": make_locator(id=1, url="testcases/1"),
+                "testCaseLocator": make_locator(
+                    id=1, url="testcases/1", name="The Test Case"),
                 "testCaseVersionId": 1,
                 "testCaseVersionLocator": make_locator(
-                    id=1, url="testcases/versions/1"),
+                    id=1,
+                    url="testcases/versions/1",
+                    name="The Test Case Version"),
                 "testSuiteId": 1,
-                "testSuiteLocator": make_locator(id=1, url="testsuites/1"),
+                "testSuiteLocator": make_locator(
+                    id=1, url="testsuites/1", name="The Test Suite"),
                 "resourceIdentity": make_identity(
                     id=1, url="%s/1/" % self.list_class.default_url)
                 },
             {
                 "testCaseId": 2,
-                "testCaseLocator": make_locator(id=2, url="testcases/1"),
+                "testCaseLocator": make_locator(
+                    id=2, url="testcases/1", name="The Test Case"),
                 "testCaseVersionId": 2,
                 "testCaseVersionLocator": make_locator(
-                    id=2, url="testcases/versions/2"),
+                    id=2,
+                    url="testcases/versions/2",
+                    name="The Test Case Version"),
                 "resourceIdentity": make_identity(
                     id=2, url="%s/2/" % self.list_class.default_url)
                 },

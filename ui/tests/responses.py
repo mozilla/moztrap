@@ -80,9 +80,10 @@ def make_identity(id="1", url="some/url", version="0"):
 
 
 
-def make_locator(id="1", url="some/url"):
+def make_locator(id="1", url="some/url", name="Some Name"):
     return {
         "@id": str(id),
+        "@name": name,
         "@url": join(conf.TCM_API_BASE, url),
         "@xsi.type":"ns1:ResourceLocator"}
 

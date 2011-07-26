@@ -297,7 +297,8 @@ class LocatorFunctionalTest(AuthTestCase):
             "thesubjects",
             "Thesubject",
             {
-                "targetLocator": make_locator(id=1, url="thetargets/1")
+                "targetLocator": make_locator(
+                    id=1, url="thetargets/1", name="The Target")
                 }
             )
 
