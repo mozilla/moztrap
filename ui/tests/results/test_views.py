@@ -81,8 +81,6 @@ class ListViewTests(object):
         responses = {
             "http://fake.base/rest/%s?_type=json&pagenumber=1&pagesize=20&companyId=1%s" % (self.list_class.default_url, self.extra_querystring()):
                 response(self.builder.searchresult(*item_data)),
-            "http://fake.base/rest/products/1?_type=json":
-                response(products.one(name="A Product")),
             # finder
             "http://fake.base/rest/products?sortfield=name&sortdirection=asc&_type=json&companyId=1":
                 response(products.searchresult({})),
@@ -195,8 +193,6 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/testcycles/1?_type=json":
-                response(testcycles.one(name="A Cycle")),
             "http://fake.base/rest/testcycles?testCycleStatusId=2&testCycleStatusId=3&_type=json":
                 response(testcycles.searchresult({})),
             }
@@ -242,12 +238,6 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/testcases/1?_type=json":
-                response(testcases.one()),
-            "http://fake.base/rest/testruns/1?_type=json":
-                response(testruns.one()),
-            "http://fake.base/rest/testsuites/1?_type=json":
-                response(testsuites.one()),
             # suites for filtering on
             "http://fake.base/rest/testsuites/?_type=json":
                 response(testsuites.searchresult({})),
@@ -272,8 +262,6 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
                 response(environmentgroups.array()),
             "http://fake.base/rest/testcases/versions/%s/steps?_type=json" % item_id:
                 response(testcasesteps.array({})),
-            "http://fake.base/rest/testcases/%s?_type=json" % item_id:
-                response(testcases.one()),
             "http://fake.base/rest/users/1?_type=json":
                 response(users.one()),
             }
@@ -344,14 +332,10 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
                 response(testrunitcs.one()),
-            "http://fake.base/rest/testcases/1?_type=json":
-                response(testcases.one()),
             "http://fake.base/rest/testcases/versions/1?_type=json":
                 response(testcaseversions.one(
                     resourceIdentity=make_identity(
                         id=1, url="testcases/versions/1"))),
-            "http://fake.base/rest/testruns/1?_type=json":
-                response(testruns.one()),
             # calculating summary results for included-case header
             "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
                 response(testresults.searchresult({})),

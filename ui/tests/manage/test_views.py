@@ -137,8 +137,6 @@ class TestCycleEditViewTest(ViewTestCase, EditViewTests):
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/products/1?_type=json":
-                response(products.one()),
             "http://fake.base/rest/testruns?_type=json&testCycleId=1&companyId=1":
                 response(testruns.searchresult({})),
             "http://fake.base/rest/users?_type=json&companyId=1":
@@ -185,8 +183,6 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                 response(testsuiteincludedtestcases.array({})),
             "http://fake.base/rest/testcases/latestversions/?_type=json&testCaseStatusId=2&productId=1":
                 response(testcaseversions.searchresult({})),
-            "http://fake.base/rest/products/1?_type=json":
-                response(products.one()),
             }
 
 
@@ -211,8 +207,6 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
 
     def extra_responses(self):
         return {
-            "http://fake.base/rest/products/1?_type=json":
-                response(products.one()),
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             }

@@ -49,10 +49,9 @@ class ResultsFinderTest(TestCase):
             {
                 "http://fake.base/rest/testruns/includedtestcases?sortfield=name&sortdirection=asc&_type=json&companyId=1":
                     response(testrunitcs.searchresult({})),
-                "http://fake.base/rest/testcases/1?_type=json": response(testcases.one(name="A Test Case")),
                 }
             )
 
         objects = f.objects("cases")
 
-        self.assertEqual(objects[0].name, "A Test Case")
+        self.assertEqual(objects[0].name, "The Test Case")

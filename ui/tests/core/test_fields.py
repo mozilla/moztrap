@@ -279,10 +279,10 @@ class LocatorFunctionalTest(AuthTestCase):
     @property
     def subject_and_target(self):
         from tcmui.core.api import RemoteObject
-        from tcmui.core.fields import Locator
+        from tcmui.core.fields import Field, Locator
 
         class TheTarget(RemoteObject):
-            pass
+            name = Field()
 
         class TheSubject(RemoteObject):
             target = Locator(TheTarget)
@@ -308,7 +308,8 @@ class LocatorFunctionalTest(AuthTestCase):
 
         target_data = {
             "@url": "http://some.base/thetargets/1",
-            "@id": "1"}
+            "@id": "1",
+            "@name": "The Target"}
         http.request.return_value = response(
             self.subjects.one(targetLocator=target_data))
 
@@ -320,7 +321,8 @@ class LocatorFunctionalTest(AuthTestCase):
         self.assertEqual(target.auth, self.auth)
         self.assertEqual(target.id, "1")
         self.assertEqual(target._location, "http://some.base/thetargets/1")
-        # getting target id and location didn't trigger delivery
+        self.assertEqual(target.name, "The Target")
+        # getting target id, name, location didn't trigger delivery
         self.assertFalse(target._delivered)
 
         # accessing attribute a second time returns cached instance
