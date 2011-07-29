@@ -9,7 +9,7 @@ Platform version
 ----------------
 
 This version of the UI expects to use git commit hash
-'28b1095066f11b5c824eb18ad2267f4ae74df095' of the platform.
+'c1078d484371e42a3b447091ad17c102982419ea' of the platform.
 
 
 Development
@@ -42,9 +42,9 @@ Two settings are required:
 
 The ``create_company`` management command is available to create an initial
 company and a default user role. Run ``./manage.py create_company "Company
-Name"``; a new company named "Company Name" and a role named "Company Name
-Tester" will be created, and the command will output their IDs, which can then
-be used for the above two settings.
+Name"``; a new company named "Company Name" and two roles, named "Company Name
+Tester" and "Company Name Admin" will be created, and the command will output
+their IDs, which can then be used for the above two settings.
 
 Several other settings have reasonable defaults, but may need to be modified:
 
@@ -65,11 +65,11 @@ Several other settings have reasonable defaults, but may need to be modified:
 Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
-.. _virtualenv: http://www.virtualenv.org
-
 To install the necessary Ruby Gems for Compass/Sass development, run
 ``bin/install-gems requirements/gems.txt``.  Update
 ``requirements/gems.txt`` if newer gems should be used.
+
+.. _virtualenv: http://www.virtualenv.org
 
 Running the tests
 ~~~~~~~~~~~~~~~~~
@@ -89,6 +89,21 @@ running the tests.
 To run just a particular test module::
 
     bin/test tests.core.test_api
+
+
+Creating sample data
+~~~~~~~~~~~~~~~~~~~~
+
+To quickly populate the platform with a small amount of sample data for
+development and manual testing, run ``./manage.py create_test_data``. This will
+create a user with email address ``tester@example.com`` with the default new
+user role and password ``testpw``, as well as several products, a test cycle,
+test run, and a couple test cases.
+
+You can optionally pass an argument to the ``create_test_data`` command, the
+integer ID of the admin role created by ``create_company`` (above). If given an
+admin role ID, ``create_test_data`` will also create an admin user
+``admin@example.com`` with that role and password ``testpw``.
 
 
 Deployment

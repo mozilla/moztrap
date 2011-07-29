@@ -1,8 +1,0 @@
-{% extends "runtests/picker/_item.html" %}
-
-{% block columns %}
-<span class="completion" data-perc="75"><span class="number">75</span>%</span>
-<span class="title" title="{{ object.name }}">{{ object.name }}</span>
-<time class="start">{{ object.startDate|date }}</time>
-<time class="end">{{ object.endDate|date }}</time>
-{% endblock %}

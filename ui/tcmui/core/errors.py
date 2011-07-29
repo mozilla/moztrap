@@ -1,11 +1,12 @@
 # maps a message id to a tuple of (error message, fields), where fields is a
 # list of field names this message is likely related to.
 MESSAGES = {
-    "duplicate.name": ("This name is already in use.", ["name"]),
+    "duplicate.name": (
+        "The name %(name)s is already in use.", ["name", "cases"]),
     "changing.used.entity": (
-        "The %(name)s is in use and cannot be modified.", []),
+        "%(obj)s is in use elsewhere and cannot be modified.", []),
     "deleting.used.entity": (
-        "The %(name)s is in use and cannot be deleted.", []),
+        "%(obj)s is in use elsewhere and cannot be deleted.", []),
     "invalid.user": (
         "You created this; someone else must approve or reject it.", []),
     "activating.incomplete.entity": {
@@ -39,7 +40,9 @@ def error_message_and_fields(obj, err):
         if isinstance(data, dict):
             data = data[obj.__class__.__name__]
         message, fields = data
-        return (message % {"name": unicode(obj)}, fields)
+        return (message % {
+                "obj": unicode(obj),
+                "name": getattr(obj, "name", "")}, fields)
     except KeyError:
         return (
             'Unknown conflict "%s"; please correct and try again.'

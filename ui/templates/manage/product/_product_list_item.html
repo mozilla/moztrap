@@ -1,0 +1,39 @@
+<article id="product-id-{{ product.id }}" class="item details">
+  <header class="summary">
+    <h3 class="title">
+      {{ product.name }}
+    </h3>
+    <p class="preview">
+      {{ product.description }}
+    </p>
+    <div class="controls">
+      <a href="{% url manage_product_edit product_id=product.id %}" title="edit">edit</a>
+      <button title="delete" type="submit" name="action-delete" value="{{ product.id }}">delete</button>
+    </div>
+  </header>
+  <div class="content">
+    <p class="byline">
+      Created by <span class="fn">{{ product.timeline.createdBy.screenName }}</span>
+      on <time pubdate>{{ product.timeline.createDate|date }}</time>
+    </p>
+    <p class="description">
+      {{ product.description }}
+    </p>
+    <section class="components">
+      <h4><a href="{% url manage_testcycles %}?product={{ product.id }}">Cycles in this product:</a></h4>
+      <ul>
+        {% for cycle in product.testcycles %}
+        <li><a href="{% url manage_testcycles %}?product={{ product.id }}#cycle-id-{{ cycle.id }}">{{ cycle.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </section>
+    <div class="testers">
+      <h4>testers</h4>
+      <ul>
+        {% for tester in product.team %}
+        <li> {{ tester.screenName }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</article>

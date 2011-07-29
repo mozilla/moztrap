@@ -1,0 +1,40 @@
+<form method="POST" id="single-case-form">
+  {% csrf_token %}
+  {{ single_form.non_field_errors }}
+  <ul class="basic">
+    <li>
+      {% include "forms/_field.html" with field=single_form.product %}
+    </li>
+    {% comment %}
+    <li class="suite-field">
+      <label for="suite-bulk">Suite</label>
+      <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
+      {# @@@ this should be an autocomplete field #}
+    </li>
+    {% endcomment %}
+    <li>
+      {% include "forms/_field.html" with field=single_form.name %}
+    </li>
+    {% block caseversions %}{% endblock caseversions %}
+    {% comment %} @@@
+    <li>
+      {% include "forms/_field.html" with field=single_form.tags %}
+    </li>
+    {% endcomment %}
+  </ul>
+
+  <div class="steps">
+    {{ single_form.steps_formset.management_form }}
+    <ol class="steplist">
+      {% for form in single_form.steps_formset %}
+      {% include "manage/product/testcase/_step_form.html" %}
+      {% endfor %}
+    </ol>
+  </div>
+
+  <div class="form-actions">
+    {% block versionactions %}{% endblock versionactions %}
+    <button type="submit" name="single-save" value="1">save test case</button>
+  </div>
+
+</form>

@@ -1,0 +1,14 @@
+{% extends "finder/_column.html" %}
+
+{% block finder-section-classes %}runs{% if testrun %} focus{% endif %}{% endblock %}
+
+{% block finder-section-column-headers %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Runs" %}
+  {% include "finder/_header.html" with tag="p" class="bystart" sort_type="date" header="start" %}
+  {% include "finder/_header.html" with tag="p" class="byend" sort_type="date" header="end" %}
+{% endblock %}
+
+
+{% block finder-section-column-content %}
+  {% include "runtests/finder/_runs.html" with active=testrun %}
+{% endblock %}

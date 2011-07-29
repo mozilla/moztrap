@@ -1,47 +1,33 @@
 {% extends 'manage/environment/base.html' %}
-{# @@@ full page wireframe #}
+
+{% block page-status %}incomplete{% endblock %}
+
+{% block page-notes %}
+<li>No filtering yet (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658123">platform limitation</a>).</li>
+{% endblock %}
 
 {% block listcontent %}
 <section id="editprofile">
   <h2>Edit Environment Profile</h2>
 
-  <form method="POST">
+  <form method="POST" id="profile-name-form">
     {% csrf_token %}
 
     <p class="profile-name">
       <label for="profile_name">profile name</label>
-      <input type="text" name="profile_name" value="name of this profile" id="profile_name" placeholder="profile name" required>
+      <input type="text" name="profile-name" value="{{ profile.name }}" id="profile-name" placeholder="profile name" required>
     </p>
 
-    {% include "lists/_filter.html" %}
-
-    <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bypreview">
-            <a href="#">environment preview</a>
-          </li>
-          <li class="bycontrols">
-            <span>controls</span>
-          </li>
-        </ul>
-      </nav>
-
-      <div class="items">
-        {% include "manage/environment/_env_list_item.html" with id='01' %}
-        {% include "manage/environment/_env_list_item.html" with id='01' %}
-
-        <a href="#" class="item add-item">add an environment</a>
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
-
     <div class="form-actions">
-      <button type="submit">save and return to profile list</button>
+    <button type="submit" name="save-profile-name" id="save-profile-name" value="1">Save</button>
     </div>
 
   </form>
+
+  {# @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=658123 #}
+  {# include "lists/_filter.html" #}
+
+  {% include 'manage/environment/edit_profile/_envs_list.html' %}
+
 </section>
 {% endblock listcontent %}

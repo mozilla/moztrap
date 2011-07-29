@@ -104,7 +104,9 @@
 
   .title
     +ellipsis
+    +suffix(1,6)
     display: block
+
 
   .start, .end, .bycompletion, .bystart, .byend, .end, .byend
     display: none
@@ -136,6 +138,7 @@
       +columns(1,12)
     .title, .bytitle
       +columns(6,12)
+      padding: 0
       &:first-child
         +columns(7,12)
         &:last-child

@@ -2,7 +2,7 @@
 Product-related remote objects.
 
 """
-from ..core.api import ListObject, RemoteObject, fields
+from ..core.api import ListObject, RemoteObject, fields, Named
 from ..core.models import Company
 from ..core.util import id_for_object
 from ..environments.models import EnvironmentGroupList
@@ -10,13 +10,19 @@ from ..users.models import Team
 
 
 
-class Product(RemoteObject):
+class Product(Named, RemoteObject):
     company = fields.Locator(Company)
     description = fields.Field()
     name = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     team = fields.Link(Team, api_name="team/members")
+
+    @property
+    def testcycles(self):
+        from ..testexecution.models import TestCycleList
+
+        return TestCycleList.get(auth=self.auth).filter(product=self)
 
 
     def __unicode__(self):
@@ -40,7 +46,15 @@ class Product(RemoteObject):
         extra_payload = {
             "environmentIds": [id_for_object(e) for e in environments]}
 
-        self._put(relative_url=url, extra_payload=extra_payload, **kwargs)
+        generated = EnvironmentGroupList()
+
+        self._put(
+            relative_url=url,
+            extra_payload=extra_payload,
+            update_from_response=generated,
+            **kwargs)
+
+        return generated
 
 
 

@@ -1,7 +1,6 @@
 {% extends 'manage/environment/base.html' %}
-{# @@@ full page wireframe #}
 
-{% load icanhaz %}
+{% load icanhaz sort %}
 
 {% block listcontent %}
 <section id="addprofile">
@@ -12,17 +11,15 @@
 
     <p class="profile-name">
       <label for="profile_name">profile name</label>
-      <input type="text" name="profile_name" value="" id="profile_name" placeholder="profile name" required>
+      <input type="text" name="profile_name" value="{{ profile_name }}" id="profile_name" placeholder="profile name" required>
     </p>
-
-    {% include "lists/_filter.html" %}
 
     <div class="managelist">
       <nav class="listordering">
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bytitle">
-            <a href="#">name</a>
+            <span>name</span>
           </li>
           <li class="bypreview">
             <span>preview</span>
@@ -34,23 +31,19 @@
       </nav>
 
       <div class="items">
-        {% icanhaz "env_profile_element" %}
-        {% icanhaz "env_profile_element_preview" %}
         {% icanhaz "env_profile_element_edit" %}
-        {% icanhaz "env_profile_category" %}
-        {% include "manage/environment/_category_list_item.html" with id="01" category="Language" elem1="English" elem2="Spanish" elem3="Iroquois" %}
-        {% include "manage/environment/_category_list_item.html" with id="02" category="Operating System" elem1="Windows" elem2="OS X" elem3="Linux" %}
-        {% include "manage/environment/_category_list_item.html" with id="03" category="Browser" elem1="Firefox" elem2="Chrome" elem3="Safari" elem4="Internet Explorer" %}
-        {% include "manage/environment/_category_list_item.html" with id="04" category="Screen resolution" elem1="Over 1280x1024" elem2="1280x1024" elem3="1024x768" elem4="800x600" %}
-        <article href="#" class="item add-item details">
-          <h3 class="summary">add a category</h3>
-          <div class="content">
-            {% include "manage/environment/_category_list_item_content.html" with new='true' %}
-          </div>
-        </a>
-      </div>
 
-      {% include "lists/_listnav.html" %}
+        {% for category in categories %}
+        {% include "manage/environment/add_profile/_category_list_item.html" %}
+        {% endfor %}
+
+        <article href="#" class="item add-item details">
+          <div class="content">
+            {% include "manage/environment/add_profile/_category_list_item_content_new.html" %}
+          </div>
+          <h3 class="summary">add a category</h3>
+        </article>
+      </div>
     </div>
 
     <div class="form-actions">

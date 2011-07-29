@@ -1,3 +1,7 @@
+.leftcolumnpadding
+  +box-sizing('border-box')
+  padding-left: $smallem
+
 .preview
   +ellipsis
   +delimited-list(',')
@@ -27,18 +31,25 @@
   +omega(10)
   display: none
 
+.footeradditem
+  +trailer
+  a, .summary
+    +border-radius
+    background: rgba($green,$xsmall) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+    color: $base
+    #{$focus}
+      background-color: rgba($green,$small)
+
 .item.add-item
   +demi
-  +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
-  #{$link}
+  a, .summary
     @extend .allcaps
+    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
     display: block
-    padding: rhythm(.25) rhythm(1)
-  .summary
-    @extend .allcaps
-    +pad(1,1,24)
-  #{$focus}
-    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
+    padding: rhythm(.25) rhythm(1.25)
+    color: $green-dark
+    #{$focus}
+      +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
 .profile-name
   +full(24)
@@ -50,6 +61,25 @@
   input
     +columns(10,12)
     +omega(12)
+
+/* Manage Products --------------------------------------------------------------
+
+#manageproducts
+  .testers, .byline
+    +columns(4,24)
+  .title, .bytitle
+    +columns(5,24)
+  .preview, .bypreview
+    +columns(15,24)
+  .description
+    +columns(18,24)
+    +prefix(2,24)
+  .testers, .byline
+    +omega(24)
+  .title
+    @extend .leftcolumnpadding
+  .byline
+    text-align: right
 
 /* Manage Tests --------------------------------------------------------------
 
@@ -92,6 +122,7 @@
     +columns(12,24)
 
   .title
+    @extend .leftcolumnpadding
     a
       #{$link}
         display: block
@@ -104,7 +135,7 @@
     +columns(6,24)
   .bytitle
     +prefix(1,24)
-    a
+    a, span
       padding: 0
   .bulk
     +columns(1,24)
@@ -119,6 +150,8 @@
     @extend .editinline
     +bold
     margin: 0 columns(7,24) + gutter(24)
+    label
+      +gone
     button
       +float(right)
       display: none
@@ -147,6 +180,13 @@
     label
       +gone
 
+  .add-item
+    @extend .footeradditem
+    .name
+      margin: 0 columns(17,24) + gutter(24) 0 columns(1,24) + gutter(24)
+      input
+        margin: 0
+
 #editprofile
   .bypreview, .preview
     +columns(22,24)
@@ -154,21 +194,40 @@
     +pad(2,2,24)
 
   .env-management
-    +leader(.5)
+    +leader(.25)
     label
       +gone
+    input
+      +trailer(.25)
 
-  .env-element-list
-    +no-style-list
-    +pie-clearfix
-    +trailer(.5)
-    li
-      +float(left)
-      +demi
-      +border-radius
-      background: rgba($green,$xsmall)
-      padding: rhythm(.125) rhythm(.25)
-      margin-right: rhythm(.25)
-      cursor: pointer
-      &:hover
-        background: rgba($red,$xsmall)
+.env-element-list
+  +no-style-list
+  +pie-clearfix
+  +leader(.25)
+  +trailer(.25)
+  li
+    +float(left)
+    +demi
+    +border-radius
+    background: rgba($green,$xsmall)
+    padding: rhythm(.125) rhythm(.25)
+    margin-right: rhythm(.25)
+    cursor: pointer
+    &:hover
+      background: rgba($red,$xsmall)
+
+/* narrow Environments -------------------------------------------------------
+
+#envnarrowlist
+  .bybulk, .bulk
+    +columns(1,24)
+    label
+      +gone
+    input
+      margin-left: rhythm(.5)
+  .bypreview, .preview
+    +columns(23,24)
+    +omega(24)
+    text-align: left
+  .content
+    +pad(1,1,24)

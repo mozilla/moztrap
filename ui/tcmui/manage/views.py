@@ -1,5 +1,8 @@
+import json
+
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
@@ -7,6 +10,9 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
+from ..environments.models import (
+    EnvironmentTypeList, EnvironmentType, EnvironmentGroupList, EnvironmentList,
+    EnvironmentGroup)
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
@@ -18,16 +24,93 @@ from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.models import UserList
 
-from .forms import TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm
+from .decorators import environment_actions
+from .finder import ManageFinder
+from .forms import (
+    ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
+    BulkTestCaseForm)
 
 
 
 def home(request):
-    return redirect(reverse("manage_testcycles") + "?finder=1")
+    return redirect(reverse("manage_testcycles") + "?openfinder=1")
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
+@dec.actions(ProductList, ["delete"])
+@dec.filter("products",
+            ("name", KeywordFilter))
+@dec.paginate("products")
+@dec.sort("products")
+@dec.ajax("manage/product/_products_list.html")
+def products(request):
+    return TemplateResponse(
+        request,
+        "manage/product/products.html",
+        {
+            "products": ProductList.ours(auth=request.auth),
+            }
+        )
+
+
+
+@login_redirect
+@dec.finder(ManageFinder)
+def add_product(request):
+    form = ProductForm(
+        request.POST or None,
+        company=request.company,
+        profile_choices=EnvironmentTypeList.get(auth=request.auth).filter(
+            groupType=True),
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        product = form.save()
+        messages.success(
+            request,
+            "The product '%s' has been created."  % product.name)
+        return redirect("manage_products")
+    return TemplateResponse(
+        request,
+        "manage/product/add_product.html",
+        {"form": form}
+        )
+
+
+
+@never_cache
+@login_redirect
+@dec.finder(ManageFinder)
+def edit_product(request, product_id):
+    product = ProductList.get_by_id(product_id, auth=request.auth)
+    form = ProductForm(
+        request.POST or None,
+        instance=product,
+        company=request.company,
+        team_choices=UserList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        product = form.save()
+        messages.success(
+            request,
+            "The product '%s' has been saved."  % product.name)
+        return redirect("manage_products")
+
+    return TemplateResponse(
+        request,
+        "manage/product/edit_product.html",
+        {
+            "form": form,
+            "product": product,
+            }
+        )
+
+
+
+@login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestCycleList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("cycles",
             ("status", status_filters.TestCycleStatusFilter),
@@ -42,16 +125,13 @@ def testcycles(request):
         "manage/product/testcycle/cycles.html",
         {
             "cycles": TestCycleList.ours(auth=request.auth),
-            "picker": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testcycle(request):
     form = TestCycleForm(
         request.POST or None,
@@ -74,6 +154,7 @@ def add_testcycle(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestRunList, ["clone", "delete", "activate", "deactivate"],
              fall_through=True)
 @dec.sort("testruns")
@@ -119,6 +200,7 @@ def testcycle_details(request, cycle_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestRunList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("runs",
             ("status", status_filters.TestRunStatusFilter),
@@ -134,16 +216,13 @@ def testruns(request):
         "manage/product/testrun/runs.html",
         {
             "runs": TestRunList.ours(auth=request.auth),
-            "picker": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testrun(request):
     tcid = request.GET.get("cycle")
     suites = TestSuiteList.ours(auth=request.auth)
@@ -170,6 +249,7 @@ def add_testrun(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testrun(request, run_id):
     run = TestRunList.get_by_id(run_id, auth=request.auth)
     form = TestRunForm(
@@ -209,6 +289,7 @@ def testrun_details(request, run_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(TestSuiteList, ["activate", "deactivate", "delete", "clone"])
 @dec.filter("suites",
             ("status", status_filters.TestSuiteStatusFilter),
@@ -224,16 +305,13 @@ def testsuites(request):
         "manage/product/testsuite/suites.html",
         {
             "suites": TestSuiteList.ours(auth=request.auth),
-            "picker": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
@@ -257,6 +335,7 @@ def add_testsuite(request):
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testsuite(request, suite_id):
     suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
     form = TestSuiteForm(
@@ -295,6 +374,7 @@ def testsuite_details(request, suite_id):
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 @dec.actions(
     TestCaseVersionList,
     ["approve", "reject", "activate", "deactivate"],
@@ -321,38 +401,65 @@ def testcases(request):
         {
             "cases": TestCaseVersionList.ours(
                 url="testcases/latestversions", auth=request.auth),
-            "picker": {
-                "products": ProductList.ours(auth=request.auth).sort(
-                    "name", "asc")
-                    }
             }
         )
 
 
 
 @login_redirect
+@dec.finder(ManageFinder)
 def add_testcase(request):
-    form = TestCaseForm(
-        request.POST or None,
-        product_choices=ProductList.ours(auth=request.auth),
-        auth=request.auth)
+    open_bulk = False
+    single_form = bulk_form = None
+
     if request.method == "POST":
-        if form.is_valid():
-            testcase = form.save()
-            messages.success(
-                request,
-                "The test case '%s' has been created."  % testcase.name)
-            return redirect("manage_testcases")
+        if "bulk-save" in request.POST:
+            bulk_form = BulkTestCaseForm(
+                request.POST,
+                product_choices=ProductList.ours(auth=request.auth),
+                auth=request.auth)
+            if bulk_form.is_valid():
+                testcases = bulk_form.save()
+                messages.success(
+                    request,
+                    "%s test cases have been created." % len(testcases))
+                return redirect("manage_testcases")
+            open_bulk = True
+        else:
+            single_form = TestCaseForm(
+                request.POST,
+                product_choices=ProductList.ours(auth=request.auth),
+                auth=request.auth)
+            if single_form.is_valid():
+                testcase = single_form.save()
+                messages.success(
+                    request,
+                    "The test case '%s' has been created."  % testcase.name)
+                return redirect("manage_testcases")
+
+    if single_form is None:
+        single_form = TestCaseForm(
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
+    if bulk_form is None:
+        bulk_form = BulkTestCaseForm(
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
 
     return TemplateResponse(
         request,
         "manage/product/testcase/add_case.html",
-        {"form": form })
+        {
+            "single_form": single_form,
+            "bulk_form": bulk_form,
+            "open_bulk": open_bulk,
+            })
 
 
 
 @never_cache
 @login_redirect
+@dec.finder(ManageFinder)
 def edit_testcase(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
     form = TestCaseForm(
@@ -371,7 +478,7 @@ def edit_testcase(request, case_id):
         request,
         "manage/product/testcase/edit_case.html",
         {
-            "form": form,
+            "single_form": form,
             "case": case,
             }
         )
@@ -389,44 +496,117 @@ def testcase_details(request, case_id):
 
 
 @login_redirect
-def picker_cycles(request, parent_id):
-    cycles = TestCycleList.get(auth=request.auth).filter(
-        product=parent_id).sort("name", "asc")
+@dec.actions(
+    EnvironmentTypeList,
+    ["delete"])
+@dec.filter("profiles",
+            ("name", KeywordFilter),
+            )
+@dec.paginate("profiles")
+@dec.sort("profiles")
+@dec.ajax("manage/environment/_profiles_list.html")
+def environment_profiles(request):
+    profiles = EnvironmentTypeList.get(auth=request.auth).filter(groupType=True)
     return TemplateResponse(
         request,
-        "manage/picker/_cycles.html",
-        {
-            "picker": {"cycles": cycles},
-            "picker_type": "manage",
-            })
+        "manage/environment/profiles.html",
+        {"profiles": profiles})
 
 
 
 @login_redirect
-def picker_runs(request, parent_id):
-    runs = TestRunList.get(auth=request.auth).filter(
-        testCycle=parent_id).sort("name", "asc")
+@environment_actions()
+def add_environment_profile(request):
+    etl = EnvironmentTypeList.get(auth=request.auth)
+
+    element_ids = set()
+    name = ""
+
+    if request.method == "POST":
+        element_ids.update(request.POST.getlist("element"))
+        name = request.POST.get("profile_name")
+
+        if not name:
+            messages.error(request, "Please provide a profile name.")
+        elif not element_ids:
+            messages.error(
+                request, "At least one environment element must be selected.")
+        else:
+            profile = EnvironmentType(
+                name=name, company=request.company, groupType=True)
+            etl.post(profile)
+            request.company.autogenerate_env_groups(element_ids, profile)
+
+            return redirect("manage_environment_edit", profile_id=profile.id)
+
+    categories = etl.filter(groupType=False)
     return TemplateResponse(
         request,
-        "manage/picker/_runs.html",
+        "manage/environment/add_profile.html",
         {
-            "picker": {"runs": runs},
-            "picker_type": "manage",
-            })
-
+            "categories": categories,
+            "selected_elements": element_ids,
+            "profile_name": name,
+            }
+        )
 
 
 @login_redirect
-def picker_suites(request, parent_id):
-    suites = TestSuiteList.get(auth=request.auth).filter(
-        run=parent_id).sort("name", "asc")
+@dec.actions(
+    EnvironmentGroupList,
+    ["delete"],
+    fall_through=True)
+@dec.paginate('environments')
+@dec.ajax("manage/environment/edit_profile/_envs_list.html")
+def edit_environment_profile(request, profile_id):
+    profile = EnvironmentTypeList.get_by_id(profile_id, auth=request.auth)
+
+    if request.is_ajax() and request.method == "POST":
+        if "save-profile-name" in request.POST:
+            new_name = request.POST.get("profile-name")
+            data = {}
+            if not new_name:
+                messages.error(request, "Please enter a profile name.")
+                data["success"] = False
+            else:
+                profile.name = new_name
+                profile.put()
+                messages.success(request, "Profile name saved!")
+                data["success"] = True
+
+            return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+        elif "add-environment" in request.POST:
+            element_ids = request.POST.getlist("element")
+            if not element_ids:
+                messages.error(
+                    request, "Please select some environment elements.")
+            else:
+                env = EnvironmentGroup(
+                    company=request.company,
+                    name=str([int(i) for i in element_ids]),
+                    environmentType=profile,
+                    )
+                EnvironmentGroupList.get(auth=request.auth).post(env)
+                env.environments = element_ids
+
     return TemplateResponse(
         request,
-        "manage/picker/_suites.html",
+        "manage/environment/edit_profile.html",
         {
-            "picker": {"suites": suites},
-            "picker_type": "manage",
-            })
+            "profile": profile,
+            "environments": profile.environments, # platform-speak: env groups
+            }
+        )
 
 
 
+def autocomplete_env_elements(request):
+    text = request.GET.get("text") + r"%"
+    elements = EnvironmentList.get(auth=request.auth).filter(name=text)
+
+    data = dict((e.id, e.name) for e in elements)
+
+    return HttpResponse(json.dumps(data), content_type="application/json")

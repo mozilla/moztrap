@@ -46,7 +46,7 @@
         </ul>
       </nav>
 
-      <div class="items {% if not results %}empty{% endif %}">
+      <div class="items">
         {% for result in results %}
         <article id="result-id-{{ result.id }}" class="{% if not result.status.PASSED and not result.status.PENDING and not result.status.STARTED %}details{% endif %} item {{ result.status|status_class }}">
           <header class="summary">
@@ -77,6 +77,8 @@
           </section>
           {% endif %}
         </article>
+        {% empty %}
+          <p class="empty">There are currently no items in this list...</p>
         {% endfor %}
       </div>
 

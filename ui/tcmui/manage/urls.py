@@ -6,6 +6,11 @@ urlpatterns = patterns(
     "tcmui.manage.views",
     url("^$", "home", name="manage"),
 
+    # products
+    url("^products/$", "products", name="manage_products"),
+    url("^product/add/$", "add_product", name="manage_product_add"),
+    url("^product/(?P<product_id>\d+)/$", "edit_product", name="manage_product_edit"),
+
     # test cycles
     url("^testcycles/$", "testcycles", name="manage_testcycles"),
     url("^testcycles/_detail/(?P<cycle_id>\d+)/$",
@@ -38,26 +43,14 @@ urlpatterns = patterns(
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
-    # picker ajax
-    url("^_picker/cycles/(?P<parent_id>\d+)/",
-        "picker_cycles",
-        name="manage_picker_cycles"),
-    url("^_picker/runs/(?P<parent_id>\d+)/",
-        "picker_runs",
-        name="manage_picker_runs"),
-    url("^_picker/suites/(?P<parent_id>\d+)/",
-        "picker_suites",
-        name="manage_picker_suites"),
+    # environment profiles
+    url(r"^environments/$", "environment_profiles", name="manage_environments"),
+    url(r"^environment/add/$", "add_environment_profile", name="manage_environment_add"),
+    url(r"^environment/edit/(?P<profile_id>\d+)/$", "edit_environment_profile", name="manage_environment_edit"),
+    url(r"^environment/_elements/", "autocomplete_env_elements", name="manage_environment_autocomplete_elements"),
 
-    # environment profile list (wireframed)
-    url(r"^environments/$", direct_to_template,
-        {"template": "manage/environment/profiles.html"}),
-    # environment profile create (wireframed)
-    url(r"^environment/add/$", direct_to_template,
-        {"template": "manage/environment/add_profile.html"}),
-    # environment profile create (wireframed)
-    url(r"^environment/edit/$", direct_to_template,
-        {"template": "manage/environment/edit_profile.html"}),
+    # environment narrowing (wireframed)
+    url(r"^type/id/environments/$", direct_to_template,
+        {"template": "manage/environment/narrowing.html"}),
 
 )
-

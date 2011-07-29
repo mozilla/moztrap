@@ -1,0 +1,9 @@
+{% extends "finder/_finder.html" %}
+
+{% block finder-column-count %}3{% endblock %}
+
+{% block finder-columns %}
+  {% include "runtests/finder/_product_column.html" %}
+  {% include "runtests/finder/_cycle_column.html" %}
+  {% include "runtests/finder/_run_column.html" %}
+{% endblock %}

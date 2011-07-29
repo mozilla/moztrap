@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4, .superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4, .superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall, .item.add-item:link, .item.add-item:visited, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -265,7 +265,7 @@ footer, header, hgroup, menu, nav, section {
   width: auto;
 }
 
-.toparrow::before, .userselect > div::before {
+.toparrow::before {
   content: " ";
   display: block;
   position: absolute;
@@ -985,6 +985,24 @@ button.sub:focus, button.sub:hover, button.sub:active {
   margin-left: 0px;
 }
 
+.readonly, .readonly dt, .readonly dd {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.readonly dt, .readonly dd {
+  padding-top: 0.405em;
+  padding-bottom: 1.214em;
+}
+.readonly dt {
+  font-style: normal;
+  font-weight: 700;
+}
+.readonly dd {
+  font-weight: 500;
+  font-style: italic;
+}
+
 /* Layout -------------------------------------------------------------------- */
 .container, #page, .secondary > ul, .secondary > ol {
   *zoom: 1;
@@ -1115,7 +1133,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/plus.png?1309283001');
+  background-image: url('../images/ui/columns.png?1310493342');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: inline;
@@ -1613,7 +1631,7 @@ button[name="action-edit"] {
   color: #999999;
 }
 
-.groupheader, #filter h5, .envgroups h5, .testers h4, .suites h4 {
+.groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0 0.25em;
@@ -1944,7 +1962,7 @@ button[name="action-edit"] {
 #filter .expanded .long:hover {
   overflow-y: auto;
 }
-#filter .expanded input {
+#filter .expanded input[type='checkbox'] {
   display: none;
 }
 #filter .expanded label {
@@ -1972,6 +1990,13 @@ button[name="action-edit"] {
 }
 #filter .expanded input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1309283001');
+}
+#filter .expanded input[type="text"] {
+  border-style: solid;
+  border-width: 0.083em;
+  padding: 0.271em;
+  margin-bottom: 0.708em;
+  margin-top: 0.472em;
 }
 
 /* Loading ------------------------------------------------------------------- */
@@ -2236,6 +2261,7 @@ button[name="action-edit"] {
   word-wrap: break-word;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+  padding-right: 17.391%;
   display: block;
 }
 .finder .start, .finder .end, .finder .bycompletion, .finder .bystart, .finder .byend, .finder .end, .finder .byend {
@@ -2285,6 +2311,7 @@ button[name="action-edit"] {
   float: left;
   width: 48.936%;
   margin-right: 2.128%;
+  padding: 0;
 }
 .finder .focus .title:first-child, .finder .focus .bytitle:first-child {
   display: inline;
@@ -2336,13 +2363,14 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.environment label {
+.environment label, .environment .readonly dt {
   display: inline;
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
+  text-align: right;
 }
-.environment input, .environment select, .environment textarea {
+.environment input, .environment select, .environment textarea, .environment .readonly dd {
   display: inline;
   float: left;
   width: 65.957%;
@@ -2418,6 +2446,8 @@ button[name="action-edit"] {
 }
 .managelist .item {
   *zoom: 1;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
   clear: both;
 }
 .managelist .item:after {
@@ -2427,6 +2457,9 @@ button[name="action-edit"] {
   clear: both;
   overflow: hidden;
   visibility: hidden;
+}
+.managelist .item.details {
+  padding: 0;
 }
 .managelist .summary, .managelist .content {
   *zoom: 1;
@@ -2483,21 +2516,14 @@ button[name="action-edit"] {
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
-  position: relative;
-  height: 4.854em;
-  color: rgba(82, 134, 132, 0.618);
-}
-.managelist .empty::after {
+  padding-top: 1.618em;
+  padding-bottom: 1.618em;
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding-top: 1.618em;
   text-shadow: white 0 1px 0;
-  content: "there are currently no items in this list...";
+  position: relative;
+  color: rgba(82, 134, 132, 0.618);
+  margin: 0;
   text-align: center;
 }
 .managelist .steps {
@@ -2532,6 +2558,15 @@ button[name="action-edit"] {
 }
 .managelist .steps .outcome {
   font-style: italic;
+  margin: 0;
+}
+.managelist .testers, .managelist .suites {
+  font-size: 0.857em;
+  line-height: 1.416em;
+  color: #6e6e6e;
+}
+.managelist .testers h4, .managelist .suites h4 {
+  background-color: transparent;
   margin: 0;
 }
 
@@ -2867,16 +2902,6 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 
-.testers, .suites {
-  font-size: 0.857em;
-  line-height: 1.416em;
-  color: #6e6e6e;
-}
-.testers h4, .suites h4 {
-  background-color: transparent;
-  margin: 0;
-}
-
 .components {
   display: inline;
   float: left;
@@ -3107,13 +3132,14 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.simpleform label, #register form label {
+.simpleform label, #register form label, .simpleform .readonly dt, #register form .readonly dt {
   display: inline;
   float: left;
   width: 31.915%;
   margin-right: 2.128%;
+  text-align: right;
 }
-.simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea {
+.simpleform input, #register form input, .simpleform select, #register form select, .simpleform textarea, #register form textarea, .simpleform .readonly dd, #register form .readonly dd {
   display: inline;
   float: left;
   width: 65.957%;
@@ -3164,6 +3190,30 @@ button[name="action-edit"] {
   margin-bottom: 1.618em;
 }
 
+.slideshow {
+  width: 100%;
+  overflow: hidden;
+}
+.slideshow > div {
+  margin: 0;
+  padding: 0;
+  width: 1030%;
+  list-style: none;
+  overflow: hidden;
+  *zoom: 1;
+}
+.slideshow > div li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.slideshow > div > article {
+  display: inline;
+  float: left;
+  width: 9.709%;
+  margin-right: 0.049%;
+}
+
 /* Create -------------------------------------------------------------------- */
 .removefields {
   text-indent: -119988px;
@@ -3176,38 +3226,14 @@ button[name="action-edit"] {
   height: 1.618em;
 }
 
-.addfields, .addfields:link, .addfields:visited {
-  font-weight: 500;
-  font-style: italic;
-  display: block;
-  padding: 0.405em 0.809em;
-  color: #4f7a1b;
-  background: rgba(119, 185, 41, 0.382);
-  text-align: right;
-}
-.addfields:first-child:last-child, h3 + .addfields, .addfields:link:first-child:last-child, h3 + .addfields:link, .addfields:visited:first-child:last-child, h3 + .addfields:visited {
-  padding-top: 0.405em;
-  padding-bottom: 0.405em;
-}
-.addfields:focus, .addfields:hover, .addfields:active {
-  color: #444444;
-  background: rgba(181, 227, 127, 0.618);
-}
-
-.addform h2, #addcycle h2, #addrun h2, #addsuite h2, #addcase h2 {
+.addform h2, #addproduct h2, #addcycle h2, #addrun h2, #addsuite h2, #single-case-form h2, #bulk-case-form h2 {
   margin-bottom: 1.618em;
 }
-.addform .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #addcase .basic {
-  display: inline;
-  float: left;
-  width: 49.425%;
-  margin-right: 1.149%;
-  margin-bottom: 1.618em;
-}
-.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
+.addform .basic, #addproduct .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic {
   *zoom: 1;
+  padding-right: 46.316%;
 }
-.addform .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #addcase .basic li:after {
+.addform .basic:after, #addproduct .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #single-case-form .basic:after, #bulk-case-form .basic:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -3215,169 +3241,120 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-.addform .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #addcase .basic label {
-  display: inline;
-  float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
+.addform .basic li, #addproduct .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li {
+  *zoom: 1;
 }
-.addform .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #addcase .basic input, .addform .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #addcase .basic select, .addform .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #addcase .basic textarea {
-  display: inline;
-  float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-.addform .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #addcase .basic li {
+.addform .basic li:after, #addproduct .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after {
+  content: "\0020";
+  display: block;
+  height: 0;
   clear: both;
+  overflow: hidden;
+  visibility: hidden;
 }
-.addform .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #addcase .basic .date {
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addproduct .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
   display: inline;
   float: left;
-  width: 44.186%;
-  margin-right: 2.326%;
-  clear: none;
+  width: 13.725%;
+  margin-right: 1.961%;
+  text-align: right;
 }
-.addform .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #addcase .basic .date + .date {
+.addform .basic input, #addproduct .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addproduct .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addproduct .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addproduct .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
+  display: inline;
+  float: left;
+  width: 84.314%;
+  margin-right: 1.961%;
   display: inline;
   float: right;
   margin-right: 0;
 }
-.addform .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #addcase .basic .date label {
-  display: inline;
-  float: left;
-  width: 36.842%;
-  margin-right: 5.263%;
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label {
+  text-align: right;
 }
-.addform .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #addcase .basic .date input {
-  display: inline;
-  float: left;
-  width: 57.895%;
-  margin-right: 5.263%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-}
-.addform .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #addcase .basic .date .errorlist {
-  padding: 0;
-}
-.addform .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #addcase .basic .errorlist {
-  clear: both;
-  padding-left: 18.605%;
-}
-.addform .env, #addcycle .env, #addrun .env, #addsuite .env, #addcase .env {
-  display: inline;
-  float: left;
-  width: 49.425%;
-  margin-right: 1.149%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  margin-bottom: 1.618em;
-}
-.addform .env h3, #addcycle .env h3, #addrun .env h3, #addsuite .env h3, #addcase .env h3 {
-  padding: 0.405em;
-  background: rgba(82, 134, 132, 0.146);
-}
-.addform .env ul, #addcycle .env ul, #addrun .env ul, #addsuite .env ul, #addcase .env ul {
+.addform .basic ul, #addproduct .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #single-case-form .basic ul, #bulk-case-form .basic ul {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.addform .env ul li, #addcycle .env ul li, #addrun .env ul li, #addsuite .env ul li, #addcase .env ul li {
+.addform .basic ul li, #addproduct .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #single-case-form .basic ul li, #bulk-case-form .basic ul li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.addform .env label, #addcycle .env label, #addrun .env label, #addsuite .env label, #addcase .env label {
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  position: absolute;
-  height: 0;
-}
-.addform .env .remove, #addcycle .env .remove, #addrun .env .remove, #addsuite .env .remove, #addcase .env .remove {
+.addform .basic .date, #addproduct .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date {
   display: inline;
   float: left;
-  width: 6.977%;
-  margin-right: 2.326%;
+  width: 45.098%;
+  margin-right: 1.961%;
+  clear: none;
+  position: relative;
+}
+.addform .basic .date + .date, #addproduct .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #single-case-form .basic .date + .date, #bulk-case-form .basic .date + .date {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.addform .env-form, #addcycle .env-form, #addrun .env-form, #addsuite .env-form, #addcase .env-form {
-  *zoom: 1;
-  padding-top: 0.809em;
-  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
-  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+.addform .basic .date label, #addproduct .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #single-case-form .basic .date label, #bulk-case-form .basic .date label {
+  display: inline;
+  float: left;
+  width: 30.435%;
+  margin-right: 4.348%;
 }
-.addform .env-form:after, #addcycle .env-form:after, #addrun .env-form:after, #addsuite .env-form:after, #addcase .env-form:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+.addform .basic .date input, #addproduct .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input {
+  display: inline;
+  float: left;
+  width: 65.217%;
+  margin-right: 4.348%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+.addform .basic .date .errorlist, #addproduct .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #single-case-form .basic .date .errorlist, #bulk-case-form .basic .date .errorlist {
+  padding-left: 34.783%;
+}
+.addform .basic .errorlist, #addproduct .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist {
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
-.addform .env-form li, #addcycle .env-form li, #addrun .env-form li, #addsuite .env-form li, #addcase .env-form li {
-  display: inline;
-  float: left;
-  width: 34.884%;
-  margin-right: 2.326%;
-}
-.addform .env-form li:first-child, #addcycle .env-form li:first-child, #addrun .env-form li:first-child, #addsuite .env-form li:first-child, #addcase .env-form li:first-child {
-  padding-left: 9.302%;
-}
-.addform .env-form li:nth-child(2n), #addcycle .env-form li:nth-child(2n), #addrun .env-form li:nth-child(2n), #addsuite .env-form li:nth-child(2n), #addcase .env-form li:nth-child(2n) {
-  display: inline;
-  float: left;
-  width: 44.186%;
-  margin-right: 2.326%;
+  padding-left: 15.686%;
 }
 
-.superselect p, .mainselect p, .suiteselect p, .caseselect p, .userselect p {
+.superselect p, .mainselect p, .userselect p, .suiteselect p, .caseselect p {
   margin: 0;
 }
-.superselect nav, .mainselect nav, .suiteselect nav, .caseselect nav, .userselect nav {
+.superselect nav, .mainselect nav, .userselect nav, .suiteselect nav, .caseselect nav {
   padding-right: 1em;
   border: 1px solid #cccccc;
   border-width: 0px 1px;
 }
-.superselect .unselected, .mainselect .unselected, .suiteselect .unselected, .caseselect .unselected, .userselect .unselected, .superselect .selected, .mainselect .selected, .suiteselect .selected, .caseselect .selected, .userselect .selected {
+.superselect .unselected, .mainselect .unselected, .userselect .unselected, .suiteselect .unselected, .caseselect .unselected, .superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected {
   display: inline;
   float: left;
-  width: 44.304%;
-  margin-right: 1.266%;
+  width: 44.828%;
+  margin-right: 1.149%;
 }
-.superselect .unselected h3, .mainselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .userselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .userselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .userselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .userselect .selected h4 {
-  padding-left: 1.5em;
-  padding-right: 1.5em;
+.superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4 {
+  padding-left: 0.618em;
+  padding-right: 0.618em;
   color: #eeeeee;
   background: #528684;
   font-weight: normal;
 }
-.superselect .selected, .mainselect .selected, .suiteselect .selected, .caseselect .selected, .userselect .selected {
+.superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.superselect label[for="search"], .mainselect label[for="search"], .suiteselect label[for="search"], .caseselect label[for="search"], .userselect label[for="search"] {
+.superselect label[for="search"], .mainselect label[for="search"], .userselect label[for="search"], .suiteselect label[for="search"], .caseselect label[for="search"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
   position: absolute;
   height: 0;
 }
-.superselect input[type="search"], .mainselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"], .userselect input[type="search"] {
-  width: 44.304%;
+.superselect input[type="search"], .mainselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"] {
+  width: 44.828%;
 }
-.superselect .select, .mainselect .select, .suiteselect .select, .caseselect .select, .userselect .select {
+.superselect .select, .mainselect .select, .userselect .select, .suiteselect .select, .caseselect .select {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -3387,18 +3364,18 @@ button[name="action-edit"] {
   background: #ccd7d6;
   overflow-y: scroll;
 }
-.superselect .select li, .mainselect .select li, .suiteselect .select li, .caseselect .select li, .userselect .select li {
+.superselect .select li, .mainselect .select li, .userselect .select li, .suiteselect .select li, .caseselect .select li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.superselect .select input, .mainselect .select input, .suiteselect .select input, .caseselect .select input, .userselect .select input {
+.superselect .select input, .mainselect .select input, .userselect .select input, .suiteselect .select input, .caseselect .select input {
   position: absolute;
   left: -9999px;
   top: -9999px;
   z-index: -1;
 }
-.superselect .select label, .mainselect .select label, .suiteselect .select label, .caseselect .select label, .userselect .select label {
+.superselect .select label, .mainselect .select label, .userselect .select label, .suiteselect .select label, .caseselect .select label {
   font-size: 0.857em;
   line-height: 1.888em;
   overflow: hidden;
@@ -3412,29 +3389,29 @@ button[name="action-edit"] {
   border-color: #eeeeee;
   font-weight: normal;
 }
-.superselect .unselected label:focus, .mainselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .userselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .userselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .userselect .unselected label:active, .superselect .unselected label.mark, .mainselect .unselected label.mark, .suiteselect .unselected label.mark, .caseselect .unselected label.mark, .userselect .unselected label.mark {
+.superselect .unselected label:focus, .mainselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .superselect .unselected label.mark, .mainselect .unselected label.mark, .userselect .unselected label.mark, .suiteselect .unselected label.mark, .caseselect .unselected label.mark {
   background-color: #b5e37f;
   background-image: url('../images/ui/arrow_right.png?1309283000');
 }
-.superselect .selected label:focus, .mainselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .userselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .userselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .userselect .selected label:active, .superselect .selected label.mark, .mainselect .selected label.mark, .suiteselect .selected label.mark, .caseselect .selected label.mark, .userselect .selected label.mark {
+.superselect .selected label:focus, .mainselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .superselect .selected label.mark, .mainselect .selected label.mark, .userselect .selected label.mark, .suiteselect .selected label.mark, .caseselect .selected label.mark {
   background-color: #eca9ab;
   background-image: url('../images/ui/arrow_left.png?1309283000');
 }
-.superselect .addremove, .mainselect .addremove, .suiteselect .addremove, .caseselect .addremove, .userselect .addremove {
+.superselect .addremove, .mainselect .addremove, .userselect .addremove, .suiteselect .addremove, .caseselect .addremove {
   display: inline;
   float: left;
-  width: 8.861%;
-  margin-right: 1.266%;
+  width: 8.046%;
+  margin-right: 1.149%;
   margin-top: 4.854em;
 }
-.superselect .addremove button, .mainselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button, .userselect .addremove button {
+.superselect .addremove button, .mainselect .addremove button, .userselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button {
   margin-bottom: 0.809em;
   display: block;
   padding: 0;
   border: 0;
   width: 100%;
 }
-.superselect .addremove button[title^="add"], .mainselect .addremove button[title^="add"], .suiteselect .addremove button[title^="add"], .caseselect .addremove button[title^="add"], .userselect .addremove button[title^="add"] {
+.superselect .addremove button[title^="add"], .mainselect .addremove button[title^="add"], .userselect .addremove button[title^="add"], .suiteselect .addremove button[title^="add"], .caseselect .addremove button[title^="add"] {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -3456,7 +3433,7 @@ button[name="action-edit"] {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"], .userselect .addremove button[title^="update"] {
+.superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .userselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"] {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -3478,7 +3455,7 @@ button[name="action-edit"] {
   min-height: 21px;
   padding: 0 0.125em;
 }
-.superselect .addremove button[title^="remove"], .mainselect .addremove button[title^="remove"], .suiteselect .addremove button[title^="remove"], .caseselect .addremove button[title^="remove"], .userselect .addremove button[title^="remove"] {
+.superselect .addremove button[title^="remove"], .mainselect .addremove button[title^="remove"], .userselect .addremove button[title^="remove"], .suiteselect .addremove button[title^="remove"], .caseselect .addremove button[title^="remove"] {
   -moz-border-radius: 0.25em;
   -webkit-border-radius: 0.25em;
   -o-border-radius: 0.25em;
@@ -3500,11 +3477,11 @@ button[name="action-edit"] {
   min-height: 14px;
   padding: 0 0.125em;
 }
-.superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"], .userselect .addremove button[title^="update"] {
+.superselect .addremove button[title^="update"], .mainselect .addremove button[title^="update"], .userselect .addremove button[title^="update"], .suiteselect .addremove button[title^="update"], .caseselect .addremove button[title^="update"] {
   padding-top: 1.618em;
   padding-bottom: 1.618em;
 }
-.superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall, .superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall {
+.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   -o-border-radius: 0;
@@ -3527,23 +3504,23 @@ button[name="action-edit"] {
   width: 100%;
   text-align: left;
 }
-.superselect .addall, .mainselect .addall, .suiteselect .addall, .caseselect .addall, .userselect .addall {
+.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall {
   color: #e5f5d2;
   background: #77b929;
   text-align: right;
 }
-.superselect .addall:hover, .mainselect .addall:hover, .suiteselect .addall:hover, .caseselect .addall:hover, .userselect .addall:hover {
+.superselect .addall:hover, .mainselect .addall:hover, .userselect .addall:hover, .suiteselect .addall:hover, .caseselect .addall:hover {
   background-color: #4f7a1b;
 }
-.superselect .removeall, .mainselect .removeall, .suiteselect .removeall, .caseselect .removeall, .userselect .removeall {
+.superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall {
   color: #f5d2d4;
   background: #e37f83;
 }
-.superselect .removeall:hover, .mainselect .removeall:hover, .suiteselect .removeall:hover, .caseselect .removeall:hover, .userselect .removeall:hover {
+.superselect .removeall:hover, .mainselect .removeall:hover, .userselect .removeall:hover, .suiteselect .removeall:hover, .caseselect .removeall:hover {
   background-color: #b9292f;
 }
 
-.mainselect, .suiteselect, .caseselect {
+.mainselect, .userselect, .suiteselect, .caseselect {
   overflow: hidden;
   *zoom: 1;
   margin-bottom: 1.618em;
@@ -3554,15 +3531,35 @@ button[name="action-edit"] {
   background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   clear: both;
 }
-.mainselect h3, .suiteselect h3, .caseselect h3 {
+.mainselect h3, .userselect h3, .suiteselect h3, .caseselect h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
   text-transform: capitalize;
 }
-.mainselect > div, .suiteselect > div, .caseselect > div {
+.mainselect > div, .userselect > div, .suiteselect > div, .caseselect > div {
   clear: both;
-  padding-left: 4.598%;
-  padding-right: 4.598%;
+  overflow: hidden;
+  *zoom: 1;
+  padding-left: 4.211%;
+  padding-right: 4.211%;
+  padding-top: 1.618em;
+  padding-bottom: 1.618em;
+}
+
+/* Create/Edit Product -------------------------------------------------------------- */
+#editproduct .basic {
+  clear: both;
+  padding-right: 50.526%;
+}
+#editproduct .basic label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 
 /* Create/Edit Cycle -------------------------------------------------------------- */
@@ -3585,89 +3582,7 @@ button[name="action-edit"] {
   width: 57.895%;
   margin-right: 1.053%;
 }
-#addcycle .addrun a:link, #addcycle .addrun a:visited {
-  clear: both;
-  font-weight: 500;
-  font-style: italic;
-  -moz-border-radius: 0.236em;
-  -webkit-border-radius: 0.236em;
-  -o-border-radius: 0.236em;
-  -ms-border-radius: 0.236em;
-  -khtml-border-radius: 0.236em;
-  border-radius: 0.236em;
-  display: block;
-  padding: 0.405em 0.809em;
-  background: rgba(119, 185, 41, 0.382);
-  color: #4f7a1b;
-  text-align: right;
-}
-#addcycle .addrun a:focus, #addcycle .addrun a:hover, #addcycle .addrun a:active {
-  color: #444444;
-  background: rgba(181, 227, 127, 0.618);
-}
 
-.assignto {
-  clear: both;
-  margin-top: 1.618em;
-}
-.assignto p {
-  margin: 0;
-}
-.assignto label {
-  font-weight: normal;
-}
-.assignto label[for="communal"] {
-  margin-left: 0.4em;
-}
-
-.userselect summary {
-  font-style: italic;
-  width: 44.828%;
-}
-.userselect summary, .userselect summary:link, .userselect summary:visited {
-  -moz-transition-property: color, background-color;
-  -webkit-transition-property: color, background-color;
-  -o-transition-property: color, background-color;
-  transition-property: color, background-color;
-  -moz-transition-duration: 180ms;
-  -webkit-transition-duration: 180ms;
-  -o-transition-duration: 180ms;
-  transition-duration: 180ms;
-  color: #528684;
-  text-decoration: none;
-}
-.userselect summary:link, .userselect summary:visited, .userselect summary:hover, .userselect summary:active {
-  outline: none;
-}
-.userselect summary:focus, .userselect summary:hover, .userselect summary:active {
-  color: #511214;
-  text-decoration: none;
-}
-.userselect summary:focus {
-  outline: thin dotted #77b929;
-}
-.userselect > div {
-  *zoom: 1;
-  clear: both;
-  padding-left: 4.598%;
-  padding-right: 4.598%;
-  margin-top: 1.618em;
-  padding-top: 1.618em;
-  padding-bottom: 1.618em;
-  margin-bottom: 1.618em;
-  position: relative;
-  background: rgba(233, 237, 237, 0.382);
-  border-color: #cccccc;
-  overflow: visible !important;
-}
-.userselect > div:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
-}
 .userselect .nickname {
   display: inline;
   float: left;
@@ -3724,10 +3639,85 @@ button[name="action-edit"] {
 }
 
 /* Create Case -------------------------------------------------------------- */
-#addcase li {
+#single-case-form, #bulk-case-form {
+  margin-top: 1.618em;
+}
+
+.formoptions {
+  width: 100%;
+  overflow: hidden;
+}
+.formoptions .forms {
+  margin: 0;
+  padding: 0;
+  width: 1030%;
+  list-style: none;
+  overflow: hidden;
   *zoom: 1;
 }
-#addcase li:after {
+.formoptions .forms li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.formoptions .forms > form {
+  display: inline;
+  float: left;
+  width: 9.709%;
+  margin-right: 0.049%;
+}
+
+.formtoggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24.211%;
+}
+.formtoggle ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+  text-align: right;
+}
+.formtoggle ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  white-space: nowrap;
+}
+.formtoggle ul li {
+  *display: inline;
+}
+.formtoggle a:link, .formtoggle a:visited {
+  font-weight: 500;
+  padding-top: 0.202em;
+  padding-bottom: 0.202em;
+  padding-left: 0.809em;
+  padding-right: 0.809em;
+  -moz-border-radius: 0.618em;
+  -webkit-border-radius: 0.618em;
+  -o-border-radius: 0.618em;
+  -ms-border-radius: 0.618em;
+  -khtml-border-radius: 0.618em;
+  border-radius: 0.618em;
+  display: block;
+}
+.formtoggle a:link.active, .formtoggle a:visited.active {
+  background: rgba(75, 101, 100, 0.236);
+  color: #444444;
+}
+
+#single-case-form li {
+  *zoom: 1;
+}
+#single-case-form li:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -3735,79 +3725,139 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-#addcase .form-actions {
-  margin-top: 1.618em;
-}
-#addcase .steps {
+#single-case-form .steps {
   clear: both;
   overflow: hidden;
   *zoom: 1;
+  margin-top: 0.405em;
 }
-#addcase .steps .addfields {
-  margin-left: 9.195%;
-}
-#addcase .steplist {
+#single-case-form .steplist {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
-  clear: both;
-  padding-left: 9.195%;
   counter-reset: step;
 }
-#addcase .steplist li {
+#single-case-form .steplist li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-#addcase .steps-form {
+#single-case-form .steps-form {
   clear: both;
-  padding-left: 5.063%;
-  padding-top: 0.405em;
-  background: rgba(233, 237, 237, 0.382) -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
-  background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
-  background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  padding-left: 8.421%;
   position: relative;
   counter-increment: step;
 }
-#addcase .steps-form::before {
-  font-size: 4.236em;
-  line-height: 2.292em;
+#single-case-form .steps-form::before {
+  font-size: 2.618em;
+  line-height: 1.236em;
   font-weight: 200;
   content: counter(step, decimal) ".";
   position: absolute;
-  right: 101.333%;
-  top: 0;
+  left: 0;
+  top: 1.082em;
+  width: 7.368%;
+  text-align: right;
 }
-#addcase .steps-form .action {
+#single-case-form .steps-form .action {
   display: inline;
   float: left;
-  width: 41.333%;
-  margin-right: 1.333%;
+  width: 49.425%;
+  margin-right: 1.149%;
 }
-#addcase .steps-form .result {
+#single-case-form .steps-form .result {
   display: inline;
   float: left;
-  width: 52%;
-  margin-right: 1.333%;
-}
-#addcase .steps-form .remove {
-  display: inline;
-  float: left;
-  width: 4%;
-  margin-right: 1.333%;
+  width: 49.425%;
+  margin-right: 1.149%;
   display: inline;
   float: right;
   margin-right: 0;
-  margin-top: 0.405em;
 }
-#addcase .steps-form .errorlist {
+#single-case-form .steps-form .removefields {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+  opacity: 0.25;
+  -moz-transition-property: opacity;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -moz-transition-duration: 300ms;
+  -webkit-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+  position: absolute;
+  left: 0;
+  top: 3.641em;
+  width: 14px;
+}
+#single-case-form .steps-form:hover .removefields {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
+}
+#single-case-form .steps-form .errorlist {
   display: inline;
   float: right;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+}
+#single-case-form .form-actions {
+  clear: both;
+  padding-left: 50.526%;
+}
+#single-case-form .increment-select {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  margin-bottom: 0em;
+  position: relative;
+  width: 48.936%;
+  vertical-align: baseline;
+}
+#single-case-form .increment-select {
+  *display: inline;
+}
+#single-case-form .increment-select.warning {
+  color: #b9292f;
+}
+
+#bulk-case-form .bulk-field {
+  clear: both;
+}
+#bulk-case-form .bulk-field label {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+  text-align: right;
+}
+#bulk-case-form .bulk-field textarea {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  min-height: 14.562em;
+}
+#bulk-case-form .fieldhelp {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  margin-top: 0.405em;
+  color: rgba(68, 68, 68, 0.618);
+}
+
+.leftcolumnpadding, #manageproducts .title, #manageprofiles .title {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 0.618em;
 }
 
 .preview {
@@ -3872,23 +3922,37 @@ button[name="action-edit"] {
   display: none;
 }
 
+.footeradditem, #addcycle .item.add-item, #addprofile .add-item {
+  margin-bottom: 1.618em;
+}
+.footeradditem a, #addcycle .item.add-item a, #addprofile .add-item a, .footeradditem .summary, #addcycle .item.add-item .summary, #addprofile .add-item .summary {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  background: rgba(119, 185, 41, 0.382) url('../images/ui/plus.png?1309283001') no-repeat scroll 0.405em 0.607em;
+  color: #444444;
+}
+.footeradditem a:focus, #addcycle .item.add-item a:focus, #addprofile .add-item a:focus, .footeradditem a:hover, #addcycle .item.add-item a:hover, #addprofile .add-item a:hover, .footeradditem a:active, #addcycle .item.add-item a:active, #addprofile .add-item a:active, .footeradditem .summary:focus, #addcycle .item.add-item .summary:focus, #addprofile .add-item .summary:focus, .footeradditem .summary:hover, #addcycle .item.add-item .summary:hover, #addprofile .add-item .summary:hover, .footeradditem .summary:active, #addcycle .item.add-item .summary:active, #addprofile .add-item .summary:active {
+  background-color: rgba(119, 185, 41, 0.618);
+}
+
 .item.add-item {
   font-weight: 500;
+}
+.item.add-item a, .item.add-item .summary {
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-}
-.item.add-item:link, .item.add-item:visited {
   display: block;
-  padding: 0.405em 1.618em;
+  padding: 0.405em 2.023em;
+  color: #4f7a1b;
 }
-.item.add-item .summary {
-  padding-left: 4.211%;
-  padding-right: 4.211%;
-}
-.item.add-item:focus, .item.add-item:hover, .item.add-item:active {
+.item.add-item a:focus, .item.add-item a:hover, .item.add-item a:active, .item.add-item .summary:focus, .item.add-item .summary:hover, .item.add-item .summary:active {
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
@@ -3924,6 +3988,41 @@ button[name="action-edit"] {
   display: inline;
   float: right;
   margin-right: 0;
+}
+
+/* Manage Products -------------------------------------------------------------- */
+#manageproducts .testers, #manageproducts .byline {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+}
+#manageproducts .title, #manageproducts .bytitle {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
+}
+#manageproducts .preview, #manageproducts .bypreview {
+  display: inline;
+  float: left;
+  width: 62.105%;
+  margin-right: 1.053%;
+}
+#manageproducts .description {
+  display: inline;
+  float: left;
+  width: 74.737%;
+  margin-right: 1.053%;
+  padding-left: 8.421%;
+}
+#manageproducts .testers, #manageproducts .byline {
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+#manageproducts .byline {
+  text-align: right;
 }
 
 /* Manage Tests -------------------------------------------------------------- */
@@ -4023,7 +4122,7 @@ button[name="action-edit"] {
 #addprofile .bytitle {
   padding-left: 4.211%;
 }
-#addprofile .bytitle a {
+#addprofile .bytitle a, #addprofile .bytitle span {
   padding: 0;
 }
 #addprofile .bulk {
@@ -4051,6 +4150,16 @@ button[name="action-edit"] {
 #addprofile .name {
   font-weight: 700;
   margin: 0 29.474%;
+}
+#addprofile .name label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 #addprofile .name button {
   display: inline;
@@ -4108,6 +4217,12 @@ button[name="action-edit"] {
   width: 1px;
   border: 0;
 }
+#addprofile .add-item .name {
+  margin: 0 71.579% 0 4.211%;
+}
+#addprofile .add-item .name input {
+  margin: 0;
+}
 
 #editprofile .bypreview, #editprofile .preview {
   display: inline;
@@ -4120,7 +4235,7 @@ button[name="action-edit"] {
   padding-right: 8.421%;
 }
 #editprofile .env-management {
-  margin-top: 0.809em;
+  margin-top: 0.405em;
 }
 #editprofile .env-management label {
   position: absolute;
@@ -4132,20 +4247,25 @@ button[name="action-edit"] {
   width: 1px;
   border: 0;
 }
-#editprofile .env-element-list {
+#editprofile .env-management input {
+  margin-bottom: 0.405em;
+}
+
+.env-element-list {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
   *zoom: 1;
-  margin-bottom: 0.809em;
+  margin-top: 0.405em;
+  margin-bottom: 0.405em;
 }
-#editprofile .env-element-list li {
+.env-element-list li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-#editprofile .env-element-list:after {
+.env-element-list:after {
   content: "\0020";
   display: block;
   height: 0;
@@ -4153,7 +4273,7 @@ button[name="action-edit"] {
   overflow: hidden;
   visibility: hidden;
 }
-#editprofile .env-element-list li {
+.env-element-list li {
   display: inline;
   float: left;
   font-weight: 500;
@@ -4168,8 +4288,43 @@ button[name="action-edit"] {
   margin-right: 0.405em;
   cursor: pointer;
 }
-#editprofile .env-element-list li:hover {
+.env-element-list li:hover {
   background: rgba(185, 41, 47, 0.382);
+}
+
+/* narrow Environments ------------------------------------------------------- */
+#envnarrowlist .bybulk, #envnarrowlist .bulk {
+  display: inline;
+  float: left;
+  width: 3.158%;
+  margin-right: 1.053%;
+}
+#envnarrowlist .bybulk label, #envnarrowlist .bulk label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#envnarrowlist .bybulk input, #envnarrowlist .bulk input {
+  margin-left: 0.809em;
+}
+#envnarrowlist .bypreview, #envnarrowlist .preview {
+  display: inline;
+  float: left;
+  width: 95.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: left;
+}
+#envnarrowlist .content {
+  padding-left: 4.211%;
+  padding-right: 4.211%;
 }
 
 /* test nav -------------------------------------------------------------- */

@@ -20,7 +20,6 @@ class StepForm(tcmforms.NonFieldErrorsClassFormMixin, forms.Form):
             initial["expected_result"] = self.instance.expectedResult
 
         super(StepForm, self).__init__(*args, **kwargs)
-        self.empty_permitted = False
 
 
     def save(self, testcaseversion, stepnumber):
@@ -64,6 +63,8 @@ class BaseStepFormSet(BaseFormSet):
 
     def save(self, testcaseversion):
         for i, form in enumerate(self.forms):
+            if form.empty_permitted and not form.has_changed():
+                break
             form.save(testcaseversion, i + 1)
         for extra_step in self.instances[i+1:]:
             extra_step.delete()

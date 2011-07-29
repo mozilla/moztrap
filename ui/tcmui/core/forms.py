@@ -37,7 +37,17 @@ class RemoteObjectForm(NonFieldErrorsClassFormMixin, forms.Form):
 
         for field in self.fields.values():
             if isinstance(field, forms.DateField):
-                field.widget.attrs.setdefault("placeholder", "mm/dd/yyyy")
+                field.widget.attrs.setdefault("placeholder", "yyyy-mm-dd")
+
+
+    def handle_error(self, obj, err):
+        message, fields = errors.error_message_and_fields(obj, err)
+        for fname in fields:
+            if fname in self.fields:
+                self._errors[fname] = self.error_class(
+                    [message])
+                return
+        raise forms.ValidationError(message)
 
 
 
@@ -98,6 +108,7 @@ class AddEditForm(RemoteObjectForm):
         if self.instance is not None:
             for fname in self.no_edit_fields:
                 self.fields[fname].widget = ReadOnlyWidget()
+                self.fields[fname].read_only = True
 
         for fname, model_list in model_choices.iteritems():
             self.fields[fname].obj_list = model_list
@@ -154,16 +165,6 @@ class AddEditForm(RemoteObjectForm):
             immediate=False)
 
 
-    def handle_error(self, obj, err):
-        message, fields = errors.error_message_and_fields(obj, err)
-        for fname in fields:
-            if fname in self.fields:
-                self._errors[fname] = self.error_class(
-                    [message])
-                return
-        raise forms.ValidationError(message)
-
-
     def add_clean(self):
         required_field_names = set(self.required_fields.iterkeys())
         if all([k in self.cleaned_data for k in required_field_names]):
@@ -193,6 +194,10 @@ class AddEditForm(RemoteObjectForm):
             self.handle_error(self.instance, e)
 
         return self.cleaned_data
+
+
+    def save(self):
+        return self.instance
 
 
 

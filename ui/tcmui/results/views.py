@@ -12,16 +12,19 @@ from ..testexecution.models import (
 from ..users.decorators import login_redirect
 from ..users.filters import UserFieldFilter
 
+from .finder import ResultsFinder
 from . import filters
 
 
 
+@dec.finder(ResultsFinder)
 def home(request):
-    return redirect(reverse("results_testcycles") + "?finder=1&status=2")
+    return redirect(reverse("results_testcycles") + "?openfinder=1&status=2")
 
 
 
 @login_redirect
+@dec.finder(ResultsFinder)
 @dec.filter("cycles",
             ("status", filters.NonDraftTestCycleStatusFilter),
             ("product", ProductFieldFilter),
@@ -49,6 +52,7 @@ def testcycle_details(request, cycle_id):
 
 
 @login_redirect
+@dec.finder(ResultsFinder)
 @dec.filter("runs",
             ("status", filters.NonDraftTestRunStatusFilter),
             ("product", ProductFieldFilter),
@@ -77,6 +81,7 @@ def testrun_details(request, run_id):
 
 
 @login_redirect
+@dec.finder(ResultsFinder)
 @dec.filter("includedcases",
             ("status", filters.NonDraftTestCaseStatusFilter),
             ("testRun", filters.NonDraftTestRunFieldFilter),
@@ -105,6 +110,7 @@ def testcase_details(request, itc_id):
 
 
 @login_redirect
+@dec.finder(ResultsFinder)
 @dec.filter("results",
             ("tester", UserFieldFilter),
             ("status", TestResultStatusFilter),

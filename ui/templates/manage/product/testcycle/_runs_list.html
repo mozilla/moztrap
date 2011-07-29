@@ -23,39 +23,43 @@
     </ul>
   </nav>
 
-  <div class="items {% if not testruns %}empty{% endif %}">
-    {% for testrun in testruns %}
-    <article class="item {{ testrun.status|status_class }}">
-      <p class="status">
+  <div class="items">
+    {% if testruns %}
+      {% for testrun in testruns %}
+      <article class="item {{ testrun.status|status_class }}">
+        <p class="status">
+            {% if testrun.status.DRAFT %}
+            {% if cycle.status.ACTIVE %}
+            <button title="activate" type="submit" name="action-activate" value="{{ testrun.id }}" class="draft">draft</button>
+            {% else %}
+            <span class="draft">draft</span>
+            {% endif %}
+            {% endif %}
+            {% if testrun.status.ACTIVE %}
+            <button title="lock" name="action-deactivate" value="{{ testrun.id }}" class="active">active</button>
+            {% endif %}
+            {% if testrun.status.LOCKED %}
+            <button title="activate" name="action-activate" value="{{ testrun.id }}" class="locked">locked</button>
+            {% endif %}
+        </p>
+        <h3 class="title"><a href="{% url manage_testrun_edit run_id=testrun.id %}">{{ testrun.name }}</a></h3>
+        <time class="start">{{ testrun.startDate|date }}</time>
+        <time class="end">{{ testrun.endDate|date }}</time>
+        <p class="controls">
+          {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
+          <button title="clone" type="submit" name="action-clone" value="{{ testrun.id }}">clone</button>
           {% if testrun.status.DRAFT %}
-          {% if cycle.status.ACTIVE %}
-          <button title="activate" type="submit" name="action-activate" value="{{ testrun.id }}" class="draft">draft</button>
-          {% else %}
-          <span class="draft">draft</span>
+          <button title="delete" type="submit" value="{{ testrun.id }}" name="action-delete">remove</button>
           {% endif %}
           {% endif %}
-          {% if testrun.status.ACTIVE %}
-          <button title="lock" name="action-deactivate" value="{{ testrun.id }}" class="active">active</button>
-          {% endif %}
-          {% if testrun.status.LOCKED %}
-          <button title="activate" name="action-activate" value="{{ testrun.id }}" class="locked">locked</button>
-          {% endif %}
-      </p>
-      <h3 class="title"><a href="{% url manage_testrun_edit run_id=testrun.id %}">{{ testrun.name }}</a></h3>
-      <time class="start">{{ testrun.startDate|date }}</time>
-      <time class="end">{{ testrun.endDate|date }}</time>
-      <p class="controls">
-        {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
-        <button title="clone" type="submit" name="action-clone" value="{{ testrun.id }}">clone</button>
-        {% if testrun.status.DRAFT %}
-        <button title="delete" type="submit" value="{{ testrun.id }}" name="action-delete">remove</button>
-        {% endif %}
-        {% endif %}
-      </p>
-    </article>
-    {% endfor %}
-    <p class="addrun">
+        </p>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty">There are currently no items in this list...</p>
+    {% endif %}
+    <div class="item add-item">
       <a href="{% url manage_testrun_add %}?cycle={{ cycle.id }}">add test run &raquo;</a>
-    </p>
+    </div>
   </div>
 </div>

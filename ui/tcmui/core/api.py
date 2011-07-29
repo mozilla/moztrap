@@ -350,7 +350,7 @@ class ObjectMixin(StrAndUnicode):
 
         response, content = http.request(**request)
 
-        if update_from_response:
+        if update_from_response not in (False, None):
             if not hasattr(update_from_response, "update_from_response"):
                 update_from_response = self
 
@@ -490,6 +490,8 @@ class ObjectMixin(StrAndUnicode):
 class RemoteObject(ObjectMixin, remoteobjects.RemoteObject):
     identity = fields.ResourceIdentity()
     timeline = fields.TimelineField()
+
+    name_field = None
 
 
     @property
@@ -774,3 +776,8 @@ class Activatable(object):
             relative_url="deactivate",
             update_from_response=True,
             **kwargs)
+
+
+
+class Named(object):
+    name_field = "name"

@@ -1,0 +1,19 @@
+{% extends 'manage/environment/base.html' %}
+{# @@@ full page wireframe #}
+
+{% block listcontent %}
+<section id="envnarrowing">
+  <h2>Select Environments for Object</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% include "manage/environment/_narrow_list.html" %}
+
+    <div class="form-actions">
+      <button type="submit">save and return to profile list</button>
+    </div>
+
+  </form>
+</section>
+{% endblock listcontent %}

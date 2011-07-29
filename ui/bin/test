@@ -25,6 +25,7 @@ def main(basedir, cover_all=False):
     cov.stop()
 
     include = [
+        os.path.join(basedir, "tests/builder.py"),
         os.path.join(basedir, "tests/responses.py"),
         os.path.join(basedir, "tests/utils.py")
         ]

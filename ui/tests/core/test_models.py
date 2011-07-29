@@ -1,5 +1,8 @@
 from mock import patch
 
+from ..environments.builders import (
+    environmenttypes, environmentgroups, environments)
+from ..responses import response
 from ..utils import ResourceTestCase, BaseResourceTest
 from .builders import companies, cvis
 
@@ -22,6 +25,79 @@ class CompanyTest(BaseResourceTest, ResourceTestCase):
         c.update_from_dict(companies.one(name="The Company"))
 
         self.assertEqual(unicode(c), u"The Company")
+
+
+    def test_autogenerate_env_groups(self, http):
+        from tcmui.environments.models import (
+            EnvironmentGroupList, Environment, EnvironmentType)
+
+        c = self.resource_class()
+        c.update_from_dict(companies.one(_url="companies/1"))
+
+        egt = EnvironmentType()
+        egt.update_from_dict(environmenttypes.one(groupType=True))
+
+        eta = EnvironmentType()
+        eta.update_from_dict(environmenttypes.one(groupType=False, _id=1))
+
+        etb = EnvironmentType()
+        etb.update_from_dict(environmenttypes.one(groupType=False, _id=2))
+
+        enva1 = Environment()
+        enva1.update_from_dict(environments.one(_id=3, environmentType=eta))
+        enva2 = Environment()
+        enva2.update_from_dict(environments.one(_id=4, environmentType=eta))
+
+        envb1 = Environment()
+        envb1.update_from_dict(environments.one(_id=5, environmentType=etb))
+        envb2 = Environment()
+        envb2.update_from_dict(environments.one(_id=6, environmentType=etb))
+
+        http.request.return_value = response(
+            environmentgroups.array({}, {}, {}, {}))
+
+        generated = c.autogenerate_env_groups([enva1, enva2, envb1, envb2], egt)
+
+        self.assertIsInstance(generated, EnvironmentGroupList)
+        self.assertEqual(len(generated), 4)
+        req = http.request.call_args[1]
+        self.assertEqual(req["uri"], "http://fake.base/rest/companies/1/environmentgroups/environmenttypes/1/autogenerate?_type=json")
+        self.assertEqual(req["body"], "environmentIds=3&environmentIds=4&environmentIds=5&environmentIds=6&originalVersionId=0")
+
+
+    def test_autogenerate_env_groups_no_type(self, http):
+        from tcmui.environments.models import (
+            EnvironmentGroupList, Environment, EnvironmentType)
+
+        c = self.resource_class()
+        c.update_from_dict(companies.one(_url="companies/1"))
+
+        eta = EnvironmentType()
+        eta.update_from_dict(environmenttypes.one(groupType=False, _id=1))
+
+        etb = EnvironmentType()
+        etb.update_from_dict(environmenttypes.one(groupType=False, _id=2))
+
+        enva1 = Environment()
+        enva1.update_from_dict(environments.one(_id=3, environmentType=eta))
+        enva2 = Environment()
+        enva2.update_from_dict(environments.one(_id=4, environmentType=eta))
+
+        envb1 = Environment()
+        envb1.update_from_dict(environments.one(_id=5, environmentType=etb))
+        envb2 = Environment()
+        envb2.update_from_dict(environments.one(_id=6, environmentType=etb))
+
+        http.request.return_value = response(
+            environmentgroups.array({}, {}, {}, {}))
+
+        generated = c.autogenerate_env_groups([enva1, enva2, envb1, envb2])
+
+        self.assertIsInstance(generated, EnvironmentGroupList)
+        self.assertEqual(len(generated), 4)
+        req = http.request.call_args[1]
+        self.assertEqual(req["uri"], "http://fake.base/rest/companies/1/environmentgroups/autogenerate?_type=json")
+        self.assertEqual(req["body"], "environmentIds=3&environmentIds=4&environmentIds=5&environmentIds=6&originalVersionId=0")
 
 
 

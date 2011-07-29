@@ -1,0 +1,23 @@
+{% include "lists/_filter.html" %}
+
+<div class="managelist" id="envnarrowlist">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bybulk">
+        <input type="checkbox" name="bulk_select" value="" id="bulk_select">
+        <label for="bulk_select">bulk select</label>
+      </li>
+      <li class="bypreview">
+        <a href="#">environment preview</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items">
+    {% include "manage/environment/_env_list_item.html" with id='01' %}
+    {% include "manage/environment/_env_list_item.html" with id='02' %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

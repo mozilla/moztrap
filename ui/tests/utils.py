@@ -138,15 +138,20 @@ class CachingFunctionalTestMixin(object):
 
 
 
+def creds(email, password=None, cookie=None):
+    from tcmui.users.auth import UserCredentials
+    from tcmui.users.models import User
+    creds = UserCredentials(email, password=password, cookie=cookie)
+    creds._user = User(email=email)
+    creds._user.auth = creds
+    creds._permission_codes = []
+    return creds
+
+
+
 class AuthTestCase(TestCase):
     def creds(self, email, password=None, cookie=None):
-        from tcmui.users.auth import UserCredentials
-        from tcmui.users.models import User
-        creds = UserCredentials(email, password=password, cookie=cookie)
-        creds._user = User(email=email)
-        creds._user.auth = creds
-        creds._permission_codes = []
-        return creds
+        return creds(email, password, cookie)
 
 
     @property
@@ -195,7 +200,12 @@ class ViewTestCase(AuthTestCase):
 
     @property
     def app(self):
-        return TestApp(WSGIHandler())
+        class AuthWSGIHandler(WSGIHandler):
+            def get_response(self_, request):
+                request._cached_user = self.auth.user
+                request._cached_auth = self.auth
+                return super(AuthWSGIHandler, self_).get_response(request)
+        return TestApp(AuthWSGIHandler())
 
 
 

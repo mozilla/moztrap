@@ -1,0 +1,30 @@
+<div class="managelist action-ajax-replace">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bypreview">
+        <span>environment preview</span>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items">
+    <form method="POST">
+    {% for env in environments %}
+    {% include "manage/environment/edit_profile/_env_list_item.html" %}
+    {% endfor %}
+    </form>
+
+    <article href="#" class="item add-item details">
+      <h3 class="summary">add an environment</h3>
+      <div class="content">
+        {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
+      </div>
+    </article>
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

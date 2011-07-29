@@ -12,9 +12,10 @@
 =inline-form($nl,$ni,$c)
   li
     +pie-clearfix
-  label
+  label, .readonly dt
     +columns($nl,$c)
-  input, select, textarea
+    text-align: right
+  input, select, textarea, .readonly dd
     +columns($ni,$c)
     +omega($c)
 
@@ -82,6 +83,10 @@ label
   +bold
 
 /* Text Inputs ---------------------------------------------------------------
+
+=adjust-input-size-to($to,$lines)
+  +rhythm-borders(1px,$lines/4,$to)
+  +trailer($lines/2,$to)
 
 .textinput
   +sans-family
@@ -257,3 +262,16 @@ button
 .errorlist
   +no-style-list
   color: $red
+
+.readonly
+  &, & dt, & dd
+    +reset-box-model
+  dt, dd
+    +padding-leader(.25)
+    +padding-trailer(.75)
+  dt
+    +font-style-normal
+    +bold
+  dd
+    +demi
+    +italic

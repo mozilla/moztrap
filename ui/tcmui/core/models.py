@@ -2,7 +2,8 @@
 Core remote objects.
 
 """
-from .api import RemoteObject, ListObject, fields
+from .api import RemoteObject, ListObject, fields, Named
+from .util import id_for_object
 from ..static.fields import StaticData
 
 
@@ -12,7 +13,7 @@ SYSTEM_WIDE = -22222
 
 
 
-class Company(RemoteObject):
+class Company(Named, RemoteObject):
     address = fields.Field()
     city = fields.Field()
     country = StaticData("COUNTRY")
@@ -24,6 +25,36 @@ class Company(RemoteObject):
 
     def __unicode__(self):
         return self.name
+
+
+    def autogenerate_env_groups(self, environments, envtype=None, **kwargs):
+        """
+        Autogenerate environment groups for all combinations of given
+        ``environments`` (should be an iterable of Environments or Environment
+        IDs), optionally generating only groups of type ``envtype`` (should be
+        an EnvironmentType with groupType=True, or the ID of one).
+
+        """
+        from ..environments.models import EnvironmentGroupList
+
+        if envtype:
+            url = ("environmentgroups/environmenttypes/%s/autogenerate"
+                   % id_for_object(envtype))
+        else:
+            url = "environmentgroups/autogenerate"
+
+        extra_payload = {
+            "environmentIds": [id_for_object(e) for e in environments]}
+
+        generated = EnvironmentGroupList()
+
+        self._put(
+            relative_url=url,
+            extra_payload=extra_payload,
+            update_from_response=generated,
+            **kwargs)
+
+        return generated
 
 
 

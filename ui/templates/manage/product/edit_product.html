@@ -1,0 +1,33 @@
+{% extends 'manage/product/product_base.html' %}
+
+{% block listcontent %}
+<section id="editproduct">
+  <h2>edit product name</h2>
+  <form id="product-edit-form" method="POST">
+    {% csrf_token %}
+    <ul class="basic">
+      <li>
+        {% include "forms/_field.html" with field=form.name %}
+      </li>
+      <li>
+        {% include "forms/_field.html" with field=form.description %}
+      </li>
+    </ul>
+
+    {# @@@ put this on a separate page #}
+    {# include "manage/environment/_narrow_list.html" #}
+
+    <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+      <h3 class="summary">assign specific users to this product &raquo;</h3>
+      <div>
+        {# @@@ needs the slick multiple-select widget #}
+        {% include "forms/_field.html" with field=form.team %}
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <button type="submit">save product</button>
+    </div>
+  </form>
+</section>
+{% endblock listcontent %}

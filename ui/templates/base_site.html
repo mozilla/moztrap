@@ -48,12 +48,12 @@
                 <a href="#">Users</a> {# @@@ Needs URL #}
               </li>
               <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %}">
-                <a href="/manage/environments/">Environments</a> {# @@@ Needs URL #}
+                <a href="{% url manage_environments %}">Environments</a>
               </li>
               <li>
                 <ol class="tertiary">
                   <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
-                    <a href="{% url manage_testcycles %}">Products</a>
+                    <a href="{% url manage_products %}">Products</a>
                   </li>
                   <li class="{% block managecycle-active-nav %}{% endblock managecycle-active-nav %}">
                     <a href="{% url manage_testcycles %}">Cycles</a>

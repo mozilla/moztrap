@@ -1,0 +1,25 @@
+{% extends 'manage/product/testcase/_case_form_single.html' %}
+
+{% block caseversions %}
+{% comment %}
+<li>
+  <label for="version">Version</label>
+  <select name="version" id="version">
+    <option value="option1">1.0</option>
+    <option value="option2">1.1</option>
+    <option value="option2">1.2</option>
+    <option value="option2">2.0</option>
+  </select>
+</li>
+{% endcomment %}
+{% endblock caseversions %}
+
+{% block versionactions %}
+{% comment %}
+  <select name="increment" id="increment" class="increment-select warning">
+    <option value="option1">save over most recent version</option>
+    <option value="option2">save a new minor version</option>
+    <option value="option2">save a new major version</option>
+  </select>
+{% endcomment %}
+{% endblock versionactions %}

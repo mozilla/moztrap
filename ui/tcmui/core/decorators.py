@@ -1,10 +1,11 @@
 from functools import wraps
 
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from . import pagination, filters, errors, sort as sort_util
 from .auth import admin
+from .util import get_action
 
 
 
@@ -117,11 +118,9 @@ def actions(list_model, allowed_actions, fall_through=False):
         def _wrapped_view(request, *args, **kwargs):
             if request.method == "POST":
                 action_taken = False
-                actions = [(k, v) for k, v in request.POST.iteritems()
-                           if k.startswith("action-")]
-                if actions:
-                    action, obj_id = actions[0]
-                    action = action[len("action-"):]
+                action_data = get_action(request.POST)
+                if action_data:
+                    action, obj_id = action_data
                     if action in allowed_actions:
                         obj = list_model.get_by_id(obj_id, auth=request.auth)
                         try:
@@ -155,6 +154,50 @@ def ajax(template_name):
             response = view_func(request, *args, **kwargs)
             if request.is_ajax() and hasattr(response, "template_name"):
                 response.template_name = template_name
+            return response
+
+        return _wrapped_view
+
+    return decorator
+
+
+
+def finder(finder_cls):
+    """
+    View decorator that takes care of everything needed to render a finder on
+    the rendered page.
+
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            finder = finder_cls(request.auth)
+            if request.is_ajax() and request.GET.get("finder"):
+                col_name = request.GET["col"]
+                return render(
+                    request,
+                    finder.column_template(col_name),
+                    {
+                        "finder": {
+                            "finder": finder,
+                            col_name: finder.objects(
+                                col_name, request.GET["id"])
+                            },
+                        }
+                    )
+            response = view_func(request, *args, **kwargs)
+            try:
+                ctx = response.context_data
+            except AttributeError:
+                return response
+            top_col = finder.columns[0]
+            finder_ctx = ctx.setdefault("finder", {})
+            finder_ctx.update(
+                {
+                    "finder": finder,
+                    top_col.name: finder.objects(top_col.name)
+                    }
+                )
             return response
 
         return _wrapped_view
