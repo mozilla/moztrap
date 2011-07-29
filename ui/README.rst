@@ -22,7 +22,7 @@ stored in a git submodule). From the root of this repo, run::
 
 If you want to run this project in a `virtualenv`_ to isolate it from other
 Python projects on your system, create the virtualenv and activate it. Then run
-``bin/install-reqs`` to install the dependencies for this project into your
+``ui/bin/install-reqs`` to install the dependencies for this project into your
 Python environment.
 
 You'll need to create a ``tcmui/settings/local.py`` file with some details of
