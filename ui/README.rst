@@ -1,7 +1,7 @@
-TCM UI
+Case Conductor UI
 ======
 
-This Django project is the user interface to the new Mozilla/uTest TCM. It
+This Django project is the user interface to the new Mozilla/uTest Case Conductor. It
 lives at https://github.com/mozilla/tcm/, and is built to speak to the backend
 API at https://github.com/mozilla/tcmplatform.
 
