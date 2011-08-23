@@ -29,6 +29,13 @@
     clear: both
     &.details
       padding: 0
+      > .summary
+        #{$focus}
+          +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
+          outline: 0
+    &.open
+      > .summary
+        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
 
   .summary, .content
     +pie-clearfix
@@ -40,14 +47,6 @@
     p
       margin-bottom: 0
 
-  .details
-    .summary
-      #{$focus}
-        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
-        outline: 0
-  .open
-    > .summary
-      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
   .content
     +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
 

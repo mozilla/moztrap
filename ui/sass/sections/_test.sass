@@ -14,7 +14,13 @@
       text-align: right
     .content
       +full(24)
-      +prefix(2,24)
+      +pad(1,1,24)
+      +padding-trailer(.5)
+      +border-bottom-radius
+      margin:
+        right: columns(3,24) + gutter(24)
+        left: columns(2,24) + gutter(24)
+      background-color: rgba($yellow-light,$xsmall)
 
   .status
     button, span
@@ -34,11 +40,21 @@
 
 .stepfail
   .summary
+    @extend .allcaps
+    +text-button('ui/x_sm.png',$red-lighter)
     +opacity(0)
     +transition(opacity,300ms)
+    +bold
     position: absolute
     top: 0
     left: 0
-    padding: 0
+    width: columns(2,24)
     .steps li:hover &
-      +opacity(.75)
+      +opacity(1)
+  .failform
+    +full(20)
+    +pad(1,1,19)
+    +border-radius
+    +rhythm(.5,.5,.5,.5)
+    margin-right: columns(1,20) + gutter(20)
+    background-color: rgba($red-lighter,$xsmall)
