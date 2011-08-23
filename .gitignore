@@ -1,8 +1,6 @@
-ui/.sass-cache
-ui/collected-assets/*
-ui/tcmui/settings/local.py
-ui/coverage/*
+.sass-cache
+collected-assets/*
+tcmui/settings/local.py
+coverage/*
 .livereload
 *.pyc
-*.class
-apis_called.html
