@@ -161,9 +161,9 @@ MIDDLEWARE_CLASSES.insert(
 
 INSTALLED_APPS += ["ajax_loading_overlay"]
 
-TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
-TCM_ADMIN_USER = "admin@utest.com"
-TCM_ADMIN_PASS = "admin"
+CC_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
+CC_ADMIN_USER = "admin@utest.com"
+CC_ADMIN_PASS = "admin"
 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "runtests"

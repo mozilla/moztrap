@@ -158,7 +158,7 @@ class Command(BaseCommand):
         except ValueError:
             raise CommandError("Optional arg should be integer admin role ID")
 
-        company = Company.get("companies/%s" % conf.TCM_COMPANY_ID, auth=admin)
+        company = Company.get("companies/%s" % conf.CC_COMPANY_ID, auth=admin)
 
         environments = {}
         environmenttypes = {}
@@ -193,7 +193,7 @@ class Command(BaseCommand):
         for data in USERS:
             user = User(company=company, **data)
             UserList.get(auth=admin).post(user)
-            user.roles = [conf.TCM_NEW_USER_ROLE_ID]
+            user.roles = [conf.CC_NEW_USER_ROLE_ID]
             user.activate()
             print "Created user '%s.'" % user.screenName
             users.append(user)

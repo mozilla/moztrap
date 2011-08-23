@@ -1,5 +1,5 @@
 Case Conductor UI
-======
+=================
 
 This Django project is the user interface to the Case Conductor test case
 management system.  It lives at
@@ -32,12 +32,12 @@ that can be copied to ``tcmui/settings/local.py`` and modified.
 
 Two settings are required:
 
-``TCM_COMPANY_ID``
+``CC_COMPANY_ID``
     The UI is per-company, and will ignore all data related to other
     companies. This setting should be the (integer) id of the company whose
     data this instance of the UI should manage.
 
-``TCM_NEW_USER_ROLE_ID``
+``CC_NEW_USER_ROLE_ID``
     The (integer) id of the role that all new user registrations should be
     given by default.
 
@@ -49,19 +49,19 @@ their IDs, which can then be used for the above two settings.
 
 Several other settings have reasonable defaults, but may need to be modified:
 
-``TCM_API_BASE``
+``CC_API_BASE``
     The base URL for the platform API. Defaults to
     ``"http://localhost:8080/tcm/services/v2/rest/"``
 
-``TCM_ADMIN_USER``
+``CC_ADMIN_USER``
     The UI generally uses the privileges of the logged-in user for all API
     calls, but requires admin privileges on the platform API for certain
     operations, such as creating new users and assigning them their default
     role. This should be the email address of the admin credentials to use;
     defaults to ``"admin@utest.com"``.
 
-``TCM_ADMIN_PASS``
-    Password for ``TCM_ADMIN_USER``. Defaults to ``"admin"``.
+``CC_ADMIN_PASS``
+    Password for ``CC_ADMIN_USER``. Defaults to ``"admin"``.
 
 Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.

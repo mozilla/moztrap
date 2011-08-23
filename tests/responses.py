@@ -73,7 +73,7 @@ def make_one(resource_type, **kwargs):
 def make_identity(id="1", url="some/url", version="0"):
     return {
         "@id": str(id),
-        "@url": join(conf.TCM_API_BASE, url),
+        "@url": join(conf.CC_API_BASE, url),
         "@version": str(version),
         "@xsi.type": "ns1:resourceIdentity",
         }
@@ -84,7 +84,7 @@ def make_locator(id="1", url="some/url", name="Some Name"):
     return {
         "@id": str(id),
         "@name": name,
-        "@url": join(conf.TCM_API_BASE, url),
+        "@url": join(conf.CC_API_BASE, url),
         "@xsi.type":"ns1:ResourceLocator"}
 
 

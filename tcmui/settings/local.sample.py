@@ -10,12 +10,12 @@ Copy local.sample.py to local.py and modify as needed.
 
 # Set these to IDs of actual company/roles; use "./manage.py create_company" to
 # create them if needed.
-TCM_COMPANY_ID = 0
-TCM_NEW_USER_ROLE_ID = 0
+CC_COMPANY_ID = 0
+CC_NEW_USER_ROLE_ID = 0
 
-#TCM_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
-#TCM_ADMIN_USER = "admin@utest.com"
-#TCM_ADMIN_PASS = "admin"
+#CC_API_BASE = "http://localhost:8080/tcm/services/v2/rest/"
+#CC_ADMIN_USER = "admin@utest.com"
+#CC_ADMIN_PASS = "admin"
 
 #DEBUG = False
 #TEMPLATE_DEBUG = False

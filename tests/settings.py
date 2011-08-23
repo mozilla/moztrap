@@ -1,8 +1,8 @@
 from tcmui.settings.base import *
 
-TCM_API_BASE = "http://fake.base/rest"
+CC_API_BASE = "http://fake.base/rest"
 
-TCM_COMPANY_ID = 1
+CC_COMPANY_ID = 1
 
 CACHES = {
     'default': {
@@ -10,8 +10,8 @@ CACHES = {
     }
 }
 
-TCM_CACHE_SECONDS = 600
-TCM_STATICDATA_CACHE_SECONDS = 1800
+CC_CACHE_SECONDS = 600
+CC_STATICDATA_CACHE_SECONDS = 1800
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 

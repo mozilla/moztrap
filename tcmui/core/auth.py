@@ -49,4 +49,4 @@ class Credentials(object):
 
 
 
-admin = Credentials(conf.TCM_ADMIN_USER, conf.TCM_ADMIN_PASS)
+admin = Credentials(conf.CC_ADMIN_USER, conf.CC_ADMIN_PASS)

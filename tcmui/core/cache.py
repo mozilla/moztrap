@@ -91,7 +91,7 @@ class CachingHttpWrapper(object):
             # Cache for twice as long as a regular cache key - ensures that a
             # cached item from a previous generation can never outlive its
             # bucket generation key.
-            added = cache.add(gen_key, val, conf.TCM_CACHE_SECONDS * 2)
+            added = cache.add(gen_key, val, conf.CC_CACHE_SECONDS * 2)
             if not added:
                 # Someone else won the race, so we try again to increment.
                 log.warn(
@@ -155,6 +155,6 @@ class CachingHttpWrapper(object):
                 cache.set(
                     cache_key,
                     (all_permsets, (response, compressed_content)),
-                    conf.TCM_CACHE_SECONDS)
+                    conf.CC_CACHE_SECONDS)
 
         return (response, content)

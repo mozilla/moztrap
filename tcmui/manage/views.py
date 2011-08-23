@@ -317,7 +317,7 @@ def add_testsuite(request):
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
-            company=conf.TCM_COMPANY_ID, status=TestCaseStatus.ACTIVE),
+            company=conf.CC_COMPANY_ID, status=TestCaseStatus.ACTIVE),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()

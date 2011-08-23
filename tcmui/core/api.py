@@ -53,7 +53,7 @@ userAgent = Http()
 
 
 class ObjectMixin(StrAndUnicode):
-    api_base_url = conf.TCM_API_BASE
+    api_base_url = conf.CC_API_BASE
     cache = True
     _filterables = {}
 
@@ -78,7 +78,7 @@ class ObjectMixin(StrAndUnicode):
     def get_request(self, *args, **kwargs):
         """
         Add authorization and user-agent headers, request a JSON-formatted
-        response, and prepend TCM_API_BASE to relative URL paths.
+        response, and prepend CC_API_BASE to relative URL paths.
 
         """
         auth = kwargs.pop("auth", None)
@@ -638,7 +638,7 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
 
     @classmethod
     def ours(cls, **kwargs):
-        return cls.get(**kwargs).filter(company=conf.TCM_COMPANY_ID)
+        return cls.get(**kwargs).filter(company=conf.CC_COMPANY_ID)
 
 
     @property

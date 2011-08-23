@@ -44,7 +44,7 @@ def register(request):
         if form.is_valid():
             user = form.user
             user.roles = RoleList(
-                entries=[conf.TCM_NEW_USER_ROLE_ID], auth=admin)
+                entries=[conf.CC_NEW_USER_ROLE_ID], auth=admin)
             # @@@ Email confirmation step missing.
             user.activate(auth=admin)
             messages.success(

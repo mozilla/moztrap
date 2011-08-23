@@ -14,7 +14,7 @@ def get_codevalue(key, id_):
             if c.id == id_:
                 code = c
             to_set[_cache_key(key, c.id)] = c
-        cache.set_many(to_set, conf.TCM_STATICDATA_CACHE_SECONDS)
+        cache.set_many(to_set, conf.CC_STATICDATA_CACHE_SECONDS)
     return code
 
 

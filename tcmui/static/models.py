@@ -27,7 +27,7 @@ class CodeValue(ObjectMixin, remoteobjects.RemoteObject):
 
 
 class ArrayOfCodeValue(ObjectMixin, remoteobjects.ListObject):
-    api_base_url = urlparse.urljoin(conf.TCM_API_BASE, "staticData/values/")
+    api_base_url = urlparse.urljoin(conf.CC_API_BASE, "staticData/values/")
 
     entries = fields.List(fields.Object(CodeValue))
 
