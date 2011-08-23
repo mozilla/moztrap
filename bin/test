@@ -31,23 +31,23 @@ def main(basedir, cover_all=False):
         ]
     report_kw = {"directory": os.path.join(basedir, "coverage")}
     if cover_all:
-        # include all python modules under tcmui in report, including even those
+        # include all python modules under ccui in report, including even those
         # the tests don't cause to be imported at all yet, so as to get a more
         # accurate overall coverage figure.
         py_files = include
-        for dirpath, dirs, filenames in os.walk(os.path.join(basedir, "tcmui")):
+        for dirpath, dirs, filenames in os.walk(os.path.join(basedir, "ccui")):
             py_files.extend([os.path.join(dirpath, fn)
                              for fn in filenames if fn.endswith(".py")])
         report_kw["morfs"] = py_files
         report_kw["omit"] = [
-            "tcmui/compressor_filters.py",
+            "ccui/compressor_filters.py",
             # non-default settings files aren't exercised in tests
-            "tcmui/settings.py",
-            "tcmui/settings_local.py",
-            "tcmui/settings_local.sample.py"
+            "ccui/settings.py",
+            "ccui/settings_local.py",
+            "ccui/settings_local.sample.py"
             ]
     else:
-        report_kw["include"] = include + [os.path.join(basedir, "tcmui/*")]
+        report_kw["include"] = include + [os.path.join(basedir, "ccui/*")]
     cov.html_report(**report_kw)
 
     teardown_test_environment()

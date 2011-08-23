@@ -25,9 +25,9 @@ Python projects on your system, create the virtualenv and activate it. Then run
 ``bin/install-reqs`` to install the dependencies for this project into your
 Python environment.
 
-You'll need to create a ``tcmui/settings/local.py`` file with some details of
-your local configuration. See ``tcmui/settings/local.sample.py`` for a sample
-that can be copied to ``tcmui/settings/local.py`` and modified.
+You'll need to create a ``ccui/settings/local.py`` file with some details of
+your local configuration. See ``ccui/settings/local.sample.py`` for a sample
+that can be copied to ``ccui/settings/local.py`` and modified.
 
 Two settings are required:
 
