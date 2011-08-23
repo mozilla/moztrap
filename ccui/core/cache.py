@@ -9,7 +9,7 @@ from .log import log_api_call
 
 
 
-log = logging.getLogger("tcmui.core.cache")
+log = logging.getLogger("ccui.core.cache")
 
 
 

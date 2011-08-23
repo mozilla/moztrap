@@ -8,15 +8,15 @@ from .builders import products
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class ProductTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.products.models import Product
+        from ccui.products.models import Product
         return Product
 
 
     def get_resource_list_class(self):
-        from tcmui.products.models import ProductList
+        from ccui.products.models import ProductList
         return ProductList
 
 
@@ -28,7 +28,7 @@ class ProductTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_autogenerate_env_groups(self, http):
-        from tcmui.environments.models import (
+        from ccui.environments.models import (
             EnvironmentGroupList, Environment, EnvironmentType)
 
         p = self.resource_class()
@@ -66,7 +66,7 @@ class ProductTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_autogenerate_env_groups_no_type(self, http):
-        from tcmui.environments.models import (
+        from ccui.environments.models import (
             EnvironmentGroupList, Environment, EnvironmentType)
 
         p = self.resource_class()

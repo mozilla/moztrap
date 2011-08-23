@@ -13,7 +13,7 @@ from ..utils import AuthTestCase, fill_cache, Url
 class BaseFieldTests(TestCase):
     @property
     def field_cls(self):
-        from tcmui.core.fields import Field
+        from ccui.core.fields import Field
         return Field
 
 
@@ -151,7 +151,7 @@ class FieldTest(BaseFieldTests):
 class DateFieldTest(BaseFieldTests):
     @property
     def field_cls(self):
-        from tcmui.core.fields import Date
+        from ccui.core.fields import Date
         return Date
 
 
@@ -187,7 +187,7 @@ class DateFieldTest(BaseFieldTests):
 class LocatorFieldTest(BaseFieldTests):
     @property
     def field_cls(self):
-        from tcmui.core.fields import Locator
+        from ccui.core.fields import Locator
         return Locator
 
 
@@ -274,12 +274,12 @@ class LocatorFieldTest(BaseFieldTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class LocatorFunctionalTest(AuthTestCase):
     @property
     def subject_and_target(self):
-        from tcmui.core.api import RemoteObject
-        from tcmui.core.fields import Field, Locator
+        from ccui.core.api import RemoteObject
+        from ccui.core.fields import Field, Locator
 
         class TheTarget(RemoteObject):
             nickname = Field()
@@ -375,7 +375,7 @@ class LocatorFunctionalTest(AuthTestCase):
 class ResourceIdentityFieldTest(BaseFieldTests):
     @property
     def field_cls(self):
-        from tcmui.core.fields import ResourceIdentity
+        from ccui.core.fields import ResourceIdentity
         return ResourceIdentity
 
 
@@ -427,12 +427,12 @@ class ResourceIdentityFieldTest(BaseFieldTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class UserIDFunctionalTest(AuthTestCase):
     @property
     def subject_and_user(self):
-        from tcmui.core.api import RemoteObject
-        from tcmui.core.fields import UserID
+        from ccui.core.api import RemoteObject
+        from ccui.core.fields import UserID
 
         class User(RemoteObject):
             pass
@@ -456,7 +456,7 @@ class UserIDFunctionalTest(AuthTestCase):
 
 
     def test_descriptor_lookup(self, http):
-        from tcmui.core.auth import admin
+        from ccui.core.auth import admin
         TheSubject, User = self.subject_and_user
 
         http.request.return_value = response(
@@ -498,19 +498,19 @@ class UserIDFunctionalTest(AuthTestCase):
 class TimelineFieldTest(BaseFieldTests):
     @property
     def field_cls(self):
-        from tcmui.core.fields import TimelineField
+        from ccui.core.fields import TimelineField
         return TimelineField
 
 
     @property
     def result_cls(self):
-        from tcmui.core.fields import Timeline
+        from ccui.core.fields import Timeline
         return Timeline
 
 
     @property
     def user_cls(self):
-        from tcmui.core.api import RemoteObject
+        from ccui.core.api import RemoteObject
 
         class User(RemoteObject):
             pass
@@ -580,12 +580,12 @@ class TimelineFieldTest(BaseFieldTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TimelineFieldFunctionalTest(AuthTestCase):
     @property
     def subject_timeline_and_user(self):
-        from tcmui.core.api import RemoteObject
-        from tcmui.core.fields import TimelineField, Timeline
+        from ccui.core.api import RemoteObject
+        from ccui.core.fields import TimelineField, Timeline
 
         class User(RemoteObject):
             pass
@@ -642,11 +642,11 @@ class TimelineFieldFunctionalTest(AuthTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class LinkFunctionalTest(AuthTestCase):
     def subject_and_target(self, cache=None):
-        from tcmui.core.api import RemoteObject, ListObject
-        from tcmui.core.fields import Link, List, Object
+        from ccui.core.api import RemoteObject, ListObject
+        from ccui.core.fields import Link, List, Object
 
         class TheTarget(RemoteObject):
             pass
@@ -714,7 +714,7 @@ class LinkFunctionalTest(AuthTestCase):
 
         http.request.return_value = response(self.targets.array({}))
 
-        with patch("tcmui.core.cache.cache") as cache:
+        with patch("ccui.core.cache.cache") as cache:
             fill_cache(cache, {})
             list(subj.targets)
 

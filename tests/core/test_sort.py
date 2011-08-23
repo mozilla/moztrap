@@ -8,7 +8,7 @@ from ..utils import Url
 class TestFromRequest(TestCase):
     @property
     def func(self):
-        from tcmui.core.sort import from_request
+        from ccui.core.sort import from_request
         return from_request
 
 
@@ -35,7 +35,7 @@ class TestFromRequest(TestCase):
 class TestSort(TestCase):
     @property
     def cls(self):
-        from tcmui.core.sort import Sort
+        from ccui.core.sort import Sort
         return Sort
 
 
@@ -79,7 +79,7 @@ class TestSort(TestCase):
 class TestUrl(TestCase):
     @property
     def func(self):
-        from tcmui.core.sort import url
+        from ccui.core.sort import url
         return url
 
 
@@ -115,7 +115,7 @@ class TestUrl(TestCase):
 class TestToggle(TestCase):
     @property
     def func(self):
-        from tcmui.core.sort import toggle
+        from ccui.core.sort import toggle
         return toggle
 
 

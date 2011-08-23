@@ -16,13 +16,13 @@ def main():
 
     imports = [
         "import datetime",
-        "from tcmui.core.auth import admin, Credentials",
-        "from tcmui.core.models import Company, CompanyList",
-        "from tcmui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
-        "from tcmui.products.models import Product, ProductList",
-        "from tcmui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, EnvironmentGroupList",
-        "from tcmui.testexecution.models import TestCycle, TestCycleList, TestRun, TestRunList, TestRunIncludedTestCase, TestRunIncludedTestCaseList, TestCaseAssignment, TestCaseAssignmentList, TestResult, TestResultList",
-        "from tcmui.testcases.models import Tag, TagList, TestCase, TestCaseList, TestCaseVersion, TestCaseVersionList, TestCaseStep, TestCaseStepList, TestSuite, TestSuiteList",
+        "from ccui.core.auth import admin, Credentials",
+        "from ccui.core.models import Company, CompanyList",
+        "from ccui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
+        "from ccui.products.models import Product, ProductList",
+        "from ccui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, EnvironmentGroupList",
+        "from ccui.testexecution.models import TestCycle, TestCycleList, TestRun, TestRunList, TestRunIncludedTestCase, TestRunIncludedTestCaseList, TestCaseAssignment, TestCaseAssignmentList, TestResult, TestResultList",
+        "from ccui.testcases.models import Tag, TagList, TestCase, TestCaseList, TestCaseVersion, TestCaseVersionList, TestCaseStep, TestCaseStepList, TestSuite, TestSuiteList",
         ]
 
     for imp in imports:

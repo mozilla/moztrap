@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from ..core.conf import conf
 
 
-log = logging.getLogger("tcmui.core.log.api")
+log = logging.getLogger("ccui.core.log.api")
 
 handler = MemoryHandler(capacity=conf.CC_DEBUG_API_LOG_RECORDS)
 
@@ -27,7 +27,7 @@ class NoDebugFilter(Filter):
 if conf.CC_DEBUG_API_LOG:
     log.setLevel(logging.DEBUG)
     log.addHandler(handler)
-    ui_req_log = logging.getLogger("tcmui.core.middleware.RequestLogMiddleware")
+    ui_req_log = logging.getLogger("ccui.core.middleware.RequestLogMiddleware")
     ui_req_log.setLevel(logging.DEBUG)
     ui_req_log.addFilter(NoDebugFilter())
     ui_req_log.addHandler(handler)

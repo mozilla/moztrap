@@ -5,33 +5,33 @@ from django.conf import settings
 
 urlpatterns = patterns(
     "",
-    url("^account/", include("tcmui.users.urls")),
+    url("^account/", include("ccui.users.urls")),
 
     # run tests
-    url("^$", "tcmui.testexecution.views.home", name="runtests"),
+    url("^$", "ccui.testexecution.views.home", name="runtests"),
     url("^environment/$",
-        "tcmui.environments.views.set_environment",
+        "ccui.environments.views.set_environment",
         name="environment"),
     url("^run/(?P<testrun_id>\d+)/$",
-        "tcmui.testexecution.views.runtests",
+        "ccui.testexecution.views.runtests",
         name="runtests_run"),
 
     # runtests ajax
     url("^runtests/_finder/environments/(?P<run_id>\d+)/",
-        "tcmui.testexecution.views.finder_environments",
+        "ccui.testexecution.views.finder_environments",
         name="runtests_finder_environments"),
     url("^_result/(?P<result_id>\d+)/$",
-        "tcmui.testexecution.views.result",
+        "ccui.testexecution.views.result",
         name="result"),
 
     # manage
-    url("^manage/", include("tcmui.manage.urls")),
+    url("^manage/", include("ccui.manage.urls")),
 
     # results
-    url("^results/", include("tcmui.results.urls")),
+    url("^results/", include("ccui.results.urls")),
 )
 
 if settings.DEBUG:
     urlpatterns += patterns(
         "",
-        url("^debug/", include("tcmui.debug.urls")))
+        url("^debug/", include("ccui.debug.urls")))

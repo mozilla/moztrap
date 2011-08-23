@@ -7,7 +7,7 @@ from ..utils import Url
 class TestFromRequest(TestCase):
     @property
     def func(self):
-        from tcmui.core.pagination import from_request
+        from ccui.core.pagination import from_request
         return from_request
 
 
@@ -37,7 +37,7 @@ class TestFromRequest(TestCase):
 class TestPagesizeUrl(TestCase):
     @property
     def func(self):
-        from tcmui.core.pagination import pagesize_url
+        from ccui.core.pagination import pagesize_url
         return pagesize_url
 
 
@@ -57,7 +57,7 @@ class TestPagesizeUrl(TestCase):
 class TestPagenumberUrl(TestCase):
     @property
     def func(self):
-        from tcmui.core.pagination import pagenumber_url
+        from ccui.core.pagination import pagenumber_url
         return pagenumber_url
 
 
@@ -77,7 +77,7 @@ class TestPagenumberUrl(TestCase):
 class TestPager(TestCase):
     @property
     def pager(self):
-        from tcmui.core.pagination import Pager
+        from ccui.core.pagination import Pager
         return Pager
 
 
@@ -250,7 +250,7 @@ class TestPager(TestCase):
 class TestPositiveInteger(TestCase):
     @property
     def func(self):
-        from tcmui.core.pagination import positive_integer
+        from ccui.core.pagination import positive_integer
         return positive_integer
 
 

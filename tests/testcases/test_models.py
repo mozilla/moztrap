@@ -8,20 +8,20 @@ from .builders import (
 
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
+@patch("ccui.core.api.userAgent", spec=["request"])
 class TestSuiteTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.testcases.models import TestSuite
+        from ccui.testcases.models import TestSuite
         return TestSuite
 
 
     def get_resource_list_class(self):
-        from tcmui.testcases.models import TestSuiteList
+        from ccui.testcases.models import TestSuiteList
         return TestSuiteList
 
 
     def test_addcase_invalidates_cache(self, http):
-        from tcmui.testcases.models import TestCaseVersion
+        from ccui.testcases.models import TestCaseVersion
 
         s = self.resource_class()
         s.update_from_dict(testsuites.one())
@@ -46,27 +46,27 @@ class TestSuiteTest(BaseResourceTest, ResourceTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
+@patch("ccui.core.api.userAgent", spec=["request"])
 class TestCaseTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.testcases.models import TestCase
+        from ccui.testcases.models import TestCase
         return TestCase
 
 
     def get_resource_list_class(self):
-        from tcmui.testcases.models import TestCaseList
+        from ccui.testcases.models import TestCaseList
         return TestCaseList
 
 
     @property
     def version_class(self):
-        from tcmui.testcases.models import TestCaseVersion
+        from ccui.testcases.models import TestCaseVersion
         return TestCaseVersion
 
 
     @property
     def version_list_class(self):
-        from tcmui.testcases.models import TestCaseVersionList
+        from ccui.testcases.models import TestCaseVersionList
         return TestCaseVersionList
 
 

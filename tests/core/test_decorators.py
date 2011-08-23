@@ -133,7 +133,7 @@ class ListDecoratorBaseTests(TemplateResponseDecoratorBaseTests):
     def on_listobject_response(self, res=None, **kwargs):
         res = res or response(self.builder.searchresult({}))
 
-        with patch("tcmui.core.api.userAgent") as http:
+        with patch("ccui.core.api.userAgent") as http:
             http.request.return_value = res
             lst = self.resource_list_class.get()
             res = self.on_template_response({self.ctx_name: lst}, **kwargs)
@@ -164,14 +164,14 @@ class SortTest(ListCtxDecoratorBaseTests,
                TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import sort
+        from ccui.core.decorators import sort
         return sort
 
 
     factory_args = ("ctx_name",)
 
 
-    @patch("tcmui.core.decorators.sort_util.Sort")
+    @patch("ccui.core.decorators.sort_util.Sort")
     def test_sort_initialization(self, sort_class):
         req = self.req(
             "GET", "/a/url", {"sortfield": "name", "sortdirection": "desc"})
@@ -181,14 +181,14 @@ class SortTest(ListCtxDecoratorBaseTests,
             '/a/url?sortfield=name&sortdirection=desc', 'name', 'desc')
 
 
-    @patch("tcmui.core.decorators.sort_util.Sort")
+    @patch("ccui.core.decorators.sort_util.Sort")
     def test_no_sort(self, sort_class):
         self.on_listobject_response()
 
         sort_class.assert_called_with('/some/url', None, 'asc')
 
 
-    @patch("tcmui.core.decorators.sort_util.Sort")
+    @patch("ccui.core.decorators.sort_util.Sort")
     def test_sort_defaults(self, sort_class):
         dec = self.factory(
             *self.factory_args, defaultfield="name", defaultdirection="desc")
@@ -197,7 +197,7 @@ class SortTest(ListCtxDecoratorBaseTests,
         sort_class.assert_called_with('/some/url', 'name', 'desc')
 
 
-    @patch("tcmui.core.decorators.sort_util.Sort")
+    @patch("ccui.core.decorators.sort_util.Sort")
     def test_sort_object_in_context(self, sort_class):
         req = self.req(
             "GET", "/a/url", {"sortfield": "name", "sortdirection": "desc"})
@@ -207,7 +207,7 @@ class SortTest(ListCtxDecoratorBaseTests,
 
 
 
-    @patch("tcmui.core.decorators.sort_util.Sort")
+    @patch("ccui.core.decorators.sort_util.Sort")
     def test_listobj_sorted(self, sort_class):
         req = self.req(
             "GET", "/a/url", {"sortfield": "name", "sortdirection": "desc"})
@@ -223,14 +223,14 @@ class FilterTest(ListCtxDecoratorBaseTests,
                  TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import filter
+        from ccui.core.decorators import filter
         return filter
 
 
     factory_args = ("ctx_name",)
 
 
-    @patch("tcmui.core.decorators.filters.Filter")
+    @patch("ccui.core.decorators.filters.Filter")
     def test_filter_initialization(self, filter_class):
         self.on_listobject_response()
 
@@ -238,7 +238,7 @@ class FilterTest(ListCtxDecoratorBaseTests,
         filter_class.assert_called_with(QueryDict({}), self.auth)
 
 
-    @patch("tcmui.core.decorators.filters.Filter")
+    @patch("ccui.core.decorators.filters.Filter")
     def test_filter_method_args(self, filter_class):
         res = self.on_listobject_response()
 
@@ -247,7 +247,7 @@ class FilterTest(ListCtxDecoratorBaseTests,
             flt.filter.call_args[0][0], self.resource_list_class)
 
 
-    @patch("tcmui.core.decorators.filters.Filter")
+    @patch("ccui.core.decorators.filters.Filter")
     def test_filter_return_value_assigned(self, filter_class):
         res = self.on_listobject_response()
 
@@ -256,7 +256,7 @@ class FilterTest(ListCtxDecoratorBaseTests,
             flt.filter.return_value, res.context_data[self.ctx_name])
 
 
-    @patch("tcmui.core.decorators.filters.Filter")
+    @patch("ccui.core.decorators.filters.Filter")
     def test_fields_passed_to_filter(self, filter_class):
         dec = self.factory(*(self.factory_args + ("a", "b")))
         self.on_listobject_response(decorator=dec)
@@ -270,7 +270,7 @@ class PaginateTest(ListCtxDecoratorBaseTests,
                    TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import paginate
+        from ccui.core.decorators import paginate
         return paginate
 
 
@@ -287,7 +287,7 @@ class PaginateTest(ListCtxDecoratorBaseTests,
 class ActionsTest(ListDecoratorBaseTests, TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import actions
+        from ccui.core.decorators import actions
         return actions
 
 
@@ -391,8 +391,8 @@ class ActionsTest(ListDecoratorBaseTests, TemplateResponseDecoratorTestCase):
         self.assertEqual(res.status_code, 200)
 
 
-    @patch("tcmui.core.decorators.errors.error_message")
-    @patch("tcmui.core.decorators.messages.error")
+    @patch("ccui.core.decorators.errors.error_message")
+    @patch("ccui.core.decorators.messages.error")
     def test_conflict(self, error, error_message):
         exc = self.resource_class.Conflict("conflict!")
         def doit(self_):
@@ -415,7 +415,7 @@ class AjaxTest(TemplateResponseDecoratorBaseTests,
                TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import ajax
+        from ccui.core.decorators import ajax
         return ajax
 
 
@@ -440,7 +440,7 @@ class FinderTest(TemplateResponseDecoratorBaseTests,
                  TemplateResponseDecoratorTestCase):
     @property
     def factory(self):
-        from tcmui.core.decorators import finder
+        from ccui.core.decorators import finder
         return finder
 
 
@@ -457,7 +457,7 @@ class FinderTest(TemplateResponseDecoratorBaseTests,
         try:
             return self._cached_finder_cls
         except AttributeError:
-            from tcmui.core.finder import Finder, Column
+            from ccui.core.finder import Finder, Column
 
             class AFinder(Finder):
                 template_base = "a/finder"
@@ -479,7 +479,7 @@ class FinderTest(TemplateResponseDecoratorBaseTests,
         return (self.finder,)
 
 
-    @patch("tcmui.core.decorators.render")
+    @patch("ccui.core.decorators.render")
     def test_ajax(self, render):
         render.return_value = "some HTML"
 
@@ -507,7 +507,7 @@ class FinderTest(TemplateResponseDecoratorBaseTests,
 class AsAdminTest(TestCase):
     @property
     def cls(self):
-        from tcmui.core.decorators import as_admin
+        from ccui.core.decorators import as_admin
 
         class TestObject(object):
             def __init__(self):
@@ -524,7 +524,7 @@ class AsAdminTest(TestCase):
 
 
     def test_uses_admin_auth(self):
-        from tcmui.core.auth import admin
+        from ccui.core.auth import admin
 
         obj = self.cls()
         obj.a_method()

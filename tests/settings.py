@@ -1,4 +1,4 @@
-from tcmui.settings.base import *
+from ccui.settings.base import *
 
 CC_API_BASE = "http://fake.base/rest"
 

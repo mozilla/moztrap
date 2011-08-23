@@ -2,15 +2,15 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 import floppyforms as forms
 
-from ..core import forms as tcmforms
+from ..core import forms as ccforms
 
 from .models import TestCaseStep
 
 
 
-class StepForm(tcmforms.NonFieldErrorsClassFormMixin, forms.Form):
-    instruction = forms.CharField(widget=tcmforms.BareTextarea)
-    expected_result = forms.CharField(widget=tcmforms.BareTextarea)
+class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+    instruction = forms.CharField(widget=ccforms.BareTextarea)
+    expected_result = forms.CharField(widget=ccforms.BareTextarea)
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance", None)

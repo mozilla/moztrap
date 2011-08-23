@@ -2,7 +2,7 @@ from django.core.cache import cache
 
 from .models import ArrayOfCodeValue
 
-from tcmui.core.conf import conf
+from ccui.core.conf import conf
 
 
 def get_codevalue(key, id_):

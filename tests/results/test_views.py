@@ -12,7 +12,7 @@ from ..utils import ViewTestCase, COMMON_RESPONSES, Url
 from ..users.builders import users
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class DefaultResultsViewTest(ViewTestCase):
     def test_redirect(self, http):
         self.setup_responses(http)
@@ -141,7 +141,7 @@ class ListViewTests(object):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
     builder = testcycles
 
@@ -173,12 +173,12 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
 
     @property
     def list_class(self):
-        from tcmui.testexecution.models import TestCycleList
+        from ccui.testexecution.models import TestCycleList
         return TestCycleList
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestRunResultsViewTest(ViewTestCase, ListViewTests):
     builder = testruns
 
@@ -216,12 +216,12 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
 
     @property
     def list_class(self):
-        from tcmui.testexecution.models import TestRunList
+        from ccui.testexecution.models import TestRunList
         return TestRunList
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
     builder = testrunitcs
 
@@ -302,12 +302,12 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
 
     @property
     def list_class(self):
-        from tcmui.testexecution.models import TestRunIncludedTestCaseList
+        from ccui.testexecution.models import TestRunIncludedTestCaseList
         return TestRunIncludedTestCaseList
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestResultsViewTest(ViewTestCase, ListViewTests):
     builder = testresults
 
@@ -318,7 +318,7 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
 
     @property
     def list_class(self):
-        from tcmui.testexecution.models import TestResultList
+        from ccui.testexecution.models import TestResultList
         return TestResultList
 
 
@@ -352,7 +352,7 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
     def get(self, uri, *args, **kwargs):
         req = self.factory.get(uri, *args, **kwargs)
         req.auth = self.auth
-        from tcmui.core.api import url_final_integer
+        from ccui.core.api import url_final_integer
         return self.view(req, url_final_integer(uri))
 
 

@@ -8,6 +8,6 @@ urlpatterns = patterns("")
 
 if conf.CC_DEBUG_API_LOG:
     urlpatterns += patterns(
-        "tcmui.debug.views",
+        "ccui.debug.views",
         url("^apilog/$", "apilog", name="debug_apilog"),
         )

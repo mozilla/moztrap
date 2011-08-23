@@ -6,7 +6,7 @@ import httplib
 import json
 from posixpath import join
 
-from tcmui.core.conf import conf
+from ccui.core.conf import conf
 
 
 

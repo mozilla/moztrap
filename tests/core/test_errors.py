@@ -11,7 +11,7 @@ class Error(object):
 
 class ErrorMessageAndFieldsTest(TestCase):
     def assert_results(self, obj, err, ret):
-        from tcmui.core.errors import error_message_and_fields
+        from ccui.core.errors import error_message_and_fields
         self.assertEqual(error_message_and_fields(obj, Error(err)), ret)
 
 
@@ -69,5 +69,5 @@ class ErrorMessageTest(ErrorMessageAndFieldsTest):
 
     """
     def assert_results(self, obj, err, ret):
-        from tcmui.core.errors import error_message
+        from ccui.core.errors import error_message
         self.assertEqual(error_message(obj, Error(err)), ret[0])

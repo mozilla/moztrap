@@ -13,12 +13,12 @@ NO_CHECK = object() # sentinel value
 
 
 
-@patch("tcmui.core.cache.zlib.compress", lambda x: "zlib:%s" % x)
-@patch("tcmui.core.cache.zlib.decompress", lambda x: x[5:])
-@patch("tcmui.core.cache.cache", spec=["get", "set", "incr", "add"])
+@patch("ccui.core.cache.zlib.compress", lambda x: "zlib:%s" % x)
+@patch("ccui.core.cache.zlib.decompress", lambda x: x[5:])
+@patch("ccui.core.cache.cache", spec=["get", "set", "incr", "add"])
 class CachingHttpWrapperTest(TestCase):
     def make_request(self, **kwargs):
-        from tcmui.core.cache import CachingHttpWrapper
+        from ccui.core.cache import CachingHttpWrapper
 
         res = Mock(["status"])
         res.status = kwargs.pop("response_status", httplib.OK)
@@ -26,7 +26,7 @@ class CachingHttpWrapperTest(TestCase):
         permissions = kwargs.pop("permissions", [])
         buckets = kwargs.pop("cache_buckets", ["BucketName"])
         dependent_buckets = kwargs.pop("cache_dependent_buckets", [])
-        with patch("tcmui.core.api.Http") as http:
+        with patch("ccui.core.api.Http") as http:
             http.request.return_value = (res, content)
             return CachingHttpWrapper(
                 http, permissions, buckets, dependent_buckets).request(**kwargs)
@@ -310,7 +310,7 @@ class CachingHttpWrapperTest(TestCase):
 
 
     def test_generation_increment_success(self, cache):
-        from tcmui.core.cache import CachingHttpWrapper
+        from ccui.core.cache import CachingHttpWrapper
 
         wrapper = CachingHttpWrapper("wrapped", ["perms"], ["BucketName"])
 
@@ -325,7 +325,7 @@ class CachingHttpWrapperTest(TestCase):
         generation key at the same time, it should end up at 2, not 1.
 
         """
-        from tcmui.core.cache import CachingHttpWrapper
+        from ccui.core.cache import CachingHttpWrapper
 
         wrapper = CachingHttpWrapper("wrapped", ["perms"], ["BucketName"])
 
@@ -345,7 +345,7 @@ class CachingHttpWrapperTest(TestCase):
         self.assertEqual(wrapper._next_generation("BucketName"), 2)
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
+@patch("ccui.core.api.userAgent", spec=["request"])
 class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
     builder = ListBuilder(
         "testresource",
@@ -357,7 +357,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
 
     def get_resource_class(self):
-        from tcmui.core.api import RemoteObject, fields
+        from ccui.core.api import RemoteObject, fields
 
         class TestResource(RemoteObject):
             name = fields.Field()
@@ -369,7 +369,7 @@ class CachingFunctionalTest(CachingFunctionalTestMixin, ResourceTestCase):
 
 
     def get_resource_list_class(self):
-        from tcmui.core.api import ListObject, fields
+        from ccui.core.api import ListObject, fields
 
         class TestResourceList(ListObject):
             entryclass = self.resource_class

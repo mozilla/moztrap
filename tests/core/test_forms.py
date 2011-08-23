@@ -6,7 +6,7 @@ from unittest2 import TestCase
 class TestNonFieldErrorsClassFormMixin(TestCase):
     @property
     def mixin(self):
-        from tcmui.core.forms import NonFieldErrorsClassFormMixin
+        from ccui.core.forms import NonFieldErrorsClassFormMixin
         return NonFieldErrorsClassFormMixin
 
 
@@ -54,7 +54,7 @@ class RemoteObjectFormTest(TestCase):
     @property
     def form_class(self):
         import floppyforms as forms
-        from tcmui.core.forms import RemoteObjectForm
+        from ccui.core.forms import RemoteObjectForm
 
         class PersonForm(RemoteObjectForm):
             name = forms.CharField()
@@ -73,11 +73,11 @@ class RemoteObjectFormTest(TestCase):
 class AddEditFormTest(TestCase):
     @property
     def form_class(self):
-        from tcmui.core.forms import AddEditForm
+        from ccui.core.forms import AddEditForm
         return AddEditForm
 
 
-    @patch("tcmui.core.forms.errors.error_message_and_fields")
+    @patch("ccui.core.forms.errors.error_message_and_fields")
     def test_non_field_errors_dont_pass_silently(self, emaf):
         emaf.return_value = ("unknown error", [])
         obj, err = ("fake obj", "fake err")
@@ -108,7 +108,7 @@ class AddEditFormTest(TestCase):
 
 class BareTextareaTest(TestCase):
     def test_no_attrs(self):
-        from tcmui.core.forms import BareTextarea
+        from ccui.core.forms import BareTextarea
         self.assertEqual(BareTextarea().attrs, {})
 
 
@@ -116,7 +116,7 @@ class BareTextareaTest(TestCase):
 class ReadOnlyWidgetTest(TestCase):
     @property
     def widget(self):
-        from tcmui.core.forms import ReadOnlyWidget
+        from ccui.core.forms import ReadOnlyWidget
         return ReadOnlyWidget
 
 

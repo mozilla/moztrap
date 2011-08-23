@@ -14,7 +14,7 @@ class FinderTest(TestCase):
 
     @property
     def finder(self):
-        from tcmui.core.finder import Finder, Column
+        from ccui.core.finder import Finder, Column
 
         class AFinder(Finder):
             template_base = "a/finder"
@@ -85,7 +85,7 @@ class FinderTest(TestCase):
             f.column_template("doesnotexist")
 
 
-    @patch("tcmui.core.finder.reverse", lambda p: p)
+    @patch("ccui.core.finder.reverse", lambda p: p)
     def test_goto_url(self):
         f = self.finder()
 
@@ -205,7 +205,7 @@ class FinderTest(TestCase):
 class ColumnTest(TestCase):
     @property
     def column(self):
-        from tcmui.core.finder import Column
+        from ccui.core.finder import Column
         return Column
 
 

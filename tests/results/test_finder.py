@@ -11,13 +11,13 @@ from ..utils import setup_responses
 class ResultsFinderTest(TestCase):
     @property
     def finder(self):
-        from tcmui.results.finder import ResultsFinder
+        from ccui.results.finder import ResultsFinder
         return ResultsFinder
 
 
     @property
     def itc(self):
-        from tcmui.testexecution.models import TestRunIncludedTestCase
+        from ccui.testexecution.models import TestRunIncludedTestCase
         return TestRunIncludedTestCase
 
 
@@ -40,7 +40,7 @@ class ResultsFinderTest(TestCase):
         self.assertEqual(f.child_column_for_obj(obj), "results")
 
 
-    @patch("tcmui.core.api.userAgent")
+    @patch("ccui.core.api.userAgent")
     def test_objects(self, http):
         f = self.finder()
 

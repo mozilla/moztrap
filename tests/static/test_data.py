@@ -6,22 +6,22 @@ from .builders import codevalues
 
 
 
-@patch("tcmui.static.data.cache")
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.static.data.cache")
+@patch("ccui.core.api.userAgent")
 class StaticDataTest(ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.static.models import CodeValue
+        from ccui.static.models import CodeValue
         return CodeValue
 
 
     def get_resource_list_class(self):
-        from tcmui.static.models import ArrayOfCodeValue
+        from ccui.static.models import ArrayOfCodeValue
         return ArrayOfCodeValue
 
 
     @property
     def func(self):
-        from tcmui.static.data import get_codevalue
+        from ccui.static.data import get_codevalue
         return get_codevalue
 
 

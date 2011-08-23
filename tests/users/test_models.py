@@ -7,15 +7,15 @@ from .builders import users
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class UserTest(CachingFunctionalTestMixin, BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.users.models import User
+        from ccui.users.models import User
         return User
 
 
     def get_resource_list_class(self):
-        from tcmui.users.models import UserList
+        from ccui.users.models import UserList
         return UserList
 
 

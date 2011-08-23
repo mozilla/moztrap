@@ -2,7 +2,7 @@ import logging
 
 
 
-log = logging.getLogger("tcmui.core.log.api")
+log = logging.getLogger("ccui.core.log.api")
 
 
 

@@ -121,7 +121,7 @@ def setup_common_responses(http, response_dict):
 def locmem_cache():
     cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
     cache.clear()
-    patcher = patch("tcmui.core.cache.cache", cache)
+    patcher = patch("ccui.core.cache.cache", cache)
     patcher.start()
     yield cache
     patcher.stop()
@@ -132,15 +132,15 @@ class CachingFunctionalTestMixin(object):
     def setUp(self):
         self.cache = get_cache("django.core.cache.backends.locmem.LocMemCache")
         self.cache.clear()
-        self.patcher = patch("tcmui.core.cache.cache", self.cache)
+        self.patcher = patch("ccui.core.cache.cache", self.cache)
         self.patcher.start()
         self.addCleanup(self.patcher.stop)
 
 
 
 def creds(email, password=None, cookie=None):
-    from tcmui.users.auth import UserCredentials
-    from tcmui.users.models import User
+    from ccui.users.auth import UserCredentials
+    from ccui.users.models import User
     creds = UserCredentials(email, password=password, cookie=cookie)
     creds._user = User(email=email)
     creds._user.auth = creds
@@ -244,7 +244,7 @@ class TestResourceTestCase(ResourceTestCase):
 
 
     def get_resource_class(self):
-        from tcmui.core.api import RemoteObject, fields
+        from ccui.core.api import RemoteObject, fields
 
         def filter_callable(vals):
             return ("callableFilter", [v+"foo" for v in vals])
@@ -267,7 +267,7 @@ class TestResourceTestCase(ResourceTestCase):
 
 
     def get_resource_list_class(self):
-        from tcmui.core.api import ListObject, fields
+        from ccui.core.api import ListObject, fields
 
         class TestResourceList(ListObject):
             entryclass = self.resource_class

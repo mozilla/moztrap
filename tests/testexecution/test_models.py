@@ -46,7 +46,7 @@ class ResultSummaryTest(object):
         http.request.return_value = response(testresults.one(
                 resourceIdentity=make_identity(url="testruns/results/1")))
 
-        from tcmui.testexecution.models import TestResult
+        from ccui.testexecution.models import TestResult
         result = TestResult.get("testruns/results/1")
         result.deliver()
 
@@ -86,15 +86,15 @@ class ResultSummaryTest(object):
 
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
+@patch("ccui.core.api.userAgent", spec=["request"])
 class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.testexecution.models import TestCycle
+        from ccui.testexecution.models import TestCycle
         return TestCycle
 
 
     def get_resource_list_class(self):
-        from tcmui.testexecution.models import TestCycleList
+        from ccui.testexecution.models import TestCycleList
         return TestCycleList
 
 
@@ -174,15 +174,15 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.testexecution.models import TestRun
+        from ccui.testexecution.models import TestRun
         return TestRun
 
 
     def get_resource_list_class(self):
-        from tcmui.testexecution.models import TestRunList
+        from ccui.testexecution.models import TestRunList
         return TestRunList
 
 
@@ -269,7 +269,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_addsuite(self, http):
-        from tcmui.testcases.models import TestSuite
+        from ccui.testcases.models import TestSuite
 
         r = self.resource_class()
         r.update_from_dict(testruns.one(
@@ -291,7 +291,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_addsuite_invalidates_cache(self, http):
-        from tcmui.testcases.models import TestSuite
+        from ccui.testcases.models import TestSuite
 
         r = self.resource_class()
         r.update_from_dict(testruns.one())
@@ -314,7 +314,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_removesuite(self, http):
-        from tcmui.testcases.models import TestSuite
+        from ccui.testcases.models import TestSuite
 
         r = self.resource_class()
         r.update_from_dict(testruns.one(
@@ -348,7 +348,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_removesuite_invalidates_cache(self, http):
-        from tcmui.testcases.models import TestSuite
+        from ccui.testcases.models import TestSuite
 
         r = self.resource_class()
         r.update_from_dict(testruns.one())
@@ -371,7 +371,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_addcase_invalidates_suitecache(self, http):
-        from tcmui.testcases.models import TestCaseVersion
+        from ccui.testcases.models import TestCaseVersion
 
         r = self.resource_class()
         r.update_from_dict(testruns.one())
@@ -394,7 +394,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
     def test_addcase_invalidates_includedcase_cache(self, http):
-        from tcmui.testcases.models import TestCaseVersion
+        from ccui.testcases.models import TestCaseVersion
 
         r = self.resource_class()
         r.update_from_dict(testruns.one())
@@ -416,15 +416,15 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         self.assertEqual(len(cases2), 1)
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.testexecution.models import TestRunIncludedTestCase
+        from ccui.testexecution.models import TestRunIncludedTestCase
         return TestRunIncludedTestCase
 
 
     def get_resource_list_class(self):
-        from tcmui.testexecution.models import TestRunIncludedTestCaseList
+        from ccui.testexecution.models import TestRunIncludedTestCaseList
         return TestRunIncludedTestCaseList
 
 

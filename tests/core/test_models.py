@@ -8,15 +8,15 @@ from .builders import companies, cvis
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class CompanyTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.core.models import Company
+        from ccui.core.models import Company
         return Company
 
 
     def get_resource_list_class(self):
-        from tcmui.core.models import CompanyList
+        from ccui.core.models import CompanyList
         return CompanyList
 
 
@@ -28,7 +28,7 @@ class CompanyTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_autogenerate_env_groups(self, http):
-        from tcmui.environments.models import (
+        from ccui.environments.models import (
             EnvironmentGroupList, Environment, EnvironmentType)
 
         c = self.resource_class()
@@ -66,7 +66,7 @@ class CompanyTest(BaseResourceTest, ResourceTestCase):
 
 
     def test_autogenerate_env_groups_no_type(self, http):
-        from tcmui.environments.models import (
+        from ccui.environments.models import (
             EnvironmentGroupList, Environment, EnvironmentType)
 
         c = self.resource_class()
@@ -101,15 +101,15 @@ class CompanyTest(BaseResourceTest, ResourceTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class CategoryValueInfoTest(BaseResourceTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.core.models import CategoryValueInfo
+        from ccui.core.models import CategoryValueInfo
         return CategoryValueInfo
 
 
     def get_resource_list_class(self):
-        from tcmui.core.models import CategoryValueInfoList
+        from ccui.core.models import CategoryValueInfoList
         return CategoryValueInfoList
 
 

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 
 
-log = logging.getLogger("tcmui.core.middleware.RequestLogMiddleware")
+log = logging.getLogger("ccui.core.middleware.RequestLogMiddleware")
 
 
 

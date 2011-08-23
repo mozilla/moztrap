@@ -1,5 +1,5 @@
 """
-Default Django settings for tcmui project.
+Default Django settings for ccui project.
 
 """
 from os.path import dirname, join, abspath
@@ -78,12 +78,12 @@ MIDDLEWARE_CLASSES = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "djangosecure.middleware.SecurityMiddleware",
-    "tcmui.core.middleware.StaticCompanyMiddleware",
-    "tcmui.users.middleware.AuthenticationMiddleware",
-    "tcmui.environments.middleware.EnvironmentsMiddleware",
+    "ccui.core.middleware.StaticCompanyMiddleware",
+    "ccui.users.middleware.AuthenticationMiddleware",
+    "ccui.environments.middleware.EnvironmentsMiddleware",
 ]
 
-ROOT_URLCONF = "tcmui.urls"
+ROOT_URLCONF = "ccui.urls"
 
 TEMPLATE_DIRS = [
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -98,12 +98,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "tcmui.core",
-    "tcmui.static",
-    "tcmui.users",
-    "tcmui.products",
-    "tcmui.environments",
-    "tcmui.testexecution"
+    "ccui.core",
+    "ccui.static",
+    "ccui.users",
+    "ccui.products",
+    "ccui.environments",
+    "ccui.testexecution"
 ]
 
 CACHES = {
@@ -139,7 +139,7 @@ LOGGING = {
 
 INSTALLED_APPS += ["compressor"]
 COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
-                        "tcmui.compressor_filters.SlimmerCSSFilter"]
+                        "ccui.compressor_filters.SlimmerCSSFilter"]
 
 INSTALLED_APPS += ["floppyforms"]
 

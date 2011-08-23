@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns(
-    "tcmui.results.views",
+    "ccui.results.views",
     url("^$", "home", name="results"),
 
     url(r"^testcycles/$", "testcycles", name="results_testcycles"),

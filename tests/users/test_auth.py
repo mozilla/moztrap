@@ -9,22 +9,22 @@ from .builders import users, permissions
 
 class UserCredentialsTest(CredentialsTest, ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.users.models import User
+        from ccui.users.models import User
         return User
 
 
     def get_resource_list_class(self):
-        from tcmui.users.models import UserList
+        from ccui.users.models import UserList
         return UserList
 
 
     def get_creds(self, *args, **kwargs):
-        from tcmui.users.auth import UserCredentials
+        from ccui.users.auth import UserCredentials
         return UserCredentials(*args, **kwargs)
 
 
     def test_user(self):
-        with patch("tcmui.core.api.userAgent", spec=["request"]) as http:
+        with patch("ccui.core.api.userAgent", spec=["request"]) as http:
             auth = self.get_creds("test@example.com", password="testpw")
 
             self.assertEqual(http.request.call_count, 0)
@@ -45,7 +45,7 @@ class UserCredentialsTest(CredentialsTest, ResourceTestCase):
 
 
     def test_permission_codes(self):
-        with patch("tcmui.core.api.userAgent", spec=["request"]) as http:
+        with patch("ccui.core.api.userAgent", spec=["request"]) as http:
             auth = self.get_creds("test@example.com", password="testpw")
 
             http.request.return_value = response(

@@ -8,21 +8,21 @@ from .builders import users
 
 
 
-@patch("tcmui.core.api.userAgent", spec=["request"])
-@patch("tcmui.core.cache.cache", spec=["get", "set", "incr", "add"])
+@patch("ccui.core.api.userAgent", spec=["request"])
+@patch("ccui.core.cache.cache", spec=["get", "set", "incr", "add"])
 class GetUserTest(ResourceTestCase):
     def get_resource_class(self):
-        from tcmui.users.models import User
+        from ccui.users.models import User
         return User
 
 
     def get_resource_list_class(self):
-        from tcmui.users.models import UserList
+        from ccui.users.models import UserList
         return UserList
 
 
     def call(self, *args, **kwargs):
-        from tcmui.users.util import get_user
+        from ccui.users.util import get_user
         return get_user(*args, **kwargs)
 
 

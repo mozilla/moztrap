@@ -14,7 +14,7 @@ class SomeStatus(Enum):
 
 class StatusValueTest(TestCase):
     def _make(self, val):
-        from tcmui.static.fields import StatusValue
+        from ccui.static.fields import StatusValue
         return StatusValue(val)
 
 
@@ -53,8 +53,8 @@ class FakeCodeValue(object):
 
 
 
-@patch("tcmui.static.fields.STATUS_ENUMS_BY_KEY", {"SOMESTATUS": SomeStatus})
-@patch("tcmui.static.fields.get_codevalue",
+@patch("ccui.static.fields.STATUS_ENUMS_BY_KEY", {"SOMESTATUS": SomeStatus})
+@patch("ccui.static.fields.get_codevalue",
        lambda key, id_: {
         1: FakeCodeValue(1, "Draft"),
         2: FakeCodeValue(2, "Active")
@@ -62,7 +62,7 @@ class FakeCodeValue(object):
 class StaticDataTest(BaseFieldTests):
     @property
     def field_cls(self):
-        from tcmui.static.fields import StaticData
+        from ccui.static.fields import StaticData
         return StaticData
 
 
@@ -100,14 +100,14 @@ class StaticDataTest(BaseFieldTests):
 
 
     def test_encode_statusvalue(self):
-        from tcmui.static.fields import StatusValue
+        from ccui.static.fields import StatusValue
         f = self.field()
 
         self.assertEqual(f.encode(StatusValue(SomeStatus.DRAFT)), "1")
 
 
     def test_encode_codevalue(self):
-        from tcmui.static.models import CodeValue
+        from ccui.static.models import CodeValue
         f = self.field()
 
         self.assertEqual(f.encode(CodeValue(id="1")), "1")
@@ -158,7 +158,7 @@ class StaticDataTest(BaseFieldTests):
 
 
     def test_get_statusvalue(self):
-        from tcmui.static.fields import StatusValue
+        from ccui.static.fields import StatusValue
 
         f, cls = self.field_and_cls()
 

@@ -10,7 +10,7 @@ class FilterTestCase(AuthTestCase):
     @property
     def status_field_filter(self):
         if not hasattr(self, "_status_field_filter"):
-            from tcmui.core.filters import FieldFilter
+            from ccui.core.filters import FieldFilter
 
             class StatusFieldFilter(FieldFilter):
                 options = [
@@ -32,7 +32,7 @@ class FilterTestCase(AuthTestCase):
 class TestFilter(FilterTestCase):
     @property
     def filter_class(self):
-        from tcmui.core.filters import Filter
+        from ccui.core.filters import Filter
         return Filter
 
 
@@ -98,9 +98,9 @@ class LocatorFieldFilterTest(FilterTestCase):
     @property
     def product_field_filter(self):
         if not hasattr(self, "_product_field_filter"):
-            from tcmui.core import fields
-            from tcmui.core.api import ListObject, RemoteObject
-            from tcmui.core.filters import LocatorFieldFilter
+            from ccui.core import fields
+            from ccui.core.api import ListObject, RemoteObject
+            from ccui.core.filters import LocatorFieldFilter
 
             class Product(RemoteObject):
                 name = fields.Field()
@@ -123,7 +123,7 @@ class LocatorFieldFilterTest(FilterTestCase):
         return self._product_field_filter
 
 
-    @patch("tcmui.core.api.userAgent")
+    @patch("ccui.core.api.userAgent")
     def test_options(self, http):
         pff = self.product_field_filter("product", self.GET(), self.auth)
 
@@ -148,7 +148,7 @@ class LocatorFieldFilterTest(FilterTestCase):
         self.assertEqual(http.request.call_count, 1)
 
 
-    @patch("tcmui.core.api.userAgent")
+    @patch("ccui.core.api.userAgent")
     def test_target_filters(self, http):
         class ActiveProductFieldFilter(self.product_field_filter):
             target_filters = {"name": "Product One"}
@@ -167,7 +167,7 @@ class LocatorFieldFilterTest(FilterTestCase):
             "http://fake.base/rest/products?_type=json&name=Product+One")
 
 
-    @patch("tcmui.core.api.userAgent")
+    @patch("ccui.core.api.userAgent")
     def test_target_label(self, http):
         class IDProductFieldFilter(self.product_field_filter):
             def target_label(self, obj):
@@ -188,7 +188,7 @@ class LocatorFieldFilterTest(FilterTestCase):
 class KeywordFilterTest(FilterTestCase):
     @property
     def filter_cls(self):
-        from tcmui.core.filters import KeywordFilter
+        from ccui.core.filters import KeywordFilter
         return KeywordFilter
 
 

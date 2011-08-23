@@ -11,7 +11,7 @@ class SomeStatus(Enum):
 
 class StatusFilterTest(TestCase):
     def _status(self, status1, status2):
-        from tcmui.static.templatetags.staticdata import status
+        from ccui.static.templatetags.staticdata import status
 
         return status(status1, status2)
 
@@ -27,8 +27,8 @@ class StatusFilterTest(TestCase):
 
 class StatusClassFilterTest(TestCase):
     def _class(self, status):
-        from tcmui.static.fields import StatusValue
-        from tcmui.static.templatetags.staticdata import status_class
+        from ccui.static.fields import StatusValue
+        from ccui.static.templatetags.staticdata import status_class
 
         return status_class(StatusValue(status))
 

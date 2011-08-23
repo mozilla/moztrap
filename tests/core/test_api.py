@@ -13,14 +13,14 @@ from ..utils import ResourceTestCase, TestResourceTestCase, Url
 class HttpTestCase(TestCase):
     @property
     def agent(self):
-        from tcmui.core.api import Http
+        from ccui.core.api import Http
         return Http
 
     def test_request_logging(self):
         http = self.agent()
         with patch("httplib2.Http.request") as req:
             req.return_value = ("the response", "the content")
-            with patch("tcmui.core.log.log") as mock_log:
+            with patch("ccui.core.log.log") as mock_log:
                 http.request(uri="/blah")
 
         mock_log.info.assert_called_with(
@@ -38,7 +38,7 @@ class HttpTestCase(TestCase):
 
 class UrlFinalIntegerTestCase(TestCase):
     def check(self, url, expected):
-        from tcmui.core.api import url_final_integer
+        from ccui.core.api import url_final_integer
         self.assertEqual(url_final_integer(url), expected)
 
 
@@ -55,7 +55,7 @@ class UrlFinalIntegerTestCase(TestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class ResourceObjectTest(TestResourceTestCase):
     def test_get_data(self, http):
         http.request.return_value = response(
@@ -324,7 +324,7 @@ class ResourceObjectTest(TestResourceTestCase):
             with patch("remoteobjects.RemoteObject.get") as mock:
                 self.resource_class.get("testresources/1", auth=self.auth)
 
-        from tcmui.core.cache import CachingHttpWrapper
+        from ccui.core.cache import CachingHttpWrapper
 
         self.assertIsInstance(mock.call_args[1]["http"], CachingHttpWrapper)
 
@@ -341,7 +341,7 @@ class ResourceObjectTest(TestResourceTestCase):
     def test_invalidate_cache(self, http):
         http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
-        with patch("tcmui.core.api.CachingHttpWrapper") as mock:
+        with patch("ccui.core.api.CachingHttpWrapper") as mock:
             mock.return_value.request.return_value = http.request.return_value
             obj.put(invalidate_cache=["SomeBucket"])
 
@@ -354,7 +354,7 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
         with patch.object(self.resource_class, "cache", True):
-            with patch("tcmui.core.cache.CachingHttpWrapper.request") as mock:
+            with patch("ccui.core.cache.CachingHttpWrapper.request") as mock:
                 mock.return_value = http.request.return_value
                 obj.put()
 
@@ -365,7 +365,7 @@ class ResourceObjectTest(TestResourceTestCase):
         http.request.return_value = response(self.builder.one())
         obj = self.resource_class.get("/testresources/1", auth=self.auth)
         with patch.object(self.resource_class, "cache", "altbucket"):
-            with patch("tcmui.core.api.CachingHttpWrapper") as mock:
+            with patch("ccui.core.api.CachingHttpWrapper") as mock:
                 mock.return_value.request.return_value = http.request.return_value
                 obj.put()
 
@@ -608,7 +608,7 @@ class ResourceObjectTest(TestResourceTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class ListObjectTest(TestResourceTestCase):
     def test_get_searchresult_empty(self, http):
         http.request.return_value = response(
@@ -873,7 +873,7 @@ class ListObjectTest(TestResourceTestCase):
         mock_filter.assert_not_called()
 
 
-    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    @patch("ccui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_pagenumber(self, http):
         http.request.return_value = response(
             self.builder.searchresult({"name":"Test TestResource"}))
@@ -888,7 +888,7 @@ class ListObjectTest(TestResourceTestCase):
             Url("http://fake.base/rest/testresources?_type=json&pagenumber=2&pagesize=10"))
 
 
-    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    @patch("ccui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_pagesize(self, http):
         http.request.return_value = response(
             self.builder.searchresult({"name":"Test TestResource"}))
@@ -903,7 +903,7 @@ class ListObjectTest(TestResourceTestCase):
             Url("http://fake.base/rest/testresources?_type=json&pagesize=5&pagenumber=1"))
 
 
-    @patch("tcmui.core.api.pagination.DEFAULT_PAGESIZE", 10)
+    @patch("ccui.core.api.pagination.DEFAULT_PAGESIZE", 10)
     def test_paginate_both(self, http):
         http.request.return_value = response(
             self.builder.searchresult({"name":"Test TestResource"}))
@@ -1086,7 +1086,7 @@ class ListObjectTest(TestResourceTestCase):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class ActivatableResourceTest(ResourceTestCase):
     builder = ListBuilder(
         "activatableresource",
@@ -1099,7 +1099,7 @@ class ActivatableResourceTest(ResourceTestCase):
 
 
     def get_resource_class(self):
-        from tcmui.core.api import Activatable, RemoteObject, fields
+        from ccui.core.api import Activatable, RemoteObject, fields
 
         class ActivatableResource(Activatable, RemoteObject):
             name = fields.Field()

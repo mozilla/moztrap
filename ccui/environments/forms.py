@@ -2,13 +2,13 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 import floppyforms as forms
 
-from ..core import forms as tcmforms
+from ..core import forms as ccforms
 from ..core.util import id_for_object
 
 from .models import EnvironmentGroupList
 from .util import environments_of
 
-class EnvironmentSelectionForm(tcmforms.NonFieldErrorsClassFormMixin,
+class EnvironmentSelectionForm(ccforms.NonFieldErrorsClassFormMixin,
                                forms.Form):
     """
     A form for selecting an environment group from a set of possible

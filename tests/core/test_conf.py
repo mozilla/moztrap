@@ -24,7 +24,7 @@ class FakeSettings(object):
 class ConfigurationTest(TestCase):
     @property
     def cls(self):
-        from tcmui.core.conf import Configuration
+        from ccui.core.conf import Configuration
         return Configuration
 
 
@@ -32,7 +32,7 @@ class ConfigurationTest(TestCase):
         conf = self.cls(SOME_SETTING="some val")
 
         settings = FakeSettings()
-        with patch("tcmui.core.conf.settings", settings):
+        with patch("ccui.core.conf.settings", settings):
             val = conf.SOME_SETTING
 
         self.assertEqual(val, "some val")
@@ -45,7 +45,7 @@ class ConfigurationTest(TestCase):
         conf = self.cls()
 
         settings = FakeSettings()
-        with patch("tcmui.core.conf.settings", settings):
+        with patch("ccui.core.conf.settings", settings):
             with self.assertRaises(ImproperlyConfigured):
                 conf.SOME_SETTING
 
@@ -56,7 +56,7 @@ class ConfigurationTest(TestCase):
         conf = self.cls()
 
         settings = FakeSettings(SOME_SETTING="a val")
-        with patch("tcmui.core.conf.settings", settings):
+        with patch("ccui.core.conf.settings", settings):
             val = conf.SOME_SETTING
 
         self.assertEqual(val, "a val")
@@ -67,7 +67,7 @@ class ConfigurationTest(TestCase):
         conf = self.cls(SOME_SETTING="default val")
 
         settings = FakeSettings(SOME_SETTING="set val")
-        with patch("tcmui.core.conf.settings", settings):
+        with patch("ccui.core.conf.settings", settings):
             val = conf.SOME_SETTING
 
         self.assertEqual(val, "set val")

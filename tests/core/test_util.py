@@ -8,7 +8,7 @@ from ..utils import TestResourceTestCase
 class TestUpdateQueryString(TestCase):
     @property
     def func(self):
-        from tcmui.core.util import update_querystring
+        from ccui.core.util import update_querystring
         return update_querystring
 
 
@@ -64,7 +64,7 @@ class TestUpdateQueryString(TestCase):
 class TestNarrowQueryString(TestCase):
     @property
     def func(self):
-        from tcmui.core.util import narrow_querystring
+        from ccui.core.util import narrow_querystring
         return narrow_querystring
 
 
@@ -140,7 +140,7 @@ class TestNarrowQueryString(TestCase):
 class TestAddToQueryString(TestCase):
     @property
     def func(self):
-        from tcmui.core.util import add_to_querystring
+        from ccui.core.util import add_to_querystring
         return add_to_querystring
 
 
@@ -196,7 +196,7 @@ class TestAddToQueryString(TestCase):
 class TestIdForObject(TestCase):
     @property
     def func(self):
-        from tcmui.core.util import id_for_object
+        from ccui.core.util import id_for_object
         return id_for_object
 
 
@@ -237,7 +237,7 @@ class TestIdForObject(TestCase):
 class TestPrepForQuery(TestResourceTestCase):
     @property
     def func(self):
-        from tcmui.core.util import prep_for_query
+        from ccui.core.util import prep_for_query
         return prep_for_query
 
 
@@ -270,7 +270,7 @@ class TestPrepForQuery(TestResourceTestCase):
 class TestLcFirst(TestCase):
     @property
     def func(self):
-        from tcmui.core.util import lc_first
+        from ccui.core.util import lc_first
         return lc_first
 
 

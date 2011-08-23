@@ -4,7 +4,7 @@ Environment-related remote objects.
 The nomenclature here is a massive pile of confusion, because the platform
 follows one set of terminology that was determined to be too confusing for the
 UI to use, so the UI uses a different set of terms. The translation, more or
-less, takes place in this file and tcmui/manage/views.py. Templates should
+less, takes place in this file and ccui/manage/views.py. Templates should
 exclusively use UI terms.
 
 Here, for reference, is a translation table with examples:

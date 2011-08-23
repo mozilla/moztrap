@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 
 import floppyforms as forms
 
-from ..core import forms as tcmforms
+from ..core import forms as ccforms
 
 from ..products.models import Product, ProductList
 from ..testcases.bulk import BulkParser
@@ -19,10 +19,10 @@ def product_id_attrs(obj):
 
 
 
-class ProductForm(tcmforms.AddEditForm):
+class ProductForm(ccforms.AddEditForm):
     name = forms.CharField()
-    description = forms.CharField(widget=tcmforms.BareTextarea)
-    team = tcmforms.ModelMultipleChoiceField(required=False)
+    description = forms.CharField(widget=ccforms.BareTextarea)
+    team = ccforms.ModelMultipleChoiceField(required=False)
 
 
     assign_later = ["team"]
@@ -33,7 +33,7 @@ class ProductForm(tcmforms.AddEditForm):
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
         if "instance" not in kwargs:
-            self.base_fields["profile"] = tcmforms.ModelChoiceField()
+            self.base_fields["profile"] = ccforms.ModelChoiceField()
 
         super(ProductForm, self).__init__(*args, **kwargs)
 
@@ -44,13 +44,13 @@ class ProductForm(tcmforms.AddEditForm):
 
 
 
-class TestCycleForm(tcmforms.AddEditForm):
+class TestCycleForm(ccforms.AddEditForm):
     name = forms.CharField()
-    description = forms.CharField(widget=tcmforms.BareTextarea)
-    product = tcmforms.ModelChoiceField()
+    description = forms.CharField(widget=ccforms.BareTextarea)
+    product = ccforms.ModelChoiceField()
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
-    team = tcmforms.ModelMultipleChoiceField(required=False)
+    team = ccforms.ModelMultipleChoiceField(required=False)
 
 
     no_edit_fields = ["product"]
@@ -67,15 +67,15 @@ class TestCycleForm(tcmforms.AddEditForm):
 
 
 
-class TestRunForm(tcmforms.AddEditForm):
+class TestRunForm(ccforms.AddEditForm):
     name = forms.CharField()
-    description = forms.CharField(widget=tcmforms.BareTextarea)
-    test_cycle = tcmforms.ModelChoiceField(
+    description = forms.CharField(widget=ccforms.BareTextarea)
+    test_cycle = ccforms.ModelChoiceField(
         option_attrs=product_id_attrs)
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
-    team = tcmforms.ModelMultipleChoiceField(required=False)
-    suites = tcmforms.ModelMultipleChoiceField(
+    team = ccforms.ModelMultipleChoiceField(required=False)
+    suites = ccforms.ModelMultipleChoiceField(
         required=False, option_attrs=product_id_attrs)
 
 
@@ -94,12 +94,12 @@ class TestRunForm(tcmforms.AddEditForm):
 
 
 
-class TestSuiteForm(tcmforms.AddEditForm):
+class TestSuiteForm(ccforms.AddEditForm):
     name = forms.CharField()
-    description = forms.CharField(widget=tcmforms.BareTextarea)
-    product = tcmforms.ModelChoiceField(
+    description = forms.CharField(widget=ccforms.BareTextarea)
+    product = ccforms.ModelChoiceField(
         option_attrs=lambda p: {"data-product-id": p.id})
-    cases = tcmforms.ModelMultipleChoiceField(
+    cases = ccforms.ModelMultipleChoiceField(
         required=False,
         label_from_instance=lambda c: c.name,
         option_attrs=product_id_attrs)
@@ -112,9 +112,9 @@ class TestSuiteForm(tcmforms.AddEditForm):
 
 
 
-class BulkTestCaseForm(tcmforms.RemoteObjectForm):
-    product = tcmforms.ModelChoiceField()
-    cases = forms.CharField(widget=tcmforms.BareTextarea)
+class BulkTestCaseForm(ccforms.RemoteObjectForm):
+    product = ccforms.ModelChoiceField()
+    cases = forms.CharField(widget=ccforms.BareTextarea)
 
 
     def __init__(self, *args, **kwargs):
@@ -185,9 +185,9 @@ class BulkTestCaseForm(tcmforms.RemoteObjectForm):
 
 
 
-class TestCaseForm(tcmforms.AddEditForm):
+class TestCaseForm(ccforms.AddEditForm):
     name = forms.CharField()
-    product = tcmforms.ModelChoiceField()
+    product = ccforms.ModelChoiceField()
     # @@@ tags = forms.CharField(required=False)
 
 

@@ -7,7 +7,7 @@ from unittest2 import TestCase
 class ParseBulkTest(TestCase):
     @property
     def parser(self):
-        from tcmui.testcases.bulk import BulkParser
+        from ccui.testcases.bulk import BulkParser
         return BulkParser
 
 

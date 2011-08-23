@@ -3,7 +3,7 @@ from django.views.generic.simple import direct_to_template
 
 
 urlpatterns = patterns(
-    "tcmui.manage.views",
+    "ccui.manage.views",
     url("^$", "home", name="manage"),
 
     # products

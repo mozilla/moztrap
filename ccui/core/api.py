@@ -25,7 +25,7 @@ from .. import __version__
 
 
 
-log = logging.getLogger("tcmui.core.api")
+log = logging.getLogger("ccui.core.api")
 
 
 

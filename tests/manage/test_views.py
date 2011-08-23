@@ -11,11 +11,11 @@ from ..utils import ViewTestCase, Url, COMMON_RESPONSES
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class DefaultManageViewTest(ViewTestCase):
     @property
     def view(self):
-        from tcmui.manage.views import home
+        from ccui.manage.views import home
         return home
 
 
@@ -129,7 +129,7 @@ class EditViewTests(object):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestCycleEditViewTest(ViewTestCase, EditViewTests):
     builder = testcycles
     edit_form_id = "cycle-form"
@@ -147,7 +147,7 @@ class TestCycleEditViewTest(ViewTestCase, EditViewTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestRunEditViewTest(ViewTestCase, EditViewTests):
     builder = testruns
 
@@ -170,7 +170,7 @@ class TestRunEditViewTest(ViewTestCase, EditViewTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
     builder = testsuites
 
@@ -194,7 +194,7 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
 
 
 
-@patch("tcmui.core.api.userAgent")
+@patch("ccui.core.api.userAgent")
 class TestCaseEditViewTest(ViewTestCase, EditViewTests):
     builder = testcaseversions
 

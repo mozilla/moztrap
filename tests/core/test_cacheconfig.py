@@ -9,7 +9,7 @@ from unittest2 import TestCase
 class MakeKeyTest(TestCase):
     @property
     def func(self):
-        from tcmui.core.cacheconfig import make_key
+        from ccui.core.cacheconfig import make_key
         return make_key
 
 

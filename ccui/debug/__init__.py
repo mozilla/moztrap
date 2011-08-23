@@ -9,7 +9,7 @@ config in your ``settings/local.py`` similar to this::
         "version": 1,
         "formatters": {
             "html": {
-                "()": "tcmui.debug.apilog.APILogHTMLFormatter"
+                "()": "ccui.debug.apilog.APILogHTMLFormatter"
                 }
             },
         "handlers": {
@@ -23,11 +23,11 @@ config in your ``settings/local.py`` similar to this::
                 }
             },
         "loggers": {
-            "tcmui.core.log.api": {
+            "ccui.core.log.api": {
                 "handlers": ["apilog"],
                 "level": "DEBUG",
                 },
-            "tcmui.core.middleware.RequestLogMiddleware": {
+            "ccui.core.middleware.RequestLogMiddleware": {
                 "handlers": ["apilog"],
                 "level": "DEBUG",
                 },

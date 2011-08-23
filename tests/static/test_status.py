@@ -10,41 +10,41 @@ class StatusEnumTest(TestCase):
 
     """
     def test_testcyclestatus(self):
-        from tcmui.static.status import TestCycleStatus
+        from ccui.static.status import TestCycleStatus
         self.assertEqual(
             TestCycleStatus._enums,
             {1: 'DRAFT', 2: 'ACTIVE', 3: 'LOCKED', 4: 'CLOSED', 5: 'DISCARDED'})
 
 
     def test_testrunstatus(self):
-        from tcmui.static.status import TestRunStatus
+        from ccui.static.status import TestRunStatus
         self.assertEqual(
             TestRunStatus._enums,
             {1: 'DRAFT', 2: 'ACTIVE', 3: 'LOCKED', 4: 'CLOSED', 5: 'DISCARDED'})
 
 
     def test_testcasestatus(self):
-        from tcmui.static.status import TestCaseStatus
+        from ccui.static.status import TestCaseStatus
         self.assertEqual(
             TestCaseStatus._enums,
             {1: 'DRAFT', 2: 'ACTIVE', 3: 'LOCKED', 4: 'CLOSED', 5: 'DISCARDED'})
 
 
     def test_testsuitestatus(self):
-        from tcmui.static.status import TestSuiteStatus
+        from ccui.static.status import TestSuiteStatus
         self.assertEqual(
             TestSuiteStatus._enums,
             {1: 'DRAFT', 2: 'ACTIVE', 3: 'LOCKED', 4: 'CLOSED', 5: 'DISCARDED'})
 
 
     def test_userstatus(self):
-        from tcmui.static.status import UserStatus
+        from ccui.static.status import UserStatus
         self.assertEqual(
             UserStatus._enums, {1: 'ACTIVE', 2: 'INACTIVE', 3: 'DISABLED'})
 
 
     def test_testresultstatus(self):
-        from tcmui.static.status import TestResultStatus
+        from ccui.static.status import TestResultStatus
         self.assertEqual(
             TestResultStatus._enums,
             {
@@ -57,6 +57,6 @@ class StatusEnumTest(TestCase):
 
 
     def test_approvalstatus(self):
-        from tcmui.static.status import ApprovalStatus
+        from ccui.static.status import ApprovalStatus
         self.assertEqual(
             ApprovalStatus._enums, {1: 'PENDING', 2: 'APPROVED', 3: 'REJECTED'})
