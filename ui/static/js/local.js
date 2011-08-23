@@ -521,11 +521,14 @@ var TCM = TCM || {};
             updateLabels();
 
             elements.live('replace', function (event, replacement) {
-                // @@@ add code here to remove preview for this element, if
-                // replacement.html() is null (means its being deleted)
-
-                // other actions might also cause this to fire, with new HTML
-                // (already parsed into jQuery object) in "replacement"
+                // Removes element preview (label) when element is deleted.
+                // Other actions (other than delete) might also cause this to fire, with new HTML
+                // (already parsed into jQuery object) in "replacement".
+                if (!replacement.html()) {
+                    var thisElementID = $(event.target).data('element-id'),
+                        thisPreview = $(event.target).closest('.item').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
+                    thisPreview.detach();
+                }
             });
 
             elementInputs.live('change', function () {
