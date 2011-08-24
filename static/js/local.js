@@ -519,6 +519,11 @@ var TCM = TCM || {};
 
             // some elements may load already checked
             updateLabels();
+            $('#addprofile .item .elements .element-select input').each(function () {
+                if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
+                    $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', true);
+                }
+            });
 
             elements.live('replace', function (event, replacement) {
                 // Removes element preview (label) when element is deleted.
