@@ -714,12 +714,32 @@ var TCM = TCM || {};
         },
 
         editEnvProfile = function () {
-            var replaceList = $('#editprofile .managelist.action-ajax-replace');
-            $('#editprofile #profile-name-form').ajaxForm({
-                success: function (response) {
-                    // take any additional action here?
+            var replaceList = $('#editprofile .managelist.action-ajax-replace'),
+                profileNameInput = $('#editprofile #profile-name-form .profile-name input'),
+                profileName = profileNameInput.val(),
+                profileNameSubmit = $('#editprofile #profile-name-form .form-actions button[type="submit"]').hide();
+
+            profileNameInput.live('keyup', function (event) {
+                if ($(this).val() !== profileName) {
+                    profileNameSubmit.fadeIn();
+                } else {
+                    profileNameSubmit.fadeOut();
                 }
             });
+
+            profileNameInput.live('keydown', function (event) {
+                if (event.keyCode === keycodes.ENTER && !profileNameSubmit.is(':visible')) {
+                    event.preventDefault();
+                }
+            });
+
+            $('#editprofile #profile-name-form').ajaxForm({
+                success: function (response) {
+                    profileName = profileNameInput.val();
+                    profileNameSubmit.fadeOut();
+                }
+            });
+
             $('#editprofile #add-environment-form').ajaxForm({
                 success: function (response) {
                     var newList = $(response.html);
