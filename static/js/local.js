@@ -601,8 +601,9 @@ var TCM = TCM || {};
                             var newelem = $(response.html);
                             if (!response.no_replace) {
                                 input.closest('.items').children('.add-item').before(newelem);
-                                newelem.find('.details').andSelf().html5accordion();
-                                input.val(null);
+                                newelem.addClass('open').find('.details').andSelf().html5accordion();
+                                input.val(null).closest('.item').find('.summary').click();
+                                newelem.find('.elements .add-element input').focus();
                             }
                             loading.loadingOverlay('remove');
                         };
