@@ -8,10 +8,12 @@
     +omega(24)
   .testinvalid
     .summary
-      +columns(4,24)
-      +omega(24)
-      padding: 0
-      text-align: right
+      +box-sizing('border-box')
+      +float(right)
+      +text-icon('ui/warning.png')
+      padding: 0 0 0 image-width('ui/warning.png') + $smallpx
+      #{$focus}
+        color: $red-dark
     .content
       +full(24)
       +pad(1,1,24)
