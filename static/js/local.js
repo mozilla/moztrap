@@ -945,6 +945,7 @@ var TCM = TCM || {};
                 success: function (response) {
                     profileName = profileNameInput.val();
                     profileNameSubmit.fadeOut();
+                    profileNameInput.blur();
                 }
             });
         },
