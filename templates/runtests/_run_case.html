@@ -1,6 +1,6 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} data-open="open"{% endif %}>
+    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}" data-action-url="{% url result result_id=result.id %}">
 
       <header class="summary">
         <div class="status">

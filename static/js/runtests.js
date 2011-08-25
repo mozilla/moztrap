@@ -39,7 +39,7 @@
                     event.preventDefault();
                     event.stopPropagation();
                     var button = $(this),
-                        testcase = button.closest(".details.test"),
+                        testcase = button.closest(".item"),
                         container = button.closest("div.form"),
                         data = { action: button.data("action") },
                         inputs = container.find("input"),
@@ -80,7 +80,7 @@
     $(function () {
         autoFocus('.details.stepfail > .summary');
         autoFocus('.details.testinvalid > .summary');
-        testCaseButtons("#run .details.test");
+        testCaseButtons("#run .item");
         breadcrumb('.selectruns');
     });
 
