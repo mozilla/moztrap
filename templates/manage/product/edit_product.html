@@ -17,7 +17,7 @@
     {# @@@ put this on a separate page #}
     {# include "manage/environment/_narrow_list.html" #}
 
-    <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+    <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
       <h3 class="summary">assign specific users to this product &raquo;</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
