@@ -21,6 +21,9 @@
           {% endif %}
         </div>
         <h3 class="title">{{ case.name }}</h3>
+      </header>
+
+      <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
           <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
             {% if result.status.INVALIDATED %}
@@ -41,9 +44,7 @@
             {% endif %}
           </section>
         {% endif %}
-      </header>
 
-      <div>
         <ol class="steps">
           {% for step in caseversion.steps %}
           <li>
@@ -54,7 +55,7 @@
             {% if result.status.STARTED %}
               <div class="stepfail details">
                 <p class="summary">fail</p>
-                <div class="failform form">
+                <div class="failform form fail-detail">
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <label for="{{ step.id }}-actualResult">actual result:</label>
                   <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
@@ -65,9 +66,9 @@
               </div>
             {% endif %}
             {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
-              <div class="stepfail details failed" data-open="open">
+              <div class="stepfail details failed open" data-open="open">
                 <p class="summary">failed</p>
-                <div class="faildesc">
+                <div class="faildesc fail-detail">
                   <p>{{ result.actualResult }}</p>
                 </div>
               </div>

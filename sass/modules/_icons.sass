@@ -32,7 +32,7 @@
 =text-icon($img,$color:false,$hover:false,$button:false)
   +box-sizing('border-box')
   margin: 0
-  padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
+  padding: 0 .25em 0 $base-font-size*.75 + image-width($img)
   border: 0
   background-repeat: no-repeat
   text-align: left
@@ -41,16 +41,23 @@
   @if $hover
     +icon-hover($color)
   @if $button
-    +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
-    +box-shadow($blue-dark 0 0 2px)
-    background-position: .25em, 0
+    @if $button == "inset"
+      +background-image(image-url($img),linear-gradient(top,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($base 0 0 4px inset)
+      cursor: default
+    @else
+      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($blue-dark 0 0 2px)
+    background-position: .375em, 0
   @else
     background:
       image: image-url($img)
-      position: .25em
+      position: .375em
 
-=text-button($img,$color:false)
-  +text-icon($img,$color,hover,true)
-
+=text-button($img,$color:false,$button:true)
+  @if $button == "inset"
+    +text-icon($img,$color,false,$button)
+  @else
+    +text-icon($img,$color,hover,$button)
 
 
