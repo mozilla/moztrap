@@ -41,10 +41,10 @@
       background-color: rgba($green,$small)
 
 .item.add-item
-  +demi
-  a, .summary
+  > a, > .summary
     @extend .allcaps
     +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
+    +demi
     display: block
     padding: rhythm(.25) rhythm(1.25)
     color: $green-dark
@@ -52,15 +52,20 @@
       +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
 
 .profile-name
-  +full(24)
-  +suffix(12,24)
-  +pie-clearfix
+  +columns(12,24)
   +trailer(0)
   label
     +columns(2,12)
   input
     +columns(10,12)
     +omega(12)
+
+#profile-name-form
+  .form-actions
+    +columns(12,24)
+    +omega(24)
+    clear: none
+    text-align: left
 
 /* Manage Products --------------------------------------------------------------
 
@@ -195,10 +200,13 @@
 
   .env-management
     +leader(.25)
+    position: relative
     label
       +gone
     input
       +trailer(.25)
+    .suggest
+      +no-style-list
 
 .env-element-list
   +no-style-list
@@ -209,12 +217,15 @@
     +float(left)
     +demi
     +border-radius
-    background: rgba($green,$xsmall)
+    background: rgba($blue,$xsmall)
     padding: rhythm(.125) rhythm(.25)
     margin-right: rhythm(.25)
-    cursor: pointer
-    &:hover
-      background: rgba($red,$xsmall)
+    .add-item &
+      background: rgba($green,$small)
+      cursor: pointer
+      #{$focus}
+        background: rgba($red,$xsmall)
+
 
 /* narrow Environments -------------------------------------------------------
 

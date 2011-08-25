@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, #run .status p, #run .stepfail .summary, #run .testinvalid .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -296,11 +296,11 @@ html {
 }
 
 body {
-  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(135, 169, 168, 0.382)), color-stop(33.333%, rgba(204, 215, 214, 0.382)), color-stop(66.667%, rgba(204, 215, 214, 0.236)), color-stop(100%, rgba(82, 134, 132, 0.236))), #eeeeee url('../images/noise.png?1309283000');
-  background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1309283000');
-  background: -moz-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1309283000');
-  background: -o-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1309283000');
-  background: linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1309283000');
+  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(135, 169, 168, 0.382)), color-stop(33.333%, rgba(204, 215, 214, 0.382)), color-stop(66.667%, rgba(204, 215, 214, 0.236)), color-stop(100%, rgba(82, 134, 132, 0.236))), #eeeeee url('../images/noise.png?1314206098');
+  background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
+  background: -moz-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
+  background: -o-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
+  background: linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
   text-shadow: rgba(233, 237, 237, 0.618) 0 1px 1px;
   color: #444444;
 }
@@ -815,7 +815,7 @@ input[type="search"] {
   -khtml-border-radius: 2em;
   border-radius: 2em;
   padding-left: 2em;
-  background-image: url('../images/ui/search.png?1309283001');
+  background-image: url('../images/ui/search.png?1314206098');
   background-position: 0.5em;
   background-repeat: no-repeat;
 }
@@ -888,7 +888,7 @@ button {
   vertical-align: baseline;
 }
 button[disabled] {
-  background: #dddddd url('../images/forms/button.png?1295396398') repeat-x;
+  background: #dddddd url('../images/forms/button.png?1314206098') repeat-x;
   color: #888888;
 }
 button.sub {
@@ -940,7 +940,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   vertical-align: baseline;
 }
 .button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], #listcontent [disabled].create {
-  background: #dddddd url('../images/forms/button.png?1295396398') repeat-x;
+  background: #dddddd url('../images/forms/button.png?1314206098') repeat-x;
   color: #888888;
 }
 
@@ -1066,7 +1066,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-left: 19px;
   display: block;
   color: inherit;
-  background: url('../images/lightning.png?1309993734') no-repeat scroll left;
+  background: url('../images/lightning.png?1314206098') no-repeat scroll left;
 }
 #brand a:focus, #brand a:hover, #brand a:active {
   color: #511214;
@@ -1133,7 +1133,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/columns.png?1310493342');
+  background-image: url('../images/ui/columns.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: inline;
@@ -1156,7 +1156,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background: linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
 }
 .drilldown.details.open .summary {
-  background-image: url('../images/ui/minus.png?1309283001');
+  background-image: url('../images/ui/minus.png?1314206098');
   background-color: rgba(254, 229, 140, 0.95);
 }
 .drilldown.details .content {
@@ -1197,28 +1197,28 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
   position: relative;
-  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1309283001') no-repeat scroll 1.618em 1.092em;
+  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1314206098') no-repeat scroll 1.618em 1.092em;
   color: #4b6564;
 }
 
 .successmessage, .message.success, #messages li.success {
   text-shadow: rgba(229, 245, 210, 0.618) 1px 1px 0;
   background-color: rgba(119, 185, 41, 0.382);
-  background-image: url('../images/ui/check.png?1309283000');
+  background-image: url('../images/ui/check.png?1314206098');
   color: #4f7a1b;
 }
 
 .errormessage, .message.error, #messages li.error {
   text-shadow: rgba(245, 210, 212, 0.618) 1px 1px 0;
   background-color: rgba(227, 127, 131, 0.382);
-  background-image: url('../images/ui/x.png?1309283001');
+  background-image: url('../images/ui/x.png?1314206098');
   color: #511214;
 }
 
 .warningmessage, .message.warning, #messages li.warning, #filter .form-actions {
   text-shadow: rgba(254, 240, 191, 0.618) 1px 1px 0;
   background-color: rgba(254, 229, 140, 0.618);
-  background-image: url('../images/ui/warning.png?1309283001');
+  background-image: url('../images/ui/warning.png?1314206098');
   color: #a38001;
 }
 
@@ -1484,7 +1484,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/pencil.png?1309283001');
+  background-image: url('../images/ui/pencil.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1500,7 +1500,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/paper_plus.png?1309283001');
+  background-image: url('../images/ui/paper_plus.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1537,7 +1537,7 @@ button[name="action-clone"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/clone.png?1309283001');
+  background-image: url('../images/ui/clone.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1552,7 +1552,7 @@ button[name="action-delete"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/trash.png?1309283001');
+  background-image: url('../images/ui/trash.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1567,7 +1567,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/pencil.png?1309283001');
+  background-image: url('../images/ui/pencil.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1673,12 +1673,12 @@ button[name="action-edit"] {
   margin: 0;
 }
 #filter button {
-  background-image: url('../images/ui/refresh.png?1309283001');
-  background-image: url('../images/ui/refresh.png?1309283001'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
-  background-image: url('../images/ui/refresh.png?1309283001'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/refresh.png?1309283001'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/refresh.png?1309283001'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/refresh.png?1309283001'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098');
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   padding-left: 26.979px;
   background-repeat: no-repeat;
   background-position: 8.653px, left;
@@ -1850,10 +1850,10 @@ button[name="action-edit"] {
   margin-right: 0.5em;
   padding: 0.236em 0.472em;
   padding-left: 15px;
-  background: #e5f5d2 url('../images/ui/check_sm.png?1309283000') no-repeat scroll 3px;
+  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
 }
 #filter .compact input:checked + label:hover {
-  background-image: url('../images/ui/x_sm.png?1309283001');
+  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";
@@ -1972,7 +1972,7 @@ button[name="action-edit"] {
   display: block;
   padding: 0.202em 0.405em;
   padding-left: 15px;
-  background: url('../images/ui/plus_sm.png?1309283001') no-repeat scroll 3px;
+  background: url('../images/ui/plus_sm.png?1314206098') no-repeat scroll 3px;
   font-weight: normal;
 }
 #filter .expanded label:hover {
@@ -1986,10 +1986,10 @@ button[name="action-edit"] {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   opacity: 1;
   font-weight: 500;
-  background-image: url('../images/ui/check_sm.png?1309283000');
+  background-image: url('../images/ui/check_sm.png?1314206098');
 }
 #filter .expanded input:checked + label:hover {
-  background-image: url('../images/ui/x_sm.png?1309283001');
+  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 #filter .expanded input[type="text"] {
   border-style: solid;
@@ -2273,7 +2273,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/open.png?1309283001');
+  background-image: url('../images/ui/open.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   position: absolute;
@@ -2421,12 +2421,12 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/plus.png?1309283001');
-  background-image: url('../images/ui/plus.png?1309283001'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
-  background-image: url('../images/ui/plus.png?1309283001'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/plus.png?1309283001'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/plus.png?1309283001'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
-  background-image: url('../images/ui/plus.png?1309283001'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098');
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   padding-left: 26.979px;
   background-repeat: no-repeat;
   background-position: 8.653px, left;
@@ -2614,7 +2614,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/check.png?1309283000');
+  background-image: url('../images/ui/check.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -2636,7 +2636,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/x.png?1309283001');
+  background-image: url('../images/ui/x.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -2656,11 +2656,11 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 .status .pending button[title="reject"]:focus, .status .pending button[title="reject"]:hover, .status .pending button[title="reject"]:active {
-  background-image: url('../images/ui/x.png?1309283001');
+  background-image: url('../images/ui/x.png?1314206098');
   background-color: #eca9ab;
 }
 .status .pending button[title="approve"]:focus, .status .pending button[title="approve"]:hover, .status .pending button[title="approve"]:active {
-  background-image: url('../images/ui/check.png?1309283000');
+  background-image: url('../images/ui/check.png?1314206098');
   background-color: #b5e37f;
 }
 .status span {
@@ -2685,7 +2685,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/x.png?1309283001');
+  background-image: url('../images/ui/x.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2703,7 +2703,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/power.png?1309283001');
+  background-image: url('../images/ui/power.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2721,7 +2721,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/power.png?1309283001');
+  background-image: url('../images/ui/power.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2739,7 +2739,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/lock.png?1309283001');
+  background-image: url('../images/ui/lock.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2760,7 +2760,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/check.png?1309283000');
+  background-image: url('../images/ui/check.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2778,7 +2778,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/power.png?1309283001');
+  background-image: url('../images/ui/power.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2796,7 +2796,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/lock.png?1309283001');
+  background-image: url('../images/ui/lock.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2814,7 +2814,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/unlock.png?1309283001');
+  background-image: url('../images/ui/unlock.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 21px;
@@ -2928,7 +2928,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/angle_up.png?1309283000');
+  background-image: url('../images/ui/angle_up.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   width: 9px;
@@ -2952,19 +2952,19 @@ button[name="action-edit"] {
 .sortlinks:focus::after, .listordering a:focus::after, .sortlinks:hover::after, .listordering a:hover::after, .sortlinks:active::after, .listordering a:active::after {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
   opacity: 0.5;
-  background-image: url('../images/ui/angle_up.png?1309283000');
+  background-image: url('../images/ui/angle_up.png?1314206098');
 }
 .sortlinks.asc:link::after, .listordering a.asc:link::after, .sortlinks.asc:visited::after, .listordering a.asc:visited::after {
-  background-image: url('../images/ui/angle_up.png?1309283000');
+  background-image: url('../images/ui/angle_up.png?1314206098');
 }
 .sortlinks.asc:focus::after, .listordering a.asc:focus::after, .sortlinks.asc:hover::after, .listordering a.asc:hover::after, .sortlinks.asc:active::after, .listordering a.asc:active::after {
-  background-image: url('../images/ui/angle_down.png?1309283000');
+  background-image: url('../images/ui/angle_down.png?1314206098');
 }
 .sortlinks.desc:link::after, .listordering a.desc:link::after, .sortlinks.desc:visited::after, .listordering a.desc:visited::after {
-  background-image: url('../images/ui/angle_down.png?1309283000');
+  background-image: url('../images/ui/angle_down.png?1314206098');
 }
 .sortlinks.desc:focus::after, .listordering a.desc:focus::after, .sortlinks.desc:hover::after, .listordering a.desc:hover::after, .sortlinks.desc:active::after, .listordering a.desc:active::after {
-  background-image: url('../images/ui/angle_up.png?1309283000');
+  background-image: url('../images/ui/angle_up.png?1314206098');
 }
 
 .listordering {
@@ -3219,7 +3219,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/x_circle.png?1309283001');
+  background-image: url('../images/ui/x_circle.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: block;
@@ -3391,11 +3391,11 @@ button[name="action-edit"] {
 }
 .superselect .unselected label:focus, .mainselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .superselect .unselected label.mark, .mainselect .unselected label.mark, .userselect .unselected label.mark, .suiteselect .unselected label.mark, .caseselect .unselected label.mark {
   background-color: #b5e37f;
-  background-image: url('../images/ui/arrow_right.png?1309283000');
+  background-image: url('../images/ui/arrow_right.png?1314206098');
 }
 .superselect .selected label:focus, .mainselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .superselect .selected label.mark, .mainselect .selected label.mark, .userselect .selected label.mark, .suiteselect .selected label.mark, .caseselect .selected label.mark {
   background-color: #eca9ab;
-  background-image: url('../images/ui/arrow_left.png?1309283000');
+  background-image: url('../images/ui/arrow_left.png?1314206098');
 }
 .superselect .addremove, .mainselect .addremove, .userselect .addremove, .suiteselect .addremove, .caseselect .addremove {
   display: inline;
@@ -3426,7 +3426,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/arrow_right.png?1309283000');
+  background-image: url('../images/ui/arrow_right.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -3448,7 +3448,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/arrow_leftright_21.png?1309283000');
+  background-image: url('../images/ui/arrow_leftright_21.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 21px;
@@ -3470,7 +3470,7 @@ button[name="action-edit"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/arrow_left.png?1309283000');
+  background-image: url('../images/ui/arrow_left.png?1314206098');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -3937,47 +3937,38 @@ button[name="action-edit"] {
   -ms-border-radius: 0.236em;
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
-  background: rgba(119, 185, 41, 0.382) url('../images/ui/plus.png?1309283001') no-repeat scroll 0.405em 0.607em;
+  background: rgba(119, 185, 41, 0.382) url('../images/ui/plus.png?1314206098') no-repeat scroll 0.405em 0.607em;
   color: #444444;
 }
 .footeradditem a:focus, #addcycle .item.add-item a:focus, #addprofile .add-item a:focus, .footeradditem a:hover, #addcycle .item.add-item a:hover, #addprofile .add-item a:hover, .footeradditem a:active, #addcycle .item.add-item a:active, #addprofile .add-item a:active, .footeradditem .summary:focus, #addcycle .item.add-item .summary:focus, #addprofile .add-item .summary:focus, .footeradditem .summary:hover, #addcycle .item.add-item .summary:hover, #addprofile .add-item .summary:hover, .footeradditem .summary:active, #addcycle .item.add-item .summary:active, #addprofile .add-item .summary:active {
   background-color: rgba(119, 185, 41, 0.618);
 }
 
-.item.add-item {
+.item.add-item > a, .item.add-item > .summary {
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   font-weight: 500;
-}
-.item.add-item a, .item.add-item .summary {
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   display: block;
   padding: 0.405em 2.023em;
   color: #4f7a1b;
 }
-.item.add-item a:focus, .item.add-item a:hover, .item.add-item a:active, .item.add-item .summary:focus, .item.add-item .summary:hover, .item.add-item .summary:active {
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1309283001') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+.item.add-item > a:focus, .item.add-item > a:hover, .item.add-item > a:active, .item.add-item > .summary:focus, .item.add-item > .summary:hover, .item.add-item > .summary:active {
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
 }
 
 .profile-name {
-  clear: both;
-  padding-right: 50.526%;
-  *zoom: 1;
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
   margin-bottom: 0em;
-}
-.profile-name:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .profile-name label {
   display: inline;
@@ -3993,6 +3984,18 @@ button[name="action-edit"] {
   display: inline;
   float: right;
   margin-right: 0;
+}
+
+#profile-name-form .form-actions {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  clear: none;
+  text-align: left;
 }
 
 /* Manage Products -------------------------------------------------------------- */
@@ -4241,6 +4244,7 @@ button[name="action-edit"] {
 }
 #editprofile .env-management {
   margin-top: 0.405em;
+  position: relative;
 }
 #editprofile .env-management label {
   position: absolute;
@@ -4254,6 +4258,17 @@ button[name="action-edit"] {
 }
 #editprofile .env-management input {
   margin-bottom: 0.405em;
+}
+#editprofile .env-management .suggest {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#editprofile .env-management .suggest li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
 }
 
 .env-element-list {
@@ -4288,12 +4303,15 @@ button[name="action-edit"] {
   -ms-border-radius: 0.236em;
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
-  background: rgba(119, 185, 41, 0.382);
+  background: rgba(82, 134, 132, 0.382);
   padding: 0.202em 0.405em;
   margin-right: 0.405em;
+}
+.add-item .env-element-list li {
+  background: rgba(119, 185, 41, 0.618);
   cursor: pointer;
 }
-.env-element-list li:hover {
+.add-item .env-element-list li:focus, .add-item .env-element-list li:hover, .add-item .env-element-list li:active {
   background: rgba(185, 41, 47, 0.382);
 }
 
@@ -4409,15 +4427,15 @@ button[name="action-edit"] {
 }
 #run .status .passed {
   text-shadow: rgba(79, 122, 27, 0.75) 1px 1px 0;
-  background: #77b929 url('../images/ui/check.png?1309283000') no-repeat scroll 6.667%;
+  background: #77b929 url('../images/ui/check.png?1314206098') no-repeat scroll 6.667%;
 }
 #run .status .invalidated {
   text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0;
-  background: #d6a702 url('../images/ui/warning.png?1309283001') no-repeat scroll 6.667%;
+  background: #d6a702 url('../images/ui/warning.png?1314206098') no-repeat scroll 6.667%;
 }
 #run .status .failed {
   text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0;
-  background: #b9292f url('../images/ui/x.png?1309283001') no-repeat scroll 6.667%;
+  background: #b9292f url('../images/ui/x.png?1314206098') no-repeat scroll 6.667%;
 }
 #run .invalid, #run .fail {
   margin-bottom: 1.618em;
@@ -4625,7 +4643,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/check_sm.png?1309283000');
+  background-image: url('../images/ui/check_sm.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 16px;
@@ -4643,7 +4661,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/warning_sm.png?1309283001');
+  background-image: url('../images/ui/warning_sm.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 19px;
@@ -4661,7 +4679,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/x_sm.png?1309283001');
+  background-image: url('../images/ui/x_sm.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 17px;
@@ -4679,7 +4697,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/clock_sm.png?1309283000');
+  background-image: url('../images/ui/clock_sm.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 19px;
@@ -4697,7 +4715,7 @@ button[name="action-edit"] {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  background-image: url('../images/ui/clock_sm.png?1309283000');
+  background-image: url('../images/ui/clock_sm.png?1314206098');
   background-repeat: no-repeat;
   background-position: 0.25em;
   padding: 0 0.25em 0 19px;
@@ -4803,14 +4821,14 @@ button[name="action-edit"] {
 }
 .managelist .multi > .summary {
   position: relative;
-  background: url('../images/ui/angle_right.png?1309283000') no-repeat 99% center;
+  background: url('../images/ui/angle_right.png?1314206098') no-repeat 99% center;
 }
 .managelist .multi > .summary .run {
   color: #999999;
 }
 .managelist .multi.open > .summary {
   background-color: rgba(205, 236, 169, 0.5);
-  background-image: url('../images/ui/angle_down.png?1309283000');
+  background-image: url('../images/ui/angle_down.png?1314206098');
 }
 .managelist .run {
   font: inherit;
