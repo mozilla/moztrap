@@ -479,13 +479,9 @@ var TCM = TCM || {};
                         success = function (response) {
                             var replacement = $(response.html);
                             if (!response.no_replace) {
-                                if (!response.html) {
-                                    replace.trigger('replace', [replacement]);
-                                    replace.replaceWith(replacement);
-                                } else {
-                                    replace.replaceWith(replacement);
-                                    replacement.trigger('replace', [replacement]);
-                                }
+                                replace.trigger('before-replace', [replacement]);
+                                replace.replaceWith(replacement);
+                                replacement.trigger('after-replace', [replacement]);
                                 replacement.find('.details').html5accordion();
                             }
                             replace.loadingOverlay('remove');
@@ -521,24 +517,33 @@ var TCM = TCM || {};
                             $('label[for=' + thisID + ']').removeClass('checked');
                         }
                     });
+                },
+                updateBulkInputs = function () {
+                    $('#addprofile .item .elements .element-select input').each(function () {
+                        if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
+                            $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
+                        }
+                    });
                 };
 
             // some elements may load already checked
             updateLabels();
-            $('#addprofile .item .elements .element-select input').each(function () {
-                if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
-                    $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', true);
-                }
-            });
+            updateBulkInputs();
 
-            elements.live('replace', function (event, replacement) {
+            elements.live('before-replace', function (event, replacement) {
                 // Removes element preview (label) when element is deleted.
                 // Other actions (other than delete) might also cause this to fire, with new HTML
                 // (already parsed into jQuery object) in "replacement".
                 if (!replacement.html()) {
-                    var thisElementID = $(event.target).data('element-id'),
-                        thisPreview = $(event.target).closest('.item').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
+                    var thisElement = $(event.target),
+                        thisElementID = thisElement.data('element-id'),
+                        thisPreview = thisElement.closest('.item').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
                     thisPreview.detach();
+                    if (thisElement.closest('.elements').find('input[name="element"]:checked').not(thisElement.closest('.action-ajax-replace').find('input[name="element"]')).length) {
+                        thisElement.closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
+                    } else {
+                        thisElement.closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', false);
+                    }
                 }
             });
 
@@ -557,9 +562,9 @@ var TCM = TCM || {};
                     $('label[for=' + thisID + ']').removeClass('checked');
                 }
                 if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
-                    $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', true);
+                    $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
                 } else {
-                    $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', false);
+                    $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', false);
                 }
             });
 
@@ -917,7 +922,7 @@ var TCM = TCM || {};
 
             addEnv();
 
-            $('#editprofile .managelist.action-ajax-replace').live('replace', function (event, replacement) {
+            $('#editprofile .managelist.action-ajax-replace').live('after-replace', function (event, replacement) {
                 // Re-attaches handlers to list after it is reloaded via Ajax.
                 addEnv();
             });
