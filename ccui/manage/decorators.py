@@ -68,16 +68,23 @@ def environment_actions():
                             request, "Please enter a category name.")
                         data["no_replace"] = True
                     else:
-                        et = EnvironmentType(
-                            name=new_category_name,
-                            company=request.company,
-                            groupType=False)
-                        EnvironmentTypeList.get(auth=request.auth).post(et)
-
-                        data["html"] = render_to_string(
-                            template_name,
-                            {"category": et},
-                            RequestContext(request))
+                        try:
+                            et = EnvironmentType(
+                                name=new_category_name,
+                                company=request.company,
+                                groupType=False)
+                            EnvironmentTypeList.get(auth=request.auth).post(et)
+                        except EnvironmentType.Conflict as e:
+                            if e.response_error == "duplicate.name":
+                                messages.error(
+                                    request,
+                                    "A category with that name already exists.")
+                                data["no_replace"] = True
+                        else:
+                            data["html"] = render_to_string(
+                                template_name,
+                                {"category": et},
+                                RequestContext(request))
                 elif "new-element-name" in request.POST:
                     template_name = ACTION_TYPES["element"][1]
                     preview_template_name = (
@@ -90,28 +97,38 @@ def environment_actions():
                             request, "Please enter an element name.")
                         data["no_replace"] = True
                     else:
-                        if "element-id" in request.POST:
-                            e = EnvironmentList.get_by_id(
-                                request.POST.get("element-id"),
-                                auth=request.auth)
-                            e.name = new_element_name
-                            e.put()
+                        try:
+                            if "element-id" in request.POST:
+                                e = EnvironmentList.get_by_id(
+                                    request.POST.get("element-id"),
+                                    auth=request.auth)
+                                e.name = new_element_name
+                                e.put()
+                            else:
+                                e = Environment(
+                                    name=new_element_name,
+                                    company=request.company,
+                                    environmentType=request.POST.get(
+                                        "category-id"))
+                                EnvironmentList.get(auth=request.auth).post(e)
+                        except Environment.Conflict as e:
+                            if e.response_error == "duplicate.name":
+                                messages.error(
+                                    request,
+                                    "An element with that name already exists.")
+                                data["no_replace"] = True
+                            else:
+                                raise
                         else:
-                            e = Environment(
-                                name=new_element_name,
-                                company=request.company,
-                                environmentType=request.POST.get("category-id"))
-                            EnvironmentList.get(auth=request.auth).post(e)
+                            data["elem"] = render_to_string(
+                                template_name,
+                                {"element": e},
+                                RequestContext(request))
 
-                        data["elem"] = render_to_string(
-                            template_name,
-                            {"element": e},
-                            RequestContext(request))
-
-                        data["preview"] = render_to_string(
-                            preview_template_name,
-                            {"element": e},
-                            RequestContext(request))
+                            data["preview"] = render_to_string(
+                                preview_template_name,
+                                {"element": e},
+                                RequestContext(request))
 
                 return HttpResponse(
                     json.dumps(data), content_type="application/json")
