@@ -25,7 +25,7 @@
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
+          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
             {% if result.status.INVALIDATED %}
               <h4 class="summary">invalid or unclear.</h4>
               <div class="invaliddesc content">
@@ -34,7 +34,7 @@
               </div>
             {% else %}
               <h4 class="summary">invalid or unclear?</h4>
-              <div class="invalidform content">
+              <div class="invalidform form content">
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
                 <div class="form-actions">
@@ -66,7 +66,7 @@
               </div>
             {% endif %}
             {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
-              <div class="stepfail details failed open" data-open="open">
+              <div class="stepfail details failed open">
                 <p class="summary">failed</p>
                 <div class="faildesc fail-detail">
                   <p>{{ result.actualResult }}</p>
