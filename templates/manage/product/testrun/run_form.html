@@ -56,7 +56,7 @@
       </div>
     </section>
 
-    <section class="userselect details"{% if form.team.errors or form.team.value %} data-open="open"{% endif %}>
+    <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
       <h3 class="summary">assign specific users to this test run &raquo;</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}

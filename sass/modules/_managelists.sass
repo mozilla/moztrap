@@ -29,6 +29,13 @@
     clear: both
     &.details
       padding: 0
+      > .summary
+        #{$focus}
+          +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
+          outline: 0
+    &.open
+      > .summary
+        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
 
   .summary, .content
     +pie-clearfix
@@ -40,14 +47,6 @@
     p
       margin-bottom: 0
 
-  .details
-    .summary
-      #{$focus}
-        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
-        outline: 0
-  .open
-    > .summary
-      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
   .content
     +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
 
@@ -111,41 +110,58 @@
   .pending
     +border-radius(.25em)
     display: block
-    button
-      +icon('[title="approve"]','ui/check.png',$light)
-      +icon('[title="reject"]','ui/x.png',$light)
-      &[title="approve"], &[title="reject"]
-        +columns(1,2)
-        padding: 0
-      &[title="reject"]
-        +omega(2)
-        #{$focus}
-          background:
-            image: image-url('ui/x.png')
-            color: $red-lighter
-      &[title="approve"]
-        #{$focus}
-          background:
-            image: image-url('ui/check.png')
-            color: $green-light
+    [title="approve"], [title="reject"]
+      +columns(1,2)
+    [title="approve"]
+      +icon-replace('ui/check.png',$light,false,button)
+      #{$focus}
+        background-color: $green-light
+    [title="reject"]
+      +icon-replace('ui/x.png',$light,false,button)
+      +omega(2)
+      #{$focus}
+        background-color: $red-lighter
+    [title="approve"], [title="reject"]
+      min-height: rhythm(1)
+      padding: 0
 
-  span
-    +inline-block
 
-  button, span
-    +icon('.rejected','ui/x.png',$red-lighter,text)
-    +icon('.draft','ui/power.png',$blue-lighter,text)
-    +icon('.active','ui/power.png',$green-light,text)
-    +icon('.locked','ui/lock.png',$yellow,text)
+  span, button
+    +demi
+    min-height: rhythm(1)
+    text-transform: uppercase
     &.rejected, &.draft, &.active, &.locked
       width: 100%
 
+  span
+    +inline-block
+    &.rejected
+      +text-icon('ui/x.png',$red-lighter)
+    &.draft
+      +text-icon('ui/power.png',$blue-lighter)
+    &.active
+      +text-icon('ui/power.png',$green-light)
+    &.locked
+      +text-icon('ui/lock.png',$yellow)
+
   button
+    &.rejected
+      +text-button('ui/x.png',$red-lighter)
+      #{$focus}
+        +text-button('ui/check.png',$green-light)
+    &.draft
+      +text-button('ui/power.png',$blue-lighter)
+      #{$focus}
+        +text-button('ui/power.png',$green-light)
+    &.active
+      +text-button('ui/power.png',$green-light)
+      #{$focus}
+        +text-button('ui/lock.png',$yellow)
+    &.locked
+      +text-button('ui/lock.png',$yellow)
+      #{$focus}
+        +text-button('ui/unlock.png',$green-light)
     #{$focus}
-      +icon('.rejected','ui/check.png',$green-light,text)
-      +icon('.draft','ui/power.png',$green-light,text)
-      +icon('.active','ui/lock.png',$yellow,text)
-      +icon('.locked','ui/unlock.png',$green-light,text)
       &.rejected, &.draft, &.active, &.locked
         +hide-text
         &::after

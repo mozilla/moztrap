@@ -1,166 +1,112 @@
-/* test nav --------------------------------------------------------------
-
+=item-highlight($color)
+  +background(linear-gradient(left,rgba($color,0),$color,$color,rgba($color,0)))
 
 /* run tests --------------------------------------------------------------
 
 #run
-  +full(24)
-  .test, .content
-    +full(24)
-  .test
-    +pie-clearfix
-  .header
-    +columns(20,24)
-    +leader(.25)
-    +trailer(.25)
-    h3
-      +columns(13,20)
-      +adjust-font-size-to(16px)
-    small
-      +columns(1,20)
-      +bold
-      vertical-align: top
-      text-align: right
+  .status, .bystatus
+    +columns(3,24)
+  .title, .bytitle
+    +columns(13,24)
+  .byinvalid
+    +columns(6,24)
+    +omega(24)
+
+  .item
+    position: relative
+    &.started
+      > .summary
+        +item-highlight(rgba($blue-lighter,$xsmall))
+    &.passed
+      > .summary
+        +item-highlight(rgba($green-light,$xsmall))
+    &.failed
+      > .summary
+        +item-highlight(rgba($red-lighter,$xsmall))
+    &.invalidated
+      > .summary
+        +item-highlight(rgba($yellow-light,$xsmall))
 
   .status
-    +columns(4,24)
-    +omega(24)
-    text-align: center
-    p
-      @extend .allcaps
-      +adjust-font-size-to(12px)
-      +border-radius($xsmallem)
-      +padding-leader(.25,12px)
-      +padding-trailer(.25,12px)
-      +hpadding(1em)
-      +bold
-      margin: 0 gutter(4)
-      color: $light
-    button
-      width: 100% - gutter(4)*2
-      margin: 0 gutter(4)
-    .passed
-      +text-shadow(rgba($green-dark,.75) 1px 1px 0)
-      background: $green image-url('ui/check.png') no-repeat scroll gutter(4)
-    .invalidated
-      +text-shadow(rgba($red,.75) 1px 1px 0)
-      background: $yellow-darker image-url('ui/warning.png') no-repeat scroll gutter(4)
-    .failed
-      +text-shadow(rgba($red-dark,.75) 1px 1px 0)
-      background: $red image-url('ui/x.png') no-repeat scroll gutter(4)
+    button, span
+      width: 100%
+    .start
+      +text-button('ui/power.png',$blue-lighter)
+    .pass
+      +text-button('ui/check.png',$green-light)
 
-  .start
-    @extend .bluebutton
-  .invalid
-    @extend .yellowbutton
-  .fail
-    @extend .redbutton
-  .invalid, .fail
-    +trailer
-    width: columns(4,20)
+    .passed
+      +text-button('ui/check_light.png',$green-dark,"inset")
+    .failed
+      +text-button('ui/x_light.png',$red-dark,"inset")
+    .invalidated
+      +text-button('ui/warning_light.png',$yellow-darkest,"inset")
+
+    .start, .pass, .passed, .failed, .invalidated
+      +padding-leader(.25)
+      +padding-trailer(.25)
+
+    .passed, .failed, .invalidated
+      +bold
+      +text-shadow(none)
+      color: rgba($light,$small)
+
+  .title
+    +adjust-font-size-to($medpx,1.5)
 
   .steps
-    +pad(3,4,24)
-    +padding-leader
-    clear: both
-    margin: 0
-    counter-reset: step
-    > li
-      +pie-clearfix
-      +trailer
-      position: relative
-      padding: $base-rhythm-unit*.5
-        bottom: 0
-      background: rgba($blue-hint,$small)
-      list-style: none
-      counter-increment: step
+    +padding-leader(.5)
+    li
+      +pad(3,2,24)
+      width: auto
       &::before
-        +adjust-font-size-to(48px)
-        content: counter(step, decimal) "."
-        position: absolute
-        right: 100% + gutter(15)
-        top: 0
-    h4
-      +trailer(0)
-    .step
-      overflow: hidden
+        width: columns(3,24)
 
-  .stepfail
-    +full(17)
-    position: relative
-    margin: 0 0 - $base-rhythm-unit*.5
-    border-top: $base-rhythm-unit solid rgba($blue-lighter,$xxsmall)
+.testinvalid
+  .summary
+    +box-sizing('border-box')
+    +text-icon('ui/warning.png')
+    position: absolute
+    top: 0
+    right: 0
+    padding: rhythm(.5) 0 rhythm(.5) image-width('ui/warning.png') + $smallpx
+    #{$focus}
+      color: $red-dark
+  .content
+    +full(24)
+    +pad(1,1,24)
+    +padding-trailer(.5)
+    +border-bottom-radius
+    margin:
+      right: columns(3,24) + gutter(24)
+      left: columns(2,24) + gutter(24)
+    background-color: rgba($yellow-light,$xsmall)
+
+.stepfail
+  .summary
+    @extend .allcaps
+    +text-button('ui/x_sm.png',$red-lighter)
+    +opacity(0)
+    +transition(opacity 300ms)
+    +bold
+    position: absolute
+    top: 0
+    left: columns(1,24) + gutter(24)
+    width: columns(2,24)
+    .steps li:hover &
+      +opacity(1)
+  &.open, &.failed
     .summary
-      @extend .allcaps
-      +bold
-      +transition(all,300ms)
-      +text-shadow(rgba($red,$xsmall) 0 1px 0)
-      position: absolute
-      top: - $base-rhythm-unit
-      right: 0
-      padding: 0 gutter(17)
-      width: columns(2,17)
-      background: $red-light
-      color: rgba($light,$small)
-      text-align: center
-      &:hover
-        background: $red
-    &.open, &.failed
-      .summary
-        width: 100%
-        padding: 0
-        background: $red
-
-  .failform, .invalidform
-    textarea
-      min-height: $base-rhythm-unit*6
-  .failform, .faildesc
-    padding: $base-rhythm-unit*.5
-    background: $red-lightest
-  .invalidform, .invaliddesc
-    +float('left')
-    +padding-leader
-    +hpadding(gutter(24))
-    +border-bottom-radius(1em)
-    width: columns(15,24) - gutter(24)*2
-    margin-left: columns(3,24) + gutter(24)
-    background: $yellow
-
-  .testinvalid
-    position: relative
-    .summary
-      @extend .allcaps
+      +opacity(1)
+  .fail-detail
+    +full(18)
+    +border-radius
+    +rhythm(.5,.5,.5,.5)
+    margin-right: columns(1,20) + gutter(20)
+    background-color: rgba($red-lighter,$xsmall)
+    p
       +demi
-      +text-shadow(rgba($light,$small) 0 1px 0)
-      +border-bottom-radius(1em)
-      position: absolute
-      top: 0
-      right: 0
-      width: columns(4,24) - gutter(24)*2
-      padding: rhythm(.25) gutter(24)
-      background: $yellow-light
-      color: rgba($yellow-darkest,$small)
-      text-align: center
-      &:hover
-        background: $yellow
-    &[open], &.invalidated
-      .summary
-        background: $yellow
-
-.testsummary
-  +pie-clearfix
-  +padding-leader(.25)
-  +padding-trailer(.25)
-  +border-radius($xsmallem)
-  #{$focus}
-    +background(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
-  .test[open] &
-    +background(linear-gradient(left,rgba($blue-light,0),rgba($blue-light,$xsmall),rgba($blue-light,$xsmall),rgba($blue-light,0)))
-  .started &, .started[open] &
-    background: rgba($blue-lighter,$small)
-  .passed &, .passed[open] &
-    background: rgba($green-lighter,$small)
-  .invalidated &, .invalidated[open] &
-    background: rgba($yellow-light,$small)
-  .failed &
-    background: rgba($red-lighter,$small)
+      margin: 0
+      padding: 0 rhythm(1)
+  .failform
+    +pad(1,1,18)

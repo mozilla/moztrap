@@ -70,7 +70,7 @@ PRODUCTS = {
         "cycles": {
             "Test Cycle 1": {
                 "startDate": datetime.date.today(),
-                "description": "",
+                "description": "Test Cycle 1",
                 "testruns": {
                     "Test Run 1A": {
                         "startDate": datetime.date.today(),
@@ -111,6 +111,51 @@ PRODUCTS = {
                             },
                         },
                     },
+                },
+            "Test Cycle 2": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 3": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 4": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 5": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 6": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 7": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 8": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 9": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
+                },
+            "Test Cycle 10": {
+                "startDate": datetime.date.today(),
+                "description": "Test Cycle 2",
+                "testruns": {},
                 },
             },
         },

@@ -6,31 +6,24 @@
   *:last-child
     margin-right: .375em
 
-[title="edit"], [title^="create"]
-  #{$link}
-    +inline-block
-    +opacity(.675)
-  #{$focus}
-    +opacity(1)
-
 [title="edit"]
   #{$link}
-    +icon(false,'ui/pencil.png')
+    +inline-block
+    +icon-replace('ui/pencil.png')
 
 [title^="create"]
   #{$link}
-    +icon(false,'ui/paper_plus.png')
+    +inline-block
+    +icon-replace('ui/paper_plus.png')
 
-button
-  &[name^="action-"]
-    +button-reset
-    +icon-hover
+[name="action-clone"]
+  +button-reset
+  +icon-replace('ui/clone.png')
 
-  &[name="action-clone"]
-    +icon(false,'ui/clone.png')
+[name="action-delete"]
+  +button-reset
+  +icon-replace('ui/trash.png')
 
-  &[name="action-delete"]
-    +icon(false,'ui/trash.png')
-
-  &[name="action-edit"]
-    +icon(false,'ui/pencil.png')
+[name="action-edit"]
+  +button-reset
+  +icon-replace('ui/pencil.png')
