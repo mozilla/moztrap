@@ -9,12 +9,22 @@
 
 // The Basic Form ------------------------------------------------------------
 
+.select-env-link
+  #{$link}
+    @extend .allcaps
+    +omega(24)
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    max-width: columns(4,24)
+    text-align: right
+    background: image-url('ui/crosshair.png') no-repeat scroll left
+    padding-left: image-width('ui/crosshair.png') + $smallpx
+
 .addform
   h2
     +trailer
   .basic
-    +pie-clearfix
-    +suffix(11,24)
+    +columns(13,24)
     +inline-form(2,11,13)
     label
       text-align: right
@@ -157,8 +167,7 @@
 
 #editproduct
   .basic
-    +full(24)
-    +suffix(12,24)
+    +columns(13,24)
     label
       +gone
 

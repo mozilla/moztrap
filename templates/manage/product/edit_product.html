@@ -2,7 +2,8 @@
 
 {% block listcontent %}
 <section id="editproduct">
-  <h2>edit product name</h2>
+  <h2>edit product</h2>
+  <a {# @@@ needs URL #} href="/manage/type/id/environments/" class="select-env-link">select environments</a>
   <form id="product-edit-form" method="POST">
     {% csrf_token %}
     <ul class="basic">

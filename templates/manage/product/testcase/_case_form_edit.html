@@ -1,5 +1,7 @@
 {% extends 'manage/product/testcase/_case_form_single.html' %}
 
+{% block select-environments %}<a {# @@@ needs URL #} href="/manage/type/id/environments/" class="select-env-link">select environments</a>{% endblock select-environments %}
+
 {% block caseversions %}
 {% comment %}
 <li>

@@ -8,6 +8,7 @@
 {% block listcontent %}
 <section id="addcycle">
   <h2>{% block formtitle %}{% endblock %}</h2>
+  <a {# @@@ needs URL #} href="/manage/type/id/environments/" class="select-env-link">select environments</a>
   <form id="cycle-form" method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}
