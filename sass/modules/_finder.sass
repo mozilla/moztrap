@@ -23,10 +23,12 @@
 
   .col
     +transition(width 300ms)
+    +box-sizing('border-box')
     +float(left)
     position: relative
     width: 25%
     min-height: rhythm(10)
+    border-right: rhythm(.125) solid rgba($blue-dark,$xsmall)
     &:last-child
       +float(right)
     &.focus
@@ -48,9 +50,8 @@
             width: 2/($n+1)*100%
 
   .listordering
-    position: absolute
-    left: 0
-    right: 15px
+    +stretch-x
+    top: 0
     padding: rhythm(.25) rhythm(.5)
     margin: 0
     background: rgba($blue-lightest,.95)
@@ -62,7 +63,7 @@
   .colcontent
     +no-style-list
     +stretch
-    padding-top: rhythm(1.5)
+    margin-top: rhythm(1.5)
     overflow-y: scroll
     overflow-x: hidden
 

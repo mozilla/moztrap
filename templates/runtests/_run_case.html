@@ -1,45 +1,40 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="test details {{ result.status|status_class }}" data-action-url="{% url result result_id=result.id %}"{% if open %} data-open="open"{% endif %}>
+    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}" data-action-url="{% url result result_id=result.id %}">
 
-      <header class="summary testsummary">
-        <div class="header">
-          <small>#{{ case.id }}</small>
-          <h3>{{ case.name }}</h3>
-        </div>
-
+      <header class="summary">
         <div class="status">
           {% if result.status.PENDING %}
-            <button class="start" data-action="start">start</button>
+            <button class="start" data-action="start" name="action-start">start</button>
           {% endif %}
           {% if result.status.STARTED %}
-            <button class="pass" data-action="finishsucceed">
-              pass
-            </button>
+            <button class="pass" data-action="finishsucceed" name="action-pass">pass</button>
           {% endif %}
           {% if result.status.PASSED %}
-            <p class="passed">Passed</p>
+            <span class="passed">Passed</span>
           {% endif %}
           {% if result.status.INVALIDATED %}
-            <p class="invalidated">Invalid</p>
+            <span class="invalidated">Invalid</span>
           {% endif %}
           {% if result.status.FAILED %}
-            <p class="failed">Failed</p>
+            <span class="failed">Failed</span>
           {% endif %}
         </div>
+        <h3 class="title">{{ case.name }}</h3>
       </header>
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <div class="testinvalid details{% if result.status.INVALIDATED %} invalidated {% endif %}"{% if result.status.INVALIDATED %} data-open="open"{% endif %}>
-            <p class="summary">invalid?</p>
+          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
             {% if result.status.INVALIDATED %}
-              <div class="invaliddesc">
-                <h4>Invalid because:</h4>
+              <h4 class="summary">invalid or unclear.</h4>
+              <div class="invaliddesc content">
+                <h5>description of problem:</h5>
                 <p>{{ result.comment }}</p>
               </div>
             {% else %}
-              <div class="invalidform form">
+              <h4 class="summary">invalid or unclear?</h4>
+              <div class="invalidform form content">
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
                 <div class="form-actions">
@@ -47,22 +42,20 @@
                 </div>
               </div>
             {% endif %}
-          </div>
+          </section>
         {% endif %}
 
         <ol class="steps">
           {% for step in caseversion.steps %}
           <li>
             <div class="step">
-              <h4>Instructions:</h4>
-              <p>{{ step.instruction }}</p>
-              <h4>Expected Results:</h4>
-              <p>{{ step.expectedResult }}</p>
+              <p class="instruction">{{ step.instruction }}</p>
+              <p class="outcome">{{ step.expectedResult }}</p>
             </div>
             {% if result.status.STARTED %}
               <div class="stepfail details">
                 <p class="summary">fail</p>
-                <div class="failform form">
+                <div class="failform form fail-detail">
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <label for="{{ step.id }}-actualResult">actual result:</label>
                   <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
@@ -73,9 +66,9 @@
               </div>
             {% endif %}
             {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
-              <div class="stepfail details failed" data-open="open">
+              <div class="stepfail details failed open">
                 <p class="summary">failed</p>
-                <div class="faildesc">
+                <div class="faildesc fail-detail">
                   <p>{{ result.actualResult }}</p>
                 </div>
               </div>

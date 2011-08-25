@@ -1,35 +1,63 @@
-=icon-hover()
-  +opacity(.675)
-  #{$focus}
-    +opacity(1)
+=icon-hover($color:false)
+  @if $color
+    #{$focus}
+      background-color: darken($color,10)
+  @else
+    +opacity(.675)
+    #{$focus}
+      +opacity(1)
 
 =icon-back($back:false)
   @if $back
     +border-radius(.25em)
     background-color: $back
 
-=icon-style($img,$back:false,$text:false,$hover:false)
-  +icon-back($back)
+=icon-replace($img,$color:false,$hover:true,$button:false)
+  +box-sizing('content-box')
+  +replace-text($img)
+  min-width: image-width($img)
+  min-height: image-height($img)
+  margin: 0
+  padding: 0 .125em
+  border: 0
+  @if $color
+    +border-radius(.25em)
+    background-color: $color
   @if $hover
     +icon-hover
-  @if $text
-    +box-sizing('border-box')
+  @if $button
+    +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+    +box-shadow($blue-dark 0 0 2px)
+
+=text-icon($img,$color:false,$hover:false,$button:false)
+  +box-sizing('border-box')
+  margin: 0
+  padding: 0 .25em 0 $base-font-size*.75 + image-width($img)
+  border: 0
+  background-repeat: no-repeat
+  text-align: left
+  @if $color
+    +icon-back($color)
+  @if $hover
+    +icon-hover($color)
+  @if $button
+    @if $button == "inset"
+      +background-image(image-url($img),linear-gradient(top,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($base 0 0 4px inset)
+      cursor: default
+    @else
+      +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
+      +box-shadow($blue-dark 0 0 2px)
+    background-position: .375em, 0
+  @else
     background:
       image: image-url($img)
-      repeat: no-repeat
-      position: .25em
-    padding: 0 .25em 0 $base-font-size*.5 + image-width($img)
-    text-align: left
-  @else
-    +box-sizing('content-box')
-    +replace-text($img)
-    min-width: image-width($img)
-    min-height: image-height($img)
-    padding: 0 .125em
+      position: .375em
 
-=icon($select,$img,$back:false,$text:false)
-  @if $select
-    &#{$select}
-      +icon-style($img,$back,$text)
+=text-button($img,$color:false,$button:true)
+  @if $button == "inset"
+    +text-icon($img,$color,false,$button)
   @else
-    +icon-style($img,$back,$text)
+    +text-icon($img,$color,hover,$button)
+
+

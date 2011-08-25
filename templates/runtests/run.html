@@ -31,13 +31,37 @@
   </nav>
 {% endblock drilldown %}
 
-
 {% block testcontent %}
   <section id="run">
     <h2>Run Tests:</h2>
+
     {% icanhaz "runtests_form_error" %}
-    {% for includedtestcase in testrun.includedtestcases %}
-      {% run_case includedtestcase request.user request.environments %}
-    {% endfor %}
+
+    <div class="managelist action-ajax-replace">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="bystatus">
+            <a href="#">status</a>
+          </li>
+          <li class="bytitle">
+            <a href="#">name</a>
+          </li>
+          <li class="byinvalid">
+            <span>flagging</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="items">
+        {% for includedtestcase in testrun.includedtestcases %}
+          {% run_case includedtestcase request.user request.environments %}
+        {% empty %}
+          <p class="empty">There are currently no items in this list...</p>
+        {% endfor %}
+      </div>
+
+      {% include "lists/_listnav.html" %}
+    </div>
   </section>
 {% endblock testcontent %}
