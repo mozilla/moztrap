@@ -209,11 +209,11 @@ footer, header, hgroup, menu, nav, section {
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, .stepfail .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item a, .item.add-item .summary, .stepfail .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -2740,7 +2740,6 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-<<<<<<< HEAD
 .status .pending [title="reject"]:focus, .status .pending [title="reject"]:hover, .status .pending [title="reject"]:active {
   background-color: #eca9ab;
 }
@@ -2755,15 +2754,6 @@ footer[role="contentinfo"] small {
 }
 .status span.rejected, .status span.draft, .status span.active, .status span.locked, .status button.rejected, .status button.draft, .status button.active, .status button.locked {
   width: 100%;
-=======
-.status .pending button[title="reject"]:focus, .status .pending button[title="reject"]:hover, .status .pending button[title="reject"]:active {
-  background-image: url('../images/ui/x.png?1314206098');
-  background-color: #eca9ab;
-}
-.status .pending button[title="approve"]:focus, .status .pending button[title="approve"]:hover, .status .pending button[title="approve"]:active {
-  background-image: url('../images/ui/check.png?1314206098');
-  background-color: #b5e37f;
->>>>>>> 0.4.X
 }
 .status span {
   display: -moz-inline-box;
@@ -2800,13 +2790,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/x.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2824,13 +2810,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/power.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2848,13 +2830,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/power.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2872,13 +2850,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/lock.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2938,13 +2912,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/check.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2973,13 +2943,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/power.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -3008,13 +2974,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/lock.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -3043,13 +3005,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/unlock.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -4290,25 +4248,11 @@ footer[role="contentinfo"] small {
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   font-weight: 500;
-<<<<<<< HEAD
-}
-.item.add-item a, .item.add-item .summary {
-  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
-  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
-=======
->>>>>>> 0.4.X
   display: block;
   padding: 0.405em 2.023em;
   color: #4f7a1b;
 }
-<<<<<<< HEAD
-.item.add-item a:focus, .item.add-item a:hover, .item.add-item a:active, .item.add-item .summary:focus, .item.add-item .summary:hover, .item.add-item .summary:active {
-=======
 .item.add-item > a:focus, .item.add-item > a:hover, .item.add-item > a:active, .item.add-item > .summary:focus, .item.add-item > .summary:hover, .item.add-item > .summary:active {
->>>>>>> 0.4.X
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
@@ -4822,7 +4766,6 @@ footer[role="contentinfo"] small {
   background-color: #9dd955;
 }
 #run .status .passed {
-<<<<<<< HEAD
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -4839,11 +4782,11 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #4f7a1b;
-  background-image: url('../images/ui/check_light.png?1314304131'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/check_light.png?1314304131'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314304131'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314304131'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314304131'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314308679'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/check_light.png?1314308679'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314308679'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314308679'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314308679'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
@@ -4868,11 +4811,11 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #511214;
-  background-image: url('../images/ui/x_light.png?1314304368'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/x_light.png?1314304368'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314304368'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314304368'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314304368'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314308679'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/x_light.png?1314308679'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314308679'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314308679'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314308679'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
@@ -4897,11 +4840,11 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #a38001;
-  background-image: url('../images/ui/warning_light.png?1314307126'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/warning_light.png?1314307126'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314307126'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314307126'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314307126'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314308679'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/warning_light.png?1314308679'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314308679'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314308679'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314308679'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
@@ -4917,18 +4860,6 @@ footer[role="contentinfo"] small {
   font-weight: 700;
   text-shadow: none;
   color: rgba(238, 238, 238, 0.618);
-=======
-  text-shadow: rgba(79, 122, 27, 0.75) 1px 1px 0;
-  background: #77b929 url('../images/ui/check.png?1314206098') no-repeat scroll 6.667%;
-}
-#run .status .invalidated {
-  text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0;
-  background: #d6a702 url('../images/ui/warning.png?1314206098') no-repeat scroll 6.667%;
-}
-#run .status .failed {
-  text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0;
-  background: #b9292f url('../images/ui/x.png?1314206098') no-repeat scroll 6.667%;
->>>>>>> 0.4.X
 }
 #run .title {
   font-size: 1.618em;
@@ -5103,13 +5034,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/check_sm.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5127,13 +5054,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 20.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/warning_sm.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5151,13 +5074,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/x_sm.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5175,13 +5094,9 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
-=======
-  background-image: url('../images/ui/clock_sm.png?1314206098');
->>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5191,20 +5106,8 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #aac0bf;
-<<<<<<< HEAD
   background-image: url('../images/ui/clock_sm.png?1314206098');
   background-position: 0.375em;
-=======
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  background-image: url('../images/ui/clock_sm.png?1314206098');
-  background-repeat: no-repeat;
-  background-position: 0.25em;
-  padding: 0 0.25em 0 19px;
-  text-align: left;
->>>>>>> 0.4.X
 }
 .resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
   position: absolute;
