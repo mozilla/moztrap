@@ -2740,6 +2740,7 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
+<<<<<<< HEAD
 .status .pending [title="reject"]:focus, .status .pending [title="reject"]:hover, .status .pending [title="reject"]:active {
   background-color: #eca9ab;
 }
@@ -2754,6 +2755,15 @@ footer[role="contentinfo"] small {
 }
 .status span.rejected, .status span.draft, .status span.active, .status span.locked, .status button.rejected, .status button.draft, .status button.active, .status button.locked {
   width: 100%;
+=======
+.status .pending button[title="reject"]:focus, .status .pending button[title="reject"]:hover, .status .pending button[title="reject"]:active {
+  background-image: url('../images/ui/x.png?1314206098');
+  background-color: #eca9ab;
+}
+.status .pending button[title="approve"]:focus, .status .pending button[title="approve"]:hover, .status .pending button[title="approve"]:active {
+  background-image: url('../images/ui/check.png?1314206098');
+  background-color: #b5e37f;
+>>>>>>> 0.4.X
 }
 .status span {
   display: -moz-inline-box;
@@ -2790,9 +2800,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/x.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2810,9 +2824,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/power.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2830,9 +2848,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/power.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2850,9 +2872,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/lock.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2912,9 +2938,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/check.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2943,9 +2973,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/power.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -2974,9 +3008,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/lock.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -3005,9 +3043,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 24.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/unlock.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -4241,8 +4283,14 @@ footer[role="contentinfo"] small {
   background-color: rgba(119, 185, 41, 0.618);
 }
 
-.item.add-item {
+.item.add-item > a, .item.add-item > .summary {
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   font-weight: 500;
+<<<<<<< HEAD
 }
 .item.add-item a, .item.add-item .summary {
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.146)), color-stop(66.667%, rgba(181, 227, 127, 0.146)), color-stop(100%, rgba(181, 227, 127, 0)));
@@ -4250,11 +4298,17 @@ footer[role="contentinfo"] small {
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+=======
+>>>>>>> 0.4.X
   display: block;
   padding: 0.405em 2.023em;
   color: #4f7a1b;
 }
+<<<<<<< HEAD
 .item.add-item a:focus, .item.add-item a:hover, .item.add-item a:active, .item.add-item .summary:focus, .item.add-item .summary:hover, .item.add-item .summary:active {
+=======
+.item.add-item > a:focus, .item.add-item > a:hover, .item.add-item > a:active, .item.add-item > .summary:focus, .item.add-item > .summary:hover, .item.add-item > .summary:active {
+>>>>>>> 0.4.X
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(181, 227, 127, 0)), color-stop(33.333%, rgba(181, 227, 127, 0.382)), color-stop(66.667%, rgba(181, 227, 127, 0.382)), color-stop(100%, rgba(181, 227, 127, 0)));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
@@ -4263,18 +4317,11 @@ footer[role="contentinfo"] small {
 }
 
 .profile-name {
-  clear: both;
-  padding-right: 50.526%;
-  *zoom: 1;
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
   margin-bottom: 0em;
-}
-.profile-name:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .profile-name label {
   display: inline;
@@ -4290,6 +4337,18 @@ footer[role="contentinfo"] small {
   display: inline;
   float: right;
   margin-right: 0;
+}
+
+#profile-name-form .form-actions {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  clear: none;
+  text-align: left;
 }
 
 /* Manage Products -------------------------------------------------------------- */
@@ -4538,6 +4597,7 @@ footer[role="contentinfo"] small {
 }
 #editprofile .env-management {
   margin-top: 0.405em;
+  position: relative;
 }
 #editprofile .env-management label {
   position: absolute;
@@ -4551,6 +4611,17 @@ footer[role="contentinfo"] small {
 }
 #editprofile .env-management input {
   margin-bottom: 0.405em;
+}
+#editprofile .env-management .suggest {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+#editprofile .env-management .suggest li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
 }
 
 .env-element-list {
@@ -4585,12 +4656,15 @@ footer[role="contentinfo"] small {
   -ms-border-radius: 0.236em;
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
-  background: rgba(119, 185, 41, 0.382);
+  background: rgba(82, 134, 132, 0.382);
   padding: 0.202em 0.405em;
   margin-right: 0.405em;
+}
+.add-item .env-element-list li {
+  background: rgba(119, 185, 41, 0.618);
   cursor: pointer;
 }
-.env-element-list li:hover {
+.add-item .env-element-list li:focus, .add-item .env-element-list li:hover, .add-item .env-element-list li:active {
   background: rgba(185, 41, 47, 0.382);
 }
 
@@ -4748,6 +4822,7 @@ footer[role="contentinfo"] small {
   background-color: #9dd955;
 }
 #run .status .passed {
+<<<<<<< HEAD
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -4842,6 +4917,18 @@ footer[role="contentinfo"] small {
   font-weight: 700;
   text-shadow: none;
   color: rgba(238, 238, 238, 0.618);
+=======
+  text-shadow: rgba(79, 122, 27, 0.75) 1px 1px 0;
+  background: #77b929 url('../images/ui/check.png?1314206098') no-repeat scroll 6.667%;
+}
+#run .status .invalidated {
+  text-shadow: rgba(185, 41, 47, 0.75) 1px 1px 0;
+  background: #d6a702 url('../images/ui/warning.png?1314206098') no-repeat scroll 6.667%;
+}
+#run .status .failed {
+  text-shadow: rgba(81, 18, 20, 0.75) 1px 1px 0;
+  background: #b9292f url('../images/ui/x.png?1314206098') no-repeat scroll 6.667%;
+>>>>>>> 0.4.X
 }
 #run .title {
   font-size: 1.618em;
@@ -5016,9 +5103,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/check_sm.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5036,9 +5127,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 20.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/warning_sm.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5056,9 +5151,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/x_sm.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5076,9 +5175,13 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+<<<<<<< HEAD
   margin: 0;
   padding: 0 0.25em 0 22.5px;
   border: 0;
+=======
+  background-image: url('../images/ui/clock_sm.png?1314206098');
+>>>>>>> 0.4.X
   background-repeat: no-repeat;
   text-align: left;
   -moz-border-radius: 0.25em;
@@ -5088,8 +5191,20 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #aac0bf;
+<<<<<<< HEAD
   background-image: url('../images/ui/clock_sm.png?1314206098');
   background-position: 0.375em;
+=======
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  background-image: url('../images/ui/clock_sm.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 0.25em;
+  padding: 0 0.25em 0 19px;
+  text-align: left;
+>>>>>>> 0.4.X
 }
 .resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
   position: absolute;
