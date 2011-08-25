@@ -604,9 +604,12 @@ def edit_environment_profile(request, profile_id):
 
 
 def autocomplete_env_elements(request):
-    text = request.GET.get("text") + r"%"
-    elements = EnvironmentList.get(auth=request.auth).filter(name=text)
+    text = request.GET.get("text")
+    elements = []
+    if text is not None:
+        elements = EnvironmentList.get(auth=request.auth).filter(
+            name="%s%%" % text)
 
-    data = dict((e.id, e.name) for e in elements)
+    data = {"suggestions": [{"id": e.id, "name": e.name} for e in elements]}
 
     return HttpResponse(json.dumps(data), content_type="application/json")

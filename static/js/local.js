@@ -479,8 +479,13 @@ var TCM = TCM || {};
                         success = function (response) {
                             var replacement = $(response.html);
                             if (!response.no_replace) {
-                                replace.trigger('replace', [replacement]);
-                                replace.replaceWith(replacement);
+                                if (!response.html) {
+                                    replace.trigger('replace', [replacement]);
+                                    replace.replaceWith(replacement);
+                                } else {
+                                    replace.replaceWith(replacement);
+                                    replacement.trigger('replace', [replacement]);
+                                }
                                 replacement.find('.details').html5accordion();
                             }
                             replace.loadingOverlay('remove');
@@ -502,6 +507,7 @@ var TCM = TCM || {};
             var elements = $('#addprofile .item .elements'),
                 elementInputs = elements.find('.element-select input'),
                 categoryInputs = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
+                profileNameInput = $('#addprofile #profile_name'),
                 addElement = $('input[id$="-new-element-name"]'),
                 addCategory = $('input#new-category-name'),
                 editElementLink = $('#addprofile .item .elements a[title="edit"]'),
@@ -519,13 +525,28 @@ var TCM = TCM || {};
 
             // some elements may load already checked
             updateLabels();
+            $('#addprofile .item .elements .element-select input').each(function () {
+                if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
+                    $(this).closest('.item').find('.bulk input[id^="bulk-select-"]').prop('checked', true);
+                }
+            });
 
             elements.live('replace', function (event, replacement) {
-                // @@@ add code here to remove preview for this element, if
-                // replacement.html() is null (means its being deleted)
+                // Removes element preview (label) when element is deleted.
+                // Other actions (other than delete) might also cause this to fire, with new HTML
+                // (already parsed into jQuery object) in "replacement".
+                if (!replacement.html()) {
+                    var thisElementID = $(event.target).data('element-id'),
+                        thisPreview = $(event.target).closest('.item').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
+                    thisPreview.detach();
+                }
+            });
 
-                // other actions might also cause this to fire, with new HTML
-                // (already parsed into jQuery object) in "replacement"
+            profileNameInput.live('keydown', function (event) {
+                if (event.keyCode === keycodes.ENTER) {
+                    event.preventDefault();
+                    $('#addprofile .form-actions button').focus();
+                }
             });
 
             elementInputs.live('change', function () {
@@ -553,60 +574,75 @@ var TCM = TCM || {};
 
             addElement.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var input = $(this),
-                        name = input.val(),
-                        loading = input.closest('.content'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var newElem = $(response.elem),
-                                newPreview = $(response.preview);
-                            if (!response.no_replace) {
-                                input.closest('.elements').children('li.add-element').before(newElem);
-                                input.closest('.item').find('.preview').append(newPreview);
+                    if ($(this).val().length) {
+                        var input = $(this),
+                            name = input.val(),
+                            loading = input.closest('.content'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var newElem = $(response.elem),
+                                    newPreview = $(response.preview);
+                                if (!response.no_replace) {
+                                    input.closest('.elements').children('li.add-element').before(newElem);
+                                    input.closest('.item').find('.preview').append(newPreview);
 
-                                input.val(null);
-                            }
-                            loading.loadingOverlay('remove');
-                        };
-                    data['category-id'] = input.data('category-id');
-                    data[input.attr('name')] = input.val();
+                                    input.val(null);
+                                }
+                                loading.loadingOverlay('remove');
+                            };
+                        data['category-id'] = input.data('category-id');
+                        data[input.attr('name')] = input.val();
 
-                    loading.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
-
+                        loading.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(ich.message({
+                            message: "Please enter an element name.",
+                            tags: "error"
+                        })).appendTo($('#messages'));
+                        $('#messages').messages();
+                    }
                     event.preventDefault();
                 }
             });
 
             addCategory.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var input = $(this),
-                        loading = input.closest('.content'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var newelem = $(response.html);
-                            if (!response.no_replace) {
-                                input.closest('.items').children('.add-item').before(newelem);
-                                newelem.find('.details').andSelf().html5accordion();
-                                input.val(null);
-                            }
-                            loading.loadingOverlay('remove');
-                        };
-                    data[input.attr('name')] = input.val();
+                    if ($(this).val().length) {
+                        var input = $(this),
+                            loading = input.closest('.content'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var newelem = $(response.html);
+                                if (!response.no_replace) {
+                                    input.closest('.items').children('.add-item').before(newelem);
+                                    newelem.addClass('open').find('.details').andSelf().html5accordion();
+                                    input.val(null).closest('.item').find('.summary').click();
+                                    newelem.find('.elements .add-element input').focus();
+                                }
+                                loading.loadingOverlay('remove');
+                            };
+                        data[input.attr('name')] = input.val();
 
-                    loading.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
-
+                        loading.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(ich.message({
+                            message: "Please enter a category name.",
+                            tags: "error"
+                        })).appendTo($('#messages'));
+                        $('#messages').messages();
+                    }
                     event.preventDefault();
                 }
             });
@@ -630,61 +666,280 @@ var TCM = TCM || {};
 
             editElement.live('keydown', function (event) {
                 if (event.keyCode === keycodes.ENTER) {
-                    var input = $(this),
-                        thisElement = input.closest('.editing'),
-                        name = input.val(),
-                        inputId = input.attr('id'),
-                        elementId = input.data('element-id'),
-                        preview = input.closest('.item').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
-                        checked = input.data('checked'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var editedElem = $(response.elem),
-                                editedPreview = $(response.preview);
+                    if ($(this).val().length) {
+                        var input = $(this),
+                            thisElement = input.closest('.editing'),
+                            name = input.val(),
+                            inputId = input.attr('id'),
+                            elementId = input.data('element-id'),
+                            preview = input.closest('.item').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
+                            checked = input.data('checked'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var editedElem = $(response.elem),
+                                    editedPreview = $(response.preview);
 
-                            if (!response.no_replace) {
-                                thisElement.replaceWith(editedElem);
-                                preview.replaceWith(editedPreview);
+                                if (!response.no_replace) {
+                                    thisElement.replaceWith(editedElem);
+                                    preview.replaceWith(editedPreview);
 
-                                if (checked) {
-                                    $('#' + inputId).prop('checked', checked);
-                                    updateLabels();
+                                    if (checked) {
+                                        $('#' + inputId).prop('checked', checked);
+                                        updateLabels();
+                                    }
+                                    input.val(null);
                                 }
-                                input.val(null);
-                            }
 
-                            thisElement.loadingOverlay('remove');
-                        };
+                                thisElement.loadingOverlay('remove');
+                            };
 
-                    data['element-id'] = elementId;
-                    data[input.attr('name')] = input.val();
+                        data['element-id'] = elementId;
+                        data[input.attr('name')] = input.val();
 
-                    thisElement.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
-
+                        thisElement.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(ich.message({
+                            message: "Please enter an element name.",
+                            tags: "error"
+                        })).appendTo($('#messages'));
+                        $('#messages').messages();
+                    }
                     event.preventDefault();
                 }
             });
         },
 
         editEnvProfile = function () {
-            var replaceList = $('#editprofile .managelist.action-ajax-replace');
-            $('#editprofile #profile-name-form').ajaxForm({
-                success: function (response) {
-                    // take any additional action here?
+            var profileNameInput = $('#editprofile #profile-name-form .profile-name input'),
+                profileName = profileNameInput.val(),
+                profileNameSubmit = $('#editprofile #profile-name-form .form-actions button[type="submit"]').hide(),
+                typedText,
+                newSuggestions,
+
+                addEnv = function () {
+                    var replaceList = $('#editprofile .managelist.action-ajax-replace'),
+                        addEnvTextbox = replaceList.find('.items .item.add-item .env-management #env-elements-input'),
+                        url = addEnvTextbox.data('autocomplete-url'),
+                        newEnvList = replaceList.find('.items .item.add-item #add-environment-form .env-element-list'),
+                        suggestionList = replaceList.find('.items .item.add-item .env-management .suggest').hide(),
+                        addEnvSubmit = replaceList.find('.items .item.add-item #add-environment-form .form-actions #add-environment').hide(),
+
+                        updateSuggestions = function (data) {
+                            var filteredSuggestions;
+                            newSuggestions = ich.env_suggestion(data);
+                            filteredSuggestions = newSuggestions.filter(function (index) {
+                                var thisSuggestion = $(this).find('a').data('id');
+                                return !(newEnvList.find('input[name="element"][value="' + thisSuggestion + '"]').length);
+                            });
+                            suggestionList.html(filteredSuggestions).show().find('li:first-child a').addClass('selected');
+                        },
+
+                        updateAddEnvSubmit = function () {
+                            if (newEnvList.find('input[name="element"]').length) {
+                                addEnvSubmit.fadeIn();
+                            } else {
+                                addEnvSubmit.fadeOut();
+                            }
+                        };
+
+                    $('#editprofile #add-environment-form').ajaxForm({
+                        beforeSubmit: function (arr, form, options) {
+                            replaceList.loadingOverlay();
+                        },
+                        success: function (response) {
+                            var newList = $(response.html);
+                            replaceList.loadingOverlay('remove');
+                            if (response.html) {
+                                replaceList.replaceWith(newList);
+                                addEnv();
+                                newList.find('.details').html5accordion();
+                            }
+                        }
+                    });
+
+                    addEnvTextbox.keyup(function () {
+                        $(this).doTimeout(300, function () {
+                            // Updates suggestion-list if typed-text has changed
+                            if ($(this).val() !== typedText) {
+                                typedText = $(this).val();
+                                if (typedText.length) {
+                                    $.get(url, {text: typedText}, updateSuggestions);
+                                } else {
+                                    suggestionList.empty().hide();
+                                }
+                            }
+                        });
+                    }).keydown(function (event) {
+                        // If the suggestion list is not visible...
+                        if (!suggestionList.is(':visible')) {
+                            // ...and if the textbox is not empty...
+                            if (addEnvTextbox.val() !== '') {
+                                // ...and if the keydown was a non-meta key other than shift, ctrl, alt, caps, or esc...
+                                if (!event.metaKey && event.keyCode !== keycodes.SHIFT && event.keyCode !== keycodes.CTRL && event.keyCode !== keycodes.ALT && event.keyCode !== keycodes.CAPS && event.keyCode !== keycodes.ESC) {
+                                    // ...prevent normal TAB function
+                                    if (event.keyCode === keycodes.TAB || event.keyCode === keycodes.ENTER) {
+                                        event.preventDefault();
+                                    }
+                                    // ...show the suggestion list
+                                    suggestionList.show();
+                                }
+                            // If the textbox is empty...
+                            } else {
+                                // ...and if the keydown was ENTER...
+                                if (event.keyCode === keycodes.ENTER) {
+                                    event.preventDefault();
+                                    // ...submit the form.
+                                    addEnvSubmit.click();
+                                    return false;
+                                }
+                            }
+                        // If the suggestion list is already visible...
+                        } else {
+                            var thisSuggestionName = suggestionList.find('.selected').data('name');
+                            // UP and DOWN move "active" suggestion
+                            if (event.keyCode === keycodes.UP) {
+                                event.preventDefault();
+                                if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                                    suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                                }
+                                return false;
+                            }
+                            if (event.keyCode === keycodes.DOWN) {
+                                event.preventDefault();
+                                if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                                    suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                                }
+                                return false;
+                            }
+                            // ENTER selects the "active" filter suggestion.
+                            if (event.keyCode === keycodes.ENTER) {
+                                event.preventDefault();
+                                if (suggestionList.find('.selected').length) {
+                                    suggestionList.find('.selected').click();
+                                }
+                                return false;
+                            }
+                            // TAB auto-completes the "active" suggestion if it isn't already completed...
+                            if (event.keyCode === keycodes.TAB) {
+                                if (thisSuggestionName && addEnvTextbox.val().toLowerCase() !== thisSuggestionName.toLowerCase()) {
+                                    event.preventDefault();
+                                    addEnvTextbox.val(thisSuggestionName);
+                                    return false;
+                                // ...otherwise, TAB selects the "active" filter suggestion (if exists)
+                                } else {
+                                    if (suggestionList.find('.selected').length) {
+                                        event.preventDefault();
+                                        suggestionList.find('.selected').click();
+                                        return false;
+                                    }
+                                }
+                            }
+                            // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                            if (event.keyCode === keycodes.RIGHT) {
+                                if (thisSuggestionName && addEnvTextbox.val().toLowerCase() !== thisSuggestionName.toLowerCase()) {
+                                    event.preventDefault();
+                                    addEnvTextbox.val(thisSuggestionName);
+                                    return false;
+                                }
+                            }
+                            // ESC hides the suggestion list
+                            if (event.keyCode === keycodes.ESC) {
+                                event.preventDefault();
+                                suggestionList.hide();
+                                return false;
+                            }
+                            return true;
+                        }
+                    }).focus(function () {
+                        // Resets textbox data-clicked to ``false`` (becomes ``true`` when an autocomplete suggestion is clicked)
+                        addEnvTextbox.data('clicked', false);
+                    // On blur, hides the suggestion list after 150 ms if textbox data-clicked is ``false``
+                    }).blur(function () {
+                        function hideList() {
+                            if (addEnvTextbox.data('clicked') !== true) {
+                                suggestionList.hide();
+                                addEnvTextbox.data('clicked', false);
+                            }
+                        }
+                        window.setTimeout(hideList, 150);
+                    });
+
+                    suggestionList.find('a').live({
+                        // Adds ``.selected`` to suggestion on mouseover, removing ``.selected`` from other suggestions
+                        mouseover: function () {
+                            var thisSuggestion = $(this).addClass('selected'),
+                                otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
+                        },
+                        // Prevent the suggestion list from being hidden (by textbox blur event) when clicking a suggestion
+                        mousedown: function () {
+                            addEnvTextbox.data('clicked', true);
+                        },
+                        click: function () {
+                            var newEnv,
+                                id = $(this).data('id'),
+                                name = $(this).data('name');
+                            if (id && name) {
+                                newEnv = ich.env_element_selected({
+                                    id: id,
+                                    name: name
+                                });
+                                if (newEnv.length) {
+                                    newEnvList.append(newEnv);
+                                    updateAddEnvSubmit();
+                                }
+                            }
+
+                            // Reset the textbox, and reset and hide the suggestion list
+                            addEnvTextbox.val(null);
+                            typedText = null;
+                            suggestionList.empty().hide();
+                            return false;
+                        }
+                    });
+
+                    newEnvList.find('li').live('click', function () {
+                        var filteredSuggestions;
+                        $(this).remove();
+                        updateAddEnvSubmit();
+                        filteredSuggestions = newSuggestions.filter(function (index) {
+                            var thisSuggestion = $(this).find('a').data('id');
+                            return !(newEnvList.find('input[name="element"][value="' + thisSuggestion + '"]').length);
+                        });
+                        suggestionList.html(filteredSuggestions);
+                    });
+                };
+
+            addEnv();
+
+            $('#editprofile .managelist.action-ajax-replace').live('replace', function (event, replacement) {
+                // Re-attaches handlers to list after it is reloaded via Ajax.
+                addEnv();
+            });
+
+            profileNameInput.live('keyup', function (event) {
+                if ($(this).val() !== profileName) {
+                    profileNameSubmit.fadeIn();
+                } else {
+                    profileNameSubmit.fadeOut();
                 }
             });
-            $('#editprofile #add-environment-form').ajaxForm({
+
+            profileNameInput.live('keydown', function (event) {
+                if (event.keyCode === keycodes.ENTER && !profileNameSubmit.is(':visible')) {
+                    event.preventDefault();
+                }
+            });
+
+            $('#editprofile #profile-name-form').ajaxForm({
                 success: function (response) {
-                    var newList = $(response.html);
-                    if (response.html) {
-                        replaceList.replaceWith(newList);
-                    }
+                    profileName = profileNameInput.val();
+                    profileNameSubmit.fadeOut();
                 }
             });
         },
