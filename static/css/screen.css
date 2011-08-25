@@ -50,8 +50,7 @@ a img {
   border: none;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
 
@@ -300,6 +299,7 @@ body {
   background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
   background: -moz-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
   background: -o-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
+  background: -ms-linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
   background: linear-gradient(left, rgba(135, 169, 168, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.236), rgba(82, 134, 132, 0.236)), #eeeeee url('../images/noise.png?1314206098');
   text-shadow: rgba(233, 237, 237, 0.618) 0 1px 1px;
   color: #444444;
@@ -320,14 +320,10 @@ body {
 
 /* Links -------------------------------------------------------------- */
 a, a:link, a:visited {
-  -moz-transition-property: color, background-color;
-  -webkit-transition-property: color, background-color;
-  -o-transition-property: color, background-color;
-  transition-property: color, background-color;
-  -moz-transition-duration: 180ms;
-  -webkit-transition-duration: 180ms;
-  -o-transition-duration: 180ms;
-  transition-duration: 180ms;
+  -moz-transition: color, background-color 180ms;
+  -webkit-transition: color, background-color 180ms;
+  -o-transition: color, background-color 180ms;
+  transition: color, background-color 180ms;
   color: #528684;
   text-decoration: none;
 }
@@ -356,7 +352,7 @@ a:focus {
 /* Headings -------------------------------------------------------------- */
 h1 {
   font-size: 1.382em;
-  line-height: 1.171em;
+  line-height: 2.342em;
   font-weight: 700;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
@@ -870,6 +866,7 @@ button {
   background-image: -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   border-color: #759d45;
   border-style: solid;
@@ -922,6 +919,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   border-color: #759d45;
   border-style: solid;
@@ -950,6 +948,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: -webkit-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   background-image: -moz-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   background-image: -o-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
+  background-image: -ms-linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   background-image: linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   border-color: #c78184;
 }
@@ -959,6 +958,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: -webkit-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   background-image: -moz-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   background-image: -o-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
+  background-image: -ms-linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   background-image: linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   border-color: #deb72c;
 }
@@ -968,6 +968,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: -webkit-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   background-image: -moz-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   background-image: -o-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
+  background-image: -ms-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   background-image: linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   border-color: #989898;
 }
@@ -1012,12 +1013,9 @@ button.sub:focus, button.sub:hover, button.sub:active {
   min-width: 800px;
 }
 .container:after, #page:after, .secondary > ul:after, .secondary > ol:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 
 .fullwidth, [role="main"], footer[role="contentinfo"] {
@@ -1027,12 +1025,9 @@ button.sub:focus, button.sub:hover, button.sub:active {
   *zoom: 1;
 }
 .fullwidth:after, [role="main"]:after, footer[role="contentinfo"]:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 
 .simple, #login, #register {
@@ -1061,8 +1056,6 @@ button.sub:focus, button.sub:hover, button.sub:active {
   margin-left: 2.02%;
 }
 #brand a:link, #brand a:visited {
-  padding-top: 0.585em;
-  padding-bottom: 0.585em;
   padding-left: 19px;
   display: block;
   color: inherit;
@@ -1118,7 +1111,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   min-height: 1.618em;
 }
 .drilldown.details .summary {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
   opacity: 0.75;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
@@ -1145,7 +1138,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   z-index: 50;
 }
 .drilldown.details .summary:focus, .drilldown.details .summary:hover, .drilldown.details .summary:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 .drilldown.details.open {
@@ -1153,6 +1146,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background: -webkit-linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
   background: -moz-linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
   background: -o-linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
+  background: -ms-linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
   background: linear-gradient(top, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0) 2.427em, rgba(204, 215, 214, 0.618) 2.427em);
 }
 .drilldown.details.open .summary {
@@ -1173,12 +1167,9 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-bottom: 2.427em;
 }
 [role="main"]:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 
 .messagestyle, .successmessage, .message.success, #messages li.success, .errormessage, .message.error, #messages li.error, .warningmessage, .message.warning, #messages li.warning, #filter .form-actions, .message, #messages li {
@@ -1227,36 +1218,28 @@ button.sub:focus, button.sub:hover, button.sub:active {
   -webkit-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
   -o-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
   box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
-  -moz-transition-property: box-shadow;
-  -webkit-transition-property: box-shadow;
-  -o-transition-property: box-shadow;
-  transition-property: box-shadow;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: box-shadow 300ms;
+  -webkit-transition: box-shadow 300ms;
+  -o-transition: box-shadow 300ms;
+  transition: box-shadow 300ms;
 }
 .message p, #messages li p {
   margin: 0;
 }
 .message::after, #messages li::after {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
-  -moz-transition-property: all;
-  -webkit-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  -o-transition: all 300ms;
+  transition: all 300ms;
   content: "(dismiss)";
   position: absolute;
   top: 0.809em;
   right: 0.809em;
 }
 .message:hover, #messages li:hover {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
   opacity: 0.75;
   -moz-box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
   -webkit-box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
@@ -1265,7 +1248,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   cursor: pointer;
 }
 .message:hover::after, #messages li:hover::after {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 .message .close, #messages li .close {
@@ -1465,14 +1448,14 @@ footer[role="contentinfo"] small {
   display: inline-block;
   vertical-align: middle;
   *vertical-align: auto;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
 [title="edit"]:link, [title="edit"]:visited, [title^="create"]:link, [title^="create"]:visited {
   *display: inline;
 }
 [title="edit"]:focus, [title="edit"]:hover, [title="edit"]:active, [title^="create"]:focus, [title^="create"]:hover, [title^="create"]:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
@@ -1522,11 +1505,11 @@ button[name^="action-"] {
   padding: 0;
   margin: 0;
   border: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=68)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
 button[name^="action-"]:focus, button[name^="action-"]:hover, button[name^="action-"]:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 button[name="action-clone"] {
@@ -1678,6 +1661,7 @@ button[name="action-edit"] {
   background-image: url('../images/ui/refresh.png?1314206098'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/refresh.png?1314206098'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/refresh.png?1314206098'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -ms-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/refresh.png?1314206098'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   padding-left: 26.979px;
   background-repeat: no-repeat;
@@ -1725,12 +1709,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 #filter .content:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 #filter small {
   display: -moz-inline-box;
@@ -1967,7 +1948,7 @@ button[name="action-edit"] {
 }
 #filter .expanded label {
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=62)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=62);
   opacity: 0.618;
   display: block;
   padding: 0.202em 0.405em;
@@ -1983,7 +1964,7 @@ button[name="action-edit"] {
   float: right;
 }
 #filter .expanded input:checked + label {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   font-weight: 500;
   background-image: url('../images/ui/check_sm.png?1314206098');
@@ -2004,7 +1985,7 @@ button[name="action-edit"] {
   position: relative;
 }
 .loading > * {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=24)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=24);
   opacity: 0.236;
 }
 .loading .overlay {
@@ -2039,12 +2020,9 @@ button[name="action-edit"] {
   background: #e9eded;
 }
 .finder:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .finder p {
   margin-bottom: 0;
@@ -2071,14 +2049,10 @@ button[name="action-edit"] {
   width: 275%;
 }
 .finder .col {
-  -moz-transition-property: width;
-  -webkit-transition-property: width;
-  -o-transition-property: width;
-  transition-property: width;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: width 300ms;
+  -webkit-transition: width 300ms;
+  -o-transition: width 300ms;
+  transition: width 300ms;
   display: inline;
   float: left;
   position: relative;
@@ -2186,14 +2160,10 @@ button[name="action-edit"] {
 .finder .logo {
   display: inline;
   float: left;
-  -moz-transition-property: all;
-  -webkit-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  -o-transition: all 300ms;
+  transition: all 300ms;
   width: 1.618em;
   margin-right: 0.809em;
 }
@@ -2211,12 +2181,9 @@ button[name="action-edit"] {
   cursor: pointer;
 }
 .finder label:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .finder li {
   position: relative;
@@ -2268,7 +2235,7 @@ button[name="action-edit"] {
   display: none;
 }
 .finder .goto:link, .finder .goto:visited {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   text-indent: -119988px;
   overflow: hidden;
@@ -2282,17 +2249,17 @@ button[name="action-edit"] {
   width: 13.043%;
 }
 .finder .goto:focus, .finder .goto:hover, .finder .goto:active {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 .finder .completion {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
   position: absolute;
   z-index: -1;
 }
 .finder .focus .completion {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   position: static;
   z-index: auto;
@@ -2338,7 +2305,7 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 .finder .bystart, .finder .byend, .finder .bycompletion {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
   opacity: 0.75;
 }
 .finder .start, .finder .end {
@@ -2356,12 +2323,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 .environment li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .environment label, .environment .readonly dt {
   display: inline;
@@ -2426,6 +2390,7 @@ button[name="action-edit"] {
   background-image: url('../images/ui/plus.png?1314206098'), -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/plus.png?1314206098'), -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/plus.png?1314206098'), -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -ms-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   background-image: url('../images/ui/plus.png?1314206098'), linear-gradient(top center, #b5e37f 0%, #77b929 100%);
   padding-left: 26.979px;
   background-repeat: no-repeat;
@@ -2451,12 +2416,9 @@ button[name="action-edit"] {
   clear: both;
 }
 .managelist .item:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .managelist .item.details {
   padding: 0;
@@ -2467,12 +2429,9 @@ button[name="action-edit"] {
   padding-bottom: 0.405em;
 }
 .managelist .summary:after, .managelist .content:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .managelist .summary label {
   padding: 0;
@@ -2485,6 +2444,7 @@ button[name="action-edit"] {
   background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
+  background-image: -ms-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0.382), rgba(233, 237, 237, 0));
   outline: 0;
 }
@@ -2493,6 +2453,7 @@ button[name="action-edit"] {
   background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -ms-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
 }
 .managelist .content {
@@ -2500,6 +2461,7 @@ button[name="action-edit"] {
   background-image: -webkit-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
   background-image: -moz-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
   background-image: -o-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
+  background-image: -ms-linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
   background-image: linear-gradient(left, rgba(204, 215, 214, 0), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0.382), rgba(204, 215, 214, 0));
 }
 .managelist .title, .managelist .run, .managelist .cycle, .managelist .product {
@@ -2515,6 +2477,7 @@ button[name="action-edit"] {
   background-image: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background-image: -ms-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background-image: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   padding-top: 1.618em;
   padding-bottom: 1.618em;
@@ -2911,12 +2874,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 .components:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 
 .sortlinks:link, .listordering a:link, .sortlinks:visited, .listordering a:visited {
@@ -2950,7 +2910,7 @@ button[name="action-edit"] {
   color: #511214;
 }
 .sortlinks:focus::after, .listordering a:focus::after, .sortlinks:hover::after, .listordering a:hover::after, .sortlinks:active::after, .listordering a:active::after {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-image: url('../images/ui/angle_up.png?1314206098');
 }
@@ -3047,12 +3007,9 @@ button[name="action-edit"] {
   white-space: nowrap;
 }
 .listnav:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .expired .listnav {
   background: rgba(253, 200, 14, 0.618);
@@ -3125,12 +3082,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 .simpleform li:after, #register form li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .simpleform label, #register form label, .simpleform .readonly dt, #register form .readonly dt {
   display: inline;
@@ -3234,23 +3188,17 @@ button[name="action-edit"] {
   padding-right: 46.316%;
 }
 .addform .basic:after, #addproduct .basic:after, #addcycle .basic:after, #addrun .basic:after, #addsuite .basic:after, #single-case-form .basic:after, #bulk-case-form .basic:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .addform .basic li, #addproduct .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li {
   *zoom: 1;
 }
 .addform .basic li:after, #addproduct .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addproduct .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
   display: inline;
@@ -3528,6 +3476,7 @@ button[name="action-edit"] {
   background: rgba(233, 237, 237, 0.382) -webkit-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   background: rgba(233, 237, 237, 0.382) -moz-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   background: rgba(233, 237, 237, 0.382) -o-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
+  background: rgba(233, 237, 237, 0.382) -ms-linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   clear: both;
 }
@@ -3718,12 +3667,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 #single-case-form li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 #single-case-form .steps {
   clear: both;
@@ -3776,23 +3722,19 @@ button[name="action-edit"] {
   margin-right: 0;
 }
 #single-case-form .steps-form .removefields {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=25)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
   opacity: 0.25;
-  -moz-transition-property: opacity;
-  -webkit-transition-property: opacity;
-  -o-transition-property: opacity;
-  transition-property: opacity;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: opacity 300ms;
+  -webkit-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  transition: opacity 300ms;
   position: absolute;
   left: 0;
   top: 3.641em;
   width: 14px;
 }
 #single-case-form .steps-form:hover .removefields {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 #single-case-form .steps-form .errorlist {
@@ -3949,6 +3891,7 @@ button[name="action-edit"] {
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -ms-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0.146), rgba(181, 227, 127, 0));
   font-weight: 500;
   display: block;
@@ -3960,6 +3903,7 @@ button[name="action-edit"] {
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -webkit-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -moz-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -o-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
+  background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, -ms-linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
   background: url('../images/ui/plus.png?1314206098') no-repeat scroll 0.202em 0.607em, linear-gradient(left, rgba(181, 227, 127, 0), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0.382), rgba(181, 227, 127, 0));
 }
 
@@ -4196,12 +4140,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 #addprofile .elements li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 #addprofile .elements li label {
   font-weight: normal;
@@ -4286,12 +4227,9 @@ button[name="action-edit"] {
   margin-left: 0px;
 }
 .env-element-list:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .env-element-list li {
   display: inline;
@@ -4362,12 +4300,9 @@ button[name="action-edit"] {
   *zoom: 1;
 }
 #run .test:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 #run .header {
   display: inline;
@@ -4460,12 +4395,9 @@ button[name="action-edit"] {
   counter-increment: step;
 }
 #run .steps > li:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 #run .steps > li::before {
   font-size: 3.429em;
@@ -4489,14 +4421,10 @@ button[name="action-edit"] {
 }
 #run .stepfail .summary {
   font-weight: 700;
-  -moz-transition-property: all;
-  -webkit-transition-property: all;
-  -o-transition-property: all;
-  transition-property: all;
-  -moz-transition-duration: 300ms;
-  -webkit-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
+  -moz-transition: all 300ms;
+  -webkit-transition: all 300ms;
+  -o-transition: all 300ms;
+  transition: all 300ms;
   text-shadow: rgba(185, 41, 47, 0.382) 0 1px 0;
   position: absolute;
   top: -1.618em;
@@ -4590,18 +4518,16 @@ button[name="action-edit"] {
   border-radius: 0.382em;
 }
 .testsummary:after {
-  content: "\0020";
-  display: block;
-  height: 0;
+  content: "";
+  display: table;
   clear: both;
-  overflow: hidden;
-  visibility: hidden;
 }
 .testsummary:focus, .testsummary:hover, .testsummary:active {
   background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(233, 237, 237, 0)), color-stop(33.333%, rgba(233, 237, 237, 0.618)), color-stop(66.667%, rgba(233, 237, 237, 0.618)), color-stop(100%, rgba(233, 237, 237, 0)));
   background: -webkit-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background: -moz-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background: -o-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
+  background: -ms-linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
   background: linear-gradient(left, rgba(233, 237, 237, 0), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0));
 }
 .test[open] .testsummary {
@@ -4609,6 +4535,7 @@ button[name="action-edit"] {
   background: -webkit-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
   background: -moz-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
   background: -o-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
+  background: -ms-linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
   background: linear-gradient(left, rgba(135, 169, 168, 0), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0.382), rgba(135, 169, 168, 0));
 }
 .started .testsummary, .started[open] .testsummary {
@@ -5523,7 +5450,7 @@ button[name="action-edit"] {
 }
 
 #page-status {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   position: fixed;
   top: 100%;
@@ -5579,7 +5506,7 @@ button[name="action-edit"] {
   background: #eeeeee;
 }
 #page-status:hover {
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   top: auto;
 }
