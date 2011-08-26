@@ -287,7 +287,12 @@
       position: absolute
       left: 0
       top: rhythm(2.25)
-      width: image-width('ui/x_circle.png')
+      width: image-width('ui/x_circle.png') + $smallpx
+      #{$focus}
+        +opacity(1)
+        +border-radius
+        background-color: rgba($red,$xsmall)
+        outline: 0
     &:hover
       .removefields
         +opacity(1)

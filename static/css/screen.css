@@ -4038,7 +4038,19 @@ footer[role="contentinfo"] small {
   position: absolute;
   left: 0;
   top: 3.641em;
-  width: 14px;
+  width: 22.653px;
+}
+#single-case-form .steps-form .removefields:focus, #single-case-form .steps-form .removefields:hover, #single-case-form .steps-form .removefields:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  background-color: rgba(185, 41, 47, 0.382);
+  outline: 0;
 }
 #single-case-form .steps-form:hover .removefields {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
