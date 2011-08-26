@@ -324,4 +324,17 @@
     +columns(11,24)
     +omega(24)
     +leader(.25)
+    +clearfix
     color: rgba($base,$small)
+    h3
+      +gone
+    li
+      list-style: decimal
+      &::before
+        +bold
+    strong
+      +demi
+      text-transform: uppercase
+
+
+

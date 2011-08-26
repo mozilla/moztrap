@@ -4103,7 +4103,29 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
   margin-top: 0.405em;
+  overflow: hidden;
+  *zoom: 1;
   color: rgba(68, 68, 68, 0.618);
+}
+#bulk-case-form .fieldhelp h3 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#bulk-case-form .fieldhelp li {
+  list-style: decimal;
+}
+#bulk-case-form .fieldhelp li::before {
+  font-weight: 700;
+}
+#bulk-case-form .fieldhelp strong {
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .leftcolumnpadding, #manageproducts .title, #manageprofiles .title {
@@ -4736,12 +4758,12 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #4f7a1b;
-  background-image: url('../images/ui/check_light.png?1314311418'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/check_light.png?1314311418'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314311418'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314311418'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314311418'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/check_light.png?1314311418'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314312255'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314312255'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314312255'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/check_light.png?1314312255'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
@@ -4766,12 +4788,12 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #511214;
-  background-image: url('../images/ui/x_light.png?1314311418'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/x_light.png?1314311418'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314311418'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314311418'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314311418'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/x_light.png?1314311418'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314312255'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314312255'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314312255'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/x_light.png?1314312255'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
@@ -4796,12 +4818,12 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #a38001;
-  background-image: url('../images/ui/warning_light.png?1314311418'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
-  background-image: url('../images/ui/warning_light.png?1314311418'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314311418'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314311418'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314311418'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314311418'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(68, 68, 68, 0.236)), color-stop(50%, rgba(68, 68, 68, 0)), color-stop(50%, rgba(251, 251, 251, 0)), color-stop(100%, rgba(251, 251, 251, 0.382)));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -moz-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -o-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -ms-linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
+  background-image: url('../images/ui/warning_light.png?1314312255'), linear-gradient(top, rgba(68, 68, 68, 0.236), rgba(68, 68, 68, 0) 50%, rgba(251, 251, 251, 0) 50%, rgba(251, 251, 251, 0.382));
   -moz-box-shadow: #444444 0 0 4px inset;
   -webkit-box-shadow: #444444 0 0 4px inset;
   -o-box-shadow: #444444 0 0 4px inset;
