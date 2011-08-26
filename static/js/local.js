@@ -3,7 +3,7 @@
             confusion:  true */
 /*global    ich, jQuery */
 
-var TCM = TCM || {};
+var CC = CC || {};
 
 (function ($) {
 
