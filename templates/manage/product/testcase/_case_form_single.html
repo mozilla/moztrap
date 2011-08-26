@@ -16,6 +16,9 @@
     <li>
       {% include "forms/_field.html" with field=single_form.name %}
     </li>
+    <li>
+      {% include "forms/_field.html" with field=single_form.description %}
+    </li>
     {% block caseversions %}{% endblock caseversions %}
     {% comment %} @@@
     <li>

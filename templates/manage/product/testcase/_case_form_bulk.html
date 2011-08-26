@@ -18,7 +18,15 @@
     <div class="fieldhelp">
       <section class="keywords">
         <h3>Keyword Instructions</h3>
-        <p>how to use given... for... etc.</p>
+        <ul>
+          <li>The first line must begin with "Test that ", and becomes the name of the new test case.</li>
+          <li>There must be at least one description line following that, possibly more. These descriptions may be in any format; there are no required keywords.</li>
+          <li>Following the description line(s) there must be a line beginning with "When ". This marks the beginning of a step instruction.</li>
+          <li>Additional lines can follow that are also part of the instruction, until a line beginning with "Then ", which marks the beginning of the expected result of that step.</li>
+          <li>Any following lines are also part of that expected result, until either another "When " line (marking the start of the instruction for the next step), or another "Test that " line (marking the beginning of a new test case).</li>
+          <li>The start-of-instruction for any step after the first may optionally use "And when " rather than just "When ". Alternatively, "And" may be used on a line by itself between steps, in which case it will be ignored.</li>
+          <li>White space at the beginning or end of lines is ignored, and all keywords are case-insensitive.</li>
+        </ul>
       </section>
       {% comment %}
       <section class="markdown">

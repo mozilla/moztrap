@@ -225,6 +225,7 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
     def edit_data(self):
         return {
             "name": "New name",
+            "description": "Some description",
             }
 
 

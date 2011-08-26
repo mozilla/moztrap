@@ -2,42 +2,34 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
 from ..users.decorators import login_redirect
+from ..testexecution.models import TestRunList
 
 from .forms import EnvironmentSelectionForm
-from .models import EnvironmentGroup
 
 
 
 @login_redirect
-def set_environment(request):
+def set_environment(request, testrun_id):
     """
-    Given a list of environment-group IDs (in the GET querystring), allow the
-    user to choose a valid environment-group from among those, set that
-    environment-group ID in the user's session, and redirect to the test run
-    finder (or a "next" URL given in querystring or POST data).
+    Given a test run ID, allow the user to choose a valid environment-group
+    from among those valid for that test run, set that environment-group ID in
+    the user's session, and redirect to that test run.
 
     """
-    next = request.REQUEST.get("next", "runtests")
-
-    groups = [
-        EnvironmentGroup.get(
-            "environmentgroups/%s" % gid,
-            auth=request.auth)
-        for gid in request.GET.getlist("gid")
-        ]
+    run = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
     form = EnvironmentSelectionForm(
         request.POST or None,
-        groups=groups,
+        groups=run.environmentgroups,
         current=request.session.get("environments", None))
 
     if request.method == "POST" and form.is_valid():
         request.session["environments"] = form.save()
-        return redirect(next)
+        return redirect("runtests_run", testrun_id=testrun_id)
 
     return TemplateResponse(
         request,
         "runtests/environment.html",
         {"form": form,
-         "next": next
+         "testrun": run,
          })

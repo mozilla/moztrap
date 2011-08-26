@@ -1,9 +1,9 @@
 from django import template
+from django.core.urlresolvers import reverse
 
 from classytags.core import Tag, Options
 from classytags.arguments import Argument
 
-from .. import util
 from ..forms import EnvironmentSelectionForm
 
 
@@ -35,8 +35,8 @@ register.tag(GetEnvironmentSelectionForm)
 
 
 @register.filter
-def set_environment_url(environmentgroups):
-    return util.set_environment_url(environmentgroups)
+def set_environment_url(run):
+    return reverse("runtests_environment", kwargs={"testrun_id": run.id})
 
 
 

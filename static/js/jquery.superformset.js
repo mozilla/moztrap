@@ -63,23 +63,55 @@
                         if (options.removeAnimationSpeed) {
                             row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
                                 $(this).hide();
+                                forms = parent.find(options.formSelector).not(':hidden');
+                                totalForms.val(forms.length);
+                                // Update names and IDs for all child controls, if this isn't a delete-able
+                                // inline formset, so they remain in sequence.
+                                for (i = 0; i < forms.length; i = i + 1) {
+                                    if (!del.length) {
+                                        updateSequence(forms, i);
+                                    }
+                                }
                             });
                         } else {
                             row.hide();
+                            forms = parent.find(options.formSelector).not(':hidden');
+                            totalForms.val(forms.length);
+                            // Update names and IDs for all child controls, if this isn't a delete-able
+                            // inline formset, so they remain in sequence.
+                            for (i = 0; i < forms.length; i = i + 1) {
+                                if (!del.length) {
+                                    updateSequence(forms, i);
+                                }
+                            }
                         }
-                        forms = parent.find(options.formSelector).not(':hidden');
                     } else {
-                        row.remove();
-
-                        // Update the TOTAL_FORMS count:
-                        forms = parent.find(options.formSelector);
-                        totalForms.val(forms.length);
-                    }
-                    // Update names and IDs for all child controls, if this isn't a delete-able
-                    // inline formset, so they remain in sequence.
-                    for (i = 0; i < forms.length; i = i + 1) {
-                        if (!del.length) {
-                            updateSequence(forms, i);
+                        if (options.removeAnimationSpeed) {
+                            row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
+                                $(this).remove();
+                                // Update the TOTAL_FORMS count:
+                                forms = parent.find(options.formSelector);
+                                totalForms.val(forms.length);
+                                // Update names and IDs for all child controls, if this isn't a delete-able
+                                // inline formset, so they remain in sequence.
+                                for (i = 0; i < forms.length; i = i + 1) {
+                                    if (!del.length) {
+                                        updateSequence(forms, i);
+                                    }
+                                }
+                            });
+                        } else {
+                            row.remove();
+                            // Update the TOTAL_FORMS count:
+                            forms = parent.find(options.formSelector);
+                            totalForms.val(forms.length);
+                            // Update names and IDs for all child controls, if this isn't a delete-able
+                            // inline formset, so they remain in sequence.
+                            for (i = 0; i < forms.length; i = i + 1) {
+                                if (!del.length) {
+                                    updateSequence(forms, i);
+                                }
+                            }
                         }
                     }
                     // If a post-delete callback was provided, call it with the deleted form:
@@ -90,7 +122,34 @@
 
             hideAddButton = !showAddButton(),
             addButton,
-            template;
+            template,
+
+            autoAddRow = function () {
+                var formCount = parseInt(totalForms.val(), 10),
+                    row = options.formTemplate.clone(true);
+                if (options.addAnimationSpeed) {
+                    row.hide().css('opacity', 0).appendTo(parent).animate({'height': 'toggle', 'opacity': '0.5'}, options.addAnimationSpeed);
+                } else {
+                    row.css('opacity', 0.5).appendTo(parent);
+                }
+                row.find('input, select, textarea, label').focus(function () {
+                    $(this).closest(options.formSelector).css('opacity', 1);
+                    $(this).attr('required', 'required');
+                    if (options.deleteOnlyActive) {
+                        $(this).closest(options.formSelector).find('.removefields').fadeIn();
+                    }
+                }).each(function () {
+                    updateElementIndex($(this), options.prefix, formCount);
+                    $(this).removeAttr('required');
+                });
+                totalForms.val(formCount + 1);
+                if (options.deleteOnlyActive) {
+                    row.find('.removefields').hide();
+                }
+                // If a post-add callback was supplied, call it with the added form:
+                if (options.added) { options.added(row); }
+                return false;
+            };
 
         $$.each(function (i) {
             var row = $(this),
@@ -128,26 +187,9 @@
         options.formTemplate = template;
 
         if (options.autoAdd) {
-            parent.find('input, select, textarea, label').live('keyup', function () {
-                if (showAddButton() && $(this).closest(options.formSelector).is(':last-child') && $(this).is($(this).closest(options.formSelector).find('input, select, textarea, label').last()) && $(this).val().length) {
-                    var formCount = parseInt(totalForms.val(), 10),
-                        row = options.formTemplate.clone(true);
-                    if (options.addAnimationSpeed) {
-                        row.hide().css('opacity', 0).appendTo(parent).animate({'height': 'toggle', 'opacity': '0.5'}, options.addAnimationSpeed).find('input, select, textarea, label').focus(function () {
-                            $(this).closest(options.formSelector).css('opacity', 1);
-                        });
-                    } else {
-                        row.css('opacity', 0.5).appendTo(parent).find('input, select, textarea, label').focus(function () {
-                            $(this).closest(options.formSelector).css('opacity', 1);
-                        });
-                    }
-                    row.find('input, select, textarea, label').each(function () {
-                        updateElementIndex($(this), options.prefix, formCount);
-                    });
-                    totalForms.val(formCount + 1);
-                    // If a post-add callback was supplied, call it with the added form:
-                    if (options.added) { options.added(row); }
-                    return false;
+            parent.find('input, select, textarea, label').live('focus', function () {
+                if (showAddButton() && $(this).closest(options.formSelector).is(':last-child')) {
+                    autoAddRow();
                 }
             });
         } else {
@@ -175,6 +217,10 @@
             });
         }
 
+        if (options.alwaysShowExtra && options.autoAdd) {
+            autoAddRow();
+        }
+
         return $$;
     };
 
@@ -197,6 +243,8 @@
         deleteOnlyNew: false,           // If true, only newly-added rows can be deleted
         formSelector: '.dynamic-form',  // jQuery selector used to match each form in a formset
         added: null,                    // Function called each time a new form is added
-        removed: null                   // Function called each time a form is deleted
+        removed: null,                  // Function called each time a form is deleted
+        alwaysShowExtra: false,         // If true, an extra (empty) row will always be displayed (requires `autoAdd: true`)
+        deleteOnlyActive: false         // If true, extra empty rows cannot be removed until they acquire focus
     };
 }(jQuery));
