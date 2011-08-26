@@ -301,6 +301,32 @@
       +padding-leader(.25)
       +padding-trailer(.25)
 
+  .insert-step
+    +cond
+    +demi
+    +adjust-font-size-to(12px)
+    +text-icon('ui/arrow_right.png')
+    +opacity(0)
+    +transition(opacity 300ms)
+    +stretch-x
+    top: - rhythm(.5,12px)
+    color: inherit
+    text-transform: uppercase
+    &::after
+      content: " "
+      position: absolute
+      top: 0
+      right: 0
+      left: columns(2,24) + gutter(24)
+      height: rhythm(.5)
+      border-bottom: 2px dashed rgba($blue-darker,$xsmall)
+    &:hover
+      +opacity(1)
+
+  .extra-row, .steps-form:first-child
+    .insert-step
+      display: none
+
   .form-actions
     +full(24)
     +prefix(12,24)

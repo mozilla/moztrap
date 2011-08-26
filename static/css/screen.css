@@ -4062,6 +4062,51 @@ footer[role="contentinfo"] small {
   padding-top: 0.405em;
   padding-bottom: 0.405em;
 }
+#single-case-form .insert-step {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 0.857em;
+  line-height: 1.888em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0.25em 0 24.5px;
+  border: 0;
+  background-repeat: no-repeat;
+  text-align: left;
+  background-image: url('../images/ui/arrow_right.png?1314206098');
+  background-position: 0.375em;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -moz-transition: opacity 300ms;
+  -webkit-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  transition: opacity 300ms;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -0.944em;
+  color: inherit;
+  text-transform: uppercase;
+}
+#single-case-form .insert-step::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 8.421%;
+  height: 0.809em;
+  border-bottom: 2px dashed rgba(71, 84, 84, 0.382);
+}
+#single-case-form .insert-step:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+#single-case-form .extra-row .insert-step, #single-case-form .steps-form:first-child .insert-step {
+  display: none;
+}
 #single-case-form .form-actions {
   clear: both;
   padding-left: 50.526%;
