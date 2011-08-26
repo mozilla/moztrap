@@ -1,13 +1,9 @@
-from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseBadRequest
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from ..core import decorators as dec
-from ..environments.util import set_environment_url
-from ..products.models import ProductList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..users.decorators import login_redirect
 
@@ -34,8 +30,7 @@ def finder_environments(request, run_id):
     return TemplateResponse(
         request,
         "runtests/_environment_form.html",
-        {"object": run,
-         "next": reverse("runtests_run", kwargs={"testrun_id": run_id}),
+        {"testrun": run,
          })
 
 
@@ -47,10 +42,7 @@ def runtests(request, testrun_id):
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
     if not testrun.environmentgroups.match(request.environments):
-        return HttpResponseRedirect("%s&next=%s" % (
-            set_environment_url(testrun.environmentgroups),
-            request.path
-            ))
+        return redirect("runtests_environment", testrun_id=testrun_id)
 
     cycle = testrun.testCycle
     product = cycle.product

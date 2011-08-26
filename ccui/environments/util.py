@@ -53,11 +53,3 @@ def match(testenvs, matchenvs):
         except KeyError:
             return False
     return True
-
-
-
-def set_environment_url(environmentgroups):
-    return "%s?%s" % (
-        reverse("environment"),
-        "&".join(["gid=%s" % g.id for g
-                  in environmentgroups]))

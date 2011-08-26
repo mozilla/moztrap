@@ -9,9 +9,9 @@ urlpatterns = patterns(
 
     # run tests
     url("^$", "ccui.testexecution.views.home", name="runtests"),
-    url("^environment/$",
+    url("^environment/(?P<testrun_id>\d+)/$",
         "ccui.environments.views.set_environment",
-        name="environment"),
+        name="runtests_environment"),
     url("^run/(?P<testrun_id>\d+)/$",
         "ccui.testexecution.views.runtests",
         name="runtests_run"),
