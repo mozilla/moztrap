@@ -22,14 +22,16 @@
       function() {
           $('ol.steplist').formset(
               {
-                  prefix: '{{ form.steps_formset.prefix }}',
+                  prefix: '{{ single_form.steps_formset.prefix }}',
                   formTemplate: '#empty-step-form > li',
                   formSelector: '.steps-form',
                   deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
                   addAnimationSpeed: 'normal',
                   removeAnimationSpeed: 'fast',
                   autoAdd: true,
-                  deleteOnlyNew: true
+                  deleteOnlyNew: true,
+                  alwaysShowExtra: true,
+                  deleteOnlyActive: true
               });
       });
 
