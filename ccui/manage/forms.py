@@ -187,6 +187,7 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
 
 class TestCaseForm(ccforms.AddEditForm):
     name = forms.CharField()
+    description = forms.CharField()
     product = ccforms.ModelChoiceField()
     # @@@ tags = forms.CharField(required=False)
 
