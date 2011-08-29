@@ -3,8 +3,6 @@
             confusion:  true */
 /*global    ich, jQuery */
 
-var TCM = TCM || {};
-
 (function ($) {
 
     'use strict';
@@ -955,7 +953,6 @@ var TCM = TCM || {};
                 container = context.find(containerSelector),
                 slides = context.find(slidesSelector),
                 slideLinks = context.find(slideLinksSelector),
-                hash = false,
                 showSlide = function (slide) {
                     var thisLink = slideLinks.filter('a[href="#' + $(slide).attr('id') + '"]');
                     $(slide).addClass('active-slide').removeClass('inactive-slide');
@@ -972,14 +969,11 @@ var TCM = TCM || {};
                 return false;
             });
 
-            slides.each(function () {
-                if (window.location.hash === '#' + $(this).attr('id')) {
-                    hash = true;
+            if (window.location.hash.length) {
+                var hash = window.location.hash.substring(1);
+                if (slides.filter('[id^="' + hash + '"]').length) {
+                    showSlide(slides.filter('[id^="' + hash + '"]'));
                 }
-            });
-
-            if (hash) {
-                showSlide(window.location.hash);
             }
         };
 
@@ -989,7 +983,7 @@ var TCM = TCM || {};
         manageActionsAjax();
         createEnvProfile();
         editEnvProfile();
-        slideshow('#addcase', '.forms', '.forms form', 'a[href^="#"][href$="-case-form"]');
+        slideshow('#addcase', '.forms', '.forms form[id$="-case-form"]', 'a[href^="#"][href$="-case-form"]');
         $('.details:not(html)').html5accordion();
         $('#messages').messages({
             handleAjax: true,

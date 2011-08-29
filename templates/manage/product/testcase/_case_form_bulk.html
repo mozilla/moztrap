@@ -1,4 +1,4 @@
-<form id="bulk-case-form" method="POST" action="#bulk-case-form">
+<form id="bulk-case-form" method="POST" action="#bulk">
   {% csrf_token %}
   {{ bulk_form.non_field_errors }}
   <ul class="basic">
@@ -15,26 +15,20 @@
   </ul>
   <div class="bulk-field">
     {% include "forms/_field.html" with field=bulk_form.cases %}
-    <div class="fieldhelp">
-      <section class="keywords">
-        <h3>Keyword Instructions</h3>
-        <ul>
-          <li>The first line must begin with "Test that ", and becomes the name of the new test case.</li>
-          <li>There must be at least one description line following that, possibly more. These descriptions may be in any format; there are no required keywords.</li>
-          <li>Following the description line(s) there must be a line beginning with "When ". This marks the beginning of a step instruction.</li>
-          <li>Additional lines can follow that are also part of the instruction, until a line beginning with "Then ", which marks the beginning of the expected result of that step.</li>
-          <li>Any following lines are also part of that expected result, until either another "When " line (marking the start of the instruction for the next step), or another "Test that " line (marking the beginning of a new test case).</li>
-          <li>The start-of-instruction for any step after the first may optionally use "And when " rather than just "When ". Alternatively, "And" may be used on a line by itself between steps, in which case it will be ignored.</li>
-          <li>White space at the beginning or end of lines is ignored, and all keywords are case-insensitive.</li>
-        </ul>
-      </section>
-      {% comment %}
-      <section class="markdown">
-        <h3>Markdown Instructions</h3>
-        <p>how to use markdown.</p>
-      </section>
-      {% endcomment %}
-    </div>
+    <section class="fieldhelp">
+      <h3>Keyword Instructions</h3>
+      <p>
+        Use the following <strong>keywords</strong> and line-breaks to format your test&nbsp;cases.<br />
+        (All fields are required. Keywords are not case&nbsp;sensitive.)
+      </p>
+      <ol>
+        <li>"<strong>Test that</strong>" - One line <em>naming</em> your test&nbsp;case.</li>
+        <li>One or more lines of <em>description</em> in any&nbsp;format.</li>
+        <li>"<strong>When</strong>" - One or more lines describing a single step&nbsp;<em>instruction</em>.</li>
+        <li>"<strong>Then</strong>" - One or more lines describing the expected <em>result</em> of that&nbsp;step.</li>
+        <li>Repeat 3-4 as needed for multiple steps, or begin a new test case with "<strong>Test&nbsp;that</strong>".</li>
+      </ol>
+    </section>
   </div>
   <div class="form-actions">
     <button type="submit" name="bulk-save" value="1">save test cases</button>

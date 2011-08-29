@@ -63,27 +63,13 @@
                         if (options.removeAnimationSpeed) {
                             row.animate({'height': 'toggle', 'opacity': 'toggle'}, options.removeAnimationSpeed, function () {
                                 $(this).hide();
-                                forms = parent.find(options.formSelector).not(':hidden');
+                                forms = parent.find(options.formSelector).not(':hidden').not('.extra-row');
                                 totalForms.val(forms.length);
-                                // Update names and IDs for all child controls, if this isn't a delete-able
-                                // inline formset, so they remain in sequence.
-                                for (i = 0; i < forms.length; i = i + 1) {
-                                    if (!del.length) {
-                                        updateSequence(forms, i);
-                                    }
-                                }
                             });
                         } else {
                             row.hide();
-                            forms = parent.find(options.formSelector).not(':hidden');
+                            forms = parent.find(options.formSelector).not(':hidden').not('.extra-row');
                             totalForms.val(forms.length);
-                            // Update names and IDs for all child controls, if this isn't a delete-able
-                            // inline formset, so they remain in sequence.
-                            for (i = 0; i < forms.length; i = i + 1) {
-                                if (!del.length) {
-                                    updateSequence(forms, i);
-                                }
-                            }
                         }
                     } else {
                         if (options.removeAnimationSpeed) {
@@ -91,7 +77,7 @@
                                 $(this).remove();
                                 // Update the TOTAL_FORMS count:
                                 forms = parent.find(options.formSelector);
-                                totalForms.val(forms.length);
+                                totalForms.val(forms.not('.extra-row').length);
                                 // Update names and IDs for all child controls, if this isn't a delete-able
                                 // inline formset, so they remain in sequence.
                                 for (i = 0; i < forms.length; i = i + 1) {
@@ -104,7 +90,7 @@
                             row.remove();
                             // Update the TOTAL_FORMS count:
                             forms = parent.find(options.formSelector);
-                            totalForms.val(forms.length);
+                            totalForms.val(forms.not('.extra-row').length);
                             // Update names and IDs for all child controls, if this isn't a delete-able
                             // inline formset, so they remain in sequence.
                             for (i = 0; i < forms.length; i = i + 1) {
@@ -120,6 +106,42 @@
                 });
             },
 
+            insertAboveLink = function (row) {
+                $(options.insertAboveLink).appendTo(row).click(function () {
+                    var thisRow = $(this).closest(options.formSelector),
+                        formCount = parent.find(options.formSelector).length,
+                        row = options.formTemplate.clone(true).addClass('new-row'),
+                        forms,
+                        i,
+                        updateSequence = function (forms, i) {
+                            forms.eq(i).find('input,select,textarea,label').each(function () {
+                                updateElementIndex($(this), options.prefix, i);
+                            });
+                        };
+                    if (options.addAnimationSpeed) {
+                        row.hide().insertBefore(thisRow).animate({"height": "toggle", "opacity": "toggle"}, options.addAnimationSpeed);
+                    } else {
+                        row.insertBefore(thisRow).show();
+                    }
+                    row.find('input,select,textarea,label').each(function () {
+                        updateElementIndex($(this), options.prefix, formCount);
+                    });
+                    // Update the TOTAL_FORMS count:
+                    forms = parent.find(options.formSelector);
+                    totalForms.val(forms.not('.extra-row').length);
+                    // Update names and IDs for all child controls so they remain in sequence.
+                    for (i = 0; i < forms.length; i = i + 1) {
+                        updateSequence(forms, i);
+                    }
+                    // Check if we've exceeded the maximum allowed number of forms:
+                    if (!showAddButton()) { $(this).hide(); }
+                    // If a post-add callback was supplied, call it with the added form:
+                    if (options.added) { options.added(row); }
+                    $(this).blur();
+                    return false;
+                });
+            },
+
             hideAddButton = !showAddButton(),
             addButton,
             template,
@@ -128,23 +150,23 @@
                 var formCount = parseInt(totalForms.val(), 10),
                     row = options.formTemplate.clone(true);
                 if (options.addAnimationSpeed) {
-                    row.hide().css('opacity', 0).appendTo(parent).animate({'height': 'toggle', 'opacity': '0.5'}, options.addAnimationSpeed);
+                    row.hide().css('opacity', 0).appendTo(parent).addClass('extra-row').animate({'height': 'toggle', 'opacity': '0.5'}, options.addAnimationSpeed);
                 } else {
-                    row.css('opacity', 0.5).appendTo(parent);
+                    row.css('opacity', 0.5).appendTo(parent).addClass('extra-row');
                 }
                 row.find('input, select, textarea, label').focus(function () {
-                    $(this).closest(options.formSelector).css('opacity', 1);
+                    $(this).closest(options.formSelector).removeClass('extra-row').css('opacity', 1);
                     $(this).attr('required', 'required');
+                    totalForms.val(formCount + 1);
                     if (options.deleteOnlyActive) {
-                        $(this).closest(options.formSelector).find('.removefields').fadeIn();
+                        $(this).closest(options.formSelector).find(options.deleteLinkSelector).fadeIn();
                     }
                 }).each(function () {
                     updateElementIndex($(this), options.prefix, formCount);
                     $(this).removeAttr('required');
                 });
-                totalForms.val(formCount + 1);
                 if (options.deleteOnlyActive) {
-                    row.find('.removefields').hide();
+                    row.find(options.deleteLinkSelector).hide();
                 }
                 // If a post-add callback was supplied, call it with the added form:
                 if (options.added) { options.added(row); }
@@ -175,6 +197,9 @@
                     if (!options.deleteOnlyNew) {
                         insertDeleteLink(row);
                     }
+                    if (options.insertAbove) {
+                        insertAboveLink(row);
+                    }
                 }
             }
         });
@@ -183,6 +208,9 @@
         template = $(options.formTemplate);
         template.removeAttr('id');
         insertDeleteLink(template);
+        if (options.insertAbove) {
+            insertAboveLink(template);
+        }
         // FIXME: Perhaps using $.data would be a better idea?
         options.formTemplate = template;
 
@@ -219,6 +247,11 @@
 
         if (options.alwaysShowExtra && options.autoAdd) {
             autoAddRow();
+            parent.closest('form').submit(function () {
+                $(this).find(options.formSelector).filter('.extra-row').find('input,select,textarea').each(function () {
+                    $(this).removeAttr('name');
+                });
+            });
         }
 
         return $$;
@@ -232,6 +265,8 @@
                                         // formset is called)
         deleteLink: '<a class="delete-row" href="javascript:void(0)">remove</a>',
                                         // The HTML "remove" link added to the end of each form-row
+        deleteLinkSelector: '.delete-row',
+                                        // Selector for HTML "remove" links
         addLink: '<a class="add-row" href="javascript:void(0)">add</a>',
                                         // The HTML "add" link added to the end of all forms
         autoAdd: false,                 // If true, the "add" link will be removed, and a row will be automatically
@@ -245,6 +280,9 @@
         added: null,                    // Function called each time a new form is added
         removed: null,                  // Function called each time a form is deleted
         alwaysShowExtra: false,         // If true, an extra (empty) row will always be displayed (requires `autoAdd: true`)
-        deleteOnlyActive: false         // If true, extra empty rows cannot be removed until they acquire focus
+        deleteOnlyActive: false,        // If true, extra empty rows cannot be removed until they acquire focus
+        insertAbove: false,             // If true, ``insertAboveLink`` will be added to the end of each form-row
+        insertAboveLink: '<a href="javascript:void(0)" class="insert-step">insert step</a>'
+                                        // The HTML "insert step" link add to the end of each form-row (if `insertAbove: true`)
     };
 }(jQuery));
