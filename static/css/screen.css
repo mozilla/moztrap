@@ -1248,7 +1248,7 @@ footer[role="contentinfo"] small {
   left: 0;
   width: 14.894%;
   padding-left: 24.695px;
-  background: rgba(82, 134, 132, 0.618) url('../images/ui/info_circle_light.png?1314655258') no-repeat scroll 5.348px;
+  background: rgba(82, 134, 132, 0.618) url('../images/ui/info_circle_light.png?1314657529') no-repeat scroll 5.348px;
   text-transform: uppercase;
 }
 
@@ -1442,18 +1442,6 @@ footer[role="contentinfo"] small {
   margin-right: 0.375em;
 }
 
-[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  vertical-align: baseline;
-}
-[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
-  *display: inline;
-}
-
 [title="edit"]:link, [title="edit"]:visited {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
@@ -1486,7 +1474,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/crosshair.png?1314639449');
+  background-image: url('../images/ui/crosshair.png?1314657529');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1635,6 +1623,30 @@ footer[role="contentinfo"] small {
 [name="action-edit"]:focus, [name="action-edit"]:hover, [name="action-edit"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+
+[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  vertical-align: middle;
+}
+[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
+  *display: inline;
+}
+
+[name="action-clone"], [name="action-delete"], [name="action-edit"] {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  vertical-align: middle;
+}
+[name="action-clone"], [name="action-delete"], [name="action-edit"] {
+  *display: inline;
 }
 
 /* Filtering ----------------------------------------------------------------- */
@@ -3493,7 +3505,7 @@ footer[role="contentinfo"] small {
   padding-bottom: 0.405em;
   max-width: 15.789%;
   text-align: right;
-  background: url('../images/ui/crosshair.png?1314639449') no-repeat scroll left;
+  background: url('../images/ui/crosshair.png?1314657529') no-repeat scroll left;
   padding-left: 22.653px;
 }
 

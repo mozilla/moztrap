@@ -6,11 +6,6 @@
   *:last-child
     margin-right: .375em
 
-[title="edit"], .target, [title^="create"]
-  #{$link}
-    +inline-block
-    vertical-align: baseline
-
 [title="edit"]
   #{$link}
     +icon-replace('ui/pencil.png')
@@ -34,3 +29,12 @@
 [name="action-edit"]
   +button-reset
   +icon-replace('ui/pencil.png')
+
+[title="edit"], .target, [title^="create"],
+  #{$link}
+    +inline-block
+    vertical-align: middle
+
+[name="action-clone"], [name="action-delete"], [name="action-edit"]
+  +inline-block
+  vertical-align: middle
