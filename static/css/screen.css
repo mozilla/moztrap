@@ -1440,12 +1440,19 @@ footer[role="contentinfo"] small {
   margin-right: 0.375em;
 }
 
-[title="edit"]:link, [title="edit"]:visited {
+[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
   display: -moz-inline-box;
   -moz-box-orient: vertical;
   display: inline-block;
   vertical-align: middle;
   *vertical-align: auto;
+  vertical-align: baseline;
+}
+[title="edit"]:link, [title="edit"]:visited, .target:link, .target:visited, [title^="create"]:link, [title^="create"]:visited {
+  *display: inline;
+}
+
+[title="edit"]:link, [title="edit"]:visited {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1464,20 +1471,36 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-[title="edit"]:link, [title="edit"]:visited {
-  *display: inline;
-}
 [title="edit"]:link:focus, [title="edit"]:link:hover, [title="edit"]:link:active, [title="edit"]:visited:focus, [title="edit"]:visited:hover, [title="edit"]:visited:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
+.target:link, .target:visited {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/crosshair.png?1314639449');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  padding: 0 0.125em;
+  border: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+}
+.target:link:focus, .target:link:hover, .target:link:active, .target:visited:focus, .target:visited:hover, .target:visited:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
 [title^="create"]:link, [title^="create"]:visited {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -1495,9 +1518,6 @@ footer[role="contentinfo"] small {
   border: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
-}
-[title^="create"]:link, [title^="create"]:visited {
-  *display: inline;
 }
 [title^="create"]:link:focus, [title^="create"]:link:hover, [title^="create"]:link:active, [title^="create"]:visited:focus, [title^="create"]:visited:hover, [title^="create"]:visited:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -3471,7 +3491,7 @@ footer[role="contentinfo"] small {
   padding-bottom: 0.405em;
   max-width: 15.789%;
   text-align: right;
-  background: url('../images/ui/crosshair.png?1314312233') no-repeat scroll left;
+  background: url('../images/ui/crosshair.png?1314639449') no-repeat scroll left;
   padding-left: 22.653px;
 }
 

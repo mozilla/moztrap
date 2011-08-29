@@ -51,14 +51,15 @@
             <time class="end">{{ run.endDate|date }}</time>
             <div class="controls">
               {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
-              {% if run.status.DRAFT %}
-              <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
-              {% endif %}
-              <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
-              {% if run.status.DRAFT %}
-              <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
-              {% endif %}
-              {# @@@ requires modifications to suite form <a href="#" title="create new test suite in this run">create new test suite in this run</a> #}
+                {% if run.status.DRAFT %}
+                <a href="{% url manage_testrun_edit run_id=run.id %}" title="edit">edit</a>
+                <a {# @@@ needs URL #} href="/manage/type/id/environments/" title="select environments" class="target">select environments</a>
+                {% endif %}
+                <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
+                {% if run.status.DRAFT %}
+                <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
+                {% endif %}
+                {# @@@ requires modifications to suite form <a href="#" title="create new test suite in this run">create new test suite in this run</a> #}
               {% endif %}
             </div>
           </header>

@@ -6,14 +6,21 @@
   *:last-child
     margin-right: .375em
 
-[title="edit"]
+[title="edit"], .target, [title^="create"]
   #{$link}
     +inline-block
+    vertical-align: baseline
+
+[title="edit"]
+  #{$link}
     +icon-replace('ui/pencil.png')
+
+.target
+  #{$link}
+    +icon-replace('ui/crosshair.png')
 
 [title^="create"]
   #{$link}
-    +inline-block
     +icon-replace('ui/paper_plus.png')
 
 [name="action-clone"]
