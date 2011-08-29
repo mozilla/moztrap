@@ -1170,111 +1170,6 @@ button.sub:focus, button.sub:hover, button.sub:active {
   clear: both;
 }
 
-.messagestyle, .successmessage, .message.success, #messages li.success, .errormessage, .message.error, #messages li.error, .warningmessage, .message.warning, #messages li.warning, #filter .form-actions, .message, #messages li {
-  clear: both;
-  padding-left: 4.211%;
-  margin-top: 0em;
-  padding-top: 0.809em;
-  padding-bottom: 0.809em;
-  margin-bottom: 0.809em;
-  font-weight: 700;
-  text-shadow: rgba(204, 215, 214, 0.618) 1px 1px 0;
-  -moz-border-radius: 0.236em;
-  -webkit-border-radius: 0.236em;
-  -o-border-radius: 0.236em;
-  -ms-border-radius: 0.236em;
-  -khtml-border-radius: 0.236em;
-  border-radius: 0.236em;
-  position: relative;
-  background: rgba(82, 134, 132, 0.146) url('../images/ui/info_circle.png?1314206098') no-repeat scroll 1.618em 1.092em;
-  color: #4b6564;
-}
-
-.successmessage, .message.success, #messages li.success {
-  text-shadow: rgba(229, 245, 210, 0.618) 1px 1px 0;
-  background-color: rgba(119, 185, 41, 0.382);
-  background-image: url('../images/ui/check.png?1314206098');
-  color: #4f7a1b;
-}
-
-.errormessage, .message.error, #messages li.error {
-  text-shadow: rgba(245, 210, 212, 0.618) 1px 1px 0;
-  background-color: rgba(227, 127, 131, 0.382);
-  background-image: url('../images/ui/x.png?1314206098');
-  color: #511214;
-}
-
-.warningmessage, .message.warning, #messages li.warning, #filter .form-actions {
-  text-shadow: rgba(254, 240, 191, 0.618) 1px 1px 0;
-  background-color: rgba(254, 229, 140, 0.618);
-  background-image: url('../images/ui/warning.png?1314206098');
-  color: #a38001;
-}
-
-.message, #messages li {
-  -moz-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
-  -webkit-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
-  -o-box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
-  box-shadow: rgba(68, 68, 68, 0) 0 0 1px 1px inset;
-  -moz-transition: box-shadow 300ms;
-  -webkit-transition: box-shadow 300ms;
-  -o-transition: box-shadow 300ms;
-  transition: box-shadow 300ms;
-}
-.message p, #messages li p {
-  margin: 0;
-}
-.message::after, #messages li::after {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-  -moz-transition: all 300ms;
-  -webkit-transition: all 300ms;
-  -o-transition: all 300ms;
-  transition: all 300ms;
-  content: "(dismiss)";
-  position: absolute;
-  top: 0.809em;
-  right: 0.809em;
-}
-.message:hover, #messages li:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
-  opacity: 0.75;
-  -moz-box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
-  -webkit-box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
-  -o-box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
-  box-shadow: rgba(68, 68, 68, 0.382) 0 0 1px 1px inset;
-  cursor: pointer;
-}
-.message:hover::after, #messages li:hover::after {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-.message .close, #messages li .close {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-
-#messages {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-#messages li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-}
-#messages li + li {
-  margin-top: 0.809em;
-}
-
 footer[role="contentinfo"] {
   font-size: 0.857em;
   line-height: 1.888em;
@@ -1309,6 +1204,113 @@ footer[role="contentinfo"] .credit {
 }
 footer[role="contentinfo"] small {
   font-size: 1em;
+}
+
+.messagestyle, .successmessage, .message.success, #messages li.success, .errormessage, .message.error, #messages li.error, .warningmessage, .message.warning, #messages li.warning, #filter .form-actions, .message, #messages li {
+  clear: both;
+  font-weight: 700;
+  text-shadow: rgba(68, 68, 68, 0.618) 0 1px 0;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-transition: background-color 300ms;
+  -webkit-transition: background-color 300ms;
+  -o-transition: background-color 300ms;
+  transition: background-color 300ms;
+  position: relative;
+  padding: 1.618em;
+  color: #eeeeee;
+  background-color: rgba(68, 68, 68, 0.854);
+}
+.messagestyle p, .successmessage p, .message.success p, #messages li.success p, .errormessage p, .message.error p, #messages li.error p, .warningmessage p, .message.warning p, #messages li.warning p, #filter .form-actions p, .message p, #messages li p {
+  padding-left: 17.021%;
+  position: relative;
+  margin: 0;
+  padding-right: 2.427em;
+}
+.messagestyle p::before, .successmessage p::before, .message.success p::before, #messages li.success p::before, .errormessage p::before, .message.error p::before, #messages li.error p::before, .warningmessage p::before, .message.warning p::before, #messages li.warning p::before, #filter .form-actions p::before, .message p::before, #messages li p::before {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  content: "info";
+  position: absolute;
+  left: 0;
+  width: 14.894%;
+  padding-left: 24.695px;
+  background: rgba(82, 134, 132, 0.618) url('../images/ui/info_circle_light.png?1314655258') no-repeat scroll 5.348px;
+  text-transform: uppercase;
+}
+
+.successmessage p::before, .message.success p::before, #messages li.success p::before {
+  content: "success";
+  background-color: rgba(119, 185, 41, 0.618);
+  background-image: url('../images/ui/check_light.png?1314312255');
+}
+
+.errormessage p::before, .message.error p::before, #messages li.error p::before {
+  content: "error";
+  background-color: rgba(185, 41, 47, 0.618);
+  background-image: url('../images/ui/x_light.png?1314312255');
+}
+
+.warningmessage p::before, .message.warning p::before, #messages li.warning p::before, #filter .form-actions p::before {
+  content: "warning";
+  background-color: rgba(253, 200, 14, 0.618);
+  background-image: url('../images/ui/warning_light.png?1314312255');
+}
+
+.message:hover, #messages li:hover {
+  cursor: pointer;
+  background: rgba(74, 43, 44, 0.854);
+}
+.message:hover p, #messages li:hover p {
+  background: url('../images/ui/x_light.png?1314312255') no-repeat scroll right;
+}
+
+#messages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  -moz-box-shadow: rgba(238, 238, 238, 0.618) 0 0 0.618em, #444444 0 0 1em, #444444 0 0 2.618em;
+  -webkit-box-shadow: rgba(238, 238, 238, 0.618) 0 0 0.618em, #444444 0 0 1em, #444444 0 0 2.618em;
+  -o-box-shadow: rgba(238, 238, 238, 0.618) 0 0 0.618em, #444444 0 0 1em, #444444 0 0 2.618em;
+  box-shadow: rgba(238, 238, 238, 0.618) 0 0 0.618em, #444444 0 0 1em, #444444 0 0 2.618em;
+  position: fixed;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  z-index: 9999;
+}
+#messages li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+#messages li:first-child {
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  -o-border-top-left-radius: 0;
+  -ms-border-top-left-radius: 0;
+  -khtml-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -webkit-border-top-right-radius: 0;
+  -o-border-top-right-radius: 0;
+  -ms-border-top-right-radius: 0;
+  -khtml-border-top-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
 [role="navigation"] li {

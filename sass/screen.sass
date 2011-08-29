@@ -103,84 +103,6 @@
   +padding-leader(.5)
   +padding-trailer(1.5)
 
-=message
-  @extend .sans
-  +full(24)
-  +prefix(1,24)
-  +rhythm(0,.5,.5,.5)
-  +bold
-  +text-shadow(rgba($blue-lightest,$small) 1px 1px 0)
-  +border-radius($xxsmallem)
-  position: relative
-  background: rgba($blue,$xxxsmall) image-url('ui/info_circle.png') no-repeat scroll rhythm(1) rhythm(.675)
-  color: $blue-dark
-
-.messagestyle
-  +message
-
-.successmessage
-  @extend .messagestyle
-  +text-shadow(rgba($green-lightest,$small) 1px 1px 0)
-  background:
-    color: rgba($green,$xsmall)
-    image: image-url('ui/check.png')
-  color: $green-dark
-
-.errormessage
-  @extend .messagestyle
-  +text-shadow(rgba($red-lightest,$small) 1px 1px 0)
-  background:
-    color: rgba($red-light,$xsmall)
-    image: image-url('ui/x.png')
-  color: $red-dark
-
-.warningmessage
-  @extend .messagestyle
-  +text-shadow(rgba($yellow-light,$small) 1px 1px 0)
-  background:
-    color: rgba($yellow,$small)
-    image: image-url('ui/warning.png')
-  color: $yellow-darkest
-
-.message
-  @extend .messagestyle
-  +box-shadow(rgba($base,0) 0 0 1px 1px inset)
-  +transition(box-shadow 300ms)
-  p
-    margin: 0
-  &.success
-    @extend .successmessage
-  &.error
-    @extend .errormessage
-  &.warning
-    @extend .warningmessage
-
-  &::after
-    +opacity(0)
-    +transition(all 300ms)
-    content: "(dismiss)"
-    position: absolute
-    top: rhythm(.5)
-    right: rhythm(.5)
-
-  &:hover
-    +opacity(.75)
-    +box-shadow(rgba($base,$xsmall) 0 0 1px 1px inset)
-    cursor: pointer
-    &::after
-      +opacity(1)
-
-  // @@@ .close should go away entirely
-  .close
-    +gone
-
-#messages
-  +no-style-list
-  li
-    @extend .message
-    + li
-      +leader(.5)
-
 footer[role="contentinfo"]
   @extend .fullwidth
   +adjust-font-size-to(12px)
@@ -204,6 +126,7 @@ footer[role="contentinfo"]
 
 // Modules -------------------------------------------------------------------
 
+@import modules/messages
 @import modules/navigation
 @import modules/controls
 @import modules/filter
