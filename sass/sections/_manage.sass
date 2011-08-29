@@ -89,8 +89,10 @@
 /* Manage Tests --------------------------------------------------------------
 
 #managecycles
-  .start, .end, .bystart, .byend, .testers, .product, .byproduct
-    +columns(4,24)
+  .start, .end, .bystart, .byend,
+    +columns(3,24)
+  .testers, .product, .byproduct
+    +columns(5,24)
   .title, .bytitle
     +columns(8,24)
   .testers
@@ -102,15 +104,19 @@
   .cycle, .product, .bycycle, .byproduct, .testers
     +columns(4,24)
   .title, .bytitle
-    +columns(6,24)
+    +columns(5,24)
 
 #managesuites
-  .product, .byproduct, .title, .bytitle
+  .title, .bytitle
     +columns(10,24)
+  .product, .byproduct
+    +columns(9,24)
 
 #managecases
-  .product, .byproduct, .title, .bytitle
+  .title, .bytitle
     +columns(10,24)
+  .product, .byproduct
+    +columns(9,24)
   .steps
     +columns(20,24)
   .byline
@@ -194,7 +200,7 @@
 
 #editprofile
   .bypreview, .preview
-    +columns(22,24)
+    +columns(21,24)
   .content
     +pad(2,2,24)
 
@@ -225,7 +231,6 @@
       cursor: pointer
       #{$focus}
         background: rgba($red,$xsmall)
-
 
 /* narrow Environments -------------------------------------------------------
 

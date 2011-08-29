@@ -3289,10 +3289,17 @@ footer[role="contentinfo"] small {
   padding-right: 0.618em;
 }
 
-.status, .bystatus, .controls, .bycontrols {
+.status, .bystatus {
   display: inline;
   float: left;
   width: 7.368%;
+  margin-right: 1.053%;
+}
+
+.controls, .bycontrols {
+  display: inline;
+  float: left;
+  width: 11.579%;
   margin-right: 1.053%;
 }
 
@@ -3880,7 +3887,7 @@ footer[role="contentinfo"] small {
 #addcycle .title, #addcycle .bytitle {
   display: inline;
   float: left;
-  width: 57.895%;
+  width: 53.684%;
   margin-right: 1.053%;
 }
 
@@ -4402,10 +4409,16 @@ footer[role="contentinfo"] small {
 }
 
 /* Manage Tests -------------------------------------------------------------- */
-#managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend, #managecycles .testers, #managecycles .product, #managecycles .byproduct {
+#managecycles .start, #managecycles .end, #managecycles .bystart, #managecycles .byend {
   display: inline;
   float: left;
-  width: 15.789%;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+#managecycles .testers, #managecycles .product, #managecycles .byproduct {
+  display: inline;
+  float: left;
+  width: 20%;
   margin-right: 1.053%;
 }
 #managecycles .title, #managecycles .bytitle {
@@ -4435,21 +4448,33 @@ footer[role="contentinfo"] small {
 #manageruns .title, #manageruns .bytitle {
   display: inline;
   float: left;
-  width: 24.211%;
+  width: 20%;
   margin-right: 1.053%;
 }
 
-#managesuites .product, #managesuites .byproduct, #managesuites .title, #managesuites .bytitle {
+#managesuites .title, #managesuites .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
   margin-right: 1.053%;
 }
+#managesuites .product, #managesuites .byproduct {
+  display: inline;
+  float: left;
+  width: 36.842%;
+  margin-right: 1.053%;
+}
 
-#managecases .product, #managecases .byproduct, #managecases .title, #managecases .bytitle {
+#managecases .title, #managecases .bytitle {
   display: inline;
   float: left;
   width: 41.053%;
+  margin-right: 1.053%;
+}
+#managecases .product, #managecases .byproduct {
+  display: inline;
+  float: left;
+  width: 36.842%;
   margin-right: 1.053%;
 }
 #managecases .steps {
@@ -4600,7 +4625,7 @@ footer[role="contentinfo"] small {
 #editprofile .bypreview, #editprofile .preview {
   display: inline;
   float: left;
-  width: 91.579%;
+  width: 87.368%;
   margin-right: 1.053%;
 }
 #editprofile .content {
