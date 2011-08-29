@@ -53,4 +53,9 @@ urlpatterns = patterns(
     url(r"^type/id/environments/$", direct_to_template,
         {"template": "manage/environment/narrowing.html"}),
 
+    # users (wireframed)
+    url(r"^users/$", direct_to_template,
+        {"template": "manage/user/base.html"},
+        name="manage_users"),
+
 )

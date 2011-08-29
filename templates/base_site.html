@@ -45,7 +45,7 @@
           <div class="secondary">
             <ul>
               <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %}">
-                <a href="#">Users</a> {# @@@ Needs URL #}
+                <a href="{% url manage_users %}">Users</a>
               </li>
               <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %}">
                 <a href="{% url manage_environments %}">Environments</a>
