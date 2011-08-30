@@ -1,7 +1,29 @@
 {# @@@ wireframe #}
 
 <article id="user-id-{{ id }}" class="item vcard">
-  <p class="status">status</p>
+  <p class="status">
+    {% if perms == 'admin' %}
+      {% if status == 'inactive' %}
+      <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="inactive">inactive</button>
+      {% endif %}
+      {% if status == 'active' %}
+      <button title="disable" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+      {% endif %}
+      {% if status == 'disabled' %}
+      <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="disabled">disabled</button>
+      {% endif %}
+    {% else %}
+      {% if status == 'inactive' %}
+      <span class="inactive">inactive</span>
+      {% endif %}
+      {% if status == 'active' %}
+      <span class="active">active</span>
+      {% endif %}
+      {% if status == 'disabled' %}
+      <span class="disabled">disabled</span>
+      {% endif %}
+    {% endif %}
+  </p>
   <h3 class="n">
     <span class="given-name">firstname</span>
     <span class="family-name">lastname</span>

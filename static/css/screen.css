@@ -2752,7 +2752,7 @@ footer[role="contentinfo"] small {
   min-height: 1.618em;
   text-transform: uppercase;
 }
-.status span.rejected, .status span.draft, .status span.active, .status span.locked, .status button.rejected, .status button.draft, .status button.active, .status button.locked {
+.status span.rejected, .status span.draft, .status span.active, .status span.locked, .status span.disabled, .status span.inactive, .status button.rejected, .status button.draft, .status button.active, .status button.locked, .status button.disabled, .status button.inactive {
   width: 100%;
 }
 .status span {
@@ -2785,7 +2785,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/x.png?1314206098');
   background-position: 0.375em;
 }
-.status span.draft {
+.status span.draft, .status span.inactive {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2825,7 +2825,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/power.png?1314206098');
   background-position: 0.375em;
 }
-.status span.locked {
+.status span.locked, .status span.disabled {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2909,7 +2909,7 @@ footer[role="contentinfo"] small {
 .status button.rejected:focus:focus, .status button.rejected:focus:hover, .status button.rejected:focus:active, .status button.rejected:hover:focus, .status button.rejected:hover:hover, .status button.rejected:hover:active, .status button.rejected:active:focus, .status button.rejected:active:hover, .status button.rejected:active:active {
   background-color: #9dd955;
 }
-.status button.draft {
+.status button.draft, .status button.inactive {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2938,10 +2938,10 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.draft:focus, .status button.draft:hover, .status button.draft:active {
+.status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.inactive:focus, .status button.inactive:hover, .status button.inactive:active {
   background-color: #8daaa9;
 }
-.status button.draft:focus, .status button.draft:hover, .status button.draft:active {
+.status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.inactive:focus, .status button.inactive:hover, .status button.inactive:active {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2970,7 +2970,7 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.draft:focus:focus, .status button.draft:focus:hover, .status button.draft:focus:active, .status button.draft:hover:focus, .status button.draft:hover:hover, .status button.draft:hover:active, .status button.draft:active:focus, .status button.draft:active:hover, .status button.draft:active:active {
+.status button.draft:focus:focus, .status button.draft:focus:hover, .status button.draft:focus:active, .status button.draft:hover:focus, .status button.draft:hover:hover, .status button.draft:hover:active, .status button.draft:active:focus, .status button.draft:active:hover, .status button.draft:active:active, .status button.inactive:focus:focus, .status button.inactive:focus:hover, .status button.inactive:focus:active, .status button.inactive:hover:focus, .status button.inactive:hover:hover, .status button.inactive:hover:active, .status button.inactive:active:focus, .status button.inactive:active:hover, .status button.inactive:active:active {
   background-color: #9dd955;
 }
 .status button.active {
@@ -3037,7 +3037,7 @@ footer[role="contentinfo"] small {
 .status button.active:focus:focus, .status button.active:focus:hover, .status button.active:focus:active, .status button.active:hover:focus, .status button.active:hover:hover, .status button.active:hover:active, .status button.active:active:focus, .status button.active:active:hover, .status button.active:active:active {
   background-color: #feda59;
 }
-.status button.locked {
+.status button.locked, .status button.disabled {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -3066,10 +3066,10 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.locked:focus, .status button.locked:hover, .status button.locked:active {
+.status button.locked:focus, .status button.locked:hover, .status button.locked:active, .status button.disabled:focus, .status button.disabled:hover, .status button.disabled:active {
   background-color: #feda59;
 }
-.status button.locked:focus, .status button.locked:hover, .status button.locked:active {
+.status button.locked:focus, .status button.locked:hover, .status button.locked:active, .status button.disabled:focus, .status button.disabled:hover, .status button.disabled:active {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -3098,15 +3098,15 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.locked:focus:focus, .status button.locked:focus:hover, .status button.locked:focus:active, .status button.locked:hover:focus, .status button.locked:hover:hover, .status button.locked:hover:active, .status button.locked:active:focus, .status button.locked:active:hover, .status button.locked:active:active {
+.status button.locked:focus:focus, .status button.locked:focus:hover, .status button.locked:focus:active, .status button.locked:hover:focus, .status button.locked:hover:hover, .status button.locked:hover:active, .status button.locked:active:focus, .status button.locked:active:hover, .status button.locked:active:active, .status button.disabled:focus:focus, .status button.disabled:focus:hover, .status button.disabled:focus:active, .status button.disabled:hover:focus, .status button.disabled:hover:hover, .status button.disabled:hover:active, .status button.disabled:active:focus, .status button.disabled:active:hover, .status button.disabled:active:active {
   background-color: #9dd955;
 }
-.status button:focus.rejected, .status button:focus.draft, .status button:focus.active, .status button:focus.locked, .status button:hover.rejected, .status button:hover.draft, .status button:hover.active, .status button:hover.locked, .status button:active.rejected, .status button:active.draft, .status button:active.active, .status button:active.locked {
+.status button:focus.rejected, .status button:focus.draft, .status button:focus.active, .status button:focus.locked, .status button:focus.disabled, .status button:focus.inactive, .status button:hover.rejected, .status button:hover.draft, .status button:hover.active, .status button:hover.locked, .status button:hover.disabled, .status button:hover.inactive, .status button:active.rejected, .status button:active.draft, .status button:active.active, .status button:active.locked, .status button:active.disabled, .status button:active.inactive {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
 }
-.status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after {
+.status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:focus.disabled::after, .status button:focus.inactive::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:hover.disabled::after, .status button:hover.inactive::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after, .status button:active.disabled::after, .status button:active.inactive::after {
   content: attr(title);
   position: absolute;
   left: 1.5em;

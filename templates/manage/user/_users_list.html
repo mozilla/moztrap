@@ -30,9 +30,12 @@
   </nav>
 
   <div class="items">
-    {% include "manage/user/_users_list_item.html" with id="1" %}
-    {% include "manage/user/_users_list_item.html" with id="2"  %}
-    {% include "manage/user/_users_list_item.html" with id="3"  %}
+    {% include "manage/user/_users_list_item.html" with id="1" status="inactive" %}
+    {% include "manage/user/_users_list_item.html" with id="3" status="active"  %}
+    {% include "manage/user/_users_list_item.html" with id="5" status="disabled" %}
+    {% include "manage/user/_users_list_item.html" with id="2" status="inactive" perms="admin" %}
+    {% include "manage/user/_users_list_item.html" with id="4" status="active"  perms="admin" %}
+    {% include "manage/user/_users_list_item.html" with id="6" status="disabled" perms="admin" %}
   </div>
 
   {% include "lists/_listnav.html" %}
