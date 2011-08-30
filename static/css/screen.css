@@ -1037,6 +1037,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 [role="banner"] {
   min-height: 5.663em;
   background: rgba(82, 134, 132, 0.236);
+  white-space: nowrap;
 }
 [role="banner"] a:link, [role="banner"] a:visited {
   font-weight: 500;
