@@ -20,7 +20,7 @@ def main():
         "from ccui.core.models import Company, CompanyList",
         "from ccui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
         "from ccui.products.models import Product, ProductList",
-        "from ccui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, EnvironmentGroupList",
+        "from ccui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, ExplodedEnvironmentGroup, EnvironmentGroupList, ExplodedEnvironmentGroupList",
         "from ccui.testexecution.models import TestCycle, TestCycleList, TestRun, TestRunList, TestRunIncludedTestCase, TestRunIncludedTestCaseList, TestCaseAssignment, TestCaseAssignmentList, TestResult, TestResultList",
         "from ccui.testcases.models import Tag, TagList, TestCase, TestCaseList, TestCaseVersion, TestCaseVersionList, TestCaseStep, TestCaseStepList, TestSuite, TestSuiteList",
         ]

@@ -161,7 +161,7 @@ class EnvironmentList(ListObject):
 
 
 
-class EnvironmentGroup(Named, RemoteObject):
+class BaseEnvironmentGroup(Named, RemoteObject):
     """
     This is a set of characteristics (e.g. "Linux, English, Chrome") that make
     up a full (in UI terms) "environment". It contains what the platform calls
@@ -176,7 +176,6 @@ class EnvironmentGroup(Named, RemoteObject):
     name = fields.Field()
     description = fields.Field()
 
-    environments = fields.Link(EnvironmentList)
 
     # UI nomenclature
     @property
@@ -206,15 +205,25 @@ class EnvironmentGroup(Named, RemoteObject):
         return self.environments.match(environments)
 
 
+
+class EnvironmentGroup(BaseEnvironmentGroup):
+    environments = fields.Link(EnvironmentList)
+
+
+
+class ExplodedEnvironmentGroup(BaseEnvironmentGroup):
+    api_name = "environmentgroup"
+    environments = fields.List(
+        fields.Object(Environment), api_name="ns1.environments")
+
+
+
 HashableEnvironment = namedtuple("HashableEnvironment", ["name", "typename"])
 
 
-class EnvironmentGroupList(ListObject):
-    entryclass = EnvironmentGroup
+class BaseEnvironmentGroupList(ListObject):
     api_name = "environmentgroups"
     default_url = "environmentgroups"
-
-    entries = fields.List(fields.Object(EnvironmentGroup))
 
 
     def match(self, environments):
@@ -250,3 +259,17 @@ class EnvironmentGroupList(ListObject):
 
     # UI nomenclature
     elements = environments
+
+
+
+class EnvironmentGroupList(BaseEnvironmentGroupList):
+    entryclass = EnvironmentGroup
+    entries = fields.List(fields.Object(EnvironmentGroup))
+
+
+
+class ExplodedEnvironmentGroupList(BaseEnvironmentGroupList):
+    entryclass = ExplodedEnvironmentGroup
+    default_url = "environmentgroups/exploded"
+    array_name = "Environmentgroup"
+    entries = fields.List(fields.Object(ExplodedEnvironmentGroup))

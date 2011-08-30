@@ -244,5 +244,16 @@ class Link(remoteobjects.fields.Link):
 
 
 
-List = remoteobjects.fields.List
+class List(remoteobjects.fields.List):
+    def decode(self, value):
+        try:
+            wrapper_key = "ns1.%s" % self.fld.cls().api_name
+        except AttributeError:
+            pass
+        else:
+            if wrapper_key in value and isinstance(value[wrapper_key], list):
+                value = value[wrapper_key]
+        return super(List, self).decode(value)
+
+
 Object = remoteobjects.fields.Object

@@ -20,7 +20,7 @@ def set_environment(request, testrun_id):
 
     form = EnvironmentSelectionForm(
         request.POST or None,
-        groups=run.environmentgroups,
+        groups=run.environmentgroups_prefetch,
         current=request.session.get("environments", None))
 
     if request.method == "POST" and form.is_valid():

@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 
 from ..core.api import Activatable, RemoteObject, ListObject, Named, fields
 from ..core.models import CategoryValueInfoList, Company
-from ..environments.models import EnvironmentGroupList, EnvironmentList
+from ..environments.models import (
+    ExplodedEnvironmentGroupList, EnvironmentGroupList, EnvironmentList)
 from ..products.models import Product
 from ..static.fields import StaticData
 from ..static.status import TestResultStatus
@@ -32,6 +33,8 @@ class TestCycle(Named, Activatable, RemoteObject):
     communityAuthoringAllowed = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    environmentgroups_prefetch = fields.Link(
+        ExplodedEnvironmentGroupList, api_name="environmentgroups/exploded")
     testruns = fields.Link("TestRunList")
     team = fields.Link(Team, api_name="team/members")
     resultstatus = fields.Link(
@@ -99,6 +102,8 @@ class TestRun(Named, Activatable, RemoteObject):
     endDate = fields.Date()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    environmentgroups_prefetch = fields.Link(
+        ExplodedEnvironmentGroupList, api_name="environmentgroups/exploded")
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
     testsuites = fields.Link(TestSuiteList, cache="IncludedTestSuiteList")

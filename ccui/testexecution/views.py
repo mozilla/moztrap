@@ -41,7 +41,7 @@ def finder_environments(request, run_id):
 def runtests(request, testrun_id):
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
-    if not testrun.environmentgroups.match(request.environments):
+    if not testrun.environmentgroups_prefetch.match(request.environments):
         return redirect("runtests_environment", testrun_id=testrun_id)
 
     cycle = testrun.testCycle
