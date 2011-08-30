@@ -1,0 +1,14 @@
+{% extends 'manage/user/base.html' %}
+
+{% block listcontent %}
+<section id="manageusers">
+  <h2>User Management</h2>
+
+  <a href="#{# @@@ url manage_user_add #}" class="create">create a user</a>
+
+  {% include "lists/_filter.html" %}
+
+  {% include "manage/user/_users_list.html" %}
+
+</section>
+{% endblock listcontent %}

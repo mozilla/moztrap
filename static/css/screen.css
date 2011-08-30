@@ -4738,6 +4738,40 @@ footer[role="contentinfo"] small {
   padding-right: 4.211%;
 }
 
+/* Manage Users -------------------------------------------------------------- */
+#manageusers .given-name, #manageusers .bygiven {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+#manageusers .roles, #manageusers .byroles, #manageusers .family-name, #manageusers .byfamily, #manageusers .nickname, #manageusers .bynickname, #manageusers .email, #manageusers .byemail {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+}
+#manageusers .roles {
+  list-style-type: none;
+}
+#manageusers .roles, #manageusers .roles li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#manageusers .roles li:after {
+  content: ", ";
+}
+#manageusers .roles li:last-child:after {
+  content: "";
+}
+#manageusers .roles li.last:after {
+  content: "";
+}
+#manageusers .item p, #manageusers .item ul {
+  margin-bottom: 0em;
+}
+
 /* run tests -------------------------------------------------------------- */
 #run .status, #run .bystatus {
   display: inline;

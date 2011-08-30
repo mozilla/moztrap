@@ -247,3 +247,19 @@
     text-align: left
   .content
     +pad(1,1,24)
+
+/* Manage Users --------------------------------------------------------------
+
+#manageusers
+  .given-name, .bygiven
+    +columns(3,24)
+  .roles, .byroles, .family-name, .byfamily, .nickname, .bynickname, .email, .byemail
+    +columns(4,24)
+
+  .roles
+    +delimited-list()
+
+  .item
+    p, ul
+      +trailer(0)
+

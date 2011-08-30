@@ -55,7 +55,7 @@ urlpatterns = patterns(
 
     # users (wireframed)
     url(r"^users/$", direct_to_template,
-        {"template": "manage/user/base.html"},
+        {"template": "manage/user/users.html"},
         name="manage_users"),
 
 )
