@@ -5,6 +5,12 @@ import urlparse
 import remoteobjects
 
 
+# A marker value to be used for platform searches which should match
+# nothing. Must be interpretable as an integer, or else searches on integer
+# fields will raise 500 errors from the platform when it attempts the
+# conversion.
+NO_MATCH = "-999"
+
 
 def update_querystring(url, **kwargs):
     """
@@ -32,7 +38,8 @@ def narrow_querystring(url, **kwargs):
     performing only updates that would further narrow the set of returned
     objects if this querystring is used as a filter. In other words, only apply
     the intersection of values for any given key, and if that intersection is
-    empty use the marker value ``__`` which should match nothing.
+    empty (or if an empty list value is provided to begin with) use the
+    NO_MATCH marker value.
 
 
     """
@@ -46,10 +53,10 @@ def narrow_querystring(url, **kwargs):
                 # no use of sets here, order matters
                 new = [o for o in new if o in existing]
                 if not new:
-                    new = str("__")
+                    new = NO_MATCH
             else:
                 new = existing
-        queryargs[k] = new
+        queryargs[k] = new or NO_MATCH
     parts[4] = urllib.urlencode(queryargs, doseq=True)
     return urlparse.urlunparse(parts)
 
