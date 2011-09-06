@@ -949,7 +949,8 @@
         },
 
         slideshow = function (contextSelector, containerSelector, slidesSelector, slideLinksSelector) {
-            var context = $(contextSelector),
+            var hash,
+                context = $(contextSelector),
                 container = context.find(containerSelector),
                 slides = context.find(slidesSelector),
                 slideLinks = context.find(slideLinksSelector),
@@ -970,11 +971,26 @@
             });
 
             if (window.location.hash.length) {
-                var hash = window.location.hash.substring(1);
+                hash = window.location.hash.substring(1);
                 if (slides.filter('[id^="' + hash + '"]').length) {
                     showSlide(slides.filter('[id^="' + hash + '"]'));
                 }
             }
+        },
+
+        addEllipses = function () {
+            $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis().each(function () {
+                $(this).data('oldWidth', $(this).width());
+            });
+            $(window).resize(function () {
+                $.doTimeout('resize', 300, function () {
+                    $('#listcontent .items').find('.title, .product, .cycle, .run').each(function () {
+                        if ($(this).width() !== $(this).data('oldWidth')) {
+                            $(this).data('oldWidth', $(this).width()).ellipsis();
+                        }
+                    });
+                });
+            });
         };
 
     $(function () {
@@ -1070,14 +1086,10 @@
     });
 
     $(window).load(function () {
-        $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis({
-            windowResize: true,
-            delay: 300
-        });
+        addEllipses();
         // Expand list item details on direct hashtag links
         if ($('.manage').length && window.location.hash) {
-            var hash = window.location.hash;
-            $(hash).children('.summary').click();
+            $(window.location.hash).children('.summary').click();
         }
     });
 

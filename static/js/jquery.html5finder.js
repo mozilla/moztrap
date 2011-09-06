@@ -39,15 +39,12 @@
             updateEllipsis = function () {
                 if (options.ellipsis === true) {
                     var target = context.find(options.sectionContentSelector + ' ' + options.ellipsisTarget);
-                    target.each(function () {
-                        if ($(this).data('originalText')) {
-                            $(this).html($(this).data('originalText'));
-                        }
-                    });
                     $.doTimeout('updateEllipsis', 300, function () {
-                        target.ellipsis({
-                            windowResize: true,
-                            delay: 250
+                        target.ellipsis();
+                    });
+                    $(window).resize(function () {
+                        $.doTimeout('resize', 300, function () {
+                            target.ellipsis();
                         });
                     });
                 }
