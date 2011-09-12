@@ -1,6 +1,6 @@
 /*jslint    browser:    true,
             indent:     4 */
-/*global    jQuery, module, test, equal */
+/*global    jQuery, module, test, equal, start, stop */
 
 (function ($) {
 
@@ -46,10 +46,10 @@
 
         stop();
 
-        $(window).resize(function(){
-            resize++;
+        $(window).resize(function () {
+            resize = resize + 1;
             $.doTimeout('resize', 100, function () {
-                dt_resize++;
+                dt_resize = dt_resize + 1;
                 equal(dt_resize, 1, 'doTimeout window.resize only fired once');
                 start();
             });
