@@ -38,4 +38,27 @@
         });
     }
 
+    module('doTimeout');
+
+    test('window.resize', 2, function () {
+        var resize = 0,
+            dt_resize = 0;
+
+        stop();
+
+        $(window).resize(function(){
+            resize++;
+            $.doTimeout('resize', 100, function () {
+                dt_resize++;
+                equal(dt_resize, 1, 'doTimeout window.resize only fired once');
+                start();
+            });
+        });
+
+        $(window).resize();
+        $(window).resize();
+        $(window).resize();
+        equal(resize, 3, 'normal window.resize fired 3 times');
+    });
+
 }(jQuery));
