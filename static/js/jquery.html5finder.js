@@ -50,17 +50,18 @@
                 }
             },
 
-            // Define the function for horizontal scrolling (requires jquery.scrollTo plugin):
+            // Define the function for horizontal scrolling:
             // Scrolls to the previous section (so that the active section is centered)
             horzScroll = function () {
                 if (options.horizontalScroll === true) {
-                    var scrollTarget;
+                    var scrollTarget,
+                        currentScroll = context.find(options.scrollContainer).scrollLeft();
                     if (context.find(options.sectionSelector + '.focus').is(':first-child')) {
-                        scrollTarget = context.find(options.sectionSelector + '.focus');
+                        scrollTarget = 0;
                     } else {
-                        scrollTarget = context.find(options.sectionSelector + '.focus').prev(options.sectionSelector);
+                        scrollTarget = currentScroll + context.find(options.sectionSelector + '.focus').prev(options.sectionSelector).position().left;
                     }
-                    context.find(options.scrollContainer).scrollTo(scrollTarget, {duration: options.scrollSpeed, axis: 'x'});
+                    context.find(options.scrollContainer).animate({scrollLeft: scrollTarget});
                 }
             },
 
@@ -173,7 +174,6 @@
     $.fn.html5finder.defaults = {
         loading: false,                     // If true, adds a loading overlay while waiting for Ajax response
         horizontalScroll: false,            // If true, automatically scrolls to center the active section
-                                                // [This requires the jquery.scrollTo plugin by default]
         scrollContainer: null,              // The container (window) to be automatically scrolled
         scrollSpeed: 500,                   // Speed of the scroll (in ms)
         ellipsis: false,                    // If true, adds ellipsis to long text
