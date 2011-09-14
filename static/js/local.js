@@ -146,14 +146,15 @@ var CC = (function (module, $) {
             };
 
         // Shows/hides the advanced filtering
-        toggle.click(function () {
+        toggle.click(function (e) {
+            e.preventDefault();
             $('#filter .visual').toggleClass('compact expanded');
-            return false;
         });
 
         // Reset button sets each input to its original state, hides form-actions
         // and suggestion-list, and returns focus to the textbox.
-        formActions.find('.reset').click(function () {
+        formActions.find('.reset').click(function (e) {
+            e.preventDefault();
             formActions.fadeOut('fast');
             $('.managelist').removeClass('expired');
             input.each(function () {
@@ -162,7 +163,6 @@ var CC = (function (module, $) {
             });
             textbox.focus();
             suggestionList.hide();
-            return false;
         });
 
         // Selecting/unselecting an input returns focus to textbox, hides
@@ -400,7 +400,8 @@ var CC = (function (module, $) {
             mousedown: function () {
                 textbox.data('clicked', true);
             },
-            click: function () {
+            click: function (e) {
+                e.preventDefault();
                 var name, thisFilter, thisGroup, existingKeyword, index, newKeywordFilter;
                 // If keyword suggestion clicked...
                 if ($(this).data('class') === 'keyword') {
@@ -439,7 +440,6 @@ var CC = (function (module, $) {
                 textbox.val(null);
                 typedText = null;
                 suggestionList.empty().hide();
-                return false;
             }
         });
     };
@@ -468,7 +468,8 @@ var CC = (function (module, $) {
     module.manageActionsAjax = function () {
         $('.manage button[name^=action-]').live(
             'click',
-            function () {
+            function (e) {
+                e.preventDefault();
                 var button = $(this),
                     form = button.closest('form'),
                     url = form.prop('action'),
@@ -492,7 +493,6 @@ var CC = (function (module, $) {
                     data: data,
                     success: success
                 });
-                return false;
             }
         );
     };
@@ -883,7 +883,8 @@ var CC = (function (module, $) {
                     mousedown: function () {
                         addEnvTextbox.data('clicked', true);
                     },
-                    click: function () {
+                    click: function (e) {
+                        e.preventDefault();
                         var newEnv,
                             id = $(this).data('id'),
                             name = $(this).data('name');
@@ -902,7 +903,6 @@ var CC = (function (module, $) {
                         addEnvTextbox.val(null);
                         typedText = null;
                         suggestionList.empty().hide();
-                        return false;
                     }
                 });
 
@@ -964,10 +964,10 @@ var CC = (function (module, $) {
                 thisLink.addClass('active');
             };
 
-        slideLinks.click(function () {
+        slideLinks.click(function (e) {
+            e.preventDefault();
             showSlide($(this).attr('href'));
             $(this).blur();
-            return false;
         });
 
         if (window.location.hash.length) {
