@@ -3,7 +3,7 @@
             confusion:  true */
 /*global    ich, jQuery */
 
-var CC = (function (module, $) {
+var CC = (function (CC, $) {
 
     'use strict';
 
@@ -24,7 +24,7 @@ var CC = (function (module, $) {
         DOWN: 40
     };
 
-    module.formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel) {
+    CC.formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel) {
         var context = $(context_sel),
             trigger = context.find(trigger_sel),
             target,
@@ -52,7 +52,7 @@ var CC = (function (module, $) {
     };
 
     // Filtering, autocomplete, and fake placeholder text for manage and results pages
-    module.filtering = function () {
+    CC.filtering = function () {
 
         // Hide the form-actions (submit, reset) initially
         var formActions = $('#filter .form-actions').hide(),
@@ -445,7 +445,7 @@ var CC = (function (module, $) {
     };
 
     // Ajax-load manage and results list item contents
-    module.listDetails = function () {
+    CC.listDetails = function () {
         $('#listcontent .items .item.details').live('click', function (event) {
             if ($(event.target).is("button, a")) {
                 return;
@@ -465,7 +465,7 @@ var CC = (function (module, $) {
     };
 
     // Ajax for manage list actions (clone and delete)
-    module.manageActionsAjax = function () {
+    CC.manageActionsAjax = function () {
         $('.manage button[name^=action-]').live(
             'click',
             function (e) {
@@ -497,7 +497,7 @@ var CC = (function (module, $) {
         );
     };
 
-    module.createEnvProfile = function () {
+    CC.createEnvProfile = function () {
         var elements = $('#addprofile .item .elements'),
             elementInputs = elements.find('.element-select input'),
             categoryInputs = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
@@ -718,7 +718,7 @@ var CC = (function (module, $) {
         });
     };
 
-    module.editEnvProfile = function () {
+    CC.editEnvProfile = function () {
         var profileNameInput = $('#editprofile #profile-name-form .profile-name input'),
             profileName = profileNameInput.val(),
             profileNameSubmit = $('#editprofile #profile-name-form .form-actions button[type="submit"]').hide(),
@@ -948,17 +948,16 @@ var CC = (function (module, $) {
         });
     };
 
-    module.slideshow = function (contextSelector, containerSelector, slidesSelector, slideLinksSelector) {
+    CC.slideshow = function (contextSelector, slidesSelector, slideLinksSelector, callback) {
         var hash,
             context = $(contextSelector),
-            container = context.find(containerSelector),
             slides = context.find(slidesSelector),
             slideLinks = context.find(slideLinksSelector),
             showSlide = function (slide) {
                 var thisLink = slideLinks.filter('a[href="#' + $(slide).attr('id') + '"]');
                 $(slide).addClass('active-slide').removeClass('inactive-slide');
-                $(slide).siblings().removeClass('active-slide').addClass('inactive-slide').fadeOut('fast', function () {
-                    $(slide).fadeIn('fast');
+                $(slide).siblings(slidesSelector).removeClass('active-slide').addClass('inactive-slide').fadeOut('fast', function () {
+                    $(slide).fadeIn('fast', callback);
                 });
                 slideLinks.removeClass('active');
                 thisLink.addClass('active');
@@ -978,7 +977,7 @@ var CC = (function (module, $) {
         }
     };
 
-    module.addEllipses = function () {
+    CC.addEllipses = function () {
         $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis().each(function () {
             $(this).data('oldWidth', $(this).width());
         });
@@ -994,12 +993,12 @@ var CC = (function (module, $) {
     };
 
     $(function () {
-        module.filtering();
-        module.listDetails();
-        module.manageActionsAjax();
-        module.createEnvProfile();
-        module.editEnvProfile();
-        module.slideshow('#addcase', '.forms', '.forms form[id$="-case-form"]', 'a[href^="#"][href$="-case-form"]');
+        CC.filtering();
+        CC.listDetails();
+        CC.manageActionsAjax();
+        CC.createEnvProfile();
+        CC.editEnvProfile();
+        CC.slideshow('#addcase', '.forms', '.forms form[id$="-case-form"]', 'a[href^="#"][href$="-case-form"]');
         $('.details:not(html)').html5accordion();
         $('#messages').messages({
             handleAjax: true,
@@ -1009,8 +1008,8 @@ var CC = (function (module, $) {
         $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function () {
             $(this).addClass('hadfocus');
         });
-        module.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
-        module.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
+        CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
+        CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
         $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,
@@ -1086,13 +1085,13 @@ var CC = (function (module, $) {
     });
 
     $(window).load(function () {
-        module.addEllipses();
+        CC.addEllipses();
         // Expand list item details on direct hashtag links
         if ($('.manage').length && window.location.hash) {
             $(window.location.hash).children('.summary').click();
         }
     });
 
-    return module;
+    return CC;
 
 }(CC || {}, jQuery));
