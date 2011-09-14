@@ -158,7 +158,7 @@ var CC = (function (module, $) {
             formActions.fadeOut('fast');
             $('.managelist').removeClass('expired');
             input.each(function () {
-                $(this).data('state', null);
+                $(this).removeData('state');
                 $(this).prop('checked', $(this).data('originallyChecked'));
             });
             textbox.focus();
@@ -172,7 +172,7 @@ var CC = (function (module, $) {
             if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                 $(this).data('state', 'changed');
             } else {
-                $(this).data('state', null);
+                $(this).removeData('state');
             }
             textbox.focus();
             suggestionList.hide();
