@@ -83,10 +83,13 @@
     +border-bottom-radius(0)
     display: none
     clear: both
-    text-align: left
     margin: 0
+    text-align: left
     p
       margin: 0
+      &::before
+        +padding-leader(.25)
+        +padding-trailer(.25)
 
   button
     +button-color($green,'ui/refresh.png')

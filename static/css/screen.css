@@ -1226,6 +1226,12 @@ footer[role="contentinfo"] small {
   color: #eeeeee;
   background-color: rgba(68, 68, 68, 0.854);
 }
+.messagestyle a:link, .successmessage a:link, .message.success a:link, #messages li.success a:link, .errormessage a:link, .message.error a:link, #messages li.error a:link, .warningmessage a:link, .message.warning a:link, #messages li.warning a:link, #filter .form-actions a:link, .message a:link, #messages li a:link, .messagestyle a:visited, .successmessage a:visited, .message.success a:visited, #messages li.success a:visited, .errormessage a:visited, .message.error a:visited, #messages li.error a:visited, .warningmessage a:visited, .message.warning a:visited, #messages li.warning a:visited, #filter .form-actions a:visited, .message a:visited, #messages li a:visited {
+  color: #87a9a8;
+}
+.messagestyle a:focus, .successmessage a:focus, .message.success a:focus, #messages li.success a:focus, .errormessage a:focus, .message.error a:focus, #messages li.error a:focus, .warningmessage a:focus, .message.warning a:focus, #messages li.warning a:focus, #filter .form-actions a:focus, .message a:focus, #messages li a:focus, .messagestyle a:hover, .successmessage a:hover, .message.success a:hover, #messages li.success a:hover, .errormessage a:hover, .message.error a:hover, #messages li.error a:hover, .warningmessage a:hover, .message.warning a:hover, #messages li.warning a:hover, #filter .form-actions a:hover, .message a:hover, #messages li a:hover, .messagestyle a:active, .successmessage a:active, .message.success a:active, #messages li.success a:active, .errormessage a:active, .message.error a:active, #messages li.error a:active, .warningmessage a:active, .message.warning a:active, #messages li.warning a:active, #filter .form-actions a:active, .message a:active, #messages li a:active {
+  color: #eca9ab;
+}
 .messagestyle p, .successmessage p, .message.success p, #messages li.success p, .errormessage p, .message.error p, #messages li.error p, .warningmessage p, .message.warning p, #messages li.warning p, #filter .form-actions p, .message p, #messages li p {
   padding-left: 17.021%;
   position: relative;
@@ -1785,11 +1791,15 @@ footer[role="contentinfo"] small {
   border-bottom-right-radius: 0;
   display: none;
   clear: both;
-  text-align: left;
   margin: 0;
+  text-align: left;
 }
 #filter .form-actions p {
   margin: 0;
+}
+#filter .form-actions p::before {
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
 }
 #filter button {
   background-image: url('../images/ui/refresh.png?1314206098');
