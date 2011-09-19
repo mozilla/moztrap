@@ -1706,6 +1706,50 @@ footer[role="contentinfo"] small {
   color: #999999;
 }
 
+.textual {
+  position: relative;
+}
+.textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.togglelist input, #filter .compact input, .tagging .visual input, .togglelist label, #filter .compact label, .tagging .visual label {
+  display: none;
+}
+.togglelist li, #filter .compact li, .tagging .visual li {
+  display: inline;
+  float: left;
+}
+.togglelist input:checked + label, #filter .compact input:checked + label, .tagging .visual input:checked + label {
+  margin-bottom: 0.944em;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  font-weight: 500;
+  display: block;
+  margin-right: 0.5em;
+  padding: 0.236em 0.472em;
+  padding-left: 15px;
+  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
+}
+.togglelist input:checked + label:hover, #filter .compact input:checked + label:hover, .tagging .visual input:checked + label:hover {
+  background-image: url('../images/ui/x_sm.png?1314206098');
+}
+
 .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -1766,17 +1810,6 @@ footer[role="contentinfo"] small {
   width: 49.474%;
   margin-right: 1.053%;
   margin-bottom: 0.809em;
-  position: relative;
-}
-#filter .textual label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
 }
 #filter .textual input {
   clear: both;
@@ -1899,34 +1932,8 @@ footer[role="contentinfo"] small {
 #filter .compact .long {
   height: auto !important;
 }
-#filter .compact h5, #filter .compact input, #filter .compact label {
+#filter .compact h5 {
   display: none;
-}
-#filter .compact li {
-  display: inline;
-  float: left;
-}
-#filter .compact input:checked + label {
-  margin-bottom: 0.944em;
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  font-weight: 500;
-  display: block;
-  margin-right: 0.5em;
-  padding: 0.236em 0.472em;
-  padding-left: 15px;
-  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
-}
-#filter .compact input:checked + label:hover {
-  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";
@@ -3505,12 +3512,26 @@ footer[role="contentinfo"] small {
   height: 1.618em;
 }
 
+.tagging {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+.tagging .visual {
+  margin-left: 0;
+}
+
 .select-env-link:link, .select-env-link:visited {
   display: inline;
   float: right;
   margin-right: 0;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+  margin-bottom: 0.809em;
   max-width: 15.789%;
   text-align: right;
   background: url('../images/ui/crosshair.png?1314731893') no-repeat scroll left;

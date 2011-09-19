@@ -43,6 +43,29 @@
     font-style: normal
     color: $mid
 
+.textual
+  position: relative
+  label
+    +gone
+
+.togglelist
+  input, label
+    display: none
+  li
+    +float(left)
+  input:checked + label
+    +trailer(.5,12px)
+    +border-radius
+    +box-shadow(rgba($blue,$xxsmall) 0 1px 1px)
+    +demi
+    display: block
+    margin-right: .5em
+    padding: rhythm(.125,12px) rhythm(.25,12px)
+      left: image-width('ui/check_sm.png') + 6px
+    background: $green-lightest image-url('ui/check_sm.png') no-repeat scroll 3px
+    &:hover
+      background-image: image-url('ui/x_sm.png')
+
 .groupheader
   @extend .allcaps
   +cond
@@ -73,9 +96,6 @@
   .textual
     +columns(12,24)
     +trailer(.5)
-    position: relative
-    label
-      +gone
     input
       +full(12)
       margin: 0
@@ -107,6 +127,7 @@
 
   // Compact --------------------------------------------------------------
   .compact
+    @extend .togglelist
     .toggle
       a
         #{$link}
@@ -118,22 +139,8 @@
       +colorwheel(label)
     .long
       height: auto !important
-    h5, input, label
+    h5
       display: none
-    li
-      +float(left)
-    input:checked + label
-      +trailer(.5,12px)
-      +border-radius(.25em)
-      +box-shadow(rgba($blue,$xxsmall) 0 1px 1px)
-      +demi
-      display: block
-      margin-right: .5em
-      padding: rhythm(.125,12px) rhythm(.25,12px)
-        left: image-width('ui/check_sm.png') + 6px
-      background: $green-lightest image-url('ui/check_sm.png') no-repeat scroll 3px
-      &:hover
-        background-image: image-url('ui/x_sm.png')
 
   // Expanded --------------------------------------------------------------
 

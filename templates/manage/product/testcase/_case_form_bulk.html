@@ -13,6 +13,9 @@
     </li>
     {% endcomment %}
   </ul>
+
+  {% include "manage/product/testcase/_tagging.html" %}
+
   <div class="bulk-field">
     {% include "forms/_field.html" with field=bulk_form.cases %}
     <section class="fieldhelp">
