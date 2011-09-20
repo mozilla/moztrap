@@ -5,7 +5,7 @@ from ..environments.builders import environmentgroups, environments
 from ..products.builders import products
 from ..responses import response, make_locator, make_identity
 from ..testcases.builders import (
-    testsuites, testcases, testcaseversions, testcasesteps)
+    testsuites, testcaseversions, testcasesteps)
 from ..testexecution.builders import (
     testcycles, testruns, testrunitcs, testresults, assignments)
 from ..utils import ViewTestCase, COMMON_RESPONSES, Url
