@@ -44,7 +44,7 @@ def home(request):
 @dec.actions(ProductList, ["delete"])
 @dec.filter("products",
             ("name", KeywordFilter),
-            ("user", TeamFieldFilter),
+            ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
             )
 @dec.paginate("products")
@@ -121,7 +121,7 @@ def edit_product(request, product_id):
             ("status", status_filters.TestCycleStatusFilter),
             ("product", ProductFieldFilter),
             ("name", KeywordFilter),
-            ("user", TeamFieldFilter),
+            ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
             )
 @dec.paginate("cycles")
@@ -215,7 +215,7 @@ def testcycle_details(request, cycle_id):
             ("product", ProductFieldFilter),
             ("testCycle", TestCycleFieldFilter),
             ("name", KeywordFilter),
-            ("user", TeamFieldFilter),
+            ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
             )
 @dec.paginate("runs")

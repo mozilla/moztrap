@@ -26,7 +26,7 @@ class Product(Named, RemoteObject):
 
 
     non_field_filters = {
-        "user": "teamMemberId",
+        "tester": "teamMemberId",
         "environment": "includedEnvironmentId",
         }
 

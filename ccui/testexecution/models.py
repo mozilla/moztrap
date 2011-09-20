@@ -42,7 +42,7 @@ class TestCycle(Named, Activatable, RemoteObject):
         cache="TestResultList")
 
     non_field_filters = {
-        "user": "teamMemberId",
+        "tester": "teamMemberId",
         "environment": "includedEnvironmentId",
         }
 
@@ -120,7 +120,7 @@ class TestRun(Named, Activatable, RemoteObject):
         "testSuite": "includedTestSuiteId",
         "testCase": "includedTestCaseId",
         "testCaseVersion": "includedTestCaseVersionId",
-        "user": "teamMemberId",
+        "tester": "teamMemberId",
         "environment": "includedEnvironmentId",
         }
 
@@ -330,6 +330,10 @@ class TestResult(RemoteObject):
     tester = fields.Locator(User)
 
     environments = fields.Link(EnvironmentList)
+
+    non_field_filters = {
+        "environment": "includedEnvironmentId",
+        }
 
 
     def __unicode__(self):

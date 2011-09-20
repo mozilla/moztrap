@@ -4,13 +4,14 @@ from django.template.response import TemplateResponse
 
 from ..core import decorators as dec
 from ..core.filters import KeywordFilter
+from ..environments.filters import EnvironmentFilter
 from ..products.filters import ProductFieldFilter
 from ..static.filters import TestResultStatusFilter
 from ..static.status import TestCycleStatus, TestRunStatus
 from ..testexecution.models import (
     TestCycleList, TestRunList, TestRunIncludedTestCaseList, TestResultList)
 from ..users.decorators import login_redirect
-from ..users.filters import UserFieldFilter
+from ..users.filters import UserFieldFilter, TeamFieldFilter
 
 from .finder import ResultsFinder
 from . import filters
@@ -28,7 +29,10 @@ def home(request):
 @dec.filter("cycles",
             ("status", filters.NonDraftTestCycleStatusFilter),
             ("product", ProductFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("tester", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("cycles")
 @dec.sort("cycles", "product")
 def testcycles(request):
@@ -57,7 +61,10 @@ def testcycle_details(request, cycle_id):
             ("status", filters.NonDraftTestRunStatusFilter),
             ("product", ProductFieldFilter),
             ("testCycle", filters.NonDraftTestCycleFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("tester", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("runs")
 @dec.sort("runs")
 def testruns(request):
@@ -87,7 +94,9 @@ def testrun_details(request, run_id):
             ("testRun", filters.NonDraftTestRunFieldFilter),
             ("product", ProductFieldFilter),
             ("testSuite", filters.TestSuiteFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("includedcases")
 @dec.sort("includedcases")
 def testcases(request):
@@ -114,7 +123,9 @@ def testcase_details(request, itc_id):
 @dec.filter("results",
             ("tester", UserFieldFilter),
             ("status", TestResultStatusFilter),
-            ("comment", KeywordFilter))
+            ("comment", KeywordFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("results")
 @dec.sort("results", "status", "desc")
 def testresults(request, itc_id):
