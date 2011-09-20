@@ -196,6 +196,8 @@ class TestSuite(Named, Activatable, RemoteObject):
 
     non_field_filters = {
         "run": "hasTestCasesInTestRunId",
+        "testCase": "includedTestCaseId",
+        "testCaseVersion": "includedTestCaseVersionId",
         }
 
 

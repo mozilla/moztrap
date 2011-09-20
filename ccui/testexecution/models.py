@@ -107,6 +107,12 @@ class TestRun(Named, Activatable, RemoteObject):
         api_name="reports/coverage/resultstatus",
         cache="TestResultList")
 
+    non_field_filters = {
+        "testSuite": "includedTestSuiteId",
+        "testCase": "includedTestCaseId",
+        "testCaseVersion": "includedTestCaseVersionId",
+        }
+
 
     def __unicode__(self):
         return self.name
