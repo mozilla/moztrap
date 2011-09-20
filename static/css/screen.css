@@ -1887,10 +1887,19 @@ footer[role="contentinfo"] small {
   -ms-border-bottom-right-radius: 0;
   -khtml-border-bottom-right-radius: 0;
   border-bottom-right-radius: 0;
+  text-shadow: #fef0bf 0 1px 0;
   display: none;
   clear: both;
   margin: 0;
+  background-color: rgba(214, 167, 2, 0.618);
   text-align: left;
+  color: #444444;
+}
+#filter .form-actions a:link, #filter .form-actions a:visited {
+  color: #4b6564;
+}
+#filter .form-actions a:focus, #filter .form-actions a:hover, #filter .form-actions a:active {
+  color: #511214;
 }
 #filter .form-actions p {
   margin: 0;

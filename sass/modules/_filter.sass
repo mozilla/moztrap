@@ -81,10 +81,18 @@
     @extend .warningmessage
     +adjust-font-size-to(14px,1,12px)
     +border-bottom-radius(0)
+    +text-shadow($yellow-light 0 1px 0)
     display: none
     clear: both
     margin: 0
+    background-color: rgba($yellow-darker,$small)
     text-align: left
+    color: $base
+    a
+      #{$link}
+        color: $blue-dark
+      #{$focus}
+        color: $red-dark
     p
       margin: 0
       &::before
