@@ -89,17 +89,6 @@ class TestCaseList(ListObject):
 
 
 
-def filter_suite(vals):
-    ids = set()
-    for suite_id in vals:
-        ids.update([
-                itc.testCase.id for itc in
-                TestSuiteList.get_by_id(suite_id, auth=admin).includedtestcases
-                ])
-    return ("testCaseId", ids)
-
-
-
 class TestCaseVersion(Activatable, TestCase):
     majorVersion = fields.Field()
     minorVersion = fields.Field()
@@ -121,7 +110,7 @@ class TestCaseVersion(Activatable, TestCase):
     non_field_filters = {
         "step": "instruction",
         "result": "expectedResult",
-        "suite": filter_suite,
+        "suite": "includedInTestSuiteId",
         }
 
 
