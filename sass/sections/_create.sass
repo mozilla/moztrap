@@ -42,6 +42,10 @@
       padding-right: rhythm(.25)
       color: $blue-dark
   .uploading
+    a
+      #{$link}
+        +text-icon('ui/clock_sm.png',rgba($yellow-dark,$small))
+  .loader
     +border-radius
     +background-size(rhythm(.5) 100%)
     +background-image(linear-gradient(left,rgba($blue-dark,$small),rgba($blue-dark,$xsmall),rgba($blue-dark,$small)))
@@ -50,7 +54,7 @@
     content: " "
     width: rhythm(3)
     height: rhythm(.5)
-    margin-left: rhythm(.25)
+    margin: 0 rhythm(.25)
     vertical-align: baseline
   input
     +gone
