@@ -1,8 +1,8 @@
-from ..core.filters import LocatorFieldFilter
+from ..core.filters import RelatedFieldFilter
 
 from .models import ProductList
 
 
 
-class ProductFieldFilter(LocatorFieldFilter):
+class ProductFieldFilter(RelatedFieldFilter):
     target = ProductList

@@ -1,8 +1,13 @@
-from ..core.filters import LocatorFieldFilter
+from ..core.filters import RelatedFieldFilter
 
-from .models import UserList
+from .models import UserList, Team
 
 
 
-class UserFieldFilter(LocatorFieldFilter):
+class UserFieldFilter(RelatedFieldFilter):
     target = UserList
+
+
+
+class TeamFieldFilter(RelatedFieldFilter):
+    target = Team

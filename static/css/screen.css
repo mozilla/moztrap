@@ -883,6 +883,22 @@ button {
   width: auto;
   vertical-align: baseline;
 }
+button:hover, button:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -o-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: linear-gradient(top center, #c1e794 0%, #77b929 100%);
+}
+button:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -o-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+}
 button[disabled] {
   background: #dddddd url('../images/forms/button.png?1314206098') repeat-x;
   color: #888888;
@@ -935,6 +951,22 @@ button.sub:focus, button.sub:hover, button.sub:active {
   width: auto;
   vertical-align: baseline;
 }
+.button:hover, input[type="reset"]:hover, input[type="submit"]:hover, input[type="button"]:hover, #listcontent .create:hover, .button:focus, input[type="reset"]:focus, input[type="submit"]:focus, input[type="button"]:focus, #listcontent .create:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -o-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: linear-gradient(top center, #c1e794 0%, #77b929 100%);
+}
+.button:active, input[type="reset"]:active, input[type="submit"]:active, input[type="button"]:active, #listcontent .create:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -o-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+}
 .button[disabled], input[disabled][type="reset"], input[disabled][type="submit"], input[disabled][type="button"], #listcontent [disabled].create {
   background: #dddddd url('../images/forms/button.png?1314206098') repeat-x;
   color: #888888;
@@ -950,6 +982,22 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: linear-gradient(top center, #f5d2d4 0%, #de6a6f 100%);
   border-color: #c78184;
 }
+.redbutton:hover, .redbutton:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fae7e8), color-stop(100%, #de6a6f));
+  background-image: -webkit-linear-gradient(top center, #fae7e8 0%, #de6a6f 100%);
+  background-image: -moz-linear-gradient(top center, #fae7e8 0%, #de6a6f 100%);
+  background-image: -o-linear-gradient(top center, #fae7e8 0%, #de6a6f 100%);
+  background-image: -ms-linear-gradient(top center, #fae7e8 0%, #de6a6f 100%);
+  background-image: linear-gradient(top center, #fae7e8 0%, #de6a6f 100%);
+}
+.redbutton:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #f5d2d4), color-stop(100%, #de6a6f));
+  background-image: -webkit-linear-gradient(bottom center, #f5d2d4 0%, #de6a6f 100%);
+  background-image: -moz-linear-gradient(bottom center, #f5d2d4 0%, #de6a6f 100%);
+  background-image: -o-linear-gradient(bottom center, #f5d2d4 0%, #de6a6f 100%);
+  background-image: -ms-linear-gradient(bottom center, #f5d2d4 0%, #de6a6f 100%);
+  background-image: linear-gradient(bottom center, #f5d2d4 0%, #de6a6f 100%);
+}
 
 .yellowbutton {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fee58c), color-stop(100%, #fdc80e));
@@ -960,6 +1008,22 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: linear-gradient(top center, #fee58c 0%, #fdc80e 100%);
   border-color: #deb72c;
 }
+.yellowbutton:hover, .yellowbutton:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #feeba5), color-stop(100%, #fdc80e));
+  background-image: -webkit-linear-gradient(top center, #feeba5 0%, #fdc80e 100%);
+  background-image: -moz-linear-gradient(top center, #feeba5 0%, #fdc80e 100%);
+  background-image: -o-linear-gradient(top center, #feeba5 0%, #fdc80e 100%);
+  background-image: -ms-linear-gradient(top center, #feeba5 0%, #fdc80e 100%);
+  background-image: linear-gradient(top center, #feeba5 0%, #fdc80e 100%);
+}
+.yellowbutton:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #fee58c), color-stop(100%, #fdc80e));
+  background-image: -webkit-linear-gradient(bottom center, #fee58c 0%, #fdc80e 100%);
+  background-image: -moz-linear-gradient(bottom center, #fee58c 0%, #fdc80e 100%);
+  background-image: -o-linear-gradient(bottom center, #fee58c 0%, #fdc80e 100%);
+  background-image: -ms-linear-gradient(bottom center, #fee58c 0%, #fdc80e 100%);
+  background-image: linear-gradient(bottom center, #fee58c 0%, #fdc80e 100%);
+}
 
 .bluebutton {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d1dede), color-stop(100%, #87a9a8));
@@ -969,6 +1033,22 @@ button.sub:focus, button.sub:hover, button.sub:active {
   background-image: -ms-linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   background-image: linear-gradient(top center, #d1dede 0%, #87a9a8 100%);
   border-color: #989898;
+}
+.bluebutton:hover, .bluebutton:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e0e9e9), color-stop(100%, #87a9a8));
+  background-image: -webkit-linear-gradient(top center, #e0e9e9 0%, #87a9a8 100%);
+  background-image: -moz-linear-gradient(top center, #e0e9e9 0%, #87a9a8 100%);
+  background-image: -o-linear-gradient(top center, #e0e9e9 0%, #87a9a8 100%);
+  background-image: -ms-linear-gradient(top center, #e0e9e9 0%, #87a9a8 100%);
+  background-image: linear-gradient(top center, #e0e9e9 0%, #87a9a8 100%);
+}
+.bluebutton:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #d1dede), color-stop(100%, #87a9a8));
+  background-image: -webkit-linear-gradient(bottom center, #d1dede 0%, #87a9a8 100%);
+  background-image: -moz-linear-gradient(bottom center, #d1dede 0%, #87a9a8 100%);
+  background-image: -o-linear-gradient(bottom center, #d1dede 0%, #87a9a8 100%);
+  background-image: -ms-linear-gradient(bottom center, #d1dede 0%, #87a9a8 100%);
+  background-image: linear-gradient(bottom center, #d1dede 0%, #87a9a8 100%);
 }
 
 .errorlist {
@@ -1225,6 +1305,12 @@ footer[role="contentinfo"] small {
   padding: 1.618em;
   color: #eeeeee;
   background-color: rgba(68, 68, 68, 0.854);
+}
+.messagestyle a:link, .successmessage a:link, .message.success a:link, #messages li.success a:link, .errormessage a:link, .message.error a:link, #messages li.error a:link, .warningmessage a:link, .message.warning a:link, #messages li.warning a:link, #filter .form-actions a:link, .message a:link, #messages li a:link, .messagestyle a:visited, .successmessage a:visited, .message.success a:visited, #messages li.success a:visited, .errormessage a:visited, .message.error a:visited, #messages li.error a:visited, .warningmessage a:visited, .message.warning a:visited, #messages li.warning a:visited, #filter .form-actions a:visited, .message a:visited, #messages li a:visited {
+  color: #87a9a8;
+}
+.messagestyle a:focus, .successmessage a:focus, .message.success a:focus, #messages li.success a:focus, .errormessage a:focus, .message.error a:focus, #messages li.error a:focus, .warningmessage a:focus, .message.warning a:focus, #messages li.warning a:focus, #filter .form-actions a:focus, .message a:focus, #messages li a:focus, .messagestyle a:hover, .successmessage a:hover, .message.success a:hover, #messages li.success a:hover, .errormessage a:hover, .message.error a:hover, #messages li.error a:hover, .warningmessage a:hover, .message.warning a:hover, #messages li.warning a:hover, #filter .form-actions a:hover, .message a:hover, #messages li a:hover, .messagestyle a:active, .successmessage a:active, .message.success a:active, #messages li.success a:active, .errormessage a:active, .message.error a:active, #messages li.error a:active, .warningmessage a:active, .message.warning a:active, #messages li.warning a:active, #filter .form-actions a:active, .message a:active, #messages li a:active {
+  color: #eca9ab;
 }
 .messagestyle p, .successmessage p, .message.success p, #messages li.success p, .errormessage p, .message.error p, #messages li.error p, .warningmessage p, .message.warning p, #messages li.warning p, #filter .form-actions p, .message p, #messages li p {
   padding-left: 17.021%;
@@ -1706,6 +1792,50 @@ footer[role="contentinfo"] small {
   color: #999999;
 }
 
+.textual {
+  position: relative;
+}
+.textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.togglelist input, #filter .compact input, .tagging .visual input, .togglelist label, #filter .compact label, .tagging .visual label {
+  display: none;
+}
+.togglelist li, #filter .compact li, .tagging .visual li {
+  display: inline;
+  float: left;
+}
+.togglelist input:checked + label, #filter .compact input:checked + label, .tagging .visual input:checked + label {
+  margin-bottom: 0.944em;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  font-weight: 500;
+  display: block;
+  margin-right: 0.5em;
+  padding: 0.236em 0.472em;
+  padding-left: 15px;
+  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
+}
+.togglelist input:checked + label:hover, #filter .compact input:checked + label:hover, .tagging .visual input:checked + label:hover {
+  background-image: url('../images/ui/x_sm.png?1314206098');
+}
+
 .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -1741,11 +1871,15 @@ footer[role="contentinfo"] small {
   border-bottom-right-radius: 0;
   display: none;
   clear: both;
-  text-align: left;
   margin: 0;
+  text-align: left;
 }
 #filter .form-actions p {
   margin: 0;
+}
+#filter .form-actions p::before {
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
 }
 #filter button {
   background-image: url('../images/ui/refresh.png?1314206098');
@@ -1760,23 +1894,28 @@ footer[role="contentinfo"] small {
   background-position: 8.653px, left;
   border-color: #759d45;
 }
+#filter button:hover, #filter button:focus {
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -moz-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -o-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -ms-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), linear-gradient(top center, #c1e794 0%, #77b929 100%);
+}
+#filter button:active {
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: url('../images/ui/refresh.png?1314206098'), -webkit-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -moz-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -o-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), -ms-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/refresh.png?1314206098'), linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+}
 #filter .textual {
   display: inline;
   float: left;
   width: 49.474%;
   margin-right: 1.053%;
   margin-bottom: 0.809em;
-  position: relative;
-}
-#filter .textual label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
 }
 #filter .textual input {
   clear: both;
@@ -1899,34 +2038,8 @@ footer[role="contentinfo"] small {
 #filter .compact .long {
   height: auto !important;
 }
-#filter .compact h5, #filter .compact input, #filter .compact label {
+#filter .compact h5 {
   display: none;
-}
-#filter .compact li {
-  display: inline;
-  float: left;
-}
-#filter .compact input:checked + label {
-  margin-bottom: 0.944em;
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  font-weight: 500;
-  display: block;
-  margin-right: 0.5em;
-  padding: 0.236em 0.472em;
-  padding-left: 15px;
-  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
-}
-#filter .compact input:checked + label:hover {
-  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";
@@ -2499,6 +2612,22 @@ footer[role="contentinfo"] small {
   background-position: 8.653px, left;
   background-repeat: no-repeat;
   white-space: nowrap;
+}
+#listcontent .create:hover, #listcontent .create:focus {
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -moz-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -o-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -ms-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), linear-gradient(top center, #c1e794 0%, #77b929 100%);
+}
+#listcontent .create:active {
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: url('../images/ui/plus.png?1314206098'), -webkit-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -moz-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -o-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), -ms-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: url('../images/ui/plus.png?1314206098'), linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
 }
 
 /* Lists --------------------------------------------------------------------- */
@@ -3505,12 +3634,225 @@ footer[role="contentinfo"] small {
   height: 1.618em;
 }
 
+.tagging {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+.tagging .visual {
+  margin-left: 0;
+}
+
+@-webkit-keyframes bgscroll {
+  0% {
+    background-position: 0;
+  }
+
+  100% {
+    background-position: 100%;
+  }
+}
+
+@-moz-keyframes bgscroll {
+  0% {
+    background-position: 0;
+  }
+
+  100% {
+    background-position: 100%;
+  }
+}
+
+@keyframes bgscroll {
+  0% {
+    background-position: 0;
+  }
+
+  100% {
+    background-position: 100%;
+  }
+}
+
+.attachments {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  padding-left: 8.421%;
+}
+.attachments .uploads {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+  margin-bottom: 0.809em;
+}
+.attachments .uploads li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  white-space: nowrap;
+}
+.attachments .uploads li {
+  *display: inline;
+}
+.attachments a:link, .attachments a:visited {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0.25em 0 19.5px;
+  border: 0;
+  background-repeat: no-repeat;
+  text-align: left;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: rgba(135, 169, 168, 0.382);
+  background-image: url('../images/ui/check_sm.png?1314206098');
+  background-position: 0.375em;
+  font-weight: 500;
+  display: block;
+  margin-right: 0.405em;
+  padding-right: 0.405em;
+  color: #4b6564;
+}
+.attachments .uploading {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-background-size: 0.809em 100%;
+  -webkit-background-size: 0.809em 100%;
+  -o-background-size: 0.809em 100%;
+  background-size: 0.809em 100%;
+  background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, rgba(75, 101, 100, 0.618)), color-stop(50%, rgba(75, 101, 100, 0.382)), color-stop(100%, rgba(75, 101, 100, 0.618)));
+  background-image: -webkit-linear-gradient(left, rgba(75, 101, 100, 0.618), rgba(75, 101, 100, 0.382), rgba(75, 101, 100, 0.618));
+  background-image: -moz-linear-gradient(left, rgba(75, 101, 100, 0.618), rgba(75, 101, 100, 0.382), rgba(75, 101, 100, 0.618));
+  background-image: -o-linear-gradient(left, rgba(75, 101, 100, 0.618), rgba(75, 101, 100, 0.382), rgba(75, 101, 100, 0.618));
+  background-image: -ms-linear-gradient(left, rgba(75, 101, 100, 0.618), rgba(75, 101, 100, 0.382), rgba(75, 101, 100, 0.618));
+  background-image: linear-gradient(left, rgba(75, 101, 100, 0.618), rgba(75, 101, 100, 0.382), rgba(75, 101, 100, 0.618));
+  -moz-animation: bgscroll 3s linear infinite;
+  -webkit-animation: bgscroll 3s linear infinite;
+  animation: bgscroll 3s linear infinite;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  content: " ";
+  width: 4.854em;
+  height: 0.809em;
+  margin-left: 0.405em;
+  vertical-align: baseline;
+}
+.attachments .uploading {
+  *display: inline;
+}
+.attachments input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.attachments .upload {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: -o-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  background-image: linear-gradient(top center, #b5e37f 0%, #77b929 100%);
+  border-color: #759d45;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.333em;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-shadow: white 0 1px 1px;
+  cursor: pointer;
+  color: #111111;
+  font: inherit;
+  outline: 0;
+  overflow: visible;
+  width: auto;
+  vertical-align: baseline;
+  display: inline;
+  float: left;
+  width: 25.581%;
+  margin-right: 2.326%;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+}
+.attachments .upload:hover, .attachments .upload:focus {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -o-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(top center, #c1e794 0%, #77b929 100%);
+  background-image: linear-gradient(top center, #c1e794 0%, #77b929 100%);
+}
+.attachments .upload:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b5e37f), color-stop(100%, #77b929));
+  background-image: -webkit-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -moz-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -o-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: -ms-linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+  background-image: linear-gradient(bottom center, #b5e37f 0%, #77b929 100%);
+}
+.attachments .upload[disabled] {
+  background: #dddddd url('../images/forms/button.png?1314206098') repeat-x;
+  color: #888888;
+}
+.attachments .helper {
+  display: inline;
+  float: left;
+  width: 72.093%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  margin-top: 0.405em;
+  font-style: italic;
+}
+
 .select-env-link:link, .select-env-link:visited {
   display: inline;
   float: right;
   margin-right: 0;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+  margin-bottom: 0.809em;
   max-width: 15.789%;
   text-align: right;
   background: url('../images/ui/crosshair.png?1314731893') no-repeat scroll left;

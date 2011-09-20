@@ -121,6 +121,8 @@ class AddEditForm(RemoteObjectForm):
 
 
     def clean(self):
+        if self.errors:
+            return self.cleaned_data
         if self.instance is None:
             cleaned = self.add_clean()
             editing = False

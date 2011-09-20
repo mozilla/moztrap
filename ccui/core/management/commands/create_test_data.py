@@ -67,16 +67,19 @@ PRODUCTS = {
     "TCM": {
         "description": "The test case manager.",
         "environments": "Website Testing Environments",
+        "testers": ["tester", "tester2"],
         "cycles": {
             "Test Cycle 1": {
                 "startDate": datetime.date.today(),
                 "description": "Test Cycle 1",
+                "testers": ["tester", "tester2"],
                 "testruns": {
                     "Test Run 1A": {
                         "startDate": datetime.date.today(),
                         "selfAssignAllowed": True,
                         "selfAssignLimit": 0,
                         "autoAssignToTeam": True,
+                        "testers": ["tester"],
                         "testsuites": {
                             "Signup": {
                                 "description": "tests for user signup",
@@ -171,6 +174,13 @@ USERS = [
         "email": "tester@example.com",
         "password": "testpw",
         },
+    {
+        "firstName": "Another",
+        "lastName": "Tester",
+        "screenName": "tester2",
+        "email": "tester2@example.com",
+        "password": "testpw",
+        },
     ]
 
 ADMINS = [
@@ -234,48 +244,53 @@ class Command(BaseCommand):
             envgroups = company.autogenerate_env_groups(envs, egt)
             grouptypelists[name] = envgroups
 
-        users = []
+        users = {}
         for data in USERS:
             user = User(company=company, **data)
             UserList.get(auth=admin).post(user)
             user.roles = [conf.CC_NEW_USER_ROLE_ID]
             user.activate()
             print "Created user '%s.'" % user.screenName
-            users.append(user)
+            users[data["screenName"]] = user
 
         if ADMIN_ROLE_ID is not None:
-            admins = []
+            admins = {}
             for data in ADMINS:
                 user = User(company=company, **data)
                 UserList.get(auth=admin).post(user)
                 user.roles = [ADMIN_ROLE_ID]
                 user.activate()
                 print "Created admin user '%s.'" % user.screenName
-                admins.append(user)
+                admins[data["screenName"]] = user
 
         cc = Credentials(USERS[0]["email"], password=USERS[0]["password"])
 
         products = {}
         for name, data in PRODUCTS.items():
+            testers = data.pop("testers", [])
             egt_name = data.pop("environments")
             cycles = data.pop("cycles", {})
             envs = grouptypelists[egt_name]
             p = Product(name=name, company=company, **data)
             ProductList.get(auth=admin).post(p)
             p.environmentgroups = envs
+            p = p.refresh()
+            if testers: p.team = [users[u] for u in testers]
             print "Created product '%s.'" % name
             products[name] = p
 
             for name, data in cycles.items():
                 testruns = data.pop("testruns", {})
+                testers = data.pop("testers", [])
                 tc = TestCycle(name=name, product=p, **data)
                 TestCycleList.get(auth=admin).post(tc)
-                print "Created test cycle '%s.'" % name
-
                 tc.activate()
+                if testers: tc.team = [users[u] for u in testers]
+                print "Created test cycle '%s.'" % name
 
                 for name, data in testruns.items():
                     suites = data.pop("testsuites")
+                    testers = data.pop("testers", [])
                     tr = TestRun(testCycle=tc, name=name, **data)
                     TestRunList.get(auth=admin).post(tr)
                     print "Created test run '%s.'" % name
@@ -311,3 +326,4 @@ class Command(BaseCommand):
                         tr.addsuite(ts)
 
                     tr.activate()
+                    if testers: tr.team = [users[u] for u in testers]

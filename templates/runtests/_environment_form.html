@@ -1,7 +1,7 @@
 {% load environment %}
 
 {% if not form %}
-{% get_environment_selection_form for testrun.environmentgroups as form %}
+{% get_environment_selection_form for testrun.environmentgroups_prefetch as form %}
 {% endif %}
 
 <h3 class="sectionhead">Set your environment</h3>
