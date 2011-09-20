@@ -4856,7 +4856,13 @@ footer[role="contentinfo"] small {
   width: 11.579%;
   margin-right: 1.053%;
 }
-#managecycles .testers, #managecycles .product, #managecycles .byproduct {
+#managecycles .testers {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+}
+#managecycles .product, #managecycles .byproduct {
   display: inline;
   float: left;
   width: 20%;
@@ -4891,6 +4897,11 @@ footer[role="contentinfo"] small {
   float: left;
   width: 20%;
   margin-right: 1.053%;
+}
+#manageruns .testers {
+  display: inline;
+  float: right;
+  margin-right: 0;
 }
 
 #managesuites .title, #managesuites .bytitle {

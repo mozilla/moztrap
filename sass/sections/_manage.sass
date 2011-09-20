@@ -91,7 +91,9 @@
 #managecycles
   .start, .end, .bystart, .byend,
     +columns(3,24)
-  .testers, .product, .byproduct
+  .testers
+    +columns(4,24)
+  .product, .byproduct
     +columns(5,24)
   .title, .bytitle
     +columns(8,24)
@@ -105,6 +107,8 @@
     +columns(4,24)
   .title, .bytitle
     +columns(5,24)
+  .testers
+    +omega(24)
 
 #managesuites
   .title, .bytitle
