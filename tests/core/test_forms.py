@@ -2,6 +2,9 @@ from mock import patch, Mock
 from unittest2 import TestCase
 
 
+from ..utils import creds
+
+
 
 class TestNonFieldErrorsClassFormMixin(TestCase):
     @property
@@ -103,6 +106,50 @@ class AddEditFormTest(TestCase):
         f = PersonForm(instance=Mock(), auth=Mock())
 
         self.assertEqual(f.fields["age"].read_only, True)
+
+
+    def test_add_no_save_with_error(self):
+        import floppyforms as forms
+
+        class PersonForm(self.form_class):
+            entryclass = Mock()
+            listclass = Mock()
+
+            name = forms.CharField(required=True)
+            birthdate = forms.DateField(required=False)
+
+        # bad date will fail validation
+        f = PersonForm(
+            data={"name": "Someone", "birthdate": "2011-12-32"},
+            auth=creds("admin@example.com"),
+            )
+
+        self.assertFalse(f.is_valid())
+
+        # failed validation should mean new obj is never instantiated
+        self.assertEqual(PersonForm.entryclass.call_count, 0)
+
+
+    def test_edit_no_save_with_error(self):
+        import floppyforms as forms
+
+        class PersonForm(self.form_class):
+            name = forms.CharField(required=True)
+            birthdate = forms.DateField(required=False)
+
+        instance = Mock()
+
+        # bad date will fail validation
+        f = PersonForm(
+            data={"name": "Someone", "birthdate": "2011-12-32"},
+            instance=instance,
+            auth=creds("admin@example.com"),
+            )
+
+        self.assertFalse(f.is_valid())
+
+        # failed validation should mean obj is never saved
+        self.assertEqual(instance.put.call_count, 0)
 
 
 
