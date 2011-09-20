@@ -33,18 +33,29 @@
   .uploads
     +inline-block-list
     +trailer(.5)
+  li
+    +border-radius
+    +demi
+    display: block
+    margin-right: rhythm(.25)
+    padding: 0 rhythm(.25)
+    background: rgba($blue-light,$xsmall)
+    &.uploading
+      background-color: rgba($yellow-dark,$small)
+      .action-remove
+        +icon-replace('ui/clock_sm.png')
+        #{$focus}
+          background-image: image-url('ui/x_sm.png')
+  .action-remove
+    +icon-replace('ui/check_sm.png')
+    background-color: transparent
+    #{$focus}
+      background-image: image-url('ui/x_sm.png')
   a
     #{$link}
-      +text-icon('ui/check_sm.png',rgba($blue-light,$xsmall))
-      +demi
-      display: block
-      margin-right: rhythm(.25)
-      padding-right: rhythm(.25)
       color: $blue-dark
-  .uploading
-    a
-      #{$link}
-        +text-icon('ui/clock_sm.png',rgba($yellow-dark,$small))
+    #{$focus}
+      color: $red-dark
   .loader
     +border-radius
     +background-size(rhythm(.5) 100%)
@@ -54,7 +65,6 @@
     content: " "
     width: rhythm(3)
     height: rhythm(.5)
-    margin: 0 rhythm(.25)
     vertical-align: baseline
   input
     +gone

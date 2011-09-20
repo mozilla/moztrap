@@ -1,9 +1,16 @@
 <div class="attachments">
   <ul class="uploads">
-    <li><a href="#">file_1.png</a></li>
-    <li class="uploading"><a href="#">file_2.png<span class="loader"> </span></a></li>
+    <li>
+      <button class="action-remove" title="remove attachment">remove attachment</button>
+      <a href="#">file_1.png</a>
+    </li>
+    <li class="uploading">
+      <button class="action-remove" title="remove attachment">remove attachment</button>
+      <a href="#">file_2.png</a>
+      <span class="loader"> </span>
+    </li>
   </ul>
-  <label class="upload">add an attachment</label>
+  <label for="attachment-input" class="upload">add an attachment</label>
   <p class="helper">any file type, up to 10GB.</p>
   <input type="file" name="attachment" id="attachment-input">
 </div>

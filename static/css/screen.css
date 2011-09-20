@@ -3706,50 +3706,80 @@ footer[role="contentinfo"] small {
 .attachments .uploads li {
   *display: inline;
 }
-.attachments a:link, .attachments a:visited {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0 0.25em 0 19.5px;
-  border: 0;
-  background-repeat: no-repeat;
-  text-align: left;
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  background-color: rgba(135, 169, 168, 0.382);
-  background-image: url('../images/ui/check_sm.png?1314206098');
-  background-position: 0.375em;
+.attachments li {
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
   font-weight: 500;
   display: block;
   margin-right: 0.405em;
-  padding-right: 0.405em;
+  padding: 0 0.405em;
+  background: rgba(135, 169, 168, 0.382);
+}
+.attachments li.uploading {
+  background-color: rgba(253, 200, 14, 0.618);
+}
+.attachments li.uploading .action-remove {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/clock_sm.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 12px;
+  min-height: 12px;
+  margin: 0;
+  padding: 0 0.125em;
+  border: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+}
+.attachments li.uploading .action-remove:focus, .attachments li.uploading .action-remove:hover, .attachments li.uploading .action-remove:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.attachments li.uploading .action-remove:focus, .attachments li.uploading .action-remove:hover, .attachments li.uploading .action-remove:active {
+  background-image: url('../images/ui/x_sm.png?1314206098');
+}
+.attachments .action-remove {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/check_sm.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  min-width: 9px;
+  min-height: 9px;
+  margin: 0;
+  padding: 0 0.125em;
+  border: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  background-color: transparent;
+}
+.attachments .action-remove:focus, .attachments .action-remove:hover, .attachments .action-remove:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.attachments .action-remove:focus, .attachments .action-remove:hover, .attachments .action-remove:active {
+  background-image: url('../images/ui/x_sm.png?1314206098');
+}
+.attachments a:link, .attachments a:visited {
   color: #4b6564;
 }
-.attachments .uploading a:link, .attachments .uploading a:visited {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0 0.25em 0 22.5px;
-  border: 0;
-  background-repeat: no-repeat;
-  text-align: left;
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  background-color: rgba(253, 200, 14, 0.618);
-  background-image: url('../images/ui/clock_sm.png?1314206098');
-  background-position: 0.375em;
+.attachments a:focus, .attachments a:hover, .attachments a:active {
+  color: #511214;
 }
 .attachments .loader {
   -moz-border-radius: 0.236em;
@@ -3779,7 +3809,6 @@ footer[role="contentinfo"] small {
   content: " ";
   width: 4.854em;
   height: 0.809em;
-  margin: 0 0.405em;
   vertical-align: baseline;
 }
 .attachments .loader {
