@@ -130,18 +130,18 @@
     +demi
     min-height: rhythm(1)
     text-transform: uppercase
-    &.rejected, &.draft, &.active, &.locked
+    &.rejected, &.draft, &.active, &.locked, &.disabled, &.inactive
       width: 100%
 
   span
     +inline-block
     &.rejected
       +text-icon('ui/x.png',$red-lighter)
-    &.draft
+    &.draft, &.inactive
       +text-icon('ui/power.png',$blue-lighter)
     &.active
       +text-icon('ui/power.png',$green-light)
-    &.locked
+    &.locked, &.disabled
       +text-icon('ui/lock.png',$yellow)
 
   button
@@ -149,7 +149,7 @@
       +text-button('ui/x.png',$red-lighter)
       #{$focus}
         +text-button('ui/check.png',$green-light)
-    &.draft
+    &.draft, &.inactive
       +text-button('ui/power.png',$blue-lighter)
       #{$focus}
         +text-button('ui/power.png',$green-light)
@@ -157,12 +157,12 @@
       +text-button('ui/power.png',$green-light)
       #{$focus}
         +text-button('ui/lock.png',$yellow)
-    &.locked
+    &.locked, &.disabled
       +text-button('ui/lock.png',$yellow)
       #{$focus}
         +text-button('ui/unlock.png',$green-light)
     #{$focus}
-      &.rejected, &.draft, &.active, &.locked
+      &.rejected, &.draft, &.active, &.locked, &.disabled, &.inactive
         +hide-text
         &::after
           content: attr(title)

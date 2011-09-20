@@ -1,7 +1,7 @@
 <article id="profile-id-{{ profile.id }}" class="item">
   <h3 class="title">
     {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <a href="/manage/environment/edit/{# @@@ #}" title="edit {{ profile.name }}">
+    <a href="{% url manage_environment_edit profile_id=profile.id %}" title="edit {{ profile.name }}">
       {{ profile.name }}
     </a>
     {% else %}

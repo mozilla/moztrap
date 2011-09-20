@@ -1,0 +1,42 @@
+{% load sort %}
+{# @@@ wireframe #}
+
+<div class="managelist action-ajax-replace">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bystatus">
+        <a href="#">status</a>
+      </li>
+      <li class="bygiven">
+        <a href="#">first name</a>
+      </li>
+      <li class="byfamily">
+        <a href="#">last name</a>
+      </li>
+      <li class="bynickname">
+        <a href="#">screenname</a>
+      </li>
+      <li class="byemail">
+        <a href="#">email</a>
+      </li>
+      <li class="byroles">
+        <a href="#">roles</a>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items">
+    {% include "manage/user/_users_list_item.html" with id="1" status="inactive" %}
+    {% include "manage/user/_users_list_item.html" with id="3" status="active"  %}
+    {% include "manage/user/_users_list_item.html" with id="5" status="disabled" %}
+    {% include "manage/user/_users_list_item.html" with id="2" status="inactive" perms="admin" %}
+    {% include "manage/user/_users_list_item.html" with id="4" status="active"  perms="admin" %}
+    {% include "manage/user/_users_list_item.html" with id="6" status="disabled" perms="admin" %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

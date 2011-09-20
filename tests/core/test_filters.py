@@ -62,6 +62,22 @@ class TestFilter(FilterTestCase):
         list_obj.filter.assert_called_with(status=["draft", "active"])
 
 
+    def test_empty_filter(self):
+        """
+        A FieldFilter with no data isn't filtered on at all.
+
+        """
+        f = self.filter_class(
+            self.GET(),
+            self.auth,
+            ("status", self.status_field_filter))
+
+        list_obj = Mock()
+        f.filter(list_obj)
+
+        list_obj.filter.assert_called_with()
+
+
 
 class FieldFilterTest(FilterTestCase):
     def test_iteration(self):

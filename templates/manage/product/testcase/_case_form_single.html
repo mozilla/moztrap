@@ -20,12 +20,9 @@
       {% include "forms/_field.html" with field=single_form.description %}
     </li>
     {% block caseversions %}{% endblock caseversions %}
-    {% comment %} @@@
-    <li>
-      {% include "forms/_field.html" with field=single_form.tags %}
-    </li>
-    {% endcomment %}
   </ul>
+
+  {% include "manage/product/testcase/_tagging.html" %}
 
   <div class="steps">
     {{ single_form.steps_formset.management_form }}

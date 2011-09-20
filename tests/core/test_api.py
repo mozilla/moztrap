@@ -1068,7 +1068,7 @@ class ListObjectTest(TestResourceTestCase):
         req = http.request.call_args[-1]
         self.assertEqual(
             Url(req["uri"]),
-            Url("http://fake.base/rest/testresources?submitAs=__&_type=json"))
+            Url("http://fake.base/rest/testresources?submitAs=-999&_type=json"))
 
 
     def test_filter_invalid_field(self, http):

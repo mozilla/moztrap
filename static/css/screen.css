@@ -208,11 +208,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .select-env-link:link, .select-env-link:visited, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .select-env-link:link, .select-env-link:visited, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .roleselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .roleselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .roleselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .roleselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .roleselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .roleselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .select-env-link:link, .select-env-link:visited, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .select-env-link:link, .select-env-link:visited, .superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .roleselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .roleselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .roleselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .roleselect .selected h4, .superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .roleselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .roleselect .removeall, .item.add-item > a, .item.add-item > .summary, .stepfail .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -1037,6 +1037,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
 [role="banner"] {
   min-height: 5.663em;
   background: rgba(82, 134, 132, 0.236);
+  white-space: nowrap;
 }
 [role="banner"] a:link, [role="banner"] a:visited {
   font-weight: 500;
@@ -1225,6 +1226,12 @@ footer[role="contentinfo"] small {
   color: #eeeeee;
   background-color: rgba(68, 68, 68, 0.854);
 }
+.messagestyle a:link, .successmessage a:link, .message.success a:link, #messages li.success a:link, .errormessage a:link, .message.error a:link, #messages li.error a:link, .warningmessage a:link, .message.warning a:link, #messages li.warning a:link, #filter .form-actions a:link, .message a:link, #messages li a:link, .messagestyle a:visited, .successmessage a:visited, .message.success a:visited, #messages li.success a:visited, .errormessage a:visited, .message.error a:visited, #messages li.error a:visited, .warningmessage a:visited, .message.warning a:visited, #messages li.warning a:visited, #filter .form-actions a:visited, .message a:visited, #messages li a:visited {
+  color: #87a9a8;
+}
+.messagestyle a:focus, .successmessage a:focus, .message.success a:focus, #messages li.success a:focus, .errormessage a:focus, .message.error a:focus, #messages li.error a:focus, .warningmessage a:focus, .message.warning a:focus, #messages li.warning a:focus, #filter .form-actions a:focus, .message a:focus, #messages li a:focus, .messagestyle a:hover, .successmessage a:hover, .message.success a:hover, #messages li.success a:hover, .errormessage a:hover, .message.error a:hover, #messages li.error a:hover, .warningmessage a:hover, .message.warning a:hover, #messages li.warning a:hover, #filter .form-actions a:hover, .message a:hover, #messages li a:hover, .messagestyle a:active, .successmessage a:active, .message.success a:active, #messages li.success a:active, .errormessage a:active, .message.error a:active, #messages li.error a:active, .warningmessage a:active, .message.warning a:active, #messages li.warning a:active, #filter .form-actions a:active, .message a:active, #messages li a:active {
+  color: #eca9ab;
+}
 .messagestyle p, .successmessage p, .message.success p, #messages li.success p, .errormessage p, .message.error p, #messages li.error p, .warningmessage p, .message.warning p, #messages li.warning p, #filter .form-actions p, .message p, #messages li p {
   padding-left: 17.021%;
   position: relative;
@@ -1248,7 +1255,7 @@ footer[role="contentinfo"] small {
   left: 0;
   width: 14.894%;
   padding-left: 24.695px;
-  background: rgba(82, 134, 132, 0.618) url('../images/ui/info_circle_light.png?1314657529') no-repeat scroll 5.348px;
+  background: rgba(82, 134, 132, 0.618) url('../images/ui/info_circle_light.png?1314731893') no-repeat scroll 5.348px;
   text-transform: uppercase;
 }
 
@@ -1474,7 +1481,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/crosshair.png?1314657529');
+  background-image: url('../images/ui/crosshair.png?1314731893');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   min-width: 14px;
@@ -1705,6 +1712,50 @@ footer[role="contentinfo"] small {
   color: #999999;
 }
 
+.textual {
+  position: relative;
+}
+.textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.togglelist input, #filter .compact input, .tagging .visual input, .togglelist label, #filter .compact label, .tagging .visual label {
+  display: none;
+}
+.togglelist li, #filter .compact li, .tagging .visual li {
+  display: inline;
+  float: left;
+}
+.togglelist input:checked + label, #filter .compact input:checked + label, .tagging .visual input:checked + label {
+  margin-bottom: 0.944em;
+  -moz-border-radius: 0.236em;
+  -webkit-border-radius: 0.236em;
+  -o-border-radius: 0.236em;
+  -ms-border-radius: 0.236em;
+  -khtml-border-radius: 0.236em;
+  border-radius: 0.236em;
+  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
+  font-weight: 500;
+  display: block;
+  margin-right: 0.5em;
+  padding: 0.236em 0.472em;
+  padding-left: 15px;
+  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
+}
+.togglelist input:checked + label:hover, #filter .compact input:checked + label:hover, .tagging .visual input:checked + label:hover {
+  background-image: url('../images/ui/x_sm.png?1314206098');
+}
+
 .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
@@ -1740,11 +1791,15 @@ footer[role="contentinfo"] small {
   border-bottom-right-radius: 0;
   display: none;
   clear: both;
-  text-align: left;
   margin: 0;
+  text-align: left;
 }
 #filter .form-actions p {
   margin: 0;
+}
+#filter .form-actions p::before {
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
 }
 #filter button {
   background-image: url('../images/ui/refresh.png?1314206098');
@@ -1765,17 +1820,6 @@ footer[role="contentinfo"] small {
   width: 49.474%;
   margin-right: 1.053%;
   margin-bottom: 0.809em;
-  position: relative;
-}
-#filter .textual label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
 }
 #filter .textual input {
   clear: both;
@@ -1898,34 +1942,8 @@ footer[role="contentinfo"] small {
 #filter .compact .long {
   height: auto !important;
 }
-#filter .compact h5, #filter .compact input, #filter .compact label {
+#filter .compact h5 {
   display: none;
-}
-#filter .compact li {
-  display: inline;
-  float: left;
-}
-#filter .compact input:checked + label {
-  margin-bottom: 0.944em;
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
-  -moz-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -webkit-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  -o-box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  box-shadow: rgba(82, 134, 132, 0.236) 0 1px 1px;
-  font-weight: 500;
-  display: block;
-  margin-right: 0.5em;
-  padding: 0.236em 0.472em;
-  padding-left: 15px;
-  background: #e5f5d2 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
-}
-#filter .compact input:checked + label:hover {
-  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";
@@ -2751,7 +2769,7 @@ footer[role="contentinfo"] small {
   min-height: 1.618em;
   text-transform: uppercase;
 }
-.status span.rejected, .status span.draft, .status span.active, .status span.locked, .status button.rejected, .status button.draft, .status button.active, .status button.locked {
+.status span.rejected, .status span.draft, .status span.active, .status span.locked, .status span.disabled, .status span.inactive, .status button.rejected, .status button.draft, .status button.active, .status button.locked, .status button.disabled, .status button.inactive {
   width: 100%;
 }
 .status span {
@@ -2784,7 +2802,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/x.png?1314206098');
   background-position: 0.375em;
 }
-.status span.draft {
+.status span.draft, .status span.inactive {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2824,7 +2842,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/power.png?1314206098');
   background-position: 0.375em;
 }
-.status span.locked {
+.status span.locked, .status span.disabled {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2908,7 +2926,7 @@ footer[role="contentinfo"] small {
 .status button.rejected:focus:focus, .status button.rejected:focus:hover, .status button.rejected:focus:active, .status button.rejected:hover:focus, .status button.rejected:hover:hover, .status button.rejected:hover:active, .status button.rejected:active:focus, .status button.rejected:active:hover, .status button.rejected:active:active {
   background-color: #9dd955;
 }
-.status button.draft {
+.status button.draft, .status button.inactive {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2937,10 +2955,10 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.draft:focus, .status button.draft:hover, .status button.draft:active {
+.status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.inactive:focus, .status button.inactive:hover, .status button.inactive:active {
   background-color: #8daaa9;
 }
-.status button.draft:focus, .status button.draft:hover, .status button.draft:active {
+.status button.draft:focus, .status button.draft:hover, .status button.draft:active, .status button.inactive:focus, .status button.inactive:hover, .status button.inactive:active {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -2969,7 +2987,7 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.draft:focus:focus, .status button.draft:focus:hover, .status button.draft:focus:active, .status button.draft:hover:focus, .status button.draft:hover:hover, .status button.draft:hover:active, .status button.draft:active:focus, .status button.draft:active:hover, .status button.draft:active:active {
+.status button.draft:focus:focus, .status button.draft:focus:hover, .status button.draft:focus:active, .status button.draft:hover:focus, .status button.draft:hover:hover, .status button.draft:hover:active, .status button.draft:active:focus, .status button.draft:active:hover, .status button.draft:active:active, .status button.inactive:focus:focus, .status button.inactive:focus:hover, .status button.inactive:focus:active, .status button.inactive:hover:focus, .status button.inactive:hover:hover, .status button.inactive:hover:active, .status button.inactive:active:focus, .status button.inactive:active:hover, .status button.inactive:active:active {
   background-color: #9dd955;
 }
 .status button.active {
@@ -3036,7 +3054,7 @@ footer[role="contentinfo"] small {
 .status button.active:focus:focus, .status button.active:focus:hover, .status button.active:focus:active, .status button.active:hover:focus, .status button.active:hover:hover, .status button.active:hover:active, .status button.active:active:focus, .status button.active:active:hover, .status button.active:active:active {
   background-color: #feda59;
 }
-.status button.locked {
+.status button.locked, .status button.disabled {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -3065,10 +3083,10 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.locked:focus, .status button.locked:hover, .status button.locked:active {
+.status button.locked:focus, .status button.locked:hover, .status button.locked:active, .status button.disabled:focus, .status button.disabled:hover, .status button.disabled:active {
   background-color: #feda59;
 }
-.status button.locked:focus, .status button.locked:hover, .status button.locked:active {
+.status button.locked:focus, .status button.locked:hover, .status button.locked:active, .status button.disabled:focus, .status button.disabled:hover, .status button.disabled:active {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -3097,15 +3115,15 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
   background-position: 0.375em, 0;
 }
-.status button.locked:focus:focus, .status button.locked:focus:hover, .status button.locked:focus:active, .status button.locked:hover:focus, .status button.locked:hover:hover, .status button.locked:hover:active, .status button.locked:active:focus, .status button.locked:active:hover, .status button.locked:active:active {
+.status button.locked:focus:focus, .status button.locked:focus:hover, .status button.locked:focus:active, .status button.locked:hover:focus, .status button.locked:hover:hover, .status button.locked:hover:active, .status button.locked:active:focus, .status button.locked:active:hover, .status button.locked:active:active, .status button.disabled:focus:focus, .status button.disabled:focus:hover, .status button.disabled:focus:active, .status button.disabled:hover:focus, .status button.disabled:hover:hover, .status button.disabled:hover:active, .status button.disabled:active:focus, .status button.disabled:active:hover, .status button.disabled:active:active {
   background-color: #9dd955;
 }
-.status button:focus.rejected, .status button:focus.draft, .status button:focus.active, .status button:focus.locked, .status button:hover.rejected, .status button:hover.draft, .status button:hover.active, .status button:hover.locked, .status button:active.rejected, .status button:active.draft, .status button:active.active, .status button:active.locked {
+.status button:focus.rejected, .status button:focus.draft, .status button:focus.active, .status button:focus.locked, .status button:focus.disabled, .status button:focus.inactive, .status button:hover.rejected, .status button:hover.draft, .status button:hover.active, .status button:hover.locked, .status button:hover.disabled, .status button:hover.inactive, .status button:active.rejected, .status button:active.draft, .status button:active.active, .status button:active.locked, .status button:active.disabled, .status button:active.inactive {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
 }
-.status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after {
+.status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:focus.disabled::after, .status button:focus.inactive::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:hover.disabled::after, .status button:hover.inactive::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after, .status button:active.disabled::after, .status button:active.inactive::after {
   content: attr(title);
   position: absolute;
   left: 1.5em;
@@ -3504,43 +3522,57 @@ footer[role="contentinfo"] small {
   height: 1.618em;
 }
 
+.tagging {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+.tagging .visual {
+  margin-left: 0;
+}
+
 .select-env-link:link, .select-env-link:visited {
   display: inline;
   float: right;
   margin-right: 0;
   padding-top: 0.405em;
   padding-bottom: 0.405em;
+  margin-bottom: 0.809em;
   max-width: 15.789%;
   text-align: right;
-  background: url('../images/ui/crosshair.png?1314657529') no-repeat scroll left;
+  background: url('../images/ui/crosshair.png?1314731893') no-repeat scroll left;
   padding-left: 22.653px;
 }
 
-.addform h2, #addproduct h2, #addcycle h2, #addrun h2, #addsuite h2, #single-case-form h2, #bulk-case-form h2 {
+.addform h2, #addproduct h2, #addcycle h2, #addrun h2, #addsuite h2, #single-case-form h2, #bulk-case-form h2, #user-add-form h2 {
   margin-bottom: 1.618em;
 }
-.addform .basic, #addproduct .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic {
+.addform .basic, #addproduct .basic, #addcycle .basic, #addrun .basic, #addsuite .basic, #single-case-form .basic, #bulk-case-form .basic, #user-add-form .basic {
   display: inline;
   float: left;
   width: 53.684%;
   margin-right: 1.053%;
 }
-.addform .basic li, #addproduct .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li {
+.addform .basic li, #addproduct .basic li, #addcycle .basic li, #addrun .basic li, #addsuite .basic li, #single-case-form .basic li, #bulk-case-form .basic li, #user-add-form .basic li {
   *zoom: 1;
 }
-.addform .basic li:after, #addproduct .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after {
+.addform .basic li:after, #addproduct .basic li:after, #addcycle .basic li:after, #addrun .basic li:after, #addsuite .basic li:after, #single-case-form .basic li:after, #bulk-case-form .basic li:after, #user-add-form .basic li:after {
   content: "";
   display: table;
   clear: both;
 }
-.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, .addform .basic .readonly dt, #addproduct .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt {
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, #user-add-form .basic label, .addform .basic .readonly dt, #addproduct .basic .readonly dt, #addcycle .basic .readonly dt, #addrun .basic .readonly dt, #addsuite .basic .readonly dt, #single-case-form .basic .readonly dt, #bulk-case-form .basic .readonly dt, #user-add-form .basic .readonly dt {
   display: inline;
   float: left;
   width: 13.725%;
   margin-right: 1.961%;
   text-align: right;
 }
-.addform .basic input, #addproduct .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, .addform .basic select, #addproduct .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, .addform .basic textarea, #addproduct .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, .addform .basic .readonly dd, #addproduct .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd {
+.addform .basic input, #addproduct .basic input, #addcycle .basic input, #addrun .basic input, #addsuite .basic input, #single-case-form .basic input, #bulk-case-form .basic input, #user-add-form .basic input, .addform .basic select, #addproduct .basic select, #addcycle .basic select, #addrun .basic select, #addsuite .basic select, #single-case-form .basic select, #bulk-case-form .basic select, #user-add-form .basic select, .addform .basic textarea, #addproduct .basic textarea, #addcycle .basic textarea, #addrun .basic textarea, #addsuite .basic textarea, #single-case-form .basic textarea, #bulk-case-form .basic textarea, #user-add-form .basic textarea, .addform .basic .readonly dd, #addproduct .basic .readonly dd, #addcycle .basic .readonly dd, #addrun .basic .readonly dd, #addsuite .basic .readonly dd, #single-case-form .basic .readonly dd, #bulk-case-form .basic .readonly dd, #user-add-form .basic .readonly dd {
   display: inline;
   float: left;
   width: 84.314%;
@@ -3549,21 +3581,21 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label {
+.addform .basic label, #addproduct .basic label, #addcycle .basic label, #addrun .basic label, #addsuite .basic label, #single-case-form .basic label, #bulk-case-form .basic label, #user-add-form .basic label {
   text-align: right;
 }
-.addform .basic ul, #addproduct .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #single-case-form .basic ul, #bulk-case-form .basic ul {
+.addform .basic ul, #addproduct .basic ul, #addcycle .basic ul, #addrun .basic ul, #addsuite .basic ul, #single-case-form .basic ul, #bulk-case-form .basic ul, #user-add-form .basic ul {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.addform .basic ul li, #addproduct .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #single-case-form .basic ul li, #bulk-case-form .basic ul li {
+.addform .basic ul li, #addproduct .basic ul li, #addcycle .basic ul li, #addrun .basic ul li, #addsuite .basic ul li, #single-case-form .basic ul li, #bulk-case-form .basic ul li, #user-add-form .basic ul li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.addform .basic .date, #addproduct .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date {
+.addform .basic .date, #addproduct .basic .date, #addcycle .basic .date, #addrun .basic .date, #addsuite .basic .date, #single-case-form .basic .date, #bulk-case-form .basic .date, #user-add-form .basic .date {
   display: inline;
   float: left;
   width: 45.098%;
@@ -3571,18 +3603,18 @@ footer[role="contentinfo"] small {
   clear: none;
   position: relative;
 }
-.addform .basic .date + .date, #addproduct .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #single-case-form .basic .date + .date, #bulk-case-form .basic .date + .date {
+.addform .basic .date + .date, #addproduct .basic .date + .date, #addcycle .basic .date + .date, #addrun .basic .date + .date, #addsuite .basic .date + .date, #single-case-form .basic .date + .date, #bulk-case-form .basic .date + .date, #user-add-form .basic .date + .date {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.addform .basic .date label, #addproduct .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #single-case-form .basic .date label, #bulk-case-form .basic .date label {
+.addform .basic .date label, #addproduct .basic .date label, #addcycle .basic .date label, #addrun .basic .date label, #addsuite .basic .date label, #single-case-form .basic .date label, #bulk-case-form .basic .date label, #user-add-form .basic .date label {
   display: inline;
   float: left;
   width: 30.435%;
   margin-right: 4.348%;
 }
-.addform .basic .date input, #addproduct .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input {
+.addform .basic .date input, #addproduct .basic .date input, #addcycle .basic .date input, #addrun .basic .date input, #addsuite .basic .date input, #single-case-form .basic .date input, #bulk-case-form .basic .date input, #user-add-form .basic .date input {
   display: inline;
   float: left;
   width: 65.217%;
@@ -3591,51 +3623,51 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-.addform .basic .date .errorlist, #addproduct .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #single-case-form .basic .date .errorlist, #bulk-case-form .basic .date .errorlist {
+.addform .basic .date .errorlist, #addproduct .basic .date .errorlist, #addcycle .basic .date .errorlist, #addrun .basic .date .errorlist, #addsuite .basic .date .errorlist, #single-case-form .basic .date .errorlist, #bulk-case-form .basic .date .errorlist, #user-add-form .basic .date .errorlist {
   padding-left: 34.783%;
 }
-.addform .basic .errorlist, #addproduct .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist {
+.addform .basic .errorlist, #addproduct .basic .errorlist, #addcycle .basic .errorlist, #addrun .basic .errorlist, #addsuite .basic .errorlist, #single-case-form .basic .errorlist, #bulk-case-form .basic .errorlist, #user-add-form .basic .errorlist {
   clear: both;
   padding-left: 15.686%;
 }
 
-.superselect p, .mainselect p, .userselect p, .suiteselect p, .caseselect p {
+.superselect p, .mainselect p, .userselect p, .suiteselect p, .caseselect p, .roleselect p {
   margin: 0;
 }
-.superselect nav, .mainselect nav, .userselect nav, .suiteselect nav, .caseselect nav {
+.superselect nav, .mainselect nav, .userselect nav, .suiteselect nav, .caseselect nav, .roleselect nav {
   padding-right: 1em;
   border: 1px solid #cccccc;
   border-width: 0px 1px;
 }
-.superselect .unselected, .mainselect .unselected, .userselect .unselected, .suiteselect .unselected, .caseselect .unselected, .superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected {
+.superselect .unselected, .mainselect .unselected, .userselect .unselected, .suiteselect .unselected, .caseselect .unselected, .roleselect .unselected, .superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected, .roleselect .selected {
   display: inline;
   float: left;
   width: 44.828%;
   margin-right: 1.149%;
 }
-.superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4 {
+.superselect .unselected h3, .mainselect .unselected h3, .userselect .unselected h3, .suiteselect .unselected h3, .caseselect .unselected h3, .roleselect .unselected h3, .superselect .unselected h4, .mainselect .unselected h4, .userselect .unselected h4, .suiteselect .unselected h4, .caseselect .unselected h4, .roleselect .unselected h4, .superselect .selected h3, .mainselect .selected h3, .userselect .selected h3, .suiteselect .selected h3, .caseselect .selected h3, .roleselect .selected h3, .superselect .selected h4, .mainselect .selected h4, .userselect .selected h4, .suiteselect .selected h4, .caseselect .selected h4, .roleselect .selected h4 {
   padding-left: 0.618em;
   padding-right: 0.618em;
   color: #eeeeee;
   background: #528684;
   font-weight: normal;
 }
-.superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected {
+.superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected, .roleselect .selected {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.superselect label[for="search"], .mainselect label[for="search"], .userselect label[for="search"], .suiteselect label[for="search"], .caseselect label[for="search"] {
+.superselect label[for="search"], .mainselect label[for="search"], .userselect label[for="search"], .suiteselect label[for="search"], .caseselect label[for="search"], .roleselect label[for="search"] {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
   position: absolute;
   height: 0;
 }
-.superselect input[type="search"], .mainselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"] {
+.superselect input[type="search"], .mainselect input[type="search"], .userselect input[type="search"], .suiteselect input[type="search"], .caseselect input[type="search"], .roleselect input[type="search"] {
   width: 44.828%;
 }
-.superselect .select, .mainselect .select, .userselect .select, .suiteselect .select, .caseselect .select {
+.superselect .select, .mainselect .select, .userselect .select, .suiteselect .select, .caseselect .select, .roleselect .select {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -3645,18 +3677,18 @@ footer[role="contentinfo"] small {
   background: #ccd7d6;
   overflow-y: scroll;
 }
-.superselect .select li, .mainselect .select li, .userselect .select li, .suiteselect .select li, .caseselect .select li {
+.superselect .select li, .mainselect .select li, .userselect .select li, .suiteselect .select li, .caseselect .select li, .roleselect .select li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.superselect .select input, .mainselect .select input, .userselect .select input, .suiteselect .select input, .caseselect .select input {
+.superselect .select input, .mainselect .select input, .userselect .select input, .suiteselect .select input, .caseselect .select input, .roleselect .select input {
   position: absolute;
   left: -9999px;
   top: -9999px;
   z-index: -1;
 }
-.superselect .select label, .mainselect .select label, .userselect .select label, .suiteselect .select label, .caseselect .select label {
+.superselect .select label, .mainselect .select label, .userselect .select label, .suiteselect .select label, .caseselect .select label, .roleselect .select label {
   font-size: 0.857em;
   line-height: 1.888em;
   overflow: hidden;
@@ -3670,29 +3702,29 @@ footer[role="contentinfo"] small {
   border-color: #eeeeee;
   font-weight: normal;
 }
-.superselect .unselected label:focus, .mainselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .superselect .unselected label.mark, .mainselect .unselected label.mark, .userselect .unselected label.mark, .suiteselect .unselected label.mark, .caseselect .unselected label.mark {
+.superselect .unselected label:focus, .mainselect .unselected label:focus, .userselect .unselected label:focus, .suiteselect .unselected label:focus, .caseselect .unselected label:focus, .roleselect .unselected label:focus, .superselect .unselected label:hover, .mainselect .unselected label:hover, .userselect .unselected label:hover, .suiteselect .unselected label:hover, .caseselect .unselected label:hover, .roleselect .unselected label:hover, .superselect .unselected label:active, .mainselect .unselected label:active, .userselect .unselected label:active, .suiteselect .unselected label:active, .caseselect .unselected label:active, .roleselect .unselected label:active, .superselect .unselected label.mark, .mainselect .unselected label.mark, .userselect .unselected label.mark, .suiteselect .unselected label.mark, .caseselect .unselected label.mark, .roleselect .unselected label.mark {
   background-color: #b5e37f;
   background-image: url('../images/ui/arrow_right.png?1314206098');
 }
-.superselect .selected label:focus, .mainselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .superselect .selected label.mark, .mainselect .selected label.mark, .userselect .selected label.mark, .suiteselect .selected label.mark, .caseselect .selected label.mark {
+.superselect .selected label:focus, .mainselect .selected label:focus, .userselect .selected label:focus, .suiteselect .selected label:focus, .caseselect .selected label:focus, .roleselect .selected label:focus, .superselect .selected label:hover, .mainselect .selected label:hover, .userselect .selected label:hover, .suiteselect .selected label:hover, .caseselect .selected label:hover, .roleselect .selected label:hover, .superselect .selected label:active, .mainselect .selected label:active, .userselect .selected label:active, .suiteselect .selected label:active, .caseselect .selected label:active, .roleselect .selected label:active, .superselect .selected label.mark, .mainselect .selected label.mark, .userselect .selected label.mark, .suiteselect .selected label.mark, .caseselect .selected label.mark, .roleselect .selected label.mark {
   background-color: #eca9ab;
   background-image: url('../images/ui/arrow_left.png?1314206098');
 }
-.superselect .addremove, .mainselect .addremove, .userselect .addremove, .suiteselect .addremove, .caseselect .addremove {
+.superselect .addremove, .mainselect .addremove, .userselect .addremove, .suiteselect .addremove, .caseselect .addremove, .roleselect .addremove {
   display: inline;
   float: left;
   width: 8.046%;
   margin-right: 1.149%;
   margin-top: 4.854em;
 }
-.superselect .addremove button, .mainselect .addremove button, .userselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button {
+.superselect .addremove button, .mainselect .addremove button, .userselect .addremove button, .suiteselect .addremove button, .caseselect .addremove button, .roleselect .addremove button {
   margin-bottom: 0.809em;
   display: block;
   padding: 0;
   border: 0;
   width: 100%;
 }
-.superselect .addremove [title^="add"], .mainselect .addremove [title^="add"], .userselect .addremove [title^="add"], .suiteselect .addremove [title^="add"], .caseselect .addremove [title^="add"] {
+.superselect .addremove [title^="add"], .mainselect .addremove [title^="add"], .userselect .addremove [title^="add"], .suiteselect .addremove [title^="add"], .caseselect .addremove [title^="add"], .roleselect .addremove [title^="add"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -3718,11 +3750,11 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-.superselect .addremove [title^="add"]:focus, .mainselect .addremove [title^="add"]:focus, .userselect .addremove [title^="add"]:focus, .suiteselect .addremove [title^="add"]:focus, .caseselect .addremove [title^="add"]:focus, .superselect .addremove [title^="add"]:hover, .mainselect .addremove [title^="add"]:hover, .userselect .addremove [title^="add"]:hover, .suiteselect .addremove [title^="add"]:hover, .caseselect .addremove [title^="add"]:hover, .superselect .addremove [title^="add"]:active, .mainselect .addremove [title^="add"]:active, .userselect .addremove [title^="add"]:active, .suiteselect .addremove [title^="add"]:active, .caseselect .addremove [title^="add"]:active {
+.superselect .addremove [title^="add"]:focus, .mainselect .addremove [title^="add"]:focus, .userselect .addremove [title^="add"]:focus, .suiteselect .addremove [title^="add"]:focus, .caseselect .addremove [title^="add"]:focus, .roleselect .addremove [title^="add"]:focus, .superselect .addremove [title^="add"]:hover, .mainselect .addremove [title^="add"]:hover, .userselect .addremove [title^="add"]:hover, .suiteselect .addremove [title^="add"]:hover, .caseselect .addremove [title^="add"]:hover, .roleselect .addremove [title^="add"]:hover, .superselect .addremove [title^="add"]:active, .mainselect .addremove [title^="add"]:active, .userselect .addremove [title^="add"]:active, .suiteselect .addremove [title^="add"]:active, .caseselect .addremove [title^="add"]:active, .roleselect .addremove [title^="add"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.superselect .addremove [title^="update"], .mainselect .addremove [title^="update"], .userselect .addremove [title^="update"], .suiteselect .addremove [title^="update"], .caseselect .addremove [title^="update"] {
+.superselect .addremove [title^="update"], .mainselect .addremove [title^="update"], .userselect .addremove [title^="update"], .suiteselect .addremove [title^="update"], .caseselect .addremove [title^="update"], .roleselect .addremove [title^="update"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -3748,11 +3780,11 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-.superselect .addremove [title^="update"]:focus, .mainselect .addremove [title^="update"]:focus, .userselect .addremove [title^="update"]:focus, .suiteselect .addremove [title^="update"]:focus, .caseselect .addremove [title^="update"]:focus, .superselect .addremove [title^="update"]:hover, .mainselect .addremove [title^="update"]:hover, .userselect .addremove [title^="update"]:hover, .suiteselect .addremove [title^="update"]:hover, .caseselect .addremove [title^="update"]:hover, .superselect .addremove [title^="update"]:active, .mainselect .addremove [title^="update"]:active, .userselect .addremove [title^="update"]:active, .suiteselect .addremove [title^="update"]:active, .caseselect .addremove [title^="update"]:active {
+.superselect .addremove [title^="update"]:focus, .mainselect .addremove [title^="update"]:focus, .userselect .addremove [title^="update"]:focus, .suiteselect .addremove [title^="update"]:focus, .caseselect .addremove [title^="update"]:focus, .roleselect .addremove [title^="update"]:focus, .superselect .addremove [title^="update"]:hover, .mainselect .addremove [title^="update"]:hover, .userselect .addremove [title^="update"]:hover, .suiteselect .addremove [title^="update"]:hover, .caseselect .addremove [title^="update"]:hover, .roleselect .addremove [title^="update"]:hover, .superselect .addremove [title^="update"]:active, .mainselect .addremove [title^="update"]:active, .userselect .addremove [title^="update"]:active, .suiteselect .addremove [title^="update"]:active, .caseselect .addremove [title^="update"]:active, .roleselect .addremove [title^="update"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.superselect .addremove [title^="remove"], .mainselect .addremove [title^="remove"], .userselect .addremove [title^="remove"], .suiteselect .addremove [title^="remove"], .caseselect .addremove [title^="remove"] {
+.superselect .addremove [title^="remove"], .mainselect .addremove [title^="remove"], .userselect .addremove [title^="remove"], .suiteselect .addremove [title^="remove"], .caseselect .addremove [title^="remove"], .roleselect .addremove [title^="remove"] {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -3778,15 +3810,15 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-.superselect .addremove [title^="remove"]:focus, .mainselect .addremove [title^="remove"]:focus, .userselect .addremove [title^="remove"]:focus, .suiteselect .addremove [title^="remove"]:focus, .caseselect .addremove [title^="remove"]:focus, .superselect .addremove [title^="remove"]:hover, .mainselect .addremove [title^="remove"]:hover, .userselect .addremove [title^="remove"]:hover, .suiteselect .addremove [title^="remove"]:hover, .caseselect .addremove [title^="remove"]:hover, .superselect .addremove [title^="remove"]:active, .mainselect .addremove [title^="remove"]:active, .userselect .addremove [title^="remove"]:active, .suiteselect .addremove [title^="remove"]:active, .caseselect .addremove [title^="remove"]:active {
+.superselect .addremove [title^="remove"]:focus, .mainselect .addremove [title^="remove"]:focus, .userselect .addremove [title^="remove"]:focus, .suiteselect .addremove [title^="remove"]:focus, .caseselect .addremove [title^="remove"]:focus, .roleselect .addremove [title^="remove"]:focus, .superselect .addremove [title^="remove"]:hover, .mainselect .addremove [title^="remove"]:hover, .userselect .addremove [title^="remove"]:hover, .suiteselect .addremove [title^="remove"]:hover, .caseselect .addremove [title^="remove"]:hover, .roleselect .addremove [title^="remove"]:hover, .superselect .addremove [title^="remove"]:active, .mainselect .addremove [title^="remove"]:active, .userselect .addremove [title^="remove"]:active, .suiteselect .addremove [title^="remove"]:active, .caseselect .addremove [title^="remove"]:active, .roleselect .addremove [title^="remove"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.superselect .addremove [title^="update"], .mainselect .addremove [title^="update"], .userselect .addremove [title^="update"], .suiteselect .addremove [title^="update"], .caseselect .addremove [title^="update"] {
+.superselect .addremove [title^="update"], .mainselect .addremove [title^="update"], .userselect .addremove [title^="update"], .suiteselect .addremove [title^="update"], .caseselect .addremove [title^="update"], .roleselect .addremove [title^="update"] {
   padding-top: 1.618em;
   padding-bottom: 1.618em;
 }
-.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall {
+.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .roleselect .addall, .superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .roleselect .removeall {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   -o-border-radius: 0;
@@ -3809,23 +3841,23 @@ footer[role="contentinfo"] small {
   width: 100%;
   text-align: left;
 }
-.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall {
+.superselect .addall, .mainselect .addall, .userselect .addall, .suiteselect .addall, .caseselect .addall, .roleselect .addall {
   color: #e5f5d2;
   background: #77b929;
   text-align: right;
 }
-.superselect .addall:hover, .mainselect .addall:hover, .userselect .addall:hover, .suiteselect .addall:hover, .caseselect .addall:hover {
+.superselect .addall:hover, .mainselect .addall:hover, .userselect .addall:hover, .suiteselect .addall:hover, .caseselect .addall:hover, .roleselect .addall:hover {
   background-color: #4f7a1b;
 }
-.superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall {
+.superselect .removeall, .mainselect .removeall, .userselect .removeall, .suiteselect .removeall, .caseselect .removeall, .roleselect .removeall {
   color: #f5d2d4;
   background: #e37f83;
 }
-.superselect .removeall:hover, .mainselect .removeall:hover, .userselect .removeall:hover, .suiteselect .removeall:hover, .caseselect .removeall:hover {
+.superselect .removeall:hover, .mainselect .removeall:hover, .userselect .removeall:hover, .suiteselect .removeall:hover, .caseselect .removeall:hover, .roleselect .removeall:hover {
   background-color: #b9292f;
 }
 
-.mainselect, .userselect, .suiteselect, .caseselect {
+.mainselect, .userselect, .suiteselect, .caseselect, .roleselect {
   overflow: hidden;
   *zoom: 1;
   margin-bottom: 1.618em;
@@ -3837,12 +3869,12 @@ footer[role="contentinfo"] small {
   background: rgba(233, 237, 237, 0.382) linear-gradient(bottom, rgba(233, 237, 237, 0.618), rgba(233, 237, 237, 0) 3.236em);
   clear: both;
 }
-.mainselect h3, .userselect h3, .suiteselect h3, .caseselect h3 {
+.mainselect h3, .userselect h3, .suiteselect h3, .caseselect h3, .roleselect h3 {
   padding: 0.405em;
   background: rgba(82, 134, 132, 0.146);
   text-transform: capitalize;
 }
-.mainselect > div, .userselect > div, .suiteselect > div, .caseselect > div {
+.mainselect > div, .userselect > div, .suiteselect > div, .caseselect > div, .roleselect > div {
   clear: both;
   overflow: hidden;
   *zoom: 1;
@@ -4230,6 +4262,7 @@ footer[role="contentinfo"] small {
   text-transform: uppercase;
 }
 
+/* Create User -------------------------------------------------------------- */
 .leftcolumnpadding, #manageproducts .title, #manageprofiles .title {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -4735,6 +4768,40 @@ footer[role="contentinfo"] small {
 #envnarrowlist .content {
   padding-left: 4.211%;
   padding-right: 4.211%;
+}
+
+/* Manage Users -------------------------------------------------------------- */
+#manageusers .given-name, #manageusers .bygiven {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+#manageusers .roles, #manageusers .byroles, #manageusers .family-name, #manageusers .byfamily, #manageusers .nickname, #manageusers .bynickname, #manageusers .email, #manageusers .byemail {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+}
+#manageusers .roles {
+  list-style-type: none;
+}
+#manageusers .roles, #manageusers .roles li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#manageusers .roles li:after {
+  content: ", ";
+}
+#manageusers .roles li:last-child:after {
+  content: "";
+}
+#manageusers .roles li.last:after {
+  content: "";
+}
+#manageusers .item p, #manageusers .item ul {
+  margin-bottom: 0em;
 }
 
 /* run tests -------------------------------------------------------------- */

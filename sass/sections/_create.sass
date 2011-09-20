@@ -7,6 +7,13 @@
   display: block
   height: $base-rhythm-unit
 
+.tagging
+  +columns(11,24)
+  +omega(24)
+  .visual
+    @extend .togglelist
+    margin-left: 0
+
 // The Basic Form ------------------------------------------------------------
 
 .select-env-link
@@ -15,6 +22,7 @@
     +omega(24)
     +padding-leader(.25)
     +padding-trailer(.25)
+    +trailer(.5)
     max-width: columns(4,24)
     text-align: right
     background: image-url('ui/crosshair.png') no-repeat scroll left
@@ -377,5 +385,11 @@
       +demi
       text-transform: uppercase
 
+/* Create User --------------------------------------------------------------
 
+#user-add-form
+  @extend .addform
+
+.roleselect
+  @extend .mainselect
 

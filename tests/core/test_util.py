@@ -1,7 +1,6 @@
 from mock import Mock
 from unittest2 import TestCase
 
-from ..responses import make_identity
 from ..utils import TestResourceTestCase
 
 
@@ -80,10 +79,16 @@ class TestNarrowQueryString(TestCase):
             "http://fake.base/?blah=foo&blah=yo")
 
 
+    def test_empty_list(self):
+        self.assertEqual(
+            self.func("http://fake.base/", blah=[]),
+            "http://fake.base/?blah=-999")
+
+
     def test_override(self):
         self.assertEqual(
             self.func("http://fake.base/?blah=yo", blah="foo"),
-            "http://fake.base/?blah=__")
+            "http://fake.base/?blah=-999")
 
 
     def test_override_same(self):
@@ -101,13 +106,13 @@ class TestNarrowQueryString(TestCase):
     def test_override_with_existing(self):
         self.assertEqual(
             self.func("http://fake.base/?arg=yo&blah=yo", blah="foo"),
-            "http://fake.base/?blah=__&arg=yo")
+            "http://fake.base/?blah=-999&arg=yo")
 
 
     def test_override_multiple(self):
         self.assertEqual(
             self.func("http://fake.base/?blah=one&blah=two", blah="foo"),
-            "http://fake.base/?blah=__")
+            "http://fake.base/?blah=-999")
 
 
     def test_override_with_empty_list(self):

@@ -1,0 +1,43 @@
+{% extends 'manage/user/base.html' %}
+{# @@@ wireframed #}
+
+{% load icanhaz sort %}
+
+{% block listcontent %}
+<section id="adduser">
+  <h2>Create A New User</h2>
+
+  <form id="user-add-form" method="POST">
+    <ul class="basic">
+      <li class="given-name">
+        <label for="first_name">first name</label><input type="text" name="first_name" value="" id="first_name">
+      </li>
+      <li class="family-name">
+        <label for="last_name">last name</label><input type="text" name="last_name" value="" id="last_name">
+      </li>
+      <li class="nickname">
+        <label for="screen_name">screen name</label><input type="text" name="screen_name" value="" id="screen_name">
+      </li>
+      <li class="email">
+        <label for="email">email</label><input type="email" name="email" value="" id="email">
+      </li>
+    </ul>
+
+    <section class="roleselect details">
+      <h3 class="summary">assign roles to this user &raquo;</h3>
+      <div>
+        {# @@@ needs the slick multiple-select widget #}
+        <select name="roles" id="roles" multiple>
+          <option value="option1">option1</option>
+          <option value="option2">option2</option>
+        </select>
+      </div>
+    </section>
+
+    <div class="form-actions">
+      <button type="submit">create user</button>
+    </div>
+
+  </form>
+</section>
+{% endblock listcontent %}

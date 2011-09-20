@@ -36,7 +36,8 @@ class Filter(object):
         our filters.
 
         """
-        filters = dict(field.filters() for field in self.fields)
+        filters = dict(
+            field.filters() for field in self.fields if field.include)
         return list_obj.filter(**filters)
 
 
@@ -75,6 +76,15 @@ class FieldFilter(object):
 
         """
         return (self.name, self.values)
+
+
+    @property
+    def include(self):
+        """
+        True if this filter has data and should be included.
+
+        """
+        return bool(self.values)
 
 
     def __iter__(self):
