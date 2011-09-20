@@ -420,6 +420,13 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Expand list item details on direct hashtag links
+    CC.openListItemDetails = function () {
+        if ($('.manage').length && window.location.hash && $(window.location.hash).length) {
+            $(window.location.hash).children('.summary').click();
+        }
+    };
+
     // Ajax for manage list actions (clone and delete)
     CC.manageActionsAjax = function () {
         $('.manage button[name^=action-]').live(

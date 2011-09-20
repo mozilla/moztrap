@@ -15,7 +15,7 @@
   <meta name="author" content="Mozilla" />
   <meta name="keywords" content="keywords" />
   <meta name="language" content="en-us" />
-  <title>Mozilla Case Conductor</title>
+  <title>{% block title %}Mozilla Case Conductor{% endblock %}</title>
 
   <!-- Microformat Profiles -->
   <!-- hCard, hCalendar, rel-license, rel-tag, XOXO, XFN, VoteLinks -->
@@ -29,11 +29,11 @@
 
   <!-- Styles -->
   <!--[if !IE 6]><!-->
-  {% block styles %}
   {% compress css %}
+  {% block styles %}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" media="screen, projection" />
-  {% endcompress %}
   {% endblock styles %}
+  {% endcompress %}
   <!--<![endif]-->
   <!--[if IE 6]>
   <link href="https://universal-ie6-css.googlecode.com/files/ie6.1.0.css" media="screen, projection" />
@@ -70,6 +70,7 @@
 
 <!-- JavaScript -->
 {% compress js %}
+{% block js %}
 <script src="{{ STATIC_URL }}js/jquery-1.6.4.js"></script>
 <script src="{{ STATIC_URL }}js/ICanHaz.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.ba-dotimeout.js"></script>
@@ -90,6 +91,7 @@
 <script src="{{ STATIC_URL }}js/manage-env.js"></script>
 <script src="{{ STATIC_URL }}js/runtests.js"></script>
 <script src="{{ STATIC_URL }}js/init.js"></script>
+{% endblock %}
 {% endcompress %}
 
 {% block last %}

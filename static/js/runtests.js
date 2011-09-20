@@ -6,6 +6,11 @@ var CC = (function (CC, $) {
 
     'use strict';
 
+    // hide empty run-tests environments form on initial load
+    CC.hideEmptyRuntestsEnv = function () {
+        $('.selectruns + .environment.empty').hide();
+    };
+
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
     CC.autoFocus = function (trigger) {
         $(trigger).click(function () {

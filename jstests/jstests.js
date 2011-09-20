@@ -1,6 +1,6 @@
 /*jslint    browser:    true,
             indent:     4 */
-/*global    jQuery, module, test, equal, start, stop */
+/*global    jQuery, module, test, equal, start, stop, expect, ok */
 
 (function (CC, $) {
 
@@ -63,9 +63,13 @@
     test('basic functionality (slide 2)', function () {
         expect(5);
         stop();
-        CC.slideshow('#qunit-fixture #slideshow', '.slide', 'a[href^="#slide"]', function() {
-            ok($('#slide1').is(':hidden'), 'slide 1 is hidden');
-            start();
+        $('#qunit-fixture #slideshow').slideshow({
+            slidesSelector: '.slide',
+            slideLinksSelector: 'a[href^="#slide"]',
+            callback: function () {
+                ok($('#slide1').is(':hidden'), 'slide 1 is hidden');
+                start();
+            }
         });
         $('#slideshow a[href="#slide2"]').click();
         ok($('#slide2').is(':visible'), 'slide 2 is visible');
@@ -78,9 +82,13 @@
         expect(5);
         stop();
         window.location.hash = '#slide1';
-        CC.slideshow('#qunit-fixture #slideshow', '.slide', 'a[href^="#slide"]', function() {
-            ok($('#slide2').is(':hidden'), 'slide 2 is hidden');
-            start();
+        $('#qunit-fixture #slideshow').slideshow({
+            slidesSelector: '.slide',
+            slideLinksSelector: 'a[href^="#slide"]',
+            callback: function () {
+                ok($('#slide2').is(':hidden'), 'slide 2 is hidden');
+                start();
+            }
         });
         ok($('#slide1').is(':visible'), 'slide 1 is visible');
         ok($('#slideshow a[href="#slide1"]').hasClass('active'), 'slide 1 link is active');

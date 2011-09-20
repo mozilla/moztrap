@@ -7,7 +7,7 @@ var CC = (function (CC, $) {
     'use strict';
 
     // Store keycode variables for easier readability
-    var keycodes = {
+    CC.keycodes = {
         SPACE: 32,
         ENTER: 13,
         TAB: 9,
@@ -21,6 +21,13 @@ var CC = (function (CC, $) {
         UP: 38,
         RIGHT: 39,
         DOWN: 40
+    };
+
+    // add class "hadfocus" to inputs and textareas on blur
+    CC.inputHadFocus = function () {
+        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function () {
+            $(this).addClass('hadfocus');
+        });
     };
 
     return CC;

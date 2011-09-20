@@ -7,14 +7,6 @@ var CC = (function (CC, $) {
     'use strict';
 
     $(function () {
-        // add class "hadfocus" to inputs and textareas on blur
-        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function () {
-            $(this).addClass('hadfocus');
-        });
-
-        // hide empty run-tests environments form on initial load
-        $('.selectruns + .environment.empty').hide();
-
         // plugins
         $('#addcase').slideshow({
             slidesSelector: '.forms form[id$="-case-form"]',
@@ -98,6 +90,9 @@ var CC = (function (CC, $) {
             ]
         });
 
+        // local.js
+        CC.inputHadFocus();
+
         // manage-results.js
         CC.autoCompleteFiltering();
         CC.loadListItemDetails();
@@ -110,6 +105,7 @@ var CC = (function (CC, $) {
         CC.editEnvProfile();
 
         // runtests.js
+        CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary');
         CC.autoFocus('.details.testinvalid > .summary');
         CC.testCaseButtons("#run .item");
@@ -119,11 +115,7 @@ var CC = (function (CC, $) {
     $(window).load(function () {
         // manage-results.js
         CC.addEllipses();
-
-        // Expand list item details on direct hashtag links
-        if ($('.manage').length && window.location.hash && $(window.location.hash).length) {
-            $(window.location.hash).children('.summary').click();
-        }
+        CC.openListItemDetails();
     });
 
     return CC;

@@ -24,8 +24,8 @@
             showSlide = function (slide) {
                 var thisLink = slideLinks.filter('a[href="#' + $(slide).attr('id') + '"]');
                 $(slide).addClass('active-slide').removeClass('inactive-slide');
-                $(slide).siblings(slidesSelector).removeClass('active-slide').addClass('inactive-slide').fadeOut('fast', function () {
-                    $(slide).fadeIn('fast', callback);
+                $(slide).siblings(options.slidesSelector).removeClass('active-slide').addClass('inactive-slide').fadeOut('fast', function () {
+                    $(slide).fadeIn('fast', options.callback);
                 });
                 slideLinks.removeClass('active');
                 thisLink.addClass('active');
@@ -49,6 +49,6 @@
     $.fn.slideshow.defaults = {
         slidesSelector: '.slide',           // Selector for slides
         slideLinksSelector: '.slideLink',   // Selector for links to slides
-        callback: null,                     // Function to be called after each slide transition
+        callback: null                      // Function to be called after each slide transition
     };
 }(jQuery));
