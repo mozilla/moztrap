@@ -3731,7 +3731,27 @@ footer[role="contentinfo"] small {
   padding-right: 0.405em;
   color: #4b6564;
 }
-.attachments .uploading {
+.attachments .uploading a:link, .attachments .uploading a:visited {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0.25em 0 22.5px;
+  border: 0;
+  background-repeat: no-repeat;
+  text-align: left;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  -o-border-radius: 0.25em;
+  -ms-border-radius: 0.25em;
+  -khtml-border-radius: 0.25em;
+  border-radius: 0.25em;
+  background-color: rgba(253, 200, 14, 0.618);
+  background-image: url('../images/ui/clock_sm.png?1314206098');
+  background-position: 0.375em;
+}
+.attachments .loader {
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
   -o-border-radius: 0.236em;
@@ -3759,10 +3779,10 @@ footer[role="contentinfo"] small {
   content: " ";
   width: 4.854em;
   height: 0.809em;
-  margin-left: 0.405em;
+  margin: 0 0.405em;
   vertical-align: baseline;
 }
-.attachments .uploading {
+.attachments .loader {
   *display: inline;
 }
 .attachments input {
