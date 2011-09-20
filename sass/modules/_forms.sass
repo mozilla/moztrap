@@ -205,8 +205,16 @@ input
     background:
       repeat: no-repeat
       position: $smallpx, left
+    &:hover, &:focus
+      +background-image(image-url($icon), linear-gradient(top center, lighten($c,30) 0%, $c 100%))
+    &:active
+      +background-image(image-url($icon), linear-gradient(bottom center, lighten($c,25) 0%, $c 100%))
   @else
     +background-image(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+    &:hover, &:focus
+      +background-image(linear-gradient(top center, lighten($c,30) 0%, $c 100%))
+    &:active
+      +background-image(linear-gradient(bottom center, lighten($c,25) 0%, $c 100%))
   border-color: desaturate($c,25)
 
 =button

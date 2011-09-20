@@ -14,6 +14,57 @@
     @extend .togglelist
     margin-left: 0
 
+=keyframes-bgscroll
+  0%
+    background-position: 0
+  100%
+    background-position: 100%
+
+@-webkit-keyframes bgscroll
+  +keyframes-bgscroll
+@-moz-keyframes bgscroll
+  +keyframes-bgscroll
+@keyframes bgscroll
+  +keyframes-bgscroll
+
+.attachments
+  +columns(11,24)
+  +prefix(2,24)
+  .uploads
+    +inline-block-list
+    +trailer(.5)
+  a
+    #{$link}
+      +text-icon('ui/check_sm.png',rgba($blue-light,$xsmall))
+      +demi
+      display: block
+      margin-right: rhythm(.25)
+      padding-right: rhythm(.25)
+      color: $blue-dark
+  .uploading
+    +border-radius
+    +background-size(rhythm(.5) 100%)
+    +background-image(linear-gradient(left,rgba($blue-dark,$small),rgba($blue-dark,$xsmall),rgba($blue-dark,$small)))
+    +animation(bgscroll 3s linear infinite)
+    +inline-block
+    content: " "
+    width: rhythm(3)
+    height: rhythm(.5)
+    margin-left: rhythm(.25)
+    vertical-align: baseline
+  input
+    +gone
+  .upload
+    +button
+    +columns(3,11)
+    +hpadding(0)
+    text-align: center
+  .helper
+    +columns(8,11)
+    +omega(11)
+    +leader(.25)
+    +italic
+
 // The Basic Form ------------------------------------------------------------
 
 .select-env-link
