@@ -3776,6 +3776,10 @@ footer[role="contentinfo"] small {
   border: 0;
 }
 .attachments .upload {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
   -o-border-radius: 0.236em;
