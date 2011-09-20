@@ -20,6 +20,8 @@
   margin: 0
   padding: 0 .125em
   border: 0
+  #{$focus}
+    background-image: image-url($img)
   @if $color
     +border-radius(.25em)
     background-color: $color

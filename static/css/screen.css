@@ -1549,6 +1549,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 [title="edit"]:link:focus, [title="edit"]:link:hover, [title="edit"]:link:active, [title="edit"]:visited:focus, [title="edit"]:visited:hover, [title="edit"]:visited:active {
+  background-image: url('../images/ui/pencil.png?1314206098');
+}
+[title="edit"]:link:focus, [title="edit"]:link:hover, [title="edit"]:link:active, [title="edit"]:visited:focus, [title="edit"]:visited:hover, [title="edit"]:visited:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1573,6 +1576,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .target:link:focus, .target:link:hover, .target:link:active, .target:visited:focus, .target:visited:hover, .target:visited:active {
+  background-image: url('../images/ui/crosshair.png?1314731893');
+}
+.target:link:focus, .target:link:hover, .target:link:active, .target:visited:focus, .target:visited:hover, .target:visited:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1595,6 +1601,9 @@ footer[role="contentinfo"] small {
   border: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
+}
+[title^="create"]:link:focus, [title^="create"]:link:hover, [title^="create"]:link:active, [title^="create"]:visited:focus, [title^="create"]:visited:hover, [title^="create"]:visited:active {
+  background-image: url('../images/ui/paper_plus.png?1314206098');
 }
 [title^="create"]:link:focus, [title^="create"]:link:hover, [title^="create"]:link:active, [title^="create"]:visited:focus, [title^="create"]:visited:hover, [title^="create"]:visited:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -1634,6 +1643,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 [name="action-clone"]:focus, [name="action-clone"]:hover, [name="action-clone"]:active {
+  background-image: url('../images/ui/clone.png?1314206098');
+}
+[name="action-clone"]:focus, [name="action-clone"]:hover, [name="action-clone"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1671,6 +1683,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 [name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
+  background-image: url('../images/ui/trash.png?1314206098');
+}
+[name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1706,6 +1721,9 @@ footer[role="contentinfo"] small {
   border: 0;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
+}
+[name="action-edit"]:focus, [name="action-edit"]:hover, [name="action-edit"]:active {
+  background-image: url('../images/ui/pencil.png?1314206098');
 }
 [name="action-edit"]:focus, [name="action-edit"]:hover, [name="action-edit"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -2830,6 +2848,9 @@ footer[role="contentinfo"] small {
   box-shadow: #4b6564 0 0 2px;
 }
 .status .pending [title="approve"]:focus, .status .pending [title="approve"]:hover, .status .pending [title="approve"]:active {
+  background-image: url('../images/ui/check.png?1314206098');
+}
+.status .pending [title="approve"]:focus, .status .pending [title="approve"]:hover, .status .pending [title="approve"]:active {
   background-color: #b5e37f;
 }
 .status .pending [title="reject"] {
@@ -2868,6 +2889,9 @@ footer[role="contentinfo"] small {
   display: inline;
   float: right;
   margin-right: 0;
+}
+.status .pending [title="reject"]:focus, .status .pending [title="reject"]:hover, .status .pending [title="reject"]:active {
+  background-image: url('../images/ui/x.png?1314206098');
 }
 .status .pending [title="reject"]:focus, .status .pending [title="reject"]:hover, .status .pending [title="reject"]:active {
   background-color: #eca9ab;
@@ -3742,6 +3766,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .attachments li.uploading .action-remove:focus, .attachments li.uploading .action-remove:hover, .attachments li.uploading .action-remove:active {
+  background-image: url('../images/ui/clock_sm.png?1314206098');
+}
+.attachments li.uploading .action-remove:focus, .attachments li.uploading .action-remove:hover, .attachments li.uploading .action-remove:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -3767,6 +3794,9 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
   background-color: transparent;
+}
+.attachments .action-remove:focus, .attachments .action-remove:hover, .attachments .action-remove:active {
+  background-image: url('../images/ui/check_sm.png?1314206098');
 }
 .attachments .action-remove:focus, .attachments .action-remove:hover, .attachments .action-remove:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -4111,6 +4141,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .superselect .addremove [title^="add"]:focus, .mainselect .addremove [title^="add"]:focus, .userselect .addremove [title^="add"]:focus, .suiteselect .addremove [title^="add"]:focus, .caseselect .addremove [title^="add"]:focus, .roleselect .addremove [title^="add"]:focus, .superselect .addremove [title^="add"]:hover, .mainselect .addremove [title^="add"]:hover, .userselect .addremove [title^="add"]:hover, .suiteselect .addremove [title^="add"]:hover, .caseselect .addremove [title^="add"]:hover, .roleselect .addremove [title^="add"]:hover, .superselect .addremove [title^="add"]:active, .mainselect .addremove [title^="add"]:active, .userselect .addremove [title^="add"]:active, .suiteselect .addremove [title^="add"]:active, .caseselect .addremove [title^="add"]:active, .roleselect .addremove [title^="add"]:active {
+  background-image: url('../images/ui/arrow_right.png?1314206098');
+}
+.superselect .addremove [title^="add"]:focus, .mainselect .addremove [title^="add"]:focus, .userselect .addremove [title^="add"]:focus, .suiteselect .addremove [title^="add"]:focus, .caseselect .addremove [title^="add"]:focus, .roleselect .addremove [title^="add"]:focus, .superselect .addremove [title^="add"]:hover, .mainselect .addremove [title^="add"]:hover, .userselect .addremove [title^="add"]:hover, .suiteselect .addremove [title^="add"]:hover, .caseselect .addremove [title^="add"]:hover, .roleselect .addremove [title^="add"]:hover, .superselect .addremove [title^="add"]:active, .mainselect .addremove [title^="add"]:active, .userselect .addremove [title^="add"]:active, .suiteselect .addremove [title^="add"]:active, .caseselect .addremove [title^="add"]:active, .roleselect .addremove [title^="add"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -4141,6 +4174,9 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .superselect .addremove [title^="update"]:focus, .mainselect .addremove [title^="update"]:focus, .userselect .addremove [title^="update"]:focus, .suiteselect .addremove [title^="update"]:focus, .caseselect .addremove [title^="update"]:focus, .roleselect .addremove [title^="update"]:focus, .superselect .addremove [title^="update"]:hover, .mainselect .addremove [title^="update"]:hover, .userselect .addremove [title^="update"]:hover, .suiteselect .addremove [title^="update"]:hover, .caseselect .addremove [title^="update"]:hover, .roleselect .addremove [title^="update"]:hover, .superselect .addremove [title^="update"]:active, .mainselect .addremove [title^="update"]:active, .userselect .addremove [title^="update"]:active, .suiteselect .addremove [title^="update"]:active, .caseselect .addremove [title^="update"]:active, .roleselect .addremove [title^="update"]:active {
+  background-image: url('../images/ui/arrow_leftright_21.png?1314206098');
+}
+.superselect .addremove [title^="update"]:focus, .mainselect .addremove [title^="update"]:focus, .userselect .addremove [title^="update"]:focus, .suiteselect .addremove [title^="update"]:focus, .caseselect .addremove [title^="update"]:focus, .roleselect .addremove [title^="update"]:focus, .superselect .addremove [title^="update"]:hover, .mainselect .addremove [title^="update"]:hover, .userselect .addremove [title^="update"]:hover, .suiteselect .addremove [title^="update"]:hover, .caseselect .addremove [title^="update"]:hover, .roleselect .addremove [title^="update"]:hover, .superselect .addremove [title^="update"]:active, .mainselect .addremove [title^="update"]:active, .userselect .addremove [title^="update"]:active, .suiteselect .addremove [title^="update"]:active, .caseselect .addremove [title^="update"]:active, .roleselect .addremove [title^="update"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -4169,6 +4205,9 @@ footer[role="contentinfo"] small {
   background-color: #e37f83;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
+}
+.superselect .addremove [title^="remove"]:focus, .mainselect .addremove [title^="remove"]:focus, .userselect .addremove [title^="remove"]:focus, .suiteselect .addremove [title^="remove"]:focus, .caseselect .addremove [title^="remove"]:focus, .roleselect .addremove [title^="remove"]:focus, .superselect .addremove [title^="remove"]:hover, .mainselect .addremove [title^="remove"]:hover, .userselect .addremove [title^="remove"]:hover, .suiteselect .addremove [title^="remove"]:hover, .caseselect .addremove [title^="remove"]:hover, .roleselect .addremove [title^="remove"]:hover, .superselect .addremove [title^="remove"]:active, .mainselect .addremove [title^="remove"]:active, .userselect .addremove [title^="remove"]:active, .suiteselect .addremove [title^="remove"]:active, .caseselect .addremove [title^="remove"]:active, .roleselect .addremove [title^="remove"]:active {
+  background-image: url('../images/ui/arrow_left.png?1314206098');
 }
 .superselect .addremove [title^="remove"]:focus, .mainselect .addremove [title^="remove"]:focus, .userselect .addremove [title^="remove"]:focus, .suiteselect .addremove [title^="remove"]:focus, .caseselect .addremove [title^="remove"]:focus, .roleselect .addremove [title^="remove"]:focus, .superselect .addremove [title^="remove"]:hover, .mainselect .addremove [title^="remove"]:hover, .userselect .addremove [title^="remove"]:hover, .suiteselect .addremove [title^="remove"]:hover, .caseselect .addremove [title^="remove"]:hover, .roleselect .addremove [title^="remove"]:hover, .superselect .addremove [title^="remove"]:active, .mainselect .addremove [title^="remove"]:active, .userselect .addremove [title^="remove"]:active, .suiteselect .addremove [title^="remove"]:active, .caseselect .addremove [title^="remove"]:active, .roleselect .addremove [title^="remove"]:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
