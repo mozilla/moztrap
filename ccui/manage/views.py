@@ -22,6 +22,7 @@ from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
 from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
+from ..users.filters import TeamFieldFilter
 from ..users.models import UserList
 
 from .decorators import environment_actions
@@ -41,7 +42,9 @@ def home(request):
 @dec.finder(ManageFinder)
 @dec.actions(ProductList, ["delete"])
 @dec.filter("products",
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            )
 @dec.paginate("products")
 @dec.sort("products")
 @dec.ajax("manage/product/_products_list.html")
@@ -115,7 +118,9 @@ def edit_product(request, product_id):
 @dec.filter("cycles",
             ("status", status_filters.TestCycleStatusFilter),
             ("product", ProductFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            )
 @dec.paginate("cycles")
 @dec.sort("cycles")
 @dec.ajax("manage/product/testcycle/_cycles_list.html")
@@ -206,7 +211,9 @@ def testcycle_details(request, cycle_id):
             ("status", status_filters.TestRunStatusFilter),
             ("product", ProductFieldFilter),
             ("testCycle", TestCycleFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            )
 @dec.paginate("runs")
 @dec.sort("runs")
 @dec.ajax("manage/product/testrun/_runs_list.html")

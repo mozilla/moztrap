@@ -102,11 +102,12 @@ class FieldFilter(object):
 
 
 
-class LocatorFieldFilter(FieldFilter):
+class RelatedFieldFilter(FieldFilter):
     """
-    A FieldFilter for Locator fields; gets its options by querying a ListObject
-    subclass set as the ``target`` attribute by subclasses, possibly filtered by
-    any given ``target_filters``. A callable
+    A FieldFilter for Locator fields and many-to-many fields (e.g. team
+    members, environments); gets its options by querying a ListObject subclass
+    set as the ``target`` attribute by subclasses, possibly filtered by any
+    given ``target_filters``.
 
     """
     target = None

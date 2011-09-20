@@ -4,7 +4,6 @@ testing.
 
 """
 from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
-from ..core.auth import admin
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product

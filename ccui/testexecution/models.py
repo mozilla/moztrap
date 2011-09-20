@@ -1,6 +1,5 @@
 """
-Remote objects related to the "documentation" (as opposed to execution) side of
-testing.
+Remote objects related to the test-execution side of testing.
 
 """
 from django.core.urlresolvers import reverse
@@ -38,6 +37,10 @@ class TestCycle(Named, Activatable, RemoteObject):
         CategoryValueInfoList,
         api_name="reports/coverage/resultstatus",
         cache="TestResultList")
+
+    non_field_filters = {
+        "user": "teamMemberId",
+        }
 
 
     def __unicode__(self):
@@ -111,6 +114,7 @@ class TestRun(Named, Activatable, RemoteObject):
         "testSuite": "includedTestSuiteId",
         "testCase": "includedTestCaseId",
         "testCaseVersion": "includedTestCaseVersionId",
+        "user": "teamMemberId",
         }
 
 

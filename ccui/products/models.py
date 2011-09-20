@@ -25,6 +25,11 @@ class Product(Named, RemoteObject):
         return TestCycleList.get(auth=self.auth).filter(product=self)
 
 
+    non_field_filters = {
+        "user": "teamMemberId",
+        }
+
+
     def __unicode__(self):
         return self.name
 
