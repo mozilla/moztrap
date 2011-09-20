@@ -193,19 +193,6 @@ class TestCaseStepList(ListObject):
 
 
 
-def filter_run(vals):
-    from ..testexecution.models import TestRunList
-
-    ids = set()
-    for run_id in vals:
-        ids.update([
-                suite.id for suite in
-                TestRunList.get_by_id(run_id, auth=admin).testsuites
-                ])
-    return ("id", ids)
-
-
-
 class TestSuite(Named, Activatable, RemoteObject):
     name = fields.Field()
     description = fields.Field()
@@ -219,7 +206,7 @@ class TestSuite(Named, Activatable, RemoteObject):
 
 
     non_field_filters = {
-        "run": filter_run,
+        "run": "hasTestCasesInTestRunId",
         }
 
 
