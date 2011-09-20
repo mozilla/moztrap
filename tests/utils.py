@@ -12,6 +12,7 @@ from webtest import TestApp
 
 from .builder import ListBuilder
 from .core.builders import companies
+from .environments.builders import environments
 from .products.builders import products
 from .responses import response, make_identity, make_error
 from .static.builders import codevalues
@@ -62,6 +63,8 @@ COMMON_RESPONSES = {
         response(users.one()),
     "http://fake.base/rest/products?_type=json":
         response(products.searchresult({})),
+    "http://fake.base/rest/environments?_type=json":
+        response(environments.searchresult({}, {})),
     "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json":
         response(codevalues.array(
             {"description": "DRAFT", "id": 1},
@@ -100,7 +103,7 @@ COMMON_RESPONSES = {
             {"description": "PENDING", "id": 1},
             {"description": "APPROVED", "id": 2},
             {"description": "REJECTED", "id": 3},
-            ))
+            )),
     }
 
 
