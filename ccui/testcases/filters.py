@@ -1,8 +1,8 @@
-from ..core.filters import LocatorFieldFilter
+from ..core.filters import RelatedFieldFilter
 
 from .models import TestSuiteList
 
 
 
-class TestSuiteFieldFilter(LocatorFieldFilter):
+class TestSuiteFieldFilter(RelatedFieldFilter):
     target = TestSuiteList

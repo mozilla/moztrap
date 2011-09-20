@@ -4,7 +4,6 @@ testing.
 
 """
 from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
-from ..core.auth import admin
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
@@ -89,17 +88,6 @@ class TestCaseList(ListObject):
 
 
 
-def filter_suite(vals):
-    ids = set()
-    for suite_id in vals:
-        ids.update([
-                itc.testCase.id for itc in
-                TestSuiteList.get_by_id(suite_id, auth=admin).includedtestcases
-                ])
-    return ("testCaseId", ids)
-
-
-
 class TestCaseVersion(Activatable, TestCase):
     majorVersion = fields.Field()
     minorVersion = fields.Field()
@@ -121,7 +109,8 @@ class TestCaseVersion(Activatable, TestCase):
     non_field_filters = {
         "step": "instruction",
         "result": "expectedResult",
-        "suite": filter_suite,
+        "suite": "includedInTestSuiteId",
+        "environment": "includedEnvironmentId",
         }
 
 
@@ -193,19 +182,6 @@ class TestCaseStepList(ListObject):
 
 
 
-def filter_run(vals):
-    from ..testexecution.models import TestRunList
-
-    ids = set()
-    for run_id in vals:
-        ids.update([
-                suite.id for suite in
-                TestRunList.get_by_id(run_id, auth=admin).testsuites
-                ])
-    return ("id", ids)
-
-
-
 class TestSuite(Named, Activatable, RemoteObject):
     name = fields.Field()
     description = fields.Field()
@@ -219,7 +195,10 @@ class TestSuite(Named, Activatable, RemoteObject):
 
 
     non_field_filters = {
-        "run": filter_run,
+        "run": "hasTestCasesInTestRunId",
+        "testCase": "includedTestCaseId",
+        "testCaseVersion": "includedTestCaseVersionId",
+        "environment": "includedEnvironmentId",
         }
 
 

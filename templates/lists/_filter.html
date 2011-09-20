@@ -5,7 +5,7 @@
     <section class="textual">
       <h4 class="navhead">Basic Filtering</h4>
       <label for="text-filter">filter</label>
-      <input type="text" name="text-filter" value="" id="text-filter" placeholder="filter by {% for field in filter %}{% if forloop.last and not forloop.first %}or {% endif %}{{ field.name|lower }}{% if not forloop.last %}, {% endif %}{% endfor %}.">
+      <input type="text" name="text-filter" value="" id="text-filter" placeholder="filter by {% for field in filter %}{% if not forloop.first %}{% if forloop.last %}{% if forloop.counter > 2 %},{% endif %} or {% else %}, {% endif %}{% endif %}{{ field.name|lower }}{% endfor %}.">
       <ul class="suggest">
         {% icanhaz "filter_suggestion" %}
         {% icanhaz "keyword_filter_suggestion" %}

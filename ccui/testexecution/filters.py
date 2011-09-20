@@ -1,13 +1,13 @@
-from ..core.filters import LocatorFieldFilter
+from ..core.filters import RelatedFieldFilter
 
 from .models import TestCycleList, TestRunList
 
 
 
-class TestCycleFieldFilter(LocatorFieldFilter):
+class TestCycleFieldFilter(RelatedFieldFilter):
     target = TestCycleList
 
 
 
-class TestRunFieldFilter(LocatorFieldFilter):
+class TestRunFieldFilter(RelatedFieldFilter):
     target = TestRunList

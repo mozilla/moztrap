@@ -110,13 +110,13 @@ class FieldFilterTest(FilterTestCase):
 
 
 
-class LocatorFieldFilterTest(FilterTestCase):
+class RelatedFieldFilterTest(FilterTestCase):
     @property
     def product_field_filter(self):
         if not hasattr(self, "_product_field_filter"):
             from ccui.core import fields
             from ccui.core.api import ListObject, RemoteObject
-            from ccui.core.filters import LocatorFieldFilter
+            from ccui.core.filters import RelatedFieldFilter
 
             class Product(RemoteObject):
                 name = fields.Field()
@@ -131,7 +131,7 @@ class LocatorFieldFilterTest(FilterTestCase):
 
                 entries = fields.List(fields.Object(Product))
 
-            class ProductFieldFilter(LocatorFieldFilter):
+            class ProductFieldFilter(RelatedFieldFilter):
                 target = ProductList
 
             self._product_field_filter = ProductFieldFilter

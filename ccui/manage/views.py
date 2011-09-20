@@ -10,6 +10,7 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
+from ..environments.filters import EnvironmentFilter
 from ..environments.models import (
     EnvironmentTypeList, EnvironmentType, EnvironmentGroupList, EnvironmentList,
     EnvironmentGroup)
@@ -22,6 +23,7 @@ from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
 from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
+from ..users.filters import TeamFieldFilter
 from ..users.models import UserList
 
 from .decorators import environment_actions
@@ -41,7 +43,10 @@ def home(request):
 @dec.finder(ManageFinder)
 @dec.actions(ProductList, ["delete"])
 @dec.filter("products",
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("products")
 @dec.sort("products")
 @dec.ajax("manage/product/_products_list.html")
@@ -115,7 +120,10 @@ def edit_product(request, product_id):
 @dec.filter("cycles",
             ("status", status_filters.TestCycleStatusFilter),
             ("product", ProductFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("cycles")
 @dec.sort("cycles")
 @dec.ajax("manage/product/testcycle/_cycles_list.html")
@@ -206,7 +214,10 @@ def testcycle_details(request, cycle_id):
             ("status", status_filters.TestRunStatusFilter),
             ("product", ProductFieldFilter),
             ("testCycle", TestCycleFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("runs")
 @dec.sort("runs")
 @dec.ajax("manage/product/testrun/_runs_list.html")
@@ -295,7 +306,9 @@ def testrun_details(request, run_id):
             ("status", status_filters.TestSuiteStatusFilter),
             ("product", ProductFieldFilter),
             ("run", TestRunFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("suites")
 @dec.sort("suites")
 @dec.ajax("manage/product/testsuite/_suites_list.html")
@@ -390,6 +403,7 @@ def testsuite_details(request, suite_id):
             ("suite", TestSuiteFieldFilter),
             ("step", KeywordFilter),
             ("result", KeywordFilter),
+            ("environment", EnvironmentFilter),
             )
 @dec.paginate("cases")
 @dec.sort("cases")

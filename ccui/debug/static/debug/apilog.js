@@ -5,7 +5,7 @@
          url = window.location.pathname + qs + "last=" + last;
          if (last) {
              $.get(url, function(data) {
-                       $("body").append(data);
+                       $("body").append(data.html);
                    });
          }
      };
