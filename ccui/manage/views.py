@@ -10,6 +10,7 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
+from ..environments.filters import EnvironmentFilter
 from ..environments.models import (
     EnvironmentTypeList, EnvironmentType, EnvironmentGroupList, EnvironmentList,
     EnvironmentGroup)
@@ -44,6 +45,7 @@ def home(request):
 @dec.filter("products",
             ("name", KeywordFilter),
             ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
             )
 @dec.paginate("products")
 @dec.sort("products")
@@ -120,6 +122,7 @@ def edit_product(request, product_id):
             ("product", ProductFieldFilter),
             ("name", KeywordFilter),
             ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
             )
 @dec.paginate("cycles")
 @dec.sort("cycles")
@@ -213,6 +216,7 @@ def testcycle_details(request, cycle_id):
             ("testCycle", TestCycleFieldFilter),
             ("name", KeywordFilter),
             ("user", TeamFieldFilter),
+            ("environment", EnvironmentFilter),
             )
 @dec.paginate("runs")
 @dec.sort("runs")
@@ -302,7 +306,9 @@ def testrun_details(request, run_id):
             ("status", status_filters.TestSuiteStatusFilter),
             ("product", ProductFieldFilter),
             ("run", TestRunFieldFilter),
-            ("name", KeywordFilter))
+            ("name", KeywordFilter),
+            ("environment", EnvironmentFilter),
+            )
 @dec.paginate("suites")
 @dec.sort("suites")
 @dec.ajax("manage/product/testsuite/_suites_list.html")
@@ -397,6 +403,7 @@ def testsuite_details(request, suite_id):
             ("suite", TestSuiteFieldFilter),
             ("step", KeywordFilter),
             ("result", KeywordFilter),
+            ("environment", EnvironmentFilter),
             )
 @dec.paginate("cases")
 @dec.sort("cases")

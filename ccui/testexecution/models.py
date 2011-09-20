@@ -40,6 +40,7 @@ class TestCycle(Named, Activatable, RemoteObject):
 
     non_field_filters = {
         "user": "teamMemberId",
+        "environment": "includedEnvironmentId",
         }
 
 
@@ -115,6 +116,7 @@ class TestRun(Named, Activatable, RemoteObject):
         "testCase": "includedTestCaseId",
         "testCaseVersion": "includedTestCaseVersionId",
         "user": "teamMemberId",
+        "environment": "includedEnvironmentId",
         }
 
 

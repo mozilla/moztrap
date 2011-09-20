@@ -110,6 +110,7 @@ class TestCaseVersion(Activatable, TestCase):
         "step": "instruction",
         "result": "expectedResult",
         "suite": "includedInTestSuiteId",
+        "environment": "includedEnvironmentId",
         }
 
 
@@ -197,6 +198,7 @@ class TestSuite(Named, Activatable, RemoteObject):
         "run": "hasTestCasesInTestRunId",
         "testCase": "includedTestCaseId",
         "testCaseVersion": "includedTestCaseVersionId",
+        "environment": "includedEnvironmentId",
         }
 
 
