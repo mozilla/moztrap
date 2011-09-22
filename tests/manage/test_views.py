@@ -130,6 +130,21 @@ class EditViewTests(object):
 
 
 @patch("ccui.core.api.userAgent")
+class ProductEditViewTest(ViewTestCase, EditViewTests):
+    builder = products
+    edit_form_id = "product-edit-form"
+
+
+    def extra_responses(self):
+        return {
+            "http://fake.base/rest/users?_type=json&companyId=1":
+                response(users.searchresult({})),
+            "http://fake.base/rest/%s/team/members?_type=json" % self.api_url:
+                response(users.array({})),
+            }
+
+
+@patch("ccui.core.api.userAgent")
 class TestCycleEditViewTest(ViewTestCase, EditViewTests):
     builder = testcycles
     edit_form_id = "cycle-form"
