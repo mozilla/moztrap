@@ -35,6 +35,25 @@ def make_searchresult(single_type, plural_type, *args):
     platform-style search result.
 
     """
+    total = len(args)
+    data = make_list(single_type, *args)
+    return {
+        "ns1.searchResult": [
+            {
+                "@xsi.type": "ns1.searchResult",
+                "ns1.%s" % plural_type: data,
+                "ns1.totalResults": total
+                }
+            ]
+        }
+
+
+def make_list(single_type, *args):
+    """
+    Given a list of single objects (as returned by ``make_one``), return the
+    list wrapped as the platform does for a nested list.
+
+    """
     objects = list(args)
     total = len(objects)
     if total == 1:
@@ -45,15 +64,7 @@ def make_searchresult(single_type, plural_type, *args):
         data = {"ns1.%s" % single_type: objects}
     else:
         data = ""
-    return {
-        "ns1.searchResult": [
-            {
-                "@xsi.type": "ns1.searchResult",
-                "ns1.%s" % plural_type: data,
-                "ns1.totalResults": total
-                }
-            ]
-        }
+    return data
 
 
 

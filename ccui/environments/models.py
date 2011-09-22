@@ -202,7 +202,7 @@ class BaseEnvironmentGroup(Named, RemoteObject):
         environments containing either one of those.
 
         """
-        return self.environments.match(environments)
+        return util.match(environments, self.environments)
 
 
 
@@ -212,6 +212,12 @@ class EnvironmentGroup(BaseEnvironmentGroup):
 
 
 class ExplodedEnvironmentGroup(BaseEnvironmentGroup):
+    """
+    "Exploded" environment groups are environment groups where the API returns
+    all the environment data as nested JSON, rather than requiring us to go
+    fetch each individual environment separately.
+
+    """
     api_name = "environmentgroup"
     environments = fields.List(
         fields.Object(Environment), api_name="ns1.environments")
@@ -269,6 +275,12 @@ class EnvironmentGroupList(BaseEnvironmentGroupList):
 
 
 class ExplodedEnvironmentGroupList(BaseEnvironmentGroupList):
+    """
+    "Exploded" environment groups are environment groups where the API returns
+    all the environment data as nested JSON, rather than requiring us to go
+    fetch each individual environment separately.
+
+    """
     entryclass = ExplodedEnvironmentGroup
     default_url = "environmentgroups/exploded"
     array_name = "Environmentgroup"

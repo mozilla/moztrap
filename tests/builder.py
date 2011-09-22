@@ -1,5 +1,6 @@
 from .responses import (
-    make_array, make_one, make_identity, make_searchresult, make_timeline)
+    make_array, make_one, make_identity, make_searchresult, make_timeline,
+    make_list)
 
 
 
@@ -61,6 +62,12 @@ class ListBuilder(SingleBuilder):
         return make_array(
             self.name,
             self.array_name,
+            *self._list(*dicts))
+
+
+    def list(self, *dicts):
+        return make_list(
+            self.name,
             *self._list(*dicts))
 
 

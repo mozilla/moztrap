@@ -237,6 +237,17 @@ class ResourceTestCase(AuthTestCase):
         raise NotImplementedError
 
 
+    def assertSameResource(self, res1, res2):
+        self.assertEqual(res1._location, res2._location)
+
+
+    def assertSameResourceList(self, list1, list2):
+        self.assertEqual(
+            [r._location for r in list1],
+            [r._location for r in list2],
+            )
+
+
 
 class TestResourceTestCase(ResourceTestCase):
     builder = ListBuilder(
