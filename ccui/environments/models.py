@@ -57,6 +57,14 @@ class EnvironmentType(Named, RemoteObject):
 
 
     @property
+    def environmentgroups_prefetch(self):
+        if not self.groupType:
+            return []
+        return ExplodedEnvironmentGroupList.get(auth=self.auth).filter(
+            environmentType=self)
+
+
+    @property
     def environmenttypes(self):
         if not self.groupType:
             return []

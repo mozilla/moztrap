@@ -3,8 +3,34 @@ from mock import patch
 from ..responses import response
 from ..utils import ResourceTestCase, BaseResourceTest
 
-from .builders import environments, environmentgroups, explodedenvironmentgroups
+from .builders import (
+    environments, environmentgroups, explodedenvironmentgroups,
+    environmenttypes)
 
+
+
+@patch("ccui.core.api.userAgent")
+class EnvironmentTypeTest(BaseResourceTest, ResourceTestCase):
+    def get_resource_class(self):
+        from ccui.environments.models import EnvironmentType
+        return EnvironmentType
+
+
+    def get_resource_list_class(self):
+        from ccui.environments.models import EnvironmentTypeList
+        return EnvironmentTypeList
+
+
+    def test_environmentgroups_prefetch(self, http):
+        http.request.return_value = response(
+            environmenttypes.one(groupType=True))
+        egt = self.resource_class.get("environmenttypes/1", auth=self.auth)
+        egt.deliver()
+
+        http.request.return_value = response(
+            explodedenvironmentgroups.array({}, {}, {}))
+
+        self.assertEqual(len(egt.environmentgroups_prefetch), 3)
 
 
 @patch("ccui.core.api.userAgent")
