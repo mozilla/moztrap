@@ -1,8 +1,9 @@
-from mock import patch
+from mock import patch, Mock
 
 from ..environments.builders import (
-    environmenttypes, environmentgroups, environments)
-from ..responses import response
+    environmenttypes, environmentgroups, explodedenvironmentgroups,
+    environments)
+from ..responses import response, make_boolean
 from ..utils import ResourceTestCase, BaseResourceTest
 from .builders import products
 
@@ -25,6 +26,40 @@ class ProductTest(BaseResourceTest, ResourceTestCase):
         p.update_from_dict(products.one(name="The Product"))
 
         self.assertEqual(unicode(p), u"The Product")
+
+
+    def test_set_profile(self, http):
+        from ccui.environments.models import EnvironmentGroupList
+
+        http.request.return_value = response(products.one(
+                _url="products/1", _version=0))
+        p = self.resource_class.get("/products/1")
+        p.deliver()
+
+        http.request.return_value = response(
+            environmentgroups.array({"_id": 1}, {"_id": 2}))
+
+        egt = Mock()
+        egt.groupType = True
+        egt.environmentgroups = EnvironmentGroupList.get(auth=self.auth)
+        egt.environmentgroups.deliver()
+
+        http.request.return_value = response(make_boolean(True))
+
+        p.profile = egt
+
+        # one to get product, one to get envgroups, one to set product envgroups
+        self.assertEqual(http.request.call_count, 3)
+
+        req = http.request.call_args_list[-1][1]
+
+        self.assertEqual(req["method"], "PUT")
+        self.assertEqual(
+            req["uri"],
+            "http://fake.base/rest/products/1/environmentgroups?_type=json")
+        self.assertEqual(
+            req["body"],
+            "originalVersionId=0&environmentGroupIds=1&environmentGroupIds=2")
 
 
     def test_autogenerate_env_groups(self, http):
