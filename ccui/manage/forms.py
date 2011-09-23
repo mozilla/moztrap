@@ -25,7 +25,7 @@ class ProductForm(ccforms.AddEditForm):
     team = ccforms.ModelMultipleChoiceField(required=False)
 
 
-    assign_later = ["team"]
+    assign_later = ["team", "profile"]
     entryclass = Product
     listclass = ProductList
 
