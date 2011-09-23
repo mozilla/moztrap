@@ -26,6 +26,14 @@ CC_NEW_USER_ROLE_ID = 0
 #]
 
 
+# Absolute path to directory where static assets will be collected by the
+# "collectstatic" management command, and can be served by front-end webserver.
+# Defaults to absolute filesystem path to "ui/collected-assets" directory.
+#STATIC_ROOT = ""
+
+# Base URL where files in STATIC_ROOT are deployed.
+#STATIC_URL = ""
+
 # Causes CSS/JS to be served in a single combined, minified file, with a name
 # based on contents hash (thus can be safely far-futures-expired).  This
 # setting requires the Django server process to have write access to
@@ -34,14 +42,6 @@ CC_NEW_USER_ROLE_ID = 0
 # changed. If static files are hosted off-site, a custom Django file storage
 # handler can be used as well.
 #COMPRESS = True
-
-# Absolute path to directory where static assets will be collected by the
-# "collectstatic" management command, and can be served by front-end webserver.
-# Defaults to absolute filesystem path to "ui/collected-assets" directory.
-#STATIC_ROOT = ""
-
-# Base URL where files in STATIC_ROOT are deployed.
-#STATIC_URL = ""
 
 # Uncomment these if the app is served over HTTPS (required for any
 # production deployment to avoid session hijacking):
@@ -63,6 +63,14 @@ CC_NEW_USER_ROLE_ID = 0
 #        'LOCATION': '127.0.0.1:11211',
 #    }
 #}
+
+# Uncomment and modify this to use a SQLite database file for storing user
+# sessions, rather than storing them in cache. This is required if you are
+# using the local-memory cache backend and a multi-process webserver. For all
+# but the smallest deployments, using the memcached cache backend is
+# recommended instead.
+#DATABASES['default']['NAME'] = '/path/to/where/you/want/your/sqlite.db'
+#SESSION_BACKEND = 'django.contrib.sessions.backends.db'
 
 # If a mail server is not available at localhost:25, set these to appropriate
 # values:

@@ -11,11 +11,14 @@ Platform version
 ----------------
 
 This version of the UI expects to use git commit hash
-'dfcadc19ae26050dd394795aba77b9d55eadd693' of the platform.
+'dfcadc19ae26050dd394795aba77b9d55eadd693' of the platform. A pre-built WAR
+file of this version of the platform is provided at ``platform/tcm.war``.
 
 
 Development
 -----------
+
+The Case Conductor UI requires Python 2.6 or 2.7.
 
 First, update git submodules (dependency source distribution tarballs are
 stored in a git submodule). From the root of this repo, run::
@@ -67,7 +70,7 @@ Several other settings have reasonable defaults, but may need to be modified:
 Once this configuration is done, you should be able to run ``./manage.py
 runserver`` and access the UI in your browser at ``http://localhost:8000``.
 
-To install the necessary Ruby Gems for Compass/Sass development, run
+All Compass/Sass files are pre-compiled to CSS, so no gems are development, run
 ``bin/install-gems requirements/gems.txt``.  Update
 ``requirements/gems.txt`` if newer gems should be used.
 
@@ -111,12 +114,28 @@ admin role ID, ``create_test_data`` will also create an admin user
 Deployment
 ----------
 
+Django's ``runserver`` is not suitable for a production deployment; use a
+WSGI-compatible webserver such as `Apache`_ with `mod_wsgi`_, or
+`gunicorn`_. You'll also need to serve the static assets; `Apache`_ or `nginx`_
+can do this.
+
 In addition to the above configuration, in any production deployment this
 entire app should be served exclusively over HTTPS (since almost all use of the
 site is authenticated, and serving authenticated pages over HTTP invites
 session hijacking attacks). Ideally, the non-HTTP URLs should redirect to the
 HTTPS version. The ``SESSION_COOKIE_SECURE`` setting should be set to ``True``
-in ``settings/local.py`` when the app is being served over HTTPS.
+in ``ccui/settings/local.py`` when the app is being served over HTTPS. You can
+run "python manage.py checksecure" on your production deployment to check that
+your security settings are correct.
+
+Case Conductor UI stores user session information in the cache. For local
+development the default cache backend is the "local memory" backend. Since many
+production webservers are multi-process, this cache backend is unsuitable for
+production use. Preferably, `memcached`_ should be used as the production cache
+backend. Alternately, to reduce infrastructure dependencies for very small
+installations, user sessions can be stored in a SQLite database. Examples of
+both of these configurations can be found in the sample local-settings file at
+``ccui/settings/local.sample.py``.
 
 This app also uses the new `staticfiles contrib app`_ in Django 1.3 for
 collecting static assets from reusable components into a single directory
@@ -126,3 +145,7 @@ static assets into the ``collected-assets`` directory (or whatever
 collected assets available by HTTP at the ``STATIC_URL`` setting.
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
+.. _memcached: http://memcached.org
+.. _Apache: http://httpd.apache.org
+.. _nginx: http://nginx.org
+.. _gunicorn: http://gunicorn.org/
