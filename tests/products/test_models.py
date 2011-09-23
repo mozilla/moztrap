@@ -1,8 +1,7 @@
 from mock import patch, Mock
 
 from ..environments.builders import (
-    environmenttypes, environmentgroups, explodedenvironmentgroups,
-    environments)
+    environmenttypes, environmentgroups, environments)
 from ..responses import response, make_boolean
 from ..utils import ResourceTestCase, BaseResourceTest
 from .builders import products
