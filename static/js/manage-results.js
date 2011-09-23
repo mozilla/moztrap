@@ -96,7 +96,7 @@ var CC = (function (CC, $) {
                             suggestionList.append(keywordSuggestion);
                         }
                     });
-                    // Adds ``.selected`` to first autocomplete suggestion.
+                    // Adds ".selected" to first autocomplete suggestion.
                     suggestionList.find('li:first-child a').addClass('selected');
                 }
             };
@@ -250,7 +250,7 @@ var CC = (function (CC, $) {
                 removeFakePlaceholder();
             }
         }).focus(function () {
-            // Resets textbox data-clicked to ``false`` (becomes ``true`` when an autocomplete suggestion is clicked)
+            // Resets textbox data-clicked to "false" (becomes "true" when an autocomplete suggestion is clicked)
             textbox.data('clicked', false);
             // Adds fake placeholder on initial load (and moves cursor to start of textbox)
             if (textbox.val().length === 0 && textbox.hasClass('placeholder')) {
@@ -258,7 +258,7 @@ var CC = (function (CC, $) {
                 textbox.get(0).setSelectionRange(0, 0);
             }
         // On blur, removes fake placeholder text, and hides the suggestion
-        // list after 150 ms if textbox data-clicked is ``false``
+        // list after 150 ms if textbox data-clicked is "false"
         }).blur(function () {
             function hideList() {
                 if (textbox.data('clicked') !== true) {
@@ -268,7 +268,7 @@ var CC = (function (CC, $) {
             }
             removeFakePlaceholder();
             window.setTimeout(hideList, 150);
-        // Add initial ``placeholder`` class and focus to textbox
+        // Add initial "placeholder" class and focus to textbox
         }).addClass('placeholder').focus();
 
         keywordTextboxes.keydown(function (event) {
@@ -347,7 +347,7 @@ var CC = (function (CC, $) {
         });
 
         suggestionList.find('a').live({
-            // Adds ``.selected`` to suggestion on mouseover, removing ``.selected`` from other suggestions
+            // Adds ".selected" to suggestion on mouseover, removing ".selected" from other suggestions
             mouseover: function () {
                 var thisSuggestion = $(this).addClass('selected'),
                     otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
@@ -500,6 +500,211 @@ var CC = (function (CC, $) {
                     }
                 });
             });
+        });
+    };
+
+    // Autocomplete suggestions for test case tags
+    CC.autoCompleteCaseTags = function () {
+
+        var typedText,
+            newSuggestions,
+            context = $('#addcase'),
+            textbox = context.find('#text-tag'),
+            tagList = context.find('.visual'),
+            tags = tagList.find('input[name="tag"]'),
+            url = textbox.data('autocomplete-url'),
+
+            // Hide the list of autocomplete suggestions initially
+            suggestionList = context.find('.textual .suggest').hide(),
+
+            updateSuggestions = function (data) {
+                var filteredSuggestions;
+                newSuggestions = ich.case_tag_suggestion(data);
+                filteredSuggestions = newSuggestions.filter(function (index) {
+                    var thisSuggestion = $(this).find('a').data('id');
+                    return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
+                });
+                suggestionList.html(filteredSuggestions).show().find('li:first-child a').addClass('selected');
+            };
+
+        textbox
+            // Updates suggestion-list if typed-text has changed on keyup
+            .keyup(function () {
+                $(this).doTimeout(300, function () {
+                    if ($(this).val() !== typedText) {
+                        typedText = $(this).val();
+                        if (typedText.length) {
+                            // @@@ remove 'xml' once ajax is live
+                            $.get(url, {text: typedText}, updateSuggestions, 'xml');
+                        } else {
+                            suggestionList.empty().hide();
+                        }
+                    }
+                });
+            })
+            .keydown(function (event) {
+                // If the suggestion list is not visible...
+                if (!suggestionList.is(':visible')) {
+                    // ...and if the textbox is not empty...
+                    if (textbox.val() !== '') {
+                        // ...and if the keydown was a non-meta key other than shift, ctrl, alt, caps, or esc...
+                        if (!event.metaKey && event.keyCode !== CC.keycodes.SHIFT && event.keyCode !== CC.keycodes.CTRL && event.keyCode !== CC.keycodes.ALT && event.keyCode !== CC.keycodes.CAPS && event.keyCode !== CC.keycodes.ESC) {
+                            // ...prevent normal TAB or ENTER function
+                            if (event.keyCode === CC.keycodes.TAB || event.keyCode === CC.keycodes.ENTER) {
+                                event.preventDefault();
+                            }
+                            // ...show the suggestion list
+                            suggestionList.show();
+                        }
+                    }
+                // If the suggestion list is already visible...
+                } else {
+                    var thisSuggestionName = suggestionList.find('.selected').data('name');
+                    // UP and DOWN move "active" suggestion
+                    if (event.keyCode === CC.keycodes.UP) {
+                        event.preventDefault();
+                        if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                            suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                        }
+                        return false;
+                    }
+                    if (event.keyCode === CC.keycodes.DOWN) {
+                        event.preventDefault();
+                        if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                            suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                        }
+                        return false;
+                    }
+                    // ENTER selects the "active" filter suggestion.
+                    if (event.keyCode === CC.keycodes.ENTER) {
+                        if (suggestionList.find('.selected').length) {
+                            event.preventDefault();
+                            suggestionList.find('.selected').click();
+                            return false;
+                        }
+                    }
+                    // TAB auto-completes the "active" suggestion if it isn't already completed...
+                    if (event.keyCode === CC.keycodes.TAB) {
+                        if (thisSuggestionName.length && textbox.val().toLowerCase() !== thisSuggestionName.toLowerCase()) {
+                            event.preventDefault();
+                            textbox.val(thisSuggestionName);
+                            return false;
+                        // ...otherwise, TAB selects the "active" filter suggestion (if exists)
+                        } else {
+                            if (suggestionList.find('.selected').length) {
+                                event.preventDefault();
+                                suggestionList.find('.selected').click();
+                                return false;
+                            }
+                        }
+                    }
+                    // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                    if (event.keyCode === CC.keycodes.RIGHT) {
+                        if (thisSuggestionName.length && textbox.val().toLowerCase() !== thisSuggestionName.toLowerCase()) {
+                            event.preventDefault();
+                            textbox.val(thisSuggestionName);
+                            return false;
+                        }
+                    }
+                    // ESC hides the suggestion list
+                    if (event.keyCode === CC.keycodes.ESC) {
+                        event.preventDefault();
+                        suggestionList.hide();
+                        return false;
+                    }
+                }
+            })
+            // Resets textbox data-clicked to "false" (becomes "true" when an autocomplete suggestion is clicked)
+            .focus(function () {
+                textbox.data('clicked', false);
+            })
+            // On blur, hides the suggestion list after 150 ms if textbox data-clicked is "false"
+            .blur(function () {
+                function hideList() {
+                    if (textbox.data('clicked') !== true) {
+                        suggestionList.hide();
+                        textbox.data('clicked', false);
+                    }
+                }
+                window.setTimeout(hideList, 150);
+            });
+
+        suggestionList.delegate('a', {
+            // Adds ".selected" to suggestion on mouseover, removing ".selected" from other suggestions
+            mouseover: function () {
+                var thisSuggestion = $(this).addClass('selected'),
+                    otherSuggestions = thisSuggestion.parent('li').siblings('li').find('a').removeClass('selected');
+            },
+            // Prevent the suggestion list from being hidden (by textbox blur event) when clicking a suggestion
+            mousedown: function () {
+                textbox.data('clicked', true);
+            },
+            click: function (e) {
+                e.preventDefault();
+                var newTag,
+                    id = $(this).data('id'),
+                    name = $(this).data('name');
+                if (id && name) {
+                    newTag = ich.case_tag({
+                        id: id,
+                        name: name
+                    });
+                    if (newTag.length) {
+                        tagList.append(newTag);
+                    }
+                }
+
+                // Reset the textbox, and reset and hide the suggestion list
+                textbox.val(null);
+                typedText = null;
+                suggestionList.empty().hide();
+            }
+        });
+
+        tagList.delegate('label', 'click', function () {
+            var filteredSuggestions;
+            $(this).parent().remove();
+            if (newSuggestions) {
+                filteredSuggestions = newSuggestions.filter(function (index) {
+                    var thisSuggestion = $(this).find('a').data('id');
+                    return !(tagList.find('input[name="element"][value="' + thisSuggestion + '"]').length);
+                });
+                console.log(filteredSuggestions);
+                suggestionList.html(filteredSuggestions).find('li:first-child a').addClass('selected');
+            }
+        });
+
+        // @@@ remove this once ajax is live
+        var response = {
+            suggestions: [
+                {
+                    id: '5',
+                    name: 'this tag',
+                    preText: '',
+                    typedText: 'thi',
+                    postText: 's tag'
+                },
+                {
+                    id: '6',
+                    name: 'this other tag',
+                    preText: '',
+                    typedText: 'thi',
+                    postText: 's other tag'
+                }
+            ],
+            messages: []
+        };
+
+        // Globally override ajaxTransport for future requests
+        $.ajaxTransport('xml', function (options, originalOptions, jqXHR) {
+            if (options.url.substr(0, 21) === '/manage/testcase/tags') {
+                return {
+                    send: function (headers, callback) {
+                        callback(200, 'success', { xml: response });
+                    },
+                    abort: $.noop
+                };
+            }
         });
     };
 
