@@ -16,4 +16,30 @@
             } // @@@ any global default error handling needed?
         }
     );
+
+    // @@@ remove this once testcase tagging ajax is live
+    $.mockjax({
+        url: '/manage/testcase/tags*',
+        contentType: 'text/json',
+        responseText: {
+            suggestions: [
+                {
+                    id: '5',
+                    name: 'this tag',
+                    preText: '',
+                    typedText: 'thi',
+                    postText: 's tag'
+                },
+                {
+                    id: '6',
+                    name: 'this other tag',
+                    preText: '',
+                    typedText: 'thi',
+                    postText: 's other tag'
+                }
+            ],
+            messages: []
+        }
+    });
+
 }(jQuery));

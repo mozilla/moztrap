@@ -534,8 +534,7 @@ var CC = (function (CC, $) {
                     if ($(this).val() !== typedText) {
                         typedText = $(this).val();
                         if (typedText.length) {
-                            // @@@ remove 'xml' once ajax is live
-                            $.get(url, {text: typedText}, updateSuggestions, 'xml');
+                            $.get(url, {text: typedText}, updateSuggestions);
                         } else {
                             suggestionList.empty().hide();
                         }
@@ -667,45 +666,12 @@ var CC = (function (CC, $) {
             if (newSuggestions) {
                 filteredSuggestions = newSuggestions.filter(function (index) {
                     var thisSuggestion = $(this).find('a').data('id');
-                    return !(tagList.find('input[name="element"][value="' + thisSuggestion + '"]').length);
+                    return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
                 });
-                console.log(filteredSuggestions);
                 suggestionList.html(filteredSuggestions).find('li:first-child a').addClass('selected');
             }
         });
 
-        // @@@ remove this once ajax is live
-        var response = {
-            suggestions: [
-                {
-                    id: '5',
-                    name: 'this tag',
-                    preText: '',
-                    typedText: 'thi',
-                    postText: 's tag'
-                },
-                {
-                    id: '6',
-                    name: 'this other tag',
-                    preText: '',
-                    typedText: 'thi',
-                    postText: 's other tag'
-                }
-            ],
-            messages: []
-        };
-
-        // Globally override ajaxTransport for future requests
-        $.ajaxTransport('xml', function (options, originalOptions, jqXHR) {
-            if (options.url.substr(0, 21) === '/manage/testcase/tags') {
-                return {
-                    send: function (headers, callback) {
-                        callback(200, 'success', { xml: response });
-                    },
-                    abort: $.noop
-                };
-            }
-        });
     };
 
     return CC;
