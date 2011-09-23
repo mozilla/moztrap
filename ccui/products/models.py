@@ -29,6 +29,17 @@ class Product(RemoteObject):
         return self.name
 
 
+    def _get_profile(self):
+        return self.environmentgroups[0].environmentType
+
+
+    def _set_profile(self, val):
+        self.environmentgroups = val.environmentgroups
+
+
+    profile = property(_get_profile, _set_profile)
+
+
     def autogenerate_env_groups(self, environments, envtype=None, **kwargs):
         """
         Autogenerate environment groups for all combinations of given
