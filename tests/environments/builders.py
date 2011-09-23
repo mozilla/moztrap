@@ -40,7 +40,7 @@ environmentgroups = ListBuilder(
 explodedenvironmentgroups = ListBuilder(
     "environmentgroup",
     "environmentgroups",
-    "ArrayOfEnvironmentgroup",
+    "Environmentgroup",
     {
         "companyId": 1,
         "companyLocator": make_locator(
