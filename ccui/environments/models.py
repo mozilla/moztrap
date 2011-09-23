@@ -292,4 +292,5 @@ class ExplodedEnvironmentGroupList(BaseEnvironmentGroupList):
     entryclass = ExplodedEnvironmentGroup
     default_url = "environmentgroups/exploded"
     array_name = "Environmentgroup"
+    submit_ids_name = "environmentGroupIds"
     entries = fields.List(fields.Object(ExplodedEnvironmentGroup))

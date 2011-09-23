@@ -47,6 +47,22 @@ class EnvironmentGroupTest(BaseResourceTest, ResourceTestCase):
         return EnvironmentGroupList
 
 
+    def test_put_list(self, http):
+        # This is especially for Exploded env groups, to make sure they
+        # submit using the right querystring names.
+        http.request.return_value = response(self.builder.array(
+                {"_id": 1}, {"_id": 2}))
+
+        egl = self.resource_list_class.get(auth=self.auth)
+
+        egl.put()
+
+        req = http.request.call_args_list[1][1]
+
+        self.assertEqual(
+            req["body"], "environmentGroupIds=1&environmentGroupIds=2")
+
+
     @patch("ccui.environments.util.match")
     def test_match(self, match, http):
         """
