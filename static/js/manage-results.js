@@ -508,6 +508,9 @@ var CC = (function (CC, $) {
 
         var typedText,
             newSuggestions,
+            newTagSuggestion,
+            newTagCounter = 1,
+            getSuggestions = true,
             context = $('#addcase'),
             textbox = context.find('#text-tag'),
             tagList = context.find('.visual'),
@@ -518,13 +521,21 @@ var CC = (function (CC, $) {
             suggestionList = context.find('.textual .suggest').hide(),
 
             updateSuggestions = function (data) {
-                var filteredSuggestions;
-                newSuggestions = ich.case_tag_suggestion(data);
-                filteredSuggestions = newSuggestions.filter(function (index) {
-                    var thisSuggestion = $(this).find('a').data('id');
-                    return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
-                });
-                suggestionList.html(filteredSuggestions).show().find('li:first-child a').addClass('selected');
+                if (getSuggestions) {
+                    var filteredSuggestions;
+                    newSuggestions = ich.case_tag_suggestion(data);
+                    filteredSuggestions = newSuggestions.filter(function (index) {
+                        var thisSuggestion = $(this).find('a').data('id');
+                        return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
+                    });
+                    suggestionList.find('a.tag-suggestion').each(function () {
+                        $(this).parent().remove();
+                    });
+                    suggestionList.append(filteredSuggestions).show();
+                    if (!(suggestionList.find('.selected').length)) {
+                        suggestionList.find('li:first-child a').addClass('selected');
+                    }
+                }
             };
 
         textbox
@@ -534,9 +545,17 @@ var CC = (function (CC, $) {
                     if ($(this).val() !== typedText) {
                         typedText = $(this).val();
                         if (typedText.length) {
+                            newTagSuggestion = ich.new_case_tag_suggestion({ typedText: typedText });
+                            if (!(tagList.find('input[name="newtag"][value="' + typedText + '"]').length)) {
+                                suggestionList.html(newTagSuggestion).find('li:first-child a').addClass('selected');
+                            } else {
+                                suggestionList.empty();
+                            }
                             $.get(url, {text: typedText}, updateSuggestions);
+                            getSuggestions = true;
                         } else {
                             suggestionList.empty().hide();
+                            getSuggestions = false;
                         }
                     }
                 });
@@ -641,16 +660,27 @@ var CC = (function (CC, $) {
             click: function (e) {
                 e.preventDefault();
                 var newTag,
-                    id = $(this).data('id'),
+                    id,
                     name = $(this).data('name');
-                if (id && name) {
-                    newTag = ich.case_tag({
-                        id: id,
-                        name: name
-                    });
-                    if (newTag.length) {
-                        tagList.append(newTag);
+
+                if ($(this).hasClass('tag-suggestion')) {
+                    id = $(this).data('id');
+                    if (id && name) {
+                        newTag = ich.case_tag({
+                            id: id,
+                            name: name
+                        });
                     }
+                } else if (name) {
+                    newTag = ich.new_case_tag({
+                        name: name,
+                        counter: newTagCounter
+                    });
+                    newTagCounter = newTagCounter + 1;
+                }
+
+                if (newTag.length) {
+                    tagList.append(newTag);
                 }
 
                 // Reset the textbox, and reset and hide the suggestion list
@@ -668,7 +698,17 @@ var CC = (function (CC, $) {
                     var thisSuggestion = $(this).find('a').data('id');
                     return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
                 });
-                suggestionList.html(filteredSuggestions).find('li:first-child a').addClass('selected');
+                if (!(suggestionList.find('a.newtag').length) && !(tagList.find('input[name="newtag"][value="' + typedText + '"]').length)) {
+                    suggestionList.prepend(newTagSuggestion);
+                }
+                if (newSuggestions !== filteredSuggestions) {
+                    suggestionList.find('a.tag-suggestion').each(function () {
+                        $(this).parent().remove();
+                    });
+                    suggestionList.append(filteredSuggestions);
+                }
+                suggestionList.find('.selected').removeClass('selected');
+                suggestionList.find('li:first-child a').addClass('selected');
             }
         });
 

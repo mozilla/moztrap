@@ -4,14 +4,16 @@
   <div class="textual">
     <label for="text-tag">tags</label>
     {# @@@ data-autocomplete-url should be updated #}
-    <input type="text" name="text-tag" value="" id="text-tag" placeholder="tag this test case." data-autocomplete-url="/manage/testcase/tags">
+    <input type="text" name="text-tag" value="" id="text-tag" placeholder="tag this test case." autocomplete="off" data-autocomplete-url="/manage/testcase/tags">
     <ul class="suggest">
+      {% icanhaz "new_case_tag_suggestion" %}
       {% icanhaz "case_tag_suggestion" %}
     </ul>
   </div>
 
   <ul class="visual">
     {% icanhaz "case_tag" %}
+    {% icanhaz "new_case_tag" %}
     {# @@@ remove mocked-in tags #}
     {% include "manage/product/testcase/_tag_visual.html" with name="this tag" counter="1" selected="true" %}
     {% include "manage/product/testcase/_tag_visual.html" with name="that tag" counter="2" selected="true" %}
