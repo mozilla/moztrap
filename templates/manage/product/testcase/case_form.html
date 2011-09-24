@@ -1,5 +1,7 @@
 {% extends 'manage/product/testcase/base.html' %}
 
+{% load icanhaz %}
+
 {% block page-notes %}
 <li>Missing new environment constraints UI.</li>
 <li>Can't add to suite when adding/editing (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=670160">platform limitation</a>).</li>
@@ -8,6 +10,10 @@
 
 {% block listcontent %}
 <section id="addcase">
+  {% icanhaz "new_case_tag_suggestion" %}
+  {% icanhaz "case_tag_suggestion" %}
+  {% icanhaz "case_tag" %}
+  {% icanhaz "new_case_tag" %}
   <h2>{% block formtitle %}{% endblock formtitle %}</h2>
 
   {% block caseforms %}

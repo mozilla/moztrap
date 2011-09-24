@@ -99,7 +99,8 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
         CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
-        CC.autoCompleteCaseTags();
+        CC.autoCompleteCaseTags('#addcase #single-case-form');
+        CC.autoCompleteCaseTags('#addcase #bulk-case-form');
 
         // manage-env.js
         CC.createEnvProfile();

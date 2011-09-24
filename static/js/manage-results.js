@@ -504,14 +504,14 @@ var CC = (function (CC, $) {
     };
 
     // Autocomplete suggestions for test case tags
-    CC.autoCompleteCaseTags = function () {
+    CC.autoCompleteCaseTags = function (context) {
 
         var typedText,
             newSuggestions,
             newTagSuggestion,
             newTagCounter = 1,
             getSuggestions = true,
-            context = $('#addcase'),
+            context = $(context),
             textbox = context.find('#text-tag'),
             tagList = context.find('.visual'),
             tags = tagList.find('input[name="tag"]'),
