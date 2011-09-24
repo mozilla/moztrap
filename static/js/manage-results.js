@@ -532,6 +532,13 @@ var CC = (function (CC, $) {
                         $(this).parent().remove();
                     });
                     suggestionList.append(filteredSuggestions).show();
+                    if (suggestionList.find('a.newtag').length) {
+                        suggestionList.find('a.newtag').each(function () {
+                            if (suggestionList.find('a.tag-suggestion[data-name="' + $(this).data('name') + '"]').length) {
+                                $(this).parent().remove();
+                            }
+                        });
+                    }
                     if (!(suggestionList.find('.selected').length)) {
                         suggestionList.find('li:first-child a').addClass('selected');
                     }
@@ -546,7 +553,7 @@ var CC = (function (CC, $) {
                         typedText = $(this).val();
                         if (typedText.length) {
                             newTagSuggestion = ich.new_case_tag_suggestion({ typedText: typedText });
-                            if (!(tagList.find('input[name="newtag"][value="' + typedText + '"]').length)) {
+                            if (!(tagList.find('label').filter(function () { return $(this).html() === typedText; }).length)) {
                                 suggestionList.html(newTagSuggestion).find('li:first-child a').addClass('selected');
                             } else {
                                 suggestionList.empty();
@@ -691,21 +698,25 @@ var CC = (function (CC, $) {
         });
 
         tagList.delegate('label', 'click', function () {
-            var filteredSuggestions;
+            var filteredSuggestions,
+                newTagSuggestionName;
             $(this).parent().remove();
             if (newSuggestions) {
+                newTagSuggestionName = $(newTagSuggestion).find('a').data('name');
                 filteredSuggestions = newSuggestions.filter(function (index) {
                     var thisSuggestion = $(this).find('a').data('id');
                     return !(tagList.find('input[name="tag"][value="' + thisSuggestion + '"]').length);
                 });
-                if (!(suggestionList.find('a.newtag').length) && !(tagList.find('input[name="newtag"][value="' + typedText + '"]').length)) {
-                    suggestionList.prepend(newTagSuggestion);
-                }
                 if (newSuggestions !== filteredSuggestions) {
                     suggestionList.find('a.tag-suggestion').each(function () {
                         $(this).parent().remove();
                     });
                     suggestionList.append(filteredSuggestions);
+                }
+                if (!(suggestionList.find('a.newtag').length)
+                        && !(tagList.find('label').filter(function () { return $(this).html() === typedText; }).length)
+                        && !(suggestionList.find('a.tag-suggestion').filter(function () { return $(this).data('name') === newTagSuggestionName }).length)) {
+                    suggestionList.prepend(newTagSuggestion);
                 }
                 suggestionList.find('.selected').removeClass('selected');
                 suggestionList.find('li:first-child a').addClass('selected');
