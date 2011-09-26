@@ -14,7 +14,7 @@
     {% endcomment %}
   </ul>
 
-  {% include "manage/product/testcase/_tagging.html" %}
+  {% include "manage/product/testcase/_tagging.html" with formtype="bulk" %}
 
   <div class="bulk-field">
     {% include "forms/_field.html" with field=bulk_form.cases %}
