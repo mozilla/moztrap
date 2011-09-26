@@ -1,5 +1,10 @@
 {% extends 'manage/product/testcase/base.html' %}
 
+{% block page-notes %}
+  {{ block.super }}
+  <p>Attachments are only wireframed.</p>
+{% endblock %}
+
 {% block listcontent %}
 
 <section id="managecases">
