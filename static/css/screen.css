@@ -5685,7 +5685,7 @@ footer[role="contentinfo"] small {
   border: 0;
   background-repeat: no-repeat;
   text-align: left;
-  background-image: url('../images/ui/bug.png?1317066901');
+  background-image: url('../images/ui/bug.png?1317067321');
   background-position: 0.375em;
 }
 
@@ -6321,6 +6321,10 @@ footer[role="contentinfo"] small {
 
 .completion[data-perc='100'] {
   background: #cdeca9;
+}
+
+.drill {
+  margin-bottom: 0em;
 }
 
 /* Result Types -------------------------------------------------------------- */
