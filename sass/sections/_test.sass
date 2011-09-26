@@ -11,6 +11,8 @@
   .byinvalid
     +columns(6,24)
     +omega(24)
+  .files
+    +leader(.5)
 
   .item
     position: relative
@@ -121,19 +123,6 @@
       +columns(3,17)
       +omega(17)
       clear: none
-
-.files
-  +columns(4,24)
-  +omega(24)
-  +leader(.5)
-  text-align: right
-  h4
-    +gone
-  .files-list
-    +no-style-list
-  a
-    &::before
-      content: image-url('ui/clip.png')
 
 .bugurl
   a

@@ -3573,6 +3573,41 @@ footer[role="contentinfo"] small {
   color: #511214;
 }
 
+.files {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: right;
+}
+.files h4 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.files .files-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.files .files-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.files a::before {
+  content: url('../images/ui/clip.png?1317059132');
+}
+
 /* Login/Register ------------------------------------------------------------ */
 .simpleform li, #register form li {
   *zoom: 1;
@@ -5254,6 +5289,9 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
+#run .files {
+  margin-top: 0.809em;
+}
 #run .item {
   position: relative;
 }
@@ -5637,42 +5675,6 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
   clear: none;
-}
-
-.files {
-  display: inline;
-  float: left;
-  width: 15.789%;
-  margin-right: 1.053%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  margin-top: 0.809em;
-  text-align: right;
-}
-.files h4 {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.files .files-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.files .files-list li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-}
-.files a::before {
-  content: url('../images/ui/clip.png?1317059132');
 }
 
 .bugurl a:link, .bugurl a:visited {
@@ -6512,10 +6514,17 @@ footer[role="contentinfo"] small {
   border: 0;
   display: inline;
   float: left;
-  width: 90.805%;
+  width: 72.414%;
+  margin-right: 1.149%;
+  margin-left: 9.195%;
+}
+.case-details .files {
+  display: inline;
+  float: left;
+  width: 17.241%;
   margin-right: 1.149%;
 }
-.case-details .results, .case-details .steps {
+.case-details .results, .case-details .files {
   display: inline;
   float: right;
   margin-right: 0;

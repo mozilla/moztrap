@@ -1,6 +1,11 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
+{% block page-notes %}
+  <p>Attached files are only wireframed.</p>
+  {{ block.super }}
+{% endblock page-notes %}
+
 {% block listcontent %}
 <section id="results">
   <h2>Results for &ldquo;{{ includedcase.testCase.name }}&rdquo;</h2>
@@ -13,6 +18,16 @@
       {% include "results/_results_summary.html" with results=includedcase.resultsummary %}
     </div>
     <div class="content">
+
+      {# @@@ wireframed #}
+      <aside class="files">
+        <h4>attached files</h4>
+        <ul class="files-list">
+          <li class="file"><a href="#">file 01</a></li>
+          <li class="file"><a href="#">file 02</a></li>
+        </ul>
+      </aside>
+
       <ol class="steps">
         {% for step in includedcase.testCaseVersion.steps %}
         <li>

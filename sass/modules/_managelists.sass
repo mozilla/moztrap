@@ -321,3 +321,15 @@
       color: $blue-dark
     #{$focus}
       color: $red-dark
+
+.files
+  +columns(4,24)
+  +omega(24)
+  text-align: right
+  h4
+    +gone
+  .files-list
+    +no-style-list
+  a
+    &::before
+      content: image-url('ui/clip.png')
