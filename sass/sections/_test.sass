@@ -55,12 +55,13 @@
     +adjust-font-size-to($medpx,1.5)
 
   .steps
+    +columns(20,24)
     +padding-leader(.5)
     li
-      +pad(3,2,24)
-      width: auto
+      +full(20)
+      +prefix(3,20)
       &::before
-        width: columns(3,24)
+        width: columns(3,20)
 
 .testinvalid
   .summary
@@ -73,13 +74,11 @@
     #{$focus}
       color: $red-dark
   .content
-    +full(24)
+    +columns(15,24)
     +pad(1,1,24)
     +padding-trailer(.5)
     +border-bottom-radius
-    margin:
-      right: columns(3,24) + gutter(24)
-      left: columns(2,24) + gutter(24)
+    margin-left: columns(3,24) + gutter(24)
     background-color: rgba($yellow-light,$xsmall)
 
 .stepfail
@@ -91,22 +90,34 @@
     +bold
     position: absolute
     top: 0
-    left: columns(1,24) + gutter(24)
-    width: columns(2,24)
+    left: columns(1,20) + gutter(20)
+    width: columns(2,20)
     .steps li:hover &
       +opacity(1)
   &.open, &.failed
     .summary
       +opacity(1)
   .fail-detail
-    +full(18)
+    +full(17)
     +border-radius
     +rhythm(.5,.5,.5,.5)
-    margin-right: columns(1,20) + gutter(20)
     background-color: rgba($red-lighter,$xsmall)
     p
       +demi
       margin: 0
       padding: 0 rhythm(1)
   .failform
-    +pad(1,1,18)
+    +pad(1,1,17)
+
+.files
+  +columns(4,24)
+  +omega(24)
+  +leader(.5)
+  text-align: right
+  h4
+    +gone
+  .files-list
+    +no-style-list
+  a
+    &::before
+      content: image-url('ui/clip.png')

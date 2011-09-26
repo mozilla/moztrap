@@ -5460,15 +5460,18 @@ footer[role="contentinfo"] small {
   line-height: 1.5em;
 }
 #run .steps {
+  display: inline;
+  float: left;
+  width: 83.158%;
+  margin-right: 1.053%;
   padding-top: 0.809em;
 }
 #run .steps li {
-  padding-left: 12.632%;
-  padding-right: 8.421%;
-  width: auto;
+  clear: both;
+  padding-left: 15.19%;
 }
 #run .steps li::before {
-  width: 11.579%;
+  width: 13.924%;
 }
 
 .testinvalid .summary {
@@ -5496,7 +5499,10 @@ footer[role="contentinfo"] small {
   color: #511214;
 }
 .testinvalid .content {
-  clear: both;
+  display: inline;
+  float: left;
+  width: 62.105%;
+  margin-right: 1.053%;
   padding-left: 4.211%;
   padding-right: 4.211%;
   padding-bottom: 0.809em;
@@ -5512,8 +5518,7 @@ footer[role="contentinfo"] small {
   -ms-border-bottom-right-radius: 0.236em;
   -khtml-border-bottom-right-radius: 0.236em;
   border-bottom-right-radius: 0.236em;
-  margin-right: 12.632%;
-  margin-left: 8.421%;
+  margin-left: 12.632%;
   background-color: rgba(254, 240, 191, 0.382);
 }
 
@@ -5554,8 +5559,8 @@ footer[role="contentinfo"] small {
   font-weight: 700;
   position: absolute;
   top: 0;
-  left: 4.211%;
-  width: 7.368%;
+  left: 5.063%;
+  width: 8.861%;
 }
 .stepfail .summary:focus, .stepfail .summary:hover, .stepfail .summary:active {
   background-color: #e37f83;
@@ -5580,7 +5585,6 @@ footer[role="contentinfo"] small {
   padding-top: 0.809em;
   padding-bottom: 0.809em;
   margin-bottom: 0.809em;
-  margin-right: 5.063%;
   background-color: rgba(236, 169, 171, 0.382);
 }
 .stepfail .fail-detail p {
@@ -5589,8 +5593,44 @@ footer[role="contentinfo"] small {
   padding: 0 1.618em;
 }
 .stepfail .failform {
-  padding-left: 5.634%;
-  padding-right: 5.634%;
+  padding-left: 5.97%;
+  padding-right: 5.97%;
+}
+
+.files {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  margin-top: 0.809em;
+  text-align: right;
+}
+.files h4 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.files .files-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.files .files-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.files a::before {
+  content: url('../images/ui/clip.png?1317059132');
 }
 
 /* Results ------------------------------------------------------------------- */
