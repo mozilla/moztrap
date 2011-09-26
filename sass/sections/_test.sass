@@ -57,7 +57,7 @@
   .steps
     +columns(20,24)
     +padding-leader(.5)
-    li
+    > li
       +full(20)
       +prefix(3,20)
       &::before
@@ -92,7 +92,7 @@
     top: 0
     left: columns(1,20) + gutter(20)
     width: columns(2,20)
-    .steps li:hover &
+    .steps > li:hover &
       +opacity(1)
   &.open, &.failed
     .summary
@@ -104,10 +104,23 @@
     background-color: rgba($red-lighter,$xsmall)
     p
       +demi
-      margin: 0
+      +trailer(.5)
       padding: 0 rhythm(1)
+      &:last-child
+        +trailer(0)
   .failform
     +pad(1,1,17)
+    +clearfix
+    ul
+      +no-style-list
+    .fail-bug
+      +columns(14,17)
+      label
+        +gone
+    .form-actions
+      +columns(3,17)
+      +omega(17)
+      clear: none
 
 .files
   +columns(4,24)
@@ -121,3 +134,8 @@
   a
     &::before
       content: image-url('ui/clip.png')
+
+.bugurl
+  a
+    #{$link}
+      +text-icon('ui/bug.png')

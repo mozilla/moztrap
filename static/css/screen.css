@@ -2765,12 +2765,12 @@ footer[role="contentinfo"] small {
   list-style-type: none;
   margin-left: 0px;
 }
-.managelist .steps li {
+.managelist .steps > li {
   padding-left: 10.127%;
   position: relative;
   counter-increment: steps;
 }
-.managelist .steps li::before {
+.managelist .steps > li::before {
   content: counter(steps, decimal) ".";
   position: absolute;
   top: 0;
@@ -5466,11 +5466,11 @@ footer[role="contentinfo"] small {
   margin-right: 1.053%;
   padding-top: 0.809em;
 }
-#run .steps li {
+#run .steps > li {
   clear: both;
   padding-left: 15.19%;
 }
-#run .steps li::before {
+#run .steps > li::before {
   width: 13.924%;
 }
 
@@ -5565,7 +5565,7 @@ footer[role="contentinfo"] small {
 .stepfail .summary:focus, .stepfail .summary:hover, .stepfail .summary:active {
   background-color: #e37f83;
 }
-.steps li:hover .stepfail .summary {
+.steps > li:hover .stepfail .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -5589,12 +5589,54 @@ footer[role="contentinfo"] small {
 }
 .stepfail .fail-detail p {
   font-weight: 500;
-  margin: 0;
+  margin-bottom: 0.809em;
   padding: 0 1.618em;
+}
+.stepfail .fail-detail p:last-child {
+  margin-bottom: 0em;
 }
 .stepfail .failform {
   padding-left: 5.97%;
   padding-right: 5.97%;
+  overflow: hidden;
+  *zoom: 1;
+}
+.stepfail .failform ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.stepfail .failform ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.stepfail .failform .fail-bug {
+  display: inline;
+  float: left;
+  width: 82.09%;
+  margin-right: 1.493%;
+}
+.stepfail .failform .fail-bug label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.stepfail .failform .form-actions {
+  display: inline;
+  float: left;
+  width: 16.418%;
+  margin-right: 1.493%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  clear: none;
 }
 
 .files {
@@ -5631,6 +5673,20 @@ footer[role="contentinfo"] small {
 }
 .files a::before {
   content: url('../images/ui/clip.png?1317059132');
+}
+
+.bugurl a:link, .bugurl a:visited {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0.25em 0 24.5px;
+  border: 0;
+  background-repeat: no-repeat;
+  text-align: left;
+  background-image: url('../images/ui/bug.png?1317066901');
+  background-position: 0.375em;
 }
 
 /* Results ------------------------------------------------------------------- */

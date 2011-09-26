@@ -1,6 +1,10 @@
 {% extends 'runtests/base.html' %}
 {% load execution environment sort icanhaz %}
 
+{% block page-notes %}
+  <p>attached files and bug URLs are wireframed</p>
+{% endblock %}
+
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
 <li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>

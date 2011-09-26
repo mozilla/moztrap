@@ -45,6 +45,7 @@
           </section>
         {% endif %}
 
+        {# @@@ wireframed #}
         <aside class="files">
           <h4>attached files</h4>
           <ul class="files-list">
@@ -67,8 +68,17 @@
                 <p class="summary">fail</p>
                 <div class="failform form fail-detail">
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
-                  <label for="{{ step.id }}-actualResult">actual result:</label>
-                  <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
+                  <ul>
+                    <li class="fail-desc">
+                      <label for="{{ step.id }}-actualResult">actual result:</label>
+                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
+                    </li>
+                    {# @@@ wireframed #}
+                    <li class="fail-bug">
+                      <label for="related_bug">related bug</label>
+                      <input type="url" name="related_bug" value="" id="related_bug" placeholder="optional URL of related bug">
+                    </li>
+                  </ul>
                   <div class="form-actions">
                     <button class="fail" data-action="finishfail">submit failure</button>
                   </div>
@@ -80,6 +90,10 @@
                 <p class="summary">failed</p>
                 <div class="faildesc fail-detail">
                   <p>{{ result.actualResult }}</p>
+                  {# @@@ wireframed #}
+                  {# if bugurl #}
+                    <p class="bugurl"><a href="#">http://www.attached-bug-url.com</a></p>
+                  {# endif #}
                 </div>
               </div>
             {% endif %}
