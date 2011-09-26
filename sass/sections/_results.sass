@@ -5,15 +5,15 @@
   +cond
   min-width: rhythm(2.25)
   &.passed
-    +text-icon('ui/check_sm.png',$green-lighter)
+    +text-icon('ui/check_sm.png',$green-lighter,$margin:true)
   &.invalidated
-    +text-icon('ui/warning_sm.png',$yellow)
+    +text-icon('ui/warning_sm.png',$yellow,$margin:true)
   &.failed
-    +text-icon('ui/x_sm.png',$red-lighter)
+    +text-icon('ui/x_sm.png',$red-lighter,$margin:true)
   &.pending
-    +text-icon('ui/clock_sm.png',$blue-lighter)
+    +text-icon('ui/clock_sm.png',$blue-lighter,$margin:true)
   &.started
-    +text-icon('ui/clock_sm.png',$blue-lighter)
+    +text-icon('ui/clock_sm.png',$blue-lighter,$margin:true)
   &.zip
     +gone
 

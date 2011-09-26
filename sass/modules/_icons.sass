@@ -31,13 +31,14 @@
     +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
     +box-shadow($blue-dark 0 0 2px)
 
-=text-icon($img,$color:false,$hover:false,$button:false)
+=text-icon($img,$color:false,$hover:false,$button:false,$margin:false)
   +box-sizing('border-box')
-  margin: 0
   padding: 0 .25em 0 $base-font-size*.75 + image-width($img)
   border: 0
   background-repeat: no-repeat
   text-align: left
+  @if not $margin
+    margin: 0
   @if $color
     +icon-back($color)
   @if $hover
