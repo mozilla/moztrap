@@ -1,8 +1,8 @@
 <div class="tagging">
   <div class="textual">
-    <label for="text-tag">tags</label>
+    <label for="{{ formtype }}-text-tag">tags</label>
     {# @@@ data-autocomplete-url should be updated #}
-    <input type="text" name="text-tag" value="" id="text-tag" placeholder="tag this test case." autocomplete="off" data-autocomplete-url="/manage/testcase/tags">
+    <input type="text" name="text-tag" value="" id="{{ formtype }}-text-tag" placeholder="tag this test case." autocomplete="off" data-autocomplete-url="/manage/testcase/tags">
     <ul class="suggest">
     </ul>
   </div>
