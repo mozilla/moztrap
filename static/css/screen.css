@@ -1756,6 +1756,10 @@ footer[role="contentinfo"] small {
 
 /* Filtering ----------------------------------------------------------------- */
 .suggest {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
   -moz-border-radius-bottomleft: 0.236em;
   -webkit-border-bottom-left-radius: 0.236em;
   -o-border-bottom-left-radius: 0.236em;
@@ -1781,6 +1785,11 @@ footer[role="contentinfo"] small {
   z-index: 900;
   border: 1px solid #999999;
   border-width: 0 1px 1px;
+}
+.suggest li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
 }
 .suggest a:link, .suggest a:visited {
   padding-top: 0.405em;
