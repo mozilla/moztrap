@@ -504,15 +504,15 @@ var CC = (function (CC, $) {
     };
 
     // Autocomplete suggestions for test case tags
-    CC.autoCompleteCaseTags = function (context) {
+    CC.autoCompleteCaseTags = function (container) {
 
         var typedText,
             newSuggestions,
             newTagSuggestion,
             newTagCounter = 1,
             getSuggestions = true,
-            context = $(context),
-            textbox = context.find('#text-tag'),
+            context = $(container),
+            textbox = context.find('input[name="text-tag"]'),
             tagList = context.find('.visual'),
             tags = tagList.find('input[name="tag"]'),
             url = textbox.data('autocomplete-url'),
@@ -697,7 +697,8 @@ var CC = (function (CC, $) {
             }
         });
 
-        tagList.delegate('label', 'click', function () {
+        tagList.delegate('label', 'click', function (e) {
+            e.preventDefault();
             var filteredSuggestions,
                 newTagSuggestionName;
             $(this).parent().remove();
@@ -715,7 +716,7 @@ var CC = (function (CC, $) {
                 }
                 if (!(suggestionList.find('a.newtag').length)
                         && !(tagList.find('label').filter(function () { return $(this).html() === typedText; }).length)
-                        && !(suggestionList.find('a.tag-suggestion').filter(function () { return $(this).data('name') === newTagSuggestionName }).length)) {
+                        && !(suggestionList.find('a.tag-suggestion').filter(function () { return $(this).data('name') === newTagSuggestionName; }).length)) {
                     suggestionList.prepend(newTagSuggestion);
                 }
                 suggestionList.find('.selected').removeClass('selected');
