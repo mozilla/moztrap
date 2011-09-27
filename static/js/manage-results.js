@@ -1,6 +1,7 @@
 /*jslint    browser:    true,
             indent:     4,
-            confusion:  true */
+            confusion:  true,
+            regexp:     true */
 /*global    ich, jQuery */
 
 var CC = (function (CC, $) {
@@ -723,7 +724,51 @@ var CC = (function (CC, $) {
                 suggestionList.find('li:first-child a').addClass('selected');
             }
         });
+    };
 
+    CC.testcaseAttachments = function (container) {
+        var context = $(container),
+            counter = 1,
+            label = context.find('.upload'),
+            uploads = context.find('.uploads'),
+            attachment,
+            newInput;
+
+        context.delegate('input[name="attachment"]', 'change', function () {
+            var input = $(this),
+                inputID = input.attr('id'),
+                filename = input.val().replace(/^.*\\/, '');
+
+            counter = counter + 1;
+            attachment = ich.case_attachment({
+                name: filename,
+                input: inputID
+            });
+            newInput = ich.case_attachment_input({ counter: counter });
+            uploads.append(attachment);
+            context.append(newInput);
+            label.attr('for', 'attachment-input-' + counter);
+        });
+
+        uploads.delegate('.action-remove', 'click', function () {
+            var button = $(this),
+                inputID = button.data('input-id'),
+                attachment = button.parent(),
+                fileID,
+                removeAttachment;
+
+            if (attachment.hasClass('uploading')) {
+                context.find('#' + inputID).remove();
+            } else {
+                fileID = attachment.data('id');
+                if (fileID) {
+                    removeAttachment = ich.case_attachment_remove({ id: fileID });
+                    context.append(removeAttachment);
+                }
+            }
+
+            attachment.remove();
+        });
     };
 
     return CC;

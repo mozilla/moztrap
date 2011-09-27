@@ -1,16 +1,20 @@
+{% load icanhaz %}
+
 <div class="attachments">
+  {% icanhaz "case_attachment" %}
+  {% icanhaz "case_attachment_input" %}
+  {% icanhaz "case_attachment_remove" %}
   <ul class="uploads">
-    <li>
+    <li data-id="3">
       <button class="action-remove" title="remove attachment">remove attachment</button>
-      <a href="#">file_1.png</a>
+      file_1.png
     </li>
-    <li class="uploading">
+    <li data-id="5">
       <button class="action-remove" title="remove attachment">remove attachment</button>
-      <a href="#">file_2.png</a>
-      <span class="loader"> </span>
+      file_2.png
     </li>
   </ul>
-  <label for="attachment-input" class="upload">add an attachment</label>
+  <label for="attachment-input-1" class="upload">add an attachment</label>
   <p class="helper">any file type, up to 10GB.</p>
-  <input type="file" name="attachment" id="attachment-input">
+  <input type="file" name="attachment" id="attachment-input-1">
 </div>

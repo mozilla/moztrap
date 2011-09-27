@@ -101,6 +101,7 @@ var CC = (function (CC, $) {
         CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
         CC.autoCompleteCaseTags('#addcase #single-case-form');
         CC.autoCompleteCaseTags('#addcase #bulk-case-form');
+        CC.testcaseAttachments('#single-case-form .attachments');
 
         // manage-env.js
         CC.createEnvProfile();
