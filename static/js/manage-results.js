@@ -734,6 +734,12 @@ var CC = (function (CC, $) {
             attachment,
             newInput;
 
+        label.click(function (e) {
+            e.preventDefault();
+            var id = $(this).attr('for');
+            context.find('#' + id).click();
+        });
+
         context.delegate('input[name="attachment"]', 'change', function () {
             var input = $(this),
                 inputID = input.attr('id'),
