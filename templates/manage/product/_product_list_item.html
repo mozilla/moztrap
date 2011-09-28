@@ -8,7 +8,7 @@
     </p>
     <div class="controls">
       <a href="{% url manage_product_edit product_id=product.id %}" title="edit">edit</a>
-      <a {# @@@ needs URL #} href="/manage/type/id/environments/" title="select environments" class="target">select environments</a>
+      <a href="{% url manage_narrow_environments object_type='product' object_id=product.id %}" title="select environments" class="target">select environments</a>
       <button title="delete" type="submit" name="action-delete" value="{{ product.id }}">delete</button>
     </div>
   </header>

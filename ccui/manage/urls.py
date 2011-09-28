@@ -49,9 +49,11 @@ urlpatterns = patterns(
     url(r"^environment/edit/(?P<profile_id>\d+)/$", "edit_environment_profile", name="manage_environment_edit"),
     url(r"^environment/_elements/", "autocomplete_env_elements", name="manage_environment_autocomplete_elements"),
 
-    # environment narrowing (wireframed)
-    url(r"^type/id/environments/$", direct_to_template,
-        {"template": "manage/environment/narrowing.html"}),
+    # environment narrowing
+    url(r"^(?P<object_type>product|testcycle|testrun|testsuite|testcase)/"
+        "(?P<object_id>\d+)/environments/$",
+        "narrow_environments",
+        name="manage_narrow_environments"),
 
     # users (wireframed)
     url(r"^users/$", direct_to_template, {"template": "manage/user/users.html"},

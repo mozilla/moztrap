@@ -1,17 +1,25 @@
 {% extends 'manage/environment/base.html' %}
-{# @@@ full page wireframe #}
+
+{% block page-status %}incomplete{% endblock %}
+
+{% block page-notes %}
+<li>No filtering yet (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=689997">platform limitation</a>).</li>
+{% endblock %}
 
 {% block listcontent %}
 <section id="envnarrowing">
-  <h2>Select Environments for Object</h2>
+  <h2>Select Environments for {{ obj }}</h2>
 
   <form method="POST">
     {% csrf_token %}
 
-    {% include "manage/environment/_narrow_list.html" %}
+    {# @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=689997 #}
+    {# include "lists/_filter.html" #}
+
+    {% include "manage/environment/narrow/_envs_list.html" %}
 
     <div class="form-actions">
-      <button type="submit">save and return to profile list</button>
+      <button type="submit">save</button>
     </div>
 
   </form>

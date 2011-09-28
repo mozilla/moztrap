@@ -1,5 +1,3 @@
-{% include "lists/_filter.html" %}
-
 <div class="managelist" id="envnarrowlist">
   <nav class="listordering">
     <h3 class="navhead">List Ordering</h3>
@@ -15,8 +13,9 @@
   </nav>
 
   <div class="items">
-    {% include "manage/environment/_env_list_item.html" with id='01' %}
-    {% include "manage/environment/_env_list_item.html" with id='02' %}
+    {% for env in environments %}
+    {% include "manage/environment/narrow/_env_list_item.html" %}
+    {% endfor %}
   </div>
 
   {% include "lists/_listnav.html" %}

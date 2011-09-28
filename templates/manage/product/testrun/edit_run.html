@@ -1,3 +1,7 @@
 {% extends 'manage/product/testrun/run_form.html' %}
 
 {% block formtitle %}Edit "{{ run.name }}"{% endblock %}
+
+{% block formtop %}
+  <a href="{% url manage_narrow_environments object_type='testrun' object_id=run.id %}" class="select-env-link">select environments</a>
+{% endblock %}

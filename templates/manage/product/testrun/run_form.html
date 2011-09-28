@@ -8,7 +8,7 @@
 {% block listcontent %}
 <section id="addrun">
   <h2>{% block formtitle %}{% endblock %}</h2>
-  <a {# @@@ needs URL #} href="/manage/type/id/environments/" class="select-env-link">select environments</a>
+  {% block formtop %}{% endblock %}
   <form id="run-form" method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}

@@ -627,3 +627,32 @@ def autocomplete_env_elements(request):
     data = {"suggestions": [{"id": e.id, "name": e.name} for e in elements]}
 
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
+OBJECT_TYPES = {
+    "product": ProductList,
+    "testcycle": TestCycleList,
+    "testrun": TestRunList,
+    "testsuite": TestSuiteList,
+    "testcase": TestCaseVersionList,
+    }
+
+
+@login_redirect
+@dec.paginate('environments')
+@dec.ajax("manage/environment/narrow/_envs_list.html")
+def narrow_environments(request, object_type, object_id):
+    list_cls = OBJECT_TYPES[object_type]
+    obj = list_cls.get_by_id(object_id, auth=request.auth)
+    if object_type == "product":
+        product = obj
+    else:
+        product = obj.product
+
+    return TemplateResponse(
+        request,
+        "manage/environment/narrowing.html",
+        {
+            "environments": product.profile.environments,
+            "obj": obj,
+            })

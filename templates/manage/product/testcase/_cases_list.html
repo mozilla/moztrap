@@ -51,7 +51,7 @@
           <div class="controls">
             {% if request.user|can_edit_case:case and case.status.DRAFT %}
             <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
-            <a {# @@@ needs URL #} href="/manage/type/id/environments/" title="select environments" class="target">select environments</a>
+            <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" title="select environments" class="target">select environments</a>
             {% endif %}
             {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
             <button title="clone" type="submit" name="action-clone" value="{{ case.testCaseId }}">clone</button>
