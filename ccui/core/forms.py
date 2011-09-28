@@ -87,9 +87,13 @@ class AddEditForm(RemoteObjectForm):
 
     def __init__(self, *args, **kwargs):
         model_choices = {}
-        for fname, field in self.base_fields.iteritems():
-            if hasattr(field, "obj_list"):
-                model_choices[fname] = kwargs.pop("%s_choices" % fname)
+        new_kwargs = {}
+        for key, val in kwargs.iteritems():
+            if key.endswith("_choices"):
+                model_choices[key[:-8]] = val
+            else:
+                new_kwargs[key] = val
+        kwargs = new_kwargs
 
         self.auth = kwargs.pop("auth")
 
@@ -97,26 +101,35 @@ class AddEditForm(RemoteObjectForm):
         formset_kwargs.pop("initial", None)
 
         self.instance = kwargs.pop("instance", None)
-        if self.instance is not None:
-            initial = kwargs.setdefault("initial", {})
-            for fname in self.base_fields.iterkeys():
-                initial[fname] = getattr(
-                    self.instance, self.form_to_model(fname))
 
         super(AddEditForm, self).__init__(*args, **kwargs)
 
+        self.add_fields()
+
         if self.instance is not None:
+            for fname in self.fields.iterkeys():
+                try:
+                    self.initial[fname] = getattr(
+                        self.instance, self.form_to_model(fname))
+                except AttributeError:
+                    pass
+
             for fname in self.no_edit_fields:
                 self.fields[fname].widget = ReadOnlyWidget()
                 self.fields[fname].read_only = True
 
-        for fname, model_list in model_choices.iteritems():
-            self.fields[fname].obj_list = model_list
+        for fname, obj_list in model_choices.iteritems():
+            if fname in self.fields:
+                self.fields[fname].obj_list = obj_list
 
         self.create_formsets(*args, **formset_kwargs)
 
 
     def create_formsets(self, *args, **kwargs):
+        pass
+
+
+    def add_fields(self):
         pass
 
 

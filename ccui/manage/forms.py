@@ -32,10 +32,13 @@ class ProductForm(ccforms.AddEditForm):
 
     def __init__(self, *args, **kwargs):
         self.company = kwargs.pop("company")
-        if "instance" not in kwargs:
-            self.base_fields["profile"] = ccforms.ModelChoiceField()
-
         super(ProductForm, self).__init__(*args, **kwargs)
+
+
+    def add_fields(self):
+        if self.instance is None:
+            self.fields["profile"] = ccforms.ModelChoiceField()
+
 
 
     @property
