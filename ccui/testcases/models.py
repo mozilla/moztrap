@@ -12,24 +12,6 @@ from ..users.models import User
 from . import increment
 
 
-class Tag(RemoteObject):
-    company = fields.Locator(Company)
-    tag = fields.Field()
-
-
-    def __unicode__(self):
-        return self.tag
-
-
-
-class TagList(ListObject):
-    entryclass = Tag
-    api_name = "tags"
-    default_url = "tags"
-
-    entries = fields.List(fields.Object(Tag))
-
-
 
 class TestCase(Named, RemoteObject):
     name = fields.Field()

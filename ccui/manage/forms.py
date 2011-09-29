@@ -5,6 +5,7 @@ import floppyforms as forms
 from ..core import forms as ccforms
 
 from ..products.models import Product, ProductList
+from ..tags.models import Tag, TagList
 from ..testcases import increment
 from ..testcases.bulk import BulkParser
 from ..testcases.forms import StepFormSet
@@ -67,6 +68,25 @@ class UserForm(ccforms.AddEditForm):
                 self.handle_error(self.instance, e)
 
         return ret
+
+
+
+class TagForm(ccforms.AddEditForm):
+    tag = forms.CharField(label="tag")
+
+
+    entryclass = Tag
+    listclass = TagList
+
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
+        super(TagForm, self).__init__(*args, **kwargs)
+
+
+    @property
+    def extra_creation_data(self):
+        return {"company": self.company}
 
 
 

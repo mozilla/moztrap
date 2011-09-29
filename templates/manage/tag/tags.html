@@ -1,0 +1,19 @@
+{% extends 'manage/tag/base.html' %}
+
+{% block listcontent %}
+<section id="managetags">
+  <h2>Tag Management</h2>
+
+  <a href="{% url manage_tag_add %}" class="create">create a tag</a>
+
+  {% include "lists/_filter.html" %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% include "manage/tag/_tags_list.html" %}
+
+  </form>
+
+</section>
+{% endblock listcontent %}

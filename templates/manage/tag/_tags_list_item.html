@@ -1,0 +1,9 @@
+<article id="tag-id-{{ tag.id }}" class="item vcard">
+  <h3 class="tag">
+    {{ tag.tag }}
+  </h3>
+  <div class="controls">
+    <a href="{% url manage_tag_edit tag_id=tag.id %}" title="edit">edit</a>
+    <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
+  </div>
+</article>

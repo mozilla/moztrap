@@ -60,4 +60,9 @@ urlpatterns = patterns(
     url(r"^users/add/$", "add_user", name="manage_user_add"),
     url(r"^users/edit/(?P<user_id>\d+)/$", "edit_user", name="manage_user_edit"),
 
+    # tags
+    url(r"^tags/$", "tags", name="manage_tags"),
+    url(r"^tags/add/$", "add_tag", name="manage_tag_add"),
+    url(r"^tags/edit/(?P<tag_id>\d+)/$", "edit_tag", name="manage_tag_edit"),
+
 )

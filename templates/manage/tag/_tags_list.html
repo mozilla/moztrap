@@ -1,0 +1,23 @@
+{% load sort %}
+
+<div class="managelist action-ajax-replace">
+  <nav class="listordering">
+    <h3 class="navhead">List Ordering</h3>
+    <ul>
+      <li class="bytag">
+        <a href="{{ sort|url:'tag' }}" class="{{ sort|dir:'tag' }}">tag</a>
+      </li>
+      <li class="bycontrols">
+        <span>controls</span>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="items">
+    {% for tag in tags %}
+    {% include "manage/tag/_tags_list_item.html" %}
+    {% endfor %}
+  </div>
+
+  {% include "lists/_listnav.html" %}
+</div>

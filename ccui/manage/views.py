@@ -18,6 +18,7 @@ from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
 from ..static.status import TestCaseStatus, TestSuiteStatus
+from ..tags.models import TagList
 from ..testcases.filters import TestSuiteFieldFilter
 from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
 from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
@@ -30,7 +31,7 @@ from .decorators import environment_actions
 from .finder import ManageFinder
 from .forms import (
     ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
-    BulkTestCaseForm, UserForm)
+    BulkTestCaseForm, UserForm, TagForm)
 
 
 
@@ -105,6 +106,72 @@ def edit_user(request, user_id):
         {
             "form": form,
             "user": user,
+            }
+        )
+
+
+
+@login_redirect
+@dec.actions(TagList, ["delete"])
+@dec.filter("tags",
+            ("tag", KeywordFilter),
+            )
+@dec.paginate("tags")
+@dec.sort("tags")
+@dec.ajax("manage/tag/_tags_list.html")
+def tags(request):
+    return TemplateResponse(
+        request,
+        "manage/tag/tags.html",
+        {
+            "tags": TagList.ours(auth=request.auth),
+            }
+        )
+
+
+
+@login_redirect
+def add_tag(request):
+    form = TagForm(
+        request.POST or None,
+        company=request.company,
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        tag = form.save()
+        messages.success(
+            request,
+            "The tag '%s' has been created."  % tag.tag)
+        return redirect("manage_tags")
+    return TemplateResponse(
+        request,
+        "manage/tag/add_tag.html",
+        {"form": form}
+        )
+
+
+
+@never_cache
+@login_redirect
+def edit_tag(request, tag_id):
+    tag = TagList.get_by_id(tag_id, auth=request.auth)
+    form = TagForm(
+        request.POST or None,
+        instance=tag,
+        company=request.company,
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        tag = form.save()
+        messages.success(
+            request,
+            "The tag '%s' has been saved."  % tag.tag)
+        return redirect("manage_tags")
+
+    return TemplateResponse(
+        request,
+        "manage/tag/edit_tag.html",
+        {
+            "form": form,
+            "tag": tag,
             }
         )
 
