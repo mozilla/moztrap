@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>tcmAppDS</jndi-name>
+		<connection-url>jdbc:mysql://localhost:3306/tcm</connection-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<user-name>root</user-name>
+		<password></password>
+		<use-java-context>false</use-java-context>
+		<!-- 
+		<min-pool-size>5</min-pool-size>
+		<max-pool-size>50</max-pool-size>
+		<idle-timeout-minutes>15</idle-timeout-minutes>
+		 -->
+		<exception-sorter-class-name>
+			com.mysql.jdbc.integration.jboss.ExtendedMysqlExceptionSorter
+		</exception-sorter-class-name>
+		<valid-connection-checker-class-name>
+			com.mysql.jdbc.integration.jboss.MysqlValidConnectionChecker
+			</valid-connection-checker-class-name>
+		<check-valid-connection-sql>select 1 from EntityType limit 1</check-valid-connection-sql>
+		<new-connection-sql>select 1 from EntityType limit 1</new-connection-sql>
+		<metadata>
+			<type-mapping>mySQL</type-mapping>
+		</metadata>
+	</local-tx-datasource>
+</datasources>

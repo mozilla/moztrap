@@ -1,0 +1,3 @@
+use tcm;
+
+ALTER TABLE User MODIFY COLUMN screenName VARCHAR(20) NOT NULL;

@@ -7,12 +7,15 @@ https://github.com/mozilla/caseconductor-ui/, and is built to speak via HTTP
 API to the platform at https://github.com/mozilla/caseconductor-platform.
 
 
-Platform version
-----------------
+Platform
+--------
 
 This version of the UI expects to use git commit hash
-'9f427f187fe5f36ea4d5df835e43fd0346e01ecb' of the platform. A pre-built WAR
-file of this version of the platform is provided at ``platform/tcm.war``.
+'9f427f187fe5f36ea4d5df835e43fd0346e01ecb' of the platform.  A pre-built WAR
+file of this version of the platform is provided at ``platform/tcm.war``. 
+The database scripts required to set up an initial platform database are in
+``platform/db_scripts``, and ``platform/reset-mysql.sh`` automates setting
+up the database.  (See the platform README at ``platform/README.rst``).
 
 
 Development
