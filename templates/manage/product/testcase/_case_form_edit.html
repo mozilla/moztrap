@@ -2,11 +2,8 @@
 
 {% load ccforms %}
 
-{% block versioning %}
-  <form method="POST" id="case-versioning-form" action="#version">
-    {% csrf_token %}
-    {{ single_form.non_field_errors }}
-
+{% block versionform %}
+  <div class="versioning">
     <ul class="basic">
       <li>
         {% include "forms/_field.html" with field=single_form.product %}
@@ -16,19 +13,21 @@
       </li>
     </ul>
 
+    {% include "manage/product/testcase/_tagging.html" with formtype="single" %}
+    {% include "manage/product/_attachments.html" %}
+
     <div class="version-select">
       {% include "forms/_field.html" with field=single_form.version %}
+      <div class="form-actions">
+        <button type="submit" name="version-change" value="1">switch versions</button>
+      </div>
     </div>
-
-    <div class="form-actions">
-      <p class="note">switching versions will lose unsaved changes below.</p>
-      <button type="submit" name="version-change" value="1">switch version</button>
-    </div>
-  </form>
-{% endblock versioning %}
+  </div>
+{% endblock versionform %}
 
 {% block basicform %}
   <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
+
   <ul class="basic">
     {% comment %}
     <li class="suite-field">
@@ -42,6 +41,8 @@
     </li>
   </ul>
 {% endblock basicform %}
+
+{% block attachments-tags %}{% endblock attachments-tags %}
 
 {% block versionactions %}
   {{ single_form.increment|classes:"increment-select warning" }}

@@ -14,19 +14,6 @@
     @extend .togglelist
     margin-left: 0
 
-=keyframes-bgscroll
-  0%
-    background-position: 0
-  100%
-    background-position: 100%
-
-@-webkit-keyframes bgscroll
-  +keyframes-bgscroll
-@-moz-keyframes bgscroll
-  +keyframes-bgscroll
-@keyframes bgscroll
-  +keyframes-bgscroll
-
 .attachments
   +columns(11,24)
   +prefix(2,24)
@@ -56,16 +43,6 @@
       color: $blue-dark
     #{$focus}
       color: $red-dark
-  .loader
-    +border-radius
-    +background-size(rhythm(.5) 100%)
-    +background-image(linear-gradient(left,rgba($blue-dark,$small),rgba($blue-dark,$xsmall),rgba($blue-dark,$small)))
-    +animation(bgscroll 3s linear infinite)
-    +inline-block
-    content: " "
-    width: rhythm(3)
-    height: rhythm(.5)
-    vertical-align: baseline
   input
     +gone
   .upload
@@ -454,34 +431,45 @@
 
 /* Edit Case --------------------------------------------------------------
 
-#case-versioning-form
-  @extend .addform
-  +clearfix
-  +leader
-  +trailing-border(2px,1)
-  +trailer
-  border:
-    style: dashed
-    color: rgba($blue-darker,$xsmall)
+#single-case-form
+  .versioning
+    +clearfix
+    // @@@ temporary!
+    .tagging
+      +leader(2)
+
   .version-select
-    +columns(11,24)
-    +omega(24)
-    label
-      +trailer(.5)
-  .form-actions
     +full(24)
-    +prefix(13,24)
-    p
-      +columns(8,11)
-      +leader(.25)
-      +trailer(0)
-      +italic
-    button
-      +columns(3,11)
-      +omega(11)
-  + #single-case-form
-    .basic
-      clear: both
+    +pad(7,7,24)
+    +clearfix
+    +padding-leader
+    +trailer(1.5)
+    position: relative
+    &::before, &::after
+      content: " "
+      display: block
+      position: absolute
+      top: rhythm(1.75)
+      width: columns(7,24)
+      border-top: 2px dashed rgba($blue-darker,$xsmall)
+    &::before
+      left: 0
+    &::after
+      right: 0
+    label
+      +columns(2,10)
+      text-align: right
+    select
+      +columns(4,10)
+    .form-actions
+      +columns(4,10)
+      +omega(10)
+      clear: none
+      padding: 0
+      text-align: left
+      button
+        width: 100%
+        margin: 0
 
 /* Create User --------------------------------------------------------------
 
