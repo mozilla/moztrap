@@ -10,6 +10,10 @@
   #{$link}
     +icon-replace('ui/pencil.png')
 
+[title="cancel"]
+  #{$link}
+    +icon-replace('ui/x.png')
+
 .target
   #{$link}
     +icon-replace('ui/crosshair.png')
@@ -30,7 +34,7 @@
   +button-reset
   +icon-replace('ui/pencil.png')
 
-[title="edit"], .target, [title^="create"],
+[title="edit"], .target, [title^="create"], [title="cancel"]
   #{$link}
     +inline-block
     vertical-align: middle

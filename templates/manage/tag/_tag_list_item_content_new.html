@@ -1,0 +1,11 @@
+<form method="POST" id="add-tag-form" class="add-tag-form">
+  {% csrf_token %}
+  <div class="add-tag-field">
+    <label for="add-tag-input">create a new tag</label>
+    <input type="text" name="text-filter" value="" id="add-tag-input" placeholder="name your tag" data-autocomplete-url="{% url manage_environment_autocomplete_elements %}">
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" name="add-tag" id="add-tag" value="1">Add Tag</button>
+  </div>
+</form>

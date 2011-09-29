@@ -267,3 +267,23 @@
     p, ul
       +trailer(0)
 
+/* Manage Tags --------------------------------------------------------------
+
+#managetags
+  .tag, .bytag
+    +columns(12,24)
+
+  .edit
+    +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+    .controls
+      +padding-leader(.25)
+    label
+      +gone
+    input
+      +columns(9,12)
+      +trailer(0)
+    .action-save-tag
+      +columns(3,12)
+      +omega(12)
+      margin: 0
+

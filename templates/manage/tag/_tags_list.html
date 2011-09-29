@@ -17,6 +17,27 @@
     {% for tag in tags %}
     {% include "manage/tag/_tags_list_item.html" %}
     {% endfor %}
+
+    {# @@@ for a tag being edited #}
+    <article id="tag-id-id" class="item vcard edit">
+        <div class="tag">
+          <label for="edit_tag_id">edit tag</label>
+          <input type="text" name="edit_tag_id" value="tag.tag" id="edit_tag_id">
+          <button class="action-save-tag">save tag</button>
+        </div>
+      <div class="controls">
+        <a href="#" title="cancel">cancel</a>
+        <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
+      </div>
+    </article>
+
+    {# @@@ for new tags #}
+    <article href="#" class="item add-item details">
+      <h3 class="summary">add a tag</h3>
+      <div class="content">
+        {% include "manage/tag/_tag_list_item_content_new.html" %}
+      </div>
+    </article>
   </div>
 
   {% include "lists/_listnav.html" %}
