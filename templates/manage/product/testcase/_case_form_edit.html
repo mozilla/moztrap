@@ -2,15 +2,46 @@
 
 {% load ccforms %}
 
-{% block select-environments %}
-<a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
-{% endblock select-environments %}
+{% block versioning %}
+  <form method="POST" id="case-versioning-form" action="#version">
+    {% csrf_token %}
+    {{ single_form.non_field_errors }}
 
-{% block caseversions %}
-<li>
-  {% include "forms/_field.html" with field=single_form.version %}
-</li>
-{% endblock caseversions %}
+    <ul class="basic">
+      <li>
+        {% include "forms/_field.html" with field=single_form.product %}
+      </li>
+      <li>
+        {% include "forms/_field.html" with field=single_form.name %}
+      </li>
+    </ul>
+
+    <div class="version-select">
+      {% include "forms/_field.html" with field=single_form.version %}
+    </div>
+
+    <div class="form-actions">
+      <p class="note">switching versions will lose any unsaved changes.</p>
+      <button type="submit" name="version-change" value="1">switch versions</button>
+    </div>
+  </form>
+{% endblock versioning %}
+
+{% block basicform %}
+  <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
+  <ul class="basic">
+    {% comment %}
+    <li class="suite-field">
+      <label for="suite-bulk">Suite</label>
+      <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
+      {# @@@ this should be an autocomplete field #}
+    </li>
+    {% endcomment %}
+    <li>
+      {% include "forms/_field.html" with field=single_form.description %}
+    </li>
+  </ul>
+{% endblock basicform %}
 
 {% block versionactions %}
   {{ single_form.increment|classes:"increment-select warning" }}

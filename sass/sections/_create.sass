@@ -98,6 +98,7 @@
   h2
     +trailer
   .basic
+    +no-style-list
     +columns(13,24)
     +inline-form(2,11,13)
     label
@@ -450,6 +451,37 @@
     strong
       +demi
       text-transform: uppercase
+
+/* Edit Case --------------------------------------------------------------
+
+#case-versioning-form
+  @extend .addform
+  +clearfix
+  +leader
+  +trailing-border(2px,1)
+  +trailer
+  border:
+    style: dashed
+    color: rgba($blue-darker,$xsmall)
+  .version-select
+    +columns(11,24)
+    +omega(24)
+    label
+      +trailer(.5)
+  .form-actions
+    +full(24)
+    +prefix(13,24)
+    p
+      +columns(8,11)
+      +leader(.25)
+      +trailer(0)
+      +italic
+    button
+      +columns(3,11)
+      +omega(11)
+  + #single-case-form
+    .basic
+      clear: both
 
 /* Create User --------------------------------------------------------------
 

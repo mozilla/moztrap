@@ -1,26 +1,29 @@
+{% block versioning %}{% endblock versioning %}
+
 <form method="POST" id="single-case-form" action="#single">
   {% csrf_token %}
-  {% block select-environments %}{% endblock select-environments %}
   {{ single_form.non_field_errors }}
-  <ul class="basic">
-    <li>
-      {% include "forms/_field.html" with field=single_form.product %}
-    </li>
-    {% comment %}
-    <li class="suite-field">
-      <label for="suite-bulk">Suite</label>
-      <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
-      {# @@@ this should be an autocomplete field #}
-    </li>
-    {% endcomment %}
-    <li>
-      {% include "forms/_field.html" with field=single_form.name %}
-    </li>
-    <li>
-      {% include "forms/_field.html" with field=single_form.description %}
-    </li>
-    {% block caseversions %}{% endblock caseversions %}
-  </ul>
+
+  {% block basicform %}
+    <ul class="basic">
+      <li>
+        {% include "forms/_field.html" with field=single_form.product %}
+      </li>
+      {% comment %}
+      <li class="suite-field">
+        <label for="suite-bulk">Suite</label>
+        <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
+        {# @@@ this should be an autocomplete field #}
+      </li>
+      {% endcomment %}
+      <li>
+        {% include "forms/_field.html" with field=single_form.name %}
+      </li>
+      <li>
+        {% include "forms/_field.html" with field=single_form.description %}
+      </li>
+    </ul>
+  {% endblock basicform %}
 
   {% include "manage/product/testcase/_tagging.html" with formtype="single" %}
   {% include "manage/product/_attachments.html" %}
