@@ -1,7 +1,5 @@
 {% extends 'manage/product/testcase/_case_form_single.html' %}
 
-{% load ccforms %}
-
 {% block versionform %}
   <div class="versioning">
     <ul class="basic">
@@ -25,25 +23,6 @@
   </div>
 {% endblock versionform %}
 
-{% block basicform %}
-  <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
-
-  <ul class="basic">
-    {% comment %}
-    <li class="suite-field">
-      <label for="suite-bulk">Suite</label>
-      <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
-      {# @@@ this should be an autocomplete field #}
-    </li>
-    {% endcomment %}
-    <li>
-      {% include "forms/_field.html" with field=single_form.description %}
-    </li>
-  </ul>
-{% endblock basicform %}
-
-{% block attachments-tags %}{% endblock attachments-tags %}
-
-{% block versionactions %}
-  {{ single_form.increment|classes:"increment-select warning" }}
-{% endblock versionactions %}
+{% block mainform %}
+  {% include "manage/product/testcase/_case_form_edit_versioned_fields.html" %}
+{% endblock mainform %}
