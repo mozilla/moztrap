@@ -17,7 +17,7 @@
     {% include "manage/product/_attachments.html" %}
 
     <div class="version-select">
-      {% include "forms/_field.html" with field=single_form.version %}
+      {% include "forms/_field.html" with field=single_form.version label="Edit Version" %}
       <div class="form-actions">
         <button type="submit" name="version-change" value="1">switch versions</button>
       </div>

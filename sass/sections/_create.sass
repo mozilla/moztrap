@@ -440,7 +440,7 @@
 
   .version-select
     +full(24)
-    +pad(7,7,24)
+    +pad(6,7,24)
     +clearfix
     +padding-leader
     +trailer(1.5)
@@ -450,20 +450,21 @@
       display: block
       position: absolute
       top: rhythm(1.75)
-      width: columns(7,24)
       border-top: 2px dashed rgba($blue-darker,$xsmall)
     &::before
       left: 0
+      width: columns(6,24)
     &::after
       right: 0
+      width: columns(7,24)
     label
-      +columns(2,10)
+      +columns(3,11)
       text-align: right
     select
-      +columns(4,10)
+      +columns(4,11)
     .form-actions
-      +columns(4,10)
-      +omega(10)
+      +columns(4,11)
+      +omega(11)
       clear: none
       padding: 0
       text-align: left

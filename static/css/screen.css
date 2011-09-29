@@ -4670,7 +4670,7 @@ footer[role="contentinfo"] small {
 }
 #single-case-form .version-select {
   clear: both;
-  padding-left: 29.474%;
+  padding-left: 25.263%;
   padding-right: 29.474%;
   overflow: hidden;
   *zoom: 1;
@@ -4683,33 +4683,34 @@ footer[role="contentinfo"] small {
   display: block;
   position: absolute;
   top: 2.832em;
-  width: 28.421%;
   border-top: 2px dashed rgba(71, 84, 84, 0.382);
 }
 #single-case-form .version-select::before {
   left: 0;
+  width: 24.211%;
 }
 #single-case-form .version-select::after {
   right: 0;
+  width: 28.421%;
 }
 #single-case-form .version-select label {
   display: inline;
   float: left;
-  width: 17.949%;
-  margin-right: 2.564%;
+  width: 25.581%;
+  margin-right: 2.326%;
   text-align: right;
 }
 #single-case-form .version-select select {
   display: inline;
   float: left;
-  width: 38.462%;
-  margin-right: 2.564%;
+  width: 34.884%;
+  margin-right: 2.326%;
 }
 #single-case-form .version-select .form-actions {
   display: inline;
   float: left;
-  width: 38.462%;
-  margin-right: 2.564%;
+  width: 34.884%;
+  margin-right: 2.326%;
   display: inline;
   float: right;
   margin-right: 0;
