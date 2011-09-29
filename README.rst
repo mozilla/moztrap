@@ -11,7 +11,7 @@ Platform version
 ----------------
 
 This version of the UI expects to use git commit hash
-'dfcadc19ae26050dd394795aba77b9d55eadd693' of the platform. A pre-built WAR
+'9f427f187fe5f36ea4d5df835e43fd0346e01ecb' of the platform. A pre-built WAR
 file of this version of the platform is provided at ``platform/tcm.war``.
 
 
