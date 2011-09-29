@@ -27,7 +27,7 @@ class UserForm(ccforms.AddEditForm):
     firstName = forms.CharField(label="first name")
     lastName = forms.CharField(label="last name")
     email = forms.CharField(label="email")
-    roles = ccforms.ModelMultipleChoiceField()
+    roles = ccforms.ModelMultipleChoiceField(required=False)
     password = forms.CharField(label="password", widget=forms.PasswordInput)
 
 
