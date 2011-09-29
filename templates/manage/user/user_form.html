@@ -17,7 +17,7 @@
       <li class="password">{% include "forms/_field.html" with field=form.password %}</li>
     </ul>
 
-    <section class="roleselect details">
+    <section class="roleselect details{% if form.roles.errors or form.roles.value %} open{% endif %}">
       <h3 class="summary">assign roles to this user &raquo;</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
