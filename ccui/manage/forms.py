@@ -5,6 +5,7 @@ import floppyforms as forms
 from ..core import forms as ccforms
 
 from ..products.models import Product, ProductList
+from ..testcases import increment
 from ..testcases.bulk import BulkParser
 from ..testcases.forms import StepFormSet
 from ..testcases.models import (
@@ -249,8 +250,14 @@ class TestCaseForm(ccforms.AddEditForm):
         for k, v in self.prep_form_data(
             self.cleaned_data, editing=True).iteritems():
             setattr(self.instance, k, v)
+        incr = self.cleaned_data["increment"]
         try:
-            self.instance.put()
+            if incr == "minor":
+                self.instance.versionincrement(increment.MINOR)
+            elif incr == "major":
+                self.instance.versionincrement(increment.MAJOR)
+            else:
+                self.instance.put()
         except self.instance.Conflict, e:
             self.handle_error(self.instance, e)
 
