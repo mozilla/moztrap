@@ -231,6 +231,8 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
 
     def extra_edit_responses(self):
         return {
+            "http://fake.base/rest/testcases/versions/1/versionincrement/MINOR?_type=json":
+                response(testcaseversions.one()),
             "http://fake.base/rest/testcasesteps/1?_type=json":
                 response(testcasesteps.one()),
             # separate call to update the name

@@ -1,42 +1,39 @@
-{# @@@ wireframe #}
-
-<article id="user-id-{{ id }}" class="item vcard">
+<article id="user-id-{{ user.id }}" class="item vcard">
   <p class="status">
-    {% if perms == 'admin' %}
-      {% if status == 'inactive' %}
-      <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="inactive">inactive</button>
+    {% if "PERMISSION_USER_ACCOUNT_EDIT" in request.user.permissionCodes %}
+      {% if user.status.INACTIVE %}
+      <button title="activate" type="submit" value="{{ user.id }}" name="action-activate" class="inactive">inactive</button>
       {% endif %}
-      {% if status == 'active' %}
-      <button title="disable" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+      {% if user.status.ACTIVE %}
+      <button title="disable" type="submit" value="{{ user.id }}" name="action-deactivate" class="active">active</button>
       {% endif %}
-      {% if status == 'disabled' %}
-      <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="disabled">disabled</button>
+      {% if user.status.DISABLED %}
+      <button title="activate" type="submit" value="{{ user.id }}" name="action-activate" class="disabled">disabled</button>
       {% endif %}
     {% else %}
-      {% if status == 'inactive' %}
+      {% if user.status.INACTIVE %}
       <span class="inactive">inactive</span>
       {% endif %}
-      {% if status == 'active' %}
+      {% if user.status.ACTIVE %}
       <span class="active">active</span>
       {% endif %}
-      {% if status == 'disabled' %}
+      {% if user.status.DISABLED %}
       <span class="disabled">disabled</span>
       {% endif %}
     {% endif %}
   </p>
   <h3 class="n">
-    <span class="given-name">firstname</span>
-    <span class="family-name">lastname</span>
+    <span class="given-name">{{ user.firstName }}</span>
+    <span class="family-name">{{ user.lastName }}</span>
   </h3>
-  <p class="nickname">screenname</p>
-  <p class="email">email@example.com</p>
+  <p class="nickname">{{ user.screenName }}</p>
+  <p class="email">{{ user.email }}</p>
   <ul class="roles">
-    <li>admin</li>
-    <li>tester</li>
-    <li>hep cat</li>
+    {% for role in user.roles %}
+    <li>{{ role }}</li>
+    {% endfor %}
   </ul>
   <div class="controls">
-    <a href="#" title="edit">edit</a>
-    <button title="delete" type="submit" name="action-delete" value="{{ id }}">delete</button>
+    <a href="{% url manage_user_edit user_id=user.id %}" title="edit">edit</a>
   </div>
 </article>

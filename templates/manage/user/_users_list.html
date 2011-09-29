@@ -1,27 +1,26 @@
 {% load sort %}
-{# @@@ wireframe #}
 
 <div class="managelist action-ajax-replace">
   <nav class="listordering">
     <h3 class="navhead">List Ordering</h3>
     <ul>
       <li class="bystatus">
-        <a href="#">status</a>
+        <a href="{{ sort|url:'status' }}" class="{{ sort|dir:'status' }}">status</a>
       </li>
       <li class="bygiven">
-        <a href="#">first name</a>
+        <a href="{{ sort|url:'firstName' }}" class="{{ sort|dir:'firstName' }}">first name</a>
       </li>
       <li class="byfamily">
-        <a href="#">last name</a>
+        <a href="{{ sort|url:'lastName' }}" class="{{ sort|dir:'lastName' }}">last name</a>
       </li>
       <li class="bynickname">
-        <a href="#">screenname</a>
+        <a href="{{ sort|url:'screenName' }}" class="{{ sort|dir:'screenName' }}">screenname</a>
       </li>
       <li class="byemail">
-        <a href="#">email</a>
+        <a href="{{ sort|url:'email' }}" class="{{ sort|dir:'email' }}">email</a>
       </li>
       <li class="byroles">
-        <a href="#">roles</a>
+        <span>roles</span>
       </li>
       <li class="bycontrols">
         <span>controls</span>
@@ -30,12 +29,9 @@
   </nav>
 
   <div class="items">
-    {% include "manage/user/_users_list_item.html" with id="1" status="inactive" %}
-    {% include "manage/user/_users_list_item.html" with id="3" status="active"  %}
-    {% include "manage/user/_users_list_item.html" with id="5" status="disabled" %}
-    {% include "manage/user/_users_list_item.html" with id="2" status="inactive" perms="admin" %}
-    {% include "manage/user/_users_list_item.html" with id="4" status="active"  perms="admin" %}
-    {% include "manage/user/_users_list_item.html" with id="6" status="disabled" perms="admin" %}
+    {% for user in users %}
+    {% include "manage/user/_users_list_item.html" %}
+    {% endfor %}
   </div>
 
   {% include "lists/_listnav.html" %}

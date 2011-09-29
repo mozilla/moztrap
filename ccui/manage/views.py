@@ -24,19 +24,89 @@ from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
 from ..users.filters import TeamFieldFilter
-from ..users.models import UserList
+from ..users.models import UserList, RoleList
 
 from .decorators import environment_actions
 from .finder import ManageFinder
 from .forms import (
     ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
-    BulkTestCaseForm)
+    BulkTestCaseForm, UserForm)
 
 
 
 def home(request):
     return redirect(reverse("manage_testcycles") + "?openfinder=1")
 
+
+
+@login_redirect
+@dec.actions(UserList, ["activate", "deactivate"])
+@dec.filter("users",
+            ("screenName", KeywordFilter),
+            ("email", KeywordFilter),
+            ("firstName", KeywordFilter),
+            ("lastName", KeywordFilter),
+            )
+@dec.paginate("users")
+@dec.sort("users")
+@dec.ajax("manage/user/_users_list.html")
+def users(request):
+    return TemplateResponse(
+        request,
+        "manage/user/users.html",
+        {
+            "users": UserList.ours(auth=request.auth),
+            }
+        )
+
+
+
+@login_redirect
+def add_user(request):
+    form = UserForm(
+        request.POST or None,
+        company=request.company,
+        roles_choices=RoleList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        messages.success(
+            request,
+            "The user '%s' has been created."  % user.screenName)
+        return redirect("manage_users")
+    return TemplateResponse(
+        request,
+        "manage/user/add_user.html",
+        {"form": form}
+        )
+
+
+
+@never_cache
+@login_redirect
+def edit_user(request, user_id):
+    user = UserList.get_by_id(user_id, auth=request.auth)
+    form = UserForm(
+        request.POST or None,
+        instance=user,
+        company=request.company,
+        roles_choices=RoleList.ours(auth=request.auth),
+        auth=request.auth)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        messages.success(
+            request,
+            "The user '%s' has been saved."  % user.screenName)
+        return redirect("manage_users")
+
+    return TemplateResponse(
+        request,
+        "manage/user/edit_user.html",
+        {
+            "form": form,
+            "user": user,
+            }
+        )
 
 
 @login_redirect

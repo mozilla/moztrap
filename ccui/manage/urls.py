@@ -55,10 +55,9 @@ urlpatterns = patterns(
         "narrow_environments",
         name="manage_narrow_environments"),
 
-    # users (wireframed)
-    url(r"^users/$", direct_to_template, {"template": "manage/user/users.html"},
-        name="manage_users"),
-    url(r"^users/add/$", direct_to_template, {"template": "manage/user/add_user.html"},
-        name="manage_user_add"),
+    # users
+    url(r"^users/$", "users", name="manage_users"),
+    url(r"^users/add/$", "add_user", name="manage_user_add"),
+    url(r"^users/edit/(?P<user_id>\d+)/$", "edit_user", name="manage_user_edit"),
 
 )

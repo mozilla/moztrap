@@ -12,11 +12,61 @@ from ..testcases.models import (
     TestSuite, TestSuiteList, TestCaseVersion, TestCaseList, TestCaseStep)
 from ..testexecution.models import (
     TestCycle, TestCycleList, TestRun, TestRunList)
+from ..users.models import User, UserList
 
 
 
 def product_id_attrs(obj):
     return {"data-product-id": obj.product.id}
+
+
+
+class UserForm(ccforms.AddEditForm):
+    screenName = forms.CharField(label="screen name")
+    firstName = forms.CharField(label="first name")
+    lastName = forms.CharField(label="last name")
+    email = forms.CharField(label="email")
+    roles = ccforms.ModelMultipleChoiceField()
+    password = forms.CharField(label="password", widget=forms.PasswordInput)
+
+
+    no_edit_fields = ["screenName"]
+    assign_later = ["roles"]
+    entryclass = User
+    listclass = UserList
+
+
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop("company")
+        super(UserForm, self).__init__(*args, **kwargs)
+        if self.instance is not None:
+            fld = self.fields["password"]
+            fld.required = False
+            fld.widget.is_required = False
+            fld.label = "new password"
+
+
+    @property
+    def extra_creation_data(self):
+        return {"company": self.company}
+
+
+    def edit_clean(self):
+        ret = super(UserForm, self).edit_clean()
+
+        # Password and email require special handling
+        if self.cleaned_data["email"] != self.instance.email:
+            try:
+                self.instance.emailchange(self.cleaned_data["email"])
+            except self.instance.Conflict, e:
+                self.handle_error(self.instance, e)
+        if self.cleaned_data["password"]:
+            try:
+                self.instance.passwordchange(self.cleaned_data["password"])
+            except self.instance.Conflict, e:
+                self.handle_error(self.instance, e)
+
+        return ret
 
 
 
