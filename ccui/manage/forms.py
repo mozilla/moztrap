@@ -294,8 +294,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
             self.fields["increment"] = forms.ChoiceField(
                 choices=[
-                    ("minor", "save as new minor version"),
-                    ("major", "save as new major version"),
+                    ("major", "save as new version"),
                     ("inplace", "save in place"),
                     ]
                 )

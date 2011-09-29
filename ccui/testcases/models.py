@@ -97,10 +97,9 @@ class TestCaseVersion(Activatable, TestCase):
 
 
     def __unicode__(self):
-        return u"%s v%s.%s (%s)" % (
+        return u"%s v%s (%s)" % (
             super(TestCaseVersion, self).__unicode__(),
             self.majorVersion,
-            self.minorVersion,
             self.latestVersion and "latest" or "obsolete",
             )
 
@@ -119,7 +118,7 @@ class TestCaseVersion(Activatable, TestCase):
             **kwargs)
 
 
-    def versionincrement(self, incr=increment.MINOR, **kwargs):
+    def versionincrement(self, incr=increment.MAJOR, **kwargs):
         self._put(
             relative_url="versionincrement/%s" % incr,
             update_from_response=True,
