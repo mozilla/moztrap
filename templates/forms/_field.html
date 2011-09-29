@@ -13,8 +13,8 @@
   {{ field|label }}
   {% endif %}
   {% if classes %}
-  {{ field }}
-  {% else %}
   {{ field|classes:classes }}
+  {% else %}
+  {{ field }}
   {% endif %}
 {% endif %}
