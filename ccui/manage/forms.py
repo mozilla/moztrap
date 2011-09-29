@@ -258,6 +258,13 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
 
 
 
+def no_name_just_version(tcv):
+        return u"v%s (%s)" % (
+            tcv.majorVersion,
+            tcv.latestVersion and "latest" or "obsolete",
+            )
+
+
 
 class TestCaseForm(ccforms.AddEditForm):
     name = forms.CharField()
@@ -280,7 +287,8 @@ class TestCaseForm(ccforms.AddEditForm):
     def add_fields(self):
         if self.instance is not None:
             self.fields["version"] = ccforms.ModelChoiceField(
-                initial=self.instance.id)
+                initial=self.instance.id,
+                label_from_instance=no_name_just_version)
             self.fields["version"].obj_list = TestCaseList.get_by_id(
                 self.instance.testCaseId, auth=self.instance.auth).versions
 
