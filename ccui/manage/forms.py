@@ -205,6 +205,24 @@ class TestCaseForm(ccforms.AddEditForm):
         "description": "",
         }
 
+
+    def add_fields(self):
+        if self.instance is not None:
+            self.fields["version"] = ccforms.ModelChoiceField(
+                initial=self.instance.id)
+            self.fields["version"].obj_list = TestCaseList.get_by_id(
+                self.instance.testCaseId, auth=self.instance.auth).versions
+
+            self.fields["increment"] = forms.ChoiceField(
+                choices=[
+                    ("minor", "save as new minor version"),
+                    ("major", "save as new major version"),
+                    ("inplace", "save in place"),
+                    ]
+                )
+
+
+
     def create_formsets(self, *args, **kwargs):
         self.steps_formset = StepFormSet(
             *args, **dict(kwargs, prefix="steps"))
@@ -228,7 +246,13 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def edit_clean(self):
-        ret = super(TestCaseForm, self).edit_clean()
+        for k, v in self.prep_form_data(
+            self.cleaned_data, editing=True).iteritems():
+            setattr(self.instance, k, v)
+        try:
+            self.instance.put()
+        except self.instance.Conflict, e:
+            self.handle_error(self.instance, e)
 
         # Name field can't be edited via TestCaseVersion, so we do it via the
         # TestCase proper
@@ -239,7 +263,7 @@ class TestCaseForm(ccforms.AddEditForm):
         except self.instance.Conflict, e:
             self.handle_error(self.instance, e)
 
-        return ret
+        return self.cleaned_data
 
 
 

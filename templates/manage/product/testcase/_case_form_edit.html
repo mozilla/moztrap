@@ -1,29 +1,17 @@
 {% extends 'manage/product/testcase/_case_form_single.html' %}
 
+{% load ccforms %}
+
 {% block select-environments %}
 <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
 {% endblock select-environments %}
 
 {% block caseversions %}
-{% comment %}
 <li>
-  <label for="version">Version</label>
-  <select name="version" id="version">
-    <option value="option1">1.0</option>
-    <option value="option2">1.1</option>
-    <option value="option2">1.2</option>
-    <option value="option2">2.0</option>
-  </select>
+  {% include "forms/_field.html" with field=single_form.version %}
 </li>
-{% endcomment %}
 {% endblock caseversions %}
 
 {% block versionactions %}
-{% comment %}
-  <select name="increment" id="increment" class="increment-select warning">
-    <option value="option1">save over most recent version</option>
-    <option value="option2">save a new minor version</option>
-    <option value="option2">save a new major version</option>
-  </select>
-{% endcomment %}
+  {{ single_form.increment|classes:"increment-select warning" }}
 {% endblock versionactions %}

@@ -224,6 +224,8 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
+            "http://fake.base/rest/testcases/1/versions?_type=json":
+                response(testcaseversions.array({}))
             }
 
 

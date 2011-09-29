@@ -38,3 +38,10 @@ def value_text(boundfield):
 @register.filter
 def read_only(boundfield):
     return getattr(boundfield.field, "read_only", False)
+
+
+@register.filter
+def classes(boundfield, classes):
+    attrs = boundfield.field.widget.attrs
+    attrs["class"] = attrs.get("class", "") + classes
+    return boundfield
