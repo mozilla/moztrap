@@ -560,41 +560,20 @@ def testcases(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def add_testcase(request):
-    open_bulk = False
-    single_form = bulk_form = None
-
     if request.method == "POST":
-        if "bulk-save" in request.POST:
-            bulk_form = BulkTestCaseForm(
-                request.POST,
-                product_choices=ProductList.ours(auth=request.auth),
-                auth=request.auth)
-            if bulk_form.is_valid():
-                testcases = bulk_form.save()
-                messages.success(
-                    request,
-                    "%s test cases have been created." % len(testcases))
-                return redirect("manage_testcases")
-            open_bulk = True
-        else:
-            single_form = TestCaseForm(
-                request.POST,
-                request.FILES,
-                product_choices=ProductList.ours(auth=request.auth),
-                auth=request.auth)
-            if single_form.is_valid():
-                testcase = single_form.save()
-                messages.success(
-                    request,
-                    "The test case '%s' has been created."  % testcase.name)
-                return redirect("manage_testcases")
-
-    if single_form is None:
-        single_form = TestCaseForm(
+        form = TestCaseForm(
+            request.POST,
+            request.FILES,
             product_choices=ProductList.ours(auth=request.auth),
             auth=request.auth)
-    if bulk_form is None:
-        bulk_form = BulkTestCaseForm(
+        if form.is_valid():
+            testcase = form.save()
+            messages.success(
+                request,
+                "The test case '%s' has been created."  % testcase.name)
+            return redirect("manage_testcases")
+    else:
+        form = TestCaseForm(
             product_choices=ProductList.ours(auth=request.auth),
             auth=request.auth)
 
@@ -602,9 +581,35 @@ def add_testcase(request):
         request,
         "manage/product/testcase/add_case.html",
         {
-            "single_form": single_form,
-            "bulk_form": bulk_form,
-            "open_bulk": open_bulk,
+            "form": form,
+            })
+
+
+
+@login_redirect
+@dec.finder(ManageFinder)
+def add_testcase_bulk(request):
+    if request.method == "POST":
+        form = BulkTestCaseForm(
+            request.POST,
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
+        if form.is_valid():
+            testcases = form.save()
+            messages.success(
+                request,
+                "%s test cases have been created." % len(testcases))
+            return redirect("manage_testcases")
+    else:
+        form = BulkTestCaseForm(
+            product_choices=ProductList.ours(auth=request.auth),
+            auth=request.auth)
+
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/add_case_bulk.html",
+        {
+            "form": form,
             })
 
 
@@ -632,7 +637,7 @@ def edit_testcase(request, case_id):
         request,
         "manage/product/testcase/edit_case.html",
         {
-            "single_form": form,
+            "form": form,
             "case": case,
             }
         )

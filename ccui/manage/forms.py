@@ -282,7 +282,6 @@ class TestCaseForm(ccforms.AddEditForm):
         "maxAttachmentSizeInMbytes": 0,
         "maxNumberOfAttachments": 0,
         "automationUri": "",
-        "description": "",
         }
 
 
@@ -369,7 +368,7 @@ class TestCaseForm(ccforms.AddEditForm):
     def clean(self):
         # If the formset is not valid, we don't want to actually try saving the
         # testcase.
-        if not getattr(self, "steps_formset_clear", False):
+        if self.errors or not getattr(self, "steps_formset_clear", False):
             return self.cleaned_data
         ret = super(TestCaseForm, self).clean()
 

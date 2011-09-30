@@ -14,7 +14,7 @@
     </li>
     {% endcomment %}
     <li>
-      {% include "forms/_field.html" with field=single_form.description %}
+      {% include "forms/_field.html" with field=form.description %}
     </li>
   </ul>
 {% endblock basicform %}
@@ -22,5 +22,5 @@
 {% block attachments-tags %}{% endblock attachments-tags %}
 
 {% block versionactions %}
-  {{ single_form.increment|classes:"increment-select warning" }}
+  {{ form.increment|classes:"increment-select warning" }}
 {% endblock versionactions %}

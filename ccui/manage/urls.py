@@ -40,8 +40,7 @@ urlpatterns = patterns(
         "testcase_details",
         name="manage_testcase_details"),
     url("^testcase/add/$", "add_testcase", name="manage_testcase_add"),
-    # @@@ needs help
-    url("^testcase/add/bulk/$", "add_testcase", name="manage_testcase_add_bulk"),
+    url("^testcase/add/bulk/$", "add_testcase_bulk", name="manage_testcase_add_bulk"),
     url("^testcase/(?P<case_id>\d+)/$", "edit_testcase", name="manage_testcase_edit"),
 
     # environment profiles

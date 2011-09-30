@@ -1,9 +1,9 @@
-<form id="bulk-case-form" method="POST" action="#bulk">
+<form id="bulk-case-form" method="POST">
   {% csrf_token %}
-  {{ bulk_form.non_field_errors }}
+  {{ form.non_field_errors }}
   <ul class="basic">
     <li class="product-field">
-      {% include "forms/_field.html" with field=bulk_form.product %}
+      {% include "forms/_field.html" with field=form.product %}
     </li>
     {% comment %}
     <li class="suite-field">
@@ -17,7 +17,7 @@
   {% include "manage/product/testcase/_tagging.html" with formtype="bulk" %}
 
   <div class="bulk-field">
-    {% include "forms/_field.html" with field=bulk_form.cases %}
+    {% include "forms/_field.html" with field=form.cases %}
     <section class="fieldhelp">
       <h3>Keyword Instructions</h3>
       <p>

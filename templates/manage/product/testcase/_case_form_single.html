@@ -1,6 +1,6 @@
-<form method="POST" enctype="multipart/form-data" id="single-case-form" action="#single">
+<form method="POST" enctype="multipart/form-data" id="single-case-form">
   {% csrf_token %}
-  {{ single_form.non_field_errors }}
+  {{ form.non_field_errors }}
 
   {% block versionform %}{% endblock versionform %}
 

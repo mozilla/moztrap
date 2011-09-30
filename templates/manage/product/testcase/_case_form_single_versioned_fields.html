@@ -2,7 +2,7 @@
     {% block basicform %}
       <ul class="basic">
         <li>
-          {% include "forms/_field.html" with field=single_form.product %}
+          {% include "forms/_field.html" with field=form.product %}
         </li>
         {% comment %}
         <li class="suite-field">
@@ -12,10 +12,10 @@
         </li>
         {% endcomment %}
         <li>
-          {% include "forms/_field.html" with field=single_form.name %}
+          {% include "forms/_field.html" with field=form.name %}
         </li>
         <li>
-          {% include "forms/_field.html" with field=single_form.description %}
+          {% include "forms/_field.html" with field=form.description %}
         </li>
       </ul>
     {% endblock basicform %}
@@ -26,9 +26,9 @@
     {% endblock attachments-tags %}
 
     <div class="steps">
-      {{ single_form.steps_formset.management_form }}
+      {{ form.steps_formset.management_form }}
       <ol class="steplist">
-        {% for form in single_form.steps_formset %}
+        {% for form in form.steps_formset %}
         {% include "manage/product/testcase/_step_form.html" %}
         {% endfor %}
       </ol>

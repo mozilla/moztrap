@@ -28,7 +28,7 @@
       function() {
           $('ol.steplist').formset(
               {
-                  prefix: '{{ single_form.steps_formset.prefix }}',
+                  prefix: '{{ form.steps_formset.prefix }}',
                   formTemplate: '#empty-step-form > li',
                   formSelector: '.steps-form',
                   deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
@@ -48,7 +48,7 @@
 {% block last %}
 <div style="display: none;">
   <ul id="empty-step-form" class="empty-form">
-    {% include "manage/product/testcase/_step_form.html" with form=single_form.steps_formset.empty_form %}
+    {% include "manage/product/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
   </ul>
 </div>
 {% endblock %}

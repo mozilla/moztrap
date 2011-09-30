@@ -4,10 +4,10 @@
   <div class="versioning">
     <ul class="basic">
       <li>
-        {% include "forms/_field.html" with field=single_form.product %}
+        {% include "forms/_field.html" with field=form.product %}
       </li>
       <li>
-        {% include "forms/_field.html" with field=single_form.name %}
+        {% include "forms/_field.html" with field=form.name %}
       </li>
     </ul>
 
@@ -15,7 +15,7 @@
     {% include "manage/product/_attachments.html" with obj=case %}
 
     <div class="version-select">
-      {% include "forms/_field.html" with field=single_form.version label="Edit Version" %}
+      {% include "forms/_field.html" with field=form.version label="Edit Version" %}
       <div class="form-actions">
         <button type="submit" name="version-change" value="1">switch version</button>
       </div>
