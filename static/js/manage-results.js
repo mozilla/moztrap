@@ -790,10 +790,25 @@ var CC = (function (CC, $) {
                 newURL = url.replace(currentVersion, newVersion),
                 updateVersion = function (data) {
                     if (data.html) {
-                        var newHTML = $(data.html).hide();
+                        var newHTML = $(data.html).hide(),
+                            prefix = newHTML.find('ol.steplist').data('prefix');
                         context.find('.versioned').fadeOut('fast', function () {
                             $(this).replaceWith(newHTML);
-                            newHTML.fadeIn('fast');
+                            newHTML.fadeIn('fast', function () {
+                                $(this).find('ol.steplist').formset({
+                                    prefix: prefix,
+                                    formTemplate: '#empty-step-form > li',
+                                    formSelector: '.steps-form',
+                                    deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                                    deleteLinkSelector: '.removefields',
+                                    addAnimationSpeed: 'normal',
+                                    removeAnimationSpeed: 'fast',
+                                    autoAdd: true,
+                                    alwaysShowExtra: true,
+                                    deleteOnlyActive: true,
+                                    insertAbove: true
+                                });
+                            });
                         });
                         context.find('#single-case-form').attr('action', url);
                     }
