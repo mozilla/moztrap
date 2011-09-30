@@ -21,6 +21,7 @@ def main():
         "from ccui.core.models import Company, CompanyList",
         "from ccui.users.models import User, UserList, Role, RoleList, Permission, PermissionList",
         "from ccui.products.models import Product, ProductList",
+        "from ccui.relatedbugs.models import ExternalBug, ExternalBugList",
         "from ccui.environments.models import EnvironmentType, EnvironmentTypeList, Environment, EnvironmentList, EnvironmentGroup, ExplodedEnvironmentGroup, EnvironmentGroupList, ExplodedEnvironmentGroupList",
         "from ccui.static import status",
         "from ccui.tags.models import Tag, TagList",

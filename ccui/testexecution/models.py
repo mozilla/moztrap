@@ -9,6 +9,7 @@ from ..core.models import CategoryValueInfoList, Company
 from ..environments.models import (
     ExplodedEnvironmentGroupList, EnvironmentGroupList, EnvironmentList)
 from ..products.models import Product
+from ..relatedbugs.models import ExternalBugList
 from ..static.fields import StaticData
 from ..static.status import TestResultStatus
 from ..testcases.models import (
@@ -329,6 +330,7 @@ class TestResult(RemoteObject):
         "TESTRUNRESULTSTATUS", "testRunResultStatusId", api_submit_name=False)
     tester = fields.Locator(User)
 
+    relatedbugs = fields.ReadOnlyLink(ExternalBugList)
     environments = fields.Link(EnvironmentList)
 
     non_field_filters = {

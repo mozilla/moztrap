@@ -8,6 +8,7 @@ from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
+from ..relatedbugs.models import ExternalBugList
 from ..static.fields import StaticData
 from ..tags.models import TagList
 from ..users.models import User
@@ -26,6 +27,7 @@ class TestCase(Named, RemoteObject):
 
     tags = fields.Link(TagList)
     attachments = fields.ReadOnlyLink(AttachmentList)
+    relatedbugs = fields.ReadOnlyLink(ExternalBugList)
     versions = fields.Link("TestCaseVersionList")
     latestversion = fields.Link("TestCaseVersion")
 
@@ -129,6 +131,11 @@ class TestCaseVersion(Activatable, TestCase):
 
 
     tags = property(_get_tags, _set_tags)
+
+
+    @property
+    def relatedbugs(self):
+        return self.testCase.relatedbugs
 
 
     def approve(self, **kwargs):
