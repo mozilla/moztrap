@@ -790,6 +790,7 @@ var CC = (function (CC, $) {
                 newURL = url.replace(currentVersion, newVersion),
                 updateVersion = function (data) {
                     context.find('.versioned').replaceWith(data.html);
+                    context.find('#single-case-form').attr('action', url);
                 };
 
             if (newURL !== url) {
