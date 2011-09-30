@@ -105,7 +105,7 @@
     +border-radius
     +rhythm(.5,.5,.5,.5)
     background-color: rgba($red-lighter,$xsmall)
-    p
+    > p
       +demi
       +trailer(.5)
       padding: 0 rhythm(1)
@@ -116,14 +116,35 @@
     +clearfix
     ul
       +no-style-list
-    .fail-bug
-      +columns(14,17)
-      label
-        +gone
     .form-actions
       +columns(3,17)
       +omega(17)
       clear: none
+
+.fail-bugs
+  p
+    +demi
+    +trailer(0)
+  .bug
+    label
+      +font-weight-normal
+      +rhythm(0)
+      +text-icon('ui/bug_radio_empty.png')
+      color: $alt
+    input
+      +gone
+      &:checked + label
+        +demi
+        background-image: image-url('ui/bug.png')
+        color: $accent
+
+.fail-bug-new
+  +columns(14,17)
+  label
+    +gone
+  [disabled]
+    +opacity(0)
+    +transition(opacity 200ms)
 
 .bugurl
   a

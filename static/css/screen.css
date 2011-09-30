@@ -882,6 +882,7 @@ button {
   overflow: visible;
   width: auto;
   vertical-align: baseline;
+  margin: 0;
 }
 button:hover, button:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
@@ -950,6 +951,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   overflow: visible;
   width: auto;
   vertical-align: baseline;
+  margin: 0;
 }
 .button:hover, input[type="reset"]:hover, input[type="submit"]:hover, input[type="button"]:hover, #listcontent .create:hover, .button:focus, input[type="reset"]:focus, input[type="submit"]:focus, input[type="button"]:focus, #listcontent .create:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c1e794), color-stop(100%, #77b929));
@@ -4020,6 +4022,7 @@ footer[role="contentinfo"] small {
   overflow: visible;
   width: auto;
   vertical-align: baseline;
+  margin: 0;
   display: inline;
   float: left;
   width: 25.581%;
@@ -5783,12 +5786,12 @@ footer[role="contentinfo"] small {
   margin-bottom: 0.809em;
   background-color: rgba(236, 169, 171, 0.382);
 }
-.stepfail .fail-detail p {
+.stepfail .fail-detail > p {
   font-weight: 500;
   margin-bottom: 0.809em;
   padding: 0 1.618em;
 }
-.stepfail .fail-detail p:last-child {
+.stepfail .fail-detail > p:last-child {
   margin-bottom: 0em;
 }
 .stepfail .failform {
@@ -5808,22 +5811,6 @@ footer[role="contentinfo"] small {
   list-style-type: none;
   margin-left: 0px;
 }
-.stepfail .failform .fail-bug {
-  display: inline;
-  float: left;
-  width: 82.09%;
-  margin-right: 1.493%;
-}
-.stepfail .failform .fail-bug label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
 .stepfail .failform .form-actions {
   display: inline;
   float: left;
@@ -5833,6 +5820,70 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
   clear: none;
+}
+
+.fail-bugs p {
+  font-weight: 500;
+  margin-bottom: 0em;
+}
+.fail-bugs .bug label {
+  font-weight: normal;
+  margin-top: 0em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  margin-bottom: 0em;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 24.5px;
+  padding-right: 0.25em;
+  background-repeat: no-repeat;
+  text-align: left;
+  margin: 0;
+  background-image: url('../images/ui/bug_radio_empty.png?1317407365');
+  background-position: 0.375em;
+  color: #528684;
+}
+.fail-bugs .bug input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.fail-bugs .bug input:checked + label {
+  font-weight: 500;
+  background-image: url('../images/ui/bug.png?1317067321');
+  color: #511214;
+}
+
+.fail-bug-new {
+  display: inline;
+  float: left;
+  width: 82.09%;
+  margin-right: 1.493%;
+}
+.fail-bug-new label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.fail-bug-new [disabled] {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -moz-transition: opacity 200ms;
+  -webkit-transition: opacity 200ms;
+  -o-transition: opacity 200ms;
+  transition: opacity 200ms;
 }
 
 .bugurl a:link, .bugurl a:visited {
