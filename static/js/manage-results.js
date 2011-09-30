@@ -777,6 +777,29 @@ var CC = (function (CC, $) {
         });
     };
 
+    CC.testcaseVersioning = function (container) {
+        var context = $(container),
+            select = context.find('#id_version'),
+            button = context.find('.versioning button[name="version-change"]'),
+            url = window.location.pathname;
+
+        button.click(function (e) {
+            e.preventDefault();
+            var newVersion = select.val(),
+                currentVersion = url.split('/')[3],
+                newURL = url.replace(currentVersion, newVersion),
+                updateVersion = function (data) {
+                    context.find('.versioned').replaceWith(data.html);
+                };
+
+            if (newURL !== url) {
+                context.find('.versioned').loadingOverlay();
+                url = newURL;
+                $.get(url, updateVersion);
+            }
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
