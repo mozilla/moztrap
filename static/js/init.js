@@ -108,6 +108,9 @@ var CC = (function (CC, $) {
         CC.createEnvProfile();
         CC.editEnvProfile();
 
+        // manage-tags.js
+        CC.manageTags('#managetags');
+
         // runtests.js
         CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary');

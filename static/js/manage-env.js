@@ -99,7 +99,6 @@ var CC = (function (CC, $) {
                             if (!response.no_replace) {
                                 input.closest('.elements').children('li.add-element').before(newElem);
                                 input.closest('.item').find('.preview').append(newPreview);
-
                                 input.val(null);
                             }
                             loading.loadingOverlay('remove');

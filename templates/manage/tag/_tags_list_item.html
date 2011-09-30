@@ -4,6 +4,9 @@
   </h3>
   <div class="controls">
     <a href="{% url manage_tag_edit tag_id=tag.id %}" title="edit">edit</a>
-    <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
+    <form method="POST">
+      {% csrf_token %}
+      <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
+    </form>
   </div>
 </article>
