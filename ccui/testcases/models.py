@@ -3,11 +3,13 @@ Remote objects related to the "documentation" (as opposed to execution) side of
 testing.
 
 """
+from ..attachments.models import AttachmentList
 from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
 from ..static.fields import StaticData
+from ..tags.models import TagList
 from ..users.models import User
 from . import increment
 
@@ -22,15 +24,14 @@ class TestCase(Named, RemoteObject):
     company = fields.Locator(Company)
     testCycle = fields.Locator("TestCycle")
 
-    tags = fields.Link("TagList")
+    tags = fields.Link(TagList)
+    attachments = fields.Link(AttachmentList)
     versions = fields.Link("TestCaseVersionList")
     latestversion = fields.Link("TestCaseVersion")
 
 
     def __unicode__(self):
         return self.name
-
-
 
 
     def clone(self, **kwargs):
@@ -108,6 +109,12 @@ class TestCaseVersion(Activatable, TestCase):
     @property
     def testCase(self):
         return TestCaseList.get_by_id(self.testCaseId, auth=self.auth)
+
+    # @@@ https://bugzilla.mozilla.org//show_bug.cgi?id=690471
+    # remove this when fixed
+    @property
+    def attachments(self):
+        return self.testCase.attachments
 
 
     # @@@ https://bugzilla.mozilla.org//show_bug.cgi?id=690472

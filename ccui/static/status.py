@@ -59,3 +59,15 @@ class ApprovalStatus(Enum):
     PENDING = 1
     APPROVED = 2
     REJECTED = 3
+
+
+
+class AttachmentType(Enum):
+    BRANDING = 1
+    DESIGN = 2
+    USERGUIDE = 3
+    REQUIREMENTS = 4
+    KNOWNISSUES = 5
+    SCREENCAPTURE = 6
+    NDA = 7
+    UNSPECIFIED = 8

@@ -2,7 +2,7 @@ from .data import get_codevalue
 from .models import CodeValue
 from .status import (TestResultStatus, TestCycleStatus, TestRunStatus,
                      UserStatus, TestCaseStatus, TestSuiteStatus,
-                     ApprovalStatus)
+                     ApprovalStatus, AttachmentType)
 from ..core.fields import Field
 
 
@@ -15,6 +15,7 @@ STATUS_ENUMS_BY_KEY = {
     "TESTRUNSTATUS": TestRunStatus,
     "USERSTATUS": UserStatus,
     "TESTRUNRESULTSTATUS": TestResultStatus,
+    "ATTACHMENTTYPE": AttachmentType,
     }
 
 
