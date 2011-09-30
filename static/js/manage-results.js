@@ -750,7 +750,7 @@ var CC = (function (CC, $) {
                 name: filename,
                 input: inputID
             });
-            newInput = input.clone().attr('id', 'attachment-input-' + counter);
+            newInput = ich.case_attachment_input({ counter: counter });
             uploads.append(attachment);
             context.append(newInput);
             label.attr('for', 'attachment-input-' + counter);
