@@ -789,8 +789,14 @@ var CC = (function (CC, $) {
                 currentVersion = url.split('/')[3],
                 newURL = url.replace(currentVersion, newVersion),
                 updateVersion = function (data) {
-                    context.find('.versioned').replaceWith(data.html);
-                    context.find('#single-case-form').attr('action', url);
+                    if (data.html) {
+                        var newHTML = $(data.html).hide();
+                        context.find('.versioned').fadeOut('fast', function () {
+                            $(this).replaceWith(newHTML);
+                            newHTML.fadeIn('fast');
+                        });
+                        context.find('#single-case-form').attr('action', url);
+                    }
                 };
 
             if (newURL !== url) {
