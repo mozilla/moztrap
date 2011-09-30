@@ -611,6 +611,7 @@ def add_testcase(request):
 @never_cache
 @login_redirect
 @dec.finder(ManageFinder)
+@dec.ajax("manage/product/testcase/_case_form_edit_versioned_fields.html")
 def edit_testcase(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
     form = TestCaseForm(
