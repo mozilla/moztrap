@@ -244,6 +244,12 @@ class Link(remoteobjects.fields.Link):
 
 
 
+class ReadOnlyLink(Link):
+    def __set__(self, instance, value):
+        raise AttributeError("Cannot set read-only property %r" % self.attrname)
+
+
+
 class List(remoteobjects.fields.List):
     def decode(self, value):
         try:

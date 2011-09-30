@@ -25,7 +25,7 @@ class TestCase(Named, RemoteObject):
     testCycle = fields.Locator("TestCycle")
 
     tags = fields.Link(TagList)
-    attachments = fields.Link(AttachmentList)
+    attachments = fields.ReadOnlyLink(AttachmentList)
     versions = fields.Link("TestCaseVersionList")
     latestversion = fields.Link("TestCaseVersion")
 
