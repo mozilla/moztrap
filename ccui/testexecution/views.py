@@ -107,7 +107,7 @@ def result(request, result_id):
     # once that's fixed, use "bugs" for existing as well as "related_bug" new
     if "related_bug" in request.POST:
         bug = ExternalBug(
-            url=request.POST["relatedbug"], externalIdentifier="1")
+            url=request.POST["related_bug"], externalIdentifier="1")
         result.relatedbugs.post(bug)
 
     return render_to_response(
