@@ -27,7 +27,7 @@ from ..users.decorators import login_redirect
 from ..users.filters import TeamFieldFilter
 from ..users.models import UserList, RoleList
 
-from .decorators import environment_actions
+from .decorators import environment_actions, tag_actions
 from .finder import ManageFinder
 from .forms import (
     ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
@@ -112,6 +112,7 @@ def edit_user(request, user_id):
 
 
 @login_redirect
+@tag_actions()
 @dec.actions(TagList, ["delete"])
 @dec.filter("tags",
             ("tag", KeywordFilter),
@@ -128,52 +129,6 @@ def tags(request):
             }
         )
 
-
-
-@login_redirect
-def add_tag(request):
-    form = TagForm(
-        request.POST or None,
-        company=request.company,
-        auth=request.auth)
-    if request.method == "POST" and form.is_valid():
-        tag = form.save()
-        messages.success(
-            request,
-            "The tag '%s' has been created."  % tag.tag)
-        return redirect("manage_tags")
-    return TemplateResponse(
-        request,
-        "manage/tag/add_tag.html",
-        {"form": form}
-        )
-
-
-
-@never_cache
-@login_redirect
-def edit_tag(request, tag_id):
-    tag = TagList.get_by_id(tag_id, auth=request.auth)
-    form = TagForm(
-        request.POST or None,
-        instance=tag,
-        company=request.company,
-        auth=request.auth)
-    if request.method == "POST" and form.is_valid():
-        tag = form.save()
-        messages.success(
-            request,
-            "The tag '%s' has been saved."  % tag.tag)
-        return redirect("manage_tags")
-
-    return TemplateResponse(
-        request,
-        "manage/tag/edit_tag.html",
-        {
-            "form": form,
-            "tag": tag,
-            }
-        )
 
 
 @login_redirect

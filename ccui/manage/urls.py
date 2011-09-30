@@ -62,8 +62,6 @@ urlpatterns = patterns(
 
     # tags
     url(r"^tags/$", "tags", name="manage_tags"),
-    url(r"^tags/add/$", "add_tag", name="manage_tag_add"),
-    url(r"^tags/edit/(?P<tag_id>\d+)/$", "edit_tag", name="manage_tag_edit"),
     url(r"^tags/_autocomplete/", "tags_autocomplete", name="manage_tags_autocomplete"),
 
 )

@@ -1,8 +1,8 @@
 <article id="tag-id-{{ id }}" class="item vcard edit">
   <form method="POST" id="edit-tag-form" class="tag">
     <label for="edit_tag_{{ id }}">edit tag</label>
-    <input type="text" name="edit_tag_{{ id }}" value="{{ name }}" id="edit_tag_{{ id }}">
-    <button type="submit" name="edit-tag" id="edit-tag" value="1" class="action-save-tag">save tag</button>
+    <input type="text" name="tag" value="{{ name }}" id="edit_tag_{{ id }}">
+    <button type="submit" name="edit-tag" id="edit-tag" value="{{ id }}" class="action-save-tag">save tag</button>
   </form>
   <div class="controls">
     <a href="#" title="cancel">cancel</a>

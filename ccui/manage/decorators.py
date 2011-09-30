@@ -10,6 +10,7 @@ from ..core import errors
 from ..core.util import get_action
 from ..environments.models import (
     EnvironmentType, EnvironmentTypeList, EnvironmentList, Environment)
+from ..tags.models import Tag, TagList
 
 
 
@@ -132,6 +133,53 @@ def environment_actions():
 
                 return HttpResponse(
                     json.dumps(data), content_type="application/json")
+
+            return view_func(request, *args, **kwargs)
+
+        return _wrapped_view
+
+    return decorator
+
+
+
+def tag_actions():
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if request.is_ajax() and request.method == "POST":
+                action_taken = False
+                if "add-tag" in request.POST:
+                    action_taken = True
+                    new_tag_name = request.POST.get("tag")
+                    if not new_tag_name:
+                        messages.error(
+                            request, "Please enter a tag name.")
+                    else:
+                        try:
+                            tag = Tag(
+                                tag=new_tag_name,
+                                company=request.company)
+                            TagList.get(auth=request.auth).post(tag)
+                        except Tag.Conflict as e:
+                            if e.response_error == "duplicate.name":
+                                messages.error(
+                                    request,
+                                    "A tag with that name already exists.")
+                elif "edit-tag" in request.POST:
+                    action_taken = True
+                    tag_id = request.POST.get("edit-tag")
+                    new_name = request.POST.get("tag")
+                    if not new_name:
+                        messages.error(
+                            request, "Please enter a tag name.")
+                    else:
+                        tag = TagList.get_by_id(tag_id, auth=request.auth)
+                        tag.tag = new_name
+                        tag.put()
+
+                if action_taken:
+                    request.method = "GET"
+                    request.POST = {}
 
             return view_func(request, *args, **kwargs)
 
