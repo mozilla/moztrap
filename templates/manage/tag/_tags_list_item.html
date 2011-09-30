@@ -1,9 +1,7 @@
-<article id="tag-id-{{ tag.id }}" class="item vcard">
-  <h3 class="tag">
-    {{ tag.tag }}
-  </h3>
+<article id="tag-id-{{ tag.id }}" class="item vcard" data-id="{{ tag.id }}">
+  <h3 class="tag">{{ tag.tag }}</h3>
   <div class="controls">
-    <a href="{% url manage_tag_edit tag_id=tag.id %}" title="edit">edit</a>
+    <a href="#" title="edit">edit</a>
     <form method="POST">
       {% csrf_token %}
       <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
