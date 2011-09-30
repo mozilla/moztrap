@@ -1,5 +1,3 @@
-@import modules/slideshow
-
 /* Create --------------------------------------------------------------------
 
 .removefields
@@ -288,29 +286,6 @@
 #single-case-form, #bulk-case-form
   @extend .addform
   +leader
-
-.formoptions
-  +slideshow(".forms", "> form")
-
-.formtoggle
-  position: absolute
-  top: 0
-  right: 0
-  width: columns(6,24)
-  ul
-    +inline-block-list
-    text-align: right
-  a
-    #{$link}
-      +demi
-      +padding-leader(.125)
-      +padding-trailer(.125)
-      +hpadding(rhythm(.5))
-      +border-radius($smallem)
-      display: block
-      &.active
-        background: rgba($blue-dark,$xxsmall)
-        color: $base
 
 #single-case-form
   li

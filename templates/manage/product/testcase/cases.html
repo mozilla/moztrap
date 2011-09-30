@@ -10,7 +10,13 @@
 <section id="managecases">
   <h2>Manage Test Cases</h2>
   {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
-  <a href="{% url manage_testcase_add %}" class="create">create a test case</a>
+  <div class="create choice">
+    <p>create a test case</p>
+    <ul>
+      <li><a href="{% url manage_testcase_add %}" class="single">single (form)</a></li>
+      <li><a href="{% url manage_testcase_add_bulk %}" class="bulk">bulk (text)</a></li>
+    </ul>
+  </div>
   {% endif %}
 
   {% include "lists/_filter.html" %}

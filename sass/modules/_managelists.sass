@@ -8,12 +8,52 @@
     +float(right)
     +box-sizing(border-box)
     +button-color($green,'ui/plus.png')
+    position: relative
     padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
     max-width: columns(4,24)
     background:
       position: $smallpx, left
       repeat: no-repeat
     white-space: nowrap
+  .choice
+    +button-color($green,'ui/angle_down.png')
+    padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
+    background-position: $smallpx*1.5, left
+    p
+      +trailer(0)
+    ul
+      +no-style-list
+      +stretch-x
+      +opacity(0)
+      +transition(opacity 200ms)
+      +box-shadow(rgba($base,$xsmall) 0 2px 2px)
+      +border-bottom-radius
+      padding-top: 1px
+      top: 100%
+      z-index: -1
+      border: 1px solid $blue-dark
+        width: 0 1px 1px
+    a
+      +box-sizing(border-box)
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +text-icon('ui/plus.png',$blue-lighter)
+      +border-radius(0)
+      display: block
+      width: 100%
+      color: #111
+      &:hover, &:focus
+        background-color: $green-light
+      &:active
+        background-color: $green
+    li:last-child
+      a
+        +border-bottom-radius
+    &:hover
+      ul
+        +opacity(1)
+        z-index: 100
+
 
 /* Lists ---------------------------------------------------------------------
 

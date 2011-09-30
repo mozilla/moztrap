@@ -3,17 +3,5 @@
 {% block formtitle %}create a new test case{% endblock formtitle %}
 
 {% block caseforms %}
-  <div class="formoptions">
-    <nav class="formtoggle">
-      <h3 class="navhead">Form Toggle</h3>
-      <ul>
-        <li><a href="#single-case-form" class="active">Single</a></li>
-        <li><a href="#bulk-case-form">Bulk</a></li>
-      </ul>
-    </nav>
-    <div class="forms">
-      {% include "manage/product/testcase/_case_form_single.html" %}
-      {% include "manage/product/testcase/_case_form_bulk.html" %}
-    </div>
-  </div>
+  {% include "manage/product/testcase/_case_form_single.html" %}
 {% endblock caseforms %}

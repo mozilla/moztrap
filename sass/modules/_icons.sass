@@ -33,7 +33,7 @@
 
 =text-icon($img,$color:false,$hover:false,$button:false,$margin:false)
   +box-sizing('border-box')
-  padding: 0 .25em 0 $base-font-size*.75 + image-width($img)
+  +hpadding($base-font-size*.75 + image-width($img), .25em)
   border: 0
   background-repeat: no-repeat
   text-align: left
