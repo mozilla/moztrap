@@ -92,9 +92,9 @@
                     </li>
                     {# @@@ end if #}
                     <li class="fail-bug-new">
-                      <label for="related_bug">assign a new bug</label>
+                      <label for="related_bug-{{ result.id }}-{{ step.id }}">assign a new bug</label>
                       {# @@@ disabled by default when previously associated bugs #}
-                      <input type="url" name="related_bug" value="" id="related_bug" placeholder="optional URL of related bug" disabled>
+                      <input type="url" name="related_bug" value="" id="related_bug-{{ result.id }}-{{ step.id }}" placeholder="optional URL of related bug" disabled>
                     </li>
                   </ul>
                   <div class="form-actions">

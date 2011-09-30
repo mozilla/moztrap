@@ -82,6 +82,22 @@ var CC = (function (CC, $) {
         );
     };
 
+    CC.failedTestBug = function (container) {
+        var context = $(container);
+
+        context.delegate('.item .stepfail input[type="radio"][name="bugs"]', 'change', function () {
+            var thisList = $(this).closest('.stepfail'),
+                newBug = thisList.find('input[type="radio"].newbug'),
+                newBugInput = thisList.find('input[type="url"][name="related_bug"]');
+
+            if (newBug.is(':checked')) {
+                newBugInput.removeAttr('disabled');
+            } else {
+                newBugInput.attr('disabled', true);
+            }
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));

@@ -112,6 +112,7 @@ var CC = (function (CC, $) {
         CC.autoFocus('.details.testinvalid > .summary');
         CC.testCaseButtons("#run .item");
         CC.breadcrumb('.selectruns');
+        CC.failedTestBug('#run');
     });
 
     $(window).load(function () {
