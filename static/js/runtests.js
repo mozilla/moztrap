@@ -47,7 +47,7 @@ var CC = (function (CC, $) {
                     testcase = button.closest(".item"),
                     container = button.closest("div.form"),
                     data = { action: button.data("action") },
-                    inputs = container.find("input"),
+                    inputs = container.find("input").not(':disabled, :radio:not(:checked)'),
                     post = true;
                 testcase.loadingOverlay();
                 container.find("textarea").add(inputs).each(function () {
