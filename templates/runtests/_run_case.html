@@ -76,17 +76,17 @@
                       <p>assign a bug to this result:</p>
                       <ul class="radio-bugs">
                         <li class="bug">
-                          <input type="radio" name="bugs" value="1" id="bug1-{{ step.id }}" />
-                          <label for="bug1-{{ step.id }}">bug option 1</label>
+                          <input type="radio" name="bugs" value="1" id="bug-{{ result.id }}-{{ step.id }}-1" />
+                          <label for="bug-{{ result.id }}-{{ step.id }}-1">bug option 1</label>
                         </li>
                         <li class="bug">
-                          <input type="radio" name="bugs" value="2" id="bug2-{{ step.id }}" />
-                          <label for="bug2-{{ step.id }}">bug option 2</label>
+                          <input type="radio" name="bugs" value="2" id="bug-{{ result.id }}-{{ step.id }}-2" />
+                          <label for="bug-{{ result.id }}-{{ step.id }}-2">bug option 2</label>
                         </li>
                         <li class="bug">
                           {# @@@ selecting/deselecting this one toggles the disabled tag on #related_bug #}
-                          <input type="radio" name="bugs" value="3" id="bug3-{{ step.id }}" />
-                          <label for="bug3-{{ step.id }}">assign a new bug</label>
+                          <input type="radio" name="bugs" value="3" id="bug-{{ result.id }}-{{ step.id }}-new" class="newbug" />
+                          <label for="bug-{{ result.id }}-{{ step.id }}-new" class="newbug">assign a new bug</label>
                         </li>
                       </ul>
                     </li>

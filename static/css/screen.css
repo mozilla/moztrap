@@ -5841,9 +5841,15 @@ footer[role="contentinfo"] small {
   background-repeat: no-repeat;
   text-align: left;
   margin: 0;
-  background-image: url('../images/ui/bug_radio_empty.png?1317407365');
+  background-image: url('../images/ui/bug_radio_empty.png?1317407754');
   background-position: 0.375em;
   color: #528684;
+}
+.fail-bugs .bug label.newbug::after {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  content: url('../images/ui/angle_right.png?1314206098');
+  margin-left: 0.809em;
 }
 .fail-bugs .bug input {
   position: absolute;
@@ -5859,6 +5865,9 @@ footer[role="contentinfo"] small {
   font-weight: 500;
   background-image: url('../images/ui/bug.png?1317067321');
   color: #511214;
+}
+.fail-bugs .bug input:checked + label.newbug::after {
+  content: url('../images/ui/angle_down.png?1314206098');
 }
 
 .fail-bug-new {

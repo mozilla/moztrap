@@ -131,12 +131,18 @@
       +rhythm(0)
       +text-icon('ui/bug_radio_empty.png')
       color: $alt
+      &.newbug::after
+        +opacity(.5)
+        content: image-url('ui/angle_right.png')
+        margin-left: rhythm(.5)
     input
       +gone
       &:checked + label
         +demi
         background-image: image-url('ui/bug.png')
         color: $accent
+        &.newbug::after
+          content: image-url('ui/angle_down.png')
 
 .fail-bug-new
   +columns(14,17)
