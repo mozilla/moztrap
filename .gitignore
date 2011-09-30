@@ -2,5 +2,6 @@
 collected-assets/*
 ccui/settings/local.py
 coverage/*
+media/*
 .livereload
 *.pyc

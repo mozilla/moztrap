@@ -46,6 +46,10 @@ STATIC_ROOT = join(BASE_PATH, "collected-assets")
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = "/static/"
 
+MEDIA_ROOT = join(BASE_PATH, "media")
+
+MEDIA_URL = "/media/"
+
 # A list of locations of additional static files
 STATICFILES_DIRS = [join(BASE_PATH, "static")]
 
