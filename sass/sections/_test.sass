@@ -8,8 +8,15 @@
     +columns(3,24)
   .title, .bytitle
     +columns(13,24)
+  .action-restart
+    +columns(3,24)
+    +button-color($red-dark,'ui/refresh.png')
+    +text-shadow($base 0 1px 0)
+    +demi
+    color: $red-lighter
   .byinvalid
     +columns(6,24)
+  .action-restart, .byinvalid
     +omega(24)
   .files
     +leader(.5)

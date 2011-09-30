@@ -21,6 +21,9 @@
           {% endif %}
         </div>
         <h3 class="title">{{ case.name }}</h3>
+        {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
+          <button class="action-restart">restart test</button>
+        {% endif %}
       </header>
 
       <div>
