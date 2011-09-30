@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
@@ -5,6 +6,7 @@ from django.views.decorators.http import require_POST
 
 from ..core import decorators as dec
 from ..static.status import TestRunStatus, TestCycleStatus
+from ..testexecution.models import TestRunIncludedTestCaseList
 from ..users.decorators import login_redirect
 
 from .finder import RunTestsFinder
@@ -38,6 +40,7 @@ def finder_environments(request, run_id):
 @never_cache
 @login_redirect
 @dec.finder(RunTestsFinder)
+@dec.paginate("cases")
 def runtests(request, testrun_id):
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
@@ -59,6 +62,8 @@ def runtests(request, testrun_id):
         {"product": product,
          "cycle": cycle,
          "testrun": testrun,
+         "cases": TestRunIncludedTestCaseList.get(auth=request.auth).filter(
+                testRun=testrun),
          "finder": {
                 "cycles": cycles,
                 "runs": runs,
@@ -71,7 +76,7 @@ ACTIONS = {
     "start": [],
     "finishsucceed": [],
     "finishinvalidate": ["comment"],
-    "finishfail": ["failedStepNumber", "actualResult"],
+    "finishfail": ["failedStepNumber", "actualResult", "related_bug"],
     }
 
 

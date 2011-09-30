@@ -1,10 +1,6 @@
 {% extends 'runtests/base.html' %}
 {% load execution environment sort icanhaz %}
 
-{% block page-notes %}
-  <p>attached files and bug URLs are wireframed</p>
-{% endblock %}
-
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
 <li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
@@ -58,7 +54,7 @@
       </nav>
 
       <div class="items">
-        {% for includedtestcase in testrun.includedtestcases %}
+        {% for includedtestcase in cases %}
           {% run_case includedtestcase request.user request.environments %}
         {% empty %}
           <p class="empty">There are currently no items in this list...</p>
