@@ -12,7 +12,7 @@
     </ul>
 
     {% include "manage/product/testcase/_tagging.html" with formtype="single" %}
-    {% include "manage/product/_attachments.html" %}
+    {% include "manage/product/_attachments.html" with obj=case %}
 
     <div class="version-select">
       {% include "forms/_field.html" with field=single_form.version label="Edit Version" %}

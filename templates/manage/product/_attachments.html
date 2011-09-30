@@ -5,16 +5,16 @@
   {% icanhaz "case_attachment_input" %}
   {% icanhaz "case_attachment_remove" %}
   <ul class="uploads">
-    <li data-id="3">
+    {% if obj %}
+    {% for attachment in obj.attachments %}
+    <li data-id="{{ attachment.id }}">
       <button class="action-remove" title="remove attachment">remove attachment</button>
-      file_1.png
+      <a href="{{ attachment.url }}">{{ attachment.description }}</a>
     </li>
-    <li data-id="5">
-      <button class="action-remove" title="remove attachment">remove attachment</button>
-      file_2.png
-    </li>
+    {% endfor %}
+    {% endif %}
   </ul>
   <label for="attachment-input-1" class="upload">add an attachment</label>
-  <p class="helper">any file type, up to 10GB.</p>
+  {# <p class="helper">any file type, up to 10GB.</p> #}
   <input type="file" name="attachment" id="attachment-input-1">
 </div>

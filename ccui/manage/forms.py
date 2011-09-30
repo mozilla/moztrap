@@ -1,10 +1,12 @@
 from django.core.exceptions import ValidationError
+from django.core.files.storage import default_storage
 
 import floppyforms as forms
 
+from ..attachments.models import Attachment
 from ..core import forms as ccforms
-
 from ..products.models import Product, ProductList
+from ..static.status import AttachmentType
 from ..tags.models import Tag, TagList
 from ..testcases import increment
 from ..testcases.bulk import BulkParser
@@ -276,6 +278,7 @@ class TestCaseForm(ccforms.AddEditForm):
     entryclass = TestCaseVersion
     listclass = TestCaseList
     extra_creation_data = {
+        # @@@ these attachment-related attributes are non-functional
         "maxAttachmentSizeInMbytes": 0,
         "maxNumberOfAttachments": 0,
         "automationUri": "",
@@ -315,6 +318,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def _save_tags(self):
+        # @@@ convert into proper form field with widget?
         tag_ids = self.data.getlist("tag")
         new_tags = self.data.getlist("newtag")
 
@@ -327,6 +331,41 @@ class TestCaseForm(ccforms.AddEditForm):
         self.instance.tags = tag_ids
 
 
+    def _save_attachments(self):
+        # @@@ convert into proper form field with widget?
+        delete_ids = set(self.data.getlist("remove-attachment"))
+        for attachment in self.instance.attachments:
+            if attachment.id in delete_ids:
+                attachment.delete()
+
+        if not self.files:
+            return
+        for uf in self.files.getlist("attachment"):
+            try:
+                file_name = uf.name
+                file_size = uf.size
+            except AttributeError:
+                continue
+
+            if not file_name or not file_size:
+                continue
+
+            storage_name = default_storage.get_available_name(
+                default_storage.get_valid_name(file_name))
+
+            default_storage.save(storage_name, uf)
+
+            attachment = Attachment(
+                name=storage_name,
+                description=file_name,
+                url=default_storage.url(storage_name),
+                size=file_size,
+                attachmentType=AttachmentType.UNSPECIFIED
+                )
+
+            self.instance.attachments.post(attachment)
+
+
     def clean(self):
         # If the formset is not valid, we don't want to actually try saving the
         # testcase.
@@ -335,6 +374,7 @@ class TestCaseForm(ccforms.AddEditForm):
         ret = super(TestCaseForm, self).clean()
 
         self._save_tags()
+        self._save_attachments()
 
         return ret
 

@@ -579,6 +579,7 @@ def add_testcase(request):
         else:
             single_form = TestCaseForm(
                 request.POST,
+                request.FILES,
                 product_choices=ProductList.ours(auth=request.auth),
                 auth=request.auth)
             if single_form.is_valid():
@@ -616,6 +617,7 @@ def edit_testcase(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
     form = TestCaseForm(
         request.POST or None,
+        request.FILES or None,
         instance=case,
         product_choices=[case.product],
         auth=request.auth)
