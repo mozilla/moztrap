@@ -1,22 +1,17 @@
 <div class="tagging">
   <div class="textual">
     <label for="{{ formtype }}-text-tag">tags</label>
-    {# @@@ data-autocomplete-url should be updated #}
-    <input type="text" name="text-tag" value="" id="{{ formtype }}-text-tag" placeholder="tag this test case." autocomplete="off" data-autocomplete-url="/manage/testcase/tags">
+    <input type="text" name="text-tag" value="" id="{{ formtype }}-text-tag" placeholder="tag this test case." autocomplete="off" data-autocomplete-url="{% url manage_tags_autocomplete %}">
     <ul class="suggest">
     </ul>
   </div>
 
   <ul class="visual">
-    {# @@@ remove mocked-in tags #}
-    {% include "manage/product/testcase/_tag_visual.html" with name="this tag" counter="1" selected="true" %}
-    {% include "manage/product/testcase/_tag_visual.html" with name="that tag" counter="2" selected="true" %}
-    {% include "manage/product/testcase/_tag_visual.html" with name="another one" counter="3" selected="true" %}
-    {% include "manage/product/testcase/_tag_visual.html" with name="and another" counter="4" selected="true" %}
-    {% include "manage/product/testcase/_tag_visual.html" with name="final tag" counter="5" selected="true" %}
+    {% if case %}
+    {% for tag in case.tags %}
+    {% include "manage/product/testcase/_tag_visual.html" %}
+    {% endfor %}
+    {% endif %}
   </ul>
 
-  {% comment %} @@@
-    {% include "forms/_field.html" with field=single_form.tags %}
-  {% endcomment %}
 </div>

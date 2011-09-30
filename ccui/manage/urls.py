@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import direct_to_template
 
 
 urlpatterns = patterns(
@@ -64,5 +63,6 @@ urlpatterns = patterns(
     url(r"^tags/$", "tags", name="manage_tags"),
     url(r"^tags/add/$", "add_tag", name="manage_tag_add"),
     url(r"^tags/edit/(?P<tag_id>\d+)/$", "edit_tag", name="manage_tag_edit"),
+    url(r"^tags/_autocomplete/", "tags_autocomplete", name="manage_tags_autocomplete"),
 
 )

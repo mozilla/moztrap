@@ -1,6 +1,7 @@
 from mock import patch
 
 from ..products.builders import products
+from ..tags.builders import tags
 from ..testcases.builders import (
     testsuites, testsuiteincludedtestcases, testcases, testcaseversions,
     testcasesteps)
@@ -225,7 +226,9 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             "http://fake.base/rest/testcases/1/versions?_type=json":
-                response(testcaseversions.array({}))
+                response(testcaseversions.array({})),
+            "http://fake.base/rest/testcases/1/tags?_type=json":
+                response(tags.array({}))
             }
 
 

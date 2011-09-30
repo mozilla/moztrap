@@ -270,7 +270,6 @@ class TestCaseForm(ccforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField()
     product = ccforms.ModelChoiceField()
-    # @@@ tags = forms.CharField(required=False)
 
 
     no_edit_fields = ["product"]
@@ -315,12 +314,20 @@ class TestCaseForm(ccforms.AddEditForm):
         return False
 
 
+    def _save_tags(self):
+        pass
+
+
     def clean(self):
         # If the formset is not valid, we don't want to actually try saving the
         # testcase.
         if not getattr(self, "steps_formset_clear", False):
             return self.cleaned_data
-        return super(TestCaseForm, self).clean()
+        ret = super(TestCaseForm, self).clean()
+
+        self._save_tags()
+
+        return ret
 
 
     def edit_clean(self):
@@ -340,12 +347,13 @@ class TestCaseForm(ccforms.AddEditForm):
 
         # Name field can't be edited via TestCaseVersion, so we do it via the
         # TestCase proper
-        tc = TestCaseList.get_by_id(self.instance.testCaseId, auth=self.auth)
-        tc.name = self.instance.name = self.cleaned_data["name"]
-        try:
-            tc.put()
-        except self.instance.Conflict, e:
-            self.handle_error(self.instance, e)
+        if self.cleaned_data["name"] != self.instance.name:
+            tc = self.instance.testCase
+            tc.name = self.instance.name = self.cleaned_data["name"]
+            try:
+                tc.put()
+            except self.instance.Conflict, e:
+                self.handle_error(self.instance, e)
 
         return self.cleaned_data
 

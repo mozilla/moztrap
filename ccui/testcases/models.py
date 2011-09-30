@@ -22,6 +22,7 @@ class TestCase(Named, RemoteObject):
     company = fields.Locator(Company)
     testCycle = fields.Locator("TestCycle")
 
+    tags = fields.Link("TagList")
     versions = fields.Link("TestCaseVersionList")
     latestversion = fields.Link("TestCaseVersion")
 
@@ -102,6 +103,25 @@ class TestCaseVersion(Activatable, TestCase):
             self.majorVersion,
             self.latestVersion and "latest" or "obsolete",
             )
+
+
+    @property
+    def testCase(self):
+        return TestCaseList.get_by_id(self.testCaseId, auth=self.auth)
+
+
+    # @@@ https://bugzilla.mozilla.org//show_bug.cgi?id=690472
+    # when that's fixed, remove this tags property and move tags Link from
+    # TestCase to TestCaseVersion
+    def _get_tags(self):
+        return self.testCase.tags
+
+
+    def _set_tags(self, v):
+        self.testCase.tags = v
+
+
+    tags = property(_get_tags, _set_tags)
 
 
     def approve(self, **kwargs):

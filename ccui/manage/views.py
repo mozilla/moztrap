@@ -637,6 +637,33 @@ def edit_testcase(request, case_id):
 
 
 
+def tags_autocomplete(request):
+    text = request.GET.get("text")
+    tags = TagList.get(auth=request.auth).filter(tag="%" + text + "%")
+    suggestions = []
+    for tag in tags:
+        # can't just use split due to case; we match "text" insensitively, but
+        # want pre and post to be case-accurate
+        start = tag.tag.lower().index(text.lower())
+        pre = tag.tag[:start]
+        post = tag.tag[start+len(text):]
+        suggestions.append({
+                "preText": pre,
+                "typedText": text,
+                "postText": post,
+                "id": tag.id,
+                "name": tag.tag,
+                })
+    return HttpResponse(
+        json.dumps(
+            {
+                "suggestions": suggestions
+                }
+            ),
+        content_type="application/json",
+        )
+
+
 @login_redirect
 def testcase_details(request, case_id):
     case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)

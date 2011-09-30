@@ -1,4 +1,4 @@
 <li>
-  <input type="checkbox" name="tag" value="{{ counter }}" id="id-tag-{{ formtype }}-{{ counter }}"{% if selected %} checked{% endif %}>
-  <label for="id-tag-{{ formtype }}-{{ counter }}">{{ name }}</label>
+  <input type="checkbox" name="tag" value="{{ tag.id }}" id="id-tag-{{ formtype }}-{{ tag.id }}" checked>
+  <label for="id-tag-{{ formtype }}-{{ tag.id }}">{{ tag.tag }}</label>
 </li>
