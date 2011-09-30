@@ -47,7 +47,7 @@ var CC = (function (CC, $) {
                     testcase = button.closest(".item"),
                     container = button.closest("div.form"),
                     data = { action: button.data("action") },
-                    inputs = container.find("input").not(':disabled, :radio:not(:checked)'),
+                    inputs = container.find("input").not(':disabled, :radio:not(:checked), .newbug:radio'),
                     post = true;
                 testcase.loadingOverlay();
                 container.find("textarea").add(inputs).each(function () {
@@ -55,10 +55,12 @@ var CC = (function (CC, $) {
                     if (val) {
                         data[$(this).attr("name")] = val;
                     } else {
-                        $(this).siblings("ul.errorlist").remove();
-                        $(this).before(ich.runtests_form_error());
-                        testcase.loadingOverlay('remove');
-                        post = false;
+                        if (!$(this).is('input[name="related_bug"]')) {
+                            $(this).siblings("ul.errorlist").remove();
+                            $(this).before(ich.runtests_form_error());
+                            testcase.loadingOverlay('remove');
+                            post = false;
+                        }
                     }
                 });
                 if (post) {
