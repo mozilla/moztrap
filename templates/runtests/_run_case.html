@@ -85,7 +85,7 @@
                         </li>
                         {% endfor %}
                         <li class="bug">
-                          <input type="radio" name="bugs" value="X" id="bug-{{ result.id }}-{{ step.id }}-new" class="newbug" />
+                          <input type="radio" name="bugs" value="" id="bug-{{ result.id }}-{{ step.id }}-new" class="newbug" />
                           <label for="bug-{{ result.id }}-{{ step.id }}-new" class="newbug">assign a new bug</label>
                         </li>
                       </ul>
@@ -93,7 +93,7 @@
                     {% endif %}
                     <li class="fail-bug-new">
                       <label for="related_bug-{{ result.id }}-{{ step.id }}">assign a new bug</label>
-                      <input type="url" name="related_bug" value="" id="related_bug-{{ result.id }}-{{ step.id }}" placeholder="URL of related bug"{% if result.testCase.relatedbugs %} disabled{% endif %}>
+                      <input type="url" name="related_bug" value="" id="related_bug-{{ result.id }}-{{ step.id }}" placeholder="optional URL of related bug"{% if result.testCase.relatedbugs %} disabled{% endif %}>
                     </li>
                   </ul>
                   <div class="form-actions">
