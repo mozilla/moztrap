@@ -324,7 +324,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
         tl = TagList.get(auth=self.auth)
         for name in new_tags:
-            t = Tag(tag=name)
+            t = Tag(tag=name, company=self.instance.company)
             tl.post(t)
             tag_ids.append(t.id)
 
