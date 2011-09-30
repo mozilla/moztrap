@@ -315,7 +315,16 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def _save_tags(self):
-        pass
+        tag_ids = self.data.getlist("tag")
+        new_tags = self.data.getlist("newtag")
+
+        tl = TagList.get(auth=self.auth)
+        for name in new_tags:
+            t = Tag(tag=name)
+            tl.post(t)
+            tag_ids.append(t.id)
+
+        self.instance.tags = tag_ids
 
 
     def clean(self):
