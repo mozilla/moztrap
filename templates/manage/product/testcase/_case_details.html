@@ -12,12 +12,12 @@
   on <time pubdate>{{ case.timeline.createDate|date }}</time>
 </p>
 
-{# @@@ wireframed #}
 <aside class="files">
   <h4>attached files</h4>
   <ul class="files-list">
-    <li class="file"><a href="#">file 01</a></li>
-    <li class="file"><a href="#">file 02</a></li>
+    {% for attachment in case.attachments %}
+    <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
+    {% endfor %}
   </ul>
 </aside>
 

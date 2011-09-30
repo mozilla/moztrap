@@ -5,6 +5,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from ..core import decorators as dec
+from ..relatedbugs.models import ExternalBug
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..testexecution.models import TestRunIncludedTestCaseList
 from ..users.decorators import login_redirect
@@ -71,12 +72,11 @@ def runtests(request, testrun_id):
          })
 
 
-
 ACTIONS = {
     "start": [],
     "finishsucceed": [],
     "finishinvalidate": ["comment"],
-    "finishfail": ["failedStepNumber", "actualResult", "related_bug"],
+    "finishfail": ["failedStepNumber", "actualResult"],
     }
 
 
@@ -102,6 +102,13 @@ def result(request, result_id):
                 "Required parameter %s missing." % argname)
 
     getattr(result, action)(**kwargs)
+
+    # @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=690918
+    # once that's fixed, use "bugs" for existing as well as "related_bug" new
+    if "related_bug" in request.POST:
+        bug = ExternalBug(
+            url=request.POST["relatedbug"], externalIdentifier="1")
+        result.relatedbugs.post(bug)
 
     return render_to_response(
         "runtests/_run_case.html",
