@@ -8,10 +8,6 @@ var CC = (function (CC, $) {
 
     $(function () {
         // plugins
-        $('#addcase').slideshow({
-            slidesSelector: '.forms form[id$="-case-form"]',
-            slideLinksSelector: 'a[href^="#"][href$="-case-form"]'
-        });
         $('.details:not(html)').html5accordion();
         $('#messages').messages({
             handleAjax: true,
@@ -99,8 +95,7 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
         CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
-        CC.autoCompleteCaseTags('#addcase #single-case-form');
-        CC.autoCompleteCaseTags('#addcase #bulk-case-form');
+        CC.autoCompleteCaseTags('#addcase');
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
 

@@ -58,43 +58,4 @@
         equal(resize, 3, 'normal window.resize fired 3 times');
     });
 
-    module('slideshow');
-
-    test('basic functionality (slide 2)', function () {
-        expect(5);
-        stop();
-        $('#qunit-fixture #slideshow').slideshow({
-            slidesSelector: '.slide',
-            slideLinksSelector: 'a[href^="#slide"]',
-            callback: function () {
-                ok($('#slide1').is(':hidden'), 'slide 1 is hidden');
-                start();
-            }
-        });
-        $('#slideshow a[href="#slide2"]').click();
-        ok($('#slide2').is(':visible'), 'slide 2 is visible');
-        ok(!$('#slideshow a[href="#slide1"]').hasClass('active'), 'slide 1 link is not active');
-        ok($('#slideshow a[href="#slide2"]').hasClass('active'), 'slide 2 link is active');
-        ok($('#slideshow a:focus').length === 0, 'none of the slide links have focus');
-    });
-
-    test('hashtag (slide 1)', function () {
-        expect(5);
-        stop();
-        window.location.hash = '#slide1';
-        $('#qunit-fixture #slideshow').slideshow({
-            slidesSelector: '.slide',
-            slideLinksSelector: 'a[href^="#slide"]',
-            callback: function () {
-                ok($('#slide2').is(':hidden'), 'slide 2 is hidden');
-                start();
-            }
-        });
-        ok($('#slide1').is(':visible'), 'slide 1 is visible');
-        ok($('#slideshow a[href="#slide1"]').hasClass('active'), 'slide 1 link is active');
-        ok(!$('#slideshow a[href="#slide2"]').hasClass('active'), 'slide 2 link is not active');
-        ok($('#slideshow a:focus').length === 0, 'none of the slide links have focus');
-        window.location.hash = '';
-    });
-
 }(CC, jQuery));
