@@ -15,11 +15,10 @@
 =icon-replace($img,$color:false,$hover:true,$button:false)
   +box-sizing('content-box')
   +replace-text($img)
+  +hpadding(.125em)
   min-width: image-width($img)
   min-height: image-height($img)
   margin: 0
-  padding: 0 .125em
-  border: 0
   #{$focus}
     background-image: image-url($img)
   @if $color
@@ -34,7 +33,6 @@
 =text-icon($img,$color:false,$hover:false,$button:false,$margin:false)
   +box-sizing('border-box')
   +hpadding($base-font-size*.75 + image-width($img), .25em)
-  border: 0
   background-repeat: no-repeat
   text-align: left
   @if not $margin
