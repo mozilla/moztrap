@@ -1,72 +1,3 @@
-.leftcolumnpadding
-  +box-sizing('border-box')
-  padding-left: $smallem
-
-.preview
-  +ellipsis
-  +delimited-list(',')
-  +italic
-  color: rgba($blue-darker,$small)
-  ul
-    margin: 0
-    padding: 0
-
-  label
-    +font-weight-normal
-    &.checked
-      +demi
-      color: $blue-dark
-
-.editinline
-  position: relative
-  &:hover
-    .element-controls
-      display: block
-
-.element-select
-  +columns(9,10)
-
-.element-controls
-  +columns(1,10)
-  +omega(10)
-  display: none
-
-.footeradditem
-  +trailer
-  a, .summary
-    +border-radius
-    background: rgba($green,$xsmall) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
-    color: $base
-    #{$focus}
-      background-color: rgba($green,$small)
-
-.item.add-item
-  > a, > .summary
-    @extend .allcaps
-    +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xxxsmall),rgba($green-light,$xxxsmall),rgba($green-light,0)))
-    +demi
-    display: block
-    padding: rhythm(.25) rhythm(1.25)
-    color: $green-dark
-    #{$focus}
-      +background(image-url('ui/plus.png') no-repeat scroll rhythm(.125) rhythm(.375), linear-gradient(left,rgba($green-light,0),rgba($green-light,$xsmall),rgba($green-light,$xsmall),rgba($green-light,0)))
-
-.profile-name
-  +columns(12,24)
-  +trailer(0)
-  label
-    +columns(2,12)
-  input
-    +columns(10,12)
-    +omega(12)
-
-#profile-name-form
-  .form-actions
-    +columns(12,24)
-    +omega(24)
-    clear: none
-    text-align: left
-
 /* Manage Products --------------------------------------------------------------
 
 #manageproducts
@@ -287,3 +218,15 @@
       +omega(12)
       margin: 0
 
+  .add-tag-form
+    +padding-leader(.5)
+  .add-tag-field
+    +columns(9,24)
+    label
+      +gone
+  .form-actions
+    +columns(3,24)
+    padding: 0
+    clear: none
+    button
+      width: 100%

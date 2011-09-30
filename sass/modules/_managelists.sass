@@ -62,37 +62,6 @@
   +full(24)
   margin: 0
 
-  .item
-    +pie-clearfix
-    +padding-leader(.25)
-    +padding-trailer(.25)
-    clear: both
-    &.details
-      padding: 0
-      > .summary
-        #{$focus}
-          +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
-          outline: 0
-    &.open
-      > .summary
-        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
-
-  .summary, .content
-    +pie-clearfix
-    +padding-leader(.25)
-    +padding-trailer(.25)
-  .summary
-    label
-      padding: 0
-    p
-      margin-bottom: 0
-
-  .content
-    +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
-
-  .title, .run, .cycle, .product
-    +ellipsis
-
   .empty
     +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
     +padding-leader
@@ -135,7 +104,42 @@
       background-color: transparent
       margin: 0
 
+.footeradditem
+  +trailer
+  > a, > .summary
+    +border-radius
+
 .item
+  +pie-clearfix
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  clear: both
+  &.details
+    padding: 0
+    > .summary
+      #{$focus}
+        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
+        outline: 0
+  &.open
+    > .summary
+      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+
+  .summary, .content
+    +pie-clearfix
+    +padding-leader(.25)
+    +padding-trailer(.25)
+  .summary
+    label
+      padding: 0
+    p
+      margin-bottom: 0
+
+  .content
+    +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
+
+  .title, .run, .cycle, .product
+    +ellipsis
+
   .info
     +columns(6,24)
     +omega(24)
@@ -144,6 +148,19 @@
       margin: 0
     .description
       +italic
+
+  &.add-item
+    > a, > .summary
+      @extend .allcaps
+      +border-top-radius
+      +demi
+      display: block
+      padding: rhythm(.25) rhythm(1.25)
+      color: $base
+      background: rgba($green,$xsmall) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+      #{$focus}
+        background: rgba($green,$small) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+
 
 .status
   position: relative
@@ -374,3 +391,52 @@
   a
     &::before
       content: image-url('ui/clip.png')
+
+.leftcolumnpadding
+  +box-sizing('border-box')
+  padding-left: $smallem
+
+.preview
+  +ellipsis
+  +delimited-list(',')
+  +italic
+  color: rgba($blue-darker,$small)
+  ul
+    margin: 0
+    padding: 0
+
+  label
+    +font-weight-normal
+    &.checked
+      +demi
+      color: $blue-dark
+
+.editinline
+  position: relative
+  &:hover
+    .element-controls
+      display: block
+
+.element-select
+  +columns(9,10)
+
+.element-controls
+  +columns(1,10)
+  +omega(10)
+  display: none
+
+.profile-name
+  +columns(12,24)
+  +trailer(0)
+  label
+    +columns(2,12)
+  input
+    +columns(10,12)
+    +omega(12)
+
+#profile-name-form
+  .form-actions
+    +columns(12,24)
+    +omega(24)
+    clear: none
+    text-align: left
