@@ -1,6 +1,11 @@
 {% extends 'runtests/base.html' %}
 {% load execution environment sort icanhaz %}
 
+{% block page-notes %}
+<li>Associating a failed result with an already-existing external bug does not show up on the submitted result yet (<a href="https://bugzilla.mozilla.org//show_bug.cgi?id=690918">platform limitation</a>).</li>
+{{ block.super }}
+{% endblock %}
+
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
 <li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
