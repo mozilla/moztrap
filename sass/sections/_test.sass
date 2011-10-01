@@ -132,12 +132,14 @@
   p
     +demi
     +trailer(0)
+  .goto
+    +icon-replace('ui/arrow_right.png')
+    +inline-block
   .bug
     label
       +font-weight-normal
       +rhythm(0)
       +text-icon('ui/bug_radio_empty.png')
-      color: $alt
       &.newbug::after
         +opacity(.5)
         content: image-url('ui/angle_right.png')

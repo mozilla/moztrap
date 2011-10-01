@@ -5918,6 +5918,40 @@ footer[role="contentinfo"] small {
   font-weight: 500;
   margin-bottom: 0em;
 }
+.fail-bugs .goto {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/arrow_right.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 0.125em;
+  padding-right: 0.125em;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+}
+.fail-bugs .goto:focus, .fail-bugs .goto:hover, .fail-bugs .goto:active {
+  background-image: url('../images/ui/arrow_right.png?1314206098');
+}
+.fail-bugs .goto:focus, .fail-bugs .goto:hover, .fail-bugs .goto:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.fail-bugs .goto {
+  *display: inline;
+}
 .fail-bugs .bug label {
   font-weight: normal;
   margin-top: 0em;
@@ -5935,7 +5969,6 @@ footer[role="contentinfo"] small {
   margin: 0;
   background-image: url('../images/ui/bug_radio_empty.png?1317407754');
   background-position: 0.375em;
-  color: #528684;
 }
 .fail-bugs .bug label.newbug::after {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);

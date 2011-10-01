@@ -81,7 +81,8 @@
                         {% for bug in result.testCase.relatedbugs %}
                         <li class="bug">
                           <input type="radio" name="bugs" value="{{ bug.id }}" id="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}" />
-                          <label for="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}"><a href="{{ bug.url }}">{{ bug.url }}</a></label>
+                          <label for="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}">{{ bug.url }}</label>
+                          <a href="{{ bug.url }}" class="goto" title="go to bug">(go to bug)</a>
                         </li>
                         {% endfor %}
                         <li class="bug">
