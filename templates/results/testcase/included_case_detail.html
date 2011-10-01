@@ -14,14 +14,21 @@
     </div>
     <div class="content">
 
-      <aside class="files">
-        <h4>attached files</h4>
+    {% if includedcase.testCaseVersion.attachments or includedcase.testCaseVersion.relatedbugs %}
+      <aside class="associated">
+        <h4>attached files and bugs</h4>
         <ul class="files-list">
           {% for attachment in includedcase.testCaseVersion.attachments %}
           <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
           {% endfor %}
         </ul>
+        <ul class="bugs-list">
+          {% for bug in includedcase.testCaseVersion.relatedbugs %}
+          <li class="bugurl"><a href="{{ bug.url }}">{{ bug.url }}</a></li>
+          {% endfor %}
+        </ul>
       </aside>
+    {% endif %}
 
       <ol class="steps">
         {% for step in includedcase.testCaseVersion.steps %}

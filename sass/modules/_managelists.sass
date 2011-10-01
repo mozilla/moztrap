@@ -380,17 +380,23 @@
     #{$focus}
       color: $red-dark
 
-.files
+.associated
   +columns(4,24)
   +omega(24)
   text-align: right
   h4
     +gone
-  .files-list
+  .files-list, .bugs-list
     +no-style-list
+
+.bugurl
   a
-    &::before
-      content: image-url('ui/clip.png')
+    #{$link}
+      +text-icon('ui/bug.png')
+.file
+  a
+    #{$link}
+      +text-icon('ui/clip.png')
 
 .leftcolumnpadding
   +box-sizing('border-box')

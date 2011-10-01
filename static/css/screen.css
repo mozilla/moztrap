@@ -3776,7 +3776,7 @@ footer[role="contentinfo"] small {
   color: #511214;
 }
 
-.files {
+.associated {
   display: inline;
   float: left;
   width: 15.789%;
@@ -3786,7 +3786,7 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   text-align: right;
 }
-.files h4 {
+.associated h4 {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -3796,19 +3796,44 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-.files .files-list {
+.associated .files-list, .associated .bugs-list {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.files .files-list li {
+.associated .files-list li, .associated .bugs-list li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.files a::before {
-  content: url('../images/ui/clip.png?1317059132');
+
+.bugurl a:link, .bugurl a:visited {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 24.5px;
+  padding-right: 0.25em;
+  background-repeat: no-repeat;
+  text-align: left;
+  margin: 0;
+  background-image: url('../images/ui/bug.png?1317067321');
+  background-position: 0.375em;
+}
+
+.file a:link, .file a:visited {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding-left: 24.5px;
+  padding-right: 0.25em;
+  background-repeat: no-repeat;
+  text-align: left;
+  margin: 0;
+  background-image: url('../images/ui/clip.png?1317059132');
+  background-position: 0.375em;
 }
 
 .leftcolumnpadding, #manageproducts .title, #manageprofiles .title {
@@ -5513,7 +5538,7 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-#run .files {
+#run .associated {
   margin-top: 0.809em;
 }
 #run .item {
@@ -5960,20 +5985,6 @@ footer[role="contentinfo"] small {
   -webkit-transition: opacity 200ms;
   -o-transition: opacity 200ms;
   transition: opacity 200ms;
-}
-
-.bugurl a:link, .bugurl a:visited {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-left: 24.5px;
-  padding-right: 0.25em;
-  background-repeat: no-repeat;
-  text-align: left;
-  margin: 0;
-  background-image: url('../images/ui/bug.png?1317067321');
-  background-position: 0.375em;
 }
 
 /* Results ------------------------------------------------------------------- */
@@ -6803,13 +6814,13 @@ footer[role="contentinfo"] small {
   margin-right: 1.149%;
   margin-left: 9.195%;
 }
-.case-details .files {
+.case-details .associated {
   display: inline;
   float: left;
   width: 17.241%;
   margin-right: 1.149%;
 }
-.case-details .results, .case-details .files {
+.case-details .results, .case-details .associated {
   display: inline;
   float: right;
   margin-right: 0;

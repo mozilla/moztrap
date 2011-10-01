@@ -11,14 +11,25 @@
   See related <a href="{% url results_testcase_detail itc.id %}" title="test results related to {{ itc.testCase.name }}">test results</a>.
 </p>
 
-<aside class="files">
-  <h4>attached files</h4>
-  <ul class="files-list">
-    {% for attachment in includedcase.testCaseVersion.attachments %}
-    <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
-    {% endfor %}
-  </ul>
-</aside>
+{% if itc.testCaseVersion.attachments or itc.testCaseVersion.relatedbugs %}
+  <aside class="associated">
+    <h4>attached files and bugs</h4>
+    {% if itc.testCaseVersion.attachments %}
+      <ul class="files-list">
+        {% for attachment in itc.testCaseVersion.attachments %}
+        <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if itc.testCaseVersion.relatedbugs %}
+      <ul class="bugs-list">
+        {% for bug in itc.testCaseVersion.relatedbugs %}
+        <li class="bugurl"><a href="{{ bug.url }}">{{ bug.url }}</a></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </aside>
+{% endif %}
 
 <section class="envgroups">
 {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
