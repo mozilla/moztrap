@@ -2,7 +2,7 @@
 
 {% block env-select %}
   <span class="bulk">
-    <input type="checkbox" name="bulk-select" value="{{ env.id }}" id="{{ env.id }}-bulk-select">
+    <input type="checkbox" name="bulk-select" value="{{ env.id }}" id="{{ env.id }}-bulk-select" checked>
     <label for="{{ env.id }}-bulk-select">{{ env.name }} bulk select</label>
   </span>
 {% endblock %}
