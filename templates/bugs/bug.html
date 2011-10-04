@@ -1,0 +1,5 @@
+{% if bug.is_url %}
+<a href="{{ bug.url }}">{{ bug.url }}</a>
+{% else %}
+{{ bug.url }}
+{% endif %}

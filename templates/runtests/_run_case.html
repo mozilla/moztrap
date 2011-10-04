@@ -82,7 +82,9 @@
                         <li class="bug">
                           <input type="radio" name="bugs" value="{{ bug.id }}" id="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}" />
                           <label for="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}">{{ bug.url }}</label>
+                          {% if bug.is_url %}
                           <a href="{{ bug.url }}" class="goto" title="go to bug">(go to bug)</a>
+                          {% endif %}
                         </li>
                         {% endfor %}
                         <li class="bug">
@@ -109,7 +111,9 @@
                 <div class="faildesc fail-detail">
                   <p>{{ result.actualResult }}</p>
                   {% for bug in result.relatedbugs %}
-                  <p class="bugurl"><a href="{{ bug.url }}">{{ bug.url }}</a></p>
+                  <p class="bugurl">
+                    {% include "bugs/bug.html" %}
+                  </p>
                   {% endfor %}
                 </div>
               </div>

@@ -11,6 +11,11 @@ class ExternalBug(RemoteObject):
         return self.url
 
 
+    @property
+    def is_url(self):
+        return "://" in self.url
+
+
 
 class ExternalBugList(ListObject):
     entryclass = ExternalBug

@@ -24,7 +24,7 @@
         </ul>
         <ul class="bugs-list">
           {% for bug in includedcase.testCaseVersion.relatedbugs %}
-          <li class="bugurl"><a href="{{ bug.url }}">{{ bug.url }}</a></li>
+          <li class="bugurl">{% include "bugs/bug.html" %}</li>
           {% endfor %}
         </ul>
       </aside>
