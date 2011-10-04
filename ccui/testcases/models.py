@@ -25,8 +25,6 @@ class TestCase(Named, RemoteObject):
     company = fields.Locator(Company)
     testCycle = fields.Locator("TestCycle")
 
-    tags = fields.Link(TagList)
-    attachments = fields.ReadOnlyLink(AttachmentList)
     relatedbugs = fields.ReadOnlyLink(ExternalBugList)
     versions = fields.Link("TestCaseVersionList")
     latestversion = fields.Link("TestCaseVersion")
@@ -88,6 +86,8 @@ class TestCaseVersion(Activatable, TestCase):
     approveDate = fields.Date(api_submit_name=False)
     approvedBy = fields.Locator(User, api_submit_name=False)
 
+    tags = fields.Link(TagList)
+    attachments = fields.ReadOnlyLink(AttachmentList)
     environmentgroups = fields.Link(EnvironmentGroupList)
     steps = fields.Link("TestCaseStepList")
 
@@ -111,26 +111,6 @@ class TestCaseVersion(Activatable, TestCase):
     @property
     def testCase(self):
         return TestCaseList.get_by_id(self.testCaseId, auth=self.auth)
-
-    # @@@ https://bugzilla.mozilla.org//show_bug.cgi?id=690471
-    # remove this when fixed
-    @property
-    def attachments(self):
-        return self.testCase.attachments
-
-
-    # @@@ https://bugzilla.mozilla.org//show_bug.cgi?id=690472
-    # when that's fixed, remove this tags property and move tags Link from
-    # TestCase to TestCaseVersion
-    def _get_tags(self):
-        return self.testCase.tags
-
-
-    def _set_tags(self, v):
-        self.testCase.tags = v
-
-
-    tags = property(_get_tags, _set_tags)
 
 
     @property

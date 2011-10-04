@@ -20,10 +20,8 @@
       </ul>
     {% endblock basicform %}
 
-    {% block attachments-tags %}
       {% include "manage/product/testcase/_tagging.html" with formtype="single" %}
-      {% include "manage/product/_attachments.html" %}
-    {% endblock attachments-tags %}
+      {% include "manage/product/_attachments.html" with obj=case %}
 
     <div class="steps">
       {{ form.steps_formset.management_form }}

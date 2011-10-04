@@ -1,8 +1,10 @@
 from mock import patch
 
+from ..attachments.builders import attachments
 from ..core.builders import cvis
 from ..environments.builders import environmentgroups, environments
 from ..products.builders import products
+from ..relatedbugs.builders import relatedbugs
 from ..responses import response, make_locator, make_identity
 from ..testcases.builders import (
     testsuites, testcaseversions, testcasesteps)
@@ -256,12 +258,18 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
 
     def per_item_ajax_detail_responses(self, item_id):
         return {
+            "http://fake.base/rest/testcases/versions/%s?_type=json" % item_id:
+                response(testcaseversions.one()),
             "http://fake.base/rest/testruns/includedtestcases/%s/assignments?_type=json" % item_id:
                 response(assignments.array({})),
             "http://fake.base/rest/testruns/includedtestcases/%s/environmentgroups?_type=json" % item_id:
                 response(environmentgroups.array()),
             "http://fake.base/rest/testcases/versions/%s/steps?_type=json" % item_id:
                 response(testcasesteps.array({})),
+            "http://fake.base/rest/testcases/versions/%s/attachments?_type=json" % item_id:
+                response(attachments.array({})),
+            "http://fake.base/rest/testcases/1/relatedbugs?_type=json":
+                response(relatedbugs.array({})),
             }
 
 
@@ -339,6 +347,10 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
                 response(testresults.searchresult({})),
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
+            "http://fake.base/rest/testcases/versions/1/attachments?_type=json":
+                response(attachments.array({})),
+            "http://fake.base/rest/testcases/1/relatedbugs?_type=json":
+                response(relatedbugs.array({})),
             }
 
 

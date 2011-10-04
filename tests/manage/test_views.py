@@ -227,10 +227,11 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             "http://fake.base/rest/testcases/1/versions?_type=json":
-                response(testcaseversions.array({})),
-            "http://fake.base/rest/testcases/1/tags?_type=json":
+                response(testcaseversions.array(
+                    {"_url": "testcases/versions/1"})),
+            "http://fake.base/rest/testcases/versions/1/tags?_type=json":
                 response(tags.array({})),
-            "http://fake.base/rest/testcases/1/attachments?_type=json":
+            "http://fake.base/rest/testcases/versions/1/attachments?_type=json":
                 response(attachments.array({})),
             }
 
@@ -238,7 +239,7 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
     def extra_edit_responses(self):
         return {
             "http://fake.base/rest/testcases/versions/1/versionincrement/MAJOR?_type=json":
-                response(testcaseversions.one()),
+                response(testcaseversions.one(_url="testcases/versions/1")),
             "http://fake.base/rest/testcasesteps/1?_type=json":
                 response(testcasesteps.one()),
             # separate call to update the name

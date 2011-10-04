@@ -31,7 +31,7 @@ from .decorators import environment_actions, tag_actions
 from .finder import ManageFinder
 from .forms import (
     ProductForm, TestCycleForm, TestRunForm, TestSuiteForm, TestCaseForm,
-    BulkTestCaseForm, UserForm, TagForm)
+    BulkTestCaseForm, UserForm)
 
 
 
@@ -601,20 +601,20 @@ def edit_testcase(request, case_id):
 
 def tags_autocomplete(request):
     text = request.GET.get("text")
-    tags = TagList.get(auth=request.auth).filter(tag="%" + text + "%")
+    tags = TagList.get(auth=request.auth).filter(name="%" + text + "%")
     suggestions = []
     for tag in tags:
         # can't just use split due to case; we match "text" insensitively, but
         # want pre and post to be case-accurate
-        start = tag.tag.lower().index(text.lower())
-        pre = tag.tag[:start]
-        post = tag.tag[start+len(text):]
+        start = tag.name.lower().index(text.lower())
+        pre = tag.name[:start]
+        post = tag.name[start+len(text):]
         suggestions.append({
                 "preText": pre,
                 "typedText": text,
                 "postText": post,
                 "id": tag.id,
-                "name": tag.tag,
+                "name": tag.name,
                 })
     return HttpResponse(
         json.dumps(

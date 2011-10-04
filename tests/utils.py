@@ -104,6 +104,17 @@ COMMON_RESPONSES = {
             {"description": "APPROVED", "id": 2},
             {"description": "REJECTED", "id": 3},
             )),
+    "http://fake.base/staticData/values/ATTACHMENTTYPE?_type=json":
+        response(codevalues.array(
+            {"description": "BRANDING", "id": 1},
+            {"description": "DESIGN", "id": 2},
+            {"description": "USERGUIDE", "id": 3},
+            {"description": "REQUIREMENTS", "id": 4},
+            {"description": "KNOWNISSUES", "id": 5},
+            {"description": "SCREENCAPTURE", "id": 6},
+            {"description": "NDA", "id": 7},
+            {"description": "UNSPECIFIED", "id": 8},
+            )),
     }
 
 

@@ -73,25 +73,6 @@ class UserForm(ccforms.AddEditForm):
 
 
 
-class TagForm(ccforms.AddEditForm):
-    tag = forms.CharField(label="tag")
-
-
-    entryclass = Tag
-    listclass = TagList
-
-
-    def __init__(self, *args, **kwargs):
-        self.company = kwargs.pop("company")
-        super(TagForm, self).__init__(*args, **kwargs)
-
-
-    @property
-    def extra_creation_data(self):
-        return {"company": self.company}
-
-
-
 class ProductForm(ccforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=ccforms.BareTextarea)
@@ -323,7 +304,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
         tl = TagList.get(auth=self.auth)
         for name in new_tags:
-            t = Tag(tag=name, company=self.instance.company)
+            t = Tag(name=name, company=self.instance.company)
             tl.post(t)
             tag_ids.append(t.id)
 
@@ -336,6 +317,13 @@ class TestCaseForm(ccforms.AddEditForm):
         for attachment in self.instance.attachments:
             if attachment.id in delete_ids:
                 attachment.delete()
+
+        # if we're saving as new version, bring forward existing attachments
+        # from previous version
+        prior_version = getattr(self, "prior_version", None)
+        if prior_version is not None:
+            for attachment in prior_version.attachments:
+                self.instance.attachments.post(attachment)
 
         if not self.files:
             return
@@ -385,8 +373,10 @@ class TestCaseForm(ccforms.AddEditForm):
         incr = self.cleaned_data["increment"]
         try:
             if incr == "minor":
+                self.prior_version = self.instance.refresh()
                 self.instance.versionincrement(increment.MINOR)
             elif incr == "major":
+                self.prior_version = self.instance.refresh()
                 self.instance.versionincrement(increment.MAJOR)
             else:
                 self.instance.put()

@@ -174,7 +174,7 @@ def tag_actions():
                             request, "Please enter a tag name.")
                     else:
                         tag = TagList.get_by_id(tag_id, auth=request.auth)
-                        tag.tag = new_name
+                        tag.name = new_name
                         tag.put()
 
                 if action_taken:

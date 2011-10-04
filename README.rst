@@ -11,7 +11,7 @@ Platform
 --------
 
 This version of the UI expects to use git commit hash
-'9f427f187fe5f36ea4d5df835e43fd0346e01ecb' of the platform.  A pre-built WAR
+'a6efe9f4748fbf821b6158d1c806c48c247fcda2' of the platform.  A pre-built WAR
 file of this version of the platform is provided at ``platform/tcm.war``. 
 The database scripts required to set up an initial platform database are in
 ``platform/db_scripts``, and ``platform/reset-mysql.sh`` automates setting
