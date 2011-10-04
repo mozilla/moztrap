@@ -548,6 +548,7 @@ def add_testcase_bulk(request):
         form = BulkTestCaseForm(
             request.POST,
             product_choices=ProductList.ours(auth=request.auth),
+            company=request.company,
             auth=request.auth)
         if form.is_valid():
             testcases = form.save()
@@ -558,6 +559,7 @@ def add_testcase_bulk(request):
     else:
         form = BulkTestCaseForm(
             product_choices=ProductList.ours(auth=request.auth),
+            company=request.company,
             auth=request.auth)
 
     return TemplateResponse(

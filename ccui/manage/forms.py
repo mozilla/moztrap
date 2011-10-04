@@ -176,6 +176,7 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
 
     def __init__(self, *args, **kwargs):
         product_choices = kwargs.pop("product_choices")
+        self.company = kwargs.pop("company")
 
         self.auth = kwargs.pop("auth")
 
@@ -198,6 +199,15 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
     def clean(self):
         cases = []
         tcl = TestCaseList.get(auth=self.auth)
+
+        tag_ids = self.data.getlist("tag")
+        new_tags = self.data.getlist("newtag")
+
+        tl = TagList.get(auth=self.auth)
+        for name in new_tags:
+            t = Tag(name=name, company=self.company)
+            tl.post(t)
+            tag_ids.append(t.id)
 
         for d in self.cleaned_data.get("cases", []):
             tcdata = dict(
@@ -230,6 +240,8 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
                     )
 
                 tcv.steps.post(step)
+
+            tcv.tags = tag_ids
 
         self.cases = cases
 
