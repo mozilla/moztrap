@@ -28,11 +28,28 @@ CC_NEW_USER_ROLE_ID = 0
 
 # Absolute path to directory where static assets will be collected by the
 # "collectstatic" management command, and can be served by front-end webserver.
-# Defaults to absolute filesystem path to "ui/collected-assets" directory.
+# Defaults to absolute filesystem path to "collected-assets/" directory.
 #STATIC_ROOT = ""
 
-# Base URL where files in STATIC_ROOT are deployed.
+# Base URL where files in STATIC_ROOT are deployed. Defaults to "/static/".
 #STATIC_URL = ""
+
+# Absolute path to directory where user-uploaded files (attachments) will be
+# stored. Defaults to absolute filesystem path to "media/" directory.
+#MEDIA_ROOT = ""
+
+# Base URL where user-uploaded files will be served. In production mode, Case
+# Conductor will not serve these files; the front-end webserver must be
+# configured to serve the files at ``MEDIA_ROOT`` at this URL. Defaults to
+# "/media/".
+#MEDIA_URL = ""
+
+# If user-uploaded files should not be stored on the local filesystem, set this
+# to the dotted path to a custom Django file storage backend, such as the
+# Amazon S3 backend included in django-storages
+# (http://code.welldev.org/django-storages/). See the Django file storage
+# backend documentation: https://docs.djangoproject.com/en/dev/topics/files/
+#DEFAULT_FILE_STORAGE = ""
 
 # Causes CSS/JS to be served in a single combined, minified file, with a name
 # based on contents hash (thus can be safely far-futures-expired).  This
