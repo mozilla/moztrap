@@ -808,6 +808,8 @@ var CC = (function (CC, $) {
                                     deleteOnlyActive: true,
                                     insertAbove: true
                                 });
+                                CC.autoCompleteCaseTags('#addcase');
+                                CC.testcaseAttachments('#single-case-form .attachments');
                             });
                         });
                         context.find('#single-case-form').attr('action', url);
