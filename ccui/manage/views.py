@@ -422,7 +422,7 @@ def add_testsuite(request):
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
-            company=conf.CC_COMPANY_ID, status=TestCaseStatus.ACTIVE),
+            company=conf.CC_COMPANY_ID),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()
@@ -448,7 +448,7 @@ def edit_testsuite(request, suite_id):
         instance=suite,
         product_choices=[suite.product],
         cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
-            product=suite.product.id, status=TestCaseStatus.ACTIVE),
+            product=suite.product.id),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
         suite = form.save()
