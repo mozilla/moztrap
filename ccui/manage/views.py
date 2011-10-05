@@ -328,12 +328,12 @@ def testruns(request):
 @dec.finder(ManageFinder)
 def add_testrun(request):
     tcid = request.GET.get("cycle")
-    suites = TestSuiteList.ours(auth=request.auth)
     form = TestRunForm(
         request.POST or None,
         initial=tcid and {"test_cycle": tcid} or {},
         test_cycle_choices=TestCycleList.ours(auth=request.auth),
-        suites_choices=suites,
+        suites_choices=TestSuiteList.ours(auth=request.auth).filter(
+            status=TestSuiteStatus.ACTIVE),
         team_choices=UserList.ours(auth=request.auth),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
