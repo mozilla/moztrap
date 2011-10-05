@@ -5,6 +5,7 @@ import floppyforms as forms
 
 from ..attachments.models import Attachment
 from ..core import forms as ccforms
+from ..core.auth import admin
 from ..products.models import Product, ProductList
 from ..static.status import AttachmentType
 from ..tags.models import Tag, TagList
@@ -241,6 +242,8 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
 
                 tcv.steps.post(step)
 
+            tcv.approve(auth=admin)
+
             tcv.tags = tag_ids
 
         self.cases = cases
@@ -387,9 +390,11 @@ class TestCaseForm(ccforms.AddEditForm):
             if incr == "minor":
                 self.prior_version = self.instance.refresh()
                 self.instance.versionincrement(increment.MINOR)
+                self.instance.approve(auth=admin)
             elif incr == "major":
                 self.prior_version = self.instance.refresh()
                 self.instance.versionincrement(increment.MAJOR)
+                self.instance.approve(auth=admin)
             else:
                 self.instance.put()
         except self.instance.Conflict, e:
@@ -412,4 +417,9 @@ class TestCaseForm(ccforms.AddEditForm):
     def save(self):
         self.steps_formset.save(self.instance)
 
-        return super(TestCaseForm, self).save()
+        instance = super(TestCaseForm, self).save()
+
+        instance.approve(auth=admin)
+
+        return instance
+
