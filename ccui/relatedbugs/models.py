@@ -19,6 +19,7 @@ class ExternalBug(RemoteObject):
 
 class ExternalBugList(ListObject):
     entryclass = ExternalBug
+    default_url = "externalbugs"
     api_name = "externalbugs"
 
     entries = fields.List(fields.Object(ExternalBug))

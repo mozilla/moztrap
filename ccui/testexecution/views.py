@@ -5,7 +5,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from ..core import decorators as dec
-from ..relatedbugs.models import ExternalBug
+from ..relatedbugs.models import ExternalBug, ExternalBugList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..testexecution.models import TestRunIncludedTestCaseList
 from ..users.decorators import login_redirect
@@ -103,11 +103,13 @@ def result(request, result_id):
 
     getattr(result, action)(**kwargs)
 
-    # @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=690918
-    # once that's fixed, use "bugs" for existing as well as "related_bug" new
     if "related_bug" in request.POST:
         bug = ExternalBug(
             url=request.POST["related_bug"], externalIdentifier="1")
+        result.relatedbugs.post(bug)
+
+    for bug_id in request.POST.getlist("bugs"):
+        bug = ExternalBugList.get_by_id(bug_id, auth=request.auth)
         result.relatedbugs.post(bug)
 
     return render_to_response(
