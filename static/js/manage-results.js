@@ -688,7 +688,7 @@ var CC = (function (CC, $) {
                 }
 
                 if (newTag.length) {
-                    tagList.append(newTag);
+                    tagList.append(newTag).addClass('dirty');
                 }
 
                 // Reset the textbox, and reset and hide the suggestion list
@@ -703,6 +703,7 @@ var CC = (function (CC, $) {
             var filteredSuggestions,
                 newTagSuggestionName;
             $(this).parent().remove();
+            tagList.addClass('dirty');
             if (newSuggestions) {
                 newTagSuggestionName = $(newTagSuggestion).find('a').data('name');
                 filteredSuggestions = newSuggestions.filter(function (index) {
@@ -780,12 +781,16 @@ var CC = (function (CC, $) {
     CC.testcaseVersioning = function (container) {
         var context = $(container),
             select = context.find('#id_version'),
-            button = context.find('.versioning button[name="version-change"]'),
-            url = window.location.pathname;
+            selectVal = select.val(),
+            url = window.location.pathname,
+            dirty = false;
 
-        button.click(function (e) {
-            e.preventDefault();
-            var newVersion = select.val(),
+        context.delegate('.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]', 'change', function () {
+            dirty = true;
+        });
+
+        select.change(function (e) {
+            var newVersion = $(this).val(),
                 currentVersion = url.split('/')[3],
                 newURL = url.replace(currentVersion, newVersion),
                 updateVersion = function (data) {
@@ -794,6 +799,7 @@ var CC = (function (CC, $) {
                             prefix = newHTML.find('ol.steplist').data('prefix');
                         context.find('.versioned').fadeOut('fast', function () {
                             $(this).replaceWith(newHTML);
+                            dirty = false;
                             newHTML.fadeIn('fast', function () {
                                 $(this).find('ol.steplist').formset({
                                     prefix: prefix,
@@ -816,9 +822,19 @@ var CC = (function (CC, $) {
                     }
                 };
 
-            if (newURL !== url) {
+            if (dirty || context.find('.visual').hasClass('dirty')) {
+                if (confirm("Are you sure?")) {
+                    context.find('.versioned').loadingOverlay();
+                    url = newURL;
+                    selectVal = select.val();
+                    $.get(url, updateVersion);
+                } else {
+                    select.val(selectVal);
+                }
+            } else {
                 context.find('.versioned').loadingOverlay();
                 url = newURL;
+                selectVal = select.val();
                 $.get(url, updateVersion);
             }
         });
