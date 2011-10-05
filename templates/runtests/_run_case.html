@@ -22,7 +22,7 @@
         </div>
         <h3 class="title">{{ case.name }}</h3>
         {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
-          <button class="action-restart" data-action="start" name="action-start">restart test</button>
+          <button class="action-restart" data-action="start" name="action-start" title="restart test">restart test</button>
         {% endif %}
       </header>
 

@@ -8,18 +8,17 @@
     +columns(3,24)
   .title, .bytitle
     +columns(13,24)
-  .action-restart
-    +columns(3,24)
-    +button-color($red-dark,'ui/refresh.png')
-    +text-shadow($base 0 1px 0)
-    +demi
-    color: $red-lighter
   .byinvalid
     +columns(6,24)
-  .action-restart, .byinvalid
     +omega(24)
   .associated
     +leader(.5)
+
+  .action-restart
+    +button-reset
+    +float(right)
+    +rhythm(0,.25,.25,0)
+    +icon-replace('ui/refresh.png')
 
   .item
     position: relative
@@ -89,6 +88,9 @@
     +border-bottom-radius
     margin-left: columns(3,24) + gutter(24)
     background-color: rgba($yellow-light,$xsmall)
+  &.invalidated
+    .summary
+      display: none
 
 .stepfail
   .summary

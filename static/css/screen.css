@@ -5493,55 +5493,62 @@ footer[role="contentinfo"] small {
   width: 53.684%;
   margin-right: 1.053%;
 }
-#run .action-restart {
-  display: inline;
-  float: left;
-  width: 11.579%;
-  margin-right: 1.053%;
-  background-image: url('../images/ui/refresh.png?1317418876');
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b9292f), color-stop(100%, #511214));
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(top center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(top center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(top center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(top center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(top center, #b9292f 0%, #511214 100%);
-  padding-left: 26.979px;
-  background-repeat: no-repeat;
-  background-position: 8.653px, left;
-  border-color: #441e20;
-  text-shadow: #444444 0 1px 0;
-  font-weight: 500;
-  color: #eca9ab;
-}
-#run .action-restart:hover, #run .action-restart:focus {
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ce2e34), color-stop(100%, #511214));
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(top center, #ce2e34 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(top center, #ce2e34 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(top center, #ce2e34 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(top center, #ce2e34 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(top center, #ce2e34 0%, #511214 100%);
-}
-#run .action-restart:active {
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b9292f), color-stop(100%, #511214));
-  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(bottom center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(bottom center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(bottom center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(bottom center, #b9292f 0%, #511214 100%);
-  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(bottom center, #b9292f 0%, #511214 100%);
-}
 #run .byinvalid {
   display: inline;
   float: left;
   width: 24.211%;
   margin-right: 1.053%;
-}
-#run .action-restart, #run .byinvalid {
   display: inline;
   float: right;
   margin-right: 0;
 }
 #run .associated {
   margin-top: 0.809em;
+}
+#run .action-restart {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  -ms-border-radius: 0;
+  -khtml-border-radius: 0;
+  border-radius: 0;
+  text-shadow: none;
+  display: inline;
+  background: none;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  display: inline;
+  float: right;
+  margin-top: 0em;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  margin-bottom: 0em;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/refresh.png?1317418876');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 0.125em;
+  padding-right: 0.125em;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+}
+#run .action-restart:focus, #run .action-restart:hover, #run .action-restart:active {
+  background-image: url('../images/ui/refresh.png?1317418876');
+}
+#run .action-restart:focus, #run .action-restart:hover, #run .action-restart:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 #run .item {
   position: relative;
@@ -5809,6 +5816,9 @@ footer[role="contentinfo"] small {
   border-bottom-right-radius: 0.236em;
   margin-left: 12.632%;
   background-color: rgba(254, 240, 191, 0.382);
+}
+.testinvalid.invalidated .summary {
+  display: none;
 }
 
 .stepfail .summary {
