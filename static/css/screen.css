@@ -4028,6 +4028,7 @@ footer[role="contentinfo"] small {
   display: inline;
   float: right;
   margin-right: 0;
+  margin-bottom: 1.618em;
 }
 .tagging .visual {
   margin-left: 0;
@@ -4039,6 +4040,7 @@ footer[role="contentinfo"] small {
   width: 45.263%;
   margin-right: 1.053%;
   padding-left: 8.421%;
+  margin-bottom: 1.618em;
 }
 .attachments .uploads {
   margin: 0;
@@ -4046,7 +4048,6 @@ footer[role="contentinfo"] small {
   border: 0;
   overflow: hidden;
   *zoom: 1;
-  margin-bottom: 0.809em;
 }
 .attachments .uploads li {
   list-style-image: none;
@@ -4070,6 +4071,7 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.236em;
   border-radius: 0.236em;
   font-weight: 500;
+  margin-bottom: 0.809em;
   display: block;
   margin-right: 0.405em;
   padding: 0 0.405em;
@@ -4909,9 +4911,6 @@ footer[role="contentinfo"] small {
   overflow: hidden;
   *zoom: 1;
 }
-#single-case-form .versioning .tagging {
-  margin-top: 3.236em;
-}
 #single-case-form .version-select {
   clear: both;
   padding-left: 25.263%;
@@ -4965,6 +4964,9 @@ footer[role="contentinfo"] small {
 #single-case-form .version-select .form-actions button {
   width: 100%;
   margin: 0;
+}
+#single-case-form .versioned .basic {
+  clear: both;
 }
 
 /* Create User -------------------------------------------------------------- */

@@ -8,6 +8,7 @@
 .tagging
   +columns(11,24)
   +omega(24)
+  +trailer
   .visual
     @extend .togglelist
     margin-left: 0
@@ -15,12 +16,13 @@
 .attachments
   +columns(11,24)
   +prefix(2,24)
+  +trailer
   .uploads
     +inline-block-list
-    +trailer(.5)
   li
     +border-radius
     +demi
+    +trailer(.5)
     display: block
     margin-right: rhythm(.25)
     padding: 0 rhythm(.25)
@@ -411,9 +413,6 @@
 #single-case-form
   .versioning
     +clearfix
-    // @@@ temporary!
-    .tagging
-      +leader(2)
 
   .version-select
     +full(24)
@@ -448,6 +447,10 @@
       button
         width: 100%
         margin: 0
+
+  .versioned
+    .basic
+      clear: both
 
 /* Create User --------------------------------------------------------------
 
