@@ -35,10 +35,10 @@
             <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
             {% endif %}
             {% if cycle.status.ACTIVE %}
-            <button title="lock" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+            <button title="disable" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
             {% endif %}
             {% if cycle.status.LOCKED %}
-            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">locked</button>
+            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">disabled</button>
             {% endif %}
           </p>
           <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>

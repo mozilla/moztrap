@@ -38,10 +38,10 @@
               <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
               {% endif %}
               {% if run.status.ACTIVE %}
-              <button title="lock" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
+              <button title="disable" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
               {% endif %}
               {% if run.status.LOCKED %}
-              <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">locked</button>
+              <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">disabled</button>
               {% endif %}
             </p>
             <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
