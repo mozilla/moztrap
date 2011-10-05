@@ -4913,12 +4913,12 @@ footer[role="contentinfo"] small {
 }
 #single-case-form .version-select {
   clear: both;
-  padding-left: 25.263%;
-  padding-right: 29.474%;
+  padding-left: 33.684%;
+  padding-right: 37.895%;
   overflow: hidden;
   *zoom: 1;
   padding-top: 1.618em;
-  margin-bottom: 2.427em;
+  margin-bottom: 0.809em;
   position: relative;
 }
 #single-case-form .version-select::before, #single-case-form .version-select::after {
@@ -4930,40 +4930,27 @@ footer[role="contentinfo"] small {
 }
 #single-case-form .version-select::before {
   left: 0;
-  width: 24.211%;
+  width: 32.632%;
 }
 #single-case-form .version-select::after {
   right: 0;
-  width: 28.421%;
+  width: 36.842%;
 }
 #single-case-form .version-select label {
   display: inline;
   float: left;
-  width: 25.581%;
-  margin-right: 2.326%;
+  width: 40.741%;
+  margin-right: 3.704%;
   text-align: right;
 }
 #single-case-form .version-select select {
   display: inline;
   float: left;
-  width: 34.884%;
-  margin-right: 2.326%;
-}
-#single-case-form .version-select .form-actions {
-  display: inline;
-  float: left;
-  width: 34.884%;
-  margin-right: 2.326%;
+  width: 55.556%;
+  margin-right: 3.704%;
   display: inline;
   float: right;
   margin-right: 0;
-  clear: none;
-  padding: 0;
-  text-align: left;
-}
-#single-case-form .version-select .form-actions button {
-  width: 100%;
-  margin: 0;
 }
 #single-case-form .versioned .basic {
   clear: both;

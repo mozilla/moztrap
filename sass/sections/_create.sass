@@ -416,10 +416,10 @@
 
   .version-select
     +full(24)
-    +pad(6,7,24)
+    +pad(8,9,24)
     +clearfix
     +padding-leader
-    +trailer(1.5)
+    +trailer(.5)
     position: relative
     &::before, &::after
       content: " "
@@ -429,24 +429,16 @@
       border-top: 2px dashed rgba($blue-darker,$xsmall)
     &::before
       left: 0
-      width: columns(6,24)
+      width: columns(8,24)
     &::after
       right: 0
-      width: columns(7,24)
+      width: columns(9,24)
     label
-      +columns(3,11)
+      +columns(3,7)
       text-align: right
     select
-      +columns(4,11)
-    .form-actions
-      +columns(4,11)
+      +columns(4,7)
       +omega(11)
-      clear: none
-      padding: 0
-      text-align: left
-      button
-        width: 100%
-        margin: 0
 
   .versioned
     .basic
