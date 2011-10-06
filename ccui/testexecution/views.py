@@ -5,6 +5,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 from django.contrib import messages
@@ -43,6 +44,7 @@ def finder_environments(request, run_id):
 
 
 
+@ensure_csrf_cookie
 @never_cache
 @login_redirect
 @dec.finder(RunTestsFinder)
