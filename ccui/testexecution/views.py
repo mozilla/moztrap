@@ -117,19 +117,20 @@ def result(request, result_id):
 
     getattr(result, action)(**kwargs)
 
-    if "related_bug" in request.POST:
-        bug_url = request.POST["related_bug"]
+    new_bug_url = request.POST.get("related_bug", None)
+    if new_bug_url:
         try:
-            URLValidator()(bug_url)
+            URLValidator()(new_bug_url)
         except ValidationError:
             messages.error(request, "The bug URL must be a valid URL.")
             return json_response({})
-        bug = ExternalBug(url=bug_url, externalIdentifier="1")
+        bug = ExternalBug(url=new_bug_url, externalIdentifier="1")
         result.relatedbugs.post(bug)
-
-    for bug_id in request.POST.getlist("bugs"):
-        bug = ExternalBugList.get_by_id(bug_id, auth=request.auth)
-        result.relatedbugs.post(bug)
+    else:
+        for bug_id in request.POST.getlist("bugs"):
+            if bug_id:
+                bug = ExternalBugList.get_by_id(bug_id, auth=request.auth)
+                result.relatedbugs.post(bug)
 
     return render_to_response(
         "runtests/_run_case.html",
