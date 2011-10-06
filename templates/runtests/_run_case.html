@@ -1,8 +1,9 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}" data-action-url="{% url result result_id=result.id %}">
+    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}">
 
       <header class="summary">
+        <form action="{% url result result_id=result.id %}" method="POST">
         <div class="status">
           {% if result.status.PENDING %}
             <button class="start" data-action="start" name="action-start">start</button>
@@ -24,11 +25,13 @@
         {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
           <button class="action-restart" data-action="start" name="action-start" title="restart test">restart test</button>
         {% endif %}
+        </form>
       </header>
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
           <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
+            <form action="{% url result result_id=result.id %}" method="POST">
             {% if result.status.INVALIDATED %}
               <h4 class="summary">invalid or unclear.</h4>
               <div class="invaliddesc content">
@@ -45,6 +48,7 @@
                 </div>
               </div>
             {% endif %}
+            </form>
           </section>
         {% endif %}
 
@@ -68,6 +72,8 @@
               <div class="stepfail details">
                 <p class="summary">fail</p>
                 <div class="failform form fail-detail">
+                  <form action="{% url result result_id=result.id %}" method="POST">
+
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <ul>
                     <li class="fail-desc">
@@ -102,6 +108,7 @@
                   <div class="form-actions">
                     <button class="fail" data-action="finishfail">submit failure</button>
                   </div>
+                  </form>
                 </div>
               </div>
             {% endif %}
