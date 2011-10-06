@@ -17,7 +17,7 @@ from ..environments.models import (
 from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
-from ..static.status import TestCaseStatus, TestSuiteStatus
+from ..static.status import TestSuiteStatus
 from ..tags.models import TagList
 from ..testcases.filters import TestSuiteFieldFilter
 from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
