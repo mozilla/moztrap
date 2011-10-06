@@ -1,6 +1,6 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}">
+    <article id="result-{{ result.id }}" class="item details action-ajax-replace {{ result.status|status_class }}{% if open %} open{% endif %}">
 
       <header class="summary">
         <form action="{% url result result_id=result.id %}" method="POST">
