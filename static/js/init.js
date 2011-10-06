@@ -108,9 +108,9 @@ var CC = (function (CC, $) {
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();
-        CC.autoFocus('.details.stepfail > .summary');
-        CC.autoFocus('.details.testinvalid > .summary');
-        CC.testCaseButtons("#run .item");
+        CC.autoFocus('.details.stepfail > .summary', '#run');
+        CC.autoFocus('.details.testinvalid > .summary', '#run');
+        CC.runTests("#run");
         CC.breadcrumb('.selectruns');
         CC.failedTestBug('#run');
     });

@@ -6,10 +6,10 @@
         <form action="{% url result result_id=result.id %}" method="POST">
         <div class="status">
           {% if result.status.PENDING %}
-            <button class="start" data-action="start" name="action-start">start</button>
+            <button class="start" value="start" name="action">start</button>
           {% endif %}
           {% if result.status.STARTED %}
-            <button class="pass" data-action="finishsucceed" name="action-pass">pass</button>
+            <button class="pass" value="finishsucceed" name="action">pass</button>
           {% endif %}
           {% if result.status.PASSED %}
             <span class="passed">Passed</span>
@@ -23,7 +23,7 @@
         </div>
         <h3 class="title">{{ case.name }}</h3>
         {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
-          <button class="action-restart" data-action="start" name="action-start" title="restart test">restart test</button>
+          <button class="action-restart" value="start" name="action" title="restart test">restart test</button>
         {% endif %}
         </form>
       </header>
@@ -44,7 +44,7 @@
                 <label>description of problem:</label>
                 <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
                 <div class="form-actions">
-                  <button class="invalid" data-action="finishinvalidate">mark as invalid</button>
+                  <button class="invalid" value="finishinvalidate" name="action">mark as invalid</button>
                 </div>
               </div>
             {% endif %}
@@ -106,7 +106,7 @@
                     </li>
                   </ul>
                   <div class="form-actions">
-                    <button class="fail" data-action="finishfail">submit failure</button>
+                    <button class="fail" value="finishfail" name="action">submit failure</button>
                   </div>
                   </form>
                 </div>
