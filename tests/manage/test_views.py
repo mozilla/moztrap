@@ -198,7 +198,7 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testsuites/1/includedtestcases?sortfield=runOrder&sortdirection=asc&_type=json":
                 response(testsuiteincludedtestcases.array({})),
-            "http://fake.base/rest/testcases/latestversions/?_type=json&testCaseStatusId=2&productId=1":
+            "http://fake.base/rest/testcases/latestversions/?_type=json&productId=1":
                 response(testcaseversions.searchresult({})),
             }
 
@@ -206,7 +206,7 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
     def extra_edit_responses(self):
         return {
             "http://fake.base/rest/testsuites/1/includedtestcases?_type=json":
-                response(testsuiteincludedtestcases.array({}))
+                response(testsuiteincludedtestcases.array({})),
             }
 
 
@@ -245,6 +245,9 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
             # separate call to update the name
             "http://fake.base/rest/testcases/1?_type=json":
                 response(testcases.one(_id=1, _url="testcases/1")),
+            # auto-approval
+            "http://fake.base/rest/testcases/versions/1/approve?_type=json":
+                response(testcaseversions.one(_url="testcases/versions/1")),
             }
 
 
