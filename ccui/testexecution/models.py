@@ -112,10 +112,6 @@ class TestRun(Named, Activatable, RemoteObject):
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
     testsuites = fields.Link(TestSuiteList, cache="IncludedTestSuiteList")
-    resultstatus = fields.Link(
-        CategoryValueInfoList,
-        api_name="reports/coverage/resultstatus",
-        cache="TestResultList")
 
     non_field_filters = {
         "testSuite": "includedTestSuiteId",
@@ -202,7 +198,8 @@ class TestRun(Named, Activatable, RemoteObject):
 
 
     def resultsummary(self):
-        return self.resultstatus.to_dict(TestResultStatus)
+        return self.testCycle.resultstatus.raw_filter(
+            testRunId=self.id).to_dict(TestResultStatus)
 
 
 
