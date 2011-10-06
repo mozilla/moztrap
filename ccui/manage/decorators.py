@@ -157,7 +157,7 @@ def tag_actions():
                     else:
                         try:
                             tag = Tag(
-                                tag=new_tag_name,
+                                name=new_tag_name,
                                 company=request.company)
                             TagList.get(auth=request.auth).post(tag)
                         except Tag.Conflict as e:
