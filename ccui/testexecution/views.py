@@ -2,10 +2,10 @@ import json
 
 from django.core.validators import URLValidator, ValidationError
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.middleware.csrf import get_token
 from django.shortcuts import render_to_response, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 from django.contrib import messages
@@ -44,12 +44,15 @@ def finder_environments(request, run_id):
 
 
 
-@ensure_csrf_cookie
 @never_cache
 @login_redirect
 @dec.finder(RunTestsFinder)
 @dec.paginate("cases")
 def runtests(request, testrun_id):
+    # force the CSRF cookie to be set
+    # @@@ replace with ensure_csrf_cookie decorator in Django 1.4
+    get_token(request)
+
     testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
 
     if not testrun.environmentgroups_prefetch.match(request.environments):
