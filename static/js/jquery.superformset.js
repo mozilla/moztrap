@@ -45,7 +45,7 @@
             },
 
             insertDeleteLink = function (row) {
-                $(options.deleteLink).appendTo(row).click(function () {
+                $(options.deleteLink).appendTo(row).click(function (e) {
                     var row = $(this).parents(options.formSelector),
                         del = row.find('input:hidden[id $= "-DELETE"]'),
                         forms,
@@ -102,12 +102,12 @@
                     }
                     // If a post-delete callback was provided, call it with the deleted form:
                     if (options.removed) { options.removed(row); }
-                    return false;
+                    e.preventDefault();
                 });
             },
 
             insertAboveLink = function (row) {
-                $(options.insertAboveLink).appendTo(row).click(function () {
+                $(options.insertAboveLink).appendTo(row).click(function (e) {
                     var thisRow = $(this).closest(options.formSelector),
                         formCount = parent.find(options.formSelector).length,
                         row = options.formTemplate.clone(true).addClass('new-row'),
@@ -138,7 +138,7 @@
                     // If a post-add callback was supplied, call it with the added form:
                     if (options.added) { options.added(row); }
                     $(this).blur();
-                    return false;
+                    e.preventDefault();
                 });
             },
 

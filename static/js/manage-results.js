@@ -2,7 +2,7 @@
             indent:     4,
             confusion:  true,
             regexp:     true */
-/*global    ich, jQuery */
+/*global    ich, jQuery, confirm */
 
 var CC = (function (CC, $) {
 
@@ -688,7 +688,7 @@ var CC = (function (CC, $) {
                 }
 
                 if (newTag.length) {
-                    tagList.append(newTag).addClass('dirty');
+                    tagList.append(newTag);
                 }
 
                 // Reset the textbox, and reset and hide the suggestion list
@@ -703,7 +703,6 @@ var CC = (function (CC, $) {
             var filteredSuggestions,
                 newTagSuggestionName;
             $(this).parent().remove();
-            tagList.addClass('dirty');
             if (newSuggestions) {
                 newTagSuggestionName = $(newTagSuggestion).find('a').data('name');
                 filteredSuggestions = newSuggestions.filter(function (index) {
@@ -783,11 +782,24 @@ var CC = (function (CC, $) {
             select = context.find('#id_version'),
             selectVal = select.val(),
             url = window.location.pathname,
-            dirty = false;
+            dirty = false,
+            tags = context.find('.versioned .tagging .visual').html();
 
-        context.delegate('.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]', 'change', function () {
-            dirty = true;
-        });
+        context
+            .delegate(
+                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
+                'change',
+                function () {
+                    dirty = true;
+                }
+            )
+            .delegate(
+                '.versioned a.removefields, .versioned a.insert-step',
+                'click',
+                function () {
+                    dirty = true;
+                }
+            );
 
         select.change(function (e) {
             var newVersion = $(this).val(),
@@ -816,14 +828,15 @@ var CC = (function (CC, $) {
                                 });
                                 CC.autoCompleteCaseTags('#addcase');
                                 CC.testcaseAttachments('#single-case-form .attachments');
+                                tags = context.find('.versioned .tagging .visual').html();
                             });
                         });
                         context.find('#single-case-form').attr('action', url);
                     }
                 };
 
-            if (dirty || context.find('.visual').hasClass('dirty')) {
-                if (confirm("Are you sure?")) {
+            if (dirty || context.find('.versioned .tagging .visual').html() !== tags) {
+                if (confirm("You have made changes to the form that will be lost if you switch versions. Are you sure you want to continue?")) {
                     context.find('.versioned').loadingOverlay();
                     url = newURL;
                     selectVal = select.val();
