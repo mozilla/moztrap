@@ -30,26 +30,24 @@
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
-            <form action="{% url result result_id=result.id %}" method="POST">
-            {% if result.status.INVALIDATED %}
-              <h4 class="summary">invalid or unclear.</h4>
-              <div class="invaliddesc content">
-                <h5>description of problem:</h5>
-                <p>{{ result.comment }}</p>
+          <form action="{% url result result_id=result.id %}" method="POST" class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
+          {% if result.status.INVALIDATED %}
+            <h4 class="summary">invalid or unclear.</h4>
+            <div class="invaliddesc content">
+              <h5>description of problem:</h5>
+              <p>{{ result.comment }}</p>
+            </div>
+          {% else %}
+            <h4 class="summary">invalid or unclear?</h4>
+            <div class="invalidform form content">
+              <label>description of problem:</label>
+              <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
+              <div class="form-actions">
+                <button class="invalid" value="finishinvalidate" name="action">mark as invalid</button>
               </div>
-            {% else %}
-              <h4 class="summary">invalid or unclear?</h4>
-              <div class="invalidform form content">
-                <label>description of problem:</label>
-                <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
-                <div class="form-actions">
-                  <button class="invalid" value="finishinvalidate" name="action">mark as invalid</button>
-                </div>
-              </div>
-            {% endif %}
-            </form>
-          </section>
+            </div>
+          {% endif %}
+          </form>
         {% endif %}
 
         <aside class="associated">
