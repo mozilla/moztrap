@@ -1,8 +1,13 @@
-from django.http import HttpResponseBadRequest
+import json
+
+from django.core.validators import URLValidator, ValidationError
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
+
+from django.contrib import messages
 
 from ..core import decorators as dec
 from ..relatedbugs.models import ExternalBug, ExternalBugList
@@ -101,11 +106,20 @@ def result(request, result_id):
             return HttpResponseBadRequest(
                 "Required parameter %s missing." % argname)
 
+        if not kwargs[argname]:
+            messages.error(request, "The %r field is required." % argname)
+            return json_response({})
+
     getattr(result, action)(**kwargs)
 
     if "related_bug" in request.POST:
-        bug = ExternalBug(
-            url=request.POST["related_bug"], externalIdentifier="1")
+        bug_url = request.POST["related_bug"]
+        try:
+            URLValidator()(bug_url)
+        except ValidationError:
+            messages.error(request, "The bug URL must be a valid URL.")
+            return json_response({})
+        bug = ExternalBug(url=bug_url, externalIdentifier="1")
         result.relatedbugs.post(bug)
 
     for bug_id in request.POST.getlist("bugs"):
@@ -119,3 +133,7 @@ def result(request, result_id):
          "result": result,
          "open": action == "start",
          })
+
+
+def json_response(data):
+    return HttpResponse(json.dumps(data), content_type="application/json")
