@@ -42,7 +42,7 @@
               <h4 class="summary">invalid or unclear?</h4>
               <div class="invalidform form content">
                 <label>description of problem:</label>
-                <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
+                <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
                 <div class="form-actions">
                   <button class="invalid" data-action="finishinvalidate">mark as invalid</button>
                 </div>
@@ -78,7 +78,7 @@
                   <ul>
                     <li class="fail-desc">
                       <label for="{{ step.id }}-actualResult">actual result:</label>
-                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
+                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
                     </li>
                     {% if result.testCase.relatedbugs %}
                     <li class="fail-bugs">
