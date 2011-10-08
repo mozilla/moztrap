@@ -48,6 +48,7 @@ def finder_environments(request, run_id):
 @login_redirect
 @dec.finder(RunTestsFinder)
 @dec.paginate("cases")
+@dec.sort("cases")
 def runtests(request, testrun_id):
     # force the CSRF cookie to be set
     # @@@ replace with ensure_csrf_cookie decorator in Django 1.4
