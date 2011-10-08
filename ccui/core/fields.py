@@ -239,7 +239,13 @@ class Link(remoteobjects.fields.Link):
         value.put(
             url=join(instance._location, self.api_name),
             version_payload=instance,
-            auth=value.auth or instance.auth
+            auth=value.auth or instance.auth,
+            # Must invalidate cache for both resource being PUT to and parent
+            # resource, because parent resource's version will be incremented.
+            invalidate_cache=(
+                instance.cache_dependent_buckets(instance.id) +
+                instance.cache_buckets(instance.id) +
+                value.cache_dependent_buckets())
             )
 
 
