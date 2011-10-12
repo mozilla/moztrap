@@ -1,60 +1,69 @@
-    {# @@@ test case selection #}
-    <section class="caseselect">
-      <h3>add test cases to your test suite</h3>
-        <div>
-          {# @@@ needs the slick multiple-select widget #}
-          {{ form.team.errors }}
-          {{ form.team.label_tag }}
-          {{ form.team }}
-        </div>
-      <div>
-        <p><label for="search">search</label><input type="search" name="search" value="" id="search" placeholder="search for suites to add"></p>
-        <div class="unselected">
-          <h4>available cases</h4>
-          <nav class="listordering">
-            <h3 class="navhead">List Ordering</h3>
-            <ul>
-              <li><a href="#" class="id">id</a></li>
-              <li><a href="#" class="title">title</a></li>
-              <li><a href="#" class="author">author</a></li>
-            </ul>
-          </nav>
-          <ul class="select">
-            <li>
-              <input type="checkbox" name="case01" value="" id="case01">
-              <label for="case01" class="hcard">
-                <span class="id">#3456</span>
-                <span class="title">Test Case 01</span>
-                <span class="author fn">Author Name</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-        <div class="addremove">
-          <button class="add" title="add selected">add selected</button>
-          <button class="update" title="update all">update all</button>
-          <button class="remove" title="remove selected">&laquo; remove selected</button>
-        </div>
-        <div class="selected">
-          <h4>included cases</h4>
-          <nav class="listordering">
-            <h3 class="navhead">List Ordering</h3>
-            <ul>
-              <li><a href="#" class="id">id</a></li>
-              <li><a href="#" class="title">title</a></li>
-              <li><a href="#" class="author">author</a></li>
-            </ul>
-          </nav>
-          <ul class="select">
-            <li>
-              <input type="checkbox" name="case06" value="" id="case06">
-              <label for="case06">
-                <span class="id">#4567</span>
-                <span class="title">Test Case 06</span>
-                <span class="author fn">Author Name</span>
-              </label>
-            </li>
-          </ul>
-        </div>
+{# @@@ test case selection #}
+<section class="caseselect">
+  <h3>add test cases to your test suite</h3>
+  <div>
+    <section class="unselected">
+      <h4>available cases</h4>
+      <div class="selectsearch">
+        <label for="search-add">filter available cases</label>
+        <input type="text" name="search" value="" id="search-add" placeholder="filter available cases">
+        <ul class="suggest">
+        </ul>
+        <ul class="terms">
+          <li>list</li>
+          <li>of</li>
+          <li>filter</li>
+          <li>terms</li>
+        </ul>
+      </div>
+      <nav class="listordering">
+        <h5 class="navhead">List Ordering</h5>
+        <ul>
+          <li class="byinclude"><button class="action-include" title="include selected">include selected</button></li>
+          <li class="bytitle"><a href="#">name</a></li>
+          <li class="byauthor"><a href="#">author</a></li>
+        </ul>
+      </nav>
+      <div class="select">
+        {% include "manage/_case_select_item.html" with id="01" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="02" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="03" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="04" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="05" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="06" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="07" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="08" checked="checked" %}
+        {% include "manage/_case_select_item.html" with id="09" checked="checked" %}
       </div>
     </section>
+    <section class="selected">
+      <h4>included cases</h4>
+      <div class="selectsearch">
+        <label for="search-remove">filter included cases</label>
+        <input type="text" name="search" value="" id="search-remove" placeholder="filter included cases">
+        <ul class="suggest">
+        </ul>
+        <p class="terms"></p>
+      </div>
+      <nav class="listordering">
+        <h5 class="navhead">List Ordering</h5>
+        <ul>
+          <li class="byexclude"><button class="action-exclude" title="remove selected">remove selected</button></li>
+          <li class="bytitle"><a href="#">name</a></li>
+          <li class="byauthor"><a href="#">author</a></li>
+        </ul>
+      </nav>
+      <div class="select">
+        {% include "manage/_case_select_item.html" with id="101" %}
+        {% include "manage/_case_select_item.html" with id="102" %}
+        {% include "manage/_case_select_item.html" with id="103" %}
+        {% include "manage/_case_select_item.html" with id="104" %}
+        {% include "manage/_case_select_item.html" with id="105" %}
+        {% include "manage/_case_select_item.html" with id="106" %}
+        {% include "manage/_case_select_item.html" with id="107" %}
+        {% include "manage/_case_select_item.html" with id="108" %}
+        {% include "manage/_case_select_item.html" with id="109" %}
+      </div>
+    </section>
+  </div>
+</section>

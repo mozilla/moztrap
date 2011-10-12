@@ -1,7 +1,7 @@
 {% extends 'manage/product/testsuite/base.html' %}
 
 {% block page-notes %}
-<p>"Add test cases" has a richer UI on the way, with search, ordering, etc.</p>
+<p>New "Add test cases" UI is only a wireframe.</p>
 {% endblock %}
 
 {% block listcontent %}
@@ -29,7 +29,7 @@
       </li>
     </ul>
 
-    <section class="caseselect">
+    <!-- <section class="caseselect">
       <h3>add test cases to your test suite</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
@@ -37,7 +37,9 @@
         {{ form.cases.label_tag }}
         {{ form.cases }}
       </div>
-    </section>
+    </section> -->
+
+    {% include "manage/_case_select.html" %}
 
     <div class="form-actions">
       <button type="submit">save test suite</button>

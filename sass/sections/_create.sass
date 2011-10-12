@@ -1,18 +1,18 @@
 // Case Conductor is a Test Case Management system.
 // Copyright (C) 2011 uTest Inc.
-// 
+//
 // This file is part of Case Conductor.
-// 
+//
 // Case Conductor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Case Conductor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 /* Create --------------------------------------------------------------------
@@ -123,105 +123,52 @@
 .superselect
   p
     margin: 0
-  nav
-    padding-right: 1em
-    border: 1px solid #ccc
-      width: 0px 1px
+  h4
+    +demi
+    padding: rhythm(.25)
+    text-transform: uppercase
 
   .unselected, .selected
-    +columns(10,22)
-    h3, h4
-      @extend .allcaps
-      +hpadding($smallem)
-      color: $light
-      background: $blue
-      font-weight: normal
+    +columns(12,24)
   .selected
-    +omega(22)
-  label[for="search"]
-    +hide-text
-    position: absolute
-    height: 0
-  input[type="search"]
-    width: columns(10,22)
+    +omega(24)
+
+  .selectsearch
+    label
+      +gone
+    input
+      margin: 0
+
+  .listordering
+    +box-sizing(border-box)
+    border: 1px solid $blue
+      width: 0 1px
+
   .select
-    +no-style-list
-    height: rhythm(8)
-    border: 1px solid #ccc
+    +pie-clearfix
+    +box-sizing(border-box)
+    border: 1px solid $blue
+    height: rhythm(12)
     background: $blue-lightest
     overflow-y: scroll
-    input
-      position: absolute
-      left: -9999px
-      top: -9999px
-      z-index: -1
-    label
-      +adjust-font-size-to(12px)
-      +clearfix
-      +padding-leader(.25,12px)
-      +trailing-border(1px,.25,12px)
-      display: block
-      background: $blue-lightest no-repeat scroll 1em
-      border-color: $light
-      font-weight: normal
-  .unselected
-    label
-      #{$focus}, &.mark
-        background:
-          color: $green-light
-          image: image-url('ui/arrow_right.png')
+    resize: vertical
 
-  .selected
-    label
-      #{$focus}, &.mark
-        background:
-          color: $red-lighter
-          image: image-url('ui/arrow_left.png')
+  .byinclude, .byexclude
+    +columns(1,12)
 
-  .addremove
-    +columns(2,22)
-    +leader(3)
-    button
-      +trailer(.5)
-      display: block
-      padding: 0
-      border: 0
-      width: 100%
-    [title^="add"]
-      +icon-replace('ui/arrow_right.png',$green-light)
-    [title^="update"]
-      +icon-replace('ui/arrow_leftright_21.png',$blue-light)
-    [title^="remove"]
-      +icon-replace('ui/arrow_left.png',$red-light)
-    [title^="update"]
-      +padding-leader
-      +padding-trailer
-  .addall, .removeall
-    @extend .allcaps
+  .action-include, .action-exclude
     +button-reset
-    +adjust-font-size-to(12px)
-    +hpadding($base-rhythm-unit)
-    +bold
-    display: block
     width: 100%
-    text-align: left
-  .addall
-    color: $green-lightest
-    background: $green
-    text-align: right
-    &:hover
-      background-color: $green-dark
-  .removeall
-    color: $red-lightest
-    background: $red-light
-    &:hover
-      background-color: $red
+  .action-include
+    +icon-replace('ui/arrow_right_dbl.png')
+  .action-exclude
+    +icon-replace('ui/arrow_left_dbl.png')
 
 .mainselect
   @extend .superselect
   +clearfix
   +trailer
-  +background(rgba($blue-hint,$xsmall) linear-gradient(bottom,rgba($blue-hint,$small),rgba($blue-hint,0) rhythm(2)))
+  +background(linear-gradient(bottom,rgba($blue-hint,$xsmall),rgba($blue-hint,0) rhythm(2)))
   clear: both
   h3
     padding: rhythm(.25)
@@ -229,10 +176,32 @@
     text-transform: capitalize
   > div
     +full(24)
+    +pie-clearfix
+    +padding-trailer(2)
+
+.selectitem
+  resize: none
+  input
+    +gone
+    &:checked + .body
+      +background(rgba($green-lighter,$xxsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+      .selected &
+        background-color: rgba($red-lighter,$xxsmall)
+      .bulkselect
+        +opacity(1)
+        background-image: image-url('ui/check.png')
+  .body
     +clearfix
-    +pad(1,1,24)
-    +padding-leader
-    +padding-trailer
+    +trailing-border(1px,.25)
+    +padding-leader(.25)
+    border-color: $blue-light
+  .bulkselect
+    +icon-replace('ui/grip.png')
+    +opacity(.25)
+    +columns(1,12)
+    padding: 0
+    &:hover
+      +opacity(.5)
 
 /* Create/Edit Product --------------------------------------------------------------
 
@@ -294,13 +263,15 @@
 
 .caseselect
   @extend .mainselect
-  .id
-    +columns(2,9)
-    +prefix(1,9)
-  .title, .author
-    +columns(3,9)
+  .bytitle, .title
+    +columns(7,12)
+  .byauthor, .author
+    +box-sizing(border-box)
+    +columns(4,12)
+    +omega(12)
+    text-align: right
   .author
-    +omega(9)
+    padding-right: rhythm(1)
 
 /* Create Case --------------------------------------------------------------
 
