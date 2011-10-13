@@ -4406,6 +4406,9 @@ footer[role="contentinfo"] small {
   display: table;
   clear: both;
 }
+.superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
+  display: none;
+}
 .superselect .byinclude, .mainselect .byinclude, .userselect .byinclude, .suiteselect .byinclude, .caseselect .byinclude, .roleselect .byinclude, .superselect .byexclude, .mainselect .byexclude, .userselect .byexclude, .suiteselect .byexclude, .caseselect .byexclude, .roleselect .byexclude {
   display: inline;
   float: left;
