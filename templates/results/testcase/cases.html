@@ -1,11 +1,6 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
-{% block page-notes %}
-<p>Per-testcase and per-testsuite result summaries waiting on <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=658706">platform support</a>.</p>
-{{ block.super }}
-{% endblock %}
-
 {% block listcontent %}
 <section id="caseresults">
   <h2>Test Case Results</h2>
@@ -58,8 +53,8 @@
                 {{ itc.testSuite.name }}
               </div>
               {% endif %}
+              {# @@@ no API for test suite result summary #}
               {% comment %}
-              {# @@@ Way too slow until the platform adds these calls. #}
               {% if itc.testSuite %}
               <div class="suite">
                 {{ itc.testSuite.name }}
@@ -69,8 +64,8 @@
                 </aside>
               </div>
               {% endif %}
-              {% include "results/_results_summary.html" with results=itc.resultsummary %}
               {% endcomment %}
+              {% include "results/_results_summary.html" with results=itc.resultsummary %}
             </header>
             <div class="content">
               {# _case_details.html loaded via ajax #}
