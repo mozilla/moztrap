@@ -1,14 +1,15 @@
 {% load execution staticdata %}
 
-    <article id="result-{{ result.id }}" class="item details {{ result.status|status_class }}{% if open %} open{% endif %}" data-action-url="{% url result result_id=result.id %}">
+    <article id="result-{{ result.id }}" class="item details action-ajax-replace {{ result.status|status_class }}{% if open %} open{% endif %}">
 
       <header class="summary">
+        <form action="{% url result result_id=result.id %}" method="POST">
         <div class="status">
           {% if result.status.PENDING %}
-            <button class="start" data-action="start" name="action-start">start</button>
+            <button class="start" value="start" name="action">start</button>
           {% endif %}
           {% if result.status.STARTED %}
-            <button class="pass" data-action="finishsucceed" name="action-pass">pass</button>
+            <button class="pass" value="finishsucceed" name="action">pass</button>
           {% endif %}
           {% if result.status.PASSED %}
             <span class="passed">Passed</span>
@@ -22,30 +23,31 @@
         </div>
         <h3 class="title">{{ case.name }}</h3>
         {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
-          <button class="action-restart" data-action="start" name="action-start" title="restart test">restart test</button>
+          <button class="action-restart" value="start" name="action" title="restart test">restart test</button>
         {% endif %}
+        </form>
       </header>
 
       <div>
         {% if result.status.STARTED or result.status.INVALIDATED %}
-          <section class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
-            {% if result.status.INVALIDATED %}
-              <h4 class="summary">invalid or unclear.</h4>
-              <div class="invaliddesc content">
-                <h5>description of problem:</h5>
-                <p>{{ result.comment }}</p>
+          <form action="{% url result result_id=result.id %}" method="POST" class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
+          {% if result.status.INVALIDATED %}
+            <h4 class="summary">invalid or unclear.</h4>
+            <div class="invaliddesc content">
+              <h5>description of problem:</h5>
+              <p>{{ result.comment }}</p>
+            </div>
+          {% else %}
+            <h4 class="summary">invalid or unclear?</h4>
+            <div class="invalidform form content">
+              <label>description of problem:</label>
+              <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
+              <div class="form-actions">
+                <button class="invalid" value="finishinvalidate" name="action">mark as invalid</button>
               </div>
-            {% else %}
-              <h4 class="summary">invalid or unclear?</h4>
-              <div class="invalidform form content">
-                <label>description of problem:</label>
-                <textarea name="comment" placeholder="please explain why this test case is invalid."></textarea>
-                <div class="form-actions">
-                  <button class="invalid" data-action="finishinvalidate">mark as invalid</button>
-                </div>
-              </div>
-            {% endif %}
-          </section>
+            </div>
+          {% endif %}
+          </form>
         {% endif %}
 
         <aside class="associated">
@@ -68,11 +70,13 @@
               <div class="stepfail details">
                 <p class="summary">fail</p>
                 <div class="failform form fail-detail">
+                  <form action="{% url result result_id=result.id %}" method="POST">
+
                   <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
                   <ul>
                     <li class="fail-desc">
                       <label for="{{ step.id }}-actualResult">actual result:</label>
-                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step."></textarea>
+                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
                     </li>
                     {% if result.testCase.relatedbugs %}
                     <li class="fail-bugs">
@@ -100,8 +104,9 @@
                     </li>
                   </ul>
                   <div class="form-actions">
-                    <button class="fail" data-action="finishfail">submit failure</button>
+                    <button class="fail" value="finishfail" name="action">submit failure</button>
                   </div>
+                  </form>
                 </div>
               </div>
             {% endif %}

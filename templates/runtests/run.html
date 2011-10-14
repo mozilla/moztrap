@@ -37,15 +37,15 @@
 
     {% icanhaz "runtests_form_error" %}
 
-    <div class="managelist action-ajax-replace">
+    <div class="managelist">
       <nav class="listordering">
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">
-            <a href="#">status</a>
+            <span>status</span>
           </li>
           <li class="bytitle">
-            <a href="#">name</a>
+            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
           </li>
           <li class="byinvalid">
             <span>flagging</span>

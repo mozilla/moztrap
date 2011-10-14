@@ -80,6 +80,18 @@ class TestCycle(Named, Activatable, RemoteObject):
         return self.resultstatus.to_dict(TestResultStatus)
 
 
+    def deactivate(self, **kwargs):
+        self._put(
+            relative_url="deactivate",
+            update_from_response=True,
+            invalidate_cache=(
+                TestCycleList.cache_buckets(self.id) +
+                TestRun.cache_buckets(self.id) +
+                TestRunList.cache_buckets(self.id)
+                ),
+            **kwargs)
+
+
 
 class TestCycleList(ListObject):
     entryclass = TestCycle

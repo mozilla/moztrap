@@ -12,8 +12,8 @@ var CC = (function (CC, $) {
     };
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
-    CC.autoFocus = function (trigger) {
-        $(trigger).click(function () {
+    CC.autoFocus = function (trigger, context) {
+        $(context).find(trigger).click(function () {
             if ($(this).parent().hasClass('open')) {
                 $(this).parent().find('textarea').focus();
             }
@@ -38,50 +38,34 @@ var CC = (function (CC, $) {
     };
 
     // Ajax submit runtest forms
-    CC.testCaseButtons = function (context) {
-        $(context).find("button").click(
-            function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                var button = $(this),
-                    testcase = button.closest(".item"),
-                    container = button.closest("div.form"),
-                    data = { action: button.data("action") },
-                    inputs = container.find("input").not(':disabled, :radio:not(:checked), .newbug:radio'),
-                    post = true;
-                testcase.loadingOverlay();
-                container.find("textarea").add(inputs).each(function () {
-                    var val = $(this).val();
-                    if (val) {
-                        data[$(this).attr("name")] = val;
-                    } else {
-                        if (!$(this).is('input[name="related_bug"]')) {
-                            $(this).siblings("ul.errorlist").remove();
-                            $(this).before(ich.runtests_form_error());
-                            testcase.loadingOverlay('remove');
-                            post = false;
+    CC.runTests = function (container) {
+        var context = $(container),
+            tests = context.find('.item.action-ajax-replace'),
+            ajaxFormsInit = function (test) {
+                var forms = test.find('form');
+
+                forms.ajaxForm({
+                    beforeSubmit: function (arr, form, options) {
+                        test.loadingOverlay();
+                    },
+                    success: function (response) {
+                        var newTest = $(response.html);
+                        test.loadingOverlay('remove');
+                        if (response.html) {
+                            test.replaceWith(newTest);
+                            ajaxFormsInit(newTest);
+                            newTest.find('.details').andSelf().html5accordion();
+                            CC.autoFocus('.details.stepfail > .summary', newTest);
+                            CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
                     }
                 });
-                if (post) {
-                    $.post(
-                        testcase.data("action-url"),
-                        data,
-                        function (data) {
-                            var id = testcase.attr("id"),
-                                newCase;
-                            testcase.replaceWith(data.html);
-                            newCase = "#" + id;
-                            $(newCase).find('.details').andSelf().html5accordion();
-                            CC.testCaseButtons(newCase);
-                            $(newCase).loadingOverlay('remove');
-                            CC.autoFocus('.details.stepfail > .summary');
-                            CC.autoFocus('.details.testinvalid > .summary');
-                        }
-                    );
-                }
-            }
-        );
+            };
+
+        tests.each(function () {
+            var thisTest = $(this);
+            ajaxFormsInit(thisTest);
+        });
     };
 
     CC.failedTestBug = function (container) {

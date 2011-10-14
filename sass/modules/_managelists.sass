@@ -141,7 +141,7 @@
     +ellipsis
 
   .info
-    +columns(6,24)
+    +columns(8,24)
     +omega(24)
     text-align: right
     p
@@ -263,7 +263,7 @@
         +omega(21)
 
 .components
-  +columns(16,24)
+  +columns(14,24)
   +prefix(2,24)
   +pie-clearfix
 
@@ -380,10 +380,17 @@
     #{$focus}
       color: $red-dark
 
-.associated
-  +columns(4,24)
+.byline, .associated
+  +columns(8,24)
   +omega(24)
   text-align: right
+
+.info .byline
+  +un-column
+  +full(8)
+
+.associated
+  +cond
   h4
     +gone
   .files-list, .bugs-list
