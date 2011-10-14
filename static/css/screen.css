@@ -1118,12 +1118,12 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 #page {
-  background: url('../images/noise.png?1314206098'), -webkit-gradient(linear, 100% 50%, 0% 50%, color-stop(0%, #f6f6f8), color-stop(100%, #fafafa));
-  background: url('../images/noise.png?1314206098'), -webkit-linear-gradient(right, #f6f6f8, #fafafa);
-  background: url('../images/noise.png?1314206098'), -moz-linear-gradient(right, #f6f6f8, #fafafa);
-  background: url('../images/noise.png?1314206098'), -o-linear-gradient(right, #f6f6f8, #fafafa);
-  background: url('../images/noise.png?1314206098'), -ms-linear-gradient(right, #f6f6f8, #fafafa);
-  background: url('../images/noise.png?1314206098'), linear-gradient(right, #f6f6f8, #fafafa);
+  background: -webkit-gradient(linear, 100% 50%, 0% 50%, color-stop(0%, rgba(232, 233, 236, 0.382)), color-stop(100%, rgba(250, 250, 250, 0.382))), url('../images/noise.png?1314206098'), white;
+  background: -webkit-linear-gradient(right, rgba(232, 233, 236, 0.382), rgba(250, 250, 250, 0.382)), url('../images/noise.png?1314206098'), white;
+  background: -moz-linear-gradient(right, rgba(232, 233, 236, 0.382), rgba(250, 250, 250, 0.382)), url('../images/noise.png?1314206098'), white;
+  background: -o-linear-gradient(right, rgba(232, 233, 236, 0.382), rgba(250, 250, 250, 0.382)), url('../images/noise.png?1314206098'), white;
+  background: -ms-linear-gradient(right, rgba(232, 233, 236, 0.382), rgba(250, 250, 250, 0.382)), url('../images/noise.png?1314206098'), white;
+  background: linear-gradient(right, rgba(232, 233, 236, 0.382), rgba(250, 250, 250, 0.382)), url('../images/noise.png?1314206098'), white;
 }
 
 [role="banner"] {
@@ -1897,6 +1897,7 @@ footer[role="contentinfo"] small {
   padding: 0.236em 0.472em;
   padding-left: 15px;
   background: #e4f5d1 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
+  white-space: nowrap;
 }
 .togglelist input:checked + label:hover, #filter .compact input:checked + label:hover, .tagging .visual input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1314206098');
