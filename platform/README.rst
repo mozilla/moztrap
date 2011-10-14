@@ -27,19 +27,22 @@ to ``root`` with no password).
 Note that the platform currently does not support MySQL 5.5 -- some operations
 will fail with foreign key constraint violations. MySQL 5.1 must be used.
 
-Create your MySQL database schema (if you are using a MySQL user other than
-root, you will probably need to comment out the ``GRANT ALL PRIVILEGES`` line
-near the top of this SQL script)::
+Create your MySQL database schema (you may need to use the ``-u`` option to the
+commands here if you are using a database user other than your current shell
+user, and you'll need to substitute a different db name if not using ``tcm``)::
 
-    $ mysql -uroot < $CCPLATFORM/utest-persistence/src/main/resources/db_scripts/db_tcm_create_empty_db_script.sql
+    $ mysqladmin create tcm
+    $ mysql tcm < $CCPLATFORM/db_scripts/db_tcm_create_empty_db_script.sql
 
 You'll need to also execute each database update script in that same directory, in order. For example::
 
-    $ mysql -uroot < $CCPLATFORM/utest-persistence/src/main/resources/db_scripts/db_tcm_update_db_script_1.sql
+    $ mysql tcm < $CCPLATFORM/db_scripts/db_tcm_update_db_script_1.sql
 
-The shell script ``reset-mysql.sh`` automates setting up the initial schema and
-running all update scripts. (You may need to modify this script if using a
-database user other than root).
+The shell script ``reset-mysql.sh`` automates dropping an existing database if
+it exists, creating the database, setting up the initial schema and running all
+update scripts. (If you are using a database name other than ``tcm`` and/or a
+database user other than ``root``, you'll need to run this script as
+``./reset-mysql.sh database_name user_name``).
 
 And run the server::
 
