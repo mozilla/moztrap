@@ -8,10 +8,9 @@ default manage.py.
 """
 import os, sys
 
-sys.path.insert(0, os.path.dirname(__file__))
+if __name__ == "__main__":
+    os.environ["DJANGO_SETTINGS_MODULE"] = "ccui.settings.default"
 
-os.environ["DJANGO_SETTINGS_MODULE"] = "ccui.settings.default"
+    from django.core.management import execute_from_command_line
 
-from django.core.management import execute_from_command_line
-
-execute_from_command_line(sys.argv)
+    execute_from_command_line(sys.argv)
