@@ -122,6 +122,14 @@ WSGI-compatible webserver such as `Apache`_ with `mod_wsgi`_, or
 `gunicorn`_. You'll also need to serve the static assets; `Apache`_ or `nginx`_
 can do this.
 
+For deployment scenarios where pip-installing dependencies into a Python
+environment (as ``bin/install-reqs`` does) is not preferred, a pre-installed
+vendor library is also provided in ``requirements/vendor/lib/python``. The
+``site.addsitedir`` function should be used to add this directory to sys.path,
+to ensure that ``.pth`` files are processed. A WSGI entry-point script is
+provided in ``deploy/vendor.wsgi`` that does all the necessary ``sys.path``
+adjustments.
+
 In addition to the above configuration, in any production deployment this
 entire app should be served exclusively over HTTPS (since almost all use of the
 site is authenticated, and serving authenticated pages over HTTP invites
