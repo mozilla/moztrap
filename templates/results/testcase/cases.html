@@ -1,6 +1,10 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
+{% block page-notes %}
+  <p>Completion percentages are inactive (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no API in platform</a>).</p>
+{% endblock %}
+
 {% block listcontent %}
 <section id="caseresults">
   <h2>Test Case Results</h2>

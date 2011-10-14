@@ -437,6 +437,15 @@ class ObjectMixin(StrAndUnicode):
         return self.__class__.get(self._location, auth=self.auth)
 
 
+    def raw_filter(self, **kwargs):
+        auth = kwargs.pop("auth", self.auth)
+        cache = kwargs.pop("cache", self.cache)
+        return self.get(
+            util.narrow_querystring(self._location, **kwargs),
+            auth=auth,
+            cache=cache)
+
+
     def __repr__(self):
         if self._delivered:
             return "<%s: %s>" % (self.__class__.__name__, self)
@@ -712,15 +721,6 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
         filters["auth"] = auth
 
         return self.raw_filter(**filters)
-
-
-    def raw_filter(self, **kwargs):
-        auth = kwargs.pop("auth", self.auth)
-        cache = kwargs.pop("cache", self.cache)
-        return self.get(
-            util.narrow_querystring(self._location, **kwargs),
-            auth=auth,
-            cache=cache)
 
 
     def sort(self, field, direction=sort.DEFAULT):
