@@ -1,4 +1,4 @@
-USE tcm;
+
 
 insert into RolePermission (permissionId, accessRoleId, createdBy, createDate, lastChangedBy, lastChangeDate) 
 select permissionId, 1, 1, current_timestamp, 1, current_timestamp

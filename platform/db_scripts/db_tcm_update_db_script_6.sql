@@ -1,4 +1,4 @@
-use tcm;
+
 
 ALTER TABLE ApprovalStatusLocale CHANGE description name VARCHAR(255) NOT NULL;
 ALTER TABLE CountryLocale CHANGE description name VARCHAR(255) NOT NULL;

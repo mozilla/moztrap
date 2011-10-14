@@ -1,4 +1,4 @@
-use tcm;
+
 
 ALTER TABLE TestCycle MODIFY COLUMN environmentProfileId INT;
 
