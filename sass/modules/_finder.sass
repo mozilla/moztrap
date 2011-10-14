@@ -1,18 +1,18 @@
 // Case Conductor is a Test Case Management system.
 // Copyright (C) 2011 uTest Inc.
-// 
+//
 // This file is part of Case Conductor.
-// 
+//
 // Case Conductor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Case Conductor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 /* Finder --------------------------------------------------------------------
@@ -27,7 +27,7 @@
   overflow: visible
   position: relative
   border: 1px solid rgba($blue-light,$small)
-  background: $blue-hint
+  background: rgba($blue-hint,$xsmall)
 
   p
     margin-bottom: 0
@@ -86,7 +86,6 @@
 
   .logo
     +float(left)
-    +transition(all 300ms)
     width: rhythm(1)
     margin-right: rhythm(.5)
 
@@ -99,15 +98,14 @@
     border-color: rgba($blue-light,$xxsmall)
     font-weight: normal
     cursor: pointer
+    #{$focus}
+      background: rgba($blue-lighter,$xxxsmall)
 
   li
     position: relative
-    &:first-child
+    &:last-child
       label
-        +leading-border(1px,.125)
-    #{$focus}
-      .logo
-        +scale(1.75)
+        border-bottom: 0
 
   input
     +gone
@@ -115,8 +113,6 @@
       + label
         +bold
         background: rgba($blue-light,$small)
-        .logo
-          +scale(1.75)
 
   // layout of specific elements ---------------------------------------------
 
@@ -124,7 +120,6 @@
     +ellipsis
     +suffix(1,6)
     display: block
-
 
   .start, .end, .bycompletion, .bystart, .byend, .end, .byend
     display: none

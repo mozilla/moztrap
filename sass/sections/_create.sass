@@ -28,7 +28,7 @@
   +trailer
   .visual
     @extend .togglelist
-    margin-left: 0
+    margin: 0
 
 .attachments
   +columns(11,24)
@@ -170,17 +170,17 @@
 .mainselect
   @extend .superselect
   +clearfix
+  +padding-leader
   +trailer
-  +background(linear-gradient(bottom,rgba($blue-hint,$xsmall),rgba($blue-hint,0) rhythm(2)))
   clear: both
   h3
+    +border-radius
     padding: rhythm(.25)
     background: rgba($blue,$xxxsmall)
     text-transform: capitalize
   > div
     +full(24)
     +pie-clearfix
-    +padding-trailer(2)
 
 .selectitem
   resize: none

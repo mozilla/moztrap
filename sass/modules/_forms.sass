@@ -1,18 +1,18 @@
 // Case Conductor is a Test Case Management system.
 // Copyright (C) 2011 uTest Inc.
-// 
+//
 // This file is part of Case Conductor.
-// 
+//
 // Case Conductor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Case Conductor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // Mixins --------------------------------------------------------------------
@@ -39,7 +39,8 @@
 // Placeholders --------------------------------------------------------------
 
 =placeholder
-  color: rgba($blue-dark,$small)
+  +italic
+  color: rgba($blue-dark,$xsmall)
 
 =apply-placeholders
   &::-webkit-input-placeholder
@@ -113,7 +114,7 @@ label
   font-size: inherit
   line-height: inherit
   width: 100%
-  background: rgba($blue-hint,$small)
+  background: rgba($blue-hint,$xxsmall)
   color: $base
   border-color: rgba($blue-dark,$small)
   outline: 0
@@ -124,21 +125,21 @@ label
     color: lighten($base,15)
 
   &:valid
-    +box-shadow($blue-lighter 0 0 .375em)
-    +box-shadow(inset $blue-lighter 0 0 .375em)
+    +box-shadow($blue-hint 0 0 .375em)
+    +box-shadow(inset $blue-hint 0 0 .375em)
     &:focus, &.hadfocus
-      +box-shadow($green 0 0 .375em)
-      +box-shadow(inset $green 0 0 .375em)
+      +box-shadow($green-light 0 0 .375em)
+      +box-shadow(inset $green-light 0 0 .375em)
       .no-boxshadow &
-        background-color: rgba($green,.25)
+        background-color: rgba($green-light,.25)
 
   &:invalid
-    +box-shadow($blue 0 0 .375em)
-    +box-shadow(inset $blue 0 0 .375em)
+    +box-shadow($blue-hint 0 0 .375em)
+    +box-shadow(inset $blue-hint 0 0 .375em)
     &:focus, &.hadfocus
       +border-radius(1px)
-      +box-shadow($red 0 0 .375em)
-      +box-shadow(inset $red 0 0 .375em)
+      +box-shadow($red-lighter 0 0 .375em)
+      +box-shadow(inset $red-lighter 0 0 .375em)
       .no-boxshadow &
         background-color: $yellow-light
 

@@ -1,18 +1,18 @@
 // Case Conductor is a Test Case Management system.
 // Copyright (C) 2011 uTest Inc.
-// 
+//
 // This file is part of Case Conductor.
-// 
+//
 // Case Conductor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Case Conductor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // Mixins --------------------------------------------------------------------
@@ -22,7 +22,7 @@
     &:nth-of-type(24n-#{$i})
       #{$select}
         $deg: ($i - 1)*15deg
-        background-color: adjust-hue($green-lightest,$deg)
+        background-color: adjust-hue($green-lighter,$deg)
 
 /* Filtering -----------------------------------------------------------------
 
@@ -74,7 +74,7 @@
   input:checked + label
     +trailer(.5,12px)
     +border-radius
-    +box-shadow(rgba($blue,$xxsmall) 0 1px 1px)
+    +box-shadow($blue-light 1px 1px 0)
     +demi
     display: block
     margin-right: .5em
@@ -103,7 +103,7 @@
     display: none
     clear: both
     margin: 0
-    background-color: rgba($yellow-darker,$small)
+    background-color: rgba($yellow,$small)
     text-align: left
     color: $base
     a

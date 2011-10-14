@@ -105,6 +105,7 @@
 </header>
 
 <div id="page">
+  <div class="container">
 {% block page %}
 
   <div id="main" role="main">
@@ -114,20 +115,25 @@
     {% endblock %}
   </div><!-- /~main -->
 
-  <footer role="contentinfo">
-    <div id="hcard-client-name" class="author vcard">
-      <small>copyright &copy; 2011</small>
-      <strong class="fn org">Mozilla</strong>
-      <div class="adr">
-        <span class="street-address">650 Castro St, Suite 300</span>,
-        <span class="locality">Mountain View</span>,
-        <span class="region">CA</span>
-        <span class="postal-code">94041-2021</span>
-      </div>
-    </div>
-  </footer>
-
 {% endblock page %}
+  </div>
 </div>
+
+<footer role="contentinfo">
+  <div class="container">
+
+  <div id="hcard-mozilla" class="author vcard">
+    <small>copyright &copy; 2011</small>
+    <strong class="fn org">Mozilla</strong>
+    <div class="adr">
+      <span class="street-address">650 Castro St, Suite 300</span>,
+      <span class="locality">Mountain View</span>,
+      <span class="region">CA</span>
+      <span class="postal-code">94041-2021</span>
+    </div>
+  </div>
+
+  </div>
+</footer>
 
 {% endblock site %}
