@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+"""
+Generate a vendor-lib in the specified directory, including all project
+requirements. Removes and recreates any "lib/" subdirectory of the target
+directory.
+
+Due to bugs in pip's "--ignore-installed" flag, this should always be run
+inside an empty no-site-packages virtualenv.
+
+Usage: %s directory-path [install-type]
+
+install_type, if present should be one of "dev" or "prod" (defaults to "prod").
+
+"""
+import os.path
+import shutil
+import sys
+import tempfile
+
+import pip
+
+def main(base_dir, argv):
+    reqs_dir = os.path.join(base_dir, "requirements")
+    dist_dir = os.path.join(reqs_dir, "dist")
+
+    install_type = "prod"
+
+    args = argv[1:]
+    if not args or args[0] in ["-h", "-?", "--help"]:
+        print __doc__ % argv[0]
+        return 0
+    else:
+        target_dir = os.path.join(args[0], "lib")
+        if len(args) > 1:
+            install_type = args[1]
+
+    reqs_file = os.path.join(reqs_dir, "%s.txt" % install_type)
+    if not os.path.isfile(reqs_file):
+        print "Requirements file %s does not exist or is not a file." % reqs_file
+        print
+        return 1
+
+    tmp_dir = tempfile.mkdtemp("ccui-generate-vendor-lib")
+
+    retval = 0
+    try:
+        args = ["install", "--no-index", "--ignore-installed",
+                '--install-option=--home=%s' % tmp_dir,
+                "-f", "file://%s" % dist_dir, "-r", reqs_file]
+        print "Running 'pip %s'" % ", ".join(args)
+        retval = pip.main(args)
+        if os.path.exists(target_dir):
+            shutil.rmtree(target_dir)
+        shutil.copytree(
+            os.path.join(tmp_dir, "lib", "python"),
+            os.path.join(target_dir, "python")
+            )
+    finally:
+        shutil.rmtree(tmp_dir)
+
+    return retval
+
+
+if __name__ == "__main__":
+    script = os.path.realpath(os.path.abspath(__file__))
+    sys.exit(main(os.path.dirname(os.path.dirname(script)), sys.argv))
