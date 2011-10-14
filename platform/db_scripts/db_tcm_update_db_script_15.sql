@@ -17,7 +17,6 @@
  *
  * copyright 2011 by uTest 
  */
-USE  tcm;
 set foreign_key_checks = 0;
 
 

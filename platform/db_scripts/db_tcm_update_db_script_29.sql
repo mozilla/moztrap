@@ -1,0 +1,1 @@
+ALTER TABLE SignInFact ADD (deleted TINYINT(1) DEFAULT '0');
