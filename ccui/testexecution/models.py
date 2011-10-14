@@ -22,7 +22,7 @@ Remote objects related to the test-execution side of testing.
 from django.core.urlresolvers import reverse
 
 from ..core.api import Activatable, RemoteObject, ListObject, Named, fields
-from ..core.models import CategoryValueInfoList, Company
+from ..core.models import CategoryValueInfo, CategoryValueInfoList, Company
 from ..environments.models import (
     ExplodedEnvironmentGroupList, EnvironmentGroupList, EnvironmentList)
 from ..products.models import Product
@@ -57,6 +57,10 @@ class TestCycle(Named, Activatable, RemoteObject):
     resultstatus = fields.Link(
         CategoryValueInfoList,
         api_name="reports/coverage/resultstatus",
+        cache="TestResultList")
+    completionstatus = fields.Link(
+        CategoryValueInfo,
+        api_name="reports/coverage/percentcomplete",
         cache="TestResultList")
 
     non_field_filters = {
@@ -95,6 +99,10 @@ class TestCycle(Named, Activatable, RemoteObject):
 
     def resultsummary(self):
         return self.resultstatus.to_dict(TestResultStatus)
+
+
+    def percentcomplete(self):
+        return self.completionstatus.categoryValue
 
 
     def deactivate(self, **kwargs):
@@ -229,6 +237,11 @@ class TestRun(Named, Activatable, RemoteObject):
     def resultsummary(self):
         return self.testCycle.resultstatus.raw_filter(
             testRunId=self.id).to_dict(TestResultStatus)
+
+
+    def percentcomplete(self):
+        return self.testCycle.completionstatus.raw_filter(
+            testRunId=self.id).categoryValue
 
 
 
