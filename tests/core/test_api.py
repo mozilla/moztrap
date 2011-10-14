@@ -380,8 +380,8 @@ class ResourceObjectTest(TestResourceTestCase):
 
     def test_cache_attribute_as_bucketname_non_GET(self, http):
         http.request.return_value = response(self.builder.one())
-        obj = self.resource_class.get("/testresources/1", auth=self.auth)
         with patch.object(self.resource_class, "cache", "altbucket"):
+            obj = self.resource_class.get("/testresources/1", auth=self.auth)
             with patch("ccui.core.api.CachingHttpWrapper") as mock:
                 mock.return_value.request.return_value = http.request.return_value
                 obj.put()

@@ -97,9 +97,9 @@ class ResultSummaryTest(object):
                 "PENDING": 159,
                 "STARTED": 1,
                 })
-        # 5 requests: get result, get summary (next one cached), start,
-        # finishsucceed, newsummary
-        self.assertEqual(http.request.call_count, 5)
+        # 6 requests: get object, get result, get summary (next one cached),
+        # start, finishsucceed, newsummary
+        self.assertEqual(http.request.call_count, 6)
 
 
 
@@ -119,7 +119,10 @@ class TestCycleTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         http.request.return_value = response(testcycles.one(
                 resourceIdentity=make_identity(url="testcycles/1")))
 
-        return self.resource_class.get("testcycles/1")
+        obj = self.resource_class.get("testcycles/1")
+        obj.deliver()
+
+        return obj
 
 
     def test_unicode(self, http):
@@ -207,7 +210,10 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
         http.request.return_value = response(testruns.one(
                 resourceIdentity=make_identity(url="testruns/1")))
 
-        return self.resource_class.get("testruns/1")
+        obj = self.resource_class.get("testruns/1")
+        obj.deliver()
+
+        return obj
 
 
     def test_unicode(self, http):

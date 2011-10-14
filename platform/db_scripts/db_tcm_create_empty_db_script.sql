@@ -17,11 +17,6 @@
  *
  * copyright 2010 by uTest 
  */
-DROP DATABASE IF EXISTS tcm;
-CREATE DATABASE tcm;
-GRANT ALL PRIVILEGES ON tcm.* TO 'root'@'localhost' IDENTIFIED BY '';
-
-USE  tcm;
 set foreign_key_checks = 0;
 
 -- 

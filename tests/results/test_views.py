@@ -219,7 +219,7 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
 
     def per_item_responses(self, item_id):
         return {
-            "http://fake.base/rest/testruns/%s/reports/coverage/resultstatus?_type=json" % item_id:
+            "http://fake.base/rest/testcycles/1/reports/coverage/resultstatus?_type=json&testRunId=%s" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
             }
 

@@ -247,6 +247,7 @@ class ObjectMixin(StrAndUnicode):
                 cls.cache_dependent_buckets(url_id))
         obj = super(ObjectMixin, cls).get(url, **kwargs)
         obj.auth = auth
+        obj.cache = cache
         return obj
 
 
@@ -725,8 +726,18 @@ class ListObject(ObjectMixin, remoteobjects.ListObject):
                     encode = None
                 filters[submit] = util.prep_for_query(v, encode)
 
+        filters["auth"] = auth
+
+        return self.raw_filter(**filters)
+
+
+    def raw_filter(self, **kwargs):
+        auth = kwargs.pop("auth", self.auth)
+        cache = kwargs.pop("cache", self.cache)
         return self.get(
-            util.narrow_querystring(self._location, **filters), auth=auth)
+            util.narrow_querystring(self._location, **kwargs),
+            auth=auth,
+            cache=cache)
 
 
     def sort(self, field, direction=sort.DEFAULT):

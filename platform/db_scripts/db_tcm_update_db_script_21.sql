@@ -1,4 +1,4 @@
-USE tcm;
+
 
 drop view if exists EnvironmentView;
 CREATE VIEW EnvironmentView

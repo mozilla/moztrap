@@ -141,10 +141,6 @@ class TestRun(Named, Activatable, RemoteObject):
     includedtestcases = fields.Link("TestRunIncludedTestCaseList")
     team = fields.Link(Team, api_name="team/members")
     testsuites = fields.Link(TestSuiteList, cache="IncludedTestSuiteList")
-    resultstatus = fields.Link(
-        CategoryValueInfoList,
-        api_name="reports/coverage/resultstatus",
-        cache="TestResultList")
 
     non_field_filters = {
         "testSuite": "includedTestSuiteId",
@@ -231,7 +227,8 @@ class TestRun(Named, Activatable, RemoteObject):
 
 
     def resultsummary(self):
-        return self.resultstatus.to_dict(TestResultStatus)
+        return self.testCycle.resultstatus.raw_filter(
+            testRunId=self.id).to_dict(TestResultStatus)
 
 
 
@@ -277,15 +274,9 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
 
 
     def resultsummary(self):
-        # @@@ this is too slow to be usable, should be done platform-side
-        base = dict([(ev.enumname, 0) for ev in TestResultStatus])
-
-        results = TestResultList.get(auth=self.auth).filter(
-            testRun=self.testRun.id,
-            testCaseVersion=self.testCaseVersion.id)
-        for result in results:
-            base[result.status.status.enumname] += 1
-        return base
+        return self.testRun.testCycle.resultstatus.raw_filter(
+            testRunId=self.testRun.id, testCaseId=self.testCase.id).to_dict(
+            TestResultStatus)
 
 
     def suite_resultsummary(self):
