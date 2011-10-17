@@ -1,10 +1,6 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
-{% block page-notes %}
-  <p>Completion percentages are inactive (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=651174">no API in platform</a>).</p>
-{% endblock %}
-
 {% block listcontent %}
 <section id="caseresults">
   <h2>Test Case Results</h2>
@@ -19,7 +15,9 @@
         <h3 class="navhead">List Ordering</h3>
         <ul>
           <li class="bystatus">status</li> {# @@@ can't sort on this #}
+          {% comment %}@@@ no API yet
           <li class="bycompletion">%</li> {# @@@ should be sortable #}
+          {% endcomment %}
           <li class="bytitle">
             <a href="{{ sort|url:"testCase" }}" class="{{ sort|dir:"testCase" }}">name</a>
           </li>
@@ -46,7 +44,7 @@
               <p class="status">
                 <span class="{{ itc.testCaseVersion.status|status_class }}">{{ itc.testCaseVersion.status|lower }}</span>
               </p>
-              <p class="completion" data-perc="75">75%</p> {# @@@ faked #}
+              {# @@@ no API <p class="completion" data-perc="75">75%</p> #}
               <hgroup>
                 <h3 class="title" title="{{ itc.testCase.name }}">{{ itc.testCase.name }}</h3>
                 <h4 class="run" title="{{ itc.testRun.name }}">{{ itc.testRun.name }}</h4>
