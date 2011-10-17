@@ -4754,49 +4754,199 @@ footer[role="contentinfo"] small {
   overflow: hidden;
   *zoom: 1;
 }
-#single-case-form .version-select {
+#single-case-form .versioned .basic {
   clear: both;
-  padding-left: 33.684%;
-  padding-right: 37.895%;
+}
+
+.version-select {
+  clear: both;
+  padding-left: 25.263%;
+  padding-right: 25.263%;
   overflow: hidden;
   *zoom: 1;
   padding-top: 1.618em;
-  margin-bottom: 0.809em;
   position: relative;
 }
-#single-case-form .version-select::before, #single-case-form .version-select::after {
+.version-select::before, .version-select::after {
   content: " ";
   display: block;
   position: absolute;
   top: 2.832em;
   border-top: 2px dashed rgba(72, 78, 85, 0.382);
+  width: 24.211%;
 }
-#single-case-form .version-select::before {
+.version-select::before {
   left: 0;
-  width: 32.632%;
 }
-#single-case-form .version-select::after {
+.version-select::after {
   right: 0;
-  width: 36.842%;
 }
-#single-case-form .version-select label {
+.version-select label {
   display: inline;
   float: left;
-  width: 40.741%;
-  margin-right: 3.704%;
+  width: 31.915%;
+  margin-right: 2.128%;
   text-align: right;
 }
-#single-case-form .version-select select {
+.version-select select {
   display: inline;
   float: left;
-  width: 55.556%;
-  margin-right: 3.704%;
+  width: 23.404%;
+  margin-right: 2.128%;
+}
+.version-select .version-toggle {
+  display: inline;
+  float: left;
+  width: 40.426%;
+  margin-right: 2.128%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  padding-top: 0.405em;
+  font-style: italic;
+}
+
+.version-details {
+  clear: both;
+  margin-bottom: 0.809em;
+  border-bottom-style: solid;
+  border-bottom-width: 0.143em;
+  padding-bottom: 0.666em;
+  border-style: dashed;
+  border-color: rgba(72, 78, 85, 0.382);
+}
+.version-details p, .version-details ul {
+  margin-bottom: 0em;
+}
+.version-details .versioncontent {
+  font-weight: normal;
+  display: none;
+}
+.version-details .byversion {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+  text-align: right;
+}
+.version-details .bydateauthor {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+.version-details .byruns, .version-details .bycycles {
+  display: inline;
+  float: left;
+  width: 32.632%;
+  margin-right: 1.053%;
+}
+.version-details .bymore {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.version-details .versioninfo {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
+}
+.version-details .version {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  width: 36.842%;
+  margin-right: 5.263%;
+  padding-left: 0.405em;
+  text-align: right;
+}
+.version-details .updated, .version-details .author {
+  display: inline;
+  float: left;
+  width: 57.895%;
+  margin-right: 5.263%;
   display: inline;
   float: right;
   margin-right: 0;
 }
-#single-case-form .versioned .basic {
-  clear: both;
+.version-details .updated {
+  font-weight: 500;
+}
+.version-details .author {
+  font-style: italic;
+}
+.version-details .runlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: inline;
+  float: left;
+  width: 66.316%;
+  margin-right: 1.053%;
+}
+.version-details .runlist li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.version-details .runlist li:first-child {
+  font-weight: 500;
+}
+.version-details .runlist li:nth-child(2) ~ li {
+  display: none;
+}
+.version-details .moreruns {
+  display: inline;
+  float: left;
+  width: 3.158%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  font-style: italic;
+}
+.version-details .run, .version-details .cycle {
+  display: inline;
+  float: left;
+  width: 49.206%;
+  margin-right: 1.587%;
+}
+.version-details .cycle {
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+.version-details .select {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.version-details .select:checked + .versioncontent {
+  display: block;
+}
+.version-details .listordering {
+  display: none;
+}
+.version-details.open .versioncontent, .version-details.open .listordering {
+  display: block;
+}
+.version-details.open .select:checked + .versioncontent {
+  background: rgba(204, 236, 167, 0.382);
 }
 
 /* Create User -------------------------------------------------------------- */

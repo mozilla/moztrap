@@ -13,6 +13,31 @@
 
     <div class="version-select">
       {% include "forms/_field.html" with field=form.version label="Edit Version" %}
+      <a href="#" class="version-toggle">show version details &raquo;</a>
+    </div>
+    <div class="version-details managelist open">
+      <nav class="listordering">
+        <h3 class="navhead">List Ordering</h3>
+        <ul>
+          <li class="byversion">
+            <span>version</span>
+          </li>
+          <li class="bydateauthor">
+            <span>date and author</span>
+          </li>
+          <li class="byruns">
+            <span>recent run</span>
+          </li>
+          <li class="bycycles">
+            <span>related cycle</span>
+          </li>
+          <li class="bymore">
+            <span>more</span>
+          </li>
+        </ul>
+      </nav>
+      {% include "manage/product/testcase/_case_form_version_list_item.html" with id="01" %}
+      {% include "manage/product/testcase/_case_form_version_list_item.html" with id="02" %}
     </div>
   </div>
 {% endblock versionform %}
