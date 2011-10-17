@@ -15,14 +15,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-// Mixins --------------------------------------------------------------------
-
-=colorwheel($select)
-  @for $i from 1 through 24
-    &:nth-of-type(24n-#{$i})
-      #{$select}
-        $deg: ($i - 1)*15deg
-        background-color: adjust-hue($green-lighter,$deg)
 
 /* Filtering -----------------------------------------------------------------
 
@@ -165,8 +157,6 @@
             content: "show "
           &::after
             content: " »"
-    .filter-group
-      +colorwheel(label)
     .long
       height: auto !important
     h5
@@ -192,7 +182,6 @@
           +omega(24)
         &:nth-of-type(8n+1)
           clear: left
-        +colorwheel(h5)
     .long
       overflow: hidden
       height: rhythm(5,12px)
