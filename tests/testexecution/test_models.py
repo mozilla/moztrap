@@ -67,6 +67,8 @@ class ResultSummaryTest(object):
         result = TestResult.get("testruns/results/1")
         result.deliver()
 
+        starting_call_count = http.request.call_count
+
         with locmem_cache():
             http.request.return_value = response(
                 cvis.array({"categoryName": 1, "categoryValue": 160}))
@@ -97,9 +99,12 @@ class ResultSummaryTest(object):
                 "PENDING": 159,
                 "STARTED": 1,
                 })
-        # 6 requests: get object, get result, get summary (next one cached),
-        # start, finishsucceed, newsummary
-        self.assertEqual(http.request.call_count, 6)
+        # 4 requests: get summary (next one cached),
+        #             start, finishsucceed, newsummary
+        self.assertEqual(
+            http.request.call_count - starting_call_count,
+            4,
+            http.request.call_args_list)
 
 
 
@@ -208,7 +213,7 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
     def get_one(self, http):
         http.request.return_value = response(testruns.one(
-                resourceIdentity=make_identity(url="testruns/1")))
+                _url="testruns/1"))
 
         obj = self.resource_class.get("testruns/1")
         obj.deliver()
@@ -440,7 +445,8 @@ class TestRunTest(BaseResourceTest, ResultSummaryTest, ResourceTestCase):
 
 
 @patch("ccui.core.api.userAgent")
-class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
+class TestRunIncludedTestCaseTest(
+    BaseResourceTest, ResultSummaryTest, ResourceTestCase):
     def get_resource_class(self):
         from ccui.testexecution.models import TestRunIncludedTestCase
         return TestRunIncludedTestCase
@@ -451,87 +457,16 @@ class TestRunIncludedTestCaseTest(BaseResourceTest, ResourceTestCase):
         return TestRunIncludedTestCaseList
 
 
-    def test_resultsummary(self, http):
-        setup_common_responses(http, {
-                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
-                    response(testrunitcs.one()),
+    def get_one(self, http):
+        http.request.return_value = response(testrunitcs.one(
+                _url="testruns/1/includedtestcases/1"))
 
-                "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
-                    response(testresults.searchresult(
-                        {"testRunResultStatusId": 1},
-                        {"testRunResultStatusId": 1},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 5},
-                        )),
-            })
+        obj = self.resource_class.get("testruns/1/includedtestcases/1")
+        obj.deliver()
 
+        http.request.return_value = response(testruns.one(
+                _url="testruns/1"))
 
-        c = self.resource_class.get("testruns/includedtestcases/1")
+        obj.testRun.deliver()
 
-        self.assertEqual(
-            c.resultsummary(),
-            {
-                "BLOCKED": 0,
-                "FAILED": 0,
-                "INVALIDATED": 0,
-                "PASSED": 3,
-                "PENDING": 2,
-                "STARTED": 1,
-                })
-
-
-    def test_suite_resultsummary(self, http):
-        setup_common_responses(http, {
-                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
-                    response(testrunitcs.one(
-                        testSuiteId=1,
-                        testSuiteLocator=make_locator(
-                            id=1, url="testsuites/1"))),
-
-                "http://fake.base/rest/testruns/results?_type=json&testSuiteId=1&testRunId=1": response(
-                    testresults.searchresult(
-                        {"testRunResultStatusId": 1},
-                        {"testRunResultStatusId": 1},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 2},
-                        {"testRunResultStatusId": 5},
-                        )),
-            })
-
-
-        c = self.resource_class.get("testruns/includedtestcases/1")
-
-        self.assertEqual(
-            c.suite_resultsummary(),
-            {
-                "BLOCKED": 0,
-                "FAILED": 0,
-                "INVALIDATED": 0,
-                "PASSED": 3,
-                "PENDING": 2,
-                "STARTED": 1,
-                })
-
-
-    def test_suite_resultsummary_no_suite(self, http):
-        setup_common_responses(http, {
-                "http://fake.base/rest/testruns/includedtestcases/1?_type=json":
-                    response(testrunitcs.one()),
-            })
-
-
-        c = self.resource_class.get("testruns/includedtestcases/1")
-
-        self.assertEqual(
-            c.suite_resultsummary(),
-            {
-                "BLOCKED": 0,
-                "FAILED": 0,
-                "INVALIDATED": 0,
-                "PASSED": 0,
-                "PENDING": 0,
-                "STARTED": 0,
-                })
+        return obj
