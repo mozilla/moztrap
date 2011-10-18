@@ -18,6 +18,7 @@
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
+from ..core.util import get_object_or_404
 from ..users.decorators import login_redirect
 from ..testexecution.models import TestRunList
 
@@ -33,7 +34,7 @@ def set_environment(request, testrun_id):
     the user's session, and redirect to that test run.
 
     """
-    run = TestRunList.get_by_id(testrun_id, auth=request.auth)
+    run = get_object_or_404(TestRunList, testrun_id, auth=request.auth)
 
     form = EnvironmentSelectionForm(
         request.POST or None,

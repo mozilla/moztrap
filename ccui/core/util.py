@@ -19,6 +19,8 @@ import collections
 import urllib
 import urlparse
 
+from django.http import Http404
+
 import remoteobjects
 
 
@@ -27,6 +29,15 @@ import remoteobjects
 # fields will raise 500 errors from the platform when it attempts the
 # conversion.
 NO_MATCH = "-999"
+
+
+def get_object_or_404(list_obj, id, **kwargs):
+    try:
+        obj = list_obj.get_by_id(id, **kwargs)
+        obj.deliver()
+        return obj
+    except list_obj.NotFound:
+        raise Http404
 
 
 def update_querystring(url, **kwargs):
