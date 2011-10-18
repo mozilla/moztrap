@@ -1,12 +1,63 @@
 from mock import patch
+from unittest2 import TestCase
 
 from ..core.builders import cvis
-from ..responses import make_identity, response, make_boolean, make_locator
+from ..responses import make_identity, response, make_boolean
 from ..testcases.builders import testsuites, testcaseversions
-from ..utils import (
-    BaseResourceTest, ResourceTestCase, setup_common_responses, locmem_cache,
-    Url)
+from ..utils import BaseResourceTest, ResourceTestCase, locmem_cache, Url
 from .builders import testcycles, testruns, testrunitcs, testresults
+
+
+
+class RoundPercentTest(TestCase):
+    """
+    These tests assert identity rather than equality, because we really want an
+    integer here, and 1.0 == 1.
+
+    """
+    def func(self, val):
+        from ccui.testexecution.models import round_percent
+        return round_percent(val)
+
+
+    def test_none(self):
+        self.assertIs(self.func(None), 0)
+
+
+    def test_zero(self):
+        self.assertIs(self.func(0), 0)
+
+
+    def test_empty_string(self):
+        self.assertIs(self.func(""), 0)
+
+
+    def test_zero_in_string(self):
+        self.assertIs(self.func("0"), 0)
+
+
+    def test_fraction_in_string(self):
+        self.assertIs(self.func("0.625"), 1)
+
+
+    def test_float(self):
+        self.assertIs(self.func(0.625), 1)
+
+
+    def test_99(self):
+        """
+        We don't ever want to see 100% unless it's really 100%.
+
+        """
+        self.assertIs(self.func(99.9), 99)
+
+
+    def test_0(self):
+        """
+        We don't ever want to see 0% unless it's really 0%.
+
+        """
+        self.assertIs(self.func(0.01), 1)
 
 
 
