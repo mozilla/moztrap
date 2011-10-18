@@ -161,6 +161,8 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testcycles/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
+            "http://fake.base/rest/testcycles/%s/reports/coverage/percentcomplete?_type=json" % item_id:
+                response(cvis.one()),
             }
 
 
@@ -204,7 +206,9 @@ class TestRunResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testcycles/1/reports/coverage/resultstatus?_type=json&testRunId=%s" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
-            }
+            "http://fake.base/rest/testcycles/1/reports/coverage/percentcomplete?_type=json&testRunId=%s" % item_id:
+                response(cvis.one()),
+                }
 
 
     def per_item_ajax_detail_responses(self, item_id):
@@ -246,13 +250,17 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
             # runs for filtering on
             "http://fake.base/rest/testruns?_type=json&testRunStatusId=2&testRunStatusId=3":
                 response(testruns.searchresult({})),
-            }
+            "http://fake.base/rest/testruns/1?_type=json":
+                response(testruns.one(_url="testruns/1")),
+                }
 
 
     def per_item_responses(self, item_id):
         return {
             "http://fake.base/rest/testcases/versions/%s?_type=json" % item_id:
                 response(testcaseversions.one()),
+            "http://fake.base/rest/testcycles/1/reports/coverage/resultstatus?_type=json&testRunId=1&testCaseId=%s" % item_id:
+                response(cvis.array({"categoryName": 1, "categoryValue": 160})),
             }
 
 
@@ -342,9 +350,10 @@ class TestResultsViewTest(ViewTestCase, ListViewTests):
                 response(testcaseversions.one(
                     resourceIdentity=make_identity(
                         id=1, url="testcases/versions/1"))),
-            # calculating summary results for included-case header
-            "http://fake.base/rest/testruns/results?_type=json&testCaseVersionId=1&testRunId=1":
-                response(testresults.searchresult({})),
+            "http://fake.base/rest/testruns/1?_type=json":
+                response(testruns.one(_url="testruns/1")),
+            "http://fake.base/rest/testcycles/1/reports/coverage/resultstatus?_type=json&testRunId=1&testCaseId=1":
+                response(cvis.array({"categoryName": 1, "categoryValue": 160})),
             "http://fake.base/rest/testcases/versions/1/steps?_type=json":
                 response(testcasesteps.array({})),
             "http://fake.base/rest/testcases/versions/1/attachments?_type=json":
