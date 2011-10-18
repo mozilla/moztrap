@@ -1,6 +1,7 @@
 import floppyforms as forms
 
 from ..core.auth import admin
+from ..core.conf import conf
 from ..core.forms import RemoteObjectForm
 
 from .models import User, UserList
@@ -34,6 +35,9 @@ class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
                 self.cleaned_data["email"],
                 self.cleaned_data["password"]
                 )
+            # disallow logging in as system admin user
+            if self.user.email == conf.CC_ADMIN_USER:
+                self.user = None
             if self.user is None:
                 raise forms.ValidationError(
                     "That email/password combination doesn't match "
