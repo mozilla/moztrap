@@ -137,8 +137,10 @@ def locmem_cache():
     cache.clear()
     patcher = patch("ccui.core.cache.cache", cache)
     patcher.start()
-    yield cache
-    patcher.stop()
+    try:
+        yield cache
+    finally:
+        patcher.stop()
 
 
 

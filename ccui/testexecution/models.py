@@ -275,19 +275,6 @@ class TestRunIncludedTestCase(TestSuiteIncludedTestCase):
             TestResultStatus)
 
 
-    def suite_resultsummary(self):
-        # @@@ this is too slow to be usable, should be done platform-side
-        base = dict([(ev.enumname, 0) for ev in TestResultStatus])
-
-        if self.testSuite is not None:
-            results = TestResultList.get(auth=self.auth).filter(
-                testRun=self.testRun.id,
-                testSuite=self.testSuite.id)
-            for result in results:
-                base[result.status.status.enumname] += 1
-        return base
-
-
 
 class TestRunIncludedTestCaseList(ListObject):
     entryclass = TestRunIncludedTestCase
