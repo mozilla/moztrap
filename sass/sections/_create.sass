@@ -439,10 +439,6 @@
 .version-details
   +full(24)
   +trailer(.5)
-  +trailing-border(2px,.5)
-  border:
-    style: dashed
-    color: rgba($blue-darker,$xsmall)
   p, ul
     +trailer(0)
   .versioncontent
@@ -501,6 +497,10 @@
     display: none
 
   &.open
+    +trailing-border(2px,.5)
+    border:
+      style: dashed
+      color: rgba($blue-darker,$xsmall)
     .versioncontent, .listordering
       display: block
     .select

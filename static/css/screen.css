@@ -4809,11 +4809,6 @@ footer[role="contentinfo"] small {
 .version-details {
   clear: both;
   margin-bottom: 0.809em;
-  border-bottom-style: solid;
-  border-bottom-width: 0.143em;
-  padding-bottom: 0.666em;
-  border-style: dashed;
-  border-color: rgba(72, 78, 85, 0.382);
 }
 .version-details p, .version-details ul {
   margin-bottom: 0em;
@@ -4941,6 +4936,13 @@ footer[role="contentinfo"] small {
 }
 .version-details .listordering {
   display: none;
+}
+.version-details.open {
+  border-bottom-style: solid;
+  border-bottom-width: 0.143em;
+  padding-bottom: 0.666em;
+  border-style: dashed;
+  border-color: rgba(72, 78, 85, 0.382);
 }
 .version-details.open .versioncontent, .version-details.open .listordering {
   display: block;
