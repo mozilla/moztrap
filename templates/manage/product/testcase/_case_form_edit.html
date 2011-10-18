@@ -11,33 +11,17 @@
       </li>
     </ul>
 
-    <div class="version-select">
-      {% include "forms/_field.html" with field=form.version label="Edit Version" %}
-      <a href="#" class="version-toggle">show version details &raquo;</a>
-    </div>
-    <div class="version-details managelist open">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="byversion">
-            <span>version</span>
-          </li>
-          <li class="bydateauthor">
-            <span>date and author</span>
-          </li>
-          <li class="byruns">
-            <span>recent run</span>
-          </li>
-          <li class="bycycles">
-            <span>related cycle</span>
-          </li>
-          <li class="bymore">
-            <span>more</span>
-          </li>
-        </ul>
-      </nav>
-      {% include "manage/product/testcase/_case_form_version_list_item.html" with id="01" %}
-      {% include "manage/product/testcase/_case_form_version_list_item.html" with id="02" %}
+    <div class="version-select details">
+      <p class="summary">Edit <strong>v1 (latest)</strong> <em>or select a different version &raquo;</em></p>
+      <div class="content">
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="01" check="checked" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="02" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="03" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="04" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="05" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="06" %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="07" %}
+      </div>
     </div>
   </div>
 {% endblock versionform %}

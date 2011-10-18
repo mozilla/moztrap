@@ -149,7 +149,8 @@
     +box-sizing(border-box)
     border: 1px solid $blue
     height: rhythm(12)
-    background: $blue-lightest
+    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
+    background: rgba($blue-dark,$xxxsmall)
     overflow-y: scroll
     resize: vertical
 
@@ -187,7 +188,7 @@
   input
     +gone
     &:checked + .body
-      +background(rgba($green-lighter,$xxsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+      +background(rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
       .selected &
         background-color: rgba($red-lighter,$xxsmall)
       .bulkselect
@@ -195,9 +196,8 @@
         background-image: image-url('ui/check.png')
   .body
     +clearfix
-    +trailing-border(1px,.25)
-    +padding-leader(.25)
-    border-color: $blue-light
+    +rhythm(0,.25,.25,0)
+    +background(linear-gradient(top, rgba($blue-light,$xxxsmall), rgba($blue-light,0) $xsmallem))
   .bulkselect
     +icon-replace('ui/grip.png')
     +opacity(.25)
@@ -410,102 +410,84 @@
 
 .version-select
   +full(24)
-  +pad(6,6,24)
+  +pad(2,2,24)
   +clearfix
   +padding-leader
+  +trailer(.5)
   position: relative
   &::before, &::after
     content: " "
     display: block
     position: absolute
-    top: rhythm(1.75)
+    top: rhythm(1.5)
     border-top: 2px dashed rgba($blue-darker,$xsmall)
-    width: columns(6,24)
+    width: columns(7,24)
   &::before
     left: 0
   &::after
     right: 0
-  label
-    +columns(4,12)
-    text-align: right
-  select
-    +columns(3,12)
-  .version-toggle
-    +columns(5,12)
-    +omega(12)
-    +padding-leader(.25)
-    +italic
-
-.version-details
-  +full(24)
-  +trailer(.5)
-  p, ul
-    +trailer(0)
-  .versioncontent
-    +font-weight-normal
-    display: none
-
-  .byversion
-    +columns(2,24)
-    text-align: right
-  .bydateauthor
-    +columns(3,24)
-  .byruns, .bycycles
-    +columns(8,24)
-  .bymore
-    +gone
-
-  .versioninfo
-    +columns(5,24)
-  .version
-    +box-sizing(border-box)
-    +columns(2,5)
-    padding-left: rhythm(.25)
-    text-align: right
-  .updated, .author
-    +columns(3,5)
-    +omega(5)
-  .updated
-    +demi
-  .author
-    +italic
-
-  .runlist
-    +no-style-list
-    +columns(16,24)
-    li
-      &:first-child
-        +demi
-      &:nth-child(2) ~ li
-        display: none
-
-  .moreruns
-    +columns(1,24)
-    +omega(24)
-    +italic
-  .run, .cycle
-    +columns(8,16)
-  .cycle
-    +omega(16)
-
-  .select
-    +gone
-    &:checked + .versioncontent
-      display: block
-
-  .listordering
-    display: none
-
   &.open
     +trailing-border(2px,.5)
     border:
       style: dashed
       color: rgba($blue-darker,$xsmall)
-    .versioncontent, .listordering
-      display: block
-    .select
-      &:checked + .versioncontent
-        background: rgba($green-lighter,$xsmall)
+
+  .summary
+    +pad(5,5,20)
+    +trailer(0)
+    +demi
+    color: rgba($blue-dark,$small)
+    text-align: center
+    text-transform: capitalize
+    strong
+      +bold
+      color: $base
+      text-transform: uppercase
+    em
+      text-transform: none
+  .content
+    +rhythm(.25,0,0,.25)
+    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
+    height: rhythm(12)
+    background: rgba($blue-dark,$xxxsmall)
+    overflow-y: scroll
+    resize: vertical
+
+  .version
+    @extend .selectitem
+  .body
+    +font-weight-normal
+    display: block
+  .versioninfo
+    +columns(4,20)
+    text-align: right
+  .runs
+    +columns(15,20)
+    +omega(20)
+  .runlist
+    margin: 0
+    padding: 0
+
+  .cycle, .info
+    color: rgba($blue-darker,$small)
+  .run, .cycle
+    display: inline
+  .run
+    +demi
+  .cycle
+    &::before
+      content: "["
+    &::after
+      content: "]"
+
+  .moreruns
+    +italic
+    color: $alt
+
+  input
+    +gone
+  p
+    +trailer(0)
 
 /* Create User --------------------------------------------------------------
 

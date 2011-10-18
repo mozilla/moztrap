@@ -1,33 +1,22 @@
-<article id="version-id-{{ id }}">
-  <input type="radio" name="version" value="" id="version-{{ id }}" class="select">
-  <label for="version-{{ id }}" class="versioncontent item">
+<article id="version-id-{{ id }}" class="version">
+  <input type="radio" name="version" value="" id="version-{{ id }}" class="select" {{ check }}>
+  <label for="version-{{ id }}" class="body">
     <header class="versioninfo">
-      <h3 class="version">v{{ id }} (latest)</h3>
-      <time datetime="" class="updated">09/24/2011</time>
-      <p class="author">by user name</p>
+      <h3><time datetime="" class="updated" pubdate updated>09/24/2011</time></h3>
+      <p class="info">v{{ id }} <em>by user name</em></p>
     </header>
-    <ul class="runlist">
-      <li>
-        <p class="run">run names can sometimes get very very long</p>
-        <p class="cycle">cycle names can also be fairly long</p>
-      </li>
-      <li>
-        <p class="run">run name</p>
-        <p class="cycle">cycle name</p>
-      </li>
-      <li>
-        <p class="run">run name</p>
-        <p class="cycle">cycle name</p>
-      </li>
-      <li>
-        <p class="run">run name</p>
-        <p class="cycle">cycle name</p>
-      </li>
-      <li>
-        <p class="run">run name</p>
-        <p class="cycle">cycle name</p>
-      </li>
-    </ul>
-    <p class="moreruns">more &raquo;</p>
+    <div class="runs">
+      <ol class="runlist">
+        <li>
+          <p class="run">Run Names Can Sometimes Get Very Very Long</p>
+          <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
+        </li>
+        <li>
+          <p class="run">Run Names Can Sometimes Get Very Very Long</p>
+          <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
+        </li>
+      </ol>
+      <span class="moreruns">show more runs &raquo;</span>
+    </div>
   </label>
 </article>
