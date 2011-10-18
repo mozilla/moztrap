@@ -10,6 +10,7 @@ from django.views.decorators.cache import never_cache
 from ..core import decorators as dec
 from ..core.conf import conf
 from ..core.filters import KeywordFilter
+from ..core.util import get_object_or_404
 from ..environments.filters import EnvironmentFilter
 from ..environments.models import (
     EnvironmentTypeList, EnvironmentType, EnvironmentGroupList, EnvironmentList,
@@ -86,7 +87,7 @@ def add_user(request):
 @never_cache
 @login_redirect
 def edit_user(request, user_id):
-    user = UserList.get_by_id(user_id, auth=request.auth)
+    user = get_object_or_404(UserList, user_id, auth=request.auth)
     form = UserForm(
         request.POST or None,
         instance=user,
@@ -181,7 +182,7 @@ def add_product(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def edit_product(request, product_id):
-    product = ProductList.get_by_id(product_id, auth=request.auth)
+    product = get_object_or_404(ProductList, product_id, auth=request.auth)
     form = ProductForm(
         request.POST or None,
         instance=product,
@@ -260,7 +261,7 @@ def add_testcycle(request):
 @dec.sort("testruns")
 @dec.ajax("manage/product/testcycle/_runs_list.html")
 def edit_testcycle(request, cycle_id):
-    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    cycle = get_object_or_404(TestCycleList, cycle_id, auth=request.auth)
     form = TestCycleForm(
         request.POST or None,
         instance=cycle,
@@ -291,7 +292,7 @@ def edit_testcycle(request, cycle_id):
 
 @login_redirect
 def testcycle_details(request, cycle_id):
-    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    cycle = get_object_or_404(TestCycleList, cycle_id, auth=request.auth)
     return TemplateResponse(
         request,
         "manage/product/testcycle/_cycle_details.html",
@@ -354,7 +355,7 @@ def add_testrun(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def edit_testrun(request, run_id):
-    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    run = get_object_or_404(TestRunList, run_id, auth=request.auth)
     form = TestRunForm(
         request.POST or None,
         instance=run,
@@ -383,7 +384,7 @@ def edit_testrun(request, run_id):
 
 @login_redirect
 def testrun_details(request, run_id):
-    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    run = get_object_or_404(TestRunList, run_id, auth=request.auth)
     return TemplateResponse(
         request,
         "manage/product/testrun/_run_details.html",
@@ -442,7 +443,7 @@ def add_testsuite(request):
 @login_redirect
 @dec.finder(ManageFinder)
 def edit_testsuite(request, suite_id):
-    suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
+    suite = get_object_or_404(TestSuiteList, suite_id, auth=request.auth)
     form = TestSuiteForm(
         request.POST or None,
         instance=suite,
@@ -470,7 +471,7 @@ def edit_testsuite(request, suite_id):
 
 @login_redirect
 def testsuite_details(request, suite_id):
-    suite = TestSuiteList.get_by_id(suite_id, auth=request.auth)
+    suite = get_object_or_404(TestSuiteList, suite_id, auth=request.auth)
     return TemplateResponse(
         request,
         "manage/product/testsuite/_suite_details.html",
@@ -576,7 +577,7 @@ def add_testcase_bulk(request):
 @dec.finder(ManageFinder)
 @dec.ajax("manage/product/testcase/_case_form_edit_versioned_fields.html")
 def edit_testcase(request, case_id):
-    case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
+    case = get_object_or_404(TestCaseVersionList, case_id, auth=request.auth)
     form = TestCaseForm(
         request.POST or None,
         request.FILES or None,
@@ -630,7 +631,7 @@ def tags_autocomplete(request):
 
 @login_redirect
 def testcase_details(request, case_id):
-    case = TestCaseVersionList.get_by_id(case_id, auth=request.auth)
+    case = get_object_or_404(TestCaseVersionList, case_id, auth=request.auth)
     return TemplateResponse(
         request,
         "manage/product/testcase/_case_details.html",
@@ -702,7 +703,8 @@ def add_environment_profile(request):
 @dec.paginate('environments')
 @dec.ajax("manage/environment/edit_profile/_envs_list.html")
 def edit_environment_profile(request, profile_id):
-    profile = EnvironmentTypeList.get_by_id(profile_id, auth=request.auth)
+    profile = get_object_or_404(
+        EnvironmentTypeList, profile_id, auth=request.auth)
 
     if request.is_ajax() and request.method == "POST":
         if "save-profile-name" in request.POST:
@@ -772,7 +774,7 @@ OBJECT_TYPES = {
 @dec.ajax("manage/environment/narrow/_envs_list.html")
 def narrow_environments(request, object_type, object_id):
     list_cls = OBJECT_TYPES[object_type]
-    obj = list_cls.get_by_id(object_id, auth=request.auth)
+    obj = get_object_or_404(list_cls, object_id, auth=request.auth)
     if object_type == "product":
         product = obj
     else:

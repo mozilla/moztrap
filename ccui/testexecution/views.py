@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from django.contrib import messages
 
 from ..core import decorators as dec
+from ..core.util import get_object_or_404
 from ..relatedbugs.models import ExternalBug, ExternalBugList
 from ..static.status import TestRunStatus, TestCycleStatus
 from ..testexecution.models import TestRunIncludedTestCaseList
@@ -34,7 +35,7 @@ def home(request):
 
 @login_redirect
 def finder_environments(request, run_id):
-    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    run = get_object_or_404(TestRunList, run_id, auth=request.auth)
 
     return TemplateResponse(
         request,
@@ -54,7 +55,7 @@ def runtests(request, testrun_id):
     # @@@ replace with ensure_csrf_cookie decorator in Django 1.4
     get_token(request)
 
-    testrun = TestRunList.get_by_id(testrun_id, auth=request.auth)
+    testrun = get_object_or_404(TestRunList, testrun_id, auth=request.auth)
 
     if not testrun.environmentgroups_prefetch.match(request.environments):
         return redirect("runtests_environment", testrun_id=testrun_id)
@@ -94,7 +95,7 @@ ACTIONS = {
 @login_redirect
 @require_POST
 def result(request, result_id):
-    result = TestResultList.get_by_id(result_id, auth=request.auth)
+    result = get_object_or_404(TestResultList, result_id, auth=request.auth)
 
     action = request.POST.get("action", None)
     try:

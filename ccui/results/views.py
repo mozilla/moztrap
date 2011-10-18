@@ -4,6 +4,7 @@ from django.template.response import TemplateResponse
 
 from ..core import decorators as dec
 from ..core.filters import KeywordFilter
+from ..core.util import get_object_or_404
 from ..environments.filters import EnvironmentFilter
 from ..products.filters import ProductFieldFilter
 from ..static.filters import TestResultStatusFilter
@@ -47,7 +48,7 @@ def testcycles(request):
 
 @login_redirect
 def testcycle_details(request, cycle_id):
-    cycle = TestCycleList.get_by_id(cycle_id, auth=request.auth)
+    cycle = get_object_or_404(TestCycleList, cycle_id, auth=request.auth)
     return TemplateResponse(
         request,
         "results/testcycle/_cycle_details.html",
@@ -79,7 +80,7 @@ def testruns(request):
 
 @login_redirect
 def testrun_details(request, run_id):
-    run = TestRunList.get_by_id(run_id, auth=request.auth)
+    run = get_object_or_404(TestRunList, run_id, auth=request.auth)
     return TemplateResponse(
         request,
         "results/testrun/_run_details.html",
@@ -110,7 +111,7 @@ def testcases(request):
 
 @login_redirect
 def testcase_details(request, itc_id):
-    itc = TestRunIncludedTestCaseList.get_by_id(itc_id, auth=request.auth)
+    itc = get_object_or_404(TestRunIncludedTestCaseList, itc_id, auth=request.auth)
     return TemplateResponse(
         request,
         "results/testcase/_case_details.html",
@@ -129,7 +130,7 @@ def testcase_details(request, itc_id):
 @dec.paginate("results")
 @dec.sort("results", "status", "desc")
 def testresults(request, itc_id):
-    itc = TestRunIncludedTestCaseList.get_by_id(itc_id, auth=request.auth)
+    itc = get_object_or_404(TestRunIncludedTestCaseList, itc_id, auth=request.auth)
     results = TestResultList.ours(auth=request.auth).filter(
         testCaseVersion=itc.testCaseVersion.id,
         testRun=itc.testRun.id)
