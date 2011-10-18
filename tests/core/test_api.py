@@ -145,16 +145,6 @@ class ResourceObjectTest(TestResourceTestCase):
             Url("http://fake.base/rest/testresources/3/"))
 
 
-    def test_set_location(self, http):
-        # querystring is stripped off fallback location
-        c = self.resource_class()
-        c._location = "http://fake.base/rest/testresources/3/?_type=json"
-
-        self.assertEqual(
-            Url(c._location),
-            Url("http://fake.base/rest/testresources/3/"))
-
-
     def test_create(self, http):
         c = self.resource_class(name="Some TestResource")
 

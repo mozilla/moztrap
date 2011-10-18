@@ -240,7 +240,7 @@ class Link(remoteobjects.fields.Link):
         """
         if instance._location is None:
             raise AttributeError('Cannot find URL of %s relative to URL-less %s' % (self.cls.__name__, owner.__name__))
-        newurl = join(instance._location, self.api_name)
+        newurl = join(instance._location.split("?")[0], self.api_name)
         kwargs = {"auth": instance.auth}
         if self.cache is not None:
             kwargs["cache"] = self.cache
@@ -254,7 +254,7 @@ class Link(remoteobjects.fields.Link):
         if isinstance(value, (list, tuple, set)):
             value = self.cls(entries=list(value))
         value.put(
-            url=join(instance._location, self.api_name),
+            url=join(instance._location.split("?")[0], self.api_name),
             version_payload=instance,
             auth=value.auth or instance.auth,
             # Must invalidate cache for both resource being PUT to and parent
