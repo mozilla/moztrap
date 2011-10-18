@@ -19,6 +19,8 @@
 Remote objects related to the test-execution side of testing.
 
 """
+import math
+
 from django.core.urlresolvers import reverse
 
 from ..core.api import Activatable, RemoteObject, ListObject, Named, fields
@@ -34,6 +36,27 @@ from ..testcases.models import (
     TestSuiteIncludedTestCase)
 from ..users.models import User, Team
 
+
+
+def round_percent(val):
+    """
+    Takes ``val``, which is either falsy or anything coercable to a
+    float. Returns an integer: zero in the former case, the float rounded to an
+    integer in the latter case.
+
+    Rounds up when under 50 and down when over 50. This ensures that the
+    endpoints are special: we never call something "0" or "100" unless it
+    really is exactly that.
+
+    """
+    if not val:
+        return 0
+    val = float(val)
+    if val > 50:
+        val = math.floor(val)
+    else:
+        val = math.ceil(val)
+    return int(val)
 
 
 
@@ -102,7 +125,7 @@ class TestCycle(Named, Activatable, RemoteObject):
 
 
     def percentcomplete(self):
-        return self.completionstatus.categoryValue
+        return round_percent(self.completionstatus.categoryValue)
 
 
     def deactivate(self, **kwargs):
@@ -240,8 +263,8 @@ class TestRun(Named, Activatable, RemoteObject):
 
 
     def percentcomplete(self):
-        return self.testCycle.completionstatus.raw_filter(
-            testRunId=self.id).categoryValue
+        return round_percent(self.testCycle.completionstatus.raw_filter(
+            testRunId=self.id).categoryValue)
 
 
 
