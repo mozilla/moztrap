@@ -465,8 +465,10 @@
     +columns(15,20)
     +omega(20)
   .runlist
-    margin: 0
-    padding: 0
+    +reset-box-model
+    +columns(12,15)
+    li:nth-child(2) ~ li
+      display: none
 
   .cycle, .info
     color: rgba($blue-darker,$small)
@@ -481,8 +483,14 @@
       content: "]"
 
   .moreruns
+    +box-sizing(border-box)
+    +columns(3,15)
+    +omega(15)
     +italic
+    padding-right: rhythm(.5)
     color: $alt
+    text-align: right
+    white-space: nowrap
 
   input
     +gone

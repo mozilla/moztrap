@@ -11,12 +11,26 @@
           <p class="run">Run Names Can Sometimes Get Very Very Long</p>
           <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
         </li>
+      {% if runs != "less" %}
         <li>
           <p class="run">Run Names Can Sometimes Get Very Very Long</p>
           <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
         </li>
+      {% endif %}
+      {% if runs == "more" %}
+        <li>
+          <p class="run">Run Names Can Sometimes Get Very Very Long</p>
+          <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
+        </li>
+        <li>
+          <p class="run">Run Names Can Sometimes Get Very Very Long</p>
+          <p class="cycle">Cycle Names Can Also Be Fairly Long</p>
+        </li>
+      {% endif %}
       </ol>
-      <span class="moreruns">show more runs &raquo;</span>
+      {% if runs == "more" %}
+        <span class="moreruns">more runs &raquo;</span>
+      {% endif %}
     </div>
   </label>
 </article>

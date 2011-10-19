@@ -4852,6 +4852,14 @@ footer[role="contentinfo"] small {
 .version-select .runlist {
   margin: 0;
   padding: 0;
+  border: 0;
+  display: inline;
+  float: left;
+  width: 79.661%;
+  margin-right: 1.695%;
+}
+.version-select .runlist li:nth-child(2) ~ li {
+  display: none;
 }
 .version-select .cycle, .version-select .info {
   color: rgba(72, 78, 85, 0.618);
@@ -4869,8 +4877,22 @@ footer[role="contentinfo"] small {
   content: "]";
 }
 .version-select .moreruns {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  width: 18.644%;
+  margin-right: 1.695%;
+  display: inline;
+  float: right;
+  margin-right: 0;
   font-style: italic;
+  padding-right: 0.809em;
   color: #516985;
+  text-align: right;
+  white-space: nowrap;
 }
 .version-select input {
   position: absolute;
