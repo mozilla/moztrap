@@ -777,6 +777,7 @@ def autocomplete_env_elements(request):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 
+
 OBJECT_TYPES = {
     "product": ProductList,
     "testcycle": TestCycleList,
@@ -786,21 +787,31 @@ OBJECT_TYPES = {
     }
 
 
+PARENT_ATTRS = {
+    "product": "profile",
+    "testcycle": "product",
+    "testrun": "testCycle",
+    "testsuite": "product",
+    "testcase": "product",
+    }
+
+
 @login_redirect
-@dec.paginate('environments')
+@dec.paginate_clientside('environments')
+@dec.filter("environments",
+            ("element", EnvironmentFilter),
+            )
 @dec.ajax("manage/environment/narrow/_envs_list.html")
 def narrow_environments(request, object_type, object_id):
     list_cls = OBJECT_TYPES[object_type]
     obj = get_object_or_404(list_cls, object_id, auth=request.auth)
-    if object_type == "product":
-        product = obj
-    else:
-        product = obj.product
+    parent = getattr(obj, PARENT_ATTRS[object_type])
 
     return TemplateResponse(
         request,
         "manage/environment/narrowing.html",
         {
-            "environments": product.profile.environments,
+            "environments": parent.environmentgroups_prefetch,
+            "selected_env_ids": set([e.id for e in obj.environmentgroups]),
             "obj": obj,
             })

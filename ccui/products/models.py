@@ -22,7 +22,8 @@ Product-related remote objects.
 from ..core.api import ListObject, RemoteObject, fields, Named
 from ..core.models import Company
 from ..core.util import id_for_object
-from ..environments.models import EnvironmentGroupList
+from ..environments.models import (
+    EnvironmentGroupList, ExplodedEnvironmentGroupList)
 from ..users.models import Team
 
 
@@ -33,6 +34,8 @@ class Product(Named, RemoteObject):
     name = fields.Field()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
+    environmentgroups_prefetch = fields.Link(
+        ExplodedEnvironmentGroupList, api_name="environmentgroups/exploded")
     team = fields.Link(Team, api_name="team/members")
 
     @property

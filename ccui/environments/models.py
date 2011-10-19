@@ -201,6 +201,9 @@ class BaseEnvironmentGroup(Named, RemoteObject):
     name = fields.Field()
     description = fields.Field()
 
+    non_field_filters = {
+        "element": "includedEnvironmentId",
+        }
 
     # UI nomenclature
     @property

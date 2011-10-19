@@ -4,18 +4,18 @@
 
 {% block page-notes %}
 <li>Not yet functional to add/remove.</li>
-<li>No filtering yet (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=689997">platform limitation</a>).</li>
+<li>Filtering by element non-functional when narrowing product environments.</li>
+<li>Can't filter by more than one environment element at a time.</li>
 {% endblock %}
 
 {% block listcontent %}
 <section id="envnarrowing">
   <h2>Select Environments for {{ obj }}</h2>
 
+  {% include "lists/_filter.html" %}
+
   <form method="POST">
     {% csrf_token %}
-
-    {# @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=689997 #}
-    {# include "lists/_filter.html" #}
 
     {% include "manage/environment/narrow/_envs_list.html" %}
 
