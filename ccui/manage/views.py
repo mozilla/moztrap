@@ -770,20 +770,19 @@ OBJECT_TYPES = {
 
 
 @login_redirect
-@dec.paginate('environments')
+@dec.paginate_clientside('environments')
+@dec.filter("environments",
+            ("element", EnvironmentFilter),
+            )
 @dec.ajax("manage/environment/narrow/_envs_list.html")
 def narrow_environments(request, object_type, object_id):
     list_cls = OBJECT_TYPES[object_type]
     obj = get_object_or_404(list_cls, object_id, auth=request.auth)
-    if object_type == "product":
-        product = obj
-    else:
-        product = obj.product
 
     return TemplateResponse(
         request,
         "manage/environment/narrowing.html",
         {
-            "environments": product.profile.environments,
+            "environments": obj.environmentgroups_prefetch,
             "obj": obj,
             })
