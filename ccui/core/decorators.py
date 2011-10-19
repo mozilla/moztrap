@@ -118,7 +118,7 @@ def paginate_clientside(ctx_name):
             obj_list = list(ctx[ctx_name])
             total = len(obj_list)
             pager = pagination.Pager(total, pagesize, pagenum)
-            ctx[ctx_name] = obj_list[pager.low-1:pager.high-1]
+            ctx[ctx_name] = obj_list[pager.low-1:pager.high]
             ctx["pager"] = pager
             return response
 
