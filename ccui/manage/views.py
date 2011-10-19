@@ -760,12 +760,22 @@ def autocomplete_env_elements(request):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 
+
 OBJECT_TYPES = {
     "product": ProductList,
     "testcycle": TestCycleList,
     "testrun": TestRunList,
     "testsuite": TestSuiteList,
     "testcase": TestCaseVersionList,
+    }
+
+
+PARENT_ATTRS = {
+    "product": "profile",
+    "testcycle": "product",
+    "testrun": "testCycle",
+    "testsuite": "product",
+    "testcase": "product",
     }
 
 
@@ -778,11 +788,13 @@ OBJECT_TYPES = {
 def narrow_environments(request, object_type, object_id):
     list_cls = OBJECT_TYPES[object_type]
     obj = get_object_or_404(list_cls, object_id, auth=request.auth)
+    parent = getattr(obj, PARENT_ATTRS[object_type])
 
     return TemplateResponse(
         request,
         "manage/environment/narrowing.html",
         {
-            "environments": obj.environmentgroups_prefetch,
+            "environments": parent.environmentgroups_prefetch,
+            "selected_env_ids": set([e.id for e in obj.environmentgroups]),
             "obj": obj,
             })
