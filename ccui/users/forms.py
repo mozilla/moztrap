@@ -53,7 +53,7 @@ class LoginForm(UserPlaceholdersMixin, RemoteObjectForm):
                 self.cleaned_data["password"]
                 )
             # disallow logging in as system admin user
-            if self.user.email == conf.CC_ADMIN_USER:
+            if self.user and self.user.email == conf.CC_ADMIN_USER:
                 self.user = None
             if self.user is None:
                 raise forms.ValidationError(
