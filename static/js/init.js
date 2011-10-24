@@ -33,6 +33,18 @@ var CC = (function (CC, $) {
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
+        $('#filter').customAutocomplete({
+            textbox: '#text-filter',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
+            multipleCategories: true,
+            allowNew: true,
+            restrictNewInputs: true,
+            newInputTextbox: 'input[type="text"]',
+            hideFormActions: true,
+            fakePlaceholder: true,
+            expiredList: '.managelist'
+        });
         $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,
@@ -109,7 +121,7 @@ var CC = (function (CC, $) {
         CC.inputHadFocus();
 
         // manage-results.js
-        CC.autoCompleteFiltering();
+        CC.toggleAdvancedFiltering('#filter');
         CC.loadListItemDetails();
         CC.manageActionsAjax();
         CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");

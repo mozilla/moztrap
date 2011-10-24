@@ -1,0 +1,5 @@
+{{# suggestions }}
+<li>
+  <a href="#" class="suggestion{{# newSuggestion }} new{{/ newSuggestion }}" {{# id }}data-id="{{ id }}" {{/ id }}{{# category }}data-category="{{ category }}" {{/ category }}data-name="{{ fullText }}">{{ preText }}<b>{{ typedText }}</b>{{ postText }}{{# displayCategory }} <i>[{{ displayCategory }}]</i>{{/ displayCategory }}{{^ displayCategory }}{{# category }} <i>[{{ category }}]</i>{{/ category }}{{/ displayCategory }}</a>
+</li>
+{{/ suggestions }}

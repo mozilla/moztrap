@@ -7,8 +7,7 @@
       <label for="text-filter">filter</label>
       <input type="text" name="text-filter" value="" id="text-filter" autocomplete="off" placeholder="filter by {% for field in filter %}{% if not forloop.first %}{% if forloop.last %}{% if forloop.counter > 2 %},{% endif %} or {% else %}, {% endif %}{% endif %}{{ field.name|lower }}{% endfor %}.">
       <ul class="suggest">
-        {% icanhaz "filter_suggestion" %}
-        {% icanhaz "keyword_filter_suggestion" %}
+        {% icanhaz "autocomplete_suggestion" %}
       </ul>
     </section>
 
@@ -27,10 +26,10 @@
           <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
           {% endif %}
 
-          {% icanhaz "keyword_filter" %}
+          {% icanhaz "autocomplete_new_input" %}
           {% for field in filter %}
           <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
-            <h5>{{ field.name|lower }}</h5>
+            <h5 class="category-title">{{ field.name|lower }}</h5>
             <ul {% if field|length > 6 %}class="long"{% endif %}>
               {% for option in field %}
               <li>
@@ -40,7 +39,7 @@
               {% endfor %}
               {% if field.cls == "keyword" %}
                 <li>
-                  <input type="text" value="" id="id-{{ field.name }}" placeholder="add {{ field.name }} filter">
+                  <input type="text" value="" id="id-{{ field.name }}" autocomplete="off" placeholder="add {{ field.name }} filter">
                 </li>
               {% endif %}
             </ul>
