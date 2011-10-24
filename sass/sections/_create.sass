@@ -134,9 +134,9 @@
     +omega(24)
 
   .selectsearch
-    label
+    > label
       +gone
-    input
+    > input
       margin: 0
 
   .listordering
@@ -147,15 +147,22 @@
   .select
     +pie-clearfix
     +box-sizing(border-box)
+    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
     border: 1px solid $blue
     height: rhythm(12)
-    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
     background: rgba($blue-dark,$xxxsmall)
     overflow-y: scroll
     resize: vertical
 
   .terms
-    display: none
+    @extend .togglelist
+    +no-style-list
+    +clearfix
+    padding: 0 rhythm(.25,12px)
+    background: $blue
+    min-height: rhythm(1.5)
+    li
+      +leader(.25,12px)
 
   .byinclude, .byexclude
     +columns(1,12)
@@ -266,8 +273,10 @@
 
 .caseselect
   @extend .mainselect
+  .bystatus, .status
+    +columns(2,12)
   .bytitle, .title
-    +columns(7,12)
+    +columns(5,12)
   .byauthor, .author
     +box-sizing(border-box)
     +columns(4,12)

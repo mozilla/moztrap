@@ -1872,15 +1872,19 @@ footer[role="contentinfo"] small {
   border: 0;
 }
 
-.togglelist input, #filter .compact input, .tagging .visual input, .togglelist label, #filter .compact label, .tagging .visual label {
+.togglelist, #filter .compact .content, .tagging .visual, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
+  font-size: 0.857em;
+  line-height: 1.416em;
+}
+.togglelist input, #filter .compact .content input, .tagging .visual input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .togglelist label, #filter .compact .content label, .tagging .visual label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label {
   display: none;
 }
-.togglelist li, #filter .compact li, .tagging .visual li {
+.togglelist li, #filter .compact .content li, .tagging .visual li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
   display: inline;
   float: left;
 }
-.togglelist input:checked + label, #filter .compact input:checked + label, .tagging .visual input:checked + label {
-  margin-bottom: 0.944em;
+.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .visual input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label {
+  margin-bottom: 0.472em;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
   -o-border-radius: 0.236em;
@@ -1894,12 +1898,12 @@ footer[role="contentinfo"] small {
   font-weight: 500;
   display: block;
   margin-right: 0.5em;
-  padding: 0.236em 0.472em;
+  padding: 0 0.472em;
   padding-left: 15px;
   background: #e4f5d1 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
   white-space: nowrap;
 }
-.togglelist input:checked + label:hover, #filter .compact input:checked + label:hover, .tagging .visual input:checked + label:hover {
+.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .visual input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
@@ -2010,9 +2014,9 @@ footer[role="contentinfo"] small {
   display: block;
 }
 #filter .content {
-  clear: both;
   font-size: 0.857em;
-  line-height: 1.416em;
+  line-height: 1.888em;
+  clear: both;
   *zoom: 1;
 }
 #filter .content:after {
@@ -2866,6 +2870,7 @@ footer[role="contentinfo"] small {
 
 .status {
   position: relative;
+  overflow: hidden;
 }
 .status .pending {
   -moz-border-radius: 0.25em;
@@ -2970,23 +2975,18 @@ footer[role="contentinfo"] small {
   padding: 0;
 }
 .status span, .status button {
+  font-size: 0.857em;
+  line-height: 1.888em;
   font-weight: 500;
   padding: 0;
-  min-height: 1.618em;
+  min-height: 1.888em;
   text-transform: uppercase;
 }
 .status span.rejected, .status span.draft, .status span.active, .status span.locked, .status span.disabled, .status span.inactive, .status button.rejected, .status button.draft, .status button.active, .status button.locked, .status button.disabled, .status button.inactive {
   width: 100%;
 }
 .status span {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-}
-.status span {
-  *display: inline;
+  display: block;
 }
 .status span.rejected {
   -moz-box-sizing: border-box;
@@ -3005,8 +3005,18 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #eca7a9;
-  background-image: url('../images/ui/x.png?1314206098');
-  background-position: 0.375em;
+  background-image: url('../images/ui/x.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/x.png?1314206098'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x.png?1314206098'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x.png?1314206098'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x.png?1314206098'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x.png?1314206098'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
+  cursor: default;
+  background-position: 0.375em, 0;
 }
 .status span.draft, .status span.inactive {
   -moz-box-sizing: border-box;
@@ -3025,8 +3035,18 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #a9b2bf;
-  background-image: url('../images/ui/power.png?1314206098');
-  background-position: 0.375em;
+  background-image: url('../images/ui/power.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/power.png?1314206098'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
+  cursor: default;
+  background-position: 0.375em, 0;
 }
 .status span.active {
   -moz-box-sizing: border-box;
@@ -3045,8 +3065,18 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #b3e37d;
-  background-image: url('../images/ui/power.png?1314206098');
-  background-position: 0.375em;
+  background-image: url('../images/ui/power.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/power.png?1314206098'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/power.png?1314206098'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
+  cursor: default;
+  background-position: 0.375em, 0;
 }
 .status span.locked, .status span.disabled {
   -moz-box-sizing: border-box;
@@ -3065,8 +3095,18 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #fee58b;
-  background-image: url('../images/ui/lock.png?1314206098');
-  background-position: 0.375em;
+  background-image: url('../images/ui/lock.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/lock.png?1314206098'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/lock.png?1314206098'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/lock.png?1314206098'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/lock.png?1314206098'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/lock.png?1314206098'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
+  cursor: default;
+  background-position: 0.375em, 0;
 }
 .status button.rejected {
   -moz-box-sizing: border-box;
@@ -3332,7 +3372,7 @@ footer[role="contentinfo"] small {
 .status button:focus.rejected::after, .status button:focus.draft::after, .status button:focus.active::after, .status button:focus.locked::after, .status button:focus.disabled::after, .status button:focus.inactive::after, .status button:hover.rejected::after, .status button:hover.draft::after, .status button:hover.active::after, .status button:hover.locked::after, .status button:hover.disabled::after, .status button:hover.inactive::after, .status button:active.rejected::after, .status button:active.draft::after, .status button:active.active::after, .status button:active.locked::after, .status button:active.disabled::after, .status button:active.inactive::after {
   content: attr(title);
   position: absolute;
-  left: 1.5em;
+  left: 2em;
   text-indent: 0;
 }
 
@@ -4217,7 +4257,7 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-.superselect .selectsearch label, .mainselect .selectsearch label, .userselect .selectsearch label, .suiteselect .selectsearch label, .caseselect .selectsearch label, .roleselect .selectsearch label {
+.superselect .selectsearch > label, .mainselect .selectsearch > label, .userselect .selectsearch > label, .suiteselect .selectsearch > label, .caseselect .selectsearch > label, .roleselect .selectsearch > label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4227,7 +4267,7 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-.superselect .selectsearch input, .mainselect .selectsearch input, .userselect .selectsearch input, .suiteselect .selectsearch input, .caseselect .selectsearch input, .roleselect .selectsearch input {
+.superselect .selectsearch > input, .mainselect .selectsearch > input, .userselect .selectsearch > input, .suiteselect .selectsearch > input, .caseselect .selectsearch > input, .roleselect .selectsearch > input {
   margin: 0;
 }
 .superselect .listordering, .mainselect .listordering, .userselect .listordering, .suiteselect .listordering, .caseselect .listordering, .roleselect .listordering {
@@ -4244,12 +4284,12 @@ footer[role="contentinfo"] small {
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
-  border: 1px solid #516985;
-  height: 19.416em;
   -moz-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
   -webkit-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
   -o-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
   box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
+  border: 1px solid #516985;
+  height: 19.416em;
   background: rgba(75, 87, 101, 0.146);
   overflow-y: scroll;
   resize: vertical;
@@ -4260,7 +4300,23 @@ footer[role="contentinfo"] small {
   clear: both;
 }
 .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
-  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  *zoom: 1;
+  padding: 0 0.472em;
+  background: #516985;
+  min-height: 2.427em;
+}
+.superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0px;
+}
+.superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
+  margin-top: 0.472em;
 }
 .superselect .byinclude, .mainselect .byinclude, .userselect .byinclude, .suiteselect .byinclude, .caseselect .byinclude, .roleselect .byinclude, .superselect .byexclude, .mainselect .byexclude, .userselect .byexclude, .suiteselect .byexclude, .caseselect .byexclude, .roleselect .byexclude {
   display: inline;
@@ -4521,10 +4577,16 @@ footer[role="contentinfo"] small {
 }
 
 /* Create Suite -------------------------------------------------------------- */
+.caseselect .bystatus, .caseselect .status {
+  display: inline;
+  float: left;
+  width: 14.894%;
+  margin-right: 2.128%;
+}
 .caseselect .bytitle, .caseselect .title {
   display: inline;
   float: left;
-  width: 57.447%;
+  width: 40.426%;
   margin-right: 2.128%;
 }
 .caseselect .byauthor, .caseselect .author {
@@ -5595,16 +5657,16 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #4d791b;
-  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.236)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.382)));
-  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/check_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/check_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/check_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/check_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  -moz-box-shadow: #454545 0 0 4px inset;
-  -webkit-box-shadow: #454545 0 0 4px inset;
-  -o-box-shadow: #454545 0 0 4px inset;
-  box-shadow: #454545 0 0 4px inset;
+  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/check_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/check_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/check_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/check_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/check_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
   cursor: default;
   background-position: 0.375em, 0;
 }
@@ -5625,16 +5687,16 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #4f1114;
-  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.236)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.382)));
-  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/x_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/x_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/x_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/x_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  -moz-box-shadow: #454545 0 0 4px inset;
-  -webkit-box-shadow: #454545 0 0 4px inset;
-  -o-box-shadow: #454545 0 0 4px inset;
-  box-shadow: #454545 0 0 4px inset;
+  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/x_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/x_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
   cursor: default;
   background-position: 0.375em, 0;
 }
@@ -5655,16 +5717,16 @@ footer[role="contentinfo"] small {
   -khtml-border-radius: 0.25em;
   border-radius: 0.25em;
   background-color: #a27f02;
-  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.236)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.382)));
-  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  background-image: url('../images/ui/warning_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.236), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.382));
-  -moz-box-shadow: #454545 0 0 4px inset;
-  -webkit-box-shadow: #454545 0 0 4px inset;
-  -o-box-shadow: #454545 0 0 4px inset;
-  box-shadow: #454545 0 0 4px inset;
+  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(69, 69, 69, 0.146)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(50%, rgba(250, 250, 250, 0)), color-stop(100%, rgba(250, 250, 250, 0.236)));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -webkit-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -moz-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -o-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/warning_light.png?1314312255'), -ms-linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  background-image: url('../images/ui/warning_light.png?1314312255'), linear-gradient(top, rgba(69, 69, 69, 0.146), rgba(69, 69, 69, 0) 50%, rgba(250, 250, 250, 0) 50%, rgba(250, 250, 250, 0.236));
+  -moz-box-shadow: #454545 0 0 2px inset;
+  -webkit-box-shadow: #454545 0 0 2px inset;
+  -o-box-shadow: #454545 0 0 2px inset;
+  box-shadow: #454545 0 0 2px inset;
   cursor: default;
   background-position: 0.375em, 0;
 }
