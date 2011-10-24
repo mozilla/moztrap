@@ -59,18 +59,19 @@
     +gone
 
 .togglelist
+  +adjust-font-size-to(12px,.75)
   input, label
     display: none
   li
     +float(left)
   input:checked + label
-    +trailer(.5,12px)
+    +trailer(.25,12px)
     +border-radius
     +box-shadow($blue-light 1px 1px 0)
     +demi
     display: block
     margin-right: .5em
-    padding: rhythm(.125,12px) rhythm(.25,12px)
+    padding: 0 rhythm(.25,12px)
       left: image-width('ui/check_sm.png') + 6px
     background: $green-lightest image-url('ui/check_sm.png') no-repeat scroll 3px
     white-space: nowrap
@@ -137,8 +138,8 @@
         display: block
 
   .content
+    +adjust-font-size-to(12px)
     +full(24)
-    +adjust-font-size-to(12px,.75)
     +pie-clearfix
 
   small
@@ -149,7 +150,8 @@
 
   // Compact --------------------------------------------------------------
   .compact
-    @extend .togglelist
+    .content
+      @extend .togglelist
     .toggle
       a
         #{$link}

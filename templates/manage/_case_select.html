@@ -10,16 +10,17 @@
         <ul class="suggest">
         </ul>
         <ul class="terms">
-          <li>list</li>
-          <li>of</li>
-          <li>filter</li>
-          <li>terms</li>
+          <li>
+            <input type="checkbox" name="term1" value="something" id="term1" checked>
+            <label for="term1">term1</label>
+          </li>
         </ul>
       </div>
       <nav class="listordering">
         <h5 class="navhead">List Ordering</h5>
         <ul>
           <li class="byinclude"><button class="action-include" title="include selected">include selected</button></li>
+          <li class="bystatus"><a href="#">status</a></li>
           <li class="bytitle"><a href="#">name</a></li>
           <li class="byauthor"><a href="#">author</a></li>
         </ul>
@@ -43,12 +44,13 @@
         <input type="text" name="search" value="" id="search-remove" placeholder="filter included cases">
         <ul class="suggest">
         </ul>
-        <p class="terms"></p>
+        <ul class="terms"></ul>
       </div>
       <nav class="listordering">
         <h5 class="navhead">List Ordering</h5>
         <ul>
           <li class="byexclude"><button class="action-exclude" title="remove selected">remove selected</button></li>
+          <li class="bystatus"><a href="#">status</a></li>
           <li class="bytitle"><a href="#">name</a></li>
           <li class="byauthor"><a href="#">author</a></li>
         </ul>

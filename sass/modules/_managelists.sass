@@ -1,18 +1,18 @@
 // Case Conductor is a Test Case Management system.
 // Copyright (C) 2011 uTest Inc.
-// 
+//
 // This file is part of Case Conductor.
-// 
+//
 // Case Conductor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Case Conductor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 /* List Pages --------------------------------------------------------------
@@ -181,6 +181,7 @@
 
 .status
   position: relative
+  overflow: hidden
   .pending
     +border-radius(.25em)
     display: block
@@ -201,23 +202,24 @@
 
 
   span, button
+    +adjust-font-size-to(12px)
     +demi
     padding: 0
-    min-height: rhythm(1)
+    min-height: rhythm(1,12px)
     text-transform: uppercase
     &.rejected, &.draft, &.active, &.locked, &.disabled, &.inactive
       width: 100%
 
   span
-    +inline-block
+    display: block
     &.rejected
-      +text-icon('ui/x.png',$red-lighter)
+      +text-icon('ui/x.png',$red-lighter,$button:'inset')
     &.draft, &.inactive
-      +text-icon('ui/power.png',$blue-lighter)
+      +text-icon('ui/power.png',$blue-lighter,$button:'inset')
     &.active
-      +text-icon('ui/power.png',$green-light)
+      +text-icon('ui/power.png',$green-light,$button:'inset')
     &.locked, &.disabled
-      +text-icon('ui/lock.png',$yellow)
+      +text-icon('ui/lock.png',$yellow,$button:'inset')
 
   button
     &.rejected
@@ -242,7 +244,7 @@
         &::after
           content: attr(title)
           position: absolute
-          left: 1.5em
+          left: 2em
           text-indent: 0
 
 .byline
