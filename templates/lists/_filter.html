@@ -26,7 +26,7 @@
           <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
           {% endif %}
 
-          {% icanhaz "autocomplete_new_input" %}
+          {% icanhaz "autocomplete_input" %}
           {% for field in filter %}
           <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
             <h5 class="category-title">{{ field.name|lower }}</h5>

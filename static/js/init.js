@@ -43,7 +43,17 @@ var CC = (function (CC, $) {
             newInputTextbox: 'input[type="text"]',
             hideFormActions: true,
             fakePlaceholder: true,
-            expiredList: '.managelist'
+            expiredList: '.managelist',
+            initialFocus: true,
+            inputsNeverRemoved: true
+        });
+        $('#addcase').customAutocomplete({
+            textbox: 'input[name="text-tag"]',
+            ajax: true,
+            url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+            triggerSubmit: null,
+            allowNew: true,
+            inputType: 'tag'
         });
         $('.selectruns').html5finder({
             loading: true,
@@ -126,7 +136,6 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
         CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
         CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
-        CC.autoCompleteCaseTags('#addcase');
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
 
