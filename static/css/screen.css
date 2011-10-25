@@ -3913,6 +3913,76 @@ footer[role="contentinfo"] small {
   background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -ms-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
   background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
 }
+.selectitem .item-input:checked + .body, .version-select .version .item-input:checked + .body {
+  background: rgba(204, 236, 167, 0.382) -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(237, 237, 237, 0.382)), color-stop(100%, rgba(237, 237, 237, 0)));
+  background: rgba(204, 236, 167, 0.382) -webkit-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: rgba(204, 236, 167, 0.382) -moz-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: rgba(204, 236, 167, 0.382) -o-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: rgba(204, 236, 167, 0.382) -ms-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: rgba(204, 236, 167, 0.382) linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+}
+.selected .selectitem .item-input:checked + .body, .selected .version-select .version .item-input:checked + .body, .version-select .selected .version .item-input:checked + .body {
+  background-color: rgba(236, 167, 169, 0.236);
+}
+.selected .selectitem .item-input:checked + .body .bulkselect, .selected .version-select .version .item-input:checked + .body .bulkselect, .version-select .selected .version .item-input:checked + .body .bulkselect {
+  background-image: url('../images/ui/x.png?1314206098');
+}
+.selectitem .item-input:checked + .body .bulkselect, .version-select .version .item-input:checked + .body .bulkselect {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/check.png?1314206098');
+}
+.selectitem .body, .version-select .version .body {
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 0em;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  margin-bottom: 0em;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(134, 149, 168, 0.146)), color-stop(100%, rgba(134, 149, 168, 0)));
+  background: -webkit-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: -moz-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: -o-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: -ms-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+}
+.selectitem .bulkselect, .version-select .version .bulkselect {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/grip.png?1319580236');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 3.305px;
+  padding-right: 3.305px;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+  opacity: 0.25;
+  display: inline;
+  float: left;
+  width: 6.383%;
+  margin-right: 2.128%;
+  padding: 0;
+}
+.selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
+  background-image: url('../images/ui/grip.png?1319580236');
+}
+.selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.selectitem .bulkselect:hover, .version-select .version .bulkselect:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+}
 .selectitem .item-select, .version-select .version .item-select {
   overflow: hidden;
   *zoom: 1;
@@ -4369,27 +4439,6 @@ footer[role="contentinfo"] small {
   border: 1px solid #516985;
   border-width: 0 1px;
 }
-.superselect .select, .mainselect .select, .userselect .select, .suiteselect .select, .caseselect .select, .roleselect .select {
-  *zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  -moz-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
-  -webkit-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
-  -o-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
-  box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
-  border: 1px solid #516985;
-  height: 19.416em;
-  background: rgba(75, 87, 101, 0.146);
-  overflow-y: scroll;
-  resize: vertical;
-}
-.superselect .select:after, .mainselect .select:after, .userselect .select:after, .suiteselect .select:after, .caseselect .select:after, .roleselect .select:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
   list-style: none;
   margin: 0;
@@ -4514,87 +4563,6 @@ footer[role="contentinfo"] small {
   content: "";
   display: table;
   clear: both;
-}
-
-.selectitem, .version-select .version {
-  resize: none;
-}
-.selectitem input, .version-select .version input {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.selectitem input:checked + .body, .version-select .version input:checked + .body {
-  background: rgba(204, 236, 167, 0.382) -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(237, 237, 237, 0.382)), color-stop(100%, rgba(237, 237, 237, 0)));
-  background: rgba(204, 236, 167, 0.382) -webkit-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
-  background: rgba(204, 236, 167, 0.382) -moz-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
-  background: rgba(204, 236, 167, 0.382) -o-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
-  background: rgba(204, 236, 167, 0.382) -ms-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
-  background: rgba(204, 236, 167, 0.382) linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
-}
-.selected .selectitem input:checked + .body, .selected .version-select .version input:checked + .body, .version-select .selected .version input:checked + .body {
-  background-color: rgba(236, 167, 169, 0.236);
-}
-.selectitem input:checked + .body .bulkselect, .version-select .version input:checked + .body .bulkselect {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background-image: url('../images/ui/check.png?1314206098');
-}
-.selectitem .body, .version-select .version .body {
-  overflow: hidden;
-  *zoom: 1;
-  margin-top: 0em;
-  padding-top: 0.405em;
-  padding-bottom: 0.405em;
-  margin-bottom: 0em;
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(134, 149, 168, 0.146)), color-stop(100%, rgba(134, 149, 168, 0)));
-  background: -webkit-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
-  background: -moz-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
-  background: -o-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
-  background: -ms-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
-  background: linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
-}
-.selectitem .bulkselect, .version-select .version .bulkselect {
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box;
-  -ms-box-sizing: content-box;
-  box-sizing: content-box;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  background-image: url('../images/ui/grip.png?1319580236');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  padding-left: 3.305px;
-  padding-right: 3.305px;
-  min-width: 14px;
-  min-height: 14px;
-  margin: 0;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
-  opacity: 0.675;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
-  opacity: 0.25;
-  display: inline;
-  float: left;
-  width: 6.383%;
-  margin-right: 2.128%;
-  padding: 0;
-}
-.selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
-  background-image: url('../images/ui/grip.png?1319580236');
-}
-.selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-.selectitem .bulkselect:hover, .version-select .version .bulkselect:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
 }
 
 /* Create/Edit Product -------------------------------------------------------------- */

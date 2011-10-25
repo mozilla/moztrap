@@ -491,6 +491,28 @@
     +gone
     &:checked + .item-select
       +background(image-url('ui/check.png') no-repeat scroll rhythm(.5), rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+    &:checked + .body
+      +background(rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+      .selected &
+        background-color: rgba($red-lighter,$xxsmall)
+        .bulkselect
+          background-image: image-url('ui/x.png')
+      .bulkselect
+        +opacity(1)
+        background-image: image-url('ui/check.png')
+
+  .body
+    +clearfix
+    +rhythm(0,.25,.25,0)
+    +background(linear-gradient(top, rgba($blue-light,$xxxsmall), rgba($blue-light,0) $xsmallem))
+  .bulkselect
+    +icon-replace('ui/grip.png')
+    +opacity(.25)
+    +columns(1,12)
+    padding: 0
+    &:hover
+      +opacity(.5)
+
   .item-select
     +clearfix
     +rhythm(0,.25,.25,0)

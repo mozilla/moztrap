@@ -144,16 +144,6 @@
     border: 1px solid $blue
       width: 0 1px
 
-  .select
-    +pie-clearfix
-    +box-sizing(border-box)
-    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
-    border: 1px solid $blue
-    height: rhythm(12)
-    background: rgba($blue-dark,$xxxsmall)
-    overflow-y: scroll
-    resize: vertical
-
   .terms
     @extend .togglelist
     +no-style-list
@@ -189,29 +179,6 @@
   > div
     +full(24)
     +pie-clearfix
-
-.selectitem
-  resize: none
-  input
-    +gone
-    &:checked + .body
-      +background(rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
-      .selected &
-        background-color: rgba($red-lighter,$xxsmall)
-      .bulkselect
-        +opacity(1)
-        background-image: image-url('ui/check.png')
-  .body
-    +clearfix
-    +rhythm(0,.25,.25,0)
-    +background(linear-gradient(top, rgba($blue-light,$xxxsmall), rgba($blue-light,0) $xsmallem))
-  .bulkselect
-    +icon-replace('ui/grip.png')
-    +opacity(.25)
-    +columns(1,12)
-    padding: 0
-    &:hover
-      +opacity(.5)
 
 /* Create/Edit Product --------------------------------------------------------------
 
