@@ -162,6 +162,7 @@ var CC = (function (CC, $) {
         CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
+        CC.envNarrowing('#envnarrowlist');
 
         // manage-env.js
         CC.createEnvProfile();
