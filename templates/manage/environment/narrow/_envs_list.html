@@ -18,5 +18,9 @@
     {% endfor %}
   </div>
 
-  {% include "lists/_listnav.html" %}
+    <nav class="listnav">
+      <h3 class="navhead">List Navigation</h3>
+      <p class="location">showing {{ environments|length }}</p>
+    </nav>
+
 </div>

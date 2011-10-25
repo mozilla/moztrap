@@ -781,7 +781,6 @@ PARENT_ATTRS = {
 
 
 @login_redirect
-@dec.paginate_clientside("environments")
 @dec.filter("environments",
             ("element", EnvironmentFilter),
             )

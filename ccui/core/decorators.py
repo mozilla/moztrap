@@ -98,35 +98,6 @@ def paginate(ctx_name):
 
 
 
-def paginate_clientside(ctx_name):
-    """
-    View decorator that handles pagination of a ListObject that doesn't support
-    pagination on the platform end, so we have to fetch all results and just
-    display some of them.
-
-    """
-    def decorator(view_func):
-        @wraps(view_func)
-        def _wrapped_view(request, *args, **kwargs):
-            response = view_func(request, *args, **kwargs)
-            try:
-                ctx = response.context_data
-            except AttributeError:
-                return response
-            pagesize, pagenum = pagination.from_request(request)
-            # No attempt to be lazy, just pull all the data in
-            obj_list = list(ctx[ctx_name])
-            total = len(obj_list)
-            pager = pagination.Pager(total, pagesize, pagenum)
-            ctx[ctx_name] = obj_list[pager.low-1:pager.high]
-            ctx["pager"] = pager
-            return response
-
-        return _wrapped_view
-
-    return decorator
-
-
 def actions(list_model, allowed_actions, fall_through=False):
     """
     View decorator that handles any POST keys named "action-method", where
