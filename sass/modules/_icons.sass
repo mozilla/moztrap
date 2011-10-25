@@ -26,20 +26,20 @@
 
 =icon-back($back:false)
   @if $back
-    +border-radius(.25em)
+    +border-radius($xxsmallpx)
     background-color: $back
 
 =icon-replace($img,$color:false,$hover:true,$button:false)
   +box-sizing('content-box')
   +replace-text($img)
-  +hpadding(.125em)
+  +hpadding($xxsmallpx)
   min-width: image-width($img)
   min-height: image-height($img)
   margin: 0
   #{$focus}
     background-image: image-url($img)
   @if $color
-    +border-radius(.25em)
+    +border-radius($xxsmallpx)
     background-color: $color
   @if $hover
     +icon-hover
@@ -60,12 +60,12 @@
     +icon-hover($color)
   @if $button
     @if $button == "inset"
-      +background-image(image-url($img),linear-gradient(top,rgba($base,$xxxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xxsmall)))
-      +box-shadow($base 0 0 2px inset)
+      +background-image(image-url($img),linear-gradient(top,rgba($mid,$xxxsmall),rgba($light,0)))
+      +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
       cursor: default
     @else
       +background-image(image-url($img),linear-gradient(bottom,rgba($base,$xxsmall),rgba($base,0) 50%,rgba($lighter,0) 50%,rgba($lighter,$xsmall)))
-      +box-shadow($blue-light 1px 1px 0)
+      +box-shadow(rgba($base,$small) 1px 1px 0)
     background-position: .375em, 0
   @else
     background:

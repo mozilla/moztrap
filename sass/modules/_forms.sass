@@ -236,11 +236,12 @@ input
   border-color: desaturate($c,25)
 
 =button
-  +border-radius
+  +border-radius($xsmallpx)
   +button-color
   +rhythm-borders(1px,.25)
   +hpadding(1em)
   +text-shadow(#fff 0 1px 1px)
+  +box-shadow(rgba($base,$small) 1px 1px 0)
   cursor: pointer
   color: #111
   font: inherit
@@ -256,6 +257,7 @@ input
 =button-reset
   +border-radius(0)
   +text-shadow(none)
+  +box-shadow(none)
   display: inline
   background: none
   color: inherit

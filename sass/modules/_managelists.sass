@@ -181,7 +181,6 @@
 
 .status
   position: relative
-  overflow: hidden
   .pending
     +border-radius(.25em)
     display: block
@@ -203,6 +202,7 @@
 
   span, button
     +adjust-font-size-to(12px)
+    +rhythm-borders(1px,.25,12px)
     +demi
     padding: 0
     min-height: rhythm(1,12px)
