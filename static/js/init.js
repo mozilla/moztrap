@@ -55,6 +55,16 @@ var CC = (function (CC, $) {
             allowNew: true,
             inputType: 'tag'
         });
+        $('#editprofile .add-item').customAutocomplete({
+            textbox: '#env-elements-input',
+            suggestionList: '.suggest',
+            inputList: '.env-element-list',
+            ajax: true,
+            url: $('#env-elements-input').data('autocomplete-url'),
+            hideFormActions: true,
+            expiredList: '.env-element-list',
+            inputType: 'element'
+        });
         $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,

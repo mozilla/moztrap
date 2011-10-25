@@ -772,10 +772,27 @@ def autocomplete_env_elements(request):
     if text is not None:
         elements = EnvironmentList.get(auth=request.auth).filter(
             name="%s%%" % text)
-
-    data = {"suggestions": [{"id": e.id, "name": e.name} for e in elements]}
-
-    return HttpResponse(json.dumps(data), content_type="application/json")
+    suggestions = []
+    for e in elements:
+        start = e.name.lower().index(text.lower())
+        pre = e.name[:start]
+        post = e.name[start+len(text):]
+        suggestions.append({
+                "preText": pre,
+                "typedText": text,
+                "postText": post,
+                "id": e.id,
+                "name": e.name,
+                "type": "element",
+                })
+    return HttpResponse(
+        json.dumps(
+            {
+                "suggestions": suggestions
+                }
+            ),
+        content_type="application/json",
+        )
 
 
 
