@@ -3015,6 +3015,7 @@ footer[role="contentinfo"] small {
 }
 .status span {
   display: block;
+  border-color: rgba(69, 69, 69, 0.382);
 }
 .status span.rejected {
   -moz-box-sizing: border-box;
