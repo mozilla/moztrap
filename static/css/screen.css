@@ -3864,8 +3864,6 @@ footer[role="contentinfo"] small {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   list-style-type: none;
-  font-style: italic;
-  color: rgba(71, 84, 84, 0.618);
 }
 .preview, .preview li {
   margin: 0px;
@@ -3951,6 +3949,66 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   clear: none;
   text-align: left;
+}
+
+.select {
+  *zoom: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-shadow: rgba(75, 101, 100, 0.382) 0 0 0.382em inset;
+  -webkit-box-shadow: rgba(75, 101, 100, 0.382) 0 0 0.382em inset;
+  -o-box-shadow: rgba(75, 101, 100, 0.382) 0 0 0.382em inset;
+  box-shadow: rgba(75, 101, 100, 0.382) 0 0 0.382em inset;
+  border: 1px solid #528684;
+  height: 19.416em;
+  background: rgba(75, 101, 100, 0.146);
+  overflow-y: scroll;
+  resize: vertical;
+}
+.select:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.selectitem {
+  padding: 0;
+  resize: none;
+}
+.selectitem .item-input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.selectitem .item-input:checked + .item-select {
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(238, 238, 238, 0.382)), color-stop(100%, rgba(238, 238, 238, 0)));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) -webkit-linear-gradient(top, rgba(238, 238, 238, 0.382), rgba(238, 238, 238, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) -moz-linear-gradient(top, rgba(238, 238, 238, 0.382), rgba(238, 238, 238, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) -o-linear-gradient(top, rgba(238, 238, 238, 0.382), rgba(238, 238, 238, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) -ms-linear-gradient(top, rgba(238, 238, 238, 0.382), rgba(238, 238, 238, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(205, 236, 169, 0.382) linear-gradient(top, rgba(238, 238, 238, 0.382), rgba(238, 238, 238, 0));
+}
+.selectitem .item-select {
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 0em;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  margin-bottom: 0em;
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(135, 169, 168, 0.146)), color-stop(100%, rgba(135, 169, 168, 0)));
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -webkit-linear-gradient(top, rgba(135, 169, 168, 0.146), rgba(135, 169, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -moz-linear-gradient(top, rgba(135, 169, 168, 0.146), rgba(135, 169, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -o-linear-gradient(top, rgba(135, 169, 168, 0.146), rgba(135, 169, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -ms-linear-gradient(top, rgba(135, 169, 168, 0.146), rgba(135, 169, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, linear-gradient(top, rgba(135, 169, 168, 0.146), rgba(135, 169, 168, 0) 0.382em);
+  display: block;
 }
 
 /* Login/Register ------------------------------------------------------------ */
@@ -5322,13 +5380,42 @@ footer[role="contentinfo"] small {
 }
 
 /* narrow Environments ------------------------------------------------------- */
-#envnarrowlist .bybulk, #envnarrowlist .bulk {
+#envnarrowlist .bybulk {
   display: inline;
   float: left;
   width: 3.158%;
   margin-right: 1.053%;
+  text-align: center;
 }
-#envnarrowlist .bybulk label, #envnarrowlist .bulk label {
+#envnarrowlist .bybulk label {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/check.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 0.125em;
+  padding-right: 0.125em;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  padding: 0;
+  vertical-align: inherit;
+}
+#envnarrowlist .bybulk label:focus, #envnarrowlist .bybulk label:hover, #envnarrowlist .bybulk label:active {
+  background-image: url('../images/ui/check.png?1314206098');
+}
+#envnarrowlist .bybulk label:focus, #envnarrowlist .bybulk label:hover, #envnarrowlist .bybulk label:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+#envnarrowlist .bybulk input {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -5338,10 +5425,11 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-#envnarrowlist .bybulk input, #envnarrowlist .bulk input {
-  margin-left: 0.809em;
+#envnarrowlist .bybulk input:checked + label {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
-#envnarrowlist .bypreview, #envnarrowlist .preview {
+#envnarrowlist .bypreview {
   display: inline;
   float: left;
   width: 95.789%;
@@ -5351,9 +5439,9 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   text-align: left;
 }
-#envnarrowlist .content {
+#envnarrowlist .item-select {
   padding-left: 4.211%;
-  padding-right: 4.211%;
+  padding-right: 0.809em;
 }
 
 /* Manage Users -------------------------------------------------------------- */
