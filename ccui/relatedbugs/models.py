@@ -20,7 +20,7 @@ from ..core.api import RemoteObject, ListObject, fields
 
 
 class ExternalBug(RemoteObject):
-    url = fields.Field()
+    url = fields.CharField()
     externalIdentifier = fields.Field()
 
 

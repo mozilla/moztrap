@@ -71,6 +71,19 @@ class Field(remoteobjects.fields.Field):
 
 
 
+class CharField(Field):
+    """
+    Platform apparently tries to guess type of returned values, so values in
+    character fields (e.g. name) will be returned as JSON numbers if they
+    happen to be all-numeric. This field type coerces anything it gets back
+    into a unicode string.
+
+    """
+    def decode(self, value):
+        return unicode(super(CharField, self).decode(value))
+
+
+
 class Date(Field):
     """
     A Date field for when the server is returning a datetime, but we really

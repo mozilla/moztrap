@@ -30,7 +30,7 @@ from ..core.api import ObjectMixin, fields
 
 class CodeValue(ObjectMixin, remoteobjects.RemoteObject):
     id = fields.Field()
-    description = fields.Field()
+    description = fields.CharField()
     sortOrder = fields.Field()
 
 

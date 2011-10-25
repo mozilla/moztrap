@@ -30,8 +30,8 @@ from ..users.models import Team
 
 class Product(Named, RemoteObject):
     company = fields.Locator(Company)
-    description = fields.Field()
-    name = fields.Field()
+    description = fields.CharField()
+    name = fields.CharField()
 
     environmentgroups = fields.Link(EnvironmentGroupList)
     environmentgroups_prefetch = fields.Link(

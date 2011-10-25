@@ -31,13 +31,13 @@ SYSTEM_WIDE = -22222
 
 
 class Company(Named, RemoteObject):
-    address = fields.Field()
-    city = fields.Field()
+    address = fields.CharField()
+    city = fields.CharField()
     country = StaticData("COUNTRY")
-    name = fields.Field()
-    phone = fields.Field()
-    url = fields.Field()
-    zip = fields.Field()
+    name = fields.CharField()
+    phone = fields.CharField()
+    url = fields.CharField()
+    zip = fields.CharField()
 
 
     def __unicode__(self):

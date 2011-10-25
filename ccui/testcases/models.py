@@ -34,8 +34,8 @@ from . import increment
 
 
 class TestCase(Named, RemoteObject):
-    name = fields.Field()
-    description = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
     maxAttachmentSizeInMbytes = fields.Field()
     maxNumberOfAttachments = fields.Field()
     product = fields.Locator(Product)
@@ -95,7 +95,7 @@ class TestCaseVersion(Activatable, TestCase):
     latestVersion = fields.Field()
     testCaseId = fields.Field()
     automated = fields.Field()
-    automationUri = fields.Field()
+    automationUri = fields.CharField()
     status = StaticData(
         "TESTCASESTATUS", "testCaseStatusId", api_submit_name=False)
     approval = StaticData(
@@ -172,11 +172,11 @@ class TestCaseVersionList(ListObject):
 
 
 class TestCaseStep(Named, RemoteObject):
-    name = fields.Field()
+    name = fields.CharField()
     testCaseVersion = fields.Locator(TestCaseVersion)
     stepNumber = fields.Field()
-    instruction = fields.Field()
-    expectedResult = fields.Field()
+    instruction = fields.CharField()
+    expectedResult = fields.CharField()
     estimatedTimeInMin = fields.Field()
 
 
@@ -195,8 +195,8 @@ class TestCaseStepList(ListObject):
 
 
 class TestSuite(Named, Activatable, RemoteObject):
-    name = fields.Field()
-    description = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
     product = fields.Locator(Product)
     status = StaticData(
         "TESTSUITESTATUS", "testSuiteStatusId", api_submit_name=False)
