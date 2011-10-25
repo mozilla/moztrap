@@ -65,6 +65,20 @@ var CC = (function (CC, $) {
             expiredList: '.env-element-list',
             inputType: 'element'
         });
+        // $('#suite-form .caseselect .unselected').customAutocomplete({
+        //     textbox: '#search-add',
+        //     inputList: '.terms',
+        //     allowNew: true,
+        //     expiredList: '.select',
+        //     triggerSubmit: null
+        // });
+        // $('#suite-form .caseselect .selected').customAutocomplete({
+        //     textbox: '#search-remove',
+        //     inputList: '.terms',
+        //     allowNew: true,
+        //     expiredList: '.select',
+        //     triggerSubmit: null
+        // });
         $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,

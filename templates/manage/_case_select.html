@@ -1,19 +1,33 @@
+{% load icanhaz %}
+
 {# @@@ test case selection #}
 <section class="caseselect">
+  {% icanhaz "autocomplete_suggestion" %}
+  {% icanhaz "autocomplete_input" %}
   <h3>add test cases to your test suite</h3>
   <div>
     <section class="unselected">
       <h4>available cases</h4>
       <div class="selectsearch">
         <label for="search-add">filter available cases</label>
-        <input type="text" name="search" value="" id="search-add" placeholder="filter available cases">
+        <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available cases">
         <ul class="suggest">
         </ul>
         <ul class="terms">
-          <li>
-            <input type="checkbox" name="term1" value="something" id="term1" checked>
-            <label for="term1">term1</label>
-          </li>
+          {# @@@ make this work #}
+          <!-- {% for field in filter %}
+          <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
+            <h5 class="category-title">{{ field.name|lower }}</h5>
+            <ul {% if field|length > 6 %}class="long"{% endif %}>
+              {% for option in field %}
+              <li>
+                <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
+                <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
+              </li>
+              {% endfor %}
+            </ul>
+          </section>
+          {% endfor %} -->
         </ul>
       </div>
       <nav class="listordering">
@@ -41,10 +55,25 @@
       <h4>included cases</h4>
       <div class="selectsearch">
         <label for="search-remove">filter included cases</label>
-        <input type="text" name="search" value="" id="search-remove" placeholder="filter included cases">
+        <input type="text" name="search" value="" id="search-remove" autocomplete="off" placeholder="filter included cases">
         <ul class="suggest">
         </ul>
-        <ul class="terms"></ul>
+        <ul class="terms">
+          {# @@@ make this work #}
+          <!-- {% for field in filter %}
+          <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
+            <h5 class="category-title">{{ field.name|lower }}</h5>
+            <ul {% if field|length > 6 %}class="long"{% endif %}>
+              {% for option in field %}
+              <li>
+                <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
+                <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
+              </li>
+              {% endfor %}
+            </ul>
+          </section>
+          {% endfor %} -->
+        </ul>
       </div>
       <nav class="listordering">
         <h5 class="navhead">List Ordering</h5>

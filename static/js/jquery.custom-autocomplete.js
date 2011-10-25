@@ -108,7 +108,7 @@
 
             // Create list of autocomplete suggestions from Ajax response or existing list of inputs
             updateSuggestions = function (data, cached) {
-                if (!data && options.inputsNeverRemoved) {
+                if (!data && !options.ajax) {
                     var suggestions = inputList.find(options.inputs).parent('li').filter(function () {
                         return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                     });
