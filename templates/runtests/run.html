@@ -1,5 +1,5 @@
 {% extends 'runtests/base.html' %}
-{% load execution environment sort icanhaz %}
+{% load execution environment sort %}
 
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
@@ -34,8 +34,6 @@
 {% block testcontent %}
   <section id="run">
     <h2>Run Tests:</h2>
-
-    {% icanhaz "runtests_form_error" %}
 
     <div class="managelist">
       <nav class="listordering">

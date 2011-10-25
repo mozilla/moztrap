@@ -1,6 +1,7 @@
 /*jslint    browser:    true,
-            indent:     4 */
-/*global    jQuery */
+            indent:     4,
+            confusion:  true */
+/*global    jQuery, ich */
 
 /**
  * jQuery Custom Autocomplete 0.1
@@ -15,10 +16,12 @@
 
     'use strict';
 
-    // TODO: replace ``return false;``, add caching
+    // Add cache to avoid repeated duplicate Ajax calls
+    var cache = {};
 
     $.fn.customAutocomplete = function (opts) {
         var options = $.extend({}, $.fn.customAutocomplete.defaults, opts),
+            keycodes = $.fn.customAutocomplete.keycodes,
             context = $(this),
             textbox = context.find(options.textbox),
             formActions = context.find(options.formActions),
@@ -44,7 +47,7 @@
             },
 
             // Checks if any inputs have changed from original-state,
-            // showing form-actions if any inputs have changed.
+            // showing form-actions and adding ``.expired`` if any inputs have changed.
             updateFormActions = function () {
                 if (inputs.filter(function () { return $(this).data('state') === 'changed'; }).length) {
                     expiredList.addClass('expired');
@@ -59,6 +62,7 @@
                 }
             },
 
+            // Used if there are specific restrictions on new inputs
             passRestrictedNewInputs = function (thisGroup, newInputName) {
                 // If the group already has selected inputs...
                 if (thisGroup.find(options.inputs + ':checked').length) {
@@ -78,7 +82,8 @@
                 }
             },
 
-            filterSuggestions = function() {
+            // Filter autocomplete suggestions, returning those that aren't duplicates.
+            filterSuggestions = function () {
                 filteredSuggestions = newSuggestions.filter(function () {
                     var thisSuggestionID = $(this).find('a').data('id'),
                         thisSuggestionName = $(this).find('a').data('name'),
@@ -101,54 +106,54 @@
                 });
             },
 
-            updateSuggestions = function (data) {
-                typedText = textbox.val();
-
+            // Create list of autocomplete suggestions from Ajax response or existing list of inputs
+            updateSuggestions = function (data, cached) {
                 if (!data && options.inputsNeverRemoved) {
-                    var data = {},
-                        suggestions = inputList.find(options.inputs).parent('li').filter(function () {
-                            return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
-                        });
-                    data["suggestions"] = [];
+                    var suggestions = inputList.find(options.inputs).parent('li').filter(function () {
+                        return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                    });
+                    data = {};
+                    data.suggestions = [];
                     suggestions.each(function () {
                         var typedIndex = $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()),
                             thisSuggestion = {};
-                        thisSuggestion["typedText"] = typedText;
-                        thisSuggestion["name"] = $(this).children('label').text();
-                        thisSuggestion["preText"] = $(this).children('label').text().substring(0, typedIndex);
-                        thisSuggestion["postText"] = $(this).children('label').text().substring(typedIndex + typedText.length);
-                        thisSuggestion["id"] = $(this).children('input').attr('value');
+                        thisSuggestion.typedText = typedText;
+                        thisSuggestion.name = $(this).children('label').text();
+                        thisSuggestion.preText = $(this).children('label').text().substring(0, typedIndex);
+                        thisSuggestion.postText = $(this).children('label').text().substring(typedIndex + typedText.length);
+                        thisSuggestion.id = $(this).children('input').attr('value');
                         if (options.multipleCategories) {
-                            thisSuggestion["type"] = $(this).children('input').attr('name');
+                            thisSuggestion.type = $(this).children('input').attr('name');
                             if ($(this).closest(options.inputList).find('.category-title').length) {
-                                thisSuggestion["displayType"] = $(this).closest(options.inputList).find('.category-title').text();
+                                thisSuggestion.displayType = $(this).closest(options.inputList).find('.category-title').text();
                             }
                         }
-                        data["suggestions"].push(thisSuggestion);
+                        data.suggestions.push(thisSuggestion);
                     });
                 }
 
-                if (options.allowNew) {
+                if (options.allowNew && !cached) {
                     newInputList.each(function () {
                         var thisSuggestion = {};
-                        thisSuggestion["typedText"] = typedText;
-                        thisSuggestion["name"] = typedText;
-                        thisSuggestion["newSuggestion"] = true;
+                        thisSuggestion.typedText = typedText;
+                        thisSuggestion.name = typedText;
+                        thisSuggestion.id = typedText;
+                        thisSuggestion.newSuggestion = true;
                         if (options.multipleCategories) {
-                            thisSuggestion["type"] = $(this).data('name');
+                            thisSuggestion.type = $(this).data('name');
                             if ($(this).find('.category-title').length) {
-                                thisSuggestion["displayType"] = $(this).find('.category-title').text();
+                                thisSuggestion.displayType = $(this).find('.category-title').text();
                             }
                         } else {
-                            thisSuggestion["type"] = options.inputType;
+                            thisSuggestion.type = options.inputType;
                         }
 
                         if (options.restrictNewInputs) {
                             if (passRestrictedNewInputs($(this), typedText)) {
-                                data["suggestions"].push(thisSuggestion);
+                                data.suggestions.push(thisSuggestion);
                             }
                         } else {
-                            data["suggestions"].push(thisSuggestion);
+                            data.suggestions.push(thisSuggestion);
                         }
                     });
                 }
@@ -223,24 +228,32 @@
         // If there are any new inputs already selected, prevent a new input from being selected
         // unless it and all new inputs begin with ^ and end with $.
         if (options.restrictNewInputs && options.inputsNeverRemoved) {
-            newInputList.delegate(options.inputs + ':not(:checked) + label', 'click', function () {
+            newInputList.delegate(options.inputs + ':not(:checked) + label', 'click', function (e) {
                 var thisGroup = $(this).closest(options.newInputList),
                     thisInputName = $(this).text();
                 if (!passRestrictedNewInputs(thisGroup, thisInputName)) {
                     textbox.focus();
-                    return false;
+                    e.preventDefault();
                 }
             });
         }
 
         textbox
             .keyup(function (e) {
+                // Updates suggestion-list if typed-text has changed
                 var updateSuggestionList = function () {
                     if (textbox.val() !== typedText && textbox.val() !== placeholder) {
                         typedText = textbox.val();
                         if (typedText.length) {
                             if (options.ajax) {
-                                $.get(options.url, {text: typedText}, updateSuggestions);
+                                if (cache[typedText]) {
+                                    updateSuggestions(cache[typedText], true);
+                                } else {
+                                    $.get(options.url, {text: typedText}, function (response) {
+                                        cache[typedText] = response;
+                                        updateSuggestions(response, false);
+                                    });
+                                }
                             } else {
                                 updateSuggestions();
                             }
@@ -249,9 +262,8 @@
                         }
                     }
                 };
-                // Updates suggestion-list if typed-text has changed
                 if (options.ajax) {
-                    $(this).doTimeout(300, function () {
+                    $(this).doTimeout(150, function () {
                         updateSuggestionList();
                     });
                 } else {
@@ -260,50 +272,48 @@
             })
             .keydown(function (e) {
                 // Prevent default actions on ENTER
-                if (e.keyCode === CC.keycodes.ENTER) {
+                if (e.keyCode === keycodes.ENTER) {
                     e.preventDefault();
                 }
-                // If textbox still has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
+                // If textbox has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
                 if (textbox.hasClass('placeholder') && options.fakePlaceholder) {
-                    if (!e.metaKey && e.keyCode !== CC.keycodes.SHIFT && e.keyCode !== CC.keycodes.CTRL && e.keyCode !== CC.keycodes.ALT && e.keyCode !== CC.keycodes.CAPS && e.keyCode !== CC.keycodes.ESC) {
+                    if (!e.metaKey && e.keyCode !== keycodes.SHIFT && e.keyCode !== keycodes.CTRL && e.keyCode !== keycodes.ALT && e.keyCode !== keycodes.CAPS && e.keyCode !== keycodes.ESC) {
                         removeFakePlaceholder();
                     }
                 }
                 // If the suggestion list is not visible...
                 if (!suggestionList.is(':visible')) {
-                    // ...prevent normal TAB function
-                    if (e.keyCode === CC.keycodes.TAB && textbox.val() !== '') {
+                    // ...prevent normal TAB function, and show suggestion list
+                    if (e.keyCode === keycodes.TAB && textbox.val() !== '') {
                         e.preventDefault();
                         suggestionList.show();
                     }
                     // ...perform submit action on ENTER if textbox is empty and inputs have changed
-                    if (e.keyCode === CC.keycodes.ENTER && textbox.val() === '' && expiredList.hasClass('expired')) {
+                    if (e.keyCode === keycodes.ENTER && textbox.val() === '' && expiredList.hasClass('expired')) {
                         options.triggerSubmit(context);
                     }
-                    // ...update and show the suggestion list on arrow-keys
-                    if (e.keyCode === CC.keycodes.UP || e.keyCode === CC.keycodes.DOWN || e.keyCode === CC.keycodes.LEFT || e.keyCode === CC.keycodes.RIGHT) {
+                    // ...show the suggestion list on arrow-keys
+                    if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
                         suggestionList.show();
                     }
                 // If the suggestion list is already visible...
                 } else {
                     var thisInputName = suggestionList.find('.selected').data('name');
                     // UP and DOWN move "active" suggestion
-                    if (e.keyCode === CC.keycodes.UP) {
+                    if (e.keyCode === keycodes.UP) {
                         e.preventDefault();
                         if (!suggestionList.find('.selected').parent().is(':first-child')) {
                             suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
                         }
-                        return false;
                     }
-                    if (e.keyCode === CC.keycodes.DOWN) {
+                    if (e.keyCode === keycodes.DOWN) {
                         e.preventDefault();
                         if (!suggestionList.find('.selected').parent().is(':last-child')) {
                             suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
                         }
-                        return false;
                     }
                     // ENTER performs submit action if textbox is empty and inputs have changed...
-                    if (e.keyCode === CC.keycodes.ENTER) {
+                    if (e.keyCode === keycodes.ENTER) {
                         e.preventDefault();
                         if (textbox.val() === '' && expiredList.hasClass('expired')) {
                             options.triggerSubmit(context);
@@ -313,37 +323,32 @@
                                 suggestionList.find('.selected').click();
                             }
                         }
-                        return false;
                     }
                     // TAB auto-completes the "active" suggestion if it isn't already completed...
-                    if (e.keyCode === CC.keycodes.TAB) {
+                    if (e.keyCode === keycodes.TAB) {
                         if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toLowerCase()) {
                             e.preventDefault();
                             textbox.val(thisInputName);
-                            return false;
                         // ...otherwise, TAB selects the "active" suggestion (if exists)
                         } else if (suggestionList.find('.selected').length) {
                             e.preventDefault();
                             suggestionList.find('.selected').click();
                             suggestionList.show();
-                            return false;
                         }
                     }
                     // RIGHT auto-completes the "active" suggestion if it isn't already completed
-                    if (e.keyCode === CC.keycodes.RIGHT) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toLowerCase()) {
+                    // and the cursor is at the end of the textbox
+                    if (e.keyCode === keycodes.RIGHT) {
+                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
                             e.preventDefault();
                             textbox.val(thisInputName);
-                            return false;
                         }
                     }
                     // ESC hides the suggestion list
-                    if (e.keyCode === CC.keycodes.ESC) {
+                    if (e.keyCode === keycodes.ESC) {
                         e.preventDefault();
                         suggestionList.hide();
-                        return false;
                     }
-                    return true;
                 }
             })
             // If textbox still has fake placeholder text, remove it on click
@@ -390,17 +395,19 @@
             mousedown: function () {
                 textbox.data('clicked', true);
             },
+            // Add new input or select existing input when suggestion is clicked
             click: function (e) {
                 e.preventDefault();
-                var thisGroup, thisTypeName, existingNewInput, index, newInput,
+                var thisGroup, thisTypeName, existingNewInput, index, newInput, thisInput,
                     thisID = $(this).data('id'),
-                    inputName = $(this).data('name'),
-                    thisInput = inputs.filter('[id^="id-' + thisTypeName + '-"][value="' + thisID + '"]');
+                    inputName = $(this).data('name');
                 if (options.multipleCategories) {
                     thisTypeName = $(this).data('type');
                 } else {
                     thisTypeName = options.inputType;
                 }
+                thisInput = inputs.filter('[id^="id-' + thisTypeName + '-"][value="' + thisID + '"]');
+                // If there's an existing non-new input, select it...
                 if (thisInput.length) {
                     thisInput.prop('checked', true);
                     if (thisInput.data('originallyChecked') !== thisInput.is(':checked')) {
@@ -420,6 +427,7 @@
                         index = newInputCounter;
                         newInputCounter = newInputCounter + 1;
                     }
+                    // If we're dealing with a new input...
                     if ($(this).hasClass('new') && options.allowNew) {
                         if (!options.multipleCategories) {
                             thisTypeName = 'new' + thisTypeName;
@@ -432,12 +440,14 @@
                             newInput: true
                         });
                         existingNewInput = thisGroup.find(options.inputs + '[value="' + inputName + '"]');
+                        // ...select it if it already exists...
                         if (existingNewInput.length && options.inputsNeverRemoved) {
                             existingNewInput.prop('checked', true);
                             if (existingNewInput.data('originallyChecked') !== existingNewInput.is(':checked')) {
                                 existingNewInput.data('state', 'changed');
                             }
                         } else {
+                            // ...or add it if it doesn't already exist.
                             if (thisGroup.find(options.newInputTextbox).length) {
                                 thisGroup.removeClass('empty').find(options.newInputTextbox).before(newInput);
                             } else {
@@ -447,6 +457,7 @@
                             inputs = inputList.add(newInputList).find(options.inputs);
                         }
                     } else {
+                        // Otherwise, simply add the input.
                         newInput = ich.autocomplete_input({
                             typeName: thisTypeName,
                             inputName: inputName,
@@ -458,7 +469,7 @@
                         inputs = inputList.add(newInputList).find(options.inputs);
                     }
                 }
-                // Show/hide the form-actions as necessary, reset the textbox, and empty and hide the suggestion list
+                // Update ``.expired`` and form-actions as necessary, empty the textbox, and empty and hide the suggestion list
                 updateFormActions();
                 textbox.val(null);
                 typedText = null;
@@ -466,6 +477,7 @@
             }
         });
 
+        // Remove inputs and update suggestion list when unchecked.
         if (!options.inputsNeverRemoved) {
             inputList.add(newInputList).delegate('label', 'click', function (e) {
                 e.preventDefault();
@@ -483,6 +495,7 @@
             });
         }
 
+        // Allow adding new inputs via group-specific textbox
         newInputTextbox.each(function () {
             $(this).keydown(function (e) {
                 var thisTextbox = $(this),
@@ -494,7 +507,9 @@
                     newInput = ich.autocomplete_input({
                         typeName: typeName,
                         inputName: thisText,
-                        index: index
+                        id: thisText,
+                        index: index,
+                        newInput: true
                     }),
                     addInput = function () {
                         newInput.insertBefore(thisTextbox);
@@ -515,18 +530,15 @@
                         thisText = null;
                     };
                 // ENTER performs submit action if textbox is empty and inputs have changed...
-                if (e.keyCode === CC.keycodes.ENTER) {
+                if (e.keyCode === keycodes.ENTER) {
                     e.preventDefault();
                     if (thisText === '' && expiredList.hasClass('expired')) {
                         options.triggerSubmit(context);
-                    }
-                    if (thisText.length) {
+                    } else if (thisText.length) {
                         // ...otherwise, if the input already exists, ENTER selects it...
                         if (existingInput.length && !existingInput.is(':checked') && !thisGroup.find(options.inputs + ':checked').length) {
                             selectInput();
-                            return false;
-                        }
-                        if (options.restrictNewInputs && passRestrictedNewInputs(thisGroup, thisText)) {
+                        } else if (options.restrictNewInputs && passRestrictedNewInputs(thisGroup, thisText)) {
                             addInput();
                         }
                     }
@@ -535,29 +547,48 @@
         });
     };
 
+    // Store keycode variables for easier readability
+    $.fn.customAutocomplete.keycodes = {
+        SPACE: 32,
+        ENTER: 13,
+        TAB: 9,
+        ESC: 27,
+        BACKSPACE: 8,
+        SHIFT: 16,
+        CTRL: 17,
+        ALT: 18,
+        CAPS: 20,
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40
+    };
+
     /* Setup plugin defaults */
     $.fn.customAutocomplete.defaults = {
-        textbox: '#autocomplete-textbox',
-        inputs: 'input[type="checkbox"]',
-        formActions: '.form-actions',
-        suggestionList: '.textual .suggest',
-        inputList: '.visual',
-        ajax: false,
-        url: null,
-        triggerSubmit: function (context) {
+        textbox: '#autocomplete-textbox',               // Selector for autocomplete textbox
+        inputs: 'input[type="checkbox"]',               // Selector for inputs
+        formActions: '.form-actions',                   // Selector for form-actions (only needed if ``hideFormActions: true``)
+        suggestionList: '.textual .suggest',            // Selector for list of autocomplete suggestions
+        inputList: '.visual',                           // Selector for list of inputs
+        ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
+        url: null,                                      // Ajax url (only needed if ``ajax: true``)
+        triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
             context.find('.form-actions button[type="submit"]').click();
         },
-        hideFormActions: false,
-        multipleCategories: false,
-        allowNew: false,
-        newInputList: null,
-        restrictNewInputs: false,
-        newInputTextbox: null,
-        fakePlaceholder: false,
-        expiredList: '.visual',
-        initialFocus: false,
-        reset: '.reset',
-        inputType: null,
-        inputsNeverRemoved: false
+        hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
+        multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
+        allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed
+        newInputList: null,                             // Selector for list of new inputs (only needed if ``allowNew: true``
+                                                        //      and ``multipleCategories: true``)
+        restrictNewInputs: false,                       // Set ``true`` if new inputs should be restricted to use ^ and $
+        newInputTextbox: null,                          // Selector for secondary textbox to enter new group-specific inputs
+        fakePlaceholder: false,                         // Set ``true`` to create fake placeholder text when using ``initialFocus: true``
+        expiredList: '.visual',                         // Selector for setting ``.expired`` when inputs have changed
+        initialFocus: false,                            // Set ``true`` to give textbox focus on initial page load
+        reset: '.reset',                                // Selector for button to reset all inputs to original state
+        inputType: null,                                // Name for input types when using only one category of inputs
+        inputsNeverRemoved: false                       // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
     };
+
 }(jQuery));
