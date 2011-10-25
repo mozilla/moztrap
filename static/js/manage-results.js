@@ -853,6 +853,26 @@ var CC = (function (CC, $) {
         });
     };
 
+    CC.envNarrowing = function (container) {
+        var context = $(container),
+            bulkSelect = context.find('#bulk_select'),
+            inputs = context.find('input[type="checkbox"][name="environments"]');
+
+        bulkSelect.change(function () {
+            if ($(this).is(':checked')) {
+                inputs.prop('checked', true);
+            } else {
+                inputs.prop('checked', false);
+            }
+        });
+
+        inputs.change(function () {
+            if (inputs.not(':checked').length) {
+                bulkSelect.prop('checked', false);
+            }
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));

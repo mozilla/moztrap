@@ -98,6 +98,7 @@ var CC = (function (CC, $) {
         CC.autoCompleteCaseTags('#addcase');
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
+        CC.envNarrowing('#envnarrowlist');
 
         // manage-env.js
         CC.createEnvProfile();
