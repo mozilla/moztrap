@@ -1896,18 +1896,18 @@ footer[role="contentinfo"] small {
   border: 0;
 }
 
-.togglelist, #filter .compact .content, .tagging .visual, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
+.togglelist, #filter .compact .content, .tagging .visual, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms, .env-element-list {
   font-size: 0.857em;
-  line-height: 1.416em;
+  line-height: 1.888em;
 }
-.togglelist input, #filter .compact .content input, .tagging .visual input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .togglelist label, #filter .compact .content label, .tagging .visual label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label {
+.togglelist input, #filter .compact .content input, .tagging .visual input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .env-element-list input, .togglelist label, #filter .compact .content label, .tagging .visual label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label, .env-element-list label {
   display: none;
 }
-.togglelist li, #filter .compact .content li, .tagging .visual li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
+.togglelist li, #filter .compact .content li, .tagging .visual li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li, .env-element-list li {
   display: inline;
   float: left;
 }
-.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .visual input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label {
+.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .visual input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label, .env-element-list input:checked + label {
   margin-bottom: 0.472em;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
@@ -1927,7 +1927,7 @@ footer[role="contentinfo"] small {
   background: #e4f5d1 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
   white-space: nowrap;
 }
-.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .visual input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover {
+.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .visual input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover, .env-element-list input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
@@ -2038,8 +2038,6 @@ footer[role="contentinfo"] small {
   display: block;
 }
 #filter .content {
-  font-size: 0.857em;
-  line-height: 1.888em;
   clear: both;
   *zoom: 1;
 }
@@ -2078,6 +2076,10 @@ footer[role="contentinfo"] small {
 }
 #filter .expanded .toggle a:link::after, #filter .expanded .toggle a:visited::after {
   content: "";
+}
+#filter .expanded .content {
+  font-size: 0.857em;
+  line-height: 1.888em;
 }
 #filter .expanded .content .filter-group {
   display: inline;
@@ -5314,47 +5316,6 @@ footer[role="contentinfo"] small {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
-}
-
-.env-element-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  *zoom: 1;
-  margin-top: 0.405em;
-  margin-bottom: 0.405em;
-}
-.env-element-list li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0px;
-}
-.env-element-list:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.env-element-list li {
-  display: inline;
-  float: left;
-  font-weight: 500;
-  -moz-border-radius: 0.236em;
-  -webkit-border-radius: 0.236em;
-  -o-border-radius: 0.236em;
-  -ms-border-radius: 0.236em;
-  -khtml-border-radius: 0.236em;
-  border-radius: 0.236em;
-  background: rgba(81, 105, 133, 0.382);
-  padding: 0.202em 0.405em;
-  margin-right: 0.405em;
-}
-.add-item .env-element-list li {
-  background: rgba(117, 184, 40, 0.618);
-  cursor: pointer;
-}
-.add-item .env-element-list li:focus, .add-item .env-element-list li:hover, .add-item .env-element-list li:active {
-  background: rgba(184, 40, 45, 0.382);
 }
 
 /* narrow Environments ------------------------------------------------------- */

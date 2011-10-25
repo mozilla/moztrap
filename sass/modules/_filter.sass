@@ -59,7 +59,7 @@
     +gone
 
 .togglelist
-  +adjust-font-size-to(12px,.75)
+  +adjust-font-size-to(12px)
   input, label
     display: none
   li
@@ -138,7 +138,6 @@
         display: block
 
   .content
-    +adjust-font-size-to(12px)
     +full(24)
     +pie-clearfix
 
@@ -175,6 +174,7 @@
           &::after
             content: ""
     .content
+      +adjust-font-size-to(12px)
       .filter-group
         +columns(3,24)
         +trailer(.5)
