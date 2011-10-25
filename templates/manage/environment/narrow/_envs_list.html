@@ -12,11 +12,15 @@
     </ul>
   </nav>
 
-  <div class="items">
+  <div class="items select">
     {% for env in environments %}
     {% include "manage/environment/narrow/_env_list_item.html" %}
     {% endfor %}
   </div>
 
-  {% include "lists/_listnav.html" %}
+    <nav class="listnav">
+      <h3 class="navhead">List Navigation</h3>
+      <p class="location">showing {{ environments|length }}</p>
+    </nav>
+
 </div>

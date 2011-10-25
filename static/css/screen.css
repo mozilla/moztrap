@@ -3781,8 +3781,6 @@ footer[role="contentinfo"] small {
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
   list-style-type: none;
-  font-style: italic;
-  color: rgba(72, 78, 85, 0.618);
 }
 .preview, .preview li {
   margin: 0px;
@@ -3868,6 +3866,66 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   clear: none;
   text-align: left;
+}
+
+.select {
+  *zoom: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
+  -webkit-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
+  -o-box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
+  box-shadow: rgba(75, 87, 101, 0.382) 0 0 0.382em inset;
+  border: 1px solid #516985;
+  height: 19.416em;
+  background: rgba(75, 87, 101, 0.146);
+  overflow-y: scroll;
+  resize: vertical;
+}
+.select:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.selectitem, .version-select .version {
+  padding: 0;
+  resize: none;
+}
+.selectitem .item-input, .version-select .version .item-input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.selectitem .item-input:checked + .item-select, .version-select .version .item-input:checked + .item-select {
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(237, 237, 237, 0.382)), color-stop(100%, rgba(237, 237, 237, 0)));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -webkit-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -moz-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -o-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) -ms-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+  background: url('../images/ui/check.png?1314206098') no-repeat scroll 0.809em, rgba(204, 236, 167, 0.382) linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
+}
+.selectitem .item-select, .version-select .version .item-select {
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 0em;
+  padding-top: 0.405em;
+  padding-bottom: 0.405em;
+  margin-bottom: 0em;
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(134, 149, 168, 0.146)), color-stop(100%, rgba(134, 149, 168, 0)));
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -webkit-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -moz-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -o-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, -ms-linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  background: url('../images/ui/x_sm.png?1314206098') no-repeat scroll 0.809em, linear-gradient(top, rgba(134, 149, 168, 0.146), rgba(134, 149, 168, 0) 0.382em);
+  display: block;
 }
 
 /* Login/Register ------------------------------------------------------------ */
@@ -4384,7 +4442,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/arrow_right_dbl.png?1318442391');
+  background-image: url('../images/ui/arrow_right_dbl.png?1319580236');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   padding-left: 3.305px;
@@ -4396,7 +4454,7 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .superselect .action-include:focus, .mainselect .action-include:focus, .userselect .action-include:focus, .suiteselect .action-include:focus, .caseselect .action-include:focus, .roleselect .action-include:focus, .superselect .action-include:hover, .mainselect .action-include:hover, .userselect .action-include:hover, .suiteselect .action-include:hover, .caseselect .action-include:hover, .roleselect .action-include:hover, .superselect .action-include:active, .mainselect .action-include:active, .userselect .action-include:active, .suiteselect .action-include:active, .caseselect .action-include:active, .roleselect .action-include:active {
-  background-image: url('../images/ui/arrow_right_dbl.png?1318442391');
+  background-image: url('../images/ui/arrow_right_dbl.png?1319580236');
 }
 .superselect .action-include:focus, .mainselect .action-include:focus, .userselect .action-include:focus, .suiteselect .action-include:focus, .caseselect .action-include:focus, .roleselect .action-include:focus, .superselect .action-include:hover, .mainselect .action-include:hover, .userselect .action-include:hover, .suiteselect .action-include:hover, .caseselect .action-include:hover, .roleselect .action-include:hover, .superselect .action-include:active, .mainselect .action-include:active, .userselect .action-include:active, .suiteselect .action-include:active, .caseselect .action-include:active, .roleselect .action-include:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -4410,7 +4468,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/arrow_left_dbl.png?1318442361');
+  background-image: url('../images/ui/arrow_left_dbl.png?1319580236');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   padding-left: 3.305px;
@@ -4422,7 +4480,7 @@ footer[role="contentinfo"] small {
   opacity: 0.675;
 }
 .superselect .action-exclude:focus, .mainselect .action-exclude:focus, .userselect .action-exclude:focus, .suiteselect .action-exclude:focus, .caseselect .action-exclude:focus, .roleselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .action-exclude:hover, .userselect .action-exclude:hover, .suiteselect .action-exclude:hover, .caseselect .action-exclude:hover, .roleselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .action-exclude:active, .userselect .action-exclude:active, .suiteselect .action-exclude:active, .caseselect .action-exclude:active, .roleselect .action-exclude:active {
-  background-image: url('../images/ui/arrow_left_dbl.png?1318442361');
+  background-image: url('../images/ui/arrow_left_dbl.png?1319580236');
 }
 .superselect .action-exclude:focus, .mainselect .action-exclude:focus, .userselect .action-exclude:focus, .suiteselect .action-exclude:focus, .caseselect .action-exclude:focus, .roleselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .action-exclude:hover, .userselect .action-exclude:hover, .suiteselect .action-exclude:hover, .caseselect .action-exclude:hover, .roleselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .action-exclude:active, .userselect .action-exclude:active, .suiteselect .action-exclude:active, .caseselect .action-exclude:active, .roleselect .action-exclude:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -4508,7 +4566,7 @@ footer[role="contentinfo"] small {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/grip.png?1318444167');
+  background-image: url('../images/ui/grip.png?1319580236');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   padding-left: 3.305px;
@@ -4527,7 +4585,7 @@ footer[role="contentinfo"] small {
   padding: 0;
 }
 .selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
-  background-image: url('../images/ui/grip.png?1318444167');
+  background-image: url('../images/ui/grip.png?1319580236');
 }
 .selectitem .bulkselect:focus, .version-select .version .bulkselect:focus, .selectitem .bulkselect:hover, .version-select .version .bulkselect:hover, .selectitem .bulkselect:active, .version-select .version .bulkselect:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -5319,13 +5377,42 @@ footer[role="contentinfo"] small {
 }
 
 /* narrow Environments ------------------------------------------------------- */
-#envnarrowlist .bybulk, #envnarrowlist .bulk {
+#envnarrowlist .bybulk {
   display: inline;
   float: left;
   width: 3.158%;
   margin-right: 1.053%;
+  text-align: center;
 }
-#envnarrowlist .bybulk label, #envnarrowlist .bulk label {
+#envnarrowlist .bybulk label {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/check.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 3.305px;
+  padding-right: 3.305px;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  padding: 0;
+  vertical-align: inherit;
+}
+#envnarrowlist .bybulk label:focus, #envnarrowlist .bybulk label:hover, #envnarrowlist .bybulk label:active {
+  background-image: url('../images/ui/check.png?1314206098');
+}
+#envnarrowlist .bybulk label:focus, #envnarrowlist .bybulk label:hover, #envnarrowlist .bybulk label:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+#envnarrowlist .bybulk input {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -5335,10 +5422,11 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-#envnarrowlist .bybulk input, #envnarrowlist .bulk input {
-  margin-left: 0.809em;
+#envnarrowlist .bybulk input:checked + label {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
-#envnarrowlist .bypreview, #envnarrowlist .preview {
+#envnarrowlist .bypreview {
   display: inline;
   float: left;
   width: 95.789%;
@@ -5348,9 +5436,9 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   text-align: left;
 }
-#envnarrowlist .content {
+#envnarrowlist .item-select {
   padding-left: 4.211%;
-  padding-right: 4.211%;
+  padding-right: 0.809em;
 }
 
 /* Manage Users -------------------------------------------------------------- */

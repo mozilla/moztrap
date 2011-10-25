@@ -166,18 +166,24 @@
 /* narrow Environments -------------------------------------------------------
 
 #envnarrowlist
-  .bybulk, .bulk
+  .bybulk
     +columns(1,24)
+    text-align: center
     label
-      +gone
+      +icon-replace('ui/check.png')
+      padding: 0
+      vertical-align: inherit
     input
-      margin-left: rhythm(.5)
-  .bypreview, .preview
+      +gone
+      &:checked + label
+        +opacity(1)
+  .bypreview
     +columns(23,24)
     +omega(24)
     text-align: left
-  .content
-    +pad(1,1,24)
+  .item-select
+    +prefix(1,24)
+    padding-right: rhythm(.5)
 
 /* Manage Users --------------------------------------------------------------
 
