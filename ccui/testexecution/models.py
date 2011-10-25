@@ -46,8 +46,8 @@ def round_percent(val):
 class TestCycle(Named, Activatable, RemoteObject):
     company = fields.Locator(Company)
     product = fields.Locator(Product)
-    name = fields.Field()
-    description = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
     status = StaticData(
         "TESTCYCLESTATUS", "testCycleStatusId", api_submit_name=False)
     startDate = fields.Date()
@@ -137,8 +137,8 @@ class TestRun(Named, Activatable, RemoteObject):
     company = fields.Locator(Company)
     product = fields.Locator(Product)
     testCycle = fields.Locator(TestCycle)
-    name = fields.Field()
-    description = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
     status = StaticData(
         "TESTRUNSTATUS", "testRunStatusId", api_submit_name=False)
     selfAssignAllowed = fields.Field()
@@ -340,12 +340,12 @@ class TestCaseAssignmentList(ListObject):
 class TestResult(RemoteObject):
     company = fields.Locator(Company)
     product = fields.Locator(Product)
-    actualResult = fields.Field()
+    actualResult = fields.CharField()
     actualTimeInMin = fields.Field()
     approval = StaticData(
         "APPROVALSTATUS", "approvalStatusId", api_submit_name=False)
     approvedBy = fields.Locator(User, api_submit_name=False)
-    comment = fields.Field()
+    comment = fields.CharField()
     failedStepNumber = fields.Field()
     product = fields.Locator(Product)
     testCase = fields.Locator(TestCase)

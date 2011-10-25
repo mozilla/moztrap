@@ -15,7 +15,7 @@ from ..static.fields import StaticData
 
 class Permission(Named, RemoteObject):
     assignable = fields.Field()
-    name = fields.Field()
+    name = fields.CharField()
     permissionCode = fields.Field()
 
 
@@ -35,7 +35,7 @@ class PermissionList(ListObject):
 
 class Role(Named, RemoteObject):
     company = fields.Locator(Company)
-    name = fields.Field()
+    name = fields.CharField()
 
     permissions = fields.Link(PermissionList)
 
@@ -68,11 +68,11 @@ class RoleList(ListObject):
 
 class User(Activatable, RemoteObject):
     company = fields.Locator(Company)
-    email = fields.Field()
-    firstName = fields.Field()
-    lastName = fields.Field()
-    password = fields.Field()
-    screenName = fields.Field()
+    email = fields.CharField()
+    firstName = fields.CharField()
+    lastName = fields.CharField()
+    password = fields.CharField()
+    screenName = fields.CharField()
     status = StaticData("USERSTATUS", "userStatusId")
 
     roles = fields.Link(RoleList)

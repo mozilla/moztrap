@@ -4,9 +4,9 @@ from ..static.fields import StaticData
 
 
 class Attachment(Named, RemoteObject):
-    name = fields.Field()
-    description = fields.Field()
-    url = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
+    url = fields.CharField()
     size = fields.Field()
     attachmentType = StaticData("ATTACHMENTTYPE", "attachmentTypeId")
 

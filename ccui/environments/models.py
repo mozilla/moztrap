@@ -42,8 +42,8 @@ class EnvironmentType(Named, RemoteObject):
 
     """
     company = fields.Locator(Company)
-    name = fields.Field()
-    groupType = fields.Field()
+    name = fields.CharField()
+    groupType = fields.CharField()
 
     _environments = fields.Link("EnvironmentList", "environments")
 
@@ -129,7 +129,7 @@ class Environment(Named, RemoteObject):
     """
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
-    name = fields.Field()
+    name = fields.CharField()
 
 
     # UI nomenclature
@@ -181,8 +181,8 @@ class BaseEnvironmentGroup(Named, RemoteObject):
     """
     company = fields.Locator(Company)
     environmentType = fields.Locator(EnvironmentType)
-    name = fields.Field()
-    description = fields.Field()
+    name = fields.CharField()
+    description = fields.CharField()
 
     non_field_filters = {
         "element": "includedEnvironmentId",
