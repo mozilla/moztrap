@@ -779,8 +779,9 @@ PARENT_ATTRS = {
     }
 
 
+
 @login_redirect
-@dec.paginate_clientside('environments')
+@dec.paginate_clientside("environments")
 @dec.filter("environments",
             ("element", EnvironmentFilter),
             )
@@ -789,6 +790,13 @@ def narrow_environments(request, object_type, object_id):
     list_cls = OBJECT_TYPES[object_type]
     obj = get_object_or_404(list_cls, object_id, auth=request.auth)
     parent = getattr(obj, PARENT_ATTRS[object_type])
+
+    if request.method == "POST":
+        env_ids = request.POST.getlist("environments")
+
+        obj.environmentgroups = env_ids
+
+        return redirect("manage_%ss" % object_type)
 
     return TemplateResponse(
         request,
