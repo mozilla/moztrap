@@ -17,6 +17,7 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.util import ErrorList
+from django.utils.datastructures import MultiValueDict
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -276,6 +277,23 @@ class OptionAttrsSelectMultiple(forms.SelectMultiple):
 
     """
     template_name = "forms/_select_with_option_attrs.html"
+
+
+
+class FilteredSelectMultiple(OptionAttrsSelectMultiple):
+    template_name = "forms/_filtered_select_multiple.html"
+
+    def __init__(self, *args, **kwargs):
+        self.filters = kwargs.pop("filters", [])
+        self.auth = kwargs.pop("auth", None)
+        super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
+
+
+    def get_context_data(self):
+        from .filters import Filter
+        ctx = super(FilteredSelectMultiple, self).get_context_data()
+        ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
+        return ctx
 
 
 

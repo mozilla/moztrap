@@ -29,7 +29,11 @@
       </li>
     </ul>
 
-    {% include "manage/_case_select.html" %}
+    <section class="caseselect">
+      <h3>add test cases to your test suite</h3>
+        {{ form.cases.errors }}
+        {{ form.cases }}
+    </section>
 
     <div class="form-actions">
       <button type="submit">save test suite</button>

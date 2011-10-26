@@ -23,7 +23,9 @@ import floppyforms as forms
 from ..attachments.models import Attachment
 from ..core import forms as ccforms
 from ..core.auth import admin
+from ..core.filters import KeywordFilter
 from ..products.models import Product, ProductList
+from ..static.filters import TestCaseStatusFilter
 from ..static.status import AttachmentType
 from ..tags.models import Tag, TagList
 from ..testcases import increment
@@ -33,6 +35,7 @@ from ..testcases.models import (
     TestSuite, TestSuiteList, TestCaseVersion, TestCaseList, TestCaseStep)
 from ..testexecution.models import (
     TestCycle, TestCycleList, TestRun, TestRunList)
+from ..users.filters import UserFieldFilter
 from ..users.models import User, UserList
 
 
@@ -178,6 +181,17 @@ class TestSuiteForm(ccforms.AddEditForm):
         required=False,
         label_from_instance=lambda c: c.name,
         option_attrs=product_id_attrs)
+
+
+    def __init__(self, *args, **kwargs):
+        super(TestSuiteForm, self).__init__(*args, **kwargs)
+        self.fields["cases"].widget = ccforms.FilteredSelectMultiple(
+            auth=self.auth,
+            filters=[
+                ("status", TestCaseStatusFilter),
+                ("name", KeywordFilter),
+                ("author", UserFieldFilter)
+                ])
 
 
     no_edit_fields = ["product"]

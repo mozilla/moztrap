@@ -1,0 +1,81 @@
+{% load icanhaz %}
+
+{% comment %}
+@@@
+- add product IDs to each option (from option_attrs)
+- add form inputs that server will care about
+- remove case-specific text, pass in from widget
+{% endcomment %}
+
+<div>
+  {% icanhaz "autocomplete_suggestion" %}
+  {% icanhaz "autocomplete_input" %}
+  <section class="unselected">
+    <h4>available cases</h4>
+    <div class="selectsearch">
+      <label for="search-add">filter available cases</label>
+      <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available cases">
+      <ul class="suggest">
+      </ul>
+      <ul class="terms">
+        {% for field in filter %}
+        {% include "lists/_filter_group.html" with advanced=0 %}
+        {% endfor %}
+      </ul>
+    </div>
+    <nav class="listordering">
+      <h5 class="navhead">List Ordering</h5>
+      <ul>
+        <li class="byinclude"><button class="action-include" title="include selected">include selected</button></li>
+        <li class="bystatus"><a href="#">status</a></li>
+        <li class="bytitle"><a href="#">name</a></li>
+        <li class="byauthor"><a href="#">author</a></li>
+      </ul>
+    </nav>
+    <div class="select">
+      {% include "forms/_filtered_select_multiple_item.html" with id="01" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="02" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="03" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="04" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="05" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="06" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="07" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="08" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="09" %}
+    </div>
+  </section>
+  <section class="selected">
+    <h4>included cases</h4>
+    <div class="selectsearch">
+      <label for="search-remove">filter included cases</label>
+      <input type="text" name="search" value="" id="search-remove" autocomplete="off" placeholder="filter included cases">
+      <ul class="suggest">
+      </ul>
+      <ul class="terms">
+        {% for field in filter %}
+        {% include "lists/_filter_group.html" with advanced=0 %}
+        {% endfor %}
+      </ul>
+    </div>
+    <nav class="listordering">
+      <h5 class="navhead">List Ordering</h5>
+      <ul>
+        <li class="byexclude"><button class="action-exclude" title="remove selected">remove selected</button></li>
+        <li class="bystatus"><a href="#">status</a></li>
+        <li class="bytitle"><a href="#">name</a></li>
+        <li class="byauthor"><a href="#">author</a></li>
+      </ul>
+    </nav>
+    <div class="select">
+      {% include "forms/_filtered_select_multiple_item.html" with id="101" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="102" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="103" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="104" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="105" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="106" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="107" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="108" %}
+      {% include "forms/_filtered_select_multiple_item.html" with id="109" %}
+    </div>
+  </section>
+</div>
