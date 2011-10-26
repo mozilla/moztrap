@@ -35,7 +35,7 @@ from ..testexecution.models import TestRunIncludedTestCaseList
 from ..users.decorators import login_redirect
 
 from .finder import RunTestsFinder
-from .models import TestCycleList, TestRunList, TestResultList
+from .models import TestCycleList, TestRunList, TestResult, TestResultList
 
 
 
@@ -73,6 +73,13 @@ def runtests(request, testrun_id):
     get_token(request)
 
     testrun = get_object_or_404(TestRunList, testrun_id, auth=request.auth)
+
+    if not testrun.status.ACTIVE:
+        messages.info(
+            request,
+            "That test run is currently not open for testing. "
+            "Please select a different test run.")
+        return redirect("runtests")
 
     if not testrun.environmentgroups_prefetch.match(request.environments):
         return redirect("runtests_environment", testrun_id=testrun_id)
@@ -134,22 +141,25 @@ def result(request, result_id):
             messages.error(request, "The %r field is required." % argname)
             return json_response({})
 
-    getattr(result, action)(**kwargs)
-
-    new_bug_url = request.POST.get("related_bug", None)
-    if new_bug_url:
-        try:
-            URLValidator()(new_bug_url)
-        except ValidationError:
-            messages.error(request, "The bug URL must be a valid URL.")
-            return json_response({})
-        bug = ExternalBug(url=new_bug_url, externalIdentifier="1")
-        result.relatedbugs.post(bug)
+    try:
+        getattr(result, action)(**kwargs)
+    except TestResult.Conflict as e:
+        messages.error(request, str(e))
     else:
-        for bug_id in request.POST.getlist("bugs"):
-            if bug_id:
-                bug = ExternalBugList.get_by_id(bug_id, auth=request.auth)
-                result.relatedbugs.post(bug)
+        new_bug_url = request.POST.get("related_bug", None)
+        if new_bug_url:
+            try:
+                URLValidator()(new_bug_url)
+            except ValidationError:
+                messages.error(request, "The bug URL must be a valid URL.")
+                return json_response({})
+            bug = ExternalBug(url=new_bug_url, externalIdentifier="1")
+            result.relatedbugs.post(bug)
+        else:
+            for bug_id in request.POST.getlist("bugs"):
+                if bug_id:
+                    bug = ExternalBugList.get_by_id(bug_id, auth=request.auth)
+                    result.relatedbugs.post(bug)
 
     return render_to_response(
         "runtests/_run_case.html",
