@@ -14,20 +14,9 @@
         <ul class="suggest">
         </ul>
         <ul class="terms">
-          {# @@@ make this work #}
-          <!-- {% for field in filter %}
-          <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
-            <h5 class="category-title">{{ field.name|lower }}</h5>
-            <ul {% if field|length > 6 %}class="long"{% endif %}>
-              {% for option in field %}
-              <li>
-                <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
-                <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
-              </li>
-              {% endfor %}
-            </ul>
-          </section>
-          {% endfor %} -->
+          {% for field in filter %}
+          {% include "lists/_filter_group.html" with advanced=0 %}
+          {% endfor %}
         </ul>
       </div>
       <nav class="listordering">

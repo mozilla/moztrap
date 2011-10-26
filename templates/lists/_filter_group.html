@@ -1,0 +1,16 @@
+<section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
+  <h5 class="category-title">{{ field.name|lower }}</h5>
+  <ul {% if field|length > 6 %}class="long"{% endif %}>
+    {% for option in field %}
+    <li>
+      <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
+      <label for="id-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
+    </li>
+    {% endfor %}
+    {% if advanced and field.cls == "keyword" %}
+      <li>
+        <input type="text" value="" id="id-{{ field.name }}" autocomplete="off" placeholder="add {{ field.name }} filter">
+      </li>
+    {% endif %}
+  </ul>
+</section>
