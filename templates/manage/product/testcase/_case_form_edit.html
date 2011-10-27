@@ -12,15 +12,18 @@
     </ul>
 
     <div class="version-select details">
-      <p class="summary">Edit <strong>v1 (latest)</strong> <em>or select a different version &raquo;</em></p>
+      <p class="summary">
+        Edit
+        <strong>
+          v{{ form.instance.majorVersion }}
+          ({% if form.instance.latestVersion %}latest{% else %}obsolete{% endif %})
+        </strong>
+        <em>or select a different version &raquo;</em>
+      </p>
       <div class="content">
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="01" runs="more" check="checked" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="02" runs="more" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="03" runs="more" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="04" runs="less" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="05" runs="less" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="06" runs="more" %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" with id="07" %}
+        {% for version in form.instance.all_versions %}
+        {% include "manage/product/testcase/_case_form_version_list_item.html" %}
+        {% endfor %}
       </div>
     </div>
   </div>

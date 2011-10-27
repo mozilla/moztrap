@@ -117,6 +117,21 @@ class TestCaseVersion(Activatable, TestCase):
         }
 
 
+    def all_versions(self):
+        return TestCaseList.get_by_id(
+            self.testCaseId, auth=self.auth).versions
+
+
+    def other_versions(self):
+        return (v for v in self.all_versions() if v.id != self.id)
+
+
+    def testruns(self):
+        from ..testexecution.models import TestRunList
+        return TestRunList.get(auth=self.auth).filter(
+            includedTestCaseVersionId=self.id)
+
+
     def __unicode__(self):
         return u"%s v%s (%s)" % (
             super(TestCaseVersion, self).__unicode__(),
