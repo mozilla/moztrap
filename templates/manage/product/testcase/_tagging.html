@@ -7,16 +7,15 @@
   </div>
 
   <div class="visual">
+    <p>tags:</p>
+    <ul class="taglist">
     {% if case and case.tags %}
-      <p>tags:</p>
-      <ul class="taglist">
       {% for tag in case.tags %}
         {% include "manage/product/testcase/_tag_visual.html" %}
       {% endfor %}
-      </ul>
     {% else %}
-      <p>tags: <em>none</em></p>
     {% endif %}
+    </ul>
   </div>
 
 </div>
