@@ -160,7 +160,14 @@
 
                 newSuggestions = ich.autocomplete_suggestion(data);
                 filterSuggestions();
-                suggestionList.html(filteredSuggestions).show();
+                suggestionList.html(filteredSuggestions);
+
+                // Show suggestion list if it contains suggestions; otherwise, hide it.
+                if (suggestionList.find('li').length) {
+                    suggestionList.show();
+                } else {
+                    suggestionList.hide();
+                }
 
                 // Adds ".selected" to first autocomplete suggestion.
                 if (!(suggestionList.find('.selected').length)) {
@@ -284,7 +291,7 @@
                 // If the suggestion list is not visible...
                 if (!suggestionList.is(':visible')) {
                     // ...prevent normal TAB function, and show suggestion list
-                    if (e.keyCode === keycodes.TAB && textbox.val() !== '') {
+                    if (e.keyCode === keycodes.TAB && textbox.val() !== '' && suggestionList.find('li').length) {
                         e.preventDefault();
                         suggestionList.show();
                     }
@@ -294,7 +301,9 @@
                     }
                     // ...show the suggestion list on arrow-keys
                     if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
-                        suggestionList.show();
+                        if (suggestionList.find('li').length) {
+                            suggestionList.show();
+                        }
                     }
                 // If the suggestion list is already visible...
                 } else {
@@ -333,7 +342,6 @@
                         } else if (suggestionList.find('.selected').length) {
                             e.preventDefault();
                             suggestionList.find('.selected').click();
-                            suggestionList.show();
                         }
                     }
                     // RIGHT auto-completes the "active" suggestion if it isn't already completed
