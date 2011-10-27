@@ -6077,13 +6077,14 @@ footer[role="contentinfo"] small {
 }
 
 /* Results ------------------------------------------------------------------- */
-.resulticons, .resultslist li, .managelist .results li, .case-details .summary .results li, #results .managelist .result {
+.resulticons, .resultslist a:link, .managelist .results a:link, .case-details .summary .results a:link, .resultslist a:visited, .managelist .results a:visited, .case-details .summary .results a:visited, #results .managelist .result {
   font-size: 0.857em;
   line-height: 1.888em;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: block;
   min-width: 3.641em;
 }
-.resulticons.passed, .resultslist li.passed, .managelist .results li.passed, .case-details .summary .results li.passed, #results .managelist .passed.result {
+.resulticons.passed, .resultslist a.passed:link, .managelist .results a.passed:link, .case-details .summary .results a.passed:link, .resultslist a.passed:visited, .managelist .results a.passed:visited, .case-details .summary .results a.passed:visited, #results .managelist .passed.result {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -6102,7 +6103,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/check_sm.png?1314206098');
   background-position: 0.375em;
 }
-.resulticons.invalidated, .resultslist li.invalidated, .managelist .results li.invalidated, .case-details .summary .results li.invalidated, #results .managelist .invalidated.result {
+.resulticons.invalidated, .resultslist a.invalidated:link, .managelist .results a.invalidated:link, .case-details .summary .results a.invalidated:link, .resultslist a.invalidated:visited, .managelist .results a.invalidated:visited, .case-details .summary .results a.invalidated:visited, #results .managelist .invalidated.result {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -6121,7 +6122,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/warning_sm.png?1314206098');
   background-position: 0.375em;
 }
-.resulticons.failed, .resultslist li.failed, .managelist .results li.failed, .case-details .summary .results li.failed, #results .managelist .failed.result {
+.resulticons.failed, .resultslist a.failed:link, .managelist .results a.failed:link, .case-details .summary .results a.failed:link, .resultslist a.failed:visited, .managelist .results a.failed:visited, .case-details .summary .results a.failed:visited, #results .managelist .failed.result {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -6140,7 +6141,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/x_sm.png?1314206098');
   background-position: 0.375em;
 }
-.resulticons.pending, .resultslist li.pending, .managelist .results li.pending, .case-details .summary .results li.pending, #results .managelist .pending.result {
+.resulticons.pending, .resultslist a.pending:link, .managelist .results a.pending:link, .case-details .summary .results a.pending:link, .resultslist a.pending:visited, .managelist .results a.pending:visited, .case-details .summary .results a.pending:visited, #results .managelist .pending.result {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -6159,7 +6160,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/clock_sm.png?1314206098');
   background-position: 0.375em;
 }
-.resulticons.started, .resultslist li.started, .managelist .results li.started, .case-details .summary .results li.started, #results .managelist .started.result {
+.resulticons.started, .resultslist a.started:link, .managelist .results a.started:link, .case-details .summary .results a.started:link, .resultslist a.started:visited, .managelist .results a.started:visited, .case-details .summary .results a.started:visited, #results .managelist .started.result {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -6178,7 +6179,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/clock_sm.png?1314206098');
   background-position: 0.375em;
 }
-.resulticons.zip, .resultslist li.zip, .managelist .results li.zip, .case-details .summary .results li.zip, #results .managelist .zip.result {
+.resulticons.zip, .resultslist a.zip:link, .managelist .results a.zip:link, .case-details .summary .results a.zip:link, .resultslist a.zip:visited, .managelist .results a.zip:visited, .case-details .summary .results a.zip:visited, #results .managelist .zip.result {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -6222,6 +6223,12 @@ footer[role="contentinfo"] small {
   height: 1px;
   width: 1px;
   border: 0;
+}
+.resultslist a:link, .managelist .results a:link, .case-details .summary .results a:link, .resultslist a:visited, .managelist .results a:visited, .case-details .summary .results a:visited {
+  color: #484e55;
+}
+.resultslist a:focus, .managelist .results a:focus, .case-details .summary .results a:focus, .resultslist a:hover, .managelist .results a:hover, .case-details .summary .results a:hover, .resultslist a:active, .managelist .results a:active, .case-details .summary .results a:active {
+  color: #4f1114;
 }
 
 .suite {
