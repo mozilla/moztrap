@@ -249,8 +249,8 @@
             .keyup(function (e) {
                 // Updates suggestion-list if typed-text has changed
                 var updateSuggestionList = function () {
-                    if (textbox.val() !== typedText && textbox.val() !== placeholder) {
-                        typedText = textbox.val();
+                    if (textbox.val().toLowerCase() !== typedText && textbox.val() !== placeholder) {
+                        typedText = textbox.val().toLowerCase();
                         if (typedText.length) {
                             if (options.ajax) {
                                 if (cache[typedText]) {
