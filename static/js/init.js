@@ -63,7 +63,8 @@ var CC = (function (CC, $) {
             url: $('#env-elements-input').data('autocomplete-url'),
             hideFormActions: true,
             expiredList: '.env-element-list',
-            inputType: 'element'
+            inputType: 'element',
+            caseSensitive: true
         });
         $('#suite-form .caseselect .unselected .selectsearch').customAutocomplete({
             textbox: '#search-add',

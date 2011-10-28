@@ -69,7 +69,7 @@
                     // ...and if *all* of the selected inputs begin with "^" and ends with "$"...
                     if (thisGroup.find(options.inputs + '[value^="^"][value$="$"]:checked').length === thisGroup.find(options.inputs + ':checked').length
                             // ...and if the typed-text hasn't already been selected as an input, and if the typed-text begins with "^" and ends with "$"...
-                            && !(thisGroup.find(options.inputs + '[value="' + newInputName + '"]:checked').length)
+                            && !(thisGroup.find(options.inputs + '[value="' + newInputName.toLowerCase() + '"]:checked').length)
                             && newInputName.indexOf('^') === 0
                             && newInputName.lastIndexOf('$') === newInputName.length - 1) {
                         // ...then append the new suggestion to the suggestion-list.
@@ -88,6 +88,7 @@
                     var thisSuggestionID = $(this).find('a').data('id'),
                         thisSuggestionName = $(this).find('a').data('name'),
                         thisSuggestionType = $(this).find('a').data('type');
+                    if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toLowerCase(); }
                     if ($(this).find('a').hasClass('new')) {
                         if (inputs.filter('[id^="id-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
                                 || inputs.filter('[id^="id-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
@@ -109,14 +110,26 @@
             // Create list of autocomplete suggestions from Ajax response or existing list of inputs
             updateSuggestions = function (data, cached) {
                 if (!data && !options.ajax) {
-                    var suggestions = inputList.find(options.inputs).parent('li').filter(function () {
-                        return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
-                    });
+                    var suggestions;
+                    if (options.caseSensitive) {
+                        suggestions = inputList.find(options.inputs).parent('li').filter(function () {
+                            return $(this).children('label').text().indexOf(typedText) !== -1;
+                        });
+                    } else {
+                        suggestions = inputList.find(options.inputs).parent('li').filter(function () {
+                            return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                        });
+                    }
                     data = {};
                     data.suggestions = [];
                     suggestions.each(function () {
-                        var typedIndex = $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()),
+                        var typedIndex,
                             thisSuggestion = {};
+                        if (options.caseSensitive) {
+                            typedIndex = $(this).children('label').text().indexOf(typedText);
+                        } else {
+                            typedIndex = $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase());
+                        }
                         thisSuggestion.typedText = typedText;
                         thisSuggestion.name = $(this).children('label').text();
                         thisSuggestion.preText = $(this).children('label').text().substring(0, typedIndex);
@@ -249,8 +262,8 @@
             .keyup(function (e) {
                 // Updates suggestion-list if typed-text has changed
                 var updateSuggestionList = function () {
-                    if (textbox.val().toLowerCase() !== typedText && textbox.val() !== placeholder) {
-                        typedText = textbox.val().toLowerCase();
+                    if (textbox.val() !== typedText && textbox.val() !== placeholder) {
+                        typedText = textbox.val();
                         if (typedText.length) {
                             if (options.ajax) {
                                 if (cache[typedText]) {
@@ -414,6 +427,9 @@
                 } else {
                     thisTypeName = options.inputType;
                 }
+                if (!options.caseSensitive) {
+                    inputName = inputName.toLowerCase();
+                }
                 thisInput = inputs.filter('[id^="id-' + thisTypeName + '-"][value="' + thisID + '"]');
                 // If there's an existing non-new input, select it...
                 if (thisInput.length) {
@@ -507,7 +523,7 @@
         newInputTextbox.each(function () {
             $(this).keydown(function (e) {
                 var thisTextbox = $(this),
-                    thisText = thisTextbox.val(),
+                    thisText = options.caseSensitive ? thisTextbox.val() : thisTextbox.val().toLowerCase(),
                     thisGroup = thisTextbox.closest(options.newInputList),
                     existingInput = thisGroup.find(options.inputs + '[value="' + thisText + '"]'),
                     typeName = thisGroup.data('name'),
@@ -596,7 +612,8 @@
         initialFocus: false,                            // Set ``true`` to give textbox focus on initial page load
         reset: '.reset',                                // Selector for button to reset all inputs to original state
         inputType: null,                                // Name for input types when using only one category of inputs
-        inputsNeverRemoved: false                       // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
+        inputsNeverRemoved: false,                      // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
+        caseSensitive: false                            // Set ``true`` if inputs should be treated as case-sensitive
     };
 
 }(jQuery));
