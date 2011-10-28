@@ -172,6 +172,8 @@ var CC = (function (CC, $) {
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
+        CC.filterIncludedTestCases('#suite-form .caseselect .unselected');
+        CC.filterIncludedTestCases('#suite-form .caseselect .selected');
 
         // manage-env.js
         CC.createEnvProfile();

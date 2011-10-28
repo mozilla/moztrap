@@ -69,7 +69,7 @@
                     // ...and if *all* of the selected inputs begin with "^" and ends with "$"...
                     if (thisGroup.find(options.inputs + '[value^="^"][value$="$"]:checked').length === thisGroup.find(options.inputs + ':checked').length
                             // ...and if the typed-text hasn't already been selected as an input, and if the typed-text begins with "^" and ends with "$"...
-                            && !(thisGroup.find(options.inputs + '[value="' + newInputName.toLowerCase() + '"]:checked').length)
+                            && !(thisGroup.find(options.inputs + '[value="' + newInputName.toString().toLowerCase() + '"]:checked').length)
                             && newInputName.indexOf('^') === 0
                             && newInputName.lastIndexOf('$') === newInputName.length - 1) {
                         // ...then append the new suggestion to the suggestion-list.
@@ -88,7 +88,7 @@
                     var thisSuggestionID = $(this).find('a').data('id'),
                         thisSuggestionName = $(this).find('a').data('name'),
                         thisSuggestionType = $(this).find('a').data('type');
-                    if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toLowerCase(); }
+                    if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toString().toLowerCase(); }
                     if ($(this).find('a').hasClass('new')) {
                         if (inputs.filter('[id^="id-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
                                 || inputs.filter('[id^="id-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
@@ -223,7 +223,7 @@
             expiredList.removeClass('expired');
             inputs.each(function () {
                 $(this).removeData('state');
-                $(this).prop('checked', $(this).data('originallyChecked'));
+                $(this).prop('checked', $(this).data('originallyChecked')).change();
             });
             textbox.focus();
             suggestionList.hide();
@@ -348,7 +348,7 @@
                     }
                     // TAB auto-completes the "active" suggestion if it isn't already completed...
                     if (e.keyCode === keycodes.TAB) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toLowerCase()) {
+                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase()) {
                             e.preventDefault();
                             textbox.val(thisInputName);
                         // ...otherwise, TAB selects the "active" suggestion (if exists)
@@ -360,7 +360,7 @@
                     // RIGHT auto-completes the "active" suggestion if it isn't already completed
                     // and the cursor is at the end of the textbox
                     if (e.keyCode === keycodes.RIGHT) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
+                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
                             e.preventDefault();
                             textbox.val(thisInputName);
                         }
@@ -428,12 +428,12 @@
                     thisTypeName = options.inputType;
                 }
                 if (!options.caseSensitive) {
-                    inputName = inputName.toLowerCase();
+                    inputName = inputName.toString().toLowerCase();
                 }
                 thisInput = inputs.filter('[id^="id-' + thisTypeName + '-"][value="' + thisID + '"]');
                 // If there's an existing non-new input, select it...
                 if (thisInput.length) {
-                    thisInput.prop('checked', true);
+                    thisInput.prop('checked', true).change();
                     if (thisInput.data('originallyChecked') !== thisInput.is(':checked')) {
                         thisInput.data('state', 'changed');
                     }
@@ -466,7 +466,7 @@
                         existingNewInput = thisGroup.find(options.inputs + '[value="' + inputName + '"]');
                         // ...select it if it already exists...
                         if (existingNewInput.length && options.inputsNeverRemoved) {
-                            existingNewInput.prop('checked', true);
+                            existingNewInput.prop('checked', true).change();
                             if (existingNewInput.data('originallyChecked') !== existingNewInput.is(':checked')) {
                                 existingNewInput.data('state', 'changed');
                             }
@@ -477,7 +477,7 @@
                             } else {
                                 thisGroup.removeClass('empty').children('ul').append(newInput);
                             }
-                            $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
+                            $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
                         }
                     } else {
@@ -489,7 +489,7 @@
                             index: index
                         });
                         thisGroup.removeClass('empty').append(newInput);
-                        $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
+                        $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                         inputs = inputList.add(newInputList).find(options.inputs);
                     }
                 }
@@ -537,7 +537,7 @@
                     }),
                     addInput = function () {
                         newInput.insertBefore(thisTextbox.parent('li'));
-                        $('#id-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
+                        $('#id-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                         thisGroup.removeClass('empty');
                         inputs = inputs.add('#id-' + typeName + '-' + index.toString());
                         updateFormActions();
@@ -545,7 +545,7 @@
                         thisText = null;
                     },
                     selectInput = function () {
-                        existingInput.prop('checked', true);
+                        existingInput.prop('checked', true).change();
                         if (existingInput.data('originallyChecked') !== existingInput.is(':checked')) {
                             existingInput.data('state', 'changed');
                         }

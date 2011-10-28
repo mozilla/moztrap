@@ -202,6 +202,51 @@ var CC = (function (CC, $) {
         });
     };
 
+    CC.filterIncludedTestCases = function (container) {
+        var context = $(container),
+            inputLists = context.find('.terms .filter-group'),
+            inputSelector = 'input[type="checkbox"]',
+            cases = context.find('.select .selectitem'),
+            casesContainer = context.find('.select'),
+            filteredCases,
+
+            filterCases = function () {
+                if (inputLists.find(inputSelector + ':checked').length) {
+                    filteredCases = cases.filter(function () {
+                        var thisCase = $(this),
+                            excludeThisCase = false;
+                        inputLists.find(inputSelector + ':checked').each(function () {
+                            var type = $(this).attr('name'),
+                                filter = $(this).siblings('label').text().toLowerCase();
+
+                            if (type === 'name') {
+                                if (!(thisCase.find('.title').text().toLowerCase().indexOf(filter) !== -1)) {
+                                    excludeThisCase = true;
+                                }
+                            } else if (type === 'status') {
+                                if (!(thisCase.find('.status').children('span').text().toLowerCase() === filter)) {
+                                    excludeThisCase = true;
+                                }
+                            } else if (type === 'author') {
+                                if (!(thisCase.find('.author').text().toLowerCase() === filter)) {
+                                    excludeThisCase = true;
+                                }
+                            }
+                        });
+
+                        return !excludeThisCase;
+                    });
+                    casesContainer.html(filteredCases);
+                } else {
+                    casesContainer.html(cases);
+                }
+            };
+
+        inputLists.delegate(inputSelector, 'change', function () {
+            filterCases();
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
