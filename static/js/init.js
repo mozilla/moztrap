@@ -53,8 +53,7 @@ var CC = (function (CC, $) {
             url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
             triggerSubmit: null,
             allowNew: true,
-            inputType: 'tag',
-            inputList: '.visual .taglist'
+            inputType: 'tag'
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
