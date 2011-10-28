@@ -3,4 +3,4 @@
 	url = git://github.com/mozilla/caseconductor-ui-reqs.git
 [submodule "requirements/vendor"]
 	path = requirements/vendor
-	url = git@github.com:mozilla/caseconductor-vendor-lib
+	url = git://github.com/mozilla/caseconductor-vendor-lib.git
