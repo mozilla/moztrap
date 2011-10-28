@@ -33,6 +33,7 @@
             expiredList = context.find(options.expiredList),
             placeholder = textbox.attr('placeholder'),
             url = options.url,
+            prefix = options.prefix,
             newInputCounter = 1,
             newSuggestions,
             filteredSuggestions,
@@ -90,15 +91,15 @@
                         thisSuggestionType = $(this).find('a').data('type');
                     if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toString().toLowerCase(); }
                     if ($(this).find('a').hasClass('new')) {
-                        if (inputs.filter('[id^="id-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
-                                || inputs.filter('[id^="id-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
+                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
+                                || inputs.filter('[id^="id-' + prefix + '-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
                                 || newSuggestions.find('a:not(.new)').filter(function () { return $(this).data('name') === thisSuggestionName && $(this).data('type') === thisSuggestionType; }).length) {
                             return false;
                         } else {
                             return true;
                         }
                     } else {
-                        if (inputs.filter('[id^="id-' + thisSuggestionType + '-"][value="' + thisSuggestionID + '"]:checked').length) {
+                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"][value="' + thisSuggestionID + '"]:checked').length) {
                             return false;
                         } else {
                             return true;
@@ -430,7 +431,7 @@
                 if (!options.caseSensitive) {
                     inputName = inputName.toString().toLowerCase();
                 }
-                thisInput = inputs.filter('[id^="id-' + thisTypeName + '-"][value="' + thisID + '"]');
+                thisInput = inputs.filter('[id^="id-' + prefix + '-' + thisTypeName + '-"][value="' + thisID + '"]');
                 // If there's an existing non-new input, select it...
                 if (thisInput.length) {
                     thisInput.prop('checked', true).change();
@@ -461,7 +462,8 @@
                             inputName: inputName,
                             id: inputName,
                             index: index,
-                            newInput: true
+                            newInput: true,
+                            prefix: prefix
                         });
                         existingNewInput = thisGroup.find(options.inputs + '[value="' + inputName + '"]');
                         // ...select it if it already exists...
@@ -477,7 +479,7 @@
                             } else {
                                 thisGroup.removeClass('empty').children('ul').append(newInput);
                             }
-                            $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                            $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
                         }
                     } else {
@@ -486,10 +488,11 @@
                             typeName: thisTypeName,
                             inputName: inputName,
                             id: thisID,
-                            index: index
+                            index: index,
+                            prefix: prefix
                         });
                         thisGroup.removeClass('empty').append(newInput);
-                        $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                        $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                         inputs = inputList.add(newInputList).find(options.inputs);
                     }
                 }
@@ -533,13 +536,14 @@
                         inputName: thisText,
                         id: thisText,
                         index: index,
-                        newInput: true
+                        newInput: true,
+                        prefix: prefix
                     }),
                     addInput = function () {
                         newInput.insertBefore(thisTextbox.parent('li'));
-                        $('#id-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                        $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                         thisGroup.removeClass('empty');
-                        inputs = inputs.add('#id-' + typeName + '-' + index.toString());
+                        inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
                         updateFormActions();
                         thisTextbox.val(null);
                         thisText = null;
@@ -613,7 +617,8 @@
         reset: '.reset',                                // Selector for button to reset all inputs to original state
         inputType: null,                                // Name for input types when using only one category of inputs
         inputsNeverRemoved: false,                      // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
-        caseSensitive: false                            // Set ``true`` if inputs should be treated as case-sensitive
+        caseSensitive: false,                           // Set ``true`` if inputs should be treated as case-sensitive
+        prefix: ''                                      // Prefix to apply to each input ID (to avoid ID duplication when using multiple times on one page)
     };
 
 }(jQuery));

@@ -74,7 +74,8 @@ var CC = (function (CC, $) {
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
-            inputsNeverRemoved: true
+            inputsNeverRemoved: true,
+            prefix: 'add'
         });
         $('#suite-form .caseselect .selected .selectsearch').customAutocomplete({
             textbox: '#search-remove',
@@ -84,7 +85,8 @@ var CC = (function (CC, $) {
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
-            inputsNeverRemoved: true
+            inputsNeverRemoved: true,
+            prefix: 'remove'
         });
         $('.selectruns').html5finder({
             loading: true,
