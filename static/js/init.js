@@ -67,20 +67,28 @@ var CC = (function (CC, $) {
             expiredList: '.env-element-list',
             inputType: 'element'
         });
-        // $('#suite-form .caseselect .unselected').customAutocomplete({
-        //     textbox: '#search-add',
-        //     inputList: '.terms',
-        //     allowNew: true,
-        //     expiredList: '.select',
-        //     triggerSubmit: null
-        // });
-        // $('#suite-form .caseselect .selected').customAutocomplete({
-        //     textbox: '#search-remove',
-        //     inputList: '.terms',
-        //     allowNew: true,
-        //     expiredList: '.select',
-        //     triggerSubmit: null
-        // });
+        $('#suite-form .caseselect .unselected .selectsearch').customAutocomplete({
+            textbox: '#search-add',
+            inputList: '.terms .filter-group:not(.keyword)',
+            newInputList: '.terms .filter-group.keyword',
+            suggestionList: '.suggest',
+            multipleCategories: true,
+            allowNew: true,
+            expiredList: null,
+            triggerSubmit: null,
+            inputsNeverRemoved: true
+        });
+        $('#suite-form .caseselect .selected .selectsearch').customAutocomplete({
+            textbox: '#search-remove',
+            inputList: '.terms .filter-group:not(.keyword)',
+            newInputList: '.terms .filter-group.keyword',
+            suggestionList: '.suggest',
+            multipleCategories: true,
+            allowNew: true,
+            expiredList: null,
+            triggerSubmit: null,
+            inputsNeverRemoved: true
+        });
         $('.selectruns').html5finder({
             loading: true,
             ellipsis: true,
