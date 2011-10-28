@@ -457,9 +457,9 @@
                         } else {
                             // ...or add it if it doesn't already exist.
                             if (thisGroup.find(options.newInputTextbox).length) {
-                                thisGroup.removeClass('empty').find(options.newInputTextbox).before(newInput);
+                                thisGroup.removeClass('empty').find(options.newInputTextbox).parent('li').before(newInput);
                             } else {
-                                thisGroup.removeClass('empty').append(newInput);
+                                thisGroup.removeClass('empty').children('ul').append(newInput);
                             }
                             $('#id-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                             inputs = inputList.add(newInputList).find(options.inputs);
@@ -520,7 +520,7 @@
                         newInput: true
                     }),
                     addInput = function () {
-                        newInput.insertBefore(thisTextbox);
+                        newInput.insertBefore(thisTextbox.parent('li'));
                         $('#id-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true);
                         thisGroup.removeClass('empty');
                         inputs = inputs.add('#id-' + typeName + '-' + index.toString());
