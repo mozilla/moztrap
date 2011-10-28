@@ -592,7 +592,7 @@
         restrictNewInputs: false,                       // Set ``true`` if new inputs should be restricted to use ^ and $
         newInputTextbox: null,                          // Selector for secondary textbox to enter new group-specific inputs
         fakePlaceholder: false,                         // Set ``true`` to create fake placeholder text when using ``initialFocus: true``
-        expiredList: '.visual',                         // Selector for setting ``.expired`` when inputs have changed
+        expiredList: null,                              // Selector for setting ``.expired`` when inputs have changed
         initialFocus: false,                            // Set ``true`` to give textbox focus on initial page load
         reset: '.reset',                                // Selector for button to reset all inputs to original state
         inputType: null,                                // Name for input types when using only one category of inputs

@@ -54,8 +54,7 @@ var CC = (function (CC, $) {
             triggerSubmit: null,
             allowNew: true,
             inputType: 'tag',
-            inputList: '.visual .taglist',
-            expiredList: null
+            inputList: '.visual .taglist'
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
@@ -74,7 +73,6 @@ var CC = (function (CC, $) {
             suggestionList: '.suggest',
             multipleCategories: true,
             allowNew: true,
-            expiredList: null,
             triggerSubmit: null,
             inputsNeverRemoved: true
         });
@@ -85,7 +83,6 @@ var CC = (function (CC, $) {
             suggestionList: '.suggest',
             multipleCategories: true,
             allowNew: true,
-            expiredList: null,
             triggerSubmit: null,
             inputsNeverRemoved: true
         });
