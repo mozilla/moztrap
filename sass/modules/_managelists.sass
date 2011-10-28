@@ -182,17 +182,22 @@
 .status
   position: relative
   .pending
-    +border-radius(.25em)
     display: block
+    border: 0
     [title="approve"], [title="reject"]
       +columns(1,2)
+      font: inherit
     [title="approve"]
       +icon-replace('ui/check.png',$light,false,button)
+      +rhythm-borders(1px,.25,12px)
+      border-color: rgba($base,$xsmall)
       #{$focus}
         background-color: $green-light
     [title="reject"]
-      +icon-replace('ui/x.png',$light,false,button)
       +omega(2)
+      +icon-replace('ui/x.png',$light,false,button)
+      +rhythm-borders(1px,.25,12px)
+      border-color: rgba($base,$xsmall)
       #{$focus}
         background-color: $red-lighter
     [title="approve"], [title="reject"]

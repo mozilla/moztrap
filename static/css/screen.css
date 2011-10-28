@@ -2898,19 +2898,15 @@ footer[role="contentinfo"] small {
   position: relative;
 }
 .status .pending {
-  -moz-border-radius: 0.25em;
-  -webkit-border-radius: 0.25em;
-  -o-border-radius: 0.25em;
-  -ms-border-radius: 0.25em;
-  -khtml-border-radius: 0.25em;
-  border-radius: 0.25em;
   display: block;
+  border: 0;
 }
 .status .pending [title="approve"], .status .pending [title="reject"] {
   display: inline;
   float: left;
   width: 42.857%;
   margin-right: 14.286%;
+  font: inherit;
 }
 .status .pending [title="approve"] {
   -moz-box-sizing: content-box;
@@ -2945,6 +2941,10 @@ footer[role="contentinfo"] small {
   -webkit-box-shadow: #8695a8 0 0 2px;
   -o-box-shadow: #8695a8 0 0 2px;
   box-shadow: #8695a8 0 0 2px;
+  border-style: solid;
+  border-width: 0.083em;
+  padding: 0.389em;
+  border-color: rgba(69, 69, 69, 0.382);
 }
 .status .pending [title="approve"]:focus, .status .pending [title="approve"]:hover, .status .pending [title="approve"]:active {
   background-image: url('../images/ui/check.png?1314206098');
@@ -2953,6 +2953,9 @@ footer[role="contentinfo"] small {
   background-color: #b3e37d;
 }
 .status .pending [title="reject"] {
+  display: inline;
+  float: right;
+  margin-right: 0;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -2985,9 +2988,10 @@ footer[role="contentinfo"] small {
   -webkit-box-shadow: #8695a8 0 0 2px;
   -o-box-shadow: #8695a8 0 0 2px;
   box-shadow: #8695a8 0 0 2px;
-  display: inline;
-  float: right;
-  margin-right: 0;
+  border-style: solid;
+  border-width: 0.083em;
+  padding: 0.389em;
+  border-color: rgba(69, 69, 69, 0.382);
 }
 .status .pending [title="reject"]:focus, .status .pending [title="reject"]:hover, .status .pending [title="reject"]:active {
   background-image: url('../images/ui/x.png?1314206098');
