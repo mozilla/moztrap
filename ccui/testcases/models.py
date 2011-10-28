@@ -129,7 +129,7 @@ class TestCaseVersion(Activatable, TestCase):
     def testruns(self):
         from ..testexecution.models import TestRunList
         return TestRunList.get(auth=self.auth).filter(
-            includedTestCaseVersionId=self.id)
+            testCaseVersion=self.id)
 
 
     def __unicode__(self):
