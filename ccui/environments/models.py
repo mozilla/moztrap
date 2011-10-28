@@ -60,7 +60,7 @@ class EnvironmentType(Named, RemoteObject):
     """
     company = fields.Locator(Company)
     name = fields.CharField()
-    groupType = fields.CharField()
+    groupType = fields.Field()
 
     _environments = fields.Link("EnvironmentList", "environments")
 
