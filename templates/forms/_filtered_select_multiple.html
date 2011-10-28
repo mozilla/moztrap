@@ -4,7 +4,8 @@
 @@@
 - add product IDs to each option (from option_attrs)
 - add form inputs that server will care about
-- remove case-specific text, pass in from widget
+- remove case-specific text, pass in from widget (or use widget subclasses with
+  inherited templates)
 {% endcomment %}
 
 <div>
@@ -19,7 +20,7 @@
       </ul>
       <ul class="terms">
         {% for field in filter %}
-        {% include "lists/_filter_group.html" with advanced=0 %}
+        {% include "lists/_filter_group.html" with advanced=0 prefix="add" %}
         {% endfor %}
       </ul>
     </div>
@@ -53,7 +54,7 @@
       </ul>
       <ul class="terms">
         {% for field in filter %}
-        {% include "lists/_filter_group.html" with advanced=0 %}
+        {% include "lists/_filter_group.html" with advanced=0 prefix="remove" %}
         {% endfor %}
       </ul>
     </div>
