@@ -206,44 +206,128 @@ var CC = (function (CC, $) {
         var context = $(container),
             inputLists = context.find('.terms .filter-group'),
             inputSelector = 'input[type="checkbox"]',
-            cases = context.find('.select .selectitem'),
             casesContainer = context.find('.select'),
-            filteredCases,
+            cases,
 
             filterCases = function () {
-                if (inputLists.find(inputSelector + ':checked').length) {
-                    filteredCases = cases.filter(function () {
-                        var thisCase = $(this),
-                            excludeThisCase = false;
-                        inputLists.find(inputSelector + ':checked').each(function () {
-                            var type = $(this).attr('name'),
-                                filter = $(this).siblings('label').text().toLowerCase();
+                cases = context.find('.select .selectitem');
+                cases.each(function () {
+                    var thisCase = $(this),
+                        excludeThisCase = false;
+                    inputLists.find(inputSelector + ':checked').each(function () {
+                        var type = $(this).attr('name'),
+                            filter = $(this).siblings('label').text().toLowerCase();
 
-                            if (type === 'name') {
-                                if (!(thisCase.find('.title').text().toLowerCase().indexOf(filter) !== -1)) {
-                                    excludeThisCase = true;
-                                }
-                            } else if (type === 'status') {
-                                if (!(thisCase.find('.status').children('span').text().toLowerCase() === filter)) {
-                                    excludeThisCase = true;
-                                }
-                            } else if (type === 'author') {
-                                if (!(thisCase.find('.author').text().toLowerCase() === filter)) {
-                                    excludeThisCase = true;
-                                }
+                        if (type === 'name') {
+                            if (!(thisCase.find('.title').text().toLowerCase().indexOf(filter) !== -1)) {
+                                excludeThisCase = true;
                             }
-                        });
-
-                        return !excludeThisCase;
+                        } else if (type === 'status') {
+                            if (!(thisCase.find('.status').children('span').text().toLowerCase() === filter)) {
+                                excludeThisCase = true;
+                            }
+                        } else if (type === 'author') {
+                            if (!(thisCase.find('.author').text().toLowerCase() === filter)) {
+                                excludeThisCase = true;
+                            }
+                        }
                     });
-                    casesContainer.html(filteredCases);
-                } else {
-                    casesContainer.html(cases);
-                }
+
+                    if (excludeThisCase) {
+                        thisCase.hide();
+                    } else {
+                        thisCase.show();
+                    }
+                });
             };
 
         inputLists.delegate(inputSelector, 'change', function () {
             filterCases();
+        });
+    };
+
+    CC.selectIncludedTestCases = function (container) {
+        var context = $(container),
+            availableList = context.find('.unselected .select'),
+            includedList = context.find('.selected .select'),
+            bulkInclude = context.find('.unselected .listordering .action-include'),
+            bulkExclude = context.find('.selected .listordering .action-exclude');
+
+        context.find('.unselected, .selected').sortable({
+            items: '.selectitem',
+            connectWith: '.sortable',
+            revert: 200,
+            delay: 50,
+            opacity: 0.7,
+            update: function (event, ui) {
+                ui.item.closest('.sortable').find('.terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+            }
+        }).disableSelection();
+
+        context.delegate('.select label.bulkselect', 'click', function (e) {
+            var thisLabel = $(this),
+                thisInput = thisLabel.closest('.selectitem').find('.item-input'),
+                labels = thisLabel.closest('.select').find('label.bulkselect'),
+                thisIndex,
+                recentlyClicked,
+                recentlyClickedIndex,
+                filteredLabels;
+
+            if (e.shiftKey) {
+                if (labels.filter(function () { return $(this).data('clicked') === true; }).length) {
+                    recentlyClicked = labels.filter(function () { return $(this).data('clicked') === true; });
+                } else if (labels.filter(function () { return $(this).data('unclicked') === true; }).length) {
+                    recentlyClicked = labels.filter(function () { return $(this).data('unclicked') === true; });
+                }
+                thisIndex = thisLabel.closest('.selectitem').index();
+                recentlyClickedIndex = recentlyClicked.closest('.selectitem').index();
+                filteredLabels = labels.filter(function () {
+                    if (thisIndex > recentlyClickedIndex) {
+                        return $(this).closest('.selectitem').index() >= recentlyClickedIndex && $(this).closest('.selectitem').index() <= thisIndex;
+                    } else if (recentlyClickedIndex > thisIndex) {
+                        return $(this).closest('.selectitem').index() >= thisIndex && $(this).closest('.selectitem').index() <= recentlyClickedIndex;
+                    }
+                });
+                if (labels.filter(function () { return $(this).data('clicked') === true; }).length) {
+                    filteredLabels.closest('.selectitem').find('.item-input').prop('checked', true);
+                    labels.data('clicked', false).data('unclicked', false);
+                    thisLabel.data('clicked', true);
+                    e.preventDefault();
+                } else if (labels.filter(function () { return $(this).data('unclicked') === true; }).length) {
+                    filteredLabels.closest('.selectitem').find('.item-input').prop('checked', false);
+                    labels.data('clicked', false).data('unclicked', false);
+                    thisLabel.data('unclicked', true);
+                    e.preventDefault();
+                } else {
+                    labels.data('clicked', false).data('unclicked', false);
+                    if (thisInput.is(':checked')) {
+                        thisLabel.data('unclicked', true);
+                    } else {
+                        thisLabel.data('clicked', true);
+                    }
+                }
+            } else {
+                labels.data('clicked', false).data('unclicked', false);
+                if (thisInput.is(':checked')) {
+                    thisLabel.data('unclicked', true);
+                } else {
+                    thisLabel.data('clicked', true);
+                }
+            }
+        });
+
+        bulkInclude.click(function (e) {
+            e.preventDefault();
+            var selectedCases = context.find('.unselected .select .selectitem input.item-input:checked');
+            selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(includedList);
+            context.find('.selected .terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+        });
+
+        bulkExclude.click(function (e) {
+            e.preventDefault();
+            var selectedCases = context.find('.selected .select .selectitem input.item-input:checked');
+            selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(availableList);
+            context.find('.unselected .terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
         });
     };
 

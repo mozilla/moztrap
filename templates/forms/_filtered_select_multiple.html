@@ -11,7 +11,7 @@
 <div>
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}
-  <section class="unselected">
+  <section class="unselected sortable">
     <h4>available cases</h4>
     <div class="selectsearch">
       <label for="search-add">filter available cases</label>
@@ -45,7 +45,7 @@
       {% include "forms/_filtered_select_multiple_item.html" with id="09" %}
     </div>
   </section>
-  <section class="selected">
+  <section class="selected sortable">
     <h4>included cases</h4>
     <div class="selectsearch">
       <label for="search-remove">filter included cases</label>

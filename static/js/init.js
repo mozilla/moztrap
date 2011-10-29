@@ -176,6 +176,7 @@ var CC = (function (CC, $) {
         CC.envNarrowing('#envnarrowlist');
         CC.filterIncludedTestCases('#suite-form .caseselect .unselected');
         CC.filterIncludedTestCases('#suite-form .caseselect .selected');
+        CC.selectIncludedTestCases('#suite-form .caseselect');
 
         // manage-env.js
         CC.createEnvProfile();
