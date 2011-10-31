@@ -204,7 +204,7 @@ var CC = (function (CC, $) {
 
     CC.filterIncludedTestCases = function (container) {
         var context = $(container),
-            inputLists = context.find('.terms .filter-group'),
+            inputLists = context.find('.groups .filter-group'),
             inputSelector = 'input[type="checkbox"]',
             casesContainer = context.find('.select'),
             cases,
@@ -261,7 +261,7 @@ var CC = (function (CC, $) {
             delay: 50,
             opacity: 0.7,
             update: function (event, ui) {
-                ui.item.closest('.sortable').find('.terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                ui.item.closest('.sortable').find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
             }
         }).disableSelection();
 
@@ -321,14 +321,14 @@ var CC = (function (CC, $) {
             e.preventDefault();
             var selectedCases = context.find('.unselected .select .selectitem input.item-input:checked');
             selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(includedList);
-            context.find('.selected .terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+            context.find('.selected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
         });
 
         bulkExclude.click(function (e) {
             e.preventDefault();
             var selectedCases = context.find('.selected .select .selectitem input.item-input:checked');
             selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(availableList);
-            context.find('.unselected .terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+            context.find('.unselected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
         });
 
         form.submit(function (e) {

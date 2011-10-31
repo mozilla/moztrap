@@ -68,25 +68,14 @@ var CC = (function (CC, $) {
         });
         $('#suite-form .caseselect .unselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
-            inputList: '.terms .filter-group:not(.keyword)',
-            newInputList: '.terms .filter-group.keyword',
+            inputList: '.groups .filter-group:not(.keyword)',
+            newInputList: '.groups .filter-group.keyword',
             suggestionList: '.suggest',
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
             inputsNeverRemoved: true,
             prefix: 'add'
-        });
-        $('#suite-form .caseselect .selected .selectsearch').customAutocomplete({
-            textbox: '#search-remove',
-            inputList: '.terms .filter-group:not(.keyword)',
-            newInputList: '.terms .filter-group.keyword',
-            suggestionList: '.suggest',
-            multipleCategories: true,
-            allowNew: true,
-            triggerSubmit: null,
-            inputsNeverRemoved: true,
-            prefix: 'remove'
         });
         $('.selectruns').html5finder({
             loading: true,
@@ -175,7 +164,6 @@ var CC = (function (CC, $) {
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
         CC.filterIncludedTestCases('#suite-form .caseselect .unselected');
-        CC.filterIncludedTestCases('#suite-form .caseselect .selected');
         CC.selectIncludedTestCases('#suite-form .caseselect');
 
         // manage-env.js
