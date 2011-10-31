@@ -354,6 +354,41 @@ var CC = (function (CC, $) {
         });
     };
 
+    CC.sortIncludedTestCases = function (container) {
+        var context = $(container),
+            headers = context.find('.sortable .listordering li[class^="by"] a');
+
+        // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
+        headers.click(function (e) {
+            var casesContainer = $(this).closest('.sortable').find('.select'),
+                sortByClass = $(this).parent().attr('class').substring(2),
+                direction;
+
+            if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
+                $(this).toggleClass('asc desc');
+                $(this).parent().siblings().find('a').removeClass('asc desc');
+            } else {
+                $(this).addClass('asc');
+                $(this).parent().siblings().find('a').removeClass('asc desc');
+            }
+            if ($(this).hasClass('asc')) {
+                direction = 'asc';
+            }
+            if ($(this).hasClass('desc')) {
+                direction = 'desc';
+            }
+            if ($(this).parent().hasClass('bystatus')) {
+                sortByClass = sortByClass + ' span';
+            }
+            casesContainer.sort({
+                sortOn: '.' + sortByClass,
+                direction: direction
+            });
+            $(this).blur();
+            return false;
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
