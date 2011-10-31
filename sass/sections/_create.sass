@@ -128,14 +128,15 @@
     padding: rhythm(.25)
     text-transform: uppercase
 
-  .unselected, .selected
+  .multiunselected, .multiselected
     +columns(12,24)
-  .selected
+  .multiselected
     +omega(24)
     .select
       height: rhythm(13.5)
 
   .selectsearch
+    position: relative
     > label
       +gone
     > input
@@ -145,7 +146,7 @@
     +box-sizing(border-box)
     border: 1px solid $blue
       width: 1px 1px 0
-  .unselected
+  .multiunselected
     .listordering
       border-width: 0 1px
 

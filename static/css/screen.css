@@ -4411,19 +4411,22 @@ footer[role="contentinfo"] small {
   padding: 0.405em;
   text-transform: uppercase;
 }
-.superselect .unselected, .mainselect .unselected, .userselect .unselected, .suiteselect .unselected, .caseselect .unselected, .roleselect .unselected, .superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected, .roleselect .selected {
+.superselect .multiunselected, .mainselect .multiunselected, .userselect .multiunselected, .suiteselect .multiunselected, .caseselect .multiunselected, .roleselect .multiunselected, .superselect .multiselected, .mainselect .multiselected, .userselect .multiselected, .suiteselect .multiselected, .caseselect .multiselected, .roleselect .multiselected {
   display: inline;
   float: left;
   width: 49.474%;
   margin-right: 1.053%;
 }
-.superselect .selected, .mainselect .selected, .userselect .selected, .suiteselect .selected, .caseselect .selected, .roleselect .selected {
+.superselect .multiselected, .mainselect .multiselected, .userselect .multiselected, .suiteselect .multiselected, .caseselect .multiselected, .roleselect .multiselected {
   display: inline;
   float: right;
   margin-right: 0;
 }
-.superselect .selected .select, .mainselect .selected .select, .userselect .selected .select, .suiteselect .selected .select, .caseselect .selected .select, .roleselect .selected .select {
+.superselect .multiselected .select, .mainselect .multiselected .select, .userselect .multiselected .select, .suiteselect .multiselected .select, .caseselect .multiselected .select, .roleselect .multiselected .select {
   height: 21.843em;
+}
+.superselect .selectsearch, .mainselect .selectsearch, .userselect .selectsearch, .suiteselect .selectsearch, .caseselect .selectsearch, .roleselect .selectsearch {
+  position: relative;
 }
 .superselect .selectsearch > label, .mainselect .selectsearch > label, .userselect .selectsearch > label, .suiteselect .selectsearch > label, .caseselect .selectsearch > label, .roleselect .selectsearch > label {
   position: absolute;
@@ -4446,7 +4449,7 @@ footer[role="contentinfo"] small {
   border: 1px solid #516985;
   border-width: 1px 1px 0;
 }
-.superselect .unselected .listordering, .mainselect .unselected .listordering, .userselect .unselected .listordering, .suiteselect .unselected .listordering, .caseselect .unselected .listordering, .roleselect .unselected .listordering {
+.superselect .multiunselected .listordering, .mainselect .multiunselected .listordering, .userselect .multiunselected .listordering, .suiteselect .multiunselected .listordering, .caseselect .multiunselected .listordering, .roleselect .multiunselected .listordering {
   border-width: 0 1px;
 }
 .superselect .groups, .mainselect .groups, .userselect .groups, .suiteselect .groups, .caseselect .groups, .roleselect .groups {
