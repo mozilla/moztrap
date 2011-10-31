@@ -251,7 +251,8 @@ var CC = (function (CC, $) {
             availableList = context.find('.unselected .select'),
             includedList = context.find('.selected .select'),
             bulkInclude = context.find('.unselected .listordering .action-include'),
-            bulkExclude = context.find('.selected .listordering .action-exclude');
+            bulkExclude = context.find('.selected .listordering .action-exclude'),
+            form = $('#suite-form');
 
         context.find('.unselected, .selected').sortable({
             items: '.selectitem',
@@ -328,6 +329,14 @@ var CC = (function (CC, $) {
             var selectedCases = context.find('.selected .select .selectitem input.item-input:checked');
             selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(availableList);
             context.find('.unselected .terms .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+        });
+
+        form.submit(function (e) {
+            includedList.find('.item-input').each(function () {
+                var id = $(this).attr('value'),
+                    hiddenInput = ich.suite_included_case_input({ id: id });
+                includedList.append(hiddenInput);
+            });
         });
     };
 
