@@ -1896,18 +1896,18 @@ footer[role="contentinfo"] small {
   border: 0;
 }
 
-.togglelist, #filter .compact .content, .tagging .visual, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms, .env-element-list {
+.togglelist, #filter .compact .content, .tagging .taglist, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms, .env-element-list {
   font-size: 0.857em;
   line-height: 1.888em;
 }
-.togglelist input, #filter .compact .content input, .tagging .visual input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .env-element-list input, .togglelist label, #filter .compact .content label, .tagging .visual label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label, .env-element-list label {
+.togglelist input, #filter .compact .content input, .tagging .taglist input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .env-element-list input, .togglelist label, #filter .compact .content label, .tagging .taglist label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label, .env-element-list label {
   display: none;
 }
-.togglelist li, #filter .compact .content li, .tagging .visual li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li, .env-element-list li {
+.togglelist li, #filter .compact .content li, .tagging .taglist li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li, .env-element-list li {
   display: inline;
   float: left;
 }
-.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .visual input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label, .env-element-list input:checked + label {
+.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .taglist input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label, .env-element-list input:checked + label {
   margin-bottom: 0.472em;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
@@ -1927,7 +1927,7 @@ footer[role="contentinfo"] small {
   background: #e4f5d1 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
   white-space: nowrap;
 }
-.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .visual input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover, .env-element-list input:checked + label:hover {
+.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .taglist input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover, .env-element-list input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
@@ -4092,8 +4092,22 @@ footer[role="contentinfo"] small {
   margin-right: 0;
   margin-bottom: 1.618em;
 }
-.tagging .visual {
+.tagging .taglist {
   margin: 0;
+  padding: 0;
+  border: 0;
+  display: inline;
+  float: left;
+}
+.tagging .taglabel {
+  display: inline;
+  float: left;
+  margin: 0 0.4em 0 0;
+}
+.tagging .none {
+  font-size: 1.167em;
+  line-height: 1.618em;
+  font-style: italic;
 }
 
 .attachments {

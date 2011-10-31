@@ -26,9 +26,16 @@
   +columns(11,24)
   +omega(24)
   +trailer
-  .visual
+  .taglist
     @extend .togglelist
-    margin: 0
+    +reset-box-model
+    +float(left)
+  .taglabel
+    +float(left)
+    margin: 0 .4em 0 0
+  .none
+    +adjust-font-size-to(14px,1,12px)
+    +italic
 
 .attachments
   +columns(11,24)
