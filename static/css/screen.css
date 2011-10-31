@@ -3489,6 +3489,7 @@ footer[role="contentinfo"] small {
   display: inline;
   float: right;
   margin-right: 0;
+  color: #6f6f6f;
   text-align: left;
 }
 

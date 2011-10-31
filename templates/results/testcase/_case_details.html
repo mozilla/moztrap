@@ -35,6 +35,15 @@
 {% include "lists/_environments.html" with environments=itc.environmentgroups.environments %}
 </section>
 
+{# @@@ if tags #}
+<section class="casetags">
+  <h4>tags</h4>
+  <ul>
+    <li>tag01</li>
+    <li>tag02</li>
+  </ul>
+</section>
+
 {% if itc.assignments|length %}
 <section class="testers">
   <h4>testers</h4>

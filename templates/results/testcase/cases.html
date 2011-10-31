@@ -1,6 +1,11 @@
 {% extends 'results/testcase/base.html' %}
 {% load sort staticdata %}
 
+{% block page-notes %}
+  <p>Tag list is wireframed.</p>
+  {{ block.super }}
+{% endblock page-notes %}
+
 {% block listcontent %}
 <section id="caseresults">
   <h2>Test Case Results</h2>
