@@ -66,7 +66,7 @@ var CC = (function (CC, $) {
             inputType: 'element',
             caseSensitive: true
         });
-        $('#suite-form .caseselect .unselected .selectsearch').customAutocomplete({
+        $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
             inputList: '.groups .filter-group:not(.keyword)',
             newInputList: '.groups .filter-group.keyword',
@@ -163,7 +163,7 @@ var CC = (function (CC, $) {
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
-        CC.filterIncludedTestCases('#suite-form .caseselect .unselected');
+        CC.filterIncludedTestCases('#suite-form .caseselect .multiunselected');
         CC.selectIncludedTestCases('#suite-form .caseselect');
 
         // manage-env.js

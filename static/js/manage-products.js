@@ -248,13 +248,13 @@ var CC = (function (CC, $) {
 
     CC.selectIncludedTestCases = function (container) {
         var context = $(container),
-            availableList = context.find('.unselected .select'),
-            includedList = context.find('.selected .select'),
-            bulkInclude = context.find('.unselected .listordering .action-include'),
-            bulkExclude = context.find('.selected .listordering .action-exclude'),
+            availableList = context.find('.multiunselected .select'),
+            includedList = context.find('.multiselected .select'),
+            bulkInclude = context.find('.multiunselected .listordering .action-include'),
+            bulkExclude = context.find('.multiselected .listordering .action-exclude'),
             form = $('#suite-form');
 
-        context.find('.unselected, .selected').sortable({
+        context.find('.multiunselected, .multiselected').sortable({
             items: '.selectitem',
             connectWith: '.sortable',
             revert: 200,
@@ -319,16 +319,16 @@ var CC = (function (CC, $) {
 
         bulkInclude.click(function (e) {
             e.preventDefault();
-            var selectedCases = context.find('.unselected .select .selectitem input.item-input:checked');
+            var selectedCases = context.find('.multiunselected .select .selectitem input.item-input:checked');
             selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(includedList);
-            context.find('.selected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+            context.find('.multiselected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
         });
 
         bulkExclude.click(function (e) {
             e.preventDefault();
-            var selectedCases = context.find('.selected .select .selectitem input.item-input:checked');
+            var selectedCases = context.find('.multiselected .select .selectitem input.item-input:checked');
             selectedCases.prop('checked', false).closest('.selectitem').detach().prependTo(availableList);
-            context.find('.unselected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+            context.find('.multiunselected .groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
         });
 
         form.submit(function (e) {
