@@ -108,8 +108,8 @@ var CC = (function (CC, $) {
 
     CC.testcaseVersioning = function (container) {
         var context = $(container),
-            select = context.find('#id_version'),
-            selectVal = select.val(),
+            versionList = context.find('.versioning .version-select'),
+            versions = versionList.find('.version .item-select'),
             url = window.location.pathname,
             dirty = false,
             tags = context.find('.versioned .tagging .visual').html();
@@ -130,54 +130,68 @@ var CC = (function (CC, $) {
                 }
             );
 
-        select.change(function (e) {
-            var newVersion = $(this).val(),
-                currentVersion = url.split('/')[3],
-                newURL = url.replace(currentVersion, newVersion),
-                updateVersion = function (data) {
-                    if (data.html) {
-                        var newHTML = $(data.html).hide(),
-                            prefix = newHTML.find('ol.steplist').data('prefix');
-                        context.find('.versioned').fadeOut('fast', function () {
-                            $(this).replaceWith(newHTML);
-                            dirty = false;
-                            newHTML.fadeIn('fast', function () {
-                                $(this).find('ol.steplist').formset({
-                                    prefix: prefix,
-                                    formTemplate: '#empty-step-form > li',
-                                    formSelector: '.steps-form',
-                                    deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
-                                    deleteLinkSelector: '.removefields',
-                                    addAnimationSpeed: 'normal',
-                                    removeAnimationSpeed: 'fast',
-                                    autoAdd: true,
-                                    alwaysShowExtra: true,
-                                    deleteOnlyActive: true,
-                                    insertAbove: true
-                                });
-                                CC.autoCompleteCaseTags('#addcase');
-                                CC.testcaseAttachments('#single-case-form .attachments');
-                                tags = context.find('.versioned .tagging .visual').html();
-                            });
-                        });
-                        context.find('#single-case-form').attr('action', url);
-                    }
-                };
+        versionList.find('.summary').click(function () { $(this).blur(); });
 
-            if (dirty || context.find('.versioned .tagging .visual').html() !== tags) {
-                if (confirm("You have made changes to the form that will be lost if you switch versions. Are you sure you want to continue?")) {
+        versions.click(function (e) {
+            var clickedVersion = $(this).closest('.version');
+            if (clickedVersion.find('.item-input').is(':checked')) {
+                versionList.find('.summary').click();
+                console.log('same version');
+            } else {
+                var newVersion = clickedVersion.attr('id').split('-')[2],
+                    currentVersion = url.split('/')[3],
+                    newURL = url.replace(currentVersion, newVersion),
+                    updateVersion = function (data) {
+                        if (data.html) {
+                            var newHTML = $(data.html).hide(),
+                                prefix = newHTML.find('ol.steplist').data('prefix');
+                            context.find('.versioned').fadeOut('fast', function () {
+                                $(this).replaceWith(newHTML);
+                                dirty = false;
+                                newHTML.fadeIn('fast', function () {
+                                    versionList.find('.summary').click();
+                                    $(this).find('ol.steplist').formset({
+                                        prefix: prefix,
+                                        formTemplate: '#empty-step-form > li',
+                                        formSelector: '.steps-form',
+                                        deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                                        deleteLinkSelector: '.removefields',
+                                        addAnimationSpeed: 'normal',
+                                        removeAnimationSpeed: 'fast',
+                                        autoAdd: true,
+                                        alwaysShowExtra: true,
+                                        deleteOnlyActive: true,
+                                        insertAbove: true
+                                    });
+                                    context.customAutocomplete({
+                                        textbox: 'input[name="text-tag"]',
+                                        ajax: true,
+                                        url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+                                        triggerSubmit: null,
+                                        allowNew: true,
+                                        inputType: 'tag'
+                                    });
+                                    CC.testcaseAttachments('#single-case-form .attachments');
+                                    tags = context.find('.versioned .tagging .visual').html();
+                                });
+                            });
+                            context.find('#single-case-form').attr('action', url);
+                        }
+                    };
+
+                if (dirty || context.find('.versioned .tagging .visual').html() !== tags) {
+                    if (confirm("You have made changes to the form that will be lost if you switch versions. Are you sure you want to continue?")) {
+                        context.find('.versioned').loadingOverlay();
+                        url = newURL;
+                        $.get(url, updateVersion);
+                    } else {
+                        e.preventDefault();
+                    }
+                } else {
                     context.find('.versioned').loadingOverlay();
                     url = newURL;
-                    selectVal = select.val();
                     $.get(url, updateVersion);
-                } else {
-                    select.val(selectVal);
                 }
-            } else {
-                context.find('.versioned').loadingOverlay();
-                url = newURL;
-                selectVal = select.val();
-                $.get(url, updateVersion);
             }
         });
     };
