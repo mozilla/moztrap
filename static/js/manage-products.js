@@ -345,9 +345,13 @@ var CC = (function (CC, $) {
         });
 
         form.submit(function (e) {
+            var name = includedList.data('name');
             includedList.find('.item-input').each(function () {
                 var id = $(this).attr('value'),
-                    hiddenInput = ich.suite_included_case_input({ id: id });
+                    hiddenInput = ich.filtered_multiselect_input({
+                        id: id,
+                        name: name
+                    });
                 includedList.append(hiddenInput);
             });
         });
