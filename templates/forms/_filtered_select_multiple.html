@@ -19,11 +19,11 @@
       <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available cases">
       <ul class="suggest">
       </ul>
-      <ul class="terms">
+      <div class="groups">
         {% for field in filter %}
         {% include "lists/_filter_group.html" with advanced=0 prefix="add" %}
         {% endfor %}
-      </ul>
+      </div>
     </div>
     <nav class="listordering">
       <h5 class="navhead">List Ordering</h5>
@@ -48,17 +48,6 @@
   </section>
   <section class="selected sortable">
     <h4>included cases</h4>
-    <div class="selectsearch">
-      <label for="search-remove">filter included cases</label>
-      <input type="text" name="search" value="" id="search-remove" autocomplete="off" placeholder="filter included cases">
-      <ul class="suggest">
-      </ul>
-      <ul class="terms">
-        {% for field in filter %}
-        {% include "lists/_filter_group.html" with advanced=0 prefix="remove" %}
-        {% endfor %}
-      </ul>
-    </div>
     <nav class="listordering">
       <h5 class="navhead">List Ordering</h5>
       <ul>

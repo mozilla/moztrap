@@ -1,6 +1,6 @@
 <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
   <h5 class="category-title">{{ field.name|lower }}</h5>
-  <ul {% if field|length > 6 %}class="long"{% endif %}>
+  <ul class="terms {% if field|length > 6 %}long{% endif %}">
     {% for option in field %}
     <li>
       <input type="checkbox" name="{{ field.name }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>

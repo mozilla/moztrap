@@ -132,6 +132,8 @@
     +columns(12,24)
   .selected
     +omega(24)
+    .select
+      height: rhythm(13.5)
 
   .selectsearch
     > label
@@ -142,16 +144,22 @@
   .listordering
     +box-sizing(border-box)
     border: 1px solid $blue
-      width: 0 1px
+      width: 1px 1px 0
+  .unselected
+    .listordering
+      border-width: 0 1px
+
+  .groups
+    +clearfix
+    padding: 0 rhythm(.25,12px)
+    background: $blue
+    h5
+      +gone
 
   .terms
     @extend .togglelist
     +no-style-list
-    +clearfix
-    padding: 0 rhythm(.25,12px)
-    background: $blue
-    min-height: rhythm(1.5)
-    li
+    input:checked + label
       +leader(.25,12px)
 
   .byinclude, .byexclude

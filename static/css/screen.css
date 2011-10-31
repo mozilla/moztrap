@@ -4422,6 +4422,9 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
+.superselect .selected .select, .mainselect .selected .select, .userselect .selected .select, .suiteselect .selected .select, .caseselect .selected .select, .roleselect .selected .select {
+  height: 21.843em;
+}
 .superselect .selectsearch > label, .mainselect .selectsearch > label, .userselect .selectsearch > label, .suiteselect .selectsearch > label, .caseselect .selectsearch > label, .roleselect .selectsearch > label {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -4441,25 +4444,39 @@ footer[role="contentinfo"] small {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   border: 1px solid #516985;
+  border-width: 1px 1px 0;
+}
+.superselect .unselected .listordering, .mainselect .unselected .listordering, .userselect .unselected .listordering, .suiteselect .unselected .listordering, .caseselect .unselected .listordering, .roleselect .unselected .listordering {
   border-width: 0 1px;
+}
+.superselect .groups, .mainselect .groups, .userselect .groups, .suiteselect .groups, .caseselect .groups, .roleselect .groups {
+  overflow: hidden;
+  *zoom: 1;
+  padding: 0 0.472em;
+  background: #516985;
+}
+.superselect .groups h5, .mainselect .groups h5, .userselect .groups h5, .suiteselect .groups h5, .caseselect .groups h5, .roleselect .groups h5 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
-  overflow: hidden;
-  *zoom: 1;
-  padding: 0 0.472em;
-  background: #516985;
-  min-height: 2.427em;
 }
 .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
+.superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label {
   margin-top: 0.472em;
 }
 .superselect .byinclude, .mainselect .byinclude, .userselect .byinclude, .suiteselect .byinclude, .caseselect .byinclude, .roleselect .byinclude, .superselect .byexclude, .mainselect .byexclude, .userselect .byexclude, .suiteselect .byexclude, .caseselect .byexclude, .roleselect .byexclude {
