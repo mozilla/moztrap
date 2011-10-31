@@ -18,7 +18,7 @@
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.util import ErrorList
 from django.utils.datastructures import MultiValueDict
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_unicode, StrAndUnicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
@@ -330,7 +330,7 @@ class ModelChoiceIterator(object):
 
 
 
-class SmartLabel(object):
+class SmartLabel(StrAndUnicode):
     """
     An object that allows us to squeeze more data into the "label" half of the
     label-value pair of a multiple-select choice. Behaves like a simple text
