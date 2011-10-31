@@ -208,11 +208,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif;
 }
 
-.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .item.add-item > a, .item.add-item > .summary, .select-env-link:link, .select-env-link:visited, .stepfail .summary, #page-status::before, .smallcaps {
+.caps, .allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .casetags h4, .item.add-item > a, .item.add-item > .summary, .select-env-link:link, .select-env-link:visited, .stepfail .summary, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .item.add-item > a, .item.add-item > .summary, .select-env-link:link, .select-env-link:visited, .stepfail .summary, #page-status::before {
+.allcaps, h2, .sectionhead, caption, .groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .casetags h4, .item.add-item > a, .item.add-item > .summary, .select-env-link:link, .select-env-link:visited, .stepfail .summary, #page-status::before {
   text-transform: uppercase;
 }
 
@@ -1931,7 +1931,7 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
-.groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5 {
+.groupheader, #filter h5, .managelist .testers h4, .managelist .suites h4, .envgroups h5, .casetags h4 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0 0.25em;
@@ -2750,7 +2750,7 @@ footer[role="contentinfo"] small {
   margin-left: 0px;
 }
 .managelist .steps > li {
-  padding-left: 10.127%;
+  padding-left: 12.632%;
   position: relative;
   counter-increment: steps;
 }
@@ -2759,7 +2759,7 @@ footer[role="contentinfo"] small {
   position: absolute;
   top: 0;
   left: 0;
-  width: 8.861%;
+  width: 11.579%;
   text-align: right;
 }
 .managelist .steps .instruction {
@@ -3477,6 +3477,19 @@ footer[role="contentinfo"] small {
   display: inline;
   float: right;
   margin-right: 0;
+}
+
+.casetags {
+  font-size: 0.857em;
+  line-height: 1.416em;
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  text-align: left;
 }
 
 .components {

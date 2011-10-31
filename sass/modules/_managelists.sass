@@ -96,7 +96,7 @@
     +trailer
     counter-reset: steps
     > li
-      +prefix(2,20)
+      +prefix(3,24)
       position: relative
       counter-increment: steps
       &::before
@@ -104,7 +104,7 @@
         position: absolute
         top: 0
         left: 0
-        width: columns(2,20)
+        width: columns(3,24)
         text-align: right
     .instruction
       +demi
@@ -286,6 +286,14 @@
       +columns(3,21)
       &:nth-child(7n)
         +omega(21)
+
+.casetags
+  +adjust-font-size-to(12px,.75)
+  +columns(4,24)
+  +omega(24)
+  text-align: left
+  h4
+    @extend .groupheader
 
 .components
   +columns(14,24)
