@@ -136,7 +136,6 @@ var CC = (function (CC, $) {
             var clickedVersion = $(this).closest('.version');
             if (clickedVersion.find('.item-input').is(':checked')) {
                 versionList.find('.summary').click();
-                console.log('same version');
             } else {
                 var newVersion = clickedVersion.attr('id').split('-')[2],
                     currentVersion = url.split('/')[3],
