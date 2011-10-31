@@ -74,8 +74,7 @@ var CC = (function (CC, $) {
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
-            inputsNeverRemoved: true,
-            prefix: 'add'
+            inputsNeverRemoved: true
         });
         $('.selectruns').html5finder({
             loading: true,

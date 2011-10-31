@@ -137,7 +137,7 @@
                         thisSuggestion.postText = $(this).children('label').text().substring(typedIndex + typedText.length);
                         thisSuggestion.id = $(this).children('input').attr('value');
                         if (options.multipleCategories) {
-                            thisSuggestion.type = $(this).children('input').attr('name');
+                            thisSuggestion.type = $(this).children('input').data('name');
                             if ($(this).closest(options.inputList).find('.category-title').length) {
                                 thisSuggestion.displayType = $(this).closest(options.inputList).find('.category-title').text();
                             }

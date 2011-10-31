@@ -228,7 +228,7 @@ var CC = (function (CC, $) {
                     var thisCase = $(this),
                         excludeThisCase = false;
                     inputLists.find(inputSelector + ':checked').each(function () {
-                        var type = $(this).attr('name'),
+                        var type = $(this).data('name'),
                             filter = $(this).siblings('label').text().toLowerCase();
 
                         if (type === 'name') {
