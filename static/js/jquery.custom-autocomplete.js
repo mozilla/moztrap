@@ -164,10 +164,10 @@
 
                         if (options.restrictNewInputs) {
                             if (passRestrictedNewInputs($(this), typedText)) {
-                                data.suggestions.push(thisSuggestion);
+                                data.suggestions.unshift(thisSuggestion);
                             }
                         } else {
-                            data.suggestions.push(thisSuggestion);
+                            data.suggestions.unshift(thisSuggestion);
                         }
                     });
                 }
