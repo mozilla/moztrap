@@ -39,8 +39,8 @@
           <p class="product">{{ suite.product.name }}</p>
           <div class="controls">
             {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
-              {% if suite.status.DRAFT %}
               <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+              {% if suite.status.DRAFT %}
               <a href="{% url manage_narrow_environments object_type='testsuite' object_id=suite.id %}" title="select environments" class="target">select environments</a>
               {% endif %}
               <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
