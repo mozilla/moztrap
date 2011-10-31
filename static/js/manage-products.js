@@ -28,7 +28,7 @@ var CC = (function (CC, $) {
     'use strict';
 
     // Filter form options for add-run and add-suite
-    CC.formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel) {
+    CC.formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel, option_sel) {
         var context = $(context_sel),
             trigger = context.find(trigger_sel),
             target,
@@ -36,7 +36,7 @@ var CC = (function (CC, $) {
             doFilter;
         if (context.length && trigger.is("select")) {
             target = context.find(target_sel);
-            allopts = target.find("option").clone();
+            allopts = target.find(option_sel).clone();
 
             doFilter = function () {
                 var key = trigger.find("option:selected").data(data_attr);

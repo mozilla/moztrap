@@ -157,8 +157,8 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
 
         // manage-products.js
-        CC.formOptionsFilter("#addsuite", "product-id", "#id_product", "#id_cases");
-        CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites");
+        CC.formOptionsFilter("#addsuite", "product-id", "#id_product", ".multiunselected .select", "article.selectitem");
+        CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites", "option");
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
