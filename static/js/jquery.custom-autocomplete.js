@@ -477,7 +477,11 @@
                             if (thisGroup.find(options.newInputTextbox).length) {
                                 thisGroup.removeClass('empty').find(options.newInputTextbox).parent('li').before(newInput);
                             } else {
-                                thisGroup.removeClass('empty').children('ul').append(newInput);
+                                if (thisGroup.children('ul').length) {
+                                    thisGroup.removeClass('empty').children('ul').append(newInput);
+                                } else {
+                                    thisGroup.removeClass('empty').append(newInput);
+                                }
                             }
                             $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
@@ -491,7 +495,11 @@
                             index: index,
                             prefix: prefix
                         });
-                        thisGroup.removeClass('empty').append(newInput);
+                        if (thisGroup.children('ul').length) {
+                            thisGroup.removeClass('empty').children('ul').append(newInput);
+                        } else {
+                            thisGroup.removeClass('empty').append(newInput);
+                        }
                         $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                         inputs = inputList.add(newInputList).find(options.inputs);
                     }
