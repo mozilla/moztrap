@@ -277,7 +277,7 @@ var CC = (function (CC, $) {
             update: function (event, ui) {
                 ui.item.closest('.sortable').find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
             }
-        }).disableSelection();
+        });
 
         context.delegate('.select label.bulkselect', 'click', function (e) {
             var thisLabel = $(this),
