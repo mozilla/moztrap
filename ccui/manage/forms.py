@@ -338,7 +338,7 @@ class TestCaseForm(ccforms.AddEditForm):
     def _save_tags(self):
         # @@@ convert into proper form field with widget?
         tag_ids = self.data.getlist("tag")
-        new_tags = self.data.getlist("newtag")
+        new_tags = self.data.getlist("filter--newtag")
 
         tl = TagList.get(auth=self.auth)
         for name in new_tags:
@@ -438,7 +438,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def save(self):
-        self.steps_formset.save(self.instance)
+        self.steps_formset.save(self.instance, hasattr(self, "prior_version"))
 
         instance = super(TestCaseForm, self).save()
 

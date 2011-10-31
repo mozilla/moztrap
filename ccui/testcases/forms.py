@@ -39,14 +39,14 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         super(StepForm, self).__init__(*args, **kwargs)
 
 
-    def save(self, testcaseversion, stepnumber):
+    def save(self, testcaseversion, stepnumber, as_new=False):
         info = dict(
             instruction=self.cleaned_data["instruction"],
             expectedResult=self.cleaned_data["expected_result"],
             stepNumber=stepnumber,
             )
 
-        if self.instance is not None:
+        if self.instance is not None and not as_new:
             for k, v in info.iteritems():
                 setattr(self.instance, k, v)
             self.instance.put()
@@ -54,7 +54,7 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             step = TestCaseStep(
                 **dict(
                     info,
-                    name="step %s" % stepnumber, # @@@
+                    name="case %s step %s" % (testcaseversion.id, stepnumber),
                     testCaseVersion=testcaseversion,
                     estimatedTimeInMin=0 # @@@
                     ))
@@ -78,11 +78,11 @@ class BaseStepFormSet(BaseFormSet):
         super(BaseStepFormSet, self).__init__(*args, **kwargs)
 
 
-    def save(self, testcaseversion):
+    def save(self, testcaseversion, as_new=False):
         for i, form in enumerate(self.forms):
             if form.empty_permitted and not form.has_changed():
                 break
-            form.save(testcaseversion, i + 1)
+            form.save(testcaseversion, i + 1, as_new=as_new)
         for extra_step in self.instances[i+1:]:
             extra_step.delete()
 
