@@ -110,7 +110,7 @@ class ProductForm(ccforms.AddEditForm):
         super(ProductForm, self).__init__(*args, **kwargs)
 
 
-    def add_fields(self):
+    def field_hook(self):
         if self.instance is None:
             self.fields["profile"] = ccforms.ModelChoiceField()
 
@@ -149,12 +149,12 @@ class TestRunForm(ccforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=ccforms.BareTextarea)
     test_cycle = ccforms.ModelChoiceField(
-        option_attrs=product_id_attrs)
+        choice_attrs=product_id_attrs)
     start_date = forms.DateField()
     end_date = forms.DateField(required=False)
     team = ccforms.ModelMultipleChoiceField(required=False)
     suites = ccforms.ModelMultipleChoiceField(
-        required=False, option_attrs=product_id_attrs)
+        required=False, choice_attrs=product_id_attrs)
 
 
     no_edit_fields = ["test_cycle"]
@@ -172,20 +172,26 @@ class TestRunForm(ccforms.AddEditForm):
 
 
 
+class TestCaseFilteredSelectMultiple(ccforms.FilteredSelectMultiple):
+    def get_context_data(self):
+        ctx = super(TestCaseFilteredSelectMultiple, self).get_context_data()
+        ctx["choice_template"] = "forms/_select_cases_item.html"
+        return ctx
+
+
+
 class TestSuiteForm(ccforms.AddEditForm):
     name = forms.CharField()
     description = forms.CharField(widget=ccforms.BareTextarea)
     product = ccforms.ModelChoiceField(
-        option_attrs=lambda p: {"data-product-id": p.id})
+        choice_attrs=lambda p: {"data-product-id": p.id})
     cases = ccforms.ModelMultipleChoiceField(
         required=False,
-        label_from_instance=lambda c: c.name,
-        option_attrs=product_id_attrs)
+        choice_attrs=product_id_attrs)
 
 
-    def __init__(self, *args, **kwargs):
-        super(TestSuiteForm, self).__init__(*args, **kwargs)
-        self.fields["cases"].widget = ccforms.FilteredSelectMultiple(
+    def field_hook(self):
+        self.fields["cases"].widget = TestCaseFilteredSelectMultiple(
             auth=self.auth,
             filters=[
                 ("status", TestCaseStatusFilter),
@@ -304,7 +310,7 @@ class TestCaseForm(ccforms.AddEditForm):
         }
 
 
-    def add_fields(self):
+    def field_hook(self):
         if self.instance is not None:
             self.fields["increment"] = forms.ChoiceField(
                 choices=[

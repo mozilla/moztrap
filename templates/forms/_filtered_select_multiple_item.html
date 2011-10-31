@@ -1,11 +1,10 @@
 <article class="selectitem">
-  <input type="checkbox" name="bulk-select" value="{{ id }}" class="item-input" id="bulk-select-{{ id }}" {{ checked }}>
+  <input{% for k, v in choice.1.attrs.items %} {{ k }}="{{ v }}"{% endfor %} type="checkbox" name="bulk-select" value="{{ choice.0 }}" class="item-input" id="bulk-select-{{ choice.0 }}" {{ checked }}>
   <div class="body">
-    <label for="bulk-select-{{ id }}" class="bulkselect">bulk select {{ id }}</label>
-    <p class="status">
-      <span class="active">active</span>
-    </p>
-    <h5 class="title">Test Case {{ id }}</h5>
-    <p class="author fn">Author Name</p>
+    <label for="bulk-select-{{ choice.0 }}" class="bulkselect">bulk select {{ choice.0 }}</label>
+    {% with choice.1.obj as item %}
+    {% block content %}
+    {% endblock %}
+    {% endwith %}
   </div>
 </article>

@@ -1,0 +1,9 @@
+{% extends "forms/_filtered_select_multiple_item.html" %}
+
+{% block content %}
+<p class="status">
+  <span class="{{ item.status|lower }}">{{ item.status|lower }}</span>
+</p>
+<h5 class="title">{{ item }}</h5>
+<p class="author fn">{{ item.timeline.createdBy }}</p>
+{% endblock %}

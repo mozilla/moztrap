@@ -122,7 +122,7 @@ class AddEditForm(RemoteObjectForm):
 
         super(AddEditForm, self).__init__(*args, **kwargs)
 
-        self.add_fields()
+        self.field_hook()
 
         if self.instance is not None:
             for fname in self.fields.iterkeys():
@@ -147,7 +147,7 @@ class AddEditForm(RemoteObjectForm):
         pass
 
 
-    def add_fields(self):
+    def field_hook(self):
         pass
 
 
@@ -260,8 +260,8 @@ class ReadOnlyWidget(forms.Widget):
 
 class OptionAttrsSelect(forms.Select):
     """
-    A SelectMultiple widget rendered by a template that expects each choice
-    option to have a third tuple element (in addition to value and label): a
+    A Select widget rendered by a template that expects each choice option's
+    label to be a ``SmartLabel`` (i.e. have an ``attrs`` attribute): a
     dictionary of arbitrary attributes to be assigned to the <option> element.
 
     """
@@ -272,7 +272,7 @@ class OptionAttrsSelect(forms.Select):
 class OptionAttrsSelectMultiple(forms.SelectMultiple):
     """
     A SelectMultiple widget rendered by a template that expects each choice
-    option to have a third tuple element (in addition to value and label): a
+    option's label to be a ``SmartLabel`` (i.e. have an ``attrs`` attribute): a
     dictionary of arbitrary attributes to be assigned to the <option> element.
 
     """
@@ -293,6 +293,7 @@ class FilteredSelectMultiple(OptionAttrsSelectMultiple):
         from .filters import Filter
         ctx = super(FilteredSelectMultiple, self).get_context_data()
         ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
+        ctx["choice_template"] = "forms/_filtered_select_multiple_item.html"
         return ctx
 
 
@@ -320,9 +321,37 @@ class ModelChoiceIterator(object):
         return len(self.obj_list)
 
     def choice(self, obj):
-        return (self.field.prepare_value(obj),
-                self.field.label_from_instance(obj),
-                self.field.option_attrs(obj))
+        return (
+            self.field.prepare_value(obj),
+            SmartLabel(
+                obj, self.field.label_from_instance, self.field.choice_attrs
+                )
+            )
+
+
+
+class SmartLabel(object):
+    """
+    An object that allows us to squeeze more data into the "label" half of the
+    label-value pair of a multiple-select choice. Behaves like a simple text
+    label if coerced to unicode, but also has "attrs" and "obj" attributes to
+    access attributes for the choice/option, and the object itself. Useful for
+    advanced multi-select widgets.
+
+    """
+    def __init__(self, obj, label_from_instance, choice_attrs):
+        self.obj = obj
+        self.label_from_instance = label_from_instance
+        self.choice_attrs = choice_attrs
+
+
+    def __unicode__(self):
+        return self.label_from_instance(self.obj)
+
+
+    @property
+    def attrs(self):
+        return self.choice_attrs(self.obj)
 
 
 
@@ -347,7 +376,7 @@ class ModelChoiceField(forms.Field):
         self.custom_label_from_instance = kwargs.pop(
             "label_from_instance", None)
 
-        self.custom_option_attrs = kwargs.pop("option_attrs", None)
+        self.custom_choice_attrs = kwargs.pop("choice_attrs", None)
 
         super(ModelChoiceField, self).__init__(
             required, widget, label, initial, help_text, *args, **kwargs)
@@ -400,9 +429,9 @@ class ModelChoiceField(forms.Field):
             return super(ModelChoiceField, self).prepare_value(value)
 
 
-    def option_attrs(self, obj):
-        if self.custom_option_attrs is not None:
-            return self.custom_option_attrs(obj)
+    def choice_attrs(self, obj):
+        if self.custom_choice_attrs is not None:
+            return self.custom_choice_attrs(obj)
         return {}
 
 
