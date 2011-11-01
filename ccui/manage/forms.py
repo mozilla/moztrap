@@ -315,12 +315,10 @@ class TestCaseForm(ccforms.AddEditForm):
             increment_choices = [
                 ("major", "save as new version"),
                 ]
-            widget = forms.HiddenInput
             if self.instance.status.DRAFT:
                 increment_choices += [("inplace", "save in place")]
-                widget = forms.Select
             self.fields["increment"] = forms.ChoiceField(
-                choices=increment_choices, widget=widget
+                choices=increment_choices
                 )
 
 
