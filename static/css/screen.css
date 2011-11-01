@@ -4748,6 +4748,14 @@ footer[role="contentinfo"] small {
 .caseselect .author {
   padding-right: 1.618em;
 }
+.caseselect .title {
+  overflow: hidden;
+  max-height: 1.618em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
 
 /* Create Case -------------------------------------------------------------- */
 #single-case-form, #bulk-case-form {
