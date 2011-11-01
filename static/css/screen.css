@@ -1896,18 +1896,18 @@ footer[role="contentinfo"] small {
   border: 0;
 }
 
-.togglelist, #filter .compact .content, .tagging .taglist, .superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms, .env-element-list {
+.togglelist, #filter .compact .content, .tagging .taglist, .superselect .terms, .mainselect .multiselect .terms, .userselect .multiselect .terms, .suiteselect .multiselect .terms, .caseselect .multiselect .terms, .roleselect .multiselect .terms, .env-element-list {
   font-size: 0.857em;
   line-height: 1.888em;
 }
-.togglelist input, #filter .compact .content input, .tagging .taglist input, .superselect .terms input, .mainselect .terms input, .userselect .terms input, .suiteselect .terms input, .caseselect .terms input, .roleselect .terms input, .env-element-list input, .togglelist label, #filter .compact .content label, .tagging .taglist label, .superselect .terms label, .mainselect .terms label, .userselect .terms label, .suiteselect .terms label, .caseselect .terms label, .roleselect .terms label, .env-element-list label {
+.togglelist input, #filter .compact .content input, .tagging .taglist input, .superselect .terms input, .mainselect .multiselect .terms input, .userselect .multiselect .terms input, .suiteselect .multiselect .terms input, .caseselect .multiselect .terms input, .roleselect .multiselect .terms input, .env-element-list input, .togglelist label, #filter .compact .content label, .tagging .taglist label, .superselect .terms label, .mainselect .multiselect .terms label, .userselect .multiselect .terms label, .suiteselect .multiselect .terms label, .caseselect .multiselect .terms label, .roleselect .multiselect .terms label, .env-element-list label {
   display: none;
 }
-.togglelist li, #filter .compact .content li, .tagging .taglist li, .superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li, .env-element-list li {
+.togglelist li, #filter .compact .content li, .tagging .taglist li, .superselect .terms li, .mainselect .multiselect .terms li, .userselect .multiselect .terms li, .suiteselect .multiselect .terms li, .caseselect .multiselect .terms li, .roleselect .multiselect .terms li, .env-element-list li {
   display: inline;
   float: left;
 }
-.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .taglist input:checked + label, .superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label, .env-element-list input:checked + label {
+.togglelist input:checked + label, #filter .compact .content input:checked + label, .tagging .taglist input:checked + label, .superselect .terms input:checked + label, .mainselect .multiselect .terms input:checked + label, .userselect .multiselect .terms input:checked + label, .suiteselect .multiselect .terms input:checked + label, .caseselect .multiselect .terms input:checked + label, .roleselect .multiselect .terms input:checked + label, .env-element-list input:checked + label {
   margin-bottom: 0.472em;
   -moz-border-radius: 0.236em;
   -webkit-border-radius: 0.236em;
@@ -1927,7 +1927,7 @@ footer[role="contentinfo"] small {
   background: #e4f5d1 url('../images/ui/check_sm.png?1314206098') no-repeat scroll 3px;
   white-space: nowrap;
 }
-.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .taglist input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .terms input:checked + label:hover, .userselect .terms input:checked + label:hover, .suiteselect .terms input:checked + label:hover, .caseselect .terms input:checked + label:hover, .roleselect .terms input:checked + label:hover, .env-element-list input:checked + label:hover {
+.togglelist input:checked + label:hover, #filter .compact .content input:checked + label:hover, .tagging .taglist input:checked + label:hover, .superselect .terms input:checked + label:hover, .mainselect .multiselect .terms input:checked + label:hover, .userselect .multiselect .terms input:checked + label:hover, .suiteselect .multiselect .terms input:checked + label:hover, .caseselect .multiselect .terms input:checked + label:hover, .roleselect .multiselect .terms input:checked + label:hover, .env-element-list input:checked + label:hover {
   background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
@@ -4431,32 +4431,44 @@ footer[role="contentinfo"] small {
   padding-left: 15.686%;
 }
 
-.superselect p, .mainselect p, .userselect p, .suiteselect p, .caseselect p, .roleselect p {
-  margin: 0;
+.superselect, .mainselect .multiselect, .userselect .multiselect, .suiteselect .multiselect, .caseselect .multiselect, .roleselect .multiselect {
+  position: relative;
 }
-.superselect h4, .mainselect h4, .userselect h4, .suiteselect h4, .caseselect h4, .roleselect h4 {
+.superselect p, .mainselect .multiselect p, .userselect .multiselect p, .suiteselect .multiselect p, .caseselect .multiselect p, .roleselect .multiselect p {
+  margin-bottom: 0em;
+}
+.superselect h4, .mainselect .multiselect h4, .userselect .multiselect h4, .suiteselect .multiselect h4, .caseselect .multiselect h4, .roleselect .multiselect h4 {
   font-weight: 500;
-  padding: 0.405em;
+  margin-top: 0em;
+  padding-top: 0.405em;
+  padding-bottom: 0em;
+  margin-bottom: 0.405em;
   text-transform: uppercase;
 }
-.superselect .multiunselected, .mainselect .multiunselected, .userselect .multiunselected, .suiteselect .multiunselected, .caseselect .multiunselected, .roleselect .multiunselected, .superselect .multiselected, .mainselect .multiselected, .userselect .multiselected, .suiteselect .multiselected, .caseselect .multiselected, .roleselect .multiselected {
+.superselect .multiunselected .selectbox, .mainselect .multiselect .multiunselected .selectbox, .userselect .multiselect .multiunselected .selectbox, .suiteselect .multiselect .multiunselected .selectbox, .caseselect .multiselect .multiunselected .selectbox, .roleselect .multiselect .multiunselected .selectbox {
   display: inline;
   float: left;
   width: 49.474%;
   margin-right: 1.053%;
+  clear: left;
 }
-.superselect .multiselected, .mainselect .multiselected, .userselect .multiselected, .suiteselect .multiselected, .caseselect .multiselected, .roleselect .multiselected {
+.superselect .multiselected, .mainselect .multiselect .multiselected, .userselect .multiselect .multiselected, .suiteselect .multiselect .multiselected, .caseselect .multiselect .multiselected, .roleselect .multiselect .multiselected {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
   display: inline;
   float: right;
   margin-right: 0;
 }
-.superselect .multiselected .select, .mainselect .multiselected .select, .userselect .multiselected .select, .suiteselect .multiselected .select, .caseselect .multiselected .select, .roleselect .multiselected .select {
-  height: 21.843em;
+.superselect .multiselected h4, .mainselect .multiselect .multiselected h4, .userselect .multiselect .multiselected h4, .suiteselect .multiselect .multiselected h4, .caseselect .multiselect .multiselected h4, .roleselect .multiselect .multiselected h4 {
+  position: absolute;
+  top: 0;
 }
-.superselect .selectsearch, .mainselect .selectsearch, .userselect .selectsearch, .suiteselect .selectsearch, .caseselect .selectsearch, .roleselect .selectsearch {
+.superselect .selectsearch, .mainselect .multiselect .selectsearch, .userselect .multiselect .selectsearch, .suiteselect .multiselect .selectsearch, .caseselect .multiselect .selectsearch, .roleselect .multiselect .selectsearch {
   position: relative;
 }
-.superselect .selectsearch > label, .mainselect .selectsearch > label, .userselect .selectsearch > label, .suiteselect .selectsearch > label, .caseselect .selectsearch > label, .roleselect .selectsearch > label {
+.superselect .selectsearch > label, .mainselect .multiselect .selectsearch > label, .userselect .multiselect .selectsearch > label, .suiteselect .multiselect .selectsearch > label, .caseselect .multiselect .selectsearch > label, .roleselect .multiselect .selectsearch > label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4466,10 +4478,19 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-.superselect .selectsearch > input, .mainselect .selectsearch > input, .userselect .selectsearch > input, .suiteselect .selectsearch > input, .caseselect .selectsearch > input, .roleselect .selectsearch > input {
-  margin: 0;
+.superselect .selectsearch > input, .mainselect .multiselect .selectsearch > input, .userselect .multiselect .selectsearch > input, .suiteselect .multiselect .selectsearch > input, .caseselect .multiselect .selectsearch > input, .roleselect .multiselect .selectsearch > input, .superselect .selectsearch .suggest, .mainselect .multiselect .selectsearch .suggest, .userselect .multiselect .selectsearch .suggest, .suiteselect .multiselect .selectsearch .suggest, .caseselect .multiselect .selectsearch .suggest, .roleselect .multiselect .selectsearch .suggest {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
 }
-.superselect .listordering, .mainselect .listordering, .userselect .listordering, .suiteselect .listordering, .caseselect .listordering, .roleselect .listordering {
+.superselect .selectsearch .suggest, .mainselect .multiselect .selectsearch .suggest, .userselect .multiselect .selectsearch .suggest, .suiteselect .multiselect .selectsearch .suggest, .caseselect .multiselect .selectsearch .suggest, .roleselect .multiselect .selectsearch .suggest {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.superselect .listordering, .mainselect .multiselect .listordering, .userselect .multiselect .listordering, .suiteselect .multiselect .listordering, .caseselect .multiselect .listordering, .roleselect .multiselect .listordering {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
@@ -4477,16 +4498,19 @@ footer[role="contentinfo"] small {
   border: 1px solid #516985;
   border-width: 1px 1px 0;
 }
-.superselect .multiunselected .listordering, .mainselect .multiunselected .listordering, .userselect .multiunselected .listordering, .suiteselect .multiunselected .listordering, .caseselect .multiunselected .listordering, .roleselect .multiunselected .listordering {
-  border-width: 0 1px;
+.superselect .groups, .mainselect .multiselect .groups, .userselect .multiselect .groups, .suiteselect .multiselect .groups, .caseselect .multiselect .groups, .roleselect .multiselect .groups {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
+  margin-bottom: 0.472em;
+  clear: left;
 }
-.superselect .groups, .mainselect .groups, .userselect .groups, .suiteselect .groups, .caseselect .groups, .roleselect .groups {
-  overflow: hidden;
-  *zoom: 1;
-  padding: 0 0.472em;
-  background: #516985;
-}
-.superselect .groups h5, .mainselect .groups h5, .userselect .groups h5, .suiteselect .groups h5, .caseselect .groups h5, .roleselect .groups h5 {
+.superselect .groups h5, .mainselect .multiselect .groups h5, .userselect .multiselect .groups h5, .suiteselect .multiselect .groups h5, .caseselect .multiselect .groups h5, .roleselect .multiselect .groups h5 {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -4496,27 +4520,27 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-.superselect .terms, .mainselect .terms, .userselect .terms, .suiteselect .terms, .caseselect .terms, .roleselect .terms {
+.superselect .terms, .mainselect .multiselect .terms, .userselect .multiselect .terms, .suiteselect .multiselect .terms, .caseselect .multiselect .terms, .roleselect .multiselect .terms {
   list-style: none;
   margin: 0;
   padding: 0;
   border: 0;
 }
-.superselect .terms li, .mainselect .terms li, .userselect .terms li, .suiteselect .terms li, .caseselect .terms li, .roleselect .terms li {
+.superselect .terms li, .mainselect .multiselect .terms li, .userselect .multiselect .terms li, .suiteselect .multiselect .terms li, .caseselect .multiselect .terms li, .roleselect .multiselect .terms li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
 }
-.superselect .terms input:checked + label, .mainselect .terms input:checked + label, .userselect .terms input:checked + label, .suiteselect .terms input:checked + label, .caseselect .terms input:checked + label, .roleselect .terms input:checked + label {
-  margin-top: 0.472em;
+.superselect .terms input:checked + label, .mainselect .multiselect .terms input:checked + label, .userselect .multiselect .terms input:checked + label, .suiteselect .multiselect .terms input:checked + label, .caseselect .multiselect .terms input:checked + label, .roleselect .multiselect .terms input:checked + label {
+  margin-bottom: 0.472em;
 }
-.superselect .byinclude, .mainselect .byinclude, .userselect .byinclude, .suiteselect .byinclude, .caseselect .byinclude, .roleselect .byinclude, .superselect .byexclude, .mainselect .byexclude, .userselect .byexclude, .suiteselect .byexclude, .caseselect .byexclude, .roleselect .byexclude {
+.superselect .byinclude, .mainselect .multiselect .byinclude, .userselect .multiselect .byinclude, .suiteselect .multiselect .byinclude, .caseselect .multiselect .byinclude, .roleselect .multiselect .byinclude, .superselect .byexclude, .mainselect .multiselect .byexclude, .userselect .multiselect .byexclude, .suiteselect .multiselect .byexclude, .caseselect .multiselect .byexclude, .roleselect .multiselect .byexclude {
   display: inline;
   float: left;
   width: 6.383%;
   margin-right: 2.128%;
 }
-.superselect .action-include, .mainselect .action-include, .userselect .action-include, .suiteselect .action-include, .caseselect .action-include, .roleselect .action-include, .superselect .action-exclude, .mainselect .action-exclude, .userselect .action-exclude, .suiteselect .action-exclude, .caseselect .action-exclude, .roleselect .action-exclude {
+.superselect .action-include, .mainselect .multiselect .action-include, .userselect .multiselect .action-include, .suiteselect .multiselect .action-include, .caseselect .multiselect .action-include, .roleselect .multiselect .action-include, .superselect .action-exclude, .mainselect .multiselect .action-exclude, .userselect .multiselect .action-exclude, .suiteselect .multiselect .action-exclude, .caseselect .multiselect .action-exclude, .roleselect .multiselect .action-exclude {
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   -o-border-radius: 0;
@@ -4536,7 +4560,7 @@ footer[role="contentinfo"] small {
   border: 0;
   width: 100%;
 }
-.superselect .action-include, .mainselect .action-include, .userselect .action-include, .suiteselect .action-include, .caseselect .action-include, .roleselect .action-include {
+.superselect .action-include, .mainselect .multiselect .action-include, .userselect .multiselect .action-include, .suiteselect .multiselect .action-include, .caseselect .multiselect .action-include, .roleselect .multiselect .action-include {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -4555,14 +4579,14 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-.superselect .action-include:focus, .mainselect .action-include:focus, .userselect .action-include:focus, .suiteselect .action-include:focus, .caseselect .action-include:focus, .roleselect .action-include:focus, .superselect .action-include:hover, .mainselect .action-include:hover, .userselect .action-include:hover, .suiteselect .action-include:hover, .caseselect .action-include:hover, .roleselect .action-include:hover, .superselect .action-include:active, .mainselect .action-include:active, .userselect .action-include:active, .suiteselect .action-include:active, .caseselect .action-include:active, .roleselect .action-include:active {
+.superselect .action-include:focus, .mainselect .multiselect .action-include:focus, .userselect .multiselect .action-include:focus, .suiteselect .multiselect .action-include:focus, .caseselect .multiselect .action-include:focus, .roleselect .multiselect .action-include:focus, .superselect .action-include:hover, .mainselect .multiselect .action-include:hover, .userselect .multiselect .action-include:hover, .suiteselect .multiselect .action-include:hover, .caseselect .multiselect .action-include:hover, .roleselect .multiselect .action-include:hover, .superselect .action-include:active, .mainselect .multiselect .action-include:active, .userselect .multiselect .action-include:active, .suiteselect .multiselect .action-include:active, .caseselect .multiselect .action-include:active, .roleselect .multiselect .action-include:active {
   background-image: url('../images/ui/arrow_right_dbl.png?1319580236');
 }
-.superselect .action-include:focus, .mainselect .action-include:focus, .userselect .action-include:focus, .suiteselect .action-include:focus, .caseselect .action-include:focus, .roleselect .action-include:focus, .superselect .action-include:hover, .mainselect .action-include:hover, .userselect .action-include:hover, .suiteselect .action-include:hover, .caseselect .action-include:hover, .roleselect .action-include:hover, .superselect .action-include:active, .mainselect .action-include:active, .userselect .action-include:active, .suiteselect .action-include:active, .caseselect .action-include:active, .roleselect .action-include:active {
+.superselect .action-include:focus, .mainselect .multiselect .action-include:focus, .userselect .multiselect .action-include:focus, .suiteselect .multiselect .action-include:focus, .caseselect .multiselect .action-include:focus, .roleselect .multiselect .action-include:focus, .superselect .action-include:hover, .mainselect .multiselect .action-include:hover, .userselect .multiselect .action-include:hover, .suiteselect .multiselect .action-include:hover, .caseselect .multiselect .action-include:hover, .roleselect .multiselect .action-include:hover, .superselect .action-include:active, .mainselect .multiselect .action-include:active, .userselect .multiselect .action-include:active, .suiteselect .multiselect .action-include:active, .caseselect .multiselect .action-include:active, .roleselect .multiselect .action-include:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.superselect .action-exclude, .mainselect .action-exclude, .userselect .action-exclude, .suiteselect .action-exclude, .caseselect .action-exclude, .roleselect .action-exclude {
+.superselect .action-exclude, .mainselect .multiselect .action-exclude, .userselect .multiselect .action-exclude, .suiteselect .multiselect .action-exclude, .caseselect .multiselect .action-exclude, .roleselect .multiselect .action-exclude {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   -ms-box-sizing: content-box;
@@ -4581,12 +4605,15 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
   opacity: 0.675;
 }
-.superselect .action-exclude:focus, .mainselect .action-exclude:focus, .userselect .action-exclude:focus, .suiteselect .action-exclude:focus, .caseselect .action-exclude:focus, .roleselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .action-exclude:hover, .userselect .action-exclude:hover, .suiteselect .action-exclude:hover, .caseselect .action-exclude:hover, .roleselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .action-exclude:active, .userselect .action-exclude:active, .suiteselect .action-exclude:active, .caseselect .action-exclude:active, .roleselect .action-exclude:active {
+.superselect .action-exclude:focus, .mainselect .multiselect .action-exclude:focus, .userselect .multiselect .action-exclude:focus, .suiteselect .multiselect .action-exclude:focus, .caseselect .multiselect .action-exclude:focus, .roleselect .multiselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .multiselect .action-exclude:hover, .userselect .multiselect .action-exclude:hover, .suiteselect .multiselect .action-exclude:hover, .caseselect .multiselect .action-exclude:hover, .roleselect .multiselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .multiselect .action-exclude:active, .userselect .multiselect .action-exclude:active, .suiteselect .multiselect .action-exclude:active, .caseselect .multiselect .action-exclude:active, .roleselect .multiselect .action-exclude:active {
   background-image: url('../images/ui/arrow_left_dbl.png?1319580236');
 }
-.superselect .action-exclude:focus, .mainselect .action-exclude:focus, .userselect .action-exclude:focus, .suiteselect .action-exclude:focus, .caseselect .action-exclude:focus, .roleselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .action-exclude:hover, .userselect .action-exclude:hover, .suiteselect .action-exclude:hover, .caseselect .action-exclude:hover, .roleselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .action-exclude:active, .userselect .action-exclude:active, .suiteselect .action-exclude:active, .caseselect .action-exclude:active, .roleselect .action-exclude:active {
+.superselect .action-exclude:focus, .mainselect .multiselect .action-exclude:focus, .userselect .multiselect .action-exclude:focus, .suiteselect .multiselect .action-exclude:focus, .caseselect .multiselect .action-exclude:focus, .roleselect .multiselect .action-exclude:focus, .superselect .action-exclude:hover, .mainselect .multiselect .action-exclude:hover, .userselect .multiselect .action-exclude:hover, .suiteselect .multiselect .action-exclude:hover, .caseselect .multiselect .action-exclude:hover, .roleselect .multiselect .action-exclude:hover, .superselect .action-exclude:active, .mainselect .multiselect .action-exclude:active, .userselect .multiselect .action-exclude:active, .suiteselect .multiselect .action-exclude:active, .caseselect .multiselect .action-exclude:active, .roleselect .multiselect .action-exclude:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+.superselect .sortable-placeholder, .mainselect .multiselect .sortable-placeholder, .userselect .multiselect .sortable-placeholder, .suiteselect .multiselect .sortable-placeholder, .caseselect .multiselect .sortable-placeholder, .roleselect .multiselect .sortable-placeholder {
+  background: rgba(179, 227, 125, 0.618);
 }
 
 .mainselect, .userselect, .suiteselect, .caseselect, .roleselect {
@@ -4607,11 +4634,11 @@ footer[role="contentinfo"] small {
   background: rgba(81, 105, 133, 0.146);
   text-transform: capitalize;
 }
-.mainselect > div, .userselect > div, .suiteselect > div, .caseselect > div, .roleselect > div {
+.mainselect .multiselect, .userselect .multiselect, .suiteselect .multiselect, .caseselect .multiselect, .roleselect .multiselect {
   clear: both;
   *zoom: 1;
 }
-.mainselect > div:after, .userselect > div:after, .suiteselect > div:after, .caseselect > div:after, .roleselect > div:after {
+.mainselect .multiselect:after, .userselect .multiselect:after, .suiteselect .multiselect:after, .caseselect .multiselect:after, .roleselect .multiselect:after {
   content: "";
   display: table;
   clear: both;

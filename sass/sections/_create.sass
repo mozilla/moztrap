@@ -128,39 +128,46 @@
 // SuperSelect! --------------------------------------------------------------
 
 .superselect
+  position: relative
   p
-    margin: 0
+    +trailer(0)
   h4
     +demi
-    padding: rhythm(.25)
+    +rhythm(0,.25,0,.25)
+
     text-transform: uppercase
 
-  .multiunselected, .multiselected
-    +columns(12,24)
+  .multiunselected
+    .selectbox
+      +columns(12,24)
+      clear: left
+
   .multiselected
+    +columns(12,24)
     +omega(24)
-    .select
-      height: rhythm(13.5)
+    h4
+      position: absolute
+      top: 0
 
   .selectsearch
     position: relative
     > label
       +gone
-    > input
-      margin: 0
+    > input, .suggest
+      +columns(12,24)
+    .suggest
+      +box-sizing(border-box)
 
   .listordering
     +box-sizing(border-box)
     border: 1px solid $blue
       width: 1px 1px 0
-  .multiunselected
-    .listordering
-      border-width: 0 1px
 
   .groups
-    +clearfix
-    padding: 0 rhythm(.25,12px)
-    background: $blue
+    +box-sizing(border-box)
+    +columns(12,24)
+    +trailer(.25,12px)
+    clear: left
     h5
       +gone
 
@@ -168,7 +175,7 @@
     @extend .togglelist
     +no-style-list
     input:checked + label
-      +leader(.25,12px)
+      +trailer(.25,12px)
 
   .byinclude, .byexclude
     +columns(1,12)
@@ -181,8 +188,10 @@
   .action-exclude
     +icon-replace('ui/arrow_left_dbl.png')
 
+  .sortable-placeholder
+    background: rgba($green-light,$small)
+
 .mainselect
-  @extend .superselect
   +clearfix
   +padding-leader
   +trailer
@@ -192,7 +201,8 @@
     padding: rhythm(.25)
     background: rgba($blue,$xxxsmall)
     text-transform: capitalize
-  > div
+  .multiselect
+    @extend .superselect
     +full(24)
     +pie-clearfix
 
