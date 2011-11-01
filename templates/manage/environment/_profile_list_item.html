@@ -8,11 +8,13 @@
     {{ profile.name }}
     {% endif %}
   </h3>
+  {% comment %} @@@ too slow
   <ul class="preview">
     {% for cat in profile.categories %}
     <li>{{ cat.name }}</li>
     {% endfor %}
   </ul>
+  {% endcomment %}
   <div class="controls">
     {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <a href="{% url manage_environment_edit profile_id=profile.id %}" title="edit">edit</a>
