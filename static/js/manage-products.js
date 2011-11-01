@@ -267,14 +267,16 @@ var CC = (function (CC, $) {
             bulkExclude = context.find('.multiselected .listordering .action-exclude'),
             form = $('#suite-form');
 
-        context.find('.multiunselected, .multiselected').sortable({
+        context.find('.multiunselected .select, .multiselected .select').sortable({
             items: '.selectitem',
             connectWith: '.sortable',
             revert: 200,
             delay: 50,
             opacity: 0.7,
+            placeholder: 'sortable-placeholder',
+            forcePlaceholderSize: true,
             update: function (event, ui) {
-                ui.item.closest('.sortable').find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                ui.item.closest('.multiunselected').find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
             }
         });
 
@@ -359,11 +361,11 @@ var CC = (function (CC, $) {
 
     CC.sortIncludedTestCases = function (container) {
         var context = $(container),
-            headers = context.find('.sortable .listordering li[class^="by"] a');
+            headers = context.find('.listordering li[class^="by"] a');
 
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
         headers.click(function (e) {
-            var casesContainer = $(this).closest('.sortable').find('.select'),
+            var casesContainer = $(this).closest('section').find('.select'),
                 sortByClass = $(this).parent().attr('class').substring(2),
                 direction;
 

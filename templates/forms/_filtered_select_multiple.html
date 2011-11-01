@@ -4,7 +4,7 @@
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}
   {% icanhaz "filtered_multiselect_input" %}
-  <section class="multiunselected sortable">
+  <section class="multiunselected">
     <h4>available {{ name }}</h4>
     <div class="selectsearch">
       <label for="search-add">filter available {{ name }}</label>
@@ -26,7 +26,7 @@
         <li class="byauthor"><a href="#">author</a></li>
       </ul>
     </nav>
-    <div class="select">
+    <div class="select sortable">
       {% for choice in choices %}
       {% if choice.0 not in value %}
       {% include choice_template %}
@@ -34,7 +34,7 @@
       {% endfor %}
     </div>
   </section>
-  <section class="multiselected sortable">
+  <section class="multiselected">
     <h4>included {{ name }}</h4>
     <nav class="listordering">
       <h5 class="navhead">List Ordering</h5>
@@ -45,7 +45,7 @@
         <li class="byauthor"><a href="#">author</a></li>
       </ul>
     </nav>
-    <div class="select" data-name="{{ name }}">
+    <div class="select sortable" data-name="{{ name }}">
       {% for choice in choices %}
       {% if choice.0 in value %}
       {% include choice_template %}
