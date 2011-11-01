@@ -70,7 +70,7 @@ class EnvironmentType(Named, RemoteObject):
             return []
         typeids = set()
         types = {}
-        for group in self.environmentgroups:
+        for group in self.environmentgroups_prefetch:
             for env in group.environments:
                 et = env.environmentType
                 typeids.add(et.id)
