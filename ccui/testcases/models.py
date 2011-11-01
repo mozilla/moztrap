@@ -22,6 +22,7 @@ testing.
 """
 from ..attachments.models import AttachmentList
 from ..core.api import RemoteObject, Activatable, ListObject, fields, Named
+from ..core.auth import admin
 from ..core.models import Company
 from ..environments.models import EnvironmentGroupList
 from ..products.models import Product
@@ -52,12 +53,13 @@ class TestCase(Named, RemoteObject):
 
 
     def clone(self, **kwargs):
-        obj = self.__class__()
+        obj = TestCaseVersion()
         self._post(
             relative_url="clone",
             version_payload=False,
             update_from_response=obj,
             **kwargs)
+        obj.approve(auth=admin)
         return obj
 
 
