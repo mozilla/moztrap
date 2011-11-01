@@ -40,9 +40,9 @@ var CC = (function (CC, $) {
 
             doFilter = function () {
                 var key = trigger.find("option:selected").data(data_attr),
-                    newopts = allopts.filter(function () {
+                    newopts = allopts.clone().filter(function () {
                         return $(this).data(data_attr) === key;
-                    }).show();
+                    });
                 target.html(newopts);
                 context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
             };
