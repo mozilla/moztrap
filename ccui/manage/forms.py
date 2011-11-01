@@ -312,11 +312,15 @@ class TestCaseForm(ccforms.AddEditForm):
 
     def field_hook(self):
         if self.instance is not None:
+            increment_choices = [
+                ("major", "save as new version"),
+                ]
+            widget = forms.HiddenInput
+            if self.instance.status.DRAFT:
+                increment_choices += [("inplace", "save in place")]
+                widget = forms.Select
             self.fields["increment"] = forms.ChoiceField(
-                choices=[
-                    ("major", "save as new version"),
-                    ("inplace", "save in place"),
-                    ]
+                choices=increment_choices, widget=widget
                 )
 
 
@@ -438,7 +442,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def save(self):
-        self.steps_formset.save(self.instance)
+        self.steps_formset.save(self.instance, hasattr(self, "prior_version"))
 
         instance = super(TestCaseForm, self).save()
 
