@@ -312,11 +312,15 @@ class TestCaseForm(ccforms.AddEditForm):
 
     def field_hook(self):
         if self.instance is not None:
+            increment_choices = [
+                ("major", "save as new version"),
+                ]
+            widget = forms.HiddenInput
+            if self.instance.status.DRAFT:
+                increment_choices += [("inplace", "save in place")]
+                widget = forms.Select
             self.fields["increment"] = forms.ChoiceField(
-                choices=[
-                    ("major", "save as new version"),
-                    ("inplace", "save in place"),
-                    ]
+                choices=increment_choices, widget=widget
                 )
 
 
@@ -338,7 +342,7 @@ class TestCaseForm(ccforms.AddEditForm):
     def _save_tags(self):
         # @@@ convert into proper form field with widget?
         tag_ids = self.data.getlist("tag")
-        new_tags = self.data.getlist("filter--newtag")
+        new_tags = self.data.getlist("newtag")
 
         tl = TagList.get(auth=self.auth)
         for name in new_tags:
