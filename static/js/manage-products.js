@@ -28,8 +28,8 @@ var CC = (function (CC, $) {
     'use strict';
 
     // Filter form options for add-run and add-suite
-    CC.formOptionsFilter = function (context_sel, data_attr, trigger_sel, target_sel, option_sel) {
-        var context = $(context_sel),
+    CC.formOptionsFilter = function (container, data_attr, trigger_sel, target_sel, option_sel) {
+        var context = $(container),
             trigger = context.find(trigger_sel),
             target,
             allopts,
@@ -39,14 +39,12 @@ var CC = (function (CC, $) {
             allopts = target.find(option_sel).clone();
 
             doFilter = function () {
-                var key = trigger.find("option:selected").data(data_attr);
-                target.empty();
-                allopts.each(function () {
-                    if ($(this).data(data_attr) === key) {
-                        var newopt = $(this).clone();
-                        newopt.appendTo(target);
-                    }
-                });
+                var key = trigger.find("option:selected").data(data_attr),
+                    newopts = allopts.filter(function () {
+                        return $(this).data(data_attr) === key;
+                    }).show();
+                target.html(newopts);
+                context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
             };
 
             doFilter();
