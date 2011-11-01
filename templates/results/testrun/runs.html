@@ -49,7 +49,7 @@
               <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
               <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
               <p class="product">{{ run.product.name }}</p>
-              {% include "results/_results_summary.html" with results=run.resultsummary %}
+              {% include "results/_results_summary.html" with obj=run %}
             </header>
             <div class="content">
               {# _run_details.html loaded via ajax #}

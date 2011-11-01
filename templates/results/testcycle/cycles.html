@@ -51,7 +51,7 @@
               <p class="product">{{ cycle.product.name }}</p>
               <time class="start">{{ cycle.startDate|date }}</time>
               <time class="end">{{ cycle.endDate|date }}</time>
-              {% include "results/_results_summary.html" with results=cycle.resultsummary %}
+              {% include "results/_results_summary.html" with obj=cycle %}
             </header>
             <div class="content">
               {# _cycle_details.html loaded via ajax #}

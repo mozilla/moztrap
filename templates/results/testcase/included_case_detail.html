@@ -10,7 +10,7 @@
       <p class="status"><span class="{{ includedcase.testCaseVersion.status|status_class }}">{{ includedcase.testCaseVersion.status|lower }}</span></p>
       <p class="run" title="{{ includedcase.testRun.name }}"><b>run:</b> {{ includedcase.testRun.name }}</p>
       <p class="product"><b>product:</b> {{ includedcase.product.name }}</p>
-      {% include "results/_results_summary.html" with results=includedcase.resultsummary %}
+      {% include "results/_results_summary.html" with obj=includedcase %}
     </div>
     <div class="content">
 
