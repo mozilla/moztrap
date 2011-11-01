@@ -28,7 +28,7 @@ var CC = (function (CC, $) {
     'use strict';
 
     // Filter form options for add-run and add-suite
-    CC.formOptionsFilter = function (container, data_attr, trigger_sel, target_sel, option_sel) {
+    CC.formOptionsFilter = function (container, data_attr, trigger_sel, target_sel, option_sel, multiselect_widget_bool) {
         var context = $(container),
             trigger = context.find(trigger_sel),
             target,
@@ -44,7 +44,10 @@ var CC = (function (CC, $) {
                         return $(this).data(data_attr) === key;
                     });
                 target.html(newopts);
-                context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                if (multiselect_widget_bool) {
+                    context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                    context.find('.multiselected .select').empty();
+                }
             };
 
             doFilter();
