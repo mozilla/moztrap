@@ -254,30 +254,32 @@ var CC = (function (CC, $) {
             addEnv = function () {
                 var replaceList = $('#editprofile .managelist.action-ajax-replace');
 
-                $('#editprofile #add-environment-form').ajaxForm({
-                    beforeSubmit: function (arr, form, options) {
-                        replaceList.loadingOverlay();
-                    },
-                    success: function (response) {
-                        var newList = $(response.html);
-                        replaceList.loadingOverlay('remove');
-                        if (response.html) {
-                            replaceList.replaceWith(newList);
-                            $('#editprofile .add-item').customAutocomplete({
-                                textbox: '#env-elements-input',
-                                suggestionList: '.suggest',
-                                inputList: '.env-element-list',
-                                ajax: true,
-                                url: $('#env-elements-input').data('autocomplete-url'),
-                                hideFormActions: true,
-                                expiredList: '.env-element-list',
-                                inputType: 'element'
-                            });
-                            addEnv();
-                            newList.find('.details').html5accordion();
+                if ($('#editprofile #add-environment-form').length) {
+                    $('#editprofile #add-environment-form').ajaxForm({
+                        beforeSubmit: function (arr, form, options) {
+                            replaceList.loadingOverlay();
+                        },
+                        success: function (response) {
+                            var newList = $(response.html);
+                            replaceList.loadingOverlay('remove');
+                            if (response.html) {
+                                replaceList.replaceWith(newList);
+                                $('#editprofile .add-item').customAutocomplete({
+                                    textbox: '#env-elements-input',
+                                    suggestionList: '.suggest',
+                                    inputList: '.env-element-list',
+                                    ajax: true,
+                                    url: $('#env-elements-input').data('autocomplete-url'),
+                                    hideFormActions: true,
+                                    expiredList: '.env-element-list',
+                                    inputType: 'element'
+                                });
+                                addEnv();
+                                newList.find('.details').html5accordion();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             };
 
         addEnv();
@@ -311,13 +313,15 @@ var CC = (function (CC, $) {
             }
         });
 
-        $('#editprofile #profile-name-form').ajaxForm({
-            success: function (response) {
-                profileName = profileNameInput.val();
-                profileNameSubmit.fadeOut();
-                profileNameInput.blur();
-            }
-        });
+        if ($('#editprofile #profile-name-form').length) {
+            $('#editprofile #profile-name-form').ajaxForm({
+                success: function (response) {
+                    profileName = profileNameInput.val();
+                    profileNameSubmit.fadeOut();
+                    profileNameInput.blur();
+                }
+            });
+        }
     };
 
     return CC;

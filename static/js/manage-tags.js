@@ -13,20 +13,22 @@ var CC = (function (CC, $) {
                 var addTagForm = context.find('#add-tag-form'),
                     replaceList = addTagForm.closest('.action-ajax-replace');
 
-                addTagForm.ajaxForm({
-                    beforeSubmit: function (arr, form, options) {
-                        replaceList.loadingOverlay();
-                    },
-                    success: function (response) {
-                        var newList = $(response.html);
-                        replaceList.loadingOverlay('remove');
-                        if (response.html) {
-                            replaceList.replaceWith(newList);
-                            addTag();
-                            newList.find('.details').html5accordion();
+                if (addTagForm.length) {
+                    addTagForm.ajaxForm({
+                        beforeSubmit: function (arr, form, options) {
+                            replaceList.loadingOverlay();
+                        },
+                        success: function (response) {
+                            var newList = $(response.html);
+                            replaceList.loadingOverlay('remove');
+                            if (response.html) {
+                                replaceList.replaceWith(newList);
+                                addTag();
+                                newList.find('.details').html5accordion();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             },
 
             editTag = function () {
