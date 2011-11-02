@@ -110,31 +110,35 @@ var CC = (function (CC, $) {
     CC.testcaseVersioning = function (container) {
         var context = $(container),
             versionList = context.find('.versioning .version-select'),
-            versions = versionList.find('.version .item-select'),
+            versions = versionList.find('.version'),
+            versionLabels = versions.find('.item-select'),
             versionHeader = versionList.find('.summary strong'),
             url = window.location.pathname,
             dirty = false,
             tags = context.find('.versioned .tagging .visual').html();
 
-        context
-            .delegate(
-                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
-                'change',
-                function () {
-                    dirty = true;
-                }
-            )
-            .delegate(
-                '.versioned a.removefields, .versioned a.insert-step',
-                'click',
-                function () {
-                    dirty = true;
-                }
-            );
+        versions.each(function () {
+            var thisVersion = $(this),
+                runlist = thisVersion.find('.item-select .runs .runlist'),
+                runs = runlist.children('li'),
+                moreRunsLink = ich.case_versioning_more_runs_link();
 
-        versionList.find('.summary').click(function () { $(this).blur(); });
+            if (runs.length > 2) {
+                moreRunsLink.click(function (e) {
+                    if ($(this).hasClass('open')) {
+                        $(this).html('more runs &raquo;').removeClass('open');
+                        runs.filter(':gt(1)').slideUp();
+                    } else {
+                        $(this).html('fewer runs &raquo;').addClass('open')
+                        runs.filter(':gt(1)').slideDown();
+                    }
+                    return false;
+                });
+                runlist.after(moreRunsLink);
+            }
+        });
 
-        versions.click(function (e) {
+        versionLabels.click(function (e) {
             var clickedVersion = $(this).closest('.version');
             if (clickedVersion.find('.item-input').is(':checked')) {
                 versionList.find('.summary').click();
@@ -202,6 +206,24 @@ var CC = (function (CC, $) {
                 }
             }
         });
+
+        context
+            .delegate(
+                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
+                'change',
+                function () {
+                    dirty = true;
+                }
+            )
+            .delegate(
+                '.versioned a.removefields, .versioned a.insert-step',
+                'click',
+                function () {
+                    dirty = true;
+                }
+            );
+
+        versionList.find('.summary').click(function () { $(this).blur(); });
     };
 
     CC.envNarrowing = function (container) {
