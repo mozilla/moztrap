@@ -57,12 +57,15 @@
   +alpha
   a
     #{$link}
-      padding-left: image-width('lightning.png')
+      +font-weight-normal
+      +cond
+      +text-shadow(rgba($lightest,$small) 0 1px 0, rgba($base,$small) 0 -1px 0)
+      padding-left: image-width('cc-logo.png') + $xsmallpx
       display: block
-      color: inherit
-      background: image-url('lightning.png') no-repeat scroll left
+      color: rgba($base,$xxsmall)
+      background: image-url('cc-logo.png') no-repeat scroll left rhythm(.1)
     #{$focus}
-      color: $accent
+      color: rgba($blue-dark,$xxsmall)
 
 [role="navigation"]
   +columns(10)
@@ -123,15 +126,16 @@
   min-height: rhythm(14)
 
 footer[role="contentinfo"]
-  +padding-leader(.5)
-  +padding-trailer(.5)
-  +background-image(linear-gradient(top, rgba($blue-light,$xsmall), rgba($blue-dark,0) $xsmallem))
+  +padding-leader(1.5)
+  +padding-trailer(1.5)
+  +background(image-url('cc-logo-126-25.png') no-repeat scroll 0 - $medpx 0 - rhythm(1), linear-gradient(top, rgba($blue-light,$xsmall), rgba($blue-dark,0) $xsmallem))
   color: rgba($blue-dark,$small)
   border-color: $blue-lightest
 
   .author
     @extend .fullwidth
     +adjust-font-size-to(12px)
+    padding-left: image-width('cc-logo-126-25.png') - $largepx
     text-transform: uppercase
   .adr
     display: inline
@@ -184,7 +188,7 @@ footer[role="contentinfo"]
     display: block
     position: absolute
     bottom: 100%
-    left: rhythm(1)
+    right: rhythm(1)
     padding: rhythm(.25) rhythm(1)
     background: $light
   &:hover
