@@ -79,7 +79,6 @@ var CC = (function (CC, $) {
         });
         $('.selectruns').html5finder({
             loading: true,
-            ellipsis: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
@@ -110,7 +109,6 @@ var CC = (function (CC, $) {
             loading: true,
             horizontalScroll: true,
             scrollContainer: '.finder',
-            ellipsis: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
@@ -131,7 +129,6 @@ var CC = (function (CC, $) {
             loading: true,
             horizontalScroll: true,
             scrollContainer: '.finder',
-            ellipsis: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
@@ -182,7 +179,6 @@ var CC = (function (CC, $) {
 
     $(window).load(function () {
         // manage-results.js
-        CC.addEllipses();
         CC.openListItemDetails();
     });
 

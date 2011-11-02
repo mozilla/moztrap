@@ -98,21 +98,6 @@ var CC = (function (CC, $) {
         );
     };
 
-    CC.addEllipses = function () {
-        $('#listcontent .items').find('.title, .product, .cycle, .run').ellipsis().each(function () {
-            $(this).data('oldWidth', $(this).width());
-        });
-        $(window).resize(function () {
-            $.doTimeout('resize', 300, function () {
-                $('#listcontent .items').find('.title, .product, .cycle, .run').each(function () {
-                    if ($(this).width() !== $(this).data('oldWidth')) {
-                        $(this).data('oldWidth', $(this).width()).ellipsis();
-                    }
-                });
-            });
-        });
-    };
-
     return CC;
 
 }(CC || {}, jQuery));
