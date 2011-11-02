@@ -33,6 +33,7 @@ var CC = (function (CC, $) {
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
+        $('#suite-form .caseselect').multiselect();
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -162,9 +163,6 @@ var CC = (function (CC, $) {
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
-        CC.filterIncludedTestCases('#suite-form .caseselect .multiunselected');
-        CC.selectIncludedTestCases('#suite-form .caseselect');
-        CC.sortIncludedTestCases('#suite-form .caseselect');
 
         // manage-env.js
         CC.createEnvProfile();
