@@ -13,7 +13,7 @@
       </ul>
       <div class="groups">
         {% for field in filter %}
-        {% include "lists/_filter_group.html" with advanced=0 %}
+        {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
         {% endfor %}
       </div>
     </div>

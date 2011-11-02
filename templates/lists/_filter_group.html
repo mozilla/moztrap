@@ -3,7 +3,7 @@
   <ul class="terms {% if field|length > 6 %}long{% endif %}">
     {% for option in field %}
     <li>
-      <input type="checkbox" name="filter-{{ prefix }}-{{ field.name }}" data-name="{{ field.name }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
+      <input type="checkbox" name="{{ prefix }}-{{ field.name }}" data-name="{{ field.name }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %}>
       <label for="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}">{{ option.label }}</label>
     </li>
     {% endfor %}

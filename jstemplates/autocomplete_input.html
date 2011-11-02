@@ -1,4 +1,4 @@
 <li>
-  <input type="checkbox" {{# newInput }}class="new" {{/ newInput }}name="filter-{{ prefix }}-{{ typeName }}" data-name="{{ typeName }}" value="{{ id }}" id="id-{{ prefix }}-{{ typeName }}-{{ index }}">
+  <input type="checkbox" {{# newInput }}class="new" {{/ newInput }}name="{{# prefix }}{{ prefix }}-{{/ prefix }}{{ typeName }}" data-name="{{ typeName }}" value="{{ id }}" id="id-{{ prefix }}-{{ typeName }}-{{ index }}">
   <label for="id-{{ prefix }}-{{ typeName }}-{{ index }}">{{ inputName }}</label>
 </li>
