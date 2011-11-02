@@ -46,7 +46,8 @@ var CC = (function (CC, $) {
             fakePlaceholder: true,
             expiredList: '.managelist',
             initialFocus: true,
-            inputsNeverRemoved: true
+            inputsNeverRemoved: true,
+            prefix: 'filter'
         });
         $('#addcase').customAutocomplete({
             textbox: 'input[name="text-tag"]',

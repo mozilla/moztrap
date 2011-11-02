@@ -28,7 +28,7 @@
 
           {% icanhaz "autocomplete_input" %}
           {% for field in filter %}
-          {% include "lists/_filter_group.html" with advanced=1 %}
+          {% include "lists/_filter_group.html" with advanced=1 prefix="filter" %}
           {% endfor %}
           <div class="form-actions">
             <p>
