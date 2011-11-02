@@ -111,6 +111,7 @@ var CC = (function (CC, $) {
         var context = $(container),
             versionList = context.find('.versioning .version-select'),
             versions = versionList.find('.version .item-select'),
+            versionHeader = versionList.find('.summary strong'),
             url = window.location.pathname,
             dirty = false,
             tags = context.find('.versioned .tagging .visual').html();
@@ -138,18 +139,25 @@ var CC = (function (CC, $) {
             if (clickedVersion.find('.item-input').is(':checked')) {
                 versionList.find('.summary').click();
             } else {
-                var newVersion = clickedVersion.attr('id').split('-')[2],
-                    currentVersion = url.split('/')[3],
-                    newURL = url.replace(currentVersion, newVersion),
+                var newVersion = clickedVersion.data('version'),
+                    newVersionID = clickedVersion.data('version-id'),
+                    currentVersionID = url.split('/')[3],
+                    newURL = url.replace(currentVersionID, newVersionID),
                     updateVersion = function (data) {
                         if (data.html) {
                             var newHTML = $(data.html).hide(),
                                 prefix = newHTML.find('ol.steplist').data('prefix');
                             context.find('.versioned').fadeOut('fast', function () {
+                                versionList.find('.summary').click();
                                 $(this).replaceWith(newHTML);
+                                versionHeader.text('v' + newVersion.toString());
+                                if (clickedVersion.is(':last-child')) {
+                                    versionHeader.append(' (latest)');
+                                } else {
+                                    versionHeader.append(' (obsolete)');
+                                }
                                 dirty = false;
                                 newHTML.fadeIn('fast', function () {
-                                    versionList.find('.summary').click();
                                     $(this).find('ol.steplist').formset({
                                         prefix: prefix,
                                         formTemplate: '#empty-step-form > li',
