@@ -71,6 +71,7 @@
             opacity: 0.7,
             placeholder: 'sortable-placeholder',
             forcePlaceholderSize: true,
+            scroll: false,
             update: function (event, ui) {
                 ui.item.closest(options.availableSel).find(options.filterListSel + ' ' + options.filterSel + ':checked').prop('checked', false).change();
             }
