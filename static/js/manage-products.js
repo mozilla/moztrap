@@ -181,7 +181,8 @@ var CC = (function (CC, $) {
                                         url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
                                         triggerSubmit: null,
                                         allowNew: true,
-                                        inputType: 'tag'
+                                        inputType: 'tag',
+                                        noInputsNote: true
                                     });
                                     CC.testcaseAttachments('#single-case-form .attachments');
                                     tags = context.find('.versioned .tagging .visual').html();
