@@ -3,7 +3,9 @@
 {% load ccforms %}
 
 {% block basicform %}
+  {% if case.status.DRAFT %}
   <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
+  {% endif %}
 
   <ul class="basic">
     {% comment %}
