@@ -8,4 +8,9 @@
     <p>{{ message|safe }}</p>
   </li>
   {% endfor %}
+  <noscript>
+    <li class="message warning">
+      <p>This application requires JavaScript in order to work properly.</p>
+    </li>
+  </noscript>
 </ul>
