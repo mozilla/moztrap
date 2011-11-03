@@ -1,5 +1,7 @@
 {% extends 'manage/product/testcase/_case_form_single.html' %}
 
+{% load icanhaz %}
+
 {% block versionform %}
   <div class="versioning">
     <ul class="basic">
@@ -21,6 +23,7 @@
         <em>or select a different version &raquo;</em>
       </p>
       <div class="content">
+        {% icanhaz "case_versioning_more_runs_link" %}
         {% for version in form.instance.all_versions %}
         {% include "manage/product/testcase/_case_form_version_list_item.html" %}
         {% endfor %}

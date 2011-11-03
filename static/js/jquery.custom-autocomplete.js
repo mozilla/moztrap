@@ -61,6 +61,21 @@
                         formActions.fadeOut('fast');
                     }
                 }
+
+                if (options.noInputsNote) {
+                    var noInputsNote = ich.autocomplete_no_inputs();
+                    inputList.add(newInputList).each(function () {
+                        if ($(this).find(options.inputs).length) {
+                            $(this).find('.none').remove();
+                        } else {
+                            if ($(this).children('ul').length) {
+                                $(this).children('ul').append(noInputsNote);
+                            } else {
+                                $(this).append(noInputsNote);
+                            }
+                        }
+                    });
+                }
             },
 
             // Used if there are specific restrictions on new inputs
@@ -626,7 +641,8 @@
         inputType: null,                                // Name for input types when using only one category of inputs
         inputsNeverRemoved: false,                      // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
         caseSensitive: false,                           // Set ``true`` if inputs should be treated as case-sensitive
-        prefix: ''                                      // Prefix to apply to each input ID (to avoid ID duplication when using multiple times on one page)
+        prefix: '',                                     // Prefix to apply to each input ID (to avoid ID duplication when using multiple times on one page)
+        noInputsNote: false                             // Set ``true`` to add "none" when no there are no inputs
     };
 
 }(jQuery));
