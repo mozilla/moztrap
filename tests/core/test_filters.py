@@ -43,7 +43,8 @@ class FilterTestCase(AuthTestCase):
 
     def GET(self, **kwargs):
         from django.utils.datastructures import MultiValueDict
-        return MultiValueDict(kwargs)
+        return MultiValueDict(
+            dict(("filter-%s" % k, v) for k,v in kwargs.items()))
 
 
 class TestFilter(FilterTestCase):
