@@ -171,6 +171,11 @@ class TestRunForm(ccforms.AddEditForm):
         }
 
 
+    def field_hook(self):
+        if self.instance and self.instance.status.ACTIVE:
+            self.fields["suites"].widget.attrs["disabled"] = "disabled"
+
+
 
 class TestCaseFilteredSelectMultiple(ccforms.FilteredSelectMultiple):
     def get_context_data(self):

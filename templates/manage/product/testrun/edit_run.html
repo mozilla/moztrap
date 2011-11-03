@@ -3,5 +3,7 @@
 {% block formtitle %}Edit "{{ run.name }}"{% endblock %}
 
 {% block formtop %}
+  {% if run.status.DRAFT %}
   <a href="{% url manage_narrow_environments object_type='testrun' object_id=run.id %}" class="select-env-link">select environments</a>
+  {% endif %}
 {% endblock %}

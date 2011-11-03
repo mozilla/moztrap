@@ -46,7 +46,13 @@
     </ul>
 
     <section class="suiteselect">
-      <h3>add test suites to your test run</h3>
+      <h3>
+        {% if form.suites.field.widget.attrs.disabled %}
+        test suites in this test run (read only)
+        {% else %}
+        add test suites to your test run
+        {% endif %}
+      </h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
         {{ form.suites.errors }}
