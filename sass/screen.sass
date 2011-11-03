@@ -126,21 +126,18 @@
   min-height: rhythm(14)
 
 footer[role="contentinfo"]
-  +padding-leader(1.5)
-  +padding-trailer(1.5)
-  +background(image-url('cc-logo-126-25.png') no-repeat scroll 0 - $medpx 0 - rhythm(1), linear-gradient(top, rgba($blue-light,$xsmall), rgba($blue-dark,0) $xsmallem))
+  +background(linear-gradient(top, rgba($blue-light,$xsmall), rgba($blue-dark,0) $xsmallem))
   color: rgba($blue-dark,$small)
   border-color: $blue-lightest
 
   .author
     @extend .fullwidth
     +adjust-font-size-to(12px)
-    padding-left: image-width('cc-logo-126-25.png') - $largepx
+    +padding-leader(2,12px)
+    +padding-trailer(1.5,12px)
+    padding-left: image-width('cc-logo-126-25.png') + $xsmallpx
+    background: image-url('cc-logo-126-25.png') no-repeat scroll left center
     text-transform: uppercase
-  .adr
-    display: inline
-    &::before
-      content: "| "
   small
     font-size: inherit
 

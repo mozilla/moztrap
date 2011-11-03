@@ -1168,7 +1168,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-left: 31.348px;
   display: block;
   color: rgba(69, 69, 69, 0.236);
-  background: url('../images/cc-logo.png?1320263098') no-repeat scroll left 0.162em;
+  background: url('../images/cc-logo.png?1320264927') no-repeat scroll left 0.162em;
 }
 #brand a:focus, #brand a:hover, #brand a:active {
   color: rgba(75, 87, 101, 0.236);
@@ -1283,28 +1283,23 @@ button.sub:focus, button.sub:hover, button.sub:active {
 }
 
 footer[role="contentinfo"] {
-  padding-top: 2.427em;
-  padding-bottom: 2.427em;
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(134, 149, 168, 0.382)), color-stop(100%, rgba(75, 87, 101, 0)));
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, -webkit-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, -moz-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, -o-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, -ms-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
-  background: url('../images/cc-logo-126-25.png?1320264004') no-repeat scroll -22.652px -1.618em, linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(134, 149, 168, 0.382)), color-stop(100%, rgba(75, 87, 101, 0)));
+  background: -webkit-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
+  background: -moz-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
+  background: -o-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
+  background: -ms-linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
+  background: linear-gradient(top, rgba(134, 149, 168, 0.382), rgba(75, 87, 101, 0) 0.382em);
   color: rgba(75, 87, 101, 0.618);
   border-color: #cbcfd6;
 }
 footer[role="contentinfo"] .author {
   font-size: 0.857em;
   line-height: 1.888em;
-  padding-left: 57.349px;
+  padding-top: 3.775em;
+  padding-bottom: 2.832em;
+  padding-left: 99.348px;
+  background: url('../images/cc-logo-126-25.png?1320264927') no-repeat scroll left center;
   text-transform: uppercase;
-}
-footer[role="contentinfo"] .adr {
-  display: inline;
-}
-footer[role="contentinfo"] .adr::before {
-  content: "| ";
 }
 footer[role="contentinfo"] small {
   font-size: inherit;
