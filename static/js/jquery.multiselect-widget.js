@@ -72,6 +72,7 @@
             placeholder: 'sortable-placeholder',
             forcePlaceholderSize: true,
             scroll: false,
+            tolerance: 'pointer',
             update: function (event, ui) {
                 ui.item.closest(options.availableSel).find(options.filterListSel + ' ' + options.filterSel + ':checked').prop('checked', false).change();
             }
