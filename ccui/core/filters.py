@@ -37,7 +37,10 @@ class Filter(object):
 
         """
         self.fields = [
-            fieldfilter_cls(fieldname, GET.getlist(fieldname), auth)
+            fieldfilter_cls(
+                fieldname,
+                GET.getlist("filter-%s" % fieldname),
+                auth)
             for fieldname, fieldfilter_cls in fields
             ]
 
