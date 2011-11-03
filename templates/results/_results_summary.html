@@ -5,6 +5,5 @@
   <li><a href="{{ detail_url }}" class="invalidated {% if results.INVALIDATED == 0 %}zip{% endif %}" title="invalid">{{ results.INVALIDATED }} <span>invalid</span></a></li>
   <li><a href="{{ detail_url }}" class="failed {% if results.FAILED == 0 %}zip{% endif %}" title="failed">{{ results.FAILED }} <span>failed</span></a></li>
   <li><a href="{{ detail_url }}" class="passed {% if results.PASSED == 0 %}zip{% endif %}" title="passed">{{ results.PASSED }} <span>passed</span></a></li>
-  <li><a href="{{ detail_url }}" class="pending {% if results.PENDING == 0 %}zip{% endif %}" title="pending">{{ results.PENDING|add:results.STARTED }} <span>pending</span></a></li>
 </ul>
 {% endwith %}
