@@ -714,6 +714,9 @@ def add_environment_profile(request):
 
 
 @login_redirect
+@dec.filter("environments",
+            ("element", EnvironmentFilter),
+            )
 @dec.actions(
     EnvironmentGroupList,
     ["delete"],

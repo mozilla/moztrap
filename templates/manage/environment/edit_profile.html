@@ -1,11 +1,5 @@
 {% extends 'manage/environment/base.html' %}
 
-{% block page-status %}incomplete{% endblock %}
-
-{% block page-notes %}
-<li>No filtering yet (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=689997">platform limitation</a>).</li>
-{% endblock %}
-
 {% block listcontent %}
 <section id="editprofile">
   <h2>Edit Environment Profile</h2>
@@ -24,8 +18,7 @@
 
   </form>
 
-  {# @@@ https://bugzilla.mozilla.org/show_bug.cgi?id=689997 #}
-  {# include "lists/_filter.html" #}
+  {% include "lists/_filter.html" %}
 
   {% include 'manage/environment/edit_profile/_envs_list.html' %}
 
