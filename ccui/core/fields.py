@@ -293,8 +293,12 @@ class List(remoteobjects.fields.List):
         except AttributeError:
             pass
         else:
-            if wrapper_key in value and isinstance(value[wrapper_key], list):
-                value = value[wrapper_key]
+            if wrapper_key in value:
+                if isinstance(value[wrapper_key], list):
+                    value = value[wrapper_key]
+                # platform unwraps length-1 lists, sigh
+                elif isinstance(value[wrapper_key], dict):
+                    value = [value[wrapper_key]]
         return super(List, self).decode(value)
 
 
