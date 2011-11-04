@@ -43,7 +43,7 @@ from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
 from ..testexecution.filters import TestCycleFieldFilter, TestRunFieldFilter
 from ..testexecution.models import TestCycleList, TestRunList
 from ..users.decorators import login_redirect
-from ..users.filters import TeamFieldFilter
+from ..users.filters import TeamFieldFilter, UserFieldFilter
 from ..users.models import UserList, RoleList
 
 from .decorators import environment_actions, tag_actions
@@ -134,7 +134,8 @@ def edit_user(request, user_id):
 @tag_actions()
 @dec.actions(TagList, ["delete"])
 @dec.filter("tags",
-            ("tag", KeywordFilter),
+            ("name", KeywordFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("tags")
 @dec.sort("tags")
@@ -157,6 +158,7 @@ def tags(request):
             ("name", KeywordFilter),
             ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("products")
 @dec.sort("products")
@@ -234,6 +236,7 @@ def edit_product(request, product_id):
             ("name", KeywordFilter),
             ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("cycles")
 @dec.sort("cycles")
@@ -328,6 +331,7 @@ def testcycle_details(request, cycle_id):
             ("name", KeywordFilter),
             ("tester", TeamFieldFilter),
             ("environment", EnvironmentFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("runs")
 @dec.sort("runs")
@@ -419,6 +423,7 @@ def testrun_details(request, run_id):
             ("run", TestRunFieldFilter),
             ("name", KeywordFilter),
             ("environment", EnvironmentFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("suites")
 @dec.sort("suites")
@@ -516,6 +521,7 @@ def testsuite_details(request, suite_id):
             ("result", KeywordFilter),
             ("tag", TagFilter),
             ("environment", EnvironmentFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("cases")
 @dec.sort("cases")
@@ -665,6 +671,7 @@ def testcase_details(request, case_id):
     ["delete"])
 @dec.filter("profiles",
             ("name", KeywordFilter),
+            ("creator", UserFieldFilter),
             )
 @dec.paginate("profiles")
 @dec.sort("profiles")

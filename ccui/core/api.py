@@ -444,8 +444,9 @@ class ObjectMixin(StrAndUnicode):
                 ((n, f.api_filter_name) for (n, f) in cls.fields.iteritems()
                 if getattr(f, "api_filter_name", False)),
                 **cls.non_field_filters)
-            # Can always filter by id
+            # Can always filter by id and creator
             d["id"] = "id"
+            d["creator"] = "createdBy"
             cls._filterables[cls.__name__] = d
         return cls._filterables.get(cls.__name__)
 
