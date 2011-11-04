@@ -29,9 +29,9 @@ register = template.Library()
 @register.filter
 def results_detail_url(obj):
     if isinstance(obj, TestCycle):
-        return reverse("results_testruns") + "?testCycle=%s" % obj.id
+        return reverse("results_testruns") + "?filter-testCycle=%s" % obj.id
     elif isinstance(obj, TestRun):
-        return reverse("results_testcases") + "?testRun=%s" % obj.id
+        return reverse("results_testcases") + "?filter-testRun=%s" % obj.id
     elif isinstance(obj, TestRunIncludedTestCase):
         return reverse("results_testcase_detail", kwargs={"itc_id": obj.id})
     return ""
