@@ -116,6 +116,7 @@ class TestCaseVersion(Activatable, TestCase):
         "result": "expectedResult",
         "suite": "includedInTestSuiteId",
         "environment": "includedEnvironmentId",
+        "tag": "tag",
         }
 
 

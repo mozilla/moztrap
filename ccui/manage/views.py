@@ -36,6 +36,7 @@ from ..products.filters import ProductFieldFilter
 from ..products.models import ProductList
 from ..static import filters as status_filters
 from ..static.status import TestSuiteStatus
+from ..tags.filters import TagFilter
 from ..tags.models import TagList
 from ..testcases.filters import TestSuiteFieldFilter
 from ..testcases.models import TestSuiteList, TestCaseList, TestCaseVersionList
@@ -513,6 +514,7 @@ def testsuite_details(request, suite_id):
             ("suite", TestSuiteFieldFilter),
             ("step", KeywordFilter),
             ("result", KeywordFilter),
+            ("tag", TagFilter),
             ("environment", EnvironmentFilter),
             )
 @dec.paginate("cases")
