@@ -215,7 +215,7 @@
         options.formTemplate = template;
 
         if (options.autoAdd) {
-            parent.find('input, select, textarea, label').live('focus', function () {
+            parent.on('focus', 'input, select, textarea, label', function () {
                 if (showAddButton() && $(this).closest(options.formSelector).is(':last-child')) {
                     autoAddRow();
                 }
