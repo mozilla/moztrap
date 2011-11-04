@@ -192,8 +192,6 @@ class TestRunEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testsuites/?_type=json&testSuiteStatusId=2&productId=1":
                 response(testsuites.searchresult({})),
-            "http://fake.base/rest/testcycles/1?_type=json":
-                response(testcycles.one()),
             "http://fake.base/rest/testruns/1/testsuites?_type=json":
                 response(testsuites.array({})),
             "http://fake.base/rest/users?_type=json&companyId=1":
@@ -224,6 +222,8 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testsuites/1/includedtestcases?_type=json":
                 response(testsuiteincludedtestcases.array({})),
+            "http://fake.base/rest/includedtestcases/1?_type=json":
+                response(testsuiteincludedtestcases.one()),
             }
 
 
@@ -250,6 +250,8 @@ class TestCaseEditViewTest(ViewTestCase, EditViewTests):
                 response(tags.array({})),
             "http://fake.base/rest/testcases/versions/1/attachments?_type=json":
                 response(attachments.array({})),
+            "http://fake.base/rest/testruns?includedTestCaseVersionId=1&_type=json":
+                response(testruns.array({})),
             }
 
 

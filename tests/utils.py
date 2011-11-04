@@ -82,6 +82,8 @@ COMMON_RESPONSES = {
         response(products.searchresult({})),
     "http://fake.base/rest/environments?_type=json":
         response(environments.searchresult({}, {})),
+    "http://fake.base/rest/users/1?_type=json":
+        response(users.one()),
     "http://fake.base/staticData/values/TESTCYCLESTATUS?_type=json":
         response(codevalues.array(
             {"description": "DRAFT", "id": 1},
@@ -99,6 +101,14 @@ COMMON_RESPONSES = {
             {"description": "DISCARDED", "id": 5},
             )),
     "http://fake.base/staticData/values/TESTCASESTATUS?_type=json":
+        response(codevalues.array(
+            {"description": "DRAFT", "id": 1},
+            {"description": "ACTIVE", "id": 2},
+            {"description": "LOCKED", "id": 3},
+            {"description": "CLOSED", "id": 4},
+            {"description": "DISCARDED", "id": 5},
+            )),
+    "http://fake.base/staticData/values/TESTSUITESTATUS?_type=json":
         response(codevalues.array(
             {"description": "DRAFT", "id": 1},
             {"description": "ACTIVE", "id": 2},

@@ -23,6 +23,7 @@ from ..environments.builders import environmentgroups, environments
 from ..products.builders import products
 from ..relatedbugs.builders import relatedbugs
 from ..responses import response, make_locator, make_identity
+from ..tags.builders import tags
 from ..testcases.builders import (
     testsuites, testcaseversions, testcasesteps)
 from ..testexecution.builders import (
@@ -284,7 +285,10 @@ class TestCaseResultsViewTest(ViewTestCase, ListViewTests):
     def per_item_ajax_detail_responses(self, item_id):
         return {
             "http://fake.base/rest/testcases/versions/%s?_type=json" % item_id:
-                response(testcaseversions.one()),
+                response(testcaseversions.one(
+                    _id=1, _url="testcaseversions/%s" % item_id)),
+            "http://fake.base/rest/testcaseversions/%s/tags?_type=json" % item_id:
+                response(tags.array({})),
             "http://fake.base/rest/testruns/includedtestcases/%s/assignments?_type=json" % item_id:
                 response(assignments.array({})),
             "http://fake.base/rest/testruns/includedtestcases/%s/environmentgroups?_type=json" % item_id:
