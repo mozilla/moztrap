@@ -59,7 +59,7 @@
                 });
             };
 
-        filterLists.delegate(options.filterSel, 'change', function () {
+        filterLists.on('change', options.filterSel, function () {
             filterItems();
         });
 
@@ -78,7 +78,7 @@
             }
         });
 
-        context.delegate(options.itemListSel + ' ' + options.labelSel, 'click', function (e) {
+        context.on('click', options.itemListSel + ' ' + options.labelSel, function (e) {
             var thisLabel = $(this),
                 thisInput = thisLabel.closest(options.itemSel).find(options.inputSel),
                 labels = thisLabel.closest(options.itemListSel).find(options.labelSel),
