@@ -5580,7 +5580,7 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-#managetags .form-actions {
+#managetags .add-item .form-actions {
   display: inline;
   float: left;
   width: 11.579%;
@@ -5588,7 +5588,7 @@ footer[role="contentinfo"] small {
   padding: 0;
   clear: none;
 }
-#managetags .form-actions button {
+#managetags .add-item .form-actions button {
   width: 100%;
 }
 
