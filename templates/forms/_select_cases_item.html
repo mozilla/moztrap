@@ -5,5 +5,11 @@
   <span class="{{ item.status|lower }}">{{ item.status|lower }}</span>
 </p>
 <h5 class="title">{{ item.name }}</h5>
+{# @@@ wireframed. links add a filter? #}
+<ul class="tags">
+  <li><a href="#">tag 1</a></li>
+  <li><a href="#">tag 2</a></li>
+  <li><a href="#">tag 3</a></li>
+</ul>
 <p class="author fn">{{ item.timeline.createdBy }}</p>
 {% endblock %}

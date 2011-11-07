@@ -268,19 +268,37 @@
 .caseselect
   @extend .mainselect
   .bystatus, .status
-    +columns(2,12)
-  .bytitle, .title
-    +columns(5,12)
+    +columns(1,12)
+  .bytitle, .title, .bytags, .tags
+    +columns(4,12)
   .byauthor, .author
     +box-sizing(border-box)
-    +columns(4,12)
+    +columns(2,12)
     +omega(12)
     text-align: right
   .author
     padding-right: rhythm(1)
 
-  .title
+  .title, .author, .tags
     +ellipsis
+
+  .tags
+    +delimited-list
+
+  .bystatus
+    position: relative
+    a
+      +icon-replace('ui/power.png')
+      background-position: left
+      &::after
+        position: absolute
+        right: 0
+        top: rhythm(.375)
+
+  .status span
+    +hide-text
+    width: 100%
+    background-position: center
 
 /* Create Case --------------------------------------------------------------
 

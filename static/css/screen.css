@@ -3936,10 +3936,10 @@ footer[role="contentinfo"] small {
   background: rgba(204, 236, 167, 0.382) -ms-linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
   background: rgba(204, 236, 167, 0.382) linear-gradient(top, rgba(237, 237, 237, 0.382), rgba(237, 237, 237, 0));
 }
-.selected .selectitem .item-input:checked + .body, .selected .version-select .version .item-input:checked + .body, .version-select .selected .version .item-input:checked + .body {
+.multiselected .selectitem .item-input:checked + .body, .multiselected .version-select .version .item-input:checked + .body, .version-select .multiselected .version .item-input:checked + .body {
   background-color: rgba(236, 167, 169, 0.236);
 }
-.selected .selectitem .item-input:checked + .body .bulkselect, .selected .version-select .version .item-input:checked + .body .bulkselect, .version-select .selected .version .item-input:checked + .body .bulkselect {
+.multiselected .selectitem .item-input:checked + .body .bulkselect, .multiselected .version-select .version .item-input:checked + .body .bulkselect, .version-select .multiselected .version .item-input:checked + .body .bulkselect {
   background-image: url('../images/ui/x.png?1314206098');
 }
 .selectitem .item-input:checked + .body .bulkselect, .version-select .version .item-input:checked + .body .bulkselect {
@@ -4713,13 +4713,13 @@ footer[role="contentinfo"] small {
 .caseselect .bystatus, .caseselect .status {
   display: inline;
   float: left;
-  width: 14.894%;
+  width: 6.383%;
   margin-right: 2.128%;
 }
-.caseselect .bytitle, .caseselect .title {
+.caseselect .bytitle, .caseselect .title, .caseselect .bytags, .caseselect .tags {
   display: inline;
   float: left;
-  width: 40.426%;
+  width: 31.915%;
   margin-right: 2.128%;
 }
 .caseselect .byauthor, .caseselect .author {
@@ -4729,7 +4729,7 @@ footer[role="contentinfo"] small {
   box-sizing: border-box;
   display: inline;
   float: left;
-  width: 31.915%;
+  width: 14.894%;
   margin-right: 2.128%;
   display: inline;
   float: right;
@@ -4739,13 +4739,72 @@ footer[role="contentinfo"] small {
 .caseselect .author {
   padding-right: 1.618em;
 }
-.caseselect .title {
+.caseselect .title, .caseselect .author, .caseselect .tags {
   overflow: hidden;
   max-height: 1.618em;
   white-space: nowrap;
   word-wrap: break-word;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+}
+.caseselect .tags {
+  list-style-type: none;
+}
+.caseselect .tags, .caseselect .tags li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+.caseselect .tags li:after {
+  content: ", ";
+}
+.caseselect .tags li:last-child:after {
+  content: "";
+}
+.caseselect .tags li.last:after {
+  content: "";
+}
+.caseselect .bystatus {
+  position: relative;
+}
+.caseselect .bystatus a {
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -ms-box-sizing: content-box;
+  box-sizing: content-box;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/power.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  padding-left: 3.305px;
+  padding-right: 3.305px;
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=68);
+  opacity: 0.675;
+  background-position: left;
+}
+.caseselect .bystatus a:focus, .caseselect .bystatus a:hover, .caseselect .bystatus a:active {
+  background-image: url('../images/ui/power.png?1314206098');
+}
+.caseselect .bystatus a:focus, .caseselect .bystatus a:hover, .caseselect .bystatus a:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.caseselect .bystatus a::after {
+  position: absolute;
+  right: 0;
+  top: 0.607em;
+}
+.caseselect .status span {
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+  background-position: center;
 }
 
 /* Create Case -------------------------------------------------------------- */
