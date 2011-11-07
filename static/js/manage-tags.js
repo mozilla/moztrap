@@ -50,7 +50,7 @@ var CC = (function (CC, $) {
                 });
             };
 
-        context.delegate('.item a[title="edit"]', 'click', function (e) {
+        context.on('click', '.item a[title="edit"]', function (e) {
             e.preventDefault();
             var thisTag = $(this).closest('.item'),
                 tagID = thisTag.data('id'),

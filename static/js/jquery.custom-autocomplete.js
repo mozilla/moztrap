@@ -249,7 +249,7 @@
         // suggestion-list, sets data-state "changed" if input has changed from
         // original state, and shows/hides form-actions as appropriate.
         if (options.inputsNeverRemoved) {
-            inputList.add(newInputList).delegate(options.inputs, 'change', function () {
+            inputList.add(newInputList).on('change', options.inputs, function () {
                 if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
                     $(this).data('state', 'changed');
                 } else {
@@ -264,7 +264,7 @@
         // If there are any new inputs already selected, prevent a new input from being selected
         // unless it and all new inputs begin with ^ and end with $.
         if (options.restrictNewInputs && options.inputsNeverRemoved) {
-            newInputList.delegate(options.inputs + ':not(:checked) + label', 'click', function (e) {
+            newInputList.on('click', options.inputs + ':not(:checked) + label', function (e) {
                 var thisGroup = $(this).closest(options.newInputList),
                     thisInputName = $(this).text();
                 if (!passRestrictedNewInputs(thisGroup, thisInputName)) {
@@ -422,7 +422,7 @@
             textbox.focus();
         }
 
-        suggestionList.delegate('a', {
+        suggestionList.on({
             // Adds ".selected" to suggestion on mouseover, removing ".selected" from other suggestions
             mouseover: function () {
                 var thisSuggestion = $(this).addClass('selected'),
@@ -525,11 +525,11 @@
                 typedText = null;
                 suggestionList.empty().hide();
             }
-        });
+        }, 'a');
 
         // Remove inputs and update suggestion list when unchecked.
         if (!options.inputsNeverRemoved) {
-            inputList.add(newInputList).delegate('label', 'click', function (e) {
+            inputList.add(newInputList).on('click', 'label', function (e) {
                 e.preventDefault();
                 $(this).parent().remove();
                 inputs = inputList.add(newInputList).find(options.inputs);

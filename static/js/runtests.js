@@ -90,7 +90,7 @@ var CC = (function (CC, $) {
     CC.failedTestBug = function (container) {
         var context = $(container);
 
-        context.delegate('.item .stepfail input[type="radio"][name="bugs"]', 'change', function () {
+        context.on('change', '.item .stepfail input[type="radio"][name="bugs"]', function () {
             var thisList = $(this).closest('.stepfail'),
                 newBug = thisList.find('input[type="radio"].newbug'),
                 newBugInput = thisList.find('input[type="url"][name="related_bug"]');

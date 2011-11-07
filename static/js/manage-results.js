@@ -40,7 +40,7 @@ var CC = (function (CC, $) {
 
     // Ajax-load manage and results list item contents
     CC.loadListItemDetails = function () {
-        $('#listcontent .items .item.details').live('click', function (event) {
+        $('#listcontent').on('click', '.items .item.details', function (event) {
             if ($(event.target).is("button, a")) {
                 return;
             }
@@ -67,8 +67,9 @@ var CC = (function (CC, $) {
 
     // Ajax for manage list actions (clone and delete)
     CC.manageActionsAjax = function () {
-        $('.manage button[name^=action-]').live(
+        $('.manage').on(
             'click',
+            'button[name^=action-]',
             function (e) {
                 e.preventDefault();
                 var button = $(this),

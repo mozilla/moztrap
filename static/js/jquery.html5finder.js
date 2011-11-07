@@ -51,7 +51,7 @@
             },
 
             itemClick = function (i) {
-                context.find(options.sectionItemSelectors[i]).live('click', function () {
+                context.on('click', options.sectionItemSelectors[i], function () {
                     var thisItem = $(this),
                         container = thisItem.closest(options.sectionSelector),
                         ajaxUrl = thisItem.data('sub-url'),
@@ -102,7 +102,7 @@
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.find('a').live('click', function () {
+        headers.on('click', 'a', function () {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
                 selectorClass = $(this).parent().attr('class').substring(2),

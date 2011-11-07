@@ -70,7 +70,7 @@ var CC = (function (CC, $) {
             context.find('#' + id).click();
         });
 
-        context.delegate('input[name="attachment"]', 'change', function () {
+        context.on('change', 'input[name="attachment"]', function () {
             var input = $(this),
                 inputID = input.attr('id'),
                 filename = input.val().replace(/^.*\\/, '');
@@ -86,7 +86,7 @@ var CC = (function (CC, $) {
             label.attr('for', 'attachment-input-' + counter);
         });
 
-        uploads.delegate('.action-remove', 'click', function () {
+        uploads.on('click', '.action-remove', function () {
             var button = $(this),
                 inputID = button.data('input-id'),
                 attachment = button.parent(),
@@ -209,16 +209,16 @@ var CC = (function (CC, $) {
         });
 
         context
-            .delegate(
-                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
+            .on(
                 'change',
+                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
                 function () {
                     dirty = true;
                 }
             )
-            .delegate(
-                '.versioned a.removefields, .versioned a.insert-step',
+            .on(
                 'click',
+                '.versioned a.removefields, .versioned a.insert-step',
                 function () {
                     dirty = true;
                 }

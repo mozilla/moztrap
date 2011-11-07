@@ -44,7 +44,7 @@ var CC = (function (CC, $) {
 
     // add class "hadfocus" to inputs and textareas on blur
     CC.inputHadFocus = function () {
-        $('input:not([type=radio], [type=checkbox]), textarea').live('blur', function () {
+        $(document).on('blur', 'input:not([type=radio], [type=checkbox]), textarea', function () {
             $(this).addClass('hadfocus');
         });
     };

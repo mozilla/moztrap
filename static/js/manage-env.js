@@ -27,16 +27,17 @@ var CC = (function (CC, $) {
     'use strict';
 
     CC.createEnvProfile = function () {
-        var elements = $('#addprofile .item .elements'),
+        var context = $('#addprofile'),
+            elements = context.find('.item .elements'),
             elementInputs = elements.find('.element-select input'),
-            categoryInputs = $('#addprofile .item .bulk input[id^="bulk-select-"]'),
-            profileNameInput = $('#addprofile #profile_name'),
+            categoryInputs = context.find('.item .bulk input[id^="bulk-select-"]'),
+            profileNameInput = context.find('#profile_name'),
             addElement = $('input[id$="-new-element-name"]'),
             addCategory = $('input#new-category-name'),
-            editElementLink = $('#addprofile .item .elements a[title="edit"]'),
-            editElement = $('#addprofile .item .elements .editing input'),
+            editElementLink = elements.find('a[title="edit"]'),
+            editElement = elements.find('.editing input'),
             updateLabels = function () {
-                $('#addprofile .item .elements .element-select input').each(function () {
+                context.find('.item .elements .element-select input').each(function () {
                     var thisID = $(this).attr('id');
                     if ($(this).is(':checked')) {
                         $('label[for=' + thisID + ']').addClass('checked');
@@ -46,7 +47,7 @@ var CC = (function (CC, $) {
                 });
             },
             updateBulkInputs = function () {
-                $('#addprofile .item .elements .element-select input').each(function () {
+                context.find('.item .elements .element-select input').each(function () {
                     if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
                         $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
                     }
@@ -57,7 +58,7 @@ var CC = (function (CC, $) {
         updateLabels();
         updateBulkInputs();
 
-        elements.live('before-replace', function (event, replacement) {
+        context.on('before-replace', '.item .elements', function (event, replacement) {
             // Removes element preview (label) when element is deleted.
             // Other actions (other than delete) might also cause this to fire, with new HTML
             // (already parsed into jQuery object) in "replacement".
@@ -74,14 +75,14 @@ var CC = (function (CC, $) {
             }
         });
 
-        profileNameInput.live('keydown', function (event) {
+        context.on('keydown', '#profile_name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 event.preventDefault();
-                $('#addprofile .form-actions button').focus();
+                context.find('.form-actions button').focus();
             }
         });
 
-        elementInputs.live('change', function () {
+        context.on('change', '.item .elements .element-select input', function () {
             var thisID = $(this).attr('id');
             if ($(this).is(':checked')) {
                 $('label[for=' + thisID + ']').addClass('checked');
@@ -95,7 +96,7 @@ var CC = (function (CC, $) {
             }
         });
 
-        categoryInputs.live('change', function () {
+        context.on('change', '.item .bulk input[id^="bulk-select-"]', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('.item').find('.elements input').prop('checked', true);
             } else {
@@ -104,7 +105,7 @@ var CC = (function (CC, $) {
             updateLabels();
         });
 
-        addElement.live('keydown', function (event) {
+        context.on('keydown', 'input[id$="-new-element-name"]', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -142,7 +143,7 @@ var CC = (function (CC, $) {
             }
         });
 
-        addCategory.live('keydown', function (event) {
+        context.on('keydown', 'input#new-category-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -178,7 +179,7 @@ var CC = (function (CC, $) {
             }
         });
 
-        editElementLink.live('click', function (event) {
+        context.on('click', '.item .elements a[title="edit"]', function (event) {
             var thisElement = $(this).closest('li'),
                 inputId = thisElement.find('input').attr('id'),
                 elementId = thisElement.data('element-id'),
@@ -195,7 +196,7 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
-        editElement.live('keydown', function (event) {
+        context.on('keydown', '.item .elements .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -284,7 +285,7 @@ var CC = (function (CC, $) {
 
         addEnv();
 
-        $('#editprofile .managelist.action-ajax-replace').live('after-replace', function (event, replacement) {
+        $('#editprofile').on('after-replace', '.managelist.action-ajax-replace', function (event, replacement) {
             // Re-attaches handlers to list after it is reloaded via Ajax.
             addEnv();
             $('#editprofile .add-item').customAutocomplete({
@@ -299,7 +300,7 @@ var CC = (function (CC, $) {
             });
         });
 
-        profileNameInput.live('keyup', function (event) {
+        $('#editprofile').on('keyup', '#profile-name-form .profile-name input', function (event) {
             if ($(this).val() !== profileName) {
                 profileNameSubmit.fadeIn();
             } else {
@@ -307,7 +308,7 @@ var CC = (function (CC, $) {
             }
         });
 
-        profileNameInput.live('keydown', function (event) {
+        $('#editprofile').on('keydown', '#profile-name-form .profile-name input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
