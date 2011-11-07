@@ -4,13 +4,14 @@
         <li>
           {% include "forms/_field.html" with field=form.product %}
         </li>
-        {% comment %}
-        <li class="suite-field">
-          <label for="suite-bulk">Suite</label>
-          <input type="text" name="suite-bulk" value="" id="suite-bulk" placeholder="begin typing the name of a suite">
-          {# @@@ this should be an autocomplete field #}
+        <li>
+          {# @@@ wireframed #}
+          <label for="suite">Suite</label>
+          <select name="suite" value="" id="suite">
+            <option>suite 1</option>
+            <option>suite 2</option>
+          </select>
         </li>
-        {% endcomment %}
         <li>
           {% include "forms/_field.html" with field=form.name %}
         </li>
