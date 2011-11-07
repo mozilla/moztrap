@@ -4698,6 +4698,29 @@ footer[role="contentinfo"] small {
 }
 
 /* Create Run -------------------------------------------------------------- */
+#addrun .update-cases {
+  display: inline;
+  float: left;
+  width: 83.158%;
+  margin-right: 1.053%;
+}
+#addrun .update-cases input {
+  vertical-align: middle;
+}
+#addrun .update-cases label {
+  font-weight: normal;
+  font-style: italic;
+}
+#addrun .form-actions [type="submit"] {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+}
+
 .suiteselect.readonly h3 {
   background: rgba(254, 229, 139, 0.236);
 }

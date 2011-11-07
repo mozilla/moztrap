@@ -250,6 +250,18 @@
 #addrun
   @extend .addform
 
+  .update-cases
+    +columns(20,24)
+    input
+      vertical-align: middle
+    label
+      +font-weight-normal
+      +italic
+  .form-actions
+    [type="submit"]
+      +columns(4,24)
+      +omega(24)
+
 .suiteselect
   @extend .mainselect
   &.readonly
