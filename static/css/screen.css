@@ -1375,11 +1375,11 @@ footer[role="contentinfo"] small {
   background-image: url('../images/ui/warning_light.png?1314312255');
 }
 
-.message:hover, #messages li:hover {
+.message:not(.noscript):hover, #messages li:not(.noscript):hover {
   cursor: pointer;
   background: rgba(74, 43, 44, 0.854);
 }
-.message:hover p, #messages li:hover p {
+.message:not(.noscript):hover p, #messages li:not(.noscript):hover p {
   background: url('../images/ui/x_light.png?1314312255') no-repeat scroll right;
 }
 
