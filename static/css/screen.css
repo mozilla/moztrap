@@ -1168,7 +1168,7 @@ button.sub:focus, button.sub:hover, button.sub:active {
   padding-left: 31.348px;
   display: block;
   color: rgba(69, 69, 69, 0.236);
-  background: url('../images/cc-logo.png?1320264927') no-repeat scroll left 0.162em;
+  background: url('../images/cc-logo.png?1320700314') no-repeat scroll left 0.162em;
 }
 #brand a:focus, #brand a:hover, #brand a:active {
   color: rgba(75, 87, 101, 0.236);
@@ -2326,12 +2326,6 @@ footer[role="contentinfo"] small {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0px;
-}
-.finder .logo {
-  display: inline;
-  float: left;
-  width: 1.618em;
-  margin-right: 0.809em;
 }
 .finder label {
   *zoom: 1;
