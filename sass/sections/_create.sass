@@ -252,12 +252,13 @@
 
 .suiteselect
   @extend .mainselect
-  .id
-    +columns(2,9)
-    +prefix(1,9)
-  .title
-    +columns(6,9)
-    +omega(9)
+  &.readonly
+    h3
+      background: rgba($yellow,$xxsmall)
+      &::after
+        content: " (read only)"
+    label
+      +opacity(.75)
 
 /* Create Suite --------------------------------------------------------------
 
