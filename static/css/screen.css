@@ -4045,10 +4045,21 @@ footer[role="contentinfo"] small {
   margin-bottom: 1.618em;
 }
 #login .logo {
-  clear: both;
-  padding-left: 25.532%;
-  padding-right: 25.532%;
+  display: inline;
+  float: left;
+  width: 23.404%;
+  margin-right: 2.128%;
   margin-bottom: 1.618em;
+}
+#login .welcome {
+  display: inline;
+  float: left;
+  width: 74.468%;
+  margin-right: 2.128%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  padding-top: 2.427em;
 }
 #login h2 {
   margin: 0;

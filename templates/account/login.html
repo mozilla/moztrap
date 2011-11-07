@@ -5,11 +5,11 @@
 {% block content %}
 
 <section id="login">
-  {% comment %}
-    <figure class="logo"><img src="http://dummyimage.com/320x192/ccc/666&text=logo"></figure>
-  {% endcomment %}
-  <h2>Welcome to Mozilla’s Test Case Manager!</h2>
-  <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
+  <figure class="logo"><img src="{{ STATIC_URL }}images/cc-logo-126-50.png"></figure>
+  <div class="welcome">
+    <h2>Welcome to Mozilla’s Test Case Manager!</h2>
+    <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
+  </div>
   <form method="POST">
     {% csrf_token %}
     {{ form.non_field_errors }}
