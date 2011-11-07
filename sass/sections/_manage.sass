@@ -145,8 +145,6 @@
 #editprofile
   .bypreview, .preview
     +columns(21,24)
-  .content
-    +pad(2,2,24)
 
   .env-management
     +leader(.25)
@@ -224,9 +222,10 @@
     +columns(9,24)
     label
       +gone
-  .form-actions
-    +columns(3,24)
-    padding: 0
-    clear: none
-    button
-      width: 100%
+  .add-item
+    .form-actions
+      +columns(3,24)
+      padding: 0
+      clear: none
+      button
+        width: 100%

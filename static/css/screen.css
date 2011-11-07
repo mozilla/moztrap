@@ -699,8 +699,8 @@ label {
 }
 
 .input[disabled], textarea[disabled], select[disabled], input[disabled][type="text"], input[disabled][type="password"], input[disabled][type="email"], input[disabled][type="url"], input[disabled][type="tel"], input[disabled][type="date"], input[disabled][type="datetime"], input[disabled][type="datetime-local"], input[disabled][type="month"], input[disabled][type="week"], input[disabled][type="time"], input[disabled][type="number"], input[disabled][type="search"], input[disabled][type="color"] {
-  background-color: #ededed;
-  color: #6b6b6b;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
 }
 .input:valid, textarea:valid, select:valid, input[type="text"]:valid, input[type="password"]:valid, input[type="email"]:valid, input[type="url"]:valid, input[type="tel"]:valid, input[type="date"]:valid, input[type="datetime"]:valid, input[type="datetime-local"]:valid, input[type="month"]:valid, input[type="week"]:valid, input[type="time"]:valid, input[type="number"]:valid, input[type="search"]:valid, input[type="color"]:valid {
   -moz-box-shadow: #e8e9ec 0 0 0.375em;
@@ -4698,21 +4698,15 @@ footer[role="contentinfo"] small {
 }
 
 /* Create Run -------------------------------------------------------------- */
-.suiteselect .id {
-  display: inline;
-  float: left;
-  width: 20%;
-  margin-right: 2.857%;
-  padding-left: 11.429%;
+.suiteselect.readonly h3 {
+  background: rgba(254, 229, 139, 0.236);
 }
-.suiteselect .title {
-  display: inline;
-  float: left;
-  width: 65.714%;
-  margin-right: 2.857%;
-  display: inline;
-  float: right;
-  margin-right: 0;
+.suiteselect.readonly h3::after {
+  content: " (read only)";
+}
+.suiteselect.readonly label {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
 }
 
 /* Create Suite -------------------------------------------------------------- */
@@ -5390,10 +5384,6 @@ footer[role="contentinfo"] small {
   width: 87.368%;
   margin-right: 1.053%;
 }
-#editprofile .content {
-  padding-left: 8.421%;
-  padding-right: 8.421%;
-}
 #editprofile .env-management {
   margin-top: 0.405em;
   position: relative;
@@ -5586,7 +5576,7 @@ footer[role="contentinfo"] small {
   width: 1px;
   border: 0;
 }
-#managetags .form-actions {
+#managetags .add-item .form-actions {
   display: inline;
   float: left;
   width: 11.579%;
@@ -5594,7 +5584,7 @@ footer[role="contentinfo"] small {
   padding: 0;
   clear: none;
 }
-#managetags .form-actions button {
+#managetags .add-item .form-actions button {
   width: 100%;
 }
 

@@ -13,51 +13,33 @@
     {{ form.non_field_errors }}
     <ul class="basic">
       <li>
-        {{ form.name.errors }}
-        {{ form.name.label_tag }}
-        {{ form.name }}
+        {% include "forms/_field.html" with field=form.name %}
       </li>
       <li>
-        {{ form.test_cycle.errors }}
-        {{ form.test_cycle.label_tag }}
-        {{ form.test_cycle }}
+        {% include "forms/_field.html" with field=form.test_cycle %}
       </li>
       <li>
-        {{ form.description.errors }}
-        {{ form.description.label_tag }}
-        {{ form.description }}
+        {% include "forms/_field.html" with field=form.description %}
       </li>
       <li class="date-fields">
         <ul>
           <li class="date">
-            {{ form.start_date.errors }}
-            {{ form.start_date.label_tag }}
-            {{ form.start_date }}
+            {% include "forms/_field.html" with field=form.start_date %}
             <span class="fieldnote">yyyy-mm-dd</span>
           </li>
           <li class="date">
-            {{ form.end_date.errors }}
-            {{ form.end_date.label_tag }}
-            {{ form.end_date }}
+            {% include "forms/_field.html" with field=form.end_date %}
             <span class="fieldnote">yyyy-mm-dd</span>
           </li>
         </ul>
       </li>
     </ul>
 
-    <section class="suiteselect">
-      <h3>
-        {% if form.suites.field.widget.attrs.disabled %}
-        test suites in this test run (read only)
-        {% else %}
-        add test suites to your test run
-        {% endif %}
-      </h3>
+    <section class="suiteselect {% if form.suites.field.widget.attrs.disabled %}readonly{% endif %}">
+      <h3>add test suites to your test run</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
-        {{ form.suites.errors }}
-        {{ form.suites.label_tag }}
-        {{ form.suites }}
+        {% include "forms/_field.html" with field=form.suites %}
       </div>
     </section>
 
@@ -65,9 +47,7 @@
       <h3 class="summary">assign specific users to this test run &raquo;</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
-        {{ form.team.errors }}
-        {{ form.team.label_tag }}
-        {{ form.team }}
+        {% include "forms/_field.html" with field=form.team %}
       </div>
     </section>
 
