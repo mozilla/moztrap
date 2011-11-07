@@ -15,6 +15,15 @@
       <li class="nickname">{% include "forms/_field.html" with field=form.screenName %}</li>
       <li class="email">{% include "forms/_field.html" with field=form.email %}</li>
       <li class="password">{% include "forms/_field.html" with field=form.password %}</li>
+      <li class="role">
+        {# @@@ wireframe: include "forms/_field.html" with field=form.role #}
+        <label for="role">role</label>
+        <select id="role">
+          <option>role 1</option>
+          <option>role 2</option>
+          <option>role 3</option>
+        </select>
+      </li>
     </ul>
 
     <section class="roleselect details{% if form.roles.errors or form.roles.value %} open{% endif %}">
