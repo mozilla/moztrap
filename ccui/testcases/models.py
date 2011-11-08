@@ -264,6 +264,14 @@ class TestSuite(Named, Activatable, RemoteObject):
             itc.delete()
 
 
+    def refreshcases(self):
+        for itc in self.includedtestcases:
+            if itc.testCaseVersion.id != itc.testCase.latestversion.id:
+                case = itc.testCase
+                itc.delete()
+                self.addcase(case)
+
+
     cases = property(_get_cases, _set_cases)
 
 

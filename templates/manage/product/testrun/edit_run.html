@@ -7,3 +7,10 @@
   <a href="{% url manage_narrow_environments object_type='testrun' object_id=run.id %}" class="select-env-link">select environments</a>
   {% endif %}
 {% endblock %}
+
+{% block actions-extra %}
+<p class="update-cases">
+  {{ form.caseupdate }}
+  <label for="caseupdate">update to latest testcase versions</label>
+</p>
+{% endblock %}

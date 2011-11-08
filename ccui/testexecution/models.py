@@ -213,6 +213,11 @@ class TestRun(Named, Activatable, RemoteObject):
             **kwargs)
 
 
+    def addsuitelatest(self, suite, **kwargs):
+        suite.refreshcases()
+        self.addsuite(suite, **kwargs)
+
+
     def removesuite(self, suite):
         for itc in TestRunIncludedTestCaseList.get(auth=self.auth).filter(
             testRun=self, testSuite=suite):
@@ -229,7 +234,7 @@ class TestRun(Named, Activatable, RemoteObject):
         existing = dict((s.id, s) for s in self.testsuites)
         for suite in suites:
             if suite.id not in existing:
-                self.addsuite(suite)
+                self.addsuitelatest(suite)
             else:
                 del existing[suite.id]
         for suite in existing.itervalues():

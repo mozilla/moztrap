@@ -172,8 +172,20 @@ class TestRunForm(ccforms.AddEditForm):
 
 
     def field_hook(self):
-        if self.instance and self.instance.status.ACTIVE:
-            self.fields["suites"].widget.attrs["disabled"] = "disabled"
+        if self.instance:
+            self.fields["caseupdate"] = forms.BooleanField(
+                initial=False, required=False)
+            if self.instance.status.ACTIVE:
+                self.fields["suites"].widget.attrs["disabled"] = "disabled"
+
+
+    def clean_caseupdate(self):
+        if self.instance and self.cleaned_data.get("caseupdate"):
+            for itc in self.instance.includedtestcases:
+                itc.delete(invalidate_cache=[
+                    "IncludedTestSuiteList",
+                    "TestRunIncludedTestCaseList"])
+
 
 
 

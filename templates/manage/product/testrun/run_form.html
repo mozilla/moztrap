@@ -52,11 +52,7 @@
     </section>
 
     <div class="form-actions">
-      <p class="update-cases">
-        {# @@@ wireframe #}
-        <input type="checkbox" name="caseupdate" value="" id="caseupdate">
-        <label for="caseupdate">update to latest testcase versions</label>
-      </p>
+      {% block actions-extra %}{% endblock %}
       <button type="submit">save test run</button>
     </div>
 
