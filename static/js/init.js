@@ -100,7 +100,7 @@ var CC = (function (CC, $) {
             },
             lastChildCallback: function (choice) {
                 var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
-                    ajaxUrl = $(choice).data("sub-url");
+                    ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
@@ -158,8 +158,24 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
 
         // manage-products.js
-        CC.formOptionsFilter("#addsuite", "product-id", "#id_product", ".multiunselected .select", ".selectitem", true);
-        CC.formOptionsFilter("#addrun", "product-id", "#id_test_cycle", "#id_suites", "option");
+        CC.formOptionsFilter({
+            container: '#addsuite',
+            trigger_sel: '#id_product',
+            target_sel: '.multiunselected .select',
+            option_sel: '.selectitem',
+            multiselect_widget_bool: true
+        });
+        CC.formOptionsFilter({
+            container: '#addrun',
+            trigger_sel: '#id_test_cycle',
+            target_sel: '#id_suites'
+        });
+        CC.formOptionsFilter({
+            container: '#addcase',
+            trigger_sel: '#id_product',
+            target_sel: '#id_suite',
+            optional: true
+        });
         CC.testcaseAttachments('#single-case-form .attachments');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
@@ -175,7 +191,7 @@ var CC = (function (CC, $) {
         CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary', '#run');
         CC.autoFocus('.details.testinvalid > .summary', '#run');
-        CC.runTests("#run");
+        CC.runTests('#run');
         CC.breadcrumb('.selectruns');
         CC.failedTestBug('#run');
     });

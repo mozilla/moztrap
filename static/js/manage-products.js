@@ -28,23 +28,38 @@ var CC = (function (CC, $) {
     'use strict';
 
     // Filter form options for add-run and add-suite
-    CC.formOptionsFilter = function (container, data_attr, trigger_sel, target_sel, option_sel, multiselect_widget_bool) {
-        var context = $(container),
-            trigger = context.find(trigger_sel),
+    CC.formOptionsFilter = function (opts) {
+        var defaults = {
+                container: 'body',
+                data_attr: 'product-id',
+                trigger_sel: '.trigger',
+                target_sel: '.target',
+                option_sel: 'option',
+                multiselect_widget_bool: false,
+                optional: false
+            },
+            options = $.extend({}, defaults, opts),
+            context = $(options.container),
+            trigger = context.find(options.trigger_sel),
             target,
             allopts,
             doFilter;
-        if (context.length && trigger.is("select")) {
-            target = context.find(target_sel);
-            allopts = target.find(option_sel).clone();
+        if (context.length && trigger.is('select')) {
+            target = context.find(options.target_sel);
+            allopts = target.find(options.option_sel).clone();
 
             doFilter = function () {
-                var key = trigger.find("option:selected").data(data_attr),
+                var key = trigger.find('option:selected').data(options.data_attr),
                     newopts = allopts.clone().filter(function () {
-                        return $(this).data(data_attr) === key;
+                        return $(this).data(options.data_attr) === key;
                     });
-                target.html(newopts);
-                if (multiselect_widget_bool) {
+                if (options.optional && key) {
+                    target.find(options.option_sel).filter(function () { return $(this).val(); }).remove();
+                    target.append(newopts);
+                } else {
+                    target.html(newopts);
+                }
+                if (options.multiselect_widget_bool) {
                     context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
                     context.find('.multiselected .select').empty();
                 }
