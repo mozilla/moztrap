@@ -20,7 +20,7 @@
     {% include "manage/tag/_tags_list_item.html" %}
     {% endfor %}
 
-    {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
+    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <article class="item add-item details">
       <div class="content">
         {% include "manage/tag/_tag_list_item_content_new.html" %}

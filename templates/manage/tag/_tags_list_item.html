@@ -1,7 +1,7 @@
 <article id="tag-id-{{ tag.id }}" class="item vcard" data-id="{{ tag.id }}">
   <h3 class="tag">{{ tag }}</h3>
   <div class="controls">
-    {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
+    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <a href="#" title="edit">edit</a>
     <form method="POST">
       {% csrf_token %}
