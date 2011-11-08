@@ -5,12 +5,7 @@
           {% include "forms/_field.html" with field=form.product %}
         </li>
         <li>
-          {# @@@ wireframed #}
-          <label for="suite">Suite</label>
-          <select name="suite" value="" id="suite">
-            <option>suite 1</option>
-            <option>suite 2</option>
-          </select>
+          {% include "forms/_field.html" with field=form.suite %}
         </li>
         <li>
           {% include "forms/_field.html" with field=form.name %}

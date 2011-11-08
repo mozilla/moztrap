@@ -214,11 +214,13 @@ class TestSuiteForm(ccforms.AddEditForm):
 
 class BulkTestCaseForm(ccforms.RemoteObjectForm):
     product = ccforms.ModelChoiceField()
+    suite = ccforms.ModelChoiceField(required=False)
     cases = forms.CharField(widget=ccforms.BareTextarea)
 
 
     def __init__(self, *args, **kwargs):
         product_choices = kwargs.pop("product_choices")
+        suite_choices = kwargs.pop("suite_choices")
         self.company = kwargs.pop("company")
 
         self.auth = kwargs.pop("auth")
@@ -226,6 +228,7 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
         super(BulkTestCaseForm, self).__init__(*args, **kwargs)
 
         self.fields["product"].obj_list = product_choices
+        self.fields["suite"].obj_list = suite_choices
 
 
     def clean_cases(self):
@@ -251,6 +254,8 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
             t = Tag(name=name, company=self.company)
             tl.post(t)
             tag_ids.append(t.id)
+
+        suite = self.cleaned_data.get("suite")
 
         for d in self.cleaned_data.get("cases", []):
             tcdata = dict(
@@ -287,6 +292,12 @@ class BulkTestCaseForm(ccforms.RemoteObjectForm):
             tcv.approve(auth=admin)
 
             tcv.tags = tag_ids
+
+            if suite:
+                try:
+                    suite.addcase(tcv)
+                except TestSuite.Conflict:
+                    pass
 
         self.cases = cases
 
@@ -325,6 +336,8 @@ class TestCaseForm(ccforms.AddEditForm):
             self.fields["increment"] = forms.ChoiceField(
                 choices=increment_choices
                 )
+        else:
+            self.fields["suite"] = ccforms.ModelChoiceField(required=False)
 
 
 
@@ -407,6 +420,13 @@ class TestCaseForm(ccforms.AddEditForm):
 
         self._save_tags()
         self._save_attachments()
+
+        suite = self.cleaned_data.get("suite")
+        if suite:
+            try:
+                suite.addcase(self.instance)
+            except TestSuite.Conflict:
+                pass
 
         return ret
 
