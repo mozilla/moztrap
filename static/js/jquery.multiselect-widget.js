@@ -44,6 +44,10 @@
                             if (thisItem.find('.' + type).children('span').text().toLowerCase() !== filter) {
                                 excludeThisItem = true;
                             }
+                        } else if (type === 'tag') {
+                            if (thisItem.find('.tags a').text().toLowerCase() !== filter) {
+                                excludeThisItem = true;
+                            }
                         } else {
                             if (thisItem.find('.' + type).text().toLowerCase() !== filter) {
                                 excludeThisItem = true;
