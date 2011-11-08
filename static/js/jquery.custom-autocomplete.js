@@ -162,29 +162,31 @@
                 }
 
                 if (options.allowNew && !cached) {
-                    newInputList.each(function () {
-                        var thisSuggestion = {};
-                        thisSuggestion.typedText = typedText;
-                        thisSuggestion.name = typedText;
-                        thisSuggestion.id = typedText;
-                        thisSuggestion.newSuggestion = true;
-                        if (options.multipleCategories) {
-                            thisSuggestion.type = $(this).data('name');
-                            if ($(this).find('.category-title').length) {
-                                thisSuggestion.displayType = $(this).find('.category-title').text();
+                    if (!(options.restrictAllowNew && textbox.data('allow-new') !== true)) {
+                        newInputList.each(function () {
+                            var thisSuggestion = {};
+                            thisSuggestion.typedText = typedText;
+                            thisSuggestion.name = typedText;
+                            thisSuggestion.id = typedText;
+                            thisSuggestion.newSuggestion = true;
+                            if (options.multipleCategories) {
+                                thisSuggestion.type = $(this).data('name');
+                                if ($(this).find('.category-title').length) {
+                                    thisSuggestion.displayType = $(this).find('.category-title').text();
+                                }
+                            } else {
+                                thisSuggestion.type = options.inputType;
                             }
-                        } else {
-                            thisSuggestion.type = options.inputType;
-                        }
 
-                        if (options.restrictNewInputs) {
-                            if (passRestrictedNewInputs($(this), typedText)) {
+                            if (options.restrictNewInputs) {
+                                if (passRestrictedNewInputs($(this), typedText)) {
+                                    data.suggestions.unshift(thisSuggestion);
+                                }
+                            } else {
                                 data.suggestions.unshift(thisSuggestion);
                             }
-                        } else {
-                            data.suggestions.unshift(thisSuggestion);
-                        }
-                    });
+                        });
+                    }
                 }
 
                 newSuggestions = ich.autocomplete_suggestion(data);
@@ -630,6 +632,7 @@
         hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
         allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed
+        restrictAllowNew: false,                        // Set ``true`` if new inputs are only allowed if textbox has data-allow-new="true"
         newInputList: null,                             // Selector for list of new inputs (only needed if ``allowNew: true``
                                                         //      and ``multipleCategories: true``)
         restrictNewInputs: false,                       // Set ``true`` if new inputs should be restricted to use ^ and $

@@ -55,6 +55,7 @@ var CC = (function (CC, $) {
             url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
             triggerSubmit: null,
             allowNew: true,
+            restrictAllowNew: true,
             inputType: 'tag',
             noInputsNote: true
         });
