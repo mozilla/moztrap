@@ -17,9 +17,6 @@
           <li class="bystatus">
             <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
           </li>
-          <li class="bycompletion">
-            <span>%</span>
-          </li>
           <li class="bytitle">
             <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
           </li>
@@ -46,7 +43,6 @@
               <p class="status">
                 <span class="{{ cycle.status|status_class }}">{{ cycle.status|lower }}</span>
               </p>
-              <p class="completion" data-perc="{{ cycle.percentcomplete }}">{{ cycle.percentcomplete }}%</p>
               <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>
               <p class="product">{{ cycle.product.name }}</p>
               <time class="start">{{ cycle.startDate|date }}</time>

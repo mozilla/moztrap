@@ -6885,12 +6885,6 @@ footer[role="contentinfo"] small {
 }
 
 /* Result Types -------------------------------------------------------------- */
-#cycleresults .completion, #cycleresults .bycompletion {
-  display: inline;
-  float: left;
-  width: 3.158%;
-  margin-right: 1.053%;
-}
 #cycleresults .start, #cycleresults .end, #cycleresults .bystart, #cycleresults .byend {
   display: inline;
   float: left;
@@ -6906,7 +6900,7 @@ footer[role="contentinfo"] small {
 #cycleresults .title, #cycleresults .bytitle {
   display: inline;
   float: left;
-  width: 24.211%;
+  width: 28.421%;
   margin-right: 1.053%;
 }
 #cycleresults .drill {
