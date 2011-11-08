@@ -227,7 +227,8 @@ class TestSuiteForm(ccforms.AddEditForm):
 
 
 class BulkTestCaseForm(ccforms.RemoteObjectForm):
-    product = ccforms.ModelChoiceField()
+    product = ccforms.ModelChoiceField(
+        choice_attrs=lambda p: {"data-product-id": p.id})
     suite = ccforms.ModelChoiceField(
         required=False, choice_attrs=product_id_attrs)
     cases = forms.CharField(widget=ccforms.BareTextarea)
