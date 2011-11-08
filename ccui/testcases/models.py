@@ -233,8 +233,14 @@ class TestSuite(Named, Activatable, RemoteObject):
 
 
     def addcase(self, case, **kwargs):
+        if isinstance(case, TestCaseVersion):
+            version_id = case.id
+        elif isinstance(case, TestCase):
+            version_id = case.latestversion.id
+        else:
+            raise ValueError("Can only add TestCase to suite, not '%s'" % case)
         payload = {
-            "testCaseVersionId": case.latestversion.id,
+            "testCaseVersionId": version_id,
             "priorityId": 0, # @@@
             "runOrder": 0, # @@@
             }
