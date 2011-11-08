@@ -67,9 +67,9 @@ Two settings are required:
     given by default.
 
 The ``create_company`` management command is available to create an initial
-company and a default user role. Run ``./manage.py create_company "Company
-Name"``; a new company named "Company Name" and two roles, named "Company Name
-Tester" and "Company Name Admin" will be created, and the command will output
+company and default user roles.  Run ``./manage.py create_company "Company
+Name"``; a new company named "Company Name" and three roles, named "Tester",
+"Test Manager", and "Admin" will be created, and the command will output
 their IDs, which can then be used for the above two settings.
 
 Several other settings have reasonable defaults, but may need to be modified:
