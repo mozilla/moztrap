@@ -2391,7 +2391,7 @@ footer[role="contentinfo"] small {
   padding-right: 17.391%;
   display: block;
 }
-.finder .start, .finder .end, .finder .bycompletion, .finder .bystart, .finder .byend, .finder .end, .finder .byend {
+.finder .start, .finder .end, .finder .bystart, .finder .byend, .finder .end, .finder .byend {
   display: none;
 }
 .finder .goto:link, .finder .goto:visited {
@@ -2412,22 +2412,10 @@ footer[role="contentinfo"] small {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.finder .completion {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-  position: absolute;
-  z-index: -1;
-}
-.finder .focus .completion {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  position: static;
-  z-index: auto;
-}
-.finder .focus .start, .finder .focus .end, .finder .focus .bycompletion, .finder .focus .bystart, .finder .focus .byend, .finder .focus .end, .finder .focus .byend {
+.finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend, .finder .focus .end, .finder .focus .byend {
   display: block;
 }
-.finder .focus .completion, .finder .focus .bycompletion, .finder .focus .open {
+.finder .focus .open {
   display: inline;
   float: left;
   width: 6.383%;
@@ -2436,15 +2424,9 @@ footer[role="contentinfo"] small {
 .finder .focus .title, .finder .focus .bytitle {
   display: inline;
   float: left;
-  width: 48.936%;
-  margin-right: 2.128%;
-  padding: 0;
-}
-.finder .focus .title:first-child, .finder .focus .bytitle:first-child {
-  display: inline;
-  float: left;
   width: 57.447%;
   margin-right: 2.128%;
+  padding: 0;
 }
 .finder .focus .title:first-child:last-child, .finder .focus .bytitle:first-child:last-child {
   float: none;
@@ -2464,7 +2446,7 @@ footer[role="contentinfo"] small {
   float: right;
   margin-right: 0;
 }
-.finder .bystart, .finder .byend, .finder .bycompletion {
+.finder .bystart, .finder .byend {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
   opacity: 0.75;
 }
