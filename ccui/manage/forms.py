@@ -214,7 +214,8 @@ class TestSuiteForm(ccforms.AddEditForm):
 
 class BulkTestCaseForm(ccforms.RemoteObjectForm):
     product = ccforms.ModelChoiceField()
-    suite = ccforms.ModelChoiceField(required=False)
+    suite = ccforms.ModelChoiceField(
+        required=False, choice_attrs=product_id_attrs)
     cases = forms.CharField(widget=ccforms.BareTextarea)
 
 
@@ -337,7 +338,8 @@ class TestCaseForm(ccforms.AddEditForm):
                 choices=increment_choices
                 )
         else:
-            self.fields["suite"] = ccforms.ModelChoiceField(required=False)
+            self.fields["suite"] = ccforms.ModelChoiceField(
+                required=False, choice_attrs=product_id_attrs)
 
 
 
