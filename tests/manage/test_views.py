@@ -215,6 +215,8 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                 response(testsuiteincludedtestcases.array({})),
             "http://fake.base/rest/testcases/latestversions/?_type=json&productId=1":
                 response(testcaseversions.searchresult({})),
+            "http://fake.base/rest/testcaseversions/1/tags?_type=json":
+                response(tags.array()),
             }
 
 
@@ -224,6 +226,8 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                 response(testsuiteincludedtestcases.array({})),
             "http://fake.base/rest/includedtestcases/1?_type=json":
                 response(testsuiteincludedtestcases.one()),
+            "http://fake.base/rest/testcaseversions/1/tags?_type=json":
+                response(tags.array()),
             }
 
 
