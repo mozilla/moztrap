@@ -755,16 +755,16 @@ label {
   background-color: #fef0bd;
 }
 
-select:not([multiple]):valid, select:not([multiple]).valid {
-  color: #454545;
+select:not([multiple]) {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
 }
-select:not([multiple]):valid:focus, select:not([multiple]):valid.hadfocus, select:not([multiple]).valid:focus, select:not([multiple]).valid.hadfocus {
+select:not([multiple]):valid {
   color: #4d791b;
 }
-select:not([multiple]):invalid, select:not([multiple]).invalid {
-  color: #454545;
-}
-select:not([multiple]):invalid:focus, select:not([multiple]):invalid.hadfocus, select:not([multiple]).invalid:focus, select:not([multiple]).invalid.hadfocus {
+select:not([multiple]):invalid {
   color: #b8282d;
 }
 
