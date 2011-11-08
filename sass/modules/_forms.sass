@@ -148,6 +148,16 @@ textarea, select
 textarea, select:not([multiple])
   @extend .textinput
 
+select:not([multiple])
+  &:valid, &.valid
+    color: $base
+    &:focus, &.hadfocus
+      color: $green-dark
+  &:invalid, &.invalid
+    color: $base
+    &:focus, &.hadfocus
+      color: $red
+
 textarea
   +apply-placeholders
   height: auto
