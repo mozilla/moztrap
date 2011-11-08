@@ -185,34 +185,51 @@ PRODUCTS = {
 
 USERS = [
     {
-        "firstName": "Some",
-        "lastName": "Tester",
+        "firstName": "Tester",
+        "lastName": "McTesterson",
         "screenName": "tester",
         "email": "tester@example.com",
         "password": "testpw",
         },
     {
-        "firstName": "Another",
-        "lastName": "Tester",
+        "firstName": "Tester2",
+        "lastName": "McTester2son",
         "screenName": "tester2",
         "email": "tester2@example.com",
         "password": "testpw",
         },
     ]
 
+MANAGERS = [
+    {
+        "firstName": "Manager",
+        "lastName": "McManager",
+        "screenName": "manager",
+        "email": "manager@example.com",
+        "password": "testpw",
+        },
+    {
+        "firstName": "Manager2",
+        "lastName": "McManager2",
+        "screenName": "manager2",
+        "email": "manager2@example.com",
+        "password": "testpw",
+        },
+    ]
+
 ADMINS = [
     {
-        "firstName": "The",
-        "lastName": "Admin",
+        "firstName": "Admin",
+        "lastName": "McAdmin",
         "screenName": "admin",
         "email": "admin@example.com",
         "password": "testpw",
         },
     {
-        "firstName": "Other",
-        "lastName": "Admin",
-        "screenName": "other",
-        "email": "other@example.com",
+        "firstName": "Admin2",
+        "lastName": "McAdmin2",
+        "screenName": "admin2",
+        "email": "admin2@example.com",
         "password": "testpw",
         },
     ]
@@ -229,6 +246,14 @@ class Command(BaseCommand):
             ADMIN_ROLE_ID = None
         except ValueError:
             raise CommandError("Optional arg should be integer admin role ID")
+
+        try:
+            MANAGER_ROLE_ID = int(args[1])
+        except IndexError:
+            MANAGER_ROLE_ID = None
+        except ValueError:
+            raise CommandError(
+                "Optional second arg should be integer manager role ID")
 
         company = Company.get("companies/%s" % conf.CC_COMPANY_ID, auth=admin)
 
@@ -269,6 +294,16 @@ class Command(BaseCommand):
             user.activate()
             print "Created user '%s.'" % user.screenName
             users[data["screenName"]] = user
+
+        if MANAGER_ROLE_ID is not None:
+            managers = {}
+            for data in MANAGERS:
+                user = User(company=company, **data)
+                UserList.get(auth=admin).post(user)
+                user.roles = [MANAGER_ROLE_ID]
+                user.activate()
+                print "Created manager user '%s.'" % user.screenName
+                managers[data["screenName"]] = user
 
         if ADMIN_ROLE_ID is not None:
             admins = {}
