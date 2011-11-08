@@ -213,9 +213,12 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
         return {
             "http://fake.base/rest/testsuites/1/includedtestcases?sortfield=runOrder&sortdirection=asc&_type=json":
                 response(testsuiteincludedtestcases.array({})),
-            "http://fake.base/rest/testcases/latestversions/?_type=json&productId=1":
-                response(testcaseversions.searchresult({})),
-            "http://fake.base/rest/testcaseversions/1/tags?_type=json":
+            "http://fake.base/rest/testcases?_type=json&productId=1":
+                response(testcases.searchresult({})),
+            "http://fake.base/rest/testcases/1/latestversion?_type=json":
+                response(testcaseversions.one(
+                    _id=1, _url="testcases/versions/1")),
+            "http://fake.base/rest/testcases/versions/1/tags?_type=json":
                 response(tags.array()),
             }
 
@@ -226,7 +229,7 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                 response(testsuiteincludedtestcases.array({})),
             "http://fake.base/rest/includedtestcases/1?_type=json":
                 response(testsuiteincludedtestcases.one()),
-            "http://fake.base/rest/testcaseversions/1/tags?_type=json":
+            "http://fake.base/rest/testcases/versions/1/tags?_type=json":
                 response(tags.array()),
             }
 

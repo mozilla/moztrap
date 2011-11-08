@@ -445,7 +445,7 @@ def add_testsuite(request):
     form = TestSuiteForm(
         request.POST or None,
         product_choices=ProductList.ours(auth=request.auth),
-        cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
+        cases_choices=TestCaseList.get(auth=request.auth).filter(
             company=conf.CC_COMPANY_ID),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():
@@ -471,7 +471,7 @@ def edit_testsuite(request, suite_id):
         request.POST or None,
         instance=suite,
         product_choices=[suite.product],
-        cases_choices=TestCaseVersionList.latest(auth=request.auth).filter(
+        cases_choices=TestCaseList.get(auth=request.auth).filter(
             product=suite.product.id),
         auth=request.auth)
     if request.method == "POST" and form.is_valid():

@@ -234,7 +234,7 @@ class TestSuite(Named, Activatable, RemoteObject):
 
     def addcase(self, case, **kwargs):
         payload = {
-            "testCaseVersionId": case.id,
+            "testCaseVersionId": case.latestversion.id,
             "priorityId": 0, # @@@
             "runOrder": 0, # @@@
             }
@@ -246,15 +246,15 @@ class TestSuite(Named, Activatable, RemoteObject):
 
 
     def _get_cases(self):
-        return TestCaseVersionList(
+        return TestCaseList(
             entries=[
-                itc.testCaseVersion for itc in
+                itc.testCase for itc in
                 self.includedtestcases.sort("runOrder")])
 
 
     def _set_cases(self, cases):
         existing = dict(
-            (itc.testCaseVersion.id, itc) for itc in self.includedtestcases)
+            (itc.testCase.id, itc) for itc in self.includedtestcases)
         for case in cases:
             if case.id not in existing:
                 self.addcase(case)
