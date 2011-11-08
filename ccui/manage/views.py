@@ -546,6 +546,7 @@ def add_testcase(request):
             request.POST,
             request.FILES,
             product_choices=ProductList.ours(auth=request.auth),
+            suite_choices=TestSuiteList.get(auth=request.auth),
             auth=request.auth)
         if form.is_valid():
             testcase = form.save()
@@ -556,6 +557,7 @@ def add_testcase(request):
     else:
         form = TestCaseForm(
             product_choices=ProductList.ours(auth=request.auth),
+            suite_choices=TestSuiteList.get(auth=request.auth),
             auth=request.auth)
 
     return TemplateResponse(
@@ -574,6 +576,7 @@ def add_testcase_bulk(request):
         form = BulkTestCaseForm(
             request.POST,
             product_choices=ProductList.ours(auth=request.auth),
+            suite_choices=TestSuiteList.get(auth=request.auth),
             company=request.company,
             auth=request.auth)
         if form.is_valid():
@@ -585,6 +588,7 @@ def add_testcase_bulk(request):
     else:
         form = BulkTestCaseForm(
             product_choices=ProductList.ours(auth=request.auth),
+            suite_choices=TestSuiteList.get(auth=request.auth),
             company=request.company,
             auth=request.auth)
 
