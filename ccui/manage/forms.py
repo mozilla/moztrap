@@ -27,6 +27,7 @@ from ..core.filters import KeywordFilter
 from ..products.models import Product, ProductList
 from ..static.filters import TestCaseStatusFilter
 from ..static.status import AttachmentType
+from ..tags.filters import TagFilter
 from ..tags.models import Tag, TagList
 from ..testcases import increment
 from ..testcases.bulk import BulkParser
@@ -213,6 +214,7 @@ class TestSuiteForm(ccforms.AddEditForm):
             filters=[
                 ("status", TestCaseStatusFilter),
                 ("name", KeywordFilter),
+                ("tag", TagFilter),
                 ("author", UserFieldFilter)
                 ])
 
