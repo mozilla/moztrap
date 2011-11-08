@@ -34,6 +34,8 @@
     {% endfor %}
   </ul>
   <div class="controls">
+    {% if "PERMISSION_USER_ACCOUNT_EDIT" in request.user.permissionCodes %}
     <a href="{% url manage_user_edit user_id=user.id %}" title="edit">edit</a>
+    {% endif %}
   </div>
 </article>

@@ -31,14 +31,26 @@
       <article id="cycle-id-{{ cycle.id }}" class="details item {{ cycle.status|status_class }}" data-details-url="{% url manage_testcycle_details cycle.id %}">
         <header class="summary">
           <p class="status">
-            {% if cycle.status.DRAFT %}
-            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
-            {% endif %}
-            {% if cycle.status.ACTIVE %}
-            <button title="disable" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
-            {% endif %}
-            {% if cycle.status.LOCKED %}
-            <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">disabled</button>
+            {% if "PERMISSION_TEST_CYCLE_ACTIVATE" in request.user.permissionCodes %}
+              {% if cycle.status.DRAFT %}
+              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="draft">draft</button>
+              {% endif %}
+              {% if cycle.status.ACTIVE %}
+              <button title="disable" type="submit" value="{{ cycle.id }}" name="action-deactivate" class="active">active</button>
+              {% endif %}
+              {% if cycle.status.LOCKED %}
+              <button title="activate" type="submit" value="{{ cycle.id }}" name="action-activate" class="locked">disabled</button>
+              {% endif %}
+            {% else %}
+              {% if cycle.status.DRAFT %}
+              <span class="draft">draft</span>
+              {% endif %}
+              {% if cycle.status.ACTIVE %}
+              <span class="active">active</span>
+              {% endif %}
+              {% if cycle.status.LOCKED %}
+              <span class="locked">disabled</span>
+              {% endif %}
             {% endif %}
           </p>
           <h3 class="title" title="{{ cycle.name }}">{{ cycle.name }}</h3>

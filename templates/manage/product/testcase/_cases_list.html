@@ -25,25 +25,37 @@
       <article id="case-id-{{ case.id }}" class="details item {{ case.status|status_class }}" data-details-url="{% url manage_testcase_details case.id %}">
         <header class="summary">
           <p class="status">
-            {% if case.approval.PENDING %}
-            <span class="pending">
-              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
-              <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
-            </span>
-            {% endif %}
-            {% if case.approval.REJECTED %}
-            <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
-            {% endif %}
-            {% if case.approval.APPROVED %}
-            {% if case.status.DRAFT %}
-            <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
-            {% endif %}
-            {% if case.status.ACTIVE %}
-            <button title="disable" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
-            {% endif %}
-            {% if case.status.LOCKED %}
-            <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">disabled</button>
-            {% endif %}
+            {% if "PERMISSION_TEST_CASE_ACTIVATE" in request.user.permissionCodes %}
+              {% if case.approval.PENDING %}
+              <span class="pending">
+                <button title="approve" type="submit" name="action-approve" value="{{ case.id }}">approve</button>
+                <button title="reject" type="submit" name="action-reject" value="{{ case.id }}">reject</button>
+              </span>
+              {% endif %}
+              {% if case.approval.REJECTED %}
+              <button title="approve" type="submit" name="action-approve" value="{{ case.id }}" class="rejected">rejected</button>
+              {% endif %}
+              {% if case.approval.APPROVED %}
+              {% if case.status.DRAFT %}
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="draft">draft</button>
+              {% endif %}
+              {% if case.status.ACTIVE %}
+              <button title="disable" type="submit" name="action-deactivate" value="{{ case.id }}" class="active">active</button>
+              {% endif %}
+              {% if case.status.LOCKED %}
+              <button title="activate" type="submit" name="action-activate" value="{{ case.id }}" class="locked">disabled</button>
+              {% endif %}
+              {% endif %}
+            {% else %}
+              {% if case.status.DRAFT %}
+              <span class="draft">draft</span>
+              {% endif %}
+              {% if case.status.ACTIVE %}
+              <span class="active">active</span>
+              {% endif %}
+              {% if case.status.LOCKED %}
+              <span class="locked">disabled</span>
+              {% endif %}
             {% endif %}
           </p>
           <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>

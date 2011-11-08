@@ -18,12 +18,14 @@
     {% endfor %}
     </form>
 
+    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <article class="item add-item details">
       <h3 class="summary">add an environment</h3>
       <div class="content">
         {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
       </div>
     </article>
+    {% endif %}
   </div>
 
   {% include "lists/_listnav.html" %}

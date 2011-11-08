@@ -1,10 +1,12 @@
 <article id="tag-id-{{ tag.id }}" class="item vcard" data-id="{{ tag.id }}">
   <h3 class="tag">{{ tag }}</h3>
   <div class="controls">
+    {% if "PERMISSION_TEST_CASE_EDIT" in request.user.permissionCodes %}
     <a href="#" title="edit">edit</a>
     <form method="POST">
       {% csrf_token %}
       <button title="delete" type="submit" name="action-delete" value="{{ tag.id }}">delete</button>
     </form>
+    {% endif %}
   </div>
 </article>

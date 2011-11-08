@@ -25,14 +25,26 @@
       <article id="suite-id-{{ suite.id }}" class="details item {{ suite.status|status_class }}" data-details-url="{% url manage_testsuite_details suite.id %}">
         <header class="summary">
           <p class="status">
-            {% if suite.status.DRAFT %}
-            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
-            {% endif %}
-            {% if suite.status.ACTIVE %}
-            <button title="disable" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
-            {% endif %}
-            {% if suite.status.LOCKED %}
-            <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">disabled</button>
+            {% if "PERMISSION_TEST_SUITE_ACTIVATE" in request.user.permissionCodes %}
+              {% if suite.status.DRAFT %}
+              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="draft">draft</button>
+              {% endif %}
+              {% if suite.status.ACTIVE %}
+              <button title="disable" type="submit" name="action-deactivate" value="{{ suite.id }}" class="active">active</button>
+              {% endif %}
+              {% if suite.status.LOCKED %}
+              <button title="activate" type="submit" name="action-activate" value="{{ suite.id }}" class="locked">disabled</button>
+              {% endif %}
+            {% else %}
+              {% if suite.status.DRAFT %}
+              <span class="draft">draft</span>
+              {% endif %}
+              {% if suite.status.ACTIVE %}
+              <span class="active">active</span>
+              {% endif %}
+              {% if suite.status.LOCKED %}
+              <span class="locked">disabled</span>
+              {% endif %}
             {% endif %}
           </p>
           <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>

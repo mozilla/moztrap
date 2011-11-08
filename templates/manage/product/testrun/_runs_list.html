@@ -34,14 +34,26 @@
         <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}" data-details-url="{% url manage_testrun_details run.id %}">
           <header class="summary">
             <p class="status">
-              {% if run.status.DRAFT %}
-              <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
-              {% endif %}
-              {% if run.status.ACTIVE %}
-              <button title="disable" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
-              {% endif %}
-              {% if run.status.LOCKED %}
-              <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">disabled</button>
+              {% if "PERMISSION_TEST_RUN_ACTIVATE" in request.user.permissionCodes %}
+                {% if run.status.DRAFT %}
+                <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
+                {% endif %}
+                {% if run.status.ACTIVE %}
+                <button title="disable" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
+                {% endif %}
+                {% if run.status.LOCKED %}
+                <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">disabled</button>
+                {% endif %}
+              {% else %}
+                {% if run.status.DRAFT %}
+                <span class="draft">draft</span>
+                {% endif %}
+                {% if run.status.ACTIVE %}
+                <span class="active">active</span>
+                {% endif %}
+                {% if run.status.LOCKED %}
+                <span class="locked">disabled</span>
+                {% endif %}
               {% endif %}
             </p>
             <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
