@@ -587,7 +587,7 @@
                     e.preventDefault();
                     if (thisText === '' && expiredList.hasClass('expired')) {
                         options.triggerSubmit(context);
-                    } else if (thisText.length) {
+                    } else if (thisText.length && thisText.trim() !== '') {
                         // ...otherwise, if the input already exists, ENTER selects it...
                         if (existingInput.length && !existingInput.is(':checked') && !thisGroup.find(options.inputs + ':checked').length) {
                             selectInput();
