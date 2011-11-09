@@ -38,6 +38,8 @@
             newSuggestions,
             filteredSuggestions,
             typedText,
+            ajaxCalls = 0,
+            ajaxResponses = 0,
 
             // Removes (faked) placeholder text from textbox
             removeFakePlaceholder = function () {
@@ -287,7 +289,9 @@
                                 if (cache[typedText]) {
                                     updateSuggestions(cache[typedText], true);
                                 } else {
+                                    ajaxCalls = ajaxCalls + 1;
                                     $.get(options.url, {text: typedText}, function (response) {
+                                        ajaxResponses = ajaxResponses + 1;
                                         cache[typedText] = response;
                                         updateSuggestions(response, false);
                                     });
@@ -360,7 +364,13 @@
                         // ...otherwise, ENTER selects the "active" suggestion.
                         } else {
                             if (suggestionList.find('.selected').length) {
-                                suggestionList.find('.selected').click();
+                                $.doTimeout(100, function () {
+                                    if (ajaxCalls === ajaxResponses) {
+                                        suggestionList.find('.selected').click();
+                                        return false;
+                                    }
+                                    return true;
+                                });
                             }
                         }
                     }
