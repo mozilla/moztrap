@@ -67,6 +67,19 @@
             filterItems();
         });
 
+        availableList.add(includedList).on('click', options.itemSel + ' .tags a', function (e) {
+            var tagName = $(this).text(),
+                suggestion = ich.autocomplete_suggestion({
+                    suggestions: true,
+                    id: tagName,
+                    type: 'tag',
+                    name: tagName,
+                    typedText: tagName
+                });
+            suggestion.appendTo(context.find(options.availableSel + ' .selectsearch .suggest')).find('a').click();
+            return false;
+        });
+
         availableList.add(includedList).sortable({
             items: options.itemSel,
             connectWith: '.sortable',
