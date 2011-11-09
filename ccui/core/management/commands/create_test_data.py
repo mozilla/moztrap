@@ -273,7 +273,7 @@ class Command(BaseCommand):
                 "Optional second arg should be integer manager role ID")
 
         try:
-            CREATOR_ROLE_ID = int(args[1])
+            CREATOR_ROLE_ID = int(args[2])
         except IndexError:
             CREATOR_ROLE_ID = None
         except ValueError:
