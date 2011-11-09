@@ -200,6 +200,23 @@ USERS = [
         },
     ]
 
+CREATORS = [
+    {
+        "firstName": "Creator",
+        "lastName": "McCreator",
+        "screenName": "creator",
+        "email": "creator@example.com",
+        "password": "testpw",
+        },
+    {
+        "firstName": "Creator2",
+        "lastName": "McCreator2",
+        "screenName": "creator2",
+        "email": "creator2@example.com",
+        "password": "testpw",
+        },
+    ]
+
 MANAGERS = [
     {
         "firstName": "Manager",
@@ -255,6 +272,14 @@ class Command(BaseCommand):
             raise CommandError(
                 "Optional second arg should be integer manager role ID")
 
+        try:
+            CREATOR_ROLE_ID = int(args[1])
+        except IndexError:
+            CREATOR_ROLE_ID = None
+        except ValueError:
+            raise CommandError(
+                "Optional third arg should be integer creator role ID")
+
         company = Company.get("companies/%s" % conf.CC_COMPANY_ID, auth=admin)
 
         environments = {}
@@ -295,6 +320,16 @@ class Command(BaseCommand):
             print "Created user '%s.'" % user.screenName
             users[data["screenName"]] = user
 
+        if CREATOR_ROLE_ID is not None:
+            creators = {}
+            for data in CREATORS:
+                user = User(company=company, **data)
+                UserList.get(auth=admin).post(user)
+                user.roles = [CREATOR_ROLE_ID]
+                user.activate()
+                print "Created test creator user '%s.'" % user.screenName
+                creators[data["screenName"]] = user
+
         if MANAGER_ROLE_ID is not None:
             managers = {}
             for data in MANAGERS:
@@ -315,7 +350,7 @@ class Command(BaseCommand):
                 print "Created admin user '%s.'" % user.screenName
                 admins[data["screenName"]] = user
 
-        cc = Credentials(USERS[0]["email"], password=USERS[0]["password"])
+        cc = Credentials(MANAGERS[0]["email"], password=MANAGERS[0]["password"])
 
         products = {}
         for name, data in PRODUCTS.items():
