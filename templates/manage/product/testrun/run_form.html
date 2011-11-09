@@ -35,13 +35,15 @@
       </li>
     </ul>
 
-    <section class="suiteselect {% if form.suites.field.widget.attrs.disabled %}readonly{% endif %}">
+    {% block suites %}
+    <section class="suiteselect">
       <h3>test suites in this test run</h3>
       <div>
         {# @@@ needs the slick multiple-select widget #}
         {% include "forms/_field.html" with field=form.suites %}
       </div>
     </section>
+    {% endblock %}
 
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
       <h3 class="summary">assign specific users to this test run &raquo;</h3>
@@ -52,7 +54,12 @@
     </section>
 
     <div class="form-actions">
-      {% block actions-extra %}{% endblock %}
+      {% if form.caseupdate %}
+      <p class="update-cases">
+        {{ form.caseupdate }}
+        <label for="caseupdate">update to latest testcase versions</label>
+      </p>
+      {% endif %}
       <button type="submit">save test run</button>
     </div>
 

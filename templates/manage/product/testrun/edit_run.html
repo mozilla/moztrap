@@ -8,9 +8,18 @@
   {% endif %}
 {% endblock %}
 
-{% block actions-extra %}
-<p class="update-cases">
-  {{ form.caseupdate }}
-  <label for="caseupdate">update to latest testcase versions</label>
-</p>
+
+{% block suites %}
+  {% if form.suites %}
+    {{ block.super }}
+  {% else %}
+    <section class="suiteselect">
+      <h3>test suites in this test run</h3>
+      <ul>
+        {% for suite in run.suites %}
+        <li><a href="{% url manage_testsuites %}?filter-suite={{ suite.id }}#suite-id-{{ suite.id }}">{{ suite }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 {% endblock %}

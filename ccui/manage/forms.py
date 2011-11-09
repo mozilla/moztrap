@@ -174,10 +174,12 @@ class TestRunForm(ccforms.AddEditForm):
 
     def field_hook(self):
         if self.instance:
-            self.fields["caseupdate"] = forms.BooleanField(
-                initial=False, required=False)
-            if self.instance.status.ACTIVE:
-                self.fields["suites"].widget.attrs["disabled"] = "disabled"
+            if self.instance.status.DRAFT:
+                self.fields["caseupdate"] = forms.BooleanField(
+                    initial=False, required=False)
+            else:
+                # no modifying suites on an active test run
+                del self.fields["suites"]
 
 
     def clean_caseupdate(self):
