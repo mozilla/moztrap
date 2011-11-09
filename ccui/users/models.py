@@ -92,7 +92,7 @@ class User(Activatable, RemoteObject):
     screenName = fields.CharField()
     status = StaticData("USERSTATUS", "userStatusId")
 
-    roles = fields.Link(RoleList)
+    roles = fields.Link(RoleList, invalidate_cache="PermissionList")
     permissions = fields.Link(PermissionList)
 
     name_field = "screenName"
