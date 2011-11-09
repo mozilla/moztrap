@@ -9,7 +9,9 @@
 <section id="manageusers">
   <h2>User Management</h2>
 
+  {% if "PERMISSION_USER_ACCOUNT_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_user_add %}" class="create">create a user</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 

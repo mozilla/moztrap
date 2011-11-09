@@ -4,7 +4,9 @@
 <section id="manageproducts">
   <h2>Manage Products</h2>
 
+  {% if "PERMISSION_PRODUCT_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_product_add %}" class="create">create a product</a>
+  {% endif %}
 
   {% include "lists/_filter.html" %}
 
