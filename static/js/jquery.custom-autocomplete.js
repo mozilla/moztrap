@@ -282,7 +282,7 @@
                 var updateSuggestionList = function () {
                     if (textbox.val() !== typedText && textbox.val() !== placeholder) {
                         typedText = textbox.val();
-                        if (typedText.length) {
+                        if (typedText.length && typedText.trim() !== '') {
                             if (options.ajax) {
                                 if (cache[typedText]) {
                                     updateSuggestions(cache[typedText], true);
