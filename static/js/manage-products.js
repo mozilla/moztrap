@@ -45,7 +45,7 @@ var CC = (function (CC, $) {
             allopts,
             doFilter,
             filterFilters;
-        if (context.length && trigger.is('select')) {
+        if (context.length) {
             target = context.find(options.target_sel);
             allopts = target.find(options.option_sel).clone();
 
@@ -96,9 +96,12 @@ var CC = (function (CC, $) {
                 }
             };
 
-            doFilter();
-
-            trigger.change(doFilter);
+            if (trigger.is('select')) {
+                doFilter();
+                trigger.change(doFilter);
+            } else if (options.multiselect_widget_bool) {
+                filterFilters(target.add(context.find('.multiselected .select')).find(options.option_sel));
+            }
         }
     };
 
