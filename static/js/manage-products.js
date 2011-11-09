@@ -61,7 +61,7 @@ var CC = (function (CC, $) {
                             excludeThisFilter = true;
                         }
                     } else if (type === 'tag') {
-                        if (!(items.filter(function () { return $(this).find('.tags a').text().toLowerCase() === filter; }).length)) {
+                        if (!(items.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
                     } else {

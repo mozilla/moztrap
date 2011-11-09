@@ -45,7 +45,7 @@
                                 excludeThisItem = true;
                             }
                         } else if (type === 'tag') {
-                            if (thisItem.find('.tags a').text().toLowerCase() !== filter) {
+                            if (!(thisItem.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                                 excludeThisItem = true;
                             }
                         } else {
