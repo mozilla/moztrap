@@ -346,6 +346,7 @@ class TestCaseForm(ccforms.AddEditForm):
 
 
     def field_hook(self):
+        self.prior_version = None
         if self.instance is not None:
             increment_choices = [
                 ("major", "save as new version"),
@@ -398,9 +399,8 @@ class TestCaseForm(ccforms.AddEditForm):
 
         # if we're saving as new version, bring forward existing attachments
         # from previous version
-        prior_version = getattr(self, "prior_version", None)
-        if prior_version is not None:
-            for attachment in prior_version.attachments:
+        if self.prior_version is not None:
+            for attachment in self.prior_version.attachments:
                 self.instance.attachments.post(attachment)
 
         if not self.files:
@@ -490,6 +490,8 @@ class TestCaseForm(ccforms.AddEditForm):
         instance = super(TestCaseForm, self).save()
 
         instance.approve(auth=admin)
+        if self.prior_version and self.prior_version.status.ACTIVE:
+            instance.activate(auth=admin)
 
         return instance
 
