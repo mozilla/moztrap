@@ -21,10 +21,10 @@
       {{ product.description }}
     </p>
     <section class="components">
-      <h4><a href="{% url manage_testcycles %}?product={{ product.id }}">Cycles in this product:</a></h4>
+      <h4><a href="{% url manage_testcycles %}?filter-product={{ product.id }}">Cycles in this product:</a></h4>
       <ul>
         {% for cycle in product.testcycles %}
-        <li><a href="{% url manage_testcycles %}?product={{ product.id }}#cycle-id-{{ cycle.id }}">{{ cycle.name }}</a></li>
+        <li><a href="{% url manage_testcycles %}?filter-product={{ product.id }}#cycle-id-{{ cycle.id }}">{{ cycle.name }}</a></li>
         {% endfor %}
       </ul>
     </section>

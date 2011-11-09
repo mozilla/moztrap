@@ -1,5 +1,5 @@
 <p class="drill">
-  See related <a href="{% url results_testcases %}?testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
+  See related <a href="{% url results_testcases %}?filter-testRun={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
 </p>
 {% if run.startDate or run.endDate %}
   <div class="time">
