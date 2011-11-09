@@ -128,11 +128,11 @@
                 if (!data && !options.ajax) {
                     var suggestions;
                     if (options.caseSensitive) {
-                        suggestions = inputList.find(options.inputs).parent('li').filter(function () {
+                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
                             return $(this).children('label').text().indexOf(typedText) !== -1;
                         });
                     } else {
-                        suggestions = inputList.find(options.inputs).parent('li').filter(function () {
+                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
                             return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                         });
                     }

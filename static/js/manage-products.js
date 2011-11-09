@@ -43,10 +43,40 @@ var CC = (function (CC, $) {
             trigger = context.find(options.trigger_sel),
             target,
             allopts,
-            doFilter;
+            doFilter,
+            filterFilters;
         if (context.length && trigger.is('select')) {
             target = context.find(options.target_sel);
             allopts = target.find(options.option_sel).clone();
+
+            filterFilters = function (items) {
+                context.find('.multiunselected .groups .filter-group:not(.keyword) input[type="checkbox"]').each(function () {
+                    var thisFilter = $(this),
+                        type = thisFilter.data('name'),
+                        filter = thisFilter.siblings('label').text().toLowerCase(),
+                        excludeThisFilter = false;
+
+                    if (type === 'status') {
+                        if (!(items.filter(function () { return $(this).find('.status span').text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
+                    } else if (type === 'tag') {
+                        if (!(items.filter(function () { return $(this).find('.tags a').text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
+                    } else {
+                        if (!(items.filter(function () { return $(this).find('.' + type).text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
+                    }
+
+                    if (excludeThisFilter) {
+                        thisFilter.attr('disabled', 'disabled');
+                    } else {
+                        thisFilter.removeAttr('disabled');
+                    }
+                });
+            };
 
             doFilter = function () {
                 var key = trigger.find('option:selected').data(options.data_attr),
@@ -62,6 +92,7 @@ var CC = (function (CC, $) {
                 if (options.multiselect_widget_bool) {
                     context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
                     context.find('.multiselected .select').empty();
+                    filterFilters(newopts);
                 }
             };
 
