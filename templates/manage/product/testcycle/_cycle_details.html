@@ -11,11 +11,11 @@
 
 {% if cycle.testruns|length %}
 <section class="components">
-  <h4><a href="{% url manage_testruns %}?testCycle={{ cycle.id }}">Runs in this cycle:</a></h4>
+  <h4><a href="{% url manage_testruns %}?filter-testCycle={{ cycle.id }}">Runs in this cycle:</a></h4>
   <ul>
     {% for run in cycle.testruns %}
     <li>
-      <a href="{% url manage_testruns %}?testCycle={{ cycle.id }}#run-id-{{ run.id }}">{{ run.name }}</a>
+      <a href="{% url manage_testruns %}?filter-testCycle={{ cycle.id }}#run-id-{{ run.id }}">{{ run.name }}</a>
     </li>
     {% endfor %}
   </ul>

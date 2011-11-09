@@ -243,6 +243,7 @@ class TimelineField(Field):
 class Link(remoteobjects.fields.Link):
     def __init__(self, *args, **kwargs):
         self.cache = kwargs.pop("cache", None)
+        self.invalidate_cache = kwargs.pop("invalidate_cache", None)
         super(Link, self).__init__(*args, **kwargs)
 
 
@@ -266,16 +267,19 @@ class Link(remoteobjects.fields.Link):
     def __set__(self, instance, value):
         if isinstance(value, (list, tuple, set)):
             value = self.cls(entries=list(value))
+        # Must invalidate cache for both resource being PUT to and parent
+        # resource, because parent resource's version will be incremented.
+        invalidate_cache = (
+            instance.cache_dependent_buckets(instance.id) +
+            instance.cache_buckets(instance.id) +
+            value.cache_dependent_buckets())
+        if self.invalidate_cache is not None:
+            invalidate_cache += [self.invalidate_cache]
         value.put(
             url=join(instance._location.split("?")[0], self.api_name),
             version_payload=instance,
             auth=value.auth or instance.auth,
-            # Must invalidate cache for both resource being PUT to and parent
-            # resource, because parent resource's version will be incremented.
-            invalidate_cache=(
-                instance.cache_dependent_buckets(instance.id) +
-                instance.cache_buckets(instance.id) +
-                value.cache_dependent_buckets())
+            invalidate_cache=invalidate_cache
             )
 
 
