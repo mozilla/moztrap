@@ -855,9 +855,19 @@ def narrow_environments(request, object_type, object_id):
     if request.method == "POST":
         env_ids = request.POST.getlist("environments")
 
-        obj.environmentgroups = env_ids
-
-        return redirect("manage_%ss" % object_type)
+        try:
+            obj.environmentgroups = env_ids
+        except EnvironmentGroup.Conflict as e:
+            if e.response_error in [
+                "unsupported.environment.selection", "changing.used.entity"]:
+                messages.error(
+                    request,
+                    "Unable to update environments; object may be activated or "
+                    "selection may conflict with existing dependent objects.")
+            else:
+                raise
+        else:
+            return redirect("manage_%ss" % object_type)
 
     return TemplateResponse(
         request,
