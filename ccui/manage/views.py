@@ -709,10 +709,21 @@ def add_environment_profile(request):
         else:
             profile = EnvironmentType(
                 name=name, company=request.company, groupType=True)
-            etl.post(profile)
-            request.company.autogenerate_env_groups(element_ids, profile)
+            try:
+                etl.post(profile)
+            except EnvironmentType.Conflict as e:
+                if e.response_error == "duplicate.name":
+                    messages.error(
+                        request,
+                        "That name is already in use. "
+                        "Please use a different name.")
+                else:
+                    raise
+            else:
+                request.company.autogenerate_env_groups(element_ids, profile)
 
-            return redirect("manage_environment_edit", profile_id=profile.id)
+                return redirect(
+                    "manage_environment_edit", profile_id=profile.id)
 
     categories = etl.filter(groupType=False)
     return TemplateResponse(
