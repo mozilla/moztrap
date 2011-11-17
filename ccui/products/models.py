@@ -56,7 +56,10 @@ class Product(Named, RemoteObject):
 
 
     def _get_profile(self):
-        return self.environmentgroups[0].environmentType
+        try:
+            return self.environmentgroups[0].environmentType
+        except IndexError:
+            return None
 
 
     def _set_profile(self, val):
