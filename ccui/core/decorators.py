@@ -146,6 +146,12 @@ def actions(list_model, allowed_actions, fall_through=False):
                         except obj.Conflict, e:
                             messages.error(
                                 request, errors.error_message(obj, e))
+                        except obj.NotFound, e:
+                            messages.error(
+                                request,
+                                "%s is an invalid %s id." % (
+                                    obj_id, list_model.entryclass.__name__)
+                                )
                         action_taken = True
                 if action_taken or not fall_through:
                     if request.is_ajax():
