@@ -90,12 +90,18 @@ class FieldFilter(object):
         return self.options
 
 
+    @property
+    def valid_values(self):
+        value_options = set([str(k) for k, v in self.get_options()])
+        return [v for v in self.values if v in value_options]
+
+
     def filters(self):
         """
         Return tuple of (fieldname, values) to filter the API query on.
 
         """
-        return (self.name, self.values)
+        return (self.name, self.valid_values)
 
 
     @property
@@ -104,13 +110,15 @@ class FieldFilter(object):
         True if this filter has data and should be included.
 
         """
-        return bool(self.values)
+        return bool(self.valid_values)
 
 
     def __iter__(self):
         for o in self.get_options():
             yield FilterOption(
-                value=o[0], label=o[1], selected=(str(o[0]) in self.values))
+                value=o[0],
+                label=o[1],
+                selected=(str(o[0]) in self.values))
 
 
     def __len__(self):

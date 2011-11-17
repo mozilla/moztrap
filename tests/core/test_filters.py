@@ -70,14 +70,14 @@ class TestFilter(FilterTestCase):
 
     def test_filter(self):
         f = self.filter_class(
-            self.GET(status=["draft", "active"]),
+            self.GET(status=["1", "2"]),
             self.auth,
             ("status", self.status_field_filter))
 
         list_obj = Mock()
         f.filter(list_obj)
 
-        list_obj.filter.assert_called_with(status=["draft", "active"])
+        list_obj.filter.assert_called_with(status=["1", "2"])
 
 
     def test_empty_filter(self):
