@@ -179,8 +179,6 @@ class TestCycleResultsViewTest(ViewTestCase, ListViewTests):
         return {
             "http://fake.base/rest/testcycles/%s/reports/coverage/resultstatus?_type=json" % item_id:
                 response(cvis.array({"categoryName": 1, "categoryValue": 160})),
-            "http://fake.base/rest/testcycles/%s/reports/coverage/percentcomplete?_type=json" % item_id:
-                response(cvis.one()),
             }
 
 

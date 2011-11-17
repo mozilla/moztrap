@@ -220,6 +220,8 @@ class TestSuiteEditViewTest(ViewTestCase, EditViewTests):
                     _id=1, _url="testcases/versions/1")),
             "http://fake.base/rest/testcases/versions/1/tags?_type=json":
                 response(tags.array()),
+            "http://fake.base/rest/tags?_type=json":
+                response(tags.searchresult({}))
             }
 
 
