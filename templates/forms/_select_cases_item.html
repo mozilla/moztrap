@@ -3,9 +3,9 @@
 {% block content %}
 {% with item.latestversion as version %}
 <p class="status">
-  <span class="{{ version.status|lower }}">{{ version.status|lower }}</span>
+  <span class="{{ version.status|lower }}" title="{{ version.status|lower }}">{{ version.status|lower }}</span>
 </p>
-<h5 class="title">{{ item.name }}</h5>
+<h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
 {# @@@ links add a filter? #}
 <ul class="tags">
   {% for tag in version.tags %}
