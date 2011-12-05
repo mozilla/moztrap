@@ -1,6 +1,4 @@
-sass==3.1.7
-compass==0.11.5
+sass==3.2.0.alpha.35
+compass==0.12.alpha.2
 compass-susy-plugin==0.9
-compass-rgbapng==0.1.1
 chunky_png==1.2.1
-css-slideshow==0.3.beta.2
