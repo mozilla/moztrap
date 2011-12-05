@@ -1,117 +1,36 @@
-@font-face {
-  font-family: "CambridgeRound";
-  src: url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.woff') format('woff'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRound";
-  src: url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.woff') format('woff'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight') format('svg');
-  font-weight: 200;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRound";
-  src: url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff') format('woff'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold') format('svg');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRound";
-  src: url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff') format('woff'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRound";
-  src: url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.woff') format('woff'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic') format('svg');
-  font-weight: normal;
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "CambridgeRoundCond";
-  src: url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRoundCond";
-  src: url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "CambridgeRoundCond";
-  src: url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.woff') format('woff'), url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.ttf') format('truetype'), url('../fonts/cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.svg#CambridgeRoundBoldCondensed') format('svg');
-  font-weight: 500;
-  font-style: normal;
-}
-
-/* !
- * Web Fonts from fontspring.com
- *
- * All OpenType features and all extended glyphs have been removed.
- * Fully installable fonts can be purchased at http://www.fontspring.com
- *
- * The fonts included in this stylesheet are subject to the End User License you purchased
- * from Fontspring. The fonts are protected under domestic and international trademark and
- * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
- * distributing this font software.
- *
- * (c) 2010-2011 Fontspring
- *
- *
- *
- *
- * The fonts included are copyrighted by the vendor listed below.
- *
- * Vendor:      Aviation Partners
- * License URL: http://www.fontspring.com/fflicense/aviation-partners
- *
- *
- */
-/* Print Defaults -------------------------------------------------------------- */
+/* Print Defaults ------------------------------------------------------------ */
 nav {
   display: none;
 }
 
 * {
   background: transparent !important;
-  color: #444444 !important;
+  color: #595959 !important;
   float: none !important;
   text-shadow: none !important;
 }
 
 body {
   font-family: Cambria, Georgia, serif;
-  font-size: 12pt;
+  font-size: 12px;
+  line-height: 18px;
   background: white;
   color: black;
 }
 
 a:link, a:visited {
-  color: #444444 !important;
+  color: #595959 !important;
+}
+a:not([href^="#"]):not([href="/"]):not([rel="home"]):link, a:not([href^="#"]):not([href="/"]):not([rel="home"]):visited {
+  color: #333366 !important;
   text-decoration: underline;
 }
-a:after {
+a:not([href^="#"]):not([href="/"]):not([rel="home"]):after {
   content: " (" attr(href) ") ";
-  font-size: smaller;
-}
-a:after[href^="#"] {
-  content: "";
-  display: none;
 }
 
 abbr:after {
   content: " (" attr(title) ")";
-  font-size: smaller;
 }
 
 pre, blockquote, img {

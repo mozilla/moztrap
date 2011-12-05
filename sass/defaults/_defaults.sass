@@ -1,0 +1,192 @@
+// Imports -------------------------------------------------------------------
+
+@import compass/reset
+@import ../settings/settings
+@import ../helpers/helpers
+@import root
+
+/* Links ---------------------------------------------------------------------
+
+$link   :   "&:link, &:visited"
+$focus  :   "&:focus, &:hover, &:active"
+
+=focus-default
+  outline: thin dotted $accent
+
+=no-style-link
+  &:link, &:visited, &:focus, &:hover, &:active
+    color: inherit
+
+a
+  &:hover, &:active
+    outline: none
+  #{$link}
+    color: $alt
+    text-decoration: none
+  #{$focus}
+    color: $accent
+
+/* Headings ------------------------------------------------------------------
+
+h1
+  +adjust-font-size-to(21px)
+
+h1, h2
+  @extend .allcaps
+
+h3
+  font-weight: bold
+
+h4
+  @extend .smallcaps
+
+h5, h6
+  font-style: italic
+
+/* Inline --------------------------------------------------------------------
+
+cite, em, dfn, address, i
+  font-style: italic
+
+strong, dfn, b
+  font-weight: bold
+
+sup, sub
+  position: relative
+  font-size: smaller
+  line-height: 0
+
+sup
+  top: -.5em
+
+sub
+  bottom: -.25em
+
+abbr, acronym
+  border-bottom: 1px dotted
+  cursor: help
+
+ins
+  text-decoration: underline
+
+del
+  text-decoration: line-through
+
+mark
+  background: #ff9
+  background-color: rgba(#ff0,.5)
+  text-shadow: none
+
+small
+  +adjust-font-size-to(12px)
+
+q
+  font-style: italic
+  em
+    font-style: normal
+
+pre, code, tt
+  @extend .mono
+
+/* Block ---------------------------------------------------------------------
+
+p
+  +trailer
+
+pre
+  padding: rhythm()
+  white-space: pre
+  white-space: pre-wrap
+  white-space: pre-line
+  word-wrap: break-word
+
+blockquote
+  padding: rhythm()
+  font-style: italic
+
+/* Interactive ---------------------------------------------------------------
+
+$summary-display: inline
+
+details
+  +trailer
+
+summary
+  display: $summary-display
+  cursor: pointer
+  &:focus
+    +focus-default
+
+.no-details
+  details
+    > *
+      display: none
+    summary
+      display: $summary-display
+
+/* Replaced ------------------------------------------------------------------
+
+figure
+  img, object, embed
+    vertical-align: top
+    max-width: 100%
+
+.ie7
+  img
+    -ms-interpolation-mode: bicubic
+
+/* Lists ---------------------------------------------------------------------
+
+=no-style-list
+  +reset-box-model
+  +no-bullets
+
+ol, ul, dd
+  margin-left: rhythm()
+
+ol
+  list-style-type: decimal
+
+ul
+  list-style-type: disc
+  nav &
+    +no-style-list
+
+dt
+  +leader
+
+/* Tables --------------------------------------------------------------------
+
+table
+  +trailer
+  width: 100%
+  border-collapse: separate
+  border-spacing: 0
+
+table, td, th
+  vertical-align: top
+
+th, thead th
+  font-weight: bold
+
+th, td, caption
+  padding: rhythm(.5)
+  text-align: left
+  font-weight: normal
+
+table, th
+  +trailing-border(1px, 0.5)
+
+tfoot
+  +adjust-font-size-to(14px)
+
+caption
+  @extend .allcaps
+
+/* Forms ---------------------------------------------------------------------
+
+@import forms
+
+// Apps ----------------------------------------------------------------------
+
+@import ../apps/apps

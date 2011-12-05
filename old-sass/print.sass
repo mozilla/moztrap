@@ -1,0 +1,67 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+// 
+// This file is part of Case Conductor.
+// 
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+//** PRINT STYLES **//
+
+// Imports --------------------------------------------------------------*/
+
+@import base
+
+/* Print Defaults --------------------------------------------------------------
+
+nav
+  display: none
+
+* 
+  background: transparent !important
+  color: #444 !important
+  float: none !important
+  text-shadow: none !important
+
+body
+  +serif-family
+  font-size: 12pt
+  background: white
+  color: black
+
+a
+  &:link, &:visited
+    color: #444 !important
+    text-decoration: underline
+  &:after
+    content: " (" attr(href) ") "
+    font-size: smaller
+    &[href^="#"]
+      content: ''
+      display: none
+
+abbr:after
+  content: " (" attr(title) ")"
+  font-size: smaller
+
+pre, blockquote, img
+  page-break-inside: avoid
+
+@page
+  margin: 0.5cm
+
+p, h2, h3
+  orphans: 3
+  widows: 3
+
+h2, h3
+  page-break-after: avoid

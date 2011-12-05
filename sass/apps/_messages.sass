@@ -1,0 +1,21 @@
+// User Messages -------------------------------------------------------------
+
+.message
+  +hpadding(rhythm(1.5) ,rhythm(.5))
+  background: rgba($lighter,$small) no-repeat scroll rhythm(.5)
+  &.info
+    background-image: image-url('ui/info.png')
+    background-color: rgba($blue-lighter,$xsmall)
+  &.success
+    background-image: image-url('ui/check.png')
+    background-color: rgba($green-lighter,$xsmall)
+  &.warning
+    background-image: image-url('ui/warning.png')
+    background-color: rgba($yellow-lighter,$xsmall)
+  &.error
+    background-image: image-url('ui/x.png')
+    background-color: rgba($red-lighter,$xsmall)
+
+#messages
+  ul
+    +no-style-list

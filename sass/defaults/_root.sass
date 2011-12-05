@@ -1,0 +1,31 @@
+/* Root ----------------------------------------------------------------------
+
++establish-baseline
+
+html
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -webkit-text-size-adjust: 100%
+  -ms-text-size-adjust: 100%
+
+body
+  @extend .serif
+  +baseline-grid-background
+  color: $base
+
+/* Selected Text -------------------------------------------------------------
+
+=selected-text($color:$alt)
+  color: contrast-color($color)
+  background: $color
+  text-shadow: none
+
+=apply-selected-text($color:$alt)
+  ::-webkit-selection
+    +selected-text($color)
+  ::-moz-selection
+    +selected-text($color)
+  ::selection
+    +selected-text($color)
+
++apply-selected-text

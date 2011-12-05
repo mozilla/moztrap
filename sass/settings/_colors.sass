@@ -1,94 +1,181 @@
-// Case Conductor is a Test Case Management system.
-// Copyright (C) 2011 uTest Inc.
-//
-// This file is part of Case Conductor.
-//
-// Case Conductor is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Case Conductor is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // Colors --------------------------------------------------------------------
 
-$light: hsl(0, 0%, 93%)
-$dark: hsl(0, 0%, 27%)
-$lighter: lighten($light,5)
-$lightest: lighten($light,10)
-$mid: mix($light,$dark)
-$mid-light: mix($light,$dark,75%)
-$mid-dark: mix($light,$dark,25%)
+$mid             : hsl(0,0%,50%)
+$blue             : hsl(240,50%,50%)
+$red              : hsl(0,50%,50%)
+$green            : hsl(120,50%,50%)
+$yellow           : hsl(45,75%,50%)
 
-$blue: hsl(212, 24%, 42%)
-$blue-light: mix($blue,$light,66%)
-$blue-lighter: mix($blue-light,$light,66%)
-$blue-lightest: mix($blue-light,$light,33%)
-$blue-hint: lighten($blue-lightest,10)
-$blue-dark: mix($blue,$dark)
-$blue-darker: mix($blue-dark,$dark)
+$dark             : darken($mid,15)
+$darker           : darken($mid,25)
+$darkest          : darken($mid,50)
+$light            : lighten($mid,15)
+$lighter          : lighten($mid,30)
+$lightest         : lighten($mid,45)
 
-$red: hsl(358, 64%, 44%)
-$red-light: lighten($red,25)
-$red-lighter: lighten($red,35)
-$red-lightest: lighten($red,45)
-$red-dark: darken($red,25)
+$blue-dark        : darken($blue,10)
+$blue-darker      : darken($blue,20)
+$blue-darkest     : darken($blue,30)
+$blue-light       : lighten($blue,15)
+$blue-lighter     : lighten($blue,30)
+$blue-lightest    : lighten($blue,40)
 
-$green: hsl(88, 64%, 44%)
-$green-light: lighten($green,25)
-$green-lighter: lighten($green,35)
-$green-lightest: lighten($green,45)
-$green-dark: darken($green,15)
+$red-dark         : darken($red,10)
+$red-darker       : darken($red,20)
+$red-darkest      : darken($red,30)
+$red-light        : lighten($red,15)
+$red-lighter      : lighten($red,30)
+$red-lightest     : lighten($red,40)
 
-$yellow: hsl(47, 98%, 77%)
-$yellow-light: lighten($yellow,10)
-$yellow-dark: darken($yellow,25)
-$yellow-darker: darken($yellow,35)
-$yellow-darkest: darken($yellow,45)
+$green-dark       : darken($green,10)
+$green-darker     : darken($green,20)
+$green-darkest    : darken($green,30)
+$green-light      : lighten($green,15)
+$green-lighter    : lighten($green,30)
+$green-lightest   : lighten($green,40)
 
-$base: $dark
-$alt: $blue
-$accent: $red-dark
+$yellow-dark      : darken($yellow,15)
+$yellow-darker    : darken($yellow,30)
+$yellow-darkest   : darken($yellow,40)
+$yellow-light     : lighten($yellow,15)
+$yellow-lighter   : lighten($yellow,30)
+$yellow-lightest  : lighten($yellow,40)
+
+$base             : $darker
+$alt              : $blue-light
+$accent           : $red-dark
 
 //! colors --------------------------------------------------------------------
 
-  light     : #{$light}
-  dark      : #{$dark}
-  lighter   : #{$lighter}
-  mid       : #{$mid}
-  mid-light : #{$mid-light}
-  mid-dark  : #{$mid-dark}
+  base              : #{$base}
+  blue              : #{$blue}
+  red               : #{$red}
+  green             : #{$green}
+  yellow            : #{$yellow}
 
-  blue            : #{$blue}
-  blue-light      : #{$blue-light}
-  blue-lighter    : #{$blue-lighter}
-  blue-lightest   : #{$blue-lightest}
-  blue-hint       : #{$blue-hint}
-  blue-dark       : #{$blue-dark}
+  dark              : #{$dark}
+  darker            : #{$darker}
+  darkest           : #{$darkest}
+  light             : #{$light}
+  lighter           : #{$lighter}
+  lightest          : #{$lightest}
 
-  red           : #{$red}
-  red-light     : #{$red-light}
-  red-lighter   : #{$red-lighter}
-  red-lightest  : #{$red-lightest}
-  red-dark      : #{$red-dark}
+  blue-dark         : #{$blue-dark}
+  blue-darker       : #{$blue-darker}
+  blue-darkest      : #{$blue-darkest}
+  blue-light        : #{$blue-light}
+  blue-lighter      : #{$blue-lighter}
+  blue-lightest     : #{$blue-lightest}
 
-  green           : #{$green}
-  green-light     : #{$green-light}
-  green-lighter   : #{$green-lighter}
-  green-lightest  : #{$green-lightest}
-  green-dark      : #{$green-dark}
+  red-dark          : #{$red-dark}
+  red-darker        : #{$red-darker}
+  red-darkest       : #{$red-darkest}
+  red-light         : #{$red-light}
+  red-lighter       : #{$red-lighter}
+  red-lightest      : #{$red-lightest}
 
-  yellow          : #{$yellow}
-  yellow-light    : #{$yellow-light}
-  yellow-dark     : #{$yellow-dark}
-  yellow-darker   : #{$yellow-darker}
-  yellow-darkest  : #{$yellow-darkest}
+  green-dark        : #{$green-dark}
+  green-darker      : #{$green-darker}
+  green-darkest     : #{$green-darkest}
+  green-light       : #{$green-light}
+  green-lighter     : #{$green-lighter}
+  green-lightest    : #{$green-lightest}
 
-  base            : #{$dark}
-  alt             : #{$blue}
-  accent          : #{$red}
+  yellow-dark       : #{$yellow-dark}
+  yellow-darker     : #{$yellow-darker}
+  yellow-darkest    : #{$yellow-darkest}
+  yellow-light      : #{$yellow-light}
+  yellow-lighter    : #{$yellow-lighter}
+  yellow-lightest   : #{$yellow-lightest}
+
+// Test Colors ---------------------------------------------------------------
+
+//#colors
+  ul
+    +clearfix
+    +reset-box-model
+    list-style: none
+  li
+    +columns(3,24)
+    +rhythm(1)
+    text-align: center
+
+  .base
+    .mid
+      background-color: $mid
+    .dark
+      background-color: $dark
+    .darker
+      background-color: $darker
+    .darkest
+      background-color: $darkest
+    .light
+      background-color: $light
+    .lighter
+      background-color: $lighter
+    .lightest
+      background-color: $lightest
+
+  .blue
+    .mid
+      background-color: $blue
+    .dark
+      background-color: $blue-dark
+    .darker
+      background-color: $blue-darker
+    .darkest
+      background-color: $blue-darkest
+    .light
+      background-color: $blue-light
+    .lighter
+      background-color: $blue-lighter
+    .lightest
+      background-color: $blue-lightest
+
+  .green
+    .mid
+      background-color: $green
+    .dark
+      background-color: $green-dark
+    .darker
+      background-color: $green-darker
+    .darkest
+      background-color: $green-darkest
+    .light
+      background-color: $green-light
+    .lighter
+      background-color: $green-lighter
+    .lightest
+      background-color: $green-lightest
+
+  .yellow
+    .mid
+      background-color: $yellow
+    .dark
+      background-color: $yellow-dark
+    .darker
+      background-color: $yellow-darker
+    .darkest
+      background-color: $yellow-darkest
+    .light
+      background-color: $yellow-light
+    .lighter
+      background-color: $yellow-lighter
+    .lightest
+      background-color: $yellow-lightest
+
+  .red
+    .mid
+      background-color: $red
+    .dark
+      background-color: $red-dark
+    .darker
+      background-color: $red-darker
+    .darkest
+      background-color: $red-darkest
+    .light
+      background-color: $red-light
+    .lighter
+      background-color: $red-lighter
+    .lightest
+      background-color: $red-lightest
