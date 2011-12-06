@@ -1,9 +1,19 @@
 {% extends 'runtests/base.html' %}
 {% load execution environment sort %}
 
-{% block main-nav %}
-  {% include "runtests/_run_nav.html" %}
-{% endblock main-nav %}
+{% block test-subnav %}
+<li><a href="{% url runtests %}">Run Tests</a></li>
+<li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
+<li>
+  <ul class="envsettings">
+    {% for env in request.environments %}
+    <li>{{ env.name }}</li>
+    {% endfor %}
+  </ul>
+</li>
+{% endblock test-subnav %}
 
 {% block drilldown %}
   <nav class="drilldown details">

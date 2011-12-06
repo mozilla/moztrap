@@ -48,3 +48,11 @@
   padding:
     left: $l
     right: $r
+
+=triangle($color,$size:rhythm(.25))
+  position: absolute
+  width: 0
+  height: 0
+  border: $size solid rgba($color,0)
+  border-top-width: 0
+  border-bottom-color: $color

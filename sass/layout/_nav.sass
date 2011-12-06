@@ -41,7 +41,96 @@
 // No styleguide reference.
 
 [role="navigation"]
-  padding: 0 side-gutter()
+  +pie-clearfix
+  +trailer(2)
+  position: relative
+  ul, ol
+    +no-style-list
+  li
+    +float(left)
+  a
+    #{$link}
+      padding: rhythm(.25) 0
 
+// Primary ----------------------------------------------------------------
+.primary
+  > li
+    &::after
+      +triangle(rgba($blue-dark,$xsmall))
+      content: " "
+      top: rhythm(1.25)
+      margin-left: rhythm(1)
+      display: none
+    &:hover
+      &::after
+        display: block
+    > a
+      #{$link}
+        +hpadding(rhythm(.5))
+
+  > .active
+    &::after
+      display: block
+    > a
+      +border-radius
+      background: rgba($blue-dark,$xsmall)
+
+  &:hover
+    > .active
+      &::after
+        display: none
+      &:hover
+        &::after
+          display: block
+
+// Secondary ----------------------------------------------------------------
 .secondary
+  +stretch-x
+  +padding-leader(.5)
   display: none
+  overflow: hidden
+
+  .active
+    a
+      #{$link}
+        +text-shadow(rgba($blue-hint,$xxsmall) 0 1px 0)
+        color: $blue-darker
+
+  > ul, > ol
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    +text-shadow(rgba($blue-hint,$xxsmall) 1px 1px 0)
+    min-height: rhythm(1)
+    background: rgba($blue-dark,$xsmall)
+    color: rgba($blue-dark,$small)
+    > li
+      &:first-child
+        margin-left: side-gutter()
+
+  li
+    &::after
+      +hpadding(rhythm(.5))
+    &:last-child::after
+      display: none
+  ul
+    li::after
+      content: "|"
+  ol
+    li::after
+      content: "»"
+
+  .active &
+    display: block
+  .primary:hover .active:not(:hover) &
+    display: none
+  .primary > li:hover &
+    display: block
+
+  .envsettings
+    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+    color: $blue-hint
+    li
+      &::after
+        content: ", "
+        padding: 0 .4em 0 0
+        margin: 0
