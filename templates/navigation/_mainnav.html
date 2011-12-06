@@ -1,0 +1,70 @@
+<nav role="navigation">
+  <h2 class="navhead">Primary Navigation</h2>
+  <ul class="primary">
+    <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
+      <a href="{% url runtests %}">Run Tests</a>
+      <div class="secondary">
+        <ol>
+          {% block test-subnav %}
+          <li>(Select Tests to Run)</li>
+          {% endblock test-subnav %}
+        </ol>
+      </div>
+    </li>
+
+    {% if request.user %} {# @@@ more specific perms check? #}
+    <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
+      <a href="{% url results %}">View Results</a>
+      <div class="secondary">
+        <ol>
+          <li class="{% block resultcycle-active-nav %}{% endblock resultcycle-active-nav %}">
+            <a href="{% url results_testcycles %}?filter-status=2">Test Cycles</a>
+          </li>
+          <li class="{% block resultrun-active-nav %}{% endblock resultrun-active-nav %}">
+            <a href="{% url results_testruns %}">Test Runs</a>
+          </li>
+          <li class="{% block resultcase-active-nav %}{% endblock resultcase-active-nav %}">
+            <a href="{% url results_testcases %}">Test Cases</a>
+          </li>
+        </ol>
+      </div>
+    </li>
+
+    <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %}">
+      <a href="{% url manage %}">Manage</a>
+      <div class="secondary">
+        <ul>
+          <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %}">
+            <a href="{% url manage_users %}">Users</a>
+          </li>
+          <li class="{% block managetag-active-nav %}{% endblock managetag-active-nav %}">
+            <a href="{% url manage_tags %}">Tags</a>
+          </li>
+          <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %}">
+            <a href="{% url manage_environments %}">Environments</a>
+          </li>
+          <li>
+            <ol class="tertiary">
+              <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
+                <a href="{% url manage_products %}">Products</a>
+              </li>
+              <li class="{% block managecycle-active-nav %}{% endblock managecycle-active-nav %}">
+                <a href="{% url manage_testcycles %}">Cycles</a>
+              </li>
+              <li class="{% block managerun-active-nav %}{% endblock managerun-active-nav %}">
+                <a href="{% url manage_testruns %}">Runs</a>
+              </li>
+              <li class="{% block managesuite-active-nav %}{% endblock managesuite-active-nav %}">
+                <a href="{% url manage_testsuites %}">Suites</a>
+              </li>
+              <li class="{% block managecase-active-nav %}{% endblock managecase-active-nav %}">
+                <a href="{% url manage_testcases %}">Cases</a>
+              </li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
