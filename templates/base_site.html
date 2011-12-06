@@ -2,6 +2,8 @@
 
 {% block site %}
 
+{% include "_messages.html" %}
+
 <header role="banner">
   <h1 id="brand"><a href="/" rel="home">case conductor</a></h1>
 
@@ -16,8 +18,6 @@
 </header>
 
 <div id="main" role="main">
-  {% include "_messages.html" %}
-
   {% block content %}
   {% endblock %}
 </div><!-- /~main -->
