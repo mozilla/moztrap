@@ -1,31 +1,39 @@
-// Mixin ---------------------------------------------------------------------
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
 
-=font-face($name, $font-files, $eot: false, $weight: false, $style: false)
-  $iefont: unquote("#{$eot}?iefix")
-  @font-face
-    font-family: quote($name)
-    @if $eot
-      src: font-url($eot)
-      $font-files: font-url($iefont) unquote("format('eot')"), $font-files
-    src: $font-files
-    @if $weight
-      font-weight: $weight
-    @if $style
-      font-style: $style
+// Settings ------------------------------------------------------------------
 
-// Font Stacks ---------------------------------------------------------------
+$font-weight-light  : 200
+$font-weight-normal : normal
+$font-weight-demi   : 500
+$font-weight-bold   : 700
 
-$sans-stack   : "Helvetica Neue", Helvetica, Arial, sans-serif
-$serif-stack  : Cambria, Georgia, serif
-$mono-stack   : "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif
+$sans-fallback      : "Helvetica Neue", Helvetica, Arial, sans-serif
 
-// Apply Fonts ---------------------------------------------------------------
+// Fonts ---------------------------------------------------------------------
 
-=sans-family
-  font-family: $sans-stack
++font-face('CambridgeRound', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg),false,$font-weight-normal,normal)
++font-face('CambridgeRound', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg),false,$font-weight-light,normal)
++font-face('CambridgeRound', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg),false,$font-weight-demi,normal)
++font-face('CambridgeRound', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg),false,$font-weight-bold,normal)
++font-face('CambridgeRound', font-files('cambridgeround_italic_macroman/cambridge_round_it-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic',svg),false,$font-weight-normal,italic)
 
-=serif-family
-  font-family: $serif-stack
-
-=mono-family
-  font-family: $mono-stack
++font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg),false,$font-weight-normal,normal)
++font-face('CambridgeRoundCond', font-files('cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff',woff,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf',truetype,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg),false,$font-weight-bold,normal)
++font-face('CambridgeRoundCond', font-files('cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.woff',woff,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.ttf',truetype,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.svg#CambridgeRoundSemiboldCondensed',svg),false,$font-weight-demi,normal)

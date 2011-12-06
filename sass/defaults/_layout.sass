@@ -1,0 +1,81 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Basic layout for the application.
+//
+// No styleguide reference.
+
+body > div
+  +container
+  +clearfix
+  +susy-grid-background
+  +box-shadow($base 0 rhythm(-1) rhythm())
+  position: relative
+
+// ---------------------------------------------------------------------------
+// Deprecated: A page status notification pop-up at the bottom of incomplete
+// pages and wireframes. Only for Dev.
+//
+// :hover                 - appears on hover
+// [title*='wireframe']   - Yellow background for wireframe
+// [title*='incomplete']  - Red background for incomplete
+//
+// No styleguide reference.
+
+#page-status
+  +opacity(.5)
+  position: fixed
+  top: 100%
+  right: 0
+  bottom: 0
+  left: 0
+  padding: rhythm(.5) rhythm(1)
+  background: $light
+
+  &[title=""], h2
+    +gone
+  p
+    +trailer(0)
+
+  &::before
+    @extend .allcaps
+    +border-top-left-radius
+    +bold
+    content: image-url('ui/warning.png')
+    display: block
+    position: absolute
+    bottom: 100%
+    right: 0
+    padding: rhythm(.25) rhythm(.5)
+    background: $light
+
+  &:hover
+    +opacity(1)
+    top: auto
+
+  &[title*="wireframe"]
+    background: $yellow-light
+    &::before
+      background: $yellow-light
+
+  &[title*="incomplete"]
+    background: $red-lighter
+    &::before
+      background: $red-lighter
