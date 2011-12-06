@@ -17,11 +17,23 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-// User Messages -------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Interaction messages for the user, with icons to show the type of message.
+//
+// .info    - blue with info icon
+// .success - green with check icon
+// .warning - yellow with warning icon
+// .error   - red with x icon
+//
+// Styleguide 1.1.
 
 .message
-  +hpadding(rhythm(1.5) ,rhythm(.5))
-  background: rgba($lighter,$small) no-repeat scroll rhythm(.5)
+  +hpadding(rhythm(2))
+  background: rgba($lighter,$small) no-repeat scroll rhythm()
+  cursor: pointer
+  p
+    +trailer(0)
+
   &.info
     background-image: image-url('ui/info.png')
     background-color: rgba($blue-lighter,$xsmall)
@@ -34,7 +46,3 @@
   &.error
     background-image: image-url('ui/x.png')
     background-color: rgba($red-lighter,$xsmall)
-
-#messages
-  ul
-    +no-style-list

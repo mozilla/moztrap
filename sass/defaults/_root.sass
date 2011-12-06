@@ -17,7 +17,10 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-/* Root ----------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Establish some basic root styles
+//
+// No styleguide reference
 
 +establish-baseline
 
@@ -32,19 +35,20 @@ body
   +baseline-grid-background
   color: $base
 
-/* Selected Text -------------------------------------------------------------
+// Selected Text -------------------------------------------------------------
 
-=selected-text($color:$alt)
+=selection-default($color: $alt)
   color: contrast-color($color)
   background: $color
   text-shadow: none
 
-=apply-selected-text($color:$alt)
+=selected-text
   ::-webkit-selection
-    +selected-text($color)
+    @content
   ::-moz-selection
-    +selected-text($color)
+    @content
   ::selection
-    +selected-text($color)
+    @content
 
-+apply-selected-text
++selected-text
+  +selection-default($accent)

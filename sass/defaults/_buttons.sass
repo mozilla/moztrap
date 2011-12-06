@@ -1,0 +1,91 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Resets browser styles on a button.
+//
+// No styleguide reference.
+
+=button-reset
+  +reset-box-model
+  display: inline
+  overflow: visible
+  width: auto
+  vertical-align: baseline
+  background: none
+  color: inherit
+  font: inherit
+
+button
+  +button-reset
+
+// Applies color, icon and gradient to a button.
+//
+// $c     - the color of the button.
+// $icon  - the icon to use.
+// $hover - [true | false] if the button should respond to hovering.
+//
+// Styleguide 1.2.
+
+=button-color($c:$green,$icon:false,$hover:true)
+  $bgrad   : linear-gradient(top center, lighten($c,25) 0%, $c 100%)
+  $bhover  : linear-gradient(top center, lighten($c,30) 0%, $c 100%)
+  $bactive : linear-gradient(bottom center, lighten($c,25) 0%, $c 100%)
+  border-color: desaturate($c,25)
+
+  @if $icon
+    +background-image(image-url($icon), $bgrad)
+    padding-left: image-width($icon) + $smallpx*1.5
+    background:
+      repeat: no-repeat
+      position: $smallpx, left
+    @if $hover
+      &:hover, &:focus
+        +background-image(image-url($icon), $bhover)
+      &:active
+        +background-image(image-url($icon), $bactive)
+  @else
+    +background-image($bgrad)
+    @if $hover
+      &:hover, &:focus
+        +background-image($bhover)
+      &:active
+        +background-image($bactive)
+
+// Applies default button styles.
+//
+// Styleguide 1.2.
+
+=button
+  +button-color
+  +border-radius
+  +rhythm-borders(1px,.25)
+  +hpadding($normem)
+  +text-shadow(rgba($lightest,$small) 1px 1px 0)
+  +box-shadow(rgba($base,$xsmall) 0 0 $xxsmallem)
+  color: $base
+  cursor: pointer
+  &[disabled]
+    +button-color($mid,false,false)
+
+.button
+  +button
+
+button
+  @extend .button

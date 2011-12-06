@@ -28,6 +28,25 @@ body > div
   +susy-grid-background
   +box-shadow($base 0 rhythm(-1) rhythm())
   position: relative
+  min-width: 960px
+
+#messages
+  ul
+    +no-style-list
+
+#brand
+  +columns(4)
+  +alpha
+
+[role="main"], [role="contentinfo"]
+  +full
+
+[role="main"]
+  +padding-leader
+  +padding-trailer
+
+[role="contentinfo"]
+  color: $mid
 
 // ---------------------------------------------------------------------------
 // Deprecated: A page status notification pop-up at the bottom of incomplete
@@ -66,15 +85,18 @@ body > div
     padding: rhythm(.25) rhythm(.5)
     background: $light
 
+  // ~ hover
   &:hover
     +opacity(1)
     top: auto
 
+  // ~ wireframe
   &[title*="wireframe"]
     background: $yellow-light
     &::before
       background: $yellow-light
 
+  // ~ incomplete
   &[title*="incomplete"]
     background: $red-lighter
     &::before

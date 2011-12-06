@@ -17,5 +17,31 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-@import defaults/defaults
-@import layout/layout
+// ---------------------------------------------------------------------------
+// Navigation titles are not displayed.
+//
+// No styleguide reference.
+
+.navhead
+  +gone
+
+// ---------------------------------------------------------------------------
+// Account Navigation.
+//
+// No styleguide reference.
+
+#accountnav
+  +columns(5)
+  +omega
+  text-align: right
+
+// ---------------------------------------------------------------------------
+// Main Navigation.
+//
+// No styleguide reference.
+
+[role="navigation"]
+  padding: 0 side-gutter()
+
+.secondary
+  display: none
