@@ -64,19 +64,22 @@
     > a
       #{$link}
         +border-top-radius
+        position: relative
         padding: rhythm(.25) rhythm(.5)
+      &::after
+        +triangle(rgba($blue-dark,$xsmall))
+        content: ""
+        top: rhythm(1.25)
+        left: 45%
+        display: none
+      &:hover::after
+        display: block
 
   > .active
     > a
       background: rgba($blue-dark,$xsmall)
-
-  &:hover
-    > .active
-      &::after
+      &:hover::after
         display: none
-      &:hover
-        &::after
-          display: block
 
 // Secondary ----------------------------------------------------------------
 .secondary

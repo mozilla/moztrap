@@ -825,12 +825,27 @@ body > div {
   -ms-border-top-right-radius: 0.296em;
   -o-border-top-right-radius: 0.296em;
   border-top-right-radius: 0.296em;
+  position: relative;
   padding: 0.375em 0.75em;
+}
+.primary > li > a::after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 0.375em solid rgba(75, 87, 101, 0);
+  border-top-width: 0;
+  border-bottom-color: rgba(75, 87, 101, 0.444);
+  content: "";
+  top: 1.875em;
+  left: 45%;
+  display: none;
+}
+.primary > li > a:hover::after {
+  display: block;
 }
 .primary > .active > a {
   background: rgba(75, 87, 101, 0.444);
 }
-.primary:hover > .active::after {
   display: none;
 }
 .primary:hover > .active:hover::after {
