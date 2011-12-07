@@ -1,6 +1,11 @@
+// Fixes an item to the given offset positions of the window.
 //
-=fixed-stretch-x($offset-left: false, $offset-right: false)
-  +fixed-stretch($offset-left: $offset-left, $offset-right, $offset-right)
+// $offset-top    - The top offset.
+// $offset-right  - The right offset.
+// $offset-bottom - The bottom offset.
+// $offset-left   - The left offset
+//
+// Styleguide 1.2
 
 =fixed-stretch($offset-top: false, $offset-right: false, $offset-bottom: false, $offset-left: false)
   position: fixed
