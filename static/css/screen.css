@@ -110,15 +110,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-style: normal;
 }
 
-.caps, .allcaps, h1, h2, caption, #page-status::before, .smallcaps, h4 {
+.caps, .allcaps, h1, h2, h3, caption, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, caption, #page-status::before {
+.allcaps, h1, h2, h3, caption, #page-status::before {
   text-transform: uppercase;
 }
 
-.smallcaps, h4 {
+.smallcaps {
   font-variant: small-caps;
 }
 
@@ -185,8 +185,16 @@ a:focus, a:hover, a:active {
 }
 
 /* Headings ------------------------------------------------------------------ */
-h3 {
-  font-weight: bold;
+h1 {
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 500;
+}
+
+h4 {
+  font-weight: 500;
 }
 
 h5, h6 {

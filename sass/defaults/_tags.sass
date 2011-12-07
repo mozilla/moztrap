@@ -40,17 +40,20 @@ a
 
 /* Headings ------------------------------------------------------------------
 
-h1, h2
+h1, h2, h3
   @extend .allcaps
 
-h3
-  font-weight: bold
+h1
+  +bold
+
+h2
+  +demi
 
 h4
-  @extend .smallcaps
+  +demi
 
 h5, h6
-  font-style: italic
+  +italic
 
 /* Inline --------------------------------------------------------------------
 
