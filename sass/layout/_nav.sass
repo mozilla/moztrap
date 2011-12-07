@@ -17,6 +17,8 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
+$nav-background: rgba($blue-dark,$xsmall)
+
 // ---------------------------------------------------------------------------
 // Navigation titles are not displayed.
 //
@@ -67,7 +69,7 @@
         position: relative
         padding: rhythm(.25) rhythm(.5)
       &::after
-        +triangle(rgba($blue-dark,$xsmall))
+        +triangle($nav-background)
         content: ""
         top: rhythm(1.25)
         left: 45%
@@ -77,7 +79,7 @@
 
   > .active
     > a
-      background: rgba($blue-dark,$xsmall)
+      background: $nav-background
       &:hover::after
         display: none
 
@@ -98,7 +100,7 @@
     +padding-trailer(.25)
     +text-shadow(rgba($blue-hint,$xxsmall) 1px 1px 0)
     min-height: rhythm(1)
-    background: rgba($blue-dark,$xsmall)
+    background: $nav-background
     color: rgba($blue-dark,$small)
     > li
       &:first-child
@@ -150,5 +152,4 @@
       position: absolute
       right: 0
       top: - rhythm(1.25)
-      background: rgba($base,.25)
 
