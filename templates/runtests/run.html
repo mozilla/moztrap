@@ -16,19 +16,7 @@
 {% endblock test-subnav %}
 
 {% block drilldown %}
-  <nav class="drilldown details">
-    <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
-    <div class="content">
-      <section class="selectruns">
-        <h3 class="sectionhead">Select a product, cycle and run</h3>
-        {% include "runtests/finder/_finder.html" %}
-      </section>
-
-      <section class="environment">
-        {% include "runtests/_environment_form.html" with object=testrun %}
-      </section>
-    </div>
-  </nav>
+  {% include "runtests/_run_drilldown.html" with hasenv='true' %}
 {% endblock drilldown %}
 
 {% block testcontent %}

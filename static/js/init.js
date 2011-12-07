@@ -81,7 +81,7 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('.selectruns').html5finder({
+        $('.runsdrill').html5finder({
             loading: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
@@ -97,10 +97,10 @@ var CC = (function (CC, $) {
                 'input[name="testrun"]'
             ],
             callback: function () {
-                $('.selectruns + .environment').slideUp('fast');
+                $('.runsdrill + .environment').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill + .environment').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
@@ -193,7 +193,7 @@ var CC = (function (CC, $) {
         CC.autoFocus('.details.stepfail > .summary', '#run');
         CC.autoFocus('.details.testinvalid > .summary', '#run');
         CC.runTests('#run');
-        CC.breadcrumb('.selectruns');
+        CC.breadcrumb('.runsdrill');
         CC.failedTestBug('#run');
     });
 

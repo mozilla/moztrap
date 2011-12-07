@@ -2,27 +2,18 @@
 
 {% block bodyclasses %}{{ block.super }} section-runtest{% endblock bodyclasses %}
 
-{% block page-status %}incomplete{% endblock %}
+{% block page-status %}incomplete{% endblock page-status %}
 
 {% block page-notes %}
   <p>Product icons in finder are faked.</p>
-{% endblock %}
+{% endblock page-notes %}
 
 {% block run-active-nav %}active{% endblock run-active-nav %}
 
 {% block content %}
 
   {% block testcontent %}
-  <nav class="drilldown">
-    <h2 class="navhead">Run Test Navigation</h2>
-    <section class="selectruns">
-      <h3 class="sectionhead">Select a product, cycle and run</h3>
-      {% include "runtests/finder/_finder.html" %}
-    </section>
+    {% include "runtests/_run_drilldown_main.html" with details="none" hasenv="empty" %}
+  {% endblock testcontent %}
 
-    <section class="environment empty">
-    </section>
-  </nav>
-  {% endblock %}
-
-{% endblock %}
+{% endblock content %}
