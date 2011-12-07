@@ -694,6 +694,9 @@ body > div {
   margin-right: 1.031%;
   color: #999999;
 }
+[role="contentinfo"] small {
+  font: inherit;
+}
 
 #page-status {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
