@@ -31,9 +31,9 @@
 // No styleguide reference.
 
 #accountnav
-  +columns(12)
+  +columns($account-width)
   +omega
-  +leader(1.5)
+  +leader(2.25)
   position: relative
   text-align: right
   z-index: 2
@@ -60,7 +60,7 @@
 .primary
   > li
     &:first-child
-      margin-left: side-gutter()
+      +push($logo-width)
     > a
       #{$link}
         +border-top-radius

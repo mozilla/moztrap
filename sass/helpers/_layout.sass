@@ -18,6 +18,30 @@
   @if $offset-left
     left: $offset-left
 
+// Apply column-margins before or after a grid element.
+//
+// $push    - left columns, defaults to false.
+// $pull    - right columns, defaults to false.
+// $context - grid context, defaults to false.
+//
+// Styleguide 3.2.
+
+=squish($push:false,$pull:false,$context:false)
+  $sg: side-gutter()
+  @if $context
+    $sg: 0
+
+  @if $push
+    margin-left: $sg + columns($push,$context) + gutter($context)
+  @if $pull
+    margin-right: $sg + columns($pull,$context) + gutter($context)
+
+=push($push:0,$context:false)
+  +squish($push:$push,$context:$context)
+
+=pull($push:0,$context:false)
+  +squish($pull:$pull,$context:$context)
+
 // Creates a grid container with a min-width of 68em (approx 960px).
 //
 // No styleguide reference.

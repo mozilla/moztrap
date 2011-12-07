@@ -29,13 +29,23 @@ body > div
   +box-shadow($base 0 rhythm(-1) rhythm())
   position: relative
 
-[role="banner"]
-  +padding-leader(.5)
+.message
+  +squish($brand-width,$account-width)
 
 #brand
-  +columns(12)
+  +columns($brand-width - $logo-width)
   +alpha
-  +trailer(.5)
+  +prefix($logo-width)
+  position: relative
+  &::before
+    +background-size('contain')
+    content: ''
+    position: absolute
+    left: 0
+    top: rhythm(.5,$medpx)
+    height: rhythm(2.75,$medpx)
+    width: columns($logo-width,$brand-width)
+    background: image-url('cc-logo-126-50.png') no-repeat scroll top center
 
 [role="main"]
   padding: rhythm() side-gutter()
