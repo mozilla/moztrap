@@ -20,19 +20,31 @@
 // ---------------------------------------------------------------------------
 // Interaction messages for the user, with icons to show the type of message.
 //
-// .info    - blue with info icon
-// .success - green with check icon
-// .warning - yellow with warning icon
-// .error   - red with x icon
+// :last-child  - last message gets rounded bottom-border
+// .info        - blue with info icon
+// .success     - green with check icon
+// .warning     - yellow with warning icon
+// .error       - red with x icon
+// .noscript    - only displays with JS turned off
 //
 // Styleguide 1.1.
 
+#messages
+  +fixed-stretch(0,0,auto,0)
+  ul
+    @extend .container
+    list-style: none
+
 .message
-  +hpadding(rhythm(2))
-  background: rgba($lighter,$small) no-repeat scroll rhythm()
+  padding: rhythm(.25) rhythm(1.5)
+  margin: 0 side-gutter() + columns(6) + gutter()
+  background: rgba($lighter,$small) no-repeat scroll rhythm(.5)
   cursor: pointer
   p
     +trailer(0)
+
+  &:last-child
+    +border-bottom-radius()
 
   &.info
     background-image: image-url('ui/info.png')
@@ -46,3 +58,7 @@
   &.error
     background-image: image-url('ui/x.png')
     background-color: rgba($red-lighter,$xsmall)
+
+  &.noscript
+    .js &
+      display: none

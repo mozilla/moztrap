@@ -31,9 +31,12 @@
 // No styleguide reference.
 
 #accountnav
-  +columns(5)
+  +columns(12)
   +omega
+  +leader(1.5)
+  position: relative
   text-align: right
+  z-index: 2
 
 // ---------------------------------------------------------------------------
 // Main Navigation.
@@ -42,7 +45,8 @@
 
 [role="navigation"]
   +pie-clearfix
-  +trailer(2)
+  +padding-trailer(1.5)
+  clear: left
   position: relative
   ul, ol
     +no-style-list
@@ -50,29 +54,20 @@
     +float(left)
   a
     #{$link}
-      padding: rhythm(.25) 0
+      display: inline-block
 
 // Primary ----------------------------------------------------------------
 .primary
   > li
-    &::after
-      +triangle(rgba($blue-dark,$xsmall))
-      content: " "
-      top: rhythm(1.25)
-      margin-left: rhythm(1)
-      display: none
-    &:hover
-      &::after
-        display: block
+    &:first-child
+      margin-left: side-gutter()
     > a
       #{$link}
-        +hpadding(rhythm(.5))
+        +border-top-radius
+        padding: rhythm(.25) rhythm(.5)
 
   > .active
-    &::after
-      display: block
     > a
-      +border-radius
       background: rgba($blue-dark,$xsmall)
 
   &:hover
@@ -86,7 +81,6 @@
 // Secondary ----------------------------------------------------------------
 .secondary
   +stretch-x
-  +padding-leader(.5)
   display: none
   overflow: hidden
 
@@ -152,7 +146,6 @@
     .summary
       position: absolute
       right: 0
-      top: - rhythm(1.375)
-      height: rhythm(1.125)
+      top: - rhythm(1.25)
       background: rgba($base,.25)
 

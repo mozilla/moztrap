@@ -110,6 +110,19 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   font-style: normal;
 }
 
+.container, #messages ul, body > div {
+  *zoom: 1;
+  margin: auto;
+  width: 97em;
+  max-width: 100%;
+  min-width: 68em;
+}
+.container:after, #messages ul:after, body > div:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .caps, .allcaps, h1, h2, h3, caption, #page-status::before, .smallcaps {
   letter-spacing: 0.1em;
 }
@@ -589,14 +602,37 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   text-align: center;
 }
 
+#messages {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+}
+#messages ul {
+  list-style: none;
+}
+
 .message {
-  padding-left: 3em;
-  padding-right: 3em;
-  background: rgba(250, 250, 250, 0.667) no-repeat scroll 1.5em;
+  padding: 0.375em 2.25em;
+  margin: 0 25.773%;
+  background: rgba(250, 250, 250, 0.667) no-repeat scroll 0.75em;
   cursor: pointer;
 }
 .message p {
   margin-bottom: 0em;
+}
+.message:last-child {
+  -moz-border-radius-bottomleft: 0.296em;
+  -webkit-border-bottom-left-radius: 0.296em;
+  -ms-border-bottom-left-radius: 0.296em;
+  -o-border-bottom-left-radius: 0.296em;
+  border-bottom-left-radius: 0.296em;
+  -moz-border-radius-bottomright: 0.296em;
+  -webkit-border-bottom-right-radius: 0.296em;
+  -ms-border-bottom-right-radius: 0.296em;
+  -o-border-bottom-right-radius: 0.296em;
+  border-bottom-right-radius: 0.296em;
 }
 .message.info {
   background-image: url('../images/ui/info.png?1309045001');
@@ -614,12 +650,11 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   background-image: url('../images/ui/x.png?1314206098');
   background-color: rgba(236, 167, 169, 0.444);
 }
+.js .message.noscript {
+  display: none;
+}
 
 body > div {
-  *zoom: 1;
-  margin: auto;
-  width: 97em;
-  max-width: 100%;
   overflow: hidden;
   *zoom: 1;
   background-image: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(1.031%, rgba(0, 0, 0, 0)), color-stop(1.031%, rgba(203, 207, 214, 0.25)), color-stop(4.124%, rgba(203, 207, 214, 0.25)), color-stop(4.124%, rgba(0, 0, 0, 0)), color-stop(5.155%, rgba(0, 0, 0, 0)), color-stop(5.155%, rgba(203, 207, 214, 0.25)), color-stop(8.247%, rgba(203, 207, 214, 0.25)), color-stop(8.247%, rgba(0, 0, 0, 0)), color-stop(9.278%, rgba(0, 0, 0, 0)), color-stop(9.278%, rgba(203, 207, 214, 0.25)), color-stop(12.371%, rgba(203, 207, 214, 0.25)), color-stop(12.371%, rgba(0, 0, 0, 0)), color-stop(13.402%, rgba(0, 0, 0, 0)), color-stop(13.402%, rgba(203, 207, 214, 0.25)), color-stop(16.495%, rgba(203, 207, 214, 0.25)), color-stop(16.495%, rgba(0, 0, 0, 0)), color-stop(17.526%, rgba(0, 0, 0, 0)), color-stop(17.526%, rgba(203, 207, 214, 0.25)), color-stop(20.619%, rgba(203, 207, 214, 0.25)), color-stop(20.619%, rgba(0, 0, 0, 0)), color-stop(21.649%, rgba(0, 0, 0, 0)), color-stop(21.649%, rgba(203, 207, 214, 0.25)), color-stop(24.742%, rgba(203, 207, 214, 0.25)), color-stop(24.742%, rgba(0, 0, 0, 0)), color-stop(25.773%, rgba(0, 0, 0, 0)), color-stop(25.773%, rgba(203, 207, 214, 0.25)), color-stop(28.866%, rgba(203, 207, 214, 0.25)), color-stop(28.866%, rgba(0, 0, 0, 0)), color-stop(29.897%, rgba(0, 0, 0, 0)), color-stop(29.897%, rgba(203, 207, 214, 0.25)), color-stop(32.99%, rgba(203, 207, 214, 0.25)), color-stop(32.99%, rgba(0, 0, 0, 0)), color-stop(34.021%, rgba(0, 0, 0, 0)), color-stop(34.021%, rgba(203, 207, 214, 0.25)), color-stop(37.113%, rgba(203, 207, 214, 0.25)), color-stop(37.113%, rgba(0, 0, 0, 0)), color-stop(38.144%, rgba(0, 0, 0, 0)), color-stop(38.144%, rgba(203, 207, 214, 0.25)), color-stop(41.237%, rgba(203, 207, 214, 0.25)), color-stop(41.237%, rgba(0, 0, 0, 0)), color-stop(42.268%, rgba(0, 0, 0, 0)), color-stop(42.268%, rgba(203, 207, 214, 0.25)), color-stop(45.361%, rgba(203, 207, 214, 0.25)), color-stop(45.361%, rgba(0, 0, 0, 0)), color-stop(46.392%, rgba(0, 0, 0, 0)), color-stop(46.392%, rgba(203, 207, 214, 0.25)), color-stop(49.485%, rgba(203, 207, 214, 0.25)), color-stop(49.485%, rgba(0, 0, 0, 0)), color-stop(50.515%, rgba(0, 0, 0, 0)), color-stop(50.515%, rgba(203, 207, 214, 0.25)), color-stop(53.608%, rgba(203, 207, 214, 0.25)), color-stop(53.608%, rgba(0, 0, 0, 0)), color-stop(54.639%, rgba(0, 0, 0, 0)), color-stop(54.639%, rgba(203, 207, 214, 0.25)), color-stop(57.732%, rgba(203, 207, 214, 0.25)), color-stop(57.732%, rgba(0, 0, 0, 0)), color-stop(58.763%, rgba(0, 0, 0, 0)), color-stop(58.763%, rgba(203, 207, 214, 0.25)), color-stop(61.856%, rgba(203, 207, 214, 0.25)), color-stop(61.856%, rgba(0, 0, 0, 0)), color-stop(62.887%, rgba(0, 0, 0, 0)), color-stop(62.887%, rgba(203, 207, 214, 0.25)), color-stop(65.979%, rgba(203, 207, 214, 0.25)), color-stop(65.979%, rgba(0, 0, 0, 0)), color-stop(67.01%, rgba(0, 0, 0, 0)), color-stop(67.01%, rgba(203, 207, 214, 0.25)), color-stop(70.103%, rgba(203, 207, 214, 0.25)), color-stop(70.103%, rgba(0, 0, 0, 0)), color-stop(71.134%, rgba(0, 0, 0, 0)), color-stop(71.134%, rgba(203, 207, 214, 0.25)), color-stop(74.227%, rgba(203, 207, 214, 0.25)), color-stop(74.227%, rgba(0, 0, 0, 0)), color-stop(75.258%, rgba(0, 0, 0, 0)), color-stop(75.258%, rgba(203, 207, 214, 0.25)), color-stop(78.351%, rgba(203, 207, 214, 0.25)), color-stop(78.351%, rgba(0, 0, 0, 0)), color-stop(79.381%, rgba(0, 0, 0, 0)), color-stop(79.381%, rgba(203, 207, 214, 0.25)), color-stop(82.474%, rgba(203, 207, 214, 0.25)), color-stop(82.474%, rgba(0, 0, 0, 0)), color-stop(83.505%, rgba(0, 0, 0, 0)), color-stop(83.505%, rgba(203, 207, 214, 0.25)), color-stop(86.598%, rgba(203, 207, 214, 0.25)), color-stop(86.598%, rgba(0, 0, 0, 0)), color-stop(87.629%, rgba(0, 0, 0, 0)), color-stop(87.629%, rgba(203, 207, 214, 0.25)), color-stop(90.722%, rgba(203, 207, 214, 0.25)), color-stop(90.722%, rgba(0, 0, 0, 0)), color-stop(91.753%, rgba(0, 0, 0, 0)), color-stop(91.753%, rgba(203, 207, 214, 0.25)), color-stop(94.845%, rgba(203, 207, 214, 0.25)), color-stop(94.845%, rgba(0, 0, 0, 0)), color-stop(95.876%, rgba(0, 0, 0, 0)), color-stop(95.876%, rgba(203, 207, 214, 0.25)), color-stop(98.969%, rgba(203, 207, 214, 0.25)), color-stop(98.969%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0)));
@@ -634,36 +669,19 @@ body > div {
   -o-box-shadow: #454545 0 -1.5em 1.5em;
   box-shadow: #454545 0 -1.5em 1.5em;
   position: relative;
-  min-width: 960px;
-}
-body > div:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-#messages ul {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-#messages ul li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0;
 }
 
 [role="banner"] {
-  padding-top: 1.5em;
+  padding-top: 0.75em;
 }
 
 #brand {
   display: inline;
   float: left;
-  width: 15.464%;
+  width: 48.454%;
   margin-right: 1.031%;
   margin-left: 1.031%;
+  margin-bottom: 0.75em;
 }
 
 [role="main"] {
@@ -748,18 +766,22 @@ body > div:after {
 #accountnav {
   display: inline;
   float: left;
-  width: 19.588%;
+  width: 48.454%;
   margin-right: 1.031%;
   display: inline;
   float: right;
   margin-right: 1.031%;
   #margin-left: -1em;
+  margin-top: 2.25em;
+  position: relative;
   text-align: right;
+  z-index: 2;
 }
 
 [role="navigation"] {
   *zoom: 1;
-  margin-bottom: 3em;
+  padding-bottom: 2.25em;
+  clear: left;
   position: relative;
 }
 [role="navigation"]:after {
@@ -783,37 +805,26 @@ body > div:after {
   float: left;
 }
 [role="navigation"] a:link, [role="navigation"] a:visited {
-  padding: 0.375em 0;
+  display: inline-block;
 }
 
-.primary > li::after {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border: 0.375em solid rgba(75, 87, 101, 0);
-  border-top-width: 0;
-  border-bottom-color: rgba(75, 87, 101, 0.444);
-  content: " ";
-  top: 1.875em;
-  margin-left: 1.5em;
-  display: none;
-}
-.primary > li:hover::after {
-  display: block;
+.primary > li:first-child {
+  margin-left: 1.031%;
 }
 .primary > li > a:link, .primary > li > a:visited {
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-}
-.primary > .active::after {
-  display: block;
+  -moz-border-radius-topleft: 0.296em;
+  -webkit-border-top-left-radius: 0.296em;
+  -ms-border-top-left-radius: 0.296em;
+  -o-border-top-left-radius: 0.296em;
+  border-top-left-radius: 0.296em;
+  -moz-border-radius-topright: 0.296em;
+  -webkit-border-top-right-radius: 0.296em;
+  -ms-border-top-right-radius: 0.296em;
+  -o-border-top-right-radius: 0.296em;
+  border-top-right-radius: 0.296em;
+  padding: 0.375em 0.75em;
 }
 .primary > .active > a {
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
   background: rgba(75, 87, 101, 0.444);
 }
 .primary:hover > .active::after {
@@ -827,7 +838,6 @@ body > div:after {
   position: absolute;
   left: 0;
   right: 0;
-  padding-top: 0.75em;
   display: none;
   overflow: hidden;
 }
@@ -888,7 +898,6 @@ body > div:after {
 [role="banner"] .drilldown .summary {
   position: absolute;
   right: 0;
-  top: -2.063em;
-  height: 1.688em;
+  top: -1.875em;
   background: rgba(69, 69, 69, 0.25);
 }

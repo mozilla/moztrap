@@ -23,23 +23,19 @@
 // No styleguide reference.
 
 body > div
-  +container
+  @extend .container
   +clearfix
   +susy-grid-background
   +box-shadow($base 0 rhythm(-1) rhythm())
   position: relative
-  min-width: 960px
-
-#messages
-  ul
-    +no-style-list
 
 [role="banner"]
-  +padding-leader
+  +padding-leader(.5)
 
 #brand
-  +columns(4)
+  +columns(12)
   +alpha
+  +trailer(.5)
 
 [role="main"]
   padding: rhythm() side-gutter()
