@@ -658,18 +658,14 @@ body > div:after {
   margin-left: 1.031%;
 }
 
-[role="main"], [role="contentinfo"] {
-  clear: both;
-  margin-left: 1.031%;
-  margin-right: 1.031%;
-}
-
 [role="main"] {
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
+  padding: 1.5em 1.031%;
 }
 
 [role="contentinfo"] {
+  clear: both;
+  margin-left: 1.031%;
+  margin-right: 1.031%;
   color: #999999;
 }
 
@@ -872,4 +868,19 @@ body > div:after {
   content: ", ";
   padding: 0 0.4em 0 0;
   margin: 0;
+}
+
+[role="banner"] .drilldown {
+  clear: both;
+  margin-left: 1.031%;
+  margin-right: 1.031%;
+  margin-bottom: 1.5em;
+  position: relative;
+}
+[role="banner"] .drilldown .summary {
+  position: absolute;
+  right: 0;
+  top: -2.063em;
+  height: 1.688em;
+  background: rgba(69, 69, 69, 0.25);
 }

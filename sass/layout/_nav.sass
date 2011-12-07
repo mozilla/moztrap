@@ -134,3 +134,25 @@
         content: ", "
         padding: 0 .4em 0 0
         margin: 0
+
+// ---------------------------------------------------------------------------
+// Drilldown Navigation.
+//
+// [role='banner']  - layout adjusted to fit in the header.
+//
+// No styleguide reference.
+
+.drilldown
+
+  [role="banner"] &
+    +full
+    +trailer
+    position: relative
+
+    .summary
+      position: absolute
+      right: 0
+      top: - rhythm(1.375)
+      height: rhythm(1.125)
+      background: rgba($base,.25)
+
