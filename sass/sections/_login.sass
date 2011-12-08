@@ -3,14 +3,18 @@ body.login
   #brand
     +un-column
     +reset-box-model
-    +adjust-font-size-to($medpx)
-    +padding-leader(7,$medpx)
+    +padding-leader(7)
     position: relative
     text-align: center
-    &::before
-      top: rhythm(1,$medpx)
+    .logo
+      top: rhythm(1)
       width: 100%
-      height: rhythm(6,$medpx)
+      height: rhythm(6)
+      background: image-url('cc-logo-126-50.png') no-repeat scroll center center
+    .wordmark
+      +adjust-font-size-to($medpx)
+      +reset-box-model
+
   #brand, #main, [role="contentinfo"]
     +full
     +pad(9,9)

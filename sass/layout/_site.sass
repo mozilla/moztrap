@@ -32,30 +32,20 @@ body > div
 .message
   +squish($brand-width,$account-width - $message-overlap)
 
-[role="banner"]
-  position: relative
-
 #brand
-  +adjust-font-size-to($large-normpx)
-  +columns($brand-width - $logo-width)
+  +columns($brand-width)
   +alpha
-  +prefix($logo-width)
   position: relative
-  &::before
-    +background-size('contain')
-    content: ''
+  .logo
     position: absolute
+    top: rhythm(.25)
     left: 0
-    top: rhythm(.5,$large-normpx)
-    height: rhythm(2.75,$large-normpx)
     width: columns($logo-width,$brand-width)
-    background: image-url('cc-logo-126-50.png') no-repeat scroll top center
-
-  +media-medium
-    +adjust-font-size-to($medpx)
-    &::before
-      top: rhythm(.5,$medpx)
-      height: rhythm(2.75,$medpx)
+    height: rhythm(3)
+    background: image-url('cc-logo.png') no-repeat top right
+  .wordmark
+    +adjust-font-size-to($large-normpx)
+    +push($logo-width,$brand-width)
 
 [role="main"]
   padding: rhythm() side-gutter()
