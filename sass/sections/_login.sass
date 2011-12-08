@@ -1,0 +1,21 @@
+body.login
+
+  #brand
+    +un-column
+    +reset-box-model
+    +adjust-font-size-to($medpx)
+    +padding-leader(7,$medpx)
+    position: relative
+    text-align: center
+    &::before
+      top: rhythm(1,$medpx)
+      width: 100%
+      height: rhythm(6,$medpx)
+  #brand, #main, [role="contentinfo"]
+    +full
+    +pad(9,9)
+
+  [role="contentinfo"]
+    +leader(2)
+  .adr
+    +gone
