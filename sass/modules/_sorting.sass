@@ -1,0 +1,43 @@
+// Adds sorting direction indicators to <a> elements.
+//
+// focus  - Display the direction to be sorted on-click.
+// .asc   - Icon indicates sort in ascending order.
+// .desc  - Icon indicates sort in descending order.
+//
+// Styleguide 5.1
+.sortlink
+  #{$link}
+    &::after
+      +replace-text-with-dimensions('ui/angle_up.png')
+      +inline-block
+      content: " "
+      margin-left: .4em
+      background-image: none
+      vertical-align: baseline
+  #{$focus}
+    &::after
+      +opacity(.5)
+      background-image: image-url('ui/angle_up.png')
+
+  &.asc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+
+  &.desc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+
+// Create a list-ordering navigation bar.
+//
+// No styleguide reference.
+.listordering
+  a
+    @extend .sortlink

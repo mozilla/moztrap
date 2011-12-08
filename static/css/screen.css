@@ -931,6 +931,46 @@ body > div {
   top: -1.875em;
 }
 
+.sortlink:link::after, .listordering a:link::after, .sortlink:visited::after, .listordering a:visited::after {
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/angle_up.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  width: 9px;
+  height: 9px;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  content: " ";
+  margin-left: 0.4em;
+  background-image: none;
+  vertical-align: baseline;
+}
+.sortlink:link::after, .listordering a:link::after, .sortlink:visited::after, .listordering a:visited::after {
+  *display: inline;
+}
+.sortlink:focus::after, .listordering a:focus::after, .sortlink:hover::after, .listordering a:hover::after, .sortlink:active::after, .listordering a:active::after {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  background-image: url('../images/ui/angle_up.png?1314206098');
+}
+.sortlink.asc:link::after, .listordering a.asc:link::after, .sortlink.asc:visited::after, .listordering a.asc:visited::after {
+  background-image: url('../images/ui/angle_up.png?1314206098');
+}
+.sortlink.asc:focus::after, .listordering a.asc:focus::after, .sortlink.asc:hover::after, .listordering a.asc:hover::after, .sortlink.asc:active::after, .listordering a.asc:active::after {
+  background-image: url('../images/ui/angle_down.png?1314206098');
+}
+.sortlink.desc:link::after, .listordering a.desc:link::after, .sortlink.desc:visited::after, .listordering a.desc:visited::after {
+  background-image: url('../images/ui/angle_down.png?1314206098');
+}
+.sortlink.desc:focus::after, .listordering a.desc:focus::after, .sortlink.desc:hover::after, .listordering a.desc:hover::after, .sortlink.desc:active::after, .listordering a.desc:active::after {
+  background-image: url('../images/ui/angle_up.png?1314206098');
+}
+
 body.login #brand {
   float: none;
   display: block;
