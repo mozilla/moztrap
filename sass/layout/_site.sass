@@ -33,6 +33,7 @@ body > div
   +squish($brand-width,$account-width)
 
 #brand
+  +adjust-font-size-to($large-normpx)
   +columns($brand-width - $logo-width)
   +alpha
   +prefix($logo-width)
@@ -42,10 +43,16 @@ body > div
     content: ''
     position: absolute
     left: 0
-    top: rhythm(.5,$medpx)
-    height: rhythm(2.75,$medpx)
+    top: rhythm(.5,$large-normpx)
+    height: rhythm(2.75,$large-normpx)
     width: columns($logo-width,$brand-width)
     background: image-url('cc-logo-126-50.png') no-repeat scroll top center
+
+  +media-medium
+    +adjust-font-size-to($medpx)
+    &::before
+      top: rhythm(.5,$medpx)
+      height: rhythm(2.75,$medpx)
 
 [role="main"]
   padding: rhythm() side-gutter()

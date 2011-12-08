@@ -115,7 +115,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   margin: auto;
   width: 97em;
   max-width: 100%;
-  min-width: 68em;
+  min-width: 54em;
 }
 .container:after, #messages ul:after, body > div:after {
   content: "";
@@ -198,11 +198,6 @@ a:focus, a:hover, a:active {
 }
 
 /* Headings ------------------------------------------------------------------ */
-h1 {
-  font-size: 1.5em;
-  line-height: 2em;
-}
-
 h1 {
   font-weight: 500;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -682,6 +677,8 @@ body > div {
 }
 
 #brand {
+  font-size: 1.25em;
+  line-height: 2.4em;
   display: inline;
   float: left;
   width: 19.588%;
@@ -698,10 +695,20 @@ body > div {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.5em;
-  height: 2.75em;
+  top: 0.6em;
+  height: 3.3em;
   width: 25.926%;
   background: url('../images/cc-logo-126-50.png?1320264927') no-repeat scroll top center;
+}
+@media (min-width: 960px) {
+  #brand {
+    font-size: 1.5em;
+    line-height: 2em;
+  }
+  #brand::before {
+    top: 0.5em;
+    height: 2.75em;
+  }
 }
 
 [role="main"] {
