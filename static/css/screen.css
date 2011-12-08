@@ -846,19 +846,19 @@ body > div {
   position: absolute;
   width: 0;
   height: 0;
-  border: 0.375em solid rgba(81, 105, 133, 0);
+  border: 0.563em solid rgba(134, 149, 168, 0);
   border-top-width: 0;
-  border-bottom-color: rgba(81, 105, 133, 0.667);
+  border-bottom-color: #8695a8;
   content: "";
-  top: 1.875em;
+  bottom: -0.188em;
   left: 45%;
   display: none;
 }
-.primary > li > a:hover::after {
+.primary > li:hover a::after {
   display: block;
 }
 .primary > .active > a {
-  background: rgba(81, 105, 133, 0.667);
+  background: #8695a8;
 }
 .primary > .active > a:hover::after {
   display: none;
@@ -880,7 +880,7 @@ body > div {
   padding-bottom: 0.375em;
   text-shadow: rgba(232, 233, 236, 0.296) 1px 1px 0;
   min-height: 1.5em;
-  background: rgba(81, 105, 133, 0.667);
+  background: #8695a8;
   color: rgba(75, 87, 101, 0.667);
 }
 .secondary > ul > li:first-child, .secondary > ol > li:first-child {
