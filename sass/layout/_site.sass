@@ -30,7 +30,10 @@ body > div
   position: relative
 
 .message
-  +squish($brand-width,$account-width)
+  +squish($brand-width,$account-width - $message-overlap)
+
+[role="banner"]
+  position: relative
 
 #brand
   +adjust-font-size-to($large-normpx)
