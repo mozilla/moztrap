@@ -983,3 +983,7 @@ body.login .adr {
   width: 1px;
   border: 0;
 }
+body.login .message {
+  margin-left: 25.773%;
+  margin-right: 25.773%;
+}
