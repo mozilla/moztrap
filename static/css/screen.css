@@ -690,7 +690,7 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/cc-logo.png?1323368403') no-repeat top right;
+  background: url('../images/cc-logo.png?1323368403') no-repeat top center;
 }
 #brand .wordmark {
   font-size: 1.25em;
