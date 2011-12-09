@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Default Django settings for ccui project.
+Default Django settings for Case Conductor project.
 
 """
 from os.path import dirname, join, abspath
@@ -97,18 +97,21 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.request",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages"
 ]
 
 MIDDLEWARE_CLASSES = [
     "django.middleware.common.CommonMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
     "djangosecure.middleware.SecurityMiddleware",
+    "django.middleware.transaction.TransactionMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
 ]
 
-ROOT_URLCONF = "ccui.urls"
+ROOT_URLCONF = "cc.urls"
 
 TEMPLATE_DIRS = [
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -123,6 +126,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.contenttypes",
+    "django.contrib.auth",
+    "django.contrib.admin",
     "south",
     "cc.core",
 ]
