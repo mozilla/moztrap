@@ -58,12 +58,12 @@ be used.
 Running the tests
 ~~~~~~~~~~~~~~~~~
 
-The UI codebase has an automated test suite. To run the tests, after installing
-all Python requirements into your environment::
+To run the tests, after installing all Python requirements into your
+environment::
 
     bin/test
 
-To view test coverage data, load ``coverage/index.html`` in your browser after
+To view test coverage data, load ``htmlcov/index.html`` in your browser after
 running the tests.
 
 To run just a particular test module::
