@@ -21,6 +21,7 @@ from optparse import make_option
 from django.core.management.commands.test import Command as TestCommand
 
 import coverage
+from south.management.commands import patch_for_test_db_setup
 
 
 
@@ -39,6 +40,8 @@ class Command(TestCommand):
     requires_model_validation = False
 
     def handle(self, *test_labels, **options):
+        patch_for_test_db_setup()
+
         if options.get("coverage"):
             cov = coverage.coverage(branch=True)
             cov.start()
@@ -58,6 +61,7 @@ class Command(TestCommand):
             cov.stop()
 
             include = []
+            omit = ["*/migrations/*"]
             report_kw = {}
             if options.get("coverall"):
                 # include all python modules under cc in report, including even
@@ -69,7 +73,7 @@ class Command(TestCommand):
                     py_files.extend([os.path.join(dirpath, fn)
                                      for fn in filenames if fn.endswith(".py")])
                 report_kw["morfs"] = py_files
-                report_kw["omit"] = [
+                report_kw["omit"] = omit + [
                     "cc/core/management/commands/test.py",
                     "cc/settings/base.py",
                     "cc/settings/default.py",
@@ -78,6 +82,7 @@ class Command(TestCommand):
             else:
                 report_kw["include"] = include + [
                     os.path.join(settings.BASE_PATH, "cc/*")]
+                report_kw["omit"] = omit
             cov.html_report(**report_kw)
 
         if failures:
