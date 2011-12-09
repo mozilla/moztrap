@@ -185,3 +185,4 @@ LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "runtests"
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
+TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
