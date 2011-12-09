@@ -85,7 +85,7 @@ vendor library is also provided in ``requirements/vendor/lib/python``. The
 ``site.addsitedir`` function should be used to add this directory to sys.path,
 to ensure that ``.pth`` files are processed. A WSGI entry-point script is
 provided in ``deploy/vendor.wsgi`` that does all the necessary ``sys.path``
-adjustments, as well as a version of ``manage.py`` in ``manage-vendor.py``.
+adjustments, as well as a version of ``manage.py`` in ``vendor-manage.py``.
 
 In any production deployment this entire app should be served exclusively over
 HTTPS (since almost all use of the site is authenticated, and serving

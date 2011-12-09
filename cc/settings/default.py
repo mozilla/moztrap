@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Case Conductor is a Test Case Management system.
 # Copyright (C) 2011 uTest Inc.
 #
@@ -17,19 +15,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+from .base import *
 
-"""
-Runs a Django management command, using the vendor library.
+try:
+    from .local import *
+except ImportError:
+    pass
 
-"""
-import os, sys
-from deploy.paths import add_vendor_lib
+CACHES["default"]["VERSION"] = 1
 
-if __name__ == "__main__":
-    add_vendor_lib()
-
-    os.environ["DJANGO_SETTINGS_MODULE"] = "cc.settings.default"
-
-    from django.core.management import execute_from_command_line
-
-    execute_from_command_line(sys.argv)
+if DEBUG:
+    MIDDLEWARE_CLASSES.insert(
+        0, "cc.debug.middleware.AjaxTracebackMiddleware")

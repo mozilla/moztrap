@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # Case Conductor is a Test Case Management system.
 # Copyright (C) 2011 uTest Inc.
 #
@@ -17,19 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+from django.conf import settings
+from django.core.exceptions import MiddlewareNotUsed
+from django.http import HttpResponse
 
-"""
-Runs a Django management command, using the vendor library.
 
-"""
-import os, sys
-from deploy.paths import add_vendor_lib
 
-if __name__ == "__main__":
-    add_vendor_lib()
+class AjaxTracebackMiddleware(object):
+    def __init__(self):
+        if not settings.DEBUG:
+            raise MiddlewareNotUsed
 
-    os.environ["DJANGO_SETTINGS_MODULE"] = "cc.settings.default"
 
-    from django.core.management import execute_from_command_line
-
-    execute_from_command_line(sys.argv)
+    def process_exception(self, request, *args, **kwargs):
+        if request.is_ajax():
+            import traceback
+            return HttpResponse(traceback.format_exc().replace("\n", "<br>\n"))

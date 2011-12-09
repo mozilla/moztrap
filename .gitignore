@@ -1,7 +1,7 @@
 .sass-cache
 collected-assets/*
 ccui/settings/local.py
-coverage/*
+htmlcov/*
 media/*
 .livereload
 *.pyc
