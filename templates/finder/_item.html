@@ -1,8 +1,8 @@
 {% load finder %}
 
-<li>
-  <input type="radio"{% if active.id == object.id %} checked{% endif %} name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ finder.finder|child_query_url:object|default:'' }}">
-  <label for="{{ object.api_name }}-{{ object.id }}">
+<li class="finderitem">
+  <input type="radio"{% if active.id == object.id %} checked{% endif %} name="{{ object.api_name }}" value="{{ object.id }}" id="{{ object.api_name }}-{{ object.id }}" data-sub-url="{{ finder.finder|child_query_url:object|default:'' }}" class="finderinput">
+  <label for="{{ object.api_name }}-{{ object.id }}" class="finderselect">
     {% block columns %}{% endblock %}
   </label>
   {% block final %}

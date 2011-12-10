@@ -1,0 +1,151 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Creates a vertical "finder" window, for hierarchy navigation.
+//
+// .widefinder  - more columns need the ability to side-scroll
+
+.widefinder
+  overflow-y: hidden
+  overflow-x: scroll
+
+.finder
+  +pie-clearfix
+  clear: both
+  overflow: visible
+  position: relative
+  border: 1px solid rgba($blue-light,$small)
+  background: rgba($blue-hint,$small)
+
+  p
+    margin-bottom: 0
+
+  @for $n from 4 through 10
+    &[data-cols="#{$n}"]
+      @extend .widefinder
+      .carousel
+        width: ($n+1)*25%
+
+  .col
+    +transition(width 300ms)
+    +box-sizing('border-box')
+    +float(left)
+    position: relative
+    width: 25%
+    min-height: rhythm(10)
+    border-right: rhythm(.125) solid rgba($blue-dark,$xsmall)
+    &:last-child
+      +float(right)
+    &.focus
+      width: 50%
+    &:not([class*="focus"])
+      .listordering
+        a::after
+          display: none
+
+    &:first-child
+      &:last-child
+        &, &.focus
+          width: 100%
+      @for $n from 2 through 10
+        &:nth-last-child(#{$n})
+          &, & ~ .col
+            width: 1/($n+1)*100%
+          &.focus, & ~ .col.focus
+            width: 2/($n+1)*100%
+
+  .listordering
+    +stretch-x
+    top: 0
+    padding: rhythm(.25) rhythm(.5)
+    z-index: 2
+
+  .colcontent
+    +no-style-list
+    +stretch
+    margin-top: rhythm(1.5)
+    overflow-y: scroll
+    overflow-x: hidden
+
+  .finderitem
+    position: relative
+
+  .finderselect
+    +pie-clearfix
+    +trailing-border(1px,.125)
+    +hpadding(rhythm(.5))
+    display: block
+    border-color: rgba($blue-light,$xxsmall)
+    cursor: pointer
+    #{$focus}
+      background: rgba($blue-lighter,$xxxsmall)
+
+  .finderinput
+    +gone
+    &:checked
+      + .finderselect
+        +demi
+        background: rgba($blue-light,$small)
+
+  // layout of specific elements ---------------------------------------------
+
+  .title
+    +ellipsis
+    +suffix(1,6)
+    display: block
+
+  .start, .end, .bystart, .byend, .end, .byend
+    display: none
+
+  .goto
+    #{$link}
+      +opacity(.5)
+      +replace-text('ui/open.png')
+      position: absolute
+      top: rhythm(.125)
+      right: 0
+      width: columns(1,6)
+    #{$focus}
+      +opacity(1)
+
+  .focus
+    .start, .end, .bystart, .byend, .end, .byend
+      display: block
+    .open
+      +columns(1,12)
+    .title, .bytitle
+      +columns(7,12)
+      padding: 0
+      &:first-child:last-child
+        +un-column
+    .start, .end, .bystart, .byend
+      +columns(2,12)
+    .byend, .end
+      +suffix(1,12)
+      +omega(12)
+
+  .bystart, .byend
+    +opacity(.75)
+
+  .start, .end
+    +cond
+
+  .start, .end
+    color: $mid

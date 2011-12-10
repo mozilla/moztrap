@@ -991,6 +991,271 @@ body > div {
   letter-spacing: 0;
 }
 
+.widefinder, .finder[data-cols="4"], .finder[data-cols="5"], .finder[data-cols="6"], .finder[data-cols="7"], .finder[data-cols="8"], .finder[data-cols="9"], .finder[data-cols="10"] {
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+
+.finder {
+  *zoom: 1;
+  clear: both;
+  overflow: visible;
+  position: relative;
+  border: 1px solid rgba(134, 149, 168, 0.667);
+  background: rgba(232, 233, 236, 0.667);
+}
+.finder:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.finder p {
+  margin-bottom: 0;
+}
+.finder[data-cols="4"] .carousel {
+  width: 125%;
+}
+.finder[data-cols="5"] .carousel {
+  width: 150%;
+}
+.finder[data-cols="6"] .carousel {
+  width: 175%;
+}
+.finder[data-cols="7"] .carousel {
+  width: 200%;
+}
+.finder[data-cols="8"] .carousel {
+  width: 225%;
+}
+.finder[data-cols="9"] .carousel {
+  width: 250%;
+}
+.finder[data-cols="10"] .carousel {
+  width: 275%;
+}
+.finder .col {
+  -webkit-transition: width 300ms;
+  -moz-transition: width 300ms;
+  -o-transition: width 300ms;
+  transition: width 300ms;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  position: relative;
+  width: 25%;
+  min-height: 15em;
+  border-right: 0.188em solid rgba(75, 87, 101, 0.444);
+}
+.finder .col:last-child {
+  display: inline;
+  float: right;
+}
+.finder .col.focus {
+  width: 50%;
+}
+.finder .col:not([class*="focus"]) .listordering a::after {
+  display: none;
+}
+.finder .col:first-child:last-child, .finder .col:first-child:last-child.focus {
+  width: 100%;
+}
+.finder .col:first-child:nth-last-child(2), .finder .col:first-child:nth-last-child(2) ~ .col {
+  width: 33.333%;
+}
+.finder .col:first-child:nth-last-child(2).focus, .finder .col:first-child:nth-last-child(2) ~ .col.focus {
+  width: 66.667%;
+}
+.finder .col:first-child:nth-last-child(3), .finder .col:first-child:nth-last-child(3) ~ .col {
+  width: 25%;
+}
+.finder .col:first-child:nth-last-child(3).focus, .finder .col:first-child:nth-last-child(3) ~ .col.focus {
+  width: 50%;
+}
+.finder .col:first-child:nth-last-child(4), .finder .col:first-child:nth-last-child(4) ~ .col {
+  width: 20%;
+}
+.finder .col:first-child:nth-last-child(4).focus, .finder .col:first-child:nth-last-child(4) ~ .col.focus {
+  width: 40%;
+}
+.finder .col:first-child:nth-last-child(5), .finder .col:first-child:nth-last-child(5) ~ .col {
+  width: 16.667%;
+}
+.finder .col:first-child:nth-last-child(5).focus, .finder .col:first-child:nth-last-child(5) ~ .col.focus {
+  width: 33.333%;
+}
+.finder .col:first-child:nth-last-child(6), .finder .col:first-child:nth-last-child(6) ~ .col {
+  width: 14.286%;
+}
+.finder .col:first-child:nth-last-child(6).focus, .finder .col:first-child:nth-last-child(6) ~ .col.focus {
+  width: 28.571%;
+}
+.finder .col:first-child:nth-last-child(7), .finder .col:first-child:nth-last-child(7) ~ .col {
+  width: 12.5%;
+}
+.finder .col:first-child:nth-last-child(7).focus, .finder .col:first-child:nth-last-child(7) ~ .col.focus {
+  width: 25%;
+}
+.finder .col:first-child:nth-last-child(8), .finder .col:first-child:nth-last-child(8) ~ .col {
+  width: 11.111%;
+}
+.finder .col:first-child:nth-last-child(8).focus, .finder .col:first-child:nth-last-child(8) ~ .col.focus {
+  width: 22.222%;
+}
+.finder .col:first-child:nth-last-child(9), .finder .col:first-child:nth-last-child(9) ~ .col {
+  width: 10%;
+}
+.finder .col:first-child:nth-last-child(9).focus, .finder .col:first-child:nth-last-child(9) ~ .col.focus {
+  width: 20%;
+}
+.finder .col:first-child:nth-last-child(10), .finder .col:first-child:nth-last-child(10) ~ .col {
+  width: 9.091%;
+}
+.finder .col:first-child:nth-last-child(10).focus, .finder .col:first-child:nth-last-child(10) ~ .col.focus {
+  width: 18.182%;
+}
+.finder .listordering {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 0.375em 0.75em;
+  z-index: 2;
+}
+.finder .colcontent {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 2.25em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.finder .colcontent li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+.finder .finderitem {
+  position: relative;
+}
+.finder .finderselect {
+  *zoom: 1;
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.116em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  display: block;
+  border-color: rgba(134, 149, 168, 0.296);
+  cursor: pointer;
+}
+.finder .finderselect:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.finder .finderselect:focus, .finder .finderselect:hover, .finder .finderselect:active {
+  background: rgba(169, 178, 191, 0.198);
+}
+.finder .finderinput {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.finder .finderinput:checked + .finderselect {
+  font-weight: 500;
+  background: rgba(134, 149, 168, 0.667);
+}
+.finder .title {
+  overflow: hidden;
+  max-height: 1.5em;
+  white-space: nowrap;
+  word-wrap: break-word;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  padding-right: 17.391%;
+  display: block;
+}
+.finder .start, .finder .end, .finder .bystart, .finder .byend, .finder .end, .finder .byend {
+  display: none;
+}
+.finder .goto:link, .finder .goto:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  background-image: url('../images/ui/open.png?1314206098');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  position: absolute;
+  top: 0.188em;
+  right: 0;
+  width: 13.043%;
+}
+.finder .goto:focus, .finder .goto:hover, .finder .goto:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend, .finder .focus .end, .finder .focus .byend {
+  display: block;
+}
+.finder .focus .open {
+  display: inline;
+  float: left;
+  width: 6.383%;
+  margin-right: 2.128%;
+}
+.finder .focus .title, .finder .focus .bytitle {
+  display: inline;
+  float: left;
+  width: 57.447%;
+  margin-right: 2.128%;
+  padding: 0;
+}
+.finder .focus .title:first-child:last-child, .finder .focus .bytitle:first-child:last-child {
+  float: none;
+  display: block;
+  width: auto;
+  margin-right: auto;
+}
+.finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend {
+  display: inline;
+  float: left;
+  width: 14.894%;
+  margin-right: 2.128%;
+}
+.finder .focus .byend, .finder .focus .end {
+  padding-right: 8.511%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.finder .bystart, .finder .byend {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+}
+.finder .start, .finder .end {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.finder .start, .finder .end {
+  color: #999999;
+}
+
 body.login #brand {
   float: none;
   display: block;
