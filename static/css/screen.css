@@ -931,7 +931,7 @@ body > div {
   top: -1.875em;
 }
 
-.sortlink:link::after, .listordering a:link::after, .sortlink:visited::after, .listordering a:visited::after {
+.sortlink:link::after, .sortlink:visited::after {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
@@ -950,25 +950,45 @@ body > div {
   background-image: none;
   vertical-align: baseline;
 }
-.sortlink:link::after, .listordering a:link::after, .sortlink:visited::after, .listordering a:visited::after {
+.sortlink:link::after, .sortlink:visited::after {
   *display: inline;
 }
-.sortlink:focus::after, .listordering a:focus::after, .sortlink:hover::after, .listordering a:hover::after, .sortlink:active::after, .listordering a:active::after {
+.sortlink:focus::after, .sortlink:hover::after, .sortlink:active::after {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-image: url('../images/ui/angle_up.png?1314206098');
 }
-.sortlink.asc:link::after, .listordering a.asc:link::after, .sortlink.asc:visited::after, .listordering a.asc:visited::after {
+.sortlink.asc:link::after, .sortlink.asc:visited::after {
   background-image: url('../images/ui/angle_up.png?1314206098');
 }
-.sortlink.asc:focus::after, .listordering a.asc:focus::after, .sortlink.asc:hover::after, .listordering a.asc:hover::after, .sortlink.asc:active::after, .listordering a.asc:active::after {
+.sortlink.asc:focus::after, .sortlink.asc:hover::after, .sortlink.asc:active::after {
   background-image: url('../images/ui/angle_down.png?1314206098');
 }
-.sortlink.desc:link::after, .listordering a.desc:link::after, .sortlink.desc:visited::after, .listordering a.desc:visited::after {
+.sortlink.desc:link::after, .sortlink.desc:visited::after {
   background-image: url('../images/ui/angle_down.png?1314206098');
 }
-.sortlink.desc:focus::after, .listordering a.desc:focus::after, .sortlink.desc:hover::after, .listordering a.desc:hover::after, .sortlink.desc:active::after, .listordering a.desc:active::after {
+.sortlink.desc:focus::after, .sortlink.desc:hover::after, .sortlink.desc:active::after {
   background-image: url('../images/ui/angle_up.png?1314206098');
+}
+
+.listordering {
+  overflow: hidden;
+  *zoom: 1;
+  padding: 0.375em 0;
+  background: rgba(169, 178, 191, 0.667);
+}
+
+.sortitem {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+  margin-bottom: 0em;
+  font-weight: 500;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+  text-transform: capitalize;
+  letter-spacing: 0;
 }
 
 body.login #brand {

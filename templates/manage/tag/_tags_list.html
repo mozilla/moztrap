@@ -1,17 +1,8 @@
 {% load sort icanhaz %}
 
 <div class="managelist action-ajax-replace">
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bytag">
-        <a href="{{ sort|url:'tag' }}" class="{{ sort|dir:'tag' }}">tag</a>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
+
+  {% include "manage/tag/_tags_listordering.html" %}
 
   <div class="items">
     {% icanhaz "tag_edit" %}

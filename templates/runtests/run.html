@@ -24,20 +24,8 @@
     <h2>Run Tests:</h2>
 
     <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bystatus">
-            <span>status</span>
-          </li>
-          <li class="bytitle">
-            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
-          </li>
-          <li class="byinvalid">
-            <span>flagging</span>
-          </li>
-        </ul>
-      </nav>
+
+      {% include "runtests/_run_listordering.html" %}
 
       <div class="items">
         {% for includedtestcase in cases %}

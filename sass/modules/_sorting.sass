@@ -3,8 +3,6 @@
 // focus  - Display the direction to be sorted on-click.
 // .asc   - Icon indicates sort in ascending order.
 // .desc  - Icon indicates sort in descending order.
-//
-// Styleguide 5.1
 .sortlink
   #{$link}
     &::after
@@ -36,8 +34,17 @@
         background-image: image-url('ui/angle_up.png')
 
 // Create a list-ordering navigation bar.
-//
-// No styleguide reference.
+
 .listordering
-  a
-    @extend .sortlink
+  +clearfix
+  padding: rhythm(.25) 0
+  background: rgba($blue-lighter,$small)
+
+.sortitem
+  +columns(2,24)
+  +trailer(0)
+  +demi
+  +cond
+  white-space: nowrap
+  text-transform: capitalize
+  letter-spacing: 0

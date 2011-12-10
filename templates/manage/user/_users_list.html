@@ -1,32 +1,8 @@
 {% load sort %}
 
 <div class="managelist action-ajax-replace">
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bystatus">
-        <a href="{{ sort|url:'status' }}" class="{{ sort|dir:'status' }}">status</a>
-      </li>
-      <li class="bygiven">
-        <a href="{{ sort|url:'firstName' }}" class="{{ sort|dir:'firstName' }}">first name</a>
-      </li>
-      <li class="byfamily">
-        <a href="{{ sort|url:'lastName' }}" class="{{ sort|dir:'lastName' }}">last name</a>
-      </li>
-      <li class="bynickname">
-        <a href="{{ sort|url:'screenName' }}" class="{{ sort|dir:'screenName' }}">screenname</a>
-      </li>
-      <li class="byemail">
-        <a href="{{ sort|url:'email' }}" class="{{ sort|dir:'email' }}">email</a>
-      </li>
-      <li class="byroles">
-        <span>roles</span>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
+
+  {% include "manage/user/_users_listordering.html" %}
 
   <div class="items">
     {% for user in users %}

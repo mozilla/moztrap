@@ -47,21 +47,8 @@
     {% csrf_token %}
 
     <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="byresult">
-            <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">result</a>
-          </li>
-          <li class="bytester">
-            <a href="{{ sort|url:"tester" }}" class="{{ sort|dir:"tester" }}">tester</a>
-          </li>
-          <li class="byenvlist">environment</li>
-          <li class="byapproval">
-            <a href="{{ sort|url:"approval" }}" class="{{ sort|dir:"approval" }}">approval</a>
-          </li>
-        </ul>
-      </nav>
+
+      {% include "results/testcase/_caseresults_listordering.html" %}
 
       <div class="items">
         {% for result in results %}
