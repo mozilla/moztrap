@@ -1,5 +1,5 @@
 <nav class="drilldown {% if details != 'none' %}details{% endif %}{% if details == 'open' %} open{% endif %}">
-  <h2 {% if details != 'none' %}class="summary" title="show/hide drilldown navigation"{% else %}class="navhead"{% endif %}>
+  <h2 {% if nodetails != 'true' %}class="summary" title="show/hide drilldown navigation"{% else %}class="navhead"{% endif %}>
     {% block drillnavhead %}DrillDown Navigation{% endblock drillnavhead %}
   </h2>
   <div class="content {% block drillclass %}{% endblock drillclass %}">
