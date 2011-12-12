@@ -439,24 +439,25 @@ button {
 }
 
 .button, button {
-  border-color: #739c44;
+  font-weight: 500;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  padding-left: 1em;
+  padding-right: 1em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b3e37d), color-stop(100%, #75b828));
   background-image: -webkit-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
   background-image: -moz-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
   background-image: -o-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
   background-image: -ms-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
   background-image: linear-gradient(top center, #b3e37d 0%, #75b828 100%);
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  padding-left: 1em;
-  padding-right: 1em;
-  text-shadow: rgba(255, 255, 255, 0.667) 1px 1px 0;
+  border-color: #739c44;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
   -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
   -o-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
@@ -481,13 +482,13 @@ button {
   background-image: linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
 }
 .button[disabled], button[disabled] {
-  border-color: #999999;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d9d9d9), color-stop(100%, #999999));
   background-image: -webkit-linear-gradient(top center, #d9d9d9 0%, #999999 100%);
   background-image: -moz-linear-gradient(top center, #d9d9d9 0%, #999999 100%);
   background-image: -o-linear-gradient(top center, #d9d9d9 0%, #999999 100%);
   background-image: -ms-linear-gradient(top center, #d9d9d9 0%, #999999 100%);
   background-image: linear-gradient(top center, #d9d9d9 0%, #999999 100%);
+  border-color: #999999;
 }
 
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
