@@ -873,7 +873,7 @@ def narrow_environments(request, object_type, object_id):
         request,
         "manage/environment/narrowing.html",
         {
-            "environments": parent.environmentgroups_prefetch,
+            "environments": parent.environmentgroups_prefetch if parent else [],
             "selected_env_ids": set([e.id for e in obj.environmentgroups]),
             "obj": obj,
             })
