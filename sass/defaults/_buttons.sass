@@ -39,25 +39,37 @@ button
 // $icon  - the icon to use.
 // $hover - [true | false] if the button should respond to hovering.
 
-=button-color($c:$green,$icon:false,$hover:true)
+=button-style($c:$green, $icon:false, $notext:false, $hover:true)
   $bgrad    : linear-gradient(top center, lighten($c,25) 0%, $c 100%)
   $bhover   : linear-gradient(top center, lighten($c,30) 0%, $c 100%)
   $bactive  : linear-gradient(bottom center, lighten($c,25) 0%, $c 100%)
+
+  +border-radius
+  +rhythm-borders(1px,.25)
+  +hpadding($normem)
+  border-color: desaturate($c,25)
+  background-repeat: no-repeat
 
   @if $icon
     $img      : image-url($icon)
     $bgrad    : $img, $bgrad
     $bhover   : $img, $bhover
     $bactive  : $img, $bactive
-    padding-left: image-width($icon) + $smallpx*2
-    background:
-      repeat: no-repeat
-      position: $smallpx, left
+
+    @if $notext
+      +replace-width($icon)
+    @else
+      +demi
+      +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
+      +box-shadow(rgba($base,$xsmall) 0 0 $xxsmallem)
+      +pad-icon($icon)
+      color: $base
+      background-position: $smallpx, left
 
   +background-image($bgrad)
-  border-color: desaturate($c,25)
 
   @if $hover
+    cursor: pointer
     &:hover, &:focus
       +background-image($bhover)
     &:active
@@ -66,20 +78,12 @@ button
 // Applies default button styles.
 
 =button
-  +demi
-  +rhythm-borders(1px,.25)
-  +hpadding($normem)
-  +border-radius
-  +button-color
-  +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
-  +box-shadow(rgba($base,$xsmall) 0 0 $xxsmallem)
-  color: $base
-  cursor: pointer
+  +button-style
   &[disabled]
-    +button-color($mid,false,false)
+    +button-style($mid,$hover:false)
 
 .button
-  +button
+  +button-style
 
 button
   @extend .button
