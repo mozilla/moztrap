@@ -97,10 +97,10 @@ var CC = (function (CC, $) {
                 'input[name="testrun"]'
             ],
             callback: function () {
-                $('.runsdrill + .environment').slideUp('fast');
+                $('.runsdrill .drillenv').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.runsdrill + .environment').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill .drillenv').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
