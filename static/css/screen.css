@@ -922,7 +922,8 @@ body > div {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;
-  margin-bottom: 1.5em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
   position: relative;
 }
 [role="banner"] .drilldown .summary {
@@ -998,6 +999,7 @@ body > div {
 
 .finder {
   *zoom: 1;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   clear: both;
   overflow: visible;
   position: relative;
@@ -1148,6 +1150,7 @@ body > div {
 }
 .finder .finderselect {
   *zoom: 1;
+  padding-top: 0.188em;
   border-bottom-style: solid;
   border-bottom-width: 0.071em;
   padding-bottom: 0.116em;
@@ -1186,11 +1189,8 @@ body > div {
   word-wrap: break-word;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
-  padding-right: 17.391%;
+  padding-right: 2.25em;
   display: block;
-}
-.finder .start, .finder .end, .finder .bystart, .finder .byend, .finder .end, .finder .byend {
-  display: none;
 }
 .finder .goto:link, .finder .goto:visited {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
@@ -1202,15 +1202,19 @@ body > div {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   position: absolute;
-  top: 0.188em;
+  top: 0;
+  bottom: 0;
   right: 0;
-  width: 13.043%;
+  width: 1.5em;
 }
 .finder .goto:focus, .finder .goto:hover, .finder .goto:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend, .finder .focus .end, .finder .focus .byend {
+.finder .start, .finder .end, .finder .bystart, .finder .byend {
+  display: none;
+}
+.finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend {
   display: block;
 }
 .finder .focus .open {
@@ -1237,6 +1241,7 @@ body > div {
   float: left;
   width: 14.894%;
   margin-right: 2.128%;
+  white-space: nowrap;
 }
 .finder .focus .byend, .finder .focus .end {
   padding-right: 8.511%;
@@ -1248,9 +1253,6 @@ body > div {
 .finder .bystart, .finder .byend {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
   opacity: 0.75;
-}
-.finder .start, .finder .end {
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .finder .start, .finder .end {
   color: #999999;
