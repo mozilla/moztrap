@@ -923,14 +923,16 @@ body > div {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
   position: relative;
 }
 [role="banner"] .drilldown .summary {
   position: absolute;
   right: 0;
   top: -1.875em;
+}
+[role="banner"] .drilldown .content {
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
 .sortlink:link::after, .sortlink:visited::after {
