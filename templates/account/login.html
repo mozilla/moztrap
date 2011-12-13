@@ -1,10 +1,8 @@
-{% extends 'base_site.html' %}
-
-{% block bodyclasses %}login{% endblock bodyclasses %}
-
-{% block site-navigation %}{% endblock site-navigation %}
+{% extends 'account/base.html' %}
 
 {% block content %}
+<section id="login">
+  <h2>Login</h2>
   <form method="POST" id="loginform">
     {% csrf_token %}
     {{ form.non_field_errors }}
@@ -22,4 +20,5 @@
       <button type="submit">login</button>
     </div>
   </form>
+</section>
 {% endblock content %}
