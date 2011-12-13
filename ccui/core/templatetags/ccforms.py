@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django import template
+from django.template.loader import render_to_string
 
 
 
@@ -32,7 +33,16 @@ def placeholder(boundfield, value):
 
 @register.filter
 def label(boundfield, contents=None):
-    return boundfield.label_tag(contents)
+    label_text = contents or boundfield.label
+    id_ = boundfield.field.widget.attrs.get('id') or boundfield.auto_id
+
+    return render_to_string(
+        "forms/_label.html",
+        {
+            "label_text": label_text,
+            "id": id_,
+            "field": boundfield,
+            })
 
 
 
