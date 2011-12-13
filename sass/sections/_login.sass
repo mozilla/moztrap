@@ -1,5 +1,14 @@
 body.login
 
+  // Layout ------------------------------------------------------------------
+  #brand, [role="contentinfo"]
+    +full
+    +pad(9,9)
+
+  #main
+    +full
+    +pad(5,9)
+
   #brand
     +un-column
     +reset-box-model
@@ -15,10 +24,6 @@ body.login
       +adjust-font-size-to($medpx)
       +reset-box-model
 
-  #brand, #main, [role="contentinfo"]
-    +full
-    +pad(8,8)
-
   [role="contentinfo"]
     +leader(2)
   .adr
@@ -27,3 +32,13 @@ body.login
   .message
     +squish(6,6)
 
+  h2
+    +gone
+
+  // Forms -------------------------------------------------------------------
+
+  label
+    +columns(4,10)
+  input, .errorlist
+    +columns(6,10)
+    +omega(10)

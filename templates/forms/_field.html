@@ -1,5 +1,5 @@
 {% load ccforms %}
-<div class="formfield {% if not field.field.required %}optional{% endif %}">
+<div class="formfield{% if not field.field.required %} optional{% endif %}{% if field.errors %} errors{% endif %}">
   {% if field|read_only %}
     <dl class="readonly">
       <dt class="rolabel">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</dt>
@@ -7,16 +7,20 @@
     </dl>
     {{ field.as_hidden }}
   {% else %}
-    {{ field.errors }}
+
     {% if label %}
     {{ field|label:label }}
     {% else %}
     {{ field|label }}
     {% endif %}
+
     {% if classes %}
     {{ field|classes:classes }}
     {% else %}
     {{ field }}
     {% endif %}
+
+    {{ field.errors }}
+
   {% endif %}
 </div>

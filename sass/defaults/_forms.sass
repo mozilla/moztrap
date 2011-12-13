@@ -86,10 +86,21 @@ input
 // ---------------------------------------------------------------------------
 // Form Layouts
 
+.formfield
+  +pie-clearfix
+  +trailer(.5)
+  position: relative
+  clear: both
+  &.errors
+    label
+      color: $red
+
 .formfields
   label
     +bold
     +cond
+    +leader(.25)
+    text-align: right
     text-transform: capitalize
   &.optional label
     +demi
@@ -106,6 +117,7 @@ input
 
 .errorlist
   +no-style-list
+  +italic
   color: $red
 
 .formactions
