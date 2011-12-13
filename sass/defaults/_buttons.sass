@@ -35,19 +35,24 @@ button
 
 // Applies color, icon and gradient to a button.
 //
-// $c     - the color of the button.
-// $icon  - the icon to use.
-// $hover - [true | false] if the button should respond to hovering.
+// $c       - the color of the button.
+// $icon    - the icon to use.
+// $notext  - [true | false] if the button should have text.
+// $hover   - [true | false] if the button should respond to hovering.
 
 =button-style($c:$green, $icon:false, $notext:false, $hover:true)
-  $bgrad    : linear-gradient(top center, lighten($c,25) 0%, $c 100%)
-  $bhover   : linear-gradient(top center, lighten($c,30) 0%, $c 100%)
-  $bactive  : linear-gradient(bottom center, lighten($c,25) 0%, $c 100%)
+  $highlight: rgba($lightest,$xsmall)
+  $lowlight : rgba($base,$xxxsmall)
+  $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+  $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+  $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
 
   +border-radius
   +rhythm-borders(1px,.25)
-  border-color: desaturate($c,25)
-  background-repeat: no-repeat
+  border-color: darken(desaturate($c,25),5)
+  background:
+    color: $c
+    repeat: no-repeat
 
   @if $icon
     $img      : image-url($icon)
