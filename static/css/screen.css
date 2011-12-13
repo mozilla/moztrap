@@ -998,6 +998,68 @@ body > div {
   padding-bottom: 1.5em;
 }
 
+.suggest {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  -moz-border-radius-bottomleft: 0.296em;
+  -webkit-border-bottom-left-radius: 0.296em;
+  -ms-border-bottom-left-radius: 0.296em;
+  -o-border-bottom-left-radius: 0.296em;
+  border-bottom-left-radius: 0.296em;
+  -moz-border-radius-bottomright: 0.296em;
+  -webkit-border-bottom-right-radius: 0.296em;
+  -ms-border-bottom-right-radius: 0.296em;
+  -o-border-bottom-right-radius: 0.296em;
+  border-bottom-right-radius: 0.296em;
+  -webkit-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
+  -moz-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
+  -o-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
+  box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
+  display: none;
+  top: 2.25em;
+  background: white;
+  z-index: 900;
+  border: 1px solid #999999;
+  border-width: 0 1px 1px;
+}
+.suggest li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+.suggest a:link, .suggest a:visited {
+  padding-top: 0.375em;
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.304em;
+  overflow: hidden;
+  *zoom: 1;
+  padding-left: 1em;
+  padding-right: 1em;
+  display: block;
+  color: #454545;
+  border-bottom: 1px solid #ededed;
+}
+.suggest a:link.selected, .suggest a:visited.selected {
+  background: rgba(254, 240, 189, 0.444);
+  outline: 0;
+}
+.suggest li:last-child a:link, .suggest li:last-child a:visited {
+  border-bottom: none;
+}
+.suggest i {
+  display: inline;
+  float: right;
+  padding-left: 1em;
+  font-style: normal;
+  color: #999999;
+}
+
 .sortlink:link::after, .sortlink:visited::after {
   text-indent: -119988px;
   overflow: hidden;
@@ -1322,6 +1384,20 @@ body > div {
 }
 .finder .start, .finder .end {
   color: #999999;
+}
+
+.textual {
+  position: relative;
+}
+.textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 
 body.login #brand {
