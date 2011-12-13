@@ -1343,19 +1343,25 @@ body > div {
   display: block;
 }
 .finder .goto:link, .finder .goto:visited {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
+  background-image: url('../images/ui/open.png?1314206098');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
-  background-image: url('../images/ui/open.png?1314206098');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
+  width: 1.5em;
+  background-position: center;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
-  width: 1.5em;
 }
 .finder .goto:focus, .finder .goto:hover, .finder .goto:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
