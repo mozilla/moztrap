@@ -147,9 +147,15 @@ $nav-background: $blue-light
     position: relative
 
     .summary
+      +button-style($green,'ui/columns.png',true)
       position: absolute
       right: 0
-      top: - rhythm(1.25)
+      top: - rhythm(1.5)
+      cursor: pointer
+      outline: 0
+    &.open
+      .summary
+        +button-style($yellow-dark,'ui/minus.png',true)
 
     .content
       +padding-leader

@@ -447,8 +447,6 @@ button {
   border-style: solid;
   border-width: 0.071em;
   padding: 0.304em;
-  padding-left: 1em;
-  padding-right: 1em;
   border-color: #739c44;
   background-repeat: no-repeat;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b3e37d), color-stop(100%, #75b828));
@@ -911,9 +909,89 @@ body > div {
   position: relative;
 }
 [role="banner"] .drilldown .summary {
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  border-color: #739c44;
+  background-repeat: no-repeat;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #b3e37d), color-stop(100%, #75b828));
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -moz-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -o-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -ms-linear-gradient(top center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), linear-gradient(top center, #b3e37d 0%, #75b828 100%);
+  cursor: pointer;
   position: absolute;
   right: 0;
-  top: -1.875em;
+  top: -2.25em;
+  cursor: pointer;
+  outline: 0;
+}
+[role="banner"] .drilldown .summary:hover, [role="banner"] .drilldown .summary:focus {
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c0e792), color-stop(100%, #75b828));
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-linear-gradient(top center, #c0e792 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -moz-linear-gradient(top center, #c0e792 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -o-linear-gradient(top center, #c0e792 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -ms-linear-gradient(top center, #c0e792 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), linear-gradient(top center, #c0e792 0%, #75b828 100%);
+}
+[role="banner"] .drilldown .summary:active {
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #b3e37d), color-stop(100%, #75b828));
+  background-image: url('../images/ui/columns.png?1314206098'), -webkit-linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -moz-linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -o-linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), -ms-linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
+  background-image: url('../images/ui/columns.png?1314206098'), linear-gradient(bottom center, #b3e37d 0%, #75b828 100%);
+}
+[role="banner"] .drilldown.open .summary {
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  border-color: #deb72b;
+  background-repeat: no-repeat;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fee58b), color-stop(100%, #fdc90d));
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-linear-gradient(top center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -moz-linear-gradient(top center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -o-linear-gradient(top center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -ms-linear-gradient(top center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), linear-gradient(top center, #fee58b 0%, #fdc90d 100%);
+  cursor: pointer;
+}
+[role="banner"] .drilldown.open .summary:hover, [role="banner"] .drilldown.open .summary:focus {
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #feeba4), color-stop(100%, #fdc90d));
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-linear-gradient(top center, #feeba4 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -moz-linear-gradient(top center, #feeba4 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -o-linear-gradient(top center, #feeba4 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -ms-linear-gradient(top center, #feeba4 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), linear-gradient(top center, #feeba4 0%, #fdc90d 100%);
+}
+[role="banner"] .drilldown.open .summary:active {
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #fee58b), color-stop(100%, #fdc90d));
+  background-image: url('../images/ui/minus.png?1314206098'), -webkit-linear-gradient(bottom center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -moz-linear-gradient(bottom center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -o-linear-gradient(bottom center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), -ms-linear-gradient(bottom center, #fee58b 0%, #fdc90d 100%);
+  background-image: url('../images/ui/minus.png?1314206098'), linear-gradient(bottom center, #fee58b 0%, #fdc90d 100%);
 }
 [role="banner"] .drilldown .content {
   padding-top: 1.5em;

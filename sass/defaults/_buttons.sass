@@ -46,7 +46,6 @@ button
 
   +border-radius
   +rhythm-borders(1px,.25)
-  +hpadding($normem)
   border-color: desaturate($c,25)
   background-repeat: no-repeat
 
@@ -60,9 +59,10 @@ button
       +replace-width($icon)
     @else
       +demi
+      +hpadding($normem)
+      +pad-icon($icon)
       +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
       +box-shadow(rgba($base,$xsmall) 0 0 $xxsmallem)
-      +pad-icon($icon)
       color: $base
       background-position: $smallpx, left
 
