@@ -53,6 +53,9 @@ button
   background:
     color: $c
     repeat: no-repeat
+  @if not $notext
+    +hpadding($normem)
+
 
   @if $icon
     $img      : image-url($icon)
@@ -64,7 +67,6 @@ button
       +replace-width($icon)
     @else
       +demi
-      +hpadding($normem)
       +pad-icon($icon)
       +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
       +box-shadow(rgba($base,$xsmall) 0 0 $xxsmallem)
