@@ -487,26 +487,6 @@ input.placeholder, textarea.placeholder {
   color: #999999;
 }
 
-form > ul {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-form > ul li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0;
-}
-form > ul > li {
-  *zoom: 1;
-}
-form > ul > li:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 .input, textarea, select, input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
@@ -555,13 +535,32 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   height: 2.25em;
 }
 
-/* Form Helpers -------------------------------------------------------------- */
+.formfields label {
+  font-weight: 700;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: capitalize;
+}
+.formfields.optional label {
+  font-weight: 500;
+}
+.formfields .isoptional {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  text-transform: lowercase;
+}
+.formfields .isoptional::before {
+  content: "(";
+}
+.formfields .isoptional::after {
+  content: ")";
+}
+
 .errorlist {
   margin: 0;
   padding: 0;
   border: 0;
   list-style: none;
-  color: red;
+  color: #b8282d;
 }
 .errorlist li {
   list-style-image: none;
@@ -569,7 +568,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   margin-left: 0;
 }
 
-.form-actions {
+.formactions {
   padding-top: 0.75em;
   clear: both;
   text-align: right;

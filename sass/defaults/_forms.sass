@@ -24,8 +24,6 @@
 // Styles placeholder text as needed.
 //
 // @content - the desired styles.
-//
-// Styleguide 1.2.
 
 =placeholder
   &::-webkit-input-placeholder
@@ -36,21 +34,10 @@
     @content
 
 // Default placeholder styles.
-//
-// No styleguide reference.
+
 input, textarea
   +placeholder
     color: $mid
-
-// ---------------------------------------------------------------------------
-// Default form styles.
-//
-// No styleguide reference.
-form
-  > ul
-    +no-style-list
-    > li
-      +pie-clearfix
 
 // ---------------------------------------------------------------------------
 // Default styling for text inputs.
@@ -58,8 +45,6 @@ form
 // [disabled]     - half opacity.
 // :focus:valid   - green highlight when valid.
 // :focus:invalid - red highlight when invalid.
-//
-// Styleguide 1.2.
 
 .input
   +sans
@@ -98,13 +83,32 @@ input
     @extend .input
     height: rhythm(1.5,14px)
 
-/* Form Helpers --------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// Form Layouts
+
+.formfields
+  label
+    +bold
+    +cond
+    text-transform: capitalize
+  &.optional label
+    +demi
+  .isoptional
+    +opacity(.5)
+    text-transform: lowercase
+    &::before
+      content: "("
+    &::after
+      content: ")"
+
+// ---------------------------------------------------------------------------
+// Form Helpers
 
 .errorlist
   +no-style-list
-  color: red
+  color: $red
 
-.form-actions
+.formactions
   +padding-leader(.5)
   clear: both
   text-align: right
