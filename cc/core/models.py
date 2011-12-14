@@ -15,11 +15,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Core Case Conductor models.
+
+"""
 from django.db import models
 
+from .base_model import BaseModel
 
 
-class Product(models.Model):
+
+class Product(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 

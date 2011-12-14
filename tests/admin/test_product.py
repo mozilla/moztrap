@@ -6,7 +6,7 @@ from ..builders import create_user, create_product
 
 
 
-class TestProductAdmin(WebTest):
+class ProductAdminTest(WebTest):
     def setUp(self):
         self.user = create_user(is_staff=True, is_superuser=True)
 
