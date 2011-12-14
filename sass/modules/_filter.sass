@@ -17,57 +17,97 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-.chick
-  +border-radius
-  +float(left)
-  position: relative
-  padding: 0 rhythm(1) 0 rhythm(.25)
-  margin-right: rhythm(.25)
-  background-color: $blue-light
-  color: $blue-hint
-
-.chickaction
-  +demi
-  +text-shadow(rgba($base,$xxsmall) 0 1px 0)
-  border-right: 1px solid $blue-lighter
-  padding-right: rhythm(.25)
-
-.chickremove
-  +stretch-y
-  +icon('ui/x_sm.png')
-  +opacity(.5)
-  right: 0
-  &:hover
-    +opacity(1)
-
-.checkchick
-  input
-    +gone
-  label
-    display: none
-  input:checked + label
-    @extend .chick
-
-.checkchickaction
-  @extend .chickaction
-  &::after
-    @extend .chickremove
-    content: " "
-
-
 // A filtering widget.
 
 .textual
+  +columns(10,24)
   position: relative
   label
     +gone
 
-#filterform
+.category-title
+  @extend .allcaps
+  +cond
+  +demi
+  +font-style-normal
+  padding: 0 .25em
+  background: rgba($light,.5)
 
-  .compact &
-    .category-title, .addterm, h5
+.toggle
+  +columns(6,24)
+  +leader(.25)
+  text-transform: capitalize
+
+#filterform
+  +padding-leader(.5)
+  clear: both
+
+#filter
+  // Compact chicklets.
+  .compact
+
+    .toggle
+      a
+        #{$link}
+          &::before
+            content: "show "
+          &::after
+            content: " »"
+
+    .category-title, .addterm
       +gone
     .term
       @extend .checkchick
     .filtertext
       @extend .checkchickaction
+
+  // Expanded lists.
+  .expanded
+
+    .toggle
+      a
+        #{$link}
+          &::before
+            content: "« hide "
+          &::after
+            content: ""
+
+    .filter-group
+      +columns(3,24)
+      +trailer(.5)
+      +cond
+      &.empty
+        display: none
+      &:nth-of-type(8n)
+        +omega(24)
+      &:nth-of-type(8n+1)
+        clear: left
+
+    .long
+      overflow: hidden
+      height: rhythm(5)
+      min-height: rhythm(5)
+      max-height: rhythm(24)
+      border-bottom: 1px solid rgba($blue,$small)
+      resize: vertical
+      &:hover
+        overflow-y: auto
+
+    input[type='checkbox']
+      display: none
+    label
+      display: block
+      padding: 0 rhythm(.25)
+        left: image-width('ui/check_sm.png') + 6px
+      background: image-url('ui/plus_sm.png') no-repeat scroll 3px
+      font-weight: normal
+      white-space: nowrap
+      &:hover
+        +demi
+    input:checked + label
+      +opacity(1)
+      +demi
+      background-image: image-url('ui/check_sm.png')
+      &:hover
+        background-image: image-url('ui/x_sm.png')
+

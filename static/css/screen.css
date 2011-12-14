@@ -123,11 +123,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.caps, .allcaps, h1, h2, h3, caption, #page-status::before, .smallcaps {
+.caps, .allcaps, h1, h2, h3, caption, #page-status::before, .category-title, .smallcaps {
   letter-spacing: 0.1em;
 }
 
-.allcaps, h1, h2, h3, caption, #page-status::before {
+.allcaps, h1, h2, h3, caption, #page-status::before, .category-title {
   text-transform: uppercase;
 }
 
@@ -1020,6 +1020,76 @@ body > div {
   padding-bottom: 1.5em;
 }
 
+.chick, .checkchick label, #filter .compact .term label {
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  display: inline;
+  float: left;
+  position: relative;
+  padding: 0 1.5em 0 0.375em;
+  margin-right: 0.375em;
+  border: 1px solid #516985;
+  background-color: #8695a8;
+  color: #e8e9ec;
+}
+
+.chickaction, .checkchickaction, #filter .compact .filtertext {
+  font-weight: 500;
+  text-shadow: rgba(69, 69, 69, 0.296) 0 1px 0;
+  border-right: 1px solid #a9b2bf;
+  padding-right: 0.375em;
+}
+
+.chickremove, .checkchickaction::after, #filter .compact .filtertext::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-image: url('../images/ui/x_sm.png?1314206098');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  right: 0;
+}
+.chickremove:hover, .checkchickaction:hover::after, #filter .compact .filtertext:hover::after {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.checkchick input, #filter .compact .term input {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.checkchick label, #filter .compact .term label {
+  display: none;
+}
+.checkchick input:checked + label, #filter .compact .term input:checked + label {
+  display: inline;
+}
+
+.checkchickaction::after, #filter .compact .filtertext::after {
+  content: " ";
+}
+
 .suggest {
   margin: 0;
   padding: 0;
@@ -1414,95 +1484,11 @@ body > div {
   color: #999999;
 }
 
-.chick, .checkchick input:checked + label, .compact #filterform .term input:checked + label, .chicklist li {
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
+.textual {
   display: inline;
   float: left;
-  position: relative;
-  padding: 0 1.5em 0 0.375em;
-  margin-right: 0.375em;
-  background-color: #8695a8;
-  color: #e8e9ec;
-}
-
-.chickaction, .checkchickaction, .compact #filterform .filtertext {
-  font-weight: 500;
-  text-shadow: rgba(69, 69, 69, 0.296) 0 1px 0;
-  border-right: 1px solid #a9b2bf;
-  padding-right: 0.375em;
-}
-
-.chickremove, .checkchickaction::after, .compact #filterform .filtertext::after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  background-image: url('../images/ui/x_sm.png?1314206098');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  width: 1.5em;
-  background-position: center;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
-  right: 0;
-}
-.chickremove:hover, .checkchickaction:hover::after, .compact #filterform .filtertext:hover::after {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-
-.checkchick input, .compact #filterform .term input {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.checkchick label, .compact #filterform .term label {
-  display: none;
-}
-
-.checkchickaction::after, .compact #filterform .filtertext::after {
-  content: " ";
-}
-
-.chicklist {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  *zoom: 1;
-}
-.chicklist li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0;
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  white-space: nowrap;
-}
-.chicklist li {
-  *display: inline;
-}
-
-.textual {
+  width: 41.053%;
+  margin-right: 1.053%;
   position: relative;
 }
 .textual label {
@@ -1516,7 +1502,35 @@ body > div {
   border: 0;
 }
 
-.compact #filterform .category-title, .compact #filterform .addterm, .compact #filterform h5 {
+.category-title {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  padding: 0 0.25em;
+  background: rgba(237, 237, 237, 0.5);
+}
+
+.toggle {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+  margin-top: 0.375em;
+  text-transform: capitalize;
+}
+
+#filterform {
+  padding-top: 0.75em;
+  clear: both;
+}
+
+#filter .compact .toggle a:link::before, #filter .compact .toggle a:visited::before {
+  content: "show ";
+}
+#filter .compact .toggle a:link::after, #filter .compact .toggle a:visited::after {
+  content: " »";
+}
+#filter .compact .category-title, #filter .compact .addterm {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1525,6 +1539,66 @@ body > div {
   height: 1px;
   width: 1px;
   border: 0;
+}
+#filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
+  content: "« hide ";
+}
+#filter .expanded .toggle a:link::after, #filter .expanded .toggle a:visited::after {
+  content: "";
+}
+#filter .expanded .filter-group {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+  margin-bottom: 0.75em;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#filter .expanded .filter-group.empty {
+  display: none;
+}
+#filter .expanded .filter-group:nth-of-type(8n) {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#filter .expanded .filter-group:nth-of-type(8n+1) {
+  clear: left;
+}
+#filter .expanded .long {
+  overflow: hidden;
+  height: 7.5em;
+  min-height: 7.5em;
+  max-height: 36em;
+  border-bottom: 1px solid rgba(81, 105, 133, 0.667);
+  resize: vertical;
+}
+#filter .expanded .long:hover {
+  overflow-y: auto;
+}
+#filter .expanded input[type='checkbox'] {
+  display: none;
+}
+#filter .expanded label {
+  display: block;
+  padding: 0 0.375em;
+  padding-left: 15px;
+  background: url('../images/ui/plus_sm.png?1314206098') no-repeat scroll 3px;
+  font-weight: normal;
+  white-space: nowrap;
+}
+#filter .expanded label:hover {
+  font-weight: 500;
+}
+#filter .expanded input:checked + label {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  font-weight: 500;
+  background-image: url('../images/ui/check_sm.png?1314206098');
+}
+#filter .expanded input:checked + label:hover {
+  background-image: url('../images/ui/x_sm.png?1314206098');
 }
 
 body.login #brand, body.login [role="contentinfo"] {

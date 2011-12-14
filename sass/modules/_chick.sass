@@ -17,8 +17,41 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-@import chick
-@import suggest
-@import sort
-@import finder
-@import filter
+.chick
+  +border-radius
+  +float(left)
+  position: relative
+  padding: 0 rhythm(1) 0 rhythm(.25)
+  margin-right: rhythm(.25)
+  border: 1px solid $blue
+  background-color: $blue-light
+  color: $blue-hint
+
+.chickaction
+  +demi
+  +text-shadow(rgba($base,$xxsmall) 0 1px 0)
+  border-right: 1px solid $blue-lighter
+  padding-right: rhythm(.25)
+
+.chickremove
+  +stretch-y
+  +icon('ui/x_sm.png')
+  +opacity(.5)
+  right: 0
+  &:hover
+    +opacity(1)
+
+.checkchick
+  input
+    +gone
+  label
+    @extend .chick
+    display: none
+  input:checked + label
+    display: inline
+
+.checkchickaction
+  @extend .chickaction
+  &::after
+    @extend .chickremove
+    content: " "
