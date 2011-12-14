@@ -42,6 +42,19 @@ Copy local.sample.py to local.py and modify as needed.
 #    ("Some One", "someone@mozilla.com"),
 #]
 
+# Uncomment these if the app is served over HTTPS (required for any
+# production deployment to avoid session hijacking):
+#SESSION_COOKIE_SECURE = True
+# http://en.wikipedia.org/wiki/Strict_Transport_Security
+#SECURE_HSTS_SECONDS = 86400
+
+# A unique (and secret) key for this deployment.
+#SECRET_KEY = "replace this with some random characters"
+
+# A dictionary of keys to use in password hashing.
+#HMAC_KEYS = {
+#    "2011-12-13": "replace this with some random characters"
+#}
 
 # Absolute path to directory where static assets will be collected by the
 # "collectstatic" management command, and can be served by front-end webserver.
@@ -75,15 +88,6 @@ Copy local.sample.py to local.py and modify as needed.
 # deployed into production.
 #COMPRESS_ENABLED = True
 #COMPRESS_OFFLINE = True
-
-# Uncomment these if the app is served over HTTPS (required for any
-# production deployment to avoid session hijacking):
-#SESSION_COOKIE_SECURE = True
-# http://en.wikipedia.org/wiki/Strict_Transport_Security
-#SECURE_HSTS_SECONDS = 86400
-
-# A unique (and secret) key for this deployment.
-#SECRET_KEY = ""
 
 # Uncomment this (and modify LOCATION appropriately) to use memcached rather
 # than local-memory cache. See

@@ -164,6 +164,8 @@ LOGGING = {
     }
 }
 
+INSTALLED_APPS += ["django_sha2"]
+
 INSTALLED_APPS += ["compressor"]
 COMPRESS_CSS_FILTERS = ["compressor.filters.css_default.CssAbsoluteFilter",
                         "compressor.filters.cssmin.CSSMinFilter"]

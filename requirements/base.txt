@@ -14,3 +14,4 @@ django-html5accordion==0.1.6
 django-messages-ui==0.1.4
 django-ajax-loading-overlay==0.1.1
 django-sha2==0.4
+py-bcrypt==0.2
