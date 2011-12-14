@@ -4,8 +4,6 @@
 // $offset-right  - The right offset.
 // $offset-bottom - The bottom offset.
 // $offset-left   - The left offset
-//
-// Styleguide 1.2
 
 =fixed-stretch($offset-top: false, $offset-right: false, $offset-bottom: false, $offset-left: false)
   position: fixed
@@ -20,27 +18,41 @@
 
 // Apply column-margins before or after a grid element.
 //
-// $push    - left columns, defaults to false.
-// $pull    - right columns, defaults to false.
+// $pre    - left columns, defaults to false.
+// $post    - right columns, defaults to false.
 // $context - grid context, defaults to false.
-//
-// Styleguide 3.2.
 
-=squish($push:false,$pull:false,$context:false)
+=squish($pre:false,$post:false,$context:false)
   $sg: side-gutter()
   @if $context
     $sg: 0
 
-  @if $push
-    margin-left: $sg + columns($push,$context) + gutter($context)
-  @if $pull
-    margin-right: $sg + columns($pull,$context) + gutter($context)
+  @if $pre
+    margin-left: $sg + columns($pre,$context) + gutter($context)
+  @if $post
+    margin-right: $sg + columns($post,$context) + gutter($context)
 
-=push($push:0,$context:false)
-  +squish($push:$push,$context:$context)
+=pre($pre:0,$context:false)
+  +squish($pre:$pre,$context:$context)
 
-=pull($pull:0,$context:false)
+=post($pull:0,$context:false)
   +squish($pull:$pull,$context:$context)
+
+// Push or pull an element on the grid.
+
+@function move($n,$context:false)
+  $move: columns($n,$context) + gutter($context)
+  @return $move
+
+=push($n,$c:false)
+  $sg: side-gutter()
+  @if $c
+    $sg: 0
+
+  margin-left: $sg + move($n,$c)
+
+=pull($n,$c:false)
+  margin-left: 0 - move($n,$c)
 
 // Creates a grid container with a min-width of 68em (approx 960px).
 //
