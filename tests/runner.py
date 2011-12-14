@@ -27,7 +27,10 @@ class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
         if test_labels:
             suite = defaultTestLoader.loadTestsFromNames(test_labels)
         else:
-            suite = defaultTestLoader.discover(settings.TEST_DISCOVERY_ROOT)
+            suite = defaultTestLoader.discover(
+                settings.TEST_DISCOVERY_ROOT,
+                top_level_dir=settings.BASE_PATH,
+                )
 
         if extra_tests:
             for test in extra_tests:
