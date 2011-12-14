@@ -2,42 +2,41 @@
 
 <nav id="filter">
   <h3 class="navhead">List Filtering</h3>
-    <section class="textual">
-      <h4 class="navhead">Basic Filtering</h4>
+    <div class="textual">
       <label for="text-filter">filter</label>
       <input type="text" name="text-filter" value="" id="text-filter" autocomplete="off" placeholder="filter by {% for field in filter %}{% if not forloop.first %}{% if forloop.last %}{% if forloop.counter > 2 %},{% endif %} or {% else %}, {% endif %}{% endif %}{{ field.name|lower }}{% endfor %}.">
       <ul class="suggest">
         {% icanhaz "autocomplete_suggestion" %}
       </ul>
-    </section>
+    </div>
 
     <section class="visual compact">
       <h4 class="toggle"><a href="#">Advanced Filtering</a></h4>
-      <div class="content">
-        <form method="GET">
-          {# preserve pagination and sort state, if any #}
-          {% if pager %}
-          {# re-filtering should jump back to page 1 #}
-          <input type="hidden" name="pagenumber" value="1">
-          <input type="hidden" name="pagesize" value="{{ pager.pagesize }}">
-          {% endif %}
-          {% if sort.field %}
-          <input type="hidden" name="sortfield" value="{{ sort.field }}">
-          <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
-          {% endif %}
+      <form method="GET" id="filterform">
+        {# preserve pagination and sort state, if any #}
+        {% if pager %}
+        {# re-filtering should jump back to page 1 #}
+        <input type="hidden" name="pagenumber" value="1">
+        <input type="hidden" name="pagesize" value="{{ pager.pagesize }}">
+        {% endif %}
+        {% if sort.field %}
+        <input type="hidden" name="sortfield" value="{{ sort.field }}">
+        <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
+        {% endif %}
 
-          {% icanhaz "autocomplete_input" %}
-          {% for field in filter %}
-          {% include "lists/_filter_group.html" with advanced=1 prefix="filter" %}
-          {% endfor %}
-          <div class="form-actions">
-            <p>
-              List no longer reflects filters:
-              <a href="" class="reset">reset the filters</a> or
-              <button type="submit">update the list</button>
-            </p>
-          </div>
-        </form>
-      </div>
+        {% icanhaz "autocomplete_input" %}
+        {% for field in filter %}
+        {% include "lists/_filter_group.html" with advanced=1 prefix="filter" %}
+        {% endfor %}
+
+        <div class="formactions">
+          <p>
+            List no longer reflects filters:
+            <a href="" class="reset">reset the filters</a> or
+            <button type="submit">update the list</button>
+          </p>
+        </div>
+
+      </form>
     </section>
 </nav>
