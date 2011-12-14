@@ -81,11 +81,14 @@ can do this.
 
 For deployment scenarios where pip-installing dependencies into a Python
 environment (as ``bin/install-reqs`` does) is not preferred, a pre-installed
-vendor library is also provided in ``requirements/vendor/lib/python``. The
-``site.addsitedir`` function should be used to add this directory to sys.path,
-to ensure that ``.pth`` files are processed. A WSGI entry-point script is
-provided in ``deploy/vendor.wsgi`` that does all the necessary ``sys.path``
-adjustments, as well as a version of ``manage.py`` in ``vendor-manage.py``.
+vendor library is also provided in ``requirements/vendor/lib/python``.  This
+library does not include the compiled dependencies listed in
+``requirements/compiled.txt``; these must be installed separately via e.g. 
+system package managers.  The ``site.addsitedir`` function should be used to
+add this directory to sys.path, to ensure that ``.pth`` files are processed. 
+A WSGI entry-point script is provided in ``deploy/vendor.wsgi`` that does
+all the necessary ``sys.path`` adjustments, as well as a version of
+``manage.py`` in ``vendor-manage.py``.
 
 In any production deployment this entire app should be served exclusively over
 HTTPS (since almost all use of the site is authenticated, and serving

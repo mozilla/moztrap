@@ -1,0 +1,4 @@
+# These requirements are not included in the bundled ``vendor/`` lib, and
+# must be installed on target machines via system package managers.
+
+py-bcrypt==0.2
