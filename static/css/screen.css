@@ -1033,12 +1033,13 @@ body > div {
   margin-right: 0.375em;
   border: 1px solid #516985;
   background-color: #8695a8;
-  color: #e8e9ec;
+  color: rgba(255, 255, 255, 0.833);
 }
 
 .chickaction, .checkchickaction, #filter .compact .filtertext {
   font-weight: 500;
-  text-shadow: rgba(69, 69, 69, 0.296) 0 1px 0;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-shadow: rgba(69, 69, 69, 0.444) 0 1px 0;
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
