@@ -21,12 +21,11 @@ Common model behavior for all Case Conductor models.
 Soft-deletion (including cascade) and tracking of user and timestamp for model
 creation, modification, and soft-deletion.
 
-@@@ implement cascade of soft-delete
-
 """
 import datetime
 
-from django.db import models
+from django.db import models, router
+from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 
 from django.contrib.auth.models import User
@@ -35,6 +34,25 @@ from django.contrib.auth.models import User
 
 def utcnow():
     return datetime.datetime.utcnow()
+
+
+
+class SoftDeleteCollector(Collector):
+    """
+    A variant of Django's default delete-cascade collector that implements soft
+    delete.
+
+    """
+    def delete(self, user=None):
+        """
+        Soft-delete all collected instances.
+
+        """
+        now = utcnow()
+        for model, instances in self.data.iteritems():
+            pk_list = [obj.pk for obj in instances]
+            model._base_manager.filter(pk__in=pk_list).update(
+                deleted_by=user, deleted_on=now)
 
 
 
@@ -68,12 +86,9 @@ class BaseQuerySet(QuerySet):
         Soft-delete all objects in this queryset.
 
         """
-        # super update, not our update, because we don't want to track
-        # soft-deletion as a modification; that would be a waste of modified-by
-        # and modified-on, since they would just duplicate deleted-by and
-        # deleted-on.
-        super(BaseQuerySet, self).update(
-            deleted_by=user, deleted_on=utcnow())
+        collector = SoftDeleteCollector(using=self._db)
+        collector.collect(self)
+        collector.delete(user)
 
 
 
@@ -135,10 +150,10 @@ class BaseModel(models.Model):
         (Soft) delete this instance.
 
         """
-        self.deleted_by = user
-        self.deleted_on = utcnow()
-        # super save, not ours; don't want to track deletion as modification
-        super(BaseModel, self).save()
+        db = router.db_for_write(self.__class__, instance=self)
+        collector = SoftDeleteCollector(using=db)
+        collector.collect([self])
+        collector.delete(user)
 
 
     class Meta:

@@ -19,9 +19,9 @@
 Tests for ``BaseModel`` (and by extension ``BaseManager``,
 ``NotDeletedManager``, and ``BaseQuerySet``).
 
-These tests use the ``Product`` model, as its a simple model
-inherited from ``BaseModel``, and this avoids the need for a
-test-only model.
+These tests use the ``Product`` model (and ``Suite`` for cascade-delete
+tests), as its a simple model inherited from ``BaseModel``, and this
+avoids the need for a test-only model.
 
 """
 import datetime
@@ -31,6 +31,7 @@ from django.test import TestCase
 from mock import patch
 
 from ..utils import refresh
+from ..library.builders import create_suite
 from .builders import create_user, create_product
 
 
@@ -45,6 +46,12 @@ class BaseModelTestCase(TestCase):
     def setUp(self):
         self.user = create_user()
 
+
+
+class BaseModelMockNowTestCase(BaseModelTestCase):
+    def setUp(self):
+        super(BaseModelMockNowTestCase, self).setUp()
+
         self.utcnow = datetime.datetime(2011, 12, 13, 22, 39)
         patcher = patch("cc.core.base_model.datetime")
         self.mock_utcnow = patcher.start().datetime.utcnow
@@ -53,7 +60,7 @@ class BaseModelTestCase(TestCase):
 
 
 
-class CreateTest(BaseModelTestCase):
+class CreateTest(BaseModelMockNowTestCase):
     def test_created_by_none(self):
         """If ``user`` is not given to create(), created_by is None."""
         p = self.Product.objects.create(name="Foo")
@@ -97,7 +104,7 @@ class CreateTest(BaseModelTestCase):
 
 
 
-class SaveTest(BaseModelTestCase):
+class SaveTest(BaseModelMockNowTestCase):
     def test_created_by_none(self):
         """If ``user`` is not given to new obj save(), created_by is None."""
         p = self.Product(name="Foo")
@@ -173,7 +180,7 @@ class SaveTest(BaseModelTestCase):
 
 
 
-class UpdateTest(BaseModelTestCase):
+class UpdateTest(BaseModelMockNowTestCase):
     def test_modified_by_none(self):
         """queryset update() sets modified_by to None if not given user."""
         p = self.Product.objects.create(name="Foo", user=self.user)
@@ -204,7 +211,7 @@ class UpdateTest(BaseModelTestCase):
 
 
 
-class DeleteTest(BaseModelTestCase):
+class DeleteTest(BaseModelMockNowTestCase):
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by to None if not given user."""
         p = create_product()
@@ -257,3 +264,73 @@ class DeleteTest(BaseModelTestCase):
         p.delete()
 
         self.assertEqual(refresh(p).deleted_on, self.utcnow)
+
+
+
+class CascadeDeleteTest(BaseModelTestCase):
+    def test_queryset_deleted_by_none(self):
+        """queryset delete() sets deleted_by None if no user on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        self.Product.objects.all().delete()
+
+        self.assertEqual(refresh(s).deleted_by, None)
+
+
+    def test_queryset_deleted_by(self):
+        """queryset delete() sets deleted_by to given user on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        self.Product.objects.all().delete(user=self.user)
+
+        self.assertEqual(refresh(s).deleted_by, self.user)
+
+
+    def test_queryset_deleted_on(self):
+        """qs delete() sets deleted_on to same time as parent on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        self.Product.objects.all().delete()
+
+        p = refresh(p)
+        s = refresh(s)
+        self.assertIsNot(p.deleted_on, None)
+
+        self.assertEqual(s.deleted_on, p.deleted_on)
+
+
+    def test_deleted_by_none(self):
+        """delete() sets deleted_by None if no user on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        p.delete()
+
+        self.assertEqual(refresh(s).deleted_by, None)
+
+
+    def test_deleted_by(self):
+        """delete() sets deleted_by to given user on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        p.delete(user=self.user)
+
+        self.assertEqual(refresh(s).deleted_by, self.user)
+
+
+    def test_deleted_on(self):
+        """delete() sets deleted_on to same time as parent on cascade."""
+        p = create_product()
+        s = create_suite(product=p)
+
+        p.delete()
+
+        p = refresh(p)
+        s = refresh(s)
+        self.assertIsNot(p.deleted_on, None)
+
+        self.assertEqual(s.deleted_on, p.deleted_on)
