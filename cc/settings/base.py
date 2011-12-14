@@ -131,6 +131,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "south",
     "cc.core",
+    "cc.library",
 ]
 
 CACHES = {
