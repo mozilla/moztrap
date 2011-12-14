@@ -1552,9 +1552,6 @@ body > div {
   background-color: rgba(254, 229, 139, 0.667);
   color: #454545;
 }
-#filterform p {
-  margin-bottom: 0em;
-}
 #filterform button {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
