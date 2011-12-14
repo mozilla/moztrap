@@ -586,7 +586,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   margin-left: 0;
 }
 
-.formactions {
+.form-actions {
   padding-top: 0.75em;
   clear: both;
   text-align: right;
@@ -1028,6 +1028,7 @@ body > div {
   border-radius: 0.296em;
   display: inline;
   float: left;
+  margin-bottom: 0.75em;
   position: relative;
   padding: 0 1.5em 0 0.375em;
   margin-right: 0.375em;
@@ -1522,7 +1523,84 @@ body > div {
 
 #filterform {
   padding-top: 0.75em;
+  *zoom: 1;
   clear: both;
+}
+#filterform:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#filterform .form-actions {
+  -moz-border-radius-topleft: 0.296em;
+  -webkit-border-top-left-radius: 0.296em;
+  -ms-border-top-left-radius: 0.296em;
+  -o-border-top-left-radius: 0.296em;
+  border-top-left-radius: 0.296em;
+  -moz-border-radius-topright: 0.296em;
+  -webkit-border-top-right-radius: 0.296em;
+  -ms-border-top-right-radius: 0.296em;
+  -o-border-top-right-radius: 0.296em;
+  border-top-right-radius: 0.296em;
+  text-shadow: #fef0bd 0 1px 0;
+  padding-bottom: 0.75em;
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+  display: none;
+  clear: both;
+  margin: 0;
+  background-color: rgba(254, 229, 139, 0.667);
+  color: #454545;
+}
+#filterform p {
+  margin-bottom: 0em;
+}
+#filterform button {
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  border-color: #668a3d;
+  background-color: #75b828;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-weight: 500;
+  padding-left: 32px;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
+  -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
+  -o-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
+  box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
+  color: #454545;
+  background-position: 9px, left;
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  cursor: pointer;
+}
+#filterform button:hover, #filterform button:focus {
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+#filterform button:active {
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/refresh.png?1317418876'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
 #filter .compact .toggle a:link::before, #filter .compact .toggle a:visited::before {

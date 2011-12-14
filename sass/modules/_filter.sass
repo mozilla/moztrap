@@ -40,7 +40,24 @@
 
 #filterform
   +padding-leader(.5)
+  +pie-clearfix
   clear: both
+
+  .form-actions
+    +border-top-radius
+    +text-shadow($yellow-light 0 1px 0)
+    +padding-trailer(.5)
+    +hpadding(rhythm(.5))
+    display: none
+    clear: both
+    margin: 0
+    background-color: rgba($yellow,$small)
+    color: $base
+
+  p
+    +trailer(0)
+  button
+    +button-style($green,'ui/refresh.png')
 
 #filter
   // Compact chicklets.
