@@ -22,38 +22,33 @@
   +float(left)
   +trailer(.5)
   position: relative
-  padding: 0 rhythm(1) 0 rhythm(.25)
+  padding: 0 rhythm(.25)
   margin-right: rhythm(.25)
   border: 1px solid $blue
   background-color: $blue-light
   color: rgba($lightest,$small-norm)
 
-.chickaction
-  +demi
-  +cond
-  +text-shadow(rgba($base,$xsmall) 0 1px 0)
-  border-right: 1px solid $blue-lighter
-  padding-right: rhythm(.25)
-
-.chickremove
-  +stretch-y
-  +icon('ui/x_sm.png')
-  +opacity(.5)
-  right: 0
-  &:hover
-    +opacity(1)
-
-.checkchick
-  input
+.chickcheck
+  .check
     +gone
-  label
+  .onoff
     @extend .chick
+    padding-right: rhythm()
     display: none
-  input:checked + label
+  .check:checked + .onoff
     display: inline
 
-.checkchickaction
-  @extend .chickaction
-  &::after
-    @extend .chickremove
-    content: " "
+  .content
+    +demi
+    +cond
+    +text-shadow(rgba($base,$xsmall) 0 1px 0)
+    border-right: 1px solid $blue-lighter
+    padding-right: rhythm(.25)
+
+  .onoffswitch
+    +stretch-y
+    +icon('ui/x_sm.png')
+    +opacity(.5)
+    right: 0
+    &:hover
+      +opacity(1)

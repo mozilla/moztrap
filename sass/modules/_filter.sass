@@ -17,6 +17,7 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
 // A filtering widget.
 
 .textual
@@ -58,6 +59,10 @@
     +button-style($green,'ui/refresh.png')
 
 #filter
+
+  .onoff
+    white-space: nowrap
+
   // Compact chicklets.
   .compact
 
@@ -72,9 +77,7 @@
     .category-title, .addterm
       +gone
     .term
-      @extend .checkchick
-    .filtertext
-      @extend .checkchickaction
+      @extend .chickcheck
 
   // Expanded lists.
   .expanded
@@ -108,19 +111,18 @@
       &:hover
         overflow-y: auto
 
-    input[type='checkbox']
+    .check, .content
       display: none
-    label
+    .onoffswitch
       display: block
       padding: 0 rhythm(.25)
-        left: image-width('ui/check_sm.png') + 6px
-      background: image-url('ui/plus_sm.png') no-repeat scroll 3px
-      font-weight: normal
-      white-space: nowrap
+      +pad-icon('ui/plus_sm.png')
+    .onoff
+      display: block
+      background: image-url('ui/plus_sm.png') no-repeat scroll $smallpx
       &:hover
         +demi
-    input:checked + label
-      +opacity(1)
+    .check:checked + .onoff
       +demi
       background-image: image-url('ui/check_sm.png')
       &:hover
