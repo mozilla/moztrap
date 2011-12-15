@@ -20,13 +20,17 @@
 .tag
   @extend .chick
 
-.taglist
+.managetaglist
   +pie-clearfix
   +padding-leader(.5)
 
-#tageditform
+  .tag
+    +icon('ui/tag_light.png',$notext:false)
+
+#managetagform
   label
     +gone
+
   .tag
     @extend .actionchick
 
@@ -42,6 +46,7 @@
     @extend .chickcontent
     border-right: 1px solid $blue-lighter
     padding-right: rhythm(.25)
+    color: rgba($lightest,$small-norm)
     cursor: pointer
     &:hover
       +italic

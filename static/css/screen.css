@@ -1020,7 +1020,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #tageditform .tag, .tag {
+.chick, .actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #managetagform .tag, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1029,27 +1029,27 @@ body > div {
   display: inline;
   float: left;
   margin-bottom: 0.75em;
+  font-weight: 500;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-shadow: rgba(69, 69, 69, 0.444) 0 1px 0;
   position: relative;
   padding: 0 0.375em;
   margin-right: 0.375em;
   border: 1px solid #516985;
   background-color: #8695a8;
-}
-
-.actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #tageditform .tag {
-  padding-right: 1.5em;
-}
-
-.chickcontent, .chickcheck .content, #filter .compact .term .content, #tageditform .name {
-  font-weight: 500;
-  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-shadow: rgba(69, 69, 69, 0.444) 0 1px 0;
-  border-right: 1px solid #a9b2bf;
-  padding-right: 0.375em;
   color: rgba(255, 255, 255, 0.833);
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch, #tageditform .tagaction {
+.actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #managetagform .tag {
+  padding-right: 1.5em;
+}
+
+.chickcontent, .chickcheck .content, #filter .compact .term .content, #managetagform .name {
+  border-right: 1px solid #a9b2bf;
+  padding-right: 0.375em;
+}
+
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch, #managetagform .tagaction {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1057,7 +1057,7 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .term .onoffswitch:hover, #tageditform .tagaction:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .term .onoffswitch:hover, #managetagform .tagaction:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1095,17 +1095,29 @@ body > div {
   display: inline;
 }
 
-.taglist {
+.managetaglist {
   *zoom: 1;
   padding-top: 0.75em;
 }
-.taglist:after {
+.managetaglist:after {
   content: "";
   display: table;
   clear: both;
 }
+.managetaglist .tag {
+  background-image: url('../images/ui/tag_light.png?1323981194');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  padding-left: 26px;
+  background-position: 6px;
+}
 
-#tageditform label {
+#managetagform label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1115,7 +1127,7 @@ body > div {
   width: 1px;
   border: 0;
 }
-#tageditform .name, #tageditform .tagaction {
+#managetagform .name, #managetagform .tagaction {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
@@ -1126,19 +1138,20 @@ body > div {
   background: transparent;
   height: auto;
 }
-#tageditform .name {
+#managetagform .name {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
+  color: rgba(255, 255, 255, 0.833);
   cursor: pointer;
 }
-#tageditform .name:hover {
+#managetagform .name:hover {
   font-style: italic;
 }
-#tageditform .name:focus {
+#managetagform .name:focus {
   font-style: normal;
   cursor: text;
 }
-#tageditform .save {
+#managetagform .save {
   background-image: url('../images/ui/disc.png?1323977546');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1154,7 +1167,7 @@ body > div {
   background-position: center;
   display: none;
 }
-#tageditform .delete {
+#managetagform .delete {
   background-image: url('../images/ui/trash.png?1314206098');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1634,7 +1647,7 @@ body > div {
   padding-left: 1em;
   padding-right: 1em;
   font-weight: 500;
-  padding-left: 32px;
+  padding-left: 26px;
   text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
   -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 0 0.296em;
@@ -1745,7 +1758,7 @@ body > div {
 #filter .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
-  padding-left: 27px;
+  padding-left: 21px;
 }
 #filter .expanded .onoff {
   display: block;
