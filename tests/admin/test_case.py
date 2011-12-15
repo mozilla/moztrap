@@ -36,14 +36,14 @@ class CaseAdminTest(AdminTestCase):
         self.get(self.changelist_url).mustcontain(c.id)
 
 
-    def test_change(self):
+    def test_change_page(self):
         """Case change page loads without error, contains id."""
         c = create_case()
 
         self.get(self.change_url(c)).mustcontain(c.id)
 
 
-    def test_change_version(self):
+    def test_change_page_version(self):
         """Case change page includes CaseVersion inline."""
         cv = create_caseversion(name="Can load a website")
 

@@ -19,9 +19,12 @@
 Tests for CaseVersion admin.
 
 """
+from mock import patch
+
 from .base import AdminTestCase
 
 from ..library.builders import create_caseversion, create_casestep
+from ..utils import refresh
 
 
 
@@ -37,16 +40,58 @@ class CaseVersionAdminTest(AdminTestCase):
         self.get(self.changelist_url).mustcontain("Can load a website")
 
 
-    def test_change(self):
+    def test_change_page(self):
         """CaseVersion change page loads without error, contains name."""
         p = create_caseversion(name="Can load a website")
 
         self.get(self.change_url(p)).mustcontain("Can load a website")
 
 
-    def test_change_step(self):
+    def test_change_page_step(self):
         """CaseVersion change page includes CaseStep inline."""
         s = create_casestep(instruction="Type a URL in the address bar")
 
         self.get(self.change_url(s.caseversion)).mustcontain(
             "Type a URL in the address bar")
+
+
+    def test_add_step_tracks_user(self):
+        """Adding a CaseStep via inline tracks created-by user."""
+        cv = create_caseversion()
+
+        # patching extra avoids need for JS to submit new step
+        with patch("cc.library.admin.CaseStepInline.extra", 1):
+           form = self.get(self.change_url(cv)).forms[0]
+           form["steps-0-number"] = "1"
+           form["steps-0-instruction"] = "An instruction"
+           form["steps-0-expected"] = "A result"
+           res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        s = cv.steps.get()
+
+        self.assertEqual(s.created_by, self.user)
+
+
+    def test_change_step_tracks_user(self):
+        """Modifying a CaseStep via inline tracks modified-by user."""
+        s = create_casestep(instruction="Type a URL in the address bar")
+
+        form = self.get(self.change_url(s.caseversion)).forms[0]
+        form["steps-0-instruction"] = "A new instruction"
+        res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        self.assertEqual(refresh(s).modified_by, self.user)
+
+
+    def test_delete_step_tracks_user(self):
+        """Modifying a CaseStep via inline tracks modified-by user."""
+        s = create_casestep()
+
+        form = self.get(self.change_url(s.caseversion)).forms[0]
+        form["steps-0-DELETE"] = True
+        res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        self.assertEqual(refresh(s).deleted_by, self.user)

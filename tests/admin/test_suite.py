@@ -37,7 +37,7 @@ class SuiteAdminTest(AdminTestCase):
         self.get(self.changelist_url).mustcontain("Performance")
 
 
-    def test_change(self):
+    def test_change_page(self):
         """Suite change page loads without error, contains name."""
         s = create_suite(name="Performance")
 

@@ -103,6 +103,7 @@ class CCModelAdmin(admin.ModelAdmin):
 class CCInlineFormSet(BaseInlineFormSet):
     def save(self, *args, **kwargs):
         """Save model instances for each form in the formset."""
+        # stash the user for use by ``save_new`` and ``save_existing``
         self.user = kwargs.pop("user", None)
         return super(CCInlineFormSet, self).save(*args, **kwargs)
 
@@ -117,9 +118,18 @@ class CCInlineFormSet(BaseInlineFormSet):
         return form.save(commit=commit, user=self.user)
 
 
+    def _existing_object(self, pk):
+        """Retrieve an existing inline object by pk."""
+        obj = super(CCInlineFormSet, self)._existing_object(pk)
+        if hasattr(self, "user"):
+            obj.delete = partial(obj.delete, user=self.user)
+        return obj
+
+
 
 class CCModelForm(ModelForm):
     def save(self, commit=True, user=None):
+        """Save and return this form's model instance."""
         instance = super(CCModelForm, self).save(commit=False)
         if commit:
             instance.save(user=user)

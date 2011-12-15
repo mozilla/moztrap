@@ -22,6 +22,7 @@ Tests for Product admin.
 from .base import AdminTestCase
 
 from ..core.builders import create_product
+from ..utils import refresh
 
 
 
@@ -37,9 +38,33 @@ class ProductAdminTest(AdminTestCase):
         self.get(self.changelist_url).mustcontain("Firefox")
 
 
-    def test_change(self):
+    def test_change_page(self):
         """Product change page loads without error, contains name."""
-
         p = create_product(name="Firefox")
 
         self.get(self.change_url(p)).mustcontain("Firefox")
+
+
+    def test_change_tracks_user(self):
+        """Making a change via the admin tracks modified-by user."""
+        p = create_product(name="Firefox")
+        url = self.change_url(p)
+        form = self.get(url).forms[0]
+        form["name"] = "Fennec"
+
+        res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        self.assertEqual(refresh(p).modified_by, self.user)
+
+
+    def test_delete_tracks_user(self):
+        """Deletion via the admin tracks deleted-by user."""
+        p = create_product(name="Firefox")
+        url = self.delete_url(p)
+        form = self.get(url).forms[0]
+
+        res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        self.assertEqual(refresh(p).deleted_by, self.user)

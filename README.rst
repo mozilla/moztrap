@@ -68,7 +68,7 @@ running the tests.
 
 To run just a particular test module::
 
-    bin/test tests.core.test_api
+    bin/test tests.core.models.test_product
 
 
 Deployment
