@@ -21,23 +21,23 @@
   +border-radius
   +float(left)
   +trailer(.5)
+  +demi
+  +cond
+  +text-shadow(rgba($base,$xsmall) 0 1px 0)
   position: relative
   padding: 0 rhythm(.25)
   margin-right: rhythm(.25)
   border: 1px solid $blue
   background-color: $blue-light
+  color: rgba($lightest,$small-norm)
 
 .actionchick
   @extend .chick
   padding-right: rhythm()
 
 .chickcontent
-  +demi
-  +cond
-  +text-shadow(rgba($base,$xsmall) 0 1px 0)
   border-right: 1px solid $blue-lighter
   padding-right: rhythm(.25)
-  color: rgba($lightest,$small-norm)
 
 .chickaction
   +stretch-y
