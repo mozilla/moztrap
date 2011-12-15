@@ -21,20 +21,36 @@ Admin config for library models.
 """
 from django.contrib import admin
 
+from ..core.base_admin import (
+    BaseModelAdmin, BaseTabularInline, BaseStackedInline)
 from . import models
 
 
 
-class CaseVersionInline(admin.StackedInline):
+class CaseVersionInline(BaseStackedInline):
     model = models.CaseVersion
     extra = 0
+    fieldsets = [
+        (None, {"fields": [("number", "latest", "exists"),
+                           "name",
+                           "description"]})
+        ]
 
 
-class CaseStepInline(admin.TabularInline):
+class CaseStepInline(BaseTabularInline):
     model = models.CaseStep
     extra = 0
 
 
-admin.site.register(models.Suite)
-admin.site.register(models.Case, inlines=[CaseVersionInline])
-admin.site.register(models.CaseVersion, inlines=[CaseStepInline])
+class CaseVersionAdmin(BaseModelAdmin):
+    inlines = [CaseStepInline]
+    fieldsets = [
+        (None, {"fields": [("number", "latest"),
+                           "name",
+                           "description"]})
+        ]
+
+
+admin.site.register(models.Suite, BaseModelAdmin)
+admin.site.register(models.Case, BaseModelAdmin, inlines=[CaseVersionInline])
+admin.site.register(models.CaseVersion, CaseVersionAdmin)

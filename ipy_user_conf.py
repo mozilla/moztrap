@@ -33,6 +33,8 @@ def main():
 
     imports = [
         "import datetime",
+        "from cc.core.models import Product",
+        "from cc.library.models import Suite, Case, CaseVersion, CaseStep",
         ]
 
     for imp in imports:

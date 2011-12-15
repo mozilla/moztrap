@@ -115,16 +115,17 @@ class BaseModel(models.Model):
     Tracks user and timestamp for creation, modification, and (soft) deletion.
 
     """
+    created_on = models.DateTimeField(default=utcnow)
     created_by = models.ForeignKey(
         User, blank=True, null=True, related_name="+")
+
+    modified_on = models.DateTimeField(default=utcnow)
     modified_by = models.ForeignKey(
         User, blank=True, null=True, related_name="+")
+    deleted_on = models.DateTimeField(db_index=True, blank=True, null=True)
     deleted_by = models.ForeignKey(
         User, blank=True, null=True, related_name="+")
 
-    created_on = models.DateTimeField(default=utcnow)
-    modified_on = models.DateTimeField(default=utcnow)
-    deleted_on = models.DateTimeField(db_index=True, blank=True, null=True)
 
 
     # default manager returns all objects, so admin can see all
