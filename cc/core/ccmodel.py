@@ -43,6 +43,18 @@ class SoftDeleteCollector(Collector):
     delete.
 
     """
+    def collect(self, objs, *args, **kwargs):
+        """
+        Collect ``objs`` and dependent objects.
+
+        We override in order to store "root" objects for undelete.
+
+        """
+        if kwargs.get("source", None) is None:
+            self.root_objs = objs
+        super(SoftDeleteCollector, self).collect(objs, *args, **kwargs)
+
+
     def delete(self, user=None):
         """
         Soft-delete all collected instances.
@@ -51,8 +63,24 @@ class SoftDeleteCollector(Collector):
         now = utcnow()
         for model, instances in self.data.iteritems():
             pk_list = [obj.pk for obj in instances]
-            model._base_manager.filter(pk__in=pk_list).update(
+            model._base_manager.filter(
+                pk__in=pk_list, deleted_on__isnull=True).update(
                 deleted_by=user, deleted_on=now)
+
+
+    def undelete(self, user=None):
+        """
+        Undelete all collected instances that were deleted.
+
+        """
+        # timestamps on which root obj(s) were deleted; only cascade items also
+        # deleted in one of these same cascade batches should be undeleted.
+        deletion_times = set([o.deleted_on for o in self.root_objs])
+        for model, instances in self.data.iteritems():
+            pk_list = [obj.pk for obj in instances]
+            model._base_manager.filter(
+                pk__in=pk_list, deleted_on__in=deletion_times).update(
+                deleted_by=None, deleted_on=None)
 
 
 
@@ -89,6 +117,16 @@ class CCQuerySet(QuerySet):
         collector = SoftDeleteCollector(using=self._db)
         collector.collect(self)
         collector.delete(user)
+
+
+    def undelete(self, user=None):
+        """
+        Undelete all objects in this queryset.
+
+        """
+        collector = SoftDeleteCollector(using=self._db)
+        collector.collect(self)
+        collector.undelete(user)
 
 
 
@@ -154,10 +192,24 @@ class CCModel(models.Model):
         (Soft) delete this instance.
 
         """
+        self._collector.delete(user)
+
+
+    def undelete(self, user=None):
+        """
+        (Soft) delete this instance.
+
+        """
+        self._collector.undelete(user)
+
+
+    @property
+    def _collector(self):
+        """Returns populated delete-cascade collector."""
         db = router.db_for_write(self.__class__, instance=self)
         collector = SoftDeleteCollector(using=db)
         collector.collect([self])
-        collector.delete(user)
+        return collector
 
 
     class Meta:

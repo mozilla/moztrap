@@ -37,19 +37,24 @@ from .builders import create_user, create_product
 
 
 class CCModelTestCase(TestCase):
+    """Common base class for CCModel tests."""
     @property
     def Product(self):
+        """Returns the Product model."""
         from cc.core.models import Product
         return Product
 
 
     def setUp(self):
+        """Creates ``self.user`` for use by all tests."""
         self.user = create_user()
 
 
 
 class CCModelMockNowTestCase(CCModelTestCase):
+    """Base class for CCModel tests that need "now" mocked."""
     def setUp(self):
+        """Mocks datetime.utcnow() with datetime in self.utcnow."""
         super(CCModelMockNowTestCase, self).setUp()
 
         self.utcnow = datetime.datetime(2011, 12, 13, 22, 39)
@@ -61,6 +66,7 @@ class CCModelMockNowTestCase(CCModelTestCase):
 
 
 class CreateTest(CCModelMockNowTestCase):
+    """Tests for (created/modified)_(on/by) when using Model.objects.create."""
     def test_created_by_none(self):
         """If ``user`` is not given to create(), created_by is None."""
         p = self.Product.objects.create(name="Foo")
@@ -105,6 +111,7 @@ class CreateTest(CCModelMockNowTestCase):
 
 
 class SaveTest(CCModelMockNowTestCase):
+    """Tests for (created/modified)_(on/by) when using instance.save."""
     def test_created_by_none(self):
         """If ``user`` is not given to new obj save(), created_by is None."""
         p = self.Product(name="Foo")
@@ -181,6 +188,7 @@ class SaveTest(CCModelMockNowTestCase):
 
 
 class UpdateTest(CCModelMockNowTestCase):
+    """Tests for modified_(by/on) when using queryset.update."""
     def test_modified_by_none(self):
         """queryset update() sets modified_by to None if not given user."""
         p = self.Product.objects.create(name="Foo", user=self.user)
@@ -212,6 +220,7 @@ class UpdateTest(CCModelMockNowTestCase):
 
 
 class DeleteTest(CCModelMockNowTestCase):
+    """Tests for deleted_(by/on) when using instance.delete or qs.delete."""
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by to None if not given user."""
         p = create_product()
@@ -268,6 +277,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
 
 class CascadeDeleteTest(CCModelTestCase):
+    """Tests for cascading soft-delete."""
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by None if no user on cascade."""
         p = create_product()
@@ -334,3 +344,98 @@ class CascadeDeleteTest(CCModelTestCase):
         self.assertIsNot(p.deleted_on, None)
 
         self.assertEqual(s.deleted_on, p.deleted_on)
+
+
+    def test_no_cascade_redelete(self):
+        """cascade delete won't update deleted-on for previously deleted."""
+        p = create_product()
+        s = create_suite(product=p)
+        # need to patch utcnow because MySQL doesn't give us better than
+        # one-second resolution on datetimes.
+        with patch("cc.core.ccmodel.datetime") as mock_dt:
+            mock_dt.datetime.utcnow.return_value = datetime.datetime(
+                2011, 12, 13, 10, 23, 58)
+            s.delete()
+            # ... a day later...
+            mock_dt.datetime.utcnow.return_value = datetime.datetime(
+                2011, 12, 14, 9, 18, 22)
+            p.delete()
+
+        self.assertNotEqual(refresh(s).deleted_on, refresh(p).deleted_on)
+
+
+
+class UndeleteMixin(object):
+    """Utility assertions mixin for undelete tests."""
+    def assertNotDeleted(self, obj):
+        self.assertEqual(obj.deleted_on, None)
+        self.assertEqual(obj.deleted_by, None)
+
+
+
+class UndeleteTest(UndeleteMixin, CCModelTestCase):
+    """Tests for undelete using instance.undelete or qs.undelete."""
+    def test_instance(self):
+        """instance.undelete() undeletes an instance."""
+        p = create_product()
+        p.delete()
+
+        p.undelete()
+
+        self.assertNotDeleted(p)
+
+
+    def test_queryset(self):
+        """qs.undelete() undeletes all objects in the queryset."""
+        p = create_product()
+        p.delete()
+
+        self.Product.everything.all().undelete()
+
+        self.assertNotDeleted(refresh(p))
+
+
+
+class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
+    """Tests for cascading undelete."""
+    def test_instance(self):
+        """Undeleting an instance also undeletes cascade-deleted dependents."""
+        p = create_product()
+        s = create_suite(product=p)
+        p.delete()
+        p = refresh(p)
+
+        p.undelete()
+
+        self.assertNotDeleted(refresh(s))
+
+
+    def test_queryset(self):
+        """Undeleting a queryset also undeletes cascade-deleted dependents."""
+        p = create_product()
+        s = create_suite(product=p)
+        p.delete()
+
+        self.Product.everything.all().undelete()
+
+        self.assertNotDeleted(refresh(s))
+
+
+    def test_cascade_limited(self):
+        """Undelete only cascades to objs cascade-deleted with that object."""
+        p = create_product()
+        s = create_suite(product=p)
+        # need to patch utcnow because MySQL doesn't give us better than
+        # one-second resolution on datetimes.
+        with patch("cc.core.ccmodel.datetime") as mock_dt:
+            mock_dt.datetime.utcnow.return_value = datetime.datetime(
+                2011, 12, 13, 10, 23, 58)
+            s.delete()
+            # ... a day later ...
+            mock_dt.datetime.utcnow.return_value = datetime.datetime(
+                2011, 12, 14, 9, 18, 22)
+            p.delete()
+
+        refresh(p).undelete()
+
+        self.assertIsNot(refresh(s).deleted_on, None)
