@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for ``BaseModel`` (and by extension ``BaseManager``,
-``NotDeletedManager``, and ``BaseQuerySet``).
+Tests for ``CCModel`` (and by extension ``CCManager``,
+``NotDeletedCCManager``, and ``CCQuerySet``).
 
 These tests use the ``Product`` model (and ``Suite`` for cascade-delete
-tests), as its a simple model inherited from ``BaseModel``, and this
+tests), as its a simple model inherited from ``CCModel``, and this
 avoids the need for a test-only model.
 
 """
@@ -36,7 +36,7 @@ from .builders import create_user, create_product
 
 
 
-class BaseModelTestCase(TestCase):
+class CCModelTestCase(TestCase):
     @property
     def Product(self):
         from cc.core.models import Product
@@ -48,19 +48,19 @@ class BaseModelTestCase(TestCase):
 
 
 
-class BaseModelMockNowTestCase(BaseModelTestCase):
+class CCModelMockNowTestCase(CCModelTestCase):
     def setUp(self):
-        super(BaseModelMockNowTestCase, self).setUp()
+        super(CCModelMockNowTestCase, self).setUp()
 
         self.utcnow = datetime.datetime(2011, 12, 13, 22, 39)
-        patcher = patch("cc.core.base_model.datetime")
+        patcher = patch("cc.core.ccmodel.datetime")
         self.mock_utcnow = patcher.start().datetime.utcnow
         self.mock_utcnow.return_value = self.utcnow
         self.addCleanup(patcher.stop)
 
 
 
-class CreateTest(BaseModelMockNowTestCase):
+class CreateTest(CCModelMockNowTestCase):
     def test_created_by_none(self):
         """If ``user`` is not given to create(), created_by is None."""
         p = self.Product.objects.create(name="Foo")
@@ -104,7 +104,7 @@ class CreateTest(BaseModelMockNowTestCase):
 
 
 
-class SaveTest(BaseModelMockNowTestCase):
+class SaveTest(CCModelMockNowTestCase):
     def test_created_by_none(self):
         """If ``user`` is not given to new obj save(), created_by is None."""
         p = self.Product(name="Foo")
@@ -180,7 +180,7 @@ class SaveTest(BaseModelMockNowTestCase):
 
 
 
-class UpdateTest(BaseModelMockNowTestCase):
+class UpdateTest(CCModelMockNowTestCase):
     def test_modified_by_none(self):
         """queryset update() sets modified_by to None if not given user."""
         p = self.Product.objects.create(name="Foo", user=self.user)
@@ -211,7 +211,7 @@ class UpdateTest(BaseModelMockNowTestCase):
 
 
 
-class DeleteTest(BaseModelMockNowTestCase):
+class DeleteTest(CCModelMockNowTestCase):
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by to None if not given user."""
         p = create_product()
@@ -267,7 +267,7 @@ class DeleteTest(BaseModelMockNowTestCase):
 
 
 
-class CascadeDeleteTest(BaseModelTestCase):
+class CascadeDeleteTest(CCModelTestCase):
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by None if no user on cascade."""
         p = create_product()

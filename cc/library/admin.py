@@ -21,13 +21,12 @@ Admin config for library models.
 """
 from django.contrib import admin
 
-from ..core.base_admin import (
-    BaseModelAdmin, BaseTabularInline, BaseStackedInline)
+from ..core.ccadmin import CCModelAdmin, CCTabularInline, CCStackedInline
 from . import models
 
 
 
-class CaseVersionInline(BaseStackedInline):
+class CaseVersionInline(CCStackedInline):
     model = models.CaseVersion
     extra = 0
     fieldsets = [
@@ -37,12 +36,12 @@ class CaseVersionInline(BaseStackedInline):
         ]
 
 
-class CaseStepInline(BaseTabularInline):
+class CaseStepInline(CCTabularInline):
     model = models.CaseStep
     extra = 0
 
 
-class CaseVersionAdmin(BaseModelAdmin):
+class CaseVersionAdmin(CCModelAdmin):
     inlines = [CaseStepInline]
     fieldsets = [
         (None, {"fields": [("number", "latest"),
@@ -51,6 +50,6 @@ class CaseVersionAdmin(BaseModelAdmin):
         ]
 
 
-admin.site.register(models.Suite, BaseModelAdmin)
-admin.site.register(models.Case, BaseModelAdmin, inlines=[CaseVersionInline])
+admin.site.register(models.Suite, CCModelAdmin)
+admin.site.register(models.Case, CCModelAdmin, inlines=[CaseVersionInline])
 admin.site.register(models.CaseVersion, CaseVersionAdmin)

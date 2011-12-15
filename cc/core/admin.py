@@ -17,9 +17,9 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.contrib import admin
 
-from .base_admin import BaseModelAdmin
+from .ccadmin import CCModelAdmin
 from .models import Product
 
 
 
-admin.site.register(Product, BaseModelAdmin)
+admin.site.register(Product, CCModelAdmin)

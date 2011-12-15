@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Base ModelAdmin and InlineModelAdmin for use with BaseModel.
+CC ModelAdmin and InlineModelAdmin for use with CCModel.
 
 """
 from itertools import chain
@@ -29,7 +29,7 @@ from django.contrib import admin
 
 
 
-class BaseModelAdmin(admin.ModelAdmin):
+class CCModelAdmin(admin.ModelAdmin):
     list_display = ["__unicode__", "deleted_on"]
     readonly_fields = [
         "created_on",
@@ -80,7 +80,7 @@ class BaseModelAdmin(admin.ModelAdmin):
             ("deleted_on", "deleted_by"),
             ]
 
-        fieldsets = super(BaseModelAdmin, self).get_fieldsets(
+        fieldsets = super(CCModelAdmin, self).get_fieldsets(
             *args, **kwargs)[:]
 
         if not self.declared_fieldsets:
@@ -129,7 +129,7 @@ class CCModelForm(ModelForm):
 
 
 
-class BaseInlineModelAdmin(object):
+class CCInlineModelAdmin(object):
     formset = CCInlineFormSet
     form = CCModelForm
     # metadata fields are too much cruft for an inline
@@ -151,10 +151,10 @@ class BaseInlineModelAdmin(object):
 
 
 
-class BaseTabularInline(BaseInlineModelAdmin, admin.TabularInline):
+class CCTabularInline(CCInlineModelAdmin, admin.TabularInline):
     pass
 
 
 
-class BaseStackedInline(BaseInlineModelAdmin, admin.StackedInline):
+class CCStackedInline(CCInlineModelAdmin, admin.StackedInline):
     pass

@@ -21,12 +21,12 @@ Models for test-case library (cases, suites).
 """
 from django.db import models
 
-from ..core.base_model import BaseModel
+from ..core.ccmodel import CCModel
 from ..core.models import Product
 
 
 
-class Case(BaseModel):
+class Case(CCModel):
     product = models.ForeignKey(Product, related_name="cases")
 
 
@@ -35,7 +35,7 @@ class Case(BaseModel):
 
 
 
-class CaseVersion(BaseModel):
+class CaseVersion(CCModel):
     case = models.ForeignKey(Case, related_name="versions")
     number = models.PositiveIntegerField(unique=True)
     latest = models.BooleanField(default=True, db_index=True)
@@ -52,7 +52,7 @@ class CaseVersion(BaseModel):
 
 
 
-class CaseStep(BaseModel):
+class CaseStep(CCModel):
     caseversion = models.ForeignKey(CaseVersion, related_name="steps")
     number = models.IntegerField(unique=True)
     instruction = models.TextField()
@@ -68,7 +68,7 @@ class CaseStep(BaseModel):
 
 
 
-class Suite(BaseModel):
+class Suite(CCModel):
     product = models.ForeignKey(Product, related_name="suites")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -82,7 +82,7 @@ class Suite(BaseModel):
 
 
 
-class SuiteCase(BaseModel):
+class SuiteCase(CCModel):
     suite = models.ForeignKey(Suite)
     case = models.ForeignKey(Case)
     order = models.IntegerField(default=0)

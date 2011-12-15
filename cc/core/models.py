@@ -21,11 +21,11 @@ Core Case Conductor models.
 """
 from django.db import models
 
-from .base_model import BaseModel
+from .ccmodel import CCModel
 
 
 
-class Product(BaseModel):
+class Product(CCModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 

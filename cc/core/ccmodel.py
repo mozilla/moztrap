@@ -56,7 +56,7 @@ class SoftDeleteCollector(Collector):
 
 
 
-class BaseQuerySet(QuerySet):
+class CCQuerySet(QuerySet):
     """
     Implements modification tracking and soft deletes on bulk update/delete.
 
@@ -68,7 +68,7 @@ class BaseQuerySet(QuerySet):
         user = kwargs.pop("user", None)
         kwargs["created_by"] = user
         kwargs["modified_by"] = user
-        return super(BaseQuerySet, self).create(*args, **kwargs)
+        return super(CCQuerySet, self).create(*args, **kwargs)
 
 
     def update(self, *args, **kwargs):
@@ -78,7 +78,7 @@ class BaseQuerySet(QuerySet):
         """
         kwargs["modified_by"] = kwargs.pop("user", None)
         kwargs["modified_on"] = utcnow()
-        return super(BaseQuerySet, self).update(*args, **kwargs)
+        return super(CCQuerySet, self).update(*args, **kwargs)
 
 
     def delete(self, user=None):
@@ -92,23 +92,23 @@ class BaseQuerySet(QuerySet):
 
 
 
-class BaseManager(models.Manager):
-    """Pass-through manager to ensure ``BaseQuerySet`` is always used."""
+class CCManager(models.Manager):
+    """Pass-through manager to ensure ``CCQuerySet`` is always used."""
     def get_query_set(self):
-        """Return a ``BaseQuerySet`` for all queries."""
-        return BaseQuerySet(self.model, using=self._db)
+        """Return a ``CCQuerySet`` for all queries."""
+        return CCQuerySet(self.model, using=self._db)
 
 
 
-class NotDeletedManager(BaseManager):
+class NotDeletedCCManager(CCManager):
     """Manager that returns only not-deleted objects."""
     def get_query_set(self):
-        return super(NotDeletedManager, self).get_query_set().filter(
+        return super(NotDeletedCCManager, self).get_query_set().filter(
             deleted_on__isnull=True)
 
 
 
-class BaseModel(models.Model):
+class CCModel(models.Model):
     """
     Common base abstract model for all Case Conductor models.
 
@@ -129,9 +129,9 @@ class BaseModel(models.Model):
 
 
     # default manager returns all objects, so admin can see all
-    everything = BaseManager()
+    everything = CCManager()
     # ...but "objects", for use in most code, returns only not-deleted
-    objects = NotDeletedManager()
+    objects = NotDeletedCCManager()
 
 
     def save(self, *args, **kwargs):
@@ -146,7 +146,7 @@ class BaseModel(models.Model):
         if self.pk or user is not None:
             self.modified_by = user
         self.modified_on = now
-        return super(BaseModel, self).save(*args, **kwargs)
+        return super(CCModel, self).save(*args, **kwargs)
 
 
     def delete(self, user=None):
