@@ -501,14 +501,10 @@
                             }
                         } else {
                             // ...or add it if it doesn't already exist.
-                            if (thisGroup.find(options.newInputTextbox).length) {
-                                thisGroup.removeClass('empty').find(options.newInputTextbox).parent('li').before(newInput);
+                            if (thisGroup.children('ul').length) {
+                                thisGroup.removeClass('empty').children('ul').append(newInput);
                             } else {
-                                if (thisGroup.children('ul').length) {
-                                    thisGroup.removeClass('empty').children('ul').append(newInput);
-                                } else {
-                                    thisGroup.removeClass('empty').append(newInput);
-                                }
+                                thisGroup.removeClass('empty').append(newInput);
                             }
                             $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
@@ -575,9 +571,12 @@
                         prefix: prefix
                     }),
                     addInput = function () {
-                        newInput.insertBefore(thisTextbox.parent('li'));
+                        if (thisGroup.children('ul').length) {
+                            thisGroup.removeClass('empty').children('ul').append(newInput);
+                        } else {
+                            thisGroup.removeClass('empty').append(newInput);
+                        }
                         $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
-                        thisGroup.removeClass('empty');
                         inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
                         updateFormActions();
                         thisTextbox.val(null);
