@@ -21,6 +21,8 @@ Models for test-case library (cases, suites).
 """
 from django.db import models
 
+from model_utils import Choices
+
 from ..core.ccmodel import CCModel
 from ..core.models import Product
 
@@ -36,6 +38,10 @@ class Case(CCModel):
 
 
 class CaseVersion(CCModel):
+    STATUS = Choices("draft", "active")
+
+    status = models.CharField(
+        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     case = models.ForeignKey(Case, related_name="versions")
     number = models.PositiveIntegerField(unique=True)
     latest = models.BooleanField(default=True, db_index=True)
@@ -69,6 +75,10 @@ class CaseStep(CCModel):
 
 
 class Suite(CCModel):
+    STATUS = Choices("draft", "active")
+
+    status = models.CharField(
+        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     product = models.ForeignKey(Product, related_name="suites")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)

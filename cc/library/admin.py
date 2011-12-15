@@ -45,7 +45,7 @@ class CaseVersionAdmin(CCModelAdmin):
     inlines = [CaseStepInline]
     fieldsets = [
         (None, {"fields": [("number", "latest"),
-                           "name",
+                           ("name", "status"),
                            "description"]})
         ]
 
