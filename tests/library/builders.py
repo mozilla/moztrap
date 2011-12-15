@@ -85,6 +85,8 @@ def create_casestep(**kwargs):
         "instruction": "Test step instruction"
         }
 
+    defaults.update(kwargs)
+
     if "caseversion" not in defaults:
         defaults["caseversion"] = create_caseversion()
 

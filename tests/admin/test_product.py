@@ -1,20 +1,26 @@
-from django.core.urlresolvers import reverse
-
 from django_webtest import WebTest
 
-from ..builders import create_user, create_product
+from .base import AdminTestCase
+
+from ..core.builders import create_product
 
 
 
-class ProductAdminTest(WebTest):
-    def setUp(self):
-        self.user = create_user(is_staff=True, is_superuser=True)
+class ProductAdminTest(AdminTestCase, WebTest):
+    app_label = "core"
+    model_name = "product"
 
 
     def test_changelist(self):
-        url = reverse('admin:core_product_changelist')
+        """Product changelist page loads without error, contains name."""
         create_product(name="Firefox")
 
-        res = self.app.get(url, user=self.user)
+        self.get(self.changelist_url).mustcontain("Firefox")
 
-        res.mustcontain("Firefox")
+
+    def test_change(self):
+        """Product change page loads without error, contains name."""
+
+        p = create_product(name="Firefox")
+
+        self.get(self.change_url(p)).mustcontain("Firefox")
