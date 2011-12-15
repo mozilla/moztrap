@@ -26,29 +26,41 @@
   margin-right: rhythm(.25)
   border: 1px solid $blue
   background-color: $blue-light
+
+.actionchick
+  @extend .chick
+  padding-right: rhythm()
+
+.chickcontent
+  +demi
+  +cond
+  +text-shadow(rgba($base,$xsmall) 0 1px 0)
+  border-right: 1px solid $blue-lighter
+  padding-right: rhythm(.25)
   color: rgba($lightest,$small-norm)
+
+.chickaction
+  +stretch-y
+  +opacity(.5)
+  right: 0
+  &:hover
+    +opacity(1)
+
+.chicktoggle
+  @extend .chickaction
+  +icon('ui/x_sm.png')
 
 .chickcheck
   .check
     +gone
   .onoff
-    @extend .chick
-    padding-right: rhythm()
+    @extend .actionchick
     display: none
   .check:checked + .onoff
     display: inline
 
   .content
-    +demi
-    +cond
-    +text-shadow(rgba($base,$xsmall) 0 1px 0)
-    border-right: 1px solid $blue-lighter
-    padding-right: rhythm(.25)
+    @extend .chickcontent
 
   .onoffswitch
-    +stretch-y
-    +icon('ui/x_sm.png')
-    +opacity(.5)
-    right: 0
-    &:hover
-      +opacity(1)
+    @extend .chicktoggle

@@ -17,9 +17,43 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-@import chick
-@import tag
-@import suggest
-@import sort
-@import finder
-@import filter
+.tag
+  @extend .chick
+
+.taglist
+  +pie-clearfix
+  +padding-leader(.5)
+
+#tageditform
+  label
+    +gone
+  .tag
+    @extend .actionchick
+
+  .name, .tagaction
+    +box-shadow(none)
+    padding: 0
+    margin: 0
+    border: 0
+    background: transparent
+    height: auto
+
+  .name
+    @extend .chickcontent
+    border-right: 1px solid $blue-lighter
+    padding-right: rhythm(.25)
+    cursor: pointer
+    &:hover
+      +italic
+    &:focus
+      +font-style-normal
+      cursor: text
+
+  .tagaction
+    @extend .chickaction
+  .save
+    +icon('ui/disc.png')
+    display: none
+  .delete
+    +icon('ui/trash.png')
+

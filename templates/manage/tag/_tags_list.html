@@ -4,21 +4,12 @@
 
   {% include "manage/tag/_tags_listordering.html" %}
 
-  <div class="items">
+  <div class="taglist">
     {% icanhaz "tag_edit" %}
 
     {% for tag in tags %}
     {% include "manage/tag/_tags_list_item.html" %}
     {% endfor %}
-
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <article class="item add-item details">
-      <div class="content">
-        {% include "manage/tag/_tag_list_item_content_new.html" %}
-      </div>
-      <h3 class="summary">add a tag</h3>
-    </article>
-    {% endif %}
   </div>
 
   {% include "lists/_listnav.html" %}

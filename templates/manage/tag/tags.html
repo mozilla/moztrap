@@ -6,6 +6,10 @@
 
   {% include "lists/_filter.html" %}
 
+  {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
+  <a href="#" class="create">create a tag</a>
+  {% endif %}
+
   {% include "manage/tag/_tags_list.html" %}
 
 </section>

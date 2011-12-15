@@ -1020,7 +1020,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .chickcheck .onoff, #filter .compact .term .onoff {
+.chick, .actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #tageditform .tag, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1034,37 +1034,35 @@ body > div {
   margin-right: 0.375em;
   border: 1px solid #516985;
   background-color: #8695a8;
-  color: rgba(255, 255, 255, 0.833);
 }
 
-.chickcheck .check, #filter .compact .term .check {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.chickcheck .onoff, #filter .compact .term .onoff {
+.actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #tageditform .tag {
   padding-right: 1.5em;
-  display: none;
 }
-.chickcheck .check:checked + .onoff, #filter .compact .term .check:checked + .onoff {
-  display: inline;
-}
-.chickcheck .content, #filter .compact .term .content {
+
+.chickcontent, .chickcheck .content, #filter .compact .term .content, #tageditform .name {
   font-weight: 500;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: rgba(69, 69, 69, 0.444) 0 1px 0;
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
+  color: rgba(255, 255, 255, 0.833);
 }
-.chickcheck .onoffswitch, #filter .compact .term .onoffswitch {
+
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch, #tageditform .tagaction {
   position: absolute;
   top: 0;
   bottom: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  right: 0;
+}
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .term .onoffswitch:hover, #tageditform .tagaction:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1314206098');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1078,13 +1076,102 @@ body > div {
   text-align: left;
   width: 1.5em;
   background-position: center;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
-  right: 0;
 }
-.chickcheck .onoffswitch:hover, #filter .compact .term .onoffswitch:hover {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
+
+.chickcheck .check, #filter .compact .term .check {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.chickcheck .onoff, #filter .compact .term .onoff {
+  display: none;
+}
+.chickcheck .check:checked + .onoff, #filter .compact .term .check:checked + .onoff {
+  display: inline;
+}
+
+.taglist {
+  *zoom: 1;
+  padding-top: 0.75em;
+}
+.taglist:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#tageditform label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#tageditform .name, #tageditform .tagaction {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  height: auto;
+}
+#tageditform .name {
+  border-right: 1px solid #a9b2bf;
+  padding-right: 0.375em;
+  cursor: pointer;
+}
+#tageditform .name:hover {
+  font-style: italic;
+}
+#tageditform .name:focus {
+  font-style: normal;
+  cursor: text;
+}
+#tageditform .save {
+  background-image: url('../images/ui/disc.png?1323977546');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+  display: none;
+}
+#tageditform .delete {
+  background-image: url('../images/ui/trash.png?1314206098');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+}
+
+.textual {
+  position: relative;
 }
 
 .suggest {
@@ -1481,24 +1568,6 @@ body > div {
   color: #999999;
 }
 
-.textual {
-  display: inline;
-  float: left;
-  width: 41.053%;
-  margin-right: 1.053%;
-  position: relative;
-}
-.textual label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-
 .category-title {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
@@ -1514,6 +1583,9 @@ body > div {
   margin-right: 1.053%;
   margin-top: 0.375em;
   text-transform: capitalize;
+}
+.toggle a:link, .toggle a:visited {
+  display: block;
 }
 
 #filterform {
@@ -1595,6 +1667,22 @@ body > div {
   background-image: url('../images/ui/refresh.png?1317418876'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
+#filter .textual {
+  display: inline;
+  float: left;
+  width: 41.053%;
+  margin-right: 1.053%;
+}
+#filter .textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
 #filter .onoff {
   white-space: nowrap;
 }

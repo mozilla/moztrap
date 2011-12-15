@@ -20,12 +20,6 @@
 // ---------------------------------------------------------------------------
 // A filtering widget.
 
-.textual
-  +columns(10,24)
-  position: relative
-  label
-    +gone
-
 .category-title
   @extend .allcaps
   +cond
@@ -38,6 +32,9 @@
   +columns(6,24)
   +leader(.25)
   text-transform: capitalize
+  a
+    #{$link}
+      display: block
 
 #filterform
   +padding-leader(.5)
@@ -59,6 +56,11 @@
     +button-style($green,'ui/refresh.png')
 
 #filter
+
+  .textual
+    +columns(10,24)
+    label
+      +gone
 
   .onoff
     white-space: nowrap
