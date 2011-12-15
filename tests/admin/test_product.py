@@ -68,3 +68,26 @@ class ProductAdminTest(AdminTestCase):
         self.assertEqual(res.status_int, 302)
 
         self.assertEqual(refresh(p).deleted_by, self.user)
+
+
+    def test_bulk_delete_tracks_user(self):
+        """Deletion via bulk-action tracks deleted-by user."""
+        p = create_product(name="Firefox")
+        form = self.get(self.changelist_url).forms["changelist-form"]
+        form["action"] = "delete_selected"
+        form["_selected_action"] = str(p.id)
+        form.submit("index", 0).forms[0].submit()
+
+        self.assertEqual(refresh(p).deleted_by, self.user)
+
+
+    def test_bulk_undelete(self):
+        """Bulk undelete action works."""
+        p = create_product(name="Firefox")
+        p.delete()
+        form = self.get(self.changelist_url).forms["changelist-form"]
+        form["action"] = "undelete_selected"
+        form["_selected_action"] = str(p.id)
+        form.submit("index", 0)
+
+        self.assertEqual(refresh(p).deleted_on, None)

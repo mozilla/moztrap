@@ -26,6 +26,7 @@ from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
 
 from django.contrib import admin
+from django.contrib.admin import actions
 
 
 
@@ -39,26 +40,36 @@ class CCModelAdmin(admin.ModelAdmin):
         "deleted_on",
         "deleted_by",
         ]
+    actions = ["delete_selected", "undelete_selected"]
+
+
+    def delete_selected(self, request, queryset):
+        """Wrapper around builtin delete action to pass in user."""
+        queryset.delete = partial(queryset.delete, user=request.user)
+        return actions.delete_selected(self, request, queryset)
+    delete_selected.short_description = (
+        u"Delete selected %(verbose_name_plural)s")
+
+
+    def undelete_selected(self, request, queryset):
+        """Admin action to undelete objects."""
+        queryset.undelete(user=request.user)
+    undelete_selected.short_description = (
+        u"Undelete selected %(verbose_name_plural)s")
 
 
     def save_model(self, request, obj, form, change):
-        """
-        Given a model instance save it to the database.
-        """
+        """ Given a model instance save it to the database."""
         obj.save(user=request.user)
 
 
     def save_formset(self, request, form, formset, change):
-        """
-        Given an inline formset save it to the database.
-        """
+        """Given an inline formset save it to the database."""
         formset.save(user=request.user)
 
 
     def delete_model(self, request, obj):
-        """
-        Given a model instance delete it from the database.
-        """
+        """Given a model instance delete it from the database."""
         obj.delete(user=request.user)
 
 
