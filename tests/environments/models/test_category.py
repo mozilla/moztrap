@@ -16,21 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Product model.
+Tests for Category model.
 
 """
 from django.test import TestCase
 
 
 
-class ProductTest(TestCase):
+class CategoryTest(TestCase):
     @property
-    def Product(self):
-        from cc.core.models import Product
-        return Product
+    def Category(self):
+        from cc.environments.models import Category
+        return Category
 
 
     def test_unicode(self):
-        p = self.Product(name="Firefox")
+        c = self.Category(name="Operating System")
 
-        self.assertEqual(unicode(p), u"Firefox")
+        self.assertEqual(unicode(c), u"Operating System")

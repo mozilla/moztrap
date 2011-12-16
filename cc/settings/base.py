@@ -132,6 +132,8 @@ INSTALLED_APPS = [
     "south",
     "cc.core",
     "cc.library",
+    "cc.environments",
+    "cc.execution",
 ]
 
 CACHES = {

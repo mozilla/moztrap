@@ -23,7 +23,6 @@ Model builders for library models (Suite, Case, CaseVersion, CaseStep).
 
 
 def create_suite(**kwargs):
-    from ..core.builders import create_product
     from cc.library.models import Suite
 
     defaults = {
@@ -33,6 +32,7 @@ def create_suite(**kwargs):
     defaults.update(kwargs)
 
     if "product" not in defaults:
+        from ..core.builders import create_product
         defaults["product"] = create_product()
 
     return Suite.objects.create(**defaults)
@@ -40,7 +40,6 @@ def create_suite(**kwargs):
 
 
 def create_case(**kwargs):
-    from ..core.builders import create_product
     from cc.library.models import Case
 
     defaults = {
@@ -49,6 +48,7 @@ def create_case(**kwargs):
     defaults.update(kwargs)
 
     if "product" not in defaults:
+        from ..core.builders import create_product
         defaults["product"] = create_product()
 
     return Case.objects.create(**defaults)
@@ -93,7 +93,7 @@ def create_casestep(**kwargs):
     if "number" not in defaults:
         try:
             defaults["number"] = defaults["caseversion"].steps.order_by(
-                "-number")[0]
+                "-number")[0].number + 1
         except IndexError:
             defaults["number"] = 1
 

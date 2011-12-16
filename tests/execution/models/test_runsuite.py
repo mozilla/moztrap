@@ -16,21 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Product model.
+Tests for RunSuite model.
 
 """
 from django.test import TestCase
 
+from ...library.builders import create_suite
+from ..builders import create_runsuite, create_run
 
 
-class ProductTest(TestCase):
+
+class RunSuiteTest(TestCase):
     @property
-    def Product(self):
-        from cc.core.models import Product
-        return Product
+    def RunSuite(self):
+        from cc.execution.models import RunSuite
+        return RunSuite
 
 
     def test_unicode(self):
-        p = self.Product(name="Firefox")
+        c = create_runsuite(
+            run=create_run(name="FF10"),
+            suite=create_suite(name="Speed"))
 
-        self.assertEqual(unicode(p), u"Firefox")
+        self.assertEqual(unicode(c), u"Suite 'Speed' included in run 'FF10'")

@@ -29,6 +29,7 @@ from ..core.models import Product
 
 
 class Case(CCModel):
+    """A test case for a given product."""
     product = models.ForeignKey(Product, related_name="cases")
 
 
@@ -38,12 +39,13 @@ class Case(CCModel):
 
 
 class CaseVersion(CCModel):
-    STATUS = Choices("draft", "active")
+    """A version of a test case."""
+    STATUS = Choices("draft", "active", "disabled")
 
     status = models.CharField(
         max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     case = models.ForeignKey(Case, related_name="versions")
-    number = models.PositiveIntegerField(unique=True)
+    number = models.PositiveIntegerField(db_index=True)
     latest = models.BooleanField(default=True, db_index=True)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -59,6 +61,7 @@ class CaseVersion(CCModel):
 
 
 class CaseStep(CCModel):
+    """A step of a test case."""
     caseversion = models.ForeignKey(CaseVersion, related_name="steps")
     number = models.IntegerField(unique=True)
     instruction = models.TextField()
@@ -75,7 +78,8 @@ class CaseStep(CCModel):
 
 
 class Suite(CCModel):
-    STATUS = Choices("draft", "active")
+    """An ordered suite of test cases."""
+    STATUS = Choices("draft", "active", "disabled")
 
     status = models.CharField(
         max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
@@ -93,9 +97,10 @@ class Suite(CCModel):
 
 
 class SuiteCase(CCModel):
+    """Association between a test case and a suite."""
     suite = models.ForeignKey(Suite)
     case = models.ForeignKey(Case)
-    order = models.IntegerField(default=0)
+    order = models.IntegerField(default=0, db_index=True)
 
 
     class Meta:
