@@ -22,6 +22,7 @@ CC ModelAdmin and InlineModelAdmin for use with CCModel.
 from itertools import chain
 from functools import partial
 
+from django.db.models.query import QuerySet
 from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
 
@@ -40,22 +41,29 @@ class CCModelAdmin(admin.ModelAdmin):
         "deleted_on",
         "deleted_by",
         ]
-    actions = ["delete_selected", "undelete_selected"]
+    actions = ["delete", "undelete", "delete_selected"]
 
 
-    def delete_selected(self, request, queryset):
-        """Wrapper around builtin delete action to pass in user."""
-        queryset.delete = partial(queryset.delete, user=request.user)
-        return actions.delete_selected(self, request, queryset)
-    delete_selected.short_description = (
+    def delete(self, request, queryset):
+        """Admin action to soft-delete objects."""
+        queryset.delete(user=request.user)
+    delete.short_description = (
         u"Delete selected %(verbose_name_plural)s")
 
 
-    def undelete_selected(self, request, queryset):
+    def undelete(self, request, queryset):
         """Admin action to undelete objects."""
         queryset.undelete(user=request.user)
-    undelete_selected.short_description = (
+    undelete.short_description = (
         u"Undelete selected %(verbose_name_plural)s")
+
+
+    def delete_selected(self, request, queryset):
+        """Bypass soft delete and really delete selected instances."""
+        queryset.delete = partial(QuerySet.delete, queryset)
+        return actions.delete_selected(self, request, queryset)
+    delete_selected.short_description = (
+        u"PERMANENTLY delete selected %(verbose_name_plural)s")
 
 
     def save_model(self, request, obj, form, change):

@@ -105,7 +105,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
 
     def test_delete_step_tracks_user(self):
-        """Modifying a CaseStep via inline tracks modified-by user."""
+        """Deleting a CaseStep via inline tracks modified-by user."""
         s = create_casestep()
 
         form = self.get(self.change_url(s.caseversion)).forms[0]

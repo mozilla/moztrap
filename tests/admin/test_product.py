@@ -74,9 +74,9 @@ class ProductAdminTest(AdminTestCase):
         """Deletion via bulk-action tracks deleted-by user."""
         p = create_product(name="Firefox")
         form = self.get(self.changelist_url).forms["changelist-form"]
-        form["action"] = "delete_selected"
+        form["action"] = "delete"
         form["_selected_action"] = str(p.id)
-        form.submit("index", 0).forms[0].submit()
+        form.submit("index", 0)
 
         self.assertEqual(refresh(p).deleted_by, self.user)
 
@@ -86,8 +86,19 @@ class ProductAdminTest(AdminTestCase):
         p = create_product(name="Firefox")
         p.delete()
         form = self.get(self.changelist_url).forms["changelist-form"]
-        form["action"] = "undelete_selected"
+        form["action"] = "undelete"
         form["_selected_action"] = str(p.id)
         form.submit("index", 0)
 
         self.assertEqual(refresh(p).deleted_on, None)
+
+
+    def test_hard_delete(self):
+        """Hard deletion via bulk-action really deletes."""
+        p = create_product(name="Firefox")
+        form = self.get(self.changelist_url).forms["changelist-form"]
+        form["action"] = "delete_selected"
+        form["_selected_action"] = str(p.id)
+        form.submit("index", 0).forms[0].submit()
+
+        self.assertEqual(p.__class__.objects.count(), 0)
