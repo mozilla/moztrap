@@ -121,12 +121,15 @@ class CCInlineFormSet(BaseInlineFormSet):
 
     def save_new(self, form, commit=True):
         """Saves and returns a new model instance for the given form."""
-        return form.save(commit=commit, user=self.user)
+        form.save = partial(form.save, user=self.user)
+        return super(CCInlineFormSet, self).save_new(form, commit)
 
 
     def save_existing(self, form, instance, commit=True):
         """Saves and returns an existing model instance for the given form."""
-        return form.save(commit=commit, user=self.user)
+        form.save = partial(form.save, user=self.user)
+        return super(CCInlineFormSet, self).save_existing(
+            form, instance, commit)
 
 
     def _existing_object(self, pk):

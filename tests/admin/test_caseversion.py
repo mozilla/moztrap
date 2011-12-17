@@ -23,7 +23,7 @@ from mock import patch
 
 from .base import AdminTestCase
 
-from ..library.builders import create_caseversion, create_casestep
+from ..library.builders import create_caseversion, create_casestep, create_case
 from ..utils import refresh
 
 
@@ -55,17 +55,36 @@ class CaseVersionAdminTest(AdminTestCase):
             "Type a URL in the address bar")
 
 
+    def test_add_step_with_caseversion(self):
+        case = create_case()
+
+        # patching extra avoids need for JS to add step
+        with patch("cc.library.admin.CaseStepInline.extra", 1):
+            form = self.get(self.add_url).forms[0]
+            form["case"] = str(case.id)
+            form["number"] = "1"
+            form["name"] = "Some case"
+            form["steps-0-number"] = "1"
+            form["steps-0-instruction"] = "An instruction"
+            form["steps-0-expected"] = "A result"
+            res = form.submit()
+        self.assertEqual(res.status_int, 302)
+
+        self.assertEqual(
+            case.versions.get().steps.get().instruction, "An instruction")
+
+
     def test_add_step_tracks_user(self):
         """Adding a CaseStep via inline tracks created-by user."""
         cv = create_caseversion()
 
         # patching extra avoids need for JS to submit new step
         with patch("cc.library.admin.CaseStepInline.extra", 1):
-           form = self.get(self.change_url(cv)).forms[0]
-           form["steps-0-number"] = "1"
-           form["steps-0-instruction"] = "An instruction"
-           form["steps-0-expected"] = "A result"
-           res = form.submit()
+            form = self.get(self.change_url(cv)).forms[0]
+            form["steps-0-number"] = "1"
+            form["steps-0-instruction"] = "An instruction"
+            form["steps-0-expected"] = "A result"
+            res = form.submit()
         self.assertEqual(res.status_int, 302)
 
         s = cv.steps.get()

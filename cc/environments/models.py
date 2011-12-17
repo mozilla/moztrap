@@ -58,6 +58,10 @@ class Category(CCModel):
         return self.name
 
 
+    class Meta:
+        verbose_name_plural = "categories"
+
+
 
 class Element(CCModel):
     """

@@ -45,6 +45,14 @@ class AdminTestCase(WebTest):
             )
 
 
+    @property
+    def add_url(self):
+        """The add URL for the given object."""
+        return reverse(
+            'admin:%s_%s_add' % (self.app_label, self.model_name)
+            )
+
+
     def change_url(self, obj):
         """The change URL for the given object."""
         return reverse(
