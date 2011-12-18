@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 
-Case Conductor UI
-=================
+Case Conductor
+==============
 
 This is the Case Conductor test case management system.  It lives at
 https://github.com/mozilla/caseconductor-ui/.
@@ -26,7 +26,7 @@ https://github.com/mozilla/caseconductor-ui/.
 Development
 -----------
 
-The Case Conductor UI requires Python 2.6 or 2.7.
+Case Conductor requires Python 2.6 or 2.7.
 
 First, update git submodules (dependency source distribution tarballs are
 stored in a git submodule). From the root of this repo, run::
