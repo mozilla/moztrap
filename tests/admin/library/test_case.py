@@ -19,9 +19,9 @@
 Tests for Case admin.
 
 """
-from .base import AdminTestCase
+from ..base import AdminTestCase
 
-from ..library.builders import create_case, create_caseversion
+from ...library.builders import create_case, create_caseversion
 
 
 class CaseAdminTest(AdminTestCase):

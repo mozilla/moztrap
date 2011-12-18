@@ -19,9 +19,9 @@
 Tests for Suite admin.
 
 """
-from .base import AdminTestCase
+from ..base import AdminTestCase
 
-from ..library.builders import create_suite
+from ...library.builders import create_suite
 
 
 
