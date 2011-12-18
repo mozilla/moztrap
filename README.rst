@@ -20,7 +20,7 @@ Case Conductor
 ==============
 
 This is the Case Conductor test case management system.  It lives at
-https://github.com/mozilla/caseconductor-ui/.
+https://github.com/mozilla/caseconductor/.
 
 
 Development
