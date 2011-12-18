@@ -16,29 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Profile admin.
+Tests for Element admin.
 
 """
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...environments.builders import create_profile
+from ..builders import create_category
 
 
 
-class ProfileAdminTest(AdminTestCase):
+class ElementAdminTest(AdminTestCase):
     app_label = "environments"
-    model_name = "profile"
+    model_name = "category"
 
 
     def test_changelist(self):
-        """Profile changelist page loads without error, contains name."""
-        create_profile(name="Browser Environments")
+        """Element changelist page loads without error, contains name."""
+        create_category(name="Linux")
 
-        self.get(self.changelist_url).mustcontain("Browser Environments")
+        self.get(self.changelist_url).mustcontain("Linux")
 
 
     def test_change_page(self):
-        """Profile change page loads without error, contains name."""
-        s = create_profile(name="Browser Environments")
+        """Element change page loads without error, contains name."""
+        s = create_category(name="Linux")
 
-        self.get(self.change_url(s)).mustcontain("Browser Environments")
+        self.get(self.change_url(s)).mustcontain("Linux")

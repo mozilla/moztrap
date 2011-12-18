@@ -16,36 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Case admin.
+Tests for Profile admin.
 
 """
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...library.builders import create_case, create_caseversion
+from ..builders import create_profile
 
 
-class CaseAdminTest(AdminTestCase):
-    app_label = "library"
-    model_name = "case"
+
+class ProfileAdminTest(AdminTestCase):
+    app_label = "environments"
+    model_name = "profile"
 
 
     def test_changelist(self):
-        """Case changelist page loads without error, contains id."""
-        c = create_case()
+        """Profile changelist page loads without error, contains name."""
+        create_profile(name="Browser Environments")
 
-        self.get(self.changelist_url).mustcontain(c.id)
+        self.get(self.changelist_url).mustcontain("Browser Environments")
 
 
     def test_change_page(self):
-        """Case change page loads without error, contains id."""
-        c = create_case()
+        """Profile change page loads without error, contains name."""
+        s = create_profile(name="Browser Environments")
 
-        self.get(self.change_url(c)).mustcontain(c.id)
-
-
-    def test_change_page_version(self):
-        """Case change page includes CaseVersion inline."""
-        cv = create_caseversion(name="Can load a website")
-
-        self.get(self.change_url(cv.case)).mustcontain(
-            "Can load a website")
+        self.get(self.change_url(s)).mustcontain("Browser Environments")

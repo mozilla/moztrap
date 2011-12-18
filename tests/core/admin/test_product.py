@@ -19,10 +19,10 @@
 Tests for Product admin.
 
 """
-from ..base import AdminTestCase
-
-from ...core.builders import create_product
+from ...admin import AdminTestCase
 from ...utils import refresh
+
+from ..builders import create_product
 
 
 

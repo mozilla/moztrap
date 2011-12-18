@@ -19,9 +19,9 @@
 Tests for Category admin.
 
 """
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...environments.builders import create_category, create_element
+from ..builders import create_category, create_element
 
 
 

@@ -21,10 +21,10 @@ Tests for CaseVersion admin.
 """
 from mock import patch
 
-from ..base import AdminTestCase
-
-from ...library.builders import create_caseversion, create_casestep, create_case
+from ...admin import AdminTestCase
 from ...utils import refresh
+
+from ..builders import create_caseversion, create_casestep, create_case
 
 
 

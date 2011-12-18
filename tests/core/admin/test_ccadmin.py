@@ -21,7 +21,7 @@ Tests for CC base admin forms.
 """
 from django.test import TestCase
 
-from ...core.builders import create_product, create_user
+from ..builders import create_product, create_user
 
 
 

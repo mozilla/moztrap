@@ -16,29 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Element admin.
+Tests for Suite admin.
 
 """
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...environments.builders import create_category
+from ..builders import create_suite
 
 
 
-class ElementAdminTest(AdminTestCase):
-    app_label = "environments"
-    model_name = "category"
+class SuiteAdminTest(AdminTestCase):
+    app_label = "library"
+    model_name = "suite"
 
 
     def test_changelist(self):
-        """Element changelist page loads without error, contains name."""
-        create_category(name="Linux")
+        """Suite changelist page loads without error, contains name."""
+        create_suite(name="Performance")
 
-        self.get(self.changelist_url).mustcontain("Linux")
+        self.get(self.changelist_url).mustcontain("Performance")
 
 
     def test_change_page(self):
-        """Element change page loads without error, contains name."""
-        s = create_category(name="Linux")
+        """Suite change page loads without error, contains name."""
+        s = create_suite(name="Performance")
 
-        self.get(self.change_url(s)).mustcontain("Linux")
+        self.get(self.change_url(s)).mustcontain("Performance")

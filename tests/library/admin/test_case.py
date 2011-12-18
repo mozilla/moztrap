@@ -16,29 +16,36 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Suite admin.
+Tests for Case admin.
 
 """
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...library.builders import create_suite
+from ..builders import create_case, create_caseversion
 
 
-
-class SuiteAdminTest(AdminTestCase):
+class CaseAdminTest(AdminTestCase):
     app_label = "library"
-    model_name = "suite"
+    model_name = "case"
 
 
     def test_changelist(self):
-        """Suite changelist page loads without error, contains name."""
-        create_suite(name="Performance")
+        """Case changelist page loads without error, contains id."""
+        c = create_case()
 
-        self.get(self.changelist_url).mustcontain("Performance")
+        self.get(self.changelist_url).mustcontain(c.id)
 
 
     def test_change_page(self):
-        """Suite change page loads without error, contains name."""
-        s = create_suite(name="Performance")
+        """Case change page loads without error, contains id."""
+        c = create_case()
 
-        self.get(self.change_url(s)).mustcontain("Performance")
+        self.get(self.change_url(c)).mustcontain(c.id)
+
+
+    def test_change_page_version(self):
+        """Case change page includes CaseVersion inline."""
+        cv = create_caseversion(name="Can load a website")
+
+        self.get(self.change_url(cv.case)).mustcontain(
+            "Can load a website")

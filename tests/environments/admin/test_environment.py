@@ -21,10 +21,9 @@ Tests for Environment admin.
 """
 from mock import patch
 
-from ..base import AdminTestCase
+from ...admin import AdminTestCase
 
-from ...environments.builders import (
-    create_profile, create_environment, create_element)
+from ..builders import create_profile, create_environment, create_element
 
 
 
