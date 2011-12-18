@@ -56,6 +56,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
 
     def test_add_step_with_caseversion(self):
+        """Can add inline step along with new caseversion."""
         case = create_case()
 
         # patching extra avoids need for JS to add step

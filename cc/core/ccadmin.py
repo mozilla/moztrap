@@ -73,7 +73,10 @@ class CCModelAdmin(admin.ModelAdmin):
 
     def save_formset(self, request, form, formset, change):
         """Given an inline formset save it to the database."""
-        formset.save(user=request.user)
+        if isinstance(formset, CCInlineFormSet):
+            formset.save(user=request.user)
+        else:
+            formset.save()
 
 
     def delete_model(self, request, obj):

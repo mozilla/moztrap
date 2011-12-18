@@ -76,7 +76,7 @@ def create_environment(**kwargs):
 
     elements = defaults.pop("elements", None)
     if elements is None:
-        elements = [create_element()]
+        elements = []
 
     env = Environment.objects.create(**defaults)
     env.elements.add(*elements)
