@@ -18,7 +18,7 @@
 """
 Model builders for test execution models.
 
-Cycle, Run, RunCaseVersion, RunSuite, Assignment, Result, StepResult
+Cycle, Run, RunCaseVersion, RunSuite, Result, StepResult
 
 """
 
@@ -91,8 +91,8 @@ def create_runsuite(**kwargs):
 
 
 
-def create_assignment(**kwargs):
-    from cc.execution.models import Assignment
+def create_result(**kwargs):
+    from cc.execution.models import Result
 
     defaults = {}
     defaults.update(kwargs)
@@ -107,19 +107,6 @@ def create_assignment(**kwargs):
     if "environment" not in defaults:
         from ..environments.builders import create_environment
         defaults["environment"] = create_environment()
-
-    return Assignment.objects.create(**defaults)
-
-
-
-def create_result(**kwargs):
-    from cc.execution.models import Result
-
-    defaults = {}
-    defaults.update(kwargs)
-
-    if "assignment" not in defaults:
-        defaults["assignment"] = create_assignment()
 
     return Result.objects.create(**defaults)
 

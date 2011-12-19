@@ -24,8 +24,7 @@ from django.test import TestCase
 from ...core.builders import create_user
 from ...environments.builders import create_environment, create_element
 from ...library.builders import create_caseversion
-from ..builders import (
-    create_result, create_assignment, create_runcaseversion, create_run)
+from ..builders import create_result, create_runcaseversion, create_run
 
 
 
@@ -39,20 +38,18 @@ class ResultTest(TestCase):
     def test_unicode(self):
         c = create_result(
             status=self.Result.STATUS.started,
-            assignment=create_assignment(
-                runcaseversion=create_runcaseversion(
-                    run=create_run(name="FF10"),
-                    caseversion=create_caseversion(name="Open URL")
-                    ),
-                tester=create_user(username="tester"),
-                environment=create_environment(elements=[
-                        create_element(name="English"),
-                        create_element(name="OS X")
-                        ])
-                )
+            runcaseversion=create_runcaseversion(
+                run=create_run(name="FF10"),
+                caseversion=create_caseversion(name="Open URL")
+                ),
+            tester=create_user(username="tester"),
+            environment=create_environment(elements=[
+                    create_element(name="English"),
+                    create_element(name="OS X")
+                    ])
             )
 
         self.assertEqual(
             unicode(c),
-            u"Case 'Open URL' included in run 'FF10' "
-            "assigned to tester in English, OS X: started")
+            u"Case 'Open URL' included in run 'FF10', "
+            "run by tester in English, OS X: started")

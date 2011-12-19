@@ -45,20 +45,16 @@ class RunSuiteInline(CCTabularInline):
 
 
 
-class AssignmentInline(CCTabularInline):
-    model = models.Assignment
-    extra = 0
-
-
-
 class ResultInline(CCStackedInline):
     model = models.Result
     extra = 0
     fieldsets = [(None, {"fields": [
-                    ("status", "exists"),
-                    ("started", "completed"),
+                    "runcaseversion",
+                    ("tester", "environment"),
+                    ("status", "started", "completed"),
                     "comment",
                     ("review", "reviewed_on", "reviewed_by"),
+                    "exists",
                     ]})]
 
 
@@ -93,6 +89,8 @@ class RunAdmin(CCModelAdmin):
 
 class ResultAdmin(CCModelAdmin):
     fieldsets = [(None, {"fields": [
+                    "runcaseversion",
+                    ("tester", "environment"),
                     ("status", "started", "completed"),
                     "comment",
                     ("review", "reviewed_on", "reviewed_by"),
@@ -105,7 +103,5 @@ class ResultAdmin(CCModelAdmin):
 admin.site.register(models.Cycle, CycleAdmin)
 admin.site.register(models.Run, RunAdmin)
 admin.site.register(
-    models.RunCaseVersion, CCModelAdmin, inlines=[AssignmentInline])
-admin.site.register(
-    models.Assignment, CCModelAdmin, inlines=[ResultInline])
+    models.RunCaseVersion, CCModelAdmin, inlines=[ResultInline])
 admin.site.register(models.Result, ResultAdmin)

@@ -21,7 +21,7 @@ Tests for RunCaseVersion admin.
 """
 from ...admin import AdminTestCase
 from ...core.builders import create_user
-from ..builders import create_runcaseversion, create_run, create_assignment
+from ..builders import create_runcaseversion, create_run, create_result
 
 
 
@@ -45,7 +45,7 @@ class RuncaseversionAdminTest(AdminTestCase):
 
 
     def test_change_page_suite(self):
-        """RunCaseVersion change page includes Assignment inline."""
-        a = create_assignment(tester=create_user(username="sometester"))
+        """RunCaseVersion change page includes Result inline."""
+        r = create_result(tester=create_user(username="sometester"))
 
-        self.get(self.change_url(a.runcaseversion)).mustcontain("sometester")
+        self.get(self.change_url(r.runcaseversion)).mustcontain("sometester")

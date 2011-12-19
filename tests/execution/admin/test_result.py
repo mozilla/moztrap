@@ -21,7 +21,7 @@ Tests for Result admin.
 """
 from ...admin import AdminTestCase
 from ...core.builders import create_user
-from ..builders import create_result, create_assignment, create_stepresult
+from ..builders import create_result, create_stepresult
 
 
 
@@ -32,18 +32,14 @@ class ResultAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Result changelist page loads without error, contains name."""
-        create_result(
-            assignment=create_assignment(
-                tester=create_user(username="sometester")))
+        create_result(tester=create_user(username="sometester"))
 
         self.get(self.changelist_url).mustcontain("sometester")
 
 
     def test_change_page(self):
         """Result change page loads without error, contains name."""
-        r = create_result(
-            assignment=create_assignment(
-                tester=create_user(username="sometester")))
+        r = create_result(tester=create_user(username="sometester"))
 
         self.get(self.change_url(r)).mustcontain("sometester")
 

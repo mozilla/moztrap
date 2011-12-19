@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Models for test execution (cycles, runs, assignments, results).
+Models for test execution (cycles, runs, results).
 
 """
 import datetime
@@ -116,29 +116,17 @@ class RunSuite(CCModel):
 
 
 
-class Assignment(CCModel):
-    """An assignment of a RunCaseVersion, in one Environment, to a User."""
-    tester = models.ForeignKey(User, related_name="assignments")
-    runcaseversion = models.ForeignKey(
-        RunCaseVersion, related_name="assignments")
-    environment = models.ForeignKey(Environment, related_name="assignments")
-
-
-    def __unicode__(self):
-        """Return unicode representation."""
-        return "%s assigned to %s in %s" % (
-            self.runcaseversion, self.tester, self.environment)
-
-
-
 class Result(CCModel):
-    """A result of a user running an Assignment."""
-    STATUS = Choices("started", "passed", "failed", "invalidated")
+    """A result of a User running a RunCaseVersion in an Environment."""
+    STATUS = Choices("assigned", "started", "passed", "failed", "invalidated")
     REVIEW = Choices("pending", "reviewed")
 
-    assignment = models.ForeignKey(Assignment, related_name="results")
+    tester = models.ForeignKey(User, related_name="results")
+    runcaseversion = models.ForeignKey(
+        RunCaseVersion, related_name="results")
+    environment = models.ForeignKey(Environment, related_name="results")
     status = models.CharField(
-        max_length=50, db_index=True, choices=STATUS, default=STATUS.started)
+        max_length=50, db_index=True, choices=STATUS, default=STATUS.assigned)
     started = models.DateTimeField(default=utcnow)
     completed = models.DateTimeField(blank=True, null=True)
     comment = models.TextField(blank=True)
@@ -152,7 +140,8 @@ class Result(CCModel):
 
     def __unicode__(self):
         """Return unicode representation."""
-        return "%s: %s" % (self.assignment, self.status)
+        return "%s, run by %s in %s: %s" % (
+            self.runcaseversion, self.tester, self.environment, self.status)
 
 
 
@@ -169,4 +158,4 @@ class StepResult(CCModel):
 
     def __unicode__(self):
         """Return unicode representation."""
-        return "%s, %s: %s" % (self.result.assignment, self.step, self.status)
+        return "%s (%s: %s)" % (self.result, self.step, self.status)
