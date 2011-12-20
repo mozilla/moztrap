@@ -28,14 +28,14 @@ from django.contrib.auth.models import User
 
 from model_utils import Choices
 
-from ..core.ccmodel import CCModel, utcnow
+from ..core.ccmodel import CCModel, TeamModel, utcnow
 from ..core.models import Product
 from ..environments.models import Environment
 from ..library.models import CaseVersion, Suite, CaseStep
 
 
 
-class Cycle(CCModel):
+class Cycle(TeamModel):
     """A test cycle."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -59,8 +59,13 @@ class Cycle(CCModel):
             raise ValidationError("Start date must be prior to end date.")
 
 
+    @property
+    def parent(self):
+        return self.product
 
-class Run(CCModel):
+
+
+class Run(TeamModel):
     """A test run."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -87,6 +92,11 @@ class Run(CCModel):
         """Validate instance field values."""
         if self.end is not None and self.start > self.end:
             raise ValidationError("Start date must be prior to end date.")
+
+
+    @property
+    def parent(self):
+        return self.cycle
 
 
 

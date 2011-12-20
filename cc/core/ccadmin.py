@@ -28,6 +28,7 @@ from django.forms.models import BaseInlineFormSet
 
 from django.contrib import admin
 from django.contrib.admin import actions
+from django.contrib.admin.util import flatten_fieldsets
 
 
 
@@ -120,6 +121,51 @@ class CCModelAdmin(admin.ModelAdmin):
                 ])
 
         return fieldsets
+
+
+class TeamModelAdmin(CCModelAdmin):
+    def get_fieldsets(self, *args, **kwargs):
+        """
+        Get fieldsets for the add/change form.
+
+        Adds separate fieldset at the end for Team fields, and removes these
+        from default all-fields fieldset, if present.
+
+        """
+        team_fields = [("has_team", "own_team")]
+
+        fieldsets = super(TeamModelAdmin, self).get_fieldsets(
+            *args, **kwargs)[:]
+
+        if not self.declared_fieldsets:
+            metadata_fields = set(chain.from_iterable(team_fields))
+
+            fieldsets[0][1]["fields"] = [
+                field for field in fieldsets[0][1]["fields"]
+                if field not in metadata_fields
+                ]
+
+        # Place Team fieldset right before Deletion and Meta
+        fieldsets.insert(-2, ("Team", {"fields": team_fields}))
+
+        return fieldsets
+
+
+    def get_form(self, *args, **kwargs):
+        """
+        Get form for use in admin add/change view.
+
+        Ensures that team fields are included in form, even when fieldsets are
+        explicitly specified and don't include the team fieldset (because it is
+        automatically added by ``get_fieldsets``).
+
+        """
+        if self.declared_fieldsets:
+            kwargs["fields"] = flatten_fieldsets(
+                self.declared_fieldsets) + ["has_team", "own_team"]
+
+        return super(TeamModelAdmin, self).get_form(*args, **kwargs)
+
 
 
 class CCInlineFormSet(BaseInlineFormSet):

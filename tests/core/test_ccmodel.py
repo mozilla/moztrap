@@ -439,3 +439,19 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
         refresh(p).undelete()
 
         self.assertIsNot(refresh(s).deleted_on, None)
+
+
+
+class TeamModelTest(TestCase):
+    """Tests for TeamModel base class."""
+    @property
+    def TeamModel(self):
+        from cc.core.ccmodel import TeamModel
+        return TeamModel
+
+
+    def test_parent(self):
+        """parent property is not implemented in base class."""
+        t = self.TeamModel()
+        with self.assertRaises(NotImplementedError):
+            t.parent

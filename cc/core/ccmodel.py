@@ -214,3 +214,35 @@ class CCModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+
+class TeamModel(CCModel):
+    """
+    Model which may have its own team or inherit team from parent.
+
+    If ``has_team`` is True, ``own_team`` is this instance's team. If False,
+    the parent's team is used instead.
+
+    Any ``TeamModel`` must implement a ``parent`` property that returns its
+    "parent" for purposes of team inheritance.
+
+    """
+    has_team = models.BooleanField(default=False)
+    own_team = models.ManyToManyField(User, blank=True)
+
+
+    @property
+    def team(self):
+        if self.has_team:
+            return self.own_team
+        return self.parent.team
+
+
+    @property
+    def parent(self):
+        raise NotImplementedError("Team model without parent property.")
+
+
+    class Meta:
+        abstract = True

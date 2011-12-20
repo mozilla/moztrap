@@ -16,10 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Core Case Conductor models.
+Core Case Conductor models (Product).
 
 """
 from django.db import models
+
+from django.contrib.auth.models import User
 
 from .ccmodel import CCModel
 
@@ -28,6 +30,7 @@ from .ccmodel import CCModel
 class Product(CCModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
+    team = models.ManyToManyField(User, blank=True)
 
 
     def __unicode__(self):

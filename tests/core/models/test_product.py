@@ -31,6 +31,7 @@ class ProductTest(TestCase):
 
 
     def test_unicode(self):
+        """Unicode representation is name of Product"""
         p = self.Product(name="Firefox")
 
         self.assertEqual(unicode(p), u"Firefox")

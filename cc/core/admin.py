@@ -22,4 +22,22 @@ from .models import Product
 
 
 
-admin.site.register(Product, CCModelAdmin)
+class ProductAdmin(CCModelAdmin):
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": ["name", "description"]
+                }
+            ),
+        (
+            "Team",
+            {
+                "fields": ["team"]
+                }
+            )
+        ]
+
+
+
+admin.site.register(Product, ProductAdmin)

@@ -21,7 +21,8 @@ Admin config for execution models.
 """
 from django.contrib import admin
 
-from ..core.ccadmin import CCModelAdmin, CCTabularInline, CCStackedInline
+from ..core.ccadmin import (
+    CCModelAdmin, TeamModelAdmin, CCTabularInline, CCStackedInline)
 from . import models
 
 
@@ -65,7 +66,7 @@ class StepResultInline(CCTabularInline):
 
 
 
-class CycleAdmin(CCModelAdmin):
+class CycleAdmin(TeamModelAdmin):
     fieldsets = [(None, {"fields": [
                     "name",
                     ("product", "status"),
@@ -76,7 +77,7 @@ class CycleAdmin(CCModelAdmin):
 
 
 
-class RunAdmin(CCModelAdmin):
+class RunAdmin(TeamModelAdmin):
     fieldsets = [(None, {"fields": [
                     "name",
                     ("cycle", "status"),

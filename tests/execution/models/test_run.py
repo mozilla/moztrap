@@ -24,6 +24,7 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from ...core.builders import create_user
 from ..builders import create_run
 
 
@@ -60,3 +61,28 @@ class RunTest(TestCase):
             end=today+datetime.timedelta(days=1))
 
         c.full_clean()
+
+
+    def test_parent(self):
+        """A Run's ``parent`` property returns its Cycle."""
+        r = create_run()
+
+        self.assertEqual(r.parent, r.cycle)
+
+
+    def test_own_team(self):
+        """If ``has_team`` is True, Run's team is its own."""
+        r = create_run(has_team=True)
+        u = create_user()
+        r.own_team.add(u)
+
+        self.assertEqual(list(r.team.all()), [u])
+
+
+    def test_inherit_team(self):
+        """If ``has_team`` is False, Run's team is its parent's."""
+        r = create_run(has_team=False)
+        u = create_user()
+        r.cycle.team.add(u)
+
+        self.assertEqual(list(r.team.all()), [u])
