@@ -36,13 +36,21 @@ class CaseVersionInline(CCStackedInline):
         ]
 
 
+
+class CaseAttachmentInline(CCTabularInline):
+    model = models.CaseAttachment
+    extra = 0
+
+
+
 class CaseStepInline(CCTabularInline):
     model = models.CaseStep
     extra = 0
 
 
+
 class CaseVersionAdmin(CCModelAdmin):
-    inlines = [CaseStepInline]
+    inlines = [CaseStepInline, CaseAttachmentInline]
     fieldsets = [
         (None, {"fields": [("case", "name", "status"),
                            ("number", "latest"),

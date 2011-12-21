@@ -24,7 +24,8 @@ from mock import patch
 from ...admin import AdminTestCase
 from ...utils import refresh
 
-from ..builders import create_caseversion, create_casestep, create_case
+from ..builders import (
+    create_caseversion, create_casestep, create_case, create_caseattachment)
 
 
 
@@ -53,6 +54,13 @@ class CaseVersionAdminTest(AdminTestCase):
 
         self.get(self.change_url(s.caseversion)).mustcontain(
             "Type a URL in the address bar")
+
+
+    def test_change_page_attachment(self):
+        """CaseVersion change page includes CaseAttachment inline."""
+        a = create_caseattachment()
+
+        self.get(self.change_url(a.caseversion)).mustcontain("attachments/")
 
 
     def test_add_step_with_caseversion(self):

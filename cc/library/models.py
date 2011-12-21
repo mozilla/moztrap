@@ -23,6 +23,7 @@ from django.db import models
 
 from model_utils import Choices
 
+from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
 from ..core.models import Product
 
@@ -57,6 +58,11 @@ class CaseVersion(CCModel):
 
     class Meta:
         ordering = ["number"]
+
+
+
+class CaseAttachment(Attachment):
+    caseversion = models.ForeignKey(CaseVersion)
 
 
 

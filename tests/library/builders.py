@@ -16,9 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Model builders for library models (Suite, Case, CaseVersion, CaseStep).
+Model builders for library models.
+
+Suite, Case, CaseVersion, CaseAttachment, CaseStep.
 
 """
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 
@@ -75,6 +78,22 @@ def create_caseversion(**kwargs):
             defaults["number"] = 1
 
     return CaseVersion.objects.create(**defaults)
+
+
+
+def create_caseattachment(**kwargs):
+    from cc.library.models import CaseAttachment
+
+    defaults = {
+        "attachment": SimpleUploadedFile("somefile.txt", "some content"),
+        }
+
+    defaults.update(kwargs)
+
+    if "caseversion" not in defaults:
+        defaults["caseversion"] = create_caseversion()
+
+    return CaseAttachment.objects.create(**defaults)
 
 
 
