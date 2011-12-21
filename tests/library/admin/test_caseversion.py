@@ -22,8 +22,8 @@ Tests for CaseVersion admin.
 from mock import patch
 
 from ...admin import AdminTestCase
+from ...tags.builders import create_tag
 from ...utils import refresh
-
 from ..builders import (
     create_caseversion, create_casestep, create_case, create_caseattachment)
 
@@ -61,6 +61,15 @@ class CaseVersionAdminTest(AdminTestCase):
         a = create_caseattachment()
 
         self.get(self.change_url(a.caseversion)).mustcontain("attachments/")
+
+
+    def test_change_page_tag(self):
+        """CaseVersion change page includes CaseTag inline."""
+        t = create_tag(name="some tag")
+        c = create_caseversion()
+        c.tags.add(t)
+
+        self.get(self.change_url(c)).mustcontain("some tag")
 
 
     def test_add_step_with_caseversion(self):

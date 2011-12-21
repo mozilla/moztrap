@@ -49,8 +49,14 @@ class CaseStepInline(CCTabularInline):
 
 
 
+class CaseTagInline(admin.TabularInline):
+    model = models.CaseVersion.tags.through
+    extra = 0
+
+
+
 class CaseVersionAdmin(CCModelAdmin):
-    inlines = [CaseStepInline, CaseAttachmentInline]
+    inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
         (None, {"fields": [("case", "name", "status"),
                            ("number", "latest"),

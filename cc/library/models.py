@@ -26,6 +26,7 @@ from model_utils import Choices
 from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
 from ..core.models import Product
+from ..tags.models import Tag
 
 
 
@@ -50,6 +51,8 @@ class CaseVersion(CCModel):
     latest = models.BooleanField(default=True, db_index=True)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
+
+    tags = models.ManyToManyField(Tag, blank=True)
 
 
     def __unicode__(self):

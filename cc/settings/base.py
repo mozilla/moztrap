@@ -135,6 +135,7 @@ INSTALLED_APPS = [
     "cc.environments",
     "cc.execution",
     "cc.attachments",
+    "cc.tags",
 ]
 
 CACHES = {
