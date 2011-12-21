@@ -63,7 +63,7 @@ class CaseVersion(CCModel):
 class CaseStep(CCModel):
     """A step of a test case."""
     caseversion = models.ForeignKey(CaseVersion, related_name="steps")
-    number = models.IntegerField(unique=True)
+    number = models.IntegerField()
     instruction = models.TextField()
     expected = models.TextField(blank=True)
 
@@ -73,7 +73,8 @@ class CaseStep(CCModel):
 
 
     class Meta:
-        ordering = ["number"]
+        ordering = ["caseversion", "number"]
+        unique_together = [("caseversion", "number")]
 
 
 
