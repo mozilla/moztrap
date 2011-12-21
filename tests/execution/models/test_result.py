@@ -24,7 +24,8 @@ from django.test import TestCase
 from ...core.builders import create_user
 from ...environments.builders import create_environment, create_element
 from ...library.builders import create_caseversion
-from ..builders import create_result, create_runcaseversion, create_run
+from ..builders import (
+    create_result, create_stepresult, create_runcaseversion, create_run)
 
 
 
@@ -53,3 +54,17 @@ class ResultTest(TestCase):
             unicode(c),
             u"Case 'Open URL' included in run 'FF10', "
             "run by tester in English, OS X: started")
+
+
+    def test_bug_urls(self):
+        """Result.bug_urls aggregates bug urls from step results, sans dupes."""
+        r = create_result()
+        create_stepresult(result=r)
+        create_stepresult(result=r, bug_url="http://www.example.com/bug1")
+        create_stepresult(result=r, bug_url="http://www.example.com/bug1")
+        create_stepresult(result=r, bug_url="http://www.example.com/bug2")
+
+        self.assertEqual(
+            r.bug_urls(),
+            set(["http://www.example.com/bug1", "http://www.example.com/bug2"])
+            )

@@ -112,6 +112,15 @@ class RunCaseVersion(CCModel):
         return "Case '%s' included in run '%s'" % (self.caseversion, self.run)
 
 
+    def bug_urls(self):
+        """Returns set of bug URLs associated with this run/caseversion."""
+        return set(
+            StepResult.objects.filter(
+                result__runcaseversion=self).exclude(
+                bug_url="").values_list("bug_url", flat=True).distinct()
+            )
+
+
 
 class RunSuite(CCModel):
     """An ordered association between a Run and a Suite."""
@@ -154,6 +163,13 @@ class Result(CCModel):
             self.runcaseversion, self.tester, self.environment, self.status)
 
 
+    def bug_urls(self):
+        """Returns set of bug URLs associated with this result."""
+        return set(
+            self.stepresults.exclude(
+                bug_url="").values_list("bug_url", flat=True).distinct()
+            )
+
 
 
 class StepResult(CCModel):
@@ -164,6 +180,7 @@ class StepResult(CCModel):
     step = models.ForeignKey(CaseStep, related_name="stepresults")
     status = models.CharField(
         max_length=50, db_index=True, choices=STATUS, default=STATUS.passed)
+    bug_url = models.URLField(blank=True)
 
 
     def __unicode__(self):

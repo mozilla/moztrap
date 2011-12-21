@@ -22,7 +22,8 @@ Tests for RunCaseVersion model.
 from django.test import TestCase
 
 from ...library.builders import create_caseversion
-from ..builders import create_runcaseversion, create_run
+from ..builders import (
+    create_runcaseversion, create_run, create_stepresult, create_result)
 
 
 
@@ -39,3 +40,22 @@ class RunCaseVersionTest(TestCase):
             caseversion=create_caseversion(name="Open URL"))
 
         self.assertEqual(unicode(c), u"Case 'Open URL' included in run 'FF10'")
+
+
+    def test_bug_urls(self):
+        """bug_urls aggregates bug urls from all results, sans dupes."""
+        rcv = create_runcaseversion()
+        result1 = create_result(runcaseversion=rcv)
+        result2 = create_result(runcaseversion=rcv)
+        create_stepresult(result=result1)
+        create_stepresult(
+            result=result1, bug_url="http://www.example.com/bug1")
+        create_stepresult(
+            result=result2, bug_url="http://www.example.com/bug1")
+        create_stepresult(
+            result=result2, bug_url="http://www.example.com/bug2")
+
+        self.assertEqual(
+            rcv.bug_urls(),
+            set(["http://www.example.com/bug1", "http://www.example.com/bug2"])
+            )
