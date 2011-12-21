@@ -21,7 +21,7 @@ Tests for Suite model.
 """
 from django.test import TestCase
 
-from ..builders import create_suite
+from ..builders import create_suite, create_suitecase
 
 
 
@@ -33,4 +33,14 @@ class SuiteTest(TestCase):
 
 
     def test_unicode(self):
+        """Unicode representation is name of Suite."""
         self.assertEqual(unicode(create_suite(name="Foo")), u"Foo")
+
+
+    def test_clone_cases(self):
+        """Cloning a suite clones its member SuiteCases."""
+        sc = create_suitecase()
+
+        new = sc.suite.clone()
+
+        self.assertEqual(new.cases.get(), sc.case)

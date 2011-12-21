@@ -57,6 +57,23 @@ def create_case(**kwargs):
     return Case.objects.create(**defaults)
 
 
+def create_suitecase(**kwargs):
+    from cc.library.models import SuiteCase
+
+    defaults = {
+        }
+
+    defaults.update(kwargs)
+
+    if "suite" not in defaults:
+        defaults["suite"] = create_suite()
+
+    if "case" not in defaults:
+        defaults["case"] = create_case(product=defaults["suite"].product)
+
+    return SuiteCase.objects.create(**defaults)
+
+
 
 def create_caseversion(**kwargs):
     from cc.library.models import CaseVersion

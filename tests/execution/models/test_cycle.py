@@ -25,7 +25,10 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from ...core.builders import create_user
-from ..builders import create_cycle
+from ...library.builders import create_suite, create_caseversion
+from ..builders import (
+    create_cycle, create_result, create_run,
+    create_runsuite, create_runcaseversion)
 
 
 
@@ -86,3 +89,70 @@ class CycleTest(TestCase):
         c.product.team.add(u)
 
         self.assertEqual(list(c.team.all()), [u])
+
+
+    def test_clone(self):
+        """
+        Cloning a cycle returns a new, distinct Cycle with "Cloned: " name.
+
+        """
+        c = create_cycle(name="A Cycle")
+
+        new = c.clone()
+
+        self.assertNotEqual(new, c)
+        self.assertIsInstance(new, self.Cycle)
+        self.assertEqual(new.name, "Cloned: A Cycle")
+
+
+    def test_clone_runs(self):
+        """
+        Cloning a cycle clones all member runs.
+
+        """
+        r = create_run()
+
+        new = r.cycle.clone()
+
+        self.assertNotEqual(r, new.runs.get())
+
+
+    def test_clone_included_suite(self):
+        """
+        Cloning a cycle clones member runs' RunSuites.
+
+        """
+        suite = create_suite()
+        run = create_run()
+        rs = create_runsuite(run=run, suite=suite)
+
+        new = run.cycle.clone()
+
+        self.assertNotEqual(new.runs.get().runsuites.get(), rs)
+
+
+    def test_clone_included_caseversion(self):
+        """
+        Cloning a cycle clones all member runs' RunCaseVersions.
+
+        """
+        caseversion = create_caseversion()
+        run = create_run()
+        rs = create_runcaseversion(run=run, caseversion=caseversion)
+
+        new = run.cycle.clone()
+
+        self.assertNotEqual(new.runs.get().runcaseversions.get(), rs)
+
+
+    def test_clone_no_results(self):
+        """
+        Cloning a cycle does not clone any results.
+
+        """
+        r = create_result()
+
+        new = r.runcaseversion.run.cycle.clone()
+
+        self.assertEqual(
+            new.runs.get().runcaseversions.get().results.count(), 0)

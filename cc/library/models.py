@@ -39,6 +39,15 @@ class Case(CCModel):
         return "case #%s" % (self.id,)
 
 
+    def clone(self, *args, **kwargs):
+        """Clone this Case with default cascade behavior: latest versions."""
+        kwargs.setdefault(
+            "cascade",
+            {"versions": lambda qs: qs.filter(latest=True)}
+            )
+        return super(Case, self).clone(*args, **kwargs)
+
+
 
 class CaseVersion(CCModel):
     """A version of a test case."""
@@ -63,9 +72,15 @@ class CaseVersion(CCModel):
         ordering = ["number"]
 
 
+    def clone(self, *args, **kwargs):
+        """Clone this CaseVersion, cascading steps, attachments, tags."""
+        kwargs.setdefault("cascade", ["steps", "attachments", "tags"])
+        return super(CaseVersion, self).clone(*args, **kwargs)
+
+
 
 class CaseAttachment(Attachment):
-    caseversion = models.ForeignKey(CaseVersion)
+    caseversion = models.ForeignKey(CaseVersion, related_name="attachments")
 
 
 
@@ -105,11 +120,17 @@ class Suite(CCModel):
         return self.name
 
 
+    def clone(self, *args, **kwargs):
+        """Clone this Suite with default cascade behavior."""
+        kwargs.setdefault("cascade", ["suitecases"])
+        return super(Suite, self).clone(*args, **kwargs)
+
+
 
 class SuiteCase(CCModel):
     """Association between a test case and a suite."""
-    suite = models.ForeignKey(Suite)
-    case = models.ForeignKey(Case)
+    suite = models.ForeignKey(Suite, related_name="suitecases")
+    case = models.ForeignKey(Case, related_name="suitecases")
     order = models.IntegerField(default=0, db_index=True)
 
 

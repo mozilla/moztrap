@@ -64,6 +64,12 @@ class Cycle(TeamModel):
         return self.product
 
 
+    def clone(self, *args, **kwargs):
+        """Clone this Cycle with default cascade behavior."""
+        kwargs.setdefault("cascade", ["runs"])
+        return super(Cycle, self).clone(*args, **kwargs)
+
+
 
 class Run(TeamModel):
     """A test run."""
@@ -99,11 +105,17 @@ class Run(TeamModel):
         return self.cycle
 
 
+    def clone(self, *args, **kwargs):
+        """Clone this Run with default cascade behavior."""
+        kwargs.setdefault("cascade", ["runcaseversions", "runsuites"])
+        return super(Run, self).clone(*args, **kwargs)
+
+
 
 class RunCaseVersion(CCModel):
     """An ordered association between a Run and a CaseVersion."""
-    run = models.ForeignKey(Run)
-    caseversion = models.ForeignKey(CaseVersion)
+    run = models.ForeignKey(Run, related_name="runcaseversions")
+    caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
 
 
@@ -121,17 +133,25 @@ class RunCaseVersion(CCModel):
             )
 
 
+    class Meta:
+        ordering = ["order"]
+
+
 
 class RunSuite(CCModel):
     """An ordered association between a Run and a Suite."""
-    run = models.ForeignKey(Run)
-    suite = models.ForeignKey(Suite)
+    run = models.ForeignKey(Run, related_name="runsuites")
+    suite = models.ForeignKey(Suite, related_name="runsuites")
     order = models.IntegerField(default=0, db_index=True)
 
 
     def __unicode__(self):
         """Return unicode representation."""
         return "Suite '%s' included in run '%s'" % (self.suite, self.run)
+
+
+    class Meta:
+        ordering = ["order"]
 
 
 

@@ -21,7 +21,9 @@ Tests for Case and related models (CaseVersion, CaseStep).
 """
 from django.test import TestCase
 
-from ..builders import create_case, create_caseversion, create_casestep
+from ...tags.builders import create_tag
+from ..builders import (
+    create_case, create_caseversion, create_casestep, create_caseattachment)
 
 
 
@@ -38,6 +40,16 @@ class CaseTest(TestCase):
         self.assertEqual(unicode(c), u"case #%s" % c.id)
 
 
+    def test_clone_versions(self):
+        """Cloning a case clones its latest version only."""
+        cv1 = create_caseversion(latest=False, number=1, name="CV 1")
+        create_caseversion(latest=True, number=2, name="CV 2", case=cv1.case)
+
+        new = cv1.case.clone()
+
+        self.assertEqual(new.versions.get().name, "Cloned: CV 2")
+
+
 
 class CaseVersionTest(TestCase):
     @property
@@ -50,6 +62,40 @@ class CaseVersionTest(TestCase):
         c = create_caseversion(name="Foo")
 
         self.assertEqual(unicode(c), u"Foo")
+
+
+    def test_clone_steps(self):
+        """Cloning a caseversion clones its steps."""
+        cs = create_casestep()
+
+        new = cs.caseversion.clone()
+
+        cloned_step = new.steps.get()
+        self.assertNotEqual(cloned_step, cs)
+        self.assertEqual(cloned_step.instruction, cs.instruction)
+
+
+    def test_clone_attachments(self):
+        """Cloning a caseversion clones its attachments."""
+        ca = create_caseattachment()
+
+        new = ca.caseversion.clone()
+
+        cloned_attachment = new.attachments.get()
+        self.assertNotEqual(cloned_attachment, ca)
+        self.assertEqual(
+            cloned_attachment.attachment.path, ca.attachment.path)
+
+
+    def test_clone_tags(self):
+        """Cloning a caseversion clones its tag relationships."""
+        tag = create_tag()
+        cv = create_caseversion()
+        cv.tags.add(tag)
+
+        new = cv.clone()
+
+        self.assertEqual(new.tags.get(), tag)
 
 
 

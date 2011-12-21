@@ -187,6 +187,72 @@ class CCModel(models.Model):
         return super(CCModel, self).save(*args, **kwargs)
 
 
+    def clone(self, cascade=None, overrides=None):
+        """
+        Clone this instance and return the new, cloned instance.
+
+        If the instance has a ``name`` field, "Cloned: " will be prepended to
+        its value in the cloned instance.
+
+        ``overrides`` should be a dictionary of override values for fields on
+        the cloned instance.
+
+        M2M or reverse FK relations listed in ``cascade`` iterable will be
+        cascade-cloned. By default, if not listed in ``cascade``, m2m/reverse
+        FKs will effectively be cleared (as the remote object will still be
+        pointing to the original instance, not the cloned one.)
+
+        If ``cascade`` is a dictionary, keys are m2m/reverse-FK accessor names,
+        and values are a callable that takes the queryset of all related
+        objects and returns those that should be cloned.
+
+        """
+        if cascade is None:
+            cascade = {}
+        else:
+            try:
+                cascade.iteritems
+            except AttributeError:
+                cascade = dict((i, lambda qs: qs) for i in cascade)
+
+        if overrides is None:
+            overrides = {}
+
+        clone = self.__class__()
+
+        for field in self._meta.fields:
+            if field.primary_key:
+                continue
+            val = overrides.get(field.name, getattr(self, field.name))
+            if field.name == "name":
+                val = "Cloned: %s" % val
+            setattr(clone, field.name, val)
+
+        clone.save(force_insert=True)
+
+        # reverse FKs
+        for ro in self._meta.get_all_related_objects():
+            name = ro.get_accessor_name()
+            if name in cascade:
+                for obj in cascade[name](getattr(self, name).all()):
+                    obj.clone(overrides={ro.field.name: clone})
+
+        # M2Ms
+        m2m_names = [
+            ro.get_accessor_name() for ro in
+            self._meta.get_all_related_many_to_many_objects()
+            ] + [
+            field.name for field in self._meta.many_to_many
+            ]
+        for name in m2m_names:
+            if name in cascade:
+                clone_mgr = getattr(clone, name)
+                for obj in cascade[name](getattr(self, name).all()):
+                    clone_mgr.add(obj)
+
+        return clone
+
+
     def delete(self, user=None):
         """
         (Soft) delete this instance.

@@ -25,7 +25,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from ...core.builders import create_user
-from ..builders import create_run
+from ...library.builders import create_suite, create_caseversion
+from ..builders import (
+    create_run, create_runsuite, create_runcaseversion, create_result)
 
 
 
@@ -86,3 +88,57 @@ class RunTest(TestCase):
         r.cycle.team.add(u)
 
         self.assertEqual(list(r.team.all()), [u])
+
+
+    def test_clone(self):
+        """
+        Cloning a run returns a new, distinct Run with "Cloned: " name.
+
+        """
+        c = create_run(name="A Run")
+
+        new = c.clone()
+
+        self.assertNotEqual(new, c)
+        self.assertIsInstance(new, self.Run)
+        self.assertEqual(new.name, "Cloned: A Run")
+
+
+    def test_clone_included_suite(self):
+        """
+        Cloning a run clones member RunSuites.
+
+        """
+        suite = create_suite()
+        run = create_run()
+        rs = create_runsuite(run=run, suite=suite)
+
+        new = run.clone()
+
+        self.assertNotEqual(new.runsuites.get(), rs)
+
+
+    def test_clone_included_caseversion(self):
+        """
+        Cloning a run clones all member RunCaseVersions.
+
+        """
+        caseversion = create_caseversion()
+        run = create_run()
+        rs = create_runcaseversion(run=run, caseversion=caseversion)
+
+        new = run.clone()
+
+        self.assertNotEqual(new.runcaseversions.get(), rs)
+
+
+    def test_clone_no_results(self):
+        """
+        Cloning a run does not clone any results.
+
+        """
+        r = create_result()
+
+        new = r.runcaseversion.run.clone()
+
+        self.assertEqual(new.runcaseversions.get().results.count(), 0)
