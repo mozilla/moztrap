@@ -37,3 +37,7 @@ class Tag(CCModel):
     def __unicode__(self):
         """Unicode representation is name."""
         return self.name
+
+
+    class Meta:
+        permissions = [("manage_tags", "Can add/edit/delete tags.")]

@@ -48,6 +48,13 @@ class Case(CCModel):
         return super(Case, self).clone(*args, **kwargs)
 
 
+    class Meta:
+        permissions = [
+            ("create_cases", "Can create new test cases."),
+            ("manage_cases", "Can add/edit/delete test cases."),
+            ]
+
+
 
 class CaseVersion(CCModel):
     """A version of a test case."""
@@ -126,6 +133,10 @@ class Suite(CCModel):
         return super(Suite, self).clone(*args, **kwargs)
 
 
+    class Meta:
+        permissions = [("manage_suites", "Can add/edit/delete test suites.")]
+
+
 
 class SuiteCase(CCModel):
     """Association between a test case and a suite."""
@@ -136,3 +147,4 @@ class SuiteCase(CCModel):
 
     class Meta:
         ordering = ["order"]
+        permissions = [("manage_suite_cases", "Can add/remove cases from suites.")]

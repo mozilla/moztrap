@@ -111,6 +111,11 @@ class Run(TeamModel):
         return super(Run, self).clone(*args, **kwargs)
 
 
+    class Meta:
+        permissions = [("manage_cycles", "Can add/edit/delete test cycles.")]
+
+
+
 
 class RunCaseVersion(CCModel):
     """An ordered association between a Run and a CaseVersion."""
@@ -135,6 +140,10 @@ class RunCaseVersion(CCModel):
 
     class Meta:
         ordering = ["order"]
+        permissions = [
+            ("execute", "Can run tests and report results."),
+            ("manage_runs", "Can add/edit/delete test runs."),
+            ]
 
 
 
@@ -181,6 +190,10 @@ class Result(CCModel):
         """Return unicode representation."""
         return "%s, run by %s in %s: %s" % (
             self.runcaseversion, self.tester, self.environment, self.status)
+
+
+    class Meta:
+        permissions = [("review_results", "Can review/edit test results.")]
 
 
     def bug_urls(self):

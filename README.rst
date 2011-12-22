@@ -48,6 +48,9 @@ Once this configuration is done, you should be able to run ``./manage.py syncdb
 the local development server, and then access the test case manager in your
 browser at ``http://localhost:8000``.
 
+To create the default set of user roles with the default permissions, run
+``./manage.py create_default_roles``.
+
 To install the necessary Ruby gems for Compass/Sass development (only
 necessary if you plan to modify Sass files and re-generate CSS), run
 ``bin/install-gems``.  Update ``requirements/gems.txt`` if newer gems should

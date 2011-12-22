@@ -35,3 +35,10 @@ class Product(CCModel):
 
     def __unicode__(self):
         return self.name
+
+
+    class Meta:
+        permissions = [
+            ("manage_products", "Can add/edit/delete products."),
+            ("manage_users", "Can add/edit/delete user accounts."),
+            ]
