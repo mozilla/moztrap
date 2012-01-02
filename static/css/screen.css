@@ -1020,7 +1020,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #managetagform .tag, .tag {
+.chick, .actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, #managetagform .tag, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1040,16 +1040,16 @@ body > div {
   color: rgba(255, 255, 255, 0.833);
 }
 
-.actionchick, .chickcheck .onoff, #filter .compact .term .onoff, #managetagform .tag {
+.actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, #managetagform .tag {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, #filter .compact .term .content, #managetagform .name {
+.chickcontent, .chickcheck .content, #filter .compact .filter-item .content, #managetagform .name {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch, #managetagform .tagaction {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch, #managetagform .tagaction {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1057,12 +1057,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .term .onoffswitch:hover, #managetagform .tagaction:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover, #managetagform .tagaction:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, #filter .compact .term .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1314206098');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1078,7 +1078,7 @@ body > div {
   background-position: center;
 }
 
-.chickcheck .check, #filter .compact .term .check {
+.chickcheck .check, #filter .compact .filter-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1088,10 +1088,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, #filter .compact .term .onoff {
+.chickcheck .onoff, #filter .compact .filter-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, #filter .compact .term .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
   display: inline;
 }
 

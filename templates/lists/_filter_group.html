@@ -1,13 +1,13 @@
 <section class="filter-group {{ field.cls }}" data-name="{{ field.name }}">
   <h5 class="category-title">{{ field.name|lower }}</h5>
-  <ul class="terms {% if field|length > 6 %}long{% endif %}">
+  <ul class="filter-items {% if field|length > 6 %}long{% endif %}">
     {% if advanced and field.cls == "keyword" %}
       <li class="addterm">
         <input type="text" value="" id="id-{{ prefix }}-{{ field.name }}" autocomplete="off" placeholder="add {{ field.name }} filter">
       </li>
     {% endif %}
     {% for option in field %}
-    <li class="term">
+    <li class="filter-item">
       <input type="checkbox" name="{{ prefix }}-{{ field.name }}" data-name="{{ field.name }}" value="{{ option.value }}" id="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}"{% if option.selected %} checked{% endif %} class="check">
       <span class="onoff">
         <label for="id-{{ prefix }}-{{ field.name }}-{{ forloop.counter }}" class="onoffswitch">{{ option.label }}</label>
