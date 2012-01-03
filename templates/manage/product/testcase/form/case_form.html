@@ -2,19 +2,21 @@
 
 {% load icanhaz %}
 
-{% block listcontent %}
-<section id="addcase">
+{% block content %}
+<section>
+
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}
   {% icanhaz "autocomplete_no_inputs" %}
+
   <h2>{% block formtitle %}{% endblock formtitle %}</h2>
 
   {% block caseforms %}
-    {% include "manage/product/testcase/_case_form_edit.html" %}
+    {% include "manage/product/testcase/form/_case_form_edit.html" %}
   {% endblock caseforms %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}
 
 {% block extrajs %}
 <script>
@@ -42,7 +44,7 @@
 {% block last %}
 <div style="display: none;">
   <ul id="empty-step-form" class="empty-form">
-    {% include "manage/product/testcase/_step_form.html" with form=form.steps_formset.empty_form %}
+    {% include "manage/product/testcase/form/_step_form.html" with form=form.steps_formset.empty_form %}
   </ul>
 </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'manage/product/testcase/_case_form_single.html' %}
+{% extends 'manage/product/testcase/form/_case_form_single.html' %}
 
 {% load icanhaz %}
 
@@ -25,7 +25,7 @@
       <div class="content">
         {% icanhaz "case_versioning_more_runs_link" %}
         {% for version in form.instance.all_versions %}
-        {% include "manage/product/testcase/_case_form_version_list_item.html" %}
+        {% include "manage/product/testcase/form/_case_form_version_list_item.html" %}
         {% endfor %}
       </div>
     </div>
@@ -33,5 +33,5 @@
 {% endblock versionform %}
 
 {% block mainform %}
-  {% include "manage/product/testcase/_case_form_edit_versioned_fields.html" %}
+  {% include "manage/product/testcase/form/_case_form_edit_versioned_fields.html" %}
 {% endblock mainform %}

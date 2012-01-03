@@ -16,14 +16,14 @@
       </ul>
     {% endblock basicform %}
 
-      {% include "manage/product/testcase/_tagging.html" with formtype="single" %}
+      {% include "manage/product/testcase/tag/_tagging.html" with formtype="single" %}
       {% include "manage/product/_attachments.html" with obj=case %}
 
     <div class="steps">
       {{ form.steps_formset.management_form }}
       <ol class="steplist" data-prefix="{{ form.steps_formset.prefix }}">
         {% for form in form.steps_formset %}
-        {% include "manage/product/testcase/_step_form.html" %}
+        {% include "manage/product/testcase/form/_step_form.html" %}
         {% endfor %}
       </ol>
     </div>
