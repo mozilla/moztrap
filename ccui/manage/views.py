@@ -664,7 +664,7 @@ def testcase_details(request, case_id):
     case = get_object_or_404(TestCaseVersionList, case_id, auth=request.auth)
     return TemplateResponse(
         request,
-        "manage/product/testcase/_case_details.html",
+        "manage/product/testcase/list/_case_details.html",
         {"case": case})
 
 
