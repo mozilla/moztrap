@@ -40,13 +40,10 @@ var CC = (function (CC, $) {
 
     // Ajax-load manage and results list item contents
     CC.loadListItemDetails = function () {
-        $('#listcontent').on('click', '.items .item.details', function (event) {
-            if ($(event.target).is("button, a")) {
-                return;
-            }
+        $('.itemlist').on('click', '.listitem .details .summary', function (event) {
             var item = $(this),
-                content = item.find('.content'),
-                url = item.data('details-url');
+                content = item.siblings('.content'),
+                url = item.closest('.listitem').data('details-url');
             if (url && !content.hasClass('loaded')) {
                 content.css('min-height', '4.854em').addClass('loaded');
                 content.loadingOverlay();
@@ -54,7 +51,8 @@ var CC = (function (CC, $) {
                     content.loadingOverlay('remove');
                     content.html(data.html);
                 });
-            }
+            } else { content.css('min-height', '0px'); }
+            return false;
         });
     };
 
