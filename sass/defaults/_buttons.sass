@@ -43,25 +43,35 @@ button
 =button-style($c:$green, $icon:false, $notext:false, $hover:true)
   $highlight: rgba($lightest,$xsmall)
   $lowlight : rgba($base,$xxxsmall)
-  $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
-  $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
-  $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+  $bgrad    : false
+  $bhover   : false
+  $bactive  : false
 
-  +border-radius
-  +rhythm-borders(1px,.25)
-  border-color: darken(desaturate($c,25),5)
-  background:
-    color: $c
-    repeat: no-repeat
-  @if not $notext
-    +hpadding($normem)
-
+  @if $c
+    $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    +border-radius
+    +rhythm-borders(1px,.25)
+    border-color: darken(desaturate($c,25),5)
+    background:
+      color: $c
+      repeat: no-repeat
+    @if not $notext
+      +hpadding($normem)
+  @else
+    padding: 0
+    border: 0
+    background: none
 
   @if $icon
-    $img      : image-url($icon)
-    $bgrad    : $img, $bgrad
-    $bhover   : $img, $bhover
-    $bactive  : $img, $bactive
+    $img        : image-url($icon)
+    @if $c
+      $bgrad    : $img, $bgrad
+      $bhover   : $img, $bhover
+      $bactive  : $img, $bactive
+    @else
+      $bgrad    : $img
 
     @if $notext
       +replace-width($icon)
@@ -73,14 +83,15 @@ button
       color: $base
       background-position: $smallpx, left
 
-  +background-image($bgrad)
+  @if $bgrad
+    +background-image($bgrad)
 
-  @if $hover
-    cursor: pointer
-    &:hover, &:focus
-      +background-image($bhover)
-    &:active
-      +background-image($bactive)
+    @if $hover
+      cursor: pointer
+      &:hover, &:focus
+        +background-image($bhover)
+      &:active
+        +background-image($bactive)
 
 // Applies default button styles.
 

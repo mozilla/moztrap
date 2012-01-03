@@ -1394,6 +1394,27 @@ body > div {
   color: #4f1114;
 }
 
+.itemlist {
+  border: 1px solid rgba(75, 87, 101, 0.296);
+  border-width: 0px 1px;
+}
+.itemlist button {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.listitem {
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.304em;
+  border-color: rgba(75, 87, 101, 0.296);
+}
+.listitem:last-child {
+  padding-bottom: 0.375em;
+  border-bottom: 0;
+}
+
 .widefinder, .finder[data-cols="4"], .finder[data-cols="5"], .finder[data-cols="6"], .finder[data-cols="7"], .finder[data-cols="8"], .finder[data-cols="9"], .finder[data-cols="10"] {
   overflow-y: hidden;
   overflow-x: scroll;
