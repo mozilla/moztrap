@@ -17,10 +17,38 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-@import chick
-@import tag
-@import suggest
-@import sort
-@import pagination
-@import finder
-@import filter
+.listnav
+  +cond
+  +pie-clearfix
+  +rhythm(0,.25,.25,.5)
+  +hpadding(.5em)
+  clear: both
+  background: rgba($blue,$xxsmall)
+  white-space: nowrap
+  .expired &
+    background: rgba($yellow-dark,$small)
+  p, ul
+    +reset-box-model
+  .location, .perpage
+    +columns(6,24)
+  .perpage
+    +omega(24)
+    text-align: right
+  .perpage ul, .pagination
+    +inline-block-list
+    display: inline
+    font-style: normal
+    li
+      vertical-align: baseline
+      + li::before
+        content: "| "
+  .pagination
+    +columns(12,24)
+    text-align: center
+  .current, strong
+    +demi
+  a
+    #{$link}
+      color: $blue-dark
+    #{$focus}
+      color: $red-dark
