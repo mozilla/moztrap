@@ -12,9 +12,12 @@
   on <time pubdate>{{ case.timeline.createDate|date }}</time>
 </p>
 
+<div class="envgroups">
+  {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
+</div>
+
 {% if case.attachments or case.relatedbugs %}
-  <aside class="associated">
-    <h4>attached files and bugs</h4>
+  <div class="associated">
     {% if case.attachments %}
       <ul class="files-list">
         {% for attachment in case.attachments %}
@@ -29,20 +32,5 @@
         {% endfor %}
       </ul>
     {% endif %}
-  </aside>
-{% endif %}
-
-<div class="envgroups">
-  {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
-</div>
-
-{% if case.tags %}
-<section class="casetags">
-  <h4>tags</h4>
-  <ul>
-    {% for tag in case.tags %}
-    <li>{{ tag }}</li>
-    {% endfor %}
-  </ul>
-</section>
+  </div>
 {% endif %}
