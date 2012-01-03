@@ -52,6 +52,7 @@ var CC = (function (CC, $) {
                     content.html(data.html);
                 });
             } else { content.css('min-height', '0px'); }
+            $(this).blur();
             return false;
         });
     };
