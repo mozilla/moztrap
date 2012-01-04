@@ -4,14 +4,12 @@
 
 {% block basicform %}
   {% if case.status.DRAFT %}
-  <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" class="select-env-link">select environments</a>
+    {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
   {% endif %}
 
-  <ul class="basic">
-    <li>
-      {% include "forms/_field.html" with field=form.description %}
-    </li>
-  </ul>
+  <div class="basic">
+    {% include "forms/_field.html" with field=form.description %}
+  </div>
 {% endblock basicform %}
 
 {% block versionactions %}

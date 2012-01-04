@@ -27,7 +27,7 @@
           {% if request.user|can_edit_case:case %}
             <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
             {% if case.status.DRAFT %}
-              <a href="{% url manage_narrow_environments object_type='testcase' object_id=case.id %}" title="select environments" class="target">select environments</a>
+              {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
             {% endif %}
           {% endif %}
           {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}

@@ -1,14 +1,11 @@
 <form id="bulk-case-form" method="POST">
   {% csrf_token %}
   {{ form.non_field_errors }}
-  <ul class="basic">
-    <li class="product-field">
-      {% include "forms/_field.html" with field=form.product %}
-    </li>
-    <li>
-      {% include "forms/_field.html" with field=form.suite %}
-    </li>
-  </ul>
+
+  <div class="basic">
+    {% include "forms/_field.html" with field=form.product %}
+    {% include "forms/_field.html" with field=form.suite %}
+  </div>
 
   {% include "manage/product/testcase/tag/_tagging.html" with formtype="bulk" %}
 
@@ -29,6 +26,7 @@
       </ol>
     </section>
   </div>
+
   <div class="form-actions">
     <button type="submit" name="bulk-save" value="1">save test cases</button>
   </div>

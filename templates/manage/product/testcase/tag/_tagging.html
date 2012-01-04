@@ -2,12 +2,11 @@
   <div class="textual">
     <label for="{{ formtype }}-text-tag">tags</label>
     <input type="text" name="text-tag" value="" id="{{ formtype }}-text-tag" placeholder="tag {% if formtype == 'single' %}this test case{% else %}these test cases{% endif %}." autocomplete="off" data-autocomplete-url="{% url manage_tags_autocomplete %}" data-allow-new="{% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}true{% else %}false{% endif %}">
-    <ul class="suggest">
-    </ul>
+    <ul class="suggest"></ul>
   </div>
 
   <div class="visual">
-    <p class="taglabel">tags:</p>
+    <strong class="taglabel">tags:</strong>
     <ul class="taglist">
     {% if case and case.tags %}
       {% for tag in case.tags %}
