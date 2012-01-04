@@ -13,23 +13,4 @@
 </ol>
 
 {% include "lists/_environments.html" with environments=case.environmentgroups %}
-
-{% if case.relatedbugs or case.attachments %}
-  <aside class="associated">
-    <h4 class="associated-title">attachments and bugs</h4>
-    {% if case.relatedbugs %}
-      <ul class="bugs-list">
-        {% for bug in case.relatedbugs %}
-        <li class="bugurl">{% include "bugs/bug.html" %}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    {% if case.attachments %}
-      <ul class="files-list">
-        {% for attachment in case.attachments %}
-        <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </aside>
-{% endif %}
+{% include "lists/_associated_links.html" with bugs=case.relatedbugs attachments=case.attachments %}

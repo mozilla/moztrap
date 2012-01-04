@@ -1,0 +1,19 @@
+{% if case.relatedbugs or case.attachments %}
+<aside class="associated">
+  <h4 class="associated-title">attachments and bugs</h4>
+  {% if bugs %}
+    <ul class="bugs-list">
+      {% for bug in bugs %}
+      <li class="bugurl">{% include "bugs/bug.html" %}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% if attachments %}
+    <ul class="files-list">
+      {% for attachment in attachments %}
+      <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</aside>
+{% endif %}
