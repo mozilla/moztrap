@@ -15,7 +15,8 @@
 {% include "lists/_environments.html" with environments=case.environmentgroups %}
 
 {% if case.relatedbugs or case.attachments %}
-  <div class="associated">
+  <aside class="associated">
+    <h4 class="associated-title">attachments and bugs</h4>
     {% if case.relatedbugs %}
       <ul class="bugs-list">
         {% for bug in case.relatedbugs %}
@@ -30,5 +31,5 @@
         {% endfor %}
       </ul>
     {% endif %}
-  </div>
+  </aside>
 {% endif %}
