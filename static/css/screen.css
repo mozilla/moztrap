@@ -123,10 +123,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.caps, .allcaps, h1, h2, h3, caption, #page-status::before, .category-title, .smallcaps {
-  letter-spacing: 0.1em;
-}
-
 .allcaps, h1, h2, h3, caption, #page-status::before, .category-title {
   text-transform: uppercase;
 }
@@ -1405,6 +1401,7 @@ body > div {
 }
 
 .listitem {
+  padding-top: 0.375em;
   border-bottom-style: solid;
   border-bottom-width: 0.071em;
   padding-bottom: 0.304em;

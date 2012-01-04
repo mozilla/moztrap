@@ -1,6 +1,6 @@
 {% load permissions %}
 
-<p class="status">
+<div class="status">
   {% if "PERMISSION_TEST_CASE_ACTIVATE" in request.user.permissionCodes %}
 
     {% if item.status.DRAFT %}
@@ -26,4 +26,4 @@
     {% endif %}
 
   {% endif %}
-</p>
+</div>

@@ -9,21 +9,19 @@
 
         {% include "manage/product/_status.html" with item=case %}
 
-        <div class="title">
-          <h3 class="name" title="{{ case.name }}">{{ case.name }}</h3>
+        <div class="name">
+          <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
 
           {% if case.tags %}
-          <div class="tags">
-            <ul>
-              {% for tag in case.tags %}
-              <li>{{ tag }}</li>
-              {% endfor %}
-            </ul>
-          </div>
+          <ul class="tags">
+            {% for tag in case.tags %}
+            <li>{{ tag }}</li>
+            {% endfor %}
+          </ul>
           {% endif %}
         </div>
 
-        <p class="product">{{ case.product }}</p>
+        <div class="product">{{ case.product }}</div>
 
         <div class="controls">
           {% if request.user|can_edit_case:case %}
