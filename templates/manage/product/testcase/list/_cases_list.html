@@ -9,13 +9,13 @@
 
         {% include "manage/product/_status.html" with item=case %}
 
-        <div class="name">
+        <div class="name-tags">
           <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
 
           {% if case.tags %}
           <ul class="tags">
             {% for tag in case.tags %}
-            <li>{{ tag }}</li>
+            <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
             {% endfor %}
           </ul>
           {% endif %}

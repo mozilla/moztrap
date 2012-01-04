@@ -1,3 +1,8 @@
+<p class="byline hcard">
+  Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
+  on <time pubdate>{{ case.timeline.createDate|date }}</time>
+</p>
+
 <ol class="steps">
   {% for step in case.steps %}
   <li>
@@ -7,28 +12,21 @@
   {% endfor %}
 </ol>
 
-<p class="byline hcard">
-  Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
-  on <time pubdate>{{ case.timeline.createDate|date }}</time>
-</p>
+{% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
 
-<div class="envgroups">
-  {% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
-</div>
-
-{% if case.attachments or case.relatedbugs %}
+{% if case.relatedbugs or case.attachments %}
   <div class="associated">
-    {% if case.attachments %}
-      <ul class="files-list">
-        {% for attachment in case.attachments %}
-        <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
-        {% endfor %}
-      </ul>
-    {% endif %}
     {% if case.relatedbugs %}
       <ul class="bugs-list">
         {% for bug in case.relatedbugs %}
         <li class="bugurl">{% include "bugs/bug.html" %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if case.attachments %}
+      <ul class="files-list">
+        {% for attachment in case.attachments %}
+        <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
