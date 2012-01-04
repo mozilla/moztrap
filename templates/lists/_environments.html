@@ -1,8 +1,12 @@
-<aside class="relatedenvs details">
-  <h4 class="summary">environments</h4>
+<aside class="envs">
+  <h4 class="envs-title">environments</h4>
   <ul class="envlist">
     {% for env in environments %}
-    <li><a href="#{{ env.name|slugify }}" title="filter by {{ env.name }}" class="filter-link">{{ env.name }}</a></li>
+    <li>
+      {% for element in env.elements %}
+        <a href="#{{ element.name|slugify }}" title="filter by {{ element.name }}" class="filter-link">{{ element.name }}</a>{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    </li>
     {% endfor %}
   </ul>
 </aside>

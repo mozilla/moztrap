@@ -12,7 +12,7 @@
   {% endfor %}
 </ol>
 
-{% include "lists/_environments.html" with environments=case.environmentgroups.environments %}
+{% include "lists/_environments.html" with environments=case.environmentgroups %}
 
 {% if case.relatedbugs or case.attachments %}
   <div class="associated">
