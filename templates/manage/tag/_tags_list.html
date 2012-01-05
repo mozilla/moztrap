@@ -1,16 +1,18 @@
-{% load sort icanhaz %}
+{% load icanhaz %}
 
-<div class="managelist action-ajax-replace">
+{% include "manage/tag/_tags_listordering.html" %}
 
-  {% include "manage/tag/_tags_listordering.html" %}
+<form method="POST" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+  {% icanhaz "tag_edit" %}
 
-  <div class="managetaglist">
-    {% icanhaz "tag_edit" %}
-
+  {% if tags %}
     {% for tag in tags %}
-    {% include "manage/tag/_tags_list_item.html" %}
+      {% include "manage/tag/_tags_list_item.html" %}
     {% endfor %}
-  </div>
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+</form>
 
-  {% include "lists/_listnav.html" %}
-</div>
+{% include "lists/_listnav.html" %}

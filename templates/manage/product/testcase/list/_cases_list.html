@@ -1,52 +1,16 @@
-{% load staticdata permissions %}
+{% include "manage/product/testcase/list/_cases_listordering.html" %}
 
-<div class="itemlist action-ajax-replace">
+<form method="POST" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
   {% if cases %}
-
     {% for case in cases %}
-    <article id="case-id-{{ case.id }}" class="listitem {{ case.status|status_class }}" data-details-url="{% url manage_testcase_details case.id %}">
-      <header class="itemhead">
-
-        {% include "manage/product/_status.html" with item=case %}
-
-        <div class="name-tags">
-          <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
-
-          {% if case.tags %}
-          <ul class="tags">
-            {% for tag in case.tags %}
-            <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
-            {% endfor %}
-          </ul>
-          {% endif %}
-        </div>
-
-        <div class="product">{{ case.product }}</div>
-
-        <div class="controls">
-          {% if request.user|can_edit_case:case %}
-            <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
-            {% if case.status.DRAFT %}
-              {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
-            {% endif %}
-          {% endif %}
-          {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
-            <button title="clone" type="submit" name="action-clone" value="{{ case.testCaseId }}">clone</button>
-          {% endif %}
-          {% if request.user|can_edit_case:case and case.status.DRAFT %}
-            <button title="delete" type="submit" name="action-delete" value="{{ case.testCaseId }}">delete</button>
-          {% endif %}
-        </div>
-
-      </header>
-
-      {# _case_details.html loaded via ajax #}
-      {% include "lists/_itembody.html" %}
-
-    </article>
+      {% include "manage/product/testcase/list/_cases_list_item.html" %}
     {% endfor %}
-
   {% else %}
     {% include "lists/_emptylist.html" %}
   {% endif %}
-</div>
+
+</form>
+
+{% include "lists/_listnav.html" %}

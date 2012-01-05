@@ -7,21 +7,13 @@
 
   {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
   <div class="create">
-    <a href="{% url manage_testcase_add %}" class="single">create single case (form)</a>
+    <a href="{% url manage_testcase_add %}" class="single">create a single case (form)</a>
     <a href="{% url manage_testcase_add_bulk %}" class="bulk">create bulk cases (text)</a>
   </div>
   {% endif %}
 
   {% include "lists/_filter.html" %}
-
-  <form method="POST" class="listform">
-    {% csrf_token %}
-
-    {% include "manage/product/testcase/list/_cases_listordering.html" %}
-    {% include "manage/product/testcase/list/_cases_list.html" %}
-    {% include "lists/_listnav.html" %}
-
-  </form>
+  {% include "manage/product/testcase/list/_cases_list.html" %}
 
 </section>
 {% endblock content %}

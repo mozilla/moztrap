@@ -1,16 +1,15 @@
 {% extends 'manage/tag/base.html' %}
 
-{% block listcontent %}
-<section id="managetags">
-  <h2>Tag Management</h2>
-
-  {% include "lists/_filter.html" %}
+{% block content %}
+<section id="managetags" class="manage">
+  <h2>Manage Tags</h2>
 
   {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-  <a href="#" class="create">create a tag</a>
+  <div class="create"><a href="#">create a tag</a></div>
   {% endif %}
 
+  {% include "lists/_filter.html" %}
   {% include "manage/tag/_tags_list.html" %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}
