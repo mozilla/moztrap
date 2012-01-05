@@ -1118,7 +1118,7 @@ body > div {
   -o-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
   box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
   display: none;
-  top: 2.25em;
+  top: 100%;
   background: white;
   z-index: 900;
   border: 1px solid #999999;
