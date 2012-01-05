@@ -53,6 +53,7 @@ var CC = (function (CC, $) {
         context.on('click', '.listitem a[title="edit"]', function (e) {
             e.preventDefault();
             var thisTag = $(this).closest('.listitem'),
+                edit = $(this),
                 tagID = thisTag.data('id'),
                 tagH3 = thisTag.find('h3.name').clone(),
                 tagName = tagH3.text(),
@@ -60,18 +61,17 @@ var CC = (function (CC, $) {
                     id: tagID,
                     name: tagName
                 }),
-                edit = thisTag.find('a[title="edit"]').clone(),
-                cancel;
+                cancel = editForm.find('a[title="cancel"]');
 
             if (tagID && tagName) {
                 thisTag.find('h3.name').replaceWith(editForm);
+                edit.remove();
                 editTag();
-                cancel = thisTag.find('a[title="edit"]').attr('title', 'cancel').text('cancel');
 
                 cancel.click(function (e) {
                     e.preventDefault();
-                    $(this).closest('.listitem').find('.tag-form').replaceWith(tagH3);
-                    $(this).replaceWith(edit);
+                    $(this).closest('.listitem').find('.controls').prepend(edit);
+                    $(this).closest('.tag-form').replaceWith(tagH3);
                 });
             }
         });
