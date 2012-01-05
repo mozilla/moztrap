@@ -1,4 +1,4 @@
-<article id="tag-id-{{ tag.id }}" class="item vcard" data-id="{{ tag.id }}">
+<article id="tag-id-{{ tag.id }}" class="listitem" data-id="{{ tag.id }}">
   <h3 class="name">{{ tag }}</h3>
   {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <div class="controls">
