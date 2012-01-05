@@ -32,7 +32,7 @@ var CC = (function (CC, $) {
             },
 
             editTag = function () {
-                var editTagForm = context.find('#edit-tag-form'),
+                var editTagForm = context.find('.tag-form'),
                     replaceList = editTagForm.closest('.action-ajax-replace');
 
                 editTagForm.ajaxForm({
@@ -50,25 +50,28 @@ var CC = (function (CC, $) {
                 });
             };
 
-        context.on('click', '.item a[title="edit"]', function (e) {
+        context.on('click', '.listitem a[title="edit"]', function (e) {
             e.preventDefault();
-            var thisTag = $(this).closest('.item'),
+            var thisTag = $(this).closest('.listitem'),
                 tagID = thisTag.data('id'),
-                tagName = thisTag.find('h3.tag').text(),
+                tagH3 = thisTag.find('h3.name').clone(),
+                tagName = tagH3.text(),
                 editForm = ich.tag_edit({
                     id: tagID,
                     name: tagName
                 }),
+                edit = thisTag.find('a[title="edit"]').clone(),
                 cancel;
 
             if (tagID && tagName) {
-                thisTag.replaceWith(editForm);
+                thisTag.find('h3.name').replaceWith(editForm);
                 editTag();
-                cancel = $(editForm).find('a[title="cancel"]');
+                cancel = thisTag.find('a[title="edit"]').attr('title', 'cancel').text('cancel');
 
                 cancel.click(function (e) {
                     e.preventDefault();
-                    $(editForm).replaceWith(thisTag);
+                    $(this).closest('.listitem').find('.tag-form').replaceWith(tagH3);
+                    $(this).replaceWith(edit);
                 });
             }
         });
