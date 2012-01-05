@@ -49,10 +49,10 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('#addcase').customAutocomplete({
+        $('#single-case-form, #bulk-case-form').customAutocomplete({
             textbox: 'input[name="text-tag"]',
             ajax: true,
-            url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+            url: $('form[id$="-case-form"] input[name="text-tag"]').data('autocomplete-url'),
             triggerSubmit: null,
             allowNew: true,
             restrictAllowNew: true,
