@@ -1,0 +1,13 @@
+{% load icanhaz %}
+
+<div class="itemlist action-ajax-replace">
+  {% icanhaz "tag_edit" %}
+
+  {% if tags %}
+    {% for tag in tags %}
+      {% include "manage/tag/_tags_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+</div>

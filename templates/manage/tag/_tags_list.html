@@ -1,17 +1,3 @@
-{% load icanhaz %}
-
 {% include "manage/tag/_tags_listordering.html" %}
-
-<div class="itemlist action-ajax-replace">
-  {% icanhaz "tag_edit" %}
-
-  {% if tags %}
-    {% for tag in tags %}
-      {% include "manage/tag/_tags_list_item.html" %}
-    {% endfor %}
-  {% else %}
-    {% include "lists/_emptylist.html" %}
-  {% endif %}
-</div>
-
+{% include "manage/tag/_tags_list_items.html" %}
 {% include "lists/_listnav.html" %}
