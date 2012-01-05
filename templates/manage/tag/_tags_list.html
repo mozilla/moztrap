@@ -2,8 +2,7 @@
 
 {% include "manage/tag/_tags_listordering.html" %}
 
-<form method="POST" class="itemlist action-ajax-replace">
-  {% csrf_token %}
+<div class="itemlist action-ajax-replace">
   {% icanhaz "tag_edit" %}
 
   {% if tags %}
@@ -13,6 +12,6 @@
   {% else %}
     {% include "lists/_emptylist.html" %}
   {% endif %}
-</form>
+</div>
 
 {% include "lists/_listnav.html" %}

@@ -635,7 +635,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   border-bottom-right-radius: 0.296em;
 }
 .message.info {
-  background-image: url('../images/ui/info.png?1309045001');
+  background-image: url('../images/ui/info.png?1325788800');
   background-color: rgba(169, 178, 191, 0.444);
 }
 .message.success {
@@ -690,7 +690,7 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/cc-logo.png?1323368403') no-repeat top center;
+  background: url('../images/cc-logo.png?1325788842') no-repeat top center;
 }
 #brand .wordmark {
   font-size: 1.25em;
@@ -1016,7 +1016,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, #managetagform .tag, .tag {
+.chick, .actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1036,16 +1036,16 @@ body > div {
   color: rgba(255, 255, 255, 0.833);
 }
 
-.actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, #managetagform .tag {
+.actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, #filter .compact .filter-item .content, #managetagform .name {
+.chickcontent, .chickcheck .content, #filter .compact .filter-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch, #managetagform .tagaction {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1053,7 +1053,7 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover, #managetagform .tagaction:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1089,94 +1089,6 @@ body > div {
 }
 .chickcheck .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
   display: inline;
-}
-
-.managetaglist {
-  *zoom: 1;
-  padding-top: 0.75em;
-}
-.managetaglist:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.managetaglist .tag {
-  background-image: url('../images/ui/tag_light.png?1323981194');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  padding-left: 26px;
-  background-position: 6px;
-}
-
-#managetagform label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-#managetagform .name, #managetagform .tagaction {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  background: transparent;
-  height: auto;
-}
-#managetagform .name {
-  border-right: 1px solid #a9b2bf;
-  padding-right: 0.375em;
-  color: rgba(255, 255, 255, 0.833);
-  cursor: pointer;
-}
-#managetagform .name:hover {
-  font-style: italic;
-}
-#managetagform .name:focus {
-  font-style: normal;
-  cursor: text;
-}
-#managetagform .save {
-  background-image: url('../images/ui/disc.png?1323977546');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  width: 1.5em;
-  background-position: center;
-  display: none;
-}
-#managetagform .delete {
-  background-image: url('../images/ui/trash.png?1314206098');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  width: 1.5em;
-  background-position: center;
 }
 
 .textual {

@@ -1,6 +1,7 @@
-<form method="POST" id="add-tag-form" class="add-tag-form">
+<form method="POST" id="add-tag-form" class="tag-form">
   {% csrf_token %}
-  <div class="add-tag-field">
+
+  <div class="tag-field">
     <label for="add-tag-input">create a new tag</label>
     <input type="text" name="tag" value="" id="add-tag-input" placeholder="name your tag">
   </div>
