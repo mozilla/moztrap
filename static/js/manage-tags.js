@@ -8,27 +8,36 @@ var CC = (function (CC, $) {
 
     CC.manageTags = function (container) {
         var context = $(container),
+            createTag = context.find('.create a'),
 
             addTag = function () {
-                var addTagForm = context.find('#add-tag-form'),
-                    replaceList = addTagForm.closest('.action-ajax-replace');
+                var addTagForm = ich.tag_edit({
+                        id: 'newtag',
+                        action: 'add'
+                    }),
+                    replaceList = context.find('.action-ajax-replace'),
+                    cancel = addTagForm.find('a[title="cancel"]');
 
-                if (addTagForm.length) {
-                    addTagForm.ajaxForm({
-                        beforeSubmit: function (arr, form, options) {
-                            replaceList.loadingOverlay();
-                        },
-                        success: function (response) {
-                            var newList = $(response.html);
-                            replaceList.loadingOverlay('remove');
-                            if (response.html) {
-                                replaceList.replaceWith(newList);
-                                addTag();
-                                newList.find('.details').html5accordion();
-                            }
+                $(addTagForm).appendTo(replaceList).wrap(ich.tag_add()).find('input').focus();
+
+                addTagForm.ajaxForm({
+                    beforeSubmit: function (arr, form, options) {
+                        replaceList.loadingOverlay();
+                    },
+                    success: function (response) {
+                        var newList = $(response.html);
+                        replaceList.loadingOverlay('remove');
+                        if (response.html) {
+                            replaceList.replaceWith(newList);
+                            newList.find('.details').html5accordion();
                         }
-                    });
-                }
+                    }
+                });
+
+                cancel.click(function (e) {
+                    e.preventDefault();
+                    $(this).closest('.listitem').remove();
+                });
             },
 
             editTag = function () {
@@ -59,7 +68,8 @@ var CC = (function (CC, $) {
                 tagName = tagH3.text(),
                 editForm = ich.tag_edit({
                     id: tagID,
-                    name: tagName
+                    name: tagName,
+                    action: 'edit'
                 }),
                 cancel = editForm.find('a[title="cancel"]');
 
@@ -76,7 +86,14 @@ var CC = (function (CC, $) {
             }
         });
 
-        addTag();
+        createTag.click(function (e) {
+            e.preventDefault();
+            if (context.find('#tag-id-newtag').length) {
+                $('#tag-id-newtag').find('input').focus();
+            } else {
+                addTag();
+            }
+        });
     };
 
     return CC;

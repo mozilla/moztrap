@@ -139,7 +139,7 @@ def edit_user(request, user_id):
             )
 @dec.paginate("tags")
 @dec.sort("tags")
-@dec.ajax("manage/tag/_tags_list.html")
+@dec.ajax("manage/tag/_tags_list_items.html")
 def tags(request):
     return TemplateResponse(
         request,

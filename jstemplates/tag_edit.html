@@ -1,10 +1,10 @@
-<form method="POST" id="edit-tag-form-{{ id }}" class="tag-form">
-  <div class="edit-tag-field">
-    <label for="edit_tag_{{ id }}">edit tag</label>
-    <input type="text" name="tag" value="{{ name }}" id="edit_tag_{{ id }}">
+<form method="POST" id="{{ action }}-tag-form-{{ id }}" class="tag-form">
+  <div class="{{ action }}-tag-field">
+    <label for="{{ action }}_tag_{{ id }}">{{ action }} tag</label>
+    <input type="text" name="tag" value="{{ name }}" id="{{ action }}_tag_{{ id }}" autocomplete="off">
   </div>
   <div class="form-actions">
     <a href="#" title="cancel">cancel</a> or
-    <button type="submit" name="edit-tag" value="{{ id }}" class="action-save-tag">save tag</button>
+    <button type="submit" name="{{ action }}-tag" value="{{ id }}" class="action-save-tag">save tag</button>
   </div>
 </form>
