@@ -47,6 +47,8 @@ class Cycle(TeamModel):
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
 
+    environments = models.ManyToManyField(Environment, related_name="cycles")
+
 
     def __unicode__(self):
         """Return unicode representation."""
@@ -83,6 +85,7 @@ class Run(TeamModel):
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
 
+    environments = models.ManyToManyField(Environment, related_name="runs")
     caseversions = models.ManyToManyField(
         CaseVersion, through="RunCaseVersion", related_name="runs")
     suites = models.ManyToManyField(

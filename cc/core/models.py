@@ -23,6 +23,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+from ..environments.models import Environment
 from .ccmodel import CCModel
 
 
@@ -31,6 +32,8 @@ class Product(CCModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     team = models.ManyToManyField(User, blank=True)
+
+    environments = models.ManyToManyField(Environment, related_name="products")
 
 
     def __unicode__(self):

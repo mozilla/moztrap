@@ -26,6 +26,7 @@ from model_utils import Choices
 from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
 from ..core.models import Product
+from ..environments.models import Environment
 from ..tags.models import Tag
 
 
@@ -69,6 +70,8 @@ class CaseVersion(CCModel):
     description = models.TextField(blank=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
+    environments = models.ManyToManyField(
+        Environment, related_name="caseversions")
 
 
     def __unicode__(self):
