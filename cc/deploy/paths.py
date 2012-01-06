@@ -26,11 +26,11 @@ def add_vendor_lib():
 
     orig_sys_path = set(sys.path)
 
-    # Add project base directory and vendor-lib to sys.path (using
-    # site.addsitedir for the latter so pth files are processed)
+    # Add vendor-lib directory to sys.path (using site.addsitedir so pth
+    # files are processed)
     site.addsitedir(vendor_lib)
 
-    # Give new entries precedence over global Python environment
+    # Give vendor lib precedence over global Python environment
     new_sys_path = []
     for item in list(sys.path):
         if item not in orig_sys_path:

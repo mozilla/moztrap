@@ -3,5 +3,6 @@ collected-assets/*
 ccui/settings/local.py
 htmlcov/*
 media/*
+docs/_build/*
 .livereload
 *.pyc
