@@ -108,8 +108,8 @@
                         thisSuggestionType = $(this).find('a').data('type');
                     if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toString().toLowerCase(); }
                     if ($(this).find('a').hasClass('new')) {
-                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
-                                || inputs.filter('[id^="id-' + prefix + '-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
+                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).closest('li[class$="item"]').find('label').text() === thisSuggestionName; }).length
+                                || inputs.filter('[id^="id-' + prefix + '-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).closest('li[class$="item"]').find('label').text() === thisSuggestionName; }).length
                                 || newSuggestions.find('a:not(.new)').filter(function () { return $(this).data('name') === thisSuggestionName && $(this).data('type') === thisSuggestionType; }).length) {
                             return false;
                         } else {
@@ -130,12 +130,12 @@
                 if (!data && !options.ajax) {
                     var suggestions;
                     if (options.caseSensitive) {
-                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
-                            return $(this).children('label').text().indexOf(typedText) !== -1;
+                        suggestions = inputList.find(options.inputs).not(':disabled').closest('li[class$="item"]').filter(function () {
+                            return $(this).find('label').text().indexOf(typedText) !== -1;
                         });
                     } else {
-                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
-                            return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                        suggestions = inputList.find(options.inputs).not(':disabled').closest('li[class$="item"]').filter(function () {
+                            return $(this).find('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                         });
                     }
                     data = {};
@@ -539,7 +539,7 @@
         if (!options.inputsNeverRemoved) {
             inputList.add(newInputList).on('click', 'label', function (e) {
                 e.preventDefault();
-                $(this).parent().remove();
+                $(this).closest('li[class$="item"]').remove();
                 inputs = inputList.add(newInputList).find(options.inputs);
                 if (newSuggestions) {
                     filterSuggestions();

@@ -57,7 +57,8 @@ var CC = (function (CC, $) {
             allowNew: true,
             restrictAllowNew: true,
             inputType: 'tag',
-            noInputsNote: true
+            noInputsNote: true,
+            prefix: 'tag'
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
@@ -68,7 +69,8 @@ var CC = (function (CC, $) {
             hideFormActions: true,
             expiredList: '.env-element-list',
             inputType: 'element',
-            caseSensitive: true
+            caseSensitive: true,
+            prefix: 'element'
         });
         $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
