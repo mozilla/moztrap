@@ -21,6 +21,8 @@ Tests for Case and related models (CaseVersion, CaseStep).
 """
 from django.test import TestCase
 
+from ...core.builders import create_product
+from ...environments.builders import create_environments
 from ...tags.builders import create_tag
 from ..builders import (
     create_case, create_caseversion, create_casestep, create_caseattachment)
@@ -96,6 +98,20 @@ class CaseVersionTest(TestCase):
         new = cv.clone()
 
         self.assertEqual(new.tags.get(), tag)
+
+
+    def test_caseversion_gets_product_envs(self):
+        """
+        A new test case inherits the environments of its product.
+
+        """
+        p = create_product()
+        p.environments.add(*create_environments(["OS"], ["Windows"], ["Linux"]))
+
+        cv = create_caseversion(case=create_case(product=p))
+
+        self.assertEqual(set(cv.environments.all()), set(p.environments.all()))
+        self.assertEqual(cv.envs_narrowed, False)
 
 
 

@@ -25,9 +25,11 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from ...core.builders import create_user
+from ...environments.builders import create_environments
 from ...library.builders import create_suite, create_caseversion
 from ..builders import (
-    create_run, create_runsuite, create_runcaseversion, create_result)
+    create_cycle, create_run, create_runsuite, create_runcaseversion,
+    create_result)
 
 
 
@@ -142,3 +144,16 @@ class RunTest(TestCase):
         new = r.runcaseversion.run.clone()
 
         self.assertEqual(new.runcaseversions.get().results.count(), 0)
+
+
+    def test_run_gets_parent_envs(self):
+        """
+        A new test run inherits the environments of its cycle.
+
+        """
+        c = create_cycle()
+        c.environments.add(*create_environments(["OS"], ["Windows"], ["Linux"]))
+
+        r = create_run(cycle=c)
+
+        self.assertEqual(set(r.environments.all()), set(c.environments.all()))

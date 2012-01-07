@@ -26,7 +26,7 @@ from model_utils import Choices
 from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
 from ..core.models import Product
-from ..environments.models import Environment
+from ..environments.models import InheritsEnvironmentsModel
 from ..tags.models import Tag
 
 
@@ -57,7 +57,7 @@ class Case(CCModel):
 
 
 
-class CaseVersion(CCModel):
+class CaseVersion(CCModel, InheritsEnvironmentsModel):
     """A version of a test case."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -70,8 +70,8 @@ class CaseVersion(CCModel):
     description = models.TextField(blank=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
-    environments = models.ManyToManyField(
-        Environment, related_name="caseversions")
+    # True if this case's envs have been narrowed from the parent product.
+    envs_narrowed = models.BooleanField(default=False)
 
 
     def __unicode__(self):
@@ -86,6 +86,11 @@ class CaseVersion(CCModel):
         """Clone this CaseVersion, cascading steps, attachments, tags."""
         kwargs.setdefault("cascade", ["steps", "attachments", "tags"])
         return super(CaseVersion, self).clone(*args, **kwargs)
+
+
+    @property
+    def parent(self):
+        return self.case.product
 
 
 

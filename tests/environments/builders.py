@@ -82,3 +82,35 @@ def create_environment(**kwargs):
     env.elements.add(*elements)
 
     return env
+
+
+
+def create_environments(category_names, *envs):
+    """
+    Create a set of environments given category and element names.
+
+    Given a list of category names, and some number of same-length lists of
+    element names, create and return a list of environments made up of the
+    given elements. For instance::
+
+      create_environments(
+          ["OS", "Browser"],
+          ["Windows", "Internet Explorer"],
+          ["Windows", "Firefox"],
+          ["Linux", "Firefox"]
+          )
+
+    """
+    categories = [create_category(name=name) for name in category_names]
+
+    environments = []
+
+    for element_names in envs:
+        elements = [
+            create_element(name=name, category=categories[i])
+            for i, name in enumerate(element_names)
+            ]
+
+        environments.append(create_environment(elements=elements))
+
+    return environments

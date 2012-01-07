@@ -30,12 +30,12 @@ from model_utils import Choices
 
 from ..core.ccmodel import CCModel, TeamModel, utcnow
 from ..core.models import Product
-from ..environments.models import Environment
+from ..environments.models import Environment, InheritsEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep
 
 
 
-class Cycle(TeamModel):
+class Cycle(TeamModel, InheritsEnvironmentsModel):
     """A test cycle."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -46,8 +46,6 @@ class Cycle(TeamModel):
         max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
-
-    environments = models.ManyToManyField(Environment, related_name="cycles")
 
 
     def __unicode__(self):
@@ -73,7 +71,7 @@ class Cycle(TeamModel):
 
 
 
-class Run(TeamModel):
+class Run(TeamModel, InheritsEnvironmentsModel):
     """A test run."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -85,7 +83,6 @@ class Run(TeamModel):
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
 
-    environments = models.ManyToManyField(Environment, related_name="runs")
     caseversions = models.ManyToManyField(
         CaseVersion, through="RunCaseVersion", related_name="runs")
     suites = models.ManyToManyField(

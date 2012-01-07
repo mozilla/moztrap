@@ -91,7 +91,8 @@ class Environment(CCModel):
     X, it doesn't matter for the purposes of this test.
 
     """
-    profile = models.ForeignKey(Profile, related_name="environments")
+    profile = models.ForeignKey(
+        Profile, blank=True, null=True, related_name="environments")
 
     elements = models.ManyToManyField(Element)
 
@@ -108,3 +109,41 @@ class Environment(CCModel):
                 "Can add/edit/delete environments, profiles, etc."
                 )
             ]
+
+
+
+class InheritsEnvironmentsModel(models.Model):
+    """
+    Base for models that inherit environments from their parent by default.
+
+    Subclasses must implement a ``parent`` property.
+
+    """
+    environments = models.ManyToManyField(Environment, related_name="%(class)s")
+
+
+    @property
+    def parent(self):
+        raise NotImplementedError(
+            "InheritsEnvironments model without parent property.")
+
+
+    class Meta:
+        abstract = True
+
+
+    def save(self, *args, **kwargs):
+        """
+        Save instance; new instances get product environments.
+
+        """
+        adding = False
+        if self.id is None:
+            adding = True
+
+        ret = super(InheritsEnvironmentsModel, self).save(*args, **kwargs)
+
+        if adding:
+            self.environments.add(*self.parent.environments.all())
+
+        return ret

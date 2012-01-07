@@ -24,7 +24,8 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ...core.builders import create_user
+from ...core.builders import create_user, create_product
+from ...environments.builders import create_environments
 from ...library.builders import create_suite, create_caseversion
 from ..builders import (
     create_cycle, create_result, create_run,
@@ -156,3 +157,16 @@ class CycleTest(TestCase):
 
         self.assertEqual(
             new.runs.get().runcaseversions.get().results.count(), 0)
+
+
+    def test_cycle_gets_parent_envs(self):
+        """
+        A new test cycle inherits the environments of its product.
+
+        """
+        p = create_product()
+        p.environments.add(*create_environments(["OS"], ["Windows"], ["Linux"]))
+
+        c = create_cycle(product=p)
+
+        self.assertEqual(set(c.environments.all()), set(p.environments.all()))
