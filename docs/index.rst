@@ -1,10 +1,5 @@
-.. Case Conductor documentation master file, created by
-   sphinx-quickstart on Thu Jan  5 18:58:30 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to Case Conductor's documentation!
-==========================================
+Welcome to Case Conductor
+=========================
 
 Quickstart
 ----------
@@ -45,6 +40,7 @@ Contents
 
    development
    deployment
+   userguide/index
 
 
 Indices and tables
