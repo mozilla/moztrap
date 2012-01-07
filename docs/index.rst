@@ -6,8 +6,12 @@ Quickstart
 
 Case Conductor requires Python 2.6 or 2.7.
 
-First, update git submodules (dependency source distribution tarballs are
-stored in a git submodule). From the root of this repo, run::
+First, clone the `Case Conductor repository`_.
+
+.. _Case Conductor repository: https://github.com/mozilla/caseconductor
+
+Then update git submodules (dependency source distribution tarballs are stored
+in a git submodule). From the root of this repo, run::
 
     git submodule init; git submodule update
 
