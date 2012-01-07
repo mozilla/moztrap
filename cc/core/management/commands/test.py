@@ -61,7 +61,11 @@ class Command(TestCommand):
             cov.stop()
 
             include = []
-            omit = ["*/migrations/*"]
+            omit = [
+                "*/migrations/*",
+                "cc/deploy/wsgi.py",
+                "cc/deploy/vendor_wsgi.py"
+                ]
             report_kw = {}
             if options.get("coverall"):
                 # include all python modules under cc in report, including even

@@ -15,12 +15,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Utility functions for deployment-related path-munging.
 
+"""
 import os, sys, site
 
 
 def add_vendor_lib():
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    """
+    Adds the vendor library to the front of sys.path.
+
+    """
+    base_dir = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     vendor_lib = os.path.join(
         base_dir, "requirements", "vendor", "lib", "python")
 
