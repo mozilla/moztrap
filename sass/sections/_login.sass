@@ -12,9 +12,14 @@ body.login
   #brand
     +un-column
     +reset-box-model
-    +padding-leader(7)
-    position: relative
+    +full
     text-align: center
+    a
+      #{$link}
+        +squish(9,9,24)
+        +padding-leader(7)
+        display: block
+        position: relative
     .logo
       top: rhythm(1)
       width: 100%

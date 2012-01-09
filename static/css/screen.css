@@ -1812,9 +1812,17 @@ body.login #brand {
   margin: 0;
   padding: 0;
   border: 0;
-  padding-top: 10.5em;
-  position: relative;
+  clear: both;
+  margin-left: 1.031%;
+  margin-right: 1.031%;
   text-align: center;
+}
+body.login #brand a:link, body.login #brand a:visited {
+  margin-left: 37.895%;
+  margin-right: 37.895%;
+  padding-top: 10.5em;
+  display: block;
+  position: relative;
 }
 body.login #brand .logo {
   top: 1.5em;
