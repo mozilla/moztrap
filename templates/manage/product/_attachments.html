@@ -8,8 +8,8 @@
     {% if obj %}
     {% for attachment in obj.attachments %}
     <li data-id="{{ attachment.id }}">
-      <button class="action-remove" title="remove attachment">remove attachment</button>
       <a href="{{ attachment.url }}">{{ attachment.description }}</a>
+      <button class="action-remove" title="remove attachment">remove attachment</button>
     </li>
     {% endfor %}
     {% endif %}
