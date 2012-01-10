@@ -497,7 +497,7 @@ def testsuite_details(request, suite_id):
     suite = get_object_or_404(TestSuiteList, suite_id, auth=request.auth)
     return TemplateResponse(
         request,
-        "manage/product/testsuite/_suite_details.html",
+        "manage/product/testsuite/list/_suite_details.html",
         {"suite": suite})
 
 

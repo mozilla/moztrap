@@ -1,0 +1,30 @@
+{% load staticdata permissions %}
+
+<article id="suite-id-{{ suite.id }}" class="listitem {{ suite.status|status_class }}" data-details-url="{% url manage_testsuite_details suite.id %}">
+  <header class="itemhead">
+
+    {% include "manage/product/_status.html" with item=suite %}
+
+    <h3 class="name" title="{{ suite.name }}">{{ suite.name }}</h3>
+    <div class="product">{{ suite.product.name }}</div>
+
+    <div class="controls">
+      {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
+        <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+        {% if suite.status.DRAFT %}
+        <a href="{% url manage_narrow_environments object_type='testsuite' object_id=suite.id %}" title="select environments" class="target">select environments</a>
+        {% endif %}
+        <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
+        {% if suite.status.DRAFT %}
+        <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+        {% endif %}
+        {# @@@ requires modifications to case form <a href="#" title="create new test case in this suite">create new test case in this suite</a> #}
+      {% endif %}
+      <a href="{% url manage_testcases %}?filter-suite={{ suite.id }}" class="drill-link" title="manage all cases in this suite">manage all cases in this suite</a>
+    </div>
+  </header>
+
+  {# _suite_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>
