@@ -65,6 +65,7 @@ class RunAdmin(TeamModelAdmin):
                     ("productversion", "status"),
                     "description",
                     ("start", "end"),
+                    "environments",
                     ]})]
     inlines = [RunSuiteInline, RunCaseVersionInline]
 

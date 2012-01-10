@@ -21,6 +21,7 @@ Tests for RunCaseVersion model.
 """
 from django.test import TestCase
 
+from ...environments.builders import create_environments
 from ...library.builders import create_caseversion
 from ..builders import (
     create_runcaseversion, create_run, create_stepresult, create_result)
@@ -59,3 +60,29 @@ class RunCaseVersionTest(TestCase):
             rcv.bug_urls(),
             set(["http://www.example.com/bug1", "http://www.example.com/bug2"])
             )
+
+
+    def test_environment_inheritance(self):
+        """gets intersection of run and caseversion environments."""
+        envs = create_environments(
+            ["OS", "Browser"],
+            ["Linux", "Firefox"],
+            ["Linux", "Chrome"],
+            ["OS X", "Chrome"],
+            )
+
+        r = create_run()
+        r.environments.add(*envs[:2])
+        cv = create_caseversion()
+        cv.environments.add(*envs[1:])
+
+        rcv = create_runcaseversion(run=r, caseversion=cv)
+
+        self.assertEqual(rcv.environments.get(), envs[1])
+
+        # only happens when first created, not on later saves
+
+        rcv.environments.clear()
+        rcv.save()
+
+        self.assertEqual(rcv.environments.count(), 0)

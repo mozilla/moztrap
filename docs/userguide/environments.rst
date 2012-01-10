@@ -112,7 +112,7 @@ test cases associated with that product version.
 Adding an environment only cascades in certain situations. Adding an
 environment to a product version's profile cascades to test runs only if they
 are still in Draft state; once they are activated, their environment profile
-can only be added to manually.
+can no longer be added to.
 
 Additions to a product version's environment profile cascade only to those test
 cases whose environment profile is still identical to the product version's

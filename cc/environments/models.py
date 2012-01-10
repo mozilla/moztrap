@@ -134,7 +134,7 @@ class InheritsEnvironmentsModel(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Save instance; new instances get product environments.
+        Save instance; new instances get parent environments.
 
         """
         adding = False

@@ -87,6 +87,9 @@ class RunCaseVersion(CCModel):
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
 
+    environments = models.ManyToManyField(
+        Environment, related_name="runcaseversions")
+
 
     def __unicode__(self):
         """Return unicode representation."""
@@ -107,6 +110,27 @@ class RunCaseVersion(CCModel):
         permissions = [
             ("execute", "Can run tests and report results."),
             ]
+
+
+    def save(self, *args, **kwargs):
+        """
+        Save instance; new instances get intersection of run/case environments.
+
+        """
+        adding = False
+        if self.id is None:
+            adding = True
+
+        ret = super(RunCaseVersion, self).save(*args, **kwargs)
+
+        if adding:
+            run_env_ids = set(
+                self.run.environments.values_list("id", flat=True))
+            case_env_ids = set(
+                self.caseversion.environments.values_list("id", flat=True))
+            self.environments.add(*run_env_ids.intersection(case_env_ids))
+
+        return ret
 
 
 
