@@ -1,7 +1,4 @@
-<p class="byline hcard">
-  Created by <span class="fn">{{ case.timeline.createdBy.screenName }}</span>
-  on <time pubdate>{{ case.timeline.createDate|date }}</time>
-</p>
+{% include "lists/_byline.html" with item=case %}
 
 <ol class="steps">
   {% for step in case.steps %}
