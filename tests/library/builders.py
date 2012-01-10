@@ -50,9 +50,9 @@ def create_case(**kwargs):
 
     defaults.update(kwargs)
 
-    if "product" not in defaults:
-        from ..core.builders import create_product
-        defaults["product"] = create_product()
+    if "productversion" not in defaults:
+        from ..core.builders import create_productversion
+        defaults["productversion"] = create_productversion()
 
     return Case.objects.create(**defaults)
 
@@ -69,7 +69,13 @@ def create_suitecase(**kwargs):
         defaults["suite"] = create_suite()
 
     if "case" not in defaults:
-        defaults["case"] = create_case(product=defaults["suite"].product)
+        product = defaults["suite"].product
+        if product.versions.exists():
+            pv = product.versions.all()[0]
+        else:
+            from ..core.builders import create_productversion
+            pv = create_productversion(product=product)
+        defaults["case"] = create_case(productversion=pv)
 
     return SuiteCase.objects.create(**defaults)
 

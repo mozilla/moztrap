@@ -34,9 +34,9 @@ def main():
     imports = [
         "import datetime",
         "from django.contrib.auth.models import User, Group, Permission",
-        "from cc.core.models import Product",
+        "from cc.core.models import Product, ProductVersion",
         "from cc.library.models import Suite, Case, CaseVersion, CaseStep, CaseAttachment, SuiteCase",
-        "from cc.execution.models import Cycle, Run, RunCaseVersion, RunSuite, Result, StepResult",
+        "from cc.execution.models import Run, RunCaseVersion, RunSuite, Result, StepResult",
         "from cc.environments.models import Profile, Category, Element, Environment",
         "from cc.tags.models import Tag",
         ]

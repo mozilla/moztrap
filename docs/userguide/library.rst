@@ -1,9 +1,6 @@
 Test Cases and Suites
 =====================
 
-Test cases and test suites represent the long-term
-
-
 .. _test-cases:
 
 Test Cases
@@ -11,11 +8,12 @@ Test Cases
 
 A **Test Case** is a named set of steps for testing a single feature or
 characteristic of the system under test. Test cases are associated with a
-`product <products>`_ and *product version*. They can be organized via
-:ref:`suites <test-suites>` and/or *tags*, and can have file
-*attachments*. Preconditions, assumptions, and other preliminary information
-can be provided in the case's *description*. A test case can have any number of
-steps; each step has an *instruction* and an *expected result*.
+:ref:`product <products>` and :ref:`product version<product-versions>`. They
+can be organized via :ref:`suites <test-suites>` and/or :ref:`tags<tags>`, and
+can have file :ref:`attachments<attachments>`. Preconditions, assumptions, and
+other preliminary information can be provided in the case's *description*. A
+test case can have any number of steps; each step has an *instruction* and an
+*expected result*.
 
 Test cases are versioned linearly; all previous versions are saved (and may
 also still be in use in earlier test runs). Minor edits can be made to any
@@ -31,7 +29,25 @@ Test Suites
 -----------
 
 A **Test Suite** is a named collection of test cases that can be included in a
-test run. Test suites do not include specific versions of cases (or to put it
-differently, they always implicitly include the latest version of each
-case). When a test suite is added to a test run, the latest version of each
-case in the suite will be included in that run.
+:ref:`test run<test-runs>`.
+
+
+.. _tags:
+
+Tags
+----
+
+A **Tag** can be associated with one or more :ref:`test cases<test-cases>` as a
+way to organize and filter them on any number of axes.
+
+By default, tags are :ref:`product<products>`-specific; global tags can also be
+created and managed via the tag management UI.
+
+
+.. _attachments:
+
+Attachments
+-----------
+
+A :ref:`test case<test-cases>` can have any number of file attachments: these
+will be made available for download by testers when the test case is executed.

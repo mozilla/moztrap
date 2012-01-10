@@ -38,12 +38,11 @@ GROUPS["Test Creator"] = [
     "library.manage_suite_cases",
     ] + GROUPS["Tester"]
 
-# Test Managers can fully manage cases, suites, cycles, runs, environments, etc.
+# Test Managers can fully manage cases, suites, runs, environments, etc.
 GROUPS["Test Manager"] = [
     "library.manage_cases",
     "library.manage_suites",
     "tags.manage_tags",
-    "execution.manage_cycles",
     "execution.manage_runs",
     "execution.review_results",
     "environments.manage_environments",

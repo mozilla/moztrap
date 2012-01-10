@@ -39,10 +39,10 @@ new product. For instance, the generic **Web Applications** profile described
 above could be used as the initial profile for a new web application
 product.
 
-:ref:`Products`, :ref:`cycles<test-cycles>`, :ref:`runs<test-runs>`, and
+:ref:`Product versions<product-versions>`, :ref:`runs<test-runs>`, and
 :ref:`test cases<test-cases>` all have their own environment profile; that is,
-the set of environments relevant for testing that particular product, test
-cycle, test run, or test case. These profiles are
+the set of environments relevant for testing that particular product version,
+test run, or test case. These profiles are
 :ref:`inherited<environment-inheritance>`.
 
 
@@ -67,25 +67,22 @@ Windows**; **Firefox, OS X**; **Opera**, **Windows**; and **Opera, OS X**.
 Inheritance
 -----------
 
-At the highest level, a product's environment profile describes the full set of
-environments that the product supports and should be tested in.
+At the highest level, a product version's environment profile describes the
+full set of environments that the product version supports and should be tested
+in.
 
-A test cycle or test case by default inherits the full environment profile of
-its product. This profile can be narrowed from the product's profile: for
-instance, if a particular test case only applies to the Windows version of the
-product, all non-Windows environments could be eliminated from that test case's
-environment profile. Similarly, a test cycle could be designated as
+A test run or test case by default inherits the full environment profile of its
+product version, but its profile can be narrowed from the product version's
+profile. For instance, if a particular test case only applies to the Windows
+port of the product, all non-Windows environments could be eliminated from that
+test case's environment profile. Similarly, a test run could be designated as
 Esperanto-only, and all non-Esperanto environments would be removed from its
 profile (ok, that's not very likely).
 
-The environment profile of a test case or test cycle is limited to a subset of
-the parent product's profile - it doesn't make sense to write a test case or
-run a test cycle for a product on environments the product itself does not
-support.
-
-Similarly, a test run inherits its initial environment profile from its parent
-test cycle; its profile can be narrowed but not expanded beyond the profile of
-its cycle.
+The environment profile of a test case or test run is limited to a subset of
+the parent product version's profile - it doesn't make sense to write a test
+case or execute a test run for a product version on environments the product
+version itself does not support.
 
 When a test case is included in a test run, the resulting "executable case"
 gets its own environment profile: the intersection of the environment profiles
@@ -94,15 +91,14 @@ test case were included in an Esperanto-only test run, that case, as executed
 in that run, would get an even smaller environment profile containing only
 Windows Esperanto environments.
 
-Thus, the inheritance tree for environment profiles looks something like this::
+Thus, the inheritance tree for environment profiles looks something like a
+diamond::
 
-    Product
-     /     \
-    Cycle  Case
-     |      |
-    Run     |
-      \     |
-      executable Case
+    Product Version
+      /        \
+     Run      Case
+      \        /
+    executable Case
 
 
 Cascades
@@ -110,22 +106,22 @@ Cascades
 
 Whenever an environment is removed from an object's profile, that removal
 cascades down to all children of that object. So removing an environment from a
-product's profile cascades to all that product's cycles and cases, and removing
-an environment from a cycle's profile cascades to its runs.
+product version's profile also automatically removes it from all test runs and
+test cases associated with that product version.
 
 Adding an environment only cascades in certain situations. Adding an
-environment to a product's profile cascades to cycles and runs only if they are
-still in Draft state; once they are activated, their environment profile can
-only be added to manually.
+environment to a product version's profile cascades to test runs only if they
+are still in Draft state; once they are activated, their environment profile
+can only be added to manually.
 
-Additions to a product's environment profile cascade only to those test cases
-whose environment profile is still identical to the product's environment
-profile (i.e. test cases that apply to all environments the product
-supports). Once a test case has been narrowed to a subset of the product's full
-environment profile, additions to the product's profile will have to be
-manually added to the case's profile if the new environment applies to that
-case.
+Additions to a product version's environment profile cascade only to those test
+cases whose environment profile is still identical to the product version's
+environment profile (i.e. test cases that apply to all environments the product
+supports). Once a test case has been narrowed to a subset of the product
+version's full environment profile, additions to the product version's profile
+will have to be manually added to the case's profile if the new environment
+applies to that case.
 
 :ref:`Test results<test-results>`, once recorded, are never deleted, even if
-their corresponding environment is removed from their product, cycle, or run's
+their corresponding environment is removed from their product version or run's
 environment profile.

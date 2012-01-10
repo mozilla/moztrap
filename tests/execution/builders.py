@@ -18,26 +18,9 @@
 """
 Model builders for test execution models.
 
-Cycle, Run, RunCaseVersion, RunSuite, Result, StepResult
+Run, RunCaseVersion, RunSuite, Result, StepResult
 
 """
-
-
-
-def create_cycle(**kwargs):
-    from cc.execution.models import Cycle
-
-    defaults = {
-        "name": "Test Cycle",
-        }
-
-    defaults.update(kwargs)
-
-    if "product" not in defaults:
-        from ..core.builders import create_product
-        defaults["product"] = create_product()
-
-    return Cycle.objects.create(**defaults)
 
 
 
@@ -50,8 +33,9 @@ def create_run(**kwargs):
 
     defaults.update(kwargs)
 
-    if "cycle" not in defaults:
-        defaults["cycle"] = create_cycle()
+    if "productversion" not in defaults:
+        from ..core.builders import create_productversion
+        defaults["productversion"] = create_productversion()
 
     return Run.objects.create(**defaults)
 

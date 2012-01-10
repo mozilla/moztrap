@@ -24,12 +24,11 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ...core.builders import create_user
+from ...core.builders import create_user, create_productversion
 from ...environments.builders import create_environments
 from ...library.builders import create_suite, create_caseversion
 from ..builders import (
-    create_cycle, create_run, create_runsuite, create_runcaseversion,
-    create_result)
+    create_run, create_runsuite, create_runcaseversion, create_result)
 
 
 
@@ -68,10 +67,10 @@ class RunTest(TestCase):
 
 
     def test_parent(self):
-        """A Run's ``parent`` property returns its Cycle."""
+        """A Run's ``parent`` property returns its ProductVersion."""
         r = create_run()
 
-        self.assertEqual(r.parent, r.cycle)
+        self.assertEqual(r.parent, r.productversion)
 
 
     def test_own_team(self):
@@ -87,7 +86,7 @@ class RunTest(TestCase):
         """If ``has_team`` is False, Run's team is its parent's."""
         r = create_run(has_team=False)
         u = create_user()
-        r.cycle.team.add(u)
+        r.productversion.team.add(u)
 
         self.assertEqual(list(r.team.all()), [u])
 
@@ -148,12 +147,13 @@ class RunTest(TestCase):
 
     def test_run_gets_parent_envs(self):
         """
-        A new test run inherits the environments of its cycle.
+        A new test run inherits the environments of its product version.
 
         """
-        c = create_cycle()
-        c.environments.add(*create_environments(["OS"], ["Windows"], ["Linux"]))
+        pv = create_productversion()
+        pv.environments.add(
+            *create_environments(["OS"], ["Windows"], ["Linux"]))
 
-        r = create_run(cycle=c)
+        r = create_run(productversion=pv)
 
-        self.assertEqual(set(r.environments.all()), set(c.environments.all()))
+        self.assertEqual(set(r.environments.all()), set(pv.environments.all()))

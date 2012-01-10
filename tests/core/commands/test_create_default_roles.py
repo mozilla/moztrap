@@ -96,7 +96,6 @@ Role 'Admin' created.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
-  Permission 'execution.manage_cycles' added.
   Permission 'execution.manage_runs' added.
   Permission 'execution.review_results' added.
   Permission 'environments.manage_environments' added.
@@ -107,7 +106,6 @@ Role 'Test Manager' created.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
-  Permission 'execution.manage_cycles' added.
   Permission 'execution.manage_runs' added.
   Permission 'execution.review_results' added.
   Permission 'environments.manage_environments' added.

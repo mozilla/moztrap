@@ -16,36 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Cycle admin.
+Tests for ProductVersion admin.
 
 """
 from ...admin import AdminTestCase
-
-from ..builders import create_cycle, create_run
-
+from ..builders import create_product, create_productversion
 
 
-class CycleAdminTest(AdminTestCase):
-    app_label = "execution"
-    model_name = "cycle"
+
+class RunAdminTest(AdminTestCase):
+    app_label = "core"
+    model_name = "productversion"
 
 
     def test_changelist(self):
-        """Cycle changelist page loads without error, contains name."""
-        create_cycle(name="Some Cycle")
+        """ProductVersion changelist page loads without error, contains name."""
+        create_productversion(product=create_product(name="Foo"), version="1.0")
 
-        self.get(self.changelist_url).mustcontain("Some Cycle")
+        self.get(self.changelist_url).mustcontain("Foo 1.0")
 
 
     def test_change_page(self):
-        """Cycle change page loads without error, contains name."""
-        s = create_cycle(name="Some Cycle")
+        """ProductVersion change page loads without error, contains name."""
+        pv = create_productversion(
+            product=create_product(name="Foo"), version="1.0")
 
-        self.get(self.change_url(s)).mustcontain("Some Cycle")
-
-
-    def test_change_page_run(self):
-        """Cycle change page includes Run inline."""
-        s = create_run(name="Some Run")
-
-        self.get(self.change_url(s.cycle)).mustcontain("Some Run")
+        self.get(self.change_url(pv)).mustcontain("Foo 1.0")

@@ -25,7 +25,7 @@ from model_utils import Choices
 
 from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
-from ..core.models import Product
+from ..core.models import Product, ProductVersion
 from ..environments.models import InheritsEnvironmentsModel
 from ..tags.models import Tag
 
@@ -33,7 +33,7 @@ from ..tags.models import Tag
 
 class Case(CCModel):
     """A test case for a given product."""
-    product = models.ForeignKey(Product, related_name="cases")
+    productversion = models.ForeignKey(ProductVersion, related_name="cases")
 
 
     def __unicode__(self):
@@ -90,7 +90,7 @@ class CaseVersion(CCModel, InheritsEnvironmentsModel):
 
     @property
     def parent(self):
-        return self.case.product
+        return self.case.productversion
 
 
 

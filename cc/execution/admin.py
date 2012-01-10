@@ -27,13 +27,6 @@ from . import models
 
 
 
-class RunInline(CCTabularInline):
-    model = models.Run
-    fields = ["name", "status", "start", "end", "exists"]
-    extra = 0
-
-
-
 class RunCaseVersionInline(CCTabularInline):
     model = models.RunCaseVersion
     extra = 0
@@ -66,21 +59,10 @@ class StepResultInline(CCTabularInline):
 
 
 
-class CycleAdmin(TeamModelAdmin):
-    fieldsets = [(None, {"fields": [
-                    "name",
-                    ("product", "status"),
-                    "description",
-                    ("start", "end"),
-                    ]})]
-    inlines = [RunInline]
-
-
-
 class RunAdmin(TeamModelAdmin):
     fieldsets = [(None, {"fields": [
                     "name",
-                    ("cycle", "status"),
+                    ("productversion", "status"),
                     "description",
                     ("start", "end"),
                     ]})]
@@ -101,7 +83,6 @@ class ResultAdmin(CCModelAdmin):
 
 
 
-admin.site.register(models.Cycle, CycleAdmin)
 admin.site.register(models.Run, RunAdmin)
 admin.site.register(
     models.RunCaseVersion, CCModelAdmin, inlines=[ResultInline])

@@ -24,16 +24,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from ..environments.models import Environment
-from .ccmodel import CCModel
+from .ccmodel import CCModel, TeamModel
 
 
 
 class Product(CCModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    team = models.ManyToManyField(User, blank=True)
 
-    environments = models.ManyToManyField(Environment, related_name="products")
+    team = models.ManyToManyField(User, blank=True)
 
 
     def __unicode__(self):
@@ -45,3 +44,39 @@ class Product(CCModel):
             ("manage_products", "Can add/edit/delete products."),
             ("manage_users", "Can add/edit/delete user accounts."),
             ]
+
+
+
+class ProductVersion(TeamModel):
+    product = models.ForeignKey(Product, related_name="versions")
+    version = models.CharField(max_length=100)
+    codename = models.CharField(max_length=100)
+    order = models.IntegerField(default=0, editable=False)
+
+    environments = models.ManyToManyField(
+        Environment, related_name="productversions")
+
+
+    def __unicode__(self):
+        return "%s %s" % (self.product, self.version)
+
+
+    class Meta:
+        ordering = ["order"]
+        unique_together = [("product", "version")]
+
+
+    @property
+    def parent(self):
+        return self.product
+
+
+    def clone(self, *args, **kwargs):
+        """
+        Clone ProductVersion, with ".next" version and "Cloned:" codename.
+
+        """
+        overrides = kwargs.setdefault("overrides", {})
+        overrides["version"] = "%s.next" % self.version
+        overrides["codename"] = "Cloned: %s" % self.codename
+        return super(ProductVersion, self).clone(*args, **kwargs)

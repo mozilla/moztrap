@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Models for test execution (cycles, runs, results).
+Models for test execution (runs, results).
 
 """
 import datetime
@@ -29,45 +29,9 @@ from django.contrib.auth.models import User
 from model_utils import Choices
 
 from ..core.ccmodel import CCModel, TeamModel, utcnow
-from ..core.models import Product
+from ..core.models import ProductVersion
 from ..environments.models import Environment, InheritsEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep
-
-
-
-class Cycle(TeamModel, InheritsEnvironmentsModel):
-    """A test cycle."""
-    STATUS = Choices("draft", "active", "disabled")
-
-    product = models.ForeignKey(Product, related_name="cycles")
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
-    start = models.DateField(default=datetime.date.today)
-    end = models.DateField(blank=True, null=True)
-
-
-    def __unicode__(self):
-        """Return unicode representation."""
-        return self.name
-
-
-    def clean(self):
-        """Validate instance field values."""
-        if self.end is not None and self.start > self.end:
-            raise ValidationError("Start date must be prior to end date.")
-
-
-    @property
-    def parent(self):
-        return self.product
-
-
-    def clone(self, *args, **kwargs):
-        """Clone this Cycle with default cascade behavior."""
-        kwargs.setdefault("cascade", ["runs"])
-        return super(Cycle, self).clone(*args, **kwargs)
 
 
 
@@ -75,7 +39,7 @@ class Run(TeamModel, InheritsEnvironmentsModel):
     """A test run."""
     STATUS = Choices("draft", "active", "disabled")
 
-    cycle = models.ForeignKey(Cycle, related_name="runs")
+    productversion = models.ForeignKey(ProductVersion, related_name="runs")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     status = models.CharField(
@@ -102,7 +66,7 @@ class Run(TeamModel, InheritsEnvironmentsModel):
 
     @property
     def parent(self):
-        return self.cycle
+        return self.productversion
 
 
     def clone(self, *args, **kwargs):
@@ -112,7 +76,7 @@ class Run(TeamModel, InheritsEnvironmentsModel):
 
 
     class Meta:
-        permissions = [("manage_cycles", "Can add/edit/delete test cycles.")]
+        permissions = [("manage_runs", "Can add/edit/delete test runs.")]
 
 
 
@@ -142,7 +106,6 @@ class RunCaseVersion(CCModel):
         ordering = ["order"]
         permissions = [
             ("execute", "Can run tests and report results."),
-            ("manage_runs", "Can add/edit/delete test runs."),
             ]
 
 

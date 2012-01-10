@@ -68,14 +68,14 @@ class TeamModelAdminTest(TestCase):
 
 
     @property
-    def Cycle(self):
-        from cc.execution.models import Cycle
-        return Cycle
+    def ProductVersion(self):
+        from cc.core.models import ProductVersion
+        return ProductVersion
 
 
     def test_fieldsets(self):
         """Sans declared fieldsets, puts team fields into Team fieldset."""
-        ma = self.TeamModelAdmin(self.Cycle, AdminSite())
+        ma = self.TeamModelAdmin(self.ProductVersion, AdminSite())
 
         fs = ma.get_fieldsets(None, None)
 

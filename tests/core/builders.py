@@ -49,3 +49,18 @@ def create_product(**kwargs):
     defaults.update(kwargs)
 
     return Product.objects.create(**defaults)
+
+
+def create_productversion(**kwargs):
+    from cc.core.models import ProductVersion
+
+    defaults = {
+        "version": "1",
+        }
+
+    defaults.update(kwargs)
+
+    if "product" not in defaults:
+        defaults["product"] = create_product()
+
+    return ProductVersion.objects.create(**defaults)
