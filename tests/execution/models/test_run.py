@@ -131,7 +131,7 @@ class RunTest(TestCase):
         self.assertEqual(new.runcaseversions.get().results.count(), 0)
 
 
-    def test_run_gets_parent_envs(self):
+    def test_gets_productversion_envs(self):
         """
         A new test run inherits the environments of its product version.
 
@@ -144,7 +144,7 @@ class RunTest(TestCase):
         self.assertEqual(set(r.environments.all()), set(pv.environments.all()))
 
 
-    def test_run_inherits_env_removal(self):
+    def test_inherits_env_removal(self):
         """
         Removing an env from a productversion cascades to run.
 

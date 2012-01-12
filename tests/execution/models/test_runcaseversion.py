@@ -73,3 +73,31 @@ class RunCaseVersionTest(TestCase):
         rcv.save()
 
         self.assertEqual(rcv.environments.count(), 0)
+
+
+    def test_inherits_env_removal_from_run(self):
+        """RCV inherits env removal from test run."""
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        r = F.RunFactory(environments=envs)
+        cv = F.CaseVersionFactory(environments=envs)
+        rcv = F.RunCaseVersionFactory(run=r, caseversion=cv)
+
+        r.remove_envs(envs[0])
+
+        self.assertEqual(set(rcv.environments.all()), set(envs[1:]))
+
+
+    def test_does_not_inherit_env_addition_on_run(self):
+        """RCV does not inherit env addition on test run."""
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        r = F.RunFactory(environments=envs[1:])
+        cv = F.CaseVersionFactory(environments=envs)
+        rcv = F.RunCaseVersionFactory(run=r, caseversion=cv)
+
+        r.add_envs(envs[0])
+
+        self.assertEqual(set(rcv.environments.all()), set(envs[1:]))
+
+
+    def test_inherits_env_removal_from_productversion(self):
+        """RCV inherits env removal from product version."""

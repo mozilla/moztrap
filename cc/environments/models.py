@@ -172,7 +172,7 @@ class HasEnvironmentsModel(models.Model):
         Get ``cascade_envs_to`` for this instance alone.
 
         """
-        return type(self).cascade_envs_to(self, adding)
+        return self.cascade_envs_to([self], adding)
 
 
     @classmethod

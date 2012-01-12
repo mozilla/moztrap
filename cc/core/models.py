@@ -68,18 +68,19 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
         return self.product
 
 
-    def cascade_envs_to(self, adding):
+    @classmethod
+    def cascade_envs_to(cls, objs, adding):
+        Run = cls.runs.related.model
+        CaseVersion = cls.caseversions.related.model
+
+        runs = Run.objects.filter(productversion__in=objs)
+        caseversions = CaseVersion.objects.filter(productversion__in=objs)
+
         if adding:
-            return {
-                self.runs.model: self.runs.filter(
-                    status=self.runs.model.STATUS.draft),
-                self.caseversions.model: self.caseversions.filter(
-                    envs_narrowed=False)
-                }
-        return {
-            self.runs.model: self.runs.all(),
-            self.caseversions.model: self.caseversions.all()
-            }
+            runs = runs.filter(status=Run.STATUS.draft)
+            caseversions = caseversions.filter(envs_narrowed=False)
+
+        return {Run: runs, CaseVersion: caseversions}
 
 
     def clone(self, *args, **kwargs):

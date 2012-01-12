@@ -64,9 +64,20 @@ class Run(TeamModel, HasEnvironmentsModel):
             raise ValidationError("Start date must be prior to end date.")
 
 
+    class Meta:
+        permissions = [("manage_runs", "Can add/edit/delete test runs.")]
+
+
     @property
     def parent(self):
         return self.productversion
+
+
+    @classmethod
+    def cascade_envs_to(cls, objs, adding):
+        if adding:
+            return {}
+        return {RunCaseVersion: RunCaseVersion.objects.filter(run__in=objs)}
 
 
     def clone(self, *args, **kwargs):
@@ -75,20 +86,13 @@ class Run(TeamModel, HasEnvironmentsModel):
         return super(Run, self).clone(*args, **kwargs)
 
 
-    class Meta:
-        permissions = [("manage_runs", "Can add/edit/delete test runs.")]
 
 
-
-
-class RunCaseVersion(CCModel):
+class RunCaseVersion(HasEnvironmentsModel, CCModel):
     """An ordered association between a Run and a CaseVersion."""
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
-
-    environments = models.ManyToManyField(
-        Environment, related_name="runcaseversions")
 
 
     def __unicode__(self):
