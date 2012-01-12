@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Model F.
+Model factories.
 
 """
 import itertools
@@ -107,9 +107,11 @@ class CaseFactory(factory.Factory):
 class SuiteCaseFactory(factory.Factory):
     FACTORY_FOR = library_models.SuiteCase
 
-    # @@@ need to ensure suite and case have same Product
     suite = factory.SubFactory(SuiteFactory)
-    case = factory.SubFactory(CaseFactory)
+    case = factory.SubFactory(
+        CaseFactory,
+        product=factory.LazyContainerAttribute(
+            lambda obj, containers: containers[0].suite.product))
 
 
 
@@ -117,9 +119,11 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = library_models.CaseVersion
 
     name = "Test Case Version"
-    # @@@ need to to ensure productversion and case have same product
     productversion = factory.SubFactory(ProductVersionFactory)
-    case = factory.SubFactory(CaseFactory)
+    case = factory.SubFactory(
+        CaseFactory,
+        product=factory.LazyContainerAttribute(
+            lambda obj, containers: containers[0].productversion.product))
 
 
     @factory.lazy_attribute
@@ -262,18 +266,22 @@ class RunFactory(EnvironmentsFactoryMixin, factory.Factory):
 class RunCaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = execution_models.RunCaseVersion
 
-    # @@@ need to ensure same Product for Run and Case
     run = factory.SubFactory(RunFactory)
-    caseversion = factory.SubFactory(CaseVersionFactory)
+    caseversion = factory.SubFactory(
+        CaseVersionFactory,
+        productversion=factory.LazyContainerAttribute(
+            lambda obj, containers: containers[0].run.productversion))
 
 
 
 class RunSuiteFactory(factory.Factory):
     FACTORY_FOR = execution_models.RunSuite
 
-    # @@@ need to ensure same Product for Run and Suite
     run = factory.SubFactory(RunFactory)
-    suite = factory.SubFactory(SuiteFactory)
+    suite = factory.SubFactory(
+        SuiteFactory,
+        product=factory.LazyContainerAttribute(
+            lambda obj, containers: containers[0].run.productversion.product))
 
 
 
