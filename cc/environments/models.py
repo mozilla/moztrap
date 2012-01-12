@@ -167,17 +167,11 @@ class HasEnvironmentsModel(models.Model):
         return {}
 
 
-    def _cascade_envs_to(self, adding):
-        """
-        Get ``cascade_envs_to`` for this instance alone.
-
-        """
-        return self.cascade_envs_to([self], adding)
-
-
     @classmethod
     def _remove_envs(cls, objs, envs):
         """Remove one or environments from one or more objects of this class."""
+        for model, instances in cls.cascade_envs_to(objs, adding=False).items():
+            model._remove_envs(instances, envs)
         m2m_reverse_name = cls.environments.field.related_query_name()
         cls.environments.through._base_manager.filter(
             **{
@@ -185,20 +179,18 @@ class HasEnvironmentsModel(models.Model):
                 "environment__in": envs
                 }
               ).delete()
-        # @@@ cascade
 
 
     def remove_envs(self, *envs):
         """Remove one or more environments from this object's profile."""
-        for model, instances in self._cascade_envs_to(adding=False).items():
-            model._remove_envs(instances, envs)
-        self.environments.remove(*envs)
+        self._remove_envs([self], envs)
 
 
     def add_envs(self, *envs):
         """Add one or more environments to this object's profile."""
         # @@@ optimize this to reduce queries once we have bulk insert in 1.4
         self.environments.add(*envs)
-        for model, instances in self._cascade_envs_to(adding=True).items():
+        for model, instances in self.cascade_envs_to(
+                [self], adding=True).items():
             for instance in instances:
                 instance.add_envs(*envs)

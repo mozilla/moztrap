@@ -101,3 +101,11 @@ class RunCaseVersionTest(TestCase):
 
     def test_inherits_env_removal_from_productversion(self):
         """RCV inherits env removal from product version."""
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory(environments=envs)
+        cv = F.CaseVersionFactory(environments=envs)
+        rcv = F.RunCaseVersionFactory(run__productversion=pv, caseversion=cv)
+
+        pv.remove_envs(envs[0])
+
+        self.assertEqual(set(rcv.environments.all()), set(envs[1:]))
