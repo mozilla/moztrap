@@ -35,6 +35,27 @@ from cc.tags import models as tag_models
 
 
 
+class EnvironmentsFactoryMixin(object):
+    """
+    Mixin for Factory subclasses for models with m2m to environments.
+
+    Allows additional ``environments`` kwarg (to ``create`` only, as m2ms can't
+    be populated on an unsaved object) with list of environments, or dictionary
+    in the format expected by ``EnvironmentFactory.create_full_set``
+
+    """
+    @classmethod
+    def create(cls, **kwargs):
+        envs = kwargs.pop("environments", None)
+        obj = super(EnvironmentsFactoryMixin, cls).create(**kwargs)
+        if envs is not None:
+            if isinstance(envs, dict):
+                envs = EnvironmentFactory.create_full_set(envs)
+            obj.environments.add(*envs)
+        return obj
+
+
+
 class UserFactory(factory.Factory):
     FACTORY_FOR = User
 
@@ -60,7 +81,7 @@ class ProductFactory(factory.Factory):
 
 
 
-class ProductVersionFactory(factory.Factory):
+class ProductVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = core_models.ProductVersion
 
     version = "1.0"
@@ -92,7 +113,7 @@ class SuiteCaseFactory(factory.Factory):
 
 
 
-class CaseVersionFactory(factory.Factory):
+class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = library_models.CaseVersion
 
     name = "Test Case Version"
@@ -228,7 +249,7 @@ class EnvironmentFactory(factory.Factory):
 
 
 
-class RunFactory(factory.Factory):
+class RunFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = execution_models.Run
 
     name = "Test Run"
@@ -236,7 +257,7 @@ class RunFactory(factory.Factory):
 
 
 
-class RunCaseVersionFactory(factory.Factory):
+class RunCaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = execution_models.RunCaseVersion
 
     # @@@ need to ensure same Product for Run and Case

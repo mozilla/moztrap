@@ -61,12 +61,9 @@ class RunCaseVersionTest(TestCase):
             ["OS X", "Chrome"],
             )
 
-        r = F.RunFactory.create()
-        r.environments.add(*envs[:2])
-        cv = F.CaseVersionFactory.create()
-        cv.environments.add(*envs[1:])
-
-        rcv = F.RunCaseVersionFactory.create(run=r, caseversion=cv)
+        rcv = F.RunCaseVersionFactory.create(
+            run__environments=envs[:2],
+            caseversion__environments=envs[1:])
 
         self.assertEqual(rcv.environments.get(), envs[1])
 

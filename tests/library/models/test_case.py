@@ -91,10 +91,7 @@ class CaseVersionTest(TestCase):
         A new test case inherits the environments of its product version.
 
         """
-        pv = F.ProductVersionFactory()
-        pv.environments.add(
-            *F.EnvironmentFactory.create_full_set(
-                {"OS": ["Windows", "Linux"]}))
+        pv = F.ProductVersionFactory(environments={"OS": ["Windows", "Linux"]})
         cv = F.CaseVersionFactory(case__productversion=pv)
 
         self.assertEqual(set(cv.environments.all()), set(pv.environments.all()))

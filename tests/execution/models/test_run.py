@@ -136,10 +136,8 @@ class RunTest(TestCase):
         A new test run inherits the environments of its product version.
 
         """
-        pv = F.ProductVersionFactory.create()
-        pv.environments.add(
-            *F.EnvironmentFactory.create_full_set(
-                {"OS": ["Windows", "Linux"]}))
+        pv = F.ProductVersionFactory.create(
+            environments={"OS": ["Windows", "Linux"]})
 
         r = F.RunFactory.create(productversion=pv)
 
