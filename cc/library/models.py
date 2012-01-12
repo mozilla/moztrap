@@ -95,6 +95,14 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
         return self.productversion
 
 
+    @classmethod
+    def cascade_envs_to(cls, objs, adding):
+        RunCaseVersion = cls.runcaseversions.related.model
+        if adding:
+            return {}
+        return {RunCaseVersion: RunCaseVersion.objects.filter(run__in=objs)}
+
+
 
 class CaseAttachment(Attachment):
     caseversion = models.ForeignKey(CaseVersion, related_name="attachments")
