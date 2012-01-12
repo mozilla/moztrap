@@ -21,16 +21,19 @@
 
     <div class="controls">
       {% if request.user|can_edit_case:case %}
-        <a href="{% url manage_testcase_edit case_id=case.id %}" title="edit">edit</a>
+        {% url manage_testcase_edit case_id=case.id as testcase_edit_url %}
+        {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=case.name %}
         {% if case.status.DRAFT %}
           {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
         {% endif %}
       {% endif %}
+
       {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
-        <button title="clone" type="submit" name="action-clone" value="{{ case.testCaseId }}">clone</button>
+        {% include "lists/controls/_clone.html" with clone_id=case.testCaseId clone_name=case.name %}
       {% endif %}
+
       {% if request.user|can_edit_case:case and case.status.DRAFT %}
-        <button title="delete" type="submit" name="action-delete" value="{{ case.testCaseId }}">delete</button>
+        {% include "lists/controls/_delete.html" with delete_id=case.testCaseId delete_name=case.name %}
       {% endif %}
     </div>
 

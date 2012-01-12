@@ -10,17 +10,26 @@
 
     <div class="controls">
       {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
-        <a href="{% url manage_testsuite_edit suite_id=suite.id %}" title="edit">edit</a>
+
+        {% url manage_testsuite_edit suite_id=suite.id as testsuite_edit_url %}
+        {% include "lists/controls/_edit.html" with edit_url=testsuite_edit_url edit_name=suite.name %}
+
         {% if suite.status.DRAFT %}
           {% include "manage/_narrow_env_link.html" with obj_type='testsuite' obj_id=suite.id %}
         {% endif %}
-        <button title="clone" type="submit" name="action-clone" value="{{ suite.id }}">clone</button>
+
+        {% include "lists/controls/_clone.html" with clone_id=suite.id clone_name=suite.name %}
+
         {% if suite.status.DRAFT %}
-        <button title="delete" type="submit" name="action-delete" value="{{ suite.id }}">delete</button>
+          {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
         {% endif %}
+
         {# @@@ requires modifications to case form <a href="#" title="create new test case in this suite">create new test case in this suite</a> #}
       {% endif %}
-      <a href="{% url manage_testcases %}?filter-suite={{ suite.id }}" class="drill-link" title="manage all cases in this suite">manage all cases in this suite</a>
+
+      {% url manage_testcases as testcases_url %}
+      {% include "lists/controls/_drill.html" with drill_url=testcases_url|add:"?filter-suite="|add:suite.id drill_action="manage" drill_children="cases" drill_name=suite.name %}
+
     </div>
   </header>
 
