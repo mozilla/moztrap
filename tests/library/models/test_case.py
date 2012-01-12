@@ -98,6 +98,48 @@ class CaseVersionTest(TestCase):
         self.assertEqual(cv.envs_narrowed, False)
 
 
+    def test_caseversion_inherits_env_removal(self):
+        """
+        Removing an env from a productversion cascades to caseversion.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs)
+        cv = F.CaseVersionFactory.create(productversion=pv)
+
+        pv.remove_envs(envs[0])
+
+        self.assertEqual(set(cv.environments.all()), set(envs[1:]))
+
+
+    def test_non_narrowed_caseversion_inherits_env_addition(self):
+        """
+        Adding an env to productversion cascades to a non-narrowed caseversion.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs[1:])
+        cv = F.CaseVersionFactory.create(productversion=pv, envs_narrowed=False)
+
+        pv.add_envs(envs[0])
+
+        self.assertEqual(set(cv.environments.all()), set(envs))
+
+
+    def test_narrowed_caseversion_does_not_inherit_env_addition(self):
+        """
+        Adding env to productversion does not cascade to narrowed caseversion.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs[1:])
+        cv = F.CaseVersionFactory.create(productversion=pv, envs_narrowed=True)
+
+        pv.add_envs(envs[0])
+
+        self.assertEqual(set(cv.environments.all()), set(envs[1:]))
+
+
 
 class CaseStepTest(TestCase):
     def test_unicode(self):
