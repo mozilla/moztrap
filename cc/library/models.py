@@ -95,6 +95,18 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
         return self.productversion
 
 
+    def remove_envs(self, *envs):
+        """
+        Remove one or more environments from this caseversion's profile.
+
+        Also sets ``envs_narrowed`` flag.
+
+        """
+        super(CaseVersion, self).remove_envs(*envs)
+        self.envs_narrowed = True
+        self.save()
+
+
     @classmethod
     def cascade_envs_to(cls, objs, adding):
         RunCaseVersion = cls.runcaseversions.related.model

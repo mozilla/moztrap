@@ -22,6 +22,7 @@ Tests for Case and related models (CaseVersion, CaseStep).
 from django.test import TestCase
 
 from ... import factories as F
+from ...utils import refresh
 
 
 
@@ -87,22 +88,16 @@ class CaseVersionTest(TestCase):
 
 
     def test_caseversion_gets_productversion_envs(self):
-        """
-        A new test case version inherits environments of its product version.
-
-        """
+        """A new caseversion inherits environments of its product version."""
         pv = F.ProductVersionFactory(environments={"OS": ["Windows", "Linux"]})
         cv = F.CaseVersionFactory(productversion=pv)
 
         self.assertEqual(set(cv.environments.all()), set(pv.environments.all()))
-        self.assertEqual(cv.envs_narrowed, False)
+        self.assertFalse(cv.envs_narrowed)
 
 
     def test_caseversion_inherits_env_removal(self):
-        """
-        Removing an env from a productversion cascades to caseversion.
-
-        """
+        """Removing an env from a productversion cascades to caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs)
         cv = F.CaseVersionFactory.create(productversion=pv)
@@ -110,13 +105,11 @@ class CaseVersionTest(TestCase):
         pv.remove_envs(envs[0])
 
         self.assertEqual(set(cv.environments.all()), set(envs[1:]))
+        self.assertFalse(cv.envs_narrowed)
 
 
     def test_non_narrowed_caseversion_inherits_env_addition(self):
-        """
-        Adding an env to productversion cascades to a non-narrowed caseversion.
-
-        """
+        """Adding env to productversion cascades to non-narrowed caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
         cv = F.CaseVersionFactory.create(productversion=pv, envs_narrowed=False)
@@ -127,10 +120,7 @@ class CaseVersionTest(TestCase):
 
 
     def test_narrowed_caseversion_does_not_inherit_env_addition(self):
-        """
-        Adding env to productversion does not cascade to narrowed caseversion.
-
-        """
+        """Adding env to prodversion doesn't cascade to narrowed caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
         cv = F.CaseVersionFactory.create(productversion=pv, envs_narrowed=True)
@@ -138,6 +128,18 @@ class CaseVersionTest(TestCase):
         pv.add_envs(envs[0])
 
         self.assertEqual(set(cv.environments.all()), set(envs[1:]))
+
+
+    def test_direct_caseversion_env_narrowing_sets_envs_narrowed(self):
+        """Removing an env from a caseversion directly sets envs_narrowed."""
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        cv = F.CaseVersionFactory.create(environments=envs)
+
+        self.assertFalse(cv.envs_narrowed)
+
+        cv.remove_envs(envs[0])
+
+        self.assertTrue(refresh(cv).envs_narrowed)
 
 
 

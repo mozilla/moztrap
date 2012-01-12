@@ -59,10 +59,7 @@ class ProductVersionTest(TestCase):
 
 
     def test_clone(self):
-        """
-        Cloning ProdVersion adds ".next" to version and "Cloned:" to codename.
-
-        """
+        """Cloning PV adds ".next" to version, "Cloned:" to codename."""
         c = F.ProductVersionFactory.create(
             version="1.0", codename="Foo")
 
@@ -75,10 +72,7 @@ class ProductVersionTest(TestCase):
 
 
     def test_clone_no_runs(self):
-        """
-        Cloning a ProductVersion does not clone runs.
-
-        """
+        """Cloning a ProductVersion does not clone runs."""
         run = F.RunFactory.create()
 
         new = run.productversion.clone()
@@ -87,10 +81,7 @@ class ProductVersionTest(TestCase):
 
 
     def test_clone_no_cases(self):
-        """
-        Cloning a ProductVersion does not clone test case versions.
-
-        """
+        """Cloning a ProductVersion does not clone test case versions."""
         cv = F.CaseVersionFactory()
 
         new = cv.productversion.clone()

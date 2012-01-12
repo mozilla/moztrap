@@ -82,10 +82,7 @@ class RunTest(TestCase):
 
 
     def test_clone(self):
-        """
-        Cloning a run returns a new, distinct Run with "Cloned: " name.
-
-        """
+        """Cloning a run returns a new, distinct Run with "Cloned: " name."""
         r = F.RunFactory.create(name="A Run")
 
         new = r.clone()
@@ -96,10 +93,7 @@ class RunTest(TestCase):
 
 
     def test_clone_included_suite(self):
-        """
-        Cloning a run clones member RunSuites.
-
-        """
+        """Cloning a run clones member RunSuites."""
         rs = F.RunSuiteFactory.create()
 
         new = rs.run.clone()
@@ -108,10 +102,7 @@ class RunTest(TestCase):
 
 
     def test_clone_included_caseversion(self):
-        """
-        Cloning a run clones all member RunCaseVersions.
-
-        """
+        """Cloning a run clones all member RunCaseVersions."""
         rcv = F.RunCaseVersionFactory.create()
 
         new = rcv.run.clone()
@@ -120,10 +111,7 @@ class RunTest(TestCase):
 
 
     def test_clone_no_results(self):
-        """
-        Cloning a run does not clone any results.
-
-        """
+        """Cloning a run does not clone any results."""
         r = F.ResultFactory.create()
 
         new = r.runcaseversion.run.clone()
@@ -132,10 +120,7 @@ class RunTest(TestCase):
 
 
     def test_gets_productversion_envs(self):
-        """
-        A new test run inherits the environments of its product version.
-
-        """
+        """A new test run inherits the environments of its product version."""
         pv = F.ProductVersionFactory.create(
             environments={"OS": ["Windows", "Linux"]})
 
@@ -145,10 +130,7 @@ class RunTest(TestCase):
 
 
     def test_inherits_env_removal(self):
-        """
-        Removing an env from a productversion cascades to run.
-
-        """
+        """Removing an env from a productversion cascades to run."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs)
         run = F.RunFactory.create(productversion=pv)
@@ -159,10 +141,7 @@ class RunTest(TestCase):
 
 
     def test_draft_run_inherits_env_addition(self):
-        """
-        Adding an env to a productversion cascades to a draft run.
-
-        """
+        """Adding an env to a productversion cascades to a draft run."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
         run = F.RunFactory.create(productversion=pv, status="draft")
@@ -173,10 +152,7 @@ class RunTest(TestCase):
 
 
     def test_active_run_does_not_inherit_env_addition(self):
-        """
-        Adding an env to a productversion does not cascade to an active run.
-
-        """
+        """Adding env to a productversion does not cascade to an active run."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
         run = F.RunFactory.create(productversion=pv, status="active")
