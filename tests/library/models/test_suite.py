@@ -21,25 +21,19 @@ Tests for Suite model.
 """
 from django.test import TestCase
 
-from ..builders import create_suite, create_suitecase
+from ... import factories as F
 
 
 
 class SuiteTest(TestCase):
-    @property
-    def Suite(self):
-        from cc.library.models import Suite
-        return Suite
-
-
     def test_unicode(self):
         """Unicode representation is name of Suite."""
-        self.assertEqual(unicode(create_suite(name="Foo")), u"Foo")
+        self.assertEqual(unicode(F.SuiteFactory(name="Foo")), u"Foo")
 
 
     def test_clone_cases(self):
         """Cloning a suite clones its member SuiteCases."""
-        sc = create_suitecase()
+        sc = F.SuiteCaseFactory()
 
         new = sc.suite.clone()
 

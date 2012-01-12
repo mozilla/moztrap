@@ -23,23 +23,20 @@ from django.test import TestCase
 
 from django.contrib.admin.sites import AdminSite
 
-from ..builders import create_product, create_user
+from ... import factories as F
+
+from cc.core.ccadmin import CCModelForm, TeamModelAdmin
+from cc.core.models import ProductVersion
 
 
 
 class CCModelFormTest(TestCase):
     """Tests of CCModelForm."""
-    @property
-    def CCModelForm(self):
-        from cc.core.ccadmin import CCModelForm
-        return CCModelForm
-
-
     def test_commit(self):
         """CCModelForm passes in user when saving model with commit=True."""
-        u = create_user()
-        p = create_product(name="Firefox")
-        f = self.CCModelForm(instance=p, data={"name": "Fennec"})
+        u = F.UserFactory.create()
+        p = F.ProductFactory.create(name="Firefox")
+        f = CCModelForm(instance=p, data={"name": "Fennec"})
 
         p = f.save(commit=True, user=u)
 
@@ -48,9 +45,9 @@ class CCModelFormTest(TestCase):
 
     def test_no_commit(self):
         """CCModelForm patches save() so user is tracked w/ commit=False."""
-        u = create_user()
-        p = create_product(name="Firefox")
-        f = self.CCModelForm(instance=p, data={"name": "Fennec"})
+        u = F.UserFactory.create()
+        p = F.ProductFactory.create(name="Firefox")
+        f = CCModelForm(instance=p, data={"name": "Fennec"})
 
         p = f.save(commit=False, user=u)
         p.save()
@@ -61,21 +58,9 @@ class CCModelFormTest(TestCase):
 
 class TeamModelAdminTest(TestCase):
     """Tests of TeamModelAdmin."""
-    @property
-    def TeamModelAdmin(self):
-        from cc.core.ccadmin import TeamModelAdmin
-        return TeamModelAdmin
-
-
-    @property
-    def ProductVersion(self):
-        from cc.core.models import ProductVersion
-        return ProductVersion
-
-
     def test_fieldsets(self):
         """Sans declared fieldsets, puts team fields into Team fieldset."""
-        ma = self.TeamModelAdmin(self.ProductVersion, AdminSite())
+        ma = TeamModelAdmin(ProductVersion, AdminSite())
 
         fs = ma.get_fieldsets(None, None)
 

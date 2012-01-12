@@ -20,8 +20,7 @@ Tests for Run admin.
 
 """
 from ...admin import AdminTestCase
-from ...library.builders import create_suite, create_caseversion
-from ..builders import create_run, create_runsuite, create_runcaseversion
+from ... import factories as F
 
 
 
@@ -32,31 +31,29 @@ class RunAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Run changelist page loads without error, contains name."""
-        create_run(name="Some Run")
+        F.RunFactory.create(name="Some Run")
 
         self.get(self.changelist_url).mustcontain("Some Run")
 
 
     def test_change_page(self):
         """Run change page loads without error, contains name."""
-        r = create_run(name="Some Run")
+        r = F.RunFactory.create(name="Some Run")
 
         self.get(self.change_url(r)).mustcontain("Some Run")
 
 
     def test_change_page_suite(self):
         """Run change page includes RunSuite inline."""
-        r = create_run(name="Some Run")
-        s = create_suite(name="A Suite")
-        create_runsuite(run=r, suite=s)
+        rs = F.RunSuiteFactory.create(
+            run__name="Some Run", suite__name="A Suite")
 
-        self.get(self.change_url(r)).mustcontain("A Suite")
+        self.get(self.change_url(rs.run)).mustcontain("A Suite")
 
 
     def test_change_page_caseversion(self):
         """Run change page includes RunCaseVersion inline."""
-        r = create_run(name="Some Run")
-        cv = create_caseversion(name="A Test Case Version")
-        create_runcaseversion(run=r, caseversion=cv)
+        rcv = F.RunCaseVersionFactory.create(
+            run__name="Some Run", caseversion__name="A Test Case Version")
 
-        self.get(self.change_url(r)).mustcontain("A Test Case Version")
+        self.get(self.change_url(rcv.run)).mustcontain("A Test Case Version")

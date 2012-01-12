@@ -21,7 +21,7 @@ Tests for Tag admin.
 """
 from ...admin import AdminTestCase
 
-from ..builders import create_tag
+from ... import factories as F
 
 
 
@@ -32,13 +32,13 @@ class TagAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Tag changelist page loads without error, contains name."""
-        create_tag(name="security")
+        F.TagFactory.create(name="security")
 
         self.get(self.changelist_url).mustcontain("security")
 
 
     def test_change_page(self):
         """Tag change page loads without error, contains name."""
-        p = create_tag(name="security")
+        p = F.TagFactory.create(name="security")
 
         self.get(self.change_url(p)).mustcontain("security")

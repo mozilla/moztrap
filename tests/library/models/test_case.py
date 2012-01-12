@@ -21,31 +21,23 @@ Tests for Case and related models (CaseVersion, CaseStep).
 """
 from django.test import TestCase
 
-from ...core.builders import create_productversion
-from ...environments.builders import create_environments
-from ...tags.builders import create_tag
-from ..builders import (
-    create_case, create_caseversion, create_casestep, create_caseattachment)
+from ... import factories as F
 
 
 
 class CaseTest(TestCase):
-    @property
-    def Case(self):
-        from cc.library.models import Case
-        return Case
-
-
     def test_unicode(self):
-        c = create_case()
+        c = F.CaseFactory()
 
         self.assertEqual(unicode(c), u"case #%s" % c.id)
 
 
     def test_clone_versions(self):
         """Cloning a case clones its latest version only."""
-        cv1 = create_caseversion(latest=False, number=1, name="CV 1")
-        create_caseversion(latest=True, number=2, name="CV 2", case=cv1.case)
+        cv1 = F.CaseVersionFactory.create(
+            latest=False, number=1, name="CV 1")
+        F.CaseVersionFactory.create(
+            latest=True, number=2, name="CV 2", case=cv1.case)
 
         new = cv1.case.clone()
 
@@ -54,21 +46,15 @@ class CaseTest(TestCase):
 
 
 class CaseVersionTest(TestCase):
-    @property
-    def CaseVersion(self):
-        from cc.library.models import CaseVersion
-        return CaseVersion
-
-
     def test_unicode(self):
-        c = create_caseversion(name="Foo")
+        c = F.CaseVersionFactory(name="Foo")
 
         self.assertEqual(unicode(c), u"Foo")
 
 
     def test_clone_steps(self):
         """Cloning a caseversion clones its steps."""
-        cs = create_casestep()
+        cs = F.CaseStepFactory.create()
 
         new = cs.caseversion.clone()
 
@@ -79,7 +65,7 @@ class CaseVersionTest(TestCase):
 
     def test_clone_attachments(self):
         """Cloning a caseversion clones its attachments."""
-        ca = create_caseattachment()
+        ca = F.CaseAttachmentFactory.create()
 
         new = ca.caseversion.clone()
 
@@ -91,8 +77,8 @@ class CaseVersionTest(TestCase):
 
     def test_clone_tags(self):
         """Cloning a caseversion clones its tag relationships."""
-        tag = create_tag()
-        cv = create_caseversion()
+        tag = F.TagFactory.create()
+        cv = F.CaseVersionFactory.create()
         cv.tags.add(tag)
 
         new = cv.clone()
@@ -100,16 +86,16 @@ class CaseVersionTest(TestCase):
         self.assertEqual(new.tags.get(), tag)
 
 
-    def test_caseversion_gets_product_envs(self):
+    def test_caseversion_gets_productversion_envs(self):
         """
-        A new test case inherits the environments of its product.
+        A new test case inherits the environments of its product version.
 
         """
-        pv = create_productversion()
+        pv = F.ProductVersionFactory()
         pv.environments.add(
-            *create_environments(["OS"], ["Windows"], ["Linux"]))
-
-        cv = create_caseversion(case=create_case(productversion=pv))
+            *F.EnvironmentFactory.create_full_set(
+                {"OS": ["Windows", "Linux"]}))
+        cv = F.CaseVersionFactory(case__productversion=pv)
 
         self.assertEqual(set(cv.environments.all()), set(pv.environments.all()))
         self.assertEqual(cv.envs_narrowed, False)
@@ -117,13 +103,7 @@ class CaseVersionTest(TestCase):
 
 
 class CaseStepTest(TestCase):
-    @property
-    def CaseStep(self):
-        from cc.library.models import CaseStep
-        return CaseStep
-
-
     def test_unicode(self):
-        c = create_casestep(number=1)
+        c = F.CaseStepFactory(number=1)
 
         self.assertEqual(unicode(c), u"step #1")

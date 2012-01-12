@@ -21,16 +21,12 @@ Tests for Profile model.
 """
 from django.test import TestCase
 
+from ... import factories as F
+
 
 
 class ProfileTest(TestCase):
-    @property
-    def Profile(self):
-        from cc.environments.models import Profile
-        return Profile
-
-
     def test_unicode(self):
-        p = self.Profile(name="Browser Testing Environments")
+        p = F.ProfileFactory(name="Browser Testing Environments")
 
         self.assertEqual(unicode(p), u"Browser Testing Environments")

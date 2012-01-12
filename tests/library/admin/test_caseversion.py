@@ -22,10 +22,8 @@ Tests for CaseVersion admin.
 from mock import patch
 
 from ...admin import AdminTestCase
-from ...tags.builders import create_tag
 from ...utils import refresh
-from ..builders import (
-    create_caseversion, create_casestep, create_case, create_caseattachment)
+from ... import factories as F
 
 
 
@@ -36,21 +34,21 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """CaseVersion changelist page loads without error, contains name."""
-        create_caseversion(name="Can load a website")
+        F.CaseVersionFactory.create(name="Can load a website")
 
         self.get(self.changelist_url).mustcontain("Can load a website")
 
 
     def test_change_page(self):
         """CaseVersion change page loads without error, contains name."""
-        p = create_caseversion(name="Can load a website")
+        p = F.CaseVersionFactory.create(name="Can load a website")
 
         self.get(self.change_url(p)).mustcontain("Can load a website")
 
 
     def test_change_page_step(self):
         """CaseVersion change page includes CaseStep inline."""
-        s = create_casestep(instruction="Type a URL in the address bar")
+        s = F.CaseStepFactory.create(instruction="Type a URL in the address bar")
 
         self.get(self.change_url(s.caseversion)).mustcontain(
             "Type a URL in the address bar")
@@ -58,15 +56,15 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_change_page_attachment(self):
         """CaseVersion change page includes CaseAttachment inline."""
-        a = create_caseattachment()
+        a = F.CaseAttachmentFactory.create()
 
         self.get(self.change_url(a.caseversion)).mustcontain("attachments/")
 
 
     def test_change_page_tag(self):
         """CaseVersion change page includes CaseTag inline."""
-        t = create_tag(name="some tag")
-        c = create_caseversion()
+        t = F.TagFactory.create(name="some tag")
+        c = F.CaseVersionFactory.create()
         c.tags.add(t)
 
         self.get(self.change_url(c)).mustcontain("some tag")
@@ -74,7 +72,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_add_step_with_caseversion(self):
         """Can add inline step along with new caseversion."""
-        case = create_case()
+        case = F.CaseFactory.create()
 
         # patching extra avoids need for JS to add step
         with patch("cc.library.admin.CaseStepInline.extra", 1):
@@ -94,7 +92,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_add_step_tracks_user(self):
         """Adding a CaseStep via inline tracks created-by user."""
-        cv = create_caseversion()
+        cv = F.CaseVersionFactory.create()
 
         # patching extra avoids need for JS to submit new step
         with patch("cc.library.admin.CaseStepInline.extra", 1):
@@ -112,7 +110,8 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_change_step_tracks_user(self):
         """Modifying a CaseStep via inline tracks modified-by user."""
-        s = create_casestep(instruction="Type a URL in the address bar")
+        s = F.CaseStepFactory.create(
+            instruction="Type a URL in the address bar")
 
         form = self.get(self.change_url(s.caseversion)).forms[0]
         form["steps-0-instruction"] = "A new instruction"
@@ -124,7 +123,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_delete_step_tracks_user(self):
         """Deleting a CaseStep via inline tracks modified-by user."""
-        s = create_casestep()
+        s = F.CaseStepFactory.create()
 
         form = self.get(self.change_url(s.caseversion)).forms[0]
         form["steps-0-DELETE"] = True

@@ -7,6 +7,7 @@ coverage==3.5.1
 WebTest==1.3.3
 django-webtest==1.4.3
 WebOb==1.2b2
+factory_boy==1.0.4.moz1
 Fabric==1.3.2
 pycrypto==2.4.1
 ssh==1.7.11

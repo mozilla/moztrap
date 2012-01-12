@@ -21,16 +21,12 @@ Tests for Category model.
 """
 from django.test import TestCase
 
+from ... import factories as F
+
 
 
 class CategoryTest(TestCase):
-    @property
-    def Category(self):
-        from cc.environments.models import Category
-        return Category
-
-
     def test_unicode(self):
-        c = self.Category(name="Operating System")
+        c = F.CategoryFactory(name="Operating System")
 
         self.assertEqual(unicode(c), u"Operating System")

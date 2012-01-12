@@ -21,17 +21,13 @@ Tests for Product model.
 """
 from django.test import TestCase
 
+from ... import factories as F
+
 
 
 class ProductTest(TestCase):
-    @property
-    def Product(self):
-        from cc.core.models import Product
-        return Product
-
-
     def test_unicode(self):
         """Unicode representation is name of Product"""
-        p = self.Product(name="Firefox")
+        p = F.ProductFactory.build(name="Firefox")
 
         self.assertEqual(unicode(p), u"Firefox")

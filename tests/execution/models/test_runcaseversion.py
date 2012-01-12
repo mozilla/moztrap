@@ -21,39 +21,29 @@ Tests for RunCaseVersion model.
 """
 from django.test import TestCase
 
-from ...environments.builders import create_environments
-from ...library.builders import create_caseversion
-from ..builders import (
-    create_runcaseversion, create_run, create_stepresult, create_result)
+from ... import factories as F
 
 
 
 class RunCaseVersionTest(TestCase):
-    @property
-    def RunCaseVersion(self):
-        from cc.execution.models import RunCaseVersion
-        return RunCaseVersion
-
-
     def test_unicode(self):
-        c = create_runcaseversion(
-            run=create_run(name="FF10"),
-            caseversion=create_caseversion(name="Open URL"))
+        c = F.RunCaseVersionFactory(
+            run__name="FF10", caseversion__name="Open URL")
 
         self.assertEqual(unicode(c), u"Case 'Open URL' included in run 'FF10'")
 
 
     def test_bug_urls(self):
         """bug_urls aggregates bug urls from all results, sans dupes."""
-        rcv = create_runcaseversion()
-        result1 = create_result(runcaseversion=rcv)
-        result2 = create_result(runcaseversion=rcv)
-        create_stepresult(result=result1)
-        create_stepresult(
+        rcv = F.RunCaseVersionFactory.create()
+        result1 = F.ResultFactory.create(runcaseversion=rcv)
+        result2 = F.ResultFactory.create(runcaseversion=rcv)
+        F.StepResultFactory.create(result=result1)
+        F.StepResultFactory.create(
             result=result1, bug_url="http://www.example.com/bug1")
-        create_stepresult(
+        F.StepResultFactory.create(
             result=result2, bug_url="http://www.example.com/bug1")
-        create_stepresult(
+        F.StepResultFactory.create(
             result=result2, bug_url="http://www.example.com/bug2")
 
         self.assertEqual(
@@ -63,20 +53,20 @@ class RunCaseVersionTest(TestCase):
 
 
     def test_environment_inheritance(self):
-        """gets intersection of run and caseversion environments."""
-        envs = create_environments(
+        """RCV gets intersection of run and caseversion environments."""
+        envs = F.EnvironmentFactory.create_set(
             ["OS", "Browser"],
             ["Linux", "Firefox"],
             ["Linux", "Chrome"],
             ["OS X", "Chrome"],
             )
 
-        r = create_run()
+        r = F.RunFactory.create()
         r.environments.add(*envs[:2])
-        cv = create_caseversion()
+        cv = F.CaseVersionFactory.create()
         cv.environments.add(*envs[1:])
 
-        rcv = create_runcaseversion(run=r, caseversion=cv)
+        rcv = F.RunCaseVersionFactory.create(run=r, caseversion=cv)
 
         self.assertEqual(rcv.environments.get(), envs[1])
 

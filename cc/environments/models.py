@@ -99,7 +99,8 @@ class Environment(CCModel):
 
     def __unicode__(self):
         """Return unicode representation."""
-        return u", ".join(str(e) for e in self.elements.all())
+        return u", ".join(
+            str(e) for e in self.elements.order_by("category__name"))
 
 
     class Meta:

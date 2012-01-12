@@ -21,48 +21,41 @@ Tests for Result model.
 """
 from django.test import TestCase
 
-from ...core.builders import create_user
-from ...environments.builders import create_environment, create_element
-from ...library.builders import create_caseversion
-from ..builders import (
-    create_result, create_stepresult, create_runcaseversion, create_run)
+from ... import factories as F
+
+from cc.execution.models import Result
 
 
 
 class ResultTest(TestCase):
-    @property
-    def Result(self):
-        from cc.execution.models import Result
-        return Result
-
-
     def test_unicode(self):
-        c = create_result(
-            status=self.Result.STATUS.started,
-            runcaseversion=create_runcaseversion(
-                run=create_run(name="FF10"),
-                caseversion=create_caseversion(name="Open URL")
-                ),
-            tester=create_user(username="tester"),
-            environment=create_environment(elements=[
-                    create_element(name="English"),
-                    create_element(name="OS X")
-                    ])
+        env = F.EnvironmentFactory.create_full_set(
+            {"OS": ["OS X"], "Language": ["English"]})[0]
+
+        r = F.ResultFactory(
+            status=Result.STATUS.started,
+            runcaseversion__run__name="FF10",
+            runcaseversion__caseversion__name="Open URL",
+            tester__username="tester",
+            environment=env,
             )
 
         self.assertEqual(
-            unicode(c),
+            unicode(r),
             u"Case 'Open URL' included in run 'FF10', "
             "run by tester in English, OS X: started")
 
 
     def test_bug_urls(self):
         """Result.bug_urls aggregates bug urls from step results, sans dupes."""
-        r = create_result()
-        create_stepresult(result=r)
-        create_stepresult(result=r, bug_url="http://www.example.com/bug1")
-        create_stepresult(result=r, bug_url="http://www.example.com/bug1")
-        create_stepresult(result=r, bug_url="http://www.example.com/bug2")
+        r = F.ResultFactory()
+        F.StepResultFactory.create(result=r)
+        F.StepResultFactory.create(
+            result=r, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=r, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=r, bug_url="http://www.example.com/bug2")
 
         self.assertEqual(
             r.bug_urls(),

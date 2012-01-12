@@ -21,21 +21,12 @@ Tests for RunSuite model.
 """
 from django.test import TestCase
 
-from ...library.builders import create_suite
-from ..builders import create_runsuite, create_run
+from ... import factories as F
 
 
 
 class RunSuiteTest(TestCase):
-    @property
-    def RunSuite(self):
-        from cc.execution.models import RunSuite
-        return RunSuite
-
-
     def test_unicode(self):
-        c = create_runsuite(
-            run=create_run(name="FF10"),
-            suite=create_suite(name="Speed"))
+        rs = F.RunSuiteFactory(run__name="FF10", suite__name="Speed")
 
-        self.assertEqual(unicode(c), u"Suite 'Speed' included in run 'FF10'")
+        self.assertEqual(unicode(rs), u"Suite 'Speed' included in run 'FF10'")

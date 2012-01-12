@@ -20,8 +20,7 @@ Tests for Result admin.
 
 """
 from ...admin import AdminTestCase
-from ...core.builders import create_user
-from ..builders import create_result, create_stepresult
+from ... import factories as F
 
 
 
@@ -32,21 +31,21 @@ class ResultAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Result changelist page loads without error, contains name."""
-        create_result(tester=create_user(username="sometester"))
+        F.ResultFactory.create(tester__username="sometester")
 
         self.get(self.changelist_url).mustcontain("sometester")
 
 
     def test_change_page(self):
         """Result change page loads without error, contains name."""
-        r = create_result(tester=create_user(username="sometester"))
+        r = F.ResultFactory.create(tester__username="sometester")
 
         self.get(self.change_url(r)).mustcontain("sometester")
 
 
     def test_change_page_stepresult(self):
         """Result change page includes StepResult inline."""
-        sr = create_stepresult(
-            status="failed", result=create_result(status="started"))
+        sr = F.StepResultFactory.create(
+            status="failed", result__status="started")
 
         self.get(self.change_url(sr.result)).mustcontain("failed")

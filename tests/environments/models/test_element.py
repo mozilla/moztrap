@@ -21,15 +21,12 @@ Tests for Element model.
 """
 from django.test import TestCase
 
+from ... import factories as F
+
+
 
 class ElementTest(TestCase):
-    @property
-    def Element(self):
-        from cc.environments.models import Element
-        return Element
-
-
     def test_unicode(self):
-        p = self.Element(name="Windows 7")
+        e = F.ElementFactory(name="Windows 7")
 
-        self.assertEqual(unicode(p), u"Windows 7")
+        self.assertEqual(unicode(e), u"Windows 7")

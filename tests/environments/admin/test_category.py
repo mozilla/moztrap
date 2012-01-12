@@ -20,8 +20,7 @@ Tests for Category admin.
 
 """
 from ...admin import AdminTestCase
-
-from ..builders import create_category, create_element
+from ... import factories as F
 
 
 
@@ -32,20 +31,20 @@ class CategoryAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Category changelist page loads without error, contains name."""
-        create_category(name="Operating System")
+        F.CategoryFactory.create(name="Operating System")
 
         self.get(self.changelist_url).mustcontain("Operating System")
 
 
     def test_change_page(self):
         """Category change page loads without error, contains name."""
-        s = create_category(name="Operating System")
+        s = F.CategoryFactory.create(name="Operating System")
 
         self.get(self.change_url(s)).mustcontain("Operating System")
 
 
     def test_change_page_element(self):
         """Category change page includes Element inline."""
-        e = create_element(name="Linux")
+        e = F.ElementFactory.create(name="Linux")
 
         self.get(self.change_url(e.category)).mustcontain("Linux")

@@ -20,32 +20,31 @@ Tests for RunCaseVersion admin.
 
 """
 from ...admin import AdminTestCase
-from ...core.builders import create_user
-from ..builders import create_runcaseversion, create_run, create_result
+from ... import factories as F
 
 
 
-class RuncaseversionAdminTest(AdminTestCase):
+class RunCaseVersionAdminTest(AdminTestCase):
     app_label = "execution"
     model_name = "runcaseversion"
 
 
     def test_changelist(self):
         """RunCaseVersion changelist page loads without error, contains name."""
-        create_runcaseversion(run=create_run(name="Some Run"))
+        F.RunCaseVersionFactory.create(run__name="Some Run")
 
         self.get(self.changelist_url).mustcontain("Some Run")
 
 
     def test_change_page(self):
         """RunCaseVersion change page loads without error, contains name."""
-        r = create_runcaseversion(run=create_run(name="Some Run"))
+        rcv = F.RunCaseVersionFactory.create(run__name="Some Run")
 
-        self.get(self.change_url(r)).mustcontain("Some Run")
+        self.get(self.change_url(rcv)).mustcontain("Some Run")
 
 
     def test_change_page_suite(self):
         """RunCaseVersion change page includes Result inline."""
-        r = create_result(tester=create_user(username="sometester"))
+        r = F.ResultFactory.create(tester__username="sometester")
 
         self.get(self.change_url(r.runcaseversion)).mustcontain("sometester")

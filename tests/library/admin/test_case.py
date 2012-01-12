@@ -20,8 +20,8 @@ Tests for Case admin.
 
 """
 from ...admin import AdminTestCase
+from ... import factories as F
 
-from ..builders import create_case, create_caseversion
 
 
 class CaseAdminTest(AdminTestCase):
@@ -31,21 +31,21 @@ class CaseAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Case changelist page loads without error, contains id."""
-        c = create_case()
+        c = F.CaseFactory()
 
         self.get(self.changelist_url).mustcontain(c.id)
 
 
     def test_change_page(self):
         """Case change page loads without error, contains id."""
-        c = create_case()
+        c = F.CaseFactory()
 
         self.get(self.change_url(c)).mustcontain(c.id)
 
 
     def test_change_page_version(self):
         """Case change page includes CaseVersion inline."""
-        cv = create_caseversion(name="Can load a website")
+        cv = F.CaseVersionFactory(name="Can load a website")
 
         self.get(self.change_url(cv.case)).mustcontain(
             "Can load a website")

@@ -24,59 +24,49 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ...core.builders import create_user, create_productversion
-from ...environments.builders import create_environments
-from ...library.builders import create_suite, create_caseversion
-from ..builders import (
-    create_run, create_runsuite, create_runcaseversion, create_result)
+from ... import factories as F
 
 
 
 class RunTest(TestCase):
-    @property
-    def Run(self):
-        from cc.execution.models import Run
-        return Run
-
-
     def test_unicode(self):
-        c = self.Run(name="Firefox 10 final run")
+        r = F.RunFactory(name="Firefox 10 final run")
 
-        self.assertEqual(unicode(c), u"Firefox 10 final run")
+        self.assertEqual(unicode(r), u"Firefox 10 final run")
 
 
     def test_invalid_dates(self):
         """Run validates that start date is not after end date."""
         today = datetime.date(2011, 12, 13)
-        c = create_run(
+        r = F.RunFactory(
             start=today,
             end=today-datetime.timedelta(days=1))
 
         with self.assertRaises(ValidationError):
-            c.full_clean()
+            r.full_clean()
 
 
     def test_valid_dates(self):
         """Run validation allows start date before or same as end date."""
         today = datetime.date(2011, 12, 13)
-        c = create_run(
+        r = F.RunFactory(
             start=today,
             end=today+datetime.timedelta(days=1))
 
-        c.full_clean()
+        r.full_clean()
 
 
     def test_parent(self):
         """A Run's ``parent`` property returns its ProductVersion."""
-        r = create_run()
+        r = F.RunFactory()
 
-        self.assertEqual(r.parent, r.productversion)
+        self.assertIs(r.parent, r.productversion)
 
 
     def test_own_team(self):
         """If ``has_team`` is True, Run's team is its own."""
-        r = create_run(has_team=True)
-        u = create_user()
+        r = F.RunFactory.create(has_team=True)
+        u = F.UserFactory.create()
         r.own_team.add(u)
 
         self.assertEqual(list(r.team.all()), [u])
@@ -84,8 +74,8 @@ class RunTest(TestCase):
 
     def test_inherit_team(self):
         """If ``has_team`` is False, Run's team is its parent's."""
-        r = create_run(has_team=False)
-        u = create_user()
+        r = F.RunFactory.create(has_team=False)
+        u = F.UserFactory.create()
         r.productversion.team.add(u)
 
         self.assertEqual(list(r.team.all()), [u])
@@ -96,12 +86,12 @@ class RunTest(TestCase):
         Cloning a run returns a new, distinct Run with "Cloned: " name.
 
         """
-        c = create_run(name="A Run")
+        r = F.RunFactory.create(name="A Run")
 
-        new = c.clone()
+        new = r.clone()
 
-        self.assertNotEqual(new, c)
-        self.assertIsInstance(new, self.Run)
+        self.assertNotEqual(new, r)
+        self.assertIsInstance(new, type(r))
         self.assertEqual(new.name, "Cloned: A Run")
 
 
@@ -110,11 +100,9 @@ class RunTest(TestCase):
         Cloning a run clones member RunSuites.
 
         """
-        suite = create_suite()
-        run = create_run()
-        rs = create_runsuite(run=run, suite=suite)
+        rs = F.RunSuiteFactory.create()
 
-        new = run.clone()
+        new = rs.run.clone()
 
         self.assertNotEqual(new.runsuites.get(), rs)
 
@@ -124,13 +112,11 @@ class RunTest(TestCase):
         Cloning a run clones all member RunCaseVersions.
 
         """
-        caseversion = create_caseversion()
-        run = create_run()
-        rs = create_runcaseversion(run=run, caseversion=caseversion)
+        rcv = F.RunCaseVersionFactory.create()
 
-        new = run.clone()
+        new = rcv.run.clone()
 
-        self.assertNotEqual(new.runcaseversions.get(), rs)
+        self.assertNotEqual(new.runcaseversions.get(), rcv)
 
 
     def test_clone_no_results(self):
@@ -138,7 +124,7 @@ class RunTest(TestCase):
         Cloning a run does not clone any results.
 
         """
-        r = create_result()
+        r = F.ResultFactory.create()
 
         new = r.runcaseversion.run.clone()
 
@@ -150,10 +136,11 @@ class RunTest(TestCase):
         A new test run inherits the environments of its product version.
 
         """
-        pv = create_productversion()
+        pv = F.ProductVersionFactory.create()
         pv.environments.add(
-            *create_environments(["OS"], ["Windows"], ["Linux"]))
+            *F.EnvironmentFactory.create_full_set(
+                {"OS": ["Windows", "Linux"]}))
 
-        r = create_run(productversion=pv)
+        r = F.RunFactory.create(productversion=pv)
 
         self.assertEqual(set(r.environments.all()), set(pv.environments.all()))

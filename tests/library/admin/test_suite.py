@@ -20,8 +20,7 @@ Tests for Suite admin.
 
 """
 from ...admin import AdminTestCase
-
-from ..builders import create_suite
+from ... import factories as F
 
 
 
@@ -32,13 +31,13 @@ class SuiteAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Suite changelist page loads without error, contains name."""
-        create_suite(name="Performance")
+        F.SuiteFactory.create(name="Performance")
 
         self.get(self.changelist_url).mustcontain("Performance")
 
 
     def test_change_page(self):
         """Suite change page loads without error, contains name."""
-        s = create_suite(name="Performance")
+        s = F.SuiteFactory.create(name="Performance")
 
         self.get(self.change_url(s)).mustcontain("Performance")

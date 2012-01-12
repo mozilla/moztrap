@@ -20,7 +20,7 @@ Tests for ProductVersion admin.
 
 """
 from ...admin import AdminTestCase
-from ..builders import create_product, create_productversion
+from ... import factories as F
 
 
 
@@ -31,14 +31,15 @@ class RunAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """ProductVersion changelist page loads without error, contains name."""
-        create_productversion(product=create_product(name="Foo"), version="1.0")
+        F.ProductVersionFactory.create(
+            product__name="Foo", version="1.0")
 
         self.get(self.changelist_url).mustcontain("Foo 1.0")
 
 
     def test_change_page(self):
         """ProductVersion change page loads without error, contains name."""
-        pv = create_productversion(
-            product=create_product(name="Foo"), version="1.0")
+        pv = F.ProductVersionFactory.create(
+            product__name="Foo", version="1.0")
 
         self.get(self.change_url(pv)).mustcontain("Foo 1.0")

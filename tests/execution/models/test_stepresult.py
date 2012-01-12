@@ -21,50 +21,32 @@ Tests for StepResult model.
 """
 from django.test import TestCase
 
-from ...core.builders import create_user
-from ...environments.builders import create_environment, create_element
-from ...library.builders import create_caseversion, create_casestep
-from ..builders import (
-    create_stepresult, create_result, create_runcaseversion, create_run)
+from ... import factories as F
+
+from cc.execution.models import Result, StepResult
 
 
 
 class StepResultTest(TestCase):
-    @property
-    def StepResult(self):
-        from cc.execution.models import StepResult
-        return StepResult
-
-
-    @property
-    def Result(self):
-        from cc.execution.models import Result
-        return Result
-
-
     def test_unicode(self):
-        cv = create_caseversion(name="Open URL")
-        step = create_casestep()
-        cv.steps.add(step)
-        c = create_stepresult(
-            status=self.StepResult.STATUS.passed,
+        env = F.EnvironmentFactory.create_full_set(
+            {"OS": ["OS X"], "Language": ["English"]})[0]
+
+        step = F.CaseStepFactory.create(
+            caseversion__name="Open URL")
+
+        sr = F.StepResultFactory.create(
+            status=StepResult.STATUS.passed,
             step=step,
-            result=create_result(
-                status=self.Result.STATUS.started,
-                runcaseversion=create_runcaseversion(
-                    run=create_run(name="FF10"),
-                    caseversion=cv
-                    ),
-                tester=create_user(username="tester"),
-                environment=create_environment(elements=[
-                        create_element(name="English"),
-                        create_element(name="OS X")
-                        ])
-                )
+            result__status=Result.STATUS.started,
+            result__runcaseversion__run__name="FF10",
+            result__runcaseversion__caseversion=step.caseversion,
+            result__tester__username="tester",
+            result__environment=env,
             )
 
         self.assertEqual(
-            unicode(c),
+            unicode(sr),
             u"Case 'Open URL' included in run 'FF10', "
             "run by tester in English, OS X: started (step #%s: passed)"
             % step.number)

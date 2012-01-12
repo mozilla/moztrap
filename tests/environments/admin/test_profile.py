@@ -20,8 +20,7 @@ Tests for Profile admin.
 
 """
 from ...admin import AdminTestCase
-
-from ..builders import create_profile
+from ... import factories as F
 
 
 
@@ -32,13 +31,13 @@ class ProfileAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Profile changelist page loads without error, contains name."""
-        create_profile(name="Browser Environments")
+        F.ProfileFactory.create(name="Browser Environments")
 
         self.get(self.changelist_url).mustcontain("Browser Environments")
 
 
     def test_change_page(self):
         """Profile change page loads without error, contains name."""
-        s = create_profile(name="Browser Environments")
+        s = F.ProfileFactory.create(name="Browser Environments")
 
         self.get(self.change_url(s)).mustcontain("Browser Environments")

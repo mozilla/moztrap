@@ -23,7 +23,7 @@ from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
 
-from .core.builders import create_user
+from . import factories as F
 
 
 
@@ -34,7 +34,8 @@ class AdminTestCase(WebTest):
 
     def setUp(self):
         """Set-up for all admin test cases."""
-        self.user = create_user(is_staff=True, is_superuser=True)
+        self.user = F.UserFactory.create(
+            is_staff=True, is_superuser=True)
 
 
     @property

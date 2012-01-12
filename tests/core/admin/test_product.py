@@ -21,8 +21,7 @@ Tests for Product admin.
 """
 from ...admin import AdminTestCase
 from ...utils import refresh
-
-from ..builders import create_product
+from ... import factories as F
 
 
 
@@ -33,21 +32,21 @@ class ProductAdminTest(AdminTestCase):
 
     def test_changelist(self):
         """Product changelist page loads without error, contains name."""
-        create_product(name="Firefox")
+        F.ProductFactory.create(name="Firefox")
 
         self.get(self.changelist_url).mustcontain("Firefox")
 
 
     def test_change_page(self):
         """Product change page loads without error, contains name."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
 
         self.get(self.change_url(p)).mustcontain("Firefox")
 
 
     def test_change_tracks_user(self):
         """Making a change via the admin tracks modified-by user."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
         url = self.change_url(p)
         form = self.get(url).forms[0]
         form["name"] = "Fennec"
@@ -60,7 +59,7 @@ class ProductAdminTest(AdminTestCase):
 
     def test_delete_tracks_user(self):
         """Deletion via the admin tracks deleted-by user."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
         url = self.delete_url(p)
         form = self.get(url).forms[0]
 
@@ -72,7 +71,7 @@ class ProductAdminTest(AdminTestCase):
 
     def test_bulk_delete_tracks_user(self):
         """Deletion via bulk-action tracks deleted-by user."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
         form = self.get(self.changelist_url).forms["changelist-form"]
         form["action"] = "delete"
         form["_selected_action"] = str(p.id)
@@ -83,7 +82,7 @@ class ProductAdminTest(AdminTestCase):
 
     def test_bulk_undelete(self):
         """Bulk undelete action works."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
         p.delete()
         form = self.get(self.changelist_url).forms["changelist-form"]
         form["action"] = "undelete"
@@ -95,7 +94,7 @@ class ProductAdminTest(AdminTestCase):
 
     def test_hard_delete(self):
         """Hard deletion via bulk-action really deletes."""
-        p = create_product(name="Firefox")
+        p = F.ProductFactory.create(name="Firefox")
         form = self.get(self.changelist_url).forms["changelist-form"]
         form["action"] = "delete_selected"
         form["_selected_action"] = str(p.id)

@@ -21,37 +21,29 @@ Tests for ProductVersion model.
 """
 from django.test import TestCase
 
-from ...execution.builders import create_run
-from ...library.builders import create_case
-from ..builders import create_user, create_product, create_productversion
+from ... import factories as F
 
 
 
 class ProductVersionTest(TestCase):
-    @property
-    def ProductVersion(self):
-        from cc.execution.models import ProductVersion
-        return ProductVersion
-
-
     def test_unicode(self):
-        p = create_product(name="Some Product")
-        pv = self.ProductVersion(product=p, version="1.0")
+        pv = F.ProductVersionFactory(
+            product__name="Some Product", version="1.0")
 
         self.assertEqual(unicode(pv), u"Some Product 1.0")
 
 
     def test_parent(self):
         """A ProductVersion's ``parent`` property returns its Product."""
-        pv = create_productversion()
+        pv = F.ProductVersionFactory()
 
-        self.assertEqual(pv.parent, pv.product)
+        self.assertIs(pv.parent, pv.product)
 
 
     def test_own_team(self):
         """If ``has_team`` is True, ProductVersion's team is its own."""
-        pv = create_productversion(has_team=True)
-        u = create_user()
+        pv = F.ProductVersionFactory.create(has_team=True)
+        u = F.UserFactory.create()
         pv.own_team.add(u)
 
         self.assertEqual(list(pv.team.all()), [u])
@@ -59,8 +51,8 @@ class ProductVersionTest(TestCase):
 
     def test_inherit_team(self):
         """If ``has_team`` is False, ProductVersion's team is its parent's."""
-        pv = create_productversion(has_team=False)
-        u = create_user()
+        pv = F.ProductVersionFactory.create(has_team=False)
+        u = F.UserFactory.create()
         pv.product.team.add(u)
 
         self.assertEqual(list(pv.team.all()), [u])
@@ -71,12 +63,13 @@ class ProductVersionTest(TestCase):
         Cloning ProdVersion adds ".next" to version and "Cloned:" to codename.
 
         """
-        c = create_productversion(version="1.0", codename="Foo")
+        c = F.ProductVersionFactory.create(
+            version="1.0", codename="Foo")
 
         new = c.clone()
 
         self.assertNotEqual(new, c)
-        self.assertIsInstance(new, self.ProductVersion)
+        self.assertIsInstance(new, type(c))
         self.assertEqual(new.version, "1.0.next")
         self.assertEqual(new.codename, "Cloned: Foo")
 
@@ -86,10 +79,9 @@ class ProductVersionTest(TestCase):
         Cloning a ProductVersion does not clone runs.
 
         """
-        pv = create_productversion()
-        create_run(productversion=pv)
+        run = F.RunFactory.create()
 
-        new = pv.clone()
+        new = run.productversion.clone()
 
         self.assertEqual(len(new.runs.all()), 0)
 
@@ -99,9 +91,8 @@ class ProductVersionTest(TestCase):
         Cloning a ProductVersion does not clone test cases.
 
         """
-        pv = create_productversion()
-        create_case(productversion=pv)
+        case = F.CaseFactory()
 
-        new = pv.clone()
+        new = case.productversion.clone()
 
         self.assertEqual(len(new.cases.all()), 0)

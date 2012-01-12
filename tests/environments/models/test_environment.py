@@ -21,23 +21,14 @@ Tests for Environment model.
 """
 from django.test import TestCase
 
-from ..builders import create_environment, create_element
+from ... import factories as F
 
 
 
 class EnvironmentTest(TestCase):
-    @property
-    def Environment(self):
-        from cc.environments.models import Environment
-        return Environment
-
-
     def test_unicode(self):
-        e = create_environment(
-            elements=[
-                create_element(name="English"),
-                create_element(name="OS X")
-                ]
-            )
+        """Unicode representation is concatenated element names."""
+        e = F.EnvironmentFactory.create_full_set(
+            {"OS": ["OS X"], "Language": ["English"]})[0]
 
         self.assertEqual(unicode(e), u"English, OS X")

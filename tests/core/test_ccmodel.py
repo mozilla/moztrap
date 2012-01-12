@@ -31,8 +31,7 @@ from django.test import TestCase
 from mock import patch
 
 from ..utils import refresh
-from ..library.builders import create_suite
-from .builders import create_user, create_product
+from .. import factories as F
 
 
 
@@ -47,7 +46,7 @@ class CCModelTestCase(TestCase):
 
     def setUp(self):
         """Creates ``self.user`` for use by all tests."""
-        self.user = create_user()
+        self.user = F.UserFactory.create()
 
 
 
@@ -223,7 +222,7 @@ class DeleteTest(CCModelMockNowTestCase):
     """Tests for deleted_(by/on) when using instance.delete or qs.delete."""
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by to None if not given user."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         self.Product.objects.all().delete()
 
@@ -232,7 +231,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
     def test_queryset_deleted_by(self):
         """queryset delete() sets deleted_by if given user."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         self.Product.objects.all().delete(user=self.user)
 
@@ -241,7 +240,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
     def test_queryset_deleted_on(self):
         """queryset delete() sets deleted_on."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         self.Product.objects.all().delete()
 
@@ -250,7 +249,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
     def test_deleted_by_none(self):
         """delete() sets deleted_by to None if not given user."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         p.delete()
 
@@ -259,7 +258,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
     def test_deleted_by(self):
         """delete() sets deleted_by if given user."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         p.delete(user=self.user)
 
@@ -268,7 +267,7 @@ class DeleteTest(CCModelMockNowTestCase):
 
     def test_deleted_on(self):
         """delete() sets deleted_on."""
-        p = create_product()
+        p = F.ProductFactory.create()
 
         p.delete()
 
@@ -280,8 +279,8 @@ class CascadeDeleteTest(CCModelTestCase):
     """Tests for cascading soft-delete."""
     def test_queryset_deleted_by_none(self):
         """queryset delete() sets deleted_by None if no user on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         self.Product.objects.all().delete()
 
@@ -290,8 +289,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_queryset_deleted_by(self):
         """queryset delete() sets deleted_by to given user on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         self.Product.objects.all().delete(user=self.user)
 
@@ -300,8 +299,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_queryset_deleted_on(self):
         """qs delete() sets deleted_on to same time as parent on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         self.Product.objects.all().delete()
 
@@ -314,8 +313,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_deleted_by_none(self):
         """delete() sets deleted_by None if no user on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         p.delete()
 
@@ -324,8 +323,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_deleted_by(self):
         """delete() sets deleted_by to given user on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         p.delete(user=self.user)
 
@@ -334,8 +333,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_deleted_on(self):
         """delete() sets deleted_on to same time as parent on cascade."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
 
         p.delete()
 
@@ -348,8 +347,8 @@ class CascadeDeleteTest(CCModelTestCase):
 
     def test_no_cascade_redelete(self):
         """cascade delete won't update deleted-on for previously deleted."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
         # need to patch utcnow because MySQL doesn't give us better than
         # one-second resolution on datetimes.
         with patch("cc.core.ccmodel.datetime") as mock_dt:
@@ -377,7 +376,7 @@ class UndeleteTest(UndeleteMixin, CCModelTestCase):
     """Tests for undelete using instance.undelete or qs.undelete."""
     def test_instance(self):
         """instance.undelete() undeletes an instance."""
-        p = create_product()
+        p = F.ProductFactory.create()
         p.delete()
 
         p.undelete()
@@ -387,7 +386,7 @@ class UndeleteTest(UndeleteMixin, CCModelTestCase):
 
     def test_queryset(self):
         """qs.undelete() undeletes all objects in the queryset."""
-        p = create_product()
+        p = F.ProductFactory.create()
         p.delete()
 
         self.Product.everything.all().undelete()
@@ -400,8 +399,8 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
     """Tests for cascading undelete."""
     def test_instance(self):
         """Undeleting an instance also undeletes cascade-deleted dependents."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
         p.delete()
         p = refresh(p)
 
@@ -412,8 +411,8 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
 
     def test_queryset(self):
         """Undeleting a queryset also undeletes cascade-deleted dependents."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
         p.delete()
 
         self.Product.everything.all().undelete()
@@ -423,8 +422,8 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
 
     def test_cascade_limited(self):
         """Undelete only cascades to objs cascade-deleted with that object."""
-        p = create_product()
-        s = create_suite(product=p)
+        p = F.ProductFactory.create()
+        s = F.SuiteFactory.create(product=p)
         # need to patch utcnow because MySQL doesn't give us better than
         # one-second resolution on datetimes.
         with patch("cc.core.ccmodel.datetime") as mock_dt:
