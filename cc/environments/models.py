@@ -193,3 +193,12 @@ class HasEnvironmentsModel(models.Model):
         for model, instances in self._cascade_envs_to(adding=False).items():
             model._remove_envs(instances, envs)
         self.environments.remove(*envs)
+
+
+    def add_envs(self, *envs):
+        """Add one or more environments to this object's profile."""
+        # @@@ optimize this to reduce queries once we have bulk insert in 1.4
+        self.environments.add(*envs)
+        for model, instances in self._cascade_envs_to(adding=True).items():
+            for instance in instances:
+                instance.add_envs(*envs)

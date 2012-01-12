@@ -69,11 +69,6 @@ class Run(TeamModel, HasEnvironmentsModel):
         return self.productversion
 
 
-    @property
-    def children(self):
-        return self.runcaseversions.all()
-
-
     def clone(self, *args, **kwargs):
         """Clone this Run with default cascade behavior."""
         kwargs.setdefault("cascade", ["runcaseversions", "runsuites"])

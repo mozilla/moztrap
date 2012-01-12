@@ -156,3 +156,31 @@ class RunTest(TestCase):
         pv.remove_envs(envs[0])
 
         self.assertEqual(set(run.environments.all()), set(envs[1:]))
+
+
+    def test_draft_run_inherits_env_addition(self):
+        """
+        Adding an env to a productversion cascades to a draft run.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs[1:])
+        run = F.RunFactory.create(productversion=pv, status="draft")
+
+        pv.add_envs(envs[0])
+
+        self.assertEqual(set(run.environments.all()), set(envs))
+
+
+    def test_active_run_does_not_inherit_env_addition(self):
+        """
+        Adding an env to a productversion does not cascade to an active run.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs[1:])
+        run = F.RunFactory.create(productversion=pv, status="active")
+
+        pv.add_envs(envs[0])
+
+        self.assertEqual(set(run.environments.all()), set(envs[1:]))
