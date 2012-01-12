@@ -72,12 +72,14 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_add_step_with_caseversion(self):
         """Can add inline step along with new caseversion."""
-        case = F.CaseFactory.create()
+        pv = F.ProductVersionFactory.create()
+        case = F.CaseFactory.create(product=pv.product)
 
         # patching extra avoids need for JS to add step
         with patch("cc.library.admin.CaseStepInline.extra", 1):
             form = self.get(self.add_url).forms[0]
             form["case"] = str(case.id)
+            form["productversion"] = str(pv.id)
             form["number"] = "1"
             form["name"] = "Some case"
             form["steps-0-number"] = "1"

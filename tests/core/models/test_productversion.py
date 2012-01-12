@@ -88,11 +88,11 @@ class ProductVersionTest(TestCase):
 
     def test_clone_no_cases(self):
         """
-        Cloning a ProductVersion does not clone test cases.
+        Cloning a ProductVersion does not clone test case versions.
 
         """
-        case = F.CaseFactory()
+        cv = F.CaseVersionFactory()
 
-        new = case.productversion.clone()
+        new = cv.productversion.clone()
 
-        self.assertEqual(len(new.cases.all()), 0)
+        self.assertEqual(len(new.caseversions.all()), 0)

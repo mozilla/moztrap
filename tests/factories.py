@@ -100,7 +100,7 @@ class SuiteFactory(factory.Factory):
 class CaseFactory(factory.Factory):
     FACTORY_FOR = library_models.Case
 
-    productversion = factory.SubFactory(ProductVersionFactory)
+    product = factory.SubFactory(ProductFactory)
 
 
 
@@ -117,6 +117,8 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = library_models.CaseVersion
 
     name = "Test Case Version"
+    # @@@ need to to ensure productversion and case have same product
+    productversion = factory.SubFactory(ProductVersionFactory)
     case = factory.SubFactory(CaseFactory)
 
 

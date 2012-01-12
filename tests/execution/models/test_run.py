@@ -142,3 +142,17 @@ class RunTest(TestCase):
         r = F.RunFactory.create(productversion=pv)
 
         self.assertEqual(set(r.environments.all()), set(pv.environments.all()))
+
+
+    def test_run_inherits_env_removal(self):
+        """
+        Removing an env from a productversion cascades to run.
+
+        """
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(environments=envs)
+        run = F.RunFactory.create(productversion=pv)
+
+        pv.remove_envs(envs[0])
+
+        self.assertEqual(set(run.environments.all()), set(envs[1:]))

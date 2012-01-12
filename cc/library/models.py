@@ -26,14 +26,14 @@ from model_utils import Choices
 from ..attachments.models import Attachment
 from ..core.ccmodel import CCModel
 from ..core.models import Product, ProductVersion
-from ..environments.models import InheritsEnvironmentsModel
+from ..environments.models import HasEnvironmentsModel
 from ..tags.models import Tag
 
 
 
 class Case(CCModel):
     """A test case for a given product."""
-    productversion = models.ForeignKey(ProductVersion, related_name="cases")
+    product = models.ForeignKey(Product, related_name="cases")
 
 
     def __unicode__(self):
@@ -57,12 +57,14 @@ class Case(CCModel):
 
 
 
-class CaseVersion(CCModel, InheritsEnvironmentsModel):
+class CaseVersion(CCModel, HasEnvironmentsModel):
     """A version of a test case."""
     STATUS = Choices("draft", "active", "disabled")
 
     status = models.CharField(
         max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
+    productversion = models.ForeignKey(
+        ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
     number = models.PositiveIntegerField(db_index=True)
     latest = models.BooleanField(default=True, db_index=True)
@@ -90,7 +92,7 @@ class CaseVersion(CCModel, InheritsEnvironmentsModel):
 
     @property
     def parent(self):
-        return self.case.productversion
+        return self.productversion
 
 
 

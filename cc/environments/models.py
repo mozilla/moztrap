@@ -113,20 +113,15 @@ class Environment(CCModel):
 
 
 
-class InheritsEnvironmentsModel(models.Model):
+class HasEnvironmentsModel(models.Model):
     """
-    Base for models that inherit environments from their parent by default.
+    Base for models that inherit/cascade environments to/from parents/children.
 
-    Subclasses must implement a ``parent`` property.
+    Subclasses should implement ``parent`` property and ``cascade_envs_to``
+    classmethod.
 
     """
     environments = models.ManyToManyField(Environment, related_name="%(class)s")
-
-
-    @property
-    def parent(self):
-        raise NotImplementedError(
-            "InheritsEnvironments model without parent property.")
 
 
     class Meta:
@@ -134,17 +129,67 @@ class InheritsEnvironmentsModel(models.Model):
 
 
     def save(self, *args, **kwargs):
-        """
-        Save instance; new instances get parent environments.
-
-        """
+        """Save instance; new instances get parent environments."""
         adding = False
         if self.id is None:
             adding = True
 
-        ret = super(InheritsEnvironmentsModel, self).save(*args, **kwargs)
+        ret = super(HasEnvironmentsModel, self).save(*args, **kwargs)
 
-        if adding:
+        if adding and isinstance(self.parent, HasEnvironmentsModel):
             self.environments.add(*self.parent.environments.all())
 
         return ret
+
+
+    @property
+    def parent(self):
+        """
+        The model instance to inherit environments from.
+
+        """
+        return None
+
+
+    @classmethod
+    def cascade_envs_to(cls, objs, adding):
+        """
+        Return model instances to cascade env profile changes to.
+
+        Return value should be a dictionary mapping model classes to iterables
+        of model instances to cascade to.
+
+        ``objs`` arg is list of objs`` of this class to cascade from;
+        ``adding`` arg is True if cascading for an addition of envs to the
+        profile, False if cascading a removal.
+
+        """
+        return {}
+
+
+    def _cascade_envs_to(self, adding):
+        """
+        Get ``cascade_envs_to`` for this instance alone.
+
+        """
+        return type(self).cascade_envs_to(self, adding)
+
+
+    @classmethod
+    def _remove_envs(cls, objs, envs):
+        """Remove one or environments from one or more objects of this class."""
+        m2m_reverse_name = cls.environments.field.related_query_name()
+        cls.environments.through._base_manager.filter(
+            **{
+                "{0}__in".format(m2m_reverse_name): objs,
+                "environment__in": envs
+                }
+              ).delete()
+        # @@@ cascade
+
+
+    def remove_envs(self, *envs):
+        """Remove one or more environments from this object's profile."""
+        for model, instances in self._cascade_envs_to(adding=False).items():
+            model._remove_envs(instances, envs)
+        self.environments.remove(*envs)

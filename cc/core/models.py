@@ -23,7 +23,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from ..environments.models import Environment
+from ..environments.models import HasEnvironmentsModel
 from .ccmodel import CCModel, TeamModel
 
 
@@ -47,14 +47,11 @@ class Product(CCModel):
 
 
 
-class ProductVersion(TeamModel):
+class ProductVersion(TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
     version = models.CharField(max_length=100)
     codename = models.CharField(max_length=100)
     order = models.IntegerField(default=0, editable=False)
-
-    environments = models.ManyToManyField(
-        Environment, related_name="productversions")
 
 
     def __unicode__(self):
@@ -69,6 +66,20 @@ class ProductVersion(TeamModel):
     @property
     def parent(self):
         return self.product
+
+
+    def cascade_envs_to(self, adding):
+        if adding:
+            return {
+                self.runs.model: self.runs.filter(
+                    status=self.runs.model.STATUS.draft),
+                self.caseversions.model: self.caseversions.filter(
+                    envs_narrowed=False)
+                }
+        return {
+            self.runs.model: self.runs.all(),
+            self.caseversions.model: self.caseversions.all()
+            }
 
 
     def clone(self, *args, **kwargs):

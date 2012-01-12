@@ -30,12 +30,12 @@ from model_utils import Choices
 
 from ..core.ccmodel import CCModel, TeamModel, utcnow
 from ..core.models import ProductVersion
-from ..environments.models import Environment, InheritsEnvironmentsModel
+from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep
 
 
 
-class Run(TeamModel, InheritsEnvironmentsModel):
+class Run(TeamModel, HasEnvironmentsModel):
     """A test run."""
     STATUS = Choices("draft", "active", "disabled")
 
@@ -67,6 +67,11 @@ class Run(TeamModel, InheritsEnvironmentsModel):
     @property
     def parent(self):
         return self.productversion
+
+
+    @property
+    def children(self):
+        return self.runcaseversions.all()
 
 
     def clone(self, *args, **kwargs):

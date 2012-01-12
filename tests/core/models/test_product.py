@@ -31,3 +31,27 @@ class ProductTest(TestCase):
         p = F.ProductFactory.build(name="Firefox")
 
         self.assertEqual(unicode(p), u"Firefox")
+
+
+    def test_clone_no_cases(self):
+        """
+        Cloning a Product does not clone test cases.
+
+        """
+        c = F.CaseFactory()
+
+        new = c.product.clone()
+
+        self.assertEqual(len(new.cases.all()), 0)
+
+
+    def test_clone_no_suites(self):
+        """
+        Cloning a Product does not clone test suites.
+
+        """
+        s = F.SuiteFactory()
+
+        new = s.product.clone()
+
+        self.assertEqual(len(new.cases.all()), 0)

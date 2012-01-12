@@ -30,7 +30,8 @@ class CaseVersionInline(CCStackedInline):
     model = models.CaseVersion
     extra = 0
     fieldsets = [
-        (None, {"fields": [("case", "name", "status"),
+        (None, {"fields": ["productversion",
+                           ("case", "name", "status"),
                            ("number", "latest", "exists"),
                            "description"]})
         ]
@@ -58,7 +59,8 @@ class CaseTagInline(admin.TabularInline):
 class CaseVersionAdmin(CCModelAdmin):
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
-        (None, {"fields": [("case", "name", "status"),
+        (None, {"fields": ["productversion",
+                           ("case", "name", "status"),
                            ("number", "latest"),
                            "description"]})
         ]
