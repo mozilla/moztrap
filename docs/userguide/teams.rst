@@ -10,7 +10,7 @@ simply a set of users associated with a given product, version, or run.
 
 Teams are inherited by default; any product version without its own team
 explicitly set will inherit its product's team, and any test run without a team
-set will inherit its product version's team. Unlike `environment
+set will inherit its product version's team. Unlike :ref:`environment
 inheritance<environment-inheritance>`, there is no subset requirement - a test
 run can be explicitly assigned any team, even if some members of that team are
 not part of the product version or product's team.
