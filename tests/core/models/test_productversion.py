@@ -87,3 +87,21 @@ class ProductVersionTest(TestCase):
         new = cv.productversion.clone()
 
         self.assertEqual(len(new.caseversions.all()), 0)
+
+
+    def test_clone_environments(self):
+        """Cloning a ProductVersion clones its environments."""
+        pv = F.ProductVersionFactory(environments={"OS": ["OS X", "Linux"]})
+
+        new = pv.clone()
+
+        self.assertEqual(len(new.environments.all()), 2)
+
+
+    def test_clone_team(self):
+        """Cloning a ProductVersion clones its team."""
+        pv = F.ProductVersionFactory(team=["One", "Two"])
+
+        new = pv.clone()
+
+        self.assertEqual(len(new.team.all()), 2)

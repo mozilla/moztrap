@@ -441,6 +441,16 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
 
 
 
+class CloneTest(UndeleteMixin, CCModelTestCase):
+    """Tests for cloning."""
+    def test_cascade_non_m2m_or_reverse_fk(self):
+        """Cascade-cloning an attr that isn't M2M or rev FK raises an error."""
+        p = F.ProductFactory.create()
+        with self.assertRaises(ValueError):
+            p.clone(cascade=["name"])
+
+
+
 class TeamModelTest(TestCase):
     """Tests for TeamModel base class."""
     @property
@@ -450,7 +460,6 @@ class TeamModelTest(TestCase):
 
 
     def test_parent(self):
-        """parent property is not implemented in base class."""
+        """parent property is None in base class."""
         t = self.TeamModel()
-        with self.assertRaises(NotImplementedError):
-            t.parent
+        self.assertIsNone(t.parent)

@@ -34,10 +34,7 @@ class ProductTest(TestCase):
 
 
     def test_clone_no_cases(self):
-        """
-        Cloning a Product does not clone test cases.
-
-        """
+        """Cloning a Product does not clone test cases."""
         c = F.CaseFactory()
 
         new = c.product.clone()
@@ -46,12 +43,18 @@ class ProductTest(TestCase):
 
 
     def test_clone_no_suites(self):
-        """
-        Cloning a Product does not clone test suites.
-
-        """
+        """Cloning a Product does not clone test suites."""
         s = F.SuiteFactory()
 
         new = s.product.clone()
 
         self.assertEqual(len(new.cases.all()), 0)
+
+
+    def test_clone_team(self):
+        """Cloning a ProductVersion clones its team."""
+        p = F.ProductFactory(team=["One", "Two"])
+
+        new = p.clone()
+
+        self.assertEqual(len(new.team.all()), 2)

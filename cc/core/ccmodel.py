@@ -230,25 +230,19 @@ class CCModel(models.Model):
 
         clone.save(force_insert=True)
 
-        # reverse FKs
-        for ro in self._meta.get_all_related_objects():
-            name = ro.get_accessor_name()
-            if name in cascade:
-                for obj in cascade[name](getattr(self, name).all()):
-                    obj.clone(overrides={ro.field.name: clone})
-
-        # M2Ms
-        m2m_names = [
-            ro.get_accessor_name() for ro in
-            self._meta.get_all_related_many_to_many_objects()
-            ] + [
-            field.name for field in self._meta.many_to_many
-            ]
-        for name in m2m_names:
-            if name in cascade:
+        for name, filter_func in cascade.items():
+            mgr = getattr(self, name)
+            if mgr.__class__.__name__ == "ManyRelatedManager": # M2M
                 clone_mgr = getattr(clone, name)
-                for obj in cascade[name](getattr(self, name).all()):
-                    clone_mgr.add(obj)
+                clone_mgr.add(*filter_func(mgr.all()))
+            elif mgr.__class__.__name__ == "RelatedManager": # reverse FK
+                reverse_name = getattr(self.__class__, name).related.field.name
+                for obj in filter_func(mgr.all()):
+                    obj.clone(overrides={reverse_name: clone})
+            else:
+                raise ValueError(
+                    "Cannot cascade-clone '{0}'; "
+                    "not a many-to-many or reverse foreignkey.".format(name))
 
         return clone
 
@@ -263,7 +257,7 @@ class CCModel(models.Model):
 
     def undelete(self, user=None):
         """
-        (Soft) delete this instance.
+        Undelete this instance.
 
         """
         self._collector.undelete(user)
@@ -290,8 +284,9 @@ class TeamModel(CCModel):
     If ``has_team`` is True, ``own_team`` is this instance's team. If False,
     the parent's team is used instead.
 
-    Any ``TeamModel`` must implement a ``parent`` property that returns its
-    "parent" for purposes of team inheritance.
+    If a ``TeamModel`` does not implement a ``parent`` property that returns
+    its "parent" for purposes of team inheritance, it will be considered to be
+    the top of the inheritance chain and won't inherit a team.
 
     """
     has_team = models.BooleanField(default=False)
@@ -300,14 +295,21 @@ class TeamModel(CCModel):
 
     @property
     def team(self):
-        if self.has_team:
+        if self.has_team or self.parent is None:
             return self.own_team
         return self.parent.team
 
 
+    def add_to_team(self, *users):
+        """Add given users to this object's team (not to parent team)."""
+        self.own_team.add(*users)
+        self.has_team = True
+        self.save()
+
+
     @property
     def parent(self):
-        raise NotImplementedError("Team model without parent property.")
+        return None
 
 
     class Meta:

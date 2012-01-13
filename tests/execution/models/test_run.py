@@ -110,6 +110,24 @@ class RunTest(TestCase):
         self.assertNotEqual(new.runcaseversions.get(), rcv)
 
 
+    def test_clone_environments(self):
+        """Cloning a Run clones its environments."""
+        r = F.RunFactory(environments={"OS": ["OS X", "Linux"]})
+
+        new = r.clone()
+
+        self.assertEqual(len(new.environments.all()), 2)
+
+
+    def test_clone_team(self):
+        """Cloning a Run clones its team."""
+        r = F.RunFactory(team=["One", "Two"])
+
+        new = r.clone()
+
+        self.assertEqual(len(new.team.all()), 2)
+
+
     def test_clone_no_results(self):
         """Cloning a run does not clone any results."""
         r = F.ResultFactory.create()

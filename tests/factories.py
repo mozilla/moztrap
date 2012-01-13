@@ -56,6 +56,31 @@ class EnvironmentsFactoryMixin(object):
 
 
 
+class TeamFactoryMixin(object):
+    """
+    Mixin for Factory subclasses for models with a team.
+
+    Allows additional ``team`` kwarg (to ``create`` only, as m2ms can't
+    be populated on an unsaved object) with list of usernames or users.
+
+    """
+    @classmethod
+    def create(cls, **kwargs):
+        team = kwargs.pop("team", None)
+        obj = super(TeamFactoryMixin, cls).create(**kwargs)
+        if team is not None:
+            users = []
+            for user_or_name in team:
+                if isinstance(user_or_name, User):
+                    user = user_or_name
+                else:
+                    user = UserFactory.create(username=user_or_name)
+                users.append(user)
+            obj.add_to_team(*users)
+        return obj
+
+
+
 class UserFactory(factory.Factory):
     FACTORY_FOR = User
 
@@ -74,14 +99,16 @@ class UserFactory(factory.Factory):
 
 
 
-class ProductFactory(factory.Factory):
+class ProductFactory(TeamFactoryMixin, factory.Factory):
     FACTORY_FOR = core_models.Product
 
     name = "Test Product"
 
 
 
-class ProductVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
+class ProductVersionFactory(TeamFactoryMixin,
+                            EnvironmentsFactoryMixin,
+                            factory.Factory):
     FACTORY_FOR = core_models.ProductVersion
 
     version = "1.0"
@@ -255,7 +282,7 @@ class EnvironmentFactory(factory.Factory):
 
 
 
-class RunFactory(EnvironmentsFactoryMixin, factory.Factory):
+class RunFactory(TeamFactoryMixin, EnvironmentsFactoryMixin, factory.Factory):
     FACTORY_FOR = execution_models.Run
 
     name = "Test Run"

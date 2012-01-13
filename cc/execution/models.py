@@ -82,7 +82,8 @@ class Run(TeamModel, HasEnvironmentsModel):
 
     def clone(self, *args, **kwargs):
         """Clone this Run with default cascade behavior."""
-        kwargs.setdefault("cascade", ["runcaseversions", "runsuites"])
+        kwargs.setdefault(
+            "cascade", ["runcaseversions", "runsuites", "environments", "team"])
         return super(Run, self).clone(*args, **kwargs)
 
 

@@ -86,7 +86,8 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
 
     def clone(self, *args, **kwargs):
         """Clone this CaseVersion, cascading steps, attachments, tags."""
-        kwargs.setdefault("cascade", ["steps", "attachments", "tags"])
+        kwargs.setdefault(
+            "cascade", ["steps", "attachments", "tags", "environments"])
         return super(CaseVersion, self).clone(*args, **kwargs)
 
 

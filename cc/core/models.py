@@ -28,11 +28,9 @@ from .ccmodel import CCModel, TeamModel
 
 
 
-class Product(CCModel):
+class Product(TeamModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-
-    team = models.ManyToManyField(User, blank=True)
 
 
     def __unicode__(self):
@@ -44,6 +42,15 @@ class Product(CCModel):
             ("manage_products", "Can add/edit/delete products."),
             ("manage_users", "Can add/edit/delete user accounts."),
             ]
+
+
+    def clone(self, *args, **kwargs):
+        """
+        Clone Product, with team.
+
+        """
+        kwargs.setdefault("cascade", ["team"])
+        return super(Product, self).clone(*args, **kwargs)
 
 
 
@@ -91,4 +98,5 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
         overrides = kwargs.setdefault("overrides", {})
         overrides["version"] = "%s.next" % self.version
         overrides["codename"] = "Cloned: %s" % self.codename
+        kwargs.setdefault("cascade", ["environments", "team"])
         return super(ProductVersion, self).clone(*args, **kwargs)

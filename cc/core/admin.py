@@ -17,7 +17,7 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.contrib import admin
 
-from .ccadmin import CCModelAdmin, CCTabularInline, TeamModelAdmin
+from .ccadmin import CCTabularInline, TeamModelAdmin
 from .models import Product, ProductVersion
 
 
@@ -27,24 +27,6 @@ class ProductVersionInline(CCTabularInline):
     extra = 0
 
 
-class ProductAdmin(CCModelAdmin):
-    fieldsets = [
-        (
-            None,
-            {
-                "fields": ["name", "description"]
-                }
-            ),
-        (
-            "Team",
-            {
-                "fields": ["team"]
-                }
-            )
-        ]
-    inlines = [ProductVersionInline]
 
-
-
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Product, TeamModelAdmin, inlines=[ProductVersionInline])
 admin.site.register(ProductVersion, TeamModelAdmin)

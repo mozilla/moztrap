@@ -87,7 +87,16 @@ class CaseVersionTest(TestCase):
         self.assertEqual(new.tags.get(), tag)
 
 
-    def test_caseversion_gets_productversion_envs(self):
+    def test_clone_environments(self):
+        """Cloning a CaseVersion clones its environments."""
+        cv = F.CaseVersionFactory(environments={"OS": ["OS X", "Linux"]})
+
+        new = cv.clone()
+
+        self.assertEqual(len(new.environments.all()), 2)
+
+
+    def test_gets_productversion_envs(self):
         """A new caseversion inherits environments of its product version."""
         pv = F.ProductVersionFactory(environments={"OS": ["Windows", "Linux"]})
         cv = F.CaseVersionFactory(productversion=pv)
@@ -96,7 +105,7 @@ class CaseVersionTest(TestCase):
         self.assertFalse(cv.envs_narrowed)
 
 
-    def test_caseversion_inherits_env_removal(self):
+    def test_inherits_env_removal(self):
         """Removing an env from a productversion cascades to caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs)
@@ -108,7 +117,7 @@ class CaseVersionTest(TestCase):
         self.assertFalse(cv.envs_narrowed)
 
 
-    def test_non_narrowed_caseversion_inherits_env_addition(self):
+    def test_non_narrowed_inherits_env_addition(self):
         """Adding env to productversion cascades to non-narrowed caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
@@ -119,7 +128,7 @@ class CaseVersionTest(TestCase):
         self.assertEqual(set(cv.environments.all()), set(envs))
 
 
-    def test_narrowed_caseversion_does_not_inherit_env_addition(self):
+    def test_narrowed_does_not_inherit_env_addition(self):
         """Adding env to prodversion doesn't cascade to narrowed caseversion."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         pv = F.ProductVersionFactory.create(environments=envs[1:])
@@ -130,7 +139,7 @@ class CaseVersionTest(TestCase):
         self.assertEqual(set(cv.environments.all()), set(envs[1:]))
 
 
-    def test_direct_caseversion_env_narrowing_sets_envs_narrowed(self):
+    def test_direct_env_narrowing_sets_envs_narrowed(self):
         """Removing an env from a caseversion directly sets envs_narrowed."""
         envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
         cv = F.CaseVersionFactory.create(environments=envs)
