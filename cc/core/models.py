@@ -53,12 +53,19 @@ class Product(TeamModel):
         return super(Product, self).clone(*args, **kwargs)
 
 
-    def reorder_versions(self):
-        """Reorder versions of this product, saving new order in db."""
+    def reorder_versions(self, update_instance=None):
+        """
+        Reorder versions of this product, saving new order in db.
+
+        If an ``update_instance`` is given, update it with new order.
+
+        """
         ordered = sorted(self.versions.all(), key=by_version)
         for i, version in enumerate(ordered, 1):
             version.order = i
             version.save(force_update=True, skip_reorder=True)
+            if version == update_instance:
+                update_instance.order = version.order
 
 
 
@@ -82,7 +89,7 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
         skip_reorder = kwargs.pop("skip_reorder", False)
         super(ProductVersion, self).save(*args, **kwargs)
         if not skip_reorder:
-            self.product.reorder_versions()
+            self.product.reorder_versions(update_instance=self)
 
 
     @property

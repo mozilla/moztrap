@@ -136,6 +136,15 @@ class ProductVersionTest(TestCase):
             )
 
 
+    def test_instance_being_saved_is_updated(self):
+        """Version being saved gets correct order after reorder."""
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.9", product=p)
+        pv = F.ProductVersionFactory.create(version="2.10", product=p)
+
+        self.assertEqual(pv.order, 2)
+
+
 
 class SortByVersionTest(TestCase):
     """
