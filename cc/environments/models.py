@@ -19,6 +19,9 @@
 Models for environments.
 
 """
+import itertools
+from collections import defaultdict
+
 from django.db import models
 
 from ..core.ccmodel import CCModel
@@ -39,6 +42,28 @@ class Profile(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return self.name
+
+
+    @classmethod
+    def generate(cls, name, *elements):
+        """
+        Create profile of environments as Cartesian product of given elements.
+
+        Elements are split by category, and then an environment is generated
+        for each combination of one element from each category.
+
+        """
+        by_category = defaultdict(list)
+        for element in elements:
+            by_category[element.category].append(element)
+
+        new = cls.objects.create(name=name)
+
+        for element_list in itertools.product(*by_category.values()):
+            e = Environment.objects.create(profile=new)
+            e.elements.add(*element_list)
+
+        return new
 
 
 

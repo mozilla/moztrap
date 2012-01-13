@@ -20,9 +20,9 @@ e.g. **Windows 7** or **Firefox 10**.
 
 .. _environment-categories:
 
-A **Environment Category** is a category containing several (generally mutually
-exclusive) elements. For instance, the **Operating System** category might
-contain the elements **OS X 10.5**, **OS X 10.6**, **Windows Vista**, and
+An **Environment Category** is a category containing several (generally
+mutually exclusive) elements. For instance, the **Operating System** category
+might contain the elements **OS X 10.5**, **OS X 10.6**, **Windows Vista**, and
 **Windows 7**.
 
 .. _environment-profiles:
