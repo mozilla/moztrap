@@ -33,17 +33,12 @@ from mock import patch
 from ..utils import refresh
 from .. import factories as F
 
+from cc.core.models import Product
+
 
 
 class CCModelTestCase(TestCase):
     """Common base class for CCModel tests."""
-    @property
-    def Product(self):
-        """Returns the Product model."""
-        from cc.core.models import Product
-        return Product
-
-
     def setUp(self):
         """Creates ``self.user`` for use by all tests."""
         self.user = F.UserFactory.create()
@@ -68,42 +63,42 @@ class CreateTest(CCModelMockNowTestCase):
     """Tests for (created/modified)_(on/by) when using Model.objects.create."""
     def test_created_by_none(self):
         """If ``user`` is not given to create(), created_by is None."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
 
         self.assertEqual(p.created_by, None)
 
 
     def test_created_by(self):
         """If ``user`` is given to create(), created_by is set."""
-        p = self.Product.objects.create(name="Foo", user=self.user)
+        p = Product.objects.create(name="Foo", user=self.user)
 
         self.assertEqual(p.created_by, self.user)
 
 
     def test_new_modified_by_none(self):
         """If ``user`` is not given to create(), modified_by is None."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
 
         self.assertEqual(p.modified_by, None)
 
 
     def test_new_modified_by(self):
         """If ``user`` is given to create(), modified_by is set."""
-        p = self.Product.objects.create(name="Foo", user=self.user)
+        p = Product.objects.create(name="Foo", user=self.user)
 
         self.assertEqual(p.modified_by, self.user)
 
 
     def test_created_on(self):
         """create() method sets created_on."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
 
         self.assertEqual(p.created_on, self.utcnow)
 
 
     def test_new_modified_on(self):
         """create() method sets modified_on."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
 
         self.assertEqual(p.modified_on, self.utcnow)
 
@@ -113,7 +108,7 @@ class SaveTest(CCModelMockNowTestCase):
     """Tests for (created/modified)_(on/by) when using instance.save."""
     def test_created_by_none(self):
         """If ``user`` is not given to new obj save(), created_by is None."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save()
 
         self.assertEqual(p.created_by, None)
@@ -121,7 +116,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_created_by(self):
         """If ``user`` is given to new obj save(), created_by is set."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save(user=self.user)
 
         self.assertEqual(p.created_by, self.user)
@@ -129,7 +124,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_new_modified_by_none(self):
         """If ``user`` is not given to new obj save(), modified_by is None."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save()
 
         self.assertEqual(p.modified_by, None)
@@ -137,7 +132,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_new_modified_by(self):
         """If ``user`` is given to new obj save(), modified_by is set."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save(user=self.user)
 
         self.assertEqual(p.modified_by, self.user)
@@ -145,7 +140,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_created_on(self):
         """save() method sets created_on."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save()
 
         self.assertEqual(p.created_on, self.utcnow)
@@ -153,7 +148,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_new_modified_on(self):
         """save() method sets modified_on for new object."""
-        p = self.Product(name="Foo")
+        p = Product(name="Foo")
         p.save()
 
         self.assertEqual(p.modified_on, self.utcnow)
@@ -161,7 +156,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_modified_by_none(self):
         """If ``user`` is not given to save(), modified_by is set to None."""
-        p = self.Product.objects.create(name="Foo", user=self.user)
+        p = Product.objects.create(name="Foo", user=self.user)
         p.save()
 
         self.assertEqual(p.modified_by, None)
@@ -169,7 +164,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_modified_by(self):
         """If ``user`` is given to save(), modified_by is set."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
         p.save(user=self.user)
 
         self.assertEqual(p.modified_by, self.user)
@@ -177,7 +172,7 @@ class SaveTest(CCModelMockNowTestCase):
 
     def test_modified_on(self):
         """save() method sets modified_on for existing object."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
         new_now = datetime.datetime(2012, 1, 1, 12, 0)
         self.mock_utcnow.return_value = new_now
         p.save()
@@ -190,29 +185,29 @@ class UpdateTest(CCModelMockNowTestCase):
     """Tests for modified_(by/on) when using queryset.update."""
     def test_modified_by_none(self):
         """queryset update() sets modified_by to None if not given user."""
-        p = self.Product.objects.create(name="Foo", user=self.user)
+        p = Product.objects.create(name="Foo", user=self.user)
 
-        self.Product.objects.update(name="Bar")
+        Product.objects.update(name="Bar")
 
         self.assertEqual(refresh(p).modified_by, None)
 
 
     def test_modified_by(self):
         """queryset update() sets modified_by if given user."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
 
-        self.Product.objects.update(name="Bar", user=self.user)
+        Product.objects.update(name="Bar", user=self.user)
 
         self.assertEqual(refresh(p).modified_by, self.user)
 
 
     def test_modified_on(self):
         """queryset update() sets modified_on."""
-        p = self.Product.objects.create(name="Foo")
+        p = Product.objects.create(name="Foo")
         new_now = datetime.datetime(2012, 1, 1, 12, 0)
         self.mock_utcnow.return_value = new_now
 
-        self.Product.objects.update(name="Bar")
+        Product.objects.update(name="Bar")
 
         self.assertEqual(refresh(p).modified_on, new_now)
 
@@ -224,7 +219,7 @@ class DeleteTest(CCModelMockNowTestCase):
         """queryset delete() sets deleted_by to None if not given user."""
         p = F.ProductFactory.create()
 
-        self.Product.objects.all().delete()
+        Product.objects.all().delete()
 
         self.assertEqual(refresh(p).deleted_by, None)
 
@@ -233,7 +228,7 @@ class DeleteTest(CCModelMockNowTestCase):
         """queryset delete() sets deleted_by if given user."""
         p = F.ProductFactory.create()
 
-        self.Product.objects.all().delete(user=self.user)
+        Product.objects.all().delete(user=self.user)
 
         self.assertEqual(refresh(p).deleted_by, self.user)
 
@@ -242,7 +237,7 @@ class DeleteTest(CCModelMockNowTestCase):
         """queryset delete() sets deleted_on."""
         p = F.ProductFactory.create()
 
-        self.Product.objects.all().delete()
+        Product.objects.all().delete()
 
         self.assertEqual(refresh(p).deleted_on, self.utcnow)
 
@@ -282,7 +277,7 @@ class CascadeDeleteTest(CCModelTestCase):
         p = F.ProductFactory.create()
         s = F.SuiteFactory.create(product=p)
 
-        self.Product.objects.all().delete()
+        Product.objects.all().delete()
 
         self.assertEqual(refresh(s).deleted_by, None)
 
@@ -292,7 +287,7 @@ class CascadeDeleteTest(CCModelTestCase):
         p = F.ProductFactory.create()
         s = F.SuiteFactory.create(product=p)
 
-        self.Product.objects.all().delete(user=self.user)
+        Product.objects.all().delete(user=self.user)
 
         self.assertEqual(refresh(s).deleted_by, self.user)
 
@@ -302,7 +297,7 @@ class CascadeDeleteTest(CCModelTestCase):
         p = F.ProductFactory.create()
         s = F.SuiteFactory.create(product=p)
 
-        self.Product.objects.all().delete()
+        Product.objects.all().delete()
 
         p = refresh(p)
         s = refresh(s)
@@ -389,7 +384,7 @@ class UndeleteTest(UndeleteMixin, CCModelTestCase):
         p = F.ProductFactory.create()
         p.delete()
 
-        self.Product.everything.all().undelete()
+        Product.everything.all().undelete()
 
         self.assertNotDeleted(refresh(p))
 
@@ -415,7 +410,7 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
         s = F.SuiteFactory.create(product=p)
         p.delete()
 
-        self.Product.everything.all().undelete()
+        Product.everything.all().undelete()
 
         self.assertNotDeleted(refresh(s))
 
@@ -448,6 +443,41 @@ class CloneTest(UndeleteMixin, CCModelTestCase):
         p = F.ProductFactory.create()
         with self.assertRaises(ValueError):
             p.clone(cascade=["name"])
+
+
+
+class CCManagerTest(CCModelTestCase):
+    """Tests for CCManager."""
+    def test_objects_doesnt_include_deleted(self):
+        """``objects`` manager doesn't include deleted objects."""
+        p1 = F.ProductFactory.create()
+        p2 = F.ProductFactory.create()
+        p2.delete()
+
+        self.assertEqual(set(Product.objects.all()), set([p1]))
+
+
+    def test_everything_does_include_deleted(self):
+        """``everything`` manager does include deleted objects."""
+        p1 = F.ProductFactory.create()
+        p2 = F.ProductFactory.create()
+        p2.delete()
+
+        self.assertEqual(set(Product.everything.all()), set([p1, p2]))
+
+
+    def test_everything_is_default_manager(self):
+        """``everything`` manager is the default manager."""
+        self.assertIs(Product._default_manager, Product.everything)
+
+
+    def test_related_managers_dont_include_deleted(self):
+        """Related managers don't include deleted objects."""
+        pv1 = F.ProductVersionFactory.create(version="2.0")
+        pv2 = F.ProductVersionFactory.create(product=pv1.product)
+        pv2.delete()
+
+        self.assertEqual(set(pv1.product.versions.all()), set([pv1]))
 
 
 

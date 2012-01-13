@@ -131,18 +131,28 @@ class CCQuerySet(QuerySet):
 
 
 class CCManager(models.Manager):
-    """Pass-through manager to ensure ``CCQuerySet`` is always used."""
+    """
+    Manager using ``CCQuerySet`` and optionally hiding deleted objects.
+
+    By making show_deleted an instantiation argument, and defaulting it to
+    False, we can achieve something a bit subtle: the default manager on a
+    CCModel shows all objects, including deleted (meaning the admin will show
+    deleted objects, so they can be undeleted). But related-object managers
+    will still hide deleted objects.
+
+    """
+    def __init__(self, *args, **kwargs):
+        """Instantiate a CCManager, pulling out the ``show_deleted`` arg."""
+        self._show_deleted = kwargs.pop("show_deleted", False)
+        super(CCManager, self).__init__(*args, **kwargs)
+
+
     def get_query_set(self):
         """Return a ``CCQuerySet`` for all queries."""
-        return CCQuerySet(self.model, using=self._db)
-
-
-
-class NotDeletedCCManager(CCManager):
-    """Manager that returns only not-deleted objects."""
-    def get_query_set(self):
-        return super(NotDeletedCCManager, self).get_query_set().filter(
-            deleted_on__isnull=True)
+        qs = CCQuerySet(self.model, using=self._db)
+        if not self._show_deleted:
+            qs = qs.filter(deleted_on__isnull=True)
+        return qs
 
 
 
@@ -167,9 +177,9 @@ class CCModel(models.Model):
 
 
     # default manager returns all objects, so admin can see all
-    everything = CCManager()
+    everything = CCManager(show_deleted=True)
     # ...but "objects", for use in most code, returns only not-deleted
-    objects = NotDeletedCCManager()
+    objects = CCManager(show_deleted=False)
 
 
     def save(self, *args, **kwargs):
