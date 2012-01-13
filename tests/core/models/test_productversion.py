@@ -105,3 +105,67 @@ class ProductVersionTest(TestCase):
         new = pv.clone()
 
         self.assertEqual(len(new.team.all()), 2)
+
+
+    def test_adding_new_version_reorders(self):
+        """Adding a new product version reorders the versions."""
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.11", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+        F.ProductVersionFactory.create(version="2.10", product=p)
+
+        self.assertEqual(
+            [v.version for v in p.versions.all()],
+            ["2.9", "2.10", "2.11"]
+            )
+
+
+    def test_editing_a_version_reorders(self):
+        """Editing a product version reorders the versions."""
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.11", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+        pv = F.ProductVersionFactory.create(version="2.12", product=p)
+
+        pv.version = "2.10"
+        pv.save()
+
+        self.assertEqual(
+            [v.version for v in p.versions.all()],
+            ["2.9", "2.10", "2.11"]
+            )
+
+
+
+class SortByVersionTest(TestCase):
+    """
+    Tests ``by_version`` sorting key func for ProductVersions.
+
+    """
+    def assertOrder(self, *versions):
+        """Assert that ``by_version`` orders given versions as listed."""
+        from cc.core.models import by_version
+        objs = [F.ProductVersionFactory(version=v) for v in reversed(versions)]
+        candidate = [o.version for o in sorted(objs, key=by_version)]
+
+        self.assertEqual(candidate, list(versions))
+
+
+    def test_numeral_padding(self):
+        """Numerals are padded so as to compare numerically."""
+        self.assertOrder("2", "11")
+
+
+    def test_lexicographic(self):
+        """Lexicographic ordering."""
+        self.assertOrder("aa", "ab")
+
+
+    def test_mixed_numeral_padding(self):
+        """Numerals are padded even when mixed with letters."""
+        self.assertOrder("1.1.a2", "1.1.a11")
+
+
+    def test_pre_release(self):
+        """Alpha strings prior to "final" are pre-release versions."""
+        self.assertOrder("1.1a", "1.1")

@@ -21,10 +21,10 @@ Core Case Conductor models (Product).
 """
 from django.db import models
 
-from django.contrib.auth.models import User
+from pkg_resources import parse_version
 
 from ..environments.models import HasEnvironmentsModel
-from .ccmodel import CCModel, TeamModel
+from .ccmodel import TeamModel
 
 
 
@@ -53,6 +53,14 @@ class Product(TeamModel):
         return super(Product, self).clone(*args, **kwargs)
 
 
+    def reorder_versions(self):
+        """Reorder versions of this product, saving new order in db."""
+        ordered = sorted(self.versions.all(), key=by_version)
+        for i, version in enumerate(ordered, 1):
+            version.order = i
+            version.save(force_update=True, skip_reorder=True)
+
+
 
 class ProductVersion(TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
@@ -68,6 +76,13 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
     class Meta:
         ordering = ["order"]
         unique_together = [("product", "version")]
+
+
+    def save(self, *args, **kwargs):
+        skip_reorder = kwargs.pop("skip_reorder", False)
+        super(ProductVersion, self).save(*args, **kwargs)
+        if not skip_reorder:
+            self.product.reorder_versions()
 
 
     @property
@@ -100,3 +115,17 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
         overrides["codename"] = "Cloned: %s" % self.codename
         kwargs.setdefault("cascade", ["environments", "team"])
         return super(ProductVersion, self).clone(*args, **kwargs)
+
+
+
+def by_version(productversion):
+    """
+    Given a ProductVersion, return a version tuple that will order correctly.
+
+    Uses pkg_resources' ``parse_version`` function.
+
+    This function is intended to be passed to the ``key`` argument of the
+    ``sorted`` builtin.
+
+    """
+    return parse_version(productversion.version)

@@ -22,6 +22,7 @@ Tests for Product model.
 from django.test import TestCase
 
 from ... import factories as F
+from ...utils import refresh
 
 
 
@@ -58,3 +59,15 @@ class ProductTest(TestCase):
         new = p.clone()
 
         self.assertEqual(len(new.team.all()), 2)
+
+
+    def test_reorder_versions(self):
+        """reorder_versions method reorders versions correctly."""
+        p = F.ProductFactory()
+        v2 = F.ProductVersionFactory(product=p, version="1.2")
+        v1 = F.ProductVersionFactory(product=p, version="1.1")
+
+        p.reorder_versions()
+
+        self.assertEqual(refresh(v1).order, 1)
+        self.assertEqual(refresh(v2).order, 2)
