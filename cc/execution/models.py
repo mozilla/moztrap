@@ -31,7 +31,7 @@ from model_utils import Choices
 from ..core.ccmodel import CCModel, TeamModel, utcnow
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
-from ..library.models import CaseVersion, Suite, CaseStep
+from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
 
 
 
@@ -86,6 +86,34 @@ class Run(TeamModel, HasEnvironmentsModel):
             "cascade", ["runcaseversions", "runsuites", "environments", "team"])
         return super(Run, self).clone(*args, **kwargs)
 
+
+    def activate(self):
+        """Make run active, locking in runcaseversions for all suites."""
+        if self.status == self.STATUS.draft:
+            self._lock_case_versions()
+        self.status = self.STATUS.active
+        self.save(force_update=True)
+
+
+    def _lock_case_versions(self):
+        """Select caseversions from suites, create runcaseversions."""
+        order = 1
+        for runsuite in RunSuite.objects.filter(
+                run=self).order_by("order").select_related("suite"):
+            for suitecase in SuiteCase.objects.filter(
+                    suite=runsuite.suite).order_by(
+                    "order").select_related("case"):
+                try:
+                    caseversion = suitecase.case.versions.filter(
+                        productversion__order__lte=self.productversion.order,
+                        status=CaseVersion.STATUS.active).order_by(
+                        "-number")[0]
+                except IndexError:
+                    pass
+                else:
+                    rcv = RunCaseVersion.objects.create(
+                        run=self, caseversion=caseversion, order=order)
+                    order += 1
 
 
 
