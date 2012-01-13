@@ -34,30 +34,37 @@ class CaseTest(TestCase):
 
 
     def test_clone_versions(self):
-        """Cloning a case clones its latest version only."""
-        cv1 = F.CaseVersionFactory.create(
-            latest=False, number=1, name="CV 1")
-        F.CaseVersionFactory.create(
-            latest=True, number=2, name="CV 2", case=cv1.case)
+        """Cloning a case clones all versions."""
+        cv = F.CaseVersionFactory.create(name="CV 1")
 
-        new = cv1.case.clone()
+        new = cv.case.clone()
 
-        self.assertEqual(new.versions.get().name, "Cloned: CV 2")
+        self.assertEqual(new.versions.get().name, "Cloned: CV 1")
 
 
 
 class CaseVersionTest(TestCase):
     def test_unicode(self):
-        c = F.CaseVersionFactory(name="Foo")
+        cv = F.CaseVersionFactory(name="Foo")
 
-        self.assertEqual(unicode(c), u"Foo")
+        self.assertEqual(unicode(cv), u"Foo")
+
+
+    def test_cant_clone_without_overriding_case_or_productversion(self):
+        """Cloning caseversion w/o case or productversion raises ValueError."""
+        cv = F.CaseVersionFactory()
+
+        with self.assertRaises(ValueError):
+            cv.clone()
 
 
     def test_clone_steps(self):
         """Cloning a caseversion clones its steps."""
         cs = F.CaseStepFactory.create()
+        pv = F.ProductVersionFactory.create(
+            product=cs.caseversion.case.product, version="2.0")
 
-        new = cs.caseversion.clone()
+        new = cs.caseversion.clone(overrides={"productversion": pv})
 
         cloned_step = new.steps.get()
         self.assertNotEqual(cloned_step, cs)
@@ -67,8 +74,10 @@ class CaseVersionTest(TestCase):
     def test_clone_attachments(self):
         """Cloning a caseversion clones its attachments."""
         ca = F.CaseAttachmentFactory.create()
+        pv = F.ProductVersionFactory.create(
+            product=ca.caseversion.case.product, version="2.0")
 
-        new = ca.caseversion.clone()
+        new = ca.caseversion.clone(overrides={"productversion": pv})
 
         cloned_attachment = new.attachments.get()
         self.assertNotEqual(cloned_attachment, ca)
@@ -81,8 +90,10 @@ class CaseVersionTest(TestCase):
         tag = F.TagFactory.create()
         cv = F.CaseVersionFactory.create()
         cv.tags.add(tag)
+        pv = F.ProductVersionFactory.create(
+            product=cv.case.product, version="2.0")
 
-        new = cv.clone()
+        new = cv.clone(overrides={"productversion": pv})
 
         self.assertEqual(new.tags.get(), tag)
 
@@ -90,8 +101,10 @@ class CaseVersionTest(TestCase):
     def test_clone_environments(self):
         """Cloning a CaseVersion clones its environments."""
         cv = F.CaseVersionFactory(environments={"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(
+            product=cv.case.product, version="2.0")
 
-        new = cv.clone()
+        new = cv.clone(overrides={"productversion": pv})
 
         self.assertEqual(len(new.environments.all()), 2)
 

@@ -32,10 +32,9 @@ date*, as well as a list of included :ref:`test suites <test-suites>`.
 
 A test run must be switched to *active* status before it can be executed by
 testers. When a test run is made active, the included test cases and their
-versions are locked in for the life of that test run. For every included *test
-suite*, the latest active version of each test case in that suite which is
-marked as applicable to a product version less than or equal to the *product
-version* of the run is included in the test run.
+versions are locked in for the life of that test run. For every test case in
+every included *test suite*, if that test case has an active version for the
+run's *product version*, that version is included in the test run.
 
 For instance, assume we have a product "Firefox" in the system with versions 8,
 9, and 10, and we have a test run for version 9. When this test run is

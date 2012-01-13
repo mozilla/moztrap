@@ -153,14 +153,6 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
             lambda obj, containers: containers[0].productversion.product))
 
 
-    @factory.lazy_attribute
-    def number(obj):
-        try:
-            return obj.case.versions.order_by("-number")[0].number + 1
-        except IndexError:
-            return 1
-
-
 
 class CaseAttachmentFactory(factory.Factory):
     FACTORY_FOR = library_models.CaseAttachment

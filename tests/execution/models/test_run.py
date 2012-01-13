@@ -185,13 +185,15 @@ class RunTest(TestCase):
 class RunActivationTest(TestCase):
     """Tests for activating runs and locking-in runcaseversions."""
     def setUp(self):
-        """Set up product and product versions used by all tests."""
+        """Set up envs, product and product versions used by all tests."""
+        self.envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"], "Browser": ["Firefox", "Chrome"]})
         self.p = F.ProductFactory.create()
-        F.ProductVersionFactory.create(product=self.p, version="7.0")
-        F.ProductVersionFactory.create(product=self.p, version="8.0")
-        F.ProductVersionFactory.create(product=self.p, version="9.0")
-        # reload versions after all are created to get correct order attr
-        self.pv7, self.pv8, self.pv9 = list(self.p.versions.all())
+        self.pv8 = F.ProductVersionFactory.create(
+            product=self.p, version="8.0", environments=self.envs)
+        self.pv9 = F.ProductVersionFactory.create(
+            product=self.p, version="9.0", environments=self.envs)
+
 
 
     def assertCaseVersions(self, run, caseversions):
@@ -211,31 +213,12 @@ class RunActivationTest(TestCase):
 
 
     def test_productversion(self):
-        """Selects latest test case version for applicable product version."""
-        tc = F.CaseFactory.create(product=self.p)
-        F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, number=1, status="active")
-        tcv2 = F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, number=2, status="active")
-        F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv9, number=3, status="active")
-
-        ts = F.SuiteFactory.create(product=self.p)
-        F.SuiteCaseFactory.create(suite=ts, case=tc)
-
-        r = F.RunFactory.create(productversion=self.pv8)
-        F.RunSuiteFactory.create(suite=ts, run=r)
-
-        r.activate()
-
-        self.assertCaseVersions(r, [tcv2])
-
-
-    def test_minimum_productversion(self):
-        """May select a case marked for an earlier product version."""
+        """Selects test case version for run's product version."""
         tc = F.CaseFactory.create(product=self.p)
         tcv1 = F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv7, number=1, status="active")
+            case=tc, productversion=self.pv8, status="active")
+        F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv9, status="active")
 
         ts = F.SuiteFactory.create(product=self.p)
         F.SuiteCaseFactory.create(suite=ts, case=tc)
@@ -248,27 +231,8 @@ class RunActivationTest(TestCase):
         self.assertCaseVersions(r, [tcv1])
 
 
-    def test_no_draft(self):
+    def test_draft_not_included(self):
         """Only active test cases are considered."""
-        tc = F.CaseFactory.create(product=self.p)
-        tcv1 = F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, number=1, status="active")
-        F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, number=2, status="draft")
-
-        ts = F.SuiteFactory.create(product=self.p)
-        F.SuiteCaseFactory.create(suite=ts, case=tc)
-
-        r = F.RunFactory.create(productversion=self.pv8)
-        F.RunSuiteFactory.create(suite=ts, run=r)
-
-        r.activate()
-
-        self.assertCaseVersions(r, [tcv1])
-
-
-    def test_case_not_included(self):
-        """A case with no applicable versions will not be included at all."""
         tc = F.CaseFactory.create(product=self.p)
         F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="draft")
@@ -284,23 +248,37 @@ class RunActivationTest(TestCase):
         self.assertCaseVersions(r, [])
 
 
-    def test_no_environments_in_common(self):
-        """Caseversion with no env overlap with run will not be included."""
-        envs = F.EnvironmentFactory.create_full_set(
-            {"OS": ["Linux", "Windows"], "Browser": ["Firefox", "Chrome"]})
-
-        self.pv8.environments.add(*envs)
-
+    def test_wrong_product_version_not_included(self):
+        """Only caseversions for correct productversion are considered."""
         tc = F.CaseFactory.create(product=self.p)
-        tcv1 = F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, number=2, status="draft")
-        tcv1.remove_envs(*envs[:2])
+        F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv9, status="active")
 
         ts = F.SuiteFactory.create(product=self.p)
         F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = F.RunFactory.create(productversion=self.pv8)
-        r.remove_envs(*envs[2:])
+        F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertCaseVersions(r, [])
+
+
+    def test_no_environments_in_common(self):
+        """Caseversion with no env overlap with run will not be included."""
+        self.pv8.environments.add(*self.envs)
+
+        tc = F.CaseFactory.create(product=self.p)
+        tcv1 = F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+        tcv1.remove_envs(*self.envs[:2])
+
+        ts = F.SuiteFactory.create(product=self.p)
+        F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = F.RunFactory.create(productversion=self.pv8)
+        r.remove_envs(*self.envs[2:])
         F.RunSuiteFactory.create(suite=ts, run=r)
 
         r.activate()

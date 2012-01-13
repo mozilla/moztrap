@@ -42,10 +42,7 @@ class Case(CCModel):
 
     def clone(self, *args, **kwargs):
         """Clone this Case with default cascade behavior: latest versions."""
-        kwargs.setdefault(
-            "cascade",
-            {"versions": lambda qs: qs.filter(latest=True)}
-            )
+        kwargs.setdefault("cascade", ["versions"])
         return super(Case, self).clone(*args, **kwargs)
 
 
@@ -66,13 +63,11 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
     productversion = models.ForeignKey(
         ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
-    number = models.PositiveIntegerField(db_index=True)
-    latest = models.BooleanField(default=True, db_index=True)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
 
     tags = models.ManyToManyField(Tag, blank=True)
-    # True if this case's envs have been narrowed from the parent product.
+    # True if this case's envs have been narrowed from the product version.
     envs_narrowed = models.BooleanField(default=False)
 
 
@@ -81,13 +76,19 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
 
 
     class Meta:
-        ordering = ["number"]
+        ordering = ["case", "productversion__order"]
+        unique_together = [("productversion", "case")]
 
 
     def clone(self, *args, **kwargs):
         """Clone this CaseVersion, cascading steps, attachments, tags."""
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
+        overrides = kwargs.get("overrides", {})
+        if "productversion" not in overrides and "case" not in overrides:
+            raise ValueError(
+                "Cannot clone CaseVersion without providing "
+                "new Case or ProductVersion.")
         return super(CaseVersion, self).clone(*args, **kwargs)
 
 

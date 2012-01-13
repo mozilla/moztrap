@@ -105,15 +105,18 @@ class Run(TeamModel, HasEnvironmentsModel):
                     "order").select_related("case"):
                 try:
                     caseversion = suitecase.case.versions.filter(
-                        productversion__order__lte=self.productversion.order,
-                        status=CaseVersion.STATUS.active).order_by(
-                        "-number")[0]
-                except IndexError:
+                        productversion=self.productversion,
+                        status=CaseVersion.STATUS.active).get()
+                except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    rcv = RunCaseVersion.objects.create(
+                    rcv = RunCaseVersion(
                         run=self, caseversion=caseversion, order=order)
-                    order += 1
+                    envs = rcv._inherited_environment_ids
+                    if envs:
+                        rcv.save(force_insert=True, inherit_envs=False)
+                        rcv.environments.add(*envs)
+                        order += 1
 
 
 
@@ -145,6 +148,16 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             ]
 
 
+    @property
+    def _inherited_environment_ids(self):
+        """Intersection of run/caseversion environment IDs."""
+        run_env_ids = set(
+            self.run.environments.values_list("id", flat=True))
+        case_env_ids = set(
+            self.caseversion.environments.values_list("id", flat=True))
+        return run_env_ids.intersection(case_env_ids)
+
+
     def save(self, *args, **kwargs):
         """
         Save instance; new instances get intersection of run/case environments.
@@ -153,15 +166,12 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
         adding = False
         if self.id is None:
             adding = True
+        inherit_envs = kwargs.pop("inherit_envs", True)
 
         ret = super(RunCaseVersion, self).save(*args, **kwargs)
 
-        if adding:
-            run_env_ids = set(
-                self.run.environments.values_list("id", flat=True))
-            case_env_ids = set(
-                self.caseversion.environments.values_list("id", flat=True))
-            self.environments.add(*run_env_ids.intersection(case_env_ids))
+        if adding and inherit_envs:
+            self.environments.add(*self._inherited_environment_ids)
 
         return ret
 

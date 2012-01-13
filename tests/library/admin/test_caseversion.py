@@ -80,7 +80,6 @@ class CaseVersionAdminTest(AdminTestCase):
             form = self.get(self.add_url).forms[0]
             form["case"] = str(case.id)
             form["productversion"] = str(pv.id)
-            form["number"] = "1"
             form["name"] = "Some case"
             form["steps-0-number"] = "1"
             form["steps-0-instruction"] = "An instruction"
