@@ -133,3 +133,26 @@ class RunCaseVersionTest(TestCase):
         cv.add_envs(envs[0])
 
         self.assertEqual(set(rcv.environments.all()), set(envs[1:]))
+
+
+    def test_result_summary(self):
+        """``result_summary`` returns dict summarizing result states."""
+        rcv = F.RunCaseVersionFactory()
+
+        F.ResultFactory(runcaseversion=rcv, status="assigned")
+        F.ResultFactory(runcaseversion=rcv, status="started")
+        F.ResultFactory(runcaseversion=rcv, status="passed")
+        F.ResultFactory(runcaseversion=rcv, status="failed")
+        F.ResultFactory(runcaseversion=rcv, status="failed")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+
+        self.assertEqual(
+            rcv.result_summary(),
+            {
+                "passed": 1,
+                "failed": 2,
+                "invalidated": 3
+                }
+            )

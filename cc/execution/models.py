@@ -19,6 +19,7 @@
 Models for test execution (runs, results).
 
 """
+from collections import defaultdict
 import datetime
 
 from django.core.exceptions import ValidationError
@@ -119,6 +120,16 @@ class Run(TeamModel, HasEnvironmentsModel):
                         order += 1
 
 
+    def result_summary(self):
+        """Return a dict summarizing status of results."""
+        return result_summary(
+            Result.objects.filter(
+                runcaseversion__run=self,
+                status__in=["passed", "failed", "invalidated"],
+                )
+            )
+
+
 
 class RunCaseVersion(HasEnvironmentsModel, CCModel):
     """An ordered association between a Run and a CaseVersion."""
@@ -174,6 +185,12 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             self.environments.add(*self._inherited_environment_ids)
 
         return ret
+
+
+    def result_summary(self):
+        """Return a dict summarizing status of results."""
+        return result_summary(
+            self.results.filter(status__in=["passed", "failed", "invalidated"]))
 
 
 
@@ -249,3 +266,13 @@ class StepResult(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return "%s (%s: %s)" % (self.result, self.step, self.status)
+
+
+
+def result_summary(results):
+    """Given an iterable of results, return a dict summarizing their states."""
+    counter = defaultdict(lambda: 0)
+    for result in results:
+        counter[result.status] += 1
+
+    return counter

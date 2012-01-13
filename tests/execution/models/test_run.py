@@ -181,6 +181,31 @@ class RunTest(TestCase):
         self.assertEqual(set(run.environments.all()), set(envs[1:]))
 
 
+    def test_result_summary(self):
+        """``result_summary`` returns dict summarizing result states."""
+        r = F.RunFactory()
+        rcv1 = F.RunCaseVersionFactory(run=r)
+        rcv2 = F.RunCaseVersionFactory(run=r)
+
+        F.ResultFactory(runcaseversion=rcv1, status="assigned")
+        F.ResultFactory(runcaseversion=rcv2, status="started")
+        F.ResultFactory(runcaseversion=rcv1, status="passed")
+        F.ResultFactory(runcaseversion=rcv2, status="failed")
+        F.ResultFactory(runcaseversion=rcv1, status="failed")
+        F.ResultFactory(runcaseversion=rcv2, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv1, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv2, status="invalidated")
+
+        self.assertEqual(
+            r.result_summary(),
+            {
+                "passed": 1,
+                "failed": 2,
+                "invalidated": 3
+                }
+            )
+
+
 
 class RunActivationTest(TestCase):
     """Tests for activating runs and locking-in runcaseversions."""
