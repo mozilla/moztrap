@@ -75,7 +75,9 @@ class Command(TestCommand):
                 for dirpath, dirs, filenames in os.walk(
                         os.path.join(settings.BASE_PATH, "cc")):
                     py_files.extend([os.path.join(dirpath, fn)
-                                     for fn in filenames if fn.endswith(".py")])
+                                     for fn in filenames
+                                     if fn.endswith(".py")
+                                     and not fn.startswith(".")])
                 report_kw["morfs"] = py_files
                 report_kw["omit"] = omit + [
                     "cc/core/management/commands/test.py",
