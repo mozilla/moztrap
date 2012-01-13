@@ -19,11 +19,10 @@
 Models for test execution (runs, results).
 
 """
-from collections import defaultdict
 import datetime
 
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import connection, models
 
 from django.contrib.auth.models import User
 
@@ -122,12 +121,7 @@ class Run(TeamModel, HasEnvironmentsModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        return result_summary(
-            Result.objects.filter(
-                runcaseversion__run=self,
-                status__in=["passed", "failed", "invalidated"],
-                )
-            )
+        return result_summary(Result.objects.filter(runcaseversion__run=self))
 
 
 
@@ -189,8 +183,7 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        return result_summary(
-            self.results.filter(status__in=["passed", "failed", "invalidated"]))
+        return result_summary(self.results.all())
 
 
 
@@ -270,9 +263,20 @@ class StepResult(CCModel):
 
 
 def result_summary(results):
-    """Given an iterable of results, return a dict summarizing their states."""
-    counter = defaultdict(lambda: 0)
-    for result in results:
-        counter[result.status] += 1
+    """
+    Given a queryset of results, return a dict summarizing their states.
 
-    return counter
+    """
+    states = [
+        Result.STATUS.passed,
+        Result.STATUS.failed,
+        Result.STATUS.invalidated,
+        ]
+
+    cols = ["COUNT(CASE WHEN status=%s THEN 1 ELSE NULL END)"] * len(states)
+    sql = "SELECT {0} FROM {1}".format(", ".join(cols), Result._meta.db_table)
+
+    cursor = connection.cursor()
+    cursor.execute(sql, states)
+
+    return dict(zip(states, cursor.fetchone()))

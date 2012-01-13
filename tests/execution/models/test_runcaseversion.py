@@ -153,6 +153,19 @@ class RunCaseVersionTest(TestCase):
             {
                 "passed": 1,
                 "failed": 2,
-                "invalidated": 3
+                "invalidated": 3,
+                }
+            )
+
+    def test_result_summary_empty(self):
+        """Empty slots in result summary still contain 0."""
+        rcv = F.RunCaseVersionFactory()
+
+        self.assertEqual(
+            rcv.result_summary(),
+            {
+                "passed": 0,
+                "failed": 0,
+                "invalidated": 0,
                 }
             )
