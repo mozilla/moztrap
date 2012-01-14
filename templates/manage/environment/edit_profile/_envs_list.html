@@ -1,15 +1,6 @@
 <div class="managelist action-ajax-replace">
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bypreview">
-        <span>environment preview</span>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
+
+  {% include "manage/environment/edit_profile/_envs_listordering.html" %}
 
   <div class="items">
     <form method="POST">

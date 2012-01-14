@@ -1,0 +1,63 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Interaction messages for the user, with icons to show the type of message.
+//
+// :last-child  - last message gets rounded bottom-border
+// .info        - blue with info icon
+// .success     - green with check icon
+// .warning     - yellow with warning icon
+// .error       - red with x icon
+// .noscript    - only displays with JS turned off
+//
+// Styleguide 1.1.
+
+#messages
+  +fixed-stretch(0,0,auto,0)
+  ul
+    @extend .container
+    list-style: none
+
+.message
+  padding: rhythm(.25) rhythm(1.5)
+  background: rgba($lighter,$small) no-repeat scroll rhythm(.5)
+  cursor: pointer
+  p
+    +trailer(0)
+
+  &:last-child
+    +border-bottom-radius()
+
+  &.info
+    background-image: image-url('ui/info.png')
+    background-color: rgba($blue-lighter,$xsmall)
+  &.success
+    background-image: image-url('ui/check.png')
+    background-color: rgba($green-lighter,$xsmall)
+  &.warning
+    background-image: image-url('ui/warning.png')
+    background-color: rgba($yellow-lighter,$xsmall)
+  &.error
+    background-image: image-url('ui/x.png')
+    background-color: rgba($red-lighter,$xsmall)
+
+  &.noscript
+    .js &
+      display: none

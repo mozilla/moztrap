@@ -49,15 +49,16 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('#addcase').customAutocomplete({
+        $('#single-case-form, #bulk-case-form').customAutocomplete({
             textbox: 'input[name="text-tag"]',
             ajax: true,
-            url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+            url: $('form[id$="-case-form"] input[name="text-tag"]').data('autocomplete-url'),
             triggerSubmit: null,
             allowNew: true,
             restrictAllowNew: true,
             inputType: 'tag',
-            noInputsNote: true
+            noInputsNote: true,
+            prefix: 'tag'
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
@@ -68,7 +69,8 @@ var CC = (function (CC, $) {
             hideFormActions: true,
             expiredList: '.env-element-list',
             inputType: 'element',
-            caseSensitive: true
+            caseSensitive: true,
+            prefix: 'element'
         });
         $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
@@ -81,7 +83,7 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('.selectruns').html5finder({
+        $('.runsdrill').html5finder({
             loading: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
@@ -97,10 +99,10 @@ var CC = (function (CC, $) {
                 'input[name="testrun"]'
             ],
             callback: function () {
-                $('.selectruns + .environment').slideUp('fast');
+                $('.runsdrill .drillenv').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill .drillenv').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
@@ -193,7 +195,7 @@ var CC = (function (CC, $) {
         CC.autoFocus('.details.stepfail > .summary', '#run');
         CC.autoFocus('.details.testinvalid > .summary', '#run');
         CC.runTests('#run');
-        CC.breadcrumb('.selectruns');
+        CC.breadcrumb('.runsdrill');
         CC.failedTestBug('#run');
     });
 

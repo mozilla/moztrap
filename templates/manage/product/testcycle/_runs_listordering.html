@@ -1,0 +1,10 @@
+{% extends 'lists/_listordering.html' %}
+
+{% block sortitems %}
+  {% include "lists/_sortitem.html" with sortname="status" sortID="status" %}
+  {% include "lists/_sortitem.html" with sortname="test runs" sortID="name" %}
+  {% include "lists/_sortitem.html" with sortname="product" sortID="product" %}
+  {% include "lists/_sortitem.html" with sortname="start date" sortID="startDate" %}
+  {% include "lists/_sortitem.html" with sortname="end date" sortID="endDate" %}
+  {% include "lists/_sortitem.html" with sortname="controls" %}
+{% endblock sortitems %}

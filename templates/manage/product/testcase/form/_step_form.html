@@ -1,0 +1,8 @@
+<div class="steps">
+  {{ form.steps_formset.management_form }}
+  <ol class="steplist" data-prefix="{{ form.steps_formset.prefix }}">
+    {% for form in form.steps_formset %}
+    {% include "manage/product/testcase/form/_step_form_item.html" %}
+    {% endfor %}
+  </ol>
+</div>

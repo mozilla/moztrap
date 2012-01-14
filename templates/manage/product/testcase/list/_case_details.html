@@ -1,0 +1,13 @@
+{% include "lists/_byline.html" with item=case %}
+
+<ol class="steps">
+  {% for step in case.steps %}
+  <li>
+    <p class="instruction">{{ step.instruction }}</p>
+    <p class="outcome">{{ step.expectedResult }}</p>
+  </li>
+  {% endfor %}
+</ol>
+
+{% include "lists/_environments.html" with environments=case.environmentgroups %}
+{% include "lists/_associated_links.html" with bugs=case.relatedbugs attachments=case.attachments %}

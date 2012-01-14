@@ -1,0 +1,95 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Creates the default sans-serif font stack.
+//
+// No styleguide reference.
+
+=sans
+  font-family: "CambridgeRound", $sans-fallback
+
+=cond
+  font-family: "CambridgeRoundCond", $sans-fallback
+
+// ---------------------------------------------------------------------------
+// Adjusts the font weight and style.
+//
+// $weight  - [light | normal | demi | bold]
+// $style   - [normal | italic]
+//
+// No styleguide reference.
+
+=adjust-font($weight:false,$style:false)
+  @if $weight == "normal"
+    font-weight: $font-weight-normal
+  @if $weight == "light"
+    font-weight: $font-weight-light
+  @if $weight == "demi"
+    font-weight: $font-weight-demi
+  @if $weight == "bold"
+    font-weight: $font-weight-bold
+
+  @if $style == "normal"
+    font-style: normal
+  @if $style == "italic"
+    font-style: italic
+
+=light
+  +adjust-font('light')
+
+=demi
+  +adjust-font('demi')
+
+=bold
+  +adjust-font('bold')
+
+=boldcond
+  +cond
+  +bold
+
+=italic
+  +adjust-font($style:'italic')
+
+=font-style-normal
+  +adjust-font($style:'normal')
+
+=font-weight-normal
+  +adjust-font('normal')
+
+=font-normal
+  +adjust-font('normal','normal')
+
+// ---------------------------------------------------------------------------
+
+=ellipsis($r:1)
+  overflow: hidden
+  max-height: rhythm($r)
+  white-space: nowrap
+  word-wrap: break-word
+  -o-text-overflow: ellipsis
+  text-overflow: ellipsis
+
+// ---------------------------------------------------------------------------
+
+.allcaps
+  text-transform: uppercase
+
+.smallcaps
+  font-variant: small-caps

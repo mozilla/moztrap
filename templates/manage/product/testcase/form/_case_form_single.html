@@ -1,0 +1,10 @@
+<form method="POST" enctype="multipart/form-data" id="single-case-form">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+
+  {% block versionform %}{% endblock versionform %}
+
+  {% block mainform %}
+    {% include "manage/product/testcase/form/_case_form_single_versioned_fields.html" %}
+  {% endblock mainform %}
+</form>

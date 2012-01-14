@@ -1,0 +1,50 @@
+{% extends 'manage/product/testcase/base.html' %}
+
+{% load icanhaz %}
+
+{% block content %}
+<section>
+
+  {% icanhaz "autocomplete_suggestion" %}
+  {% icanhaz "autocomplete_input" %}
+  {% icanhaz "autocomplete_no_inputs" %}
+
+  <h2>{% block formtitle %}{% endblock formtitle %}</h2>
+
+  {% block caseforms %}
+    {% include "manage/product/testcase/form/_case_form_edit.html" %}
+  {% endblock caseforms %}
+
+</section>
+{% endblock content %}
+
+{% block extrajs %}
+<script>
+  $(
+      function() {
+          $('ol.steplist').formset(
+              {
+                  prefix: '{{ form.steps_formset.prefix }}',
+                  formTemplate: '#empty-step-form > li',
+                  formSelector: '.steps-form',
+                  deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                  deleteLinkSelector: '.removefields',
+                  addAnimationSpeed: 'normal',
+                  removeAnimationSpeed: 'fast',
+                  autoAdd: true,
+                  alwaysShowExtra: true,
+                  deleteOnlyActive: true,
+                  insertAbove: true
+              });
+      });
+
+</script>
+{% endblock %}
+
+{% block last %}
+<div style="display: none;">
+  <ul id="empty-step-form" class="empty-form">
+    {% include "manage/product/testcase/form/_step_form.html" with form=form.steps_formset.empty_form %}
+  </ul>
+</div>
+{% endblock %}

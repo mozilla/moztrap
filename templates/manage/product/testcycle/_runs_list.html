@@ -2,26 +2,7 @@
 
 <div class="managelist action-ajax-replace">
 
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bystatus">
-        <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
-      </li>
-      <li class="bytitle">
-        <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">test runs</a>
-      </li>
-      <li class="bystart">
-        <a href="{{ sort|url:"startDate" }}" class="{{ sort|dir:"startDate" }}">start date</a>
-      </li>
-      <li class="byend">
-        <a href="{{ sort|url:"endDate" }}" class="{{ sort|dir:"endDate" }}">end date</a>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
+  {% include "manage/product/testcycle/_runs_listordering.html" %}
 
   <div class="items">
     {% if testruns %}

@@ -1,0 +1,19 @@
+  <div class="versioned">
+    {% block basicform %}
+      <div class="basic">
+        {% include "forms/_field.html" with field=form.product %}
+        {% include "forms/_field.html" with field=form.suite %}
+        {% include "forms/_field.html" with field=form.name %}
+        {% include "forms/_field.html" with field=form.description %}
+      </div>
+    {% endblock basicform %}
+
+    {% include "manage/product/testcase/tag/_tagging.html" with formtype="single" %}
+    {% include "manage/product/_attachments.html" with obj=case %}
+    {% include "manage/product/testcase/form/_step_form.html" %}
+
+    <div class="form-actions">
+      {% block versionactions %}{% endblock versionactions %}
+      <button type="submit" name="single-save" value="1">save test case</button>
+    </div>
+  </div>

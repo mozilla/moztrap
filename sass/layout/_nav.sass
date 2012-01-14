@@ -1,0 +1,164 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+$nav-background: $blue-light
+
+// ---------------------------------------------------------------------------
+// Navigation titles are not displayed.
+//
+// No styleguide reference.
+
+.navhead
+  +gone
+
+// ---------------------------------------------------------------------------
+// Account Navigation.
+//
+// No styleguide reference.
+
+#accountnav
+  +columns($account-width)
+  +omega
+  +leader(2.25)
+  position: relative
+  text-align: right
+  z-index: 2
+
+// ---------------------------------------------------------------------------
+// Main Navigation.
+//
+// No styleguide reference.
+
+[role="navigation"]
+  +pie-clearfix
+  +padding-trailer(1.5)
+  clear: left
+  position: relative
+  ul, ol
+    +no-style-list
+  li
+    +float(left)
+  a
+    #{$link}
+      display: inline-block
+
+// Primary ----------------------------------------------------------------
+.primary
+  > li
+    &:first-child
+      +pre($logo-width)
+    > a
+      #{$link}
+        +border-top-radius
+        position: relative
+        padding: rhythm(.25) rhythm(.5)
+      &::after
+        +triangle($nav-background,rhythm(.375))
+        content: ""
+        bottom: rhythm(-.125)
+        left: 45%
+        display: none
+    &:hover
+      a::after
+        display: block
+
+  > .active
+    > a
+      background: $nav-background
+      &:hover::after
+        display: none
+
+// Secondary ----------------------------------------------------------------
+.secondary
+  +stretch-x
+  display: none
+  overflow: hidden
+
+  .active
+    a
+      #{$link}
+        +text-shadow(rgba($blue-hint,$xxsmall) 0 1px 0)
+        color: $blue-darker
+
+  > ul, > ol
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    +text-shadow(rgba($blue-hint,$xxsmall) 1px 1px 0)
+    min-height: rhythm(1)
+    background: $nav-background
+    color: rgba($blue-dark,$small)
+    > li
+      &:first-child
+        margin-left: side-gutter()
+
+  li
+    &::after
+      +hpadding(rhythm(.5))
+    &:last-child::after
+      display: none
+  ul
+    li::after
+      content: "|"
+  ol
+    li::after
+      content: "»"
+
+  .active &
+    display: block
+  .primary:hover .active:not(:hover) &
+    display: none
+  .primary > li:hover &
+    display: block
+
+  .envsettings
+    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+    color: $blue-hint
+    li
+      &::after
+        content: ", "
+        padding: 0 .4em 0 0
+        margin: 0
+
+// ---------------------------------------------------------------------------
+// Drilldown Navigation.
+//
+// [role='banner']  - layout adjusted to fit in the header.
+
+.drilldown
+
+  [role="banner"] &
+    +full
+    position: relative
+
+    .summary
+      +button-style($green,'ui/columns.png',true)
+      position: absolute
+      right: 0
+      top: - rhythm(1.5)
+      cursor: pointer
+      outline: 0
+    &.open
+      .summary
+        +button-style($yellow-dark,'ui/minus.png',true)
+
+    .content
+      +padding-leader
+      +padding-trailer
+
+

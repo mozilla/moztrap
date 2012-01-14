@@ -15,89 +15,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-// Mixin ---------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-=font-face($name, $font-files, $eot: false, $weight: false, $style: false)
-  $iefont: unquote("#{$eot}?iefix")
-  @font-face
-    font-family: quote($name)
-    @if $eot
-      src: font-url($eot)
-      $font-files: font-url($iefont) unquote("format('eot')"), $font-files
-    src: $font-files
-    @if $weight
-      font-weight: $weight
-    @if $style
-      font-style: $style
+$font-weight-light  : 200
+$font-weight-normal : normal
+$font-weight-demi   : 500
+$font-weight-bold   : 700
+
+$sans-fallback      : "Helvetica Neue", Helvetica, Arial, sans-serif
 
 // Fonts ---------------------------------------------------------------------
 
-+font-face('CambridgeRound', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg),false,normal,normal)
-+font-face('CambridgeRound', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg),false,200,normal)
-+font-face('CambridgeRound', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg),false,500,normal)
-+font-face('CambridgeRound', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg),false,700,normal)
-+font-face('CambridgeRound', font-files('cambridgeround_italic_macroman/cambridge_round_it-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic',svg),false,normal,italic)
++font-face('CambridgeRound', font-files('cambridgeround_regular_macroman/cambridge_round-webfont.woff',woff,'cambridgeround_regular_macroman/cambridge_round-webfont.ttf',truetype,'cambridgeround_regular_macroman/cambridge_round-webfont.svg#CambridgeRound',svg),false,$font-weight-normal,normal)
++font-face('CambridgeRound', font-files('cambridgeround_light_macroman/cambridge_round_light-webfont.woff',woff,'cambridgeround_light_macroman/cambridge_round_light-webfont.ttf',truetype,'cambridgeround_light_macroman/cambridge_round_light-webfont.svg#CambridgeRoundLight',svg),false,$font-weight-light,normal)
++font-face('CambridgeRound', font-files('cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.woff',woff,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.ttf',truetype,'cambridgeround_semibold_macroman/cambridge_round_semibold-webfont.svg#CambridgeRoundSemibold',svg),false,$font-weight-demi,normal)
++font-face('CambridgeRound', font-files('cambridgeround_bold_macroman/cambridge_round_bold-webfont.woff',woff,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.ttf',truetype,'cambridgeround_bold_macroman/cambridge_round_bold-webfont.svg#CambridgeRoundBold',svg),false,$font-weight-bold,normal)
++font-face('CambridgeRound', font-files('cambridgeround_italic_macroman/cambridge_round_it-webfont.woff',woff,'cambridgeround_italic_macroman/cambridge_round_it-webfont.ttf',truetype,'cambridgeround_italic_macroman/cambridge_round_it-webfont.svg#CambridgeRoundItalic',svg),false,$font-weight-normal,italic)
 
-+font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg),false,normal,normal)
-+font-face('CambridgeRoundCond', font-files('cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff',woff,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf',truetype,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg),false,700,normal)
-+font-face('CambridgeRoundCond', font-files('cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.woff',woff,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.ttf',truetype,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg),false,500,normal)
-
-$sans-fallback: "Helvetica Neue", Helvetica, Arial, sans-serif
-
-=sans-family
-  font-family: "CambridgeRound", $sans-fallback
-
-=light
-  font-weight: 200
-
-=font-weight-normal
-  font-weight: normal
-
-=demi
-  font-weight: 500
-
-=bold
-  font-weight: 700
-
-=italic
-  font-style: italic
-
-=font-style-normal
-  font-style: normal
-
-=cond
-  font-family: "CambridgeRoundCond", $sans-fallback
-
-=boldcond
-  +cond
-  +bold
-
-=serif-family
-  font-family: Cambria, Georgia, serif
-
-=monospace-family
-  font-family: "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, Courier, monospace, sans-serif
-
-/* !
- * Web Fonts from fontspring.com
- *
- * All OpenType features and all extended glyphs have been removed.
- * Fully installable fonts can be purchased at http://www.fontspring.com
- *
- * The fonts included in this stylesheet are subject to the End User License you purchased
- * from Fontspring. The fonts are protected under domestic and international trademark and
- * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
- * distributing this font software.
- *
- * (c) 2010-2011 Fontspring
- *
- *
- *
- *
- * The fonts included are copyrighted by the vendor listed below.
- *
- * Vendor:      Aviation Partners
- * License URL: http://www.fontspring.com/fflicense/aviation-partners
- *
- *
- */
++font-face('CambridgeRoundCond', font-files('cambridgeround_condensed_macroman/cambridge_round_cond-webfont.woff',woff,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.ttf',truetype,'cambridgeround_condensed_macroman/cambridge_round_cond-webfont.svg#CambridgeRoundCondensed',svg),false,$font-weight-normal,normal)
++font-face('CambridgeRoundCond', font-files('cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.woff',woff,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.ttf',truetype,'cambridgeround_boldcondensed_macroman/cambridge_round_bold_cond-webfont.svg#CambridgeRoundBoldCondensed',svg),false,$font-weight-bold,normal)
++font-face('CambridgeRoundCond', font-files('cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.woff',woff,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.ttf',truetype,'cambridgeround_semiboldcondensed_macroman/cambridge_round_semibold_cond-webfont.svg#CambridgeRoundSemiboldCondensed',svg),false,$font-weight-demi,normal)

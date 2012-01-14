@@ -1,14 +1,12 @@
-<h4>environments</h4>
-<ul>
-   {% regroup environments by typename as type_list %}
-  {% for type in type_list %}
-  <li class="envgroup">
-    <h5>{{ type.grouper }}</h5>
-    <ul>
-      {% for env in type.list %}
-      <li>{{ env.name }}</li>
+<aside class="envs">
+  <h4 class="envs-title">environments</h4>
+  <ul class="envlist">
+    {% for env in environments %}
+    <li>
+      {% for element in env.elements %}
+        <a href="#{{ element.name|slugify }}" title="filter by {{ element.name }}" class="filter-link">{{ element.name }}</a>{% if not forloop.last %},{% endif %}
       {% endfor %}
-    </ul>
-  </li>
-  {% endfor %}
-</ul>
+    </li>
+    {% endfor %}
+  </ul>
+</aside>

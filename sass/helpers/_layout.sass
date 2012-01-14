@@ -1,0 +1,63 @@
+// Fixes an item to the given offset positions of the window.
+//
+// $offset-top    - The top offset.
+// $offset-right  - The right offset.
+// $offset-bottom - The bottom offset.
+// $offset-left   - The left offset
+
+=fixed-stretch($offset-top: false, $offset-right: false, $offset-bottom: false, $offset-left: false)
+  position: fixed
+  @if $offset-top
+    top: $offset-top
+  @if $offset-right
+    right: $offset-right
+  @if $offset-bottom
+    bottom: $offset-bottom
+  @if $offset-left
+    left: $offset-left
+
+// Apply column-margins before or after a grid element.
+//
+// $pre    - left columns, defaults to false.
+// $post    - right columns, defaults to false.
+// $context - grid context, defaults to false.
+
+=squish($pre:false,$post:false,$context:false)
+  $sg: side-gutter()
+  @if $context
+    $sg: 0
+
+  @if $pre
+    margin-left: $sg + columns($pre,$context) + gutter($context)
+  @if $post
+    margin-right: $sg + columns($post,$context) + gutter($context)
+
+=pre($pre:0,$context:false)
+  +squish($pre:$pre,$context:$context)
+
+=post($pull:0,$context:false)
+  +squish($pull:$pull,$context:$context)
+
+// Push or pull an element on the grid.
+
+@function move($n,$context:false)
+  $move: columns($n,$context) + gutter($context)
+  @return $move
+
+=push($n,$c:false)
+  $sg: side-gutter()
+  @if $c
+    $sg: 0
+
+  margin-left: $sg + move($n,$c)
+
+=pull($n,$c:false)
+  margin-left: 0 - move($n,$c)
+
+// Creates a grid container with a min-width of 68em (approx 960px).
+//
+// No styleguide reference.
+
+.container
+  +container
+  min-width: 54em

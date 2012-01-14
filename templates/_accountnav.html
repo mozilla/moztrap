@@ -1,0 +1,16 @@
+<nav id="accountnav">
+  <h2 class="navhead">Account Navigation</h2>
+  <ul>
+    {% if request.user %}
+      <li>
+        Welcome {{ request.user.firstName }} [<a href="{% url logout %}">Sign Out</a>]
+      </li>
+    {% else %}
+      <li>
+        <a href="{% url login %}">Sign in</a> or <a href="{% url register %}">Register</a>
+      </li>
+    {% endif %}
+    {# @@@ <li><a href="#">Account Settings</a></li> #}
+    {# @@@ <li><a href="#">Help</a></li> #}
+  </ul>
+</nav>

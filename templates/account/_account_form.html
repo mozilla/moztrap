@@ -1,16 +1,13 @@
 <form method="POST">
   {% csrf_token %}
   {{ form.non_field_errors }}
-  <ul>
+  <div class="formfields">
     {% for field in form %}
-    <li>
-      {{ field.errors }}
-      {{ field.label_tag }}
-      {{ field }}
-    </li>
+    {% include "forms/_field.html" %}
     {% endfor %}
-  </ul>
+  </div>
   <div class="form-actions">
+    <a href="{% url login %}">login</a> or
     <button type="submit">register</button>
   </div>
 </form>

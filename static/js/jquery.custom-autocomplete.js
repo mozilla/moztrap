@@ -108,8 +108,8 @@
                         thisSuggestionType = $(this).find('a').data('type');
                     if (thisSuggestionName && !options.caseSensitive) { thisSuggestionName = thisSuggestionName.toString().toLowerCase(); }
                     if ($(this).find('a').hasClass('new')) {
-                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
-                                || inputs.filter('[id^="id-' + prefix + '-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).siblings('label').text() === thisSuggestionName; }).length
+                        if (inputs.filter('[id^="id-' + prefix + '-' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).closest('li[class$="item"]').find('label').text() === thisSuggestionName; }).length
+                                || inputs.filter('[id^="id-' + prefix + '-new' + thisSuggestionType + '-"]:checked').filter(function () { return $(this).closest('li[class$="item"]').find('label').text() === thisSuggestionName; }).length
                                 || newSuggestions.find('a:not(.new)').filter(function () { return $(this).data('name') === thisSuggestionName && $(this).data('type') === thisSuggestionType; }).length) {
                             return false;
                         } else {
@@ -130,12 +130,12 @@
                 if (!data && !options.ajax) {
                     var suggestions;
                     if (options.caseSensitive) {
-                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
-                            return $(this).children('label').text().indexOf(typedText) !== -1;
+                        suggestions = inputList.find(options.inputs).not(':disabled').closest('li[class$="item"]').filter(function () {
+                            return $(this).find('label').text().indexOf(typedText) !== -1;
                         });
                     } else {
-                        suggestions = inputList.find(options.inputs).not(':disabled').parent('li').filter(function () {
-                            return $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
+                        suggestions = inputList.find(options.inputs).not(':disabled').closest('li[class$="item"]').filter(function () {
+                            return $(this).find('label').text().toLowerCase().indexOf(typedText.toLowerCase()) !== -1;
                         });
                     }
                     data = {};
@@ -501,14 +501,10 @@
                             }
                         } else {
                             // ...or add it if it doesn't already exist.
-                            if (thisGroup.find(options.newInputTextbox).length) {
-                                thisGroup.removeClass('empty').find(options.newInputTextbox).parent('li').before(newInput);
+                            if (thisGroup.children('ul').length) {
+                                thisGroup.removeClass('empty').children('ul').append(newInput);
                             } else {
-                                if (thisGroup.children('ul').length) {
-                                    thisGroup.removeClass('empty').children('ul').append(newInput);
-                                } else {
-                                    thisGroup.removeClass('empty').append(newInput);
-                                }
+                                thisGroup.removeClass('empty').append(newInput);
                             }
                             $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
@@ -543,7 +539,7 @@
         if (!options.inputsNeverRemoved) {
             inputList.add(newInputList).on('click', 'label', function (e) {
                 e.preventDefault();
-                $(this).parent().remove();
+                $(this).closest('li[class$="item"]').remove();
                 inputs = inputList.add(newInputList).find(options.inputs);
                 if (newSuggestions) {
                     filterSuggestions();
@@ -575,9 +571,12 @@
                         prefix: prefix
                     }),
                     addInput = function () {
-                        newInput.insertBefore(thisTextbox.parent('li'));
+                        if (thisGroup.children('ul').length) {
+                            thisGroup.removeClass('empty').children('ul').append(newInput);
+                        } else {
+                            thisGroup.removeClass('empty').append(newInput);
+                        }
                         $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
-                        thisGroup.removeClass('empty');
                         inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
                         updateFormActions();
                         thisTextbox.val(null);

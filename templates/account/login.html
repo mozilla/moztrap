@@ -1,27 +1,18 @@
-{% extends 'base_site.html' %}
+{% extends 'account/base.html' %}
 
-{% block run-active-nav %}active{% endblock run-active-nav %}
+{% block title %}Login | {{ block.super }}{% endblock title %}
 
 {% block content %}
-
 <section id="login">
-  <figure class="logo"><img src="{{ STATIC_URL }}images/cc-logo-126-50.png"></figure>
-  <div class="welcome">
-    <h2>Welcome to Mozilla’s Test Case Manager!</h2>
-    <p>To run tests, login to your account. Once logged in, you can select a test cycle to run. Or you can view results of already completed runs above.</p>
-  </div>
-  <form method="POST">
+  <h2>Login</h2>
+  <form method="POST" id="loginform">
     {% csrf_token %}
     {{ form.non_field_errors }}
-    <ul>
+    <div class="formfields">
       {% for field in form %}
-      <li>
-        {{ field.errors }}
-        {{ field.label_tag }}
-        {{ field }}
-      </li>
+      {% include "forms/_field.html" %}
       {% endfor %}
-    </ul>
+    </div>
     <div class="form-actions">
       <a href="{% url register %}">register</a> or
       <button type="submit">login</button>

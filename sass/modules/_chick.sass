@@ -1,0 +1,66 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+.chick
+  +border-radius
+  +float(left)
+  +trailer(.5)
+  +demi
+  +cond
+  +text-shadow(rgba($base,$xsmall) 0 1px 0)
+  position: relative
+  padding: 0 rhythm(.25)
+  margin-right: rhythm(.25)
+  border: 1px solid $blue
+  background-color: $blue-light
+  color: rgba($lightest,$small-norm)
+
+.actionchick
+  @extend .chick
+  padding-right: rhythm()
+
+.chickcontent
+  border-right: 1px solid $blue-lighter
+  padding-right: rhythm(.25)
+
+.chickaction
+  +stretch-y
+  +opacity(.5)
+  right: 0
+  &:hover
+    +opacity(1)
+
+.chicktoggle
+  @extend .chickaction
+  +icon('ui/x_sm.png')
+
+.chickcheck
+  .check
+    +gone
+  .onoff
+    @extend .actionchick
+    display: none
+  .check:checked + .onoff
+    display: inline
+
+  .content
+    @extend .chickcontent
+
+  .onoffswitch
+    @extend .chicktoggle

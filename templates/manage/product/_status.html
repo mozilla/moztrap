@@ -1,0 +1,29 @@
+{% load permissions %}
+
+<div class="status">
+  {% if "PERMISSION_TEST_CASE_ACTIVATE" in request.user.permissionCodes %}
+
+    {% if item.status.DRAFT %}
+    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft">draft</button>
+    {% endif %}
+    {% if item.status.ACTIVE %}
+    <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active">active</button>
+    {% endif %}
+    {% if item.status.LOCKED %}
+    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled">disabled</button>
+    {% endif %}
+
+  {% else %}
+
+    {% if item.status.DRAFT %}
+    <span class="draft">draft</span>
+    {% endif %}
+    {% if item.status.ACTIVE %}
+    <span class="active">active</span>
+    {% endif %}
+    {% if item.status.LOCKED %}
+    <span class="disabled">disabled</span>
+    {% endif %}
+
+  {% endif %}
+</div>

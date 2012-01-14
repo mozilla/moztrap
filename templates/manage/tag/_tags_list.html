@@ -1,34 +1,3 @@
-{% load sort icanhaz %}
-
-<div class="managelist action-ajax-replace">
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bytag">
-        <a href="{{ sort|url:'tag' }}" class="{{ sort|dir:'tag' }}">tag</a>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
-
-  <div class="items">
-    {% icanhaz "tag_edit" %}
-
-    {% for tag in tags %}
-    {% include "manage/tag/_tags_list_item.html" %}
-    {% endfor %}
-
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <article class="item add-item details">
-      <div class="content">
-        {% include "manage/tag/_tag_list_item_content_new.html" %}
-      </div>
-      <h3 class="summary">add a tag</h3>
-    </article>
-    {% endif %}
-  </div>
-
-  {% include "lists/_listnav.html" %}
-</div>
+{% include "manage/tag/_tags_listordering.html" %}
+{% include "manage/tag/_tags_list_items.html" %}
+{% include "lists/_listnav.html" %}

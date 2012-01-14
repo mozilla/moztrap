@@ -2,11 +2,18 @@
 
 {% block site %}
 
-<header role="banner">
-  <div class="container">
-    <a href="#main">skip to main content</a>
+{% include "_messages.html" %}
 
-    <h1 id="brand"><a href="/" rel="home">case conductor</a></h1>
+<header role="banner">
+  <h1 id="brand">
+    <a href="/" rel="home">
+      <span class="logo"> </span>
+      <span class="wordmark">case conductor</span>
+    </a>
+  </h1>
+
+  {% block site-navigation %}
+    {% include "_accountnav.html" %}
 
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
@@ -79,51 +86,19 @@
       </ul>
     </nav>
 
-    <nav class="meta">
-      <h2 class="navhead">Account Navigation</h2>
-      <ul>
-        {% block meta-user %}
-          {% if request.user %}
-            <li>
-              Welcome {{ request.user.firstName }} [<a href="{% url logout %}">Sign Out</a>]
-            </li>
-          {% else %}
-            <li>
-              <a href="{% url login %}">Sign in</a> or <a href="{% url register %}">Register</a>
-            </li>
-          {% endif %}
-          {# @@@ <li><a href="#">Account Settings</a></li> #}
-        {% endblock %}
-        {# @@@ <li><a href="#">Help</a></li> #}
-      </ul>
-    </nav>
+    {% block drilldown %}{% endblock drilldown %}
+  {% endblock site-navigation %}
 
-    {% block drilldown %}
-    {% endblock drilldown %}
-
-  </div>
 </header>
 
-<div id="page">
-  <div class="container">
-{% block page %}
-
-  <div id="main" role="main">
-    {% include "_messages.html" %}
-
-    {% block content %}
-    {% endblock %}
-  </div><!-- /~main -->
-
-{% endblock page %}
-  </div>
-</div>
+<div id="main" role="main">
+  {% block content %}
+  {% endblock %}
+</div><!-- /~main -->
 
 <footer role="contentinfo">
-  <div class="container">
-
   <div id="hcard-mozilla" class="author vcard">
-    <small>copyright &copy; 2011</small>
+    <small>Copyright &copy; 2011</small>
     <strong class="fn org">Mozilla</strong>
     <div class="adr">
       <div class="street-address">650 Castro St, Suite 300</div>
@@ -131,8 +106,6 @@
       <span class="region">CA</span>
       <span class="postal-code">94041-2021</span>
     </div>
-  </div>
-
   </div>
 </footer>
 

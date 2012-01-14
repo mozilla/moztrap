@@ -1,0 +1,127 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+@import reset
+@import buttons
+
+// ---------------------------------------------------------------------------
+// Styles placeholder text as needed.
+//
+// @content - the desired styles.
+
+=placeholder
+  &::-webkit-input-placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &.placeholder
+    @content
+
+// Default placeholder styles.
+
+input, textarea
+  +placeholder
+    color: $mid
+
+// ---------------------------------------------------------------------------
+// Default styling for text inputs.
+//
+// [disabled]     - half opacity.
+// :focus:valid   - green highlight when valid.
+// :focus:invalid - red highlight when invalid.
+
+.input
+  +sans
+  +adjust-font-size-to(14px,1)
+  +rhythm-borders(1px,.25,14px)
+  +box-sizing(border-box)
+  +box-shadow(inset rgba($blue,.25) 0 0 $smallem)
+  width: 100%
+  background: rgba($lightest,.5)
+  color: $base
+  border-color: $base
+  vertical-align: top
+  outline: 0
+
+  &:focus, &.hadfocus
+    &:valid
+      +box-shadow(inset rgba($green,.25) 0 0 $smallem)
+    &:invalid
+      +box-shadow(inset rgba($red,.25) 0 0 $smallem)
+
+[disabled]
+  +opacity(.5)
+
+textarea, select
+  @extend .input
+
+textarea
+  min-height: rhythm(5,14px)
+
+input
+  &[type="text"], &[type="password"],
+  &[type="email"], &[type="url"], &[type="tel"],
+  &[type="date"], &[type="datetime"], &[type="datetime-local"],
+  &[type="month"], &[type="week"], &[type="time"],
+  &[type="number"], &[type="search"], &[type="color"]
+    @extend .input
+    height: rhythm(1.5,14px)
+
+// ---------------------------------------------------------------------------
+// Form Layouts
+
+.formfield
+  +pie-clearfix
+  +trailer(.5)
+  position: relative
+  clear: both
+  &.errors
+    label
+      color: $red
+
+.formfields
+  label
+    +bold
+    +cond
+    +leader(.25)
+    text-align: right
+    text-transform: capitalize
+  &.optional label
+    +demi
+  .isoptional
+    +opacity(.5)
+    text-transform: lowercase
+    &::before
+      content: "("
+    &::after
+      content: ")"
+
+// ---------------------------------------------------------------------------
+// Form Helpers
+
+.errorlist
+  +no-style-list
+  +italic
+  color: $red
+
+.form-actions
+  +padding-leader(.5)
+  clear: both
+  text-align: right
+
