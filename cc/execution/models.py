@@ -124,6 +124,21 @@ class Run(TeamModel, HasEnvironmentsModel):
         return result_summary(Result.objects.filter(runcaseversion__run=self))
 
 
+    def completion(self):
+        """Return fraction of case/env combos that have a completed result."""
+        total = RunCaseVersion.environments.through._default_manager.filter(
+            runcaseversion__run=self).count()
+        completed = Result.objects.filter(
+            status__in=Result.COMPLETED_STATES,
+            runcaseversion__run=self).values(
+            "runcaseversion", "environment").distinct().count()
+
+        try:
+            return float(completed) / total
+        except ZeroDivisionError:
+            return 0
+
+
 
 class RunCaseVersion(HasEnvironmentsModel, CCModel):
     """An ordered association between a Run and a CaseVersion."""
@@ -186,6 +201,19 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
         return result_summary(self.results.all())
 
 
+    def completion(self):
+        """Return fraction of environments that have a completed result."""
+        total = self.environments.count()
+        completed = self.results.filter(
+            status__in=Result.COMPLETED_STATES).values(
+            "environment").distinct().count()
+
+        try:
+            return float(completed) / total
+        except ZeroDivisionError:
+            return 0
+
+
 
 class RunSuite(CCModel):
     """An ordered association between a Run and a Suite."""
@@ -208,6 +236,8 @@ class Result(CCModel):
     """A result of a User running a RunCaseVersion in an Environment."""
     STATUS = Choices("assigned", "started", "passed", "failed", "invalidated")
     REVIEW = Choices("pending", "reviewed")
+
+    COMPLETED_STATES = [STATUS.passed, STATUS.failed, STATUS.invalidated]
 
     tester = models.ForeignKey(User, related_name="results")
     runcaseversion = models.ForeignKey(
@@ -267,11 +297,7 @@ def result_summary(results):
     Given a queryset of results, return a dict summarizing their states.
 
     """
-    states = [
-        Result.STATUS.passed,
-        Result.STATUS.failed,
-        Result.STATUS.invalidated,
-        ]
+    states = Result.COMPLETED_STATES
 
     cols = ["COUNT(CASE WHEN status=%s THEN 1 ELSE NULL END)"] * len(states)
     sql = "SELECT {0} FROM {1}".format(", ".join(cols), Result._meta.db_table)

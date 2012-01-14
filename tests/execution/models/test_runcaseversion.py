@@ -169,3 +169,26 @@ class RunCaseVersionTest(TestCase):
                 "invalidated": 0,
                 }
             )
+
+
+    def test_completion_percentage(self):
+        """``completion`` returns fraction of envs completed."""
+        envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows", "Linux"]})
+        rcv = F.RunCaseVersionFactory(environments=envs)
+
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[0], status="passed")
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[0], status="failed")
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[1], status="started")
+
+        self.assertEqual(rcv.completion(), 0.5)
+
+
+    def test_completion_percentage_empty(self):
+        """If no envs, ``completion`` returns zero."""
+        rcv = F.RunCaseVersionFactory()
+
+        self.assertEqual(rcv.completion(), 0)

@@ -206,6 +206,34 @@ class RunTest(TestCase):
             )
 
 
+    def test_completion_percentage(self):
+        """``completion`` returns fraction of case/env combos completed."""
+        envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows", "Linux"]})
+        pv = F.ProductVersionFactory(environments=envs)
+        run = F.RunFactory(productversion=pv)
+        rcv1 = F.RunCaseVersionFactory(
+            run=run, caseversion__productversion=pv)
+        rcv2 = F.RunCaseVersionFactory(
+            run=run, caseversion__productversion=pv)
+
+        F.ResultFactory(
+            runcaseversion=rcv1, environment=envs[0], status="passed")
+        F.ResultFactory(
+            runcaseversion=rcv1, environment=envs[0], status="failed")
+        F.ResultFactory(
+            runcaseversion=rcv2, environment=envs[1], status="started")
+
+        self.assertEqual(run.completion(), 0.25)
+
+
+    def test_completion_percentage_empty(self):
+        """If no runcaseversions, ``completion`` returns zero."""
+        run = F.RunFactory()
+
+        self.assertEqual(run.completion(), 0)
+
+
 
 class RunActivationTest(TestCase):
     """Tests for activating runs and locking-in runcaseversions."""
