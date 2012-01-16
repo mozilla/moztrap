@@ -37,13 +37,34 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = patterns(
     "",
 
+    # users ------------------------------------------------------------------
     url("^users/", include("cc.users.urls")),
 
-    # wireframe case management
+    # testcase (@@@ wireframe) -----------------------------------------------
+    # add
+    url("^manage/case/add/$",
+        direct_to_template,
+        {"template": "manage/product/testcase/add_case.html"},
+        name="manage_testcase_add"),
+
+    # add bulk
+    url("^manage/case/add/bulk/$",
+        direct_to_template,
+        {"template": "manage/product/testcase/form/add_case_bulk.html"},
+        name="manage_testcase_add_bulk"),
+
+    # edit
+    url("^manage/caseid/$",
+        direct_to_template,
+        {"template": "manage/product/testcase/form/edit_case.html"},
+        name="manage_testcase_edit"),
+
+    # manage
     url("^manage/cases/$",
         login_required(direct_to_template),
         {"template": "manage/product/testcase/cases.html"},
         name="manage_testcases"),
 
+    # admin ------------------------------------------------------------------
     url("^admin/", include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
