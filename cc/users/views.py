@@ -16,34 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Case Conductor root URLconf.
+Account-related views.
 
 """
-from django.conf.urls.defaults import patterns, url, include
-from django.conf.urls.static import static
-from django.conf import settings
-
-from django.contrib import admin
-
-admin.autodiscover()
-
-
-# @@@ for wireframes
-from django.views.generic.simple import direct_to_template
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 
 
 
-urlpatterns = patterns(
-    "",
-
-    url("^users/", include("cc.users.urls")),
-
-    # wireframe case management
-    url("^manage/cases/$",
-        login_required(direct_to_template),
-        {"template": "manage/product/testcase/cases.html"},
-        name="manage_testcases"),
-
-    url("^admin/", include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+def login(request):
+    return auth_views.login(request, template_name="users/login.html")

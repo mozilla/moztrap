@@ -132,6 +132,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "south",
     "cc.core",
+    "cc.users",
     "cc.library",
     "cc.environments",
     "cc.execution",
@@ -196,8 +197,8 @@ MIDDLEWARE_CLASSES.insert(
 
 INSTALLED_APPS += ["ajax_loading_overlay"]
 
-LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "runtests"
+LOGIN_URL = "/users/login/"
+LOGIN_REDIRECT_URL = "/manage/cases/" # @@@ runtests
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")

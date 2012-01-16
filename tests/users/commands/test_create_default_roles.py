@@ -71,7 +71,7 @@ class CreateDefaultRolesTest(TestCase):
     def test_unknown_permission(self):
         """Gracefully skips unknown permission."""
         with patch(
-            "cc.core.management.commands.create_default_roles.GROUPS",
+            "cc.users.management.commands.create_default_roles.GROUPS",
             {"Foo": ["foo.foo"]}):
             output = self.call_command()
 
