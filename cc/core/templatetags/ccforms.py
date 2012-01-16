@@ -80,5 +80,5 @@ def read_only(boundfield):
 def classes(boundfield, classes):
     """Append given classes to the widget attrs of given boundfield."""
     attrs = boundfield.field.widget.attrs
-    attrs["class"] = attrs.get("class", "") + classes
+    attrs["class"] = " ".join([attrs.get("class", ""), classes])
     return boundfield
