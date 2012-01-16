@@ -4,7 +4,7 @@
     <label for="bulk_select">bulk select</label>
   {% else %}
     {% if sortID %}
-      <a href="{# sort|url:sortID #}" class="{# sort|dir:sortID #} sortlink">{{ sortname }}</a>
+      <a href="{# @@@ sort|url:sortID #}" class="{# @@@ sort|dir:sortID #} sortlink">{{ sortname }}</a>
     {% else %}
       {% if sortURL %}
         <a href="{{ sortURL }}">{{ sortname }}</a>

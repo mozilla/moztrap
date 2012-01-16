@@ -5,12 +5,12 @@
 <section id="managecases" class="manage">
   <h2>Manage Test Cases</h2>
 
-  {# if permissions #}
+  {# @@@ if permission #}
   <div class="create">
-    <a href="{# url manage_testcase_add #}" class="single">create a single case (form)</a>
-    <a href="{# url manage_testcase_add_bulk #}" class="bulk">create bulk cases (text)</a>
+    <a href="{# @@@ url manage_testcase_add #}" class="single">create a single case (form)</a>
+    <a href="{# @@@ url manage_testcase_add_bulk #}" class="bulk">create bulk cases (text)</a>
   </div>
-  {# endif #}
+  {# @@@ endif #}
 
   {% include "lists/_filter.html" %}
   {% include "manage/product/testcase/list/_cases_list.html" %}
