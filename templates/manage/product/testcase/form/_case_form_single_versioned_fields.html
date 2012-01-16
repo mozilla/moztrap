@@ -1,10 +1,10 @@
   <div class="versioned">
     {% block basicform %}
       <div class="basic">
-        {% include "forms/_field.html" with field=form.product %}
-        {% include "forms/_field.html" with field=form.suite %}
-        {% include "forms/_field.html" with field=form.name %}
-        {% include "forms/_field.html" with field=form.description %}
+        {% include "forms/_mock_field.html" with field="product" type="select" %}
+        {% include "forms/_mock_field.html" with field="suite" type="select" %}
+        {% include "forms/_mock_field.html" with field="name" type="text" %}
+        {% include "forms/_mock_field.html" with field="description" type="text" %}
       </div>
     {% endblock basicform %}
 

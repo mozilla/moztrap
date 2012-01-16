@@ -1,9 +1,5 @@
 <div class="tagging">
-  <div class="textual">
-    <label for="{{ formtype }}-text-tag">tags</label>
-    <input type="text" name="text-tag" value="" id="{{ formtype }}-text-tag" placeholder="tag {% if formtype == 'single' %}this test case{% else %}these test cases{% endif %}." autocomplete="off" data-autocomplete-url="{% url manage_tags_autocomplete %}" data-allow-new="{% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}true{% else %}false{% endif %}">
-    <ul class="suggest"></ul>
-  </div>
+  {% include "forms/_mock_field.html" with field="add tags" type="text" suggest="#" %}
 
   <div class="visual">
     <strong class="taglabel">tags:</strong>
