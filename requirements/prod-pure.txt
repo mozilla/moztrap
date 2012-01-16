@@ -1,0 +1,4 @@
+# Requirements for a live/staging/qa deploy (pure Python only).
+
+-r pure.txt
+-r prod-base.txt

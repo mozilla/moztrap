@@ -9,7 +9,7 @@ inside an empty no-site-packages virtualenv.
 
 Usage: %s directory-path [install-type]
 
-install_type, if present should be one of "dev" or "prod" (defaults to "prod").
+install_type is the requirements file to use; defaults to "prod-pure".
 
 """
 import os.path
