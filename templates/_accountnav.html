@@ -3,7 +3,7 @@
   <ul>
     {% if request.user %}
       <li>
-        Welcome {{ request.user.firstName }} [<a href="{# @@@ url logout #}">Sign Out</a>]
+        Welcome {{ request.user.username }} [<a href="{# @@@ url logout #}">Sign Out</a>]
       </li>
     {% else %}
       <li>
