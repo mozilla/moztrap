@@ -27,5 +27,6 @@ urlpatterns = patterns(
     "cc.users.views",
 
     url("^login/", "login", name="login"),
+    url("^logout/", "logout", name="logout"),
 
 )
