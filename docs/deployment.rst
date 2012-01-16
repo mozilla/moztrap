@@ -9,6 +9,9 @@ in the ``application`` object.
 You'll also need to serve the `static assets`_; `Apache`_ or `nginx`_ can do
 this.
 
+In addition to the notes here, you should read through all comments in
+``cc/settings/local.sample.py`` before deploying this app into production.
+
 .. _Apache: http://httpd.apache.org
 .. _mod_wsgi: http://modwsgi.org
 .. _nginx: http://nginx.org
