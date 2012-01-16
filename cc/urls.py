@@ -15,6 +15,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+from django.views.generic.simple import direct_to_template
+
 from django.conf.urls.defaults import patterns, url, include
 from django.conf.urls.static import static
 from django.conf import settings
@@ -27,5 +29,12 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     "",
+
+    # wireframe case management
+    url("^manage/cases/$",
+        direct_to_template,
+        {"template": "manage/product/testcase/cases.html"},
+        name="manage_testcases"),
+
     url("^admin/", include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

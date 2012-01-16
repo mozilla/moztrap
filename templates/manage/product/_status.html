@@ -1,7 +1,5 @@
-{% load permissions %}
-
 <div class="status">
-  {% if "PERMISSION_TEST_CASE_ACTIVATE" in request.user.permissionCodes %}
+  {# if permissions #}
 
     {% if item.status.DRAFT %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft">draft</button>
@@ -13,7 +11,7 @@
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled">disabled</button>
     {% endif %}
 
-  {% else %}
+  {# else #}
 
     {% if item.status.DRAFT %}
     <span class="draft">draft</span>
@@ -25,5 +23,5 @@
     <span class="disabled">disabled</span>
     {% endif %}
 
-  {% endif %}
+  {# endif #}
 </div>

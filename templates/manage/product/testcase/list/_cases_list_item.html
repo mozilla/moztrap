@@ -1,6 +1,4 @@
-{% load staticdata permissions %}
-
-<article id="case-id-{{ case.id }}" class="listitem {{ case.status|status_class }}" data-details-url="{% url manage_testcase_details case.id %}">
+<article id="case-id-{{ case.id }}" class="listitem {{ case.status|slugify }}" data-details-url="{# url manage_testcase_details case.id #}">
   <header class="itemhead">
 
     {% include "manage/product/_status.html" with item=case %}
@@ -20,21 +18,21 @@
     <div class="product">{{ case.product }}</div>
 
     <div class="controls">
-      {% if request.user|can_edit_case:case %}
-        {% url manage_testcase_edit case_id=case.id as testcase_edit_url %}
+      {# if permissions #}
+        {# url manage_testcase_edit case_id=case.id as testcase_edit_url #}
         {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=case.name %}
         {% if case.status.DRAFT %}
           {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
         {% endif %}
-      {% endif %}
+      {# endif #}
 
-      {% if "PERMISSION_TEST_CASE_ADD" in request.user.permissionCodes %}
+      {# if permissions #}
         {% include "lists/controls/_clone.html" with clone_id=case.testCaseId clone_name=case.name %}
-      {% endif %}
+      {# endif #}
 
-      {% if request.user|can_edit_case:case and case.status.DRAFT %}
+      {# if permissions #}
         {% include "lists/controls/_delete.html" with delete_id=case.testCaseId delete_name=case.name %}
-      {% endif %}
+      {# endif #}
     </div>
 
   </header>
