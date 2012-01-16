@@ -23,11 +23,11 @@ from django.utils.unittest import TestCase
 
 from django import forms
 
-from cc.core.ccforms import BareTextarea, NonFieldErrorsClassFormMixin
+from cc.core import ccforms
 
 
 
-class PersonForm(NonFieldErrorsClassFormMixin, forms.Form):
+class PersonForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     name = forms.CharField()
     age = forms.IntegerField()
 
@@ -65,33 +65,27 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
 
 class BareTextareaTest(TestCase):
     def test_no_attrs(self):
-        self.assertEqual(BareTextarea().attrs, {})
+        self.assertEqual(ccforms.BareTextarea().attrs, {})
 
 
 
 class ReadOnlyWidgetTest(TestCase):
-    @property
-    def widget(self):
-        from ccui.core.forms import ReadOnlyWidget
-        return ReadOnlyWidget
-
-
     def test_simple(self):
         self.assertEqual(
-            self.widget().render("name", "value"),
+            ccforms.ReadOnlyWidget().render("name", "value"),
             u'value<input type="hidden" name="name" value="value">\n'
             )
 
 
     def test_attrs(self):
         self.assertEqual(
-            self.widget().render("name", "value", {"attr": "val"}),
+            ccforms.ReadOnlyWidget().render("name", "value", {"attr": "val"}),
             u'value<input type="hidden" name="name" value="value" attr="val">\n'
             )
 
 
     def test_choices(self):
-        widget = self.widget()
+        widget = ccforms.ReadOnlyWidget()
         widget.choices = [(1, "one"), (2, "two")]
         self.assertEqual(
             widget.render("name", 1),
@@ -100,7 +94,7 @@ class ReadOnlyWidgetTest(TestCase):
 
 
     def test_choices_bad_choice(self):
-        widget = self.widget()
+        widget = ccforms.ReadOnlyWidget()
         widget.choices = [(1, "one"), (2, "two")]
         self.assertEqual(
             widget.render("name", 3),
@@ -109,7 +103,7 @@ class ReadOnlyWidgetTest(TestCase):
 
 
     def test_choices_iterator(self):
-        widget = self.widget()
+        widget = ccforms.ReadOnlyWidget()
         widget.choices = (i for i in [(1, "one"), (2, "two")])
         self.assertEqual(
             widget.render("name", 2),
@@ -118,7 +112,7 @@ class ReadOnlyWidgetTest(TestCase):
 
 
     def test_choices_extra_data(self):
-        widget = self.widget()
+        widget = ccforms.ReadOnlyWidget()
         widget.choices = [(1, "one", "extra"), (2, "two", "extra")]
         self.assertEqual(
             widget.render("name", 1),
