@@ -56,7 +56,7 @@ urlpatterns = patterns(
     # edit
     url("^manage/caseid/$",
         direct_to_template,
-        {"template": "manage/product/testcase/form/edit_case.html"},
+        {"template": "manage/product/testcase/edit_case.html"},
         name="manage_testcase_edit"),
 
     # manage
