@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,28 +16,32 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Case Conductor root URLconf.
+Tests for sort template filters.
 
 """
-from django.conf.urls.defaults import patterns, url, include
-from django.conf.urls.static import static
-from django.conf import settings
+from mock import Mock
 
-from django.contrib import admin
+from django.utils.unittest import TestCase
 
-admin.autodiscover()
+from cc.core.templatetags import sort
 
 
 
-urlpatterns = patterns(
-    "",
+class FilterTest(TestCase):
+    """Tests for sort template filters."""
+    def test_url(self):
+        """url filter passes through to url method of Sort object."""
+        s = Mock()
 
-    # users ------------------------------------------------------------------
-    url("^users/", include("cc.users.urls")),
+        sort.url(s, "name")
 
-    # manage -----------------------------------------------------------------
-    url("^manage/", include("cc.manage.urls")),
+        s.url.assert_called_with("name")
 
-    # admin ------------------------------------------------------------------
-    url("^admin/", include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    def test_dir(self):
+        """dir filter passes through to dir method of Sort object."""
+        s = Mock()
+
+        sort.dir(s, "name")
+
+        s.dir.assert_called_with("name")

@@ -76,147 +76,147 @@ class ReadOnlyWidget(forms.Widget):
 
 
 
-class CCSelect(forms.Select):
-    """
-    A Select widget for use with ``CCModelChoiceField``.
+# class CCSelect(forms.Select):
+#     """
+#     A Select widget for use with ``CCModelChoiceField``.
 
-    Rendered by a template that expects each choice option's label to have an
-    ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
-    the <option> element.
+#     Rendered by a template that expects each choice option's label to have an
+#     ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
+#     the <option> element.
 
-    """
-    template_name = "forms/_select_with_option_attrs.html"
-
-
-
-class CCSelectMultiple(forms.SelectMultiple):
-    """
-    A SelectMultiple widget for use with ``CCModelChoiceField``.
-
-    Rendered by a template that expects each choice option's label to have an
-    ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
-    the <option> element.
-
-    """
-    template_name = "forms/_select_with_option_attrs.html"
+#     """
+#     template_name = "forms/_select_with_option_attrs.html"
 
 
 
-class FilteredSelectMultiple(CCSelectMultiple):
-    """
-    A SelectMultiple widget that provides UI for filtering options.
+# class CCSelectMultiple(forms.SelectMultiple):
+#     """
+#     A SelectMultiple widget for use with ``CCModelChoiceField``.
 
-    """
-    template_name = "forms/_filtered_select_multiple.html"
+#     Rendered by a template that expects each choice option's label to have an
+#     ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
+#     the <option> element.
 
-    def __init__(self, *args, **kwargs):
-        self.filters = kwargs.pop("filters", [])
-        super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
-
-
-    def get_context_data(self):
-        from .filters import Filter
-        ctx = super(FilteredSelectMultiple, self).get_context_data()
-        ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
-        ctx["choice_template"] = "forms/_filtered_select_multiple_item.html"
-        return ctx
+#     """
+#     template_name = "forms/_select_with_option_attrs.html"
 
 
 
-class CCModelChoiceIterator(ModelChoiceIterator):
-    """
-    ModelChoiceIterator for use with ``CCModelChoiceField````.
+# class FilteredSelectMultiple(CCSelectMultiple):
+#     """
+#     A SelectMultiple widget that provides UI for filtering options.
 
-    Returns a ``SmartLabel`` for each choice, with attrs based on the
-    ``choice_attrs`` method of the field.
+#     """
+#     template_name = "forms/_filtered_select_multiple.html"
 
-    """
-    def choice(self, obj):
-        return (
-            self.field.prepare_value(obj),
-            SmartLabel(
-                obj, self.field.label_from_instance, self.field.choice_attrs
-                )
-            )
+#     def __init__(self, *args, **kwargs):
+#         self.filters = kwargs.pop("filters", [])
+#         super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
 
 
-
-class SmartLabel(StrAndUnicode):
-    """
-    A select-widget option label with smarts: also stores option attributes.
-
-    Allows us to squeeze more data into the "label" half of the label-value
-    pair of a multiple-select choice. Behaves like a simple text label if
-    coerced to unicode, but also has "attrs" and "obj" attributes to access
-    attributes for the choice/option, and the object itself. Useful for
-    advanced multi-select widgets.
-
-    """
-    def __init__(self, obj, label_from_instance, choice_attrs):
-        self.obj = obj
-        self.label_from_instance = label_from_instance
-        self.choice_attrs = choice_attrs
-
-
-    def __unicode__(self):
-        return self.label_from_instance(self.obj)
-
-
-    @property
-    def attrs(self):
-        return self.choice_attrs(self.obj)
+#     def get_context_data(self):
+#         from .filters import Filter
+#         ctx = super(FilteredSelectMultiple, self).get_context_data()
+#         ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
+#         ctx["choice_template"] = "forms/_filtered_select_multiple_item.html"
+#         return ctx
 
 
 
-class CCModelChoiceField(forms.ModelChoiceField):
-    """
-    A ModelChoiceField where each choice object's label is a ``SmartLabel``.
+# class CCModelChoiceIterator(ModelChoiceIterator):
+#     """
+#     ModelChoiceIterator for use with ``CCModelChoiceField````.
 
-    Accepts additional optional keyword arguments ``label_from_instance`` and
-    ``choice_attrs``: each should be a one-argument callable that takes a model
-    instance and returns suitable label text and a dictionary of choice
-    attributes, respectively.
+#     Returns a ``SmartLabel`` for each choice, with attrs based on the
+#     ``choice_attrs`` method of the field.
 
-    """
-    widget = CCSelect
-
-
-    def __init__(self, *args, **kwargs):
-        """Create field, checking for label_from_instance and choice_attrs."""
-        self.custom_label_from_instance = kwargs.pop(
-            "label_from_instance", None)
-
-        self.custom_choice_attrs = kwargs.pop("choice_attrs", None)
-
-        super(CCModelChoiceField, self).__init__(*args, **kwargs)
-
-
-    def label_from_instance(self, obj):
-        """Use custom label_from_instance method if provided."""
-        if self.custom_label_from_instance is not None:
-            return self.custom_label_from_instance(obj)
-        return super(CCModelChoiceField, self).label_from_instance(obj)
-
-
-    def _get_choices(self):
-        """Use CCModelChoiceIterator."""
-        if hasattr(self, "_choices"):
-            return self._choices
-
-        return CCModelChoiceIterator(self)
-
-
-    choices = property(_get_choices, forms.ChoiceField._set_choices)
-
-
-    def choice_attrs(self, obj):
-        """Get choice attributes for a model instance."""
-        if self.custom_choice_attrs is not None:
-            return self.custom_choice_attrs(obj)
-        return {}
+#     """
+#     def choice(self, obj):
+#         return (
+#             self.field.prepare_value(obj),
+#             SmartLabel(
+#                 obj, self.field.label_from_instance, self.field.choice_attrs
+#                 )
+#             )
 
 
 
-class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
-                                 CCModelChoiceField):
-    widget = CCSelectMultiple
+# class SmartLabel(StrAndUnicode):
+#     """
+#     A select-widget option label with smarts: also stores option attributes.
+
+#     Allows us to squeeze more data into the "label" half of the label-value
+#     pair of a multiple-select choice. Behaves like a simple text label if
+#     coerced to unicode, but also has "attrs" and "obj" attributes to access
+#     attributes for the choice/option, and the object itself. Useful for
+#     advanced multi-select widgets.
+
+#     """
+#     def __init__(self, obj, label_from_instance, choice_attrs):
+#         self.obj = obj
+#         self.label_from_instance = label_from_instance
+#         self.choice_attrs = choice_attrs
+
+
+#     def __unicode__(self):
+#         return self.label_from_instance(self.obj)
+
+
+#     @property
+#     def attrs(self):
+#         return self.choice_attrs(self.obj)
+
+
+
+# class CCModelChoiceField(forms.ModelChoiceField):
+#     """
+#     A ModelChoiceField where each choice object's label is a ``SmartLabel``.
+
+#     Accepts additional optional keyword arguments ``label_from_instance`` and
+#     ``choice_attrs``: each should be a one-argument callable that takes a model
+#     instance and returns suitable label text and a dictionary of choice
+#     attributes, respectively.
+
+#     """
+#     widget = CCSelect
+
+
+#     def __init__(self, *args, **kwargs):
+#         """Create field, checking for label_from_instance and choice_attrs."""
+#         self.custom_label_from_instance = kwargs.pop(
+#             "label_from_instance", None)
+
+#         self.custom_choice_attrs = kwargs.pop("choice_attrs", None)
+
+#         super(CCModelChoiceField, self).__init__(*args, **kwargs)
+
+
+#     def label_from_instance(self, obj):
+#         """Use custom label_from_instance method if provided."""
+#         if self.custom_label_from_instance is not None:
+#             return self.custom_label_from_instance(obj)
+#         return super(CCModelChoiceField, self).label_from_instance(obj)
+
+
+#     def _get_choices(self):
+#         """Use CCModelChoiceIterator."""
+#         if hasattr(self, "_choices"):
+#             return self._choices
+
+#         return CCModelChoiceIterator(self)
+
+
+#     choices = property(_get_choices, forms.ChoiceField._set_choices)
+
+
+#     def choice_attrs(self, obj):
+#         """Get choice attributes for a model instance."""
+#         if self.custom_choice_attrs is not None:
+#             return self.custom_choice_attrs(obj)
+#         return {}
+
+
+
+# class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
+#                                  CCModelChoiceField):
+#     widget = CCSelectMultiple

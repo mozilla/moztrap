@@ -72,7 +72,7 @@ class Product(TeamModel):
 class ProductVersion(TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
     version = models.CharField(max_length=100)
-    codename = models.CharField(max_length=100)
+    codename = models.CharField(max_length=100, blank=True)
     order = models.IntegerField(default=0, editable=False)
 
 

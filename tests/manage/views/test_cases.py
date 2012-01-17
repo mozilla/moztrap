@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,28 +16,33 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Case Conductor root URLconf.
+Tests for login/logout/account views.
 
 """
-from django.conf.urls.defaults import patterns, url, include
-from django.conf.urls.static import static
-from django.conf import settings
+from django.core.urlresolvers import reverse
 
-from django.contrib import admin
-
-admin.autodiscover()
+from ... import factories as F
+from ...views import ViewTestCase
 
 
 
-urlpatterns = patterns(
-    "",
+class CasesTest(ViewTestCase):
+    """Test for cases manage list view."""
+    @property
+    def url(self):
+        """Shortcut for manage-cases url."""
+        return reverse("manage_cases")
 
-    # users ------------------------------------------------------------------
-    url("^users/", include("cc.users.urls")),
 
-    # manage -----------------------------------------------------------------
-    url("^manage/", include("cc.manage.urls")),
+    def get(self):
+        """Shortcut for getting manage-cases url authenticated."""
+        return self.app.get(self.url, user=self.user)
 
-    # admin ------------------------------------------------------------------
-    url("^admin/", include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    def test_lists_cases(self):
+        """Manage-cases view displays a list of cases."""
+        F.CaseVersionFactory.create(name="Foo Bar")
+
+        res = self.get()
+
+        res.mustcontain("Foo Bar")

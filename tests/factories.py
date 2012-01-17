@@ -113,7 +113,7 @@ class UserFactory(factory.Factory):
         password = kwargs.pop('password', None)
         user = super(UserFactory, cls)._prepare(create, **kwargs)
         if password:
-            user.set_password(user)
+            user.set_password(password)
             if create:
                 user.save()
         return user

@@ -16,28 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Case Conductor root URLconf.
+Manage views.
 
 """
-from django.conf.urls.defaults import patterns, url, include
-from django.conf.urls.static import static
-from django.conf import settings
+from django.template.response import TemplateResponse
 
-from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 
-admin.autodiscover()
-
+from ...core.sort import sort
+from ...library.models import CaseVersion
 
 
-urlpatterns = patterns(
-    "",
 
-    # users ------------------------------------------------------------------
-    url("^users/", include("cc.users.urls")),
-
-    # manage -----------------------------------------------------------------
-    url("^manage/", include("cc.manage.urls")),
-
-    # admin ------------------------------------------------------------------
-    url("^admin/", include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+@login_required
+@sort("caseversions")
+def cases(request):
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/cases.html",
+        {
+            "caseversions": CaseVersion.objects.all(), # @@@ just latest
+            }
+        )

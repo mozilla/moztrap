@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,28 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Case Conductor root URLconf.
+Template tags/filters for sorting.
 
 """
-from django.conf.urls.defaults import patterns, url, include
-from django.conf.urls.static import static
-from django.conf import settings
-
-from django.contrib import admin
-
-admin.autodiscover()
+from django.template import Library
 
 
 
-urlpatterns = patterns(
-    "",
+register = Library()
 
-    # users ------------------------------------------------------------------
-    url("^users/", include("cc.users.urls")),
 
-    # manage -----------------------------------------------------------------
-    url("^manage/", include("cc.manage.urls")),
 
-    # admin ------------------------------------------------------------------
-    url("^admin/", include(admin.site.urls)),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+@register.filter
+def url(sort, field):
+    return sort.url(field)
+
+
+
+@register.filter
+def dir(sort, field):
+    return sort.dir(field)

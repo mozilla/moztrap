@@ -1,37 +1,39 @@
-<article id="case-id-{{ case.id }}" class="listitem {{ case.status|slugify }}" data-details-url="{# @@@ url manage_testcase_details case.id #}">
+<article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}" data-details-url="{# @@@ url manage_testcase_details caseversion.id #}">
   <header class="itemhead">
 
     {% include "manage/product/_status.html" with item=case %}
 
     <div class="name-tags">
-      <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
 
-      {% if case.tags %}
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
       <ul class="tags">
-        {% for tag in case.tags %}
+        {% for tag in tags %}
         <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
+      {% endwith %}
     </div>
 
-    <div class="product">{{ case.product }}</div>
+    <div class="product">{{ caseversion.product }}</div>
 
     <div class="controls">
       {# @@@ if permissions #}
-        {# @@@ url manage_testcase_edit case_id=case.id as testcase_edit_url #}
-        {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=case.name %}
-        {% if case.status.DRAFT %}
-          {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=case.id %}
+        {# @@@ url manage_testcase_edit case_id=caseversion.id as testcase_edit_url #}
+        {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=caseversion.name %}
+        {% if caseversion.status.DRAFT %}
+          {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
         {% endif %}
       {# @@@ endif #}
 
       {# @@@ if permissions #}
-        {% include "lists/controls/_clone.html" with clone_id=case.testCaseId clone_name=case.name %}
+        {% include "lists/controls/_clone.html" with clone_id=caseversion.testCaseId clone_name=caseversion.name %}
       {# @@@ endif #}
 
       {# @@@ if permissions #}
-        {% include "lists/controls/_delete.html" with delete_id=case.testCaseId delete_name=case.name %}
+        {% include "lists/controls/_delete.html" with delete_id=caseversion.testCaseId delete_name=caseversion.name %}
       {# @@@ endif #}
     </div>
 

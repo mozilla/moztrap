@@ -11,9 +11,9 @@ class Migration(SchemaMigration):
         # Adding model 'Profile'
         db.create_table('environments_profile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 710551))),
+            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 352635))),
             ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 710731))),
+            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 352839))),
             ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
             ('deleted_on', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
             ('deleted_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
@@ -24,9 +24,9 @@ class Migration(SchemaMigration):
         # Adding model 'Category'
         db.create_table('environments_category', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 708329))),
+            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 353421))),
             ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 708560))),
+            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 353603))),
             ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
             ('deleted_on', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
             ('deleted_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
@@ -37,9 +37,9 @@ class Migration(SchemaMigration):
         # Adding model 'Element'
         db.create_table('environments_element', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 712006))),
+            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 356126))),
             ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 712193))),
+            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 356328))),
             ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
             ('deleted_on', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
             ('deleted_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
@@ -51,13 +51,13 @@ class Migration(SchemaMigration):
         # Adding model 'Environment'
         db.create_table('environments_environment', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 709220))),
+            ('created_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 354192))),
             ('created_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2011, 12, 16, 0, 46, 6, 709415))),
+            ('modified_on', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 1, 17, 3, 41, 10, 354374))),
             ('modified_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
             ('deleted_on', self.gf('django.db.models.fields.DateTimeField')(db_index=True, null=True, blank=True)),
             ('deleted_by', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='+', null=True, to=orm['auth.User'])),
-            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(related_name='environments', to=orm['environments.Profile'])),
+            ('profile', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='environments', null=True, to=orm['environments.Profile'])),
         ))
         db.send_create_signal('environments', ['Environment'])
 
@@ -128,47 +128,47 @@ class Migration(SchemaMigration):
         'environments.category': {
             'Meta': {'object_name': 'Category'},
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 715479)'}),
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 360471)'}),
             'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
             'deleted_on': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 715664)'}),
+            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 360650)'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'environments.element': {
             'Meta': {'object_name': 'Element'},
             'category': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'elements'", 'to': "orm['environments.Category']"}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 718975)'}),
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 363324)'}),
             'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
             'deleted_on': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 719153)'}),
+            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 363506)'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'environments.environment': {
             'Meta': {'object_name': 'Environment'},
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 716262)'}),
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 361240)'}),
             'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
             'deleted_on': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'elements': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['environments.Element']", 'symmetrical': 'False'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 716442)'}),
-            'profile': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'environments'", 'to': "orm['environments.Profile']"})
+            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 361418)'}),
+            'profile': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'environments'", 'null': 'True', 'to': "orm['environments.Profile']"})
         },
         'environments.profile': {
             'Meta': {'object_name': 'Profile'},
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 717504)'}),
+            'created_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 359723)'}),
             'deleted_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
             'deleted_on': ('django.db.models.fields.DateTimeField', [], {'db_index': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'modified_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'to': "orm['auth.User']"}),
-            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2011, 12, 16, 0, 46, 6, 717700)'}),
+            'modified_on': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 1, 17, 3, 41, 10, 359908)'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         }
     }

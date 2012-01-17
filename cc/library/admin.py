@@ -31,7 +31,7 @@ class CaseVersionInline(CCStackedInline):
     extra = 0
     fieldsets = [
         (None, {"fields": ["productversion",
-                           ("case", "name", "status"),
+                           ("name", "status"),
                            "exists",
                            "description"]})
         ]

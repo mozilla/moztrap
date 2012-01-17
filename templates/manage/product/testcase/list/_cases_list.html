@@ -3,8 +3,8 @@
 <form method="POST" class="itemlist action-ajax-replace">
   {% csrf_token %}
 
-  {% if cases %}
-    {% for case in cases %}
+  {% if caseversions %}
+    {% for caseversion in caseversions %}
       {% include "manage/product/testcase/list/_cases_list_item.html" %}
     {% endfor %}
   {% else %}
