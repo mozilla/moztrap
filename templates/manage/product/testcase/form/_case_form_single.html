@@ -5,14 +5,14 @@
     {% csrf_token %}
     {# @@@ form.non_field_errors #}
 
+    {% block versioningform %}
     <div class="versioning">
-      {% block versioningform %}
-        {% include "forms/_mock_field.html" with field="product" type="select" %}
-        {% include "forms/_mock_field.html" with field="version" type="select" %}
-        {% include "forms/_mock_field.html" with field="all later versions" type="checkbox" %}
-        {% include "forms/_mock_field.html" with field="suite" type="select" %}
-      {% endblock versioningform %}
+      {% include "forms/_mock_field.html" with field="product" type="select" %}
+      {% include "forms/_mock_field.html" with field="version" type="select" %}
+      {% include "forms/_mock_field.html" with field="all later versions" type="checkbox" %}
+      {% include "forms/_mock_field.html" with field="suite" type="select" %}
     </div>
+    {% endblock versioningform %}
 
     <div class="versioned">
       {% block versionedform %}
