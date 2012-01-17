@@ -1,3 +1,9 @@
-{% extends 'manage/product/testcase/form/case_form.html' %}
+{% extends 'manage/product/testcase/form/_case_form_single.html' %}
+
+{% load icanhaz %}
 
 {% block formtitle %}Edit "{{ case.name }}"{% endblock %}
+
+{% block caseversions %}{% endblock caseversions %}
+
+{% block versioningform %}{% endblock versioningform %}

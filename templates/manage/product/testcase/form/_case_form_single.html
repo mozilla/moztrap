@@ -1,35 +1,33 @@
-<form method="POST" enctype="multipart/form-data" id="case-form" class="{% block formclasses %}single-case-form{% endblock formclasses %}">
-  {% csrf_token %}
-  {# @@@ form.non_field_errors #}
+{% extends 'manage/product/testcase/form/case_form.html' %}
 
-  <div class="versioning">
-    {% block versioningform %}
-      {% block product %}
+{% block caseforms %}
+  <form method="POST" enctype="multipart/form-data" id="case-form" class="{% block formclasses %}single-case-form{% endblock formclasses %}">
+    {% csrf_token %}
+    {# @@@ form.non_field_errors #}
+
+    <div class="versioning">
+      {% block versioningform %}
         {% include "forms/_mock_field.html" with field="product" type="select" %}
-      {% endblock product %}
-      {% block version %}
         {% include "forms/_mock_field.html" with field="version" type="select" %}
         {% include "forms/_mock_field.html" with field="all later versions" type="checkbox" %}
-      {% endblock version %}
-      {% block suite %}
         {% include "forms/_mock_field.html" with field="suite" type="select" %}
-      {% endblock suite %}
-    {% endblock versioningform %}
-  </div>
+      {% endblock versioningform %}
+    </div>
 
-  <div class="versioned">
-    {% block versionedform %}
-      {% include "forms/_mock_field.html" with field="name" type="text" %}
-      {% include "forms/_mock_field.html" with field="description" type="text" %}
+    <div class="versioned">
+      {% block versionedform %}
+        {% include "forms/_mock_field.html" with field="name" type="text" %}
+        {% include "forms/_mock_field.html" with field="description" type="text" %}
 
-      {% include "manage/product/testcase/tag/_tagging.html" with formtype="single" %}
-      {% include "manage/product/_attachments.html" with obj=case %}
-      {% include "manage/product/testcase/form/_step_form.html" %}
-    {% endblock versionedform %}
-  </div>
+        {% include "manage/product/testcase/tag/_tagging.html" with formtype="single" %}
+        {% include "manage/product/_attachments.html" with obj=case %}
+        {% include "manage/product/testcase/form/_step_form.html" %}
+      {% endblock versionedform %}
+    </div>
 
-  <div class="form-actions">
-    {% block versionactions %}{% endblock versionactions %}
-    <button type="submit" name="action-save" value="1">save test case</button>
-  </div>
-</form>
+    <div class="form-actions">
+      {% block versionactions %}{% endblock versionactions %}
+      <button type="submit" name="action-save" value="1">save test case</button>
+    </div>
+  </form>
+{% endblock caseforms %}
