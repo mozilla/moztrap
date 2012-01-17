@@ -1,16 +1,12 @@
-<form id="bulk-case-form" method="POST">
-  {% csrf_token %}
-  {{ form.non_field_errors }}
+{% extends 'manage/product/testcase/form/_case_form_single.html' %}
 
-  <div class="basic">
-    {% include "forms/_field.html" with field=form.product %}
-    {% include "forms/_field.html" with field=form.suite %}
-  </div>
+{% block formclasses %}bulk-case-form{% endblock formclasses %}
 
+{% block versionedform %}
   {% include "manage/product/testcase/tag/_tagging.html" with formtype="bulk" %}
 
   <div class="bulk-field">
-    {% include "forms/_field.html" with field=form.cases %}
+    {% include "forms/_mock_field.html" with field="cases" type="textarea" %}
     <section class="fieldhelp">
       <h3>Keyword Instructions</h3>
       <p>
@@ -26,8 +22,4 @@
       </ol>
     </section>
   </div>
-
-  <div class="form-actions">
-    <button type="submit" name="bulk-save" value="1">save test cases</button>
-  </div>
-</form>
+{% endblock versionedform %}
