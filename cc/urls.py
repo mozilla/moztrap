@@ -50,7 +50,7 @@ urlpatterns = patterns(
     # add bulk
     url("^manage/case/add/bulk/$",
         direct_to_template,
-        {"template": "manage/product/testcase/form/add_case_bulk.html"},
+        {"template": "manage/product/testcase/add_case_bulk.html"},
         name="manage_testcase_add_bulk"),
 
     # edit
