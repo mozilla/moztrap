@@ -6,7 +6,7 @@
     <ul class="taglist">
     {% if case and case.tags %}
       {% for tag in case.tags %}
-        {% include "manage/product/testcase/tag/_tag_visual.html" %}
+        {% include "manage/product/testcase/tag/_tag_item.html" %}
       {% endfor %}
     {% else %}
       <li class="none">none</li>
