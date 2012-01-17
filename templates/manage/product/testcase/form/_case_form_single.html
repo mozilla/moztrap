@@ -2,13 +2,15 @@
   {% csrf_token %}
   {# @@@ form.non_field_errors #}
 
-  <header class="versioning">
+  <div class="versioning">
     {% block versioningform %}
-      {% include "forms/_mock_field.html" with field="product" type="select" %}
+      {% block product %}
+        {% include "forms/_mock_field.html" with field="product" type="select" %}
+      {% endblock product %}
       {% include "forms/_mock_field.html" with field="version" type="select" %}
       {% include "forms/_mock_field.html" with field="suite" type="select" %}
     {% endblock versioningform %}
-  </header>
+  </div>
 
   <div class="versioned">
     <div class="basic">

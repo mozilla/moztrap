@@ -2,29 +2,6 @@
 
 {% load icanhaz %}
 
-{% block versionform %}
-  <div class="versioning">
-    <div class="basic">
-      {% include "forms/_field.html" with field=form.product %}
-      {% include "forms/_field.html" with field=form.name %}
-    </div>
-
-    <div class="version-select details">
-      <p class="summary">
-        Edit <strong>v{{ form.instance.majorVersion }}
-        ({% if form.instance.latestVersion %}latest{% else %}obsolete{% endif %})</strong>
-        <em>or select a different version &raquo;</em>
-      </p>
-      <div class="content">
-        {% icanhaz "case_versioning_more_runs_link" %}
-        {% for version in form.instance.all_versions %}
-        {% include "manage/product/testcase/form/_case_form_version_list_item.html" %}
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-{% endblock versionform %}
-
-{% block mainform %}
-  {% include "manage/product/testcase/form/_case_form_edit_versioned_fields.html" %}
-{% endblock mainform %}
+{% block product %}
+  {% include "forms/_mock_field.html" with field="product" type="select" readonly="product name" %}
+{% endblock product %}
