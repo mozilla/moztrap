@@ -6,4 +6,8 @@
   {% include "forms/_mock_field.html" with field="product" type="select" readonly="product name" %}
 {% endblock product %}
 
+{% block version %}
+  {% include "forms/_mock_field.html" with field="version" type="select" %}
+{% endblock version %}
+
 {% block suite %}{% endblock suite %}

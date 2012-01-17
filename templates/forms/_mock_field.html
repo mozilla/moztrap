@@ -9,7 +9,9 @@
 
   {% else %}
 
-    <label for="field-{{ field|slugify }}">{% if label %}{{ label }}{% else %}{{ field }}{% endif %}</label>
+    {% if type != "checkbox" %}
+      <label for="field-{{ field|slugify }}">{% if label %}{{ label }}{% else %}{{ field }}{% endif %}</label>
+    {% endif %}
 
     {% if type == "select" %}
       <select id="field-{{ field|slugify }}" {% if classes %}class="{{ classes }}"{% endif %}>
@@ -33,6 +35,10 @@
       <ul class="errorlist">
         <li>{{ errors }}</li>
       </ul>
+    {% endif %}
+
+    {% if type == "checkbox" %}
+      <label for="field-{{ field|slugify }}">{% if label %}{{ label }}{% else %}{{ field }}{% endif %}</label>
     {% endif %}
 
   {% endif %}
