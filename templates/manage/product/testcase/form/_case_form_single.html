@@ -8,7 +8,9 @@
         {% include "forms/_mock_field.html" with field="product" type="select" %}
       {% endblock product %}
       {% include "forms/_mock_field.html" with field="version" type="select" %}
-      {% include "forms/_mock_field.html" with field="suite" type="select" %}
+      {% block suite %}
+        {% include "forms/_mock_field.html" with field="suite" type="select" %}
+      {% endblock suite %}
     {% endblock versioningform %}
   </div>
 
