@@ -29,7 +29,7 @@
           </div>
         </li>
 
-        {% if request.user %} {# @@@ more specific perms check? #}
+        {% if user %} {# @@@ more specific perms check? #}
         <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
           <a href="{# @@@ url results #}">View Results</a>
           <div class="secondary">

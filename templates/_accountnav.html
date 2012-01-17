@@ -1,7 +1,7 @@
 <nav id="accountnav">
   <h2 class="navhead">Account Navigation</h2>
   <ul>
-    {% if request.user %}
+    {% if user %}
       <li>
         Welcome {{ request.user.username }} [<a href="{% url logout %}">Sign Out</a>]
       </li>

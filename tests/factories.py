@@ -23,7 +23,7 @@ import itertools
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
 import factory
 
@@ -66,6 +66,7 @@ class TeamFactoryMixin(object):
     """
     @classmethod
     def create(cls, **kwargs):
+        """Create method that allows specifying team."""
         team = kwargs.pop("team", None)
         obj = super(TeamFactoryMixin, cls).create(**kwargs)
         if team is not None:
@@ -88,7 +89,27 @@ class UserFactory(factory.Factory):
 
 
     @classmethod
+    def create(cls, **kwargs):
+        """Create method that allows specifying permissions."""
+        permissions = kwargs.pop("permissions", None)
+        obj = super(UserFactory, cls).create(**kwargs)
+        if permissions is not None:
+            perms = []
+            for perm_or_name in permissions:
+                if isinstance(perm_or_name, Permission):
+                    perm = perm_or_name
+                else:
+                    app_label, codename = perm_or_name.split(".", 1)
+                    perm = Permission.objects.get(
+                        content_type__app_label=app_label, codename=codename)
+                perms.append(perm)
+            obj.user_permissions.add(*perms)
+        return obj
+
+
+    @classmethod
     def _prepare(cls, create, **kwargs):
+        """Special handling for ``set_password`` method."""
         password = kwargs.pop('password', None)
         user = super(UserFactory, cls)._prepare(create, **kwargs)
         if password:

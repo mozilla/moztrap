@@ -35,7 +35,8 @@ class PersonForm(forms.Form):
 
 
 
-class FilterTests(TestCase):
+class FieldFilterTests(TestCase):
+    """Tests for form field filters."""
     def test_placeholder(self):
         """``placeholder`` filter sets placeholder attribute."""
         bf = ccforms.placeholder(PersonForm()["name"], "Placeholder")
@@ -123,7 +124,7 @@ class FilterTests(TestCase):
         self.assertIn('class="yo ma"', unicode(bf))
 
 
-    def test_classes(self):
+    def test_classes_append(self):
         """``classes`` filter appends to widget's class attr if set."""
         bf = PersonForm()["name"]
         bf.field.widget.attrs["class"] = "foo"
