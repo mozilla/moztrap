@@ -71,58 +71,6 @@ class BareTextareaTest(TestCase):
 
 
 
-class ReadOnlyWidgetTest(TestCase):
-    def test_simple(self):
-        self.assertEqual(
-            ccforms.ReadOnlyWidget().render("name", "value"),
-            u'value<input type="hidden" name="name" value="value">\n'
-            )
-
-
-    def test_attrs(self):
-        self.assertEqual(
-            ccforms.ReadOnlyWidget().render("name", "value", {"attr": "val"}),
-            u'value<input type="hidden" name="name" value="value" attr="val">\n'
-            )
-
-
-    def test_choices(self):
-        widget = ccforms.ReadOnlyWidget()
-        widget.choices = [(1, "one"), (2, "two")]
-        self.assertEqual(
-            widget.render("name", 1),
-            u'one<input type="hidden" name="name" value="1">\n'
-            )
-
-
-    def test_choices_bad_choice(self):
-        widget = ccforms.ReadOnlyWidget()
-        widget.choices = [(1, "one"), (2, "two")]
-        self.assertEqual(
-            widget.render("name", 3),
-            u'3<input type="hidden" name="name" value="3">\n'
-            )
-
-
-    def test_choices_iterator(self):
-        widget = ccforms.ReadOnlyWidget()
-        widget.choices = (i for i in [(1, "one"), (2, "two")])
-        self.assertEqual(
-            widget.render("name", 2),
-            u'two<input type="hidden" name="name" value="2">\n'
-            )
-
-
-    def test_choices_extra_data(self):
-        widget = ccforms.ReadOnlyWidget()
-        widget.choices = [(1, "one", "extra"), (2, "two", "extra")]
-        self.assertEqual(
-            widget.render("name", 1),
-            u'one<input type="hidden" name="name" value="1">\n'
-            )
-
-
-
 class ProductVersionForm(forms.Form):
     product = ccforms.CCModelChoiceField(
         models.Product.objects.all(),

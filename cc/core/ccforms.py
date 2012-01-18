@@ -19,7 +19,7 @@
 Core form widgets, mixins, and fields for Case Conductor.
 
 """
-from django import forms as django_forms
+from django import forms
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.models import ModelChoiceIterator
 from django.forms.util import ErrorList
@@ -28,7 +28,7 @@ from django.utils.encoding import force_unicode, StrAndUnicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
-import floppyforms as forms
+import floppyforms
 
 
 
@@ -55,7 +55,7 @@ class NonFieldErrorsClassFormMixin(object):
 
 
 
-class BareTextarea(forms.Textarea):
+class BareTextarea(floppyforms.Textarea):
     """A Textarea with no rows or cols attributes."""
     def __init__(self, *args, **kwargs):
         super(BareTextarea, self).__init__(*args, **kwargs)
@@ -63,21 +63,7 @@ class BareTextarea(forms.Textarea):
 
 
 
-class ReadOnlyWidget(forms.Widget):
-    """A form widget that displays the field's value as human-readable text."""
-    def render(self, name, value, attrs=None):
-        # work around floppyforms bug with no attrs:
-        if attrs is None:
-            attrs = {}
-        # If choices is set, use the display label
-        displayed = str(dict((o[:2] for o in getattr(self, "choices", []))).get(
-            value, value))
-        return mark_safe(
-            displayed + forms.HiddenInput().render(name, value, attrs))
-
-
-
-class CCSelect(forms.Select):
+class CCSelect(floppyforms.Select):
     """
     A Select widget for use with ``CCModelChoiceField``.
 
@@ -90,7 +76,7 @@ class CCSelect(forms.Select):
 
 
 
-class CCSelectMultiple(forms.SelectMultiple):
+class CCSelectMultiple(floppyforms.SelectMultiple):
     """
     A SelectMultiple widget for use with ``CCModelChoiceField``.
 
@@ -169,7 +155,7 @@ class SmartLabel(StrAndUnicode):
 
 
 
-class CCModelChoiceField(django_forms.ModelChoiceField):
+class CCModelChoiceField(forms.ModelChoiceField):
     """
     A ModelChoiceField where each choice object's label is a ``SmartLabel``.
 
@@ -207,7 +193,7 @@ class CCModelChoiceField(django_forms.ModelChoiceField):
         return CCModelChoiceIterator(self)
 
 
-    choices = property(_get_choices, django_forms.ChoiceField._set_choices)
+    choices = property(_get_choices, forms.ChoiceField._set_choices)
 
 
     def choice_attrs(self, obj):
@@ -218,6 +204,6 @@ class CCModelChoiceField(django_forms.ModelChoiceField):
 
 
 
-class CCModelMultipleChoiceField(django_forms.ModelMultipleChoiceField,
+class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
                                  CCModelChoiceField):
     widget = CCSelectMultiple
