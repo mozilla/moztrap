@@ -23,7 +23,9 @@ from django.utils.unittest import TestCase
 
 from django import forms
 
-from cc.core import ccforms
+from .. import factories as F
+
+from cc.core import ccforms, models
 
 
 
@@ -118,3 +120,50 @@ class ReadOnlyWidgetTest(TestCase):
             widget.render("name", 1),
             u'one<input type="hidden" name="name" value="1">\n'
             )
+
+
+
+class ProductVersionForm(forms.Form):
+    product = ccforms.CCModelChoiceField(
+        models.Product.objects.all(),
+        label_from_instance=lambda p: "FooLabel {0}".format(unicode(p)),
+        choice_attrs=lambda p: {"data-product-id": p.id}
+        )
+    product2 = ccforms.CCModelChoiceField(models.Product.objects.all())
+
+
+
+class CCModelChoiceFieldTest(TestCase):
+    """Tests for CCModelChoiceField."""
+    def test_label_from_instance(self):
+        """Custom label_from_instance callable is used."""
+        F.ProductFactory(name="Bar")
+        s = unicode(ProductVersionForm()["product"])
+
+        self.assertIn(">FooLabel Bar<", s, s)
+
+
+    def test_default_label_from_instance(self):
+        """Default label_from_instance is unicode of instance."""
+        F.ProductFactory(name="Bar")
+        s = unicode(ProductVersionForm()["product2"])
+
+        self.assertIn(">Bar<", s, s)
+
+
+    def test_choice_attrs(self):
+        """Custom choice_attrs callable is used."""
+        p = F.ProductFactory(name="Bar")
+        s = unicode(ProductVersionForm()["product"])
+
+        self.assertIn('data-product-id="{0}"'.format(p.id), s, s)
+
+
+    def test_set_choices(self):
+        """Can set choices explicitly."""
+        f = ProductVersionForm()
+        f.fields["product"].choices = [(1, "Foo")]
+        s = unicode(f["product"])
+
+        self.assertEqual(f.fields["product"].choices, [(1, "Foo")])
+        self.assertIn(">Foo<", s, s)

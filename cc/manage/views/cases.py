@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Manage views.
+Manage views for cases.
 
 """
 from django.template.response import TemplateResponse
@@ -35,6 +35,6 @@ def cases(request):
         request,
         "manage/product/testcase/cases.html",
         {
-            "caseversions": CaseVersion.objects.all(), # @@@ just latest
+            "caseversions": CaseVersion.objects.all(), # @@@ just latest?
             }
         )
