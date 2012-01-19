@@ -149,6 +149,7 @@ html {
 
 body {
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: rgba(81, 105, 133, 0.296) url('../images/noise.png?1326735333');
   color: #454545;
 }
 
@@ -697,6 +698,11 @@ body > div {
 }
 
 [role="main"] {
+  background: url('../images/noise.png?1326735333'), white;
+  -webkit-box-shadow: #8695a8 0 0 0.375em;
+  -moz-box-shadow: #8695a8 0 0 0.375em;
+  -o-box-shadow: #8695a8 0 0 0.375em;
+  box-shadow: #8695a8 0 0 0.375em;
   padding: 1.5em 1.031%;
 }
 
@@ -704,6 +710,8 @@ body > div {
   clear: both;
   margin-left: 1.031%;
   margin-right: 1.031%;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
   color: #999999;
 }
 [role="contentinfo"] small {
