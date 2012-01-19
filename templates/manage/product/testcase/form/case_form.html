@@ -3,7 +3,7 @@
 {% load icanhaz %}
 
 {% block content %}
-<section>
+<section class="{% block sectionclass %}{% endblock sectionclass %}">
 
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}

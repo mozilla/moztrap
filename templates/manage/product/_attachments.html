@@ -7,11 +7,14 @@
 
   {% include "forms/_mock_field.html" with field="attachment 1" type="file" label="add attachment" %}
 
-  <ul class="attachments">
-    {% if obj %}
-      {% for attachment in obj.attachments %}
-        {% include "manage/product/_attachment_item.html" %}
-      {% endfor %}
-    {% endif %}
-  </ul>
+  <div class="visual">
+    <strong class="attachlabel">Attachments</strong>
+    <ul class="attachlist">
+      {% if obj %}
+        {% for attachment in obj.attachments %}
+          {% include "manage/product/_attachment_item.html" %}
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
 </div>

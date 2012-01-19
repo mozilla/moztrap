@@ -1,6 +1,6 @@
 {# field mockup takes 'field', 'type' [, 'label', 'classes', 'required', 'readonly', 'errors', 'suggest'] #}
 
-<div class="formfield {{ field|slugify }}{% if readonly %} readonly{% endif %}{% if required %} optional{% endif %}{% if errors %} errors{% endif %}">
+<div class="formfield {{ field|slugify }}-field{% if readonly %} readonly{% endif %}{% if required %} optional{% endif %}{% if errors %} errors{% endif %}">
   {% if readonly %}
 
     <strong class="ro-label">{% if label %}{{ label }}{% else %}{{ field }}{% endif %}</strong>

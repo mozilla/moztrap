@@ -72,6 +72,7 @@ textarea, select
   @extend .input
 
 textarea
+  margin: 0
   min-height: rhythm(5,14px)
 
 select
@@ -94,12 +95,6 @@ input
   +pie-clearfix
   +trailer(.5)
   position: relative
-  clear: both
-  &.errors
-    label
-      color: $red
-
-.formfields
   label
     +bold
     +cond
@@ -115,6 +110,9 @@ input
       content: "("
     &::after
       content: ")"
+  &.errors
+    label
+      color: $red
 
 // ---------------------------------------------------------------------------
 // Form Helpers

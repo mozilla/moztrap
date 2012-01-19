@@ -1,7 +1,7 @@
 {% extends 'manage/product/testcase/form/case_form.html' %}
 
 {% block caseforms %}
-  <form method="POST" enctype="multipart/form-data" id="case-form" class="{% block formclasses %}single-case-form{% endblock formclasses %}">
+  <form method="POST" enctype="multipart/form-data" id="{% block formclasses %}single-case-form{% endblock formclasses %}" class="manage-form case-form">
     {% csrf_token %}
     {# @@@ form.non_field_errors #}
 
