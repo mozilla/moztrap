@@ -17,20 +17,32 @@
 // along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 // ---------------------------------------------------------------------------
 
-$nav-background: $blue-light
+$nav-background       : $blue-light
+$nav-link-color       : $blue-hint
+$nav-link-hover-color : $red-dark
+
+// ---------------------------------------------------------------------------
+// Navigation styleguides
+
+.navlightlink
+  #{$link}
+    +text-shadow(rgba($blue-dark,$small) 0 1px 0)
+    color: $nav-link-color
+
+.navlightlinkfocus
+  @extend .navlightlink
+  #{$focus}
+    +text-shadow(rgba($blue-hint,$xsmall) 0 1px 0)
+    color: $nav-link-hover-color
 
 // ---------------------------------------------------------------------------
 // Navigation titles are not displayed.
-//
-// No styleguide reference.
 
 .navhead
   +gone
 
 // ---------------------------------------------------------------------------
 // Account Navigation.
-//
-// No styleguide reference.
 
 #accountnav
   +columns($account-width)
@@ -63,8 +75,11 @@ $nav-background: $blue-light
   > li
     &:first-child
       +pre($logo-width)
+      > a
+        margin-left: rhythm(-.5)
     > a
       #{$link}
+        +demi
         +border-top-radius
         position: relative
         padding: rhythm(.25) rhythm(.5)
@@ -80,6 +95,7 @@ $nav-background: $blue-light
 
   > .active
     > a
+      @extend .navlightlink
       background: $nav-background
       &:hover::after
         display: none
@@ -89,6 +105,9 @@ $nav-background: $blue-light
   +stretch-x
   display: none
   overflow: hidden
+
+  a
+    @extend .navlightlinkfocus
 
   .active
     a

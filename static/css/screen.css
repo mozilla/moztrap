@@ -688,6 +688,12 @@ body > div {
   margin-left: 1.031%;
   position: relative;
 }
+#brand a:link, #brand a:visited {
+  color: #454545;
+}
+#brand a:focus, #brand a:hover, #brand a:active {
+  color: #4f1114;
+}
 #brand .logo {
   position: absolute;
   top: 0.375em;
@@ -773,6 +779,16 @@ body > div {
   background: #eca7a9;
 }
 
+.navlightlink:link, .navlightlinkfocus:link, .secondary a:link, .primary > .active > a:link, .navlightlink:visited, .navlightlinkfocus:visited, .secondary a:visited, .primary > .active > a:visited {
+  text-shadow: rgba(75, 87, 101, 0.667) 0 1px 0;
+  color: #e8e9ec;
+}
+
+.navlightlinkfocus:focus, .secondary a:focus, .navlightlinkfocus:hover, .secondary a:hover, .navlightlinkfocus:active, .secondary a:active {
+  text-shadow: rgba(232, 233, 236, 0.444) 0 1px 0;
+  color: #4f1114;
+}
+
 .navhead {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -832,7 +848,11 @@ body > div {
 .primary > li:first-child {
   margin-left: 9.278%;
 }
+.primary > li:first-child > a {
+  margin-left: -0.75em;
+}
 .primary > li > a:link, .primary > li > a:visited {
+  font-weight: 500;
   -moz-border-radius-topleft: 0.296em;
   -webkit-border-top-left-radius: 0.296em;
   -ms-border-top-left-radius: 0.296em;
