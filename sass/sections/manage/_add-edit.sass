@@ -28,15 +28,10 @@
 // ---------------------------------------------------------------------------
 // Cases
 
-.edit-case
-  h2, .case-version-nav
-    +columns(12,24)
-    +trailer(1)
-  .case-version-nav
-    +omega(24)
-    +leader(-.25)
-
 .case-version-nav
+  +full(24)
+  +suffix(2,24)
+  +leader(-1.25)
   text-align: right
 
 .case-version-head
@@ -46,7 +41,7 @@
 .change-version
   +inline-block
   position: relative
-  width: columns(6,12)
+  width: columns(6,22)
   text-align: left
   .case-version-current
     +button-style($blue-hint,'ui/angle_right.png')
@@ -121,6 +116,12 @@
 
 .versioned
   @extend .fauxfieldset
+  .edit-case &
+    +leading-border($xxxsmallpx,1)
+    clear: both
+    border:
+      style: dashed
+      color: rgba($base,$xxxsmall)
 
   .name-field, .description-field
     +columns(11,24)
