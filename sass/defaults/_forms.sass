@@ -74,6 +74,10 @@ textarea, select
 textarea
   min-height: rhythm(5,14px)
 
+select
+  &:not([multiple])
+    height: $base-rhythm-unit*1.5
+
 input
   &[type="text"], &[type="password"],
   &[type="email"], &[type="url"], &[type="tel"],

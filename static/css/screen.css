@@ -527,6 +527,10 @@ textarea {
   min-height: 7.5em;
 }
 
+select:not([multiple]) {
+  height: 2.25em;
+}
+
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
   height: 2.25em;
 }
