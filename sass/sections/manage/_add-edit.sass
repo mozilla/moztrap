@@ -7,6 +7,7 @@
   +pie-clearfix
   +trailing-border($xxxsmallpx,.5)
   +trailer(.5)
+  clear: both
   border:
     style: dashed
     color: rgba($base,$xxxsmall)
@@ -26,6 +27,67 @@
 
 // ---------------------------------------------------------------------------
 // Cases
+
+.edit-case
+  h2, .case-version-nav
+    +columns(12,24)
+    +trailer(1)
+  .case-version-nav
+    +omega(24)
+    +leader(-.25)
+
+.case-version-nav
+  text-align: right
+
+.case-version-head
+  +inline-block
+  +demi
+
+.change-version
+  +inline-block
+  position: relative
+  width: columns(6,12)
+  text-align: left
+  .case-version-current
+    +button-style($blue-hint,'ui/angle_right.png')
+    +trailer(0)
+  .case-version-list
+    +no-style-list
+    +box-shadow($base 0 rhythm(.125) rhythm(.25))
+    display: none
+    position: absolute
+    top: 100%
+    right: 0
+    width: 100%
+    max-height: rhythm(12.5)
+    background-color: $lightest
+    overflow-y: auto
+    z-index: 900
+  .vaction-edit, .vaction-add
+    #{$link}
+      display: block
+  .vaction-edit
+    #{$link}
+      +button-style($green-lighter,'ui/pencil.png')
+      +border-radius(0)
+  .vaction-add
+    #{$link}
+      +opacity(.75)
+      +icon('ui/plus.png',$blue-hint,false)
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +border-radius(0)
+      color: $base
+    #{$focus}
+      +opacity(1)
+      background-color: $blue-lightest
+
+  &:hover
+    .case-version-current
+      +button-style($blue-lighter,'ui/angle_down.png')
+      +border-bottom-radius(0)
+    .case-version-list
+      display: block
 
 .versioning
   @extend .fauxfieldset
