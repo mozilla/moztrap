@@ -50,24 +50,21 @@
 
 {% block extrajs %}
 <script>
-  $(
-      function() {
-          $('ol.steplist').formset(
-              {
-                  prefix: '{{ form.steps_formset.prefix }}',
-                  formTemplate: '#empty-step-form > li',
-                  formSelector: '.steps-form',
-                  deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
-                  deleteLinkSelector: '.removefields',
-                  addAnimationSpeed: 'normal',
-                  removeAnimationSpeed: 'fast',
-                  autoAdd: true,
-                  alwaysShowExtra: true,
-                  deleteOnlyActive: true,
-                  insertAbove: true
-              });
-      });
-
+$(function() {
+    $('ol.steplist').formset({
+        prefix: '{{ form.steps_formset.prefix }}',
+        formTemplate: '#empty-step-form .step-form-item',
+        formSelector: '.step-form-item',
+        deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+        deleteLinkSelector: '.removefields',
+        addAnimationSpeed: 'normal',
+        removeAnimationSpeed: 'fast',
+        autoAdd: true,
+        alwaysShowExtra: true,
+        deleteOnlyActive: true,
+        insertAbove: true
+    });
+});
 </script>
 {% endblock %}
 

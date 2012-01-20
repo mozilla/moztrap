@@ -213,8 +213,8 @@ var CC = (function (CC, $) {
                                 newHTML.fadeIn('fast', function () {
                                     $(this).find('ol.steplist').formset({
                                         prefix: prefix,
-                                        formTemplate: '#empty-step-form > li',
-                                        formSelector: '.steps-form',
+                                        formTemplate: '#empty-step-form .step-form-item',
+                                        formSelector: '.step-form-item',
                                         deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
                                         deleteLinkSelector: '.removefields',
                                         addAnimationSpeed: 'normal',
