@@ -173,9 +173,14 @@ var CC = (function (CC, $) {
             target_sel: '#id_suites'
         });
         CC.formOptionsFilter({
-            container: '#addcase',
+            container: '#single-case-add',
             trigger_sel: '#id_product',
-            target_sel: '#id_suite',
+            target_sel: '#id_productversion'
+        });
+        CC.formOptionsFilter({
+            container: '#single-case-add',
+            trigger_sel: '#id_product',
+            target_sel: '#id_initial_suite',
             optional: true
         });
         CC.testcaseAttachments('#single-case-add .attach');
