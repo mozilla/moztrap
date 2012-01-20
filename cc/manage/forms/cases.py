@@ -136,7 +136,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         caseversion.attachments.filter(id__in=delete_ids).delete()
 
         if self.files: # if no files, it's a plain dict, has no getlist
-            for uf in self.files.getlist("attachment", []):
+            for uf in self.files.getlist("add_attachment", []):
                 CaseAttachment.objects.create(
                     attachment=uf,
                     caseversion=caseversion,
