@@ -11,8 +11,8 @@
     <strong class="attachlabel">Attachments</strong>
     <ul class="attachlist">
       {% if obj %}
-        {% for case_attachment in obj.attachments.all %}
-          {% include "manage/product/_attachment_item.html" with attachment=case_attachment.attachment %}
+        {% for attachment in obj.attachments.all %}
+          {% include "manage/product/_attachment_item.html" with attachment=attachment %}
         {% endfor %}
       {% endif %}
     </ul>
