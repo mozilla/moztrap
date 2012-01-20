@@ -38,7 +38,7 @@ def cases(request):
         request,
         "manage/product/testcase/cases.html",
         {
-            "caseversions": CaseVersion.objects.all(), # @@@ just latest?
+            "caseversions": CaseVersion.objects.filter(latest=True),
             }
         )
 

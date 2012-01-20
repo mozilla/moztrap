@@ -164,6 +164,35 @@ class CaseVersionTest(TestCase):
         self.assertTrue(refresh(cv).envs_narrowed)
 
 
+    def test_adding_new_version_sets_latest(self):
+        """Adding a new case version updates latest version."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        self.assertEqual(
+            [v.latest for v in c.versions.all()],
+            [False, False, True]
+            )
+
+
+    def test_instance_being_saved_is_updated(self):
+        """Version being saved gets correct latest setting."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        cv = F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+
+        self.assertEqual(cv.latest, True)
+
+
 
 class CaseStepTest(TestCase):
     def test_unicode(self):

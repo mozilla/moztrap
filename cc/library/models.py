@@ -46,6 +46,29 @@ class Case(CCModel):
         return super(Case, self).clone(*args, **kwargs)
 
 
+    def set_latest_version(self, update_instance=None):
+        """
+        Mark latest version of this case in DB, marking all others non-latest.
+
+        If ``update_instance`` is provided, its ``latest`` flag is updated
+        appropriately.
+
+        """
+        try:
+            latest_version = self.versions.order_by("-productversion__order")[0]
+        except IndexError:
+            pass
+        else:
+            self.versions.update(latest=False)
+            latest_version.latest = True
+            latest_version.save(force_update=True, skip_set_latest=True)
+            if update_instance == latest_version:
+                update_instance.latest = True
+            elif update_instance is not None:
+                update_instance.latest = False
+
+
+
     class Meta:
         permissions = [
             ("create_cases", "Can create new test cases."),
@@ -66,6 +89,9 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
 
+    # denormalized for queries
+    latest = models.BooleanField(default=False, editable=False)
+
     tags = models.ManyToManyField(Tag, blank=True)
     # True if this case's envs have been narrowed from the product version.
     envs_narrowed = models.BooleanField(default=False)
@@ -78,6 +104,14 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
     class Meta:
         ordering = ["case", "productversion__order"]
         unique_together = [("productversion", "case")]
+
+
+    def save(self, *args, **kwargs):
+        """Save CaseVersion, updating latest version."""
+        skip_set_latest = kwargs.pop("skip_set_latest", False)
+        super(CaseVersion, self).save(*args, **kwargs)
+        if not skip_set_latest:
+            self.case.set_latest_version(update_instance=self)
 
 
     def clone(self, *args, **kwargs):

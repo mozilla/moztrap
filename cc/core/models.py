@@ -69,6 +69,9 @@ class Product(TeamModel):
             if version == update_instance:
                 update_instance.order = version.order
                 update_instance.latest = version.latest
+        # now we have to update latest caseversions too, @@@ too slow?
+        for case in self.cases.all():
+            case.set_latest_version()
 
 
 
@@ -91,6 +94,7 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
 
 
     def save(self, *args, **kwargs):
+        """Save productversion, updating latest version."""
         skip_reorder = kwargs.pop("skip_reorder", False)
         super(ProductVersion, self).save(*args, **kwargs)
         if not skip_reorder:
