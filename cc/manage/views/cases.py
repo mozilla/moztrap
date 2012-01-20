@@ -19,7 +19,7 @@
 Manage views for cases.
 
 """
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -39,6 +39,18 @@ def list(request):
         "manage/product/testcase/cases.html",
         {
             "caseversions": CaseVersion.objects.filter(latest=True),
+            }
+        )
+
+
+@login_required
+def details(request, caseversion_id):
+    caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/list/_case_details.html",
+        {
+            "caseversion": caseversion
             }
         )
 

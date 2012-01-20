@@ -32,6 +32,11 @@ urlpatterns = patterns(
         "cc.manage.views.cases.list",
         name="manage_cases"),
 
+    # ajax details
+    url("^cases/_detail/(?P<caseversion_id>\d+)/$",
+        "cc.manage.views.cases.details",
+        name="manage_case_details"),
+
     # add
     url("^case/add/$",
         "cc.manage.views.cases.add",

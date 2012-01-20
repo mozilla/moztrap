@@ -10,7 +10,7 @@
   {% endif %}
   {% if attachments %}
     <ul class="files-list">
-      {% for attachment in attachments %}
+      {% for attachment in attachments.all %}
       <li class="file"><a href="{{ attachment.url }}">{{ attachment.name }}</a></li>
       {% endfor %}
     </ul>

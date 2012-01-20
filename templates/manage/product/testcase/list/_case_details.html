@@ -1,7 +1,7 @@
 {% include "lists/_byline.html" with item=case %}
 
 <ol class="steps">
-  {% for step in caseversion.steps %}
+  {% for step in caseversion.steps.all %}
   <li>
     <p class="instruction">{{ step.instruction }}</p>
     <p class="outcome">{{ step.expected }}</p>
