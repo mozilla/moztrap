@@ -189,4 +189,8 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
 
 
 StepFormSet = inlineformset_factory(
-    CaseVersion, CaseStep, form=StepForm, formset=BaseStepInlineFormSet)
+    CaseVersion,
+    CaseStep,
+    form=StepForm,
+    formset=BaseStepInlineFormSet,
+    extra=1)
