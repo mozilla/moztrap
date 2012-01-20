@@ -211,7 +211,10 @@ class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
 
 
 class AutocompleteInput(floppyforms.TextInput):
-    """A text input  with a data-autocomplete-url attribute."""
+    """A text input  with a data-autocomplete-url attribute and ul.suggest."""
+    template_name = "forms/widgets/_autocomplete_input.html"
+
+
     def __init__(self, *args, **kwargs):
         self.url = kwargs.pop("url")
         super(AutocompleteInput, self).__init__(*args, **kwargs)
