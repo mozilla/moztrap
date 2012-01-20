@@ -43,7 +43,7 @@ var CC = (function (CC, $) {
         $('.itemlist').on('click', '.listitem .details .summary', function (event) {
             var item = $(this),
                 content = item.siblings('.content'),
-                url = item.closest('.listitem').data('details-url');
+                url = item.attr('href');
             if (url && !content.hasClass('loaded')) {
                 content.css('min-height', '4.854em').addClass('loaded');
                 content.loadingOverlay();
@@ -53,7 +53,7 @@ var CC = (function (CC, $) {
                 });
             } else { content.css('min-height', '0px'); }
             $(this).blur();
-            return false;
+            event.preventDefault();
         });
     };
 
