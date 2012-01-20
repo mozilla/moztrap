@@ -19,11 +19,10 @@
 Tests for Case Conductor form-rendering template tags and filters.
 
 """
-from mock import patch
-
 from django.utils.unittest import TestCase
 
-from django import forms
+from mock import patch
+import floppyforms as forms
 
 from cc.core.templatetags import ccforms
 
@@ -134,3 +133,16 @@ class FieldFilterTests(TestCase):
     def test_optional_boolean(self):
         """A non-"required" BooleanField should not be marked optional."""
         self.assertFalse(ccforms.optional(PersonForm()["awesome"]))
+
+
+    def test_attr(self):
+        """``attr`` filter sets an attribute."""
+        self.assertIn(
+            'foo="bar"',
+            unicode(ccforms.attr(PersonForm()["name"], "foo:bar")))
+
+
+    def test_attr_no_value(self):
+        """``attr`` filter sets a no-value attribute."""
+        self.assertIn(
+            "foo ", unicode(ccforms.attr(PersonForm()["name"], "foo")))

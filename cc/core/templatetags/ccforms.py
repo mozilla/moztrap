@@ -92,3 +92,21 @@ def optional(boundfield):
     if isinstance(boundfield.field, forms.BooleanField):
         return False
     return not boundfield.field.required
+
+
+@register.filter
+def attr(boundfield, attrval):
+    """
+    Given "attr:val" arg, set attr to val on the field's widget.
+
+    If given arg has no colon, set it as a no-value attribute (only works with
+    floppyforms widgets).
+
+    """
+    try:
+        attr, val = attrval.split(":", 1)
+    except ValueError:
+        attr, val = attrval, False
+
+    boundfield.field.widget.attrs[attr] = val
+    return boundfield
