@@ -1,0 +1,7 @@
+{% load ccforms %}
+
+{% if label %}
+{{ field|label:label }}
+{% else %}
+{{ field|label }}
+{% endif %}

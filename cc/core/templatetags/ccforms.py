@@ -110,3 +110,10 @@ def attr(boundfield, attrval):
 
     boundfield.field.widget.attrs[attr] = val
     return boundfield
+
+
+@register.filter
+def is_checkbox(boundfield):
+    """Returns True if this field's widget is a CheckboxInput."""
+    return isinstance(
+        boundfield.field.widget, forms.CheckboxInput)

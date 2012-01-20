@@ -146,3 +146,17 @@ class FieldFilterTests(TestCase):
         """``attr`` filter sets a no-value attribute."""
         self.assertIn(
             "foo ", unicode(ccforms.attr(PersonForm()["name"], "foo")))
+
+
+    def test_detect_checkbox(self):
+        """``is_checkbox`` detects checkboxes."""
+        f = PersonForm()
+
+        self.assertTrue(ccforms.is_checkbox(f["awesome"]))
+
+
+    def test_detect_(self):
+        """``is_checkbox`` detects checkboxes."""
+        f = PersonForm()
+
+        self.assertFalse(ccforms.is_checkbox(f["level"]))
