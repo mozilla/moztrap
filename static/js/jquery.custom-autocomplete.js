@@ -631,7 +631,7 @@
         textbox: '#autocomplete-textbox',               // Selector for autocomplete textbox
         inputs: 'input[type="checkbox"]',               // Selector for inputs
         formActions: '.form-actions',                   // Selector for form-actions (only needed if ``hideFormActions: true``)
-        suggestionList: '.suggest',            // Selector for list of autocomplete suggestions
+        suggestionList: '.suggest',                     // Selector for list of autocomplete suggestions
         inputList: '.visual',                           // Selector for list of inputs
         ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
         url: null,                                      // Ajax url (only needed if ``ajax: true``)

@@ -53,6 +53,7 @@ var CC = (function (CC, $) {
             textbox: '#id_add_tags',
             ajax: true,
             url: $('#id_add_tags').data('autocomplete-url'),
+            inputList: '.taglist',
             triggerSubmit: null,
             allowNew: true,
             restrictAllowNew: true,
