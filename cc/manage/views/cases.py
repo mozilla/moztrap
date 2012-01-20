@@ -33,7 +33,7 @@ from ..forms.cases import AddCaseForm
 
 @login_required
 @sort("caseversions")
-def cases(request):
+def list(request):
     return TemplateResponse(
         request,
         "manage/product/testcase/cases.html",
@@ -45,7 +45,7 @@ def cases(request):
 
 
 @permission_required("library.create_cases")
-def add_case(request):
+def add(request):
     if request.method == "POST":
         form = AddCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():

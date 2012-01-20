@@ -19,6 +19,7 @@
 Management forms for cases.
 
 """
+from django.core.urlresolvers import reverse
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 
 import floppyforms as forms
@@ -48,7 +49,9 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     # these are just placeholder fields for the JS autocomplete stuff, we don't
     # use their contents
     add_tags = forms.CharField(
-        widget=ccforms.AutocompleteInput(url="/_tags/"), required=False) # @@@
+        widget=ccforms.AutocompleteInput(
+            url=lambda: reverse("manage_tags_autocomplete")),
+        required=False) # @@@
     add_attachment = forms.FileField(required=False)
 
 

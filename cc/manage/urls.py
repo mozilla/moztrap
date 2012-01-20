@@ -29,12 +29,12 @@ urlpatterns = patterns(
     # testcase ---------------------------------------------------------------
     # manage
     url("^cases/$",
-        "cc.manage.views.cases.cases",
+        "cc.manage.views.cases.list",
         name="manage_cases"),
 
     # add
     url("^case/add/$",
-        "cc.manage.views.cases.add_case",
+        "cc.manage.views.cases.add",
         name="manage_case_add"),
 
     # add bulk (@@@ wireframe)
@@ -48,4 +48,8 @@ urlpatterns = patterns(
         "django.views.generic.simple.direct_to_template",
         {"template": "manage/product/testcase/edit_case.html"},
         name="manage_case_edit"),
+
+    # tags -------------------------------------------------------------------
+    url(r"^tags/_autocomplete/",
+        "cc.manage.views.tags.autocomplete", name="manage_tags_autocomplete"),
 )
