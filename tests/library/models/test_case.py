@@ -195,7 +195,33 @@ class CaseVersionTest(TestCase):
 
 
 class CaseStepTest(TestCase):
+    """Tests for the CaseStep model."""
     def test_unicode(self):
+        """Unicode representation is 'step #X'."""
         c = F.CaseStepFactory(number=1)
 
         self.assertEqual(unicode(c), u"step #1")
+
+
+
+class CaseAttachmentTest(TestCase):
+    """Tests for the CaseAttachment model."""
+    def test_unicode(self):
+        """Unicode representation is name of attached file."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(unicode(ca), ca.attachment.name)
+
+
+    def test_name(self):
+        """``name`` property is shortcut to attached file name."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(ca.name, ca.attachment.name)
+
+
+    def test_url(self):
+        """``url`` property is shortcut to attached file url."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(ca.url, ca.attachment.url)
