@@ -29,4 +29,4 @@ class ProductVersionInline(CCTabularInline):
 
 
 admin.site.register(Product, TeamModelAdmin, inlines=[ProductVersionInline])
-admin.site.register(ProductVersion, TeamModelAdmin)
+admin.site.register(ProductVersion, TeamModelAdmin, list_filter=["product"])
