@@ -166,15 +166,15 @@ $nav-link-hover-color : $red-dark
     position: relative
 
     .summary
-      +button-style($green,'ui/columns.png',true)
+      +button-style($green,'ui/columns.png',true,$small:true)
       position: absolute
       right: 0
-      top: - rhythm(1.5)
+      top: - rhythm(1.25)
       cursor: pointer
       outline: 0
     &.open
       .summary
-        +button-style($yellow-dark,'ui/minus.png',true)
+        +button-style($yellow-dark,'ui/minus.png',true,$small:true)
 
     .content
       +padding-leader

@@ -40,7 +40,7 @@ button
 // $notext  - [true | false] if the button should have text.
 // $hover   - [true | false] if the button should respond to hovering.
 
-=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false)
+=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false, $small:false)
   $highlight: rgba($lightest,$xsmall)
   $lowlight : rgba($base,$xxxsmall)
   $bgrad    : false
@@ -95,6 +95,9 @@ button
 
   @if $inset
     +box-shadow($lowlight 0 0 $smallpx inset)
+
+  @if $small
+    height: rhythm(.5)
 
 // Applies default button styles.
 
