@@ -1,7 +1,7 @@
 {% if id %}
   <label for="{{ id }}">
     {{ label_text }}
-    {% if not field.field.required %}
+    {% if field|optional %}
       <span class="isoptional">optional</span>
     {% endif %}
   </label>

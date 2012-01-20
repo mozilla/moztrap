@@ -30,8 +30,10 @@ from cc.core.templatetags import ccforms
 
 
 class PersonForm(forms.Form):
-    name = forms.CharField(initial="none")
-    level = forms.ChoiceField(choices=(("b", "Beginner"), ("a", "Advanced")))
+    name = forms.CharField(initial="none", required=True)
+    level = forms.ChoiceField(
+        choices=(("b", "Beginner"), ("a", "Advanced")), required=False)
+    awesome = forms.BooleanField(required=False)
 
 
 
@@ -100,21 +102,6 @@ class FieldFilterTests(TestCase):
             ccforms.value_text(PersonForm({"level": "a"})["level"]), "Advanced")
 
 
-    def test_read_only(self):
-        """``read_only`` filter returns field's ``read_only`` attr."""
-        bf = PersonForm()["name"]
-        bf.field.read_only = True
-
-        self.assertEqual(ccforms.read_only(bf), True)
-
-
-    def test_read_only_default(self):
-        """``read_only`` filter returns False if no ``read_only`` attr."""
-        bf = PersonForm()["name"]
-
-        self.assertEqual(ccforms.read_only(bf), False)
-
-
     def test_classes(self):
         """``classes`` filter sets widget's class attr if not set."""
         bf = PersonForm()["name"]
@@ -132,3 +119,18 @@ class FieldFilterTests(TestCase):
         bf = ccforms.classes(bf, "yo ma")
 
         self.assertIn('class="foo yo ma"', unicode(bf))
+
+
+    def test_optional_false(self):
+        """A required field should not be marked optional."""
+        self.assertFalse(ccforms.optional(PersonForm()["name"]))
+
+
+    def test_optional_true(self):
+        """A non-required field should be marked optional."""
+        self.assertTrue(ccforms.optional(PersonForm()["level"]))
+
+
+    def test_optional_boolean(self):
+        """A non-"required" BooleanField should not be marked optional."""
+        self.assertFalse(ccforms.optional(PersonForm()["awesome"]))

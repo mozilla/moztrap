@@ -19,6 +19,7 @@
 Form-rendering tags and filters.
 
 """
+from django import forms
 from django import template
 from django.template.loader import render_to_string
 
@@ -71,15 +72,23 @@ def value_text(boundfield):
 
 
 @register.filter
-def read_only(boundfield):
-    """Return boundfield "read_only" attribute, or False if not present."""
-    return getattr(boundfield.field, "read_only", False)
-
-
-@register.filter
 def classes(boundfield, classes):
     """Append given classes to the widget attrs of given boundfield."""
     attrs = boundfield.field.widget.attrs
     attrs["class"] = " ".join(
         [c for c in [attrs.get("class", None), classes] if c])
     return boundfield
+
+
+@register.filter
+def optional(boundfield):
+    """
+    Return True if given boundfield should be marked optional, False otherwise.
+
+    For boolean fields, "required" means "must be checked", so non-required
+    boolean fields should not be marked "optional" in the UI.
+
+    """
+    if isinstance(boundfield.field, forms.BooleanField):
+        return False
+    return not boundfield.field.required
