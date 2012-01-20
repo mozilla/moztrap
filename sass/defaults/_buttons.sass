@@ -40,7 +40,7 @@ button
 // $notext  - [true | false] if the button should have text.
 // $hover   - [true | false] if the button should respond to hovering.
 
-=button-style($c:$green, $icon:false, $notext:false, $hover:true)
+=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false)
   $highlight: rgba($lightest,$xsmall)
   $lowlight : rgba($base,$xxxsmall)
   $bgrad    : false
@@ -51,12 +51,11 @@ button
     $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
-    $border   : darken(desaturate($c,25),5)
+    $border   : darken(desaturate($c,25),15)
     +demi
     +border-radius
     +rhythm-borders(1px,.25)
     +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
-    +box-shadow(rgba($border,$xsmall) 0 0 $xxxsmallem)
     color: $base
     border-color: $border
     background:
@@ -93,6 +92,9 @@ button
         +background-image($bhover)
       &:active
         +background-image($bactive)
+
+  @if $inset
+    +box-shadow($lowlight 0 0 $smallpx inset)
 
 // Applies default button styles.
 
