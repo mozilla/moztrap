@@ -78,10 +78,14 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
     def clean(self):
         productversion = self.cleaned_data.get("productversion")
+        initial_suite = self.cleaned_data.get("initial_suite")
         product = self.cleaned_data.get("product")
         if product and productversion and productversion.product != product:
             raise forms.ValidationError(
                 "Must select a version of the correct product.")
+        if product and initial_suite and initial_suite.product != product:
+            raise forms.ValidationError(
+                "Must select a suite for the correct product.")
         return self.cleaned_data
 
 
