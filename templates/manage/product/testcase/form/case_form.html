@@ -14,8 +14,34 @@
   {% block caseversions %}
   {% endblock caseversions %}
 
-  {% block caseforms %}
-  {% endblock caseforms %}
+  <form method="POST" enctype="multipart/form-data" id="{% block formclasses %}single-case-form{% endblock formclasses %}" class="manage-form case-form">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% block versioningform %}
+    <div class="versioning">
+      {% include "forms/_field.html" with field=form.product %}
+      {% include "forms/_field.html" with field=form.productversion label="Version" %}
+      {% include "forms/_field.html" with field=form.and_later_versions %}
+      {% include "forms/_field.html" with field=form.initial_suite label="Suite" %}
+    </div>
+    {% endblock versioningform %}
+
+    <div class="versioned">
+      {% block versionedform %}
+        {% include "forms/_field.html" with field=form.name %}
+        {% include "forms/_field.html" with field=form.description %}
+
+        {% include "manage/product/testcase/tag/_tagging.html" with formtype="single" %}
+        {% include "manage/product/_attachments.html" with obj=caseversion field=form.add_attachment %}
+        {% include "manage/product/testcase/form/_step_form.html" %}
+      {% endblock versionedform %}
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" name="action-save" value="1">save test case</button>
+    </div>
+  </form>
 
 </section>
 {% endblock content %}
