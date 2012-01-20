@@ -151,6 +151,17 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
         return {RunCaseVersion: RunCaseVersion.objects.filter(run__in=objs)}
 
 
+    def bug_urls(self):
+        """Returns set of bug URLs associated with this caseversion."""
+        Result = self.runcaseversions.model.results.related.model
+        StepResult = Result.stepresults.related.model
+        return set(
+            StepResult.objects.filter(
+                result__runcaseversion__caseversion=self).exclude(
+                bug_url="").values_list("bug_url", flat=True).distinct()
+            )
+
+
 
 class CaseAttachment(Attachment):
     caseversion = models.ForeignKey(CaseVersion, related_name="attachments")

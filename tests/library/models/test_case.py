@@ -193,6 +193,27 @@ class CaseVersionTest(TestCase):
         self.assertEqual(cv.latest, True)
 
 
+    def test_bug_urls(self):
+        """bug_urls aggregates bug urls from all results, sans dupes."""
+        cv = F.CaseVersionFactory.create()
+        rcv1 = F.RunCaseVersionFactory.create(caseversion=cv)
+        rcv2 = F.RunCaseVersionFactory.create(caseversion=cv)
+        result1 = F.ResultFactory.create(runcaseversion=rcv1)
+        result2 = F.ResultFactory.create(runcaseversion=rcv2)
+        F.StepResultFactory.create(result=result1)
+        F.StepResultFactory.create(
+            result=result1, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=result2, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=result2, bug_url="http://www.example.com/bug2")
+
+        self.assertEqual(
+            cv.bug_urls(),
+            set(["http://www.example.com/bug1", "http://www.example.com/bug2"])
+            )
+
+
 
 class CaseStepTest(TestCase):
     """Tests for the CaseStep model."""
