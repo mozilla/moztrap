@@ -157,9 +157,12 @@
                 row.find('input, select, textarea, label').focus(function () {
                     $(this).closest(options.formSelector).removeClass('extra-row').css('opacity', 1);
                     $(this).attr('required', 'required');
-                    totalForms.val(formCount + 1);
+                    totalForms.val(parent.find(options.formSelector).not('.extra-row').length);
                     if (options.deleteOnlyActive) {
                         $(this).closest(options.formSelector).find(options.deleteLinkSelector).fadeIn();
+                    }
+                    if (showAddButton() && $(this).closest(options.formSelector).is(':last-child')) {
+                        autoAddRow();
                     }
                 }).each(function () {
                     updateElementIndex($(this), options.prefix, formCount);
@@ -214,13 +217,7 @@
         // FIXME: Perhaps using $.data would be a better idea?
         options.formTemplate = template;
 
-        if (options.autoAdd) {
-            parent.on('focus', 'input, select, textarea, label', function () {
-                if (showAddButton() && $(this).closest(options.formSelector).is(':last-child')) {
-                    autoAddRow();
-                }
-            });
-        } else {
+        if (!options.autoAdd) {
             // Insert the add-link immediately after the last form:
             parent.after(options.addLink);
             addButton = parent.next();
