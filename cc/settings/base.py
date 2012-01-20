@@ -121,6 +121,10 @@ TEMPLATE_DIRS = [
     join(BASE_PATH, "templates"),
 ]
 
+FIXTURE_DIRS = [
+    join(BASE_PATH, "fixtures"),
+    ]
+
 DATE_FORMAT = "Y-m-d"
 
 INSTALLED_APPS = [
