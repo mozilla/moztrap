@@ -72,7 +72,7 @@ class CCSelect(floppyforms.Select):
     the <option> element.
 
     """
-    template_name = "forms/_select_with_option_attrs.html"
+    template_name = "forms/widgets/_select_with_option_attrs.html"
 
 
 
@@ -85,7 +85,7 @@ class CCSelectMultiple(floppyforms.SelectMultiple):
     the <option> element.
 
     """
-    template_name = "forms/_select_with_option_attrs.html"
+    template_name = "forms/widgets/_select_with_option_attrs.html"
 
 
 
@@ -94,7 +94,7 @@ class CCSelectMultiple(floppyforms.SelectMultiple):
 #     A SelectMultiple widget that provides UI for filtering options.
 
 #     """
-#     template_name = "forms/_filtered_select_multiple.html"
+#     template_name = "forms/widgets/_filtered_select_multiple.html"
 
 #     def __init__(self, *args, **kwargs):
 #         self.filters = kwargs.pop("filters", [])
@@ -105,7 +105,7 @@ class CCSelectMultiple(floppyforms.SelectMultiple):
 #         from .filters import Filter
 #         ctx = super(FilteredSelectMultiple, self).get_context_data()
 #         ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
-#         ctx["choice_template"] = "forms/_filtered_select_multiple_item.html"
+#         ctx["choice_template"] = "forms/widgets/_filtered_select_multiple_item.html"
 #         return ctx
 
 

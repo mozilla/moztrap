@@ -7,11 +7,11 @@
   {% else %}
 
     {% if field|is_checkbox %}
-      {% include "forms/_field_field.html" %}
-      {% include "forms/_field_label.html" %}
+      {% include "forms/field/_input.html" %}
+      {% include "forms/field/_label.html" %}
     {% else %}
-      {% include "forms/_field_label.html" %}
-      {% include "forms/_field_field.html" %}
+      {% include "forms/field/_label.html" %}
+      {% include "forms/field/_input.html" %}
     {% endif %}
 
     {{ field.errors }}
