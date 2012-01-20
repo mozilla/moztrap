@@ -1,4 +1,6 @@
 body.login
+  > div
+    +box-shadow(none)
 
   // Layout ------------------------------------------------------------------
   #brand, [role="contentinfo"]
@@ -6,8 +8,8 @@ body.login
     +pad(9,9)
 
   #main
-    +full
-    +pad(5,9)
+    +squish(5,5)
+    +suffix(4)
 
   #brand
     +un-column
@@ -18,6 +20,7 @@ body.login
       #{$link}
         +squish(9,9,24)
         +padding-leader(7)
+        +trailer(.5)
         display: block
         position: relative
     .logo
@@ -28,11 +31,6 @@ body.login
     .wordmark
       +adjust-font-size-to($medpx)
       +reset-box-model
-
-  [role="contentinfo"]
-    +leader(2)
-  .adr
-    +gone
 
   .message
     +squish(6,6)
