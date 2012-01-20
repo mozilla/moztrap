@@ -19,7 +19,7 @@
 Management forms for cases.
 
 """
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
 
 import floppyforms as forms
 
@@ -74,6 +74,8 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         data = self.cleaned_data.copy()
         case = Case.objects.create(product=data.pop("product"))
         data["case"] = case
+        del data["add_tags"]
+        del data["add_attachment"]
         initial_suite = data.pop("initial_suite")
         productversions = [data.pop("productversion")]
         if data.pop("and_later_versions"):
@@ -114,11 +116,12 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         delete_ids = set(self.data.getlist("remove-attachment"))
         caseversion.attachments.filter(id__in=delete_ids).delete()
 
-        for uf in self.files.getlist("attachment", []):
-            CaseAttachment.objects.create(
-                attachment=uf,
-                caseversion=caseversion,
-                )
+        if self.files: # if no files, it's a plain dict, has no getlist
+            for uf in self.files.getlist("attachment", []):
+                CaseAttachment.objects.create(
+                    attachment=uf,
+                    caseversion=caseversion,
+                    )
 
 
 
@@ -128,11 +131,13 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
         widgets = {
             "instruction": ccforms.BareTextarea,
             "expected": ccforms.BareTextarea,
-            "number": forms.HiddenInput,
             }
-        exclude = ["number"]
+        fields = ["caseversion", "instruction", "expected"]
 
 
+
+class BaseStepInlineFormSet(BaseInlineFormSet):
+    """Step formset that assigns sequential numbers to steps."""
     def save_new(self, form, commit=True):
         """Assign auto-incrementing step numbers to steps when saving."""
         obj = form.save(commit=False)
@@ -164,4 +169,5 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
 
 
 
-StepFormSet = inlineformset_factory(CaseVersion, CaseStep, form=StepForm)
+StepFormSet = inlineformset_factory(
+    CaseVersion, CaseStep, form=StepForm, formset=BaseStepInlineFormSet)

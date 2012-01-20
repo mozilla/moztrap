@@ -35,7 +35,7 @@ urlpatterns = patterns(
     # add
     url("^case/add/$",
         "cc.manage.views.cases.add_case",
-        name="manage_add_case"),
+        name="manage_case_add"),
 
     # add bulk (@@@ wireframe)
     url("^case/add/bulk/$",
