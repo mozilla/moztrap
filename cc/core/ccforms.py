@@ -207,3 +207,20 @@ class CCModelChoiceField(forms.ModelChoiceField):
 class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
                                  CCModelChoiceField):
     widget = CCSelectMultiple
+
+
+
+class AutocompleteInput(floppyforms.TextInput):
+    """A text input  with a data-autocomplete-url attribute."""
+    def __init__(self, *args, **kwargs):
+        self.url = kwargs.pop("url")
+        super(AutocompleteInput, self).__init__(*args, **kwargs)
+
+
+    def render(self, name, value, attrs=None, extra_context={}):
+        attrs = attrs or {}
+        attrs["data-autocomplete-url"] = (
+            self.url() if callable(self.url) else self.url)
+        attrs["autocomplete"] = "off"
+        return super(AutocompleteInput, self).render(
+            name, value, attrs, extra_context)

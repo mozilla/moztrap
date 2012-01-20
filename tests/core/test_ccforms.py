@@ -115,3 +115,30 @@ class CCModelChoiceFieldTest(TestCase):
 
         self.assertEqual(f.fields["product"].choices, [(1, "Foo")])
         self.assertIn(">Foo<", s, s)
+
+
+
+class AutocompleteInputTest(TestCase):
+    """Tests for AutocompleteInput."""
+    def test_autocomplete_off(self):
+        """Sets autocomplete attr to "off" to disable browser autocomplete."""
+        self.assertIn(
+            'autocomplete="off"',
+            ccforms.AutocompleteInput(url="foo").render("n", "")
+            )
+
+
+    def test_autocomplete_url(self):
+        """Sets data-autocomplete-url."""
+        self.assertIn(
+            'data-autocomplete-url="/foo/bar/"',
+            ccforms.AutocompleteInput(url="/foo/bar/").render("n", "")
+            )
+
+
+    def test_autocomplete_url_callable(self):
+        """Sets data-autocomplete-url from callable url argument."""
+        self.assertIn(
+            'data-autocomplete-url="/foo/bar/"',
+            ccforms.AutocompleteInput(url=lambda: "/foo/bar/").render("n", "")
+            )
