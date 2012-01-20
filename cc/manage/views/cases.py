@@ -19,12 +19,15 @@
 Manage views for cases.
 
 """
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from ...core.sort import sort
 from ...library.models import CaseVersion
+
+from ..forms.cases import AddCaseForm
 
 
 
@@ -36,5 +39,24 @@ def cases(request):
         "manage/product/testcase/cases.html",
         {
             "caseversions": CaseVersion.objects.all(), # @@@ just latest?
+            }
+        )
+
+
+
+@permission_required("library.create_cases")
+def add_case(request):
+    if request.method == "POST":
+        form = AddCaseForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("manage_cases")
+    else:
+        form = AddCaseForm(user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/add_case.html",
+        {
+            "form": form
             }
         )

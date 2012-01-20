@@ -28,13 +28,14 @@ urlpatterns = patterns(
 
     # testcase ---------------------------------------------------------------
     # manage
-    url("^cases/$", "cc.manage.views.cases.cases", name="manage_cases"),
+    url("^cases/$",
+        "cc.manage.views.cases.cases",
+        name="manage_cases"),
 
-    # add (@@@ wireframe)
+    # add
     url("^case/add/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/product/testcase/add_case.html"},
-        name="manage_case_add"),
+        "cc.manage.views.cases.add_case",
+        name="manage_add_case"),
 
     # add bulk (@@@ wireframe)
     url("^case/add/bulk/$",

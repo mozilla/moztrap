@@ -1,4 +1,5 @@
 <li class="step-form-item">
-  {% include "forms/_mock_field.html" with field="instruction" type="textarea" %}
-  {% include "forms/_mock_field.html" with field="expected result" type="textarea" %}
+  {{ form.caseversion }}
+  {% include "forms/_field.html" with field=form.instruction %}
+  {% include "forms/_field.html" with field=form.expected %}
 </li>

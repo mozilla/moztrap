@@ -1,5 +1,5 @@
 {% load ccforms %}
-<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}{% if field|optional %} optional{% endif %}{% if field.errors %} errors{% endif %}">
+<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field.errors %} errors{% endif %}">
   {% if read_only %}
     <dl class="readonly">
       <dt class="rolabel">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</dt>
