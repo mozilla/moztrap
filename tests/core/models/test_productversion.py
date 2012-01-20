@@ -115,8 +115,8 @@ class ProductVersionTest(TestCase):
         F.ProductVersionFactory.create(version="2.10", product=p)
 
         self.assertEqual(
-            [v.version for v in p.versions.all()],
-            ["2.9", "2.10", "2.11"]
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", False), ("2.11", True)]
             )
 
 
@@ -131,8 +131,8 @@ class ProductVersionTest(TestCase):
         pv.save()
 
         self.assertEqual(
-            [v.version for v in p.versions.all()],
-            ["2.9", "2.10", "2.11"]
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", False), ("2.11", True)]
             )
 
 
@@ -143,6 +143,7 @@ class ProductVersionTest(TestCase):
         pv = F.ProductVersionFactory.create(version="2.10", product=p)
 
         self.assertEqual(pv.order, 2)
+        self.assertEqual(pv.latest, True)
 
 
 
