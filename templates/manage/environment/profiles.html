@@ -1,12 +1,5 @@
 {% extends 'manage/environment/base.html' %}
 
-{% block page-status %}incomplete{% endblock %}
-
-{% block page-notes %}
-{{ block.super }}
-<p>Environment profile previews disabled temporarily; can't fetch needed details efficiently from platform.</p>
-{% endblock %}
-
 {% block listcontent %}
 <section id="manageprofiles">
   <h2>Manage Environment Profiles</h2>
