@@ -98,7 +98,7 @@
     +columns(11,24)
     label
       +columns(2,11)
-    select
+    select, .errorlist
       +columns(9,11)
       +omega(11)
 
@@ -106,7 +106,7 @@
     +columns(7,24)
     label
       +columns(2,7)
-    select
+    select, .errorlist
       +columns(5,7)
       +omega(7)
 
@@ -118,7 +118,7 @@
     +full(24)
     label
       +columns(2,24)
-    select
+    select, .errorlist
       +columns(20,24)
 
 .versioned
@@ -137,7 +137,7 @@
   .name-field, .description-field
     label
       +columns(2,11)
-    input, textarea
+    input, textarea, .errorlist
       +columns(9,11)
       +omega(11)
 
@@ -153,7 +153,7 @@
     +full(11)
     label
       +columns(2,11)
-    input
+    input, .errorlist
       +columns(9,11)
       +omega(11)
     .suggest
@@ -177,11 +177,10 @@
     +columns(13,24)
     label
       +columns(2,13)
-    textarea
+    textarea, .errorlist
       +columns(11,13)
       +omega(13)
       min-height: rhythm(10)
-
 
 .step-form
   .steplist

@@ -2299,7 +2299,7 @@ body.login input, body.login .errorlist {
   width: 16.279%;
   margin-right: 2.326%;
 }
-.versioning .product-field select {
+.versioning .product-field select, .versioning .product-field .errorlist {
   display: inline;
   float: left;
   width: 81.395%;
@@ -2321,7 +2321,7 @@ body.login input, body.login .errorlist {
   width: 25.926%;
   margin-right: 3.704%;
 }
-.versioning .version-field select {
+.versioning .version-field select, .versioning .version-field .errorlist {
   display: inline;
   float: left;
   width: 70.37%;
@@ -2347,7 +2347,7 @@ body.login input, body.login .errorlist {
   width: 7.368%;
   margin-right: 1.053%;
 }
-.versioning .suite-field select {
+.versioning .suite-field select, .versioning .suite-field .errorlist {
   display: inline;
   float: left;
   width: 83.158%;
@@ -2375,7 +2375,7 @@ body.login input, body.login .errorlist {
   width: 16.279%;
   margin-right: 2.326%;
 }
-.versioned .name-field input, .versioned .name-field textarea, .versioned .description-field input, .versioned .description-field textarea {
+.versioned .name-field input, .versioned .name-field textarea, .versioned .name-field .errorlist, .versioned .description-field input, .versioned .description-field textarea, .versioned .description-field .errorlist {
   display: inline;
   float: left;
   width: 81.395%;
@@ -2417,7 +2417,7 @@ body.login input, body.login .errorlist {
   width: 16.279%;
   margin-right: 2.326%;
 }
-.versioned .add-tags-field input {
+.versioned .add-tags-field input, .versioned .add-tags-field .errorlist {
   display: inline;
   float: left;
   width: 81.395%;
@@ -2474,7 +2474,7 @@ body.login input, body.login .errorlist {
   width: 13.725%;
   margin-right: 1.961%;
 }
-.versioned .cases-field textarea {
+.versioned .cases-field textarea, .versioned .cases-field .errorlist {
   display: inline;
   float: left;
   width: 84.314%;
