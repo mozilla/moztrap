@@ -2365,7 +2365,7 @@ body.login input, body.login .errorlist {
   width: 16.279%;
   margin-right: 2.326%;
 }
-.versioned .name-field input, .versioned .description-field input {
+.versioned .name-field input, .versioned .name-field textarea, .versioned .description-field input, .versioned .description-field textarea {
   display: inline;
   float: left;
   width: 81.395%;
