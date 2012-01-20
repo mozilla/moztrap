@@ -64,3 +64,12 @@
 
   .onoffswitch
     @extend .chicktoggle
+
+.reversecheck
+  @extend .chickcheck
+  .onoff
+    @extend .actionchick
+    display: inline
+  .check:checked + .onoff
+    display: inline
+    +opacity(.5)

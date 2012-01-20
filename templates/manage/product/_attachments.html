@@ -8,12 +8,10 @@
   {% include "forms/_field.html" with field=field label="add attachment" %}
 
   <ul class="attachlist">
-    {% if obj and obj.attachments.all %}
+    {% if obj %}
       {% for attachment in obj.attachments.all %}
         {% include "manage/product/_attachment_item.html" with attachment=attachment %}
       {% endfor %}
-    {% else %}
-      <li class="none">no attachments</li>
     {% endif %}
   </ul>
 </div>

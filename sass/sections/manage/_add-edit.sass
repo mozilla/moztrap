@@ -3,15 +3,6 @@
   +pie-clearfix
   +padding-leader
 
-.fauxfieldset
-  +pie-clearfix
-  +trailing-border($xxxsmallpx,.5)
-  +trailer(.5)
-  clear: both
-  border:
-    style: dashed
-    color: rgba($base,$xxxsmall)
-
 .taglist, .attachlist
   +no-style-list
   .none
@@ -19,9 +10,10 @@
     +padding-leader(.25)
     +padding-trailer(.25)
 
-.attach
+.add-attachment-field
   label
     +button-style($blue-hint,$hover:false,$inset:true)
+    white-space: nowrap
     #{$focus}
       +button-style($green)
   input
@@ -92,7 +84,7 @@
       display: block
 
 .versioning
-  @extend .fauxfieldset
+  +trailer(2)
 
   .product-field
     +columns(11,24)
@@ -122,7 +114,6 @@
       +columns(20,24)
 
 .versioned
-  @extend .fauxfieldset
   .edit-case &
     +leading-border($xxxsmallpx,1)
     clear: both
@@ -132,7 +123,6 @@
 
   .caseinfo-fields
     +columns(11,24)
-    +trailer(2)
 
   .name-field, .description-field
     label
@@ -141,10 +131,10 @@
       +columns(9,11)
       +omega(11)
 
-  .tagging, .attach
+  .tagging
     +columns(11,24)
     +pie-clearfix
-  .taglist, .attachlist
+  .taglist
     +columns(9,11)
     +omega(11)
     +trailer
@@ -159,9 +149,21 @@
     .suggest
       +pre(2,11)
 
-  .formfield[class*="attachment"]
-    +columns(9,11)
-    +omega(11)
+  .attach
+    +pie-clearfix
+    +full(24)
+    +pad(2,13,24)
+    +trailer(2)
+
+  .add-attachment-field
+    +float(right)
+    text-align: right
+
+  .attachlist
+    +clearfix
+
+  .attachment-item
+    @extend .reversecheck
 
   .bulk-field
     +full(24)

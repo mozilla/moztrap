@@ -1040,7 +1040,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff, .tag {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1060,16 +1060,16 @@ body > div {
   color: rgba(255, 255, 255, 0.833);
 }
 
-.actionchick, .chickcheck .onoff, #filter .compact .filter-item .onoff {
+.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, #filter .compact .filter-item .content {
+.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, #filter .compact .filter-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1077,12 +1077,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1098,7 +1098,7 @@ body > div {
   background-position: center;
 }
 
-.chickcheck .check, #filter .compact .filter-item .check {
+.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, #filter .compact .filter-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1108,11 +1108,20 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, #filter .compact .filter-item .onoff {
+.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
   display: inline;
+}
+
+.reversecheck .onoff, .versioned .attachment-item .onoff {
+  display: inline;
+}
+.reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff {
+  display: inline;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
 }
 
 .textual {
@@ -2298,22 +2307,6 @@ body.login input, body.login .errorlist {
   clear: both;
 }
 
-.fauxfieldset, .versioning, .versioned {
-  *zoom: 1;
-  border-bottom-style: solid;
-  border-bottom-width: 0.214em;
-  padding-bottom: 0.536em;
-  margin-bottom: 0.75em;
-  clear: both;
-  border-style: dashed;
-  border-color: rgba(69, 69, 69, 0.198);
-}
-.fauxfieldset:after, .versioning:after, .versioned:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 .taglist, .attachlist {
   margin: 0;
   padding: 0;
@@ -2331,7 +2324,7 @@ body.login input, body.login .errorlist {
   padding-bottom: 0.375em;
 }
 
-.attach label {
+.add-attachment-field label {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2358,8 +2351,9 @@ body.login input, body.login .errorlist {
   -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   -o-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
+  white-space: nowrap;
 }
-.attach label:focus, .attach label:hover, .attach label:active {
+.add-attachment-field label:focus, .add-attachment-field label:hover, .add-attachment-field label:active {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2384,7 +2378,7 @@ body.login input, body.login .errorlist {
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   cursor: pointer;
 }
-.attach label:focus:hover, .attach label:focus:focus, .attach label:hover:hover, .attach label:hover:focus, .attach label:active:hover, .attach label:active:focus {
+.add-attachment-field label:focus:hover, .add-attachment-field label:focus:focus, .add-attachment-field label:hover:hover, .add-attachment-field label:hover:focus, .add-attachment-field label:active:hover, .add-attachment-field label:active:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
@@ -2392,7 +2386,7 @@ body.login input, body.login .errorlist {
   background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.attach label:focus:active, .attach label:hover:active, .attach label:active:active {
+.add-attachment-field label:focus:active, .add-attachment-field label:hover:active, .add-attachment-field label:active:active {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
@@ -2400,7 +2394,7 @@ body.login input, body.login .errorlist {
   background-image: -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.attach input {
+.add-attachment-field input {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -2652,6 +2646,9 @@ body.login input, body.login .errorlist {
   display: block;
 }
 
+.versioning {
+  margin-bottom: 3em;
+}
 .versioning .product-field {
   display: inline;
   float: left;
@@ -2732,7 +2729,6 @@ body.login input, body.login .errorlist {
   float: left;
   width: 45.263%;
   margin-right: 1.053%;
-  margin-bottom: 3em;
 }
 .versioned .name-field label, .versioned .description-field label {
   display: inline;
@@ -2750,19 +2746,19 @@ body.login input, body.login .errorlist {
   margin-right: 0;
   #margin-left: -1em;
 }
-.versioned .tagging, .versioned .attach {
+.versioned .tagging {
   display: inline;
   float: left;
   width: 45.263%;
   margin-right: 1.053%;
   *zoom: 1;
 }
-.versioned .tagging:after, .versioned .attach:after {
+.versioned .tagging:after {
   content: "";
   display: table;
   clear: both;
 }
-.versioned .taglist, .versioned .attachlist {
+.versioned .taglist {
   display: inline;
   float: left;
   width: 81.395%;
@@ -2795,15 +2791,26 @@ body.login input, body.login .errorlist {
 .versioned .add-tags-field .suggest {
   margin-left: 18.605%;
 }
-.versioned .formfield[class*="attachment"] {
-  display: inline;
-  float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
+.versioned .attach {
+  *zoom: 1;
+  clear: both;
+  padding-left: 8.421%;
+  padding-right: 54.737%;
+  margin-bottom: 3em;
+}
+.versioned .attach:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.versioned .add-attachment-field {
   display: inline;
   float: right;
-  margin-right: 0;
-  #margin-left: -1em;
+  text-align: right;
+}
+.versioned .attachlist {
+  overflow: hidden;
+  *zoom: 1;
 }
 .versioned .bulk-field {
   clear: both;
