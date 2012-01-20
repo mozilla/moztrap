@@ -117,11 +117,11 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
     def _save_tags(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
-        tag_ids = set([int(tid) for tid in self.data.getlist("tag")])
-        new_tags = self.data.getlist("newtag")
+        tag_ids = set([int(tid) for tid in self.data.getlist("tag-tag")])
+        new_tags = self.data.getlist("tag-newtag")
 
         for name in new_tags:
-            t = Tag.objects.get_or_create(
+            t, created = Tag.objects.get_or_create(
                 name=name, product=caseversion.case.product)
             tag_ids.add(t.id)
 
