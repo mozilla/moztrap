@@ -49,10 +49,10 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('#single-case-form, #bulk-case-form').customAutocomplete({
-            textbox: 'input[name="text-tag"]',
+        $('#single-case-add .tagging').customAutocomplete({
+            textbox: '#id_add_tags',
             ajax: true,
-            url: $('form[id$="-case-form"] input[name="text-tag"]').data('autocomplete-url'),
+            url: $('#id_add_tags').data('autocomplete-url'),
             triggerSubmit: null,
             allowNew: true,
             restrictAllowNew: true,
@@ -62,7 +62,6 @@ var CC = (function (CC, $) {
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
-            suggestionList: '.suggest',
             inputList: '.env-element-list',
             ajax: true,
             url: $('#env-elements-input').data('autocomplete-url'),
@@ -76,7 +75,6 @@ var CC = (function (CC, $) {
             textbox: '#search-add',
             inputList: '.groups .filter-group:not(.keyword)',
             newInputList: '.groups .filter-group.keyword',
-            suggestionList: '.suggest',
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
