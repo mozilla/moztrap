@@ -55,8 +55,15 @@ class CaseTagInline(admin.TabularInline):
     extra = 0
 
 
+class SuiteCaseInline(CCTabularInline):
+    model = models.SuiteCase
+    extra = 0
+
+
 
 class CaseVersionAdmin(CCModelAdmin):
+    list_display = ["__unicode__", "productversion", "deleted_on"]
+    list_filter = ["productversion"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
         (None, {"fields": ["productversion",
@@ -65,6 +72,8 @@ class CaseVersionAdmin(CCModelAdmin):
         ]
 
 
+
 admin.site.register(models.Suite, CCModelAdmin)
-admin.site.register(models.Case, CCModelAdmin, inlines=[CaseVersionInline])
+admin.site.register(
+    models.Case, CCModelAdmin, inlines=[CaseVersionInline, SuiteCaseInline])
 admin.site.register(models.CaseVersion, CaseVersionAdmin)
