@@ -12,10 +12,12 @@
     style: dashed
     color: rgba($base,$xxxsmall)
 
-.taglabel, .attachlabel
-  +cond
-  text-align: right
-  text-transform: capitalize
+.taglist, .attachlist
+  +no-style-list
+  .none
+    +italic
+    +padding-leader(.25)
+    +padding-trailer(.25)
 
 .attach
   label
@@ -123,8 +125,11 @@
       style: dashed
       color: rgba($base,$xxxsmall)
 
-  .name-field, .description-field
+  .caseinfo-fields
     +columns(11,24)
+    +trailer(2)
+
+  .name-field, .description-field
     label
       +columns(2,11)
     input, textarea
@@ -132,22 +137,15 @@
       +omega(11)
 
   .tagging, .attach
-    +full(24)
-    +suffix(2,24)
+    +columns(11,24)
     +pie-clearfix
-    .visual
-      +columns(11,22)
-      +omega(22)
-      +padding-leader(.25)
-      .taglist, .attachlist
-        +no-style-list
-        +columns(9,11)
-        +omega(11)
-      .taglabel, .attachlabel
-        +columns(2,11)
+  .taglist, .attachlist
+    +columns(9,11)
+    +omega(11)
+    +trailer
 
   .add-tags-field
-    +columns(11,22)
+    +full(11)
     label
       +columns(2,11)
     input
@@ -156,13 +154,9 @@
     .suggest
       +pre(2,11)
 
-  .attach
-    @extend .fauxfieldset
-
   .formfield[class*="attachment"]
-    +columns(11,22)
-    +padding-leader(.25)
-    text-align: right
+    +columns(9,11)
+    +omega(11)
 
   .bulk-field
     +full(24)
