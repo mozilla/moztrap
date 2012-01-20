@@ -178,7 +178,7 @@ var CC = (function (CC, $) {
             target_sel: '#id_suite',
             optional: true
         });
-        CC.testcaseAttachments('#single-case-form .attachments');
+        CC.testcaseAttachments('#single-case-add .attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
 

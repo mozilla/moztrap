@@ -65,7 +65,7 @@
                 }
 
                 if (options.noInputsNote) {
-                    var noInputsNote = ich.autocomplete_no_inputs();
+                    var noInputsNote = ich.autocomplete_no_inputs({ prefix: prefix });
                     inputList.add(newInputList).each(function () {
                         if ($(this).find(options.inputs).length) {
                             $(this).find('.none').remove();
