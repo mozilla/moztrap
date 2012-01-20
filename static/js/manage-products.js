@@ -146,9 +146,6 @@ var CC = (function (CC, $) {
             if (attachment.hasClass('new')) {
                 context.find('#' + inputID).remove();
                 attachment.remove();
-                if (!attachmentList.find('.attachment-item').length) {
-                    ich.case_attachment_none().appendTo(attachmentList);
-                }
             }
         });
     };
