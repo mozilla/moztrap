@@ -1,7 +1,7 @@
 <article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}">
   <header class="itemhead">
 
-    {% include "manage/product/_status.html" with item=case %}
+    {% include "manage/product/_status.html" with item=caseversion %}
 
     <div class="name-tags">
       <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>

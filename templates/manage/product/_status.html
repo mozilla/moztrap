@@ -1,25 +1,27 @@
-<div class="status">
-  {% if 1 %}{# @@@ permissions #}
+{% load permissions %}
 
-    {% if item.status.DRAFT %}
+<div class="status">
+  {% if user|has_perm:"library.manage_cases" %}
+
+    {% if item.status == "draft" %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft">draft</button>
     {% endif %}
-    {% if item.status.ACTIVE %}
+    {% if item.status == "active" %}
     <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active">active</button>
     {% endif %}
-    {% if item.status.LOCKED %}
+    {% if item.status == "disabled" %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled">disabled</button>
     {% endif %}
 
   {% else %}
 
-    {% if item.status.DRAFT %}
+    {% if item.status == "draft" %}
     <span class="draft">draft</span>
     {% endif %}
-    {% if item.status.ACTIVE %}
+    {% if item.status == "active" %}
     <span class="active">active</span>
     {% endif %}
-    {% if item.status.LOCKED %}
+    {% if item.status == "disabled" %}
     <span class="disabled">disabled</span>
     {% endif %}
 
