@@ -1,6 +1,6 @@
 {% extends 'manage/product/testcase/base.html' %}
 
-{% load icanhaz %}
+{% load icanhaz permissions %}
 
 {% block content %}
 <section class="{% block sectionclass %}{% endblock sectionclass %}">
@@ -23,7 +23,9 @@
       {% include "forms/_field.html" with field=form.product %}
       {% include "forms/_field.html" with field=form.productversion label="Version" %}
       {% include "forms/_field.html" with field=form.and_later_versions %}
+      {% if user|has_perm:"library.manage_suite_cases" %}
       {% include "forms/_field.html" with field=form.initial_suite label="Suite" %}
+      {% endif %}
     </div>
     {% endblock versioningform %}
 

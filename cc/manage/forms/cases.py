@@ -42,8 +42,6 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     productversion = ccforms.CCModelChoiceField(
         ProductVersion.objects.all(), choice_attrs=product_id_attrs)
     and_later_versions = forms.BooleanField(initial=True, required=False)
-    initial_suite = ccforms.CCModelChoiceField(
-        Suite.objects.all(), choice_attrs=product_id_attrs, required=False)
     name = forms.CharField(max_length=200)
     description = forms.CharField(required=False, widget=ccforms.BareTextarea)
     # @@@ tags and attachments aren't proper fields/widgets (yet)
@@ -62,6 +60,11 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         self.fields["add_tags"].widget.attrs["data-allow-new"] = (
             "true" if user.has_perm("tags.manage_tags") else "false")
+        if user.has_perm("library.manage_suite_cases"):
+            self.fields["initial_suite"] = ccforms.CCModelChoiceField(
+                Suite.objects.all(),
+                choice_attrs=product_id_attrs,
+                required=False)
         self.steps_formset = StepFormSet(data=self.data or None, prefix="steps")
 
 
@@ -70,29 +73,42 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             AddCaseForm, self).is_valid()
 
 
+    def clean(self):
+        productversion = self.cleaned_data.get("productversion")
+        product = self.cleaned_data.get("product")
+        if product and productversion and productversion.product != product:
+            raise forms.ValidationError(
+                "Must select a version of the correct product.")
+        return self.cleaned_data
+
+
     def save(self):
         data = self.cleaned_data.copy()
         case = Case.objects.create(product=data.pop("product"))
         data["case"] = case
+
         del data["add_tags"]
         del data["add_attachment"]
+
         initial_suite = data.pop("initial_suite")
+        if initial_suite:
+            SuiteCase.objects.create(case=case, suite=initial_suite)
+
         productversions = [data.pop("productversion")]
         if data.pop("and_later_versions"):
             productversions.extend(ProductVersion.objects.filter(
                     order__gt=productversions[0].order))
+
         for productversion in productversions:
             this_data = data.copy()
             this_data["productversion"] = productversion
             caseversion = CaseVersion.objects.create(**this_data)
-            if initial_suite:
-                SuiteCase.objects.create(
-                    caseversion=caseversion, suite=initial_suite)
             steps_formset = StepFormSet(
                 data=self.data, prefix="steps", instance=caseversion)
             steps_formset.save()
             self._save_tags(caseversion)
             self._save_attachments(caseversion)
+
         return case
 
 

@@ -174,9 +174,12 @@ class SuiteCase(CCModel):
     """Association between a test case and a suite."""
     suite = models.ForeignKey(Suite, related_name="suitecases")
     case = models.ForeignKey(Case, related_name="suitecases")
+    # order of test cases in the suite
     order = models.IntegerField(default=0, db_index=True)
 
 
     class Meta:
         ordering = ["order"]
-        permissions = [("manage_suite_cases", "Can add/remove cases from suites.")]
+        unique_together = [["suite", "case"]]
+        permissions = [
+            ("manage_suite_cases", "Can add/remove cases from suites.")]
