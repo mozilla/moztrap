@@ -103,13 +103,9 @@ input
     text-transform: capitalize
   &.optional label
     +demi
+    color: rgba($base,.75)
   .isoptional
-    +opacity(.5)
-    text-transform: lowercase
-    &::before
-      content: "("
-    &::after
-      content: ")"
+    +gone
   &.errors
     label
       color: $red

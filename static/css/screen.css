@@ -552,17 +552,17 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
 }
 .formfield.optional label {
   font-weight: 500;
+  color: rgba(69, 69, 69, 0.75);
 }
 .formfield .isoptional {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
-  text-transform: lowercase;
-}
-.formfield .isoptional::before {
-  content: "(";
-}
-.formfield .isoptional::after {
-  content: ")";
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 .formfield.errors label {
   color: #b8282d;
