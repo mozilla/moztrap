@@ -4,25 +4,25 @@
   {% if user|has_perm:"library.manage_cases" %}
 
     {% if item.status == "draft" %}
-    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft">draft</button>
+    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft status-action">draft</button>
     {% endif %}
     {% if item.status == "active" %}
-    <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active">active</button>
+    <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active status-action">active</button>
     {% endif %}
     {% if item.status == "disabled" %}
-    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled">disabled</button>
+    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled status-action">disabled</button>
     {% endif %}
 
   {% else %}
 
     {% if item.status == "draft" %}
-    <span class="draft">draft</span>
+    <span class="draft status-readonly">draft</span>
     {% endif %}
     {% if item.status == "active" %}
-    <span class="active">active</span>
+    <span class="active status-readonly">active</span>
     {% endif %}
     {% if item.status == "disabled" %}
-    <span class="disabled">disabled</span>
+    <span class="disabled status-readonly">disabled</span>
     {% endif %}
 
   {% endif %}

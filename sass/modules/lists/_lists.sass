@@ -19,6 +19,8 @@
 
 @import sort
 @import pagination
+@import list-item
+@import status
 
 .itemlist
   border: 1px solid rgba($blue-dark,$xxsmall)
@@ -32,12 +34,3 @@
     +italic
     +hpadding
     color: rgba($base,$small)
-
-.listitem
-  +padding-leader(.25)
-  +trailing-border(1px,.25)
-  border-color: rgba($blue-dark,$xxsmall)
-  &:last-child
-    +padding-trailer(.25)
-    border-bottom: 0
-
