@@ -123,7 +123,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, caption, #page-status::before, .category-title {
+.allcaps, h1, h2, caption, #page-status::before, .itembody .envs-title, .category-title {
   text-transform: uppercase;
 }
 
@@ -1226,7 +1226,7 @@ body > div {
 .listordering {
   overflow: hidden;
   *zoom: 1;
-  padding: 0.375em 0;
+  padding: 0.375em 0.375em 0.375em 0;
   background: rgba(169, 178, 191, 0.667);
 }
 
@@ -1341,7 +1341,7 @@ body > div {
   background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.667), rgba(153, 153, 153, 0.198));
   background-image: linear-gradient(top, rgba(255, 255, 255, 0.667), rgba(153, 153, 153, 0.198));
   position: relative;
-  padding-left: 1.5em;
+  padding-right: 0.375em;
   background-color: rgba(232, 233, 236, 0.667);
   border-color: rgba(75, 87, 101, 0.296);
 }
@@ -1385,6 +1385,61 @@ body > div {
 .itembody .summary:focus, .itembody .summary:hover, .itembody .summary:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+.itembody .content {
+  clear: both;
+  margin-left: 1.5em;
+  position: relative;
+}
+.itembody .byline {
+  margin-bottom: 0.75em;
+  font-style: italic;
+}
+.itembody .envs {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
+  -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
+  -o-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
+  box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
+  right: 0;
+  width: 24.211%;
+  overflow-y: auto;
+}
+.itembody .envs-title {
+  font-weight: normal;
+  padding: 0 0.375em;
+  color: rgba(255, 255, 255, 0.667);
+  background: rgba(69, 69, 69, 0.444);
+}
+.itembody .envlist {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.itembody .envlist li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+.itembody .envlist a:link, .itembody .envlist a:visited {
+  display: block;
+  padding: 0 0.375em;
+}
+.itembody .envlist a:focus, .itembody .envlist a:hover, .itembody .envlist a:active {
+  background: rgba(169, 178, 191, 0.667);
+}
+.itembody .associated-title {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 .itembody.open .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -1510,6 +1565,7 @@ body > div {
   display: inline;
   float: left;
   width: 1.5em;
+  margin-left: 1.5em;
   margin-right: 0.75em;
 }
 .status .status-readonly {
@@ -2212,6 +2268,22 @@ body > div {
 }
 #filter .expanded .check:checked + .onoff:hover {
   background-image: url('../images/ui/x_sm.png?1326735333');
+}
+
+.steps {
+  margin-left: 0;
+}
+.steps li {
+  margin-bottom: 0.75em;
+}
+.steps .instruction, .steps .outcome {
+  margin-bottom: 0em;
+}
+.steps .instruction {
+  font-weight: 500;
+}
+.steps .outcome {
+  font-style: italic;
 }
 
 body.login > div {
@@ -3004,4 +3076,11 @@ body.login input, body.login .errorlist {
   width: 24.211%;
   margin-right: 1.053%;
   min-height: 1.5em;
+}
+#managecases .name-tags {
+  font-weight: 500;
+}
+#managecases .content {
+  padding-right: 25.263%;
+  margin-left: 3.75em;
 }
