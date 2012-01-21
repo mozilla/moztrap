@@ -27,7 +27,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from ...core.sort import sort
 from ...library.models import CaseVersion
 
-from ..forms.cases import AddCaseForm
+from ..forms.cases import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
 
@@ -38,7 +38,8 @@ def list(request):
         request,
         "manage/product/testcase/cases.html",
         {
-            "caseversions": CaseVersion.objects.filter(latest=True),
+            "caseversions": CaseVersion.objects.filter(
+                latest=True).select_related("case"),
             }
         )
 
@@ -68,6 +69,51 @@ def add(request):
     return TemplateResponse(
         request,
         "manage/product/testcase/add_case.html",
+        {
+            "form": form
+            }
+        )
+
+
+
+@permission_required("library.create_cases")
+def add_bulk(request):
+    if request.method == "POST":
+        form = AddBulkCaseForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("manage_cases")
+    else:
+        form = AddBulkCaseForm(user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/add_case_bulk.html",
+        {
+            "form": form
+            }
+        )
+
+
+
+
+
+@permission_required("library.manage_cases")
+def edit(request, caseversion_id):
+    caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
+    if request.method == "POST":
+        form = EditCaseForm(
+            request.POST,
+            request.FILES,
+            instance=caseversion,
+            user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("manage_cases")
+    else:
+        form = EditCaseForm(instance=caseversion, user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/product/testcase/edit_case.html",
         {
             "form": form
             }

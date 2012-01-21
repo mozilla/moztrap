@@ -30,6 +30,8 @@ from django.db.models.query import QuerySet
 
 from django.contrib.auth.models import User
 
+from model_utils import Choices
+
 
 
 def utcnow():
@@ -287,7 +289,7 @@ class CCModel(models.Model):
 
 
 
-class TeamModel(CCModel):
+class TeamModel(models.Model):
     """
     Model which may have its own team or inherit team from parent.
 
@@ -320,6 +322,37 @@ class TeamModel(CCModel):
     @property
     def parent(self):
         return None
+
+
+    class Meta:
+        abstract = True
+
+
+
+class DraftStatusModel(models.Model):
+    """
+    Model which has a status that can be draft, active, or disabled.
+
+    Also provides ``activate`` and ``deactivate`` model methods.
+
+    """
+    STATUS = Choices("draft", "active", "disabled")
+
+    status = models.CharField(
+        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
+
+
+    def activate(self):
+        """Activate this object."""
+        self.status = self.STATUS.active
+        self.save(force_update=True)
+
+
+    def deactivate(self):
+        """Deactivate this object."""
+        self.status = self.STATUS.disabled
+        self.save(force_update=True)
+
 
 
     class Meta:

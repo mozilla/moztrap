@@ -57,13 +57,13 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Initialize AddCaseForm, including StepFormSet."""
-        user = kwargs.pop("user")
+        self.user = kwargs.pop("user")
 
         super(AddCaseForm, self).__init__(*args, **kwargs)
 
         self.fields["add_tags"].widget.attrs["data-allow-new"] = (
-            "true" if user.has_perm("tags.manage_tags") else "false")
-        if user.has_perm("library.manage_suite_cases"):
+            "true" if self.user.has_perm("tags.manage_tags") else "false")
+        if self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
                 Suite.objects.all(),
                 choice_attrs=product_id_attrs,
@@ -90,26 +90,28 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
 
     def save(self):
-        data = self.cleaned_data.copy()
-        case = Case.objects.create(product=data.pop("product"))
-        data["case"] = case
+        version_kwargs = self.cleaned_data.copy()
+        case = Case.objects.create(product=version_kwargs.pop("product"), user=self.user)
+        version_kwargs["case"] = case
+        version_kwargs["user"] = self.user
 
-        del data["add_tags"]
-        del data["add_attachment"]
+        del version_kwargs["add_tags"]
+        del version_kwargs["add_attachment"]
 
-        initial_suite = data.pop("initial_suite")
+        initial_suite = version_kwargs.pop("initial_suite")
         if initial_suite:
-            SuiteCase.objects.create(case=case, suite=initial_suite)
+            SuiteCase.objects.create(
+                case=case, suite=initial_suite, user=self.user)
 
-        productversions = [data.pop("productversion")]
-        if data.pop("and_later_versions"):
+        productversions = [version_kwargs.pop("productversion")]
+        if version_kwargs.pop("and_later_versions"):
             productversions.extend(ProductVersion.objects.filter(
                     order__gt=productversions[0].order))
 
         for productversion in productversions:
-            this_data = data.copy()
-            this_data["productversion"] = productversion
-            caseversion = CaseVersion.objects.create(**this_data)
+            this_version_kwargs = version_kwargs.copy()
+            this_version_kwargs["productversion"] = productversion
+            caseversion = CaseVersion.objects.create(**this_version_kwargs)
             steps_formset = StepFormSet(
                 data=self.data, prefix="steps", instance=caseversion)
             steps_formset.save()
@@ -125,6 +127,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         new_tags = self.data.getlist("tag-newtag")
 
         for name in new_tags:
+            # @@@ should pass in user here, need CCQuerySet.get_or_create
             t, created = Tag.objects.get_or_create(
                 name=name, product=caseversion.case.product)
             tag_ids.add(t.id)
@@ -144,7 +147,18 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
                 CaseAttachment.objects.create(
                     attachment=uf,
                     caseversion=caseversion,
+                    user=self.user,
                     )
+
+
+
+class AddBulkCaseForm(AddCaseForm):
+    pass # @@@
+
+
+
+class EditCaseForm(AddCaseForm):
+    pass # @@@
 
 
 

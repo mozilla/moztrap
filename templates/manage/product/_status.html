@@ -1,7 +1,7 @@
 {% load permissions %}
 
 <div class="status">
-  {% if user|has_perm:"library.manage_cases" %}
+  {% if user|has_perm:permission %}
 
     {% if item.status == "draft" %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft status-action">draft</button>

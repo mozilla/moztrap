@@ -24,11 +24,11 @@ from django.db import models
 from pkg_resources import parse_version
 
 from ..environments.models import HasEnvironmentsModel
-from .ccmodel import TeamModel
+from .ccmodel import CCModel, TeamModel
 
 
 
-class Product(TeamModel):
+class Product(CCModel, TeamModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
@@ -75,7 +75,7 @@ class Product(TeamModel):
 
 
 
-class ProductVersion(TeamModel, HasEnvironmentsModel):
+class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
     version = models.CharField(max_length=100)
     codename = models.CharField(max_length=100, blank=True)

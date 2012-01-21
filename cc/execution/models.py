@@ -28,22 +28,18 @@ from django.contrib.auth.models import User
 
 from model_utils import Choices
 
-from ..core.ccmodel import CCModel, TeamModel, utcnow
+from ..core.ccmodel import CCModel, TeamModel, DraftStatusModel, utcnow
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
 
 
 
-class Run(TeamModel, HasEnvironmentsModel):
+class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     """A test run."""
-    STATUS = Choices("draft", "active", "disabled")
-
     productversion = models.ForeignKey(ProductVersion, related_name="runs")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
 

@@ -1,5 +1,7 @@
+{% load permissions %}
+
 <article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}">
-  {% include "manage/product/_status.html" with item=caseversion %}
+  {% include "manage/product/_status.html" with item=caseversion permission="library.manage_cases" %}
 
   <header class="itemhead">
 
@@ -20,21 +22,13 @@
     <div class="product">{{ caseversion.product }}</div>
 
     <div class="controls">
-      {# @@@ if permissions #}
-        {# @@@ url manage_testcase_edit case_id=caseversion.id as testcase_edit_url #}
+      {% if user|has_perm:"library.manage_cases" %}
+        {% url manage_case_edit caseversion_id=caseversion.id as testcase_edit_url %}
         {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=caseversion.name %}
-        {% if caseversion.status.DRAFT %}
-          {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
-        {% endif %}
-      {# @@@ endif #}
-
-      {# @@@ if permissions #}
-        {% include "lists/controls/_clone.html" with clone_id=caseversion.testCaseId clone_name=caseversion.name %}
-      {# @@@ endif #}
-
-      {# @@@ if permissions #}
-        {% include "lists/controls/_delete.html" with delete_id=caseversion.testCaseId delete_name=caseversion.name %}
-      {# @@@ endif #}
+        {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
+        {% include "lists/controls/_clone.html" with clone_id=caseversion.case.id clone_name=caseversion.name %}
+        {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
+      {% endif %}
     </div>
 
   </header>

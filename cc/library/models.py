@@ -21,10 +21,8 @@ Models for test-case library (cases, suites).
 """
 from django.db import models
 
-from model_utils import Choices
-
 from ..attachments.models import Attachment
-from ..core.ccmodel import CCModel
+from ..core.ccmodel import CCModel, DraftStatusModel
 from ..core.models import Product, ProductVersion
 from ..environments.models import HasEnvironmentsModel
 from ..tags.models import Tag
@@ -77,12 +75,8 @@ class Case(CCModel):
 
 
 
-class CaseVersion(CCModel, HasEnvironmentsModel):
+class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
     """A version of a test case."""
-    STATUS = Choices("draft", "active", "disabled")
-
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     productversion = models.ForeignKey(
         ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
@@ -186,12 +180,8 @@ class CaseStep(CCModel):
 
 
 
-class Suite(CCModel):
+class Suite(CCModel, DraftStatusModel):
     """An ordered suite of test cases."""
-    STATUS = Choices("draft", "active", "disabled")
-
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     product = models.ForeignKey(Product, related_name="suites")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)

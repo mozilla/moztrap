@@ -1,4 +1,4 @@
 <p class="byline hcard">
-  Created by <span class="fn">{{ item.created_by.username }}</span>
+  Created by <span class="fn">{{ item.created_by.username|default:"unknown" }}</span>
   on <time pubdate>{{ item.created_on|date }}</time>
 </p>

@@ -42,16 +42,14 @@ urlpatterns = patterns(
         "cc.manage.views.cases.add",
         name="manage_case_add"),
 
-    # add bulk (@@@ wireframe)
+    # add bulk
     url("^case/add/bulk/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/product/testcase/add_case_bulk.html"},
+        "cc.manage.views.cases.add_bulk",
         name="manage_case_add_bulk"),
 
-    # edit (@@@ wireframe)
-    url("^case/id/$",
-        "django.views.generic.simple.direct_to_template",
-        {"template": "manage/product/testcase/edit_case.html"},
+    # edit
+    url("^case/(?P<caseversion_id>\d+)/$",
+        "cc.manage.views.cases.edit",
         name="manage_case_edit"),
 
     # tags -------------------------------------------------------------------
