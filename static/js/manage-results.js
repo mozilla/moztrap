@@ -40,7 +40,7 @@ var CC = (function (CC, $) {
 
     // Ajax-load manage and results list item contents
     CC.loadListItemDetails = function () {
-        $('.manage, .results').on('click', '.itemlist .listitem .details .summary', function (event) {
+        $('.listpage').on('click', '.itemlist .listitem .details .summary', function (event) {
             var item = $(this),
                 content = item.siblings('.content'),
                 url = item.attr('href');
