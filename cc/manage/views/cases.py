@@ -24,14 +24,19 @@ from django.template.response import TemplateResponse
 
 from django.contrib.auth.decorators import login_required, permission_required
 
+from ...core.ajax import ajax
 from ...core.sort import sort
-from ...library.models import CaseVersion
+from ...library.models import CaseVersion, Case
 
+from ..actions import actions
 from ..forms.cases import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
 
 @login_required
+@actions(Case, ["clone", "delete"], fall_through=True)
+@actions(CaseVersion, ["activate", "deactivate"])
+@ajax("manage/product/testcase/list/_cases_list.html")
 @sort("caseversions")
 def list(request):
     return TemplateResponse(
@@ -42,6 +47,7 @@ def list(request):
                 latest=True).select_related("case"),
             }
         )
+
 
 
 @login_required
@@ -92,8 +98,6 @@ def add_bulk(request):
             "form": form
             }
         )
-
-
 
 
 

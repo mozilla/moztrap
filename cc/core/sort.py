@@ -60,7 +60,7 @@ class Sort(object):
         self.field = request.GET.get("sortfield", defaultfield)
         self.direction = request.GET.get("sortdirection", defaultdirection)
         if self.field is None:
-            self.field = "modified_on"
+            self.field = "created_on"
             self.direction = "desc"
 
 

@@ -126,7 +126,7 @@ class SortDecoratorTest(TestCase):
         qs = Mock()
         self.on_template_response({self.ctx_name: qs})
 
-        qs.order_by.assert_called_with("-modified_on")
+        qs.order_by.assert_called_with("-created_on")
 
 
     def test_sort_defaults(self):
@@ -166,7 +166,7 @@ class TestSort(TestCase):
         """Sort defaults to descending last-modified date."""
         s = self.cls("path", {})
 
-        self.assertEqual(s.field, "modified_on")
+        self.assertEqual(s.field, "created_on")
         self.assertEqual(s.direction, "desc")
 
 
