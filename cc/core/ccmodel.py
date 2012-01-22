@@ -137,10 +137,11 @@ class CCManager(models.Manager):
     Manager using ``CCQuerySet`` and optionally hiding deleted objects.
 
     By making show_deleted an instantiation argument, and defaulting it to
-    False, we can achieve something a bit subtle: the default manager on a
-    CCModel shows all objects, including deleted (meaning the admin will show
-    deleted objects, so they can be undeleted). But related-object managers
-    will still hide deleted objects.
+    False, we can achieve something a bit subtle: the instantiated default
+    manager on a CCModel shows all objects, including deleted one (meaning the
+    admin will show deleted objects, so they can be undeleted). But
+    related-object managers (which subclass the default manager class) will
+    still hide deleted objects.
 
     """
     def __init__(self, *args, **kwargs):

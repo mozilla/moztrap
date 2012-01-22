@@ -493,3 +493,30 @@ class TeamModelTest(TestCase):
         """parent property is None in base class."""
         t = self.TeamModel()
         self.assertIsNone(t.parent)
+
+
+
+class DraftStatusModelTest(TestCase):
+    """
+    Tests for DraftStatusModel base class.
+
+    The tests use Run, a DraftStatusModel subclass, to avoid the need for a
+    test-only model.
+
+    """
+    def test_activate(self):
+        """Test the activate method."""
+        r = F.RunFactory.create(status="draft")
+
+        r.activate()
+
+        self.assertEqual(refresh(r).status, "active")
+
+
+    def test_deactivate(self):
+        """Test the deactivate method."""
+        r = F.RunFactory.create(status="active")
+
+        r.deactivate()
+
+        self.assertEqual(refresh(r).status, "disabled")

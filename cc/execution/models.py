@@ -87,8 +87,7 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:
             self._lock_case_versions()
-        self.status = self.STATUS.active
-        self.save(force_update=True)
+        super(Run, self).activate()
 
 
     def _lock_case_versions(self):
