@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for login/logout/account views.
+Tests for case management views.
 
 """
 from django.core.urlresolvers import reverse

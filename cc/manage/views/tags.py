@@ -23,10 +23,13 @@ import json
 
 from django.http import HttpResponse
 
+from django.contrib.auth.decorators import login_required
+
 from ...tags.models import Tag
 
 
 
+@login_required
 def autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""
     text = request.GET.get("text")
