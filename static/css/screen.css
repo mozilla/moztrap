@@ -1040,7 +1040,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff, .tag {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff, .tag, .files-list .file, .bugs-list .bugurl {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1051,13 +1051,18 @@ body > div {
   margin-bottom: 0.75em;
   font-weight: 500;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  text-shadow: rgba(69, 69, 69, 0.444) 0 1px 0;
+  text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
   position: relative;
   padding: 0 0.375em;
   margin-right: 0.375em;
-  border: 1px solid #516985;
-  background-color: #8695a8;
-  color: rgba(255, 255, 255, 0.833);
+  border: 1px solid #8695a8;
+  background-color: #cbcfd6;
+}
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, #filter .compact .filter-item .onoff a:link, .tag a:link, .files-list .file a:link, .bugs-list .bugurl a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, #filter .compact .filter-item .onoff a:visited, .tag a:visited, .files-list .file a:visited, .bugs-list .bugurl a:visited {
+  color: #4b5765;
+}
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, #filter .compact .filter-item .onoff a:focus, .tag a:focus, .files-list .file a:focus, .bugs-list .bugurl a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, #filter .compact .filter-item .onoff a:hover, .tag a:hover, .files-list .file a:hover, .bugs-list .bugurl a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, #filter .compact .filter-item .onoff a:active, .tag a:active, .files-list .file a:active, .bugs-list .bugurl a:active {
+  color: #4f1114;
 }
 
 .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff {
@@ -1122,6 +1127,11 @@ body > div {
   display: inline;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
+}
+
+.tag-item .onoff {
+  background-color: #e4f5d1;
+  border-color: #4d791b;
 }
 
 .textual {
@@ -1412,16 +1422,6 @@ body > div {
   max-height: 18em;
   overflow-y: auto;
 }
-.itembody .associated-title {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
 .itembody.open .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
@@ -1438,6 +1438,65 @@ body > div {
   text-align: left;
   width: 1.5em;
   background-position: center;
+}
+
+.associated {
+  clear: both;
+  overflow: hidden;
+  *zoom: 1;
+}
+
+.associated-title {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.bugs-list, .files-list {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.bugs-list li, .files-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.files-list .file {
+  background-image: url('../images/ui/clip.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  padding-left: 32px;
+  background-position: 6px;
+  padding-left: 1.5em;
+}
+
+.bugs-list .bugurl {
+  background-image: url('../images/ui/bug.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  padding-left: 32px;
+  background-position: 6px;
+  padding-left: 1.875em;
+  background-color: #fef0bd;
+  border-color: #a27f02;
 }
 
 .bystatus {

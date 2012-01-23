@@ -1,3 +1,6 @@
+// ---------------------------------------------------------------------------
+// Item
+
 .listitem
   +pie-clearfix
   +background-image(linear-gradient(top, rgba($lightest,$small), rgba($mid,$xxxsmall)))
@@ -6,12 +9,18 @@
   &:hover
     background-image: none
 
+// ---------------------------------------------------------------------------
+// Item Head
+
 .itemhead
   +clearfix
   +padding-leader(.25)
   +trailing-border(1px,.25)
   +hpadding(rhythm(1),rhythm(.25))
   border-color: rgba($blue-dark,$xxsmall)
+
+// ---------------------------------------------------------------------------
+// Item Body
 
 .itembody
 
@@ -43,10 +52,35 @@
     max-height: rhythm(12)
     overflow-y: auto
 
-  .associated-title
-    +gone
-
   &.open
     .summary
       +opacity(1)
       +icon('ui/angle_down.png')
+
+// ---------------------------------------------------------------------------
+// Associated Links
+
+.associated
+  +full(24)
+  +clearfix
+
+.associated-title
+  +gone
+
+.bugs-list, .files-list
+  +no-style-list
+
+.files-list
+  .file
+    @extend .chick
+    +icon('ui/clip.png',$notext:false)
+    padding-left: rhythm(1)
+
+.bugs-list
+  .bugurl
+    @extend .chick
+    +icon('ui/bug.png',$notext:false)
+    padding-left: rhythm(1.25)
+    background-color: $yellow-light
+    border-color: $yellow-darkest
+

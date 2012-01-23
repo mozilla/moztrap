@@ -23,13 +23,17 @@
   +trailer(.5)
   +demi
   +cond
-  +text-shadow(rgba($base,$xsmall) 0 1px 0)
+  +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
   position: relative
   padding: 0 rhythm(.25)
   margin-right: rhythm(.25)
-  border: 1px solid $blue
-  background-color: $blue-light
-  color: rgba($lightest,$small-norm)
+  border: 1px solid $blue-light
+  background-color: $blue-lightest
+  a
+    #{$link}
+      color: $blue-dark
+    #{$focus}
+      color: $red-dark
 
 .actionchick
   @extend .chick
