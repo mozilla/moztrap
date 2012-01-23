@@ -34,11 +34,11 @@ def main():
     imports = [
         "import datetime",
         "from django.contrib.auth.models import User, Group, Permission",
-        "from cc.core.models import Product, ProductVersion",
-        "from cc.library.models import Suite, Case, CaseVersion, CaseStep, CaseAttachment, SuiteCase",
-        "from cc.execution.models import Run, RunCaseVersion, RunSuite, Result, StepResult",
-        "from cc.environments.models import Profile, Category, Element, Environment",
-        "from cc.tags.models import Tag",
+        "from cc.model.core.models import Product, ProductVersion",
+        "from cc.model.library.models import Suite, Case, CaseVersion, CaseStep, CaseAttachment, SuiteCase",
+        "from cc.model.execution.models import Run, RunCaseVersion, RunSuite, Result, StepResult",
+        "from cc.model.environments.models import Profile, Category, Element, Environment",
+        "from cc.model.tags.models import Tag",
         ]
 
     for imp in imports:
