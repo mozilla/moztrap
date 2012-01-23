@@ -1,26 +1,5 @@
 // ---------------------------------------------------------------------------
-.manage-form
-  +pie-clearfix
-  +padding-leader
-
-.taglist, .attachlist
-  +no-style-list
-  .none
-    +italic
-    +padding-leader(.25)
-    +padding-trailer(.25)
-
-.add-attachment-field
-  label
-    +button-style($blue-hint,$hover:false,$inset:true)
-    white-space: nowrap
-    #{$focus}
-      +button-style($green)
-  input
-    +gone
-
-// ---------------------------------------------------------------------------
-// Cases
+// Case Forms
 
 .case-form
   .form-actions
@@ -83,6 +62,9 @@
     .case-version-list
       display: block
 
+// ---------------------------------------------------------------------------
+// Versioning
+
 .versioning
   +trailer(2)
 
@@ -112,6 +94,9 @@
       +columns(2,24)
     select, .errorlist
       +columns(20,24)
+
+// ---------------------------------------------------------------------------
+// Versioned
 
 .versioned
   .edit-case &
@@ -184,6 +169,9 @@
       +omega(13)
       min-height: rhythm(10)
 
+// ---------------------------------------------------------------------------
+// Steps
+
 .step-form
   .steplist
     +no-style-list
@@ -193,6 +181,7 @@
       display: none
 
 .step-form-item
+  +pie-clearfix
   +full(24)
   +pad(2,2,24)
   +trailer(1)
@@ -231,24 +220,33 @@
       +opacity(1)
 
   .insert-step
+    +opacity(.25)
     +cond
     +demi
     +adjust-font-size-to($small-normpx)
-    +icon('ui/arrow_right.png',$notext:false)
-    +opacity(0)
     +transition(opacity 300ms)
     +stretch-x
-    top: rhythm(-.5,$smallpx)
+    +prefix(22,20)
+    top: rhythm(-.75,$smallpx)
     color: inherit
     text-transform: uppercase
+    text-align: center
     &::after
+      +opacity(0)
       content: " "
       position: absolute
       top: 0
-      right: 0
+      right: columns(2,24) + gutter(24)
       left: columns(2,24) + gutter(24)
       height: rhythm(.5,$small-normpx)
       border-bottom: 2px dashed rgba($blue-darker,$xsmall)
-    &:hover
+    &::before
+      +icon('ui/arrow_left.png')
+      +inline-block
+      content: '<'
+      padding-right: .4em
+    #{$focus}
       +opacity(1)
-
+      outline: 0
+      &::after
+        +opacity(1)

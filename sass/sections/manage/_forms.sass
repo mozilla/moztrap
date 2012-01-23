@@ -1,0 +1,24 @@
+// ---------------------------------------------------------------------------
+.manage-form
+  +pie-clearfix
+  +padding-leader
+
+.taglist, .attachlist
+  +no-style-list
+  .none
+    +italic
+    +padding-leader(.25)
+    +padding-trailer(.25)
+
+.add-attachment-field
+  label
+    +button-style($blue-hint,$hover:false,$inset:true)
+    white-space: nowrap
+    #{$focus}
+      +button-style($green)
+  input
+    +gone
+
+// ---------------------------------------------------------------------------
+
+@import forms/case-forms

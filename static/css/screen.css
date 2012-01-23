@@ -2927,12 +2927,18 @@ body.login input, body.login .errorlist {
 }
 
 .step-form-item {
+  *zoom: 1;
   clear: both;
   padding-left: 8.421%;
   padding-right: 8.421%;
   margin-bottom: 1.5em;
   position: relative;
   counter-increment: step;
+}
+.step-form-item:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .step-form-item::before {
   font-size: 2.286em;
@@ -3000,22 +3006,12 @@ body.login input, body.login .errorlist {
   opacity: 1;
 }
 .step-form-item .insert-step {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+  opacity: 0.25;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   font-size: 0.821em;
   line-height: 1.826em;
-  background-image: url('../images/ui/arrow_right.png?1326735333');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  padding-left: 32px;
-  background-position: 6px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
   -webkit-transition: opacity 300ms;
   -moz-transition: opacity 300ms;
   -o-transition: opacity 300ms;
@@ -3023,20 +3019,54 @@ body.login input, body.login .errorlist {
   position: absolute;
   left: 0;
   right: 0;
-  top: -1.167em;
+  padding-left: 111.392%;
+  top: -1.75em;
   color: inherit;
   text-transform: uppercase;
+  text-align: center;
 }
 .step-form-item .insert-step::after {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
   content: " ";
   position: absolute;
   top: 0;
-  right: 0;
+  right: 8.421%;
   left: 8.421%;
   height: 0.913em;
   border-bottom: 2px dashed rgba(72, 78, 85, 0.444);
 }
-.step-form-item .insert-step:hover {
+.step-form-item .insert-step::before {
+  background-image: url('../images/ui/arrow_left.png?1327351751');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  width: 1.5em;
+  background-position: center;
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  content: "<";
+  padding-right: 0.4em;
+}
+.step-form-item .insert-step::before {
+  *display: inline;
+}
+.step-form-item .insert-step:focus, .step-form-item .insert-step:hover, .step-form-item .insert-step:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  outline: 0;
+}
+.step-form-item .insert-step:focus::after, .step-form-item .insert-step:hover::after, .step-form-item .insert-step:active::after {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
