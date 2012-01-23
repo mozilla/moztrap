@@ -1770,7 +1770,7 @@ body > div {
 }
 
 .itemlist {
-  border: 1px solid rgba(75, 87, 101, 0.444);
+  border: 1px solid rgba(75, 87, 101, 0.667);
 }
 .itemlist button {
   padding: 0;
