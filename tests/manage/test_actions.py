@@ -149,3 +149,29 @@ class ActionsTest(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.request.method, "POST")
         self.assertEqual(res.request.POST["other"], "thing")
+
+
+    def test_object_does_not_exist(self):
+        """If requested obj id does not exist, no action is taken."""
+        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+
+        class MockModelDoesNotExist(Exception):
+            pass
+        self.mock_model.DoesNotExist = MockModelDoesNotExist
+        def raise_does_not_exist(*args, **kwargs):
+            raise self.mock_model.DoesNotExist
+        self.mock_model._base_manager.get.side_effect = raise_does_not_exist
+
+        res = self.view(req)
+
+        self.mock_model._base_manager.get.assert_called_with(pk="3")
+        self.assertEqual(res.status_code, 302)
+
+
+    def test_non_POST(self):
+        """Decorator ignores non-POST requests."""
+        req = RequestFactory().get("/the/url", data={"action-doit": "3"})
+
+        self.view(req)
+
+        self.assertEqual(self.mock_model._base_manager.get.call_count, 0)
