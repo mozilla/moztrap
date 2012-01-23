@@ -52,7 +52,7 @@ def actions(model, allowed_actions, fall_through=False):
                     action, obj_id = action_data
                     if action in allowed_actions:
                         try:
-                            obj = model.objects.get(pk=obj_id)
+                            obj = model._base_manager.get(pk=obj_id)
                         except model.DoesNotExist:
                             pass
                         else:
