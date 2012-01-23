@@ -57,13 +57,16 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
     def __init__(self, *args, **kwargs):
         """Initialize AddCaseForm, including StepFormSet."""
-        self.user = kwargs.pop("user")
+        self.user = kwargs.pop("user", None)
 
         super(AddCaseForm, self).__init__(*args, **kwargs)
 
         self.fields["add_tags"].widget.attrs["data-allow-new"] = (
-            "true" if self.user.has_perm("tags.manage_tags") else "false")
-        if self.user.has_perm("library.manage_suite_cases"):
+            "true"
+            if (self.user and self.user.has_perm("tags.manage_tags"))
+            else "false"
+            )
+        if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
                 Suite.objects.all(),
                 choice_attrs=product_id_attrs,
@@ -90,8 +93,11 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
 
     def save(self):
+        assert self.is_valid()
+
         version_kwargs = self.cleaned_data.copy()
-        case = Case.objects.create(product=version_kwargs.pop("product"), user=self.user)
+        case = Case.objects.create(
+            product=version_kwargs.pop("product"), user=self.user)
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
 
@@ -113,7 +119,10 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             this_version_kwargs["productversion"] = productversion
             caseversion = CaseVersion.objects.create(**this_version_kwargs)
             steps_formset = StepFormSet(
-                data=self.data, prefix="steps", instance=caseversion)
+                data=self.data,
+                prefix="steps",
+                instance=caseversion,
+                user=self.user)
             steps_formset.save()
             self._save_tags(caseversion)
             self._save_attachments(caseversion)
@@ -175,6 +184,11 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
 
 class BaseStepInlineFormSet(BaseInlineFormSet):
     """Step formset that assigns sequential numbers to steps."""
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)
+        super(BaseStepInlineFormSet, self).__init__(*args, **kwargs)
+
+
     def save_new(self, form, commit=True):
         """Assign auto-incrementing step numbers to steps when saving."""
         obj = form.save(commit=False)
@@ -182,7 +196,7 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
         obj.number = self._get_next_step_number()
 
         if commit:
-            obj.save()
+            obj.save(user=self.user)
         return obj
 
 
@@ -193,7 +207,7 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
         obj.number = self._get_next_step_number()
 
         if commit:
-            obj.save()
+            obj.save(user=self.user)
         return obj
 
 
