@@ -228,17 +228,17 @@ class CaseStepTest(TestCase):
 class CaseAttachmentTest(TestCase):
     """Tests for the CaseAttachment model."""
     def test_unicode(self):
-        """Unicode representation is name of attached file."""
-        ca = F.CaseAttachmentFactory()
+        """Unicode representation is name."""
+        ca = F.CaseAttachmentFactory(attachment__name="afile.txt")
 
-        self.assertEqual(unicode(ca), ca.attachment.name)
+        self.assertEqual(unicode(ca), "afile.txt")
 
 
     def test_name(self):
-        """``name`` property is shortcut to attached file name."""
-        ca = F.CaseAttachmentFactory()
+        """``name`` property is basename of attached file name."""
+        ca = F.CaseAttachmentFactory(attachment__name="thefile.txt")
 
-        self.assertEqual(ca.name, ca.attachment.name)
+        self.assertEqual(ca.name, "thefile.txt")
 
 
     def test_url(self):

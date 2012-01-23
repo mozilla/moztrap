@@ -19,6 +19,8 @@
 Models for attachments.
 
 """
+from os.path import basename
+
 from django.db import models
 
 from ..ccmodel import CCModel
@@ -47,5 +49,5 @@ class Attachment(CCModel):
 
     @property
     def name(self):
-        """Shortcut property to access file attachment name."""
-        return self.attachment.name
+        """Shortcut property to access file attachment basename."""
+        return basename(self.attachment.name)
