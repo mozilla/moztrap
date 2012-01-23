@@ -1,19 +1,5 @@
-Cycles, Runs, and Results
+Runs, and Results
 =========================
-
-
-.. _test-cycles:
-
-Test Cycles
------------
-
-A **Test Cycle** is simply a container for :ref:`test runs <test-runs>`; its
-meaning will depend on your project's workflow. For instance, it might
-correspond to a release cycle. It has a *name*, a *start date*, an *end date*,
-and a *product* and *product version*. It also has a *status*: either "draft",
-"active", or "disabled". A test cycle must be marked "active" before any of its
-member runs can be made active, and when a test cycle is disabled all member
-runs are disabled as well.
 
 
 .. _test-runs:
@@ -26,30 +12,26 @@ can be assigned to a tester for execution (or that a tester can assign to
 themselves and execute) in a particular :ref:`environment <environments>` or
 set of environments.
 
-It is part of a :ref:`test cycle <test-cycles>` and inherits the *product
-version* of the cycle. It has its own *name*, *status*, *start date*, and *end
-date*, as well as a list of included :ref:`test suites <test-suites>`.
+It is part of a :ref:`product <products>` version. It has its own *name*,
+*status*, *start date*, and *end date*, as well as a list of included :ref:`test
+suites <test-suites>`. A test run must be switched to *active* status before it
+can be executed by testers.
 
-A test run must be switched to *active* status before it can be executed by
-testers. When a test run is made active, the included test cases and their
-versions are locked in for the life of that test run. For every included *test
-suite*, the latest active version of each test case in that suite which is
-marked as applicable to a product version less than or equal to the *product
-version* of the run is included in the test run.
+A Test Run applies to a Product and a Product Version. Usually, a product has had
+several iterations (or builds) prior to the release of a final Version. Therefore,
+a Test Run is a single execution pass over a specific iteration of that Product
+Version. And your product will likely have more than one iteration prior to
+release of that version. Therefore, you may choose to name your test runs after
+the build they are testing like Build 23, Build 24, etc. Once your product goes
+Alpha or Beta, you may choose to name your test runs that way: "Alpha 1, Build
+86," "Alpha 1, Build 87," etc.
 
-For instance, assume we have a product "Firefox" in the system with versions 8,
-9, and 10, and we have a test run for version 9. When this test run is
-activated, the test suite "Core" is included in it, and has a test case "Can
-visit a web page" in it. That test case has versions 1, 2, and 3. Versions 1
-and 2 are marked as for Firefox 8+, and version 3 is marked as for Firefox 10+.
+The test case steps executed in test runs may be different for each Product
+Version, as the Product itself evolves. See :ref:`Test Cases <test-cases>` for
+more info on how test case versions relate to Product Versions.
 
-Version 3 is the latest version of the test case, but cannot be included
-because the test run is for Firefox 9, and version 3 only applies to Firefox
-10+. So version 2 of the test case is included in the run, since it is the
-latest version that applies to the correct version of the product.
-
-An active test run can be disabled, which halts all execution of tests in that
-run until it is made active again.
+An active test run can be disabled, which halts all execution of tests in that run
+until it is made active again.
 
 
 .. _test-results:
