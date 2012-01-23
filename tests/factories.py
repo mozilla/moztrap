@@ -27,11 +27,11 @@ from django.contrib.auth.models import User, Permission
 
 import factory
 
-from cc.core import models as core_models
-from cc.environments import models as environment_models
-from cc.execution import models as execution_models
-from cc.library import models as library_models
-from cc.tags import models as tag_models
+from cc.model.core import models as core_models
+from cc.model.environments import models as environment_models
+from cc.model.execution import models as execution_models
+from cc.model.library import models as library_models
+from cc.model.tags import models as tag_models
 
 
 

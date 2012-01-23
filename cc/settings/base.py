@@ -112,7 +112,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
 ]
 
-ROOT_URLCONF = "cc.urls"
+ROOT_URLCONF = "cc.view.urls"
 
 TEMPLATE_DIRS = [
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -135,13 +135,14 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "south",
-    "cc.core",
-    "cc.users",
-    "cc.library",
-    "cc.environments",
-    "cc.execution",
-    "cc.attachments",
-    "cc.tags",
+    "cc.model.core",
+    "cc.model.library",
+    "cc.model.environments",
+    "cc.model.execution",
+    "cc.model.attachments",
+    "cc.model.tags",
+    "cc.view",
+    "cc.view.lists",
 ]
 
 CACHES = {
