@@ -21,6 +21,10 @@ Tests for case management views.
 """
 from django.core.urlresolvers import reverse
 
+from django.contrib.auth.models import Permission
+
+from cc.library.models import CaseVersion
+
 from ... import factories as F
 from ...views import ViewTestCase
 
@@ -46,3 +50,63 @@ class CasesTest(ViewTestCase):
         res = self.get()
 
         res.mustcontain("Foo Bar")
+
+
+
+class AddCaseTest(ViewTestCase):
+    """Tests for add-case-single view."""
+    @property
+    def url(self):
+        """Shortcut for add-case-single url."""
+        return reverse("manage_case_add")
+
+
+    def setUp(self):
+        """Add create-cases permission to user."""
+        super(AddCaseTest, self).setUp()
+        perm = Permission.objects.get(codename="create_cases")
+        self.user.user_permissions.add(perm)
+
+
+    def get(self):
+        """Shortcut for getting add-case-single url authenticated."""
+        return self.app.get(self.url, user=self.user)
+
+
+    def get_form(self):
+        """Get single case add form."""
+        return self.get().forms["single-case-add"]
+
+
+    def test_success(self):
+        """Can add a test case with basic data, including a step."""
+        pv = F.ProductVersionFactory.create()
+
+        form = self.get_form()
+        form["product"] = pv.product.id
+        form["productversion"] = pv.id
+        form["name"] = "Can log in."
+        form["description"] = "Tests that a user can log in."
+        form["steps-0-instruction"] = "Type creds and click login."
+        form["steps-0-expected"] = "You should see a welcome message."
+        res = form.submit()
+
+        self.assertEqual(res.status_int, 302)
+        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+
+        cv = CaseVersion.objects.get()
+        self.assertEqual(cv.case.product, pv.product)
+        self.assertEqual(cv.productversion, pv)
+        self.assertEqual(cv.name, "Can log in.")
+        self.assertEqual(cv.description, "Tests that a user can log in.")
+        step = cv.steps.get()
+        self.assertEqual(step.instruction, "Type creds and click login.")
+        self.assertEqual(step.expected, "You should see a welcome message.")
+
+
+    def test_error(self):
+        """Bound form with errors is re-displayed."""
+        res = self.get_form().submit()
+
+        self.assertEqual(res.status_int, 200)
+        res.mustcontain("This field is required.")

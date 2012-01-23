@@ -51,7 +51,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     add_tags = forms.CharField(
         widget=ccforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
-        required=False) # @@@
+        required=False)
     add_attachment = forms.FileField(required=False)
 
 
@@ -98,7 +98,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         del version_kwargs["add_tags"]
         del version_kwargs["add_attachment"]
 
-        initial_suite = version_kwargs.pop("initial_suite")
+        initial_suite = version_kwargs.pop("initial_suite", None)
         if initial_suite:
             SuiteCase.objects.create(
                 case=case, suite=initial_suite, user=self.user)
