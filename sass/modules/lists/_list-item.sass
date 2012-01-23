@@ -1,17 +1,17 @@
 .listitem
   +pie-clearfix
-  +padding-leader(.25)
-  +trailing-border(1px,.25)
   +background-image(linear-gradient(top, rgba($lightest,$small), rgba($mid,$xxxsmall)))
   position: relative
-  padding-right: rhythm(.25)
   background-color: rgba($blue-hint,$small)
-  border-color: rgba($blue-dark,$xxsmall)
   &:hover
     background-image: none
 
 .itemhead
   +clearfix
+  +padding-leader(.25)
+  +trailing-border(1px,.25)
+  +hpadding(rhythm(1),rhythm(.25))
+  border-color: rgba($blue-dark,$xxsmall)
 
 .itembody
 
@@ -29,7 +29,10 @@
 
   .content
     +full(24)
-    margin-left: rhythm(1)
+    +clearfix
+    +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
+    background: $blue-hint
+    padding: rhythm(.25) rhythm(.25) rhythm(.25) rhythm(1)
     position: relative
 
   .byline
@@ -37,25 +40,8 @@
     +italic
 
   .envs
-    +stretch-y
-    +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
-    right: 0
-    width: columns(6,24)
+    max-height: rhythm(12)
     overflow-y: auto
-  .envs-title
-    @extend .allcaps
-    +font-weight-normal
-    padding: 0 rhythm(.25)
-    color: rgba($lightest,$small)
-    background: rgba($base,$xsmall)
-  .envlist
-    +no-style-list
-    a
-      #{$link}
-        display: block
-        padding: 0 rhythm(.25)
-      #{$focus}
-        background: rgba($blue-lighter,$small)
 
   .associated-title
     +gone

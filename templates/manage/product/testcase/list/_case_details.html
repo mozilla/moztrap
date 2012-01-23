@@ -1,13 +1,14 @@
-{% include "lists/_byline.html" with item=caseversion %}
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=caseversion %}
 
-<ol class="steps">
-  {% for step in caseversion.steps.all %}
-  <li>
-    <p class="instruction">{{ step.instruction }}</p>
-    <p class="outcome">{{ step.expected }}</p>
-  </li>
-  {% endfor %}
-</ol>
-
+  <ol class="steps">
+    {% for step in caseversion.steps.all %}
+    <li>
+      <p class="instruction">{{ step.instruction }}</p>
+      <p class="outcome">{{ step.expected }}</p>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
 {% include "lists/_environments.html" with environments=caseversion.environments %}
 {% include "lists/_associated_links.html" with bugs=caseversion.bug_urls attachments=caseversion.attachments %}
