@@ -1,20 +1,13 @@
 {% extends 'base_site.html' %}
 
-{% block page-status %}incomplete{% endblock %}
-
-{% block page-notes %}
-  <p>Can't pair multiple name searches, unless they are all exact, e.g. &ldquo;^Full Name$&rdquo; (<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=659226">platform limitation</a>).</p>
-{% endblock %}
-
 {% block result-active-nav %}active{% endblock result-active-nav %}
 
 {% block drilldown %}
-  <nav class="drilldown details{% if request.GET.openfinder %} open{% endif %}">
-    <h2 class="summary" title="show/hide drilldown navigation">Drill-down Navigation</h2>
-    <div class="resultsdrill content">
-      {% include "results/finder/_finder.html" %}
-    </div>
-  </nav>
+  {% if request.GET.openfinder %}
+    {% include "results/_results_drilldown.html" with details='open' %}
+  {% else %}
+    {% include "results/_results_drilldown.html" %}
+  {% endif %}
 {% endblock drilldown %}
 
 {% block content %}

@@ -1,0 +1,16 @@
+<form method="POST" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/product/testcase/list/_cases_listordering.html" %}
+
+  {% if caseversions %}
+    {% for caseversion in caseversions %}
+      {% include "manage/product/testcase/list/_cases_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" %}
+
+</form>

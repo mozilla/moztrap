@@ -1,0 +1,254 @@
+// ---------------------------------------------------------------------------
+.manage-form
+  +pie-clearfix
+  +padding-leader
+
+.taglist, .attachlist
+  +no-style-list
+  .none
+    +italic
+    +padding-leader(.25)
+    +padding-trailer(.25)
+
+.add-attachment-field
+  label
+    +button-style($blue-hint,$hover:false,$inset:true)
+    white-space: nowrap
+    #{$focus}
+      +button-style($green)
+  input
+    +gone
+
+// ---------------------------------------------------------------------------
+// Cases
+
+.case-form
+  .form-actions
+    +full(24)
+    +pad(2,2,24)
+
+.case-version-nav
+  +full(24)
+  +suffix(2,24)
+  +leader(-1.25)
+  text-align: right
+
+.case-version-head
+  +inline-block
+  +demi
+
+.change-version
+  +inline-block
+  position: relative
+  width: columns(6,22)
+  text-align: left
+  .case-version-current
+    +button-style($blue-hint,'ui/angle_right.png')
+    +trailer(0)
+  .case-version-list
+    +no-style-list
+    +box-shadow($base 0 rhythm(.125) rhythm(.25))
+    display: none
+    position: absolute
+    top: 100%
+    right: 0
+    width: 100%
+    max-height: rhythm(12.5)
+    background-color: $lightest
+    overflow-y: auto
+    z-index: 900
+  .vaction-edit, .vaction-add
+    #{$link}
+      display: block
+  .vaction-edit
+    #{$link}
+      +button-style($green-lighter,'ui/pencil.png')
+      +border-radius(0)
+  .vaction-add
+    #{$link}
+      +opacity(.75)
+      +icon('ui/plus.png',$blue-hint,false)
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +border-radius(0)
+      color: $base
+    #{$focus}
+      +opacity(1)
+      background-color: $blue-lightest
+
+  &:hover
+    .case-version-current
+      +button-style($blue-lighter,'ui/angle_down.png')
+      +border-bottom-radius(0)
+    .case-version-list
+      display: block
+
+.versioning
+  +trailer(2)
+
+  .product-field
+    +columns(11,24)
+    label
+      +columns(2,11)
+    select, .errorlist
+      +columns(9,11)
+      +omega(11)
+
+  .version-field
+    +columns(7,24)
+    label
+      +columns(2,7)
+    select, .errorlist
+      +columns(5,7)
+      +omega(7)
+
+  .and-later-versions-field
+    +columns(4,24)
+    +padding-leader(.25)
+
+  .suite-field
+    +full(24)
+    label
+      +columns(2,24)
+    select, .errorlist
+      +columns(20,24)
+
+.versioned
+  .edit-case &
+    +leading-border($xxxsmallpx,1)
+    clear: both
+    border:
+      style: dashed
+      color: rgba($base,$xxxsmall)
+
+  .caseinfo-fields
+    +columns(11,24)
+
+  .name-field, .description-field
+    label
+      +columns(2,11)
+    input, textarea, .errorlist
+      +columns(9,11)
+      +omega(11)
+
+  .tagging
+    +columns(11,24)
+    +pie-clearfix
+  .taglist
+    +columns(9,11)
+    +omega(11)
+    +trailer
+
+  .add-tags-field
+    +full(11)
+    label
+      +columns(2,11)
+    input, .errorlist
+      +columns(9,11)
+      +omega(11)
+    .suggest
+      +pre(2,11)
+
+  .attach
+    +pie-clearfix
+    +full(24)
+    +pad(2,13,24)
+    +trailer(2)
+
+  .add-attachment-field
+    +float(right)
+    text-align: right
+
+  .attachlist
+    +clearfix
+
+  .attachment-item
+    @extend .reversecheck
+
+  .bulk-field
+    +full(24)
+    +padding-leader
+    +pie-clearfix
+    .fieldhelp
+      +columns(11,24)
+      +omega(24)
+      +cond
+      color: rgba($dark,$small)
+
+  .cases-field
+    +columns(13,24)
+    label
+      +columns(2,13)
+    textarea, .errorlist
+      +columns(11,13)
+      +omega(13)
+      min-height: rhythm(10)
+
+.step-form
+  .steplist
+    +no-style-list
+    counter-reset: step
+  .extra-row, .step-form-item:first-child
+    .insert-step
+      display: none
+
+.step-form-item
+  +full(24)
+  +pad(2,2,24)
+  +trailer(1)
+  position: relative
+  counter-increment: step
+  &::before
+    +adjust-font-size-to($largepx)
+    +light
+    content: counter(step, decimal) "."
+    position: absolute
+    left: 0
+    top: rhythm(1.5,$largepx)
+    width: columns(2,24)
+    text-align: right
+  .formfield
+    +columns(10,20)
+    &.expected-field
+      +omega(20)
+  textarea
+    min-height: rhythm(3)
+
+  .removefields
+    +opacity(.25)
+    +transition(opacity 300ms)
+    +icon('ui/x_circle.png')
+    position: absolute
+    right: move(1,24)
+    top: rhythm(2)
+    #{$focus}
+      +opacity(1)
+      +border-radius
+      background-color: rgba($red,$xsmall)
+      outline: 0
+  &:hover
+    .removefields
+      +opacity(1)
+
+  .insert-step
+    +cond
+    +demi
+    +adjust-font-size-to($small-normpx)
+    +icon('ui/arrow_right.png',$notext:false)
+    +opacity(0)
+    +transition(opacity 300ms)
+    +stretch-x
+    top: rhythm(-.5,$smallpx)
+    color: inherit
+    text-transform: uppercase
+    &::after
+      content: " "
+      position: absolute
+      top: 0
+      right: 0
+      left: columns(2,24) + gutter(24)
+      height: rhythm(.5,$small-normpx)
+      border-bottom: 2px dashed rgba($blue-darker,$xsmall)
+    &:hover
+      +opacity(1)
+

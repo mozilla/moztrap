@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -24,11 +24,11 @@ from django.db import models
 from pkg_resources import parse_version
 
 from ..environments.models import HasEnvironmentsModel
-from .ccmodel import TeamModel
+from .ccmodel import CCModel, TeamModel
 
 
 
-class Product(TeamModel):
+class Product(CCModel, TeamModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
@@ -57,23 +57,31 @@ class Product(TeamModel):
         """
         Reorder versions of this product, saving new order in db.
 
-        If an ``update_instance`` is given, update it with new order.
+        If an ``update_instance`` is given, update it with new order and
+        ``latest`` flag.
 
         """
         ordered = sorted(self.versions.all(), key=by_version)
         for i, version in enumerate(ordered, 1):
             version.order = i
+            version.latest = (i == len(ordered))
             version.save(force_update=True, skip_reorder=True)
             if version == update_instance:
                 update_instance.order = version.order
+                update_instance.latest = version.latest
+        # now we have to update latest caseversions too, @@@ too slow?
+        for case in self.cases.all():
+            case.set_latest_version()
 
 
 
-class ProductVersion(TeamModel, HasEnvironmentsModel):
+class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
     version = models.CharField(max_length=100)
-    codename = models.CharField(max_length=100)
+    codename = models.CharField(max_length=100, blank=True)
     order = models.IntegerField(default=0, editable=False)
+    # denormalized for querying
+    latest = models.BooleanField(default=False, editable=False)
 
 
     def __unicode__(self):
@@ -86,6 +94,7 @@ class ProductVersion(TeamModel, HasEnvironmentsModel):
 
 
     def save(self, *args, **kwargs):
+        """Save productversion, updating latest version."""
         skip_reorder = kwargs.pop("skip_reorder", False)
         super(ProductVersion, self).save(*args, **kwargs)
         if not skip_reorder:

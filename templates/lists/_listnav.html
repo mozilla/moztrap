@@ -1,48 +1,49 @@
-{% load pagination %}
-    <nav class="listnav">
-      <h3 class="navhead">List Navigation</h3>
-      <p class="location">showing {{ pager.low }}-{{ pager.high }} of {{ pager.total }}</p>
-      <ul class="pagination">
-        <li>
-          {% if pager.prev %}
-          <a href="{{ request|pagenumber_url:pager.prev }}" class="prev">&laquo; previous</a>
-          {% else %}
-          &laquo; previous
-          {% endif %}
-        </li>
-        {% for num in pager.display_pages %}
-        <li>
-          {% if num == pager.pagenumber %}
-          <span class="current page">{{ num }}</span>
-          {% else %}
-           {% if num %}
-           <a href="{{ request|pagenumber_url:num }}" class="page">{{ num }}</a>
-           {% else %}
-           &hellip;
-           {% endif %}
-          {% endif %}
-        </li>
-        {% endfor %}
-        <li>
-          {% if pager.next %}
-          <a href="{{ request|pagenumber_url:pager.next }}" class="next">next &raquo;</a>
-          {% else %}
-          next &raquo;
-          {% endif %}
-        </li>
-      </ul>
-      <div class="perpage">
-        <strong>per page:</strong>
-        <ul>
-          {% for size in pager.sizes %}
-          <li>
-            {% if size == pager.pagesize %}
-            <span class="current">{{ size }}</span>
-            {% else %}
-            <a href="{{ request|pagesize_url:size }}">{{ size }}</a>
-            {% endif %}
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-    </nav>
+{# @@@ load pagination #}
+
+<nav class="listnav">
+  <h3 class="navhead">List Navigation</h3>
+  <p class="location">showing {{ pager.low }}-{{ pager.high }} of {{ pager.total }}</p>
+  <ul class="pagination">
+    <li>
+      {% if pager.prev %}
+      <a href="{# @@@ request|pagenumber_url:pager.prev #}" class="prev">&laquo; previous</a>
+      {% else %}
+      &laquo; previous
+      {% endif %}
+    </li>
+    {% for num in pager.display_pages %}
+    <li>
+      {% if num == pager.pagenumber %}
+      <span class="current page">{{ num }}</span>
+      {% else %}
+       {% if num %}
+       <a href="{# @@@ request|pagenumber_url:num #}" class="page">{{ num }}</a>
+       {% else %}
+       &hellip;
+       {% endif %}
+      {% endif %}
+    </li>
+    {% endfor %}
+    <li>
+      {% if pager.next %}
+      <a href="{# @@@ request|pagenumber_url:pager.next #}" class="next">next &raquo;</a>
+      {% else %}
+      next &raquo;
+      {% endif %}
+    </li>
+  </ul>
+  <div class="perpage">
+    <strong>per page:</strong>
+    <ul>
+      {% for size in pager.sizes %}
+      <li>
+        {% if size == pager.pagesize %}
+        <span class="current">{{ size }}</span>
+        {% else %}
+        <a href="{# @@@ request|pagesize_url:size #}">{{ size }}</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>

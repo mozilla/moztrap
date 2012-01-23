@@ -1,20 +1,6 @@
-{% load sort %}
-
 <div class="managelist action-ajax-replace">
-  <nav class="listordering">
-    <h3 class="navhead">List Ordering</h3>
-    <ul>
-      <li class="bytitle">
-        <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
-      </li>
-      <li class="bypreview">
-        <span>preview</span>
-      </li>
-      <li class="bycontrols">
-        <span>controls</span>
-      </li>
-    </ul>
-  </nav>
+
+  {% include "manage/product/_products_listordering.html" %}
 
   <div class="items">
     {% for product in products %}

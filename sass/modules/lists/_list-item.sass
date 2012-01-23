@@ -1,0 +1,66 @@
+.listitem
+  +pie-clearfix
+  +padding-leader(.25)
+  +trailing-border(1px,.25)
+  +background-image(linear-gradient(top, rgba($lightest,$small), rgba($mid,$xxxsmall)))
+  position: relative
+  padding-right: rhythm(.25)
+  background-color: rgba($blue-hint,$small)
+  border-color: rgba($blue-dark,$xxsmall)
+  &:hover
+    background-image: none
+
+.itemhead
+  +clearfix
+
+.itembody
+
+  .summary
+    +opacity(.5)
+    +icon('ui/angle_right.png')
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    position: absolute
+    top: 0
+    left: 0
+    width: rhythm(1)
+    #{$focus}
+      +opacity(1)
+
+  .content
+    +full(24)
+    margin-left: rhythm(1)
+    position: relative
+
+  .byline
+    +trailer(.5)
+    +italic
+
+  .envs
+    +stretch-y
+    +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
+    right: 0
+    width: columns(6,24)
+    overflow-y: auto
+  .envs-title
+    @extend .allcaps
+    +font-weight-normal
+    padding: 0 rhythm(.25)
+    color: rgba($lightest,$small)
+    background: rgba($base,$xsmall)
+  .envlist
+    +no-style-list
+    a
+      #{$link}
+        display: block
+        padding: 0 rhythm(.25)
+      #{$focus}
+        background: rgba($blue-lighter,$small)
+
+  .associated-title
+    +gone
+
+  &.open
+    .summary
+      +opacity(1)
+      +icon('ui/angle_down.png')

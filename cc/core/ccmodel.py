@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -29,6 +29,8 @@ from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 
 from django.contrib.auth.models import User
+
+from model_utils import Choices
 
 
 
@@ -131,18 +133,29 @@ class CCQuerySet(QuerySet):
 
 
 class CCManager(models.Manager):
-    """Pass-through manager to ensure ``CCQuerySet`` is always used."""
+    """
+    Manager using ``CCQuerySet`` and optionally hiding deleted objects.
+
+    By making show_deleted an instantiation argument, and defaulting it to
+    False, we can achieve something a bit subtle: the instantiated default
+    manager on a CCModel shows all objects, including deleted one (meaning the
+    admin will show deleted objects, so they can be undeleted). But
+    related-object managers (which subclass the default manager class) will
+    still hide deleted objects.
+
+    """
+    def __init__(self, *args, **kwargs):
+        """Instantiate a CCManager, pulling out the ``show_deleted`` arg."""
+        self._show_deleted = kwargs.pop("show_deleted", False)
+        super(CCManager, self).__init__(*args, **kwargs)
+
+
     def get_query_set(self):
         """Return a ``CCQuerySet`` for all queries."""
-        return CCQuerySet(self.model, using=self._db)
-
-
-
-class NotDeletedCCManager(CCManager):
-    """Manager that returns only not-deleted objects."""
-    def get_query_set(self):
-        return super(NotDeletedCCManager, self).get_query_set().filter(
-            deleted_on__isnull=True)
+        qs = CCQuerySet(self.model, using=self._db)
+        if not self._show_deleted:
+            qs = qs.filter(deleted_on__isnull=True)
+        return qs
 
 
 
@@ -167,9 +180,9 @@ class CCModel(models.Model):
 
 
     # default manager returns all objects, so admin can see all
-    everything = CCManager()
+    everything = CCManager(show_deleted=True)
     # ...but "objects", for use in most code, returns only not-deleted
-    objects = NotDeletedCCManager()
+    objects = CCManager(show_deleted=False)
 
 
     def save(self, *args, **kwargs):
@@ -277,7 +290,7 @@ class CCModel(models.Model):
 
 
 
-class TeamModel(CCModel):
+class TeamModel(models.Model):
     """
     Model which may have its own team or inherit team from parent.
 
@@ -310,6 +323,37 @@ class TeamModel(CCModel):
     @property
     def parent(self):
         return None
+
+
+    class Meta:
+        abstract = True
+
+
+
+class DraftStatusModel(models.Model):
+    """
+    Model which has a status that can be draft, active, or disabled.
+
+    Also provides ``activate`` and ``deactivate`` model methods.
+
+    """
+    STATUS = Choices("draft", "active", "disabled")
+
+    status = models.CharField(
+        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
+
+
+    def activate(self):
+        """Activate this object."""
+        self.status = self.STATUS.active
+        self.save(force_update=True)
+
+
+    def deactivate(self):
+        """Deactivate this object."""
+        self.status = self.STATUS.disabled
+        self.save(force_update=True)
+
 
 
     class Meta:

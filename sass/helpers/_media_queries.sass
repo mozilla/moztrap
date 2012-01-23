@@ -1,0 +1,78 @@
+=media-big
+  //@media (min-width: $media-query-width-big)
+  @media (min-width: 1280px)
+    @content
+
+// average desktop
+
+=media-medium
+  //@media (max-width: $media-query-width-big - 1px)
+  @media (min-width: 960px)
+    @content
+
+=media-medium-only
+  //@media (min-width: $media-query-width-medium) and (max-width: $media-query-width-big - 1px)
+  @media (min-width: 960px) and (max-width: 1279px)
+    @content
+
+// old computer & tablet
+
+=media-small
+  //@media (max-width: $media-query-width-medium - 1px)
+  @media (min-width: 480px)
+    @content
+
+=media-small-only
+  //@media (min-width: $media-query-width-small) and (max-width: $media-query-width-medium - 1px)
+  @media (min-width: 480px) and (max-width: 959px)
+    @content
+
+// mobile
+
+=media-tiny
+  //@media (max-width: $media-query-width-small - 1px)
+  @media (max-width: 479px)
+    @content
+
+// orientation
+
+=media-portrait
+  @media (orientation:portrait)
+    @content
+
+=media-landscape
+  @media (orientation:landscape)
+    @content
+
+// media for high resolution screen
+
+=media-highres
+  @media (-webkit-min-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 3/2), (min-device-pixel-ratio: 2)
+    @content
+
+// susy integration
+
+=media-columns($tiny:false,$small:false,$medium:false,$omega:false)
+  @if $tiny
+    +media-tiny
+      +columns(nth($tiny,1),nth($tiny,2))
+      @if $omega
+        +omega(nth($tiny,2))
+
+  @if not $medium
+    @if $small
+      +media-small
+        +columns(nth($small,1),nth($small,2))
+        @if $omega
+          +omega(nth($small,2))
+  @else
+    @if $small
+      +media-small-only
+        +columns(nth($small,1),nth($small,2))
+        @if $omega
+          +omega(nth($small,2))
+
+    +media-medium
+      +columns(nth($medium,1),nth($medium,2))
+      @if $omega
+        +omega(nth($medium,2))

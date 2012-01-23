@@ -13,29 +13,8 @@
     {% csrf_token %}
 
     <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bystatus">
-            <a href="{{ sort|url:"status" }}" class="{{ sort|dir:"status" }}">status</a>
-          </li>
-          <li class="bycompletion">
-            <span>%</span>
-          </li>
-          <li class="bytitle">
-            <a href="{{ sort|url:"name" }}" class="{{ sort|dir:"name" }}">name</a>
-          </li>
-          <li class="bycycle">
-            <a href="{{ sort|url:"testCycle" }}" class="{{ sort|dir:"testCycle" }}">test cycle</a>
-          </li>
-          <li class="byproduct">
-            <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
-          </li>
-          <li class="byresults">
-            <span>results</span>
-          </li>
-        </ul>
-      </nav>
+
+      {% include "results/testrun/_runs_listordering.html" %}
 
       <div class="items">
         {% if runs %}

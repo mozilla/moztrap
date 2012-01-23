@@ -1,0 +1,56 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// A suggestion drop-down for text fields.
+
+.textual
+  position: relative
+
+.suggest
+  +no-style-list
+  +stretch-x
+  +border-bottom-radius
+  +box-shadow(rgba($blue-dark,$small) 0 .25em .5em)
+  display: none
+  top: 100%
+  background: $lightest
+  z-index: 900
+  border: 1px solid $mid
+    width: 0 1px 1px
+  a
+    #{$link}
+      +padding-leader(.25)
+      +trailing-border(1px,.25)
+      +clearfix
+      +hpadding(1em)
+      display: block
+      color: $base
+      border-bottom: 1px solid $light
+      &.selected
+        background: rgba($yellow-light,$xsmall)
+        outline: 0
+  li:last-child
+    a
+      #{$link}
+        border-bottom: none
+  i
+    +float(right)
+    padding-left: 1em
+    font-style: normal
+    color: $mid

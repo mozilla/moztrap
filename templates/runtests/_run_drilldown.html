@@ -1,0 +1,12 @@
+{% extends 'finder/_drilldown.html' %}
+
+{% block drillclass %}runsdrill{% endblock drillclass %}
+{% block drilltitle %}Select a product, cycle and run{% endblock drilltitle %}
+
+{% block drillfinder %}
+  {% include "runtests/finder/_finder.html" %}
+{% endblock drillfinder %}
+
+{% block drillenv %}
+  {% include "runtests/_environment_form.html" with object=testrun %}
+{% endblock drillenv %}

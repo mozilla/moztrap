@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -31,8 +31,8 @@ class CaseVersionInline(CCStackedInline):
     extra = 0
     fieldsets = [
         (None, {"fields": ["productversion",
-                           ("case", "name", "status"),
-                           ("number", "latest", "exists"),
+                           ("name", "status"),
+                           "exists",
                            "description"]})
         ]
 
@@ -55,17 +55,25 @@ class CaseTagInline(admin.TabularInline):
     extra = 0
 
 
+class SuiteCaseInline(CCTabularInline):
+    model = models.SuiteCase
+    extra = 0
+
+
 
 class CaseVersionAdmin(CCModelAdmin):
+    list_display = ["__unicode__", "productversion", "deleted_on"]
+    list_filter = ["productversion"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
     fieldsets = [
         (None, {"fields": ["productversion",
                            ("case", "name", "status"),
-                           ("number", "latest"),
                            "description"]})
         ]
 
 
+
 admin.site.register(models.Suite, CCModelAdmin)
-admin.site.register(models.Case, CCModelAdmin, inlines=[CaseVersionInline])
+admin.site.register(
+    models.Case, CCModelAdmin, inlines=[CaseVersionInline, SuiteCaseInline])
 admin.site.register(models.CaseVersion, CaseVersionAdmin)

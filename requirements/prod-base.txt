@@ -1,0 +1,3 @@
+# Additional requirements needed only for a live/staging/qa deploy.
+
+python-memcached==1.4.7

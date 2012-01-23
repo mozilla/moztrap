@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -34,30 +34,37 @@ class CaseTest(TestCase):
 
 
     def test_clone_versions(self):
-        """Cloning a case clones its latest version only."""
-        cv1 = F.CaseVersionFactory.create(
-            latest=False, number=1, name="CV 1")
-        F.CaseVersionFactory.create(
-            latest=True, number=2, name="CV 2", case=cv1.case)
+        """Cloning a case clones all versions."""
+        cv = F.CaseVersionFactory.create(name="CV 1")
 
-        new = cv1.case.clone()
+        new = cv.case.clone()
 
-        self.assertEqual(new.versions.get().name, "Cloned: CV 2")
+        self.assertEqual(new.versions.get().name, "Cloned: CV 1")
 
 
 
 class CaseVersionTest(TestCase):
     def test_unicode(self):
-        c = F.CaseVersionFactory(name="Foo")
+        cv = F.CaseVersionFactory(name="Foo")
 
-        self.assertEqual(unicode(c), u"Foo")
+        self.assertEqual(unicode(cv), u"Foo")
+
+
+    def test_cant_clone_without_overriding_case_or_productversion(self):
+        """Cloning caseversion w/o case or productversion raises ValueError."""
+        cv = F.CaseVersionFactory()
+
+        with self.assertRaises(ValueError):
+            cv.clone()
 
 
     def test_clone_steps(self):
         """Cloning a caseversion clones its steps."""
         cs = F.CaseStepFactory.create()
+        pv = F.ProductVersionFactory.create(
+            product=cs.caseversion.case.product, version="2.0")
 
-        new = cs.caseversion.clone()
+        new = cs.caseversion.clone(overrides={"productversion": pv})
 
         cloned_step = new.steps.get()
         self.assertNotEqual(cloned_step, cs)
@@ -67,8 +74,10 @@ class CaseVersionTest(TestCase):
     def test_clone_attachments(self):
         """Cloning a caseversion clones its attachments."""
         ca = F.CaseAttachmentFactory.create()
+        pv = F.ProductVersionFactory.create(
+            product=ca.caseversion.case.product, version="2.0")
 
-        new = ca.caseversion.clone()
+        new = ca.caseversion.clone(overrides={"productversion": pv})
 
         cloned_attachment = new.attachments.get()
         self.assertNotEqual(cloned_attachment, ca)
@@ -81,8 +90,10 @@ class CaseVersionTest(TestCase):
         tag = F.TagFactory.create()
         cv = F.CaseVersionFactory.create()
         cv.tags.add(tag)
+        pv = F.ProductVersionFactory.create(
+            product=cv.case.product, version="2.0")
 
-        new = cv.clone()
+        new = cv.clone(overrides={"productversion": pv})
 
         self.assertEqual(new.tags.get(), tag)
 
@@ -90,8 +101,10 @@ class CaseVersionTest(TestCase):
     def test_clone_environments(self):
         """Cloning a CaseVersion clones its environments."""
         cv = F.CaseVersionFactory(environments={"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory.create(
+            product=cv.case.product, version="2.0")
 
-        new = cv.clone()
+        new = cv.clone(overrides={"productversion": pv})
 
         self.assertEqual(len(new.environments.all()), 2)
 
@@ -151,9 +164,85 @@ class CaseVersionTest(TestCase):
         self.assertTrue(refresh(cv).envs_narrowed)
 
 
+    def test_adding_new_version_sets_latest(self):
+        """Adding a new case version updates latest version."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        self.assertEqual(
+            [v.latest for v in c.versions.all()],
+            [False, False, True]
+            )
+
+
+    def test_instance_being_saved_is_updated(self):
+        """Version being saved gets correct latest setting."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        cv = F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+
+        self.assertEqual(cv.latest, True)
+
+
+    def test_bug_urls(self):
+        """bug_urls aggregates bug urls from all results, sans dupes."""
+        cv = F.CaseVersionFactory.create()
+        rcv1 = F.RunCaseVersionFactory.create(caseversion=cv)
+        rcv2 = F.RunCaseVersionFactory.create(caseversion=cv)
+        result1 = F.ResultFactory.create(runcaseversion=rcv1)
+        result2 = F.ResultFactory.create(runcaseversion=rcv2)
+        F.StepResultFactory.create(result=result1)
+        F.StepResultFactory.create(
+            result=result1, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=result2, bug_url="http://www.example.com/bug1")
+        F.StepResultFactory.create(
+            result=result2, bug_url="http://www.example.com/bug2")
+
+        self.assertEqual(
+            cv.bug_urls(),
+            set(["http://www.example.com/bug1", "http://www.example.com/bug2"])
+            )
+
+
 
 class CaseStepTest(TestCase):
+    """Tests for the CaseStep model."""
     def test_unicode(self):
+        """Unicode representation is 'step #X'."""
         c = F.CaseStepFactory(number=1)
 
         self.assertEqual(unicode(c), u"step #1")
+
+
+
+class CaseAttachmentTest(TestCase):
+    """Tests for the CaseAttachment model."""
+    def test_unicode(self):
+        """Unicode representation is name of attached file."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(unicode(ca), ca.attachment.name)
+
+
+    def test_name(self):
+        """``name`` property is shortcut to attached file name."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(ca.name, ca.attachment.name)
+
+
+    def test_url(self):
+        """``url`` property is shortcut to attached file url."""
+        ca = F.CaseAttachmentFactory()
+
+        self.assertEqual(ca.url, ca.attachment.url)

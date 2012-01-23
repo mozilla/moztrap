@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -133,3 +133,62 @@ class RunCaseVersionTest(TestCase):
         cv.add_envs(envs[0])
 
         self.assertEqual(set(rcv.environments.all()), set(envs[1:]))
+
+
+    def test_result_summary(self):
+        """``result_summary`` returns dict summarizing result states."""
+        rcv = F.RunCaseVersionFactory()
+
+        F.ResultFactory(runcaseversion=rcv, status="assigned")
+        F.ResultFactory(runcaseversion=rcv, status="started")
+        F.ResultFactory(runcaseversion=rcv, status="passed")
+        F.ResultFactory(runcaseversion=rcv, status="failed")
+        F.ResultFactory(runcaseversion=rcv, status="failed")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+        F.ResultFactory(runcaseversion=rcv, status="invalidated")
+
+        self.assertEqual(
+            rcv.result_summary(),
+            {
+                "passed": 1,
+                "failed": 2,
+                "invalidated": 3,
+                }
+            )
+
+    def test_result_summary_empty(self):
+        """Empty slots in result summary still contain 0."""
+        rcv = F.RunCaseVersionFactory()
+
+        self.assertEqual(
+            rcv.result_summary(),
+            {
+                "passed": 0,
+                "failed": 0,
+                "invalidated": 0,
+                }
+            )
+
+
+    def test_completion_percentage(self):
+        """``completion`` returns fraction of envs completed."""
+        envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows", "Linux"]})
+        rcv = F.RunCaseVersionFactory(environments=envs)
+
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[0], status="passed")
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[0], status="failed")
+        F.ResultFactory(
+            runcaseversion=rcv, environment=envs[1], status="started")
+
+        self.assertEqual(rcv.completion(), 0.5)
+
+
+    def test_completion_percentage_empty(self):
+        """If no envs, ``completion`` returns zero."""
+        rcv = F.RunCaseVersionFactory()
+
+        self.assertEqual(rcv.completion(), 0)

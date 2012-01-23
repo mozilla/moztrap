@@ -1,5 +1,5 @@
-# Additional requirements needed only for a live/staging/qa deploy.
+# Requirements for a live/staging/qa deploy.
 
--r base.txt
-
-python-memcached==1.47
+-r pure.txt
+-r compiled.txt
+-r prod-base.txt

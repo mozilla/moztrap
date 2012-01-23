@@ -23,25 +23,38 @@
   <!-- hAtom -->
   <link rel="profile" href="https://microformats.org/profile/hatom/" />
 
-	<!-- favicon.ico and apple-touch-icon.png -->
+	<!-- favicon.ico -->
   <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" />
-	<link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png" />
 
-  <!-- Styles -->
-  <!--[if !IE 6]><!-->
   {% compress css %}
   {% block styles %}
+  <!--
+  /*
+   * Web Fonts from fontspring.com
+   *
+   * All OpenType features and all extended glyphs have been removed.
+   * Fully installable fonts can be purchased at http://www.fontspring.com
+   *
+   * The fonts included in this stylesheet are subject to the End User License you purchased
+   * from Fontspring. The fonts are protected under domestic and international trademark and
+   * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+   * distributing this font software.
+   *
+   * (c) 2010-2011 Fontspring
+   *
+   *
+   *
+   *
+   * The fonts included are copyrighted by the vendor listed below.
+   *
+   * Vendor:      Aviation Partners
+   * License URL: http://www.fontspring.com/fflicense/aviation-partners
+   *
+   *
+   */
+  -->
   <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" media="screen, projection" />
   {% endblock styles %}
-  {% endcompress %}
-  <!--<![endif]-->
-  <!--[if IE 6]>
-  <link href="https://universal-ie6-css.googlecode.com/files/ie6.1.0.css" media="screen, projection" />
-  <![endif]-->
-
-  <!-- Other Media -->
-  {% compress css %}
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/print.css" media="print" />
   {% endcompress %}
 
   <!-- Modernizr -->
@@ -55,17 +68,20 @@
 </head>
 
 <body id="caseconductor-com" class="{% block bodyclasses %}{% endblock %}">
-
 {% block body %}
+
+<div>
   {% block site %}
   {% endblock site %}
+</div>
 
-  <aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
-    <h2>Page Status</h2>
-    {% block page-notes %}
+<aside id="page-status" title="{% block page-status %}{% endblock page-status %}">
+  <h2>Page Status</h2>
+  {% block page-notes %}
 
-    {% endblock page-notes %}
-  </aside>
+  {% endblock page-notes %}
+</aside>
+
 {% endblock body %}
 
 <!-- JavaScript -->

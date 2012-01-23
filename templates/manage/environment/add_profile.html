@@ -15,20 +15,7 @@
     </p>
 
     <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bytitle">
-            <span>name</span>
-          </li>
-          <li class="bypreview">
-            <span>preview</span>
-          </li>
-          <li class="bycontrols">
-            <span>controls</span>
-          </li>
-        </ul>
-      </nav>
+      {% include "manage/environment/add_profile/_categories_listordering.html" %}
 
       <div class="items">
         {% icanhaz "env_profile_element_edit" %}

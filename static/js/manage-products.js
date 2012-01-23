@@ -1,6 +1,6 @@
 /*
 Case Conductor is a Test Case Management system.
-Copyright (C) 2011 uTest Inc.
+Copyright (C) 2011-2012 Mozilla
 
 This file is part of Case Conductor.
 
@@ -107,11 +107,10 @@ var CC = (function (CC, $) {
 
     CC.testcaseAttachments = function (container) {
         var context = $(container),
-            counter = 1,
-            label = context.find('.upload'),
-            uploads = context.find('.uploads'),
-            attachment,
-            newInput;
+            counter = 0,
+            label = context.find('label[for="id_add_attachment"]'),
+            attachmentList = context.find('.attachlist'),
+            inputList = context.find('.add-attachment-field');
 
         label.click(function (e) {
             e.preventDefault();
@@ -119,40 +118,35 @@ var CC = (function (CC, $) {
             context.find('#' + id).click();
         });
 
-        context.on('change', 'input[name="attachment"]', function () {
+        context.on('change', 'input[name="add_attachment"]', function () {
             var input = $(this),
                 inputID = input.attr('id'),
-                filename = input.val().replace(/^.*\\/, '');
+                filename = input.val().replace(/^.*\\/, ''),
+                attachment,
+                newInput;
 
-            counter = counter + 1;
             attachment = ich.case_attachment({
                 name: filename,
-                input: inputID
+                input: inputID,
+                counter: counter
             });
+            counter = counter + 1;
             newInput = ich.case_attachment_input({ counter: counter });
-            uploads.append(attachment);
-            context.append(newInput);
-            label.attr('for', 'attachment-input-' + counter);
+            attachmentList.append(attachment);
+            attachmentList.find('.none').remove();
+            inputList.append(newInput);
+            label.attr('for', 'id_add_attachment_' + counter);
         });
 
-        uploads.on('click', '.action-remove', function () {
-            var button = $(this),
-                inputID = button.data('input-id'),
-                attachment = button.parent(),
-                fileID,
-                removeAttachment;
+        attachmentList.on('change', '.check', function () {
+            var input = $(this),
+                inputID = input.data('id'),
+                attachment = input.closest('.attachment-item');
 
-            if (attachment.hasClass('uploading')) {
+            if (attachment.hasClass('new')) {
                 context.find('#' + inputID).remove();
-            } else {
-                fileID = attachment.data('id');
-                if (fileID) {
-                    removeAttachment = ich.case_attachment_remove({ id: fileID });
-                    context.append(removeAttachment);
-                }
+                attachment.remove();
             }
-
-            attachment.remove();
         });
     };
 
@@ -178,7 +172,7 @@ var CC = (function (CC, $) {
                         $(this).html('more runs &raquo;').removeClass('open');
                         runs.filter(':gt(1)').slideUp();
                     } else {
-                        $(this).html('fewer runs &raquo;').addClass('open')
+                        $(this).html('fewer runs &raquo;').addClass('open');
                         runs.filter(':gt(1)').slideDown();
                     }
                     return false;
@@ -213,8 +207,8 @@ var CC = (function (CC, $) {
                                 newHTML.fadeIn('fast', function () {
                                     $(this).find('ol.steplist').formset({
                                         prefix: prefix,
-                                        formTemplate: '#empty-step-form > li',
-                                        formSelector: '.steps-form',
+                                        formTemplate: '#empty-step-form .step-form-item',
+                                        formSelector: '.step-form-item',
                                         deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
                                         deleteLinkSelector: '.removefields',
                                         addAnimationSpeed: 'normal',

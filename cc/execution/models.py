@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -22,28 +22,24 @@ Models for test execution (runs, results).
 import datetime
 
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import connection, models
 
 from django.contrib.auth.models import User
 
 from model_utils import Choices
 
-from ..core.ccmodel import CCModel, TeamModel, utcnow
+from ..core.ccmodel import CCModel, TeamModel, DraftStatusModel, utcnow
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
 
 
 
-class Run(TeamModel, HasEnvironmentsModel):
+class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     """A test run."""
-    STATUS = Choices("draft", "active", "disabled")
-
     productversion = models.ForeignKey(ProductVersion, related_name="runs")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
 
@@ -91,8 +87,7 @@ class Run(TeamModel, HasEnvironmentsModel):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:
             self._lock_case_versions()
-        self.status = self.STATUS.active
-        self.save(force_update=True)
+        super(Run, self).activate()
 
 
     def _lock_case_versions(self):
@@ -105,15 +100,38 @@ class Run(TeamModel, HasEnvironmentsModel):
                     "order").select_related("case"):
                 try:
                     caseversion = suitecase.case.versions.filter(
-                        productversion__order__lte=self.productversion.order,
-                        status=CaseVersion.STATUS.active).order_by(
-                        "-number")[0]
-                except IndexError:
+                        productversion=self.productversion,
+                        status=CaseVersion.STATUS.active).get()
+                except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    rcv = RunCaseVersion.objects.create(
+                    rcv = RunCaseVersion(
                         run=self, caseversion=caseversion, order=order)
-                    order += 1
+                    envs = rcv._inherited_environment_ids
+                    if envs:
+                        rcv.save(force_insert=True, inherit_envs=False)
+                        rcv.environments.add(*envs)
+                        order += 1
+
+
+    def result_summary(self):
+        """Return a dict summarizing status of results."""
+        return result_summary(Result.objects.filter(runcaseversion__run=self))
+
+
+    def completion(self):
+        """Return fraction of case/env combos that have a completed result."""
+        total = RunCaseVersion.environments.through._default_manager.filter(
+            runcaseversion__run=self).count()
+        completed = Result.objects.filter(
+            status__in=Result.COMPLETED_STATES,
+            runcaseversion__run=self).values(
+            "runcaseversion", "environment").distinct().count()
+
+        try:
+            return float(completed) / total
+        except ZeroDivisionError:
+            return 0
 
 
 
@@ -145,6 +163,16 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             ]
 
 
+    @property
+    def _inherited_environment_ids(self):
+        """Intersection of run/caseversion environment IDs."""
+        run_env_ids = set(
+            self.run.environments.values_list("id", flat=True))
+        case_env_ids = set(
+            self.caseversion.environments.values_list("id", flat=True))
+        return run_env_ids.intersection(case_env_ids)
+
+
     def save(self, *args, **kwargs):
         """
         Save instance; new instances get intersection of run/case environments.
@@ -153,17 +181,32 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
         adding = False
         if self.id is None:
             adding = True
+        inherit_envs = kwargs.pop("inherit_envs", True)
 
         ret = super(RunCaseVersion, self).save(*args, **kwargs)
 
-        if adding:
-            run_env_ids = set(
-                self.run.environments.values_list("id", flat=True))
-            case_env_ids = set(
-                self.caseversion.environments.values_list("id", flat=True))
-            self.environments.add(*run_env_ids.intersection(case_env_ids))
+        if adding and inherit_envs:
+            self.environments.add(*self._inherited_environment_ids)
 
         return ret
+
+
+    def result_summary(self):
+        """Return a dict summarizing status of results."""
+        return result_summary(self.results.all())
+
+
+    def completion(self):
+        """Return fraction of environments that have a completed result."""
+        total = self.environments.count()
+        completed = self.results.filter(
+            status__in=Result.COMPLETED_STATES).values(
+            "environment").distinct().count()
+
+        try:
+            return float(completed) / total
+        except ZeroDivisionError:
+            return 0
 
 
 
@@ -188,6 +231,8 @@ class Result(CCModel):
     """A result of a User running a RunCaseVersion in an Environment."""
     STATUS = Choices("assigned", "started", "passed", "failed", "invalidated")
     REVIEW = Choices("pending", "reviewed")
+
+    COMPLETED_STATES = [STATUS.passed, STATUS.failed, STATUS.invalidated]
 
     tester = models.ForeignKey(User, related_name="results")
     runcaseversion = models.ForeignKey(
@@ -239,3 +284,20 @@ class StepResult(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return "%s (%s: %s)" % (self.result, self.step, self.status)
+
+
+
+def result_summary(results):
+    """
+    Given a queryset of results, return a dict summarizing their states.
+
+    """
+    states = Result.COMPLETED_STATES
+
+    cols = ["COUNT(CASE WHEN status=%s THEN 1 ELSE NULL END)"] * len(states)
+    sql = "SELECT {0} FROM {1}".format(", ".join(cols), Result._meta.db_table)
+
+    cursor = connection.cursor()
+    cursor.execute(sql, states)
+
+    return dict(zip(states, cursor.fetchone()))

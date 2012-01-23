@@ -1,3 +1,19 @@
-{% extends 'manage/product/testcase/case_form.html' %}
+{% extends 'manage/product/testcase/form/case_form.html' %}
 
-{% block formtitle %}Edit "{{ case.name }}"{% endblock %}
+{% load icanhaz %}
+
+{% block formtitle %}Edit "{ latest version case name }"{% endblock %}
+{% block sectionclass %}edit-case{% endblock sectionclass %}
+{% block form-id %}single-case-edit{% endblock form-id %}
+
+{% block caseversions %}
+  <nav class="case-version-nav">
+    <h3 class="case-version-head">{ product name }</h3>
+    <div class="change-version">
+      <p class="case-version-current">{ number/name of current case version }</p>
+      {% include "manage/product/testcase/_case_version_nav.html" %}
+    </div>
+  </nav>
+{% endblock caseversions %}
+
+{% block versioningform %}{% endblock versioningform %}

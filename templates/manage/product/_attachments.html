@@ -1,20 +1,16 @@
 {% load icanhaz %}
 
-<div class="attachments">
+<div class="attach">
   {% icanhaz "case_attachment" %}
   {% icanhaz "case_attachment_input" %}
-  {% icanhaz "case_attachment_remove" %}
-  <ul class="uploads">
+
+  {% include "forms/_field.html" with field=field label="add attachment" %}
+
+  <ul class="attachlist">
     {% if obj %}
-    {% for attachment in obj.attachments %}
-    <li data-id="{{ attachment.id }}">
-      <button class="action-remove" title="remove attachment">remove attachment</button>
-      <a href="{{ attachment.url }}">{{ attachment.description }}</a>
-    </li>
-    {% endfor %}
+      {% for attachment in obj.attachments.all %}
+        {% include "manage/product/_attachment_item.html" with attachment=attachment %}
+      {% endfor %}
     {% endif %}
   </ul>
-  <label for="attachment-input-1" class="upload">add an attachment</label>
-  {# <p class="helper">any file type, up to 10GB.</p> #}
-  <input type="file" name="attachment" id="attachment-input-1">
 </div>

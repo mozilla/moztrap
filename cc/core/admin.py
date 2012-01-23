@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -29,4 +29,4 @@ class ProductVersionInline(CCTabularInline):
 
 
 admin.site.register(Product, TeamModelAdmin, inlines=[ProductVersionInline])
-admin.site.register(ProductVersion, TeamModelAdmin)
+admin.site.register(ProductVersion, TeamModelAdmin, list_filter=["product"])

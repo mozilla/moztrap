@@ -1,13 +1,10 @@
-<article id="tag-id-{{ id }}" class="item vcard edit">
-  <form method="POST" id="edit-tag-form" class="tag">
-    <label for="edit_tag_{{ id }}">edit tag</label>
-    <input type="text" name="tag" value="{{ name }}" id="edit_tag_{{ id }}">
-    <button type="submit" name="edit-tag" id="edit-tag" value="{{ id }}" class="action-save-tag">save tag</button>
-  </form>
-  <div class="controls">
-    <a href="#" title="cancel">cancel</a>
-    <form method="POST">
-      <button title="delete" type="submit" name="action-delete" value="{{ id }}">delete</button>
-    </form>
+<form method="POST" id="{{ action }}-tag-form-{{ id }}" class="tag-form">
+  <div class="{{ action }}-tag-field">
+    <label for="{{ action }}_tag_{{ id }}">{{ action }} tag</label>
+    <input type="text" name="tag" value="{{ name }}" id="{{ action }}_tag_{{ id }}" autocomplete="off">
   </div>
-</article>
+  <div class="form-actions">
+    <a href="#" title="cancel">cancel</a> or
+    <button type="submit" name="{{ action }}-tag" value="{{ id }}" class="action-save-tag">save tag</button>
+  </div>
+</form>

@@ -1,6 +1,7 @@
 # Additional requirements useful for development.
 
--r base.txt
+-r pure.txt
+-r compiled.txt
 
 mock==0.7.2
 coverage==3.5.1

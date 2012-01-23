@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -21,10 +21,8 @@ Models for test-case library (cases, suites).
 """
 from django.db import models
 
-from model_utils import Choices
-
 from ..attachments.models import Attachment
-from ..core.ccmodel import CCModel
+from ..core.ccmodel import CCModel, DraftStatusModel
 from ..core.models import Product, ProductVersion
 from ..environments.models import HasEnvironmentsModel
 from ..tags.models import Tag
@@ -42,11 +40,31 @@ class Case(CCModel):
 
     def clone(self, *args, **kwargs):
         """Clone this Case with default cascade behavior: latest versions."""
-        kwargs.setdefault(
-            "cascade",
-            {"versions": lambda qs: qs.filter(latest=True)}
-            )
+        kwargs.setdefault("cascade", ["versions"])
         return super(Case, self).clone(*args, **kwargs)
+
+
+    def set_latest_version(self, update_instance=None):
+        """
+        Mark latest version of this case in DB, marking all others non-latest.
+
+        If ``update_instance`` is provided, its ``latest`` flag is updated
+        appropriately.
+
+        """
+        try:
+            latest_version = self.versions.order_by("-productversion__order")[0]
+        except IndexError:
+            pass
+        else:
+            self.versions.update(latest=False)
+            latest_version.latest = True
+            latest_version.save(force_update=True, skip_set_latest=True)
+            if update_instance == latest_version:
+                update_instance.latest = True
+            elif update_instance is not None:
+                update_instance.latest = False
+
 
 
     class Meta:
@@ -57,22 +75,19 @@ class Case(CCModel):
 
 
 
-class CaseVersion(CCModel, HasEnvironmentsModel):
+class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
     """A version of a test case."""
-    STATUS = Choices("draft", "active", "disabled")
-
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     productversion = models.ForeignKey(
         ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
-    number = models.PositiveIntegerField(db_index=True)
-    latest = models.BooleanField(default=True, db_index=True)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
 
+    # denormalized for queries
+    latest = models.BooleanField(default=False, editable=False)
+
     tags = models.ManyToManyField(Tag, blank=True)
-    # True if this case's envs have been narrowed from the parent product.
+    # True if this case's envs have been narrowed from the product version.
     envs_narrowed = models.BooleanField(default=False)
 
 
@@ -81,13 +96,27 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
 
 
     class Meta:
-        ordering = ["number"]
+        ordering = ["case", "productversion__order"]
+        unique_together = [("productversion", "case")]
+
+
+    def save(self, *args, **kwargs):
+        """Save CaseVersion, updating latest version."""
+        skip_set_latest = kwargs.pop("skip_set_latest", False)
+        super(CaseVersion, self).save(*args, **kwargs)
+        if not skip_set_latest:
+            self.case.set_latest_version(update_instance=self)
 
 
     def clone(self, *args, **kwargs):
         """Clone this CaseVersion, cascading steps, attachments, tags."""
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
+        overrides = kwargs.get("overrides", {})
+        if "productversion" not in overrides and "case" not in overrides:
+            raise ValueError(
+                "Cannot clone CaseVersion without providing "
+                "new Case or ProductVersion.")
         return super(CaseVersion, self).clone(*args, **kwargs)
 
 
@@ -116,6 +145,17 @@ class CaseVersion(CCModel, HasEnvironmentsModel):
         return {RunCaseVersion: RunCaseVersion.objects.filter(run__in=objs)}
 
 
+    def bug_urls(self):
+        """Returns set of bug URLs associated with this caseversion."""
+        Result = self.runcaseversions.model.results.related.model
+        StepResult = Result.stepresults.related.model
+        return set(
+            StepResult.objects.filter(
+                result__runcaseversion__caseversion=self).exclude(
+                bug_url="").values_list("bug_url", flat=True).distinct()
+            )
+
+
 
 class CaseAttachment(Attachment):
     caseversion = models.ForeignKey(CaseVersion, related_name="attachments")
@@ -140,12 +180,8 @@ class CaseStep(CCModel):
 
 
 
-class Suite(CCModel):
+class Suite(CCModel, DraftStatusModel):
     """An ordered suite of test cases."""
-    STATUS = Choices("draft", "active", "disabled")
-
-    status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
     product = models.ForeignKey(Product, related_name="suites")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -173,9 +209,12 @@ class SuiteCase(CCModel):
     """Association between a test case and a suite."""
     suite = models.ForeignKey(Suite, related_name="suitecases")
     case = models.ForeignKey(Case, related_name="suitecases")
+    # order of test cases in the suite
     order = models.IntegerField(default=0, db_index=True)
 
 
     class Meta:
         ordering = ["order"]
-        permissions = [("manage_suite_cases", "Can add/remove cases from suites.")]
+        unique_together = [["suite", "case"]]
+        permissions = [
+            ("manage_suite_cases", "Can add/remove cases from suites.")]

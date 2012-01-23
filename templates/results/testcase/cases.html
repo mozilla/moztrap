@@ -11,30 +11,8 @@
     {% csrf_token %}
 
     <div class="managelist">
-      <nav class="listordering">
-        <h3 class="navhead">List Ordering</h3>
-        <ul>
-          <li class="bystatus">status</li> {# @@@ can't sort on this #}
-          {% comment %}@@@ no API yet
-          <li class="bycompletion">%</li> {# @@@ should be sortable #}
-          {% endcomment %}
-          <li class="bytitle">
-            <a href="{{ sort|url:"testCase" }}" class="{{ sort|dir:"testCase" }}">name</a>
-          </li>
-          <li class="byrun">
-            <a href="{{ sort|url:"testRun" }}" class="{{ sort|dir:"testRun" }}">run</a>
-          </li>
-          <li class="byproduct">
-            <a href="{{ sort|url:"product" }}" class="{{ sort|dir:"product" }}">product</a>
-          </li>
-          <li class="bysuite">
-            <a href="{{ sort|url:"testSuite" }}" class="{{ sort|dir:"testSuite" }}">suite</a>
-          </li>
-          <li class="byresults">
-            <span>results</span>
-          </li>
-        </ul>
-      </nav>
+
+      {% include "results/testcase/_cases_listordering.html" %}
 
       <div class="items">
         {% if includedcases %}

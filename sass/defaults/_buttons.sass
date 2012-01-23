@@ -1,0 +1,113 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Resets browser styles on a button.
+
+=button-reset
+  +reset-box-model
+  display: inline
+  overflow: visible
+  width: auto
+  vertical-align: baseline
+  background: none
+  color: inherit
+  font: inherit
+
+button
+  +button-reset
+
+// Applies color, icon and gradient to a button.
+//
+// $c       - the color of the button.
+// $icon    - the icon to use.
+// $notext  - [true | false] if the button should have text.
+// $hover   - [true | false] if the button should respond to hovering.
+
+=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false, $small:false)
+  $highlight: rgba($lightest,$xsmall)
+  $lowlight : rgba($base,$xxxsmall)
+  $bgrad    : false
+  $bhover   : false
+  $bactive  : false
+
+  @if $c
+    $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $border   : darken(desaturate($c,25),15)
+    +demi
+    +border-radius
+    +rhythm-borders(1px,.25)
+    +text-shadow(rgba($lightest,$xsmall) 1px 1px 0)
+    color: $base
+    border-color: $border
+    background:
+      color: $c
+      repeat: no-repeat
+    @if not $notext
+      +hpadding($normem)
+  @else
+    padding: 0
+    border: 0
+    background: none
+
+  @if $icon
+    $img        : image-url($icon)
+    @if $c
+      $bgrad    : $img, $bgrad
+      $bhover   : $img, $bhover
+      $bactive  : $img, $bactive
+    @else
+      $bgrad    : $img
+
+    @if $notext
+      +replace-width($icon)
+    @else
+      +pad-icon($icon)
+      background-position: $smallpx, left
+
+  @if $bgrad
+    +background-image($bgrad)
+
+    @if $hover
+      cursor: pointer
+      &:hover, &:focus
+        +background-image($bhover)
+      &:active
+        +background-image($bactive)
+
+  @if $inset
+    +box-shadow($lowlight 0 0 $smallpx inset)
+
+  @if $small
+    height: rhythm(.5)
+
+// Applies default button styles.
+
+=button
+  +button-style
+  &[disabled]
+    +button-style($mid,$hover:false)
+
+.button
+  +button-style
+
+button
+  @extend .button

@@ -2,3 +2,4 @@
 # must be installed on target machines via system package managers.
 
 py-bcrypt==0.2
+MySQL-python==1.2.3

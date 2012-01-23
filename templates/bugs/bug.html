@@ -1,5 +1,7 @@
-{% if bug.is_url %}
-<a href="{{ bug.url }}">{{ bug.url }}</a>
+{% load urls %}
+
+{% if bug|is_url %}
+<a href="{{ bug }}">{{ bug }}</a>
 {% else %}
-{{ bug.url }}
+{{ bug }}
 {% endif %}

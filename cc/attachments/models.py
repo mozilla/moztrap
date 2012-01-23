@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -31,9 +31,21 @@ class Attachment(CCModel):
 
 
     def __unicode__(self):
-        """Unicode representation is unicode representation of attached file."""
-        return self.attachment.name
+        """Unicode representation is name of attached file."""
+        return self.name
 
 
     class Meta:
         abstract = True
+
+
+    @property
+    def url(self):
+        """Shortcut property to access file attachment url."""
+        return self.attachment.url
+
+
+    @property
+    def name(self):
+        """Shortcut property to access file attachment name."""
+        return self.attachment.name

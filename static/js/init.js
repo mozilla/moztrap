@@ -1,6 +1,6 @@
 /*
 Case Conductor is a Test Case Management system.
-Copyright (C) 2011 uTest Inc.
+Copyright (C) 2011-2012 Mozilla
 
 This file is part of Case Conductor.
 
@@ -49,39 +49,40 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('#addcase').customAutocomplete({
-            textbox: 'input[name="text-tag"]',
+        $('#single-case-add .tagging').customAutocomplete({
+            textbox: '#id_add_tags',
             ajax: true,
-            url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+            url: $('#id_add_tags').data('autocomplete-url'),
+            inputList: '.taglist',
             triggerSubmit: null,
             allowNew: true,
             restrictAllowNew: true,
             inputType: 'tag',
-            noInputsNote: true
+            noInputsNote: true,
+            prefix: 'tag'
         });
         $('#editprofile .add-item').customAutocomplete({
             textbox: '#env-elements-input',
-            suggestionList: '.suggest',
             inputList: '.env-element-list',
             ajax: true,
             url: $('#env-elements-input').data('autocomplete-url'),
             hideFormActions: true,
             expiredList: '.env-element-list',
             inputType: 'element',
-            caseSensitive: true
+            caseSensitive: true,
+            prefix: 'element'
         });
         $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
             inputList: '.groups .filter-group:not(.keyword)',
             newInputList: '.groups .filter-group.keyword',
-            suggestionList: '.suggest',
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('.selectruns').html5finder({
+        $('.runsdrill').html5finder({
             loading: true,
             headerSelector: '.listordering',
             sectionSelector: '.col',
@@ -97,10 +98,10 @@ var CC = (function (CC, $) {
                 'input[name="testrun"]'
             ],
             callback: function () {
-                $('.selectruns + .environment').slideUp('fast');
+                $('.runsdrill .drillenv').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.selectruns + .environment').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill .drillenv').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
@@ -172,12 +173,17 @@ var CC = (function (CC, $) {
             target_sel: '#id_suites'
         });
         CC.formOptionsFilter({
-            container: '#addcase',
+            container: '#single-case-add',
             trigger_sel: '#id_product',
-            target_sel: '#id_suite',
+            target_sel: '#id_productversion'
+        });
+        CC.formOptionsFilter({
+            container: '#single-case-add',
+            trigger_sel: '#id_product',
+            target_sel: '#id_initial_suite',
             optional: true
         });
-        CC.testcaseAttachments('#single-case-form .attachments');
+        CC.testcaseAttachments('#single-case-add .attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
 
@@ -193,7 +199,7 @@ var CC = (function (CC, $) {
         CC.autoFocus('.details.stepfail > .summary', '#run');
         CC.autoFocus('.details.testinvalid > .summary', '#run');
         CC.runTests('#run');
-        CC.breadcrumb('.selectruns');
+        CC.breadcrumb('.runsdrill');
         CC.failedTestBug('#run');
     });
 

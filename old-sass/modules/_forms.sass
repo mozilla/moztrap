@@ -1,0 +1,311 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011-2012 Mozilla
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// Mixins --------------------------------------------------------------------
+
+=side-errors($n,$c,$s:'right')
+  li
+    .errorlist
+      position: absolute
+      left: 100% + gutter($c)
+      top: $base-rhythm-unit*.25
+      width: columns($n,$c)
+      margin: 0
+
+=inline-form($nl,$ni,$c)
+  li
+    +pie-clearfix
+  label, .readonly dt
+    +columns($nl,$c)
+    text-align: right
+  input, select, textarea, .readonly dd
+    +columns($ni,$c)
+    +omega($c)
+
+// Placeholders --------------------------------------------------------------
+
+=placeholder
+  +italic
+  color: rgba($blue-dark,$xsmall)
+
+=apply-placeholders
+  &::-webkit-input-placeholder
+    +placeholder
+  &:-moz-placeholder
+    +placeholder
+  &.placeholder
+    +placeholder
+
+/* Form Resets ---------------------------------------------------------------
+
+input[type="button"], input[type="submit"], input[type="image"], label, button
+  cursor: pointer
+
+input
+  &[type="search"]
+    -webkit-appearance: none
+    &::-webkit-search-decoration
+      display: none
+
+  &[type="radio"], &[type="checkbox"]
+    vertical-align: baseline
+
+textarea
+  overflow: auto
+  resize: vertical
+
+button, input[type="select"], select, textarea
+  +border-radius(0)
+
+optgroup
+  +reset-box-model
+
+optgroup
+  color: $base
+  font-style: normal
+  font-weight: normal
+
+legend
+  .iem7 &
+    margin-left: -7px
+
+::-moz-focus-inner
+  border: 0
+
+/* Basic ---------------------------------------------------------------------
+
+form
+  > ul, > ol
+    +no-style-list
+    > li
+      position: relative
+
+label
+  +inline-block
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  +bold
+
+/* Text Inputs ---------------------------------------------------------------
+
+=adjust-input-size-to($to,$lines)
+  +rhythm-borders(1px,$lines/4,$to)
+  +trailer($lines/2,$to)
+
+.textinput
+  +sans-family
+  +rhythm-borders(1px,.25)
+  +trailer(.5)
+  +box-sizing(border-box)
+  font-size: inherit
+  line-height: inherit
+  width: 100%
+  background: rgba($blue-hint,$xxsmall)
+  color: $base
+  border-color: rgba($blue-dark,$small)
+  outline: 0
+
+.input
+  &[disabled]
+    +opacity(.75)
+
+  &:valid
+    +box-shadow($blue-hint 0 0 .375em)
+    +box-shadow(inset $blue-hint 0 0 .375em)
+    &:focus, &.hadfocus
+      +box-shadow($green-light 0 0 .375em)
+      +box-shadow(inset $green-light 0 0 .375em)
+      .no-boxshadow &
+        background-color: rgba($green-light,.25)
+
+  &:invalid
+    +box-shadow($blue-hint 0 0 .375em)
+    +box-shadow(inset $blue-hint 0 0 .375em)
+    &:focus, &.hadfocus
+      +border-radius(1px)
+      +box-shadow($red-lighter 0 0 .375em)
+      +box-shadow(inset $red-lighter 0 0 .375em)
+      .no-boxshadow &
+        background-color: $yellow-light
+
+textarea, select
+  @extend .input
+
+textarea, select:not([multiple])
+  @extend .textinput
+
+select:not([multiple])
+  +box-shadow(none)
+  &:valid
+    color: $green-dark
+  &:invalid
+    color: $red
+
+textarea
+  +apply-placeholders
+  height: auto
+
+select
+  height: $base-rhythm-unit*1.5
+  &[multiple]
+    +sans-family
+    +adjust-font-size-to(12px)
+    +trailer
+    height: auto
+    width: 100%
+    padding: rhythm(.25)
+    background: rgba($blue-hint,$small)
+    color: $base
+    border-color: rgba($blue-dark,$xsmall)
+
+input
+  &[type="text"], &[type="password"],
+  &[type="email"], &[type="url"], &[type="tel"],
+  &[type="date"], &[type="datetime"], &[type="datetime-local"],
+  &[type="month"], &[type="week"], &[type="time"],
+  &[type="number"], &[type="search"], &[type="color"]
+    @extend .input
+    @extend .textinput
+    +apply-placeholders
+    height: rhythm(1.5)
+  &[type="reset"], &[type="submit"], &[type="button"]
+    @extend .button
+  &[type="search"]
+    +border-radius(2em)
+    padding-left: 2em
+    background:
+      image: image-url('ui/search.png')
+      position: .5em
+      repeat: no-repeat
+  &:focus
+    + .fieldnote
+      display: block
+
+.fieldnote
+  +border-radius
+  +box-shadow(rgba($blue-dark,$small) 0 0 $xsmallem)
+  +demi
+  display: none
+  position: absolute
+  top: 100%
+  right: 0
+  padding: rhythm(.25) rhythm(1)
+  color: rgba($blue-dark,$small)
+  background: rgba($blue-hint,.85)
+  z-index: 100
+  &::after
+    content: " "
+    position: absolute
+    bottom: 100%
+    left: rhythm(1)
+    border: rhythm(.25) solid rgba($blue-hint,0)
+    border-bottom-color: rgba($blue-hint,.85)
+
+/* Buttons -------------------------------------------------------------------
+
+.form-actions
+  clear: both
+  text-align: right
+
+=button-color($c:$green,$icon:false)
+  @if $icon
+    +background-image(image-url($icon))
+    +background-image(image-url($icon), linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+    padding-left: image-width($icon) + $smallpx*1.5
+    background:
+      repeat: no-repeat
+      position: $smallpx, left
+    &:hover, &:focus
+      +background-image(image-url($icon), linear-gradient(top center, lighten($c,30) 0%, $c 100%))
+    &:active
+      +background-image(image-url($icon), linear-gradient(bottom center, lighten($c,25) 0%, $c 100%))
+  @else
+    +background-image(linear-gradient(top center, lighten($c,25) 0%, $c 100%))
+    &:hover, &:focus
+      +background-image(linear-gradient(top center, lighten($c,30) 0%, $c 100%))
+    &:active
+      +background-image(linear-gradient(bottom center, lighten($c,25) 0%, $c 100%))
+  border-color: desaturate($c,25)
+
+=button
+  +border-radius($xsmallpx)
+  +button-color
+  +rhythm-borders(1px,.25)
+  +hpadding(1em)
+  +text-shadow(#fff 0 1px 1px)
+  +box-shadow(rgba($base,$small) 1px 1px 0)
+  cursor: pointer
+  color: #111
+  font: inherit
+  outline: 0
+  overflow: visible
+  width: auto
+  vertical-align: baseline
+  margin: 0
+  &[disabled]
+    +background(#ddd image-url('forms/button.png') repeat-x)
+    color: #888
+
+=button-reset
+  +border-radius(0)
+  +text-shadow(none)
+  +box-shadow(none)
+  display: inline
+  background: none
+  color: inherit
+  padding: 0
+  margin: 0
+  border: 0
+
+button
+  +button
+  &.sub
+    +button-reset
+    color: $alt
+    #{$focus}
+      color: $accent
+
+.button
+  +button
+
+/* Form Helpers --------------------------------------------------------------
+
+.redbutton
+  +button-color(lighten($red,20))
+
+.yellowbutton
+  +button-color($yellow-dark)
+
+.bluebutton
+  +button-color($blue-light)
+
+.errorlist
+  +no-style-list
+  color: $red
+
+.readonly
+  &, & dt, & dd
+    +reset-box-model
+  dt, dd
+    +padding-leader(.25)
+    +padding-trailer(.75)
+  dt
+    +font-style-normal
+    +bold
+  dd
+    +demi
+    +italic

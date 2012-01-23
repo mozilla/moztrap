@@ -1,0 +1,40 @@
+{% load permissions %}
+
+<article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}">
+  {% include "manage/product/_status.html" with item=caseversion permission="library.manage_cases" %}
+
+  <header class="itemhead">
+
+    <div class="name-tags">
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
+      <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="product">{{ caseversion.product }}</div>
+
+    <div class="controls">
+      {% if user|has_perm:"library.manage_cases" %}
+        {% url manage_case_edit caseversion_id=caseversion.id as testcase_edit_url %}
+        {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=caseversion.name %}
+        {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
+        {% include "lists/controls/_clone.html" with clone_id=caseversion.case.id clone_name=caseversion.name %}
+        {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
+      {% endif %}
+    </div>
+
+  </header>
+
+  {% url manage_case_details caseversion.id as details_url %}
+  {# _case_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

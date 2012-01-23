@@ -1,0 +1,22 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Login | {{ block.super }}{% endblock title %}
+
+{% block content %}
+<section id="login">
+  <h2>Login</h2>
+  <form method="POST" id="loginform">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="formfields">
+      {% for field in form %}
+      {% include "forms/_field.html" %}
+      {% endfor %}
+    </div>
+    <div class="form-actions">
+      <a href="{# @@@ url register #}">register</a> or
+      <button type="submit">login</button>
+    </div>
+  </form>
+</section>
+{% endblock content %}

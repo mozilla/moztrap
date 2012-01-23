@@ -1,0 +1,534 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011-2012 Mozilla
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+/* List Pages --------------------------------------------------------------
+
+#listcontent
+  +full(24)
+  position: relative
+  .create
+    @extend .button
+    +float(right)
+    +box-sizing(border-box)
+    +button-color($green,'ui/plus.png')
+    position: relative
+    padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
+    max-width: columns(4,24)
+    background:
+      position: $smallpx, left
+      repeat: no-repeat
+    white-space: nowrap
+  .choice
+    +button-color($green,'ui/angle_down.png')
+    padding-left: image-width('ui/plus.png') + $smallpx + $xsmallpx
+    background-position: $smallpx*1.5, left
+    p
+      +trailer(0)
+    ul
+      +no-style-list
+      +stretch-x
+      +opacity(0)
+      +transition(opacity 200ms)
+      +box-shadow(rgba($base,$xsmall) 0 2px 2px)
+      +border-bottom-radius
+      padding-top: 1px
+      top: 100%
+      z-index: -1
+      border: 1px solid $blue-dark
+        width: 0 1px 1px
+    a
+      +box-sizing(border-box)
+      +padding-leader(.25)
+      +padding-trailer(.25)
+      +text-icon('ui/plus.png',$blue-lighter)
+      +border-radius(0)
+      display: block
+      width: 100%
+      color: #111
+      &:hover, &:focus
+        background-color: $green-light
+      &:active
+        background-color: $green
+    li:last-child
+      a
+        +border-bottom-radius
+    &:hover
+      ul
+        +opacity(1)
+        z-index: 100
+
+
+/* Lists ---------------------------------------------------------------------
+
+.managelist
+  +cond
+  +full(24)
+  margin: 0
+
+  .empty
+    +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+    +padding-leader
+    +padding-trailer
+    +sans-family
+    +demi
+    +text-shadow(white 0 1px 0)
+    position: relative
+    color: rgba($blue,$small)
+    margin: 0
+    text-align: center
+
+  .steps
+    +no-style-list
+    +trailer
+    counter-reset: steps
+    > li
+      +prefix(3,24)
+      position: relative
+      counter-increment: steps
+      &::before
+        content: counter(steps,decimal) "."
+        position: absolute
+        top: 0
+        left: 0
+        width: columns(3,24)
+        text-align: right
+    .instruction
+      +demi
+      margin: 0
+    .outcome
+      +italic
+      margin: 0
+
+  .testers, .suites
+    +adjust-font-size-to(12px,.75)
+    color: $mid-dark
+    h4
+      @extend .groupheader
+      background-color: transparent
+      margin: 0
+
+.footeradditem
+  +trailer
+  > a, > .summary
+    +border-radius
+
+.item
+  +pie-clearfix
+  +padding-leader(.25)
+  +padding-trailer(.25)
+  clear: both
+  &.details
+    padding: 0
+    > .summary
+      #{$focus}
+        +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$xsmall),rgba($blue-hint,$xsmall),rgba($blue-hint,0)))
+        outline: 0
+  &.open
+    > .summary
+      +background-image(linear-gradient(left,rgba($blue-hint,0),rgba($blue-hint,$small),rgba($blue-hint,$small),rgba($blue-hint,0)))
+
+  .summary, .content
+    +pie-clearfix
+    +padding-leader(.25)
+    +padding-trailer(.25)
+  .summary
+    label
+      padding: 0
+    p
+      margin-bottom: 0
+
+  .content
+    +background-image(linear-gradient(left,rgba($blue-lightest,0),rgba($blue-lightest,$xsmall),rgba($blue-lightest,$xsmall),rgba($blue-lightest,0)))
+
+  .title, .run, .cycle, .product
+    +ellipsis
+
+  .info
+    +columns(8,24)
+    +omega(24)
+    text-align: right
+    p
+      margin: 0
+    .description
+      +italic
+
+  &.add-item
+    > a, > .summary
+      @extend .allcaps
+      +border-top-radius
+      +demi
+      display: block
+      padding: rhythm(.25) rhythm(1.25)
+      color: $base
+      background: rgba($green,$xsmall) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+      #{$focus}
+        background: rgba($green,$small) image-url('ui/plus.png') no-repeat scroll rhythm(.25) rhythm(.375)
+
+
+.status
+  position: relative
+  .pending
+    display: block
+    border: 0
+    [title="approve"], [title="reject"]
+      +columns(1,2)
+      font: inherit
+    [title="approve"]
+      +icon-replace('ui/check.png',$light,false,button)
+      +rhythm-borders(1px,.25,12px)
+      border-color: rgba($base,$xsmall)
+      #{$focus}
+        background-color: $green-light
+    [title="reject"]
+      +omega(2)
+      +icon-replace('ui/x.png',$light,false,button)
+      +rhythm-borders(1px,.25,12px)
+      border-color: rgba($base,$xsmall)
+      #{$focus}
+        background-color: $red-lighter
+    [title="approve"], [title="reject"]
+      min-height: rhythm(1)
+      padding: 0
+
+
+  span, button
+    +adjust-font-size-to(12px)
+    +rhythm-borders(1px,.25,12px)
+    +demi
+    padding: 0
+    min-height: rhythm(1,12px)
+    text-transform: uppercase
+    &.rejected, &.draft, &.active, &.locked, &.disabled, &.inactive
+      width: 100%
+
+  span
+    display: block
+    border-color: rgba($base,$xsmall)
+    &.rejected
+      +text-icon('ui/x.png',$red-lighter,$button:'inset')
+    &.draft, &.inactive
+      +text-icon('ui/power.png',$blue-lighter,$button:'inset')
+    &.active
+      +text-icon('ui/power.png',$green-light,$button:'inset')
+    &.locked, &.disabled
+      +text-icon('ui/lock.png',$yellow,$button:'inset')
+
+  button
+    &.rejected
+      +text-button('ui/x.png',$red-lighter)
+      #{$focus}
+        +text-button('ui/check.png',$green-light)
+    &.draft, &.inactive
+      +text-button('ui/power.png',$blue-lighter)
+      #{$focus}
+        +text-button('ui/power.png',$green-light)
+    &.active
+      +text-button('ui/power.png',$green-light)
+      #{$focus}
+        +text-button('ui/lock.png',$yellow)
+    &.locked, &.disabled
+      +text-button('ui/lock.png',$yellow)
+      #{$focus}
+        +text-button('ui/unlock.png',$green-light)
+    #{$focus}
+      &.rejected, &.draft, &.active, &.locked, &.disabled, &.inactive
+        +hide-text
+        &::after
+          content: attr(title)
+          position: absolute
+          left: 2em
+          text-indent: 0
+
+.byline
+  margin: 0
+
+.envgroup
+  +columns(3,18)
+  &:nth-child(6n)
+    +omega(18)
+
+.envgroups
+  +adjust-font-size-to(12px,.75)
+  +columns(18,24)
+  +prefix(2,24)
+  clear: both
+  h4
+    +gone
+  h5
+    @extend .groupheader
+  > ul
+    +reset-box-model
+    list-style: none
+  .envgroup
+    color: $mid-dark
+    li
+      list-style-type: disc
+  &:last-child
+    +reset-column
+    +full(24)
+    +pad(2,1,24)
+    clear: both
+    .envgroup
+      +columns(3,21)
+      &:nth-child(7n)
+        +omega(21)
+
+.casetags
+  +adjust-font-size-to(12px,.75)
+  +columns(4,24)
+  +omega(24)
+  color: $mid-dark
+  text-align: left
+  h4
+    @extend .groupheader
+
+.components
+  +columns(14,24)
+  +prefix(2,24)
+  +pie-clearfix
+
+.sortlinks
+  #{$link}
+    display: block
+    position: relative
+    color: $blue-dark
+    &::after
+      +replace-text-with-dimensions('ui/angle_up.png')
+      +inline-block
+      content: " "
+      margin-left: .4em
+      background-image: none
+      vertical-align: baseline
+  #{$focus}
+    color: $accent
+    &::after
+      +opacity(.5)
+      background-image: image-url('ui/angle_up.png')
+  &.asc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+  &.desc
+    #{$link}
+      &::after
+        background-image: image-url('ui/angle_down.png')
+    #{$focus}
+      &::after
+        background-image: image-url('ui/angle_up.png')
+
+.listordering
+  +clearfix
+  +rhythm(0,.25,.25,0)
+  +bold
+  background: rgba($blue,$xxsmall)
+  color: rgba($base,$small)
+  text-transform: capitalize
+  .expired &
+    background: rgba($yellow-dark,$small)
+  ul
+    +no-style-list
+  a
+    @extend .sortlinks
+  span
+    display: block
+
+  li
+    &:first-child
+      a
+        #{$link}
+          padding-left: $smallem
+      span
+        padding-left: $smallem
+    &:last-child
+      text-align: right
+      a
+        #{$link}
+          padding-right: $smallem
+      span
+        padding-right: $smallem
+
+
+.status, .bystatus
+  +columns(2,24)
+
+.controls, .bycontrols
+  +columns(3,24)
+
+.summary > .results, .byresults
+  +columns(5,24)
+
+.controls, .bycontrols, .summary > .results, .byresults
+  +omega(24)
+
+.listnav
+  +cond
+  +pie-clearfix
+  +rhythm(0,.25,.25,.5)
+  +hpadding(.5em)
+  clear: both
+  margin-top: -1px
+  background: rgba($blue,$xxsmall)
+  white-space: nowrap
+  .expired &
+    background: rgba($yellow-dark,$small)
+  p, ul
+    +reset-box-model
+  .location, .perpage
+    +columns(6,24)
+  .perpage
+    +omega(24)
+    text-align: right
+  .perpage ul, .pagination
+    +inline-block-list
+    display: inline
+    font-style: normal
+    li
+      vertical-align: baseline
+      + li::before
+        content: "| "
+  .pagination
+    +columns(12,24)
+    text-align: center
+  .current, strong
+    +demi
+  a
+    #{$link}
+      color: $blue-dark
+    #{$focus}
+      color: $red-dark
+
+.byline, .associated
+  +columns(8,24)
+  +omega(24)
+  text-align: right
+
+.info .byline
+  +un-column
+  +full(8)
+
+.associated
+  +cond
+  h4
+    +gone
+  .files-list, .bugs-list
+    +no-style-list
+
+.bugurl
+  a
+    #{$link}
+      +text-icon('ui/bug.png')
+.file
+  a
+    #{$link}
+      +text-icon('ui/clip.png')
+
+.leftcolumnpadding
+  +box-sizing('border-box')
+  padding-left: $smallem
+
+.preview
+  +ellipsis
+  +delimited-list(',')
+  ul
+    margin: 0
+    padding: 0
+
+  label
+    +font-weight-normal
+    &.checked
+      +demi
+      color: $blue-dark
+
+.editinline
+  position: relative
+  &:hover
+    .element-controls
+      display: block
+
+.element-select
+  +columns(9,10)
+
+.element-controls
+  +columns(1,10)
+  +omega(10)
+  display: none
+
+.profile-name
+  +columns(12,24)
+  +trailer(0)
+  label
+    +columns(2,12)
+  input
+    +columns(10,12)
+    +omega(12)
+
+#profile-name-form
+  .form-actions
+    +columns(12,24)
+    +omega(24)
+    clear: none
+    text-align: left
+
+// selecting -----------------------------------------------------------------
+
+.select
+  +pie-clearfix
+  +box-sizing(border-box)
+  +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
+  border: 1px solid $blue
+  height: rhythm(12)
+  background: rgba($blue-dark,$xxxsmall)
+  overflow-y: scroll
+  resize: vertical
+
+.selectitem
+  padding: 0
+  resize: none
+  .item-input
+    +gone
+    &:checked + .item-select
+      +background(image-url('ui/check.png') no-repeat scroll rhythm(.5), rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+    &:checked + .body
+      +background(rgba($green-lighter,$xsmall) linear-gradient(top, rgba($light,$xsmall), rgba($light,0)))
+      .multiselected &
+        background-color: rgba($red-lighter,$xxsmall)
+        .bulkselect
+          background-image: image-url('ui/x.png')
+      .bulkselect
+        +opacity(1)
+        background-image: image-url('ui/check.png')
+
+  .body
+    +clearfix
+    +rhythm(0,.25,.25,0)
+    +background(linear-gradient(top, rgba($blue-light,$xxxsmall), rgba($blue-light,0) $xsmallem))
+  .bulkselect
+    +icon-replace('ui/grip.png')
+    +opacity(.25)
+    +columns(1,12)
+    padding: 0
+    &:hover
+      +opacity(.5)
+
+  .item-select
+    +clearfix
+    +rhythm(0,.25,.25,0)
+    +background(image-url('ui/x_sm.png') no-repeat scroll rhythm(.5), linear-gradient(top, rgba($blue-light,$xxxsmall), rgba($blue-light,0) $xsmallem))
+    display: block

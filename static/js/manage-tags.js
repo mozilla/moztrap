@@ -8,31 +8,40 @@ var CC = (function (CC, $) {
 
     CC.manageTags = function (container) {
         var context = $(container),
+            createTag = context.find('.create a'),
 
             addTag = function () {
-                var addTagForm = context.find('#add-tag-form'),
-                    replaceList = addTagForm.closest('.action-ajax-replace');
+                var addTagForm = ich.tag_edit({
+                        id: 'newtag',
+                        action: 'add'
+                    }),
+                    replaceList = context.find('.action-ajax-replace'),
+                    cancel = addTagForm.find('a[title="cancel"]');
 
-                if (addTagForm.length) {
-                    addTagForm.ajaxForm({
-                        beforeSubmit: function (arr, form, options) {
-                            replaceList.loadingOverlay();
-                        },
-                        success: function (response) {
-                            var newList = $(response.html);
-                            replaceList.loadingOverlay('remove');
-                            if (response.html) {
-                                replaceList.replaceWith(newList);
-                                addTag();
-                                newList.find('.details').html5accordion();
-                            }
+                $(addTagForm).appendTo(replaceList).wrap(ich.tag_add()).find('input').focus();
+
+                addTagForm.ajaxForm({
+                    beforeSubmit: function (arr, form, options) {
+                        replaceList.loadingOverlay();
+                    },
+                    success: function (response) {
+                        var newList = $(response.html);
+                        replaceList.loadingOverlay('remove');
+                        if (response.html) {
+                            replaceList.replaceWith(newList);
+                            newList.find('.details').html5accordion();
                         }
-                    });
-                }
+                    }
+                });
+
+                cancel.click(function (e) {
+                    e.preventDefault();
+                    $(this).closest('.listitem').remove();
+                });
             },
 
             editTag = function () {
-                var editTagForm = context.find('#edit-tag-form'),
+                var editTagForm = context.find('.tag-form'),
                     replaceList = editTagForm.closest('.action-ajax-replace');
 
                 editTagForm.ajaxForm({
@@ -50,30 +59,41 @@ var CC = (function (CC, $) {
                 });
             };
 
-        context.on('click', '.item a[title="edit"]', function (e) {
+        context.on('click', '.listitem a[title="edit"]', function (e) {
             e.preventDefault();
-            var thisTag = $(this).closest('.item'),
+            var thisTag = $(this).closest('.listitem'),
+                edit = $(this),
                 tagID = thisTag.data('id'),
-                tagName = thisTag.find('h3.tag').text(),
+                tagH3 = thisTag.find('h3.name').clone(),
+                tagName = tagH3.text(),
                 editForm = ich.tag_edit({
                     id: tagID,
-                    name: tagName
+                    name: tagName,
+                    action: 'edit'
                 }),
-                cancel;
+                cancel = editForm.find('a[title="cancel"]');
 
             if (tagID && tagName) {
-                thisTag.replaceWith(editForm);
+                thisTag.find('h3.name').replaceWith(editForm);
+                edit.remove();
                 editTag();
-                cancel = $(editForm).find('a[title="cancel"]');
 
                 cancel.click(function (e) {
                     e.preventDefault();
-                    $(editForm).replaceWith(thisTag);
+                    $(this).closest('.listitem').find('.controls').prepend(edit);
+                    $(this).closest('.tag-form').replaceWith(tagH3);
                 });
             }
         });
 
-        addTag();
+        createTag.click(function (e) {
+            e.preventDefault();
+            if (context.find('#tag-id-newtag').length) {
+                $('#tag-id-newtag').find('input').focus();
+            } else {
+                addTag();
+            }
+        });
     };
 
     return CC;

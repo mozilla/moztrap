@@ -1,0 +1,94 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011 uTest Inc.
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// Colors --------------------------------------------------------------------
+
+$light: hsl(0, 0%, 93%)
+$dark: hsl(0, 0%, 27%)
+$lighter: lighten($light,5)
+$lightest: lighten($light,10)
+$mid: mix($light,$dark)
+$mid-light: mix($light,$dark,75%)
+$mid-dark: mix($light,$dark,25%)
+
+$blue: hsl(212, 24%, 42%)
+$blue-light: mix($blue,$light,66%)
+$blue-lighter: mix($blue-light,$light,66%)
+$blue-lightest: mix($blue-light,$light,33%)
+$blue-hint: lighten($blue-lightest,10)
+$blue-dark: mix($blue,$dark)
+$blue-darker: mix($blue-dark,$dark)
+
+$red: hsl(358, 64%, 44%)
+$red-light: lighten($red,25)
+$red-lighter: lighten($red,35)
+$red-lightest: lighten($red,45)
+$red-dark: darken($red,25)
+
+$green: hsl(88, 64%, 44%)
+$green-light: lighten($green,25)
+$green-lighter: lighten($green,35)
+$green-lightest: lighten($green,45)
+$green-dark: darken($green,15)
+
+$yellow: hsl(47, 98%, 77%)
+$yellow-light: lighten($yellow,10)
+$yellow-dark: darken($yellow,25)
+$yellow-darker: darken($yellow,35)
+$yellow-darkest: darken($yellow,45)
+
+$base: $dark
+$alt: $blue
+$accent: $red-dark
+
+//! colors --------------------------------------------------------------------
+
+  light     : #{$light}
+  dark      : #{$dark}
+  lighter   : #{$lighter}
+  mid       : #{$mid}
+  mid-light : #{$mid-light}
+  mid-dark  : #{$mid-dark}
+
+  blue            : #{$blue}
+  blue-light      : #{$blue-light}
+  blue-lighter    : #{$blue-lighter}
+  blue-lightest   : #{$blue-lightest}
+  blue-hint       : #{$blue-hint}
+  blue-dark       : #{$blue-dark}
+
+  red           : #{$red}
+  red-light     : #{$red-light}
+  red-lighter   : #{$red-lighter}
+  red-lightest  : #{$red-lightest}
+  red-dark      : #{$red-dark}
+
+  green           : #{$green}
+  green-light     : #{$green-light}
+  green-lighter   : #{$green-lighter}
+  green-lightest  : #{$green-lightest}
+  green-dark      : #{$green-dark}
+
+  yellow          : #{$yellow}
+  yellow-light    : #{$yellow-light}
+  yellow-dark     : #{$yellow-dark}
+  yellow-darker   : #{$yellow-darker}
+  yellow-darkest  : #{$yellow-darkest}
+
+  base            : #{$dark}
+  alt             : #{$blue}
+  accent          : #{$red}

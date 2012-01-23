@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -82,6 +82,7 @@ STATICFILES_DIRS = [join(BASE_PATH, "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 ]
 
 # Make this unique, and don"t share it with anybody.
@@ -120,6 +121,10 @@ TEMPLATE_DIRS = [
     join(BASE_PATH, "templates"),
 ]
 
+FIXTURE_DIRS = [
+    join(BASE_PATH, "fixtures"),
+    ]
+
 DATE_FORMAT = "Y-m-d"
 
 INSTALLED_APPS = [
@@ -131,6 +136,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "south",
     "cc.core",
+    "cc.users",
     "cc.library",
     "cc.environments",
     "cc.execution",
@@ -195,8 +201,8 @@ MIDDLEWARE_CLASSES.insert(
 
 INSTALLED_APPS += ["ajax_loading_overlay"]
 
-LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "runtests"
+LOGIN_URL = "/users/login/"
+LOGIN_REDIRECT_URL = "/manage/cases/" # @@@ runtests
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")

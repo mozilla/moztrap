@@ -1,0 +1,327 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011-2012 Mozilla
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+// Imports --------------------------------------------------------------
+
+@import base
+
+/* Typography ----------------------------------------------------------------
+
+.serif
+  +serif-family
+
+.sans
+  +sans-family
+
+.mono
+  +monospace-family
+
+.caps
+  letter-spacing: .1em
+
+.allcaps
+  @extend .caps
+  text-transform: uppercase
+
+.smallcaps
+  @extend .caps
+  font-variant: small-caps
+
+/* Helpers -------------------------------------------------------------------
+
+.full
+  display: block
+  float: none
+  width: auto
+
+.half
+  max-width: 50%
+
+.left
+  +float(left)
+  margin:
+    right: 1em
+    bottom: 0.5em
+
+.right
+  +float(right)
+  margin:
+    left: 1em
+    bottom: 0.5em
+
+.oncall
+  +gone
+  &:active, &:focus
+    position: static
+    clip: auto
+    overflow: visible
+    height: auto
+    margin: 0
+    width: auto
+
+.toparrow
+  &::before
+    content: " "
+    display: block
+    position: absolute
+    bottom: 100%
+    left: columns(1,21) + gutter(21)
+    width: 0
+    height: 0
+    border: 1em solid rgba($mid,0)
+      width: $base-rhythm-unit*.5
+    border-bottom-color: rgba($blue-hint,$xsmall)
+
+/* Root ----------------------------------------------------------------------
+
++establish-baseline
+
+html
+  text-rendering: optimizeLegibility
+  -webkit-font-smoothing: antialiased
+  -webkit-text-size-adjust: 100%
+  -ms-text-size-adjust: 100%
+
+body
+  @extend .sans
+  +text-shadow(rgba($blue-hint,$small) 0 1px 1px)
+  +baseline-grid-background
+  color: $base
+  background: rgba($blue,$xxsmall) image-url('noise.png')
+
+/* Selected Text -------------------------------------------------------------
+
+=accessible-color($background: $light)
+  @if lightness($background) >= 65%
+    color: $base
+  @else
+    color: #fff
+
+=selection
+  +accessible-color($alt)
+  background: $alt
+  text-shadow: none
+
+::-moz-selection
+  +selection
+
+::selection
+  +selection
+
+/* Links --------------------------------------------------------------
+
+$link   :   "&:link, &:visited"
+$focus  :   "&:focus, &:hover, &:active"
+
+=link-button
+  +button-reset
+  color: $alt
+  #{$focus}
+    color: $accent
+  &:focus
+    outline: thin dotted $green
+
+=link
+  &, #{$link}
+    +transition((color, background-color) 180ms)
+    color: $alt
+    text-decoration: none
+  #{$link}, &:hover, &:active
+    outline: none
+  #{$focus}
+    color: $accent
+    text-decoration: none
+  &:focus
+    outline: thin dotted $green
+
+a
+  +link
+
+.linkcontext
+  +gone
+
+=no-style-link
+  color: inherit
+
+/* Headings --------------------------------------------------------------
+
+h1
+  +adjust-font-size-to($medpx,2)
+  text-transform: uppercase
+
+h2
+  @extend .allcaps
+  +bold
+
+h2
+  color: rgba($blue-dark,$small)
+
+h3, h4, h5, h6
+  +demi
+
+.sectionhead
+  @extend .allcaps
+  +font-weight-normal
+
+/* Inline --------------------------------------------------------------
+
+cite, em, dfn, address, i
+  +italic
+
+strong, dfn, b
+  +bold
+
+sup, sub
+  font-size: smaller
+  line-height: 0
+
+sup
+  vertical-align: super
+
+sub
+  vertical-align: sub
+
+abbr, acronym
+  border-bottom: 1px dotted
+  cursor: help
+
+ins
+  text-decoration: underline
+
+del
+  text-decoration: line-through
+
+mark
+  background: #ff9
+  background-color: rgba(#ff0,.5)
+  text-shadow: none
+
+small
+  +adjust-font-size-to(12px)
+
+q
+  +italic
+  em
+    +sans-family
+
+pre, code, tt
+  @extend .mono
+
+/* Block --------------------------------------------------------------
+
+p
+  +trailer
+
+pre
+  margin: $base-rhythm-unit
+  white-space: pre
+  white-space: pre-wrap
+  white-space: pre-line
+  word-wrap: break-word
+
+blockquote
+  +italic
+
+summary, .summary
+  display: block
+  cursor: pointer
+  &:focus
+    outline: thin dotted $green
+
+.accordion
+  > *
+    display: none
+  > .summary, > summary
+    display: block
+
+html
+  .details
+    @extend .accordion
+
+.no-details
+  details
+    @extend .accordion
+
+
+/* Replaced --------------------------------------------------------------
+
+img
+  vertical-align: text-bottom
+  max-width: 100%
+  -ms-interpolation-mode: bicubic
+
+/* Lists --------------------------------------------------------------
+
+=no-style-list
+  +no-bullets
+  +reset-box-model
+
+ol, ul, dl
+  +trailer
+  margin-left: $base-rhythm-unit
+
+ol
+  list-style: decimal
+
+ul
+  list-style: disc
+  li &
+    list-style-type: circle
+
+dt
+  +leader
+  +italic
+
+dd
+  padding-left: $base-rhythm-unit
+
+/* Navigation ----------------------------------------------------------------
+
+nav
+  .navhead
+    +gone
+  ul, ol
+    +no-style-list
+
+a[href="#main"]
+  @extend .oncall
+  +rhythm-borders(1px,.25)
+  +border-bottom-radius(.5em)
+  +text-shadow($blue-dark 1px 1px 0)
+  +hpadding(1em)
+  +bold
+  color: $light
+  background: $blue
+  border-color: $blue-dark
+  &:focus, &:active
+    position: absolute
+    top: 0
+    right: 0
+    left: auto
+
+// Default Modules -----------------------------------------------------------
+@import modules/tables
+@import modules/forms
+
+// Template ------------------------------------------------------------------
+
+=animation($args)
+  -moz-animation: $args
+  -webkit-animation: $args
+  animation: $args
+
+

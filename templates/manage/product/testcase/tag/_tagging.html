@@ -1,0 +1,14 @@
+<div class="tagging">
+  {% include "forms/_field.html" with field=form.add_tags %}
+
+  <ul class="taglist">
+  {% if case and case.tags %}
+    {% for tag in case.tags %}
+      {% include "manage/product/testcase/tag/_tag_item.html" %}
+    {% endfor %}
+  {% else %}
+    <li class="none">no tags</li>
+  {% endif %}
+  </ul>
+
+</div>

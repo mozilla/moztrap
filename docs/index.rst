@@ -20,10 +20,18 @@ Python projects on your system, create the virtualenv and activate it. Then run
 ``bin/install-reqs`` to install the dependencies for this project into your
 Python environment.
 
-You may need to create a ``cc/settings/local.py`` file with some details of
-your local database and other configuration. See
-``cc/settings/local.sample.py`` for a sample that can be copied to
-``cc/settings/local.py`` and modified as needed.
+You'll need a MySQL database. If you have a local MySQL server and your user
+has rights to create databases on it, ``mysqladmin create caseconductor``
+should be all that's needed.
+
+If your database is named ``caseconductor`` and is accessible at localhost
+under your shell username, the default settings should be fine for
+:doc:`development` and experimentation with Case Conductor. If your setup is
+different, you'll need to create a ``cc/settings/local.py`` file with some
+details of your configuration. See ``cc/settings/local.sample.py`` for a sample
+that can be copied to ``cc/settings/local.py`` and modified as needed. (If this
+is a production deployment, please read the :doc:`deployment` documentation for
+important security and other considerations.)
 
 Once this configuration is done, you should be able to run ``./manage.py syncdb
 --migrate`` to install the database tables, ``./manage.py runserver`` to run

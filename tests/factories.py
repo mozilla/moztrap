@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011 uTest Inc.
+# Copyright (C) 2011-2012 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -23,7 +23,7 @@ import itertools
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 
 import factory
 
@@ -66,6 +66,7 @@ class TeamFactoryMixin(object):
     """
     @classmethod
     def create(cls, **kwargs):
+        """Create method that allows specifying team."""
         team = kwargs.pop("team", None)
         obj = super(TeamFactoryMixin, cls).create(**kwargs)
         if team is not None:
@@ -88,11 +89,31 @@ class UserFactory(factory.Factory):
 
 
     @classmethod
+    def create(cls, **kwargs):
+        """Create method that allows specifying permissions."""
+        permissions = kwargs.pop("permissions", None)
+        obj = super(UserFactory, cls).create(**kwargs)
+        if permissions is not None:
+            perms = []
+            for perm_or_name in permissions:
+                if isinstance(perm_or_name, Permission):
+                    perm = perm_or_name
+                else:
+                    app_label, codename = perm_or_name.split(".", 1)
+                    perm = Permission.objects.get(
+                        content_type__app_label=app_label, codename=codename)
+                perms.append(perm)
+            obj.user_permissions.add(*perms)
+        return obj
+
+
+    @classmethod
     def _prepare(cls, create, **kwargs):
+        """Special handling for ``set_password`` method."""
         password = kwargs.pop('password', None)
         user = super(UserFactory, cls)._prepare(create, **kwargs)
         if password:
-            user.set_password(user)
+            user.set_password(password)
             if create:
                 user.save()
         return user
@@ -153,20 +174,26 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
             lambda obj, containers: containers[0].productversion.product))
 
 
-    @factory.lazy_attribute
-    def number(obj):
-        try:
-            return obj.case.versions.order_by("-number")[0].number + 1
-        except IndexError:
-            return 1
-
-
 
 class CaseAttachmentFactory(factory.Factory):
     FACTORY_FOR = library_models.CaseAttachment
 
-    attachment = SimpleUploadedFile("somefile.txt", "some content")
     caseversion = factory.SubFactory(CaseVersionFactory)
+
+
+    @classmethod
+    def _prepare(cls, create, **kwargs):
+        """Special handling for attachment so we can set name and contents."""
+        attachment = kwargs.pop("attachment", None)
+        attachment_name = kwargs.pop("attachment__name", "somefile.txt")
+        attachment_content = kwargs.pop("attachment__content", "some content")
+        if attachment is None:
+            attachment = SimpleUploadedFile(attachment_name, attachment_content)
+        obj = super(CaseAttachmentFactory, cls)._prepare(create, **kwargs)
+        obj.attachment = attachment
+        if create:
+            obj.save()
+        return obj
 
 
 

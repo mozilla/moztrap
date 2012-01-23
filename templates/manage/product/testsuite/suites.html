@@ -1,21 +1,16 @@
 {% extends 'manage/product/testsuite/base.html' %}
 
-{% block listcontent %}
+{% block content %}
 
-<section id="managesuites">
+<section id="managesuites" class="manage listpage">
   <h2>Manage Test Suites</h2>
+
   {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
   <a href="{% url manage_testsuite_add %}" class="create">create test suite</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
-
-  <form method="POST">
-    {% csrf_token %}
-
-    {% include "manage/product/testsuite/_suites_list.html" %}
-
-  </form>
+  {% include "manage/product/testsuite/list/_suites_list.html" %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}

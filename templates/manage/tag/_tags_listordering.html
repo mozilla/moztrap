@@ -1,0 +1,6 @@
+{% extends 'lists/_listordering.html' %}
+
+{% block sortitems %}
+  {% include "lists/_sortitem.html" with sortname="tag" sortID="tag" %}
+  {% include "lists/_sortitem.html" with sortname="controls" %}
+{% endblock sortitems %}

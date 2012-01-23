@@ -1,6 +1,6 @@
 .sass-cache
 collected-assets/*
-ccui/settings/local.py
+cc/settings/local.py
 htmlcov/*
 media/*
 docs/_build/*

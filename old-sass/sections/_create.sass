@@ -1,0 +1,545 @@
+// Case Conductor is a Test Case Management system.
+// Copyright (C) 2011-2012 Mozilla
+//
+// This file is part of Case Conductor.
+//
+// Case Conductor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Case Conductor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+/* Create --------------------------------------------------------------------
+
+.removefields
+  +replace-text('ui/x_circle.png')
+  display: block
+  height: $base-rhythm-unit
+
+.tagging
+  +columns(11,24)
+  +omega(24)
+  +trailer
+  .taglist
+    @extend .togglelist
+    +reset-box-model
+    +float(left)
+  .taglabel
+    +float(left)
+    margin: 0 .4em 0 0
+  .none
+    +adjust-font-size-to(14px,1,12px)
+    +italic
+
+.attachments
+  +columns(11,24)
+  +prefix(2,24)
+  +trailer
+  .uploads
+    +inline-block-list
+  li
+    +border-radius
+    +demi
+    +trailer(.5)
+    display: block
+    margin-right: rhythm(.25)
+    padding: 0 rhythm(.25)
+    background: rgba($blue-light,$xsmall)
+    &.uploading
+      background-color: rgba($yellow-dark,$small)
+      .action-remove
+        +icon-replace('ui/clock_sm.png')
+        #{$focus}
+          background-image: image-url('ui/x_sm.png')
+  .action-remove
+    +rhythm(0)
+    +icon-replace('ui/check_sm.png')
+    background-color: transparent
+    border: 0
+    #{$focus}
+      background-image: image-url('ui/x_sm.png')
+  a
+    #{$link}
+      color: $blue-dark
+    #{$focus}
+      color: $red-dark
+  input
+    +gone
+  .upload
+    +box-sizing(border-box)
+    +button
+    +columns(3,11)
+    +hpadding(0)
+    text-align: center
+  .helper
+    +columns(8,11)
+    +omega(11)
+    +leader(.25)
+    +italic
+
+// The Basic Form ------------------------------------------------------------
+
+.select-env-link
+  #{$link}
+    @extend .allcaps
+    +omega(24)
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    +trailer(.5)
+    max-width: columns(4,24)
+    text-align: right
+    background: image-url('ui/crosshair.png') no-repeat scroll left
+    padding-left: image-width('ui/crosshair.png') + $smallpx
+
+.addform
+  h2
+    +trailer
+  .basic
+    +no-style-list
+    +columns(13,24)
+    +inline-form(2,11,13)
+    label
+      text-align: right
+    ul
+      +no-style-list
+    .date
+      +columns(6,13)
+      clear: none
+      position: relative
+      + .date
+        +omega(13)
+      label
+        +columns(2,6)
+      input
+        +columns(4,6)
+        +omega(6)
+      .errorlist
+        +prefix(2,6)
+    .errorlist
+      +full(13)
+      +prefix(2,13)
+
+// SuperSelect! --------------------------------------------------------------
+
+.superselect
+  position: relative
+  p
+    +trailer(0)
+  h4
+    +demi
+    +rhythm(0,.25,0,.25)
+
+    text-transform: uppercase
+
+  .multiunselected
+    .selectbox
+      +columns(12,24)
+      clear: left
+
+  .multiselected
+    +columns(12,24)
+    +omega(24)
+    h4
+      position: absolute
+      top: 0
+
+  .selectsearch
+    position: relative
+    > label
+      +gone
+    > input, .suggest
+      +columns(12,24)
+    .suggest
+      +box-sizing(border-box)
+
+  .listordering
+    +box-sizing(border-box)
+    border: 1px solid $blue
+      width: 1px 1px 0
+
+  .groups
+    +box-sizing(border-box)
+    +columns(12,24)
+    +trailer(.25,12px)
+    clear: left
+    h5
+      +gone
+
+  .terms
+    @extend .togglelist
+    +no-style-list
+    input:checked + label
+      +trailer(.25,12px)
+
+  .byinclude, .byexclude
+    +columns(1,12)
+
+  .action-include, .action-exclude
+    +button-reset
+    width: 100%
+  .action-include
+    +icon-replace('ui/arrow_right_dbl.png')
+  .action-exclude
+    +icon-replace('ui/arrow_left_dbl.png')
+
+  .sortable-placeholder
+    background: rgba($green-light,$small)
+
+.mainselect
+  +clearfix
+  +padding-leader
+  +trailer
+  clear: both
+  h3
+    +border-radius
+    padding: rhythm(.25)
+    background: rgba($blue,$xxxsmall)
+    text-transform: capitalize
+  .multiselect
+    @extend .superselect
+    +full(24)
+    +pie-clearfix
+
+/* Create/Edit Product --------------------------------------------------------------
+
+#addproduct
+  @extend .addform
+
+#editproduct
+  .basic
+    +columns(13,24)
+    label
+      +gone
+
+/* Create/Edit Cycle --------------------------------------------------------------
+
+#addcycle
+  @extend .addform
+  @extend .managelists
+
+  .item
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    &.add-item
+      @extend .footeradditem
+
+  .status, .controls
+    +trailer(0)
+  .start, .end, .bystart, .byend
+    +columns(3,24)
+  .title, .bytitle
+    +columns(13,24)
+
+.userselect
+  @extend .mainselect
+  .nickname
+    +columns(3,9)
+    +prefix(1,9)
+  .fn
+    +columns(5,9)
+    +omega(9)
+
+/* Create Run --------------------------------------------------------------
+
+#addrun
+  @extend .addform
+
+  .update-cases
+    +columns(20,24)
+    input
+      vertical-align: middle
+    label
+      +font-weight-normal
+      +italic
+  .form-actions
+    [type="submit"]
+      +columns(4,24)
+      +omega(24)
+
+.suiteselect
+  @extend .mainselect
+  &.readonly
+    h3
+      background: rgba($yellow,$xxsmall)
+      &::after
+        content: " (read only)"
+    label
+      +opacity(.75)
+
+/* Create Suite --------------------------------------------------------------
+
+#addsuite
+  @extend .addform
+
+.caseselect
+  @extend .mainselect
+  .bystatus, .status
+    +columns(1,12)
+  .bytitle, .title, .bytags, .tags
+    +columns(4,12)
+  .byauthor, .author
+    +box-sizing(border-box)
+    +columns(2,12)
+    +omega(12)
+    text-align: right
+  .author
+    padding-right: rhythm(1)
+
+  .title, .author, .tags
+    +ellipsis
+
+  .tags
+    +delimited-list
+
+  .bystatus
+    position: relative
+    a
+      +icon-replace('ui/power.png')
+      background-position: left
+      &::after
+        position: absolute
+        right: 0
+        top: rhythm(.375)
+
+  .status span
+    +hide-text
+    width: 100%
+    background-position: center
+
+/* Create Case --------------------------------------------------------------
+
+#single-case-form, #bulk-case-form
+  @extend .addform
+  +leader
+
+#single-case-form
+  li
+    +pie-clearfix
+
+  .steps
+    +full(22)
+    +clearfix
+    +leader(.25)
+  .steplist
+    +no-style-list
+    counter-reset: step
+  .steps-form
+    +full(24)
+    +prefix(2,24)
+    position: relative
+    counter-increment: step
+    &::before
+      +adjust-font-size-to($largepx)
+      +light
+      content: counter(step, decimal) "."
+      position: absolute
+      left: 0
+      top: rhythm(1.75,$largepx)
+      width: columns(2,24)
+      text-align: right
+    .action
+      +columns(11,22)
+    .result
+      +columns(11,22)
+      +omega(22)
+    .removefields
+      +opacity(.25)
+      +transition(opacity 300ms)
+      position: absolute
+      left: 0
+      top: rhythm(2.25)
+      width: image-width('ui/x_circle.png') + $smallpx
+      #{$focus}
+        +opacity(1)
+        +border-radius
+        background-color: rgba($red,$xsmall)
+        outline: 0
+    &:hover
+      .removefields
+        +opacity(1)
+    .errorlist
+      +float('right')
+      +padding-leader(.25)
+      +padding-trailer(.25)
+
+  .insert-step
+    +cond
+    +demi
+    +adjust-font-size-to(12px)
+    +text-icon('ui/arrow_right.png')
+    +opacity(0)
+    +transition(opacity 300ms)
+    +stretch-x
+    top: - rhythm(.5,12px)
+    color: inherit
+    text-transform: uppercase
+    &::after
+      content: " "
+      position: absolute
+      top: 0
+      right: 0
+      left: columns(2,24) + gutter(24)
+      height: rhythm(.5)
+      border-bottom: 2px dashed rgba($blue-darker,$xsmall)
+    &:hover
+      +opacity(1)
+
+  .extra-row, .steps-form:first-child
+    .insert-step
+      display: none
+
+  .form-actions
+    +full(24)
+    +prefix(12,24)
+  .increment-select
+    +inline-block
+    +trailer(0)
+    position: relative
+    width: columns(6,12)
+    vertical-align: baseline
+    &.warning
+      color: $red
+
+#bulk-case-form
+  .bulk-field
+    +full(24)
+    label
+      +columns(2,24)
+      text-align: right
+    textarea
+      +columns(11,24)
+      min-height: rhythm(9)
+    .errorlist
+      +full(24)
+      +pad(2,11,24)
+  .fieldhelp
+    +columns(11,24)
+    +omega(24)
+    +leader(.25)
+    color: rgba($base,$small)
+    h3
+      height: 0
+      width: 0
+      text-indent: -9999px
+    li
+      list-style: decimal
+      &::before
+        +bold
+    strong
+      +demi
+      text-transform: uppercase
+
+/* Edit Case --------------------------------------------------------------
+
+#single-case-form
+  .versioning
+    +clearfix
+  .versioned
+    .basic
+      clear: both
+
+.version-select
+  +full(24)
+  +pad(2,2,24)
+  +clearfix
+  +padding-leader
+  +trailer(.5)
+  position: relative
+  &::before, &::after
+    content: " "
+    display: block
+    position: absolute
+    top: rhythm(1.5)
+    border-top: 2px dashed rgba($blue-darker,$xsmall)
+    width: columns(7,24)
+  &::before
+    left: 0
+  &::after
+    right: 0
+  &.open
+    +trailing-border(2px,.5)
+    border:
+      style: dashed
+      color: rgba($blue-darker,$xsmall)
+
+  .summary
+    +pad(5,5,20)
+    +trailer(0)
+    +demi
+    color: rgba($blue-dark,$small)
+    text-align: center
+    text-transform: capitalize
+    strong
+      +bold
+      color: $base
+      text-transform: uppercase
+    em
+      text-transform: none
+  .content
+    +rhythm(.25,0,0,.25)
+    +box-shadow(rgba($blue-dark,$xsmall) 0 0 $xsmallem inset)
+    height: rhythm(12)
+    background: rgba($blue-dark,$xxxsmall)
+    overflow-y: scroll
+    resize: vertical
+
+  .version
+    @extend .selectitem
+  .body
+    +font-weight-normal
+    display: block
+  .versioninfo
+    +columns(4,20)
+    text-align: right
+  .runs
+    +columns(15,20)
+    +omega(20)
+  .runlist
+    +reset-box-model
+    +columns(12,15)
+    li:nth-child(2) ~ li
+      display: none
+
+  .cycle, .info
+    color: rgba($blue-darker,$small)
+  .run, .cycle
+    display: inline
+  .run
+    +demi
+  .cycle
+    &::before
+      content: "["
+    &::after
+      content: "]"
+
+  .moreruns
+    +box-sizing(border-box)
+    +columns(3,15)
+    +omega(15)
+    +italic
+    padding-right: rhythm(.5)
+    color: $alt
+    text-align: right
+    white-space: nowrap
+
+  input
+    +gone
+  p
+    +trailer(0)
+
+/* Create User --------------------------------------------------------------
+
+#adduser
+  @extend .addform
+  .basic
+    +inline-form(3,10,13)
+
+.roleselect
+  @extend .mainselect
+

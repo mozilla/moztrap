@@ -1,0 +1,7 @@
+{% load ccforms %}
+
+{% if classes %}
+  {{ field|classes:classes }}
+{% else %}
+  {{ field }}
+{% endif %}
