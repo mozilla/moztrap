@@ -80,7 +80,7 @@ class Command(TestCommand):
                                      and not fn.startswith(".")])
                 report_kw["morfs"] = py_files
                 report_kw["omit"] = omit + [
-                    "cc/core/management/commands/test.py",
+                    "cc/model/core/management/commands/test.py",
                     "cc/settings/base.py",
                     "cc/settings/default.py",
                     "cc/settings/local.py",
