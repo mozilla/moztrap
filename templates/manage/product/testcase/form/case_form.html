@@ -14,7 +14,7 @@
   {% block caseversions %}
   {% endblock caseversions %}
 
-  <form method="POST" enctype="multipart/form-data" id="{% block formclasses %}single-case-form{% endblock formclasses %}" class="manage-form case-form">
+  <form method="POST" enctype="multipart/form-data" id="{% block form-id %}{% endblock form-id %}" class="manage-form case-form">
     {% csrf_token %}
     {{ form.non_field_errors }}
 
