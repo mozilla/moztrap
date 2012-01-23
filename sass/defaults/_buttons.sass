@@ -70,6 +70,8 @@ button
 
   @if $icon
     $img        : image-url($icon)
+    background-repeat: no-repeat
+
     @if $c
       $bgrad    : $img, $bgrad
       $bhover   : $img, $bhover
@@ -81,7 +83,10 @@ button
       +replace-width($icon)
     @else
       +pad-icon($icon)
-      background-position: $smallpx, left
+      @if $c
+        background-position: $smallpx, left
+      @else
+        background-position: $smallpx
 
   @if $bgrad
     +background-image($bgrad)

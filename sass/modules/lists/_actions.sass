@@ -1,0 +1,43 @@
+// ---------------------------------------------------------------------------
+// Controls General
+
+.controls
+  display: inline-block
+  padding-left: rhythm(.5)
+
+// ---------------------------------------------------------------------------
+// Action Details
+
+=action-button($img)
+  @extend .actionbutton
+  +icon($img,$small:true)
+  #{$focus}
+    background-image: image-url($img)
+
+=action-link($img)
+  @extend .actionlink
+  +icon($img,$small:true)
+
+.actionbutton
+  +reset-box-model
+  background: none
+  +opacity($xxsmall)
+  #{$focus}
+    +opacity(1)
+
+.actionlink
+  #{$link}
+    +inline-block
+    +opacity($xxsmall)
+    vertical-align: baseline
+  #{$focus}
+    +opacity(1)
+
+.edit-link
+  +action-link('ui/pencil.png')
+
+[name="action-clone"]
+  +action-button('ui/clone.png')
+
+[name="action-delete"]
+  +action-button('ui/x.png')

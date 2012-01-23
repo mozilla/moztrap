@@ -1,15 +1,18 @@
 // Hide the text, but keep enough width for the desired icon
-=replace-width($img)
+=replace-width($img,$small:false)
   +hide-text
-  width: rhythm(ceil(image-width($img)/$base-line-height))
   background-position: center
+  @if $small
+    width: image-width($img)
+  @else
+    width: rhythm(ceil(image-width($img)/$base-line-height))
 
 // Make room for an icon to the left of the text.
 =pad-icon($img)
-  padding-left: image-width($img) + $xsmallpx*3
+  padding-left: image-width($img) + $xsmallpx*2
 
 // Add an icon, with or without text and a background.
-=icon($img, $color:false, $notext:true)
+=icon($img, $color:false, $notext:true, $small:false)
 
   background:
     image: image-url($img)
@@ -20,7 +23,7 @@
     background-color: $color
 
   @if $notext
-    +replace-width($img)
+    +replace-width($img,$small)
   @else
     +pad-icon($img)
     background-position: $xsmallpx

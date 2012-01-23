@@ -17,19 +17,20 @@
       </ul>
       {% endif %}
       {% endwith %}
+
+      <div class="controls">
+        {% if user|has_perm:"library.manage_cases" %}
+          {% url manage_case_edit caseversion_id=caseversion.id as testcase_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=caseversion.name %}
+          {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
+          {% include "lists/controls/_clone.html" with clone_id=caseversion.case.id clone_name=caseversion.name %}
+          {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
+        {% endif %}
+      </div>
+
     </div>
 
     <div class="product">{{ caseversion.product }}</div>
-
-    <div class="controls">
-      {% if user|has_perm:"library.manage_cases" %}
-        {% url manage_case_edit caseversion_id=caseversion.id as testcase_edit_url %}
-        {% include "lists/controls/_edit.html" with edit_url=testcase_edit_url edit_name=caseversion.name %}
-        {% include "manage/_narrow_env_link.html" with obj_type='testcase' obj_id=caseversion.id %}
-        {% include "lists/controls/_clone.html" with clone_id=caseversion.case.id clone_name=caseversion.name %}
-        {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
-      {% endif %}
-    </div>
 
   </header>
 
