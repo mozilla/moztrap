@@ -1040,7 +1040,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff, .tag {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff, .tag {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1060,16 +1060,16 @@ body > div {
   color: rgba(255, 255, 255, 0.833);
 }
 
-.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff {
+.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, #filter .compact .filter-item .content {
+.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, #filter .compact .filter-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1077,12 +1077,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1098,7 +1098,7 @@ body > div {
   background-position: center;
 }
 
-.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, #filter .compact .filter-item .check {
+.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, #filter .compact .filter-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1108,10 +1108,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, #filter .compact .filter-item .onoff {
+.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
   display: inline;
 }
 
@@ -3037,7 +3037,7 @@ body.login input, body.login .errorlist {
   border-bottom: 2px dashed rgba(72, 78, 85, 0.444);
 }
 .step-form-item .insert-step::before {
-  background-image: url('../images/ui/arrow_left.png?1327351751');
+  background-image: url('../images/ui/arrow_left.png?1327353019');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
