@@ -71,7 +71,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
                 Suite.objects.all(),
                 choice_attrs=product_id_attrs,
                 required=False)
-        self.steps_formset = StepFormSet(data=self.data or None, prefix="steps")
+        self.steps_formset = StepFormSet(data=self.data or None)
 
 
     def is_valid(self):
@@ -119,10 +119,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             this_version_kwargs["productversion"] = productversion
             caseversion = CaseVersion.objects.create(**this_version_kwargs)
             steps_formset = StepFormSet(
-                data=self.data,
-                prefix="steps",
-                instance=caseversion,
-                user=self.user)
+                data=self.data, instance=caseversion, user=self.user)
             steps_formset.save()
             self._save_tags(caseversion)
             self._save_attachments(caseversion)

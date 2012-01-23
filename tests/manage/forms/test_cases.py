@@ -213,3 +213,28 @@ class AddCaseFormTest(TestCase):
             [v.productversion for v in case.versions.all()],
             [self.productversion, newer_version]
             )
+
+
+
+class StepFormSetTest(TestCase):
+    """Tests for StepFormSet."""
+    @property
+    def formset(self):
+        from cc.manage.forms.cases import StepFormSet
+        return StepFormSet
+
+
+    def test_commit_false(self):
+        """Can save a StepFormSet with commit=False."""
+        fs = self.formset(
+            data={
+                "steps-TOTAL_FORMS": 1,
+                "steps-INITIAL_FORMS": 0,
+                "steps-0-instruction": "instruction",
+                "steps-0-expected": "expected",
+                }
+            )
+
+        steps = fs.save(commit=False)
+
+        self.assertEqual([s.id for s in steps], [None])
