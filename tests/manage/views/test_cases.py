@@ -53,6 +53,24 @@ class CasesTest(ViewTestCase):
 
 
 
+class CaseDetailTest(ViewTestCase):
+    """Test for case-detail ajax view."""
+    def test_details(self):
+        """Returns details HTML snippet for given caseversion."""
+        step = F.CaseStepFactory.create(instruction="Frobnigate.")
+        res = self.app.get(
+            reverse(
+                "manage_case_details",
+                kwargs=dict(caseversion_id=step.caseversion.id)
+                ),
+            user=self.user,
+            headers=dict(HTTP_X_REQUESTED_WITH="XMLHttpRequest"),
+            )
+
+        res.mustcontain("Frobnigate.")
+
+
+
 class AddCaseTest(ViewTestCase):
     """Tests for add-case-single view."""
     @property
