@@ -31,24 +31,10 @@ from ..utils import Url
 
 class SortDecoratorTest(TestCase):
     @property
-    def factory(self):
-        """Decorator factory."""
+    def sort(self):
+        """The decorator factory under test."""
         from cc.core.sort import sort
         return sort
-
-
-    factory_args = ("ctx_name",)
-
-
-    @property
-    def ctx_name(self):
-        return self.factory_args[0]
-
-
-    @property
-    def decorator(self):
-        """Actual decorator (provides simplest-case args to factory)."""
-        return self.factory(*self.factory_args)
 
 
     def req(self, method="GET", path="/some/url", *args, **kwargs):
@@ -58,7 +44,7 @@ class SortDecoratorTest(TestCase):
 
     def on_response(self, response, decorator=None, request=None):
         """Apply given decorator to dummy view, return given response."""
-        decorator = decorator or self.decorator
+        decorator = decorator or self.sort("ctx_name")
         request = request or self.req()
 
         @decorator
@@ -90,7 +76,7 @@ class SortDecoratorTest(TestCase):
 
     def test_uses_wraps(self):
         """Preserves docstring and name of original view func."""
-        @self.decorator
+        @self.sort("ctx_name")
         def myview(request, some_id):
             """docstring"""
 
@@ -102,7 +88,7 @@ class SortDecoratorTest(TestCase):
         """Arguments are passed on to original view func."""
         record = []
 
-        @self.decorator
+        @self.sort("ctx_name")
         def myview(request, *args, **kwargs):
             record.extend([args, kwargs])
 
@@ -116,7 +102,7 @@ class SortDecoratorTest(TestCase):
         req = self.req(
             "GET", "/a/url", {"sortfield": "name", "sortdirection": "asc"})
         qs = Mock()
-        self.on_template_response({self.ctx_name: qs}, request=req)
+        self.on_template_response({"ctx_name": qs}, request=req)
 
         qs.order_by.assert_called_with("name")
 
@@ -124,17 +110,17 @@ class SortDecoratorTest(TestCase):
     def test_no_sort(self):
         """Handles lack of querystring sort params."""
         qs = Mock()
-        self.on_template_response({self.ctx_name: qs})
+        self.on_template_response({"ctx_name": qs})
 
         qs.order_by.assert_called_with("-created_on")
 
 
     def test_sort_defaults(self):
         """Decorator factory accepts default sort field and direction."""
-        dec = self.factory(
-            *self.factory_args, defaultfield="name", defaultdirection="desc")
+        dec = self.sort(
+            "ctx_name", defaultfield="name", defaultdirection="desc")
         qs = Mock()
-        self.on_template_response({self.ctx_name: qs}, decorator=dec)
+        self.on_template_response({"ctx_name": qs}, decorator=dec)
 
         qs.order_by.assert_called_with("-name")
 
@@ -143,7 +129,7 @@ class SortDecoratorTest(TestCase):
         """Places Sort object in context as "sort"."""
         req = self.req(
             "GET", "/a/url", {"sortfield": "name", "sortdirection": "desc"})
-        res = self.on_template_response({self.ctx_name: Mock()}, request=req)
+        res = self.on_template_response({"ctx_name": Mock()}, request=req)
 
         sort = res.context_data["sort"]
         self.assertEqual(sort.field, "name")

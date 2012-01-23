@@ -19,8 +19,6 @@
 Tests for ajax view utilities.
 
 """
-from mock import Mock
-
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
 from django.utils.unittest import TestCase
@@ -30,7 +28,7 @@ from django.utils.unittest import TestCase
 class AjaxTest(TestCase):
     @property
     def ajax(self):
-        """The decorator under test."""
+        """The decorator-factory under test."""
         from cc.core.ajax import ajax
         return ajax
 
