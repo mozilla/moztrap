@@ -1226,8 +1226,9 @@ body > div {
 .listordering {
   overflow: hidden;
   *zoom: 1;
+  text-shadow: rgba(232, 233, 236, 0.444) 0 1px 0;
   padding: 0.375em 0.375em 0.375em 0;
-  background: rgba(169, 178, 191, 0.667);
+  background: rgba(81, 105, 133, 0.444);
 }
 
 .sortitem {
@@ -1249,11 +1250,12 @@ body > div {
   margin-top: 0em;
   padding-top: 0.375em;
   padding-bottom: 0.375em;
-  margin-bottom: 0.75em;
+  margin-bottom: 0em;
   padding-left: 0.5em;
   padding-right: 0.5em;
+  text-shadow: rgba(232, 233, 236, 0.444) 0 1px 0;
   clear: both;
-  background: rgba(81, 105, 133, 0.296);
+  background: rgba(81, 105, 133, 0.444);
   white-space: nowrap;
 }
 .listnav:after {
@@ -1318,7 +1320,10 @@ body > div {
   margin-right: 1.053%;
   text-align: center;
 }
-.listnav .current, .listnav strong {
+.listnav strong {
+  font-weight: normal;
+}
+.listnav .current {
   font-weight: 500;
 }
 .listnav a:link, .listnav a:visited {
@@ -1765,8 +1770,7 @@ body > div {
 }
 
 .itemlist {
-  border: 1px solid rgba(75, 87, 101, 0.296);
-  border-width: 0px 1px;
+  border: 1px solid rgba(75, 87, 101, 0.444);
 }
 .itemlist button {
   padding: 0;

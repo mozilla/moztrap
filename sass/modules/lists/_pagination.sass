@@ -20,10 +20,11 @@
 .listnav
   +cond
   +pie-clearfix
-  +rhythm(0,.25,.25,.5)
+  +rhythm(0,.25,.25,0)
   +hpadding(.5em)
+  +text-shadow(rgba($blue-hint,$xsmall) 0 1px 0)
   clear: both
-  background: rgba($blue,$xxsmall)
+  background: rgba($blue,$xsmall)
   white-space: nowrap
   .expired &
     background: rgba($yellow-dark,$small)
@@ -45,7 +46,9 @@
   .pagination
     +columns(12,24)
     text-align: center
-  .current, strong
+  strong
+    +font-weight-normal
+  .current
     +demi
   a
     #{$link}
