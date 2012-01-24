@@ -6,17 +6,6 @@
   <header class="itemhead">
 
     <div class="name-tags">
-      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
-
-      {% with caseversion.tags.all as tags %}
-      {% if tags %}
-      <ul class="tags">
-        {% for tag in tags %}
-        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
-        {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
 
       <div class="controls">
         {% if user|has_perm:"library.manage_cases" %}
@@ -27,6 +16,18 @@
           {% include "lists/controls/_delete.html" with delete_id=caseversion.case.id delete_name=caseversion.name %}
         {% endif %}
       </div>
+
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
+      <ul class="tags">
+        {% for tag in tags %}
+        <li class="tag"><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
 
     </div>
 

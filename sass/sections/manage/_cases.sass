@@ -4,21 +4,20 @@
     padding-left: rhythm(2.5)
 
   .byname-tags, .name-tags
-    +columns(13,23)
+    +box-sizing('border-box')
+    +columns(15,23)
   .byproduct, .product
-    +columns(10,23)
+    +columns(8,23)
     +omega(23)
     min-height: rhythm(1)
 
-  .itemhead
+  .itemhead, .content
     padding-left: rhythm(2.5)
 
   .title
     +demi
-    display: inline
-
-  .content
-    padding-left: rhythm(2.5)
+    display: inline-block
+    margin-right: rhythm(.25)
 
   .iteminfo
     +columns(18,23)
