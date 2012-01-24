@@ -107,7 +107,7 @@
             },
 
             insertAboveLink = function (row) {
-                $(options.insertAboveLink).appendTo(row).click(function (e) {
+                $(options.insertAboveLink).prependTo(row).click(function (e) {
                     var thisRow = $(this).closest(options.formSelector),
                         formCount = parent.find(options.formSelector).length,
                         row = options.formTemplate.clone(true).addClass('new-row'),
