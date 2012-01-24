@@ -13,3 +13,4 @@ Fabric==1.3.2
 pycrypto==2.4.1
 ssh==1.7.11
 ipython==0.10.2
+django-inmemorystorage==0.1.1

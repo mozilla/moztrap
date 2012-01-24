@@ -82,7 +82,7 @@ class CaseVersionTest(TestCase):
         cloned_attachment = new.attachments.get()
         self.assertNotEqual(cloned_attachment, ca)
         self.assertEqual(
-            cloned_attachment.attachment.path, ca.attachment.path)
+            cloned_attachment.attachment.name, ca.attachment.name)
 
 
     def test_clone_tags(self):
