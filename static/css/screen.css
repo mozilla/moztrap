@@ -674,10 +674,11 @@ body > div {
   position: relative;
 }
 #brand a:link, #brand a:visited {
-  color: #454545;
+  text-shadow: rgba(255, 255, 255, 0.667) 0 1px 0, rgba(69, 69, 69, 0.444) 0 -1px 0;
+  color: #6f6f6f;
 }
 #brand a:focus, #brand a:hover, #brand a:active {
-  color: #4f1114;
+  color: #516985;
 }
 #brand .logo {
   position: absolute;
@@ -685,11 +686,11 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/64x64.png?1327346243') no-repeat top center;
+  background: url('../images/64x64.png?1327441931') no-repeat top center;
 }
 #brand .wordmark {
-  font-size: 1.25em;
-  line-height: 2.4em;
+  font-size: 1.5em;
+  line-height: 2em;
   margin-left: 29.63%;
 }
 

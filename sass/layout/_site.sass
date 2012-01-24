@@ -38,9 +38,10 @@ body > div
   position: relative
   a
     #{$link}
-      color: $base
+      +text-shadow(rgba($lightest,$small) 0 1px 0, rgba($base,$xsmall) 0 -1px 0)
+      color: $mid-dark
     #{$focus}
-      color: $red-dark
+      color: $blue
   .logo
     position: absolute
     top: rhythm(.25)
@@ -49,7 +50,7 @@ body > div
     height: rhythm(3)
     background: image-url('64x64.png') no-repeat top center
   .wordmark
-    +adjust-font-size-to($large-normpx)
+    +adjust-font-size-to($medpx)
     +pre($logo-width,$brand-width)
 
 [role="main"]
