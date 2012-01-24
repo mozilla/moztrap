@@ -19,14 +19,13 @@
 
 .chick
   +border-radius
-  +float(left)
   +trailer(.5)
   +demi
   +cond
   +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
   position: relative
+  display: inline-block
   padding: 0 rhythm(.25)
-  margin-right: rhythm(.25)
   border: 1px solid $blue-light
   background-color: $blue-lightest
   a
@@ -61,7 +60,7 @@
     @extend .actionchick
     display: none
   .check:checked + .onoff
-    display: inline
+    display: inline-block
 
   .content
     @extend .chickcontent
@@ -73,7 +72,6 @@
   @extend .chickcheck
   .onoff
     @extend .actionchick
-    display: inline
+    display: inline-block
   .check:checked + .onoff
-    display: inline
     +opacity(.5)

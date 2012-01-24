@@ -2,23 +2,23 @@
 // Controls General
 
 .controls
-  +float(left)
+  display: inline
 
 .action
   +reset-box-model
-  +float(left)
   +opacity($xxsmall)
   margin-right: rhythm(.25)
+  display: inline-block
+  vertical-align: baseline
+  background: none
   #{$focus}
     +opacity(1)
 
 .actionbutton
   @extend .action
-  background: none
 
 .actionlink
   @extend .action
-  vertical-align: baseline
 
 // ---------------------------------------------------------------------------
 // Action Details

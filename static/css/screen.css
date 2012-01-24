@@ -959,6 +959,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1010,6 +1011,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/minus.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1048,15 +1050,13 @@ body > div {
   -ms-border-radius: 0.296em;
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
-  display: inline;
-  float: left;
   margin-bottom: 0.75em;
   font-weight: 500;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
   position: relative;
+  display: inline-block;
   padding: 0 0.375em;
-  margin-right: 0.375em;
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
@@ -1101,6 +1101,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1119,14 +1120,13 @@ body > div {
   display: none;
 }
 .chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
-  display: inline;
+  display: inline-block;
 }
 
 .reversecheck .onoff, .versioned .attachment-item .onoff {
-  display: inline;
+  display: inline-block;
 }
 .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff {
-  display: inline;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
 }
@@ -1352,30 +1352,22 @@ body > div {
 
 .controls {
   display: inline;
-  float: left;
 }
 
 .action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link {
   margin: 0;
   padding: 0;
   border: 0;
-  display: inline;
-  float: left;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
   margin-right: 0.375em;
+  display: inline-block;
+  vertical-align: baseline;
+  background: none;
 }
 .action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionlink:focus, .edit-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionlink:hover, .edit-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .actionlink:active, .edit-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-}
-
-.actionbutton, [name="action-clone"], [name="action-delete"] {
-  background: none;
-}
-
-.actionlink, .edit-link {
-  vertical-align: baseline;
 }
 
 .edit-link {
@@ -1390,6 +1382,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 14px;
 }
@@ -1406,6 +1399,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 14px;
 }
@@ -1425,6 +1419,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 14px;
 }
@@ -1464,17 +1459,12 @@ body > div {
   border-color: rgba(75, 87, 101, 0.296);
 }
 .itemhead .tags {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-  display: inline-block;
-  vertical-align: bottom;
-}
-.itemhead .tags li {
-  list-style-image: none;
   list-style-type: none;
-  margin-left: 0;
+}
+.itemhead .tags, .itemhead .tags li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
 }
 .itemhead .tag {
   margin-bottom: 0em;
@@ -1495,6 +1485,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   padding-top: 0.375em;
@@ -1543,6 +1534,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1621,6 +1613,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   display: block;
@@ -1639,6 +1632,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1654,6 +1648,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1669,6 +1664,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1684,6 +1680,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1699,6 +1696,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1734,6 +1732,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1756,6 +1755,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1785,6 +1785,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1807,6 +1808,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1829,6 +1831,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1858,6 +1861,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1880,6 +1884,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1902,6 +1907,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1931,6 +1937,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2169,6 +2176,7 @@ body > div {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
@@ -2667,15 +2675,12 @@ body.login input, body.login .errorlist {
 }
 
 .taglist, .attachlist {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-.taglist li, .attachlist li {
-  list-style-image: none;
   list-style-type: none;
-  margin-left: 0;
+}
+.taglist, .taglist li, .attachlist, .attachlist li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
 }
 .taglist .none, .attachlist .none {
   font-style: italic;
@@ -3294,6 +3299,7 @@ body.login input, body.login .errorlist {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   position: absolute;
@@ -3358,6 +3364,7 @@ body.login input, body.login .errorlist {
   text-indent: -119988px;
   overflow: hidden;
   text-align: left;
+  overflow: visible;
   background-position: center;
   width: 1.5em;
   display: -moz-inline-box;
@@ -3412,7 +3419,7 @@ body.login input, body.login .errorlist {
 }
 #managecases .title {
   font-weight: 500;
-  display: inline-block;
+  display: inline;
   margin-right: 0.375em;
 }
 #managecases .product, #managecases .modified {

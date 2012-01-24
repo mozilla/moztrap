@@ -23,7 +23,7 @@
       {% if tags %}
       <ul class="tags">
         {% for tag in tags %}
-        <li class="tag"><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link">{{ tag }}</a></li>
+        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link tag">{{ tag }}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
