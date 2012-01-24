@@ -123,7 +123,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, caption, #page-status::before, .category-title {
+.allcaps, h1, h2, caption, #page-status::before, .itembody .envs-title, .category-title {
   text-transform: uppercase;
 }
 
@@ -1525,6 +1525,7 @@ body > div {
   font-style: italic;
 }
 .itembody .envs {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-height: 18em;
   overflow-y: auto;
 }
