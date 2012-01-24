@@ -25,12 +25,12 @@ Congratulations! If that all worked, you have a functioning instance of Case
 Conductor for local testing and experimentation, or :doc:`developing
 <development>` Case Conductor.
 
+See the full :doc:`installation` documentation for details and troubleshooting
+of the above steps.
+
 If this is a production deployment of Case Conductor, please read the
 :doc:`deployment` documentation for important security and other
 considerations.
-
-See the full :doc:`installation` documentation for details and troubleshooting
-of the above steps.
 
 .. _Python: http://www.python.org
 .. _MySQL: http://www.mysql.com

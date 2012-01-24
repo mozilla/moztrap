@@ -72,3 +72,7 @@ All done!
 ---------
 
 You can access Case Conductor in your browser at http://localhost:8000.
+
+For a production deployment of Case Conductor, please read the
+:doc:`deployment` documentation for important security and other
+considerations.
