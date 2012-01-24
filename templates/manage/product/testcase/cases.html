@@ -8,9 +8,9 @@
   <h2>Manage Test Cases</h2>
 
   {% if user|has_perm:"library.create_cases" %}
-  <div class="create">
-    <a href="{% url manage_case_add %}" class="single">create a single case (form)</a>
-    <a href="{% url manage_case_add_bulk %}" class="bulk">create bulk cases (text)</a>
+  <div class="create-options">
+    <a href="{% url manage_case_add %}" class="create single">create a <strong>single</strong> case</a>
+    <a href="{% url manage_case_add_bulk %}" class="create bulk">create <strong>bulk</strong> cases</a>
   </div>
   {% endif %}
 

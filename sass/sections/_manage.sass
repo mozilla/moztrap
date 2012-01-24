@@ -1,2 +1,33 @@
+// ---------------------------------------------------------------------------
+// Manage General
+
+.create
+  +box-sizing('border-box')
+  +columns(4,24)
+  +omega(24)
+  +button-style($green-light,'ui/plus.png',$inset:true)
+  display: block
+  text-align: center
+  #{$link}
+    color: $green-dark
+  #{$focus}
+    color: $base
+
+.create-options
+  +columns(8,24)
+  +omega(24)
+  .create
+    +columns(4,8)
+    &:nth-child(odd)
+      +omega(8)
+    ~ .create
+      +opacity($small)
+      +button-style($light,'ui/plus.png',$inset:true)
+      #{$focus}
+        +opacity(1)
+
+// ---------------------------------------------------------------------------
+// Manage Details
+
 @import manage/forms
 @import manage/cases
