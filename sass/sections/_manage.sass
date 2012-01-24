@@ -9,8 +9,6 @@
   display: block
   text-align: center
   #{$link}
-    color: $green-dark
-  #{$focus}
     color: $base
 
 .create-options
@@ -21,10 +19,7 @@
     &:nth-child(odd)
       +omega(8)
     ~ .create
-      +opacity($small)
       +button-style($light,'ui/plus.png',$inset:true)
-      #{$focus}
-        +opacity(1)
 
 // ---------------------------------------------------------------------------
 // Manage Details

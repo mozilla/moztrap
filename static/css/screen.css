@@ -2582,9 +2582,6 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/plus.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 .create:link, .create:visited {
-  color: #4d791b;
-}
-.create:focus, .create:hover, .create:active {
   color: #454545;
 }
 
@@ -2611,8 +2608,6 @@ body.login input, body.login .errorlist {
   #margin-left: -1em;
 }
 .create-options .create ~ .create {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
-  opacity: 0.667;
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2659,10 +2654,6 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/plus.png?1326735333'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/plus.png?1326735333'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/plus.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-}
-.create-options .create ~ .create:focus, .create-options .create ~ .create:hover, .create-options .create ~ .create:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
 }
 
 .manage-form {
