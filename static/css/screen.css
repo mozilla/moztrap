@@ -3406,19 +3406,21 @@ body.login input, body.login .errorlist {
   box-sizing: border-box;
   display: inline;
   float: left;
-  width: 64.835%;
+  width: 47.253%;
   margin-right: 1.099%;
 }
-#managecases .byproduct, #managecases .product {
+#managecases .byproduct, #managecases .product, #managecases .bymodified, #managecases .modified {
   display: inline;
   float: left;
-  width: 34.066%;
+  width: 25.275%;
   margin-right: 1.099%;
+  min-height: 1.5em;
+}
+#managecases .bymodified, #managecases .modified {
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
-  min-height: 1.5em;
 }
 #managecases .itemhead, #managecases .content {
   padding-left: 3.75em;

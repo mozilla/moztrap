@@ -5,11 +5,12 @@
 
   .byname-tags, .name-tags
     +box-sizing('border-box')
-    +columns(15,23)
-  .byproduct, .product
-    +columns(8,23)
-    +omega(23)
+    +columns(11,23)
+  .byproduct, .product, .bymodified, .modified
+    +columns(6,23)
     min-height: rhythm(1)
+  .bymodified, .modified
+    +omega(23)
 
   .itemhead, .content
     padding-left: rhythm(2.5)
