@@ -1859,12 +1859,12 @@ body > div {
   text-align: left;
   background-position: center;
   width: 1.5em;
-  background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   padding: 0;
 }
 .status .disabled.status-readonly {
@@ -1932,12 +1932,12 @@ body > div {
   text-align: left;
   background-position: center;
   width: 1.5em;
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   padding: 0;
 }
 
