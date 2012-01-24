@@ -1251,8 +1251,8 @@ body > div {
 .sortitem {
   display: inline;
   float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
+  width: 7.692%;
+  margin-right: 1.099%;
   margin-bottom: 0em;
   font-weight: 500;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1351,39 +1351,32 @@ body > div {
 }
 
 .controls {
-  display: inline-block;
+  display: inline;
+  float: left;
   padding-right: 0.375em;
 }
 
-.actionbutton, [name="action-clone"], [name="action-delete"] {
+.action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link {
   margin: 0;
   padding: 0;
   border: 0;
-  background: none;
+  display: inline;
+  float: left;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
+  margin-right: 0.375em;
 }
-.actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active {
+.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionlink:focus, .edit-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionlink:hover, .edit-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .actionlink:active, .edit-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.actionlink:link, .edit-link:link, .actionlink:visited, .edit-link:visited {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
-  opacity: 0.296;
+.actionbutton, [name="action-clone"], [name="action-delete"] {
+  background: none;
+}
+
+.actionlink, .edit-link {
   vertical-align: baseline;
-}
-.actionlink:link, .edit-link:link, .actionlink:visited, .edit-link:visited {
-  *display: inline;
-}
-.actionlink:focus, .edit-link:focus, .actionlink:hover, .edit-link:hover, .actionlink:active, .edit-link:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
 }
 
 .edit-link {
@@ -1713,6 +1706,7 @@ body > div {
 .bystatus {
   width: 1.5em;
   margin-left: -2.25em;
+  margin-right: 0;
 }
 
 .status {

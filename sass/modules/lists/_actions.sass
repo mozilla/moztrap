@@ -2,8 +2,24 @@
 // Controls General
 
 .controls
-  display: inline-block
+  +float(left)
   padding-right: rhythm(.25)
+
+.action
+  +reset-box-model
+  +float(left)
+  +opacity($xxsmall)
+  margin-right: rhythm(.25)
+  #{$focus}
+    +opacity(1)
+
+.actionbutton
+  @extend .action
+  background: none
+
+.actionlink
+  @extend .action
+  vertical-align: baseline
 
 // ---------------------------------------------------------------------------
 // Action Details
@@ -17,21 +33,6 @@
 =action-link($img)
   @extend .actionlink
   +icon($img,$small:true)
-
-.actionbutton
-  +reset-box-model
-  background: none
-  +opacity($xxsmall)
-  #{$focus}
-    +opacity(1)
-
-.actionlink
-  #{$link}
-    +inline-block
-    +opacity($xxsmall)
-    vertical-align: baseline
-  #{$focus}
-    +opacity(1)
 
 .edit-link
   +action-link('ui/pencil.png')
