@@ -1449,7 +1449,7 @@ body > div {
   background-image: -ms-linear-gradient(top, rgba(255, 255, 255, 0.667), rgba(153, 153, 153, 0.198));
   background-image: linear-gradient(top, rgba(255, 255, 255, 0.667), rgba(153, 153, 153, 0.198));
   position: relative;
-  background-color: rgba(232, 233, 236, 0.667);
+  background-color: rgba(232, 233, 236, 0.296);
 }
 .listitem:after {
   content: "";
