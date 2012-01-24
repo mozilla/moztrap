@@ -19,7 +19,7 @@
 Tests for Case Conductor form utilities.
 
 """
-from django.utils.unittest import TestCase
+from django.test import TestCase
 
 from django import forms
 

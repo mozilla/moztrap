@@ -1,16 +1,19 @@
+{% load pagination %}
+
 <form method="POST" class="itemlist action-ajax-replace">
   {% csrf_token %}
 
   {% include "manage/product/testcase/list/_cases_listordering.html" %}
 
-  {% if caseversions %}
-    {% for caseversion in caseversions %}
+  {% paginate caseversions as pager %}
+  {% if pager.objects %}
+    {% for caseversion in pager.objects %}
       {% include "manage/product/testcase/list/_cases_list_item.html" %}
     {% endfor %}
   {% else %}
     {% include "lists/_emptylist.html" %}
   {% endif %}
 
-  {% include "lists/_listnav.html" %}
+  {% include "lists/_listnav.html" with pager=pager %}
 
 </form>
