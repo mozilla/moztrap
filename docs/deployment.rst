@@ -32,6 +32,10 @@ that ``.pth`` files are processed.  A WSGI entry-point script is provided in
 ``cc/deploy/vendor_wsgi.py`` that makes the necessary ``sys.path`` adjustments,
 as well as a version of ``manage.py`` in ``vendor-manage.py``.
 
+If you are using ``bin/install-reqs`` to install dependencies into your
+production environment, you can use ``bin/install-reqs prod`` to avoid
+installing some development dependencies that aren't needed in production.
+
 
 Security
 --------
@@ -56,3 +60,14 @@ from reusable components into a single directory for production serving.  Run
 the URL ``STATIC_URL`` is set to.
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
+
+Database performance tweak
+--------------------------
+
+In order to ensure that all database tables are created with the InnoDB storage
+engine, Case Conductor's default settings file sets the database driver option
+"init_command" to "SET storage_engine=InnoDB". This causes the SET command to
+be run on each database connection, which is an unnecessary slowdown once all
+tables have been created. Thus, on a production server, you should remove this
+option from your ``cc/settings/local.py`` file's ``DATABASES`` setting after
+you've run ``python manage.py syncdb --migrate`` to create all tables.

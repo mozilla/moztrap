@@ -39,6 +39,10 @@ DATABASES = {
         "NAME": "caseconductor",
         "USER": environ.get("USER", ""),
         "PASSWORD": "",
+        "OPTIONS": {
+            "init_command": "SET storage_engine=InnoDB",
+            },
+        "STORAGE_ENGINE": "InnoDB"
         }
     }
 

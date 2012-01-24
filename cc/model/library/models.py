@@ -142,7 +142,9 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
         RunCaseVersion = cls.runcaseversions.related.model
         if adding:
             return {}
-        return {RunCaseVersion: RunCaseVersion.objects.filter(run__in=objs)}
+        return {
+            RunCaseVersion: RunCaseVersion.objects.filter(caseversion__in=objs)
+            }
 
 
     def bug_urls(self):

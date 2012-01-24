@@ -44,7 +44,7 @@ class TagsAutocompleteTest(ViewTestCase):
 
     def test_matching_tags_json(self):
         """Returns list of matching tags in JSON."""
-        F.TagFactory.create(name="foo")
+        t = F.TagFactory.create(name="foo")
 
         res = self.get("o")
 
@@ -53,7 +53,7 @@ class TagsAutocompleteTest(ViewTestCase):
             {
                 "suggestions": [
                     {
-                        "id": 1,
+                        "id": t.id,
                         "name": "foo",
                         "postText": "o",
                         "preText": "f",
@@ -67,7 +67,7 @@ class TagsAutocompleteTest(ViewTestCase):
 
     def test_case_insensitive(self):
         """Matching is case-insensitive, but pre/post are case-accurate."""
-        F.TagFactory.create(name="FooBar")
+        t = F.TagFactory.create(name="FooBar")
 
         res = self.get("oO")
 
@@ -76,7 +76,7 @@ class TagsAutocompleteTest(ViewTestCase):
             {
                 "suggestions": [
                     {
-                        "id": 1,
+                        "id": t.id,
                         "name": "FooBar",
                         "postText": "Bar",
                         "preText": "F",

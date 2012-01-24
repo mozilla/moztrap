@@ -6,6 +6,12 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = [
+        ("core", "0001_initial"),
+        ("environments", "0001_initial"),
+        ("tags", "0001_initial"),
+        ]
+
     def forwards(self, orm):
         
         # Adding model 'Case'
