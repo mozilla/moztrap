@@ -204,6 +204,12 @@ class AddCaseFormTest(TestCase):
         newer_version = F.ProductVersionFactory.create(
             product=self.product, version="1.1")
 
+        # these versions from a different product should not be included
+        other_product = F.ProductFactory.create(name="Other Product")
+        F.ProductVersionFactory.create(version="2", product=other_product)
+        F.ProductVersionFactory.create(version="3", product=other_product)
+        F.ProductVersionFactory.create(version="4", product=other_product)
+
         data = self.get_form_data()
         data["and_later_versions"] = 1
 

@@ -96,8 +96,8 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         assert self.is_valid()
 
         version_kwargs = self.cleaned_data.copy()
-        case = Case.objects.create(
-            product=version_kwargs.pop("product"), user=self.user)
+        product = version_kwargs.pop("product")
+        case = Case.objects.create(product=product, user=self.user)
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
 
@@ -111,7 +111,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         productversions = [version_kwargs.pop("productversion")]
         if version_kwargs.pop("and_later_versions"):
-            productversions.extend(ProductVersion.objects.filter(
+            productversions.extend(product.versions.filter(
                     order__gt=productversions[0].order))
 
         for productversion in productversions:
