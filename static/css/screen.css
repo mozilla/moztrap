@@ -686,7 +686,7 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/64x64.png?1327441931') no-repeat top center;
+  background: url('../images/64x64.png?1327444929') no-repeat top center;
 }
 #brand .wordmark {
   font-size: 1.5em;
@@ -2489,7 +2489,7 @@ body.login #brand .logo {
   top: 1.5em;
   width: 100%;
   height: 9em;
-  background: url('../images/cc-logo-126-50.png?1327348155') no-repeat scroll center center;
+  background: url('../images/126x126.png?1327444929') no-repeat scroll center center;
 }
 body.login #brand .wordmark {
   font-size: 1.5em;
