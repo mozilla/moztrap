@@ -1353,7 +1353,6 @@ body > div {
 .controls {
   display: inline;
   float: left;
-  padding-right: 0.375em;
 }
 
 .action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link {
@@ -3423,6 +3422,9 @@ body.login input, body.login .errorlist {
   font-weight: 500;
   display: inline-block;
   margin-right: 0.375em;
+}
+#managecases .product, #managecases .modified {
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #managecases .iteminfo {
   display: inline;
