@@ -694,12 +694,12 @@ body > div {
 }
 
 [role="main"] {
-  background: url('../images/noise.png?1326735333'), white;
   -webkit-box-shadow: #8695a8 0 0 0.375em;
   -moz-box-shadow: #8695a8 0 0 0.375em;
   -o-box-shadow: #8695a8 0 0 0.375em;
   box-shadow: #8695a8 0 0 0.375em;
   padding: 1.5em 1.031%;
+  background: white;
 }
 
 [role="contentinfo"] {
