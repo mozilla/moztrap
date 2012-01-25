@@ -21,6 +21,8 @@ Utilities for views that sort list of objects.
 """
 from functools import wraps
 
+from django.core.exceptions import FieldError
+
 from ..utils.querystring import update_querystring
 
 
@@ -41,7 +43,13 @@ def sort(ctx_name, defaultfield=None, defaultdirection=DEFAULT):
             except AttributeError:
                 return response
             ctx["sort"] = Sort(request, defaultfield, defaultdirection)
-            ctx[ctx_name] = ctx[ctx_name].order_by(ctx["sort"].order_by)
+            try:
+                sortqs = ctx[ctx_name].order_by(ctx["sort"].order_by)
+                str(sortqs.query) # hack to force evaluation of sort arguments
+            except FieldError:
+                pass
+            else:
+                ctx[ctx_name] = sortqs
             return response
 
         return _wrapped_view

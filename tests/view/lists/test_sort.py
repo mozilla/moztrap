@@ -107,6 +107,17 @@ class SortDecoratorTest(TestCase):
         qs.order_by.assert_called_with("name")
 
 
+    def test_bad_sort_field(self):
+        """Silently ignores bad sort field."""
+        req = self.req(
+            "GET", "/a/url", {"sortfield": "foo", "sortdirection": "asc"})
+        from cc.model.core.models import Product # has no "foo" field
+        qs = Product.objects.all()
+        res = self.on_template_response({"ctx_name": qs}, request=req)
+
+        self.assertEqual(list(res.context_data["ctx_name"]), [])
+
+
     def test_no_sort(self):
         """Handles lack of querystring sort params."""
         qs = Mock()
@@ -137,7 +148,7 @@ class SortDecoratorTest(TestCase):
 
 
 
-class TestSort(TestCase):
+class SortTest(TestCase):
     def cls(self, full_path, GET):
         """Construct mock request; instantiate and return Sort object."""
         request = Mock()
