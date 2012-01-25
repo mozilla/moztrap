@@ -4,7 +4,7 @@
   <h3 class="navhead">List Filtering</h3>
     <div class="textual">
       <label for="text-filter">filter</label>
-      <input type="text" name="text-filter" value="" id="text-filter" autocomplete="off" placeholder="filter by {% for field in filter %}{% if not forloop.first %}{% if forloop.last %}{% if forloop.counter > 2 %},{% endif %} or {% else %}, {% endif %}{% endif %}{{ field.name|lower }}{% endfor %}.">
+      <input type="text" name="text-filter" value="" id="text-filter" autocomplete="off" placeholder="filter by {% for field in filters %}{% if not forloop.first %}{% if forloop.last %}{% if forloop.counter > 2 %},{% endif %} or {% else %}, {% endif %}{% endif %}{{ field.name|lower }}{% endfor %}.">
       <ul class="suggest">
         {% icanhaz "autocomplete_suggestion" %}
       </ul>
@@ -25,7 +25,7 @@
         {% endif %}
 
         {% icanhaz "autocomplete_input" %}
-        {% for field in filter %}
+        {% for field in filters %}
         {% include "lists/_filter_group.html" with advanced=1 prefix="filter" %}
         {% endfor %}
 

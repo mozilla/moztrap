@@ -24,20 +24,22 @@ from django.template.response import TemplateResponse
 
 from django.contrib.auth.decorators import login_required, permission_required
 
-from ...utils.ajax import ajax
-from ...lists.sort import sort
 from ....model.library.models import CaseVersion, Case
 
-from ...lists.actions import actions
+from ...lists import decorators as deco
+from ...lists.filters import ChoicesFilter
+from ...utils.ajax import ajax
+
 from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
 
 @login_required
-@actions(Case, ["clone", "delete"], fall_through=True)
-@actions(CaseVersion, ["activate", "deactivate"])
+@deco.actions(Case, ["clone", "delete"], fall_through=True)
+@deco.actions(CaseVersion, ["activate", "deactivate"])
+@deco.filter("caseversions", ChoicesFilter("status", choices=[("draft", "draft"), ("active", "active")]))
 @ajax("manage/product/testcase/list/_cases_list.html")
-@sort("caseversions")
+@deco.sort("caseversions")
 def list(request):
     return TemplateResponse(
         request,
