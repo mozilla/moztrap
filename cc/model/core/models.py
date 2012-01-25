@@ -89,7 +89,7 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
 
 
     class Meta:
-        ordering = ["order"]
+        ordering = ["product", "order"]
         unique_together = [("product", "version")]
 
 
