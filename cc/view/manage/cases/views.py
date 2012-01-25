@@ -27,9 +27,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from ....model.library.models import CaseVersion, Case
 
 from ... import lists
-from ...lists.filters import ChoicesFilter
 from ...utils.ajax import ajax
 
+from .filters import CaseVersionFilterSet
 from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
@@ -37,16 +37,15 @@ from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
 @login_required
 @lists.actions(Case, ["clone", "delete"], fall_through=True)
 @lists.actions(CaseVersion, ["activate", "deactivate"])
-@lists.filter("caseversions", ChoicesFilter("status", choices=[("draft", "draft"), ("active", "active")]))
-@ajax("manage/product/testcase/list/_cases_list.html")
+@lists.filter("caseversions", filterset=CaseVersionFilterSet)
 @lists.sort("caseversions")
+@ajax("manage/product/testcase/list/_cases_list.html")
 def cases_list(request):
     return TemplateResponse(
         request,
         "manage/product/testcase/cases.html",
         {
-            "caseversions": CaseVersion.objects.filter(
-                latest=True).select_related("case"),
+            "caseversions": CaseVersion.objects.select_related("case"),
             }
         )
 

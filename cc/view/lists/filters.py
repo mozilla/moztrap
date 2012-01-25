@@ -24,7 +24,7 @@ from functools import wraps
 
 
 
-def filter(ctx_name, *filters):
+def filter(ctx_name, filterset=None, *filters):
     """
     View decorator that handles filtering of a queryset.
 
@@ -32,6 +32,8 @@ def filter(ctx_name, *filters):
     ``ctx_name``. Each additional argument should be a Filter instance.
 
     """
+    if filterset is None:
+        filterset = FilterSet
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
@@ -40,7 +42,7 @@ def filter(ctx_name, *filters):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            fs = FilterSet(filters, request.GET)
+            fs = filterset(filters, request.GET)
             ctx[ctx_name] = fs.filter(ctx[ctx_name])
             ctx["filters"] = fs
             return response
@@ -53,6 +55,10 @@ def filter(ctx_name, *filters):
 
 class FilterSet(object):
     """A set of possible filters on a queryset and their current state."""
+    # subclasses can have preset filters
+    filters = []
+
+
     def __init__(self, filters, GET, prefix="filter-"):
         """
         Initialize a FilterSet.
@@ -68,13 +74,20 @@ class FilterSet(object):
             (k[len(prefix):], GET.getlist(k)) for k in GET.keys()
             if k.startswith(prefix)
             )
-        self.boundfilters = [BoundFilter(f, self.data) for f in filters]
+        if filters:
+            self.filters.extend(filters)
+        self.boundfilters = [BoundFilter(f, self.data) for f in self.filters]
 
 
     def __iter__(self):
         """Iteration yields BoundFilters."""
         for f in self.boundfilters:
             yield f
+
+
+    def __len__(self):
+        """Length is number of member filters."""
+        return len(self.boundfilters)
 
 
     def filter(self, queryset):
@@ -121,6 +134,12 @@ class BoundFilter(object):
     def name(self):
         """Pass-through to Filter name."""
         return self._filter.name
+
+
+    @property
+    def key(self):
+        """Pass-through to Filter key."""
+        return self._filter.key
 
 
     def __iter__(self):
@@ -269,6 +288,7 @@ class RelatedFieldFilter(BaseChoicesFilter):
 
     def get_choices(self):
         """Get the options for this filter."""
+        # always clone to get new data; filter instances are persistent
         return [(obj.id, self.label_func(obj)) for obj in self.queryset]
 
 

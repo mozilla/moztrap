@@ -19,7 +19,6 @@
 List pagination utilities.
 
 """
-from functools import wraps
 import math
 
 from ..utils.querystring import update_querystring
