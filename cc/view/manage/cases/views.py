@@ -26,7 +26,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from ....model.library.models import CaseVersion, Case
 
-from ...lists import decorators as deco
+from ... import lists
 from ...lists.filters import ChoicesFilter
 from ...utils.ajax import ajax
 
@@ -35,12 +35,12 @@ from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
 @login_required
-@deco.actions(Case, ["clone", "delete"], fall_through=True)
-@deco.actions(CaseVersion, ["activate", "deactivate"])
-@deco.filter("caseversions", ChoicesFilter("status", choices=[("draft", "draft"), ("active", "active")]))
+@lists.actions(Case, ["clone", "delete"], fall_through=True)
+@lists.actions(CaseVersion, ["activate", "deactivate"])
+@lists.filter("caseversions", ChoicesFilter("status", choices=[("draft", "draft"), ("active", "active")]))
 @ajax("manage/product/testcase/list/_cases_list.html")
-@deco.sort("caseversions")
-def list(request):
+@lists.sort("caseversions")
+def cases_list(request):
     return TemplateResponse(
         request,
         "manage/product/testcase/cases.html",
@@ -53,7 +53,7 @@ def list(request):
 
 
 @login_required
-def details(request, caseversion_id):
+def case_details(request, caseversion_id):
     caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
     return TemplateResponse(
         request,
@@ -66,7 +66,7 @@ def details(request, caseversion_id):
 
 
 @permission_required("library.create_cases")
-def add(request):
+def case_add(request):
     if request.method == "POST":
         form = AddCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -85,7 +85,7 @@ def add(request):
 
 
 @permission_required("library.create_cases")
-def add_bulk(request):
+def case_add_bulk(request):
     if request.method == "POST":
         form = AddBulkCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -104,7 +104,7 @@ def add_bulk(request):
 
 
 @permission_required("library.manage_cases")
-def edit(request, caseversion_id):
+def case_edit(request, caseversion_id):
     caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
     if request.method == "POST":
         form = EditCaseForm(

@@ -29,31 +29,31 @@ urlpatterns = patterns(
     # testcase ---------------------------------------------------------------
     # manage
     url("^cases/$",
-        "cc.view.manage.cases.views.list",
+        "cc.view.manage.cases.views.cases_list",
         name="manage_cases"),
 
     # ajax details
     url("^cases/_detail/(?P<caseversion_id>\d+)/$",
-        "cc.view.manage.cases.views.details",
+        "cc.view.manage.cases.views.case_details",
         name="manage_case_details"),
 
     # add
     url("^case/add/$",
-        "cc.view.manage.cases.views.add",
+        "cc.view.manage.cases.views.case_add",
         name="manage_case_add"),
 
     # add bulk
     url("^case/add/bulk/$",
-        "cc.view.manage.cases.views.add_bulk",
+        "cc.view.manage.cases.views.case_add_bulk",
         name="manage_case_add_bulk"),
 
     # edit
     url("^case/(?P<caseversion_id>\d+)/$",
-        "cc.view.manage.cases.views.edit",
+        "cc.view.manage.cases.views.case_edit",
         name="manage_case_edit"),
 
     # tags -------------------------------------------------------------------
     url(r"^tags/_autocomplete/",
-        "cc.view.manage.tags.views.autocomplete",
+        "cc.view.manage.tags.views.tag_autocomplete",
         name="manage_tags_autocomplete"),
 )

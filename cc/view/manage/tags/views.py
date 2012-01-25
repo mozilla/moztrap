@@ -30,7 +30,7 @@ from ....model.tags.models import Tag
 
 
 @login_required
-def autocomplete(request):
+def tag_autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""
     text = request.GET.get("text")
     if text is not None:
