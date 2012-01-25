@@ -125,6 +125,7 @@ class TestPager(TestCase):
         """Returns mock queryset with given count."""
         qs = Mock()
         qs.count.return_value = count
+        qs.empty.return_value = []
         qs.__getitem__ = Mock()
         return qs
 
@@ -247,6 +248,13 @@ class TestPager(TestCase):
         p = self.pager(products[0].__class__.objects.all(), 3, 1)
 
         self.assertEqual(list(p.objects), products[:3])
+
+
+    def test_objects_empty(self):
+        """.objects can be empty."""
+        p = self.pager(self.qs(0), 3, 1)
+
+        self.assertEqual(list(p.objects), [])
 
 
     def test_sliced_queryset_cached(self):

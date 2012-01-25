@@ -125,7 +125,10 @@ class Pager(object):
 
         """
         if self._sliced_qs is None:
-            self._sliced_qs = self._queryset[self.low-1:self.high]
+            if not self.high:
+                self._sliced_qs = self._queryset.empty()
+            else:
+                self._sliced_qs = self._queryset[self.low-1:self.high]
         return self._sliced_qs
 
 
