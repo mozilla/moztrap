@@ -1,4 +1,4 @@
-{% load icanhaz %}
+{% load icanhaz pagination %}
 
 <nav id="filter">
   <h3 class="navhead">List Filtering</h3>
@@ -14,11 +14,9 @@
       <h4 class="toggle"><a href="#">Advanced Filtering</a></h4>
       <form method="GET" id="filterform">
         {# preserve pagination and sort state, if any #}
-        {% if pager %}
         {# re-filtering should jump back to page 1 #}
         <input type="hidden" name="pagenumber" value="1">
-        <input type="hidden" name="pagesize" value="{{ pager.pagesize }}">
-        {% endif %}
+        <input type="hidden" name="pagesize" value="{{ request|pagesize }}">
         {% if sort.field %}
         <input type="hidden" name="sortfield" value="{{ sort.field }}">
         <input type="hidden" name="sortdirection" value="{{ sort.direction }}">
