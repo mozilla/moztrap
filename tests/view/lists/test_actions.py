@@ -61,6 +61,29 @@ class ActionsTest(TestCase):
         return view(request)
 
 
+    def test_uses_wraps(self):
+        """Preserves docstring and name of original view func."""
+        @self.actions("ctx_name", [])
+        def myview(request, some_id):
+            """docstring"""
+
+        self.assertEqual(myview.func_name, "myview")
+        self.assertEqual(myview.func_doc, "docstring")
+
+
+    def test_passes_on_args(self):
+        """Arguments are passed on to original view func."""
+        record = []
+
+        @self.actions("ctx_name", [])
+        def myview(request, *args, **kwargs):
+            record.extend([args, kwargs])
+
+        myview(RequestFactory().get("/"), "a", b=2)
+
+        self.assertEqual(record, [("a",), {"b": 2}])
+
+
     def test_action_redirects(self):
         """After action is taken, redirects to original URL."""
         req = RequestFactory().post("/the/url", data={"action-doit": "3"})
