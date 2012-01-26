@@ -1,4 +1,7 @@
 <p class="byline hcard">
+  {% if item.id %}
+    <strong>#{{ item.id }}</strong>
+  {% endif %}
   Created by <span class="fn">{{ item.created_by.username|default:"unknown" }}</span>
   on <time pubdate>{{ item.created_on|date }}</time>
 </p>
