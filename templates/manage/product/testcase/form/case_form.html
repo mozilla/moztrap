@@ -42,8 +42,7 @@
     </div>
 
     <div class="form-actions">
-      {# @@@ wireframed status field: [draft | active | disabled] #}
-      {% include "forms/_mock_field.html" with field='status' type='select' %}
+      {% include "forms/_field.html" with field=form.status %}
       <button type="submit" name="action-save" value="1">save test case</button>
     </div>
   </form>

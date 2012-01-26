@@ -64,6 +64,7 @@ class AddCaseFormTest(TestCase):
             "steps-INITIAL_FORMS": [0],
             "steps-0-instruction": ["Fill in form and submit."],
             "steps-0-expected": ["You should get a welcome email."],
+            "status": ["draft"],
             }
         return MultiValueDict(defaults)
 

@@ -107,6 +107,7 @@ class AddCaseTest(ViewTestCase):
         form["description"] = "Tests that a user can log in."
         form["steps-0-instruction"] = "Type creds and click login."
         form["steps-0-expected"] = "You should see a welcome message."
+        form["status"] = "active"
         res = form.submit()
 
         self.assertEqual(res.status_int, 302)
@@ -117,6 +118,7 @@ class AddCaseTest(ViewTestCase):
         self.assertEqual(cv.productversion, pv)
         self.assertEqual(cv.name, "Can log in.")
         self.assertEqual(cv.description, "Tests that a user can log in.")
+        self.assertEqual(cv.status, "active")
         step = cv.steps.get()
         self.assertEqual(step.instruction, "Type creds and click login.")
         self.assertEqual(step.expected, "You should see a welcome message.")

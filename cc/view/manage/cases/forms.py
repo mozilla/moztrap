@@ -24,11 +24,10 @@ from django.forms.models import inlineformset_factory, BaseInlineFormSet
 
 import floppyforms as forms
 
+from .... import model
+
 from ...utils import ccforms
-from ....model.core.models import Product, ProductVersion
-from ....model.library.models import (
-    Case, CaseVersion, CaseStep, CaseAttachment, Suite, SuiteCase)
-from ....model.tags.models import Tag
+
 
 
 
@@ -39,12 +38,15 @@ def product_id_attrs(obj):
 
 class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     product = ccforms.CCModelChoiceField(
-        Product.objects.all(), choice_attrs=lambda p: {"data-product-id": p.id})
+        model.Product.objects.all(),
+        choice_attrs=lambda p: {"data-product-id": p.id})
     productversion = ccforms.CCModelChoiceField(
-        ProductVersion.objects.all(), choice_attrs=product_id_attrs)
+        model.ProductVersion.objects.all(), choice_attrs=product_id_attrs)
     and_later_versions = forms.BooleanField(initial=True, required=False)
     name = forms.CharField(max_length=200)
     description = forms.CharField(required=False, widget=ccforms.BareTextarea)
+    status = forms.CharField(
+        widget=forms.Select(choices=model.CaseVersion.STATUS))
     # @@@ tags and attachments aren't proper fields/widgets (yet)
     # these are just placeholder fields for the JS autocomplete stuff, we don't
     # use their contents
@@ -68,7 +70,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             )
         if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
-                Suite.objects.all(),
+                model.Suite.objects.all(),
                 choice_attrs=product_id_attrs,
                 required=False)
         self.steps_formset = StepFormSet(data=self.data or None)
@@ -97,7 +99,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         version_kwargs = self.cleaned_data.copy()
         product = version_kwargs.pop("product")
-        case = Case.objects.create(product=product, user=self.user)
+        case = model.Case.objects.create(product=product, user=self.user)
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
 
@@ -106,7 +108,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         initial_suite = version_kwargs.pop("initial_suite", None)
         if initial_suite:
-            SuiteCase.objects.create(
+            model.SuiteCase.objects.create(
                 case=case, suite=initial_suite, user=self.user)
 
         productversions = [version_kwargs.pop("productversion")]
@@ -117,7 +119,8 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         for productversion in productversions:
             this_version_kwargs = version_kwargs.copy()
             this_version_kwargs["productversion"] = productversion
-            caseversion = CaseVersion.objects.create(**this_version_kwargs)
+            caseversion = model.CaseVersion.objects.create(
+                **this_version_kwargs)
             steps_formset = StepFormSet(
                 data=self.data, instance=caseversion, user=self.user)
             steps_formset.save()
@@ -134,7 +137,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         for name in new_tags:
             # @@@ should pass in user here, need CCQuerySet.get_or_create
-            t, created = Tag.objects.get_or_create(
+            t, created = model.Tag.objects.get_or_create(
                 name=name, product=caseversion.case.product)
             tag_ids.add(t.id)
 
@@ -150,7 +153,7 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
         if self.files: # if no files, it's a plain dict, has no getlist
             for uf in self.files.getlist("add_attachment"):
-                CaseAttachment.objects.create(
+                model.CaseAttachment.objects.create(
                     attachment=uf,
                     caseversion=caseversion,
                     user=self.user,
@@ -170,7 +173,7 @@ class EditCaseForm(AddCaseForm):
 
 class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
     class Meta:
-        model = CaseStep
+        model = model.CaseStep
         widgets = {
             "instruction": ccforms.BareTextarea,
             "expected": ccforms.BareTextarea,
@@ -218,8 +221,8 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
 
 
 StepFormSet = inlineformset_factory(
-    CaseVersion,
-    CaseStep,
+    model.CaseVersion,
+    model.CaseStep,
     form=StepForm,
     formset=BaseStepInlineFormSet,
     extra=1)
