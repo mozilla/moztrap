@@ -73,3 +73,19 @@ class FilterTest(TestCase):
         self.assertEqual(
             pagesize_url(request, 20),
             "http://localhost/?pagenumber=1&pagesize=20")
+
+
+    def test_pagenumber(self):
+        """``pagenumber`` gets the pagenumber from the request."""
+        from cc.view.lists.templatetags.pagination import pagenumber
+        request = Mock()
+        request.GET = {"pagenumber": 2, "pagesize": 10}
+        self.assertEqual(pagenumber(request), 2)
+
+
+    def test_pagesize(self):
+        """``pagenumber`` gets the pagenumber from the request."""
+        from cc.view.lists.templatetags.pagination import pagesize
+        request = Mock()
+        request.GET = {"pagenumber": 2, "pagesize": 10}
+        self.assertEqual(pagesize(request), 10)
