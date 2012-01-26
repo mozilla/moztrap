@@ -33,6 +33,8 @@ class CaseVersionFilterSet(filters.FilterSet):
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
         filters.KeywordFilter("name"),
         filters.RelatedFieldFilter(
+            "tag", lookup="tags", queryset=model.Tag.objects.all()),
+        filters.RelatedFieldFilter(
             "product",
             lookup="case__product",
             queryset=model.Product.objects.all()),
@@ -41,15 +43,17 @@ class CaseVersionFilterSet(filters.FilterSet):
             lookup="productversion",
             key="productversion",
             queryset=model.ProductVersion.objects.all()),
+        filters.KeywordFilter("instruction", lookup="steps__instruction"),
+        filters.KeywordFilter("expected result", lookup="steps__expected"),
         filters.RelatedFieldFilter(
             "creator", lookup="created_by", queryset=User.objects.all()),
-        filters.RelatedFieldFilter(
-            "tag", lookup="tags", queryset=model.Tag.objects.all()),
         filters.RelatedFieldFilter(
             "environment element",
             lookup="environments__elements",
             key="envelement",
             queryset=model.Element.objects.all()),
+        filters.RelatedFieldFilter(
+            "suite", lookup="case__suites", queryset=model.Suite.objects.all()),
         ]
 
 

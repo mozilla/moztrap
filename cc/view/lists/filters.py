@@ -316,4 +316,4 @@ class KeywordFilter(Filter):
             queryset = queryset.filter(
                 **{"{0}__icontains".format(self.lookup): value})
 
-        return queryset
+        return queryset.distinct()
