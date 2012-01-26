@@ -76,8 +76,12 @@
           &::after
             content: " »"
 
+    .filter-group, .filter-items
+      display: inline
+
     .category-title, .addterm
-      +gone
+      display: none
+
     .filter-item
       @extend .chickcheck
 
@@ -130,3 +134,10 @@
       &:hover
         background-image: image-url('ui/x_sm.png')
 
+  // Keywords
+  .keyword
+    .content, .onoffswitch
+      &::before
+        content: open-quote
+      &::after
+        content: close-quote

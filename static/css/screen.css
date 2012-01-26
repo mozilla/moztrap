@@ -1107,6 +1107,9 @@ body > div {
   width: 1.5em;
 }
 
+.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, #filter .compact .filter-item {
+  display: inline;
+}
 .chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, #filter .compact .filter-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
@@ -2354,15 +2357,11 @@ body > div {
 #filter .compact .toggle a:link::after, #filter .compact .toggle a:visited::after {
   content: " »";
 }
+#filter .compact .filter-group, #filter .compact .filter-items {
+  display: inline;
+}
 #filter .compact .category-title, #filter .compact .addterm {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
+  display: none;
 }
 #filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
   content: "« hide ";
@@ -2422,6 +2421,12 @@ body > div {
 }
 #filter .expanded .check:checked + .onoff:hover {
   background-image: url('../images/ui/x_sm.png?1326735333');
+}
+#filter .keyword .content::before, #filter .keyword .onoffswitch::before {
+  content: open-quote;
+}
+#filter .keyword .content::after, #filter .keyword .onoffswitch::after {
+  content: close-quote;
 }
 
 .steps {
@@ -3408,7 +3413,7 @@ body.login input, body.login .errorlist {
   margin-right: 0;
   #margin-left: -1em;
 }
-#managecases .itemhead, #managecases .content {
+#managecases .itemhead, #managecases .itembody .content {
   padding-left: 3.75em;
 }
 #managecases .title {
