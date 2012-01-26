@@ -180,6 +180,9 @@ class Filter(object):
 
     def filter(self, queryset, values):
         """Given queryset and selected values, return filtered queryset."""
+        if values:
+            return queryset.filter(
+                **{"{0}__in".format(self.lookup): values}).distinct()
         return queryset
 
 
@@ -219,14 +222,6 @@ class BaseChoicesFilter(Filter):
 
         """
         return []
-
-
-    def filter(self, queryset, values):
-        """Given queryset and selected values, return filtered queryset."""
-        if values:
-            return queryset.filter(
-                **{"{0}__in".format(self.lookup): values}).distinct()
-        return queryset
 
 
     def options(self, values):
@@ -306,16 +301,23 @@ class RelatedFieldFilter(BaseChoicesFilter):
 
 
 
-class KeywordFilter(Filter):
-    """Filters by arbitrary keywords rather than a pre-set list of options."""
+class KeywordExactFilter(Filter):
+    """Allows user to input arbitrary filter values; no pre-set options list."""
     cls = "keyword"
 
 
     def options(self, values):
+        """Options displayed are always the current filter values."""
         return [(v, v) for v in values]
 
 
+
+class KeywordFilter(KeywordExactFilter):
+    """Values are ANDed in a 'contains' search of the field"""
+
+
     def filter(self, queryset, values):
+        """Values are ANDed in a 'contains' search of the field text."""
         for value in values:
             queryset = queryset.filter(
                 **{"{0}__icontains".format(self.lookup): value})
