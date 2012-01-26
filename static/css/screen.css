@@ -2406,11 +2406,11 @@ body > div {
 #filter .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
-  padding-left: 21px;
+  padding-left: 22px;
 }
 #filter .expanded .onoff {
   display: block;
-  background: url('../images/ui/plus_sm.png?1326735333') no-repeat scroll 9px;
+  background: url('../images/ui/x_sm.png?1326735333') no-repeat scroll 9px;
 }
 #filter .expanded .onoff:hover {
   font-weight: 500;
