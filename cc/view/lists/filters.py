@@ -108,9 +108,9 @@ FilterOption = namedtuple("FilterOption", ["value", "label", "selected"])
 
 class BoundFilter(object):
     """A Filter plus specific filtering values."""
-    def __init__(self, filter, data):
+    def __init__(self, flt, data):
         """``flt`` is a Filter instance, ``data`` is a dict of filter data."""
-        self._filter = filter
+        self._filter = flt
         self.data = data
 
         # list of valid selected option values

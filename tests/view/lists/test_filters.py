@@ -28,19 +28,24 @@ from django.utils.datastructures import MultiValueDict
 from ... import factories as F
 
 
-class DecoratorTest(TestCase):
+class FiltersTestCase(TestCase):
+    """A test case for testing classes in the cc.view.lists.filters module."""
+
+
+    @property
+    def filters(self):
+        """The module under test."""
+        from cc.view.lists import filters
+        return filters
+
+
+
+class DecoratorTest(FiltersTestCase):
     """Tests for ``filter`` decorator."""
     @property
     def filter(self):
         """The decorator factory under test."""
         return self.filters.filter
-
-
-    @property
-    def filters(self):
-        """The filters module."""
-        from cc.view.lists import filters
-        return filters
 
 
     def on_response(self, response, decorator=None, request=None):
@@ -136,15 +141,8 @@ class DecoratorTest(TestCase):
 
 
 
-class FilterSetTest(TestCase):
+class FilterSetTest(FiltersTestCase):
     """Tests for FilterSet."""
-    @property
-    def filters(self):
-        """The module under test."""
-        from cc.view.lists import filters
-        return filters
-
-
     def test_data(self):
         """
         ``self.data`` is plain dict of lists from given MultiValueDict.
@@ -270,3 +268,72 @@ class FilterSetTest(TestCase):
 
         self.assertEqual(qs.one, ["1"])
         self.assertEqual(qs.two, ["2", "3"])
+
+
+
+class BoundFilterTest(FiltersTestCase):
+    """Tests for BoundFilter."""
+    def test_values(self):
+        """values is list of valid values (as returned by Filter)."""
+        bf = self.filters.BoundFilter(
+            self.filters.ChoicesFilter(
+                "name", choices=[("1", "one"), ("2", "two")]),
+            {"name": ["1", "bad"], "other": ["irrelevant"]}
+            )
+
+        self.assertEqual(bf.values, ["1"])
+
+
+    def test_iteration(self):
+        """Iteration returns FilterOptions with value, label, selected attrs."""
+        bf = self.filters.BoundFilter(
+            self.filters.ChoicesFilter(
+                "name", choices=[("1", "one"), ("2", "two")]),
+            {"name": ["1", "bad"], "other": ["irrelevant"]}
+            )
+
+        self.assertEqual(
+            [(o.value, o.label, o.selected) for o in bf],
+            [("1", "one", True), ("2", "two", False)])
+
+
+    def test_filter(self):
+        """Filtering just passes through queryset and values to filter."""
+        class MyChoicesFilter(self.filters.ChoicesFilter):
+            def filter(self, queryset, values):
+                # simple annotation so we can tell qs went through here
+                queryset.values = values
+                return queryset
+
+        bf = self.filters.BoundFilter(
+            MyChoicesFilter(
+                "name", choices=[("1", "one"), ("2", "two")]),
+            {"name": ["1", "bad"], "other": ["irrelevant"]}
+            )
+
+        qs = bf.filter(Mock())
+
+        self.assertEqual(qs.values, ["1"])
+
+
+    def test_passthrough(self):
+        """cls, name, and key properties are just pass-through to filter."""
+        flt = self.filters.Filter("name", key="key")
+        flt.cls = "foobar"
+
+        bf = self.filters.BoundFilter(flt, {})
+
+        self.assertEqual(bf.cls, "foobar")
+        self.assertEqual(bf.name, "name")
+        self.assertEqual(bf.key, "key")
+
+
+    def test_len(self):
+        """Length is number of options."""
+        bf = self.filters.BoundFilter(
+            self.filters.ChoicesFilter(
+                "name", choices=[("1", "one"), ("2", "two")]),
+            {}
+            )
+
+        self.assertEqual(len(bf), 2)
