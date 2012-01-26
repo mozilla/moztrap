@@ -1315,15 +1315,8 @@ body > div {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0;
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
   display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
   white-space: nowrap;
-}
-.listnav .perpage ul li, .listnav .pagination li {
-  *display: inline;
 }
 .listnav .perpage ul li, .listnav .pagination li {
   vertical-align: baseline;
@@ -2776,6 +2769,25 @@ body.login input, body.login .errorlist {
   padding-left: 8.421%;
   padding-right: 8.421%;
 }
+.case-form .status-field {
+  display: inline-block;
+  width: 18.987%;
+  margin-right: 1.266%;
+}
+.case-form .status-field label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.case-form .status-field select {
+  display: inline-block;
+  vertical-align: baseline;
+}
 
 .case-version-nav {
   clear: both;
@@ -2785,29 +2797,15 @@ body.login input, body.login .errorlist {
 }
 
 .case-version-head {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
   display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
   font-weight: 500;
-}
-.case-version-head {
-  *display: inline;
 }
 
 .change-version {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
   display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
   position: relative;
   width: 26.437%;
   text-align: left;
-}
-.change-version {
-  *display: inline;
 }
 .change-version .case-version-current {
   font-weight: 500;
@@ -3369,16 +3367,9 @@ body.login input, body.login .errorlist {
   overflow: visible;
   background-position: center;
   width: 1.5em;
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
   display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
   content: "<";
   padding-right: 0.4em;
-}
-.step-form-item .insert-step::before {
-  *display: inline;
 }
 .step-form-item .insert-step:focus, .step-form-item .insert-step:hover, .step-form-item .insert-step:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
