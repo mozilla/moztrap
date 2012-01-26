@@ -1,0 +1,14 @@
+[run]
+branch = True
+
+[report]
+omit =
+  */migrations/*
+  cc/deploy/wsgi.py
+  cc/deploy/vendor_wsgi.py
+  cc/settings/base.py
+  cc/settings/default.py
+  cc/settings/local.py
+  cc/settings/local.sample.py
+include =
+  cc/**/*.py

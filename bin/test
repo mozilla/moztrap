@@ -1,3 +1,5 @@
 #!/bin/sh
 
-DJANGO_SETTINGS_MODULE="tests.settings" python manage.py test --coverage --coverall $*
+export DJANGO_SETTINGS_MODULE="tests.settings"
+coverage run manage.py test $*
+coverage html
