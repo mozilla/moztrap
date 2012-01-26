@@ -19,8 +19,9 @@
 Filtering for cases.
 
 """
-from ....model.core.models import Product, ProductVersion
-from ....model.library.models import CaseVersion
+from django.contrib.auth.models import User
+
+from .... import model
 
 from ...lists import filters
 
@@ -29,14 +30,26 @@ from ...lists import filters
 class CaseVersionFilterSet(filters.FilterSet):
     """FilterSet for CaseVersions; filters on latest by default."""
     filters = [
-        filters.ChoicesFilter("status", choices=CaseVersion.STATUS),
+        filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
+        filters.KeywordFilter("name"),
         filters.RelatedFieldFilter(
-            "product", lookup="case__product", queryset=Product.objects.all()),
+            "product",
+            lookup="case__product",
+            queryset=model.Product.objects.all()),
         filters.RelatedFieldFilter(
             "product version",
             lookup="productversion",
             key="productversion",
-            queryset=ProductVersion.objects.all()),
+            queryset=model.ProductVersion.objects.all()),
+        filters.RelatedFieldFilter(
+            "creator", lookup="created_by", queryset=User.objects.all()),
+        filters.RelatedFieldFilter(
+            "tag", lookup="tags", queryset=model.Tag.objects.all()),
+        filters.RelatedFieldFilter(
+            "environment element",
+            lookup="environments__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
         ]
 
 

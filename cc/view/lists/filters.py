@@ -220,7 +220,8 @@ class BaseChoicesFilter(Filter):
     def filter(self, queryset, values):
         """Given queryset and selected values, return filtered queryset."""
         if values:
-            return queryset.filter(**{"{0}__in".format(self.lookup): values})
+            return queryset.filter(
+                **{"{0}__in".format(self.lookup): values}).distinct()
         return queryset
 
 
@@ -313,6 +314,6 @@ class KeywordFilter(Filter):
     def filter(self, queryset, values):
         for value in values:
             queryset = queryset.filter(
-                **{"{0}__contains".format(self.lookup): value})
+                **{"{0}__icontains".format(self.lookup): value})
 
         return queryset
