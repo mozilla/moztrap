@@ -24,14 +24,17 @@ from functools import wraps
 
 
 
-def filter(ctx_name, filterset=None, *filters):
+def filter(ctx_name, filters=None, filterset=None):
     """
     View decorator that handles filtering of a queryset.
 
     Expects to find the queryset in the TemplateResponse context under the name
-    ``ctx_name``. Each additional argument should be a Filter instance.
+    ``ctx_name``. Optional ``filters`` argument should be an iterable of
+    filters, and ``filterset`` is an optional FilterSet subclass to use.
 
     """
+    if filters is None:
+        filters = []
     if filterset is None:
         filterset = FilterSet
     def decorator(view_func):
@@ -75,6 +78,7 @@ class FilterSet(object):
             if k.startswith(prefix)
             )
         if filters:
+            self.filters = self.filters[:]
             self.filters.extend(filters)
         self.boundfilters = [BoundFilter(f, self.data) for f in self.filters]
 
