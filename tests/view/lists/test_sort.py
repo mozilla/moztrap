@@ -37,22 +37,13 @@ class SortDecoratorTest(TestCase):
         return sort
 
 
-    def req(self, method="GET", path="/some/url", *args, **kwargs):
-        """Return a request with given method, path, etc."""
-        return getattr(RequestFactory(), method.lower())(path, *args, **kwargs)
-
-
     def on_response(self, response, decorator=None, request=None):
         """Apply given decorator to dummy view, return given response."""
         decorator = decorator or self.sort("ctx_name")
-        request = request or self.req()
+        request = request or RequestFactory().get("/")
 
         @decorator
         def view(request):
-            try:
-                response.request = request
-            except AttributeError:
-                pass
             return response
 
         return view(request)
@@ -60,7 +51,7 @@ class SortDecoratorTest(TestCase):
 
     def on_template_response(self, context, **kwargs):
         """Run TemplateResponse with given context through decorated view."""
-        request = kwargs.setdefault("request", self.req())
+        request = kwargs.setdefault("request", RequestFactory().get("/"))
 
         res = TemplateResponse(request, "some/template.html", context)
 
@@ -92,15 +83,15 @@ class SortDecoratorTest(TestCase):
         def myview(request, *args, **kwargs):
             record.extend([args, kwargs])
 
-        myview(self.req(), "a", b=2)
+        myview(RequestFactory().get("/"), "a", b=2)
 
         self.assertEqual(record, [("a",), {"b": 2}])
 
 
     def test_orders_queryset(self):
         """Orders queryset in context according to sort params."""
-        req = self.req(
-            "GET", "/a/url", {"sortfield": "name", "sortdirection": "asc"})
+        req = RequestFactory().get(
+            "/a/url", {"sortfield": "name", "sortdirection": "asc"})
         qs = Mock()
         self.on_template_response({"ctx_name": qs}, request=req)
 
@@ -109,8 +100,8 @@ class SortDecoratorTest(TestCase):
 
     def test_bad_sort_field(self):
         """Silently ignores bad sort field."""
-        req = self.req(
-            "GET", "/a/url", {"sortfield": "foo", "sortdirection": "asc"})
+        req = RequestFactory().get(
+            "/a/url", {"sortfield": "foo", "sortdirection": "asc"})
         from cc.model.core.models import Product # has no "foo" field
         qs = Product.objects.all()
         res = self.on_template_response({"ctx_name": qs}, request=req)
@@ -138,8 +129,8 @@ class SortDecoratorTest(TestCase):
 
     def test_sort_object_in_context(self):
         """Places Sort object in context as "sort"."""
-        req = self.req(
-            "GET", "/a/url", {"sortfield": "name", "sortdirection": "desc"})
+        req = RequestFactory().get(
+            "/a/url", {"sortfield": "name", "sortdirection": "desc"})
         res = self.on_template_response({"ctx_name": Mock()}, request=req)
 
         sort = res.context_data["sort"]
