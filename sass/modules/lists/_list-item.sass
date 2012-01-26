@@ -1,4 +1,14 @@
 // ---------------------------------------------------------------------------
+// Templates
+
+.detailslist
+  +cond
+  max-height: rhythm(12)
+  overflow-y: auto
+.detailstitle
+  @extend .allcaps
+
+// ---------------------------------------------------------------------------
 // Item
 
 .listitem
@@ -57,11 +67,9 @@
     +italic
 
   .envs
-    +cond
-    max-height: rhythm(12)
-    overflow-y: auto
+    @extend .detailslist
   .envs-title
-    @extend .allcaps
+    @extend .detailstitle
 
   &.open
     .summary

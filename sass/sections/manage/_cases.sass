@@ -21,8 +21,14 @@
     margin-right: rhythm(.25)
 
   .iteminfo
-    +columns(18,23)
+    +columns(13,23)
 
-  .envs
+  .envs, .suites
     +columns(5,23)
+  .envs
     +omega(23)
+
+  .suites
+    @extend .detailslist
+  .suites-title
+    @extend .detailstitle

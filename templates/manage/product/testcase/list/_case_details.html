@@ -10,5 +10,16 @@
     {% endfor %}
   </ol>
 </div>
+
+{# @@@ wireframed #}
+<div class="suites">
+  <h4 class="suites-title">Suites</h4>
+  <ul class="suite-list">
+    <li><a href="#">suite name 1</a></li>
+    <li><a href="#">suite name 2</a></li>
+    <li><a href="#">suite name 3</a></li>
+  </ul>
+</div>
+
 {% include "lists/_environments.html" with environments=caseversion.environments %}
 {% include "lists/_associated_links.html" with bugs=caseversion.bug_urls attachments=caseversion.attachments %}
