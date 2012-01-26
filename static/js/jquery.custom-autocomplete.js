@@ -80,26 +80,6 @@
                 }
             },
 
-            // Used if there are specific restrictions on new inputs
-            passRestrictedNewInputs = function (thisGroup, newInputName) {
-                // If the group already has selected inputs...
-                if (thisGroup.find(options.inputs + ':checked').length) {
-                    // ...and if *all* of the selected inputs begin with "^" and ends with "$"...
-                    if (thisGroup.find(options.inputs + '[value^="^"][value$="$"]:checked').length === thisGroup.find(options.inputs + ':checked').length
-                            // ...and if the typed-text hasn't already been selected as an input, and if the typed-text begins with "^" and ends with "$"...
-                            && !(thisGroup.find(options.inputs + '[value="' + newInputName.toString().toLowerCase() + '"]:checked').length)
-                            && newInputName.indexOf('^') === 0
-                            && newInputName.lastIndexOf('$') === newInputName.length - 1) {
-                        // ...then append the new suggestion to the suggestion-list.
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return true;
-                }
-            },
-
             // Filter autocomplete suggestions, returning those that aren't duplicates.
             filterSuggestions = function () {
                 filteredSuggestions = newSuggestions.filter(function () {
@@ -144,17 +124,17 @@
                         var typedIndex,
                             thisSuggestion = {};
                         if (options.caseSensitive) {
-                            typedIndex = $(this).children('label').text().indexOf(typedText);
+                            typedIndex = $(this).find('label').text().indexOf(typedText);
                         } else {
-                            typedIndex = $(this).children('label').text().toLowerCase().indexOf(typedText.toLowerCase());
+                            typedIndex = $(this).find('label').text().toLowerCase().indexOf(typedText.toLowerCase());
                         }
                         thisSuggestion.typedText = typedText;
-                        thisSuggestion.name = $(this).children('label').text();
-                        thisSuggestion.preText = $(this).children('label').text().substring(0, typedIndex);
-                        thisSuggestion.postText = $(this).children('label').text().substring(typedIndex + typedText.length);
-                        thisSuggestion.id = $(this).children('input').attr('value');
+                        thisSuggestion.name = $(this).find('label').text();
+                        thisSuggestion.preText = $(this).find('label').text().substring(0, typedIndex);
+                        thisSuggestion.postText = $(this).find('label').text().substring(typedIndex + typedText.length);
+                        thisSuggestion.id = $(this).find('input').attr('value');
                         if (options.multipleCategories) {
-                            thisSuggestion.type = $(this).children('input').data('name');
+                            thisSuggestion.type = $(this).find('input').data('name');
                             if ($(this).closest(options.inputList).find('.category-title').length) {
                                 thisSuggestion.displayType = $(this).closest(options.inputList).find('.category-title').text();
                             }
@@ -180,13 +160,7 @@
                                 thisSuggestion.type = options.inputType;
                             }
 
-                            if (options.restrictNewInputs) {
-                                if (passRestrictedNewInputs($(this), typedText)) {
-                                    data.suggestions.unshift(thisSuggestion);
-                                }
-                            } else {
-                                data.suggestions.unshift(thisSuggestion);
-                            }
+                            data.suggestions.unshift(thisSuggestion);
                         });
                     }
                 }
@@ -262,19 +236,6 @@
                 textbox.focus();
                 suggestionList.hide();
                 updateFormActions();
-            });
-        }
-
-        // If there are any new inputs already selected, prevent a new input from being selected
-        // unless it and all new inputs begin with ^ and end with $.
-        if (options.restrictNewInputs && options.inputsNeverRemoved) {
-            newInputList.on('click', options.inputs + ':not(:checked) + label', function (e) {
-                var thisGroup = $(this).closest(options.newInputList),
-                    thisInputName = $(this).text();
-                if (!passRestrictedNewInputs(thisGroup, thisInputName)) {
-                    textbox.focus();
-                    e.preventDefault();
-                }
             });
         }
 
@@ -556,51 +517,53 @@
         // Allow adding new inputs via group-specific textbox
         newInputTextbox.each(function () {
             $(this).keydown(function (e) {
-                var thisTextbox = $(this),
-                    thisText = options.caseSensitive ? thisTextbox.val() : thisTextbox.val().toLowerCase(),
-                    thisGroup = thisTextbox.closest(options.newInputList),
-                    existingInput = thisGroup.find(options.inputs + '[value="' + thisText + '"]'),
-                    typeName = thisGroup.data('name'),
-                    index = thisGroup.find(options.inputs).length + 1,
-                    newInput = ich.autocomplete_input({
-                        typeName: typeName,
-                        inputName: thisText,
-                        id: thisText,
-                        index: index,
-                        newInput: true,
-                        prefix: prefix
-                    }),
-                    addInput = function () {
-                        if (thisGroup.children('ul').length) {
-                            thisGroup.removeClass('empty').children('ul').append(newInput);
-                        } else {
-                            thisGroup.removeClass('empty').append(newInput);
-                        }
-                        $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
-                        inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
-                        updateFormActions();
-                        thisTextbox.val(null);
-                        thisText = null;
-                    },
-                    selectInput = function () {
-                        existingInput.prop('checked', true).change();
-                        if (existingInput.data('originallyChecked') !== existingInput.is(':checked')) {
-                            existingInput.data('state', 'changed');
-                        }
-                        updateFormActions();
-                        thisTextbox.val(null);
-                        thisText = null;
-                    };
                 // ENTER performs submit action if textbox is empty and inputs have changed...
                 if (e.keyCode === keycodes.ENTER) {
                     e.preventDefault();
+                    var thisTextbox = $(this),
+                        thisText = options.caseSensitive ? thisTextbox.val() : thisTextbox.val().toLowerCase(),
+                        thisGroup = thisTextbox.closest(options.newInputList),
+                        existingInput = thisGroup.find(options.inputs + '[value="' + thisText + '"]'),
+                        typeName = thisGroup.data('name'),
+                        index = thisGroup.find(options.inputs).length + 1,
+                        newInput = ich.autocomplete_input({
+                            typeName: typeName,
+                            inputName: thisText,
+                            id: thisText,
+                            index: index,
+                            newInput: true,
+                            prefix: prefix
+                        }),
+                        addInput = function () {
+                            if (thisGroup.children('ul').length) {
+                                thisGroup.removeClass('empty').children('ul').append(newInput);
+                            } else {
+                                thisGroup.removeClass('empty').append(newInput);
+                            }
+                            $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                            inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
+                            updateFormActions();
+                            thisTextbox.val(null);
+                            thisText = null;
+                        },
+                        selectInput = function () {
+                            existingInput.prop('checked', true).change();
+                            if (existingInput.data('originallyChecked') !== existingInput.is(':checked')) {
+                                existingInput.data('state', 'changed');
+                            }
+                            updateFormActions();
+                            thisTextbox.val(null);
+                            thisText = null;
+                        };
                     if (thisText === '' && expiredList.hasClass('expired')) {
                         options.triggerSubmit(context);
                     } else if (thisText.length && thisText.trim() !== '') {
                         // ...otherwise, if the input already exists, ENTER selects it...
-                        if (existingInput.length && !existingInput.is(':checked') && !thisGroup.find(options.inputs + ':checked').length) {
-                            selectInput();
-                        } else if (options.restrictNewInputs && passRestrictedNewInputs(thisGroup, thisText)) {
+                        if (existingInput.length) {
+                            if (!existingInput.is(':checked')) {
+                                selectInput();
+                            }
+                        } else {
                             addInput();
                         }
                     }
@@ -644,7 +607,6 @@
         restrictAllowNew: false,                        // Set ``true`` if new inputs are only allowed if textbox has data-allow-new="true"
         newInputList: null,                             // Selector for list of new inputs (only needed if ``allowNew: true``
                                                         //      and ``multipleCategories: true``)
-        restrictNewInputs: false,                       // Set ``true`` if new inputs should be restricted to use ^ and $
         newInputTextbox: null,                          // Selector for secondary textbox to enter new group-specific inputs
         fakePlaceholder: false,                         // Set ``true`` to create fake placeholder text when using ``initialFocus: true``
         expiredList: null,                              // Selector for setting ``.expired`` when inputs have changed

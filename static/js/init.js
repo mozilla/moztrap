@@ -40,11 +40,9 @@ var CC = (function (CC, $) {
             newInputList: '.visual .filter-group.keyword',
             multipleCategories: true,
             allowNew: true,
-            restrictNewInputs: true,
             newInputTextbox: 'input[type="text"]',
             hideFormActions: true,
             fakePlaceholder: true,
-            expiredList: '.managelist',
             initialFocus: true,
             inputsNeverRemoved: true,
             prefix: 'filter'
