@@ -29,8 +29,8 @@ def filter(ctx_name, filters=None, filterset=None):
     View decorator that handles filtering of a queryset.
 
     Expects to find the queryset in the TemplateResponse context under the name
-    ``ctx_name``. Optional ``filters`` argument should be an iterable of
-    filters, and ``filterset`` is an optional FilterSet subclass to use.
+    ``ctx_name``. Optional ``filters`` argument should be an iterable of Filter
+    instances, and ``filterset`` is an optional FilterSet subclass to use.
 
     """
     if filters is None:
@@ -66,11 +66,11 @@ class FilterSet(object):
         """
         Initialize a FilterSet.
 
-        ``GET`` is a MultiValueDict containing filtering keys; usually
+        ``filters`` is an iterable of Filter instances.
+
+        ``GET`` is a MultiValueDict that may contain filtering keys; usually
         request.GET from the current request. Keys not beginning with
         ``prefix``` will be ignored.
-
-        ``filters`` is an iterable of Filter instances.
 
         """
         self.data = dict(
@@ -107,7 +107,7 @@ FilterOption = namedtuple("FilterOption", ["value", "label", "selected"])
 
 
 class BoundFilter(object):
-    """A Filter plus specific filtering values."""
+    """A Filter plus specific filtering values from the request."""
     def __init__(self, flt, data):
         """``flt`` is a Filter instance, ``data`` is a dict of filter data."""
         self._filter = flt
@@ -264,12 +264,11 @@ class ChoicesFilter(BaseChoicesFilter):
 
 
 
-class RelatedFieldFilter(BaseChoicesFilter):
+class ModelFilter(BaseChoicesFilter):
     """
-    A Filter for related fields.
+    A Filter whose choices are from a provided queryset.
 
-    Gets its choices from a provided queryset. Assumes the queryset model has a
-    numeric "id" primary key.
+    Assumes the queryset model has a numeric "id" primary key.
 
     """
     def __init__(self, *args, **kwargs):
@@ -283,7 +282,7 @@ class RelatedFieldFilter(BaseChoicesFilter):
         """
         self.queryset = kwargs.pop("queryset")
         self.label_func = kwargs.pop("label", lambda o: unicode(o))
-        super(RelatedFieldFilter, self).__init__(*args, **kwargs)
+        super(ModelFilter, self).__init__(*args, **kwargs)
 
 
     def get_choices(self):

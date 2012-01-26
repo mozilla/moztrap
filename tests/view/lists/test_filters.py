@@ -22,16 +22,14 @@ Tests for queryset-filtering.
 from mock import Mock
 
 from django.template.response import TemplateResponse
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory
 from django.utils.datastructures import MultiValueDict
+from django.utils.unittest import TestCase
 
-from ... import factories as F
 
 
 class FiltersTestCase(TestCase):
     """A test case for testing classes in the cc.view.lists.filters module."""
-
-
     @property
     def filters(self):
         """The module under test."""
@@ -337,3 +335,191 @@ class BoundFilterTest(FiltersTestCase):
             )
 
         self.assertEqual(len(bf), 2)
+
+
+
+class FilterTest(FiltersTestCase):
+    """Tests for base Filter class."""
+    def test_name(self):
+        """Name attribute is from mandatory first instantiation argument."""
+        f = self.filters.Filter("name")
+
+        self.assertEqual(f.name, "name")
+
+
+    def test_lookup(self):
+        """Lookup attribute is optional keyword argument."""
+        f = self.filters.Filter("name", lookup="lookup")
+
+        self.assertEqual(f.lookup, "lookup")
+
+
+    def test_lookup_defaults_to_name(self):
+        """Lookup attribute defaults to name."""
+        f = self.filters.Filter("name")
+
+        self.assertEqual(f.lookup, "name")
+
+
+    def test_key(self):
+        """Key attribute is optional keyword argument."""
+        f = self.filters.Filter("name", key="key")
+
+        self.assertEqual(f.key, "key")
+
+
+    def test_key_defaults_to_name(self):
+        """Key attribute defaults to name."""
+        f = self.filters.Filter("name")
+
+        self.assertEqual(f.key, "name")
+
+
+    def test_filter(self):
+        """Filters queryset so ``self.lookup`` field value is in ``values``."""
+        f = self.filters.Filter("name", lookup="lookup")
+
+        qs = Mock()
+        qs2 = f.filter(qs, ["1", "2"])
+
+        qs.filter.assert_called_with(lookup__in=["1", "2"])
+        qs.filter.return_value.distinct.assert_called_with()
+        self.assertEqual(qs2, qs.filter.return_value.distinct.return_value)
+
+
+    def test_options(self):
+        """Base Filter has no options."""
+        f = self.filters.Filter("name")
+
+        self.assertEqual(f.options(["yo"]), [])
+
+
+    def test_values(self):
+        """Pulls ``self.key`` values from given data."""
+        f = self.filters.Filter("name", key="key")
+
+        self.assertEqual(f.values({"key": ["one"], "name": ["two"]}), ["one"])
+
+
+
+class BaseChoicesFilterTest(FiltersTestCase):
+    """Tests for BaseChoicesFilter."""
+    def test_choices(self):
+        """choices property is return value of get_choices method, memoized."""
+        class MyChoicesFilter(self.filters.BaseChoicesFilter):
+            count = 0
+            def get_choices(self):
+                self.count += 1
+                return [(i, unicode(i)) for i in range(self.count)]
+
+        f = MyChoicesFilter("name")
+
+        f.choices
+
+        self.assertEqual(f.choices, [(0, u"0")])
+
+
+    def test_get_choices(self):
+        """Default get_choices returns no choices; should be overridden."""
+        f = self.filters.BaseChoicesFilter("name")
+
+        self.assertEqual(f.choices, [])
+
+
+    def test_options(self):
+        """Options are fixed to choices, regardless of current filter values."""
+        f = self.filters.BaseChoicesFilter("name")
+        f.get_choices = lambda: [("1", "one")]
+
+        self.assertEqual(f.options(["values"]), [("1", "one")])
+
+
+    def test_values(self):
+        """Values are constrained to valid choices."""
+        f = self.filters.BaseChoicesFilter("name")
+        f.get_choices = lambda: [("1", "one")]
+
+        self.assertEqual(f.values({"name": ["1", "2"]}), ["1"])
+
+
+
+class ChoicesFilterTest(FiltersTestCase):
+    """Tests for ChoicesFilter."""
+    def test_choices(self):
+        """Choices can be passed in as a keyword argument at instantiation."""
+        f = self.filters.ChoicesFilter("name", choices=[("1", "one")])
+
+        self.assertEqual(f.choices, [("1", "one")])
+
+
+
+class ModelFilterTest(FiltersTestCase):
+    """Tests for ModelFilter."""
+    @property
+    def queryset(self):
+        """Mock "queryset" of instances with numeric id and unicode repr."""
+        o1 = Mock()
+        o1.id = 1
+        o1.__unicode__ = lambda self: "one"
+        o2 = Mock()
+        o2.id = 2
+        o2.__unicode__ = lambda self: "two"
+        return [o1, o2]
+
+
+    def test_choices(self):
+        """Choices are passed in as an iterable of model instances."""
+        f = self.filters.ModelFilter("name", queryset=self.queryset)
+
+        self.assertEqual(f.choices, [(1, "one"), (2, "two")])
+
+
+    def test_custom_labels(self):
+        """Callable can be passed in to customize labeling of instances."""
+        f = self.filters.ModelFilter(
+            "name",
+            queryset=self.queryset,
+            label=lambda o: u"option {0}".format(o)
+            )
+
+        self.assertEqual(f.choices, [(1, "option one"), (2, "option two")])
+
+
+    def test_values_coerced(self):
+        """
+        Values are coerced to integers before being matched against options.
+
+        If coercion fails, value is ignored.
+
+        """
+        f = self.filters.ModelFilter("name", queryset=self.queryset)
+
+        self.assertEqual(f.values({"name": ["1", "foo", None]}), [1])
+
+
+
+class KeywordExactFilterTest(FiltersTestCase):
+    """Tests for KeywordExactFilter."""
+    def test_options(self):
+        """Available options are the current filter values."""
+        f = self.filters.KeywordExactFilter("name")
+
+        self.assertEqual(
+            f.options(["one", "two"]), [("one", "one"), ("two", "two")])
+
+
+class KeywordFilterTest(FiltersTestCase):
+    """Tests for KeywordFilter."""
+    def test_filter(self):
+        """Filters queryset by 'contains' all values."""
+        f = self.filters.KeywordFilter("name")
+
+        qs = Mock()
+        qs2 = f.filter(qs, ["one", "two"])
+
+        qs.filter.assert_called_with(name__icontains="one")
+        qs.filter.return_value.filter.assert_called_with(name__icontains="two")
+        qs.filter.return_value.filter.return_value.distinct.assert_called_with()
+        self.assertIs(
+            qs2,
+            qs.filter.return_value.filter.return_value.distinct.return_value)
