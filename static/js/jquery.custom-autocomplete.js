@@ -24,13 +24,11 @@
             keycodes = $.fn.customAutocomplete.keycodes,
             context = $(this),
             textbox = context.find(options.textbox),
-            formActions = context.find(options.formActions),
             suggestionList = context.find(options.suggestionList),
             inputList = context.find(options.inputList),
             newInputList = context.find(options.newInputList),
             inputs = inputList.add(newInputList).find(options.inputs),
             newInputTextbox = newInputList.find(options.newInputTextbox),
-            expiredList = context.find(options.expiredList),
             placeholder = textbox.attr('placeholder'),
             url = options.url,
             prefix = options.prefix,
@@ -49,22 +47,10 @@
                 textbox.removeClass('placeholder');
             },
 
-            // Checks if any inputs have changed from original-state,
-            // showing form-actions and adding ``.expired`` if any inputs have changed.
-            updateFormActions = function () {
-                if (inputs.filter(function () { return $(this).data('state') === 'changed'; }).length) {
-                    expiredList.addClass('expired');
-                    if (options.hideFormActions) {
-                        formActions.fadeIn('fast');
-                    }
-                    if (options.autoSubmit) {
-                        options.triggerSubmit(context);
-                    }
-                } else {
-                    expiredList.removeClass('expired');
-                    if (options.hideFormActions) {
-                        formActions.fadeOut('fast');
-                    }
+            // Submits form or adds no-inputs note when inputs change
+            inputsChanged = function () {
+                if (options.autoSubmit) {
+                    options.triggerSubmit(context);
                 }
 
                 if (options.noInputsNote) {
@@ -187,10 +173,6 @@
 
         suggestionList.hide();
 
-        if (options.hideFormActions) {
-            formActions.hide();
-        }
-
         if (options.fakePlaceholder) {
             textbox.addClass('placeholder');
         }
@@ -201,44 +183,12 @@
             options.newInputList = options.inputList;
         }
 
-        if (!expiredList.length) {
-            expiredList = $(options.expiredList);
-        }
-
-        // Set data-originallyChecked on each input to store original state
-        inputs.each(function () {
-            $(this).data('originallyChecked', $(this).is(':checked'));
-        });
-
-        // Reset button sets each input to its original state, hides form-actions
-        // and suggestion-list, and returns focus to the textbox.
-        formActions.find(options.reset).click(function (e) {
-            e.preventDefault();
-            if (options.hideFormActions) {
-                formActions.fadeOut('fast');
-            }
-            expiredList.removeClass('expired');
-            inputs.each(function () {
-                $(this).removeData('state');
-                $(this).prop('checked', $(this).data('originallyChecked')).change();
-            });
-            textbox.focus();
-            suggestionList.hide();
-        });
-
-        // Selecting/unselecting an input returns focus to textbox, hides
-        // suggestion-list, sets data-state "changed" if input has changed from
-        // original state, and shows/hides form-actions as appropriate.
+        // Selecting/unselecting an input returns focus to textbox and hides suggestion-list
         if (options.inputsNeverRemoved) {
             inputList.add(newInputList).on('change', options.inputs, function () {
-                if ($(this).data('originallyChecked') !== $(this).is(':checked')) {
-                    $(this).data('state', 'changed');
-                } else {
-                    $(this).removeData('state');
-                }
                 textbox.focus();
                 suggestionList.hide();
-                updateFormActions();
+                inputsChanged();
             });
         }
 
@@ -277,10 +227,6 @@
                 }
             })
             .keydown(function (e) {
-                // Prevent default actions on ENTER
-                if (e.keyCode === keycodes.ENTER) {
-                    e.preventDefault();
-                }
                 // If textbox has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
                 if (textbox.hasClass('placeholder') && options.fakePlaceholder) {
                     if (!e.metaKey && e.keyCode !== keycodes.SHIFT && e.keyCode !== keycodes.CTRL && e.keyCode !== keycodes.ALT && e.keyCode !== keycodes.CAPS && e.keyCode !== keycodes.ESC) {
@@ -294,9 +240,12 @@
                         e.preventDefault();
                         suggestionList.show();
                     }
-                    // ...perform submit action on ENTER if textbox is empty and inputs have changed
-                    if (e.keyCode === keycodes.ENTER && textbox.val() === '' && expiredList.hasClass('expired')) {
-                        options.triggerSubmit(context);
+                    // ...show suggestion list on ENTER
+                    if (e.keyCode === keycodes.ENTER) {
+                        e.preventDefault();
+                        if (suggestionList.find('li').length) {
+                            suggestionList.show();
+                        }
                     }
                     // ...show the suggestion list on arrow-keys
                     if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
@@ -320,22 +269,17 @@
                             suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
                         }
                     }
-                    // ENTER performs submit action if textbox is empty and inputs have changed...
+                    // ENTER selects the "active" suggestion, if exists.
                     if (e.keyCode === keycodes.ENTER) {
                         e.preventDefault();
-                        if (textbox.val() === '' && expiredList.hasClass('expired')) {
-                            options.triggerSubmit(context);
-                        // ...otherwise, ENTER selects the "active" suggestion.
-                        } else {
-                            if (suggestionList.find('.selected').length) {
-                                $.doTimeout(100, function () {
-                                    if (ajaxCalls === ajaxResponses) {
-                                        suggestionList.find('.selected').click();
-                                        return false;
-                                    }
-                                    return true;
-                                });
-                            }
+                        if (suggestionList.find('.selected').length) {
+                            $.doTimeout(100, function () {
+                                if (ajaxCalls === ajaxResponses) {
+                                    suggestionList.find('.selected').click();
+                                    return false;
+                                }
+                                return true;
+                            });
                         }
                     }
                     // TAB auto-completes the "active" suggestion if it isn't already completed...
@@ -426,9 +370,6 @@
                 // If there's an existing non-new input, select it...
                 if (thisInput.length) {
                     thisInput.prop('checked', true).change();
-                    if (thisInput.data('originallyChecked') !== thisInput.is(':checked')) {
-                        thisInput.data('state', 'changed');
-                    }
                 } else {
                     if (options.multipleCategories) {
                         thisGroup = newInputList.filter(function () {
@@ -460,9 +401,6 @@
                         // ...select it if it already exists...
                         if (existingNewInput.length && options.inputsNeverRemoved) {
                             existingNewInput.prop('checked', true).change();
-                            if (existingNewInput.data('originallyChecked') !== existingNewInput.is(':checked')) {
-                                existingNewInput.data('state', 'changed');
-                            }
                         } else {
                             // ...or add it if it doesn't already exist.
                             if (thisGroup.children('ul').length) {
@@ -470,7 +408,7 @@
                             } else {
                                 thisGroup.removeClass('empty').append(newInput);
                             }
-                            $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                            $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).prop('checked', true).change();
                             inputs = inputList.add(newInputList).find(options.inputs);
                         }
                     } else {
@@ -487,12 +425,12 @@
                         } else {
                             thisGroup.removeClass('empty').append(newInput);
                         }
-                        $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                        $('#id-' + prefix + '-' + thisTypeName + '-' + index.toString()).prop('checked', true).change();
                         inputs = inputList.add(newInputList).find(options.inputs);
                     }
                 }
-                // Update ``.expired`` and form-actions as necessary, empty the textbox, and empty and hide the suggestion list
-                updateFormActions();
+                // Empty the textbox, and empty and hide the suggestion list
+                inputsChanged();
                 textbox.val(null);
                 typedText = null;
                 suggestionList.empty().hide();
@@ -513,7 +451,7 @@
                         suggestionList.find('li:first-child a').addClass('selected');
                     }
                 }
-                updateFormActions();
+                inputsChanged();
             });
         }
 
@@ -543,24 +481,19 @@
                             } else {
                                 thisGroup.removeClass('empty').append(newInput);
                             }
-                            $('#id-' + prefix + '-' + typeName + '-' + index.toString()).data('state', 'changed').data('originallyChecked', false).prop('checked', true).change();
+                            $('#id-' + prefix + '-' + typeName + '-' + index.toString()).prop('checked', true).change();
                             inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
-                            updateFormActions();
+                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         },
                         selectInput = function () {
                             existingInput.prop('checked', true).change();
-                            if (existingInput.data('originallyChecked') !== existingInput.is(':checked')) {
-                                existingInput.data('state', 'changed');
-                            }
-                            updateFormActions();
+                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         };
-                    if (thisText === '' && expiredList.hasClass('expired')) {
-                        options.triggerSubmit(context);
-                    } else if (thisText.length && thisText.trim() !== '') {
+                    if (thisText.length && thisText.trim() !== '') {
                         // ...otherwise, if the input already exists, ENTER selects it...
                         if (existingInput.length) {
                             if (!existingInput.is(':checked')) {
@@ -596,7 +529,6 @@
     $.fn.customAutocomplete.defaults = {
         textbox: '#autocomplete-textbox',               // Selector for autocomplete textbox
         inputs: 'input[type="checkbox"]',               // Selector for inputs
-        formActions: '.form-actions',                   // Selector for form-actions (only needed if ``hideFormActions: true``)
         suggestionList: '.suggest',                     // Selector for list of autocomplete suggestions
         inputList: '.visual',                           // Selector for list of inputs
         ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
@@ -604,7 +536,6 @@
         triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
             context.find('.form-actions button[type="submit"]').click();
         },
-        hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
         autoSubmit: false,                              // Set ``true`` if form should be submitted on every input change
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
         allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed
@@ -613,7 +544,6 @@
                                                         //      and ``multipleCategories: true``)
         newInputTextbox: null,                          // Selector for secondary textbox to enter new group-specific inputs
         fakePlaceholder: false,                         // Set ``true`` to create fake placeholder text when using ``initialFocus: true``
-        expiredList: null,                              // Selector for setting ``.expired`` when inputs have changed
         initialFocus: false,                            // Set ``true`` to give textbox focus on initial page load
         reset: '.reset',                                // Selector for button to reset all inputs to original state
         inputType: null,                                // Name for input types when using only one category of inputs

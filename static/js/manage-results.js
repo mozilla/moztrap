@@ -111,6 +111,26 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Prepare filter-form for ajax-submit
+    CC.filterFormAjax = function (container) {
+        var context = $(container),
+            filterForm = context.find('#filterform');
+
+        filterForm.ajaxForm({
+            beforeSubmit: function (arr, form, options) {
+                context.find('.action-ajax-replace').loadingOverlay();
+            },
+            success: function (response) {
+                var newList = $(response.html);
+                context.find('.action-ajax-replace').loadingOverlay('remove');
+                if (response.html) {
+                    context.find('.action-ajax-replace').replaceWith(newList);
+                    newList.find('.details').html5accordion();
+                }
+            }
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
