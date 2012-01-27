@@ -57,9 +57,9 @@ class AuthenticatedViewTestCase(WebTest):
 
     def test_login_required(self):
         """Requires login."""
-        response = self.app.get(self.url)
+        response = self.app.get(self.url, status=302)
 
-        self.assertEqual(response.status_int, 302)
+        self.assertIn("login", response.headers["Location"])
 
 
 

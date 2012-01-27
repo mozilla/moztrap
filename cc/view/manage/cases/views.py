@@ -21,10 +21,11 @@ Manage views for cases.
 """
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_POST
 
 from django.contrib.auth.decorators import login_required, permission_required
 
-from ....model.library.models import CaseVersion, Case
+from .... import model
 
 from ... import lists
 from ...utils.ajax import ajax
@@ -36,20 +37,24 @@ from . import forms
 
 @login_required
 @lists.actions(
-    Case, ["delete"], permission="library.manage_cases", fall_through=True)
+    model.Case,
+    ["delete"],
+    permission="library.manage_cases",
+    fall_through=True)
 @lists.actions(
-    CaseVersion,
+    model.CaseVersion,
     ["clone", "activate", "deactivate"],
     permission="library.manage_cases")
 @lists.filter("caseversions", filterset=CaseVersionFilterSet)
 @lists.sort("caseversions")
 @ajax("manage/product/testcase/list/_cases_list.html")
 def cases_list(request):
+    """List caseversions."""
     return TemplateResponse(
         request,
         "manage/product/testcase/cases.html",
         {
-            "caseversions": CaseVersion.objects.select_related("case"),
+            "caseversions": model.CaseVersion.objects.select_related("case"),
             }
         )
 
@@ -57,7 +62,8 @@ def cases_list(request):
 
 @login_required
 def case_details(request, caseversion_id):
-    caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
+    """Get details snippet for a caseversion."""
+    caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)
     return TemplateResponse(
         request,
         "manage/product/testcase/list/_case_details.html",
@@ -70,6 +76,7 @@ def case_details(request, caseversion_id):
 
 @permission_required("library.create_cases")
 def case_add(request):
+    """Add a single case."""
     if request.method == "POST":
         form = forms.AddCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
@@ -89,6 +96,7 @@ def case_add(request):
 
 @permission_required("library.create_cases")
 def case_add_bulk(request):
+    """Add cases in bulk."""
     if request.method == "POST":
         form = forms.AddBulkCaseForm(
             request.POST, request.FILES, user=request.user)
@@ -108,8 +116,9 @@ def case_add_bulk(request):
 
 
 @permission_required("library.manage_cases")
-def case_edit(request, caseversion_id):
-    caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
+def caseversion_edit(request, caseversion_id):
+    """Edit a caseversion."""
+    caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)
     if request.method == "POST":
         form = forms.EditCaseVersionForm(
             request.POST,
@@ -126,6 +135,35 @@ def case_edit(request, caseversion_id):
         request,
         "manage/product/testcase/edit_case.html",
         {
-            "form": form
+            "form": form,
+            "caseversion": caseversion,
             }
         )
+
+
+@require_POST
+@permission_required("library.manage_cases")
+def caseversion_clone(request, caseversion_id):
+    """Clone caseversion for productversion, and redirect to edit new clone."""
+    try:
+        productversion = model.ProductVersion.objects.get(
+            pk=request.POST["productversion"])
+    except (model.ProductVersion.DoesNotExist, KeyError):
+        return redirect(
+            "manage_caseversion_edit", caseversion_id=caseversion_id)
+
+    caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)
+
+    # if it exists already, just redirect to edit it
+    try:
+        target = model.CaseVersion.objects.get(
+            case=caseversion.case, productversion=productversion)
+    except model.CaseVersion.DoesNotExist:
+        target = caseversion.clone(
+            overrides={
+                "productversion": productversion,
+                "name": caseversion.name
+                }
+            )
+
+    return redirect("manage_caseversion_edit", caseversion_id=target.id)

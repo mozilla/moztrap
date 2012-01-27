@@ -48,9 +48,14 @@ urlpatterns = patterns(
         name="manage_case_add_bulk"),
 
     # edit
-    url("^case/(?P<caseversion_id>\d+)/$",
-        "cc.view.manage.cases.views.case_edit",
-        name="manage_case_edit"),
+    url("^case/version/(?P<caseversion_id>\d+)/$",
+        "cc.view.manage.cases.views.caseversion_edit",
+        name="manage_caseversion_edit"),
+
+    # new version
+    url("^case/version/(?P<caseversion_id>\d+)/clone/$",
+        "cc.view.manage.cases.views.caseversion_clone",
+        name="manage_caseversion_clone"),
 
     # tags -------------------------------------------------------------------
     url(r"^tags/_autocomplete/",

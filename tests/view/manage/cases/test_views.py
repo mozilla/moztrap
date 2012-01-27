@@ -21,6 +21,7 @@ Tests for case management views.
 """
 from datetime import datetime
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from .... import factories as F
@@ -375,6 +376,112 @@ class AddCaseTest(base.FormViewTestCase):
 
         self.assertEqual(res.status_int, 200)
         res.mustcontain("This field is required.")
+
+
+
+class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
+    """Tests for caseversion-clone view."""
+    def setUp(self):
+        """Setup for caseversion clone tests; create a caseversion, add perm."""
+        super(CloneCaseVersionTest, self).setUp()
+        self.cv = F.CaseVersionFactory.create()
+        self.add_perm("manage_cases")
+
+
+    @property
+    def url(self):
+        """Shortcut for caseversion-clone url."""
+        return reverse(
+            "manage_caseversion_clone", kwargs=dict(caseversion_id=self.cv.id))
+
+
+    def post(self, data, **kwargs):
+        """Shortcut for posting to this view."""
+        data["csrfmiddlewaretoken"] = "foo"
+        headers = kwargs.setdefault("headers", {})
+        headers["Cookie"] = "{0}=foo".format(settings.CSRF_COOKIE_NAME)
+        return super(CloneCaseVersionTest, self).post(data, **kwargs)
+
+
+    def test_login_required(self):
+        """Requires login."""
+        response = self.app.post(
+            self.url,
+            {"csrfmiddlewaretoken": "foo"},
+            headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
+            status=302,
+            )
+
+        self.assertIn("login", response.headers["Location"])
+
+
+    def test_requires_post(self):
+        """View only accepts POST."""
+        self.get(status=405)
+
+
+    def test_no_productversion_id(self):
+        """If no productversion id, redirects back to original caseversion."""
+        res = self.post({}, status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80" + reverse(
+                "manage_caseversion_edit",
+                kwargs=dict(caseversion_id=self.cv.id)
+                )
+            )
+
+
+    def test_bad_productversion_id(self):
+        """If bad productversion id, redirects back to original caseversion."""
+        res = self.post({"productversion": 75}, status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80" + reverse(
+                "manage_caseversion_edit",
+                kwargs=dict(caseversion_id=self.cv.id)
+                )
+            )
+
+
+    def test_already_exists(self):
+        """If target caseversion already exists, redirect to edit it."""
+        target = F.CaseVersionFactory.create(
+            case=self.cv.case,
+            productversion__product=self.cv.productversion.product,
+            productversion__version="2.0")
+
+        res = self.post(
+            {"productversion": target.productversion.id}, status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80" + reverse(
+                "manage_caseversion_edit",
+                kwargs=dict(caseversion_id=target.id)
+                )
+            )
+
+
+    def test_clone(self):
+        """If target caseversion doesn't exist yet, clone this one to it."""
+        pv = F.ProductVersionFactory.create(
+            product=self.cv.productversion.product, version="2.0")
+
+        res = self.post({"productversion": pv.id}, status=302)
+
+        new = pv.caseversions.get()
+        self.assertEqual(new.name, self.cv.name)
+        self.assertEqual(new.case, self.cv.case)
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80" + reverse(
+                "manage_caseversion_edit",
+                kwargs=dict(caseversion_id=new.id)
+                )
+            )
 
 
 
