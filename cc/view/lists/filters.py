@@ -45,7 +45,7 @@ def filter(ctx_name, filters=None, filterset=None):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            fs = filterset(filters, request.GET)
+            fs = filterset(request.GET, filters)
             ctx[ctx_name] = fs.filter(ctx[ctx_name])
             ctx["filters"] = fs
             return response
@@ -62,15 +62,15 @@ class FilterSet(object):
     filters = []
 
 
-    def __init__(self, filters, GET, prefix="filter-"):
+    def __init__(self, GET, filters=None, prefix="filter-"):
         """
         Initialize a FilterSet.
-
-        ``filters`` is an iterable of Filter instances.
 
         ``GET`` is a MultiValueDict that may contain filtering keys; usually
         request.GET from the current request. Keys not beginning with
         ``prefix``` will be ignored.
+
+        ``filters`` is an optional iterable of additional Filter instances.
 
         """
         self.data = dict(
@@ -199,39 +199,19 @@ class Filter(object):
 
 class BaseChoicesFilter(Filter):
     """A Filter with a fixed set of choices."""
-    def __init__(self, *args, **kwargs):
-        """Initialize a BaseChoicesFilter."""
-        self._cached_choices = None
-        super(BaseChoicesFilter, self).__init__(*args, **kwargs)
-
-
-    @property
-    def choices(self):
-        """Property proxy for get_choices; ensures it is called only once."""
-        if self._cached_choices is None:
-            self._cached_choices = self.get_choices()
-        return self._cached_choices
-
-
     def get_choices(self):
-        """
-        Return this filter's choices, a list of (value, label) tuples.
-
-        Subclasses should override, and don't need to worry about caching the
-        results; this function will only be called once per page load.
-
-        """
+        """Return this filter's choices, a list of (value, label) tuples."""
         return []
 
 
     def options(self, values):
         """Given list of selected values, return options to display."""
-        return self.choices
+        return self.get_choices()
 
 
     def values(self, data):
         """Given data dict, return list of selected values."""
-        choice_values = set([k for k, v in self.choices])
+        choice_values = set([k for k, v in self.get_choices()])
         return [
             v for v in
             map(self.coerce, super(BaseChoicesFilter, self).values(data))
@@ -260,24 +240,30 @@ class ChoicesFilter(BaseChoicesFilter):
         """Looks for ``choices`` kwarg."""
         choices = kwargs.pop("choices")
         super(ChoicesFilter, self).__init__(*args, **kwargs)
-        self._cached_choices = choices
+        self._choices = choices
+
+
+    def get_choices(self):
+        """Return the passed-in choices."""
+        return self._choices
 
 
 
 class ModelFilter(BaseChoicesFilter):
     """
-    A Filter whose choices are from a provided queryset.
+    A Filter whose choices are from a provided iterable of model instances.
 
-    Assumes the queryset model has a numeric "id" primary key.
+    Assumes the model instances have a numeric "id" primary key.
 
     """
     def __init__(self, *args, **kwargs):
         """
-        Looks for queryset and label keyword arguments.
+        Looks for ``queryset`` and ``label`` keyword arguments.
 
-        The objects in ``queryset`` are the options available for this filter;
-        ``label`` is an optional one-argument function that returns the display
-        label for each object, given the object.
+        ``queryset`` should contain the model instances that are the options
+        available for this filter; ``label`` is an optional one-argument
+        callable that returns the display label for each object, given the
+        object.
 
         """
         self.queryset = kwargs.pop("queryset")
@@ -288,7 +274,7 @@ class ModelFilter(BaseChoicesFilter):
     def get_choices(self):
         """Get the options for this filter."""
         # always clone to get new data; filter instances are persistent
-        return [(obj.id, self.label_func(obj)) for obj in self.queryset]
+        return [(obj.id, self.label_func(obj)) for obj in self.queryset.all()]
 
 
     def coerce(self, value):
@@ -321,4 +307,7 @@ class KeywordFilter(KeywordExactFilter):
             queryset = queryset.filter(
                 **{"{0}__icontains".format(self.lookup): value})
 
-        return queryset.distinct()
+        if values:
+            return queryset.distinct()
+
+        return queryset

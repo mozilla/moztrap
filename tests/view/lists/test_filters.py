@@ -150,7 +150,6 @@ class FilterSetTest(FiltersTestCase):
 
         """
         fs = self.filters.FilterSet(
-            [],
             MultiValueDict(
                 {
                     "other": ["a", "b"],
@@ -166,7 +165,6 @@ class FilterSetTest(FiltersTestCase):
     def test_prefix_override(self):
         """'filter-' prefix can be changed via 'filter' kwarg."""
         fs = self.filters.FilterSet(
-            [],
             MultiValueDict(
                 {
                     "other": ["a", "b"],
@@ -183,7 +181,7 @@ class FilterSetTest(FiltersTestCase):
     def test_boundfilters(self):
         """``self.boundfilters`` has a BoundFilter for each given Filter."""
         flt = self.filters.Filter("name")
-        fs = self.filters.FilterSet([flt], MultiValueDict())
+        fs = self.filters.FilterSet(MultiValueDict(), [flt])
 
         self.assertEqual(len(fs.boundfilters), 1)
         self.assertIsInstance(fs.boundfilters[0], self.filters.BoundFilter)
@@ -197,7 +195,7 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("name")
                 ]
 
-        fs = MyFilterSet([], MultiValueDict())
+        fs = MyFilterSet(MultiValueDict())
 
         self.assertEqual(len(fs.boundfilters), 1)
         self.assertEqual(fs.boundfilters[0].name, "name")
@@ -210,7 +208,7 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        fs = MyFilterSet([self.filters.Filter("two")], MultiValueDict())
+        fs = MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
 
         self.assertEqual([bf.name for bf in fs.boundfilters], ["one", "two"])
 
@@ -222,8 +220,8 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        MyFilterSet([self.filters.Filter("two")], MultiValueDict())
-        fs = MyFilterSet([], MultiValueDict())
+        MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
+        fs = MyFilterSet(MultiValueDict())
 
         self.assertEqual(len(fs.boundfilters), 1)
 
@@ -231,7 +229,7 @@ class FilterSetTest(FiltersTestCase):
     def test_iteration_yields_boundfilters(self):
         """Iterating over a FilterSet yields its BoundFilters."""
         fs = self.filters.FilterSet(
-            [self.filters.Filter("name")], MultiValueDict())
+            MultiValueDict(), [self.filters.Filter("name")])
 
         self.assertEqual(list(fs), fs.boundfilters)
 
@@ -243,7 +241,7 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        fs = MyFilterSet([self.filters.Filter("two")], MultiValueDict())
+        fs = MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
 
         self.assertEqual(len(fs), 2)
 
@@ -257,8 +255,8 @@ class FilterSetTest(FiltersTestCase):
                 return queryset
 
         fs = self.filters.FilterSet(
+            MultiValueDict({"filter-one": ["1"], "filter-two": ["2", "3"]}),
             [MockFilter("one"), MockFilter("two")],
-            MultiValueDict({"filter-one": ["1"], "filter-two": ["2", "3"]})
             )
         qs = Mock()
 
@@ -404,26 +402,11 @@ class FilterTest(FiltersTestCase):
 
 class BaseChoicesFilterTest(FiltersTestCase):
     """Tests for BaseChoicesFilter."""
-    def test_choices(self):
-        """choices property is return value of get_choices method, memoized."""
-        class MyChoicesFilter(self.filters.BaseChoicesFilter):
-            count = 0
-            def get_choices(self):
-                self.count += 1
-                return [(i, unicode(i)) for i in range(self.count)]
-
-        f = MyChoicesFilter("name")
-
-        f.choices
-
-        self.assertEqual(f.choices, [(0, u"0")])
-
-
     def test_get_choices(self):
         """Default get_choices returns no choices; should be overridden."""
         f = self.filters.BaseChoicesFilter("name")
 
-        self.assertEqual(f.choices, [])
+        self.assertEqual(f.get_choices(), [])
 
 
     def test_options(self):
@@ -449,7 +432,7 @@ class ChoicesFilterTest(FiltersTestCase):
         """Choices can be passed in as a keyword argument at instantiation."""
         f = self.filters.ChoicesFilter("name", choices=[("1", "one")])
 
-        self.assertEqual(f.choices, [("1", "one")])
+        self.assertEqual(f.get_choices(), [("1", "one")])
 
 
 
@@ -464,14 +447,17 @@ class ModelFilterTest(FiltersTestCase):
         o2 = Mock()
         o2.id = 2
         o2.__unicode__ = lambda self: "two"
-        return [o1, o2]
+        qs = Mock()
+        qs.__iter__ = lambda self: iter([o1, o2])
+        qs.all.return_value = qs
+        return qs
 
 
     def test_choices(self):
         """Choices are passed in as an iterable of model instances."""
         f = self.filters.ModelFilter("name", queryset=self.queryset)
 
-        self.assertEqual(f.choices, [(1, "one"), (2, "two")])
+        self.assertEqual(f.get_choices(), [(1, "one"), (2, "two")])
 
 
     def test_custom_labels(self):
@@ -482,7 +468,8 @@ class ModelFilterTest(FiltersTestCase):
             label=lambda o: u"option {0}".format(o)
             )
 
-        self.assertEqual(f.choices, [(1, "option one"), (2, "option two")])
+        self.assertEqual(
+            f.get_choices(), [(1, "option one"), (2, "option two")])
 
 
     def test_values_coerced(self):
@@ -508,6 +495,7 @@ class KeywordExactFilterTest(FiltersTestCase):
             f.options(["one", "two"]), [("one", "one"), ("two", "two")])
 
 
+
 class KeywordFilterTest(FiltersTestCase):
     """Tests for KeywordFilter."""
     def test_filter(self):
@@ -523,3 +511,14 @@ class KeywordFilterTest(FiltersTestCase):
         self.assertIs(
             qs2,
             qs.filter.return_value.filter.return_value.distinct.return_value)
+
+
+    def test_filter_doesnt_touch_queryset_if_no_values(self):
+        """Doesn't call .distinct() or .filter() unless actually filtered."""
+        f = self.filters.KeywordFilter("name")
+
+        qs = Mock()
+        f.filter(qs, [])
+
+        self.assertEqual(qs.filter.call_count, 0)
+        self.assertEqual(qs.distinct.call_count, 0)

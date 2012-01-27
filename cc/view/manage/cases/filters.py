@@ -61,6 +61,7 @@ class CaseVersionFilterSet(filters.FilterSet):
     def filter(self, queryset):
         """Add a filter on latest=True if not filtered on productversion."""
         queryset = super(CaseVersionFilterSet, self).filter(queryset)
-        if "productversion" not in self.data:
+        pv = [bf for bf in self if bf.key == "productversion"][0]
+        if not pv.values:
             queryset = queryset.filter(latest=True)
         return queryset
