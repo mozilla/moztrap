@@ -50,12 +50,16 @@ class CaseVersionTest(TestCase):
         self.assertEqual(unicode(cv), u"Foo")
 
 
-    def test_cant_clone_without_overriding_case_or_productversion(self):
-        """Cloning caseversion w/o case or productversion raises ValueError."""
-        cv = F.CaseVersionFactory()
+    def test_clone_clones_case(self):
+        """Cloning caseversion w/o case or productversion clones case."""
+        cv = F.CaseVersionFactory(name="one")
+        F.CaseVersionFactory(case=cv.case)
 
-        with self.assertRaises(ValueError):
-            cv.clone()
+        new = cv.clone()
+
+        self.assertIsInstance(new, cv.__class__)
+        self.assertEqual(
+            [v.name for v in new.case.versions.all()], ["Cloned: one"])
 
 
     def test_clone_steps(self):

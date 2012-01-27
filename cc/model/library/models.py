@@ -109,14 +109,20 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
 
 
     def clone(self, *args, **kwargs):
-        """Clone this CaseVersion, cascading steps, attachments, tags."""
+        """
+        Clone this CaseVersion, cascading steps, attachments, tags.
+
+        Only one CaseVersion can exist for a given case/productversion
+        combination; thus if neither a new case nor a new productversion is
+        provided in the ``overrides`` dictionary, a new Case will implicitly be
+        cloned and the cloned CaseVersion will be assigned to that new case.
+
+        """
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
-        overrides = kwargs.get("overrides", {})
+        overrides = kwargs.setdefault("overrides", {})
         if "productversion" not in overrides and "case" not in overrides:
-            raise ValueError(
-                "Cannot clone CaseVersion without providing "
-                "new Case or ProductVersion.")
+            overrides["case"] = self.case.clone(cascade=[])
         return super(CaseVersion, self).clone(*args, **kwargs)
 
 

@@ -35,8 +35,8 @@ from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
 
 
 @login_required
-@lists.actions(Case, ["clone", "delete"], fall_through=True)
-@lists.actions(CaseVersion, ["activate", "deactivate"])
+@lists.actions(Case, ["delete"], fall_through=True)
+@lists.actions(CaseVersion, ["clone", "activate", "deactivate"])
 @lists.filter("caseversions", filterset=CaseVersionFilterSet)
 @lists.sort("caseversions")
 @ajax("manage/product/testcase/list/_cases_list.html")
