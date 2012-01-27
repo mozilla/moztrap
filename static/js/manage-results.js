@@ -98,6 +98,19 @@ var CC = (function (CC, $) {
         );
     };
 
+    // Tags, suites, environments act as filter-links on list pages
+    CC.directFilterLinks = function () {
+        $('.listpage').on('click', '.filter-link', function (e) {
+            var thisLink = $(this),
+                name = thisLink.text(),
+                type = thisLink.data('type');
+            $('#filterform').find('.filter-group[data-name="' + type + '"] .filter-item label').filter(function () {
+                return $(this).text() === name;
+            }).closest('.filter-item').children('input').click();
+            e.preventDefault();
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));

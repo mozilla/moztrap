@@ -4,7 +4,7 @@
     {% for env in environments.all %}
     <li>
       {% for element in env.elements.all %}
-        <a href="#{{ element.name|slugify }}" title="filter by {{ element.name }}" class="filter-link">{{ element.name }}</a>{% if not forloop.last %},{% endif %}
+        <a href="#{{ element.name|slugify }}" title="filter by {{ element.name }}" class="filter-link envelement" data-type="envelement">{{ element.name }}</a>{% if not forloop.last %},{% endif %}
       {% endfor %}
     </li>
     {% endfor %}

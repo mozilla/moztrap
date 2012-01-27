@@ -17,7 +17,7 @@
   <h4 class="suites-title">Suites</h4>
   <ul class="suite-list">
     {% for suite in suites %}
-    <li><a href="#">{{ suite.name }}</a></li>
+    <li><a href="#{{ suite.name|slugify }}" title="filter by {{ suite.name }}" class="filter-link suite" data-type="suite">{{ suite.name }}</a></li>
     {% endfor %}
   </ul>
 </div>

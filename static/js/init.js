@@ -156,6 +156,7 @@ var CC = (function (CC, $) {
         CC.toggleAdvancedFiltering('#filter');
         CC.loadListItemDetails();
         CC.manageActionsAjax();
+        CC.directFilterLinks();
 
         // manage-products.js
         CC.formOptionsFilter({
