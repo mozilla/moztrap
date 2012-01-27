@@ -183,7 +183,7 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
-        CC.testcaseAttachments('#single-case-add .attach');
+        CC.testcaseAttachments('.attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
 
