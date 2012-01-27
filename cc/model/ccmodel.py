@@ -204,9 +204,6 @@ class CCModel(models.Model):
         """
         Clone this instance and return the new, cloned instance.
 
-        If the instance has a ``name`` field, "Cloned: " will be prepended to
-        its value in the cloned instance.
-
         ``overrides`` should be a dictionary of override values for fields on
         the cloned instance.
 
@@ -237,8 +234,6 @@ class CCModel(models.Model):
             if field.primary_key:
                 continue
             val = overrides.get(field.name, getattr(self, field.name))
-            if field.name == "name":
-                val = "Cloned: %s" % val
             setattr(clone, field.name, val)
 
         clone.save(force_insert=True)

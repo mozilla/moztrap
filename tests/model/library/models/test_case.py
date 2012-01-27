@@ -62,6 +62,15 @@ class CaseVersionTest(TestCase):
             [v.name for v in new.case.versions.all()], ["Cloned: one"])
 
 
+    def test_clone_override_name(self):
+        """Providing name override prevents 'Cloned: ' prefix."""
+        cv = F.CaseVersionFactory(name="one")
+
+        new = cv.clone(overrides={"name": "two"})
+
+        self.assertEqual(new.name, "two")
+
+
     def test_clone_sets_draft_state(self):
         """Clone of active caseversion is still draft."""
         cv = F.CaseVersionFactory(status="active")

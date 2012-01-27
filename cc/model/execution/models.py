@@ -82,6 +82,7 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
             "cascade", ["runcaseversions", "runsuites", "environments", "team"])
         overrides = kwargs.setdefault("overrides", {})
         overrides["status"] = self.STATUS.draft
+        overrides.setdefault("name", "Cloned: {0}".format(self.name))
         return super(Run, self).clone(*args, **kwargs)
 
 

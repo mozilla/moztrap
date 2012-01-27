@@ -50,6 +50,8 @@ class Product(CCModel, TeamModel):
 
         """
         kwargs.setdefault("cascade", ["team"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "Cloned: {0}".format(self.name))
         return super(Product, self).clone(*args, **kwargs)
 
 
