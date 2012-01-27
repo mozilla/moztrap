@@ -156,7 +156,9 @@
                 }
                 row.find('input, select, textarea, label').focus(function () {
                     $(this).closest(options.formSelector).removeClass('extra-row').css('opacity', 1);
-                    $(this).attr('required', 'required');
+                    if ($(this).hasClass('required')) {
+                        $(this).attr('required', 'required');
+                    }
                     totalForms.val(parent.find(options.formSelector).not('.extra-row').length);
                     if (options.deleteOnlyActive) {
                         $(this).closest(options.formSelector).find(options.deleteLinkSelector).fadeIn();
@@ -209,7 +211,11 @@
 
         // Clone the form template to generate new form instances:
         template = $(options.formTemplate);
-        template.removeAttr('id');
+        template.removeAttr('id').find('input, select, textarea, label').each(function () {
+            if ($(this).is(':required')) {
+                $(this).addClass('required');
+            }
+        });
         insertDeleteLink(template);
         if (options.insertAbove) {
             insertAboveLink(template);
