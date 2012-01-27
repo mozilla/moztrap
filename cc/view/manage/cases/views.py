@@ -30,7 +30,7 @@ from ... import lists
 from ...utils.ajax import ajax
 
 from .filters import CaseVersionFilterSet
-from .forms import AddCaseForm, EditCaseForm, AddBulkCaseForm
+from . import forms
 
 
 
@@ -71,12 +71,12 @@ def case_details(request, caseversion_id):
 @permission_required("library.create_cases")
 def case_add(request):
     if request.method == "POST":
-        form = AddCaseForm(request.POST, request.FILES, user=request.user)
+        form = forms.AddCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             form.save()
             return redirect("manage_cases")
     else:
-        form = AddCaseForm(user=request.user)
+        form = forms.AddCaseForm(user=request.user)
     return TemplateResponse(
         request,
         "manage/product/testcase/add_case.html",
@@ -90,12 +90,13 @@ def case_add(request):
 @permission_required("library.create_cases")
 def case_add_bulk(request):
     if request.method == "POST":
-        form = AddBulkCaseForm(request.POST, request.FILES, user=request.user)
+        form = forms.AddBulkCaseForm(
+            request.POST, request.FILES, user=request.user)
         if form.is_valid():
             form.save()
             return redirect("manage_cases")
     else:
-        form = AddBulkCaseForm(user=request.user)
+        form = forms.AddBulkCaseForm(user=request.user)
     return TemplateResponse(
         request,
         "manage/product/testcase/add_case_bulk.html",
@@ -110,7 +111,7 @@ def case_add_bulk(request):
 def case_edit(request, caseversion_id):
     caseversion = get_object_or_404(CaseVersion, pk=caseversion_id)
     if request.method == "POST":
-        form = EditCaseForm(
+        form = forms.EditCaseVersionForm(
             request.POST,
             request.FILES,
             instance=caseversion,
@@ -119,7 +120,8 @@ def case_edit(request, caseversion_id):
             form.save()
             return redirect("manage_cases")
     else:
-        form = EditCaseForm(instance=caseversion, user=request.user)
+        form = forms.EditCaseVersionForm(
+            instance=caseversion, user=request.user)
     return TemplateResponse(
         request,
         "manage/product/testcase/edit_case.html",

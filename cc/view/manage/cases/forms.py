@@ -35,14 +35,8 @@ def product_id_attrs(obj):
     return {"data-product-id": obj.product.id}
 
 
-
-class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
-    product = ccforms.CCModelChoiceField(
-        model.Product.objects.all(),
-        choice_attrs=lambda p: {"data-product-id": p.id})
-    productversion = ccforms.CCModelChoiceField(
-        model.ProductVersion.objects.all(), choice_attrs=product_id_attrs)
-    and_later_versions = forms.BooleanField(initial=True, required=False)
+class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+    """Base form class for AddCaseForm and EditCaseVersionForm."""
     name = forms.CharField(max_length=200)
     description = forms.CharField(required=False, widget=ccforms.BareTextarea)
     status = forms.CharField(
@@ -58,27 +52,76 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize AddCaseForm, including StepFormSet."""
+        """Initialize CaseVersionForm, including StepFormSet."""
         self.user = kwargs.pop("user", None)
 
-        super(AddCaseForm, self).__init__(*args, **kwargs)
+        super(CaseVersionForm, self).__init__(*args, **kwargs)
 
         self.fields["add_tags"].widget.attrs["data-allow-new"] = (
             "true"
             if (self.user and self.user.has_perm("tags.manage_tags"))
             else "false"
             )
+
+        self.steps_formset = StepFormSet(
+            data=self.data or None, instance=getattr(self, "instance", None))
+
+
+    def is_valid(self):
+        return self.steps_formset.is_valid() and super(
+            CaseVersionForm, self).is_valid()
+
+
+    def save_tags(self, caseversion):
+        # @@@ convert into a modelmultiplechoicefield widget?
+        tag_ids = set([int(tid) for tid in self.data.getlist("tag-tag")])
+        new_tags = self.data.getlist("tag-newtag")
+
+        for name in new_tags:
+            # @@@ should pass in user here, need CCQuerySet.get_or_create
+            t, created = model.Tag.objects.get_or_create(
+                name=name, product=caseversion.case.product)
+            tag_ids.add(t.id)
+
+        current_tag_ids = set([t.id for t in caseversion.tags.all()])
+        caseversion.tags.add(*tag_ids.difference(current_tag_ids))
+        caseversion.tags.remove(*current_tag_ids.difference(tag_ids))
+
+
+    def save_attachments(self, caseversion):
+        # @@@ convert into a modelmultiplechoicefield widget?
+        delete_ids = set(self.data.getlist("remove-attachment"))
+        caseversion.attachments.filter(id__in=delete_ids).delete()
+
+        if self.files: # if no files, it's a plain dict, has no getlist
+            for uf in self.files.getlist("add_attachment"):
+                model.CaseAttachment.objects.create(
+                    attachment=uf,
+                    caseversion=caseversion,
+                    user=self.user,
+                    )
+
+
+
+class AddCaseForm(CaseVersionForm):
+    """Form for adding a new single case and some number of versions."""
+    product = ccforms.CCModelChoiceField(
+        model.Product.objects.all(),
+        choice_attrs=lambda p: {"data-product-id": p.id})
+    productversion = ccforms.CCModelChoiceField(
+        model.ProductVersion.objects.all(), choice_attrs=product_id_attrs)
+    and_later_versions = forms.BooleanField(initial=True, required=False)
+
+
+    def __init__(self, *args, **kwargs):
+        """Initialize AddCaseForm; possibly add initial_suite field."""
+        super(AddCaseForm, self).__init__(*args, **kwargs)
+
         if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
                 model.Suite.objects.all(),
                 choice_attrs=product_id_attrs,
                 required=False)
-        self.steps_formset = StepFormSet(data=self.data or None)
-
-
-    def is_valid(self):
-        return self.steps_formset.is_valid() and super(
-            AddCaseForm, self).is_valid()
 
 
     def clean(self):
@@ -124,40 +167,10 @@ class AddCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             steps_formset = StepFormSet(
                 data=self.data, instance=caseversion, user=self.user)
             steps_formset.save()
-            self._save_tags(caseversion)
-            self._save_attachments(caseversion)
+            self.save_tags(caseversion)
+            self.save_attachments(caseversion)
 
         return case
-
-
-    def _save_tags(self, caseversion):
-        # @@@ convert into a modelmultiplechoicefield widget?
-        tag_ids = set([int(tid) for tid in self.data.getlist("tag-tag")])
-        new_tags = self.data.getlist("tag-newtag")
-
-        for name in new_tags:
-            # @@@ should pass in user here, need CCQuerySet.get_or_create
-            t, created = model.Tag.objects.get_or_create(
-                name=name, product=caseversion.case.product)
-            tag_ids.add(t.id)
-
-        current_tag_ids = set([t.id for t in caseversion.tags.all()])
-        caseversion.tags.add(*tag_ids.difference(current_tag_ids))
-        caseversion.tags.remove(*current_tag_ids.difference(tag_ids))
-
-
-    def _save_attachments(self, caseversion):
-        # @@@ convert into a modelmultiplechoicefield widget?
-        delete_ids = set(self.data.getlist("remove-attachment"))
-        caseversion.attachments.filter(id__in=delete_ids).delete()
-
-        if self.files: # if no files, it's a plain dict, has no getlist
-            for uf in self.files.getlist("add_attachment"):
-                model.CaseAttachment.objects.create(
-                    attachment=uf,
-                    caseversion=caseversion,
-                    user=self.user,
-                    )
 
 
 
@@ -166,8 +179,18 @@ class AddBulkCaseForm(AddCaseForm):
 
 
 
-class EditCaseForm(AddCaseForm):
-    pass # @@@
+class EditCaseVersionForm(CaseVersionForm):
+    """Form for editing a case version."""
+    def __init__(self, *args, **kwargs):
+        """Initialize EditCaseVersionForm, pulling instance from kwargs."""
+        self.instance = kwargs.pop("instance", None)
+
+        initial = kwargs.setdefault("initial", {})
+        initial["name"] = self.instance.name
+        initial["description"] = self.instance.description
+        initial["status"] = self.instance.status
+
+        super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
 
 
@@ -186,6 +209,8 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
     """Step formset that assigns sequential numbers to steps."""
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
+        if kwargs.get("instance") is not None:
+            self.extra = 0
         super(BaseStepInlineFormSet, self).__init__(*args, **kwargs)
 
 

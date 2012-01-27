@@ -395,3 +395,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
         """Shortcut for edit-caseversion url."""
         return reverse(
             "manage_case_edit", kwargs=dict(caseversion_id=self.cv.id))
+
+
+    def test_version_links(self):
+        """Page has links to edit other versions."""
+        res = self.get()
