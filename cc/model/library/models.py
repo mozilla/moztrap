@@ -121,6 +121,7 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
         overrides = kwargs.setdefault("overrides", {})
+        overrides["status"] = self.STATUS.draft
         if "productversion" not in overrides and "case" not in overrides:
             overrides["case"] = self.case.clone(cascade=[])
         return super(CaseVersion, self).clone(*args, **kwargs)
@@ -205,6 +206,8 @@ class Suite(CCModel, DraftStatusModel):
     def clone(self, *args, **kwargs):
         """Clone this Suite with default cascade behavior."""
         kwargs.setdefault("cascade", ["suitecases"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides["status"] = self.STATUS.draft
         return super(Suite, self).clone(*args, **kwargs)
 
 

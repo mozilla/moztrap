@@ -62,6 +62,15 @@ class CaseVersionTest(TestCase):
             [v.name for v in new.case.versions.all()], ["Cloned: one"])
 
 
+    def test_clone_sets_draft_state(self):
+        """Clone of active caseversion is still draft."""
+        cv = F.CaseVersionFactory(status="active")
+
+        new = cv.clone()
+
+        self.assertEqual(new.status, "draft")
+
+
     def test_clone_steps(self):
         """Cloning a caseversion clones its steps."""
         cs = F.CaseStepFactory.create()

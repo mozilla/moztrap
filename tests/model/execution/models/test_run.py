@@ -93,6 +93,15 @@ class RunTest(TestCase):
         self.assertEqual(new.name, "Cloned: A Run")
 
 
+    def test_clone_sets_draft(self):
+        """Clone of active run is still draft."""
+        r = F.RunFactory.create(status="active")
+
+        new = r.clone()
+
+        self.assertEqual(new.status, "draft")
+
+
     def test_clone_included_suite(self):
         """Cloning a run clones member RunSuites."""
         rs = F.RunSuiteFactory.create()

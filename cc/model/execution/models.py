@@ -80,6 +80,8 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         """Clone this Run with default cascade behavior."""
         kwargs.setdefault(
             "cascade", ["runcaseversions", "runsuites", "environments", "team"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides["status"] = self.STATUS.draft
         return super(Run, self).clone(*args, **kwargs)
 
 

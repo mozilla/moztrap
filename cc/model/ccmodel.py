@@ -355,6 +355,5 @@ class DraftStatusModel(models.Model):
         self.save(force_update=True)
 
 
-
     class Meta:
         abstract = True

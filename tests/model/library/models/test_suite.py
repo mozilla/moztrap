@@ -38,3 +38,12 @@ class SuiteTest(TestCase):
         new = sc.suite.clone()
 
         self.assertEqual(new.cases.get(), sc.case)
+
+
+    def test_clone_sets_draft_state(self):
+        """Clone of active suite is still draft."""
+        s = F.SuiteFactory(status="active")
+
+        new = s.clone()
+
+        self.assertEqual(new.status, "draft")
