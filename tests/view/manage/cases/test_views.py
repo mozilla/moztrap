@@ -501,9 +501,66 @@ class EditCaseVersionTest(base.FormViewTestCase):
     def url(self):
         """Shortcut for edit-caseversion url."""
         return reverse(
-            "manage_case_edit", kwargs=dict(caseversion_id=self.cv.id))
+            "manage_caseversion_edit", kwargs=dict(caseversion_id=self.cv.id))
 
 
-    def test_version_links(self):
-        """Page has links to edit other versions."""
+    def test_existing_version_links(self):
+        """Page has links to edit other existing versions."""
+        other_cv = F.CaseVersionFactory.create(
+            case=self.cv.case,
+            productversion__product=self.cv.case.product,
+            productversion__version="2.0"
+            )
+
         res = self.get()
+
+        res.mustcontain(
+            reverse(
+                "manage_caseversion_edit",
+                kwargs=dict(caseversion_id=other_cv.id)
+                )
+            )
+
+
+    def test_clone_version_buttons(self):
+        """Page has buttons for creating new versions."""
+        other_pv = F.ProductVersionFactory.create(
+            product=self.cv.case.product, version="2.0")
+
+        form = self.get().forms["case-version-list-form"]
+
+        self.assertEqual(len(form.fields["productversion"]), 1)
+        self.assertEqual(
+            form.fields["productversion"][0].value_if_submitted(),
+            str(other_pv.id)
+            )
+
+
+    def test_initial_data(self):
+        """Form prepopulates with correct initial data."""
+        self.cv.name = "Some name"
+        self.cv.description = "Some desc"
+        self.cv.status = "active"
+        self.cv.save(force_update=True)
+
+        form = self.get_form()
+
+        self.assertEqual(form.fields["name"][0].value, "Some name")
+        self.assertEqual(form.fields["description"][0].value, "Some desc")
+        self.assertEqual(form.fields["status"][0].value, "active")
+
+
+    def test_existing_tags(self):
+        """Form prepopulates with existing tags."""
+        tags = [
+            F.TagFactory.create(name="one"),
+            F.TagFactory.create(name="two")
+            ]
+        self.cv.tags.add(*tags)
+
+        form = self.get_form()
+
+        self.assertEqual(
+            [f.value for f in form.fields["tag-tag"]],
+            [str(t.id) for t in tags]
+            )

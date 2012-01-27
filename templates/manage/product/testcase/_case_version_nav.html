@@ -1,56 +1,27 @@
 <ol class="case-version-list">
+  <form id="case-version-list-form" action="{% url manage_caseversion_clone caseversion_id=caseversion.id %}" method="POST">
+  {% csrf_token %}
+  {% for productversion, othercaseversion in caseversion.case.all_versions %}
   <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">3.2</span>
-      <span class="vname">{ version case name }</span>
-    </a>
+    {% if othercaseversion %}
+      {% if othercaseversion == caseversion %}
+        <span class="vaction-current">
+          <span class="vnumber">{{ productversion.version }}</span>
+          <span class="vname">{{ othercaseversion.name }}</span>
+        </span>
+      {% else %}
+        <a href="{% url manage_caseversion_edit caseversion_id=othercaseversion.id %}" class="vaction-edit" title="edit {{ othercaseversion.name }} for {{ productversion.version }}">
+          <span class="vnumber">{{ productversion.version }}</span>
+          <span class="vname">{{ othercaseversion.name }}</span>
+        </a>
+      {% endif %}
+    {% else %}
+      <button name="productversion" value="{{ productversion.id }}" class="vaction-add" title="add case version for {{ productversion.version }}">
+        <span class="vnumber">{{ productversion.version }}</span>
+        <span class="vname">(add this version)</span>
+      </button>
+    {% endif %}
   </li>
-  <li class="case-version">
-    <a href="#" class="vaction-add" title="add/edit { version case name }">
-      <span class="vnumber">3.1</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">2.0</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">3.2</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-add" title="add/edit { version case name }">
-      <span class="vnumber">3.1</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">2.0</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">3.2</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-add" title="add/edit { version case name }">
-      <span class="vnumber">3.1</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
-  <li class="case-version">
-    <a href="#" class="vaction-edit" title="add/edit { version case name }">
-      <span class="vnumber">2.0</span>
-      <span class="vname">{ version case name }</span>
-    </a>
-  </li>
+  {% endfor %}
+  </form>
 </ol>
