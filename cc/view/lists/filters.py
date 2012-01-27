@@ -163,19 +163,22 @@ class Filter(object):
     cls = ""
 
 
-    def __init__(self, name, lookup=None, key=None):
+    def __init__(self, name, lookup=None, key=None, coerce=None):
         """
         Instantiate the Filter.
 
         ``name`` is the public name of the filter, ``lookup`` is the field used
         for filtering a queryset, and ``key`` is the key under which data for
         this filter is found in the provided filter data. Both ``lookup`` and
-        ``key`` default to ``name`` if not provided.
+        ``key`` default to ``name`` if not provided. ``coerce`` is a
+        one-argument function to coerce values to the correct type for this
+        filter; it may raise ValueError or TypeError.
 
         """
         self.name = name
         self.lookup = name if lookup is None else lookup
         self.key = name if key is None else key
+        self._coerce_func = coerce
 
 
     def filter(self, queryset, values):
@@ -193,7 +196,28 @@ class Filter(object):
 
     def values(self, data):
         """Given data dict, return list of selected values."""
-        return data.get(self.key, [])
+        return [
+            v for v in map(self.coerce, data.get(self.key, []))
+            if v is not None
+            ]
+
+
+    def coerce(self, value):
+        """
+        Coerce a string value to the value type of this Filter's options.
+
+        For instance, a related-field-lookup filter might have integer object
+        IDs as option values, and would coerce all incoming filter values to
+        integers.
+
+        Should return None if a value cannot be coerced.
+        """
+        if self._coerce_func is None:
+            return value
+        try:
+            return self._coerce_func(value)
+        except (ValueError, TypeError):
+            return None
 
 
 
@@ -214,23 +238,9 @@ class BaseChoicesFilter(Filter):
         choice_values = set([k for k, v in self.get_choices()])
         return [
             v for v in
-            map(self.coerce, super(BaseChoicesFilter, self).values(data))
+            super(BaseChoicesFilter, self).values(data)
             if v is not None and v in choice_values
             ]
-
-
-    def coerce(self, value):
-        """
-        Coerce a string value to the value type of this Filter's options.
-
-        For instance, a related-field-lookup filter might have integer object
-        IDs as option values, and would coerce all incoming filter values to
-        integers.
-
-        Should return None if a value cannot be coerced.
-
-        """
-        return value
 
 
 
@@ -253,7 +263,8 @@ class ModelFilter(BaseChoicesFilter):
     """
     A Filter whose choices are from a provided iterable of model instances.
 
-    Assumes the model instances have a numeric "id" primary key.
+    By default, assumes the model has a numeric primary key; if not an
+    alternative ``coerce`` function should be provided at instantiation.
 
     """
     def __init__(self, *args, **kwargs):
@@ -268,21 +279,14 @@ class ModelFilter(BaseChoicesFilter):
         """
         self.queryset = kwargs.pop("queryset")
         self.label_func = kwargs.pop("label", lambda o: unicode(o))
+        kwargs.setdefault("coerce", int)
         super(ModelFilter, self).__init__(*args, **kwargs)
 
 
     def get_choices(self):
         """Get the options for this filter."""
         # always clone to get new data; filter instances are persistent
-        return [(obj.id, self.label_func(obj)) for obj in self.queryset.all()]
-
-
-    def coerce(self, value):
-        """Attempt to coerce all values to integers."""
-        try:
-            return int(value)
-        except (ValueError, TypeError):
-            return None
+        return [(obj.pk, self.label_func(obj)) for obj in self.queryset.all()]
 
 
 

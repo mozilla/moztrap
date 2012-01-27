@@ -399,6 +399,13 @@ class FilterTest(FiltersTestCase):
         self.assertEqual(f.values({"key": ["one"], "name": ["two"]}), ["one"])
 
 
+    def test_coerce(self):
+        """Can force values to be coerced."""
+        f = self.filters.Filter("name", coerce=int)
+
+        self.assertEqual(f.values({"name": ["1", "two"]}), [1])
+
+
 
 class BaseChoicesFilterTest(FiltersTestCase):
     """Tests for BaseChoicesFilter."""
@@ -442,10 +449,10 @@ class ModelFilterTest(FiltersTestCase):
     def queryset(self):
         """Mock "queryset" of instances with numeric id and unicode repr."""
         o1 = Mock()
-        o1.id = 1
+        o1.pk = 1
         o1.__unicode__ = lambda self: "one"
         o2 = Mock()
-        o2.id = 2
+        o2.pk = 2
         o2.__unicode__ = lambda self: "two"
         qs = Mock()
         qs.__iter__ = lambda self: iter([o1, o2])

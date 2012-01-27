@@ -153,6 +153,15 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertNotInList(res, "Case 2")
 
 
+    def test_filter_by_bad_id(self):
+        """Attempt to filter by non-integer id is ignored."""
+        F.CaseVersionFactory.create(name="Case 1")
+
+        res = self.get(params={"filter-id": "foo"})
+
+        self.assertInList(res, "Case 1")
+
+
     def test_filter_by_name(self):
         """Can filter by id."""
         F.CaseVersionFactory.create(name="Case 1")

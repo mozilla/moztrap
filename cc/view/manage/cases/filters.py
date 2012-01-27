@@ -31,7 +31,7 @@ class CaseVersionFilterSet(filters.FilterSet):
     """FilterSet for CaseVersions; filters on latest by default."""
     filters = [
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
-        filters.KeywordExactFilter("id", lookup="case__id"),
+        filters.KeywordExactFilter("id", lookup="case__id", coerce=int),
         filters.KeywordFilter("name"),
         filters.ModelFilter(
             "tag", lookup="tags", queryset=model.Tag.objects.all()),
