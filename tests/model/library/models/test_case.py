@@ -42,6 +42,18 @@ class CaseTest(TestCase):
         self.assertEqual(new.versions.get().name, "Cloned: CV 1")
 
 
+    def test_all_versions(self):
+        """Returns ordered product versions paired with caseversion or None."""
+        c = F.CaseFactory()
+        pv1 = F.ProductVersionFactory(product=c.product, version="1")
+        pv2 = F.ProductVersionFactory(product=c.product, version="2")
+        pv3 = F.ProductVersionFactory(product=c.product, version="3")
+        cv2 = F.CaseVersionFactory(productversion=pv2, case=c)
+
+        self.assertEqual(
+            c.all_versions(), [(pv1, None), (pv2, cv2), (pv3, None)])
+
+
 
 class CaseVersionTest(TestCase):
     def test_unicode(self):

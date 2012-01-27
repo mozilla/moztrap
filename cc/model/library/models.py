@@ -66,6 +66,24 @@ class Case(CCModel):
                 update_instance.latest = False
 
 
+    def all_versions(self):
+        """
+        Return list of (productversion, caseversion) tuples for this case.
+
+        Includes all product versions; caseversion may be None if this case has
+        no version for that product version.
+
+        """
+        caseversions_by_pv = dict(
+            (cv.productversion, cv) for cv in self.versions.all())
+        return(
+            [
+                (pv, caseversions_by_pv.get(pv, None))
+                for pv in self.product.versions.all()
+                ]
+            )
+
+
 
     class Meta:
         permissions = [
