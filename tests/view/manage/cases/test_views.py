@@ -575,3 +575,30 @@ class EditCaseVersionTest(base.FormViewTestCase):
         form = self.get_form()
 
         self.assertEqual(form.fields["remove-attachment"][0].value, None)
+
+
+    def test_save_basic(self):
+        """Can save updates; redirects to manage cases list."""
+        form = self.get_form()
+        form["status"] = "active"
+        form["name"] = "new name"
+        form["description"] = "new desc"
+        res = form.submit(status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80" + reverse("manage_cases")
+            )
+
+        cv = refresh(self.cv)
+        self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.description, "new desc")
+        self.assertEqual(cv.status, "active")
+
+
+    def test_remove_tags(self):
+        """Can remove tags."""
+
+
+    def test_remove_attachments(self):
+        """Can remove attachments."""

@@ -193,6 +193,22 @@ class EditCaseVersionForm(CaseVersionForm):
         super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
 
+    def save(self):
+        """Save the edited caseversion."""
+        assert self.is_valid()
+
+        version_kwargs = self.cleaned_data.copy()
+        del version_kwargs["add_tags"]
+        del version_kwargs["add_attachment"]
+
+        for k, v in version_kwargs.items():
+            setattr(self.instance, k, v)
+
+        self.instance.save(force_update=True)
+
+        return self.instance
+
+
 
 class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
     class Meta:
