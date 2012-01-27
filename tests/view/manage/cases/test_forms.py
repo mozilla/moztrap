@@ -27,7 +27,7 @@ from django.utils.datastructures import MultiValueDict
 from django.contrib.auth.models import Permission
 
 from .... import factories as F
-
+from ....utils import refresh
 
 
 class AddCaseFormTest(TestCase):
@@ -227,21 +227,190 @@ class StepFormSetTest(TestCase):
     """Tests for StepFormSet."""
     @property
     def formset(self):
+        """The class under test."""
         from cc.view.manage.cases.forms import StepFormSet
         return StepFormSet
 
 
-    def test_commit_false(self):
-        """Can save a StepFormSet with commit=False."""
-        fs = self.formset(
-            data={
-                "steps-TOTAL_FORMS": 1,
-                "steps-INITIAL_FORMS": 0,
-                "steps-0-instruction": "instruction",
-                "steps-0-expected": "expected",
+    def bound(self, data, instance=None):
+        """Return a formset, with instance, bound to data."""
+        if instance is None:
+            instance = F.CaseVersionFactory.create()
+        return self.formset(data=data, instance=instance)
+
+
+    def assertSteps(self, caseversion, steps):
+        """Assert ``caseversion`` has ``steps``, as (inst, exp) tuples."""
+        self.assertEqual(
+            [(s.instruction, s.expected) for s in caseversion.steps.all()],
+            steps)
+
+
+    def test_existing(self):
+        """Displays forms for existing steps when unbound."""
+        step = F.CaseStepFactory.create(instruction="do this")
+        fs = self.formset(instance=step.caseversion)
+
+        self.assertEqual(len(fs), 1)
+        self.assertEqual(list(fs)[0].initial["instruction"], "do this")
+
+
+    def test_add_new(self):
+        """Can add new steps."""
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "0",
+                "steps-0-id": "",
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
                 }
             )
+        fs.save()
 
-        steps = fs.save(commit=False)
+        self.assertSteps(fs.instance, [("do this", "see that")])
 
-        self.assertEqual([s.id for s in steps], [None])
+
+    def test_unknown_id_adds_new(self):
+        """Unknown step id just creates a new step."""
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "0",
+                "steps-0-id": "27",
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                }
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [("do this", "see that")])
+
+
+    def test_bad_id_adds_new(self):
+        """Unknown step id just creates a new step."""
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "0",
+                "steps-0-id": "foo",
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                }
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [("do this", "see that")])
+
+
+    def test_edit_existing(self):
+        """Can edit existing steps."""
+        step = F.CaseStepFactory.create()
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "1",
+                "steps-0-id": str(step.id),
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                },
+            instance=step.caseversion,
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [("do this", "see that")])
+
+
+    def test_delete_existing(self):
+        """Can delete existing steps."""
+        step = F.CaseStepFactory.create()
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "0",
+                "steps-INITIAL_FORMS": "1", # JS doesn't touch this
+                },
+            instance=step.caseversion,
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [])
+
+
+    def test_delete_existing_and_add_new(self):
+        """Can delete an existing step and put a new one in its place."""
+        step = F.CaseStepFactory.create()
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "1", # JS doesn't touch this
+                "steps-0-id": "",
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                },
+            instance=step.caseversion,
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [("do this", "see that")])
+
+
+    def test_intersperse_new(self):
+        """Can add a new step in between existing ones."""
+        step1 = F.CaseStepFactory.create(instruction="one")
+        step2 = F.CaseStepFactory.create(
+            instruction="two", caseversion=step1.caseversion)
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "3",
+                "steps-INITIAL_FORMS": "2",
+                "steps-0-id": str(step1.id),
+                "steps-0-instruction": "one",
+                "steps-0-expected": "",
+                "steps-1-id": "",
+                "steps-1-instruction": "new",
+                "steps-1-expected": "",
+                "steps-2-id": str(step2.id),
+                "steps-2-instruction": "three",
+                "steps-2-expected": "",
+                },
+            instance=step1.caseversion,
+            )
+        fs.save()
+
+        self.assertSteps(fs.instance, [("one", ""), ("new", ""), ("three", "")])
+
+
+    def test_marks_created_by(self):
+        """Steps are saved with created-by data."""
+        u = F.UserFactory.create()
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "0",
+                "steps-0-id": "",
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                },
+            )
+        fs.save(user=u)
+
+        self.assertEqual(fs.instance.steps.get().created_by, u)
+
+
+    def test_marks_modified_by(self):
+        """Steps are saved with modified-by data."""
+        u = F.UserFactory.create()
+        step = F.CaseStepFactory.create()
+        fs = self.bound(
+            {
+                "steps-TOTAL_FORMS": "1",
+                "steps-INITIAL_FORMS": "1",
+                "steps-0-id": str(step.id),
+                "steps-0-instruction": "do this",
+                "steps-0-expected": "see that",
+                },
+            instance=step.caseversion,
+            )
+        fs.save(user=u)
+
+        self.assertEqual(refresh(step).modified_by, u)

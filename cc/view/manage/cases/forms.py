@@ -66,7 +66,7 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         self.steps_formset = StepFormSet(
             data=self.data or None,
             instance=getattr(self, "instance", None),
-            user=self.user)
+            )
 
 
     def is_valid(self):
@@ -167,8 +167,8 @@ class AddCaseForm(CaseVersionForm):
             caseversion = model.CaseVersion.objects.create(
                 **this_version_kwargs)
             steps_formset = StepFormSet(
-                data=self.data, instance=caseversion, user=self.user)
-            steps_formset.save()
+                data=self.data, instance=caseversion)
+            steps_formset.save(user=self.user)
             self.save_tags(caseversion)
             self.save_attachments(caseversion)
 
@@ -210,7 +210,7 @@ class EditCaseVersionForm(CaseVersionForm):
 
         self.save_tags(self.instance)
         self.save_attachments(self.instance)
-        self.steps_formset.save()
+        self.steps_formset.save(user=self.user)
 
         return self.instance
 
@@ -227,42 +227,79 @@ class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
 
 
 
-class BaseStepInlineFormSet(BaseInlineFormSet):
+class BaseStepFormSet(BaseInlineFormSet):
     """Step formset that assigns sequential numbers to steps."""
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop("user", None)
         if kwargs.get("instance") is not None:
             self.extra = 0
-        super(BaseStepInlineFormSet, self).__init__(*args, **kwargs)
+        super(BaseStepFormSet, self).__init__(*args, **kwargs)
 
 
-    def save_new(self, form, commit=True):
-        """Assign auto-incrementing step numbers to steps when saving."""
-        obj = form.save(commit=False)
+    def save(self, user=None):
+        """Save all forms in this formset."""
+        assert self.is_valid()
 
-        obj.number = self._get_next_step_number()
+        to_delete = set([o.pk for o in self.get_queryset()])
 
-        if commit:
-            obj.save(user=self.user)
-        return obj
+        steps = []
+        existing = []
+        new = []
+        for i, form in enumerate(self.forms, 1):
+            step = form.save(commit=False)
+            step.number = i
+            steps.append(step)
+            if step.pk:
+                to_delete.remove(step.pk)
+                existing.append(step)
+            else:
+                new.append(step)
+
+        # first delete any existing steps that weren't in the incoming data,
+        # then update existing steps on a first pass, then save new steps. This
+        # dance is so we never fall afoul of the number-unique constraint (and
+        # MySQL's inability to defer constraint checks)
+        self.model._base_manager.filter(pk__in=to_delete).delete()
+
+        for step in existing:
+            step.save(user=user, force_update=True)
+
+        for step in new:
+            step.save(user=user, force_insert=True)
+
+        return steps
 
 
-    def save_existing(self, form, instance, commit=True):
-        """Assign auto-incrementing step numbers to steps when saving."""
-        obj = form.save(commit=False)
+    def initial_form_count(self):
+        """
+        Consider all forms 'extra' when bound so ModelFormSet won't look up PK.
 
-        obj.number = self._get_next_step_number()
+        We don't know that the extra forms are at the end, they could be in any
+        order, so Django's "i < self.initial_form_count()" checks are
+        inherently broken.
 
-        if commit:
-            obj.save(user=self.user)
-        return obj
+        """
+        if self.is_bound:
+            return 0
+        return super(BaseStepFormSet, self).initial_form_count()
 
 
-    def _get_next_step_number(self):
-        """Provide the next step number in sequence."""
-        number = getattr(self, "_next_step_number", 1)
-        self._next_step_number = number + 1
-        return number
+    def _construct_form(self, i, **kwargs):
+        """Set empty_permitted and instance for all forms."""
+        kwargs["empty_permitted"] = False
+
+        if self.is_bound:
+            pk_key = "{0}-id".format(self.add_prefix(i))
+            try:
+                pk = int(self.data.get(pk_key))
+            except (ValueError, TypeError):
+                pk = None
+            if pk:
+                kwargs["instance"] = self._existing_object(pk)
+            if kwargs.get("instance") is None:
+                self.data[pk_key] = ""
+
+        return super(BaseStepFormSet, self)._construct_form(i, **kwargs)
+
 
 
 
@@ -271,5 +308,7 @@ StepFormSet = inlineformset_factory(
     model.CaseVersion,
     model.CaseStep,
     form=StepForm,
-    formset=BaseStepInlineFormSet,
+    formset=BaseStepFormSet,
+    can_order=False,    # we don't use Django's implementation of
+    can_delete=False,   # formset deletion or ordering
     extra=1)
