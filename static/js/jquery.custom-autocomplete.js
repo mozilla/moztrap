@@ -57,6 +57,9 @@
                     if (options.hideFormActions) {
                         formActions.fadeIn('fast');
                     }
+                    if (options.autoSubmit) {
+                        options.triggerSubmit(context);
+                    }
                 } else {
                     expiredList.removeClass('expired');
                     if (options.hideFormActions) {
@@ -602,6 +605,7 @@
             context.find('.form-actions button[type="submit"]').click();
         },
         hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
+        autoSubmit: false,                              // Set ``true`` if form should be submitted on every input change
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
         allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed
         restrictAllowNew: false,                        // Set ``true`` if new inputs are only allowed if textbox has data-allow-new="true"
