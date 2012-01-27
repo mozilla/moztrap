@@ -21,11 +21,12 @@ Actions-handling for manage list pages.
 """
 from functools import wraps
 
+from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 
 
 
-def actions(model, allowed_actions, fall_through=False):
+def actions(model, allowed_actions, permission=None, fall_through=False):
     """
     View decorator for handling single-model actions on manage list pages.
 
@@ -51,6 +52,9 @@ def actions(model, allowed_actions, fall_through=False):
                 if action_data:
                     action, obj_id = action_data
                     if action in allowed_actions:
+                        if permission and not request.user.has_perm(permission):
+                            return HttpResponseForbidden(
+                                "You do not have permission for this action.")
                         try:
                             obj = model._base_manager.get(pk=obj_id)
                         except model.DoesNotExist:

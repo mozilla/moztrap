@@ -198,3 +198,35 @@ class ActionsTest(TestCase):
         self.view(req)
 
         self.assertEqual(self.mock_model._base_manager.get.call_count, 0)
+
+
+    def test_no_permission(self):
+        """If permission is passed in and user doesn't have it, returns 403."""
+        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req.user = Mock()
+        req.user.has_perm.return_value = False
+
+        res = self.view(
+            req,
+            decorator=self.actions(
+                self.mock_model, ["doit"], permission="do_things")
+            )
+
+        self.assertEqual(res.status_code, 403)
+        req.user.has_perm.assert_called_with("do_things")
+
+
+    def test_has_permission(self):
+        """If permission is passed in and user has it, success."""
+        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req.user = Mock()
+        req.user.has_perm.return_value = True
+
+        res = self.view(
+            req,
+            decorator=self.actions(
+                self.mock_model, ["doit"], permission="do_things")
+            )
+
+        self.assertEqual(res.status_code, 302)
+        req.user.has_perm.assert_called_with("do_things")

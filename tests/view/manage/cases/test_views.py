@@ -23,9 +23,10 @@ from django.core.urlresolvers import reverse
 
 from django.contrib.auth.models import Permission
 
-from cc.model.library.models import CaseVersion
+from cc import model
 
 from .... import factories as F
+from ....utils import refresh
 from ...base import ViewTestCase
 
 
@@ -38,9 +39,16 @@ class CasesTest(ViewTestCase):
         return reverse("manage_cases")
 
 
-    def get(self):
+    def get(self, **kwargs):
         """Shortcut for getting manage-cases url authenticated."""
-        return self.app.get(self.url, user=self.user)
+        kwargs.setdefault("user", self.user)
+        return self.app.get(self.url, **kwargs)
+
+
+    def post(self, data, **kwargs):
+        """Shortcut for posting to manage-cases url authenticated."""
+        kwargs.setdefault("user", self.user)
+        return self.app.post(self.url, data, **kwargs)
 
 
     def test_login_required(self):
@@ -57,6 +65,40 @@ class CasesTest(ViewTestCase):
         res = self.get()
 
         res.mustcontain("Foo Bar")
+
+
+    def test_delete(self):
+        perm = model.Permission.objects.get(codename="manage_cases")
+        self.user.user_permissions.add(perm)
+
+        cv = F.CaseVersionFactory.create()
+
+        form = self.get().forms["manage-cases-form"]
+        form.submit(name="action-delete", index=0)
+
+        self.assertTrue(bool(refresh(cv).deleted_on))
+
+
+    def test_delete_requires_manage_cases_permission(self):
+        cv = F.CaseVersionFactory.create()
+
+        form = self.get().forms["manage-cases-form"]
+
+        # delete button not shown to the user
+        self.assertTrue("action-delete" not in form.fields)
+
+        # ...but if they cleverly submit it anyway they get a 403...
+        res = self.post(
+            {
+                "action-delete": str(cv.id),
+                "csrfmiddlewaretoken":
+                    form.fields.get("csrfmiddlewaretoken")[0].value
+                },
+            status=403,
+            )
+
+        # ...with a message about permissions.
+        res.mustcontain("permission")
 
 
 
@@ -120,7 +162,7 @@ class AddCaseTest(ViewTestCase):
         self.assertEqual(res.status_int, 302)
         self.assertEqual(res["Location"], "http://testserver/manage/cases/")
 
-        cv = CaseVersion.objects.get()
+        cv = model.CaseVersion.objects.get()
         self.assertEqual(cv.case.product, pv.product)
         self.assertEqual(cv.productversion, pv)
         self.assertEqual(cv.name, "Can log in.")

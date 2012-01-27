@@ -19,6 +19,8 @@
 All models.
 
 """
+from django.contrib.auth.models import User, Permission
+
 from .core.models import Product, ProductVersion
 from .environments.models import Environment, Profile, Element, Category
 from .execution.models import Run, RunSuite, RunCaseVersion, Result, StepResult

@@ -1,6 +1,6 @@
 {% load pagination %}
 
-<form method="POST" class="itemlist action-ajax-replace">
+<form method="POST" id="manage-cases-form" class="itemlist action-ajax-replace">
   {% csrf_token %}
 
   {% include "manage/product/testcase/list/_cases_listordering.html" %}
