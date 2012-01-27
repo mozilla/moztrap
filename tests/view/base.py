@@ -19,8 +19,6 @@
 Utility base TestCase for testing views.
 
 """
-from django.utils.unittest import TestSuite
-
 from django_webtest import WebTest
 
 from .. import factories as F
@@ -62,3 +60,75 @@ class AuthenticatedViewTestCase(WebTest):
         response = self.app.get(self.url)
 
         self.assertEqual(response.status_int, 302)
+
+
+
+class FormViewTestCase(AuthenticatedViewTestCase):
+    """Base class for testing any view with a form."""
+    # subclasses should override
+    form_id = None
+
+
+    def get_form(self):
+        """Get the manage list form."""
+        return self.get().forms[self.form_id]
+
+
+
+class ManageListViewTestCase(FormViewTestCase):
+    """Base class for testing manage list views."""
+    def assertInList(self, response, name, count=1):
+        """Assert that item ``name`` is in the list ``count`` times."""
+        # One occurrence in the list = two occurrences of the name in HTML
+        actual = response.body.count(name)
+        self.assertEqual(
+            actual, count * 2,
+            "'{0}' is in the list {1} times, not {2}.".format(
+                name, actual, count))
+
+
+    def assertNotInList(self, response, name):
+        """Assert that item ``name`` is not in the list."""
+        self.assertInList(response, name, 0)
+
+
+    def assertOrderInList(self, response, *names):
+        """Assert that ``names`` appear in list in given order."""
+        indices = []
+        for name in names:
+            try:
+                indices.append((response.body.index(name), name))
+            except ValueError:
+                self.fail("{0} does not appear in response.".format(name))
+
+        actual_order = sorted(indices, key=lambda t: t[0])
+
+        self.assertEqual(
+            [t[1] for t in actual_order],
+            [t[1] for t in indices],
+            )
+
+
+    def assertActionRequiresPermission(self, action, permission):
+        """Assert that the given list action requires the given permission."""
+        cv = F.CaseVersionFactory.create()
+
+        form = self.get_form()
+
+        name = "action-{0}".format(action)
+
+        # action button not shown to the user
+        self.assertTrue(name not in form.fields)
+
+        # ...but if they cleverly submit it anyway they get a 403...
+        res = self.post(
+            {
+                name: str(cv.id),
+                "csrfmiddlewaretoken":
+                    form.fields.get("csrfmiddlewaretoken")[0].value
+                },
+            status=403,
+            )
+
+        # ...with a message about permissions.
+        res.mustcontain("permission")

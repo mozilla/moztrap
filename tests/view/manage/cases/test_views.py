@@ -29,74 +29,15 @@ from ... import base
 
 
 
-class CasesTest(base.AuthenticatedViewTestCase):
+class CasesTest(base.ManageListViewTestCase):
     """Test for cases manage list view."""
+    form_id = "manage-cases-form"
+
+
     @property
     def url(self):
         """Shortcut for manage-cases url."""
         return reverse("manage_cases")
-
-
-    def get_form(self):
-        """Get the manage-cases form."""
-        return self.get().forms["manage-cases-form"]
-
-
-    def assertInList(self, response, name, count=1):
-        """Assert that caseversion ``name`` is in the list ``count`` times."""
-        # One occurrence in the list = two occurrences of the name in HTML
-        actual = response.body.count(name)
-        self.assertEqual(
-            actual, count * 2,
-            "'{0}' is in the list {1} times, not {2}.".format(
-                name, actual, count))
-
-
-    def assertNotInList(self, response, name):
-        """Assert that caseversion ``name`` is not in the list."""
-        self.assertInList(response, name, 0)
-
-
-    def assertOrderInList(self, response, *names):
-        """Assert that ``names`` appear in list in given order."""
-        indices = []
-        for name in names:
-            try:
-                indices.append((response.body.index(name), name))
-            except ValueError:
-                self.fail("{0} does not appear in response.".format(name))
-
-        actual_order = sorted(indices, key=lambda t: t[0])
-
-        self.assertEqual(
-            [t[1] for t in actual_order],
-            [t[1] for t in indices],
-            )
-
-
-    def assertActionRequiresPermission(self, action, permission):
-        """Assert that the given list action requires the given permission."""
-        cv = F.CaseVersionFactory.create()
-
-        form = self.get_form()
-
-        name = "action-{0}".format(action)
-
-        # action button not shown to the user
-        self.assertTrue(name not in form.fields)
-
-        # ...but if they cleverly submit it anyway they get a 403...
-        res = self.post(
-            {
-                name: str(cv.id),
-                "csrfmiddlewaretoken":
-                    form.fields.get("csrfmiddlewaretoken")[0].value
-                },
-            status=403,
-            )
-
-        # ...with a message about permissions.
-        res.mustcontain("permission")
 
 
     def test_lists_cases(self):
@@ -382,8 +323,11 @@ class CaseDetailTest(base.AuthenticatedViewTestCase):
 
 
 
-class AddCaseTest(base.AuthenticatedViewTestCase):
+class AddCaseTest(base.FormViewTestCase):
     """Tests for add-case-single view."""
+    form_id = "single-case-add"
+
+
     @property
     def url(self):
         """Shortcut for add-case-single url."""
@@ -394,11 +338,6 @@ class AddCaseTest(base.AuthenticatedViewTestCase):
         """Add create-cases permission to user."""
         super(AddCaseTest, self).setUp()
         self.add_perm("create_cases")
-
-
-    def get_form(self):
-        """Get single case add form."""
-        return self.get().forms["single-case-add"]
 
 
     def test_success(self):
@@ -439,8 +378,11 @@ class AddCaseTest(base.AuthenticatedViewTestCase):
 
 
 
-class EditCaseVersionTest(base.AuthenticatedViewTestCase):
+class EditCaseVersionTest(base.FormViewTestCase):
     """Tests for edit-caseversion view."""
+    form_id = "single-case-edit"
+
+
     def setUp(self):
         """Setup for caseversion edit tests; create a caseversion, add perm."""
         super(EditCaseVersionTest, self).setUp()
@@ -453,8 +395,3 @@ class EditCaseVersionTest(base.AuthenticatedViewTestCase):
         """Shortcut for edit-caseversion url."""
         return reverse(
             "manage_case_edit", kwargs=dict(caseversion_id=self.cv.id))
-
-
-    def get_form(self):
-        """Get case edit form."""
-        return self.get().forms["single-case-edit"]
