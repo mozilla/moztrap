@@ -47,7 +47,7 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
-        $('#single-case-add .tagging').customAutocomplete({
+        $('.tagging').customAutocomplete({
             textbox: '#id_add_tags',
             ajax: true,
             url: $('#id_add_tags').data('autocomplete-url'),

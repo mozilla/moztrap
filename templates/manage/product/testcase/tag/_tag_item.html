@@ -1,4 +1,7 @@
-<li>
-  <input type="checkbox" name="tag-tag" value="{{ tag.id }}" id="id-tag-{{ formtype }}-{{ tag.id }}" checked>
-  <label for="id-tag-{{ formtype }}-{{ tag.id }}">{{ tag }}</label>
+<li class="tag-item">
+  <input type="checkbox" class="check" name="tag-tag" data-name="tag" value="{{ tag.id }}" id="id-tag-tag-{{ tag.id }}">
+  <span class="onoff">
+    <label for="id-tag-tag-{{ tag.id }}" class="onoffswitch">{{ tag }}</label>
+    <span class="content">{{ tag }}</span>
+  </span>
 </li>
