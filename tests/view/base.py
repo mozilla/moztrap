@@ -19,6 +19,8 @@
 Utility base TestCase for testing views.
 
 """
+from django.utils.unittest import TestSuite
+
 from django_webtest import WebTest
 
 from .. import factories as F
@@ -53,3 +55,10 @@ class AuthenticatedViewTestCase(WebTest):
         from cc import model
         perm = model.Permission.objects.get(codename=codename)
         self.user.user_permissions.add(perm)
+
+
+    def test_login_required(self):
+        """Requires login."""
+        response = self.app.get(self.url)
+
+        self.assertEqual(response.status_int, 302)

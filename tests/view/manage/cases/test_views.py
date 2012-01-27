@@ -23,15 +23,13 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 
-from django.contrib.auth.models import Permission
-
 from .... import factories as F
 from ....utils import refresh
-from ...base import AuthenticatedViewTestCase
+from ... import base
 
 
 
-class CasesTest(AuthenticatedViewTestCase):
+class CasesTest(base.AuthenticatedViewTestCase):
     """Test for cases manage list view."""
     @property
     def url(self):
@@ -99,13 +97,6 @@ class CasesTest(AuthenticatedViewTestCase):
 
         # ...with a message about permissions.
         res.mustcontain("permission")
-
-
-    def test_login_required(self):
-        """Requires login."""
-        response = self.app.get(self.url)
-
-        self.assertEqual(response.status_int, 302)
 
 
     def test_lists_cases(self):
@@ -366,25 +357,32 @@ class CasesTest(AuthenticatedViewTestCase):
 
 
 
-class CaseDetailTest(AuthenticatedViewTestCase):
+class CaseDetailTest(base.AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
+    def setUp(self):
+        """Setup for case details tests; create a caseversion."""
+        super(CaseDetailTest, self).setUp()
+        self.cv = F.CaseVersionFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for add-case-single url."""
+        return reverse(
+            "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
+
+
     def test_details(self):
         """Returns details HTML snippet for given caseversion."""
-        step = F.CaseStepFactory.create(instruction="Frobnigate.")
-        res = self.app.get(
-            reverse(
-                "manage_case_details",
-                kwargs=dict(caseversion_id=step.caseversion.id)
-                ),
-            user=self.user,
-            headers=dict(HTTP_X_REQUESTED_WITH="XMLHttpRequest"),
-            )
+        F.CaseStepFactory.create(caseversion=self.cv, instruction="Frobnigate.")
+
+        res = self.get(headers=dict(HTTP_X_REQUESTED_WITH="XMLHttpRequest"))
 
         res.mustcontain("Frobnigate.")
 
 
 
-class AddCaseTest(AuthenticatedViewTestCase):
+class AddCaseTest(base.AuthenticatedViewTestCase):
     """Tests for add-case-single view."""
     @property
     def url(self):
@@ -438,3 +436,25 @@ class AddCaseTest(AuthenticatedViewTestCase):
 
         self.assertEqual(res.status_int, 200)
         res.mustcontain("This field is required.")
+
+
+
+class EditCaseVersionTest(base.AuthenticatedViewTestCase):
+    """Tests for edit-caseversion view."""
+    def setUp(self):
+        """Setup for caseversion edit tests; create a caseversion, add perm."""
+        super(EditCaseVersionTest, self).setUp()
+        self.cv = F.CaseVersionFactory.create()
+        self.add_perm("manage_cases")
+
+
+    @property
+    def url(self):
+        """Shortcut for edit-caseversion url."""
+        return reverse(
+            "manage_case_edit", kwargs=dict(caseversion_id=self.cv.id))
+
+
+    def get_form(self):
+        """Get case edit form."""
+        return self.get().forms["single-case-edit"]
