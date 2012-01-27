@@ -598,7 +598,36 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_remove_tags(self):
         """Can remove tags."""
+        tags = [
+            F.TagFactory.create(name="one"),
+            F.TagFactory.create(name="two")
+            ]
+        self.cv.tags.add(*tags)
+
+        form = self.get_form()
+        form.set("tag-tag", None, index=1)
+        form.submit(status=302)
+
+        self.assertEqual(list(self.cv.tags.all()), tags[:1])
 
 
     def test_remove_attachments(self):
         """Can remove attachments."""
+        ca = F.CaseAttachmentFactory.create(
+            caseversion=self.cv, attachment__name="sample.csv")
+        self.cv.attachments.add(ca)
+
+        form = self.get_form()
+        form["remove-attachment"] = ca.id
+        form.submit(status=302)
+
+        self.assertEqual(list(self.cv.attachments.all()), [])
+
+
+    def test_errors(self):
+        """Test bound form redisplay with errors."""
+        form = self.get_form()
+        form["name"] = ""
+        res = form.submit(status=200)
+
+        res.mustcontain("This field is required.")

@@ -206,6 +206,9 @@ class EditCaseVersionForm(CaseVersionForm):
 
         self.instance.save(force_update=True)
 
+        self.save_tags(self.instance)
+        self.save_attachments(self.instance)
+
         return self.instance
 
 
