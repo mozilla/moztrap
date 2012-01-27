@@ -45,7 +45,10 @@ class CaseVersionFilterSet(filters.FilterSet):
             key="productversion",
             queryset=model.ProductVersion.objects.all()),
         filters.KeywordFilter("instruction", lookup="steps__instruction"),
-        filters.KeywordFilter("expected result", lookup="steps__expected"),
+        filters.KeywordFilter(
+            "expected result",
+            lookup="steps__expected",
+            key="expected"),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=User.objects.all()),
         filters.ModelFilter(

@@ -29,3 +29,10 @@ class ViewTestCase(WebTest):
     def setUp(self):
         """Set-up for all view test cases."""
         self.user = F.UserFactory.create()
+
+
+    def add_perm(self, codename):
+        """Add named permission to user."""
+        from cc import model
+        perm = model.Permission.objects.get(codename=codename)
+        self.user.user_permissions.add(perm)
