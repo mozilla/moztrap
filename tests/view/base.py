@@ -25,10 +25,27 @@ from .. import factories as F
 
 
 
-class ViewTestCase(WebTest):
+class AuthenticatedViewTestCase(WebTest):
+    """Base test case for authenticated views."""
     def setUp(self):
-        """Set-up for all view test cases."""
+        """Set-up for authenticated view test cases; create a user."""
         self.user = F.UserFactory.create()
+
+
+    # subclasses should provide a url property
+    url = None
+
+
+    def get(self, **kwargs):
+        """Shortcut for getting url, authenticated."""
+        kwargs.setdefault("user", self.user)
+        return self.app.get(self.url, **kwargs)
+
+
+    def post(self, data, **kwargs):
+        """Shortcut for posting to url, authenticated."""
+        kwargs.setdefault("user", self.user)
+        return self.app.post(self.url, data, **kwargs)
 
 
     def add_perm(self, codename):

@@ -22,11 +22,11 @@ Tests for tag management views.
 from django.core.urlresolvers import reverse
 
 from .... import factories as F
-from ...base import ViewTestCase
+from ...base import AuthenticatedViewTestCase
 
 
 
-class TagsAutocompleteTest(ViewTestCase):
+class TagsAutocompleteTest(AuthenticatedViewTestCase):
     """Test for tags autocomplete view."""
     @property
     def url(self):

@@ -27,11 +27,11 @@ from django.contrib.auth.models import Permission
 
 from .... import factories as F
 from ....utils import refresh
-from ...base import ViewTestCase
+from ...base import AuthenticatedViewTestCase
 
 
 
-class CasesTest(ViewTestCase):
+class CasesTest(AuthenticatedViewTestCase):
     """Test for cases manage list view."""
     @property
     def url(self):
@@ -39,16 +39,9 @@ class CasesTest(ViewTestCase):
         return reverse("manage_cases")
 
 
-    def get(self, **kwargs):
-        """Shortcut for getting manage-cases url authenticated."""
-        kwargs.setdefault("user", self.user)
-        return self.app.get(self.url, **kwargs)
-
-
-    def post(self, data, **kwargs):
-        """Shortcut for posting to manage-cases url authenticated."""
-        kwargs.setdefault("user", self.user)
-        return self.app.post(self.url, data, **kwargs)
+    def get_form(self):
+        """Get the manage-cases form."""
+        return self.get().forms["manage-cases-form"]
 
 
     def assertInList(self, response, name, count=1):
@@ -87,7 +80,7 @@ class CasesTest(ViewTestCase):
         """Assert that the given list action requires the given permission."""
         cv = F.CaseVersionFactory.create()
 
-        form = self.get().forms["manage-cases-form"]
+        form = self.get_form()
 
         name = "action-{0}".format(action)
 
@@ -146,8 +139,7 @@ class CasesTest(ViewTestCase):
 
         cv = F.CaseVersionFactory.create()
 
-        form = self.get().forms["manage-cases-form"]
-        form.submit(name="action-delete", index=0)
+        self.get_form().submit(name="action-delete", index=0)
 
         self.assertTrue(bool(refresh(cv).deleted_on))
 
@@ -163,8 +155,7 @@ class CasesTest(ViewTestCase):
 
         F.CaseVersionFactory.create()
 
-        form = self.get().forms["manage-cases-form"]
-        form.submit(name="action-clone", index=0)
+        self.get_form().submit(name="action-clone", index=0)
 
         from cc.model import Case
         self.assertEqual(Case.objects.count(), 2)
@@ -181,8 +172,7 @@ class CasesTest(ViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="draft")
 
-        form = self.get().forms["manage-cases-form"]
-        form.submit(name="action-activate", index=0)
+        self.get_form().submit(name="action-activate", index=0)
 
         self.assertEqual(refresh(cv).status, "active")
 
@@ -198,8 +188,7 @@ class CasesTest(ViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="active")
 
-        form = self.get().forms["manage-cases-form"]
-        form.submit(name="action-deactivate", index=0)
+        self.get_form().submit(name="action-deactivate", index=0)
 
         self.assertEqual(refresh(cv).status, "disabled")
 
@@ -377,7 +366,7 @@ class CasesTest(ViewTestCase):
 
 
 
-class CaseDetailTest(ViewTestCase):
+class CaseDetailTest(AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
     def test_details(self):
         """Returns details HTML snippet for given caseversion."""
@@ -395,7 +384,7 @@ class CaseDetailTest(ViewTestCase):
 
 
 
-class AddCaseTest(ViewTestCase):
+class AddCaseTest(AuthenticatedViewTestCase):
     """Tests for add-case-single view."""
     @property
     def url(self):
@@ -406,13 +395,7 @@ class AddCaseTest(ViewTestCase):
     def setUp(self):
         """Add create-cases permission to user."""
         super(AddCaseTest, self).setUp()
-        perm = Permission.objects.get(codename="create_cases")
-        self.user.user_permissions.add(perm)
-
-
-    def get(self):
-        """Shortcut for getting add-case-single url authenticated."""
-        return self.app.get(self.url, user=self.user)
+        self.add_perm("create_cases")
 
 
     def get_form(self):
