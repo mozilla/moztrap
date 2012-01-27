@@ -61,3 +61,14 @@ class CaseVersionFilterSetTest(TestCase):
         qs.filter.assert_called_with(productversion__in=[pv.id])
         # no other filters intervening
         self.assertIs(qs2, qs.filter.return_value.distinct.return_value)
+
+
+    def test_filtered_by_invalid_productversion(self):
+        """If filtered by invalid productversion, filters by latest=True."""
+        fs = self.CaseVersionFilterSet(
+            MultiValueDict({"filter-productversion": ["74"]}))
+
+        qs = Mock()
+        fs.filter(qs)
+
+        qs.filter.assert_called_with(latest=True)

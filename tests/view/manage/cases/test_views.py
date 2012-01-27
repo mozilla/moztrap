@@ -43,8 +43,15 @@ class CasesTest(ViewTestCase):
         return self.app.get(self.url, user=self.user)
 
 
+    def test_login_required(self):
+        """Requires login."""
+        response = self.app.get(self.url)
+
+        self.assertEqual(response.status_int, 302)
+
+
     def test_lists_cases(self):
-        """Manage-cases view displays a list of cases."""
+        """Displays a list of cases."""
         F.CaseVersionFactory.create(name="Foo Bar")
 
         res = self.get()
