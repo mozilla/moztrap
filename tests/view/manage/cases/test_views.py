@@ -564,3 +564,14 @@ class EditCaseVersionTest(base.FormViewTestCase):
             [f.value for f in form.fields["tag-tag"]],
             [str(t.id) for t in tags]
             )
+
+
+    def test_existing_attachments(self):
+        """Form prepopulates with remove checkboxes for existing attachments."""
+        ca = F.CaseAttachmentFactory.create(
+            caseversion=self.cv, attachment__name="sample.csv")
+        self.cv.attachments.add(ca)
+
+        form = self.get_form()
+
+        self.assertEqual(form.fields["remove-attachment"][0].value, None)
