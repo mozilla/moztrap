@@ -596,6 +596,21 @@ class EditCaseVersionTest(base.FormViewTestCase):
         self.assertEqual(cv.status, "active")
 
 
+    def test_edit_step(self):
+        """Can edit a step."""
+        step = F.CaseStepFactory(
+            caseversion=self.cv, instruction="do this", expected="see that")
+
+        form = self.get_form()
+        form["steps-0-instruction"] = "do something else"
+        form["steps-0-expected"] = ""
+        form.submit(status=302)
+
+        step = refresh(step)
+        self.assertEqual(step.instruction, "do something else")
+        self.assertEqual(step.expected, "")
+
+
     def test_remove_tags(self):
         """Can remove tags."""
         tags = [

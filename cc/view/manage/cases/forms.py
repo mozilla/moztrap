@@ -64,7 +64,9 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
             )
 
         self.steps_formset = StepFormSet(
-            data=self.data or None, instance=getattr(self, "instance", None))
+            data=self.data or None,
+            instance=getattr(self, "instance", None),
+            user=self.user)
 
 
     def is_valid(self):
@@ -208,6 +210,7 @@ class EditCaseVersionForm(CaseVersionForm):
 
         self.save_tags(self.instance)
         self.save_attachments(self.instance)
+        self.steps_formset.save()
 
         return self.instance
 
@@ -244,7 +247,7 @@ class BaseStepInlineFormSet(BaseInlineFormSet):
         return obj
 
 
-    def save_existing(self, form, commit=True):
+    def save_existing(self, form, instance, commit=True):
         """Assign auto-incrementing step numbers to steps when saving."""
         obj = form.save(commit=False)
 
