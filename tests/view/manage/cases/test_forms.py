@@ -40,16 +40,15 @@ class AddCaseFormTest(TestCase):
 
     @property
     def user(self):
-        """A lazily-created user with create-cases perm."""
+        """A lazily-created user."""
         if not hasattr(self, "_user"):
             self._user = F.UserFactory.create()
-            perm = Permission.objects.get(codename="create_cases")
-            self._user.user_permissions.add(perm)
         return self._user
 
 
     @property
     def form(self):
+        """The form class under test."""
         from cc.view.manage.cases.forms import AddCaseForm
         return AddCaseForm
 
@@ -177,13 +176,47 @@ class AddCaseFormTest(TestCase):
 
 
     def test_new_tag(self):
-        """Can create a new case with a new tag."""
+        """Can create a new case with a new tag, with correct perm."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_tags"))
         data = self.get_form_data()
         data.setlist("tag-newtag", ["baz"])
 
-        caseversion = self.form(data=data).save().versions.get()
+        caseversion = self.form(data=data, user=self.user).save().versions.get()
 
         self.assertEqual([t.name for t in caseversion.tags.all()], ["baz"])
+
+
+    def test_new_tag_requires_manage_tags_permission(self):
+        """Cannot add new tag without correct permission."""
+        data = self.get_form_data()
+        data.setlist("tag-newtag", ["baz"])
+
+        form = self.form(data=data)
+
+        self.assertEqual(
+            form.errors["__all__"],
+            ["You do not have permission to create new tags."]
+            )
+
+
+    def test_data_allow_new(self):
+        """add_tag field has data-allow-new set true with manage_tags perm."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_tags"))
+
+        form = self.form(user=self.user)
+
+        self.assertEqual(
+            form.fields["add_tags"].widget.attrs["data-allow-new"], "true")
+
+
+    def test_no_allow_new(self):
+        """add_tag field has data-allow-new false without manage_tags perm."""
+        form = self.form(user=self.user)
+
+        self.assertEqual(
+            form.fields["add_tags"].widget.attrs["data-allow-new"], "false")
 
 
     def test_attachment(self):
@@ -220,6 +253,123 @@ class AddCaseFormTest(TestCase):
             [v.productversion for v in case.versions.all()],
             [self.productversion, newer_version]
             )
+
+
+class EditCaseVersionFormTest(TestCase):
+    """Tests for EditCaseVersionForm."""
+    @property
+    def user(self):
+        """A lazily-created user."""
+        if not hasattr(self, "_user"):
+            self._user = F.UserFactory.create()
+        return self._user
+
+
+    @property
+    def form(self):
+        """The form class under test."""
+        from cc.view.manage.cases.forms import EditCaseVersionForm
+        return EditCaseVersionForm
+
+
+    def test_initial(self):
+        """Initial data is populated accurately."""
+        cv = F.CaseVersionFactory.create(
+            name="a name", description="a desc", status="active")
+        F.CaseStepFactory.create(
+            caseversion=cv, instruction="do this", expected="see that")
+
+        form = self.form(instance=cv)
+
+        self.assertEqual(
+            form.initial,
+            {"name": "a name", "description": "a desc", "status": "active"})
+        self.assertEqual(
+            form.steps_formset.forms[0].initial,
+            {
+                "caseversion": cv.id,
+                "instruction": "do this",
+                "expected": "see that"
+                }
+            )
+
+
+    def test_save_edits(self):
+        """Can edit basic data and steps and save."""
+        cv = F.CaseVersionFactory.create(
+            name="a name", description="a desc", status="draft")
+        step = F.CaseStepFactory.create(
+            caseversion=cv, instruction="do this", expected="see that")
+
+        form = self.form(
+            instance=cv,
+            data=MultiValueDict(
+                {
+                    "name": ["new name"],
+                    "description": ["new desc"],
+                    "status": ["active"],
+                    "steps-TOTAL_FORMS": ["2"],
+                    "steps-INITIAL_FORMS": ["1"],
+                    "steps-0-id": [""],
+                    "steps-0-instruction": ["new step"],
+                    "steps-0-expected": [""],
+                    "steps-1-id": [str(step.id)],
+                    "steps-1-instruction": ["do this instead"],
+                    "steps-1-expected": [""],
+                    }
+                )
+            )
+
+        cv = form.save()
+        cv = refresh(cv)
+
+        self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.description, "new desc")
+        self.assertEqual(cv.status, "active")
+        self.assertEqual(
+            [s.instruction for s in cv.steps.all()],
+            ["new step", "do this instead"])
+
+
+    def test_save_tags(self):
+        """Can add/remove tags."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_tags"))
+
+        cv = F.CaseVersionFactory.create()
+
+        t1 = F.TagFactory.create(name="one")
+        t2 = F.TagFactory.create(name="two")
+        t3 = F.TagFactory.create(name="three")
+
+        cv.tags.add(t1, t2)
+
+        form = self.form(
+            instance=cv,
+            user=self.user,
+            data=MultiValueDict(
+                {
+                    "name": ["new name"],
+                    "description": ["new desc"],
+                    "status": ["active"],
+                    "tag-tag": [t2.id, t3.id],
+                    "tag-newtag": ["foo"],
+                    "steps-TOTAL_FORMS": ["0"],
+                    "steps-INITIAL_FORMS": ["0"],
+                    }
+                )
+            )
+
+        cv = form.save()
+
+        self.assertEqual(
+            set([t.name for t in cv.tags.all()]),
+            set(["two", "three", "foo"])
+            )
+
+
+    def test_save_attachments(self):
+        """Can add/remove attachments."""
 
 
 

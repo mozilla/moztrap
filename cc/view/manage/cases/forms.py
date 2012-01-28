@@ -70,8 +70,18 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
 
     def is_valid(self):
+        """The form and the steps formset must both be valid."""
         return self.steps_formset.is_valid() and super(
             CaseVersionForm, self).is_valid()
+
+
+    def clean(self):
+        """Can't create new tags without appropriate permissions."""
+        if (self.data.get("tag-newtag") and
+                not (self.user and self.user.has_perm("tags.manage_tags"))):
+            raise forms.ValidationError(
+                "You do not have permission to create new tags.")
+        return self.cleaned_data
 
 
     def save_tags(self, caseversion):
@@ -127,19 +137,22 @@ class AddCaseForm(CaseVersionForm):
 
 
     def clean(self):
-        productversion = self.cleaned_data.get("productversion")
-        initial_suite = self.cleaned_data.get("initial_suite")
-        product = self.cleaned_data.get("product")
+        """Verify that products all match up."""
+        cleaned_data = super(AddCaseForm, self).clean()
+        productversion = cleaned_data.get("productversion")
+        initial_suite = cleaned_data.get("initial_suite")
+        product = cleaned_data.get("product")
         if product and productversion and productversion.product != product:
             raise forms.ValidationError(
                 "Must select a version of the correct product.")
         if product and initial_suite and initial_suite.product != product:
             raise forms.ValidationError(
                 "Must select a suite for the correct product.")
-        return self.cleaned_data
+        return cleaned_data
 
 
     def save(self):
+        """Create new case and all called-for versions."""
         assert self.is_valid()
 
         version_kwargs = self.cleaned_data.copy()

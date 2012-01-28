@@ -618,6 +618,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
         step = refresh(step)
         self.assertEqual(step.instruction, "do something else")
         self.assertEqual(step.expected, "")
+        self.assertEqual(step.modified_by, self.user)
 
 
     def test_remove_tags(self):
