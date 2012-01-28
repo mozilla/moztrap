@@ -183,6 +183,17 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
+        CC.formOptionsFilter({
+            container: '#bulk-case-add',
+            trigger_sel: '#id_product',
+            target_sel: '#id_productversion'
+        });
+        CC.formOptionsFilter({
+            container: '#bulk-case-add',
+            trigger_sel: '#id_product',
+            target_sel: '#id_initial_suite',
+            optional: true
+        });
         CC.testcaseAttachments('.attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
