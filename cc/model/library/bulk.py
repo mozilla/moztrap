@@ -58,8 +58,7 @@ class BulkParser(object):
                 try:
                     state = state(line.lower(), line, data)
                 except ParsingError as e:
-                    if not data:
-                        data.append({})
+                    data = data or [{}]
                     data[-1]["error"] = str(e)
                     error = True
                     break
@@ -76,8 +75,7 @@ class BulkParser(object):
             if "description" in item:
                 item["description"] = "\n".join(item["description"])
             for step in item.get("steps", []):
-                if "instruction" in step:
-                    step["instruction"] = "\n".join(step["instruction"])
+                step["instruction"] = "\n".join(step["instruction"])
                 if "expected" in step:
                     step["expected"] = "\n".join(step["expected"])
 
