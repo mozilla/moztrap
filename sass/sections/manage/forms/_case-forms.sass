@@ -45,24 +45,23 @@
     background-color: $lightest
     overflow-y: auto
     z-index: 900
-  .vaction-edit, .vaction-add
-    #{$link}
-      display: block
   .vaction-edit
     #{$link}
       +button-style($green-lighter,'ui/pencil.png')
       +border-radius(0)
+      display: block
   .vaction-add
-    #{$link}
-      +opacity(.75)
-      +icon('ui/plus.png',$blue-hint,false)
-      +padding-leader(.25)
-      +padding-trailer(.25)
-      +border-radius(0)
-      color: $base
-    #{$focus}
-      +opacity(1)
-      background-color: $blue-lightest
+    +button-style($blue-hint,'ui/plus.png')
+    +border-radius(0)
+    display: block
+    width: 100%
+    text-align: left
+  .vaction-current
+    +pad-icon('ui/plus.png')
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    display: block
+
 
   &:hover
     .case-version-current
