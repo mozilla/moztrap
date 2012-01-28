@@ -3117,14 +3117,6 @@ body.login input, body.login .errorlist {
   margin-right: 1.053%;
 }
 
-.edit-case .versioned {
-  border-top-style: solid;
-  border-top-width: 0.214em;
-  padding-top: 1.286em;
-  clear: both;
-  border-style: dashed;
-  border-color: rgba(69, 69, 69, 0.198);
-}
 .versioned .caseinfo-fields {
   display: inline;
   float: left;
