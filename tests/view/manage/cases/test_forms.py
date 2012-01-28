@@ -30,6 +30,7 @@ from .... import factories as F
 from ....utils import refresh
 
 
+
 class AddCaseFormTest(TestCase):
     """Tests for add-case form."""
     def setUp(self):
@@ -253,6 +254,210 @@ class AddCaseFormTest(TestCase):
             [v.productversion for v in case.versions.all()],
             [self.productversion, newer_version]
             )
+
+
+
+class AddBulkCasesFormTest(TestCase):
+    """Tests for add-bulk-case form."""
+    def setUp(self):
+        """All add-bulk-case tests require at least one product version."""
+        self.productversion = F.ProductVersionFactory.create(version="1.0")
+        self.product = self.productversion.product
+
+
+    @property
+    def user(self):
+        """A lazily-created user."""
+        if not hasattr(self, "_user"):
+            self._user = F.UserFactory.create()
+        return self._user
+
+
+    @property
+    def form(self):
+        """The form class under test."""
+        from cc.view.manage.cases.forms import AddBulkCaseForm
+        return AddBulkCaseForm
+
+
+    def get_form_data(self):
+        defaults = {
+            "product": [self.product.id],
+            "productversion": [self.productversion.id],
+            "cases": [
+                "Test that I can register\n"
+                "this is the description\n"
+                "when I fill in form and submit\n"
+                "then I get a welcome email\n"
+                ],
+            "status": ["draft"],
+            }
+        return MultiValueDict(defaults)
+
+
+    def test_success(self):
+        """Can add a test case."""
+        form = self.form(data=self.get_form_data())
+
+        cv = form.save()[0].versions.get()
+
+        self.assertEqual(cv.name, "Test that I can register")
+
+
+    def test_parse_error(self):
+        """Error in bulk case text parsing."""
+        data = self.get_form_data()
+        data["cases"] = "Foo"
+
+        form = self.form(data=data)
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors["cases"], [u"Expected 'Test that ...', not 'Foo'"])
+
+
+    def test_created_by(self):
+        """If user is provided, created objects have created_by set."""
+        form = self.form(data=self.get_form_data(), user=self.user)
+
+        cv = form.save()[0].versions.get()
+
+        self.assertEqual(cv.case.created_by, self.user)
+        self.assertEqual(cv.created_by, self.user)
+        self.assertEqual(cv.steps.get().created_by, self.user)
+
+
+    def test_wrong_product_version(self):
+        """Selecting version of wrong product results in validation error."""
+        data = self.get_form_data()
+        data["product"] = F.ProductFactory.create().id
+
+        form = self.form(data=data)
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'__all__': [u'Must select a version of the correct product.']}
+            )
+
+
+    def test_no_initial_suite(self):
+        """If no manage-suite-cases perm, no initial_suite field."""
+        self.assertNotIn("initial_suite", self.form().fields)
+
+
+    def test_initial_suite(self):
+        """Can pick an initial suite for case to be in (with right perms)."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_suite_cases"))
+        suite = F.SuiteFactory.create(product=self.product)
+
+        data = self.get_form_data()
+        data["initial_suite"] = suite.id
+
+        case = self.form(data=data, user=self.user).save()[0]
+
+        self.assertEqual(list(case.suites.all()), [suite])
+
+
+    def test_wrong_suite_product(self):
+        """Selecting suite from wrong product results in validation error."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_suite_cases"))
+        suite = F.SuiteFactory.create() # some other product
+
+        data = self.get_form_data()
+        data["initial_suite"] = suite.id
+
+        form = self.form(data=data, user=self.user)
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {"__all__": [u"Must select a suite for the correct product."]}
+            )
+
+
+    def test_tag(self):
+        """Can tag a new case with some existing tags."""
+        t1 = F.TagFactory.create(name="foo")
+        t2 = F.TagFactory.create(name="bar")
+        data = self.get_form_data()
+        data.setlist("tag-tag", [t1.id, t2.id])
+
+        caseversion = self.form(data=data).save()[0].versions.get()
+
+        self.assertEqual(list(caseversion.tags.all()), [t1, t2])
+
+
+    def test_new_tag(self):
+        """Can create a new case with a new tag, with correct perm."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_tags"))
+        data = self.get_form_data()
+        data.setlist("tag-newtag", ["baz"])
+
+        caseversion = self.form(data=data, user=self.user).save(
+            )[0].versions.get()
+
+        self.assertEqual([t.name for t in caseversion.tags.all()], ["baz"])
+
+
+    def test_new_tag_requires_manage_tags_permission(self):
+        """Cannot add new tag without correct permission."""
+        data = self.get_form_data()
+        data.setlist("tag-newtag", ["baz"])
+
+        form = self.form(data=data)
+
+        self.assertEqual(
+            form.errors["__all__"],
+            ["You do not have permission to create new tags."]
+            )
+
+
+    def test_data_allow_new(self):
+        """add_tag field has data-allow-new set true with manage_tags perm."""
+        self.user.user_permissions.add(
+            Permission.objects.get(codename="manage_tags"))
+
+        form = self.form(user=self.user)
+
+        self.assertEqual(
+            form.fields["add_tags"].widget.attrs["data-allow-new"], "true")
+
+
+    def test_no_allow_new(self):
+        """add_tag field has data-allow-new false without manage_tags perm."""
+        form = self.form(user=self.user)
+
+        self.assertEqual(
+            form.fields["add_tags"].widget.attrs["data-allow-new"], "false")
+
+
+    def test_and_later_versions(self):
+        """Can add multiple versions of a test case at once."""
+        F.ProductVersionFactory.create(
+            product=self.product, version="0.5")
+        newer_version = F.ProductVersionFactory.create(
+            product=self.product, version="1.1")
+
+        # these versions from a different product should not be included
+        other_product = F.ProductFactory.create(name="Other Product")
+        F.ProductVersionFactory.create(version="2", product=other_product)
+        F.ProductVersionFactory.create(version="3", product=other_product)
+        F.ProductVersionFactory.create(version="4", product=other_product)
+
+        data = self.get_form_data()
+        data["and_later_versions"] = 1
+
+        case = self.form(data=data).save()[0]
+
+        self.assertEqual(
+            [v.productversion for v in case.versions.all()],
+            [self.productversion, newer_version]
+            )
+
 
 
 class EditCaseVersionFormTest(TestCase):

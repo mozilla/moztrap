@@ -35,44 +35,30 @@ def product_id_attrs(obj):
     return {"data-product-id": obj.product.id}
 
 
-class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
-    """Base form class for AddCaseForm and EditCaseVersionForm."""
-    name = forms.CharField(max_length=200)
-    description = forms.CharField(required=False, widget=ccforms.BareTextarea)
-    status = forms.CharField(
-        widget=forms.Select(choices=model.CaseVersion.STATUS))
-    # @@@ tags and attachments aren't proper fields/widgets (yet)
-    # these are just placeholder fields for the JS autocomplete stuff, we don't
-    # use their contents
+class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+    """
+    Base form for all test case/version forms.
+
+    Provides self.user, tags field, and non-field-errors-class mixin.
+
+    """
     add_tags = forms.CharField(
         widget=ccforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
         required=False)
-    add_attachment = forms.FileField(required=False)
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize CaseVersionForm, including StepFormSet."""
+        """Initialize form; pull out user from kwargs, set up data-allow-new."""
         self.user = kwargs.pop("user", None)
 
-        super(CaseVersionForm, self).__init__(*args, **kwargs)
+        super(BaseCaseForm, self).__init__(*args, **kwargs)
 
         self.fields["add_tags"].widget.attrs["data-allow-new"] = (
             "true"
             if (self.user and self.user.has_perm("tags.manage_tags"))
             else "false"
             )
-
-        self.steps_formset = StepFormSet(
-            data=self.data or None,
-            instance=getattr(self, "instance", None),
-            )
-
-
-    def is_valid(self):
-        """The form and the steps formset must both be valid."""
-        return self.steps_formset.is_valid() and super(
-            CaseVersionForm, self).is_valid()
 
 
     def clean(self):
@@ -89,6 +75,7 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         tag_ids = set([int(tid) for tid in self.data.getlist("tag-tag")])
         new_tags = self.data.getlist("tag-newtag")
 
+        # @@@ shouldn't be doing this multiple times (ea productversion)
         for name in new_tags:
             # @@@ should pass in user here, need CCQuerySet.get_or_create
             t, created = model.Tag.objects.get_or_create(
@@ -100,9 +87,37 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         caseversion.tags.remove(*current_tag_ids.difference(tag_ids))
 
 
+
+class BaseCaseVersionForm(forms.Form):
+    """Base form class for AddCaseForm and EditCaseVersionForm."""
+    name = forms.CharField(max_length=200)
+    description = forms.CharField(required=False, widget=ccforms.BareTextarea)
+    status = forms.CharField(
+        widget=forms.Select(choices=model.CaseVersion.STATUS))
+
+    add_attachment = forms.FileField(required=False)
+
+
+    def __init__(self, *args, **kwargs):
+        """Initialize BaseCaseVersionForm, including StepFormSet."""
+        super(BaseCaseVersionForm, self).__init__(*args, **kwargs)
+
+        self.steps_formset = StepFormSet(
+            data=self.data or None,
+            instance=getattr(self, "instance", None),
+            )
+
+
+    def is_valid(self):
+        """The form and the steps formset must both be valid."""
+        return self.steps_formset.is_valid() and super(
+            BaseCaseVersionForm, self).is_valid()
+
+
     def save_attachments(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
         delete_ids = set(self.data.getlist("remove-attachment"))
+        # @@@ shouldn't be doing this multiple times (ea productversion)
         caseversion.attachments.filter(id__in=delete_ids).delete()
 
         if self.files: # if no files, it's a plain dict, has no getlist
@@ -114,9 +129,8 @@ class CaseVersionForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
                     )
 
 
-
-class AddCaseForm(CaseVersionForm):
-    """Form for adding a new single case and some number of versions."""
+class BaseAddCaseForm(forms.Form):
+    """Base form for adding cases."""
     product = ccforms.CCModelChoiceField(
         model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
@@ -126,8 +140,8 @@ class AddCaseForm(CaseVersionForm):
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize AddCaseForm; possibly add initial_suite field."""
-        super(AddCaseForm, self).__init__(*args, **kwargs)
+        """Initialize form; possibly add initial_suite field."""
+        super(BaseAddCaseForm, self).__init__(*args, **kwargs)
 
         if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
@@ -138,17 +152,33 @@ class AddCaseForm(CaseVersionForm):
 
     def clean(self):
         """Verify that products all match up."""
-        cleaned_data = super(AddCaseForm, self).clean()
-        productversion = cleaned_data.get("productversion")
-        initial_suite = cleaned_data.get("initial_suite")
-        product = cleaned_data.get("product")
+        productversion = self.cleaned_data.get("productversion")
+        initial_suite = self.cleaned_data.get("initial_suite")
+        product = self.cleaned_data.get("product")
         if product and productversion and productversion.product != product:
             raise forms.ValidationError(
                 "Must select a version of the correct product.")
         if product and initial_suite and initial_suite.product != product:
             raise forms.ValidationError(
                 "Must select a suite for the correct product.")
-        return cleaned_data
+        return self.cleaned_data
+
+
+
+class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
+    """Form for adding a new single case and some number of versions."""
+    def clean(self):
+        """
+        Call clean methods from parent classes explicitly.
+
+        Can't use super() as forms.Form.clean doesn't.
+
+        """
+        # we should get cleaned-data from return value of these, but we know
+        # they don't modify self.cleaned_data
+        BaseCaseForm.clean(self)
+        BaseAddCaseForm.clean(self)
+        return self.cleaned_data
 
 
     def save(self):
@@ -189,12 +219,86 @@ class AddCaseForm(CaseVersionForm):
 
 
 
-class AddBulkCaseForm(AddCaseForm):
-    pass # @@@
+class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
+    """Form for adding test cases in bulk."""
+    cases = forms.CharField(widget=ccforms.BareTextarea)
+
+
+    def clean_cases(self):
+        """Validate the bulk cases text."""
+        data = model.BulkParser().parse(self.cleaned_data["cases"])
+
+        for d in data:
+            if "error" in d:
+                raise forms.ValidationError(d["error"])
+
+        return data
 
 
 
-class EditCaseVersionForm(CaseVersionForm):
+    def clean(self):
+        """
+        Call clean methods from parent classes explicitly.
+
+        Can't use super() as forms.Form.clean doesn't.
+
+        """
+        # we should get cleaned-data from return value of these, but we know
+        # they don't modify self.cleaned_data
+        BaseCaseForm.clean(self)
+        BaseAddCaseForm.clean(self)
+
+        return self.cleaned_data
+
+
+    def save(self):
+        """Create and return the new case(s) and version(s)."""
+        assert self.is_valid()
+
+        product = self.cleaned_data["product"]
+
+        productversions = [self.cleaned_data["productversion"]]
+        if self.cleaned_data.get("and_later_versions"):
+            productversions.extend(product.versions.filter(
+                    order__gt=productversions[0].order))
+
+        initial_suite = self.cleaned_data.get("initial_suite")
+
+        cases = []
+
+        for case_data in self.cleaned_data["cases"]:
+            case = model.Case.objects.create(product=product, user=self.user)
+
+            version_kwargs = case_data.copy()
+            steps_data = version_kwargs.pop("steps")
+
+            version_kwargs["case"] = case
+            version_kwargs["user"] = self.user
+
+            if initial_suite:
+                model.SuiteCase.objects.create(
+                    case=case, suite=initial_suite, user=self.user)
+
+            for productversion in productversions:
+                this_version_kwargs = version_kwargs.copy()
+                this_version_kwargs["productversion"] = productversion
+                caseversion = model.CaseVersion.objects.create(
+                    **this_version_kwargs)
+                for i, step_kwargs in enumerate(steps_data, 1):
+                    model.CaseStep.objects.create(
+                        user=self.user,
+                        caseversion=caseversion,
+                        number=i,
+                        **step_kwargs)
+                self.save_tags(caseversion)
+
+            cases.append(case)
+
+        return cases
+
+
+
+class EditCaseVersionForm(BaseCaseVersionForm, BaseCaseForm):
     """Form for editing a case version."""
     def __init__(self, *args, **kwargs):
         """Initialize EditCaseVersionForm, pulling instance from kwargs."""
