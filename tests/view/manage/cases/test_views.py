@@ -387,6 +387,89 @@ class AddCaseTest(base.FormViewTestCase):
         res.mustcontain("This field is required.")
 
 
+    def test_requires_create_cases_permission(self):
+        """Requires create-cases permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
+
+class AddBulkCaseTest(base.FormViewTestCase):
+    """Tests for add-case-bulk view."""
+    form_id = "bulk-case-add"
+
+
+    @property
+    def url(self):
+        """Shortcut for add-case-bulk url."""
+        return reverse("manage_case_add_bulk")
+
+
+    def setUp(self):
+        """Add create-cases permission to user."""
+        super(AddBulkCaseTest, self).setUp()
+        self.add_perm("create_cases")
+
+
+    def test_success(self):
+        """Can add a test case or two with basic data, including a step."""
+        pv = F.ProductVersionFactory.create()
+
+        form = self.get_form()
+        form["product"] = pv.product.id
+        form["productversion"] = pv.id
+        form["cases"] = (
+            "Test that I can log in\n"
+            "description here\n"
+            "When I type creds and click login\n"
+            "Then I should see a welcome message.\n"
+            "Test that I can register\n"
+            "When I register\n"
+            "Then I am registered\n"
+            )
+        form["status"] = "active"
+        res = form.submit(status=302)
+
+        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+
+        from cc.model import CaseVersion
+        cv1, cv2 = list(CaseVersion.objects.all())
+
+        self.assertEqual(cv1.case.product, pv.product)
+        self.assertEqual(cv1.productversion, pv)
+        self.assertEqual(cv1.name, "Test that I can log in")
+        self.assertEqual(cv1.description, "description here")
+        self.assertEqual(cv1.status, "active")
+        step = cv1.steps.get()
+        self.assertEqual(step.instruction, "When I type creds and click login")
+        self.assertEqual(step.expected, "Then I should see a welcome message.")
+
+        self.assertEqual(cv2.case.product, pv.product)
+        self.assertEqual(cv2.productversion, pv)
+        self.assertEqual(cv2.name, "Test that I can register")
+        self.assertEqual(cv2.description, "")
+        self.assertEqual(cv2.status, "active")
+        step = cv2.steps.get()
+        self.assertEqual(step.instruction, "When I register")
+        self.assertEqual(step.expected, "Then I am registered")
+
+
+    def test_error(self):
+        """Bound form with errors is re-displayed."""
+        res = self.get_form().submit()
+
+        self.assertEqual(res.status_int, 200)
+        res.mustcontain("This field is required.")
+
+
+    def test_requires_create_cases_permission(self):
+        """Requires create-cases permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
 
 class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     """Tests for caseversion-clone view."""
@@ -418,6 +501,19 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
             self.url,
             {"csrfmiddlewaretoken": "foo"},
             headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
+            status=302,
+            )
+
+        self.assertIn("login", response.headers["Location"])
+
+
+    def test_manage_cases_permission_required(self):
+        """Requires manage cases permission."""
+        response = self.app.post(
+            self.url,
+            {"csrfmiddlewaretoken": "foo"},
+            headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
+            user=F.UserFactory.create(),
             status=302,
             )
 
@@ -511,6 +607,13 @@ class EditCaseVersionTest(base.FormViewTestCase):
         """Shortcut for edit-caseversion url."""
         return reverse(
             "manage_caseversion_edit", kwargs=dict(caseversion_id=self.cv.id))
+
+
+    def test_requires_manage_cases_permission(self):
+        """Requires manage-cases permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
 
 
     def test_existing_version_links(self):

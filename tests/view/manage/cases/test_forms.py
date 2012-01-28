@@ -290,7 +290,7 @@ class AddBulkCasesFormTest(TestCase):
                 "when I fill in form and submit\n"
                 "then I get a welcome email\n"
                 ],
-            "status": ["draft"],
+            "status": ["active"],
             }
         return MultiValueDict(defaults)
 
@@ -302,6 +302,14 @@ class AddBulkCasesFormTest(TestCase):
         cv = form.save()[0].versions.get()
 
         self.assertEqual(cv.name, "Test that I can register")
+        self.assertEqual(cv.case.product, self.product)
+        self.assertEqual(cv.productversion, self.productversion)
+        self.assertEqual(cv.description, "this is the description")
+        self.assertEqual(
+            [(s.instruction, s.expected) for s in cv.steps.all()],
+            [("when I fill in form and submit", "then I get a welcome email")]
+            )
+        self.assertEqual(cv.status, "active")
 
 
     def test_parse_error(self):

@@ -39,9 +39,12 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     """
     Base form for all test case/version forms.
 
-    Provides self.user, tags field, and non-field-errors-class mixin.
+    Provides self.user, tags and status fields, and non-field-errors-class
+    mixin.
 
     """
+    status = forms.CharField(
+        widget=forms.Select(choices=model.CaseVersion.STATUS))
     add_tags = forms.CharField(
         widget=ccforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
@@ -92,8 +95,6 @@ class BaseCaseVersionForm(forms.Form):
     """Base form class for AddCaseForm and EditCaseVersionForm."""
     name = forms.CharField(max_length=200)
     description = forms.CharField(required=False, widget=ccforms.BareTextarea)
-    status = forms.CharField(
-        widget=forms.Select(choices=model.CaseVersion.STATUS))
 
     add_attachment = forms.FileField(required=False)
 
@@ -273,6 +274,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
             steps_data = version_kwargs.pop("steps")
 
             version_kwargs["case"] = case
+            version_kwargs["status"] = self.cleaned_data["status"]
             version_kwargs["user"] = self.user
 
             if initial_suite:
