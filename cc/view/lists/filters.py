@@ -24,20 +24,21 @@ from functools import wraps
 
 
 
-def filter(ctx_name, filters=None, filterset=None):
+def filter(ctx_name, filters=None, filterset_class=None):
     """
     View decorator that handles filtering of a queryset.
 
     Expects to find the queryset in the TemplateResponse context under the name
     ``ctx_name``. Optional ``filters`` argument should be an iterable of Filter
-    instances, and ``filterset`` is an optional FilterSet subclass to use.
+    instances, and ``filterset_class`` is an optional FilterSet subclass to
+    use.
 
     """
     if filters is None:
         filters = []
-    if filterset is None:
-        filterset = FilterSet
-    filterset = filterset(*filters)
+    if filterset_class is None:
+        filterset_class = FilterSet
+    filterset = filterset_class(*filters)
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):

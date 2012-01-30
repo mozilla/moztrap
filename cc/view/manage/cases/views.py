@@ -45,7 +45,7 @@ from . import forms
     model.CaseVersion,
     ["clone", "activate", "deactivate"],
     permission="library.manage_cases")
-@lists.filter("caseversions", filterset=CaseVersionFilterSet)
+@lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
 @lists.sort("caseversions")
 @ajax("manage/product/testcase/list/_cases_list.html")
 def cases_list(request):

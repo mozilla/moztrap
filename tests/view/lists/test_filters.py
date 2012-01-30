@@ -110,13 +110,13 @@ class DecoratorTest(FiltersTestCase):
 
 
     def test_filterset_subclass(self):
-        """Accepts a FilterSet subclass to use in ``filterset`` argument."""
+        """Accepts a FilterSet subclass in ``filterset_class`` argument."""
         class MyFilterSet(self.filters.FilterSet):
             filters = [self.filters.Filter("name")]
 
         response = self.on_template_response(
             {"ctx_name": Mock()},
-            decorator=self.filter("ctx_name", filterset=MyFilterSet),
+            decorator=self.filter("ctx_name", filterset_class=MyFilterSet),
             )
 
         bfs = response.context_data["filters"]
