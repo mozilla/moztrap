@@ -30,17 +30,16 @@ from .... import factories as F
 
 
 class CaseVersionFilterSetTest(TestCase):
-    """Tests for CaseVersionFilterSet."""
-    @property
-    def CaseVersionFilterSet(self):
-        """The class under test."""
+    """Tests for CaseVersionFilterSet and CaseVersionBoundFilterSet."""
+    def bound(self, GET):
+        """Return instance of bound filter set."""
         from cc.view.manage.cases.filters import CaseVersionFilterSet
-        return CaseVersionFilterSet
+        return CaseVersionFilterSet().bind(GET)
 
 
     def test_filter_latest(self):
         """If productversion is not filtered on, filters by latest=True."""
-        fs = self.CaseVersionFilterSet(MultiValueDict())
+        fs = self.bound(MultiValueDict())
 
         qs = Mock()
         fs.filter(qs)
@@ -52,8 +51,7 @@ class CaseVersionFilterSetTest(TestCase):
         """If filtered by productversion, doesn't filter by latest=True."""
         pv = F.ProductVersionFactory.create()
 
-        fs = self.CaseVersionFilterSet(
-            MultiValueDict({"filter-productversion": [str(pv.id)]}))
+        fs = self.bound(MultiValueDict({"filter-productversion": [str(pv.id)]}))
 
         qs = Mock()
         qs2 = fs.filter(qs)
@@ -65,8 +63,7 @@ class CaseVersionFilterSetTest(TestCase):
 
     def test_filtered_by_invalid_productversion(self):
         """If filtered by invalid productversion, filters by latest=True."""
-        fs = self.CaseVersionFilterSet(
-            MultiValueDict({"filter-productversion": ["74"]}))
+        fs = self.bound(MultiValueDict({"filter-productversion": ["74"]}))
 
         qs = Mock()
         fs.filter(qs)

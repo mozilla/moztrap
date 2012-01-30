@@ -98,15 +98,15 @@ class DecoratorTest(FiltersTestCase):
 
 
     def test_filterset(self):
-        """Constructs FilterSet instance and places it in template context."""
+        """Constructs BoundFilterSet and places it in template context."""
         response = self.on_template_response(
             {"ctx_name": Mock()},
             decorator=self.filter("ctx_name", [self.filters.Filter("name")]),
             )
 
-        fs = response.context_data["filters"]
-        self.assertIsInstance(fs, self.filters.FilterSet)
-        self.assertEqual(list(fs)[0].name, "name")
+        bfs = response.context_data["filters"]
+        self.assertIsInstance(bfs, self.filters.BoundFilterSet)
+        self.assertEqual(list(bfs)[0].name, "name")
 
 
     def test_filterset_subclass(self):
@@ -119,9 +119,9 @@ class DecoratorTest(FiltersTestCase):
             decorator=self.filter("ctx_name", filterset=MyFilterSet),
             )
 
-        fs = response.context_data["filters"]
-        self.assertIsInstance(fs, MyFilterSet)
-        self.assertEqual(list(fs)[0].name, "name")
+        bfs = response.context_data["filters"]
+        self.assertIsInstance(bfs.filterset, MyFilterSet)
+        self.assertEqual(list(bfs)[0].name, "name")
 
 
     def test_filters_qs(self):
@@ -141,15 +141,76 @@ class DecoratorTest(FiltersTestCase):
 
 class FilterSetTest(FiltersTestCase):
     """Tests for FilterSet."""
-    def test_data(self):
+    def test_class_filters(self):
+        """Subclasses can provide filters list as class attribute."""
+        class MyFilterSet(self.filters.FilterSet):
+            filters = [
+                self.filters.Filter("name")
+                ]
+
+        fs = MyFilterSet()
+
+        self.assertEqual(len(fs.filters), 1)
+        self.assertEqual(fs.filters[0].name, "name")
+
+
+    def test_instantiation_filters_extend_class_filters(self):
+        """Filters given at instantiation extend class-attr filters."""
+        class MyFilterSet(self.filters.FilterSet):
+            filters = [
+                self.filters.Filter("one")
+                ]
+
+        fs = MyFilterSet(self.filters.Filter("two"))
+
+        self.assertEqual([f.name for f in fs.filters], ["one", "two"])
+
+
+    def test_extend_doesnt_alter_class_attr(self):
+        """Providing filters at instantiation doesn't alter the class attr."""
+        class MyFilterSet(self.filters.FilterSet):
+            filters = [
+                self.filters.Filter("one")
+                ]
+
+        MyFilterSet(self.filters.Filter("two"))
+        fs = MyFilterSet()
+
+        self.assertEqual(len(fs.filters), 1)
+
+
+    def test_bind(self):
+        """``bind`` method returns BoundFilterSet."""
+        fs = self.filters.FilterSet()
+        bfs = fs.bind(MultiValueDict())
+
+        self.assertIsInstance(bfs, self.filters.BoundFilterSet)
+        self.assertIs(bfs.filterset, fs)
+
+
+    def test_bound_class(self):
+        """Subclass can use subclass of BoundFilterSet."""
+        class MyBoundFilterSet(self.filters.BoundFilterSet):
+            pass
+
+        class MyFilterSet(self.filters.FilterSet):
+            bound_class = MyBoundFilterSet
+
+        fs = MyFilterSet()
+        bfs = fs.bind(MultiValueDict())
+
+        self.assertIsInstance(bfs, MyBoundFilterSet)
+
+
+    def test_bound_data(self):
         """
-        ``self.data`` is plain dict of lists from given MultiValueDict.
+        BoundFilterSet's data is plain dict of lists from given MultiValueDict.
 
         Only keys beginning with the prefix "filter-" are included, and the
         prefix is stripped from the key.
 
         """
-        fs = self.filters.FilterSet(
+        bfs = self.filters.FilterSet().bind(
             MultiValueDict(
                 {
                     "other": ["a", "b"],
@@ -159,12 +220,12 @@ class FilterSetTest(FiltersTestCase):
                 )
             )
 
-        self.assertEqual(fs.data, {"one": ["foo"], "two": ["bar", "baz"]})
+        self.assertEqual(bfs.data, {"one": ["foo"], "two": ["bar", "baz"]})
 
 
     def test_prefix_override(self):
         """'filter-' prefix can be changed via 'filter' kwarg."""
-        fs = self.filters.FilterSet(
+        bfs = self.filters.FilterSet().bind(
             MultiValueDict(
                 {
                     "other": ["a", "b"],
@@ -175,75 +236,41 @@ class FilterSetTest(FiltersTestCase):
             prefix="foo:"
             )
 
-        self.assertEqual(fs.data, {"one": ["foo"], "two": ["bar", "baz"]})
+        self.assertEqual(bfs.data, {"one": ["foo"], "two": ["bar", "baz"]})
 
 
+
+class BoundFilterSetTest(FiltersTestCase):
+    """Tests for BoundFilterSet."""
     def test_boundfilters(self):
         """``self.boundfilters`` has a BoundFilter for each given Filter."""
-        flt = self.filters.Filter("name")
-        fs = self.filters.FilterSet(MultiValueDict(), [flt])
+        fs = self.filters.FilterSet(self.filters.Filter("name"))
+        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
-        self.assertEqual(len(fs.boundfilters), 1)
-        self.assertIsInstance(fs.boundfilters[0], self.filters.BoundFilter)
-        self.assertIs(fs.boundfilters[0].name, "name")
-
-
-    def test_class_filters(self):
-        """Subclasses can provide filters list as class attribute."""
-        class MyFilterSet(self.filters.FilterSet):
-            filters = [
-                self.filters.Filter("name")
-                ]
-
-        fs = MyFilterSet(MultiValueDict())
-
-        self.assertEqual(len(fs.boundfilters), 1)
-        self.assertEqual(fs.boundfilters[0].name, "name")
-
-
-    def test_instantiation_filters_extend_class_filters(self):
-        """Filters given at instantiation extend class-attr filters."""
-        class MyFilterSet(self.filters.FilterSet):
-            filters = [
-                self.filters.Filter("one")
-                ]
-
-        fs = MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
-
-        self.assertEqual([bf.name for bf in fs.boundfilters], ["one", "two"])
-
-
-    def test_extend_doesnt_alter_class_attr(self):
-        """Providing filters at instantiation doesn't alter the class attr."""
-        class MyFilterSet(self.filters.FilterSet):
-            filters = [
-                self.filters.Filter("one")
-                ]
-
-        MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
-        fs = MyFilterSet(MultiValueDict())
-
-        self.assertEqual(len(fs.boundfilters), 1)
+        self.assertEqual(len(bfs.boundfilters), 1)
+        self.assertIsInstance(bfs.boundfilters[0], self.filters.BoundFilter)
+        self.assertIs(bfs.boundfilters[0].name, "name")
 
 
     def test_iteration_yields_boundfilters(self):
-        """Iterating over a FilterSet yields its BoundFilters."""
-        fs = self.filters.FilterSet(
-            MultiValueDict(), [self.filters.Filter("name")])
+        """Iterating over a BoundFilterSet yields its BoundFilters."""
+        fs = self.filters.FilterSet(self.filters.Filter("name"))
+        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
-        self.assertEqual(list(fs), fs.boundfilters)
+        self.assertEqual(list(bfs), bfs.boundfilters)
 
 
     def test_len_is_number_of_boundfilters(self):
-        """Length of a FilterSet is its number of BoundFilters."""
+        """Length of a BoundFilterSet is its number of BoundFilters."""
         class MyFilterSet(self.filters.FilterSet):
             filters = [
                 self.filters.Filter("one")
                 ]
 
-        fs = MyFilterSet(MultiValueDict(), [self.filters.Filter("two")])
+        fs = MyFilterSet(self.filters.Filter("two"))
+        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
-        self.assertEqual(len(fs), 2)
+        self.assertEqual(len(bfs), 2)
 
 
     def test_filter(self):
@@ -254,13 +281,12 @@ class FilterSetTest(FiltersTestCase):
                 setattr(queryset, self.name, values)
                 return queryset
 
-        fs = self.filters.FilterSet(
+        bfs = self.filters.FilterSet(MockFilter("one"), MockFilter("two")).bind(
             MultiValueDict({"filter-one": ["1"], "filter-two": ["2", "3"]}),
-            [MockFilter("one"), MockFilter("two")],
             )
         qs = Mock()
 
-        qs = fs.filter(qs)
+        qs = bfs.filter(qs)
 
         self.assertEqual(qs.one, ["1"])
         self.assertEqual(qs.two, ["2", "3"])

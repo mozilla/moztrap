@@ -27,8 +27,23 @@ from ...lists import filters
 
 
 
+class CaseVersionBoundFilterSet(filters.BoundFilterSet):
+    """Filters on ``latest`` if not filtered by ``productversion``."""
+    def filter(self, queryset):
+        """Add a filter on latest=True if not filtered on productversion."""
+        queryset = super(CaseVersionBoundFilterSet, self).filter(queryset)
+        pv = [bf for bf in self if bf.key == "productversion"][0]
+        if not pv.values:
+            queryset = queryset.filter(latest=True)
+        return queryset
+
+
+
 class CaseVersionFilterSet(filters.FilterSet):
-    """FilterSet for CaseVersions; filters on latest by default."""
+    """FilterSet for CaseVersions."""
+    bound_class = CaseVersionBoundFilterSet
+
+
     filters = [
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
         filters.KeywordExactFilter("id", lookup="case__id", coerce=int),
@@ -59,12 +74,3 @@ class CaseVersionFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "suite", lookup="case__suites", queryset=model.Suite.objects.all()),
         ]
-
-
-    def filter(self, queryset):
-        """Add a filter on latest=True if not filtered on productversion."""
-        queryset = super(CaseVersionFilterSet, self).filter(queryset)
-        pv = [bf for bf in self if bf.key == "productversion"][0]
-        if not pv.values:
-            queryset = queryset.filter(latest=True)
-        return queryset

@@ -37,6 +37,7 @@ def filter(ctx_name, filters=None, filterset=None):
         filters = []
     if filterset is None:
         filterset = FilterSet
+    filterset = filterset(*filters)
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
@@ -45,9 +46,9 @@ def filter(ctx_name, filters=None, filterset=None):
                 ctx = response.context_data
             except AttributeError:
                 return response
-            fs = filterset(request.GET, filters)
-            ctx[ctx_name] = fs.filter(ctx[ctx_name])
-            ctx["filters"] = fs
+            bfs = filterset.bind(request.GET)
+            ctx[ctx_name] = bfs.filter(ctx[ctx_name])
+            ctx["filters"] = bfs
             return response
 
         return _wrapped_view
@@ -56,30 +57,19 @@ def filter(ctx_name, filters=None, filterset=None):
 
 
 
-class FilterSet(object):
-    """A set of possible filters on a queryset and their current state."""
-    # subclasses can have preset filters
-    filters = []
-
-
-    def __init__(self, GET, filters=None, prefix="filter-"):
+class BoundFilterSet(object):
+    """A FilterSet plus actual filtering data."""
+    def __init__(self, filterset, data):
         """
-        Initialize a FilterSet.
+        Initialize a BoundFilterSet.
 
-        ``GET`` is a MultiValueDict that may contain filtering keys; usually
-        request.GET from the current request. Keys not beginning with
-        ``prefix``` will be ignored.
-
-        ``filters`` is an optional iterable of additional Filter instances.
+        ``filterset`` is the FilterSet instance that provides the filters;
+        ``data`` is a dictionary mapping filter keys to lists of values.
 
         """
-        self.data = dict(
-            (k[len(prefix):], GET.getlist(k)) for k in GET.keys()
-            if k.startswith(prefix)
-            )
-        if filters:
-            self.filters = self.filters[:]
-            self.filters.extend(filters)
+        self.data = data
+        self.filterset = filterset
+        self.filters = self.filterset.filters
         self.boundfilters = [BoundFilter(f, self.data) for f in self.filters]
 
 
@@ -99,6 +89,45 @@ class FilterSet(object):
         for boundfilter in self.boundfilters:
             queryset = boundfilter.filter(queryset)
         return queryset
+
+
+
+class FilterSet(object):
+    """A set of possible filters on a queryset."""
+    # subclasses can have preset filters
+    filters = []
+
+    bound_class = BoundFilterSet
+
+
+    def __init__(self, *filters):
+        """
+        Initialize a FilterSet.
+
+        ``filters`` is an optional iterable of additional Filter instances.
+
+        """
+        if filters:
+            self.filters = self.filters[:]
+            self.filters.extend(filters)
+
+
+    def bind(self, GET, prefix="filter-"):
+        """
+        Return BoundFilterSet (or subclass) for given filter data.
+
+         ``GET`` is a MultiValueDict that may contain filtering keys; usually
+        request.GET from the current request. Keys not beginning with
+        ``prefix``` will be ignored.
+
+        """
+        return self.bound_class(
+            self,
+            dict(
+                (k[len(prefix):], GET.getlist(k)) for k in GET.keys()
+                if k.startswith(prefix)
+                )
+            )
 
 
 
