@@ -31,6 +31,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     "",
+    # runtests ---------------------------------------------------------------
+    url("^runtests/", include("cc.view.runtests.urls")),
 
     # users ------------------------------------------------------------------
     url("^users/", include("cc.view.users.urls")),
@@ -40,4 +42,5 @@ urlpatterns = patterns(
 
     # admin ------------------------------------------------------------------
     url("^admin/", include(admin.site.urls)),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

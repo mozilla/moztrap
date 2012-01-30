@@ -27,8 +27,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from .... import model
 
-from ... import lists
+from ...lists import decorators as lists
 from ...utils.ajax import ajax
+
+from ..finders import ManageFinder
 
 from .filters import CaseVersionFilterSet
 from . import forms
@@ -45,6 +47,7 @@ from . import forms
     model.CaseVersion,
     ["clone", "activate", "deactivate"],
     permission="library.manage_cases")
+@lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
 @lists.sort("caseversions")
 @ajax("manage/product/testcase/list/_cases_list.html")

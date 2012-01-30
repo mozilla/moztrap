@@ -1,4 +1,4 @@
 {# included from _product_column.html #}
 {% for object in finder.products %}
-{% include "runtests/finder/_product.html" %}
+{% include "runtests/finder/_product.html" with colname="products" %}
 {% endfor %}

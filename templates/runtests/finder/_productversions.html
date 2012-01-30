@@ -1,0 +1,4 @@
+{# used by ajax finder views, and included from _productversion_column.html #}
+{% for object in finder.productversions %}
+{% include "runtests/finder/_productversion.html" %}
+{% endfor %}
