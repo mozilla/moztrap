@@ -22,7 +22,7 @@ Finder; a multi-column hierarchical object navigator.
 from functools import wraps
 import posixpath
 
-from django.forms.models import _get_foreign_key
+from django.db import models
 from django.shortcuts import render
 
 from .filters import filter_url
@@ -144,8 +144,13 @@ class Finder(object):
             except KeyError:
                 raise ValueError(
                     "Column {0} has no parent.".format(column_name))
-            fk = _get_foreign_key(parent_col.model, col.model)
-            ret = ret.filter(**{fk.name: parent})
+            opts = col.model._meta
+            for field in [
+                    f for f in opts.fields if isinstance(f, models.ForeignKey)
+                    ] + opts.many_to_many:
+                if field.rel.to is parent_col.model:
+                    break
+            ret = ret.filter(**{field.name: parent})
         return ret
 
 
