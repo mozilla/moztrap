@@ -144,13 +144,29 @@ class Finder(object):
             except KeyError:
                 raise ValueError(
                     "Column {0} has no parent.".format(column_name))
+
             opts = col.model._meta
+
+            attr = None
             for field in [
                     f for f in opts.fields if isinstance(f, models.ForeignKey)
                     ] + opts.many_to_many:
                 if field.rel.to is parent_col.model:
+                    attr = field.name
                     break
-            ret = ret.filter(**{field.name: parent})
+
+            if attr is None:
+                for related in opts.get_all_related_many_to_many_objects():
+                    if related.model is parent_col.model:
+                        attr = related.get_accessor_name()
+                        break
+
+            if attr is None:
+                raise ValueError(
+                    "Cannot find relationship from {0} to {1}".format(
+                        col.model, parent_col.model))
+
+            ret = ret.filter(**{attr: parent})
         return ret
 
 
