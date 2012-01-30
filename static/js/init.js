@@ -105,18 +105,7 @@ var CC = (function (CC, $) {
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'suites'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testsuite"]'
-            ]
+            numberCols: 4
         });
         $('.resultsdrill').html5finder({
             loading: true,
