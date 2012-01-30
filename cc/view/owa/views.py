@@ -44,7 +44,7 @@ def self_register(request):
     return TemplateResponse(
            request,
            "owa/self_register.html",
-           {"manifest_path": "http://host-6-146.mv.mozilla.com:8000/owa/manifest.webapp"}
+           {"manifest_path": request.META['HTTP_HOST'] + "/owa/manifest.webapp"}
            )
 
 
