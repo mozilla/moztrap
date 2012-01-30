@@ -19,9 +19,7 @@
     $.fn.html5finder = function (opts) {
         var options = $.extend({}, $.fn.html5finder.defaults, opts),
             context = $(this),
-            numberCols = options.sectionClasses.length,
             sections = context.find(options.sectionSelector),
-            i,
 
             // Set the width of each section to account for vertical scroll-bars
             headers = context.find(options.headerSelector).each(function () {
@@ -50,8 +48,8 @@
                 }
             },
 
-            itemClick = function (i) {
-                context.on('click', options.sectionItemSelectors[i], function () {
+            itemClick = function () {
+                context.on('click', options.itemSelector, function () {
                     var thisItem = $(this),
                         container = thisItem.closest(options.sectionSelector),
                         ajaxUrl = thisItem.data('sub-url'),
@@ -97,7 +95,7 @@
                 });
             };
 
-        context.find('.finder').data('cols', numberCols);
+        context.find('.finder').data('cols', options.numberCols);
         markSelected();
 
         // Enable headers to engage section focus, and sort column if section already has focus
@@ -146,9 +144,7 @@
             return false;
         });
 
-        for (i = 0; i < numberCols; i = i + 1) {
-            itemClick(i);
-        }
+        itemClick();
     };
 
     /* Setup plugin defaults */
@@ -157,21 +153,13 @@
         horizontalScroll: false,            // If true, automatically scrolls to center the active section
         scrollContainer: null,              // The container (window) to be automatically scrolled
         scrollSpeed: 500,                   // Speed of the scroll (in ms)
+        numberCols: 3,                      // Number of sections (columns)
         selected: 'input:checked',          // A selected element
         notSelected: 'input:not(:checked)', // An unselected element
         headerSelector: 'header',           // Section headers
         sectionSelector: 'section',         // Sections
         sectionContentSelector: 'ul',       // Content to be replaced by Ajax function
-        sectionClasses: [                   // Classes for each section
-            'section1',
-            'section2',
-            'section3'
-        ],
-        sectionItemSelectors: [             // Selectors for items in each section
-            'input[name="section1"]',
-            'input[name="section2"]',
-            'input[name="section3"]'
-        ],
+        itemSelector: '.finderinput',       // Selector for items in each section
         callback: null,                     // Callback function, currently runs after input in any section (except lastChild) is selected
         lastChildCallback: null             // Callback function, currently runs after input in last section is selected
     };

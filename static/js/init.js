@@ -85,16 +85,6 @@ var CC = (function (CC, $) {
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]'
-            ],
             callback: function () {
                 $('.runsdrill .drillenv').slideUp('fast');
             },
