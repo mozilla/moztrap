@@ -100,14 +100,15 @@
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.on('click', '.sortlink', function (e) {
+        headers.on('click', options.sortLinkSelector, function (e) {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
                 selectorClass = $(this).parent().data('sort-by'),
                 type = $(this).parent().data('sort-type'),
+                sortOnData = $(this).parent().data('sort-on-data-attr'),
                 direction;
             if (container.hasClass('focus')) {
-                $(this).parent().siblings().find('.sortlink').removeClass('asc desc');
+                $(this).parent().siblings().find(options.sortLinkSelector).removeClass('asc desc');
                 if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
                     $(this).toggleClass('asc desc');
                 } else {
@@ -121,7 +122,8 @@
                 list.sort({
                     sortOn: '.' + selectorClass,
                     direction: direction,
-                    sortType: type
+                    sortType: type,
+                    sortOnDataAttr: sortOnData
                 });
             } else {
                 context.find(options.sectionSelector).removeClass('focus');
@@ -149,6 +151,8 @@
         sectionContentSelector: 'ul',       // Content to be replaced by Ajax function
         itemSelector: '.finderinput',       // Selector for items in each section
         callback: null,                     // Callback function, currently runs after input in any section (except lastChild) is selected
-        lastChildCallback: null             // Callback function, currently runs after input in last section is selected
+        lastChildCallback: null,            // Callback function, currently runs after input in last section is selected
+        sortLinkSelector: '.sortlink'       // Selector for link (in header) to sort items in that column
+
     };
 }(jQuery));
