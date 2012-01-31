@@ -475,11 +475,9 @@ button {
   padding: 0.304em;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-box-shadow: inset rgba(81, 105, 133, 0.25) 0 0 0.667em;
   -moz-box-shadow: inset rgba(81, 105, 133, 0.25) 0 0 0.667em;
-  -o-box-shadow: inset rgba(81, 105, 133, 0.25) 0 0 0.667em;
   box-shadow: inset rgba(81, 105, 133, 0.25) 0 0 0.667em;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
@@ -500,13 +498,11 @@ button {
 .input:focus:valid, textarea:focus:valid, select:focus:valid, input[type="text"]:focus:valid, input[type="password"]:focus:valid, input[type="email"]:focus:valid, input[type="url"]:focus:valid, input[type="tel"]:focus:valid, input[type="date"]:focus:valid, input[type="datetime"]:focus:valid, input[type="datetime-local"]:focus:valid, input[type="month"]:focus:valid, input[type="week"]:focus:valid, input[type="time"]:focus:valid, input[type="number"]:focus:valid, input[type="search"]:focus:valid, input[type="color"]:focus:valid, .input.hadfocus:valid, textarea.hadfocus:valid, select.hadfocus:valid, input.hadfocus[type="text"]:valid, input.hadfocus[type="password"]:valid, input.hadfocus[type="email"]:valid, input.hadfocus[type="url"]:valid, input.hadfocus[type="tel"]:valid, input.hadfocus[type="date"]:valid, input.hadfocus[type="datetime"]:valid, input.hadfocus[type="datetime-local"]:valid, input.hadfocus[type="month"]:valid, input.hadfocus[type="week"]:valid, input.hadfocus[type="time"]:valid, input.hadfocus[type="number"]:valid, input.hadfocus[type="search"]:valid, input.hadfocus[type="color"]:valid {
   -webkit-box-shadow: inset rgba(117, 184, 40, 0.25) 0 0 0.667em;
   -moz-box-shadow: inset rgba(117, 184, 40, 0.25) 0 0 0.667em;
-  -o-box-shadow: inset rgba(117, 184, 40, 0.25) 0 0 0.667em;
   box-shadow: inset rgba(117, 184, 40, 0.25) 0 0 0.667em;
 }
 .input:focus:invalid, textarea:focus:invalid, select:focus:invalid, input[type="text"]:focus:invalid, input[type="password"]:focus:invalid, input[type="email"]:focus:invalid, input[type="url"]:focus:invalid, input[type="tel"]:focus:invalid, input[type="date"]:focus:invalid, input[type="datetime"]:focus:invalid, input[type="datetime-local"]:focus:invalid, input[type="month"]:focus:invalid, input[type="week"]:focus:invalid, input[type="time"]:focus:invalid, input[type="number"]:focus:invalid, input[type="search"]:focus:invalid, input[type="color"]:focus:invalid, .input.hadfocus:invalid, textarea.hadfocus:invalid, select.hadfocus:invalid, input.hadfocus[type="text"]:invalid, input.hadfocus[type="password"]:invalid, input.hadfocus[type="email"]:invalid, input.hadfocus[type="url"]:invalid, input.hadfocus[type="tel"]:invalid, input.hadfocus[type="date"]:invalid, input.hadfocus[type="datetime"]:invalid, input.hadfocus[type="datetime-local"]:invalid, input.hadfocus[type="month"]:invalid, input.hadfocus[type="week"]:invalid, input.hadfocus[type="time"]:invalid, input.hadfocus[type="number"]:invalid, input.hadfocus[type="search"]:invalid, input.hadfocus[type="color"]:invalid {
   -webkit-box-shadow: inset rgba(184, 40, 45, 0.25) 0 0 0.667em;
   -moz-box-shadow: inset rgba(184, 40, 45, 0.25) 0 0 0.667em;
-  -o-box-shadow: inset rgba(184, 40, 45, 0.25) 0 0 0.667em;
   box-shadow: inset rgba(184, 40, 45, 0.25) 0 0 0.667em;
 }
 
@@ -654,7 +650,6 @@ body > div {
   *zoom: 1;
   -webkit-box-shadow: #454545 0 -1.5em 1.5em;
   -moz-box-shadow: #454545 0 -1.5em 1.5em;
-  -o-box-shadow: #454545 0 -1.5em 1.5em;
   box-shadow: #454545 0 -1.5em 1.5em;
   position: relative;
 }
@@ -696,7 +691,6 @@ body > div {
 [role="main"] {
   -webkit-box-shadow: #8695a8 0 0 0.375em;
   -moz-box-shadow: #8695a8 0 0 0.375em;
-  -o-box-shadow: #8695a8 0 0 0.375em;
   box-shadow: #8695a8 0 0 0.375em;
   padding: 1.5em 1.031%;
   background: white;
@@ -1168,7 +1162,6 @@ body > div {
   border-bottom-right-radius: 0.296em;
   -webkit-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
   -moz-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
-  -o-box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
   box-shadow: rgba(75, 87, 101, 0.667) 0 0.25em 0.5em;
   display: none;
   top: 100%;
@@ -1508,7 +1501,6 @@ body > div {
   *zoom: 1;
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
-  -o-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
   box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
   background: #e8e9ec;
   padding: 0.375em 0.375em 0.375em 1.5em;
@@ -1715,7 +1707,6 @@ body > div {
 .status .status-readonly {
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
-  -o-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
 }
 .status .draft.status-readonly {
@@ -2008,11 +1999,11 @@ body > div {
 .finder .col {
   -webkit-transition: width 300ms;
   -moz-transition: width 300ms;
+  -ms-transition: width 300ms;
   -o-transition: width 300ms;
   transition: width 300ms;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
   float: left;
@@ -2447,7 +2438,6 @@ body > div {
 body.login > div {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
-  -o-box-shadow: none;
   box-shadow: none;
 }
 body.login #brand, body.login [role="contentinfo"] {
@@ -2530,7 +2520,6 @@ body.login input, body.login .errorlist {
 .create {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
   float: left;
@@ -2568,7 +2557,6 @@ body.login input, body.login .errorlist {
   cursor: pointer;
   -webkit-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
-  -o-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   display: block;
   text-align: center;
@@ -2644,7 +2632,6 @@ body.login input, body.login .errorlist {
   cursor: pointer;
   -webkit-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
-  -o-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
 }
 .create-options .create ~ .create:hover, .create-options .create ~ .create:focus {
@@ -2713,7 +2700,6 @@ body.login input, body.login .errorlist {
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   -webkit-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
-  -o-box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   box-shadow: rgba(69, 69, 69, 0.198) 0 0 9px inset;
   white-space: nowrap;
 }
@@ -2864,7 +2850,6 @@ body.login input, body.login .errorlist {
   list-style: none;
   -webkit-box-shadow: #454545 0 0.188em 0.375em;
   -moz-box-shadow: #454545 0 0.188em 0.375em;
-  -o-box-shadow: #454545 0 0.188em 0.375em;
   box-shadow: #454545 0 0.188em 0.375em;
   display: none;
   position: absolute;
@@ -3312,6 +3297,7 @@ body.login input, body.login .errorlist {
   opacity: 0.25;
   -webkit-transition: opacity 300ms;
   -moz-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
   -o-transition: opacity 300ms;
   transition: opacity 300ms;
   background-image: url('../images/ui/x_circle.png?1326735333');
@@ -3356,6 +3342,7 @@ body.login input, body.login .errorlist {
   line-height: 1.826em;
   -webkit-transition: opacity 300ms;
   -moz-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
   -o-transition: opacity 300ms;
   transition: opacity 300ms;
   position: absolute;
@@ -3413,7 +3400,6 @@ body.login input, body.login .errorlist {
 #managecases .byname-tags, #managecases .name-tags {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
   float: left;
