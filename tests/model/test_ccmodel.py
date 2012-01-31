@@ -570,3 +570,23 @@ class DraftStatusModelTest(TestCase):
         r.deactivate()
 
         self.assertEqual(refresh(r).status, "disabled")
+
+
+    def test_activate_by_user(self):
+        """Test the activate method with a user."""
+        r = F.RunFactory.create(status="draft")
+        u = F.UserFactory.create()
+
+        r.activate(user=u)
+
+        self.assertEqual(refresh(r).modified_by, u)
+
+
+    def test_deactivate_by_user(self):
+        """Test the deactivate method with a user."""
+        r = F.RunFactory.create(status="active")
+        u = F.UserFactory.create()
+
+        r.deactivate(user=u)
+
+        self.assertEqual(refresh(r).modified_by, u)

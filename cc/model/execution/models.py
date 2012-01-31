@@ -86,11 +86,11 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         return super(Run, self).clone(*args, **kwargs)
 
 
-    def activate(self):
+    def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:
             self._lock_case_versions()
-        super(Run, self).activate()
+        super(Run, self).activate(*args, **kwargs)
 
 
     def _lock_case_versions(self):
