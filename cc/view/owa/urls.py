@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-URLconf for running tests
+URLconf for open web apps
 
 """
 from django.conf.urls.defaults import patterns, url
