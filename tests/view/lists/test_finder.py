@@ -15,17 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Tests for finder.
+
+"""
+from django.test import TestCase
+
 from mock import Mock, patch
-from unittest2 import TestCase
 
 
 
 class FinderTest(TestCase):
-
-
+    """Tests for Finder."""
     @property
     def finder(self):
-        from ccui.core.finder import Finder, Column
+        from cc.view.lists.finder import Finder, Column
 
         class AFinder(Finder):
             template_base = "a/finder"
@@ -96,7 +100,7 @@ class FinderTest(TestCase):
             f.column_template("doesnotexist")
 
 
-    @patch("ccui.core.finder.reverse", lambda p: p)
+    @patch("cc.view.lists.finder.reverse", lambda p: p)
     def test_goto_url(self):
         f = self.finder()
 
@@ -214,48 +218,39 @@ class FinderTest(TestCase):
 
 
 class ColumnTest(TestCase):
+    """Tests for finder Column."""
     @property
     def column(self):
-        from ccui.core.finder import Column
+        from cc.view.lists.finder import Column
         return Column
 
 
     def test_objects(self):
-        ThingList = Mock(name="ThingList")
-        c = self.column("thing", "_things.html", ThingList, "theThing")
+        """Objects method is just .all() on given queryset."""
+        qs = Mock()
+        c = self.column("thing", "_things.html", qs)
 
-        objects = c.objects(auth="auth")
+        objects = c.objects()
 
-        our_things = ThingList.ours.return_value
-
-        self.assertIs(
-            objects,
-            our_things.filter.return_value.sort.return_value)
-        ThingList.ours.assert_called_with(auth="auth")
-        our_things.filter.assert_called_with()
-        our_things.filter.return_value.sort.assert_called_with("name", "asc")
+        self.assertIs(objects, qs.all.return_value)
 
 
-    def test_custom_sort(self):
-        ThingList = Mock(name="ThingList")
-        c = self.column(
-            "thing", "_things.html", ThingList, "theThing",
-            sort=("name", "desc"))
+    @patch("cc.view.lists.finder.filter_url")
+    def test_goto_url(self, filter_url):
+        """goto_url method calls filter_url if goto is given."""
+        c = self.column("thing", "_things.html", Mock(), "goto_name")
 
-        c.objects(auth="auth")
+        obj = Mock()
+        url = c.goto_url(obj)
 
-        our_things = ThingList.ours.return_value
+        self.assertIs(url, filter_url.return_value)
+        filter_url.assert_called_with("goto_name", obj)
 
-        our_things.filter.return_value.sort.assert_called_with("name", "desc")
 
+    def test_no_goto_url(self):
+        """goto_url method just returns None if no goto is given."""
+        c = self.column("thing", "_things.html", Mock())
 
-    def test_custom_filter(self):
-        ThingList = Mock(name="ThingList")
-        c = self.column(
-            "thing", "_things.html", ThingList, "theThing", prop="value")
+        url = c.goto_url(Mock())
 
-        c.objects(auth="auth")
-
-        our_things = ThingList.ours.return_value
-
-        our_things.filter.assert_called_with(prop="value")
+        self.assertIs(url, None)
