@@ -19,15 +19,21 @@
 
 // ---------------------------------------------------------------------------
 // Loading styles. JS add <.loading> and <span.overlay> to the loading object.
-//
-// Styleguide 1.1.
+
++keyframes(loading)
+  0%
+    +opacity(.25)
+  100%
+    +opacity(1)
 
 .loading
   position: relative
 
   .overlay
+    +animation(loading 1s linear alternate infinite both)
     +stretch
     +bold
-    background: rgba($lightest,$small)
-    color: rgba($base,$small)
+    background: rgba($mid,$xsmall)
+    color: $base
     text-align: center
+    z-index: 950

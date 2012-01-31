@@ -2,11 +2,7 @@
 
 require 'susy'
 require 'modular-scale'
-# require 'css-slideshow'
-# require 'compass-colors'
-# require 'css-lightbox'
-# require 'rgbapng'
-# require 'lemonade'
+require 'animation'
 # Require any additional compass plugins here.
 
 project_type = :stand_alone

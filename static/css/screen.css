@@ -579,19 +579,72 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   text-align: right;
 }
 
+@-webkit-keyframes loading {
+  0% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes loading {
+  0% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+}
+
+@-ms-keyframes loading {
+  0% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+}
+
+@keyframes loading {
+  0% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+}
+
 .loading {
   position: relative;
 }
 .loading .overlay {
+  -webkit-animation: loading 1s linear alternate infinite both;
+  -moz-animation: loading 1s linear alternate infinite both;
+  -ms-animation: loading 1s linear alternate infinite both;
+  animation: loading 1s linear alternate infinite both;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.667);
-  color: rgba(69, 69, 69, 0.667);
+  background: rgba(153, 153, 153, 0.444);
+  color: #454545;
   text-align: center;
+  z-index: 950;
 }
 
 #messages {
