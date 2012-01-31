@@ -65,6 +65,22 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
             )
 
 
+    def test_not_wrong_product_tags(self):
+        """Only tags for the correct product, or global tags, are returned."""
+        p1 = F.ProductFactory.create()
+        p2 = F.ProductFactory.create()
+
+        t1 = F.TagFactory.create(product=p1, name="t1")
+        F.TagFactory.create(product=p2, name="t2")
+        t3 = F.TagFactory.create(product=None, name="t3")
+
+        res = self.app.get(
+            self.url, user=self.user, params={"text": "t", "product": p1.id})
+
+        self.assertEqual(
+            [t["id"] for t in res.json["suggestions"]], [t1.id, t3.id])
+
+
     def test_case_insensitive(self):
         """Matching is case-insensitive, but pre/post are case-accurate."""
         t = F.TagFactory.create(name="FooBar")
