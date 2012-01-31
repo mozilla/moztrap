@@ -100,36 +100,34 @@
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.on('click', 'a', function () {
+        headers.on('click', '.sortlink', function (e) {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
-                selectorClass = $(this).parent().attr('class').substring(2),
-                type = $(this).parent().data('sort'),
+                selectorClass = $(this).parent().data('sort-by'),
+                type = $(this).parent().data('sort-type'),
                 direction;
             if (container.hasClass('focus')) {
+                $(this).parent().siblings().find('.sortlink').removeClass('asc desc');
                 if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
-                    $(this).toggleClass('asc').toggleClass('desc');
-                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
+                    $(this).toggleClass('asc desc');
                 } else {
                     $(this).addClass('asc');
-                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
                 }
                 if ($(this).hasClass('asc')) {
                     direction = 'asc';
-                }
-                if ($(this).hasClass('desc')) {
+                } else if ($(this).hasClass('desc')) {
                     direction = 'desc';
                 }
-                if (type === 'number') {
-                    selectorClass = selectorClass + ' .number';
-                }
-                if (type === 'date') {
-                    list.sort({
-                        sortOn: '.' + selectorClass,
-                        direction: direction,
-                        sortType: 'string'
-                    });
-                }
+                // if (type === 'number') {
+                //     selectorClass = selectorClass + ' .number';
+                // }
+                // if (type === 'date') {
+                //     list.sort({
+                //         sortOn: '.' + selectorClass,
+                //         direction: direction,
+                //         sortType: 'string'
+                //     });
+                // }
                 list.sort({
                     sortOn: '.' + selectorClass,
                     direction: direction,
@@ -141,7 +139,7 @@
                 horzScroll();
             }
             $(this).blur();
-            return false;
+            e.preventDefault();
         });
 
         itemClick();
