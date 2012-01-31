@@ -53,6 +53,7 @@ def tag_autocomplete(request):
                 "typedText": text,
                 "postText": post,
                 "id": tag.id,
+                "product": tag.product.id if tag.product else None,
                 "name": tag.name,
                 "type": "tag",
                 })

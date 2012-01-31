@@ -57,6 +57,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "foo",
                         "postText": "o",
                         "preText": "f",
+                        "product": None,
                         "type": "tag",
                         "typedText": "o",
                         }
@@ -78,7 +79,9 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
             self.url, user=self.user, params={"text": "t", "product": p1.id})
 
         self.assertEqual(
-            [t["id"] for t in res.json["suggestions"]], [t1.id, t3.id])
+            [(t["id"], t["product"]) for t in res.json["suggestions"]],
+            [(t1.id, p1.id), (t3.id, None)]
+            )
 
 
     def test_case_insensitive(self):
@@ -96,6 +99,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "FooBar",
                         "postText": "Bar",
                         "preText": "F",
+                        "product": None,
                         "type": "tag",
                         "typedText": "oO",
                         }
