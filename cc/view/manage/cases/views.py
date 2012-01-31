@@ -24,6 +24,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.http import require_POST
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 
 from .... import model
 
@@ -83,7 +84,11 @@ def case_add(request):
     if request.method == "POST":
         form = forms.AddCaseForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
-            form.save()
+            case = form.save()
+            messages.success(
+                request, "Test case '{0}' added.".format(
+                    case.versions.all()[0].name)
+                )
             return redirect("manage_cases")
     else:
         form = forms.AddCaseForm(user=request.user)
@@ -104,7 +109,11 @@ def case_add_bulk(request):
         form = forms.AddBulkCaseForm(
             request.POST, request.FILES, user=request.user)
         if form.is_valid():
-            form.save()
+            cases = form.save()
+            messages.success(
+                request, "Added {0} test case{1}.".format(
+                    len(cases), "" if len(cases) == 1 else "s")
+                )
             return redirect("manage_cases")
     else:
         form = forms.AddBulkCaseForm(user=request.user)
@@ -129,7 +138,8 @@ def caseversion_edit(request, caseversion_id):
             instance=caseversion,
             user=request.user)
         if form.is_valid():
-            form.save()
+            cv = form.save()
+            messages.success(request, "Saved '{0}'.".format(cv.name))
             return redirect("manage_cases")
     else:
         form = forms.EditCaseVersionForm(
@@ -167,6 +177,11 @@ def caseversion_clone(request, caseversion_id):
                 "productversion": productversion,
                 "name": caseversion.name
                 }
+            )
+        messages.success(
+            request,
+            "Created new version of '{0}' for {1}.".format(
+                caseversion.name, productversion)
             )
 
     return redirect("manage_caseversion_edit", caseversion_id=target.id)

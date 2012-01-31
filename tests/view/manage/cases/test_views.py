@@ -410,10 +410,11 @@ class AddCaseTest(base.FormViewTestCase):
         form["steps-0-instruction"] = "Type creds and click login."
         form["steps-0-expected"] = "You should see a welcome message."
         form["status"] = "active"
-        res = form.submit()
+        res = form.submit(status=302)
 
-        self.assertEqual(res.status_int, 302)
         self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+
+        res.follow().mustcontain("Test case 'Can log in.' added.")
 
         from cc.model import CaseVersion
         cv = CaseVersion.objects.get()
@@ -481,6 +482,8 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
         self.assertEqual(res["Location"], "http://testserver/manage/cases/")
 
+        res.follow().mustcontain("Added 2 test cases.")
+
         from cc.model import CaseVersion
         cv1, cv2 = list(CaseVersion.objects.all())
 
@@ -501,6 +504,24 @@ class AddBulkCaseTest(base.FormViewTestCase):
         step = cv2.steps.get()
         self.assertEqual(step.instruction, "When I register")
         self.assertEqual(step.expected, "Then I am registered")
+
+
+    def test_success_single(self):
+        """Confirmation message for single add is grammatically correct."""
+        pv = F.ProductVersionFactory.create()
+
+        form = self.get_form()
+        form["product"] = pv.product.id
+        form["productversion"] = pv.id
+        form["cases"] = (
+            "Test that I can log in\n"
+            "description here\n"
+            "When I type creds and click login\n"
+            "Then I should see a welcome message.\n"
+            )
+        res = form.submit(status=302)
+
+        res.follow().mustcontain("Added 1 test case.")
 
 
     def test_error(self):
@@ -524,7 +545,8 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     def setUp(self):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
-        self.cv = F.CaseVersionFactory.create()
+        self.cv = F.CaseVersionFactory.create(
+            name="Can log in", productversion__product__name="Case Conductor")
         self.add_perm("manage_cases")
 
 
@@ -624,6 +646,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
             product=self.cv.productversion.product, version="2.0")
 
         res = self.post({"productversion": pv.id}, status=302)
+
+        res.follow().mustcontain(
+            "Created new version of 'Can log in' for Case Conductor 2.0.")
 
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
@@ -749,6 +774,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
             res.headers["Location"],
             "http://localhost:80" + reverse("manage_cases")
             )
+
+        res.follow().mustcontain("Saved 'new name'.")
 
         cv = refresh(self.cv)
         self.assertEqual(cv.name, "new name")
