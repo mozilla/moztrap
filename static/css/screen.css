@@ -2183,7 +2183,7 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.finder .start, .finder .end, .finder .bystart, .finder .byend {
+.finder .start, .finder .end, .finder .bystart, .finder .byend, .finder .order {
   display: none;
 }
 .finder .focus .start, .finder .focus .end, .finder .focus .bystart, .finder .focus .byend {
