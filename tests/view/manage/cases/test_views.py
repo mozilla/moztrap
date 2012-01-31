@@ -307,6 +307,38 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertOrderInList(res, "Case 2", "Case 1")
 
 
+    def test_finder(self):
+        """Finder is present in context with list of products."""
+        p = F.ProductFactory.create(name="Foo Product")
+
+        res = self.get()
+
+        res.mustcontain("Foo Product")
+        res.mustcontain(
+            "data-sub-url="
+            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
+
+
+    def test_finder_ajax(self):
+        """Finder intercepts its ajax requests to return child obj lists."""
+        pv = F.ProductVersionFactory.create(version="1.0.1")
+
+        res = self.get(
+            params={
+                "finder": "1",
+                "col": "productversions",
+                "id": str(pv.product.id)
+                },
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertIn("1.0.1", res.json["html"])
+        self.assertIn(
+            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
+            res.json["html"]
+            )
+
+
 
 class CaseDetailTest(base.AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
@@ -327,7 +359,7 @@ class CaseDetailTest(base.AuthenticatedViewTestCase):
         """Returns details HTML snippet for given caseversion."""
         F.CaseStepFactory.create(caseversion=self.cv, instruction="Frobnigate.")
 
-        res = self.get(headers=dict(HTTP_X_REQUESTED_WITH="XMLHttpRequest"))
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("Frobnigate.")
 
