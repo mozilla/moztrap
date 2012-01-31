@@ -445,6 +445,56 @@ class CloneTest(UndeleteMixin, CCModelTestCase):
             p.clone(cascade=["name"])
 
 
+    @patch("cc.model.ccmodel.datetime")
+    def test_updates_created_on(self, mock_dt):
+        """Cloned objects get a new created-on timestamp."""
+        mock_dt.datetime.utcnow.return_value = datetime.datetime(
+            2012, 1, 30)
+        p = F.ProductFactory.create()
+
+        cloned_on = datetime.datetime(2012, 1, 31)
+        mock_dt.datetime.utcnow.return_value = cloned_on
+        new = p.clone()
+
+        self.assertEqual(new.created_on, cloned_on)
+
+
+    def test_updates_created_by(self):
+        """Cloned objects get a new created-by; the cloning user."""
+        u1 = F.UserFactory.create()
+        p = F.ProductFactory.create(user=u1)
+
+        u2 = F.UserFactory.create()
+        new = p.clone(user=u2)
+
+        self.assertEqual(new.created_by, u2)
+
+
+    @patch("cc.model.ccmodel.datetime")
+    def test_updates_modified_on(self, mock_dt):
+        """Cloned objects get a new modified-on timestamp."""
+        mock_dt.datetime.utcnow.return_value = datetime.datetime(
+            2012, 1, 30)
+        p = F.ProductFactory.create()
+
+        cloned_on = datetime.datetime(2012, 1, 31)
+        mock_dt.datetime.utcnow.return_value = cloned_on
+        new = p.clone()
+
+        self.assertEqual(new.modified_on, cloned_on)
+
+
+    def test_updates_modified_by(self):
+        """Cloned objects get a new modified-by; the cloning user."""
+        u1 = F.UserFactory.create()
+        p = F.ProductFactory.create(user=u1)
+
+        u2 = F.UserFactory.create()
+        new = p.clone(user=u2)
+
+        self.assertEqual(new.modified_by, u2)
+
+
 
 class CCManagerTest(CCModelTestCase):
     """Tests for CCManager."""
