@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,26 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-URLconf for running tests
+Forms for test execution.
 
 """
-from django.conf.urls.defaults import patterns, url
+import floppyforms as forms
 
 
 
-urlpatterns = patterns(
-    "cc.view.runtests.views",
-
-    url("^$", "select", name="runtests"),
-    url("^environment/(?P<run_id>\d+)/$",
-        "set_environment",
-        name="runtests_environment"),
-    url("^run/(?P<run_id>\d+)/$", "run", name="runtests_run"),
-
-    # finder -----------------------------------------------------------------
-    url(
-        "^_finder/environments/(?P<run_id>\d+)/$",
-        "finder_environments",
-        name="runtests_finder_environments")
-
-)
+class EnvironmentSelectionForm(forms.Form):
+    pass # @@@

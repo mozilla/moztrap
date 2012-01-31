@@ -3,25 +3,25 @@
 <div class="status">
   {% if user|has_perm:permission %}
 
-    {% if item.status == "draft" %}
+    {% if item.status == item.STATUS.draft %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft status-action">draft</button>
     {% endif %}
-    {% if item.status == "active" %}
+    {% if item.status == item.STATUS.active %}
     <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active status-action">active</button>
     {% endif %}
-    {% if item.status == "disabled" %}
+    {% if item.status == item.STATUS.disabled %}
     <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled status-action">disabled</button>
     {% endif %}
 
   {% else %}
 
-    {% if item.status == "draft" %}
+    {% if item.status == item.STATUS.draft %}
     <span class="draft status-readonly">draft</span>
     {% endif %}
-    {% if item.status == "active" %}
+    {% if item.status == item.STATUS.active %}
     <span class="active status-readonly">active</span>
     {% endif %}
-    {% if item.status == "disabled" %}
+    {% if item.status == item.STATUS.disabled %}
     <span class="disabled status-readonly">disabled</span>
     {% endif %}
 
