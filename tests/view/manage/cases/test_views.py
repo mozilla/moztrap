@@ -72,7 +72,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create()
 
-        self.get_form().submit(name="action-delete", index=0)
+        self.get_form().submit(
+            name="action-delete",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
 
         self.assertTrue(bool(refresh(cv).deleted_on))
 
@@ -88,7 +92,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         F.CaseVersionFactory.create()
 
-        self.get_form().submit(name="action-clone", index=0)
+        self.get_form().submit(
+            name="action-clone",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         from cc.model import Case
         self.assertEqual(Case.objects.count(), 2)
@@ -105,7 +113,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="draft")
 
-        self.get_form().submit(name="action-activate", index=0)
+        self.get_form().submit(
+            name="action-activate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         self.assertEqual(refresh(cv).status, "active")
 
@@ -121,7 +133,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="active")
 
-        self.get_form().submit(name="action-deactivate", index=0)
+        self.get_form().submit(
+            name="action-deactivate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         self.assertEqual(refresh(cv).status, "disabled")
 
