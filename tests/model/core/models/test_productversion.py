@@ -19,6 +19,7 @@
 Tests for ProductVersion model.
 
 """
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from .... import factories as F
@@ -144,6 +145,34 @@ class ProductVersionTest(TestCase):
 
         self.assertEqual(pv.order, 2)
         self.assertEqual(pv.latest, True)
+
+
+    def test_unique_constraint(self):
+        """Can't have two versions of same product with same version number."""
+        pv = F.ProductVersionFactory.create()
+
+        new = F.ProductVersionFactory.build(
+            product=pv.product, version=pv.version)
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
+    def test_unique_constraint_doesnt_prevent_edit(self):
+        """Unique constraint still allows saving an edited existing object."""
+        pv = F.ProductVersionFactory.create()
+
+        pv.codename = "new codename"
+
+        pv.full_clean()
+
+
+    def test_unique_constraint_ignores_deleted(self):
+        """Deleted version doesn't prevent new with same product, version."""
+        pv = F.ProductVersionFactory.create()
+        pv.delete()
+
+        F.ProductVersionFactory.create(version=pv.version, product=pv.product)
 
 
 
