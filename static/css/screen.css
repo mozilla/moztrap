@@ -1397,7 +1397,7 @@ body > div {
 }
 
 [name="action-delete"] {
-  background-image: url('../images/ui/x.png?1326735333');
+  background-image: url('../images/ui/trash.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1413,7 +1413,7 @@ body > div {
   width: 14px;
 }
 [name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
-  background-image: url('../images/ui/x.png?1326735333');
+  background-image: url('../images/ui/trash.png?1326735333');
 }
 
 .detailslist, .itembody .envs, #managecases .suites {
