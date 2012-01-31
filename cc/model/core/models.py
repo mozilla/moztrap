@@ -19,6 +19,7 @@
 Core Case Conductor models (Product).
 
 """
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from pkg_resources import parse_version
@@ -92,7 +93,6 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
 
     class Meta:
         ordering = ["product", "order"]
-        unique_together = [("product", "version")]
 
 
     def save(self, *args, **kwargs):
@@ -101,6 +101,27 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
         super(ProductVersion, self).save(*args, **kwargs)
         if not skip_reorder:
             self.product.reorder_versions(update_instance=self)
+
+
+    def clean(self):
+        """
+        Validate uniqueness of product/version combo.
+
+        Can't use actual unique constraint due to soft-deletion; if we don't
+        include deleted-on in the constraint, deleted objects can cause
+        integrity errors; if we include deleted-on in the constraint it
+        nullifies the constraint entirely, since NULL != NULL in SQL.
+
+        """
+        dupes = ProductVersion.objects.filter(
+            product=self.product, version=self.version)
+        if self.pk is not None:
+            dupes = dupes.exclude(pk=self.pk)
+        if dupes.exists():
+            raise ValidationError(
+                "Product version '{0}' for '{1}' already exists.".format(
+                    self.version, self.product)
+                )
 
 
     @property

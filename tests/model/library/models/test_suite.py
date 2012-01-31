@@ -19,6 +19,7 @@
 Tests for Suite model.
 
 """
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from .... import factories as F
@@ -47,3 +48,32 @@ class SuiteTest(TestCase):
         new = s.clone()
 
         self.assertEqual(new.status, "draft")
+
+
+    def test_unique_constraint(self):
+        """Can't have two SuiteCases with same suite and case."""
+        sc = F.SuiteCaseFactory.create()
+
+        new = F.SuiteCaseFactory.build(
+            case=sc.case, suite=sc.suite)
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
+    def test_unique_constraint_doesnt_prevent_edit(self):
+        """Unique constraint still allows saving an edited existing object."""
+        sc = F.SuiteCaseFactory.create()
+
+        sc.instruction = "new instruction"
+
+        sc.full_clean()
+
+
+    def test_unique_constraint_ignores_deleted(self):
+        """Deleted suitecase doesn't prevent new with same suite and case."""
+        sc = F.SuiteCaseFactory.create()
+        sc.delete()
+
+        F.SuiteCaseFactory.create(
+            case=sc.case, suite=sc.suite)

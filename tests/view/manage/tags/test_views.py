@@ -57,11 +57,30 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "foo",
                         "postText": "o",
                         "preText": "f",
+                        "product": None,
                         "type": "tag",
                         "typedText": "o",
                         }
                     ]
                 }
+            )
+
+
+    def test_not_wrong_product_tags(self):
+        """Only tags for the correct product, or global tags, are returned."""
+        p1 = F.ProductFactory.create()
+        p2 = F.ProductFactory.create()
+
+        t1 = F.TagFactory.create(product=p1, name="t1")
+        F.TagFactory.create(product=p2, name="t2")
+        t3 = F.TagFactory.create(product=None, name="t3")
+
+        res = self.app.get(
+            self.url, user=self.user, params={"text": "t", "product": p1.id})
+
+        self.assertEqual(
+            [(t["id"], t["product"]) for t in res.json["suggestions"]],
+            [(t1.id, p1.id), (t3.id, None)]
             )
 
 
@@ -80,6 +99,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "FooBar",
                         "postText": "Bar",
                         "preText": "F",
+                        "product": None,
                         "type": "tag",
                         "typedText": "oO",
                         }

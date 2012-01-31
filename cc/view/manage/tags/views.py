@@ -21,6 +21,7 @@ Manage views for tags.
 """
 import json
 
+from django.db.models import Q
 from django.http import HttpResponse
 
 from django.contrib.auth.decorators import login_required
@@ -33,8 +34,11 @@ from ....model.tags.models import Tag
 def tag_autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""
     text = request.GET.get("text")
+    product_id = request.GET.get("product")
     if text is not None:
         tags = Tag.objects.filter(name__icontains=text)
+        if product_id is not None:
+            tags = tags.filter(Q(product=product_id) | Q(product=None))
     else:
         tags = []
     suggestions = []
@@ -49,6 +53,7 @@ def tag_autocomplete(request):
                 "typedText": text,
                 "postText": post,
                 "id": tag.id,
+                "product": tag.product.id if tag.product else None,
                 "name": tag.name,
                 "type": "tag",
                 })
