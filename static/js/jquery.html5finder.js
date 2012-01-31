@@ -118,16 +118,6 @@
                 } else if ($(this).hasClass('desc')) {
                     direction = 'desc';
                 }
-                // if (type === 'number') {
-                //     selectorClass = selectorClass + ' .number';
-                // }
-                // if (type === 'date') {
-                //     list.sort({
-                //         sortOn: '.' + selectorClass,
-                //         direction: direction,
-                //         sortType: 'string'
-                //     });
-                // }
                 list.sort({
                     sortOn: '.' + selectorClass,
                     direction: direction,
