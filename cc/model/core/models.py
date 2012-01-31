@@ -119,7 +119,7 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():
             raise ValidationError(
-                "ProductVersion '{0}' for '{1}' already exists.".format(
+                "Product version '{0}' for '{1}' already exists.".format(
                     self.version, self.product)
                 )
 

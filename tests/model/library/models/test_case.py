@@ -19,6 +19,7 @@
 Tests for Case and related models (CaseVersion, CaseStep).
 
 """
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from .... import factories as F
@@ -248,6 +249,35 @@ class CaseVersionTest(TestCase):
             )
 
 
+    def test_unique_constraint(self):
+        """Can't have two versions of a case for same product version."""
+        cv = F.CaseVersionFactory.create()
+
+        new = F.CaseVersionFactory.build(
+            productversion=cv.productversion, case=cv.case)
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
+    def test_unique_constraint_doesnt_prevent_edit(self):
+        """Unique constraint still allows saving an edited existing object."""
+        cv = F.CaseVersionFactory.create()
+
+        cv.name = "new name"
+
+        cv.full_clean()
+
+
+    def test_unique_constraint_ignores_deleted(self):
+        """Deleted version doesn't prevent new with same productversion."""
+        cv = F.CaseVersionFactory.create()
+        cv.delete()
+
+        F.CaseVersionFactory.create(
+            case=cv.case, productversion=cv.productversion)
+
+
 
 class CaseStepTest(TestCase):
     """Tests for the CaseStep model."""
@@ -256,6 +286,35 @@ class CaseStepTest(TestCase):
         c = F.CaseStepFactory(number=1)
 
         self.assertEqual(unicode(c), u"step #1")
+
+
+    def test_unique_constraint(self):
+        """Can't have two steps of the same number in one caseversion."""
+        cs = F.CaseStepFactory.create()
+
+        new = F.CaseStepFactory.build(
+            caseversion=cs.caseversion, number=cs.number)
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
+    def test_unique_constraint_doesnt_prevent_edit(self):
+        """Unique constraint still allows saving an edited existing step."""
+        cs = F.CaseStepFactory.create()
+
+        cs.instruction = "new instruction"
+
+        cs.full_clean()
+
+
+    def test_unique_constraint_ignores_deleted(self):
+        """Deleted step doesn't prevent new with same number."""
+        cs = F.CaseStepFactory.create()
+        cs.delete()
+
+        F.CaseStepFactory.create(
+            caseversion=cs.caseversion, number=cs.number)
 
 
 

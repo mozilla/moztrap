@@ -19,6 +19,7 @@
 Models for test-case library (cases, suites).
 
 """
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from ..attachments.models import Attachment
@@ -115,7 +116,6 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
 
     class Meta:
         ordering = ["case", "productversion__order"]
-        unique_together = [("productversion", "case")]
 
 
     def save(self, *args, **kwargs):
@@ -124,6 +124,27 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
         super(CaseVersion, self).save(*args, **kwargs)
         if not skip_set_latest:
             self.case.set_latest_version(update_instance=self)
+
+
+    def clean(self):
+        """
+        Validate uniqueness of product/version combo.
+
+        Can't use actual unique constraint due to soft-deletion; if we don't
+        include deleted-on in the constraint, deleted objects can cause
+        integrity errors; if we include deleted-on in the constraint it
+        nullifies the constraint entirely, since NULL != NULL in SQL.
+
+        """
+        dupes = CaseVersion.objects.filter(
+            productversion=self.productversion, case=self.case)
+        if self.pk is not None:
+            dupes = dupes.exclude(pk=self.pk)
+        if dupes.exists():
+            raise ValidationError(
+                "A version of this test case for '{0}' already exists.".format(
+                    self.productversion)
+                )
 
 
     def clone(self, *args, **kwargs):
@@ -202,9 +223,29 @@ class CaseStep(CCModel):
         return u"step #%s" % (self.number,)
 
 
+    def clean(self):
+        """
+        Validate uniqueness of caseversion/number combo.
+
+        Can't use actual unique constraint due to soft-deletion; if we don't
+        include deleted-on in the constraint, deleted objects can cause
+        integrity errors; if we include deleted-on in the constraint it
+        nullifies the constraint entirely, since NULL != NULL in SQL.
+
+        """
+        dupes = CaseStep.objects.filter(
+            caseversion=self.caseversion, number=self.number)
+        if self.pk is not None:
+            dupes = dupes.exclude(pk=self.pk)
+        if dupes.exists():
+            raise ValidationError(
+                "Test case '{0}' already has a step number '{1}'.".format(
+                    self.caseversion, self.number)
+                )
+
+
     class Meta:
         ordering = ["caseversion", "number"]
-        unique_together = [("caseversion", "number")]
 
 
 
@@ -246,6 +287,26 @@ class SuiteCase(CCModel):
 
     class Meta:
         ordering = ["order"]
-        unique_together = [["suite", "case"]]
         permissions = [
             ("manage_suite_cases", "Can add/remove cases from suites.")]
+
+
+    def clean(self):
+        """
+        Validate uniqueness of suite/case combo.
+
+        Can't use actual unique constraint due to soft-deletion; if we don't
+        include deleted-on in the constraint, deleted objects can cause
+        integrity errors; if we include deleted-on in the constraint it
+        nullifies the constraint entirely, since NULL != NULL in SQL.
+
+        """
+        dupes = SuiteCase.objects.filter(
+            suite=self.suite, case=self.case)
+        if self.pk is not None:
+            dupes = dupes.exclude(pk=self.pk)
+        if dupes.exists():
+            raise ValidationError(
+                "'{0}' is already in suite '{1}'".format(
+                    self.case, self.suite)
+                )
