@@ -2054,11 +2054,11 @@ body > div {
   width: 275%;
 }
 .finder .col {
-  -webkit-transition: width 300ms;
-  -moz-transition: width 300ms;
-  -ms-transition: width 300ms;
-  -o-transition: width 300ms;
-  transition: width 300ms;
+  -webkit-transition: width 0.3s;
+  -moz-transition: width 0.3s;
+  -ms-transition: width 0.3s;
+  -o-transition: width 0.3s;
+  transition: width 0.3s;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -2074,6 +2074,11 @@ body > div {
   float: right;
 }
 .finder .col.focus {
+  -webkit-transition: width 0.3s 0.01s;
+  -moz-transition: width 0.3s 0.01s;
+  -ms-transition: width 0.3s 0.01s;
+  -o-transition: width 0.3s 0.01s;
+  transition: width 0.3s 0.01s;
   width: 50%;
 }
 .finder .col:not([class*="focus"]) .listordering a::after {
