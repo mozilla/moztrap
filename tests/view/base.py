@@ -134,8 +134,3 @@ class ManageListViewTestCase(FormViewTestCase):
 
         # ...with a message about permissions.
         res.mustcontain("permission")
-
-
-
-class DecoratorTestCase(TestCase):
-    """Base class for tests of view decorators."""
