@@ -72,7 +72,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create()
 
-        self.get_form().submit(name="action-delete", index=0)
+        self.get_form().submit(
+            name="action-delete",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
 
         self.assertTrue(bool(refresh(cv).deleted_on))
 
@@ -88,7 +92,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         F.CaseVersionFactory.create()
 
-        self.get_form().submit(name="action-clone", index=0)
+        self.get_form().submit(
+            name="action-clone",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         from cc.model import Case
         self.assertEqual(Case.objects.count(), 2)
@@ -105,7 +113,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="draft")
 
-        self.get_form().submit(name="action-activate", index=0)
+        self.get_form().submit(
+            name="action-activate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         self.assertEqual(refresh(cv).status, "active")
 
@@ -121,7 +133,11 @@ class CasesTest(base.ManageListViewTestCase):
 
         cv = F.CaseVersionFactory.create(status="active")
 
-        self.get_form().submit(name="action-deactivate", index=0)
+        self.get_form().submit(
+            name="action-deactivate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
 
         self.assertEqual(refresh(cv).status, "disabled")
 
@@ -307,6 +323,38 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertOrderInList(res, "Case 2", "Case 1")
 
 
+    def test_finder(self):
+        """Finder is present in context with list of products."""
+        p = F.ProductFactory.create(name="Foo Product")
+
+        res = self.get()
+
+        res.mustcontain("Foo Product")
+        res.mustcontain(
+            "data-sub-url="
+            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
+
+
+    def test_finder_ajax(self):
+        """Finder intercepts its ajax requests to return child obj lists."""
+        pv = F.ProductVersionFactory.create(version="1.0.1")
+
+        res = self.get(
+            params={
+                "finder": "1",
+                "col": "productversions",
+                "id": str(pv.product.id)
+                },
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertIn("1.0.1", res.json["html"])
+        self.assertIn(
+            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
+            res.json["html"]
+            )
+
+
 
 class CaseDetailTest(base.AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
@@ -327,7 +375,7 @@ class CaseDetailTest(base.AuthenticatedViewTestCase):
         """Returns details HTML snippet for given caseversion."""
         F.CaseStepFactory.create(caseversion=self.cv, instruction="Frobnigate.")
 
-        res = self.get(headers=dict(HTTP_X_REQUESTED_WITH="XMLHttpRequest"))
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("Frobnigate.")
 
@@ -362,10 +410,11 @@ class AddCaseTest(base.FormViewTestCase):
         form["steps-0-instruction"] = "Type creds and click login."
         form["steps-0-expected"] = "You should see a welcome message."
         form["status"] = "active"
-        res = form.submit()
+        res = form.submit(status=302)
 
-        self.assertEqual(res.status_int, 302)
         self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+
+        res.follow().mustcontain("Test case 'Can log in.' added.")
 
         from cc.model import CaseVersion
         cv = CaseVersion.objects.get()
@@ -433,6 +482,8 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
         self.assertEqual(res["Location"], "http://testserver/manage/cases/")
 
+        res.follow().mustcontain("Added 2 test cases.")
+
         from cc.model import CaseVersion
         cv1, cv2 = list(CaseVersion.objects.all())
 
@@ -453,6 +504,24 @@ class AddBulkCaseTest(base.FormViewTestCase):
         step = cv2.steps.get()
         self.assertEqual(step.instruction, "When I register")
         self.assertEqual(step.expected, "Then I am registered")
+
+
+    def test_success_single(self):
+        """Confirmation message for single add is grammatically correct."""
+        pv = F.ProductVersionFactory.create()
+
+        form = self.get_form()
+        form["product"] = pv.product.id
+        form["productversion"] = pv.id
+        form["cases"] = (
+            "Test that I can log in\n"
+            "description here\n"
+            "When I type creds and click login\n"
+            "Then I should see a welcome message.\n"
+            )
+        res = form.submit(status=302)
+
+        res.follow().mustcontain("Added 1 test case.")
 
 
     def test_error(self):
@@ -476,7 +545,8 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     def setUp(self):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
-        self.cv = F.CaseVersionFactory.create()
+        self.cv = F.CaseVersionFactory.create(
+            name="Can log in", productversion__product__name="Case Conductor")
         self.add_perm("manage_cases")
 
 
@@ -576,6 +646,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
             product=self.cv.productversion.product, version="2.0")
 
         res = self.post({"productversion": pv.id}, status=302)
+
+        res.follow().mustcontain(
+            "Created new version of 'Can log in' for Case Conductor 2.0.")
 
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
@@ -701,6 +774,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
             res.headers["Location"],
             "http://localhost:80" + reverse("manage_cases")
             )
+
+        res.follow().mustcontain("Saved 'new name'.")
 
         cv = refresh(self.cv)
         self.assertEqual(cv.name, "new name")

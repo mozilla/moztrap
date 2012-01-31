@@ -1,7 +1,6 @@
 {% extends "runtests/finder/_item.html" %}
 
 {% block columns %}
-{# @@@ image should be dynamic #}
-<!-- img src="{{ STATIC_URL }}images/products/firefox.png" class="logo" alt=""-->
+{# img src="{{ STATIC_URL }}images/products/firefox.png" class="logo" alt="" #}
 <span class="title" title="{{ object.name }}">{{ object.name }}</span>
 {% endblock %}

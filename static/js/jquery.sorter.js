@@ -1,5 +1,5 @@
 /**
- * jQuery Element Sorter 1.1
+ * Based on jQuery Element Sorter 1.1
  *
  * http://plugins.jquery.com/project/ElementSort
  *
@@ -14,8 +14,9 @@
         /*
         {
             sortOn: '.selector',  //selector of the column to sort on
-            direction: 'asc' | 'desc' //optional..defaults to asc
-            sortType: 'string | date | number' //optional..defaults to string
+            direction: 'asc' | 'desc',  //optional..defaults to asc
+            sortType: 'string | date | number',  //optional..defaults to string
+            sortOnDataAttr: 'selector'  //name of data-attribute on sortOn element to sort on
         }
 
         OR
@@ -80,15 +81,19 @@
                 }
                 else
                 {
-                    val = findValue(obj.row, params[index].sortOn);
+                    val = findValue(obj.row, params[index].sortOn, index);
                     obj.hash[index] = val;
                 }
                 return val;
             }
 
-            var findValue = function(row, selector)
+            var findValue = function(row, selector, index)
             {
-                return row.find(selector).text();
+                if (params[index].sortOnDataAttr) {
+                    return row.find(selector).data(params[index].sortOnDataAttr);
+                } else {
+                    return row.find(selector).text();
+                }
             }
 
             var innerSort = function(a, b, direction)

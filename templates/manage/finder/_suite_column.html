@@ -3,10 +3,10 @@
 {% block finder-section-classes %}suites{% endblock %}
 
 {% block finder-section-column-headers %}
-  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Suites" %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort_by="title" sort="asc" header="Suites" %}
 {% endblock %}
 
 
 {% block finder-section-column-content %}
-  {% include "manage/finder/_suites.html" %}
+  {% include "manage/finder/_suites.html" with colname="suites" %}
 {% endblock %}

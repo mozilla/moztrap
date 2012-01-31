@@ -3,12 +3,12 @@
 {% block finder-section-classes %}runs{% endblock %}
 
 {% block finder-section-column-headers %}
-  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Runs" %}
-  {% include "finder/_header.html" with tag="p" class="bystart" sort_type="date" header="start" %}
-  {% include "finder/_header.html" with tag="p" class="byend" sort_type="date" header="end" %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort_by="title" sort="asc" header="Runs" %}
+  {% include "finder/_header.html" with tag="p" class="bystart" sort_type="date" sort_by="start" header="start" %}
+  {% include "finder/_header.html" with tag="p" class="byend" sort_type="date" sort_by="end" header="end" %}
 {% endblock %}
 
 
 {% block finder-section-column-content %}
-  {% include "manage/finder/_runs.html" %}
+  {% include "manage/finder/_runs.html" with colname="runs" %}
 {% endblock %}

@@ -19,7 +19,7 @@
       <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
         <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
-          <a href="{# @@@ url runtests #}">Run Tests</a>
+          <a href="{% url runtests %}">Run Tests</a>
           <div class="secondary">
             <ol>
               {% block test-subnav %}

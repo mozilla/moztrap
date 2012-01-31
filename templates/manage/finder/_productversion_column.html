@@ -1,0 +1,12 @@
+{% extends "finder/_column.html" %}
+
+{% block finder-section-classes %}productversions{% endblock %}
+
+{% block finder-section-column-headers %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="number" sort_by="title" sort_on_data_attr="order" sort="asc" header="Versions" %}
+{% endblock %}
+
+
+{% block finder-section-column-content %}
+  {% include "manage/finder/_productversions.html" with colname="productversions" %}
+{% endblock %}

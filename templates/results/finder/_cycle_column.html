@@ -3,9 +3,9 @@
 {% block finder-section-classes %}cycles{% endblock %}
 
 {% block finder-section-column-headers %}
-  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort="asc" header="Cycles" %}
-  {% include "finder/_header.html" with tag="p" class="bystart" sort_type="date" header="start" %}
-  {% include "finder/_header.html" with tag="p" class="byend" sort_type="date" header="end" %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort_by="title" sort="asc" header="Cycles" %}
+  {% include "finder/_header.html" with tag="p" class="bystart" sort_type="date" sort_by="start" header="start" %}
+  {% include "finder/_header.html" with tag="p" class="byend" sort_type="date" sort_by="end" header="end" %}
 {% endblock %}
 
 

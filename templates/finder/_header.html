@@ -1,3 +1,3 @@
-<{{ tag }} class="{{ class }} sortitem" data-sort="{{ sort_type }}">
-  <a href="#"{% if sort %} class="{{ sort }} sortlink"{% endif %}>{{ header }}</a>
+<{{ tag }} class="{{ class }} sortitem" data-sort-type="{{ sort_type }}" data-sort-by="{{ sort_by }}"{% if sort_on_data_attr %} data-sort-on-data-attr="{{ sort_on_data_attr }}"{% endif %}>
+  <a href="#" class="{% if sort %}{{ sort }} {% endif %}sortlink">{{ header }}</a>
 </{{ tag }}>

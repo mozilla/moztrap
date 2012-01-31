@@ -19,9 +19,7 @@
     $.fn.html5finder = function (opts) {
         var options = $.extend({}, $.fn.html5finder.defaults, opts),
             context = $(this),
-            numberCols = options.sectionClasses.length,
             sections = context.find(options.sectionSelector),
-            i,
 
             // Set the width of each section to account for vertical scroll-bars
             headers = context.find(options.headerSelector).each(function () {
@@ -50,8 +48,8 @@
                 }
             },
 
-            itemClick = function (i) {
-                context.on('click', options.sectionItemSelectors[i], function () {
+            itemClick = function () {
+                context.on('click', options.itemSelector, function () {
                     var thisItem = $(this),
                         container = thisItem.closest(options.sectionSelector),
                         ajaxUrl = thisItem.data('sub-url'),
@@ -97,45 +95,35 @@
                 });
             };
 
-        context.find('.finder').data('cols', numberCols);
+        context.find('.finder').data('cols', options.numberCols);
         markSelected();
 
         // Enable headers to engage section focus, and sort column if section already has focus
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
-        headers.on('click', 'a', function () {
+        headers.on('click', options.sortLinkSelector, function (e) {
             var container = $(this).closest(options.sectionSelector),
                 list = container.find(options.sectionContentSelector),
-                selectorClass = $(this).parent().attr('class').substring(2),
-                type = $(this).parent().data('sort'),
+                selectorClass = $(this).parent().data('sort-by'),
+                type = $(this).parent().data('sort-type'),
+                sortOnData = $(this).parent().data('sort-on-data-attr'),
                 direction;
             if (container.hasClass('focus')) {
+                $(this).parent().siblings().find(options.sortLinkSelector).removeClass('asc desc');
                 if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
-                    $(this).toggleClass('asc').toggleClass('desc');
-                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
+                    $(this).toggleClass('asc desc');
                 } else {
                     $(this).addClass('asc');
-                    $(this).parent().siblings().find('a').removeClass('asc').removeClass('desc');
                 }
                 if ($(this).hasClass('asc')) {
                     direction = 'asc';
-                }
-                if ($(this).hasClass('desc')) {
+                } else if ($(this).hasClass('desc')) {
                     direction = 'desc';
-                }
-                if (type === 'number') {
-                    selectorClass = selectorClass + ' .number';
-                }
-                if (type === 'date') {
-                    list.sort({
-                        sortOn: '.' + selectorClass,
-                        direction: direction,
-                        sortType: 'string'
-                    });
                 }
                 list.sort({
                     sortOn: '.' + selectorClass,
                     direction: direction,
-                    sortType: type
+                    sortType: type,
+                    sortOnDataAttr: sortOnData
                 });
             } else {
                 context.find(options.sectionSelector).removeClass('focus');
@@ -143,12 +131,10 @@
                 horzScroll();
             }
             $(this).blur();
-            return false;
+            e.preventDefault();
         });
 
-        for (i = 0; i < numberCols; i = i + 1) {
-            itemClick(i);
-        }
+        itemClick();
     };
 
     /* Setup plugin defaults */
@@ -157,22 +143,16 @@
         horizontalScroll: false,            // If true, automatically scrolls to center the active section
         scrollContainer: null,              // The container (window) to be automatically scrolled
         scrollSpeed: 500,                   // Speed of the scroll (in ms)
+        numberCols: 3,                      // Number of sections (columns)
         selected: 'input:checked',          // A selected element
         notSelected: 'input:not(:checked)', // An unselected element
         headerSelector: 'header',           // Section headers
         sectionSelector: 'section',         // Sections
         sectionContentSelector: 'ul',       // Content to be replaced by Ajax function
-        sectionClasses: [                   // Classes for each section
-            'section1',
-            'section2',
-            'section3'
-        ],
-        sectionItemSelectors: [             // Selectors for items in each section
-            'input[name="section1"]',
-            'input[name="section2"]',
-            'input[name="section3"]'
-        ],
+        itemSelector: '.finderinput',       // Selector for items in each section
         callback: null,                     // Callback function, currently runs after input in any section (except lastChild) is selected
-        lastChildCallback: null             // Callback function, currently runs after input in last section is selected
+        lastChildCallback: null,            // Callback function, currently runs after input in last section is selected
+        sortLinkSelector: '.sortlink'       // Selector for link (in header) to sort items in that column
+
     };
 }(jQuery));

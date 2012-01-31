@@ -37,8 +37,49 @@ class FiltersTestCase(TestCase):
         return filters
 
 
+    @property
+    def model(self):
+        """Model classes."""
+        from cc import model
+        return model
 
-class DecoratorTest(FiltersTestCase):
+
+class FilterUrlTest(FiltersTestCase):
+    """Tests for ``filter_url`` function."""
+    def test_urlpattern_name(self):
+        """Can find filter url by url pattern name."""
+        p = self.model.Product(pk=2)
+
+        self.assertEqual(
+            self.filters.filter_url("manage_cases", p),
+            "/manage/cases/?filter-product=2"
+            )
+
+
+    def test_view_function(self):
+        """Can find filter url by view function."""
+        p = self.model.Product(pk=2)
+
+        from cc.view.manage.cases.views import cases_list
+
+        self.assertEqual(
+            self.filters.filter_url(cases_list, p),
+            "/manage/cases/?filter-product=2"
+            )
+
+
+    def test_path(self):
+        """Can find filter url by path."""
+        p = self.model.Product(pk=2)
+
+        self.assertEqual(
+            self.filters.filter_url("/manage/cases/", p),
+            "/manage/cases/?filter-product=2"
+            )
+
+
+
+class FilterDecoratorTest(FiltersTestCase):
     """Tests for ``filter`` decorator."""
     @property
     def filter(self):
@@ -161,7 +202,7 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        fs = MyFilterSet(self.filters.Filter("two"))
+        fs = MyFilterSet([self.filters.Filter("two")])
 
         self.assertEqual([f.name for f in fs.filters], ["one", "two"])
 
@@ -173,7 +214,7 @@ class FilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        MyFilterSet(self.filters.Filter("two"))
+        MyFilterSet([self.filters.Filter("two")])
         fs = MyFilterSet()
 
         self.assertEqual(len(fs.filters), 1)
@@ -225,7 +266,7 @@ class FilterSetTest(FiltersTestCase):
 
     def test_prefix_override(self):
         """'filter-' prefix can be changed via 'filter' kwarg."""
-        bfs = self.filters.FilterSet().bind(
+        bfs = self.filters.FilterSet(prefix="foo:").bind(
             MultiValueDict(
                 {
                     "other": ["a", "b"],
@@ -233,10 +274,38 @@ class FilterSetTest(FiltersTestCase):
                     "foo:two": ["bar", "baz"]
                     }
                 ),
-            prefix="foo:"
             )
 
         self.assertEqual(bfs.data, {"one": ["foo"], "two": ["bar", "baz"]})
+
+
+    def test_iteration_yields_filters(self):
+        """Iterating over a FilterSet yields its Filters."""
+        fs = self.filters.FilterSet([self.filters.Filter("name")])
+
+        self.assertEqual(list(fs), fs.filters)
+
+
+    def test_params_for(self):
+        """params_for returns querystring params for a given object."""
+        class MockModel(object):
+            def __init__(self, pk):
+                self.pk = pk
+
+        mock_model_filter = self.filters.Filter("name", key="key")
+        mock_model_filter.queryset = Mock()
+        mock_model_filter.queryset.model = MockModel
+
+        fs = self.filters.FilterSet([mock_model_filter], prefix="foo:")
+
+        self.assertEqual(fs.params_for(MockModel(3)), {"foo:key": 3})
+
+
+    def test_params_for_none(self):
+        """params_for returns empty dict if no applicable model-filter."""
+        fs = self.filters.FilterSet()
+
+        self.assertEqual(fs.params_for(3), {})
 
 
 
@@ -244,7 +313,7 @@ class BoundFilterSetTest(FiltersTestCase):
     """Tests for BoundFilterSet."""
     def test_boundfilters(self):
         """``self.boundfilters`` has a BoundFilter for each given Filter."""
-        fs = self.filters.FilterSet(self.filters.Filter("name"))
+        fs = self.filters.FilterSet([self.filters.Filter("name")])
         bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
         self.assertEqual(len(bfs.boundfilters), 1)
@@ -254,7 +323,7 @@ class BoundFilterSetTest(FiltersTestCase):
 
     def test_iteration_yields_boundfilters(self):
         """Iterating over a BoundFilterSet yields its BoundFilters."""
-        fs = self.filters.FilterSet(self.filters.Filter("name"))
+        fs = self.filters.FilterSet([self.filters.Filter("name")])
         bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
         self.assertEqual(list(bfs), bfs.boundfilters)
@@ -267,7 +336,7 @@ class BoundFilterSetTest(FiltersTestCase):
                 self.filters.Filter("one")
                 ]
 
-        fs = MyFilterSet(self.filters.Filter("two"))
+        fs = MyFilterSet([self.filters.Filter("two")])
         bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
 
         self.assertEqual(len(bfs), 2)
@@ -281,7 +350,8 @@ class BoundFilterSetTest(FiltersTestCase):
                 setattr(queryset, self.name, values)
                 return queryset
 
-        bfs = self.filters.FilterSet(MockFilter("one"), MockFilter("two")).bind(
+        bfs = self.filters.FilterSet(
+            [MockFilter("one"), MockFilter("two")]).bind(
             MultiValueDict({"filter-one": ["1"], "filter-two": ["2", "3"]}),
             )
         qs = Mock()

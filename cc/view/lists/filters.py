@@ -21,6 +21,42 @@ Utilities for filtering querysets in a view.
 """
 from collections import namedtuple
 from functools import wraps
+import urllib
+import urlparse
+
+from django.core.urlresolvers import reverse, resolve
+
+
+
+def filter_url(path_or_view, obj):
+    """
+    Return URL for ``path_or_view`` filtered by ``obj``.
+
+    ``path_or_view`` should be a URL path, a view function, or a url pattern
+    name resolvable without arguments, and ``obj`` should be an instance of a
+    model for which there is a ``ModelFilter`` applied to that view.
+
+    For instance, ``filter_url("manage_cases", product)`` would return the URL
+    for viewing the manage list of cases, filtered by ``product``.
+
+    """
+    if callable(path_or_view):
+        view_func = path_or_view
+        path = reverse(view_func)
+    else:
+        if path_or_view.startswith("/"):
+            path = path_or_view
+        else:
+            path = reverse(path_or_view)
+
+        view_func = resolve(path).func
+
+    params = view_func.filterset.params_for(obj)
+
+    return "{0}?{1}".format(
+        path,
+        "&".join(["{0}={1}".format(k, v) for k, v in params.items()])
+        )
 
 
 
@@ -38,7 +74,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
         filters = []
     if filterset_class is None:
         filterset_class = FilterSet
-    filterset = filterset_class(*filters)
+    filterset = filterset_class(filters)
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):
@@ -51,6 +87,10 @@ def filter(ctx_name, filters=None, filterset_class=None):
             ctx[ctx_name] = bfs.filter(ctx[ctx_name])
             ctx["filters"] = bfs
             return response
+
+        # annotate wrapped view with filterset
+        # for introspection by e.g. filter_url
+        _wrapped_view.filterset = filterset
 
         return _wrapped_view
 
@@ -101,7 +141,7 @@ class FilterSet(object):
     bound_class = BoundFilterSet
 
 
-    def __init__(self, *filters):
+    def __init__(self, filters=None, prefix="filter-"):
         """
         Initialize a FilterSet.
 
@@ -111,24 +151,47 @@ class FilterSet(object):
         if filters:
             self.filters = self.filters[:]
             self.filters.extend(filters)
+        self.prefix = prefix
 
 
-    def bind(self, GET, prefix="filter-"):
+    def bind(self, GET):
         """
         Return BoundFilterSet (or subclass) for given filter data.
 
          ``GET`` is a MultiValueDict that may contain filtering keys; usually
         request.GET from the current request. Keys not beginning with
-        ``prefix``` will be ignored.
+        ``self.prefix``` will be ignored.
 
         """
         return self.bound_class(
             self,
             dict(
-                (k[len(prefix):], GET.getlist(k)) for k in GET.keys()
-                if k.startswith(prefix)
+                (k[len(self.prefix):], GET.getlist(k)) for k in GET.keys()
+                if k.startswith(self.prefix)
                 )
             )
+
+
+    def __iter__(self):
+        """Iteration yields filters."""
+        return iter(self.filters)
+
+
+    def params_for(self, obj):
+        """
+        Return dict; querystring parameters to filter for ``obj``.
+
+        Only useful if filterset contains a ModelFilter for ``obj``'s class,
+        otherwise will return empty dict.
+
+        """
+        for flt in self.filters:
+            qs = getattr(flt, "queryset", None)
+            if qs is not None:
+                if isinstance(obj, qs.model):
+                    return {"{0}{1}".format(self.prefix, flt.key): obj.pk}
+
+        return {}
 
 
 
@@ -178,8 +241,7 @@ class BoundFilter(object):
 
     def __iter__(self):
         """Yields FilterOption objects when iterated."""
-        for o in self.options:
-            yield o
+        return iter(self.options)
 
 
     def __len__(self):

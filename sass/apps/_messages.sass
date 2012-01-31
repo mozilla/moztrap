@@ -31,11 +31,13 @@
 
 #messages
   +fixed-stretch(0,0,auto,0)
+  z-index: 999
   ul
     @extend .container
     list-style: none
 
 .message
+  +box-shadow(rgba($base,$small) 0 0 rhythm(.25))
   padding: rhythm(.25) rhythm(1.5)
   background: rgba($lighter,$small) no-repeat scroll rhythm(.5)
   cursor: pointer
@@ -47,16 +49,16 @@
 
   &.info
     background-image: image-url('ui/info.png')
-    background-color: rgba($blue-lighter,$xsmall)
+    background-color: rgba($blue-lighter,.9)
   &.success
     background-image: image-url('ui/check.png')
-    background-color: rgba($green-lighter,$xsmall)
+    background-color: rgba($green-lighter,.9)
   &.warning
     background-image: image-url('ui/warning.png')
-    background-color: rgba($yellow-lighter,$xsmall)
+    background-color: rgba($yellow-lighter,.9)
   &.error
     background-image: image-url('ui/x.png')
-    background-color: rgba($red-lighter,$xsmall)
+    background-color: rgba($red-lighter,.9)
 
   &.noscript
     .js &

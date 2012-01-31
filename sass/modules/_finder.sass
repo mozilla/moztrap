@@ -45,7 +45,7 @@
         width: ($n+1)*25%
 
   .col
-    +transition(width 300ms)
+    +transition(width .3s)
     +box-sizing('border-box')
     +float(left)
     position: relative
@@ -55,6 +55,7 @@
     &:last-child
       +float(right)
     &.focus
+      +transition(width .3s .01s)
       width: 50%
     &:not([class*="focus"])
       .listordering
@@ -97,14 +98,14 @@
     border-color: rgba($blue-light,$xxsmall)
     cursor: pointer
     #{$focus}
-      background: rgba($blue-lighter,$xxxsmall)
+      background: rgba($blue-lightest,$xxsmall)
 
   .finderinput
     +gone
     &:checked
       + .finderselect
         +demi
-        background: rgba($blue-light,$small)
+        background: rgba($blue-lighter,$xsmall)
 
   // layout of specific elements ---------------------------------------------
 

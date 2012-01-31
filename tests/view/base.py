@@ -19,6 +19,8 @@
 Utility base TestCase for testing views.
 
 """
+from django.test import TestCase
+
 from django_webtest import WebTest
 
 from .. import factories as F

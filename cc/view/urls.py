@@ -31,6 +31,8 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     "",
+    # runtests ---------------------------------------------------------------
+    url("^runtests/", include("cc.view.runtests.urls")),
 
     # users ------------------------------------------------------------------
     url("^users/", include("cc.view.users.urls")),
@@ -40,8 +42,8 @@ urlpatterns = patterns(
 
     # admin ------------------------------------------------------------------
     url("^admin/", include(admin.site.urls)),
+
+    # open web apps-----------------------------------------------------------
+    url("^owa/", include("cc.view.owa.urls")),
     
-    # open web apps ----------------------------------------------------------
-    url("^owa/manifest.webapp", "cc.view.owa.views.manifest"),
-    url("^owa/register/", "cc.view.owa.views.self_register"),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
