@@ -73,21 +73,27 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         return self.cleaned_data
 
 
-    def save_tags(self, caseversion):
-        # @@@ convert into a modelmultiplechoicefield widget?
-        tag_ids = set([int(tid) for tid in self.data.getlist("tag-tag")])
+    def save_new_tags(self, product=None):
+        """Save new tags and add them to the list of tags to assign."""
+        tags = self.cleaned_data.setdefault("tags", set())
+        tags.update([int(tid) for tid in self.data.getlist("tag-tag")])
+
         new_tags = self.data.getlist("tag-newtag")
 
-        # @@@ shouldn't be doing this multiple times (ea productversion)
         for name in new_tags:
             # @@@ should pass in user here, need CCQuerySet.get_or_create
             t, created = model.Tag.objects.get_or_create(
-                name=name, product=caseversion.case.product)
-            tag_ids.add(t.id)
+                name=name, product=product)
+            tags.add(t.id)
 
-        current_tag_ids = set([t.id for t in caseversion.tags.all()])
-        caseversion.tags.add(*tag_ids.difference(current_tag_ids))
-        caseversion.tags.remove(*current_tag_ids.difference(tag_ids))
+
+    def save_tags(self, caseversion):
+        """Update set of tags assigned to ``caseversion``."""
+        tags = self.cleaned_data.get("tags", set())
+
+        current_tags = set([t.id for t in caseversion.tags.all()])
+        caseversion.tags.add(*tags.difference(current_tags))
+        caseversion.tags.remove(*current_tags.difference(tags))
 
 
 
@@ -118,7 +124,6 @@ class BaseCaseVersionForm(forms.Form):
     def save_attachments(self, caseversion):
         # @@@ convert into a modelmultiplechoicefield widget?
         delete_ids = set(self.data.getlist("remove-attachment"))
-        # @@@ shouldn't be doing this multiple times (ea productversion)
         caseversion.attachments.filter(id__in=delete_ids).delete()
 
         if self.files: # if no files, it's a plain dict, has no getlist
@@ -188,6 +193,9 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 
         version_kwargs = self.cleaned_data.copy()
         product = version_kwargs.pop("product")
+
+        self.save_new_tags(product)
+
         case = model.Case.objects.create(product=product, user=self.user)
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
@@ -258,6 +266,8 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
 
         product = self.cleaned_data["product"]
 
+        self.save_new_tags(product)
+
         productversions = [self.cleaned_data["productversion"]]
         if self.cleaned_data.get("and_later_versions"):
             productversions.extend(product.versions.filter(
@@ -327,6 +337,7 @@ class EditCaseVersionForm(BaseCaseVersionForm, BaseCaseForm):
 
         self.instance.save(force_update=True)
 
+        self.save_new_tags(self.instance.case.product)
         self.save_tags(self.instance)
         self.save_attachments(self.instance)
         self.steps_formset.save(user=self.user)
