@@ -2184,7 +2184,7 @@ body > div {
   clear: both;
 }
 .finder .finderselect:focus, .finder .finderselect:hover, .finder .finderselect:active {
-  background: rgba(169, 178, 191, 0.198);
+  background: rgba(203, 207, 214, 0.296);
 }
 .finder .finderinput {
   position: absolute;
@@ -2198,7 +2198,7 @@ body > div {
 }
 .finder .finderinput:checked + .finderselect {
   font-weight: 500;
-  background: rgba(134, 149, 168, 0.667);
+  background: rgba(169, 178, 191, 0.444);
 }
 .finder .title {
   overflow: hidden;
