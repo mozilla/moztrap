@@ -1,4 +1,4 @@
-<div class="tagging">
+<div class="tagging"{% if caseversion %} data-product-id="{{ caseversion.case.product.id }}"{% endif %}>
   {% include "forms/_field.html" with field=form.add_tags %}
 
   <ul class="taglist">
