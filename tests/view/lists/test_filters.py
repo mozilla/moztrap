@@ -26,8 +26,6 @@ from django.test import RequestFactory
 from django.utils.datastructures import MultiValueDict
 from django.utils.unittest import TestCase
 
-from cc import model
-
 
 
 class FiltersTestCase(TestCase):
@@ -39,13 +37,18 @@ class FiltersTestCase(TestCase):
         return filters
 
 
+    @property
+    def model(self):
+        """Model classes."""
+        from cc import model
+        return model
+
 
 class FilterUrlTest(FiltersTestCase):
     """Tests for ``filter_url`` function."""
     def test_urlpattern_name(self):
         """Can find filter url by url pattern name."""
-        # don't save, this isn't a database test case
-        p = model.Product(pk=2)
+        p = self.model.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("manage_cases", p),
@@ -55,8 +58,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_view_function(self):
         """Can find filter url by view function."""
-        # don't save, this isn't a database test case
-        p = model.Product(pk=2)
+        p = self.model.Product(pk=2)
 
         from cc.view.manage.cases.views import cases_list
 
@@ -68,8 +70,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_path(self):
         """Can find filter url by path."""
-        # don't save, this isn't a database test case
-        p = model.Product(pk=2)
+        p = self.model.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("/manage/cases/", p),
@@ -78,7 +79,7 @@ class FilterUrlTest(FiltersTestCase):
 
 
 
-class DecoratorTest(FiltersTestCase):
+class FilterDecoratorTest(FiltersTestCase):
     """Tests for ``filter`` decorator."""
     @property
     def filter(self):

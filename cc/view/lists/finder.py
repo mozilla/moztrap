@@ -156,15 +156,16 @@ class Finder(object):
                     break
 
             if attr is None:
-                for related in opts.get_all_related_many_to_many_objects():
-                    if related.model is parent_col.model:
-                        attr = related.get_accessor_name()
-                        break
-
-            if attr is None:
-                raise ValueError(
-                    "Cannot find relationship from {0} to {1}".format(
-                        col.model, parent_col.model))
+                try:
+                    attr = [
+                        r.get_accessor_name()
+                        for r in opts.get_all_related_many_to_many_objects()
+                        if r.model is parent_col.model
+                        ][0]
+                except IndexError:
+                    raise ValueError(
+                        "Cannot find relationship from {0} to {1}".format(
+                            col.model, parent_col.model))
 
             ret = ret.filter(**{attr: parent})
         return ret

@@ -19,6 +19,8 @@
 Utility base TestCase for testing views.
 
 """
+from django.test import TestCase
+
 from django_webtest import WebTest
 
 from .. import factories as F
@@ -132,3 +134,8 @@ class ManageListViewTestCase(FormViewTestCase):
 
         # ...with a message about permissions.
         res.mustcontain("permission")
+
+
+
+class DecoratorTestCase(TestCase):
+    """Base class for tests of view decorators."""

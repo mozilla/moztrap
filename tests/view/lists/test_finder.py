@@ -19,60 +19,195 @@
 Tests for finder.
 
 """
-from django.test import TestCase
+from django.template.response import TemplateResponse
+from django.test import TestCase, RequestFactory
 
 from mock import Mock, patch
+
+from ... import factories as F
+
+
+
+class FinderDecoratorTest(TestCase):
+    """Tests for the finder view decorator."""
+    @property
+    def finder(self):
+        """The decorator under test."""
+        from cc.view.lists.decorators import finder
+        return finder
+
+
+    def on_response(self, response, decorator=None, request=None):
+        """Apply given decorator to dummy view, return given response."""
+        decorator = decorator or self.finder(Mock())
+        request = request or RequestFactory().get("/")
+
+        @decorator
+        def view(request):
+            return response
+
+        return view(request)
+
+
+    def on_template_response(self, context, **kwargs):
+        """Run TemplateResponse with given context through decorated view."""
+        request = kwargs.setdefault("request", RequestFactory().get("/"))
+
+        res = TemplateResponse(request, "some/template.html", context)
+
+        return self.on_response(res, **kwargs)
+
+
+    def test_returns_non_template_response(self):
+        """Returns a non-TemplateResponse unmodified, without error."""
+        res = self.on_response("blah")
+
+        self.assertEqual(res, "blah")
+
+
+    def test_uses_wraps(self):
+        """Preserves docstring and name of original view func."""
+        @self.finder(Mock())
+        def myview(request, some_id):
+            """docstring"""
+
+        self.assertEqual(myview.func_name, "myview")
+        self.assertEqual(myview.func_doc, "docstring")
+
+
+    def test_passes_on_args(self):
+        """Arguments are passed on to original view func."""
+        record = []
+
+        @self.finder(Mock())
+        def myview(request, *args, **kwargs):
+            record.extend([args, kwargs])
+
+        myview(RequestFactory().get("/"), "a", b=2)
+
+        self.assertEqual(record, [("a",), {"b": 2}])
+
+
+    @patch("cc.view.lists.finder.render")
+    def test_ajax(self, render):
+        """Ajax response is rendered column template."""
+        render.return_value = "some HTML"
+
+        MockFinder = Mock()
+        f = MockFinder.return_value
+        f.column_template.return_value = "some/finder/_column.html"
+        f.objects.return_value = ["some", "objects"]
+
+        req = RequestFactory().get(
+            "/some/url",
+            {"finder": "1", "col": "things", "id": "2"},
+            HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+        res = self.on_template_response(
+            {}, request=req, decorator=self.finder(MockFinder))
+
+        self.assertEqual(res, "some HTML")
+
+        self.assertEqual(
+            render.call_args[0][1:],
+            (
+                "some/finder/_column.html",
+                {
+                    "colname": "things",
+                    "finder": {
+                        "finder": f,
+                        "things": ["some", "objects"]
+                        }
+                    }
+                )
+            )
+
+        f.column_template.assert_called_with("things")
+        f.objects.assert_called_with("things", "2")
+
+
+    def test_no_ajax(self):
+        """Non-ajax response has finder with top-column objects in context."""
+        MockFinder = Mock()
+        f = MockFinder.return_value
+        top_col = Mock()
+        top_col.name = "top"
+        f.columns = [top_col]
+        f.objects.return_value = ["some", "objects"]
+
+        res = self.on_template_response({}, decorator=self.finder(MockFinder))
+
+        self.assertIs(res.context_data["finder"]["finder"], f)
+        self.assertEqual(
+            res.context_data["finder"]["top"],
+            ["some", "objects"]
+            )
+
+        f.objects.assert_called_with("top")
 
 
 
 class FinderTest(TestCase):
     """Tests for Finder."""
     @property
-    def finder(self):
-        from cc.view.lists.finder import Finder, Column
+    def ManageFinder(self):
+        """ManageFinder; a sample finder subclass to exercise Finder."""
+        from cc.view.manage.finders import ManageFinder
+        return ManageFinder
 
-        class AFinder(Finder):
-            template_base = "a/finder"
 
-            columns = [
-                Column("top", "_tops.html", self.TopList, "theTop",
-                       goto="list_of_mids"),
-                Column("mid", "_mids.html", self.MidList, "theMid"),
-                Column("fin", "_fins.html", self.FinList, "theFin")
-                ]
-
-        return AFinder
+    @property
+    def model(self):
+        """Model classes."""
+        from cc import model
+        return model
 
 
     def test_columns_by_name(self):
-        f = self.finder()
+        """Index of columns by name."""
+        f = self.ManageFinder()
 
         self.assertEqual(
             sorted((n, c.name) for (n, c) in f.columns_by_name.items()),
-            [("fin", "fin"), ("mid", "mid"), ("top", "top")]
+            [
+                ("products", "products"),
+                ("productversions", "productversions"),
+                ("runs", "runs"),
+                ("suites", "suites"),
+                ]
             )
 
 
     def test_parent_columns(self):
-        f = self.finder()
+        """Maps column name to parent column."""
+        f = self.ManageFinder()
 
         self.assertEqual(
             sorted((n, c.name) for (n, c) in f.parent_columns.items()),
-            [("fin", "mid"), ("mid", "top")]
+            [
+                ("productversions", "products"),
+                ("runs", "productversions"),
+                ("suites", "runs"),
+                ]
             )
 
 
     def test_child_columns(self):
-        f = self.finder()
+        """Maps column name to child column."""
+        f = self.ManageFinder()
 
         self.assertEqual(
             sorted((n, c.name) for (n, c) in f.child_columns.items()),
-            [("mid", "fin"), ("top", "mid")]
+            [
+                ("products", "productversions"),
+                ("productversions", "runs"),
+                ("runs", "suites")
+                ]
             )
 
 
     def test_columns_by_model(self):
-        f = self.finder()
+        """Index of columns by model."""
+        f = self.ManageFinder()
 
         self.assertEqual(
             sorted(
@@ -80,66 +215,59 @@ class FinderTest(TestCase):
                 key=lambda o: o[1]
                 ),
             [
-                (self.Fin, "fin"),
-                (self.Mid, "mid"),
-                (self.Top, "top"),
+                (self.model.Product, "products"),
+                (self.model.ProductVersion, "productversions"),
+                (self.model.Run, "runs"),
+                (self.model.Suite, "suites"),
                 ]
             )
 
 
-    def test_column_name(self):
-        f = self.finder()
+    def test_column_template(self):
+        """Joins finder base template to column template name."""
+        f = self.ManageFinder()
 
-        self.assertEqual(f.column_template("mid"), "a/finder/_mids.html")
+        self.assertEqual(f.column_template("runs"), "manage/finder/_runs.html")
 
 
     def test_bad_column_name(self):
-        f = self.finder()
+        """Bad column name raises ValueError."""
+        f = self.ManageFinder()
 
         with self.assertRaises(ValueError):
             f.column_template("doesnotexist")
 
 
-    @patch("cc.view.lists.finder.reverse", lambda p: p)
     def test_goto_url(self):
-        f = self.finder()
+        """Goto url is manage url for child objects, filtered by parent."""
+        f = self.ManageFinder()
 
-        obj = Mock()
-        obj._spec_class = self.Top
-        obj.id = 2
+        obj = self.model.Suite(pk=2)
 
-        self.assertEqual(f.goto_url(obj), "list_of_mids?theTop=2")
+        self.assertEqual(f.goto_url(obj), "/manage/cases/?filter-suite=2")
 
 
-    def test_goto_url_bad_obj(self):
-        f = self.finder()
+    def test_goto_url_bad_object(self):
+        """Goto url returns None if given object from unknown class."""
+        f = self.ManageFinder()
 
         self.assertEqual(f.goto_url(Mock()), None)
 
 
-    def test_goto_url_no_goto(self):
-        f = self.finder()
-
-        obj = Mock()
-        obj._spec_class = self.Mid
-        obj.id = 2
-
-        self.assertEqual(f.goto_url(obj), None)
-
-
     def test_child_column_for_obj(self):
-        f = self.finder()
+        """Returns child column name for given object."""
+        f = self.ManageFinder()
 
-        obj = Mock()
-        obj._spec_class = self.Mid
+        obj = self.model.Product()
 
         child_col = f.child_column_for_obj(obj)
 
-        self.assertEqual(child_col, "fin")
+        self.assertEqual(child_col, "productversions")
 
 
     def test_child_column_for_bad_obj(self):
-        f = self.finder()
+        """Returns None if obj isn't of a model class in this finder."""
+        f = self.ManageFinder()
 
         child_col = f.child_column_for_obj(Mock())
 
@@ -147,10 +275,10 @@ class FinderTest(TestCase):
 
 
     def test_child_column_for_last_obj(self):
-        f = self.finder()
+        """Returns None if given object from final-column class."""
+        f = self.ManageFinder()
 
-        obj = Mock()
-        obj._spec_class = self.Fin
+        obj = self.model.Suite()
 
         child_col = f.child_column_for_obj(obj)
 
@@ -158,59 +286,91 @@ class FinderTest(TestCase):
 
 
     def test_child_query_url(self):
-        f = self.finder()
+        """Returns ajax query url for list of child objects in next column."""
+        f = self.ManageFinder()
 
-        obj = Mock()
-        obj._spec_class = self.Mid
-        obj.id = 5
+        obj = self.model.Run(pk=5)
 
         url = f.child_query_url(obj)
-        self.assertEqual(url, "?finder=1&col=fin&id=5")
+        self.assertEqual(url, "?finder=1&col=suites&id=5")
 
 
     def test_child_query_url_none(self):
-        f = self.finder()
+        """Returns None for final column."""
+        f = self.ManageFinder()
 
-        obj = Mock()
-        obj._spec_class = self.Fin
-        obj.id = 5
-
+        obj = self.model.Suite(pk=5)
         url = f.child_query_url(obj)
+
         self.assertEqual(url, None)
 
 
     def test_objects(self):
-        f = self.finder()
+        """Without parent, objects is just pass-through to column objects."""
+        f = self.ManageFinder()
 
-        objects = f.objects("top")
+        p = F.ProductFactory.create()
 
-        our_tops = self.TopList.ours.return_value
-        col_tops = our_tops.filter.return_value.sort.return_value
+        objects = f.objects("products")
 
-        self.assertIs(objects, col_tops)
+        self.assertEqual(list(objects), [p])
 
 
     def test_objects_of_parent(self):
-        f = self.finder()
+        """With parent, objects filters by parent."""
+        f = self.ManageFinder()
 
-        objects = f.objects("mid", 3)
+        pv = F.ProductVersionFactory.create()
+        F.ProductVersionFactory.create()
 
-        our_mids = self.MidList.ours.return_value
-        col_mids = our_mids.filter.return_value.sort.return_value
+        objects = f.objects("productversions", pv.product.pk)
 
-        self.assertIs(objects, col_mids.filter.return_value)
-        col_mids.filter.assert_called_with(theTop=3)
+        self.assertEqual(list(objects), [pv])
+
+
+    def test_parent_via_m2m(self):
+        """Parent filtering also works via m2m relationship."""
+        f = self.ManageFinder()
+
+        rs = F.RunSuiteFactory.create()
+        F.SuiteFactory.create()
+
+        objects = f.objects("suites", rs.run.pk)
+
+        self.assertEqual(list(objects), [rs.suite])
+
+
+    def test_no_parent_relationship(self):
+        """If no relationship to parent model is found, raises ValueError."""
+        from cc.view.lists.finder import Finder, Column
+
+        class BadFinder(Finder):
+            columns = [
+                Column(
+                    "products",
+                    "_products.html",
+                    self.model.Product.objects.all()
+                    ),
+                Column("runs", "_runs.html", self.model.Run.objects.all()),
+                ]
+
+        f = BadFinder()
+
+        with self.assertRaises(ValueError):
+            f.objects("runs", 1)
 
 
     def test_objects_of_no_parent(self):
-        f = self.finder()
+        """Passing in parent for top column raises ValueError."""
+        f = self.ManageFinder()
 
         with self.assertRaises(ValueError):
-            f.objects("top", 3)
+            f.objects("products", 3)
 
 
     def test_objects_bad_col(self):
-        f = self.finder()
+        """Asking for objects of bad column raises ValueError."""
+        f = self.ManageFinder()
 
         with self.assertRaises(ValueError):
             f.objects("doesnotexist")
