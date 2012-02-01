@@ -27,8 +27,8 @@ urlpatterns = patterns(
     "cc.view.owa.views",
 
     # open web apps ----------------------------------------------------------
-    url("^manifest.webapp", "manifest"),
-    url("^register/", "self_register"),
+    url("^manifest.webapp", "manifest", name="owa_manifest"),
+    url("^register/", "self_register", name="owa_register"),
 
 )
 
