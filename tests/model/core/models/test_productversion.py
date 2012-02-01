@@ -19,10 +19,15 @@
 Tests for ProductVersion model.
 
 """
+from datetime import datetime
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from mock import patch
+
 from .... import factories as F
+from ....utils import refresh
 
 
 
@@ -123,6 +128,7 @@ class ProductVersionTest(TestCase):
 
     def test_editing_a_version_reorders(self):
         """Editing a product version reorders the versions."""
+        # @@@ what about bulk update of product versions?
         p = F.ProductFactory.create()
         F.ProductVersionFactory.create(version="2.11", product=p)
         F.ProductVersionFactory.create(version="2.9", product=p)
@@ -135,6 +141,62 @@ class ProductVersionTest(TestCase):
             [(v.version, v.latest) for v in p.versions.all()],
             [("2.9", False), ("2.10", False), ("2.11", True)]
             )
+
+
+    def test_deleting_a_version_reorders(self):
+        """Deleting a product version reorders the versions."""
+        # @@@ what about bulk deletion of product versions?
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.10", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+
+        F.ProductVersionFactory.create(version="2.11", product=p).delete()
+
+        self.assertEqual(
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", True)]
+            )
+
+
+    def test_undeleting_a_version_reorders(self):
+        """Undeleting a product version reorders the versions."""
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.10", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+        pv = F.ProductVersionFactory.create(version="2.11", product=p)
+
+        pv.delete()
+        refresh(pv).undelete()
+
+        self.assertEqual(
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", False), ("2.11", True)]
+            )
+
+
+    @patch("cc.model.ccmodel.datetime")
+    def test_reorder_versions_does_not_change_modified_on(self, mock_dt):
+        """Updating latest product version does not change modified_on."""
+        mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 30)
+        pv = F.ProductVersionFactory.create()
+
+        mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 31)
+        pv.product.reorder_versions()
+
+        self.assertEqual(refresh(pv).modified_on, datetime(2012, 1, 30))
+        self.assertEqual(refresh(pv.product).modified_on, datetime(2012, 1, 30))
+
+
+    def test_reorder_versions_does_not_change_modified_by(self):
+        """Updating latest product version does not change modified_by."""
+        u = F.UserFactory.create()
+        p = F.ProductFactory.create(user=u)
+        pv = F.ProductVersionFactory.create(product=p, user=u)
+
+        pv.product.reorder_versions()
+
+        self.assertEqual(refresh(pv).modified_by, u)
+        self.assertEqual(refresh(p).modified_by, u)
 
 
     def test_instance_being_saved_is_updated(self):

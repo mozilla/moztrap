@@ -68,7 +68,7 @@ class Product(CCModel, TeamModel):
         for i, version in enumerate(ordered, 1):
             version.order = i
             version.latest = (i == len(ordered))
-            version.save(force_update=True, skip_reorder=True)
+            version.save(force_update=True, skip_reorder=True, notrack=True)
             if version == update_instance:
                 update_instance.order = version.order
                 update_instance.latest = version.latest
@@ -101,6 +101,18 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
         super(ProductVersion, self).save(*args, **kwargs)
         if not skip_reorder:
             self.product.reorder_versions(update_instance=self)
+
+
+    def delete(self, *args, **kwargs):
+        """Delete productversion, updating latest version."""
+        super(ProductVersion, self).delete(*args, **kwargs)
+        self.product.reorder_versions()
+
+
+    def undelete(self, *args, **kwargs):
+        """Undelete productversion, updating latest version."""
+        super(ProductVersion, self).undelete(*args, **kwargs)
+        self.product.reorder_versions()
 
 
     def clean(self):

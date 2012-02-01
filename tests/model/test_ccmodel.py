@@ -180,6 +180,26 @@ class SaveTest(CCModelMockNowTestCase):
         self.assertEqual(p.modified_on, new_now)
 
 
+    def test_notrack_modified_on(self):
+        """If notrack=True, doesn't update modified_on."""
+        self.mock_utcnow.return_value = datetime.datetime(2012, 1, 1)
+        p = Product.objects.create(name="Foo")
+
+        self.mock_utcnow.return_value = datetime.datetime(2012, 1, 2)
+        p.save(notrack=True)
+
+        self.assertEqual(refresh(p).modified_on, datetime.datetime(2012, 1, 1))
+
+
+    def test_notrack_modified_by(self):
+        """If notrack=True, doesn't update modified_by."""
+        p = Product.objects.create(name="Foo", user=self.user)
+
+        p.save(notrack=True)
+
+        self.assertEqual(refresh(p).modified_by, self.user)
+
+
 
 class UpdateTest(CCModelMockNowTestCase):
     """Tests for modified_(by/on) when using queryset.update."""
@@ -210,6 +230,26 @@ class UpdateTest(CCModelMockNowTestCase):
         Product.objects.update(name="Bar")
 
         self.assertEqual(refresh(p).modified_on, new_now)
+
+
+    def test_notrack_modified_on(self):
+        """If notrack=True, doesn't update modified_on."""
+        self.mock_utcnow.return_value = datetime.datetime(2012, 1, 1)
+        p = Product.objects.create(name="Foo")
+
+        self.mock_utcnow.return_value = datetime.datetime(2012, 1, 2)
+        Product.objects.update(name="bar", notrack=True)
+
+        self.assertEqual(refresh(p).modified_on, datetime.datetime(2012, 1, 1))
+
+
+    def test_notrack_modified_by(self):
+        """If notrack=True, doesn't update modified_by."""
+        p = Product.objects.create(name="Foo", user=self.user)
+
+        Product.objects.update(name="bar", notrack=True)
+
+        self.assertEqual(refresh(p).modified_by, self.user)
 
 
 

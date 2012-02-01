@@ -58,9 +58,10 @@ class Case(CCModel):
         except IndexError:
             pass
         else:
-            self.versions.update(latest=False)
+            self.versions.update(latest=False, notrack=True)
             latest_version.latest = True
-            latest_version.save(force_update=True, skip_set_latest=True)
+            latest_version.save(
+                force_update=True, skip_set_latest=True, notrack=True)
             if update_instance == latest_version:
                 update_instance.latest = True
             elif update_instance is not None:
@@ -124,6 +125,18 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
         super(CaseVersion, self).save(*args, **kwargs)
         if not skip_set_latest:
             self.case.set_latest_version(update_instance=self)
+
+
+    def delete(self, *args, **kwargs):
+        """Delete CaseVersion, updating latest version."""
+        super(CaseVersion, self).delete(*args, **kwargs)
+        self.case.set_latest_version()
+
+
+    def undelete(self, *args, **kwargs):
+        """Undelete CaseVersion, updating latest version."""
+        super(CaseVersion, self).undelete(*args, **kwargs)
+        self.case.set_latest_version()
 
 
     def clean(self):
