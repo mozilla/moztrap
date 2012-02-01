@@ -52,13 +52,17 @@ def select(request):
 def finder_environments(request, run_id):
     """Ajax-load environment-selection form."""
     run = get_object_or_404(model.Run, pk=run_id)
+    form_kwargs = {
+        "current": request.session.get("environment", None),
+        "environments": run.environments.all()
+        }
 
     return TemplateResponse(
         request,
         "runtests/_environment_form.html",
         {
-            "testrun": run,
-            "form": EnvironmentSelectionForm
+            "run": run,
+            "form": EnvironmentSelectionForm(**form_kwargs)
             }
         )
 
@@ -68,18 +72,21 @@ def finder_environments(request, run_id):
 def set_environment(request, run_id):
     """Select valid environment for given run and save it in session."""
     run = get_object_or_404(model.Run, pk=run_id)
-    current = request.session.get("environments", None)
+    form_kwargs = {
+        "current": request.session.get("environment", None),
+        "environments": run.environments.all()
+        }
 
     if request.method == "POST":
         form = EnvironmentSelectionForm(
             request.POST,
-            current=current)
+            **form_kwargs)
 
         if form.is_valid():
-            request.session["environments"] = form.save()
+            request.session["environment"] = form.save()
             return redirect("runtests_run", run_id=run_id)
     else:
-        form = EnvironmentSelectionForm(current=current)
+        form = EnvironmentSelectionForm(**form_kwargs)
 
     return TemplateResponse(
         request,

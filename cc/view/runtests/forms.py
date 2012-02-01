@@ -21,7 +21,28 @@ Forms for test execution.
 """
 import floppyforms as forms
 
+from ... import model
+
 
 
 class EnvironmentSelectionForm(forms.Form):
-    pass # @@@
+    """Form for selecting an environment."""
+    environment = forms.ModelChoiceField(model.Environment.objects.none())
+
+
+    def __init__(self, *args, **kwargs):
+        """Accepts ``environments`` iterable and ``current`` env id."""
+        environments = kwargs.pop("environments", None)
+        current = kwargs.pop("current", None)
+
+        super(EnvironmentSelectionForm, self).__init__(*args, **kwargs)
+
+        if environments is not None:
+            self.fields["environment"].queryset = environments
+        if current is not None:
+            self.initial["environment"] = current
+
+
+    def save(self):
+        """Return id of selected environment."""
+        return self.cleaned_data["environment"]
