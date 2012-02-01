@@ -128,6 +128,7 @@ class ProductVersionTest(TestCase):
 
     def test_editing_a_version_reorders(self):
         """Editing a product version reorders the versions."""
+        # @@@ what about bulk update of product versions?
         p = F.ProductFactory.create()
         F.ProductVersionFactory.create(version="2.11", product=p)
         F.ProductVersionFactory.create(version="2.9", product=p)
@@ -135,6 +136,37 @@ class ProductVersionTest(TestCase):
 
         pv.version = "2.10"
         pv.save()
+
+        self.assertEqual(
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", False), ("2.11", True)]
+            )
+
+
+    def test_deleting_a_version_reorders(self):
+        """Deleting a product version reorders the versions."""
+        # @@@ what about bulk deletion of product versions?
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.10", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+
+        F.ProductVersionFactory.create(version="2.11", product=p).delete()
+
+        self.assertEqual(
+            [(v.version, v.latest) for v in p.versions.all()],
+            [("2.9", False), ("2.10", True)]
+            )
+
+
+    def test_undeleting_a_version_reorders(self):
+        """Undeleting a product version reorders the versions."""
+        p = F.ProductFactory.create()
+        F.ProductVersionFactory.create(version="2.10", product=p)
+        F.ProductVersionFactory.create(version="2.9", product=p)
+        pv = F.ProductVersionFactory.create(version="2.11", product=p)
+
+        pv.delete()
+        refresh(pv).undelete()
 
         self.assertEqual(
             [(v.version, v.latest) for v in p.versions.all()],

@@ -127,6 +127,18 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
             self.case.set_latest_version(update_instance=self)
 
 
+    def delete(self, *args, **kwargs):
+        """Delete CaseVersion, updating latest version."""
+        super(CaseVersion, self).delete(*args, **kwargs)
+        self.case.set_latest_version()
+
+
+    def undelete(self, *args, **kwargs):
+        """Undelete CaseVersion, updating latest version."""
+        super(CaseVersion, self).undelete(*args, **kwargs)
+        self.case.set_latest_version()
+
+
     def clean(self):
         """
         Validate uniqueness of product/version combo.

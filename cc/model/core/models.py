@@ -103,6 +103,18 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
             self.product.reorder_versions(update_instance=self)
 
 
+    def delete(self, *args, **kwargs):
+        """Delete productversion, updating latest version."""
+        super(ProductVersion, self).delete(*args, **kwargs)
+        self.product.reorder_versions()
+
+
+    def undelete(self, *args, **kwargs):
+        """Undelete productversion, updating latest version."""
+        super(ProductVersion, self).undelete(*args, **kwargs)
+        self.product.reorder_versions()
+
+
     def clean(self):
         """
         Validate uniqueness of product/version combo.

@@ -220,6 +220,45 @@ class CaseVersionTest(TestCase):
             )
 
 
+    def test_deleting_version_sets_latest(self):
+        """Deleting a case version updates latest version."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        cv = F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        cv.delete()
+
+        self.assertEqual(
+            [v.latest for v in c.versions.all()],
+            [False, True]
+            )
+
+
+    def test_undeleting_version_sets_latest(self):
+        """Undeleting a case version updates latest version."""
+        c = F.CaseFactory.create()
+        p = c.product
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+        F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        cv = F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        cv.delete()
+        refresh(cv).undelete()
+
+        self.assertEqual(
+            [v.latest for v in c.versions.all()],
+            [False, False, True]
+            )
+
+
     @patch("cc.model.ccmodel.datetime")
     def test_update_latest_version_does_not_change_modified_on(self, mock_dt):
         """Updating latest case version does not change modified_on."""
