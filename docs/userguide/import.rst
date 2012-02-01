@@ -3,41 +3,33 @@ Data Import Formats
 
 .. _data-import:
 
+**Note:** The data you choose to import must be encoded in UTF8.
+
 JSON 
 ----
 
-JSON is a great way to import more complex sets of :ref:`cases <test-cases>`, :ref:`suites
-<test-suites>` and :ref:`product <products>` definitions.  
-
-**Note:** The JSON you choose to import must be encoded in UTF8.
+JSON is a great way to import more complex sets of :ref:`cases <test-cases>` and
+:ref:`suites <test-suites>` for your product. One JSON file will be used per :ref:`product
+<products>` :ref:`version <product-versions>`. Simply use the user interface to create the
+:ref:`Product <products>` and :ref:`Version <product-versions>` that applies to the
+:ref:`cases <test-cases>` and :ref:`suites <test-suites>` to be imported. Then just import
+your JSON file to that :ref:`product version <product-versions>`.
 
 Example::
 
     {
-        "Products": [
-            {
-                "name": "product name",
-                "description": "product description"
-            },
-            {
-                "name": "product name",
-                "description": "product description"
-            }
-        ],
         "Suites": [
             {
                 "name": "suite name",
-                "description": "suite description",
-                "product": "product name"
+                "description": "suite description"
             }
         ],
         "Cases": [
             {
                 "title": "case title",
                 "description": "case description",
-                "product": "product name",
                 "tags": ["tag1", "tag2", "tag3"],
-                "suites": ["suite1", "suite2", "suite3"],
+                "suites": ["suite1 name", "suite2 name", "suite3 name"],
                 "steps": [
                     {
                         "action": "action text",
