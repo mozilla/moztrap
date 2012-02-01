@@ -19,8 +19,12 @@
 Tests for Case and related models (CaseVersion, CaseStep).
 
 """
+from datetime import datetime
+
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+
+from mock import patch
 
 from .... import factories as F
 from ....utils import refresh
@@ -214,6 +218,31 @@ class CaseVersionTest(TestCase):
             [v.latest for v in c.versions.all()],
             [False, False, True]
             )
+
+
+    @patch("cc.model.ccmodel.datetime")
+    def test_update_latest_version_does_not_change_modified_on(self, mock_dt):
+        """Updating latest case version does not change modified_on."""
+        mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 30)
+        cv = F.CaseVersionFactory.create()
+
+        mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 31)
+        cv.case.set_latest_version()
+
+        self.assertEqual(refresh(cv).modified_on, datetime(2012, 1, 30))
+        self.assertEqual(refresh(cv.case).modified_on, datetime(2012, 1, 30))
+
+
+    def test_update_latest_version_does_not_change_modified_by(self):
+        """Updating latest case version does not change modified_by."""
+        u = F.UserFactory.create()
+        c = F.CaseFactory.create(user=u)
+        cv = F.CaseVersionFactory.create(case=c, user=u)
+
+        cv.case.set_latest_version()
+
+        self.assertEqual(refresh(cv).modified_by, u)
+        self.assertEqual(refresh(c).modified_by, u)
 
 
     def test_instance_being_saved_is_updated(self):

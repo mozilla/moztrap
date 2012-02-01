@@ -68,7 +68,7 @@ class Product(CCModel, TeamModel):
         for i, version in enumerate(ordered, 1):
             version.order = i
             version.latest = (i == len(ordered))
-            version.save(force_update=True, skip_reorder=True)
+            version.save(force_update=True, skip_reorder=True, notrack=True)
             if version == update_instance:
                 update_instance.order = version.order
                 update_instance.latest = version.latest

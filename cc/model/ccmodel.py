@@ -106,8 +106,9 @@ class CCQuerySet(QuerySet):
         Update all objects in this queryset with modifications in ``kwargs``.
 
         """
-        kwargs["modified_by"] = kwargs.pop("user", None)
-        kwargs["modified_on"] = utcnow()
+        if not kwargs.pop("notrack", False):
+            kwargs["modified_by"] = kwargs.pop("user", None)
+            kwargs["modified_on"] = utcnow()
         return super(CCQuerySet, self).update(*args, **kwargs)
 
 
@@ -190,13 +191,15 @@ class CCModel(models.Model):
         Save this instance, recording modified timestamp and user.
 
         """
-        user = kwargs.pop("user", None)
-        now = utcnow()
-        if self.pk is None and user is not None:
-            self.created_by = user
-        if self.pk or user is not None:
-            self.modified_by = user
-        self.modified_on = now
+        if not kwargs.pop("notrack", False):
+            user = kwargs.pop("user", None)
+            now = utcnow()
+            if self.pk is None and user is not None:
+                self.created_by = user
+            # .create() won't pass in user, but presets modified_by
+            if not (self.pk is None and self.modified_by is not None):
+                self.modified_by = user
+            self.modified_on = now
         return super(CCModel, self).save(*args, **kwargs)
 
 

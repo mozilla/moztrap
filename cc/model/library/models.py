@@ -58,9 +58,10 @@ class Case(CCModel):
         except IndexError:
             pass
         else:
-            self.versions.update(latest=False)
+            self.versions.update(latest=False, notrack=True)
             latest_version.latest = True
-            latest_version.save(force_update=True, skip_set_latest=True)
+            latest_version.save(
+                force_update=True, skip_set_latest=True, notrack=True)
             if update_instance == latest_version:
                 update_instance.latest = True
             elif update_instance is not None:
