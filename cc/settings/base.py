@@ -147,6 +147,8 @@ INSTALLED_APPS = [
     "cc.model.tags",
     "cc.view",
     "cc.view.lists",
+    "cc.view.manage",
+    "cc.view.runtests",
 ]
 
 CACHES = {

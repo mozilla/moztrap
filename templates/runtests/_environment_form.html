@@ -4,15 +4,9 @@
 <form method="POST" action="{{ run|set_environment_url }}"%}>
   {% csrf_token %}
   {{ form.non_field_errors }}
-  <ul>
-    {% for field in form %}
-    <li>
-      {{ field.label_tag }}
-      {{ field.errors }}
-      {{ field }}
-    </li>
-    {% endfor %}
-  </ul>
+  {% for field in form %}
+    {% include "forms/_field.html" with field=field %}
+  {% endfor %}
   <div class="form-actions">
     <button type="submit">run tests in {{ run }}!</button>
   </div>
