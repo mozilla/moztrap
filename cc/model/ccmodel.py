@@ -200,7 +200,7 @@ class CCModel(models.Model):
         return super(CCModel, self).save(*args, **kwargs)
 
 
-    def clone(self, cascade=None, overrides=None):
+    def clone(self, cascade=None, overrides=None, user=None):
         """
         Clone this instance and return the new, cloned instance.
 
@@ -227,6 +227,10 @@ class CCModel(models.Model):
 
         if overrides is None:
             overrides = {}
+
+        overrides["created_on"] = utcnow()
+        overrides["created_by"] = user
+        overrides["modified_by"] = user
 
         clone = self.__class__()
 
@@ -338,16 +342,16 @@ class DraftStatusModel(models.Model):
         max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
 
 
-    def activate(self):
+    def activate(self, user=None):
         """Activate this object."""
         self.status = self.STATUS.active
-        self.save(force_update=True)
+        self.save(force_update=True, user=user)
 
 
-    def deactivate(self):
+    def deactivate(self, user=None):
         """Deactivate this object."""
         self.status = self.STATUS.disabled
-        self.save(force_update=True)
+        self.save(force_update=True, user=user)
 
 
     class Meta:

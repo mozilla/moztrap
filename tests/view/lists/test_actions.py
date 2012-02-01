@@ -61,6 +61,13 @@ class ActionsTest(TestCase):
         return view(request)
 
 
+    def req(self, method, *args, **kwargs):
+        """Shortcut for RequestFactory; adds request.user."""
+        req = getattr(RequestFactory(), method)(*args, **kwargs)
+        req.user = Mock()
+        return req
+
+
     def test_uses_wraps(self):
         """Preserves docstring and name of original view func."""
         @self.actions("ctx_name", [])
@@ -79,14 +86,14 @@ class ActionsTest(TestCase):
         def myview(request, *args, **kwargs):
             record.extend([args, kwargs])
 
-        myview(RequestFactory().get("/"), "a", b=2)
+        myview(self.req("get", "/"), "a", b=2)
 
         self.assertEqual(record, [("a",), {"b": 2}])
 
 
     def test_action_redirects(self):
         """After action is taken, redirects to original URL."""
-        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req = self.req("post", "/the/url", data={"action-doit": "3"})
 
         res = self.view(req)
 
@@ -96,8 +103,8 @@ class ActionsTest(TestCase):
 
     def test_action_redirects_with_querystring(self):
         """Post-action redirect includes querystring."""
-        req = RequestFactory().post(
-            "/the/url?filter=value", data={"action-doit": "3"})
+        req = self.req(
+            "post", "/the/url?filter=value", data={"action-doit": "3"})
 
         res = self.view(req)
 
@@ -107,8 +114,8 @@ class ActionsTest(TestCase):
 
     def test_ajax_no_redirect(self):
         """Ajax request doesn't redirect post-action."""
-        req = RequestFactory().post(
-            "/the/url?filter=value", data={"action-doit": "3"},
+        req = self.req(
+            "post", "/the/url?filter=value", data={"action-doit": "3"},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest")
 
         res = self.view(req)
@@ -118,8 +125,8 @@ class ActionsTest(TestCase):
 
     def test_ajax_fall_through_method(self):
         """Post-action, ajax req continues with method GET and no POST data."""
-        req = RequestFactory().post(
-            "/the/url?filter=value", data={"action-doit": "3"},
+        req = self.req(
+            "post", "/the/url?filter=value", data={"action-doit": "3"},
             HTTP_X_REQUESTED_WITH="XMLHttpRequest")
 
         res = self.view(req)
@@ -129,8 +136,9 @@ class ActionsTest(TestCase):
 
 
     def test_action_called(self):
-        """Correct method is called on correct object."""
-        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        """Correct method is called on correct object, with user."""
+        req = self.req("post", "/the/url", data={"action-doit": "3"})
+        req.user = Mock()
 
         self.view(req)
 
@@ -138,12 +146,12 @@ class ActionsTest(TestCase):
         model_get.assert_called_with(pk="3")
 
         instance = model_get.return_value
-        instance.doit.assert_called_with()
+        instance.doit.assert_called_with(user=req.user)
 
 
     def test_POST_no_action(self):
         """Without fallthrough, redirects even if no action taken."""
-        req = RequestFactory().post("/the/url", data={})
+        req = self.req("post", "/the/url", data={})
 
         res = self.view(req)
 
@@ -153,7 +161,7 @@ class ActionsTest(TestCase):
 
     def test_bad_action(self):
         """Unknown action is handled the same as no action."""
-        req = RequestFactory().post("/the/url", data={"action-bad": "3"})
+        req = self.req("post", "/the/url", data={"action-bad": "3"})
 
         res = self.view(req)
 
@@ -164,7 +172,7 @@ class ActionsTest(TestCase):
     def test_fall_through(self):
         """If fall_through is set, POST falls through untouched if no action."""
         dec = self.actions(self.mock_model, ["doit"], fall_through=True)
-        req = RequestFactory().post("/the/url", data={"other": "thing"})
+        req = self.req("post", "/the/url", data={"other": "thing"})
 
         res = self.view(req, decorator=dec)
 
@@ -176,7 +184,7 @@ class ActionsTest(TestCase):
 
     def test_object_does_not_exist(self):
         """If requested obj id does not exist, no action is taken."""
-        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req = self.req("post", "/the/url", data={"action-doit": "3"})
 
         class MockModelDoesNotExist(Exception):
             pass
@@ -193,7 +201,7 @@ class ActionsTest(TestCase):
 
     def test_non_POST(self):
         """Decorator ignores non-POST requests."""
-        req = RequestFactory().get("/the/url", data={"action-doit": "3"})
+        req = self.req("get", "/the/url", data={"action-doit": "3"})
 
         self.view(req)
 
@@ -202,7 +210,7 @@ class ActionsTest(TestCase):
 
     def test_no_permission(self):
         """If permission is passed in and user doesn't have it, returns 403."""
-        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req = self.req("post", "/the/url", data={"action-doit": "3"})
         req.user = Mock()
         req.user.has_perm.return_value = False
 
@@ -218,7 +226,7 @@ class ActionsTest(TestCase):
 
     def test_has_permission(self):
         """If permission is passed in and user has it, success."""
-        req = RequestFactory().post("/the/url", data={"action-doit": "3"})
+        req = self.req("post", "/the/url", data={"action-doit": "3"})
         req.user = Mock()
         req.user.has_perm.return_value = True
 

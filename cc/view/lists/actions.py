@@ -60,7 +60,7 @@ def actions(model, allowed_actions, permission=None, fall_through=False):
                         except model.DoesNotExist:
                             pass
                         else:
-                            getattr(obj, action)()
+                            getattr(obj, action)(user=request.user)
                             action_taken = True
                 if action_taken or not fall_through:
                     if request.is_ajax():
