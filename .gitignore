@@ -6,3 +6,4 @@ media/*
 docs/_build/*
 .livereload
 *.pyc
+*.DS_Store
