@@ -19,6 +19,8 @@
 Views for test execution.
 
 """
+import json
+
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
@@ -76,6 +78,7 @@ def set_environment(request, run_id):
         {
             "form": form,
             "run": run,
+            "environments_json": json.dumps(form.elementids_by_envid.values())
             }
         )
 

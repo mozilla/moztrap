@@ -1,5 +1,11 @@
 {% load environment %}
 
+<script>
+
+VALID_ENVIRONMENTS = {{ environments_json }};
+
+</script>
+
 <h3 class="sectionhead">Set your environment</h3>
 <form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}"%}>
   {% csrf_token %}

@@ -34,47 +34,66 @@ class EnvironmentSelectionForm(forms.Form):
 
         super(EnvironmentSelectionForm, self).__init__(*args, **kwargs)
 
-        # maps (cat.id, cat.name) to element list for that category.
-        # e.g. (1, "Operating System") => [(5, "Windows"), (6, "Linux")]
-        self.categories = {}
+        # list of categories, ordered by name
+        self.categories = []
 
-        # maps environment ID to set of element IDs
-        self.envsets = {}
+        # maps category to list of elements
+        self.elements_by_category = {}
 
-        for env in environments:
-            element_ids = set()
-            for element in env.elements.select_related("category"):
-                element_ids.add(element.id)
-                cat = element.category
-                options = self.categories.setdefault((cat.id, cat.name), set())
-                options.add((element.id, element.name))
-            self.envsets[env.id] = element_ids
+        # maps environment ID to list of element IDs, ordered by category
+        self.elementids_by_envid = {}
+
+        # elements in current environment
+        current_elements = []
+
+        env_element_through_model = model.Environment.elements.through
+        env_element_relationships = env_element_through_model.objects.filter(
+            environment__in=environments).select_related()
+
+        # first construct the ordered list of categories (and current elements)
+        cat_set = set()
+        for ee in env_element_relationships:
+            cat_set.add(ee.element.category)
+            if ee.environment.id == current:
+                current_elements.append(ee.element)
+        self.categories = sorted(cat_set, key=lambda c: c.name)
+
+        num_categories = len(self.categories)
+
+        # populate elements by category and environment
+        for ee in env_element_relationships:
+            byenv = self.elementids_by_envid.setdefault(
+                ee.environment.id, [None] * num_categories)
+            category_index = self.categories.index(ee.element.category)
+            byenv[category_index] = ee.element.id
+
+            bycat = self.elements_by_category.setdefault(
+                ee.element.category, [])
+            bycat.append(ee.element)
 
         # construct choice-field for each env type
-        for (catid, catname), options in sorted(
-                self.categories.items(), key=lambda x: x[0][1]):
-            self.fields["category_{0}".format(catid)] = forms.ChoiceField(
-                choices=sorted(options, key=lambda x: x[1]),
-                label=catname)
+        for category in self.categories:
+            self.fields["category_{0}".format(category.id)] = forms.ChoiceField(
+                choices=[
+                    (e.id, e.name) for e in sorted(
+                        self.elements_by_category[category],
+                        key=lambda e: e.name)
+                    ],
+                label=category.name)
 
         # set initial data based on current user environment
-        if current is not None:
-            try:
-                environment = model.Environment.objects.get(pk=current)
-            except model.Environment.DoesNotExist:
-                pass
-            else:
-                for element in environment.elements.select_related("category"):
-                    field_name = "category_{0}".format(element.category.id)
-                    self.initial[field_name] = element.id
+        for element in current_elements:
+            field_name = "category_{0}".format(element.category.id)
+            self.initial[field_name] = element.id
 
 
     def clean(self):
         """Validate that selected elements form valid environment."""
-        element_ids = set([int(eid) for eid in self.cleaned_data.itervalues()])
+        selected_element_ids = set(
+            [int(eid) for eid in self.cleaned_data.itervalues()])
         matches = [
-            envid for envid, envset in self.envsets.items()
-            if element_ids == envset
+            envid for envid, element_ids in self.elementids_by_envid.items()
+            if selected_element_ids == set(element_ids)
             ]
         if not matches:
             raise forms.ValidationError(

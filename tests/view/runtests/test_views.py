@@ -133,6 +133,25 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
         res.mustcontain("Windows 7")
 
 
+    def test_valid_environments(self):
+        """JSON list of valid envs (as ordered element list) is in template."""
+        self.add_perm("execute")
+        envs = F.EnvironmentFactory.create_set(
+            ["OS", "Browser"], ["OS X", "Safari"], ["Windows", "IE"])
+        self.testrun.environments.add(*envs)
+
+        osx = self.model.Element.objects.get(name="OS X")
+        safari = self.model.Element.objects.get(name="Safari")
+        windows = self.model.Element.objects.get(name="Windows")
+        ie = self.model.Element.objects.get(name="IE")
+
+        res = self.get()
+
+        res.mustcontain("VALID_ENVIRONMENTS = [")
+        res.mustcontain("[{0}, {1}]".format(safari.id, osx.id))
+        res.mustcontain("[{0}, {1}]".format(ie.id, windows.id))
+
+
     def test_form_initial(self):
         """Form initial choices determined by "environment" session key."""
         self.add_perm("execute")
