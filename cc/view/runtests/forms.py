@@ -37,7 +37,7 @@ class EnvironmentSelectionForm(forms.Form):
         # list of categories, ordered by name
         self.categories = []
 
-        # maps category to list of elements
+        # maps category to set of elements
         self.elements_by_category = {}
 
         # maps environment ID to list of element IDs, ordered by category
@@ -68,8 +68,8 @@ class EnvironmentSelectionForm(forms.Form):
             byenv[category_index] = ee.element.id
 
             bycat = self.elements_by_category.setdefault(
-                ee.element.category, [])
-            bycat.append(ee.element)
+                ee.element.category, set())
+            bycat.add(ee.element)
 
         # construct choice-field for each env type
         for category in self.categories:

@@ -51,8 +51,9 @@ class EnvironmentSelectionFormTest(TestCase):
     def test_environments(self):
         """Can pass in queryset of environments."""
         F.EnvironmentFactory.create_full_set(
-            {"OS": ["Linux", "Windows"]})
-        cat = self.model.Category.objects.get()
+            {"OS": ["Linux", "Windows"], "Browser": ["Opera", "Firefox"]})
+        os = self.model.Category.objects.get(name="OS")
+        browser = self.model.Category.objects.get(name="Browser")
 
         form = self.form(environments=self.model.Environment.objects.all())
 
@@ -61,7 +62,10 @@ class EnvironmentSelectionFormTest(TestCase):
                 (fname, [c[1] for c in f.choices])
                 for fname, f in form.fields.items()
                 ),
-            {"category_{0}".format(cat.id): ["Linux", "Windows"]}
+            {
+                "category_{0}".format(browser.id): ["Firefox", "Opera"],
+                "category_{0}".format(os.id): ["Linux", "Windows"],
+                },
             )
 
 
