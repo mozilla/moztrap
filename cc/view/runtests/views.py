@@ -117,7 +117,7 @@ def run(request, run_id):
             "run": run,
             "cases": [], # @@@ runcaseversions in this run
             "finder": {
-                # finder decorator populates top column, products
+                # finder decorator populates top column (products)
                 "productversions": productversions,
                 "runs": runs,
                 },

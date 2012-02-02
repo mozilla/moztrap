@@ -107,6 +107,13 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
         return self._cached_envs
 
 
+    @property
+    def model(self):
+        """The models."""
+        from cc import model
+        return model
+
+
     def test_requires_execute_permission(self):
         """Requires execute permission."""
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
@@ -115,18 +122,19 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 
 
     def test_form_choices(self):
-        """Form has available environments for run as choices."""
+        """Form has available categories and elements for run as choices."""
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
 
         res = self.get()
 
+        res.mustcontain("OS")
         res.mustcontain("Ubuntu Linux")
         res.mustcontain("Windows 7")
 
 
     def test_form_initial(self):
-        """Form initial choice determined by "environment" session key."""
+        """Form initial choices determined by "environment" session key."""
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
 
@@ -138,7 +146,9 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
             res = self.get()
 
         res.mustcontain(
-            '<option value="{0}" selected="selected">'.format(self.envs[0].id))
+            '<option value="{0}" selected="selected">'.format(
+                self.envs[0].elements.get().id)
+            )
 
 
     def test_run(self):
@@ -168,18 +178,20 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 
 
     def test_env_required(self):
-        """Selecting an environment is required."""
+        """Invalid combination results in error."""
         self.add_perm("execute")
 
         res = self.get().forms["runtests-environment-form"].submit()
 
-        res.mustcontain("field is required")
+        res.mustcontain("selected environment is not valid")
 
 
     def test_set_environment(self):
         """Selecting an environment sets it in session."""
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
+
+        cat = self.model.Category.objects.get()
 
         session_data = {}
 
@@ -190,7 +202,7 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
                 create=True,
                 ):
             form = self.get().forms["runtests-environment-form"]
-            form["environment"] = self.envs[0].id
+            form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
 
             res = form.submit(status=302)
 
