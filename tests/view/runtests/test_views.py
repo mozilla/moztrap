@@ -21,6 +21,8 @@ Tests for runtests views.
 """
 from django.core.urlresolvers import reverse
 
+from mock import patch
+
 from ... import factories as F
 
 from .. import base
@@ -76,3 +78,73 @@ class SelectTest(base.AuthenticatedViewTestCase):
             'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
             res.json["html"]
             )
+
+
+
+class FinderEnvironmentTest(base.AuthenticatedViewTestCase):
+    """Tests for finder_environments view."""
+    @property
+    def url(self):
+        """Shortcut for finder_environments url."""
+        return reverse(
+            "runtests_finder_environments", kwargs={"run_id": self.testrun.id})
+
+
+    @property
+    def testrun(self):
+        """A lazily-created test run."""
+        if getattr(self, "_cached_run", None) is None:
+            self._cached_run = F.RunFactory.create(name="Foo Run")
+        return self._cached_run
+
+
+    @property
+    def envs(self):
+        """A lazily-created sample set of environments."""
+        if getattr(self, "_cached_envs", None) is None:
+            self._cached_envs = F.EnvironmentFactory.create_full_set(
+                {"OS": ["Windows 7", "Ubuntu Linux"]})
+        return self._cached_envs
+
+
+    def test_requires_execute_permission(self):
+        """Requires execute permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
+    def test_form_choices(self):
+        """Form has available environments for run as choices."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        res = self.get()
+
+        res.mustcontain("Ubuntu Linux")
+        res.mustcontain("Windows 7")
+
+
+    def test_form_initial(self):
+        """Form initial choice determined by "environment" session key."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        with patch(
+                "django.contrib.sessions.backends.cached_db."
+                "SessionStore._session_cache",
+                {"environment": self.envs[0].id},
+                create=True):
+            res = self.get()
+
+        res.mustcontain(
+            '<option value="{0}" selected="selected">'.format(self.envs[0].id))
+
+
+    def test_run(self):
+        """Form has test run name in label."""
+        self.add_perm("execute")
+
+        res = self.get()
+
+        res.mustcontain("run tests in Foo Run!")
