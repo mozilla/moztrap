@@ -131,3 +131,66 @@ class EnvironmentSelectionFormTest(TestCase):
                     ]
                 }
             )
+
+
+    def test_superset_env(self):
+        """Selecting a superset of the envs for a valid combo is valid."""
+        os = F.CategoryFactory.create(name="OS")
+        browser = F.CategoryFactory.create(name="Browser")
+        language = F.CategoryFactory.create(name="Language")
+
+        windows = F.ElementFactory.create(name="Windows", category=os)
+        linux = F.ElementFactory.create(name="Linux", category=os)
+        firefox = F.ElementFactory.create(name="Firefox", category=browser)
+        opera = F.ElementFactory.create(name="Opera", category=browser)
+        english = F.ElementFactory.create(name="English", category=language)
+        spanish = F.ElementFactory.create(name="Spanish", category=language)
+
+        # we only care about language for Opera/Linux, not Firefox/Windows
+        winff = F.EnvironmentFactory.create()
+        winff.elements.add(windows, firefox)
+        linuxoperaenglish = F.EnvironmentFactory.create()
+        linuxoperaenglish.elements.add(linux, opera, english)
+        linuxoperaspanish = F.EnvironmentFactory.create()
+        linuxoperaspanish.elements.add(linux, opera, spanish)
+
+        f = self.form(
+            {
+                "category_{0}".format(browser.id): str(firefox.id),
+                "category_{0}".format(language.id): str(spanish.id),
+                "category_{0}".format(os.id): str(windows.id),
+                },
+            environments=self.model.Environment.objects.all())
+
+        self.assertTrue(f.is_valid(), f.errors)
+        self.assertEqual(f.save(), winff.id)
+
+
+    def test_incomplete_env(self):
+        """A valid combo that does not include all categories is ok."""
+        os = F.CategoryFactory.create(name="OS")
+        browser = F.CategoryFactory.create(name="Browser")
+        language = F.CategoryFactory.create(name="Language")
+
+        windows = F.ElementFactory.create(name="Windows", category=os)
+        linux = F.ElementFactory.create(name="Linux", category=os)
+        firefox = F.ElementFactory.create(name="Firefox", category=browser)
+        opera = F.ElementFactory.create(name="Opera", category=browser)
+        english = F.ElementFactory.create(name="English", category=language)
+        F.ElementFactory.create(name="Spanish", category=language)
+
+        winff = F.EnvironmentFactory.create()
+        winff.elements.add(windows, firefox)
+        linuxoperaenglish = F.EnvironmentFactory.create()
+        linuxoperaenglish.elements.add(linux, opera, english)
+
+        f = self.form(
+            {
+                "category_{0}".format(browser.id): str(firefox.id),
+                "category_{0}".format(language.id): "",
+                "category_{0}".format(os.id): str(windows.id),
+                },
+            environments=self.model.Environment.objects.all())
+
+        self.assertTrue(f.is_valid(), f.errors)
+        self.assertEqual(f.save(), winff.id)

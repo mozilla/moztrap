@@ -79,7 +79,8 @@ class EnvironmentSelectionForm(forms.Form):
                         self.elements_by_category[category],
                         key=lambda e: e.name)
                     ],
-                label=category.name)
+                label=category.name,
+                required=False)
 
         # set initial data based on current user environment
         for element in current_elements:
@@ -90,10 +91,10 @@ class EnvironmentSelectionForm(forms.Form):
     def clean(self):
         """Validate that selected elements form valid environment."""
         selected_element_ids = set(
-            [int(eid) for eid in self.cleaned_data.itervalues()])
+            [int(eid) for eid in self.cleaned_data.itervalues() if eid])
         matches = [
             envid for envid, element_ids in self.elementids_by_envid.items()
-            if selected_element_ids == set(element_ids)
+            if set([e for e in element_ids if e]).issubset(selected_element_ids)
             ]
         if not matches:
             raise forms.ValidationError(
