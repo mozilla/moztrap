@@ -18,13 +18,13 @@
         }  
 
         function register() {
-        navigator.mozApps.install(  
-            "{{ manifest_url }}",  
-            {},  
-            installCallback,  
-            errorCallback  
-        );
-    }
+            navigator.mozApps.install(  
+                "{{ manifest_url }}",  
+                {},  
+                installCallback,  
+                errorCallback  
+            );
+        }
 </script>
 
   <h2>Register Case Conductor as an Open Web Application.</h2>

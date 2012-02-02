@@ -19,6 +19,8 @@
 Tests for login/logout/account views.
 
 """
+import json
+
 from django.core.urlresolvers import reverse
 
 from django_webtest import WebTest
@@ -33,21 +35,24 @@ class ManifestTest(WebTest):
         return reverse("owa_manifest")
 
 
-    def get(self):
+    def get(self, **kwargs):
         """Shortcut for getting manifest url."""
-        return self.app.get(self.url)
+        return self.app.get(self.url, **kwargs)
 
 
-    def test_login(self):
+    def test_manifest(self):
         """Successful manifest is returned."""
 
-        res = self.get()
+        res = self.get(status=200)
 
-        self.assertEqual(res.status_int, 200, res.headers)
         self.assertEqual(
             res.headers["Content-Type"], "application/x-web-app-manifest+json", 
             res.headers)
-        res.mustcontain("A Test Case and Results management System")
+        
+        # content-type isn't normal JSON, so I must parse the JSON
+        # directly, rather than using res.json["name"]
+
+        self.assertEqual(json.loads(res.body)["name"], "Case Conductor")
 
 
 class RegisterTest(WebTest):
@@ -58,35 +63,15 @@ class RegisterTest(WebTest):
         return reverse("owa_register")
 
 
-    def get(self):
+    def get(self, **kwargs):
         """Shortcut for getting register url."""
-        return self.app.get(self.url)
+        return self.app.get(self.url, **kwargs)
 
 
     def test_registration_page(self):
         """registration page is returned."""
 
-        res = self.get()
+        res = self.get(status=200)
 
-        self.assertEqual(res.status_int, 200, res.headers)
         res.mustcontain("Register as an Open Web App")
 
-    def test_registration_succeed(self):
-        """registration succeeds on button click."""
-
-        res = self.get()
-        self.assertEqual("got success", "oh no you di'int")
-
-        self.assertEqual(res.status_int, 200, res.headers)
-        res.mustcontain("Register as an Open Web App")
-
-
-    def test_registration_fail(self):
-        """registration fails on button click."""
-
-        res = self.get()
-
-        self.assertEqual("got success", "oh no you di'int")
-
-        self.assertEqual(res.status_int, 200, res.headers)
-        res.mustcontain("Register as an Open Web App")
