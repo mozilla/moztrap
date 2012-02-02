@@ -32,10 +32,4 @@ urlpatterns = patterns(
         name="runtests_environment"),
     url("^run/(?P<run_id>\d+)/$", "run", name="runtests_run"),
 
-    # finder -----------------------------------------------------------------
-    url(
-        "^_finder/environments/(?P<run_id>\d+)/$",
-        "finder_environments",
-        name="runtests_finder_environments")
-
 )

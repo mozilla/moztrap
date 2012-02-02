@@ -29,6 +29,7 @@ from django.middleware.csrf import get_token
 from ... import model
 
 from ..lists import decorators as lists
+from ..utils.ajax import ajax
 
 from .finders import RunTestsFinder
 from .forms import EnvironmentSelectionForm
@@ -49,26 +50,7 @@ def select(request):
 
 
 @permission_required("execution.execute")
-def finder_environments(request, run_id):
-    """Ajax-load environment-selection form."""
-    run = get_object_or_404(model.Run, pk=run_id)
-    form_kwargs = {
-        "current": request.session.get("environment", None),
-        "environments": run.environments.all()
-        }
-
-    return TemplateResponse(
-        request,
-        "runtests/_environment_form.html",
-        {
-            "run": run,
-            "form": EnvironmentSelectionForm(**form_kwargs)
-            }
-        )
-
-
-
-@permission_required("execution.execute")
+@ajax("runtests/_environment_form.html")
 def set_environment(request, run_id):
     """Select valid environment for given run and save it in session."""
     run = get_object_or_404(model.Run, pk=run_id)

@@ -81,13 +81,13 @@ class SelectTest(base.AuthenticatedViewTestCase):
 
 
 
-class FinderEnvironmentTest(base.AuthenticatedViewTestCase):
-    """Tests for finder_environments view."""
+class SetEnvironmentTest(base.AuthenticatedViewTestCase):
+    """Tests for set_environment view."""
     @property
     def url(self):
-        """Shortcut for finder_environments url."""
+        """Shortcut for set_environment url."""
         return reverse(
-            "runtests_finder_environments", kwargs={"run_id": self.testrun.id})
+            "runtests_environment", kwargs={"run_id": self.testrun.id})
 
 
     @property
@@ -148,3 +148,54 @@ class FinderEnvironmentTest(base.AuthenticatedViewTestCase):
         res = self.get()
 
         res.mustcontain("run tests in Foo Run!")
+
+
+    def test_bad_run_id_404(self):
+        """Bad run id returns 404."""
+        self.add_perm("execute")
+        url = reverse("runtests_environment", kwargs={"run_id": 9999})
+
+        self.app.get(url, user=self.user, status=404)
+
+
+    def test_ajax(self):
+        """Ajax request uses partial template."""
+        self.add_perm("execute")
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        self.assertNotIn("<body", res.body)
+
+
+    def test_env_required(self):
+        """Selecting an environment is required."""
+        self.add_perm("execute")
+
+        res = self.get().forms["runtests-environment-form"].submit()
+
+        res.mustcontain("field is required")
+
+
+    def test_set_environment(self):
+        """Selecting an environment sets it in session."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        session_data = {}
+
+        with patch(
+                "django.contrib.sessions.backends.cached_db."
+                "SessionStore._session_cache",
+                session_data,
+                create=True,
+                ):
+            form = self.get().forms["runtests-environment-form"]
+            form["environment"] = self.envs[0].id
+
+            res = form.submit(status=302)
+
+        self.assertEqual(session_data["environment"], self.envs[0].id)
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80/runtests/run/{0}/".format(self.testrun.id)
+            )

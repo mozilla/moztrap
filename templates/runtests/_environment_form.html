@@ -1,7 +1,7 @@
 {% load environment %}
 
 <h3 class="sectionhead">Set your environment</h3>
-<form method="POST" action="{{ run|set_environment_url }}"%}>
+<form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}"%}>
   {% csrf_token %}
   {{ form.non_field_errors }}
   {% for field in form %}
