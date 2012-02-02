@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python manage.py dumpdata --format=json --indent=4 core library execution environments tags > fixtures/sample_data.json
