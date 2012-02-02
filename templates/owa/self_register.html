@@ -6,13 +6,15 @@
 <script type="text/javascript" src="view-source:https://myapps.mozillalabs.com/jsapi/include.js"></script>
 <script>
         function installCallback(result) {  
-            alert("success");
             // great - display a message, or redirect to a launch page  
+            var msg = "<p>Successfully registered!</p>";
+            document.getElementById("result_status").innerHTML=msg;
         }  
 
         function errorCallback(result) {  
-            alert("failurized");
             // whoops - result.code and result.message have details  
+            var msg = "<h3>Unable to register due to: " + result.code + "</h3><p>" + result.message + "</p>";
+            document.getElementById("result_status").innerHTML=msg;
         }  
 
         function register() {
@@ -26,7 +28,8 @@
 </script>
 
   <h2>Register Case Conductor as an Open Web Application.</h2>
-  <button onClick="register();">Register Me</button>
+  <button id="reg_button" onClick="register();">Register Me</button>
+  <div id="result_status"></div>
 
 {% endblock %}
 
