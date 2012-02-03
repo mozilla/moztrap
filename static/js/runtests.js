@@ -122,13 +122,7 @@ var CC = (function (CC, $) {
 
             doFilter = function () {
                 var thisTrigger = $(this),
-                    // targets = triggers.not(thisTrigger).filter(function () {
-                    //     return $(this).find('option:selected').val() === '';
-                    // }),
-                    targets = triggers.not(thisTrigger),
                     key = [null, null, null],
-                    newValidCombos = VALID_ENVIRONMENTS,
-                    nullIndex,
                     i;
 
                 key = triggers.map(function () {
@@ -146,16 +140,17 @@ var CC = (function (CC, $) {
                 }
 
                 if (VALID_ENVIRONMENTS) {
-                    targets.each(function () {
+                    triggers.each(function () {
                         var thisIndex = triggers.index($(this)),
                             validOpts = [],
                             acceptAll = false,
                             thisAllOpts = $(this).data('allopts'),
+                            newValidCombos = VALID_ENVIRONMENTS,
                             newOpts,
                             selected;
 
                         for (i = 0; i < key.length; i = i + 1) {
-                            if (key[i] !== null) {
+                            if (key[i] !== null && i !== thisIndex) {
                                 newValidCombos = $.grep(newValidCombos, function (elementOfArray, indexInArray) {
                                     if (elementOfArray[i] === null) {
                                         return true;
