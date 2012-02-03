@@ -94,7 +94,7 @@ var CC = (function (CC, $) {
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
-                    environments.html(data.html);
+                    environments.replaceWith(data.html);
                     CC.filterEnvironments('#runtests-environment-form');
                 });
             }
