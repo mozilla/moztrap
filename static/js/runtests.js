@@ -104,34 +104,33 @@ var CC = (function (CC, $) {
     };
 
     // Filter environment form options
-    CC.filterEnvironments = function (opts) {
-        var defaults = {
-                container: '.drillenv',
-                trigger_sel: 'select',
-                option_sel: 'option'
-            },
-            options = $.extend({}, defaults, opts),
-            context = $(options.container),
-            triggers = context.find(options.trigger_sel),
+    CC.filterEnvironments = function (container) {
+        var context = $(container),
+            triggers = context.find('select'),
             doFilter;
+
         if (context.length) {
             triggers.each(function () {
-                var allopts = $(this).find(options.option_sel).clone();
+                var allopts = $(this).find('option').clone();
                 $(this).data('allopts', allopts);
             });
 
             doFilter = function () {
-                var thisTrigger = $(this),
-                    key = [null, null, null],
-                    i;
-
-                key = triggers.map(function () {
-                    if ($(this).find('option:selected').val()) {
-                        return parseInt($(this).find('option:selected').val(), 10);
-                    } else {
-                        return '';
-                    }
-                });
+                var i,
+                    key = triggers.map(function () {
+                        if ($(this).find('option:selected').val()) {
+                            return parseInt($(this).find('option:selected').val(), 10);
+                        } else {
+                            return '';
+                        }
+                    }),
+                    filterCombos = function (elementOfArray, indexInArray) {
+                        if (elementOfArray[i] === null) {
+                            return true;
+                        } else {
+                            return elementOfArray[i] === key[i];
+                        }
+                    };
 
                 for (i = 0; i < key.length; i = i + 1) {
                     if (key[i] === '') {
@@ -144,24 +143,18 @@ var CC = (function (CC, $) {
                         var thisIndex = triggers.index($(this)),
                             validOpts = [],
                             acceptAll = false,
-                            thisAllOpts = $(this).data('allopts'),
-                            newValidCombos = VALID_ENVIRONMENTS,
-                            newOpts,
-                            selected;
+                            allopts = $(this).data('allopts'),
+                            filteredValidCombos = VALID_ENVIRONMENTS,
+                            filteredOpts,
+                            selectedVal;
 
                         for (i = 0; i < key.length; i = i + 1) {
                             if (key[i] !== null && i !== thisIndex) {
-                                newValidCombos = $.grep(newValidCombos, function (elementOfArray, indexInArray) {
-                                    if (elementOfArray[i] === null) {
-                                        return true;
-                                    } else {
-                                        return elementOfArray[i] === key[i];
-                                    }
-                                });
+                                filteredValidCombos = $.grep(filteredValidCombos, filterCombos);
                             }
                         }
 
-                        validOpts = $.map(newValidCombos, function (elementOfArray, indexInArray) {
+                        validOpts = $.map(filteredValidCombos, function (elementOfArray, indexInArray) {
                             if (elementOfArray[thisIndex] === null) {
                                 acceptAll = true;
                             }
@@ -169,25 +162,25 @@ var CC = (function (CC, $) {
                         });
 
                         if ($(this).find('option:selected').val()) {
-                            selected = $(this).find('option:selected').val();
+                            selectedVal = $(this).find('option:selected').val();
                         }
 
                         if (acceptAll) {
-                            $(this).html(thisAllOpts);
+                            $(this).html(allopts);
                         } else {
-                            newOpts = thisAllOpts.filter(function (index) {
+                            filteredOpts = allopts.filter(function (index) {
                                 if ($(this).val() === '') {
                                     return true;
                                 } else {
                                     return $.inArray(parseInt($(this).val(), 10), validOpts) !== -1;
                                 }
                             });
-                            $(this).html(newOpts);
+                            $(this).html(filteredOpts);
                         }
 
-                        if (selected) {
-                            $(this).find(options.option_sel).removeAttr('selected').filter(function () {
-                                return $(this).val() === selected;
+                        if (selectedVal) {
+                            $(this).find('option').removeAttr('selected').filter(function () {
+                                return $(this).val() === selectedVal;
                             }).attr('selected', 'selected');
                         }
                     });
