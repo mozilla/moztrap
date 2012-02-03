@@ -63,8 +63,10 @@ class EnvironmentSelectionFormTest(TestCase):
                 for fname, f in form.fields.items()
                 ),
             {
-                "category_{0}".format(browser.id): ["Firefox", "Opera"],
-                "category_{0}".format(os.id): ["Linux", "Windows"],
+                "category_{0}".format(browser.id): [
+                    "---------", "Firefox", "Opera"],
+                "category_{0}".format(os.id): [
+                    "---------", "Linux", "Windows"],
                 },
             )
 

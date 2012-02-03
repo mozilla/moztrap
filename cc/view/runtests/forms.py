@@ -74,7 +74,7 @@ class EnvironmentSelectionForm(forms.Form):
         # construct choice-field for each env type
         for category in self.categories:
             self.fields["category_{0}".format(category.id)] = forms.ChoiceField(
-                choices=[
+                choices=[("", "---------")] + [
                     (e.id, e.name) for e in sorted(
                         self.elements_by_category[category],
                         key=lambda e: e.name)
