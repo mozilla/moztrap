@@ -210,7 +210,7 @@ MIDDLEWARE_CLASSES.insert(
 INSTALLED_APPS += ["ajax_loading_overlay"]
 
 LOGIN_URL = "/users/login/"
-LOGIN_REDIRECT_URL = "/manage/cases/" # @@@ runtests
+LOGIN_REDIRECT_URL = "/"
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")

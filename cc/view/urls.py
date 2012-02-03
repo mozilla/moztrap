@@ -33,6 +33,8 @@ session_csrf.monkeypatch()
 
 urlpatterns = patterns(
     "",
+    url("^$", "cc.view.views.home", name="home"),
+
     # runtests ---------------------------------------------------------------
     url("^runtests/", include("cc.view.runtests.urls")),
 

@@ -50,7 +50,7 @@ class LoginTest(WebTest):
         res = form.submit(status=302)
 
         self.assertEqual(
-            res.headers["Location"], "http://localhost:80/manage/cases/")
+            res.headers["Location"], "http://localhost:80/")
 
 
     def test_login_failed(self):
