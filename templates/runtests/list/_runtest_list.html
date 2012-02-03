@@ -1,0 +1,17 @@
+{% load pagination %}
+
+<div class="itemlist">
+
+  {% include "runtests/list/_run_listordering.html" %}
+
+  {% paginate runcaseversions as pager %}
+  {% for runcaseversion in pager.objects %}
+    {% include "runtests/list/_runtest_list_item.html" %}
+  {% empty %}
+    <p class="empty">There are currently no items in this list...</p>
+  {% endfor %}
+
+  {% include "lists/_listnav.html" %}
+
+</div>
+

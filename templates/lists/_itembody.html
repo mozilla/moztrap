@@ -1,6 +1,8 @@
 <div class="itembody details">
   <a href="{{ details_url }}" class="summary" title="show details">details</a>
   <div class="content">
-    {# content loaded via ajax #}
+    {% block itembody-content %}
+      {# content normally loaded via ajax #}
+    {% endblock itembody-content %}
   </div>
 </div>

@@ -1,0 +1,87 @@
+{% extends 'lists/_itembody.html' %}
+
+{% load execution urls %}
+
+{% block itembody-content %}
+<ol class="steps">
+  {% for step in caseversion.steps.all %}
+  <li>
+    <div class="step">
+      <p class="instruction">{{ step.instruction }}</p>
+      <p class="outcome">{{ step.expected }}</p>
+    </div>
+    {% if result.status == result.STATUS.started %}
+      <div class="stepfail details">
+        <p class="summary">fail</p>
+        <div class="failform form fail-detail">
+          <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="runcaseversion" value="{{ runcaseversion.id }}">
+            <input type="hidden" name="stepnumber" value="{{ step.number }}">
+            <ul>
+              <li class="fail-desc">
+                <label for="{{ step.id }}-actualResult">actual result:</label>
+                <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
+              </li>
+              {% with runcaseversion.caseversion.bug_urls as bug_urls %}
+              {% if bug_urls %}
+              <li class="fail-bugs">
+                <p>assign a bug to this result:</p>
+                <ul class="radio-bugs">
+                  {% for bug_url in bug_urls %}
+                    <li class="bug">
+                      <input type="radio" name="bugs" value="{{ bug_url }}" id="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}" />
+                      <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}">{{ bug_url }}</label>
+                      {% if bug_url|is_url %}
+                        <a href="{{ bug_url }}" class="goto" title="go to bug">(go to bug)</a>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                  <li class="bug">
+                    <input type="radio" name="bugs" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
+                    <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug">assign a new bug</label>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+              {% endwith %}
+              <li class="fail-bug-new">
+                <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}">assign a new bug</label>
+                <input type="url" name="related_bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
+              </li>
+            </ul>
+            <div class="form-actions">
+              <button class="fail" value="{{ runcaseversion.id }}" name="action-finishfail">submit failure</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    {% endif %}
+    {% if result.status == result.STATUS.failed and result.failedStepNumber == step.stepNumber %}
+      <div class="stepfail details failed open">
+        <p class="summary">failed</p>
+        <div class="faildesc fail-detail">
+          <p>{{ result.comment }}</p>
+          {% for bug in result.bug_urls %}
+          <p class="bugurl">
+            {% include "bugs/bug.html" %}
+          </p>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ol>
+
+<aside class="associated">
+  <h4>attached files</h4>
+  <ul class="files-list">
+    {% for attachment in caseversion.attachments.all %}
+      <li class="file">
+        <a href="{{ attachment.url }}">{{ attachment.name }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</aside>
+{% endblock itembody-content %}
