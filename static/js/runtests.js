@@ -19,7 +19,7 @@ along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery */
+/*global    ich, jQuery, VALID_ENVIRONMENTS */
 
 var CC = (function (CC, $) {
 
@@ -101,6 +101,106 @@ var CC = (function (CC, $) {
                 newBugInput.attr('disabled', true);
             }
         });
+    };
+
+    // Filter environment form options
+    CC.filterEnvironments = function (opts) {
+        var defaults = {
+                container: '.drillenv',
+                trigger_sel: 'select',
+                option_sel: 'option'
+            },
+            options = $.extend({}, defaults, opts),
+            context = $(options.container),
+            triggers = context.find(options.trigger_sel),
+            doFilter;
+        if (context.length) {
+            triggers.each(function () {
+                var allopts = $(this).find(options.option_sel).clone();
+                $(this).data('allopts', allopts);
+            });
+
+            doFilter = function () {
+                var thisTrigger = $(this),
+                    // targets = triggers.not(thisTrigger).filter(function () {
+                    //     return $(this).find('option:selected').val() === '';
+                    // }),
+                    targets = triggers.not(thisTrigger),
+                    key = [null, null, null],
+                    newValidCombos = VALID_ENVIRONMENTS,
+                    nullIndex,
+                    i;
+
+                key = triggers.map(function () {
+                    if ($(this).find('option:selected').val()) {
+                        return parseInt($(this).find('option:selected').val(), 10);
+                    } else {
+                        return '';
+                    }
+                });
+
+                for (i = 0; i < key.length; i = i + 1) {
+                    if (key[i] === '') {
+                        key[i] = null;
+                    }
+                }
+
+                if (VALID_ENVIRONMENTS) {
+                    targets.each(function () {
+                        var thisIndex = triggers.index($(this)),
+                            validOpts = [],
+                            acceptAll = false,
+                            thisAllOpts = $(this).data('allopts'),
+                            newOpts,
+                            selected;
+
+                        for (i = 0; i < key.length; i = i + 1) {
+                            if (key[i] !== null) {
+                                newValidCombos = $.grep(newValidCombos, function (elementOfArray, indexInArray) {
+                                    if (elementOfArray[i] === null) {
+                                        return true;
+                                    } else {
+                                        return elementOfArray[i] === key[i];
+                                    }
+                                });
+                            }
+                        }
+
+                        validOpts = $.map(newValidCombos, function (elementOfArray, indexInArray) {
+                            if (elementOfArray[thisIndex] === null) {
+                                acceptAll = true;
+                            }
+                            return elementOfArray[thisIndex];
+                        });
+
+                        if ($(this).find('option:selected').val()) {
+                            selected = $(this).find('option:selected').val();
+                        }
+
+                        if (acceptAll) {
+                            $(this).html(thisAllOpts);
+                        } else {
+                            newOpts = thisAllOpts.filter(function (index) {
+                                if ($(this).val() === '') {
+                                    return true;
+                                } else {
+                                    return $.inArray(parseInt($(this).val(), 10), validOpts) !== -1;
+                                }
+                            });
+                            $(this).html(newOpts);
+                        }
+
+                        if (selected) {
+                            $(this).find(options.option_sel).removeAttr('selected').filter(function () {
+                                return $(this).val() === selected;
+                            }).attr('selected', 'selected');
+                        }
+                    });
+                }
+            };
+
+            triggers.change(doFilter);
+        }
     };
 
     return CC;
