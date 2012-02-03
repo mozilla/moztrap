@@ -59,15 +59,19 @@ Resetting your database
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 To drop your database and create a fresh one including only the sample data,
-run these commands::
+run these commands:
+
+.. note::
+
+   If your shell user doesn't have the MySQL permissions for the first two
+   commands, you may need to append e.g. `-uroot` to them.
+
+::
 
     mysqladmin drop caseconductor
     echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql
     python manage.py syncdb --migrate
     bin/load-sample-data
-
-If your shell user doesn't have the MySQL permissions for the first two
-commands, you may need to append e.g. `-uroot` to the first two commands.
 
 If you create a superuser during the course of the ``syncdb`` command
 (recommended so that you can access the Django admin), the sample data fixture

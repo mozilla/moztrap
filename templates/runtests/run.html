@@ -1,5 +1,4 @@
 {% extends 'runtests/base.html' %}
-{% load pagination %}
 
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
@@ -19,24 +18,11 @@
   {% include "runtests/_run_drilldown.html" with hasenv='true' %}
 {% endblock drilldown %}
 
-{% block testcontent %}
-  <section id="run">
+{% block content %}
+  <section id="runtests" class="run listpage">
     <h2>Run Tests:</h2>
 
-    <div class="managelist">
+    {% include "runtests/list/_runtest_list.html" %}
 
-      {% include "runtests/_run_listordering.html" %}
-
-      <div class="items">
-        {% paginate runcaseversions as pager %}
-        {% for runcaseversion in pager.objects %}
-          {% include "runtests/_run_case.html" %}
-        {% empty %}
-          <p class="empty">There are currently no items in this list...</p>
-        {% endfor %}
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
   </section>
-{% endblock testcontent %}
+{% endblock content %}

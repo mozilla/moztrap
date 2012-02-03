@@ -1,0 +1,66 @@
+{% load execution urls %}
+
+{% with runcaseversion.caseversion as caseversion %}
+{% result_for runcaseversion user environment as result %}
+
+<article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}">
+
+  <form method="POST" id="test-status-form-{{ runcaseversion.id }}" class="itemhead">
+    {% csrf_token %}
+
+    <div class="results">
+
+      {% if result.status == result.STATUS.assigned %}
+        <button class="start" value="{{ runcaseversion.id }}" name="action-start">start</button>
+      {% endif %}
+      {% if result.status == result.STATUS.started %}
+        <button class="pass" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
+      {% endif %}
+
+      {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
+
+        <button class="restart {{ result.status }}" value="{{ runcaseversion.id }}" name="action-restart" title="restart test">
+          {% if result.status == result.STATUS.passed %}
+            Passed
+          {% endif %}
+          {% if result.status == result.STATUS.invalidated %}
+            Invalid
+          {% endif %}
+          {% if result.status == result.STATUS.failed %}
+            Failed
+          {% endif %}
+        </button>
+
+      {% endif %}
+    </div>
+
+    <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+  </form>
+
+  {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
+    <form method="POST" class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
+      {% csrf_token %}
+      {% if result.status == result.STATUS.invalidated %}
+        <h4 class="summary">invalid or unclear.</h4>
+        <div class="invaliddesc content">
+          <h5>description of problem:</h5>
+          <p>{{ result.comment }}</p>
+        </div>
+      {% else %}
+        <h4 class="summary">invalid or unclear?</h4>
+        <div class="invalidform form content">
+          <label>description of problem:</label>
+          <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
+          <div class="form-actions">
+            <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
+          </div>
+        </div>
+      {% endif %}
+    </form>
+  {% endif %}
+
+  {% include "runtests/list/_runtest_details.html" %}
+
+</article>
+
+{% endwith %}

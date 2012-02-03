@@ -5,9 +5,5 @@
 {% block run-active-nav %}active{% endblock run-active-nav %}
 
 {% block content %}
-
-  {% block testcontent %}
-    {% include "runtests/_run_drilldown_main.html" with details="none" hasenv="empty" %}
-  {% endblock testcontent %}
-
+  {% include "runtests/_run_drilldown_main.html" with details="none" hasenv="empty" %}
 {% endblock content %}
