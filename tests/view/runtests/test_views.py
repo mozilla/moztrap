@@ -21,8 +21,6 @@ Tests for runtests views.
 """
 from django.core.urlresolvers import reverse
 
-from mock import patch
-
 from ... import factories as F
 
 from .. import base
@@ -81,23 +79,8 @@ class SelectTest(base.AuthenticatedViewTestCase):
 
 
 
-class SetEnvironmentTest(base.AuthenticatedViewTestCase):
-    """Tests for set_environment view."""
-    @property
-    def url(self):
-        """Shortcut for set_environment url."""
-        return reverse(
-            "runtests_environment", kwargs={"run_id": self.testrun.id})
-
-
-    @property
-    def testrun(self):
-        """A lazily-created test run."""
-        if getattr(self, "_cached_run", None) is None:
-            self._cached_run = F.RunFactory.create(name="Foo Run")
-        return self._cached_run
-
-
+class RunTestsTestCase(object):
+    """Test case mixin for runtest/environment tests."""
     @property
     def envs(self):
         """A lazily-created sample set of environments."""
@@ -119,6 +102,22 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
+
+
+
+class SetEnvironmentTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
+    """Tests for set_environment view."""
+    def setUp(self):
+        """These tests all require a test run."""
+        super(RunTestsTestCase, self).setUp()
+        self.testrun = F.RunFactory.create(name="Foo Run")
+
+
+    @property
+    def url(self):
+        """Shortcut for set_environment url."""
+        return reverse(
+            "runtests_environment", kwargs={"run_id": self.testrun.id})
 
 
     def test_form_choices(self):
@@ -157,11 +156,7 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
 
-        with patch(
-                "django.contrib.sessions.backends.cached_db."
-                "SessionStore._session_cache",
-                {"environment": self.envs[0].id},
-                create=True):
+        with base.patch_session(dict(environment=self.envs[0].id)):
             res = self.get()
 
         res.mustcontain(
@@ -214,12 +209,7 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 
         session_data = {}
 
-        with patch(
-                "django.contrib.sessions.backends.cached_db."
-                "SessionStore._session_cache",
-                session_data,
-                create=True,
-                ):
+        with base.patch_session(session_data):
             form = self.get().forms["runtests-environment-form"]
             form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
 
@@ -230,3 +220,66 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
             res.headers["Location"],
             "http://localhost:80/runtests/run/{0}/".format(self.testrun.id)
             )
+
+
+
+class RunTestsTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
+    """Tests for runtests view."""
+    def setUp(self):
+        """These tests all require a test run."""
+        super(RunTestsTestCase, self).setUp()
+        self.testrun = F.RunFactory.create(status="active")
+
+
+    @property
+    def url(self):
+        """Shortcut for runtests_run url."""
+        return reverse(
+            "runtests_run", kwargs={"run_id": self.testrun.id})
+
+
+    def test_bad_run_id_404(self):
+        """Bad run id returns 404."""
+        self.add_perm("execute")
+        url = reverse("runtests_environment", kwargs={"run_id": 9999})
+
+        self.app.get(url, user=self.user, status=404)
+
+
+    def test_inactive_run_redirects_to_selector(self):
+        """An inactive run redirects to run selector with message."""
+        self.testrun.status = "draft"
+        self.testrun.save()
+        self.add_perm("execute")
+
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"], "http://localhost:80/runtests/")
+        res.follow().mustcontain("not open for testing")
+
+
+    def test_no_environment_set(self):
+        """If no environment in the session, redirects to set-environment."""
+        self.add_perm("execute")
+
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80/runtests/environment/{0}/".format(
+                self.testrun.id))
+
+
+    def test_invalid_environment_set(self):
+        """If current env is not valid for run, redirects to set-environment."""
+        self.testrun.environments.add(*self.envs[1:])
+        self.add_perm("execute")
+
+        with base.patch_session(dict(environment=self.envs[0].id)):
+            res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80/runtests/environment/{0}/".format(
+                self.testrun.id))

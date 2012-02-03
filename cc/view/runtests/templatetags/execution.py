@@ -15,9 +15,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-"""Template tags/filters for setting environment when running tests."""
+"""Template tags/filters for running tests."""
 from django import template
-from django.core.urlresolvers import reverse
+
+from .... import model
 
 
 
@@ -25,7 +26,24 @@ register = template.Library()
 
 
 
-@register.filter
-def set_environment_url(run):
-    """Returns URL for selecting environment for this test run."""
-    return reverse("runtests_environment", kwargs={"run_id": run.id})
+@register.simple_tag(takes_context=True)
+def result_for(context, runcaseversion, user, environment, as_, name):
+    """
+    Sets Result for this runcaseversion/user/env in context under "name".
+
+    If no relevant Result exists, returns *unsaved* default Result for use in
+    template (result will be saved when case is started.)
+
+    """
+    result_kwargs = dict(
+        # we can assume this is set, else the view will redirect
+        environment=environment,
+        tester=user,
+        runcaseversion=runcaseversion
+        )
+    try:
+        result = model.Result.get(**result_kwargs)
+    except model.Result.DoesNotExist:
+        result = model.Result(**result_kwargs)
+
+    context[name] = result

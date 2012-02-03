@@ -26,7 +26,6 @@ from django.template.response import TemplateResponse
 
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
-from django.middleware.csrf import get_token
 
 from ... import model
 
@@ -86,12 +85,9 @@ def set_environment(request, run_id):
 
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
+@lists.sort("runcaseversions")
 def run(request, run_id):
-    # force the CSRF cookie to be set
-    # @@@ replace with ensure_csrf_cookie decorator in Django 1.4
-    get_token(request)
-
-    run = get_object_or_404(model.Run, pk=run_id)
+    run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
 
     if not run.status == model.Run.STATUS.active:
         messages.info(
@@ -100,29 +96,30 @@ def run(request, run_id):
             "Please select a different test run.")
         return redirect("runtests")
 
-    # @@@ if not run.environment.match(request.environments):
-    # @@@    return redirect("runtests_environment", testrun_id=testrun_id)
-
-    productversion = run.productversion
-    product = productversion.product
-
-    # for prepopulating finder
-    productversions = model.ProductVersion.objects.filter(product=product)
-    runs = model.Run.objects.order_by("name").filter(
-        productversion=productversion, status=model.Run.STATUS.active)
+    try:
+        environment = run.environments.get(
+            pk=request.session.get("environment", -1))
+    except model.Environment.DoesNotExist:
+        return redirect("runtests_environment", run_id=run_id)
 
     return TemplateResponse(
         request,
         "runtests/run.html",
         {
+            "environment": environment,
             "product": run.productversion.product,
             "productversion": run.productversion,
             "run": run,
-            "cases": [], # @@@ runcaseversions in this run
+            "runcaseversions": run.runcaseversions.select_related(
+                "caseversion"),
             "finder": {
-                # finder decorator populates top column (products)
-                "productversions": productversions,
-                "runs": runs,
+                # finder decorator populates top column (products), we
+                # prepopulate the other two columns
+                "productversions": model.ProductVersion.objects.filter(
+                    product=run.productversion.product),
+                "runs": model.Run.objects.order_by("name").filter(
+                    productversion=run.productversion,
+                    status=model.Run.STATUS.active),
                 },
             }
         )

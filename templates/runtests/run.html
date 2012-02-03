@@ -1,15 +1,15 @@
 {% extends 'runtests/base.html' %}
-{% load execution environment sort %}
+{% load pagination %}
 
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="product-{{ product.id }}">{{ product }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="productversion-{{ productversion.id }}">{{ productversion.version }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="run-{{ run.id }}">{{ run }}</a></li>
 <li>
   <ul class="envsettings">
-    {% for env in request.environments %}
-    <li>{{ env.name }}</li>
+    {% for element in environment %}
+    <li>{{ element.name }}</li>
     {% endfor %}
   </ul>
 </li>
@@ -28,8 +28,9 @@
       {% include "runtests/_run_listordering.html" %}
 
       <div class="items">
-        {% for includedtestcase in cases %}
-          {% run_case includedtestcase request.user request.environments %}
+        {% paginate runcaseversions as pager %}
+        {% for runcaseversion in pager.objects %}
+          {% include "runtests/_run_case.html" %}
         {% empty %}
           <p class="empty">There are currently no items in this list...</p>
         {% endfor %}

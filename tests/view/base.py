@@ -19,11 +19,27 @@
 Utility base TestCase for testing views.
 
 """
+from contextlib import contextmanager
+
 from django.conf import settings
 
 import django_webtest
+from mock import patch
 
 from .. import factories as F
+
+
+
+@contextmanager
+def patch_session(session_data):
+    """Context manager to patch session vars."""
+    with patch(
+            "django.contrib.sessions.backends.cached_db."
+            "SessionStore._session_cache",
+            session_data,
+            create=True):
+        yield
+
 
 
 class WebTest(django_webtest.WebTest):
