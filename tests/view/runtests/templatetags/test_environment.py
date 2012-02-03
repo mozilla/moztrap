@@ -15,28 +15,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-"""
-Tests for URL-related template filters.
+"""Tests for template tags/filters for setting environment to run tests."""
+from django.core.urlresolvers import reverse
+from django.test import TestCase
 
-"""
-from django.utils.unittest import TestCase
+from .... import factories as F
 
 
 
 class FilterTest(TestCase):
-    """Tests for URL-related template filters."""
+    """Tests for environment-setting template filters."""
     @property
-    def urls(self):
+    def environment(self):
         """The templatetag module under test."""
-        from cc.view.templatetags import urls
-        return urls
+        from cc.view.runtests.templatetags import environment
+        return environment
 
 
-    def test_is_url(self):
-        """is_url filter detects a full URL."""
-        self.assertTrue(self.urls.is_url("http://www.example.com"))
+    def test_set_environment_url(self):
+        """Returns set-environment url for a run."""
+        run = F.RunFactory()
 
-
-    def test_is_not_url(self):
-        """is_url filter detects a non-URL."""
-        self.assertFalse(self.urls.is_url("1234567"))
+        self.assertEqual(
+            self.environment.set_environment_url(run),
+            reverse("runtests_environment", kwargs=dict(run_id=run.id)),
+            )

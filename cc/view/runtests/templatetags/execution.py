@@ -50,7 +50,6 @@ class ResultFor(Tag):
     def render_tag(self, context, runcaseversion, user, environment, varname):
         """Get/construct Result and place it in context under ``varname``"""
         result_kwargs = dict(
-            # we can assume this is set, else the view will redirect
             environment=environment,
             tester=user,
             runcaseversion=runcaseversion
