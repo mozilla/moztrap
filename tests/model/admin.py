@@ -21,7 +21,7 @@ Utility base TestCase for testing admin views.
 """
 from django.core.urlresolvers import reverse
 
-from django_webtest import WebTest
+from ..view.base import WebTest
 
 from .. import factories as F
 

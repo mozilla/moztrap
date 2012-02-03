@@ -542,6 +542,9 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
 class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     """Tests for caseversion-clone view."""
+    csrf_checks = False
+
+
     def setUp(self):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
@@ -555,14 +558,6 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """Shortcut for caseversion-clone url."""
         return reverse(
             "manage_caseversion_clone", kwargs=dict(caseversion_id=self.cv.id))
-
-
-    def post(self, data, **kwargs):
-        """Shortcut for posting to this view."""
-        data["csrfmiddlewaretoken"] = "foo"
-        headers = kwargs.setdefault("headers", {})
-        headers["Cookie"] = "{0}=foo".format(settings.CSRF_COOKIE_NAME)
-        return super(CloneCaseVersionTest, self).post(data, **kwargs)
 
 
     def test_login_required(self):

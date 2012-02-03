@@ -103,17 +103,18 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages"
+    "django.contrib.messages.context_processors.messages",
+    "session_csrf.context_processor",
 ]
 
 MIDDLEWARE_CLASSES = [
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "djangosecure.middleware.SecurityMiddleware",
     "django.middleware.transaction.TransactionMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "session_csrf.CsrfMiddleware",
 ]
 
 ROOT_URLCONF = "cc.view.urls"
