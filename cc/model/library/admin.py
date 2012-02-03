@@ -30,10 +30,16 @@ class CaseVersionInline(CCStackedInline):
     model = models.CaseVersion
     extra = 0
     fieldsets = [
-        (None, {"fields": ["productversion",
-                           ("name", "status"),
-                           "exists",
-                           "description"]})
+        (
+            None, {
+                "fields": [
+                    "productversion",
+                    ("name", "status"),
+                    "exists",
+                    "description",
+                    ]
+                }
+            )
         ]
 
 
@@ -65,10 +71,18 @@ class CaseVersionAdmin(CCModelAdmin):
     list_display = ["__unicode__", "productversion", "deleted_on"]
     list_filter = ["productversion"]
     inlines = [CaseStepInline, CaseAttachmentInline, CaseTagInline]
+    filter_horizontal = ["environments"]
     fieldsets = [
-        (None, {"fields": ["productversion",
-                           ("case", "name", "status"),
-                           "description"]})
+        (
+            None, {
+                "fields": [
+                    "productversion",
+                    ("case", "name", "status"),
+                    "description",
+                    "environments",
+                    ]
+                }
+            )
         ]
 
 

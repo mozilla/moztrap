@@ -124,7 +124,7 @@ class Environment(CCModel):
 
     def __unicode__(self):
         """Return unicode representation."""
-        return u", ".join(unicode(e) for e in self)
+        return u", ".join(unicode(e) for e in self.ordered_elements())
 
 
     class Meta:
@@ -136,8 +136,8 @@ class Environment(CCModel):
             ]
 
 
-    def __iter__(self):
-        """Iterating an environment yields elements in category name order."""
+    def ordered_elements(self):
+        """All elements in category name order."""
         return iter(self.elements.order_by("category__name"))
 
 

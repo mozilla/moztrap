@@ -8,7 +8,7 @@
 <li><a href="#" class="breadcrumb" data-id="run-{{ run.id }}">{{ run }}</a></li>
 <li>
   <ul class="envsettings">
-    {% for element in environment %}
+    {% for element in environment.ordered_elements %}
     <li>{{ element.name }}</li>
     {% endfor %}
   </ul>
