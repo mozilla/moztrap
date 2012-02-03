@@ -1,5 +1,5 @@
 html, body, div, span, applet, object, iframe,
-h1, h2, .runsdrill .drilltitle, .runsdrill .sectionhead, h3, h4, h5, h6, p, blockquote, pre,
+h1, h2, .drilltitle, .sectionhead, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -123,7 +123,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .runsdrill .drilltitle, .runsdrill .sectionhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #managecases .suites-title, .category-title {
+.allcaps, h1, h2, .drilltitle, .sectionhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #managecases .suites-title, .category-title {
   text-transform: uppercase;
 }
 
@@ -189,7 +189,7 @@ h1 {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-h2, .runsdrill .drilltitle, .runsdrill .sectionhead {
+h2, .drilltitle, .sectionhead {
   font-weight: 500;
 }
 
@@ -776,7 +776,7 @@ body > div {
   padding: 0.75em 1.5em;
   background: #ededed;
 }
-#page-status[title=""], #page-status h2, #page-status .runsdrill .drilltitle, .runsdrill #page-status .drilltitle, #page-status .runsdrill .sectionhead, .runsdrill #page-status .sectionhead {
+#page-status[title=""], #page-status h2, #page-status .drilltitle, #page-status .sectionhead {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -2553,7 +2553,7 @@ body.login .message {
   margin-left: 25.773%;
   margin-right: 25.773%;
 }
-body.login h2, body.login .runsdrill .drilltitle, .runsdrill body.login .drilltitle, body.login .runsdrill .sectionhead, .runsdrill body.login .sectionhead {
+body.login h2, body.login .drilltitle, body.login .sectionhead {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -3510,7 +3510,8 @@ body.login input, body.login .errorlist {
 }
 
 .drillenv {
-  margin-top: 1.5em;
+  overflow: hidden;
+  *zoom: 1;
 }
 .drillenv .sectionhead {
   display: inline;
@@ -3528,6 +3529,9 @@ body.login input, body.login .errorlist {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.runsdrill .drillenv {
+  margin-top: 1.5em;
 }
 
 #runtests-environment-form label {

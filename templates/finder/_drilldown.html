@@ -13,9 +13,7 @@
     {% if hasenv %}
       </section>
       {% block hasdrillenv %}
-        <section class="drillenv {% if hasenv == 'empty' %}empty{% endif %}">
-          {% block drillenv %}{% endblock drillenv %}
-        </section>
+        {% include "runtests/_environment_form.html" %}
       {% endblock hasdrillenv %}
     {% endif %}
   </div>

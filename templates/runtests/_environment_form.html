@@ -6,14 +6,18 @@ VALID_ENVIRONMENTS = {{ environments_json }};
 
 </script>
 
-<h3 class="sectionhead">Set your environment</h3>
-<form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}">
-  {% csrf_token %}
-  {{ form.non_field_errors }}
-  {% for field in form %}
-    {% include "forms/_field.html" with field=field %}
-  {% endfor %}
-  <div class="form-actions">
-    <button type="submit">run tests in {{ run }}!</button>
-  </div>
-</form>
+<section class="drillenv {% if hasenv == 'empty' %}empty{% endif %}">
+  {% if hasenv != 'empty' %}
+    <h3 class="sectionhead">Set your environment</h3>
+    <form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        {% include "forms/_field.html" with field=field %}
+      {% endfor %}
+      <div class="form-actions">
+        <button type="submit">run tests in {{ run }}!</button>
+      </div>
+    </form>
+  {% endif %}
+</section>
