@@ -51,6 +51,7 @@ class EnvironmentsFactoryMixin(object):
         if envs is not None:
             if isinstance(envs, dict):
                 envs = EnvironmentFactory.create_full_set(envs)
+            obj.environments.clear()
             obj.environments.add(*envs)
         return obj
 
