@@ -110,8 +110,8 @@ var CC = (function (CC, $) {
             trigger = context.find('#id_product'),
             tags,
             filterTags = function () {
-                tags = context.find('.tagging .taglist .tag-item');
                 if (trigger.find('option:selected').data('product-id')) {
+                    tags = context.find('.tagging .taglist .tag-item');
                     tags.filter(function () {
                         var input = $(this).find('input');
                         if (input.data('product-id')) {
