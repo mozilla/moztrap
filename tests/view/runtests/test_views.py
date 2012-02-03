@@ -219,11 +219,13 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 class RunTestsTest(base.AuthenticatedViewTestCase):
     """Tests for runtests view."""
     def setUp(self):
-        """These tests all require a test run and envs."""
+        """These tests all require a test run and envs, and execute perm."""
         super(RunTestsTest, self).setUp()
         self.testrun = F.RunFactory.create(status="active")
         self.envs = F.EnvironmentFactory.create_full_set(
             {"OS": ["Windows 7", "Ubuntu Linux"]})
+        self.testrun.environments.add(*self.envs)
+        self.add_perm("execute")
 
 
     @property
@@ -250,7 +252,6 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
     def test_bad_run_id_404(self):
         """Bad run id returns 404."""
-        self.add_perm("execute")
         url = reverse("runtests_environment", kwargs={"run_id": 9999})
 
         self.app.get(url, user=self.user, status=404)
@@ -260,7 +261,6 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         """An inactive run redirects to run selector with message."""
         self.testrun.status = "draft"
         self.testrun.save()
-        self.add_perm("execute")
 
         res = self.get(status=302)
 
@@ -271,8 +271,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
     def test_invalid_environment_set(self):
         """If env is not valid for run, redirects to set-environment."""
-        self.testrun.environments.add(*self.envs[1:])
-        self.add_perm("execute")
+        self.testrun.environments.remove(self.envs[0])
 
         res = self.get(status=302)
 
@@ -280,3 +279,50 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             res.headers["Location"],
             "http://localhost:80/runtests/environment/{0}/".format(
                 self.testrun.id))
+
+
+    def test_environment(self):
+        """Environment is shown in template."""
+        res = self.get(status=200)
+
+        self.assertEqual(
+            res.html.findAll("ul", "envsettings")[0].find("li").text,
+            self.envs[0].elements.get().name)
+
+
+    def test_finder_productversions_prepopulated(self):
+        """Finder is prepopulated with product versions."""
+        res = self.get(status=200)
+
+        finder_productversions = res.html.findAll(
+            "input",
+            id="finder-productversions-{0}".format(
+                self.testrun.productversion.id)
+            )
+
+
+        self.assertEqual(len(finder_productversions), 1)
+        self.assertIn("checked", unicode(finder_productversions[0]))
+
+
+    def test_finder_runs_prepopulated(self):
+        """Finder is prepopulated with runs."""
+        res = self.get(status=200)
+
+        finder_runs = res.html.findAll(
+            "input", id="finder-runs-{0}".format(self.testrun.id))
+
+        self.assertEqual(len(finder_runs), 1)
+        self.assertIn("checked", unicode(finder_runs[0]))
+
+
+    def test_runcaseversions(self):
+        """Lists runcaseversions."""
+        F.RunCaseVersionFactory.create(
+            run=self.testrun,
+            caseversion__name="Foo Case",
+            caseversion__productversion=self.testrun.productversion)
+
+        res = self.get(status=200)
+
+        res.mustcontain("Foo Case")
