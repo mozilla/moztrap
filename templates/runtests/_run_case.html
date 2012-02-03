@@ -1,4 +1,4 @@
-{% load execution %}
+{% load execution urls %}
 
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
@@ -7,119 +7,125 @@
 
       <header class="summary">
         <form method="POST">
-          <input type="hidden" name="runcaseversion" value="{{ runcaseversion.id }}">
-        <div class="status">
-          {% if result.status == result.STATUS.assigned %}
-            <button class="start" value="start" name="action">start</button>
+          {% csrf_token %}
+          <div class="status">
+            {% if result.status == result.STATUS.assigned %}
+              <button class="start" value="{{ runcaseversion.id }}" name="action-start">start</button>
+            {% endif %}
+            {% if result.status == result.STATUS.started %}
+              <button class="pass" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
+            {% endif %}
+            {% if result.status == result.STATUS.passed %}
+              <span class="passed">Passed</span>
+            {% endif %}
+            {% if result.status == result.STATUS.invalidated %}
+              <span class="invalidated">Invalid</span>
+            {% endif %}
+            {% if result.status == result.STATUS.failed %}
+              <span class="failed">Failed</span>
+            {% endif %}
+          </div>
+          <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+          {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
+            <button class="restart" value="{{ runcaseversion.id }}" name="action-restart" title="restart test">restart test</button>
           {% endif %}
-          {% if result.status == result.STATUS.started %}
-            <button class="pass" value="finishsucceed" name="action">pass</button>
-          {% endif %}
-          {% if result.status == result.STATUS.passed %}
-            <span class="passed">Passed</span>
-          {% endif %}
-          {% if result.status == result.STATUS.invalidated %}
-            <span class="invalidated">Invalid</span>
-          {% endif %}
-          {% if result.status == result.STATUS.failed %}
-            <span class="failed">Failed</span>
-          {% endif %}
-        </div>
-        <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
-        {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-          <button class="action-restart" value="start" name="action" title="restart test">restart test</button>
-        {% endif %}
         </form>
       </header>
 
       <div>
-        {% if result.status == result.STATUS.started or result.status.INVALIDATED %}
-          <form action="{% url result result_id=result.id %}" method="POST" class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
-          {% if result.status.INVALIDATED %}
-            <h4 class="summary">invalid or unclear.</h4>
-            <div class="invaliddesc content">
-              <h5>description of problem:</h5>
-              <p>{{ result.comment }}</p>
-            </div>
-          {% else %}
-            <h4 class="summary">invalid or unclear?</h4>
-            <div class="invalidform form content">
-              <label>description of problem:</label>
-              <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
-              <div class="form-actions">
-                <button class="invalid" value="finishinvalidate" name="action">mark as invalid</button>
+        {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
+          <form method="POST" class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
+            {% csrf_token %}
+            {% if result.status == result.STATUS.invalidated %}
+              <h4 class="summary">invalid or unclear.</h4>
+              <div class="invaliddesc content">
+                <h5>description of problem:</h5>
+                <p>{{ result.comment }}</p>
               </div>
-            </div>
-          {% endif %}
+            {% else %}
+              <h4 class="summary">invalid or unclear?</h4>
+              <div class="invalidform form content">
+                <label>description of problem:</label>
+                <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
+                <div class="form-actions">
+                  <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
+                </div>
+              </div>
+            {% endif %}
           </form>
         {% endif %}
 
         <aside class="associated">
           <h4>attached files</h4>
           <ul class="files-list">
-            {% for attachment in caseversion.attachments %}
-            <li class="file"><a href="{{ attachment.url }}">{{ attachment.description }}</a></li>
+            {% for attachment in caseversion.attachments.all %}
+              <li class="file">
+                <a href="{{ attachment.url }}">{{ attachment.name }}</a>
+              </li>
             {% endfor %}
           </ul>
         </aside>
 
         <ol class="steps">
-          {% for step in caseversion.steps %}
+          {% for step in caseversion.steps.all %}
           <li>
             <div class="step">
               <p class="instruction">{{ step.instruction }}</p>
-              <p class="outcome">{{ step.expectedResult }}</p>
+              <p class="outcome">{{ step.expected }}</p>
             </div>
             {% if result.status == result.STATUS.started %}
               <div class="stepfail details">
                 <p class="summary">fail</p>
                 <div class="failform form fail-detail">
-                  <form action="{% url result result_id=result.id %}" method="POST">
-
-                  <input type="hidden" name="failedStepNumber" value="{{ step.stepNumber }}">
-                  <ul>
-                    <li class="fail-desc">
-                      <label for="{{ step.id }}-actualResult">actual result:</label>
-                      <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
-                    </li>
-                    {% if result.testCase.relatedbugs %}
-                    <li class="fail-bugs">
-                      <p>assign a bug to this result:</p>
-                      <ul class="radio-bugs">
-                        {% for bug in result.testCase.relatedbugs %}
-                        <li class="bug">
-                          <input type="radio" name="bugs" value="{{ bug.id }}" id="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}" />
-                          <label for="bug-{{ result.id }}-{{ step.id }}-{{ bug.id }}">{{ bug.url }}</label>
-                          {% if bug.is_url %}
-                          <a href="{{ bug.url }}" class="goto" title="go to bug">(go to bug)</a>
-                          {% endif %}
-                        </li>
-                        {% endfor %}
-                        <li class="bug">
-                          <input type="radio" name="bugs" value="" id="bug-{{ result.id }}-{{ step.id }}-new" class="newbug" />
-                          <label for="bug-{{ result.id }}-{{ step.id }}-new" class="newbug">assign a new bug</label>
-                        </li>
-                      </ul>
-                    </li>
-                    {% endif %}
-                    <li class="fail-bug-new">
-                      <label for="related_bug-{{ result.id }}-{{ step.id }}">assign a new bug</label>
-                      <input type="url" name="related_bug" value="" id="related_bug-{{ result.id }}-{{ step.id }}" placeholder="optional URL of related bug"{% if result.testCase.relatedbugs %} disabled{% endif %}>
-                    </li>
-                  </ul>
-                  <div class="form-actions">
-                    <button class="fail" value="finishfail" name="action">submit failure</button>
-                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="runcaseversion" value="{{ runcaseversion.id }}">
+                    <input type="hidden" name="stepnumber" value="{{ step.number }}">
+                    <ul>
+                      <li class="fail-desc">
+                        <label for="{{ step.id }}-actualResult">actual result:</label>
+                        <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
+                      </li>
+                      {% with runcaseversion.caseversion.bug_urls as bug_urls %}
+                      {% if bug_urls %}
+                      <li class="fail-bugs">
+                        <p>assign a bug to this result:</p>
+                        <ul class="radio-bugs">
+                          {% for bug_url in bug_urls %}
+                            <li class="bug">
+                              <input type="radio" name="bugs" value="{{ bug_url }}" id="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}" />
+                              <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}">{{ bug_url }}</label>
+                              {% if bug_url|is_url %}
+                                <a href="{{ bug_url }}" class="goto" title="go to bug">(go to bug)</a>
+                              {% endif %}
+                            </li>
+                          {% endfor %}
+                          <li class="bug">
+                            <input type="radio" name="bugs" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
+                            <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug">assign a new bug</label>
+                          </li>
+                        </ul>
+                      </li>
+                      {% endif %}
+                      {% endwith %}
+                      <li class="fail-bug-new">
+                        <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}">assign a new bug</label>
+                        <input type="url" name="related_bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
+                      </li>
+                    </ul>
+                    <div class="form-actions">
+                      <button class="fail" value="{{ runcaseversion.id }}" name="action-finishfail">submit failure</button>
+                    </div>
                   </form>
                 </div>
               </div>
             {% endif %}
-            {% if result.status.FAILED and result.failedStepNumber == step.stepNumber %}
+            {% if result.status == result.STATUS.failed and result.failedStepNumber == step.stepNumber %}
               <div class="stepfail details failed open">
                 <p class="summary">failed</p>
                 <div class="faildesc fail-detail">
-                  <p>{{ result.actualResult }}</p>
-                  {% for bug in result.relatedbugs %}
+                  <p>{{ result.comment }}</p>
+                  {% for bug in result.bug_urls %}
                   <p class="bugurl">
                     {% include "bugs/bug.html" %}
                   </p>
