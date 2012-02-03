@@ -1765,6 +1765,7 @@ body > div {
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
+  display: inline-block;
 }
 .status .draft.status-readonly {
   background-image: url('../images/ui/power.png?1326735333');
