@@ -111,7 +111,7 @@ var CC = (function (CC, $) {
 
         if (context.length) {
             triggers.each(function () {
-                var allopts = $(this).find('option').clone();
+                var allopts = $(this).find('option').clone().removeAttr('selected');
                 $(this).data('allopts', allopts);
             });
 
@@ -179,9 +179,11 @@ var CC = (function (CC, $) {
                         }
 
                         if (selectedVal) {
-                            $(this).find('option').removeAttr('selected').filter(function () {
+                            $(this).find('option').filter(function () {
                                 return $(this).val() === selectedVal;
-                            }).attr('selected', 'selected');
+                            }).prop('selected', true);
+                        } else {
+                            $(this).find('option').first().prop('selected', true);
                         }
                     });
                 }
