@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "south",
+    "fixture_generator",
     "cc.model.core",
     "cc.model.library",
     "cc.model.environments",
