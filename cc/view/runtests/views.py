@@ -55,8 +55,14 @@ def select(request):
 def set_environment(request, run_id):
     """Select valid environment for given run and save it in session."""
     run = get_object_or_404(model.Run, pk=run_id)
+
+    try:
+        current = int(request.GET.get("environment", None))
+    except (TypeError, ValueError):
+        current = None
+
     form_kwargs = {
-        "current": request.session.get("environment", None),
+        "current": current,
         "environments": run.environments.all()
         }
 
@@ -66,8 +72,8 @@ def set_environment(request, run_id):
             **form_kwargs)
 
         if form.is_valid():
-            request.session["environment"] = form.save()
-            return redirect("runtests_run", run_id=run_id)
+            envid = form.save()
+            return redirect("runtests_run", run_id=run_id, env_id=envid)
     else:
         form = EnvironmentSelectionForm(**form_kwargs)
 
@@ -86,7 +92,7 @@ def set_environment(request, run_id):
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.sort("runcaseversions")
-def run(request, run_id):
+def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
 
     if not run.status == model.Run.STATUS.active:
@@ -97,8 +103,7 @@ def run(request, run_id):
         return redirect("runtests")
 
     try:
-        environment = run.environments.get(
-            pk=request.session.get("environment", -1))
+        environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:
         return redirect("runtests_environment", run_id=run_id)
 

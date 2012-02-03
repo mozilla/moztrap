@@ -107,5 +107,5 @@ class EnvironmentSelectionForm(forms.Form):
 
 
     def save(self):
-        """Return id of selected environment."""
+        """Return selected environment ID."""
         return self.cleaned_data["environment"]

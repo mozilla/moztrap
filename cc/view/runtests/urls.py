@@ -30,6 +30,8 @@ urlpatterns = patterns(
     url("^environment/(?P<run_id>\d+)/$",
         "set_environment",
         name="runtests_environment"),
-    url("^run/(?P<run_id>\d+)/$", "run", name="runtests_run"),
+    url("^run/(?P<run_id>\d+)/env/(?P<env_id>\d+)/$",
+        "run",
+        name="runtests_run"),
 
 )

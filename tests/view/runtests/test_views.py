@@ -79,8 +79,21 @@ class SelectTest(base.AuthenticatedViewTestCase):
 
 
 
-class RunTestsTestCase(object):
-    """Test case mixin for runtest/environment tests."""
+class SetEnvironmentTest(base.AuthenticatedViewTestCase):
+    """Tests for set_environment view."""
+    def setUp(self):
+        """These tests all require a test run."""
+        super(SetEnvironmentTest, self).setUp()
+        self.testrun = F.RunFactory.create(name="Foo Run")
+
+
+    @property
+    def url(self):
+        """Shortcut for set_environment url."""
+        return reverse(
+            "runtests_environment", kwargs={"run_id": self.testrun.id})
+
+
     @property
     def envs(self):
         """A lazily-created sample set of environments."""
@@ -102,22 +115,6 @@ class RunTestsTestCase(object):
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
-
-
-
-class SetEnvironmentTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
-    """Tests for set_environment view."""
-    def setUp(self):
-        """These tests all require a test run."""
-        super(RunTestsTestCase, self).setUp()
-        self.testrun = F.RunFactory.create(name="Foo Run")
-
-
-    @property
-    def url(self):
-        """Shortcut for set_environment url."""
-        return reverse(
-            "runtests_environment", kwargs={"run_id": self.testrun.id})
 
 
     def test_form_choices(self):
@@ -152,12 +149,11 @@ class SetEnvironmentTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
 
 
     def test_form_initial(self):
-        """Form initial choices determined by "environment" session key."""
+        """Form initial choices determined by "environment" querystring key."""
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
 
-        with base.patch_session(dict(environment=self.envs[0].id)):
-            res = self.get()
+        res = self.get(params=dict(environment=self.envs[0].id))
 
         res.mustcontain(
             '<option value="{0}" selected="selected">'.format(
@@ -201,41 +197,55 @@ class SetEnvironmentTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
 
 
     def test_set_environment(self):
-        """Selecting an environment sets it in session."""
+        """Selecting an environment redirects to run view for that run/env."""
         self.add_perm("execute")
         self.testrun.environments.add(*self.envs)
 
         cat = self.model.Category.objects.get()
 
-        session_data = {}
+        form = self.get().forms["runtests-environment-form"]
+        form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
 
-        with base.patch_session(session_data):
-            form = self.get().forms["runtests-environment-form"]
-            form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
+        res = form.submit(status=302)
 
-            res = form.submit(status=302)
-
-        self.assertEqual(session_data["environment"], self.envs[0].id)
         self.assertEqual(
             res.headers["Location"],
-            "http://localhost:80/runtests/run/{0}/".format(self.testrun.id)
+            "http://localhost:80/runtests/run/{0}/env/{1}/".format(
+                self.testrun.id, self.envs[0].id)
             )
 
 
 
-class RunTestsTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
+class RunTestsTest(base.AuthenticatedViewTestCase):
     """Tests for runtests view."""
     def setUp(self):
-        """These tests all require a test run."""
-        super(RunTestsTestCase, self).setUp()
+        """These tests all require a test run and envs."""
+        super(RunTestsTest, self).setUp()
         self.testrun = F.RunFactory.create(status="active")
+        self.envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows 7", "Ubuntu Linux"]})
 
 
     @property
     def url(self):
         """Shortcut for runtests_run url."""
         return reverse(
-            "runtests_run", kwargs={"run_id": self.testrun.id})
+            "runtests_run",
+            kwargs={"run_id": self.testrun.id, "env_id": self.envs[0].id})
+
+
+    @property
+    def model(self):
+        """The models."""
+        from cc import model
+        return model
+
+
+    def test_requires_execute_permission(self):
+        """Requires execute permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
 
 
     def test_bad_run_id_404(self):
@@ -259,25 +269,12 @@ class RunTestsTest(RunTestsTestCase, base.AuthenticatedViewTestCase):
         res.follow().mustcontain("not open for testing")
 
 
-    def test_no_environment_set(self):
-        """If no environment in the session, redirects to set-environment."""
-        self.add_perm("execute")
-
-        res = self.get(status=302)
-
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80/runtests/environment/{0}/".format(
-                self.testrun.id))
-
-
     def test_invalid_environment_set(self):
-        """If current env is not valid for run, redirects to set-environment."""
+        """If env is not valid for run, redirects to set-environment."""
         self.testrun.environments.add(*self.envs[1:])
         self.add_perm("execute")
 
-        with base.patch_session(dict(environment=self.envs[0].id)):
-            res = self.get(status=302)
+        res = self.get(status=302)
 
         self.assertEqual(
             res.headers["Location"],
