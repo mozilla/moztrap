@@ -32,10 +32,10 @@ from mock import patch
 
 class CreateDefaultRolesTest(TestCase):
     """Tests for create_default_roles management command."""
-    def call_command(self):
+    def call_command(self, **kwargs):
         """Runs the management command under test and returns stdout output."""
         with patch("sys.stdout", StringIO()) as stdout:
-            call_command("create_default_roles")
+            call_command("create_default_roles", **kwargs)
 
         stdout.seek(0)
         return stdout.read()
@@ -115,3 +115,29 @@ Role 'Test Manager' created.
 Role 'Tester' created.
   Permission 'execution.execute' added.
 """)
+
+
+    def test_creates_all_quietly(self):
+        """Test output when verbosity=0."""
+        output = self.call_command(verbosity=0)
+
+        self.assertEqual(output, "")
+
+
+    def test_skips_existing_roles_quietly(self):
+        """Command skips roles with no output when verbosity 0."""
+        Group.objects.create(name="Tester")
+
+        output = self.call_command(verbosity=0)
+
+        self.assertEqual(output, "")
+
+
+    def test_skips_unknown_permission_quietly(self):
+        """Skips unknown permission silently with verbosity 0."""
+        with patch(
+            "cc.model.core.management.commands.create_default_roles.GROUPS",
+            {"Foo": ["foo.foo"]}):
+            output = self.call_command(verbosity=0)
+
+        self.assertEqual(output, "")

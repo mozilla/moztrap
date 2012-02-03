@@ -60,13 +60,17 @@ class Command(NoArgsCommand):
     help = ("Create default user roles (unless they already exist).")
 
     def handle_noargs(self, **options):
+        verbosity = int(options.get('verbosity', 1))
+
         for group_name, perms in GROUPS.iteritems():
             group, created = Group.objects.get_or_create(name=group_name)
             if not created:
-                print("Role %r already exists; skipping." % group_name)
+                if verbosity:
+                    print("Role %r already exists; skipping." % group_name)
                 continue
 
-            print("Role %r created." % group_name)
+            if verbosity:
+                print("Role %r created." % group_name)
 
             for perm_label in perms:
                 app_label, codename = perm_label.split(".")
@@ -75,9 +79,11 @@ class Command(NoArgsCommand):
                         content_type__app_label=app_label,
                         codename=codename)
                 except Permission.DoesNotExist:
-                    print("  Permission %r unknown; skipping." % perm_label)
+                    if verbosity:
+                        print("  Permission %r unknown; skipping." % perm_label)
                     continue
 
                 group.permissions.add(perm)
 
-                print("  Permission %r added." % perm_label)
+                if verbosity:
+                    print("  Permission %r added." % perm_label)
