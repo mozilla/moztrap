@@ -105,6 +105,29 @@ var CC = (function (CC, $) {
         }
     };
 
+    CC.filterProductTags = function (container) {
+        var context = $(container),
+            trigger = context.find('#id_product'),
+            tags,
+            filterTags = function () {
+                tags = context.find('.tagging .taglist .tag-item');
+                if (trigger.find('option:selected').data('product-id')) {
+                    tags.filter(function () {
+                        var input = $(this).find('input');
+                        if (input.data('product-id')) {
+                            return input.data('product-id') !== trigger.find('option:selected').data('product-id');
+                        } else {
+                            return false;
+                        }
+                    }).each(function () {
+                        $(this).find('label').click();
+                    });
+                }
+            };
+
+        trigger.change(filterTags);
+    };
+
     CC.testcaseAttachments = function (container) {
         var context = $(container),
             counter = 0,
@@ -182,58 +205,63 @@ var CC = (function (CC, $) {
         });
 
         versionLabels.click(function (e) {
-            var clickedVersion = $(this).closest('.version');
+            var clickedVersion = $(this).closest('.version'),
+                newVersion,
+                newVersionID,
+                currentVersionID,
+                newURL,
+                updateVersion;
             if (clickedVersion.find('.item-input').is(':checked')) {
                 versionList.find('.summary').click();
             } else {
-                var newVersion = clickedVersion.data('version'),
-                    newVersionID = clickedVersion.data('version-id'),
-                    currentVersionID = url.split('/')[3],
-                    newURL = url.replace(currentVersionID, newVersionID),
-                    updateVersion = function (data) {
-                        if (data.html) {
-                            var newHTML = $(data.html).hide(),
-                                prefix = newHTML.find('ol.steplist').data('prefix');
-                            context.find('.versioned').fadeOut('fast', function () {
-                                versionList.find('.summary').click();
-                                $(this).replaceWith(newHTML);
-                                versionHeader.text('v' + newVersion.toString());
-                                if (clickedVersion.is(':last-child')) {
-                                    versionHeader.append(' (latest)');
-                                } else {
-                                    versionHeader.append(' (obsolete)');
-                                }
-                                dirty = false;
-                                newHTML.fadeIn('fast', function () {
-                                    $(this).find('ol.steplist').formset({
-                                        prefix: prefix,
-                                        formTemplate: '#empty-step-form .step-form-item',
-                                        formSelector: '.step-form-item',
-                                        deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
-                                        deleteLinkSelector: '.removefields',
-                                        addAnimationSpeed: 'normal',
-                                        removeAnimationSpeed: 'fast',
-                                        autoAdd: true,
-                                        alwaysShowExtra: true,
-                                        deleteOnlyActive: true,
-                                        insertAbove: true
-                                    });
-                                    context.customAutocomplete({
-                                        textbox: 'input[name="text-tag"]',
-                                        ajax: true,
-                                        url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
-                                        triggerSubmit: null,
-                                        allowNew: true,
-                                        inputType: 'tag',
-                                        noInputsNote: true
-                                    });
-                                    CC.testcaseAttachments('#single-case-form .attachments');
-                                    tags = context.find('.versioned .tagging .visual').html();
+                newVersion = clickedVersion.data('version');
+                newVersionID = clickedVersion.data('version-id');
+                currentVersionID = url.split('/')[3];
+                newURL = url.replace(currentVersionID, newVersionID);
+                updateVersion = function (data) {
+                    if (data.html) {
+                        var newHTML = $(data.html).hide(),
+                            prefix = newHTML.find('ol.steplist').data('prefix');
+                        context.find('.versioned').fadeOut('fast', function () {
+                            versionList.find('.summary').click();
+                            $(this).replaceWith(newHTML);
+                            versionHeader.text('v' + newVersion.toString());
+                            if (clickedVersion.is(':last-child')) {
+                                versionHeader.append(' (latest)');
+                            } else {
+                                versionHeader.append(' (obsolete)');
+                            }
+                            dirty = false;
+                            newHTML.fadeIn('fast', function () {
+                                $(this).find('ol.steplist').formset({
+                                    prefix: prefix,
+                                    formTemplate: '#empty-step-form .step-form-item',
+                                    formSelector: '.step-form-item',
+                                    deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
+                                    deleteLinkSelector: '.removefields',
+                                    addAnimationSpeed: 'normal',
+                                    removeAnimationSpeed: 'fast',
+                                    autoAdd: true,
+                                    alwaysShowExtra: true,
+                                    deleteOnlyActive: true,
+                                    insertAbove: true
                                 });
+                                context.customAutocomplete({
+                                    textbox: 'input[name="text-tag"]',
+                                    ajax: true,
+                                    url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
+                                    triggerSubmit: null,
+                                    allowNew: true,
+                                    inputType: 'tag',
+                                    noInputsNote: true
+                                });
+                                CC.testcaseAttachments('#single-case-form .attachments');
+                                tags = context.find('.versioned .tagging .visual').html();
                             });
-                            context.find('#single-case-form').attr('action', url);
-                        }
-                    };
+                        });
+                        context.find('#single-case-form').attr('action', url);
+                    }
+                };
 
                 if (dirty || context.find('.versioned .tagging .visual').html() !== tags) {
                     if (confirm("You have made changes to the form that will be lost if you switch versions. Are you sure you want to continue?")) {
