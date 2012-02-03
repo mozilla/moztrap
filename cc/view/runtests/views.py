@@ -19,16 +19,18 @@
 Views for test execution.
 
 """
+import json
+
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
-from django.middleware.csrf import get_token
 
 from ... import model
 
 from ..lists import decorators as lists
+from ..utils.ajax import ajax
 
 from .finders import RunTestsFinder
 from .forms import EnvironmentSelectionForm
@@ -49,31 +51,18 @@ def select(request):
 
 
 @permission_required("execution.execute")
-def finder_environments(request, run_id):
-    """Ajax-load environment-selection form."""
-    run = get_object_or_404(model.Run, pk=run_id)
-    form_kwargs = {
-        "current": request.session.get("environment", None),
-        "environments": run.environments.all()
-        }
-
-    return TemplateResponse(
-        request,
-        "runtests/_environment_form.html",
-        {
-            "run": run,
-            "form": EnvironmentSelectionForm(**form_kwargs)
-            }
-        )
-
-
-
-@permission_required("execution.execute")
+@ajax("runtests/_environment_form.html")
 def set_environment(request, run_id):
     """Select valid environment for given run and save it in session."""
     run = get_object_or_404(model.Run, pk=run_id)
+
+    try:
+        current = int(request.GET.get("environment", None))
+    except (TypeError, ValueError):
+        current = None
+
     form_kwargs = {
-        "current": request.session.get("environment", None),
+        "current": current,
         "environments": run.environments.all()
         }
 
@@ -83,8 +72,8 @@ def set_environment(request, run_id):
             **form_kwargs)
 
         if form.is_valid():
-            request.session["environment"] = form.save()
-            return redirect("runtests_run", run_id=run_id)
+            envid = form.save()
+            return redirect("runtests_run", run_id=run_id, env_id=envid)
     else:
         form = EnvironmentSelectionForm(**form_kwargs)
 
@@ -94,6 +83,7 @@ def set_environment(request, run_id):
         {
             "form": form,
             "run": run,
+            "environments_json": json.dumps(form.elementids_by_envid.values())
             }
         )
 
@@ -101,12 +91,9 @@ def set_environment(request, run_id):
 
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
-def run(request, run_id):
-    # force the CSRF cookie to be set
-    # @@@ replace with ensure_csrf_cookie decorator in Django 1.4
-    get_token(request)
-
-    run = get_object_or_404(model.Run, pk=run_id)
+@lists.sort("runcaseversions")
+def run(request, run_id, env_id):
+    run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
 
     if not run.status == model.Run.STATUS.active:
         messages.info(
@@ -115,29 +102,29 @@ def run(request, run_id):
             "Please select a different test run.")
         return redirect("runtests")
 
-    # @@@ if not run.environment.match(request.environments):
-    # @@@    return redirect("runtests_environment", testrun_id=testrun_id)
-
-    productversion = run.productversion
-    product = productversion.product
-
-    # for prepopulating finder
-    productversions = model.ProductVersion.objects.filter(product=product)
-    runs = model.Run.objects.order_by("name").filter(
-        productversion=productversion, status=model.Run.STATUS.active)
+    try:
+        environment = run.environments.get(pk=env_id)
+    except model.Environment.DoesNotExist:
+        return redirect("runtests_environment", run_id=run_id)
 
     return TemplateResponse(
         request,
         "runtests/run.html",
         {
+            "environment": environment,
             "product": run.productversion.product,
             "productversion": run.productversion,
             "run": run,
-            "cases": [], # @@@ runcaseversions in this run
+            "runcaseversions": run.runcaseversions.select_related(
+                "caseversion"),
             "finder": {
-                # finder decorator populates top column, products
-                "productversions": productversions,
-                "runs": runs,
+                # finder decorator populates top column (products), we
+                # prepopulate the other two columns
+                "productversions": model.ProductVersion.objects.filter(
+                    product=run.productversion.product),
+                "runs": model.Run.objects.order_by("name").filter(
+                    productversion=run.productversion,
+                    status=model.Run.STATUS.active),
                 },
             }
         )

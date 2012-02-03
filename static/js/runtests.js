@@ -19,7 +19,7 @@ along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery */
+/*global    ich, jQuery, VALID_ENVIRONMENTS */
 
 var CC = (function (CC, $) {
 
@@ -101,6 +101,96 @@ var CC = (function (CC, $) {
                 newBugInput.attr('disabled', true);
             }
         });
+    };
+
+    // Filter environment form options
+    CC.filterEnvironments = function (container) {
+        var context = $(container),
+            triggers = context.find('select'),
+            doFilter;
+
+        if (context.length) {
+            triggers.each(function () {
+                var allopts = $(this).find('option').clone().removeAttr('selected');
+                $(this).data('allopts', allopts);
+            });
+
+            doFilter = function () {
+                var i,
+                    key = triggers.map(function () {
+                        if ($(this).find('option:selected').val()) {
+                            return parseInt($(this).find('option:selected').val(), 10);
+                        } else {
+                            return '';
+                        }
+                    }),
+                    filterCombos = function (elementOfArray, indexInArray) {
+                        if (elementOfArray[i] === null) {
+                            return true;
+                        } else {
+                            return elementOfArray[i] === key[i];
+                        }
+                    };
+
+                for (i = 0; i < key.length; i = i + 1) {
+                    if (key[i] === '') {
+                        key[i] = null;
+                    }
+                }
+
+                if (VALID_ENVIRONMENTS) {
+                    triggers.each(function () {
+                        var thisIndex = triggers.index($(this)),
+                            validOpts = [],
+                            acceptAll = false,
+                            allopts = $(this).data('allopts'),
+                            filteredValidCombos = VALID_ENVIRONMENTS,
+                            filteredOpts,
+                            selectedVal;
+
+                        for (i = 0; i < key.length; i = i + 1) {
+                            if (key[i] !== null && i !== thisIndex) {
+                                filteredValidCombos = $.grep(filteredValidCombos, filterCombos);
+                            }
+                        }
+
+                        validOpts = $.map(filteredValidCombos, function (elementOfArray, indexInArray) {
+                            if (elementOfArray[thisIndex] === null) {
+                                acceptAll = true;
+                            }
+                            return elementOfArray[thisIndex];
+                        });
+
+                        if ($(this).find('option:selected').val()) {
+                            selectedVal = $(this).find('option:selected').val();
+                        }
+
+                        if (acceptAll) {
+                            $(this).html(allopts);
+                        } else {
+                            filteredOpts = allopts.filter(function (index) {
+                                if ($(this).val() === '') {
+                                    return true;
+                                } else {
+                                    return $.inArray(parseInt($(this).val(), 10), validOpts) !== -1;
+                                }
+                            });
+                            $(this).html(filteredOpts);
+                        }
+
+                        if (selectedVal) {
+                            $(this).find('option').filter(function () {
+                                return $(this).val() === selectedVal;
+                            }).prop('selected', true);
+                        } else {
+                            $(this).find('option').first().prop('selected', true);
+                        }
+                    });
+                }
+            };
+
+            triggers.change(doFilter);
+        }
     };
 
     return CC;

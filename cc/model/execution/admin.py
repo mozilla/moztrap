@@ -60,6 +60,7 @@ class StepResultInline(CCTabularInline):
 
 
 class RunAdmin(TeamModelAdmin):
+    filter_horizontal = ["environments"]
     fieldsets = [(None, {"fields": [
                     "name",
                     ("productversion", "status"),

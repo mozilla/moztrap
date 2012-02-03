@@ -19,11 +19,43 @@
 Utility base TestCase for testing views.
 
 """
-from django.test import TestCase
+from contextlib import contextmanager
 
-from django_webtest import WebTest
+from django.conf import settings
+
+import django_webtest
+from mock import patch
 
 from .. import factories as F
+
+
+
+@contextmanager
+def patch_session(session_data):
+    """Context manager to patch session vars."""
+    with patch(
+            "django.contrib.sessions.backends.cached_db."
+            "SessionStore._session_cache",
+            session_data,
+            create=True):
+        yield
+
+
+
+class WebTest(django_webtest.WebTest):
+    """Fix WebTest so it works with django-session-csrf."""
+    def _setup_auth_middleware(self):
+        """
+        Monkeypatch remote-user-auth middleware into MIDDLEWARE_CLASSES.
+
+        Places remote-user-auth middleware before session-csrf middleware, so
+        session-csrf sees the authenticated user.
+
+        """
+        auth_middleware = "django_webtest.middleware.WebtestUserMiddleware"
+        session_csrf_middleware = "session_csrf.CsrfMiddleware"
+        index = settings.MIDDLEWARE_CLASSES.index(session_csrf_middleware)
+        settings.MIDDLEWARE_CLASSES.insert(index, auth_middleware)
 
 
 

@@ -10,7 +10,7 @@ Case Conductor requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5+.
 
 (These quickstart instructions assume that you have `virtualenv`_ and
 `virtualenvwrapper`_; if you'd rather just install everything globally, skip
-step 2.)
+step 2; you may have to prepend ``sudo`` to step 3 in that case.)
 
 1. ``git clone --recursive git://github.com/mozilla/caseconductor``
 2. ``mkvirtualenv caseconductor``

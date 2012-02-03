@@ -16,28 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Environment model.
+Case Conductor home view.
 
 """
-from django.test import TestCase
+from django.shortcuts import redirect
 
-from .... import factories as F
-
-
-
-class EnvironmentTest(TestCase):
-    def test_unicode(self):
-        """Unicode representation is concatenated element names."""
-        e = F.EnvironmentFactory.create_full_set(
-            {"OS": ["OS X"], "Language": ["English"]})[0]
-
-        self.assertEqual(unicode(e), u"English, OS X")
+from django.contrib.auth.decorators import login_required
 
 
-    def test_ordered_elements(self):
-        """ordered_elements yields elements in category name order."""
-        e = F.EnvironmentFactory.create_full_set(
-            {"OS": ["OS X"], "Language": ["English"]})[0]
 
-        self.assertEqual(
-            [el.name for el in e.ordered_elements()], [u"English", u"OS X"])
+@login_required
+def home(request):
+    """Home view; redirects to run-tests or results depending on permissions."""
+    if request.user.has_perm("execution.execute"):
+        return redirect("runtests")
+    return redirect("manage_cases") # @@@ should be run results, once it exists

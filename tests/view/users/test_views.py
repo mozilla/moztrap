@@ -21,7 +21,7 @@ Tests for login/logout/account views.
 """
 from django.core.urlresolvers import reverse
 
-from django_webtest import WebTest
+from ..base import WebTest
 
 from ... import factories as F
 
@@ -47,11 +47,10 @@ class LoginTest(WebTest):
         form = self.get().forms["loginform"]
         form["username"] = "test"
         form["password"] = "sekrit"
-        res = form.submit()
+        res = form.submit(status=302)
 
-        self.assertEqual(res.status_int, 302, res.body)
         self.assertEqual(
-            res.headers["Location"], "http://localhost:80/manage/cases/")
+            res.headers["Location"], "http://localhost:80/")
 
 
     def test_login_failed(self):
@@ -61,9 +60,8 @@ class LoginTest(WebTest):
         form = self.get().forms["loginform"]
         form["username"] = "test"
         form["password"] = "blah"
-        res = form.submit()
+        res = form.submit(status=200)
 
-        self.assertEqual(res.status_int, 200, res.headers)
         res.mustcontain("Please enter a correct username and password")
 
 
@@ -76,9 +74,9 @@ class LogoutTest(WebTest):
         return reverse("logout")
 
 
-    def get(self):
+    def get(self, **kwargs):
         """Shortcut for getting logout url."""
-        return self.app.get(self.url)
+        return self.app.get(self.url, **kwargs)
 
 
     def test_logout(self):
@@ -90,8 +88,7 @@ class LogoutTest(WebTest):
         form["password"] = "sekrit"
         form.submit()
 
-        res = self.get()
+        res = self.get(status=302)
 
-        self.assertEqual(res.status_int, 302, res.body)
         self.assertEqual(
             res.headers["Location"], "http://localhost:80/users/login/")

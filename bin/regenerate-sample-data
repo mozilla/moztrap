@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python manage.py generate_fixture execution.sample_runs --format=json --indent=4 > fixtures/sample_data.json

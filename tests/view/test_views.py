@@ -15,17 +15,36 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-"""Template tags/filters for setting environment when running tests."""
-from django import template
+"""
+Tests for home view.
+
+"""
 from django.core.urlresolvers import reverse
 
-
-
-register = template.Library()
+from . import base
 
 
 
-@register.filter
-def set_environment_url(run):
-    """Returns URL for selecting environment for this test run."""
-    return reverse("runtests_environment", kwargs={"run_id": run.id})
+class HomeViewTest(base.AuthenticatedViewTestCase):
+    """Tests for home view."""
+    @property
+    def url(self):
+        """Shortcut for home url."""
+        return reverse("home")
+
+
+    def test_execute_permission_redirects_to_runtests(self):
+        """Users with execute permission are directed to run-tests page."""
+        self.add_perm("execute")
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"], "http://localhost:80/runtests/")
+
+
+    def test_no_permission_redirects_to_manage_cases(self):
+        """Users without execute permission are directed to manage-cases."""
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"], "http://localhost:80/manage/cases/")

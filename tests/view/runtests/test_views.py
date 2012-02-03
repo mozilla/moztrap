@@ -76,3 +76,253 @@ class SelectTest(base.AuthenticatedViewTestCase):
             'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
             res.json["html"]
             )
+
+
+
+class SetEnvironmentTest(base.AuthenticatedViewTestCase):
+    """Tests for set_environment view."""
+    def setUp(self):
+        """These tests all require a test run."""
+        super(SetEnvironmentTest, self).setUp()
+        self.testrun = F.RunFactory.create(name="Foo Run")
+
+
+    @property
+    def url(self):
+        """Shortcut for set_environment url."""
+        return reverse(
+            "runtests_environment", kwargs={"run_id": self.testrun.id})
+
+
+    @property
+    def envs(self):
+        """A lazily-created sample set of environments."""
+        if getattr(self, "_cached_envs", None) is None:
+            self._cached_envs = F.EnvironmentFactory.create_full_set(
+                {"OS": ["Windows 7", "Ubuntu Linux"]})
+        return self._cached_envs
+
+
+    @property
+    def model(self):
+        """The models."""
+        from cc import model
+        return model
+
+
+    def test_requires_execute_permission(self):
+        """Requires execute permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
+    def test_form_choices(self):
+        """Form has available categories and elements for run as choices."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        res = self.get()
+
+        res.mustcontain("OS")
+        res.mustcontain("Ubuntu Linux")
+        res.mustcontain("Windows 7")
+
+
+    def test_valid_environments(self):
+        """JSON list of valid envs (as ordered element list) is in template."""
+        self.add_perm("execute")
+        envs = F.EnvironmentFactory.create_set(
+            ["OS", "Browser"], ["OS X", "Safari"], ["Windows", "IE"])
+        self.testrun.environments.add(*envs)
+
+        osx = self.model.Element.objects.get(name="OS X")
+        safari = self.model.Element.objects.get(name="Safari")
+        windows = self.model.Element.objects.get(name="Windows")
+        ie = self.model.Element.objects.get(name="IE")
+
+        res = self.get()
+
+        res.mustcontain("VALID_ENVIRONMENTS = [")
+        res.mustcontain("[{0}, {1}]".format(safari.id, osx.id))
+        res.mustcontain("[{0}, {1}]".format(ie.id, windows.id))
+
+
+    def test_form_initial(self):
+        """Form initial choices determined by "environment" querystring key."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        res = self.get(params=dict(environment=self.envs[0].id))
+
+        res.mustcontain(
+            '<option value="{0}" selected="selected">'.format(
+                self.envs[0].elements.get().id)
+            )
+
+
+    def test_run(self):
+        """Form has test run name in label."""
+        self.add_perm("execute")
+
+        res = self.get()
+
+        res.mustcontain("run tests in Foo Run!")
+
+
+    def test_bad_run_id_404(self):
+        """Bad run id returns 404."""
+        self.add_perm("execute")
+        url = reverse("runtests_environment", kwargs={"run_id": 9999})
+
+        self.app.get(url, user=self.user, status=404)
+
+
+    def test_ajax(self):
+        """Ajax request uses partial template."""
+        self.add_perm("execute")
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        self.assertNotIn("<body", res.body)
+
+
+    def test_env_required(self):
+        """Invalid combination results in error."""
+        self.add_perm("execute")
+
+        res = self.get().forms["runtests-environment-form"].submit()
+
+        res.mustcontain("selected environment is not valid")
+
+
+    def test_set_environment(self):
+        """Selecting an environment redirects to run view for that run/env."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+
+        cat = self.model.Category.objects.get()
+
+        form = self.get().forms["runtests-environment-form"]
+        form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
+
+        res = form.submit(status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80/runtests/run/{0}/env/{1}/".format(
+                self.testrun.id, self.envs[0].id)
+            )
+
+
+
+class RunTestsTest(base.AuthenticatedViewTestCase):
+    """Tests for runtests view."""
+    def setUp(self):
+        """These tests all require a test run and envs, and execute perm."""
+        super(RunTestsTest, self).setUp()
+        self.testrun = F.RunFactory.create(status="active")
+        self.envs = F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows 7", "Ubuntu Linux"]})
+        self.testrun.environments.add(*self.envs)
+        self.add_perm("execute")
+
+
+    @property
+    def url(self):
+        """Shortcut for runtests_run url."""
+        return reverse(
+            "runtests_run",
+            kwargs={"run_id": self.testrun.id, "env_id": self.envs[0].id})
+
+
+    @property
+    def model(self):
+        """The models."""
+        from cc import model
+        return model
+
+
+    def test_requires_execute_permission(self):
+        """Requires execute permission."""
+        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
+    def test_bad_run_id_404(self):
+        """Bad run id returns 404."""
+        url = reverse("runtests_environment", kwargs={"run_id": 9999})
+
+        self.app.get(url, user=self.user, status=404)
+
+
+    def test_inactive_run_redirects_to_selector(self):
+        """An inactive run redirects to run selector with message."""
+        self.testrun.status = "draft"
+        self.testrun.save()
+
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"], "http://localhost:80/runtests/")
+        res.follow().mustcontain("not open for testing")
+
+
+    def test_invalid_environment_set(self):
+        """If env is not valid for run, redirects to set-environment."""
+        self.testrun.environments.remove(self.envs[0])
+
+        res = self.get(status=302)
+
+        self.assertEqual(
+            res.headers["Location"],
+            "http://localhost:80/runtests/environment/{0}/".format(
+                self.testrun.id))
+
+
+    def test_environment(self):
+        """Environment is shown in template."""
+        res = self.get(status=200)
+
+        self.assertEqual(
+            res.html.findAll("ul", "envsettings")[0].find("li").text,
+            self.envs[0].elements.get().name)
+
+
+    def test_finder_productversions_prepopulated(self):
+        """Finder is prepopulated with product versions."""
+        res = self.get(status=200)
+
+        finder_productversions = res.html.findAll(
+            "input",
+            id="finder-productversions-{0}".format(
+                self.testrun.productversion.id)
+            )
+
+
+        self.assertEqual(len(finder_productversions), 1)
+        self.assertIn("checked", unicode(finder_productversions[0]))
+
+
+    def test_finder_runs_prepopulated(self):
+        """Finder is prepopulated with runs."""
+        res = self.get(status=200)
+
+        finder_runs = res.html.findAll(
+            "input", id="finder-runs-{0}".format(self.testrun.id))
+
+        self.assertEqual(len(finder_runs), 1)
+        self.assertIn("checked", unicode(finder_runs[0]))
+
+
+    def test_runcaseversions(self):
+        """Lists runcaseversions."""
+        F.RunCaseVersionFactory.create(
+            run=self.testrun,
+            caseversion__name="Foo Case",
+            caseversion__productversion=self.testrun.productversion)
+
+        res = self.get(status=200)
+
+        res.mustcontain("Foo Case")

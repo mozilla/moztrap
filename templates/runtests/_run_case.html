@@ -1,35 +1,39 @@
-{% load execution staticdata %}
+{% load execution %}
 
-    <article id="result-{{ result.id }}" class="item details action-ajax-replace {{ result.status|status_class }}{% if open %} open{% endif %}">
+{% with runcaseversion.caseversion as caseversion %}
+{% result_for runcaseversion user environment as result %}
+
+    <article id="result-{{ runcaseversion.id }}" class="item details action-ajax-replace {{ result.status }}{% if open %} open{% endif %}">
 
       <header class="summary">
-        <form action="{% url result result_id=result.id %}" method="POST">
+        <form method="POST">
+          <input type="hidden" name="runcaseversion" value="{{ runcaseversion.id }}">
         <div class="status">
-          {% if result.status.PENDING %}
+          {% if result.status == result.STATUS.assigned %}
             <button class="start" value="start" name="action">start</button>
           {% endif %}
-          {% if result.status.STARTED %}
+          {% if result.status == result.STATUS.started %}
             <button class="pass" value="finishsucceed" name="action">pass</button>
           {% endif %}
-          {% if result.status.PASSED %}
+          {% if result.status == result.STATUS.passed %}
             <span class="passed">Passed</span>
           {% endif %}
-          {% if result.status.INVALIDATED %}
+          {% if result.status == result.STATUS.invalidated %}
             <span class="invalidated">Invalid</span>
           {% endif %}
-          {% if result.status.FAILED %}
+          {% if result.status == result.STATUS.failed %}
             <span class="failed">Failed</span>
           {% endif %}
         </div>
-        <h3 class="title" title="{{ case.name }}">{{ case.name }}</h3>
-        {% if result.status.PASSED or result.status.INVALIDATED or result.status.FAILED %}
+        <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+        {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
           <button class="action-restart" value="start" name="action" title="restart test">restart test</button>
         {% endif %}
         </form>
       </header>
 
       <div>
-        {% if result.status.STARTED or result.status.INVALIDATED %}
+        {% if result.status == result.STATUS.started or result.status.INVALIDATED %}
           <form action="{% url result result_id=result.id %}" method="POST" class="testinvalid details{% if result.status.INVALIDATED %} invalidated open{% endif %}">
           {% if result.status.INVALIDATED %}
             <h4 class="summary">invalid or unclear.</h4>
@@ -66,7 +70,7 @@
               <p class="instruction">{{ step.instruction }}</p>
               <p class="outcome">{{ step.expectedResult }}</p>
             </div>
-            {% if result.status.STARTED %}
+            {% if result.status == result.STATUS.started %}
               <div class="stepfail details">
                 <p class="summary">fail</p>
                 <div class="failform form fail-detail">
@@ -128,3 +132,5 @@
         </ol>
       </div>
     </article>
+
+{% endwith %}

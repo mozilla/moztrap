@@ -50,7 +50,5 @@ class RunTestsFinder(finder.Finder):
 
     def child_query_url(self, obj):
         if isinstance(obj, model.Run):
-            return reverse(
-                "runtests_finder_environments", kwargs={"run_id": obj.id}
-                )
+            return reverse("runtests_environment", kwargs={"run_id": obj.id})
         return super(RunTestsFinder, self).child_query_url(obj)

@@ -23,8 +23,11 @@ from django.conf import settings
 
 from django.contrib.auth import views as auth_views
 
+from session_csrf import anonymous_csrf
 
 
+
+@anonymous_csrf
 def login(request):
     return auth_views.login(request, template_name="users/login.html")
 

@@ -49,7 +49,7 @@ class RunTestsFinderTest(TestCase):
         url = f.child_query_url(r)
 
         self.assertEqual(
-            url, "/runtests/_finder/environments/{0}/".format(r.id))
+            url, "/runtests/environment/{0}/".format(r.id))
 
 
     def test_child_query_url_non_run(self):

@@ -27,10 +27,14 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+import session_csrf
+session_csrf.monkeypatch()
 
 
 urlpatterns = patterns(
     "",
+    url("^$", "cc.view.views.home", name="home"),
+
     # runtests ---------------------------------------------------------------
     url("^runtests/", include("cc.view.runtests.urls")),
 

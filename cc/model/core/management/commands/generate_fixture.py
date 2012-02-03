@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,28 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Environment model.
+Patch database setup for fixture generation so it runs South migrations.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
-
+from fixture_generator.management.commands import generate_fixture
+from south.management.commands import patch_for_test_db_setup
 
 
-class EnvironmentTest(TestCase):
-    def test_unicode(self):
-        """Unicode representation is concatenated element names."""
-        e = F.EnvironmentFactory.create_full_set(
-            {"OS": ["OS X"], "Language": ["English"]})[0]
-
-        self.assertEqual(unicode(e), u"English, OS X")
-
-
-    def test_ordered_elements(self):
-        """ordered_elements yields elements in category name order."""
-        e = F.EnvironmentFactory.create_full_set(
-            {"OS": ["OS X"], "Language": ["English"]})[0]
-
-        self.assertEqual(
-            [el.name for el in e.ordered_elements()], [u"English", u"OS X"])
+class Command(generate_fixture.Command):
+    def handle(self, *args, **kwargs):
+        patch_for_test_db_setup()
+        super(Command, self).handle(*args, **kwargs)

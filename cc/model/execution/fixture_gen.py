@@ -15,17 +15,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-"""Template tags/filters for setting environment when running tests."""
-from django import template
-from django.core.urlresolvers import reverse
+"""Sample runs fixture generator."""
+from django.contrib.auth.models import User
 
+from fixture_generator import fixture_generator
 
+from ..core.models import ProductVersion
+from ..library.models import Suite
 
-register = template.Library()
+from .models import Run, RunSuite, RunCaseVersion
 
+@fixture_generator(
+    Run, RunSuite, RunCaseVersion, requires=[
+        "library.sample_suites", "core.sample_users", "core.sample_products"])
+def sample_runs():
+    manager = User.objects.get(username="manager")
 
+    accounts = Suite.objects.get(name="Accounts")
 
-@register.filter
-def set_environment_url(run):
-    """Returns URL for selecting environment for this test run."""
-    return reverse("runtests_environment", kwargs={"run_id": run.id})
+    cc8 = ProductVersion.objects.get(product=accounts.product, version="0.8")
+
+    alpha = Run.objects.create(productversion=cc8, name="Alpha 1", user=manager)
+
+    RunSuite.objects.create(run=alpha, suite=accounts)
+
+    alpha.activate(user=manager)

@@ -95,6 +95,7 @@ var CC = (function (CC, $) {
                 $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
                     environments.html(data.html);
+                    CC.filterEnvironments('#runtests-environment-form');
                 });
             }
         });
@@ -191,6 +192,7 @@ var CC = (function (CC, $) {
         CC.runTests('#run');
         CC.breadcrumb('.runsdrill');
         CC.failedTestBug('#run');
+        CC.filterEnvironments('#runtests-environment-form');
     });
 
     $(window).load(function () {
