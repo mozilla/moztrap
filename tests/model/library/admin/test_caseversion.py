@@ -70,8 +70,14 @@ class CaseVersionAdminTest(AdminTestCase):
         self.get(self.change_url(c)).mustcontain("some tag")
 
 
+    def get_envs(self):
+        """Returns an Environment."""
+        return F.EnvironmentFactory.create_set(["OS"], ["Linux"])
+
+
     def test_add_step_with_caseversion(self):
         """Can add inline step along with new caseversion."""
+        envs = self.get_envs()
         pv = F.ProductVersionFactory.create()
         case = F.CaseFactory.create(product=pv.product)
 
@@ -81,6 +87,7 @@ class CaseVersionAdminTest(AdminTestCase):
             form["case"] = str(case.id)
             form["productversion"] = str(pv.id)
             form["name"] = "Some case"
+            form["environments"] = str(envs[0].id)
             form["steps-0-number"] = "1"
             form["steps-0-instruction"] = "An instruction"
             form["steps-0-expected"] = "A result"
@@ -94,6 +101,7 @@ class CaseVersionAdminTest(AdminTestCase):
     def test_add_step_tracks_user(self):
         """Adding a CaseStep via inline tracks created-by user."""
         cv = F.CaseVersionFactory.create()
+        cv.environments.add(*self.get_envs())
 
         # patching extra avoids need for JS to submit new step
         with patch("cc.model.library.admin.CaseStepInline.extra", 1):
@@ -113,6 +121,7 @@ class CaseVersionAdminTest(AdminTestCase):
         """Modifying a CaseStep via inline tracks modified-by user."""
         s = F.CaseStepFactory.create(
             instruction="Type a URL in the address bar")
+        s.caseversion.environments.add(*self.get_envs())
 
         form = self.get(self.change_url(s.caseversion)).forms[0]
         form["steps-0-instruction"] = "A new instruction"
@@ -125,6 +134,7 @@ class CaseVersionAdminTest(AdminTestCase):
     def test_delete_step_tracks_user(self):
         """Deleting a CaseStep via inline tracks modified-by user."""
         s = F.CaseStepFactory.create()
+        s.caseversion.environments.add(*self.get_envs())
 
         form = self.get(self.change_url(s.caseversion)).forms[0]
         form["steps-0-DELETE"] = True
