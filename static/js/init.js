@@ -53,10 +53,13 @@ var CC = (function (CC, $) {
             url: $('#id_add_tags').data('autocomplete-url'),
             extraDataName: 'product-id',
             extraDataFn: function () {
-                var product = $('#id_product'),
-                    selectedIndex = product.prop('selectedIndex'),
+                var product_sel = $('#id_product'),
+                    selectedIndex = product_sel.prop('selectedIndex'),
+                    tagging_container = $('.case-form .tagging'),
                     productID;
-                if (selectedIndex && selectedIndex !== 0) {
+                if (tagging_container.data('product-id')) {
+                    productID = tagging_container.data('product-id');
+                } else if (selectedIndex && selectedIndex !== 0) {
                     productID = product.find('option:selected').data('product-id');
                 }
                 return productID;
