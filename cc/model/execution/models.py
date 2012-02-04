@@ -276,7 +276,7 @@ class Result(CCModel):
         """Mark this result started."""
         self.status = self.STATUS.started
         self.started = utcnow()
-        self.save(force_update=True)
+        self.save(force_update=True, user=user)
 
 
     def finishsucceed(self, user=None):
