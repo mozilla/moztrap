@@ -272,6 +272,50 @@ class Result(CCModel):
             )
 
 
+    def start(self, user=None):
+        """Mark this result started."""
+        self.status = self.STATUS.started
+        self.started = utcnow()
+        self.save(force_update=True)
+
+
+    def finishsucceed(self, user=None):
+        """Mark this result passed."""
+        self.status = self.STATUS.passed
+        self.completed = utcnow()
+        self.save(force_update=True, user=user)
+
+
+    def finishinvalidate(self, comment="", user=None):
+        """Mark this result invalidated."""
+        self.status = self.STATUS.invalidated
+        self.comment = comment
+        self.completed = utcnow()
+        self.save(force_update=True, user=user)
+
+
+    def finishfail(self, comment="", stepnumber=None, bug="", user=None):
+        """Mark this result failed."""
+        self.status = self.STATUS.failed
+        self.completed = utcnow()
+        self.comment = comment
+        if stepnumber:
+            try:
+                step = self.runcaseversion.caseversion.steps.get(
+                    number=stepnumber)
+            except CaseStep.DoesNotExist:
+                pass
+            else:
+                try:
+                    stepresult = self.stepresults.get(step=step)
+                except StepResult.DoesNotExist:
+                    stepresult = StepResult(result=self, step=step)
+                stepresult.status = StepResult.STATUS.failed
+                stepresult.bug_url = bug
+                stepresult.save(user=user)
+        self.save(force_update=True, user=user)
+
+
 
 class StepResult(CCModel):
     """A result of a particular step in a test case."""

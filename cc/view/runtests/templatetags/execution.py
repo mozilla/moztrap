@@ -31,7 +31,7 @@ register = template.Library()
 
 class ResultFor(Tag):
     """
-    Sets Result for this runcaseversion/user/env in context.
+    Places Result for this runcaseversion/user/env in context.
 
     If no relevant Result exists, returns *unsaved* default Result for use in
     template (result will be saved when case is started.)
@@ -64,3 +64,39 @@ class ResultFor(Tag):
 
 
 register.tag(ResultFor)
+
+
+
+class StepResultFor(Tag):
+    """
+    Places StepResult for this result/casestep in context.
+
+    If no relevant StepResult exists, returns *unsaved* default StepResult for
+    use in template.
+
+    """
+    name = "stepresult_for"
+    options = Options(
+        Argument("result"),
+        Argument("casestep"),
+        "as",
+        Argument("varname", resolve=False),
+        )
+
+
+    def render_tag(self, context, result, casestep, varname):
+        """Get/construct StepResult and place it in context under ``varname``"""
+        stepresult_kwargs = dict(
+            result=result,
+            step=casestep,
+            )
+        try:
+            stepresult = model.StepResult.objects.get(**stepresult_kwargs)
+        except model.StepResult.DoesNotExist:
+            stepresult = model.StepResult(**stepresult_kwargs)
+
+        context[varname] = stepresult
+        return u""
+
+
+register.tag(StepResultFor)

@@ -19,7 +19,11 @@
 Tests for runtests views.
 
 """
+from datetime import datetime
+
 from django.core.urlresolvers import reverse
+
+from mock import patch
 
 from ... import factories as F
 
@@ -316,13 +320,44 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         self.assertIn("checked", unicode(finder_runs[0]))
 
 
+    def create_rcv(self, **kwargs):
+        """Create a runcaseversion for this run with given kwargs."""
+        defaults = {
+            "run": self.testrun,
+            "caseversion__productversion": self.testrun.productversion,
+            "caseversion__case__product": self.testrun.productversion.product,
+            }
+        defaults.update(kwargs)
+        return F.RunCaseVersionFactory.create(**defaults)
+
+
     def test_runcaseversions(self):
         """Lists runcaseversions."""
-        F.RunCaseVersionFactory.create(
-            run=self.testrun,
-            caseversion__name="Foo Case",
-            caseversion__productversion=self.testrun.productversion)
+        self.create_rcv(caseversion__name="Foo Case")
 
         res = self.get(status=200)
 
         res.mustcontain("Foo Case")
+
+
+    def test_start_case(self):
+        """Submit a "start" action for a case."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms[
+            "test-status-form-{0}".format(rcv.id)]
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            res = form.submit(
+                name="action-start",
+                index=0,
+                headers={"X-Requested-With": "XMLHttpRequest"},
+                )
+
+        self.assertIn('button class="pass"', res.json["html"])
+
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.started)
+        self.assertEqual(result.started, datetime(2012, 2, 3))

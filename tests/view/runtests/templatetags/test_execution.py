@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Tests for template tags/filters for running tests."""
-from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from django.test import TestCase
 
@@ -60,4 +59,57 @@ class ResultForTest(TestCase):
                 "{{ result.id }} {{ result.runcaseversion.id }} "
                 "{{ result.environment.id }} {{ result.tester.id }}"),
             "None {0} {1} {2}".format(rcv.id, env.id, user.id)
+            )
+
+
+
+class StepResultForTest(TestCase):
+    """Tests for the step_result_for template tag."""
+    def result_for(self, result, step, render):
+        """Execute template tag with given args and render given string."""
+        t = Template(
+            "{% load execution %}{% stepresult_for result step as stepresult %}"
+            + render)
+        return t.render(
+            Context({"result": result, "step": step}))
+
+
+    def test_stepresult_exists(self):
+        """If the step result already exists, it is returned."""
+        sr = F.StepResultFactory()
+
+        self.assertEqual(
+            self.result_for(
+                sr.result, sr.step, "{{ stepresult.id }}"),
+            str(sr.id)
+            )
+
+
+    def test_step_result_does_not_exist(self):
+        """If the step result does not exist, a new unsaved one is returned."""
+        r = F.ResultFactory.create()
+        step = F.CaseStepFactory.create()
+
+        self.assertEqual(
+            self.result_for(
+                r,
+                step,
+                "{{ stepresult.id }} {{ stepresult.result.id }} "
+                "{{ stepresult.step.id }}"),
+            "None {0} {1}".format(r.id, step.id)
+            )
+
+
+    def test_result_does_not_exist(self):
+        """If given result is not saved, unsaved step result is returned."""
+        r = F.ResultFactory.build()
+        step = F.CaseStepFactory.create()
+
+        self.assertEqual(
+            self.result_for(
+                r,
+                step,
+                "{{ stepresult.id }} {{ stepresult.result.id }} "
+                "{{ stepresult.step.id }}"),
+            "None None {0}".format(step.id)
             )

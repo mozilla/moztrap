@@ -2,6 +2,8 @@
 
 {% load execution urls %}
 
+{% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
+
 {% block itembody-content %}
 <ol class="steps">
   {% for step in caseversion.steps.all %}
@@ -14,14 +16,13 @@
       <div class="stepfail details">
         <p class="summary">fail</p>
         <div class="failform form fail-detail">
-          <form method="POST">
+          <form method="POST" class="testfail" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}">
             {% csrf_token %}
-            <input type="hidden" name="runcaseversion" value="{{ runcaseversion.id }}">
             <input type="hidden" name="stepnumber" value="{{ step.number }}">
             <ul>
               <li class="fail-desc">
-                <label for="{{ step.id }}-actualResult">actual result:</label>
-                <textarea name="actualResult" id="{{ step.id }}-actualResult" placeholder="please explain the actual results of this step." required></textarea>
+                <label for="fail-comment-{{ runcaseversion.id }}-{{ step.number }}">actual result:</label>
+                <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
               </li>
               {% with runcaseversion.caseversion.bug_urls as bug_urls %}
               {% if bug_urls %}
@@ -30,7 +31,7 @@
                 <ul class="radio-bugs">
                   {% for bug_url in bug_urls %}
                     <li class="bug">
-                      <input type="radio" name="bugs" value="{{ bug_url }}" id="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}" />
+                      <input type="radio" name="bug" value="{{ bug_url }}" id="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}" />
                       <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}">{{ bug_url }}</label>
                       {% if bug_url|is_url %}
                         <a href="{{ bug_url }}" class="goto" title="go to bug">(go to bug)</a>
@@ -38,7 +39,7 @@
                     </li>
                   {% endfor %}
                   <li class="bug">
-                    <input type="radio" name="bugs" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
+                    <input type="radio" name="bug" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
                     <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug">assign a new bug</label>
                   </li>
                 </ul>
@@ -47,7 +48,7 @@
               {% endwith %}
               <li class="fail-bug-new">
                 <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}">assign a new bug</label>
-                <input type="url" name="related_bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
+                <input type="url" name="bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
               </li>
             </ul>
             <div class="form-actions">
@@ -57,7 +58,8 @@
         </div>
       </div>
     {% endif %}
-    {% if result.status == result.STATUS.failed and result.failedStepNumber == step.stepNumber %}
+    {% stepresult_for result step as stepresult %}
+    {% if result.status == result.STATUS.failed and stepresult.status == stepresult.STATUS.failed %}
       <div class="stepfail details failed open">
         <p class="summary">failed</p>
         <div class="faildesc fail-detail">
@@ -74,14 +76,18 @@
   {% endfor %}
 </ol>
 
+{% with caseversion.attachments.all as attachments %}
+{% if attachments %}
 <aside class="associated">
   <h4>attached files</h4>
   <ul class="files-list">
-    {% for attachment in caseversion.attachments.all %}
+    {% for attachment in attachments %}
       <li class="file">
         <a href="{{ attachment.url }}">{{ attachment.name }}</a>
       </li>
     {% endfor %}
   </ul>
 </aside>
+{% endif %}
+{% endwith %}
 {% endblock itembody-content %}
