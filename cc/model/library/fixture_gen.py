@@ -92,16 +92,16 @@ def sample_cases():
                 **dict(step_data, caseversion=cv, number=i, user=creator))
         # registration not translated into Mandarin yet?
         for env in cv.environments.all():
-            if any([el.name == "Mandarin" for el in env]):
+            if any([el.name == "Mandarin" for el in env.ordered_elements()]):
                 cv.environments.remove(env)
 
     ff = Product.objects.get(name="Firefox")
     ff9 = ff.versions.get(version="9")
-    ff10 = ff.versions.get(version="9")
+    ff10 = ff.versions.get(version="10")
 
     key = Tag.objects.get(name="key")
 
-    fast = Case.objects.create(product=cc, user=creator)
+    fast = Case.objects.create(product=ff, user=creator)
     fast_data = {
         "name": "It is fast.",
         "case": fast,

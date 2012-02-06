@@ -129,6 +129,19 @@ class RunTest(TestCase):
         self.assertEqual(len(new.environments.all()), 2)
 
 
+    def test_clone_environments_narrowed(self):
+        """Cloning a Run clones its environments exactly, even if narrowed."""
+        envs = F.EnvironmentFactory.create_full_set({"OS": ["OS X", "Linux"]})
+        pv = F.ProductVersionFactory(environments=envs)
+        r = F.RunFactory(productversion=pv, environments=envs[1:])
+
+        self.assertEqual(len(r.environments.all()), 1)
+
+        new = r.clone()
+
+        self.assertEqual(len(new.environments.all()), 1)
+
+
     def test_clone_team(self):
         """Cloning a Run clones its team."""
         r = F.RunFactory(team=["One", "Two"])

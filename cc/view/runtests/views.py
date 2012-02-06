@@ -21,7 +21,7 @@ Views for test execution.
 """
 import json
 
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 
 from django.contrib import messages
@@ -89,6 +89,16 @@ def set_environment(request, run_id):
 
 
 
+# maps valid action names to default parameters
+ACTIONS = {
+    "start": {},
+    "finishsucceed": {},
+    "finishinvalidate": {"comment": ""},
+    "finishfail": {"stepnumber": None, "comment": "", "bug": ""},
+    }
+
+
+
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.sort("runcaseversions")
@@ -106,6 +116,71 @@ def run(request, run_id, env_id):
         environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:
         return redirect("runtests_environment", run_id=run_id)
+
+    if request.method == "POST":
+        prefix = "action-"
+        while True:
+            try:
+                action, rcv_id = [
+                    (k[len(prefix):], int(v)) for k, v in request.POST.items()
+                    if k.startswith(prefix)
+                    ][0]
+            except IndexError:
+                break
+
+            try:
+                defaults = ACTIONS[action]
+            except KeyError:
+                messages.error(
+                    request, "{0} is not a valid action.".format(action))
+                break
+
+            try:
+                rcv = run.runcaseversions.get(pk=rcv_id)
+            except model.RunCaseVersion.DoesNotExist:
+                messages.error(
+                    request,
+                    "{0} is not a valid run/caseversion ID.".format(rcv_id))
+                break
+
+            try:
+                result = rcv.results.get(
+                    tester=request.user, environment=environment)
+            except model.Result.DoesNotExist:
+                if action == "start":
+                    result = model.Result.objects.create(
+                        runcaseversion=rcv,
+                        tester=request.user,
+                        environment=environment,
+                        user=request.user)
+                else:
+                    messages.error(
+                        request,
+                        "Can't finish a result that was never started.")
+                    break
+
+            for argname in defaults.keys():
+                try:
+                    defaults[argname] = request.POST[argname]
+                except KeyError:
+                    pass
+
+            getattr(result, action)(**defaults)
+            break
+
+        if request.is_ajax():
+            # by not returning a TemplateResponse, we skip the sort and finder
+            # decorators, which aren't applicable to a single case.
+            return render(
+                request,
+                "runtests/list/_runtest_list_item.html",
+                {
+                    "environment": environment,
+                    "runcaseversion": rcv
+                    }
+                )
+        else:
+            return redirect(request.get_full_path())
 
     return TemplateResponse(
         request,

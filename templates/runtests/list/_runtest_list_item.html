@@ -38,7 +38,7 @@
   </form>
 
   {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
-    <form method="POST" class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
+    <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
       {% csrf_token %}
       {% if result.status == result.STATUS.invalidated %}
         <h4 class="summary">invalid or unclear.</h4>
@@ -49,8 +49,8 @@
       {% else %}
         <h4 class="summary">invalid or unclear?</h4>
         <div class="invalidform form content">
-          <label>description of problem:</label>
-          <textarea name="comment" placeholder="please explain why this test case is invalid." required></textarea>
+          <label for="invalid-comment-{{ runcaseversion.id }}">description of problem:</label>
+          <textarea name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
           <div class="form-actions">
             <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
           </div>

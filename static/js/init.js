@@ -51,6 +51,19 @@ var CC = (function (CC, $) {
             textbox: '#id_add_tags',
             ajax: true,
             url: $('#id_add_tags').data('autocomplete-url'),
+            extraDataName: 'product-id',
+            extraDataFn: function () {
+                var product_sel = $('#id_product'),
+                    selectedIndex = product_sel.prop('selectedIndex'),
+                    tagging_container = $('.case-form .tagging'),
+                    productID;
+                if (tagging_container.data('product-id')) {
+                    productID = tagging_container.data('product-id');
+                } else if (selectedIndex && selectedIndex !== 0) {
+                    productID = product.find('option:selected').data('product-id');
+                }
+                return productID;
+            },
             inputList: '.taglist',
             triggerSubmit: null,
             allowNew: true,
@@ -174,6 +187,7 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
+        CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');

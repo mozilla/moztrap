@@ -96,8 +96,8 @@
 
             // Create list of autocomplete suggestions from Ajax response or existing list of inputs
             updateSuggestions = function (data, cached) {
+                var extraDataName, suggestions;
                 if (!data && !options.ajax) {
-                    var suggestions;
                     if (options.caseSensitive) {
                         suggestions = inputList.find(options.inputs).not(':disabled').closest('li[class$="item"]').filter(function () {
                             return $(this).find('label').text().indexOf(typedText) !== -1;
@@ -154,6 +154,16 @@
                     }
                 }
 
+                if (options.extraDataName) {
+                    extraDataName = options.extraDataName;
+                    $.each(data.suggestions, function (index, value) {
+                        if (this[extraDataName]) {
+                            this.responseDataName = extraDataName;
+                            this.responseDataVal = this[extraDataName];
+                        }
+                    });
+                }
+
                 newSuggestions = ich.autocomplete_suggestion(data);
                 filterSuggestions();
                 suggestionList.html(filteredSuggestions);
@@ -196,17 +206,29 @@
             .keyup(function (e) {
                 // Updates suggestion-list if typed-text has changed
                 var updateSuggestionList = function () {
+                    var data,
+                        serializedData,
+                        extraData = {},
+                        extraDataName,
+                        extraDataVal;
                     if (textbox.val() !== typedText && textbox.val() !== placeholder) {
                         typedText = textbox.val();
                         if (typedText.length && typedText.trim() !== '') {
                             if (options.ajax) {
-                                if (cache[typedText]) {
-                                    updateSuggestions(cache[typedText], true);
+                                if (options.extraDataName && options.extraDataFn) {
+                                    extraDataName = options.extraDataName;
+                                    extraDataVal = options.extraDataFn();
+                                    extraData[extraDataName] = extraDataVal;
+                                }
+                                data = $.extend({}, extraData, {text: typedText});
+                                serializedData = $.param(data);
+                                if (cache[serializedData]) {
+                                    updateSuggestions(cache[serializedData], true);
                                 } else {
                                     ajaxCalls = ajaxCalls + 1;
-                                    $.get(options.url, {text: typedText}, function (response) {
+                                    $.get(options.url, data, function (response) {
                                         ajaxResponses = ajaxResponses + 1;
-                                        cache[typedText] = response;
+                                        cache[serializedData] = response;
                                         updateSuggestions(response, false);
                                     });
                                 }
@@ -355,7 +377,7 @@
             // Add new input or select existing input when suggestion is clicked
             click: function (e) {
                 e.preventDefault();
-                var thisGroup, thisTypeName, existingNewInput, index, newInput, thisInput,
+                var thisGroup, thisTypeName, existingNewInput, index, newInput, thisInput, data,
                     thisID = $(this).data('id'),
                     inputName = $(this).data('name');
                 if (options.multipleCategories) {
@@ -389,14 +411,19 @@
                         if (!options.multipleCategories) {
                             thisTypeName = 'new' + thisTypeName;
                         }
-                        newInput = ich.autocomplete_input({
+                        data = {
                             typeName: thisTypeName,
                             inputName: inputName,
                             id: inputName,
                             index: index,
                             newInput: true,
                             prefix: prefix
-                        });
+                        };
+                        if ($(this).data(options.extraDataName)) {
+                            data.responseDataName = options.extraDataName;
+                            data.responseDataVal = $(this).data(options.extraDataName);
+                        }
+                        newInput = ich.autocomplete_input(data);
                         existingNewInput = thisGroup.find(options.inputs + '[value="' + inputName + '"]');
                         // ...select it if it already exists...
                         if (existingNewInput.length && options.inputsNeverRemoved) {
@@ -413,13 +440,18 @@
                         }
                     } else {
                         // Otherwise, simply add the input.
-                        newInput = ich.autocomplete_input({
+                        data = {
                             typeName: thisTypeName,
                             inputName: inputName,
                             id: thisID,
                             index: index,
                             prefix: prefix
-                        });
+                        };
+                        if ($(this).data(options.extraDataName)) {
+                            data.responseDataName = options.extraDataName;
+                            data.responseDataVal = $(this).data(options.extraDataName);
+                        }
+                        newInput = ich.autocomplete_input(data);
                         if (thisGroup.children('ul').length) {
                             thisGroup.removeClass('empty').children('ul').append(newInput);
                         } else {
@@ -550,7 +582,9 @@
         inputsNeverRemoved: false,                      // Set ``true`` if non-new inputs are never added or removed (only checked or unchecked)
         caseSensitive: false,                           // Set ``true`` if inputs should be treated as case-sensitive
         prefix: '',                                     // Prefix to apply to each input ID (to avoid ID duplication when using multiple times on one page)
-        noInputsNote: false                             // Set ``true`` to add "none" when no there are no inputs
+        noInputsNote: false,                            // Set ``true`` to add "none" when no there are no inputs
+        extraDataName: null,                            // Additional key to be sent with ajax-request
+        extraDataFn: null                               // Function which returns additional value to be sent with ajax-request
     };
 
 }(jQuery));
