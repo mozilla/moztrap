@@ -60,7 +60,7 @@ var CC = (function (CC, $) {
                 if (tagging_container.data('product-id')) {
                     productID = tagging_container.data('product-id');
                 } else if (selectedIndex && selectedIndex !== 0) {
-                    productID = product.find('option:selected').data('product-id');
+                    productID = product_sel.find('option:selected').data('product-id');
                 }
                 return productID;
             },
