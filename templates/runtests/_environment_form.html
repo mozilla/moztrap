@@ -1,13 +1,13 @@
 {% load environment %}
 
+{% if environments_json %}
 <script>
-
 VALID_ENVIRONMENTS = {{ environments_json }};
-
 </script>
+{% endif %}
 
-<section class="drillenv {% if hasenv == 'empty' %}empty{% endif %}">
-  {% if hasenv != 'empty' %}
+<section class="drillenv {% if not form %}empty{% endif %}">
+  {% if form %}
     <h3 class="sectionhead">Set your environment</h3>
     <form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}">
       {% csrf_token %}
