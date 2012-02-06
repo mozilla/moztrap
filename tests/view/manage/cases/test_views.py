@@ -594,9 +594,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """If no productversion id, redirects back to original caseversion."""
         res = self.post({}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=self.cv.id)
                 )
@@ -607,9 +607,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """If bad productversion id, redirects back to original caseversion."""
         res = self.post({"productversion": 75}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=self.cv.id)
                 )
@@ -626,9 +626,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         res = self.post(
             {"productversion": target.productversion.id}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=target.id)
                 )
@@ -648,9 +648,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
         self.assertEqual(new.case, self.cv.case)
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=new.id)
                 )
@@ -765,10 +765,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
         form["description"] = "new desc"
         res = form.submit(status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse("manage_cases")
-            )
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Saved 'new name'.")
 

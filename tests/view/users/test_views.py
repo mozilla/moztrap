@@ -21,13 +21,13 @@ Tests for login/logout/account views.
 """
 from django.core.urlresolvers import reverse
 
-from ..base import WebTest
+from .. import base
 
 from ... import factories as F
 
 
 
-class LoginTest(WebTest):
+class LoginTest(base.ViewTestCase):
     """Tests for login view."""
     @property
     def url(self):
@@ -49,8 +49,7 @@ class LoginTest(WebTest):
         form["password"] = "sekrit"
         res = form.submit(status=302)
 
-        self.assertEqual(
-            res.headers["Location"], "http://localhost:80/")
+        self.assertRedirects(res, reverse("home"))
 
 
     def test_login_failed(self):
@@ -66,7 +65,7 @@ class LoginTest(WebTest):
 
 
 
-class LogoutTest(WebTest):
+class LogoutTest(base.ViewTestCase):
     """Tests for logout view."""
     @property
     def url(self):
@@ -90,5 +89,4 @@ class LogoutTest(WebTest):
 
         res = self.get(status=302)
 
-        self.assertEqual(
-            res.headers["Location"], "http://localhost:80/users/login/")
+        self.assertRedirects(res, reverse("login"))

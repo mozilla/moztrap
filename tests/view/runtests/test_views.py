@@ -212,10 +212,11 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 
         res = form.submit(status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80/runtests/run/{0}/env/{1}/".format(
-                self.testrun.id, self.envs[0].id)
+        self.assertRedirects(
+            res,
+            reverse(
+                "runtests_run",
+                kwargs={"run_id": self.testrun.id, "env_id": self.envs[0].id})
             )
 
 
@@ -268,8 +269,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
         res = self.get(status=302)
 
-        self.assertEqual(
-            res.headers["Location"], "http://localhost:80/runtests/")
+        self.assertRedirects(res, reverse("runtests"))
         res.follow().mustcontain("not open for testing")
 
 
@@ -279,10 +279,10 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
         res = self.get(status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80/runtests/environment/{0}/".format(
-                self.testrun.id))
+        self.assertRedirects(
+            res,
+            reverse("runtests_environment", kwargs={"run_id": self.testrun.id})
+            )
 
 
     def test_environment(self):

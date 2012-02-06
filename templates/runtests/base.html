@@ -5,5 +5,10 @@
 {% block run-active-nav %}active{% endblock run-active-nav %}
 
 {% block content %}
-  {% include "runtests/_run_drilldown_main.html" with details="none" hasenv="empty" %}
+  <div class="runsdrill">
+    <div class="runsfinder">
+      {% include "runtests/finder/_finder.html" %}
+    </div>
+    {% include "runtests/_environment_form.html" %}
+  </div>
 {% endblock content %}

@@ -99,10 +99,10 @@ var CC = (function (CC, $) {
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
             callback: function () {
-                $('.runsdrill .drillenv').slideUp('fast');
+                $('.runsdrill .runenvselect').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.runsdrill .drillenv').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill .runenvselect').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
