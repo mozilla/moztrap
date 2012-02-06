@@ -5,6 +5,10 @@
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
 {% block itembody-content %}
+<div class="description">
+  {{ caseversion.description }}
+</div>
+
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   <li>
