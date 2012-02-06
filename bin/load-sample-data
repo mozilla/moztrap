@@ -19,14 +19,4 @@
 
 # Load the sample data fixture.
 
-# Ugh. We have to overwrite permission and content type data so that the IDs
-# match up so the default roles have the correct permissions in the sample
-# data. But we can't just overwrite the data in loading the fixture, as content
-# types have a unique constraint, and MySQL doesn't know how to defer
-# constraints until the end of a transaction. So we have to first clear out
-# content types, and the other tables with foreign keys to content type.
-echo "DELETE FROM auth_group_permissions" | python manage.py dbshell
-echo "DELETE FROM auth_permission" | python manage.py dbshell
-echo "DELETE FROM django_content_type" | python manage.py dbshell
-
 python manage.py loaddata sample_data

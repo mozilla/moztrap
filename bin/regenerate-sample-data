@@ -19,4 +19,4 @@
 
 # Regenerate the sample data fixture using django-fixture-generator.
 
-python manage.py generate_fixture execution.sample_runs --format=json --indent=4 > fixtures/sample_data.json
+python manage.py generate_fixture execution.sample_runs --natural --format=json --indent=4 > fixtures/sample_data.json

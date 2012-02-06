@@ -18,8 +18,7 @@
 """Sample products fixture generator."""
 from django.core.management import call_command
 
-from django.contrib.auth.models import User, Group, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User, Group
 
 from fixture_generator import fixture_generator
 
@@ -53,7 +52,7 @@ def sample_products():
     cc8.environments.add(*webenvs.environments.all())
 
 
-@fixture_generator(ContentType, Permission, Group, User)
+@fixture_generator(Group, User)
 def sample_users():
     call_command("create_default_roles", verbosity=0)
 
