@@ -1,7 +1,6 @@
 {% extends 'lists/_listordering.html' %}
 
 {% block sortitems %}
-  {% include "lists/_sortitem.html" with sortname="status" sortID="caseversion__status" %}
+  {% include "lists/_sortitem.html" with sortname="result" sortID="caseversion__status" %}
   {% include "lists/_sortitem.html" with sortname="name" sortID="caseversion__name" %}
-  {% include "lists/_sortitem.html" with sortname="invalid" %}
 {% endblock sortitems %}

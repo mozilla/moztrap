@@ -42,7 +42,7 @@
 
 .itembody
 
-  .summary
+  > .summary
     +opacity(.5)
     +icon('ui/angle_right.png')
     +padding-leader(.25)
@@ -54,7 +54,7 @@
     #{$focus}
       +opacity(1)
 
-  .content
+  > .content
     +full(24)
     +clearfix
     +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
@@ -72,7 +72,7 @@
     @extend .detailstitle
 
   &.open
-    .summary
+    > .summary
       +opacity(1)
       +icon('ui/angle_down.png')
 

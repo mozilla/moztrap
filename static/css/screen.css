@@ -1524,7 +1524,7 @@ body > div {
   font-weight: normal;
 }
 
-.itembody .summary {
+.itembody > .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-image: url('../images/ui/angle_right.png?1326735333');
@@ -1548,11 +1548,11 @@ body > div {
   left: 0;
   width: 1.5em;
 }
-.itembody .summary:focus, .itembody .summary:hover, .itembody .summary:active {
+.itembody > .summary:focus, .itembody > .summary:hover, .itembody > .summary:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.itembody .content {
+.itembody > .content {
   clear: both;
   overflow: hidden;
   *zoom: 1;
@@ -1567,7 +1567,7 @@ body > div {
   margin-bottom: 0.75em;
   font-style: italic;
 }
-.itembody.open .summary {
+.itembody.open > .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/angle_down.png?1326735333');
