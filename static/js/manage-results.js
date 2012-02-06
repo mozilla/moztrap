@@ -78,7 +78,7 @@ var CC = (function (CC, $) {
                     replace = button.closest('.action-ajax-replace'),
                     success = function (response) {
                         var replacement = $(response.html);
-                        if (!response.no_replace) {
+                        if (!response.no_replace && replacement) {
                             replace.trigger('before-replace', [replacement]);
                             replace.replaceWith(replacement);
                             replacement.trigger('after-replace', [replacement]);
