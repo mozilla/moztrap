@@ -27,7 +27,6 @@
 
     {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
       <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
-        {% csrf_token %}
 
         <p class="summary testinvalid-summary" title="invalid or unclear">invalid or unclear</p>
 
@@ -37,6 +36,7 @@
           </p>
         {% else %}
           <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalidform content">
+            {% csrf_token %}
             <label for="invalid-comment-{{ runcaseversion.id }}">description of problem:</label>
             <textarea name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
             <div class="form-actions">
