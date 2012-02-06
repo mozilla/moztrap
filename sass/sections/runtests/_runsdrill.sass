@@ -1,17 +1,15 @@
-.drilltitle, .sectionhead
+.selectenvhead
   @extend h2
 
-.drillenv
+.runenvselect
   +clearfix
-  .sectionhead
+  +leader
+  .selectenvhead
     +columns(12,24)
     +padding-leader(.25)
   form
     +columns(12,24)
     +omega(24)
-
-  .runsdrill &
-    +leader
 
 #runtests-environment-form
   label

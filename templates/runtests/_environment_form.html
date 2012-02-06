@@ -6,9 +6,9 @@ VALID_ENVIRONMENTS = {{ environments_json }};
 </script>
 {% endif %}
 
-<section class="drillenv {% if not form %}empty{% endif %}">
+<div class="runenvselect {% if not form %}empty{% endif %}">
   {% if form %}
-    <h3 class="sectionhead">Set your environment</h3>
+    <h3 class="selectenvhead">Set your environment</h3>
     <form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}">
       {% csrf_token %}
       {{ form.non_field_errors }}
@@ -20,4 +20,4 @@ VALID_ENVIRONMENTS = {{ environments_json }};
       </div>
     </form>
   {% endif %}
-</section>
+</div>
