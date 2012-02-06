@@ -38,13 +38,11 @@ class HomeViewTest(base.AuthenticatedViewTestCase):
         self.add_perm("execute")
         res = self.get(status=302)
 
-        self.assertEqual(
-            res.headers["Location"], "http://localhost:80/runtests/")
+        self.assertRedirects(res, reverse("runtests"))
 
 
     def test_no_permission_redirects_to_manage_cases(self):
         """Users without execute permission are directed to manage-cases."""
         res = self.get(status=302)
 
-        self.assertEqual(
-            res.headers["Location"], "http://localhost:80/manage/cases/")
+        self.assertRedirects(res, reverse("manage_cases"))

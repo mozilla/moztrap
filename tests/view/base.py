@@ -27,6 +27,7 @@ import django_webtest
 from mock import patch
 
 from .. import factories as F
+from ..utils import Url
 
 
 
@@ -59,7 +60,20 @@ class WebTest(django_webtest.WebTest):
 
 
 
-class AuthenticatedViewTestCase(WebTest):
+class ViewTestCase(WebTest):
+    """Add some utility assertions."""
+    def assertRedirects(self, response, path, status_code=302):
+        """An assertRedirects that works with WebTest."""
+        self.assertEqual(response.status_int, status_code)
+
+        self.assertEqual(
+            Url(response.headers["Location"]),
+            Url("http://localhost:80" + path)
+            )
+
+
+
+class AuthenticatedViewTestCase(ViewTestCase):
     """Base test case for authenticated views."""
     def setUp(self):
         """Set-up for authenticated view test cases; create a user."""
