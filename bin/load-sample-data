@@ -1,3 +1,32 @@
 #!/bin/bash
+# Case Conductor is a Test Case Management system.
+# Copyright (C) 2011-12 Mozilla
+#
+# This file is part of Case Conductor.
+#
+# Case Conductor is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Case Conductor is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+
+# Load the sample data fixture.
+
+# Ugh. We have to overwrite permission and content type data so that the IDs
+# match up so the default roles have the correct permissions in the sample
+# data. But we can't just overwrite the data in loading the fixture, as content
+# types have a unique constraint, and MySQL doesn't know how to defer
+# constraints until the end of a transaction. So we have to first clear out
+# content types, and the other tables with foreign keys to content type.
+echo "DELETE FROM auth_group_permissions" | python manage.py dbshell
+echo "DELETE FROM auth_permission" | python manage.py dbshell
+echo "DELETE FROM django_content_type" | python manage.py dbshell
 
 python manage.py loaddata sample_data
