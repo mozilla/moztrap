@@ -26,6 +26,7 @@ from django.core.urlresolvers import reverse
 from mock import patch
 
 from ... import factories as F
+from ...utils import refresh
 
 from .. import base
 
@@ -248,6 +249,29 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         return model
 
 
+    def create_rcv(self, **kwargs):
+        """Create a runcaseversion for this run with given kwargs."""
+        defaults = {
+            "run": self.testrun,
+            "caseversion__productversion": self.testrun.productversion,
+            "caseversion__case__product": self.testrun.productversion.product,
+            }
+        defaults.update(kwargs)
+        return F.RunCaseVersionFactory.create(**defaults)
+
+
+    def create_result(self, **kwargs):
+        """Create a result for this run/env/user with given kwargs."""
+        defaults = {
+            "tester": self.user,
+            "environment": self.envs[0]
+            }
+        defaults.update(kwargs)
+        if "runcaseversion" not in defaults:
+            defaults["runcaseversion"] = self.create_rcv()
+        return F.ResultFactory.create(**defaults)
+
+
     def test_requires_execute_permission(self):
         """Requires execute permission."""
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
@@ -320,17 +344,6 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         self.assertIn("checked", unicode(finder_runs[0]))
 
 
-    def create_rcv(self, **kwargs):
-        """Create a runcaseversion for this run with given kwargs."""
-        defaults = {
-            "run": self.testrun,
-            "caseversion__productversion": self.testrun.productversion,
-            "caseversion__case__product": self.testrun.productversion.product,
-            }
-        defaults.update(kwargs)
-        return F.RunCaseVersionFactory.create(**defaults)
-
-
     def test_runcaseversions(self):
         """Lists runcaseversions."""
         self.create_rcv(caseversion__name="Foo Case")
@@ -341,23 +354,358 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
 
     def test_start_case(self):
-        """Submit a "start" action for a case."""
+        """Submit a "start" action for a case; redirects."""
         rcv = self.create_rcv()
 
-        form = self.get(status=200).forms[
-            "test-status-form-{0}".format(rcv.id)]
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(
-                name="action-start",
-                index=0,
-                headers={"X-Requested-With": "XMLHttpRequest"},
-                )
+            res = form.submit(name="action-start", index=0, status=302)
 
-        self.assertIn('button class="pass"', res.json["html"])
+        self.assertRedirects(res, self.url)
 
         result = rcv.results.get(tester=self.user, environment=self.envs[0])
 
         self.assertEqual(result.status, result.STATUS.started)
         self.assertEqual(result.started, datetime(2012, 2, 3))
+
+
+    def test_redirect_preserves_sort(self):
+        """Redirect after non-Ajax post preserves sort params."""
+        rcv = self.create_rcv()
+
+        form = self.get(
+            params={"sortfield": "name"}, status=200).forms[
+            "test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(name="action-start", index=0, status=302)
+
+        self.assertRedirects(res, self.url + "?sortfield=name")
+
+
+    def test_start_case_ajax(self):
+        """Submit a "start" action for a case via Ajax; returns HTML snippet."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(
+            name="action-start",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+            )
+
+        self.assertIn('button class="pass"', res.json["html"])
+
+
+    def test_post_no_action_redirect(self):
+        """POST with no action does nothing and redirects."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, self.url)
+
+
+    def test_post_no_action_ajax(self):
+        """Ajax POST with no action does nothing and returns no HTML."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(
+            headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
+
+        self.assertEqual(res.json["html"], "")
+        self.assertEqual(res.json["no_replace"], True)
+
+
+    @patch("cc.view.runtests.views.ACTIONS", {})
+    def test_post_bad_action_redirect(self):
+        """POST with bad action does nothing but message and redirects."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        # we patched the actions dictionary so "start" will not be valid
+        res = form.submit(name="action-start", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        res.follow().mustcontain("start is not a valid action")
+
+
+    @patch("cc.view.runtests.views.ACTIONS", {})
+    def test_post_bad_action_ajax(self):
+        """Ajax POST with bad action sets message and returns no HTML."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        # we patched the actions dictionary so "start" will not be valid
+        res = form.submit(
+            name="action-start", index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
+
+        self.assertEqual(res.json["html"], "")
+        self.assertEqual(res.json["no_replace"], True)
+        self.assertEqual(
+            res.json["messages"][0]["message"], "start is not a valid action.")
+
+
+    def test_post_bad_rcv_id_redirect(self):
+        """POST with bad rcv id does nothing but message and redirects."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        rcv.delete()
+
+        res = form.submit(name="action-start", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        res.follow().mustcontain("is not a valid run/caseversion ID")
+
+
+    def test_post_bad_rcv_id_ajax(self):
+        """Ajax POST with bad rcv id sets message and returns no HTML."""
+        rcv = self.create_rcv()
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        rcv.delete()
+
+        res = form.submit(
+            name="action-start", index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
+
+        self.assertEqual(res.json["html"], "")
+        self.assertEqual(res.json["no_replace"], True)
+        self.assertIn(
+            "is not a valid run/caseversion ID",
+            res.json["messages"][0]["message"]
+            )
+
+
+    def test_post_missing_result(self):
+        """POST an action other than start to a missing result; message."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        result.delete()
+
+        res = form.submit(name="action-finishsucceed", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        res.follow().mustcontain("finish a result that was never started")
+
+
+    def test_post_missing_result_ajax(self):
+        """Ajax POST to missing action results in message, fixed HTML."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        result.delete()
+
+        res = form.submit(
+            name="action-finishsucceed", index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
+
+        self.assertIn('button class="start', res.json["html"])
+        self.assertIn(
+            "finish a result that was never started",
+            res.json["messages"][0]["message"]
+            )
+
+
+    def test_pass_case(self):
+        """Submit a "finishsucceed" action for a case; redirects."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            res = form.submit(name="action-finishsucceed", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.passed)
+        self.assertEqual(result.completed, datetime(2012, 2, 3))
+
+
+    def test_pass_case_ajax(self):
+        """Ajax post a "finishsucceed" action; returns HTML snippet."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(
+            name="action-finishsucceed",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+            )
+
+        self.assertIn('button class="restart', res.json["html"])
+
+
+    def test_invalidate_case(self):
+        """Submit a "finishinvalidate" action for a case; redirects."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms[
+            "test-invalid-form-{0}".format(rcv.id)]
+
+        form["comment"] = "it ain't valid"
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            res = form.submit(
+                name="action-finishinvalidate", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.invalidated)
+        self.assertEqual(result.comment, "it ain't valid")
+        self.assertEqual(result.completed, datetime(2012, 2, 3))
+
+
+    def test_invalidate_case_ajax(self):
+        """Ajax post a "finishinvalidate" action; returns HTML snippet."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms[
+            "test-invalid-form-{0}".format(rcv.id)]
+
+        form["comment"] = "it ain't valid"
+
+        res = form.submit(
+            name="action-finishinvalidate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+            )
+
+        self.assertIn('button class="restart', res.json["html"])
+
+
+    def test_fail_case(self):
+        """Submit a "finishinvalidate" action for a case; redirects."""
+        step = F.CaseStepFactory.create(number=1)
+        rcv = self.create_rcv(caseversion=step.caseversion)
+        self.create_result(status="started", runcaseversion=rcv)
+
+        form = self.get(status=200).forms[
+            "test-fail-form-{0}-1".format(rcv.id)]
+
+        form["comment"] = "it didn't pass"
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            res = form.submit(
+                name="action-finishfail", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.failed)
+        self.assertEqual(result.comment, "it didn't pass")
+        self.assertEqual(result.completed, datetime(2012, 2, 3))
+
+
+    def test_fail_case_ajax(self):
+        """Ajax post a "finishinvalidate" action; returns HTML snippet."""
+        step = F.CaseStepFactory.create(number=1)
+        rcv = self.create_rcv(caseversion=step.caseversion)
+        self.create_result(status="started", runcaseversion=rcv)
+
+        form = self.get(status=200).forms[
+            "test-fail-form-{0}-1".format(rcv.id)]
+
+        form["comment"] = "it didn't pass"
+
+        res = form.submit(
+            name="action-finishfail",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+            )
+
+        self.assertIn('button class="restart', res.json["html"])
+
+
+    def test_restart_case(self):
+        """Submit a "restart" action for a case; redirects."""
+        result = self.create_result(status="passed")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            res = form.submit(name="action-restart", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.started)
+        self.assertEqual(result.started, datetime(2012, 2, 3))
+
+
+    def test_restart_case_ajax(self):
+        """Ajax post a "restart" action; returns HTML snippet."""
+        result = self.create_result(status="passed")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(
+            name="action-restart",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+            )
+
+        self.assertIn('button class="pass', res.json["html"])
+
+
+    def test_parameter_defaults(self):
+        """Action parameters have defaults and are not required."""
+        result = self.create_result(status="started")
+        rcv = result.runcaseversion
+
+        form = self.get(status=200).forms[
+            "test-invalid-form-{0}".format(rcv.id)]
+
+        # prevents any comment parameter from being submitted
+        del form.fields["comment"]
+
+        res = form.submit(name="action-finishinvalidate", index=0, status=302)
+
+        self.assertRedirects(res, self.url)
+
+        result = refresh(result)
+
+        self.assertEqual(result.status, result.STATUS.invalidated)
+        self.assertEqual(result.comment, "")

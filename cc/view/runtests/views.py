@@ -21,6 +21,7 @@ Views for test execution.
 """
 import json
 
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
 
@@ -95,6 +96,7 @@ ACTIONS = {
     "finishsucceed": {},
     "finishinvalidate": {"comment": ""},
     "finishfail": {"stepnumber": None, "comment": "", "bug": ""},
+    "restart": {},
     }
 
 
@@ -120,6 +122,8 @@ def run(request, run_id, env_id):
     if request.method == "POST":
         prefix = "action-"
         while True:
+            rcv = None
+
             try:
                 action, rcv_id = [
                     (k[len(prefix):], int(v)) for k, v in request.POST.items()
@@ -129,7 +133,7 @@ def run(request, run_id, env_id):
                 break
 
             try:
-                defaults = ACTIONS[action]
+                defaults = ACTIONS[action].copy()
             except KeyError:
                 messages.error(
                     request, "{0} is not a valid action.".format(action))
@@ -169,6 +173,13 @@ def run(request, run_id, env_id):
             break
 
         if request.is_ajax():
+            # if we don't know the runcaseversion id, we return an empty
+            # response.
+            if rcv is None:
+                return HttpResponse(
+                    json.dumps({"html": "", "no_replace": True}),
+                    content_type = "application/json",
+                    )
             # by not returning a TemplateResponse, we skip the sort and finder
             # decorators, which aren't applicable to a single case.
             return render(
