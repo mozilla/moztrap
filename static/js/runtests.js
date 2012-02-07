@@ -60,7 +60,7 @@ var CC = (function (CC, $) {
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
-            tests = context.find('.item.action-ajax-replace'),
+            tests = context.find('.listitem.action-ajax-replace'),
             ajaxFormsInit = function (test) {
                 var forms = test.find('form');
 
@@ -74,7 +74,7 @@ var CC = (function (CC, $) {
                         if (response.html) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
-                            newTest.find('.details').andSelf().html5accordion();
+                            newTest.find('.details').html5accordion();
                             CC.autoFocus('.details.stepfail > .summary', newTest);
                             CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
