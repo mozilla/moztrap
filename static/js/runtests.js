@@ -91,15 +91,15 @@ var CC = (function (CC, $) {
     CC.failedTestBug = function (container) {
         var context = $(container);
 
-        context.on('change', '.item .stepfail input[type="radio"][name="bugs"]', function () {
+        context.on('change', '.listitem .stepfail input[type="radio"][name="bug"]', function () {
             var thisList = $(this).closest('.stepfail'),
                 newBug = thisList.find('input[type="radio"].newbug'),
-                newBugInput = thisList.find('input[type="url"][name="related_bug"]');
+                newBugInput = thisList.find('input[type="url"][name="bug"]');
 
             if (newBug.is(':checked')) {
-                newBugInput.removeAttr('disabled');
+                newBugInput.prop('disabled', false);
             } else {
-                newBugInput.attr('disabled', true);
+                newBugInput.prop('disabled', true);
             }
         });
     };
