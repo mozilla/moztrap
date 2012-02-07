@@ -201,8 +201,8 @@ var CC = (function (CC, $) {
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();
-        CC.autoFocus('.details.stepfail > .summary', '#run');
-        CC.autoFocus('.details.testinvalid > .summary', '#run');
+        CC.autoFocus('.details.stepfail > .summary', '#runtests');
+        CC.autoFocus('.details.testinvalid > .summary', '#runtests');
         CC.runTests('#runtests');
         CC.breadcrumb('.drilldown');
         CC.failedTestBug('#runtests');
