@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
 
     // hide empty run-tests environments form on initial load
     CC.hideEmptyRuntestsEnv = function () {
-        $('.runsfinder + .runenvselect.empty').hide();
+        $('.runenvselect.empty').hide();
     };
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
