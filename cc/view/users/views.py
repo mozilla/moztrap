@@ -27,6 +27,8 @@ from django.contrib import messages
 from registration import views as registration_views
 from session_csrf import anonymous_csrf
 
+from . import forms
+
 
 
 @anonymous_csrf
@@ -44,6 +46,7 @@ def password_change(request):
     response = auth_views.password_change(
         request,
         template_name="users/password_change_form.html",
+        password_change_form=forms.ChangePasswordForm,
         post_change_redirect=reverse("home")
         )
 
@@ -79,6 +82,7 @@ def password_reset_confirm(request, uidb36, token):
         uidb36=uidb36,
         token=token,
         template_name="users/password_reset_confirm.html",
+        set_password_form=forms.SetPasswordForm,
         post_reset_redirect=reverse("home")
         )
 
