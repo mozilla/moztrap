@@ -95,6 +95,7 @@ ACTIONS = {
     "finishsucceed": {},
     "finishinvalidate": {"comment": ""},
     "finishfail": {"stepnumber": None, "comment": "", "bug": ""},
+    "restart": {},
     }
 
 

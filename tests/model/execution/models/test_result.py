@@ -226,3 +226,58 @@ class ResultTest(TestCase):
         r.finishfail(stepnumber="2")
 
         self.assertEqual(r.stepresults.count(), 0)
+
+
+    def test_restart(self):
+        """Restart method marks status started and sets started timestamp."""
+        r = F.ResultFactory.create(
+            status="passed", started=datetime(2011, 12, 1))
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.restart()
+
+        r = refresh(r)
+        self.assertEqual(r.status, "started")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
+
+
+    def test_restart_sets_modified_user(self):
+        """Restart method can set modified-by user."""
+        r = F.ResultFactory.create()
+        u = F.UserFactory.create()
+
+        r.restart(user=u)
+
+        self.assertEqual(refresh(r).modified_by, u)
+
+
+    def test_restart_clears_completed_timestamp(self):
+        """Restart method clears completed timestamp."""
+        r = F.ResultFactory.create(completed=datetime(2011, 12, 1))
+
+        r.restart()
+
+        self.assertEqual(refresh(r).completed, None)
+
+
+    def test_restart_clears_comment(self):
+        """Restart method clears comment."""
+        r = F.ResultFactory.create(
+            status="invalidated", comment="it ain't valid")
+
+        r.restart()
+
+        self.assertEqual(refresh(r).comment, "")
+
+
+    def test_restart_clears_stepresults(self):
+        """Restart method clears any step results."""
+        sr = F.StepResultFactory.create(
+            status="failed", result__status="failed")
+
+        sr.result.restart()
+
+        r = refresh(sr.result)
+        self.assertEqual(r.status, "started")
+        self.assertEqual(r.stepresults.count(), 0)

@@ -316,6 +316,16 @@ class Result(CCModel):
         self.save(force_update=True, user=user)
 
 
+    def restart(self, user=None):
+        """Restart this test, clearing any previous result."""
+        self.stepresults.all().delete()
+        self.status = self.STATUS.started
+        self.started = utcnow()
+        self.completed = None
+        self.comment = ""
+        self.save(force_update=True, user=user)
+
+
 
 class StepResult(CCModel):
     """A result of a particular step in a test case."""
