@@ -2584,21 +2584,28 @@ body.login .message {
   margin-left: 25.773%;
   margin-right: 25.773%;
 }
+body.login h2, body.login .selectenvhead, body.login .forgot {
+  clear: both;
+  padding-left: 41.026%;
+  color: #999999;
+}
 body.login h2, body.login .selectenvhead {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
+  margin-bottom: 1.5em;
+}
+body.login .forgot {
+  margin-top: 1.5em;
+  margin-bottom: 0em;
+  font-style: italic;
+  text-align: right;
 }
 body.login label {
   display: inline;
   float: left;
   width: 38.462%;
   margin-right: 2.564%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 body.login input, body.login .errorlist {
   display: inline;

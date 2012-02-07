@@ -35,13 +35,27 @@ body.login
   .message
     +squish(6,6)
 
+  h2, .forgot
+    +full(10)
+    +prefix(4,10)
+    color: $mid
+
   h2
-    +gone
+    +trailer
+
+  .forgot
+    +leader
+    +trailer(0)
+    +italic
+    text-align: right
 
   // Forms -------------------------------------------------------------------
 
   label
     +columns(4,10)
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
   input, .errorlist
     +columns(6,10)
     +omega(10)
