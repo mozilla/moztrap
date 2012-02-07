@@ -853,9 +853,39 @@ body > div {
   margin-right: 1.031%;
   #margin-left: -1em;
   margin-top: 3.375em;
+  font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: relative;
   text-align: right;
   z-index: 2;
+}
+#accountnav .fn {
+  font-weight: 500;
+}
+#accountnav p {
+  display: inline;
+}
+#accountnav ul {
+  list-style-type: none;
+}
+#accountnav ul, #accountnav ul li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#accountnav ul li:after {
+  content: ", ";
+}
+#accountnav ul li:last-child:after {
+  content: "";
+}
+#accountnav ul li.last:after {
+  content: "";
+}
+#accountnav ul::before {
+  content: "[";
+}
+#accountnav ul::after {
+  content: "]";
 }
 
 [role="navigation"] {

@@ -1,17 +1,17 @@
 <nav id="accountnav">
   <h2 class="navhead">Account Navigation</h2>
-  <ul>
-    {% if user %}
-      <li>
-        Welcome {{ request.user.username }} [<a href="{% url auth_logout %}">Sign Out</a>]
-      </li>
-      <li><a href="{% url auth_password_change %}">Change Password</a></li>
+  {% if user %}
+    <p class="account-welcome vcard">Welcome <span class="fn">{{ request.user.username }}</span></p>
+    <ul class="account-links">
+      <li><a href="{% url auth_logout %}">Sign Out</a></li>
+      <li><a href="{% url auth_password_change %}">Password</a></li>
       {# @@@ <li><a href="#">Account Settings</a></li> #}
-    {% else %}
-      <li>
-        <a href="{% url auth_login %}">Sign in</a> or <a href="{# @@@ url register #}">Register</a>
-      </li>
-    {% endif %}
-    {# @@@ <li><a href="#">Help</a></li> #}
-  </ul>
+    </ul>
+  {% else %}
+    <p>
+      <a href="{% url auth_login %}">Sign in</a> or
+      <a href="{# @@@ url register #}">Register</a>
+    </p>
+  {% endif %}
+    {# @@@ <p><a href="#">Help</a></p> #}
 </nav>
