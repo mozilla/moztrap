@@ -50,7 +50,7 @@ def main(base_dir, argv):
 
     args = ["install", "--no-index",
             "-f", "file://%s" % dist_dir, "-r", reqs_file]
-    print "Running 'pip %s'" % ", ".join(args)
+    print "Running 'pip %s'" % " ".join(args)
     return pip.main(args)
 
 
