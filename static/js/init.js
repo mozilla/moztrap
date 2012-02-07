@@ -150,7 +150,7 @@ var CC = (function (CC, $) {
         CC.loadListItemDetails();
         CC.manageActionsAjax();
         CC.directFilterLinks();
-        CC.filterFormAjax('.listpage');
+        CC.filterFormAjax('.manage, .results');
 
         // manage-products.js
         CC.formOptionsFilter({
