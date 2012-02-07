@@ -204,7 +204,7 @@ var CC = (function (CC, $) {
         CC.autoFocus('.details.stepfail > .summary', '#run');
         CC.autoFocus('.details.testinvalid > .summary', '#run');
         CC.runTests('#run');
-        CC.breadcrumb('.runsdrill');
+        CC.breadcrumb('.drilldown');
         CC.failedTestBug('#run');
         CC.filterEnvironments('#runtests-environment-form');
     });

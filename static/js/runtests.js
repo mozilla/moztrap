@@ -41,18 +41,19 @@ var CC = (function (CC, $) {
 
     // Open hierarchical navigation directly to clicked breadcrumb link
     CC.breadcrumb = function (context) {
-        $(context).find('.colcontent').each(function () {
+        var finder = $(context);
+        finder.find('.runsdrill .colcontent').each(function () {
             $(this).data('originalHTML', $(this).html());
         });
-        $('.runtests-nav .secondary .breadcrumb').click(function () {
-            if (!$('.drilldown.details').hasClass('open')) {
-                $('.drilldown.details > .summary').click();
+        $('.runtests-nav .secondary .breadcrumb').click(function (e) {
+            if (!finder.hasClass('open')) {
+                finder.children('.summary').click();
             }
-            $(context).find('.colcontent').each(function () {
+            finder.find('.runsdrill .colcontent').each(function () {
                 $(this).html($(this).data('originalHTML'));
             });
-            $(context).find('#' + $(this).data('id')).click();
-            return false;
+            finder.find('#' + $(this).data('id')).click();
+            e.preventDefault();
         });
     };
 
