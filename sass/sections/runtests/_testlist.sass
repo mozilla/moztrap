@@ -41,15 +41,20 @@
 .testinvalid
 
   .invalid-summary
+    +demi
     +box-sizing(border-box)
     +columns(4,24)
     +omega(24)
-    +button-style($light,'ui/warning.png',$inset:true)
     +trailer(0)
+    +rhythm-borders(1px,.25)
+    +icon('ui/warning.png',$notext:false)
+    border-color: rgba($base,$xxxsmall)
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
     cursor: pointer
+    &:hover
+      +button-style($light,'ui/warning.png',$inset:true)
 
   .invalid-content, .invalid-form
     +full(24)
