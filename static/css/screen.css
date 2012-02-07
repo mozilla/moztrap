@@ -3617,6 +3617,12 @@ body.login input, body.login .errorlist {
   line-height: 1.5em;
   font-weight: 500;
 }
+#runtests .description, #runtests .steps {
+  padding-left: 16.842%;
+}
+#runtests .description {
+  font-style: italic;
+}
 
 .result-action {
   text-align: left;

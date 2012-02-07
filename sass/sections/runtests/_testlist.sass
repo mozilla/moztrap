@@ -1,3 +1,5 @@
+// ---------------------------------------------------------------------------
+// Runtest list basics
 #runtests
 
   .listordering
@@ -19,6 +21,14 @@
     +adjust-font-size-to($medpx,1.5)
     +demi
 
+  .description, .steps
+    +prefix(4,24)
+
+  .description
+    +italic
+
+// ---------------------------------------------------------------------------
+// Result action buttons
 .result-action
   text-align: left
   &.start
@@ -38,6 +48,8 @@
     #{$focus}
       +button-style($yellow,'ui/refresh.png')
 
+// ---------------------------------------------------------------------------
+// Test Invalid
 .testinvalid
 
   .invalid-summary
