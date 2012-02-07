@@ -10,35 +10,35 @@
       {% csrf_token %}
 
       {% if result.status == result.STATUS.assigned %}
-        <button class="start" value="{{ runcaseversion.id }}" name="action-start">start</button>
+        <button class="start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
       {% endif %}
       {% if result.status == result.STATUS.started %}
-        <button class="pass" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
+        <button class="pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
       {% endif %}
 
       {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-        <button class="restart {{ result.status }}" value="{{ runcaseversion.id }}" name="action-restart" title="test {{ result.status }} (restart test)">
+        <button class="result-action restart {{ result.status }}" value="{{ runcaseversion.id }}" name="action-restart" title="test {{ result.status }} (restart test)">
           {{ result.status }}
         </button>
       {% endif %}
     </form>
 
-    <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+    <h3 class="name" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
 
     {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
       <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
 
-        <p class="summary testinvalid-summary" title="invalid or unclear">invalid or unclear</p>
+        <p class="summary invalid-summary" title="invalid or unclear">invalid or unclear</p>
 
         {% if result.status == result.STATUS.invalidated %}
-          <p class="invaliddesc content">
+          <p class="invalid-content">
             {{ result.comment }}
           </p>
         {% else %}
-          <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalidform content">
+          <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
             {% csrf_token %}
-            <label for="invalid-comment-{{ runcaseversion.id }}">description of problem:</label>
-            <textarea name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
+            <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
+            <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
             <div class="form-actions">
               <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
             </div>

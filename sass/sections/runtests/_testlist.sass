@@ -1,0 +1,77 @@
+#runtests
+
+  .listordering
+    padding-left: rhythm(1)
+
+  .item-summary
+    +padding-leader(.5)
+    +padding-trailer(.5)
+
+  .results, .byresults
+    +columns(4,24)
+  .result-action
+    @extend .allcaps
+    width: 100%
+
+  .name, .byname
+    +columns(16,24)
+  .name
+    +adjust-font-size-to($medpx,1.5)
+    +demi
+
+.result-action
+  text-align: left
+  &.start
+    +button-style($blue-lighter,'ui/power.png')
+  &.pass
+    +button-style($green-light,'ui/check.png')
+  &.passed
+    +button-style($green-dark,'ui/check.png')
+  &.failed
+    +button-style($red,'ui/x.png')
+  &.invalidated
+    +button-style($yellow-darker,'ui/check.png')
+  &.restart
+    +box-shadow($base 0 0 $xxsmallem inset)
+    +text-shadow(rgba($base,$small) 0 -1px 0)
+    color: $lightest
+    #{$focus}
+      +button-style($yellow,'ui/refresh.png')
+
+.testinvalid
+
+  .invalid-summary
+    +box-sizing(border-box)
+    +columns(4,24)
+    +omega(24)
+    +button-style($light,'ui/warning.png',$inset:true)
+    +trailer(0)
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    cursor: pointer
+
+  .invalid-content, .invalid-form
+    +full(24)
+    +prefix(4,24)
+    +trailer(0)
+
+  .invalid-form
+    +padding-leader(1)
+    .invalid-label
+      +gone
+    .invalid
+      +button-style($yellow-dark)
+    .form-actions
+      +padding-leader(.25)
+      +trailer(.75)
+
+  .invalid-content
+    +italic
+    &::before
+      content: image-url('ui/warning.png')
+      vertical-align: middle
+
+  &.open, &.invalidated
+    .invalid-summary
+      +button-style($yellow,'ui/warning.png')

@@ -1,6 +1,6 @@
 <div class="itembody details {% block extra-itembody-classes %}{% endblock %}">
-  <a {% if details_url %}href="{{ details_url }}" {% endif %}class="summary" title="show details">details</a>
-  <div class="content">
+  <a {% if details_url %}href="{{ details_url }}" {% endif %}class="summary item-summary" title="show details">details</a>
+  <div class="content item-content">
     {% block itembody-content %}
       {# content normally loaded via ajax #}
     {% endblock itembody-content %}
