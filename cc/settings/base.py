@@ -184,6 +184,13 @@ LOGGING = {
     }
 }
 
+INSTALLED_APPS += ["registration"]
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "do-not-reply@example.com"
+
 INSTALLED_APPS += ["django_sha2"]
 
 INSTALLED_APPS += ["compressor"]

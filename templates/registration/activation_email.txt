@@ -1,0 +1,15 @@
+Hello,
+
+We've received a request to create an account for this email address at
+{{ site.name }}.
+
+To activate this account, please visit:
+
+{% load urls %}{% protocol %}://{{ site.domain }}{% url registration_activate activation_key=activation_key %}
+
+If you did not create this account, please disregard this email. This
+activation link will expire in {{ expiration_days }} days.
+
+Thanks,
+
+- {{ site.name }}

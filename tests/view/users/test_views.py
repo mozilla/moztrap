@@ -32,7 +32,7 @@ class LoginTest(base.ViewTestCase):
     @property
     def url(self):
         """Shortcut for login url."""
-        return reverse("login")
+        return reverse("auth_login")
 
 
     def get(self):
@@ -70,7 +70,7 @@ class LogoutTest(base.ViewTestCase):
     @property
     def url(self):
         """Shortcut for logout url."""
-        return reverse("logout")
+        return reverse("auth_logout")
 
 
     def get(self, **kwargs):
@@ -82,11 +82,11 @@ class LogoutTest(base.ViewTestCase):
         """Successful logout redirects to login."""
         F.UserFactory.create(username="test", password="sekrit")
 
-        form = self.app.get(reverse("login")).forms["loginform"]
+        form = self.app.get(reverse("auth_login")).forms["loginform"]
         form["username"] = "test"
         form["password"] = "sekrit"
         form.submit()
 
         res = self.get(status=302)
 
-        self.assertRedirects(res, reverse("login"))
+        self.assertRedirects(res, reverse("auth_login"))

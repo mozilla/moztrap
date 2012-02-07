@@ -28,32 +28,32 @@ urlpatterns = patterns(
 
     # testcase ---------------------------------------------------------------
     # manage
-    url("^cases/$",
+    url(r"^cases/$",
         "cc.view.manage.cases.views.cases_list",
         name="manage_cases"),
 
     # ajax details
-    url("^cases/_detail/(?P<caseversion_id>\d+)/$",
+    url(r"^cases/_detail/(?P<caseversion_id>\d+)/$",
         "cc.view.manage.cases.views.case_details",
         name="manage_case_details"),
 
     # add
-    url("^case/add/$",
+    url(r"^case/add/$",
         "cc.view.manage.cases.views.case_add",
         name="manage_case_add"),
 
     # add bulk
-    url("^case/add/bulk/$",
+    url(r"^case/add/bulk/$",
         "cc.view.manage.cases.views.case_add_bulk",
         name="manage_case_add_bulk"),
 
     # edit
-    url("^case/version/(?P<caseversion_id>\d+)/$",
+    url(r"^case/version/(?P<caseversion_id>\d+)/$",
         "cc.view.manage.cases.views.caseversion_edit",
         name="manage_caseversion_edit"),
 
     # new version
-    url("^case/version/(?P<caseversion_id>\d+)/clone/$",
+    url(r"^case/version/(?P<caseversion_id>\d+)/clone/$",
         "cc.view.manage.cases.views.caseversion_clone",
         name="manage_caseversion_clone"),
 

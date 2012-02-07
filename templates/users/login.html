@@ -14,9 +14,13 @@
       {% endfor %}
     </div>
     <div class="form-actions">
-      <a href="{# @@@ url register #}">register</a> or
+      <a href="{% url registration_register %}">register</a> or
       <button type="submit">login</button>
     </div>
+    <p>
+      Forgot your password?
+      <a href="{% url auth_password_reset %}">Reset it</a>.
+    </p>
   </form>
 </section>
 {% endblock content %}

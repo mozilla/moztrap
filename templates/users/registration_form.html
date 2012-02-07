@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Create an account | {{ block.super }}{% endblock title %}
+
+{% block content %}
+<section id="register">
+  <h2>Create an account</h2>
+  {% include "users/_account_form.html" %}
+</section>
+{% endblock content %}

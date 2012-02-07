@@ -22,15 +22,14 @@ step 2; you may have to prepend ``sudo`` to step 3 in that case.)
 8. Visit http://localhost:8000 in your browser.
 
 Congratulations! If that all worked, you have a functioning instance of Case
-Conductor for local testing and experimentation, or :doc:`developing
-<development>` Case Conductor.
+Conductor for local testing, experimentation, and :doc:`development
+<development>`.
 
 See the full :doc:`installation` documentation for details and troubleshooting
 of the above steps.
 
-If this is a production deployment of Case Conductor, please read the
-:doc:`deployment` documentation for important security and other
-considerations.
+Please read the :doc:`deployment` documentation for important security and
+other considerations before deploying a public instance of Case Conductor.
 
 .. _Python: http://www.python.org
 .. _MySQL: http://www.mysql.com

@@ -1,6 +1,16 @@
 Development
 ===========
 
+User registration
+-----------------
+
+Case Conductor's default settings use Django's "console" email backend to avoid
+requiring an SMTP server or sending real emails in development/testing mode. So
+when registering a new user, pay attention to your runserver console; this is
+where the confirmation email text will appear with the link you need to visit
+to activate the new account.
+
+
 Running the tests
 -----------------
 
