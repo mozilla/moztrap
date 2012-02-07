@@ -344,6 +344,17 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         self.assertIn("checked", unicode(finder_runs[0]))
 
 
+    def test_finder_env_form_prepopulated(self):
+        """Finder env form is prepopulated."""
+        el = self.envs[0].elements.get()
+
+        res = self.get(status=200)
+
+        form = res.html.find("form", id="runtests-environment-form")
+        self.assertEqual(
+            form.find("option", value=str(el.id))["selected"], "selected")
+
+
     def test_runcaseversions(self):
         """Lists runcaseversions."""
         self.create_rcv(caseversion__name="Foo Case")
