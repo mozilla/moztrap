@@ -23,7 +23,6 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 
-from BeautifulSoup import BeautifulSoup
 from mock import patch
 
 from ... import factories as F
@@ -250,22 +249,6 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         return model
 
 
-    def assertElement(self, html, element, *args, **kwargs):
-        """
-        Assert that an element is in an HTML snippet some number of times.
-
-        ``element`` is the HTML tag name; keyword arguments are passed on to
-        BeautifulSoup as attribute selectors.
-
-        ``count`` keyword arg specifies the number of elements matching the
-        spec that are expected to be found; defaults to 1.
-
-        """
-        count = kwargs.pop("count", 1)
-        soup = BeautifulSoup(html)
-        self.assertEqual(len(soup.findAll(element, attrs=kwargs)), count)
-
-
     def create_rcv(self, **kwargs):
         """Create a runcaseversion for this run with given kwargs."""
         defaults = {
@@ -426,7 +409,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             )
 
         self.assertElement(
-            res.json["html"], "button", name="action-finishsucceed")
+            res.json["html"], "button", attrs={"name": "action-finishsucceed"})
 
 
     def test_post_no_action_redirect(self):
@@ -550,7 +533,8 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             name="action-finishsucceed", index=0,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
-        self.assertElement(res.json["html"], "button", name="action-start")
+        self.assertElement(
+            res.json["html"], "button", attrs={"name": "action-start"})
         self.assertIn(
             "finish a result that was never started",
             res.json["messages"][0]["message"]
@@ -590,7 +574,8 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             status=200
             )
 
-        self.assertElement(res.json["html"], "button", name="action-restart")
+        self.assertElement(
+            res.json["html"], "button", attrs={"name": "action-restart"})
 
 
     def test_invalidate_case(self):
@@ -634,7 +619,8 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             status=200
             )
 
-        self.assertElement(res.json["html"], "button", name="action-restart")
+        self.assertElement(
+            res.json["html"], "button", attrs={"name": "action-restart"})
 
 
     def test_fail_case(self):
@@ -680,7 +666,8 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             status=200
             )
 
-        self.assertElement(res.json["html"], "button", name="action-restart")
+        self.assertElement(
+            res.json["html"], "button", attrs={"name": "action-restart"})
 
 
     def test_restart_case(self):
@@ -717,7 +704,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             )
 
         self.assertElement(
-            res.json["html"], "button", name="action-finishsucceed")
+            res.json["html"], "button", attrs={"name": "action-finishsucceed"})
 
 
     def test_parameter_defaults(self):

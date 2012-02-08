@@ -23,11 +23,12 @@ from contextlib import contextmanager
 
 from django.conf import settings
 
+from BeautifulSoup import BeautifulSoup
 import django_webtest
 from mock import patch
 
 from .. import factories as F
-from ..utils import Url
+from ..utils import Url, refresh
 
 
 
@@ -74,6 +75,22 @@ class ViewTestCase(WebTest):
             Url(response.headers["Location"]),
             Url("http://localhost:80" + path)
             )
+
+
+    def assertElement(self, html, element, *args, **kwargs):
+        """
+        Assert that an element is in an HTML snippet some number of times.
+
+        ``element`` is the HTML tag name; extra arguments and keyword arguments
+        are passed on to BeautifulSoup as attribute selectors.
+
+        ``count`` keyword arg specifies the number of elements matching the
+        spec that are expected to be found; defaults to 1.
+
+        """
+        count = kwargs.pop("count", 1)
+        soup = BeautifulSoup(html)
+        self.assertEqual(len(soup.findAll(element, *args, **kwargs)), count)
 
 
     def get(self, **kwargs):
@@ -130,6 +147,12 @@ class FormViewTestCase(AuthenticatedViewTestCase):
 
 class ManageListViewTestCase(FormViewTestCase):
     """Base class for testing manage list views."""
+    # subclasses should specify these:
+    perm = None          # required management permission codename
+    factory = None       # factory for creating objects in this list
+    name_attr = "name"   # char attribute that should appear in list
+
+
     def assertInList(self, response, name, count=1):
         """Assert that item ``name`` is in the list ``count`` times."""
         # One occurrence in the list = two occurrences of the name in HTML
@@ -162,9 +185,12 @@ class ManageListViewTestCase(FormViewTestCase):
             )
 
 
-    def assertActionRequiresPermission(self, action, permission):
+    def assertActionRequiresPermission(self, action, permission=None):
         """Assert that the given list action requires the given permission."""
-        cv = F.CaseVersionFactory.create()
+        if permission is None:
+            permission = self.perm
+
+        o = self.factory.create()
 
         form = self.get_form()
 
@@ -176,7 +202,7 @@ class ManageListViewTestCase(FormViewTestCase):
         # ...but if they cleverly submit it anyway they get a 403...
         res = self.post(
             {
-                name: str(cv.id),
+                name: str(o.id),
                 "csrfmiddlewaretoken":
                     form.fields.get("csrfmiddlewaretoken")[0].value
                 },
@@ -185,3 +211,88 @@ class ManageListViewTestCase(FormViewTestCase):
 
         # ...with a message about permissions.
         res.mustcontain("permission")
+
+
+    def test_list(self):
+        """Displays a list of objects."""
+        self.factory.create(**{self.name_attr: "Foo Bar"})
+
+        res = self.get()
+
+        res.mustcontain("Foo Bar")
+
+
+    def test_delete(self):
+        """Can delete objects from list."""
+        self.add_perm(self.perm)
+
+        o = self.factory.create()
+
+        self.get_form().submit(
+            name="action-delete",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
+
+        self.assertTrue(bool(refresh(o).deleted_on))
+
+
+    def test_delete_requires_permission(self):
+        """Deleting requires appropriate permission."""
+        self.assertActionRequiresPermission("delete")
+
+
+    def test_clone(self):
+        """Can clone objects in list."""
+        self.add_perm(self.perm)
+
+        self.factory.create()
+
+        res = self.get_form().submit(
+            name="action-clone",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertElement(
+            res.json["html"], "h3", "title", count=2)
+
+
+    def test_clone_requires_manage_cases_permission(self):
+        """Cloning requires manage_cases permission."""
+        self.assertActionRequiresPermission("clone")
+
+
+
+class ManageListViewFinderTestCase(ManageListViewTestCase):
+    """Test case for manage lists with finder."""
+    def test_finder(self):
+        """Finder is present in context with list of products."""
+        p = F.ProductFactory.create(name="Foo Product")
+
+        res = self.get()
+
+        res.mustcontain("Foo Product")
+        res.mustcontain(
+            "data-sub-url="
+            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
+
+
+    def test_finder_ajax(self):
+        """Finder intercepts its ajax requests to return child obj lists."""
+        pv = F.ProductVersionFactory.create(version="1.0.1")
+
+        res = self.get(
+            params={
+                "finder": "1",
+                "col": "productversions",
+                "id": str(pv.product.id)
+                },
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertIn("1.0.1", res.json["html"])
+        self.assertIn(
+            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
+            res.json["html"]
+            )

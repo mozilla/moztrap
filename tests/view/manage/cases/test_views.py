@@ -30,24 +30,17 @@ from ... import base
 
 
 
-class CasesTest(base.ManageListViewTestCase):
+class CasesTest(base.ManageListViewFinderTestCase):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
+    perm = "manage_cases"
+    factory = F.CaseVersionFactory
 
 
     @property
     def url(self):
         """Shortcut for manage-cases url."""
         return reverse("manage_cases")
-
-
-    def test_lists_cases(self):
-        """Displays a list of cases."""
-        F.CaseVersionFactory.create(name="Foo Bar")
-
-        res = self.get()
-
-        res.mustcontain("Foo Bar")
 
 
     def test_lists_latest_versions(self):
@@ -64,47 +57,6 @@ class CasesTest(base.ManageListViewTestCase):
 
         self.assertNotInList(res, "Old Version")
         self.assertInList(res, "Latest Version")
-
-
-    def test_delete(self):
-        """Can delete objects from list."""
-        self.add_perm("manage_cases")
-
-        cv = F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-delete",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"}
-            )
-
-        self.assertTrue(bool(refresh(cv).deleted_on))
-
-
-    def test_delete_requires_manage_cases_permission(self):
-        """Deleting requires manage_cases permission."""
-        self.assertActionRequiresPermission("delete", "manage_cases")
-
-
-    def test_clone(self):
-        """Can clone objects in list."""
-        self.add_perm("manage_cases")
-
-        F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-clone",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        from cc.model import Case
-        self.assertEqual(Case.objects.count(), 2)
-
-
-    def test_clone_requires_manage_cases_permission(self):
-        """Cloning requires manage_cases permission."""
-        self.assertActionRequiresPermission("clone", "manage_cases")
 
 
     def test_activate(self):
@@ -179,7 +131,7 @@ class CasesTest(base.ManageListViewTestCase):
 
 
     def test_filter_by_name(self):
-        """Can filter by id."""
+        """Can filter by name."""
         F.CaseVersionFactory.create(name="Case 1")
         F.CaseVersionFactory.create(name="Case 2")
 
@@ -321,38 +273,6 @@ class CasesTest(base.ManageListViewTestCase):
         res = self.get(params={"sortfield": "name", "sortdirection": "desc"})
 
         self.assertOrderInList(res, "Case 2", "Case 1")
-
-
-    def test_finder(self):
-        """Finder is present in context with list of products."""
-        p = F.ProductFactory.create(name="Foo Product")
-
-        res = self.get()
-
-        res.mustcontain("Foo Product")
-        res.mustcontain(
-            "data-sub-url="
-            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
-
-
-    def test_finder_ajax(self):
-        """Finder intercepts its ajax requests to return child obj lists."""
-        pv = F.ProductVersionFactory.create(version="1.0.1")
-
-        res = self.get(
-            params={
-                "finder": "1",
-                "col": "productversions",
-                "id": str(pv.product.id)
-                },
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertIn("1.0.1", res.json["html"])
-        self.assertIn(
-            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
-            res.json["html"]
-            )
 
 
 
