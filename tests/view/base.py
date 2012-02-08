@@ -89,8 +89,13 @@ class ViewTestCase(WebTest):
 
         """
         count = kwargs.pop("count", 1)
-        soup = BeautifulSoup(html)
-        self.assertEqual(len(soup.findAll(element, *args, **kwargs)), count)
+        actual = len(BeautifulSoup(html).findAll(element, *args, **kwargs))
+        self.assertEqual(
+            actual,
+            count,
+            "Element {0}({1}, {2}) is in the list {3} times, not {4}.".format(
+                element, args, kwargs, actual, count)
+            )
 
 
     def get(self, **kwargs):
@@ -155,12 +160,8 @@ class ManageListViewTestCase(FormViewTestCase):
 
     def assertInList(self, response, name, count=1):
         """Assert that item ``name`` is in the list ``count`` times."""
-        # One occurrence in the list = two occurrences of the name in HTML
-        actual = response.body.count(name)
-        self.assertEqual(
-            actual, count * 2,
-            "'{0}' is in the list {1} times, not {2}.".format(
-                name, actual, count))
+        self.assertElement(
+            response.body, "h3", "title", title=name, count=count)
 
 
     def assertNotInList(self, response, name):
