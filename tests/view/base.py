@@ -61,7 +61,11 @@ class WebTest(django_webtest.WebTest):
 
 
 class ViewTestCase(WebTest):
-    """Add some utility assertions."""
+    """Add some utility assertions and methods."""
+    # subclasses should provide a url property
+    url = None
+
+
     def assertRedirects(self, response, path, status_code=302):
         """An assertRedirects that works with WebTest."""
         self.assertEqual(response.status_int, status_code)
@@ -72,16 +76,17 @@ class ViewTestCase(WebTest):
             )
 
 
+    def get(self, **kwargs):
+        """Shortcut for getting url."""
+        return self.app.get(self.url, **kwargs)
+
+
 
 class AuthenticatedViewTestCase(ViewTestCase):
     """Base test case for authenticated views."""
     def setUp(self):
         """Set-up for authenticated view test cases; create a user."""
         self.user = F.UserFactory.create()
-
-
-    # subclasses should provide a url property
-    url = None
 
 
     def get(self, **kwargs):
