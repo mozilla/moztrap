@@ -16,3 +16,5 @@ django-html5accordion==0.1.6
 django-messages-ui==0.1.4
 django-ajax-loading-overlay==0.1.1
 django-sha2==0.4
+django-session-csrf==0.5
+django-registration==0.8-alpha-1

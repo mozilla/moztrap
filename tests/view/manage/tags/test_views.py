@@ -57,7 +57,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "foo",
                         "postText": "o",
                         "preText": "f",
-                        "product": None,
+                        "product-id": None,
                         "type": "tag",
                         "typedText": "o",
                         }
@@ -76,10 +76,10 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
         t3 = F.TagFactory.create(product=None, name="t3")
 
         res = self.app.get(
-            self.url, user=self.user, params={"text": "t", "product": p1.id})
+            self.url, user=self.user, params={"text": "t", "product-id": p1.id})
 
         self.assertEqual(
-            [(t["id"], t["product"]) for t in res.json["suggestions"]],
+            [(t["id"], t["product-id"]) for t in res.json["suggestions"]],
             [(t1.id, p1.id), (t3.id, None)]
             )
 
@@ -99,7 +99,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
                         "name": "FooBar",
                         "postText": "Bar",
                         "preText": "F",
-                        "product": None,
+                        "product-id": None,
                         "type": "tag",
                         "typedText": "oO",
                         }

@@ -27,20 +27,24 @@ from django.contrib import admin
 
 admin.autodiscover()
 
+import session_csrf
+session_csrf.monkeypatch()
 
 
 urlpatterns = patterns(
     "",
+    url(r"^$", "cc.view.views.home", name="home"),
+
     # runtests ---------------------------------------------------------------
-    url("^runtests/", include("cc.view.runtests.urls")),
+    url(r"^runtests/", include("cc.view.runtests.urls")),
 
     # users ------------------------------------------------------------------
-    url("^users/", include("cc.view.users.urls")),
+    url(r"^users/", include("cc.view.users.urls")),
 
     # manage -----------------------------------------------------------------
-    url("^manage/", include("cc.view.manage.urls")),
+    url(r"^manage/", include("cc.view.manage.urls")),
 
     # admin ------------------------------------------------------------------
-    url("^admin/", include(admin.site.urls)),
+    url(r"^admin/", include(admin.site.urls)),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

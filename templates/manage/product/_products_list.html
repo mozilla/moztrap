@@ -1,12 +1,19 @@
-<div class="managelist action-ajax-replace">
+{% load pagination %}
+
+<form method="POST" id="manage-products-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
 
   {% include "manage/product/_products_listordering.html" %}
 
-  <div class="items">
-    {% for product in products %}
-    {% include "manage/product/_product_list_item.html" %}
+  {% paginate products as pager %}
+  {% if pager.objects %}
+    {% for product in pager.objects %}
+      {% include "manage/product/_product_list_item.html" %}
     {% endfor %}
-  </div>
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
 
-  {% include "lists/_listnav.html" %}
-</div>
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

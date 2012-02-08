@@ -1,20 +1,20 @@
 {% extends 'manage/product/product_base.html' %}
 
-{% block listcontent %}
-<section id="manageproducts">
+{% load permissions %}
+
+{% block content %}
+
+<section id="manageproducts" class="manage listpage">
   <h2>Manage Products</h2>
 
-  {% if "PERMISSION_PRODUCT_EDIT" in request.user.permissionCodes %}
-  <a href="{% url manage_product_add %}" class="create">create a product</a>
+  {% if user|has_perm:"library.manage_products" %}
+  <div class="create-options">
+    <a href="{% url manage_product_add %}" class="create single">create a product</a>
+  </div>
   {% endif %}
 
   {% include "lists/_filter.html" %}
+  {% include "manage/product/_products_list.html" %}
 
-  <form method="POST">
-    {% csrf_token %}
-
-    {% include "manage/product/_products_list.html" %}
-
-  </form>
 </section>
-{% endblock listcontent %}
+{% endblock content %}

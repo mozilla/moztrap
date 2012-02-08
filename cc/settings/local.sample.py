@@ -47,6 +47,17 @@ Copy local.sample.py to local.py and modify as needed.
 #    ("Some One", "someone@mozilla.com"),
 #]
 
+# These must be uncommented and pointed to a functioning SMTP server or users
+# will not be able to register.
+#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#EMAIL_HOST = "localhost"
+#EMAIL_HOST_USER = ""
+#EMAIL_HOST_PASSWORD = ""
+#EMAIL_PORT = 25
+#EMAIL_USE_TLS = False
+# Account activation and password reset emails will come from this address
+#DEFAULT_FROM_EMAIL = "do-not-reply@example.com"
+
 # Uncomment these if the app is served over HTTPS (required for any
 # production deployment to avoid session hijacking):
 #SESSION_COOKIE_SECURE = True

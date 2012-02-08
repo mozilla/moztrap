@@ -52,6 +52,10 @@ button
     $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $border   : darken(desaturate($c,25),15)
+
+    @if lightness($border) > 40%
+      $border : change-color($border,$lightness:40%)
+
     +demi
     +border-radius
     +rhythm-borders(1px,.25)

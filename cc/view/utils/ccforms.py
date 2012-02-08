@@ -63,6 +63,26 @@ class BareTextarea(floppyforms.Textarea):
 
 
 
+class CCModelForm(floppyforms.ModelForm):
+    """A ModelForm that knows about the current user and passes it to save."""
+    def __init__(self, *args, **kwargs):
+        """Pull user out of ModelForm initialization keyword arguments."""
+        self.user = kwargs.pop("user", None)
+        super(CCModelForm, self).__init__(*args, **kwargs)
+
+
+    def save(self, commit=True):
+        """If commit is requested, pass the user into save()."""
+        instance = super(CCModelForm, self).save(commit=False)
+
+        if commit:
+            instance.save(user=self.user)
+            self.save_m2m()
+
+        return instance
+
+
+
 class CCSelect(floppyforms.Select):
     """
     A Select widget for use with ``CCModelChoiceField``.

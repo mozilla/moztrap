@@ -51,6 +51,19 @@ var CC = (function (CC, $) {
             textbox: '#id_add_tags',
             ajax: true,
             url: $('#id_add_tags').data('autocomplete-url'),
+            extraDataName: 'product-id',
+            extraDataFn: function () {
+                var product_sel = $('#id_product'),
+                    selectedIndex = product_sel.prop('selectedIndex'),
+                    tagging_container = $('.case-form .tagging'),
+                    productID;
+                if (tagging_container.data('product-id')) {
+                    productID = tagging_container.data('product-id');
+                } else if (selectedIndex && selectedIndex !== 0) {
+                    productID = product_sel.find('option:selected').data('product-id');
+                }
+                return productID;
+            },
             inputList: '.taglist',
             triggerSubmit: null,
             allowNew: true,
@@ -86,15 +99,16 @@ var CC = (function (CC, $) {
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
             callback: function () {
-                $('.runsdrill .drillenv').slideUp('fast');
+                $('.runsdrill .runenvselect').slideUp('fast');
             },
             lastChildCallback: function (choice) {
-                var environments = $('.runsdrill .drillenv').css('min-height', '169px').slideDown('fast'),
+                var environments = $('.runsdrill .runenvselect').css('min-height', '169px').slideDown('fast'),
                     ajaxUrl = $(choice).data('sub-url');
                 environments.loadingOverlay();
                 $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
-                    environments.html(data.html);
+                    environments.replaceWith(data.html);
+                    CC.filterEnvironments('#runtests-environment-form');
                 });
             }
         });
@@ -136,7 +150,7 @@ var CC = (function (CC, $) {
         CC.loadListItemDetails();
         CC.manageActionsAjax();
         CC.directFilterLinks();
-        CC.filterFormAjax('.listpage');
+        CC.filterFormAjax('.manage, .results');
 
         // manage-products.js
         CC.formOptionsFilter({
@@ -173,6 +187,7 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
+        CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.attach');
         CC.testcaseVersioning('#addcase');
         CC.envNarrowing('#envnarrowlist');
@@ -186,11 +201,12 @@ var CC = (function (CC, $) {
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();
-        CC.autoFocus('.details.stepfail > .summary', '#run');
-        CC.autoFocus('.details.testinvalid > .summary', '#run');
-        CC.runTests('#run');
-        CC.breadcrumb('.runsdrill');
-        CC.failedTestBug('#run');
+        CC.autoFocus('.details.stepfail > .summary', '#runtests');
+        CC.autoFocus('.details.testinvalid > .summary', '#runtests');
+        CC.runTests('#runtests');
+        CC.breadcrumb('.drilldown');
+        CC.failedTestBug('#runtests');
+        CC.filterEnvironments('#runtests-environment-form');
     });
 
     $(window).load(function () {

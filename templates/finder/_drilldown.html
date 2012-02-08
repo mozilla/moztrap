@@ -1,22 +1,7 @@
-<nav class="drilldown {% if details != 'none' %}details{% endif %}{% if details == 'open' %} open{% endif %}">
-  <h2 {% if details != 'none' %}class="summary" title="show/hide drilldown navigation"{% else %}class="navhead"{% endif %}>
-    {% block drillnavhead %}DrillDown Navigation{% endblock drillnavhead %}
-  </h2>
+<nav class="drilldown details{% if details == 'open' %} open{% endif %}">
+  <h2 class="summary" title="show/hide drilldown navigation">DrillDown Navigation</h2>
+
   <div class="content {% block drillclass %}{% endblock drillclass %}">
-    {% if hasenv %}
-      <section class="drillfinder">
-        <h3 class="drilltitle">{% block drilltitle %}{% endblock drilltitle %}</h3>
-    {% endif %}
-
     {% block drillfinder %}{% endblock drillfinder %}
-
-    {% if hasenv %}
-      </section>
-      {% block hasdrillenv %}
-        <section class="drillenv {% if hasenv == 'empty' %}empty{% endif %}">
-          {% block drillenv %}{% endblock drillenv %}
-        </section>
-      {% endblock hasdrillenv %}
-    {% endif %}
   </div>
 </nav>

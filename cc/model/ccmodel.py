@@ -249,7 +249,10 @@ class CCModel(models.Model):
             mgr = getattr(self, name)
             if mgr.__class__.__name__ == "ManyRelatedManager": # M2M
                 clone_mgr = getattr(clone, name)
-                clone_mgr.add(*filter_func(mgr.all()))
+                existing = set(clone_mgr.all())
+                new = set(filter_func(mgr.all()))
+                clone_mgr.add(*new.difference(existing))
+                clone_mgr.remove(*existing.difference(new))
             elif mgr.__class__.__name__ == "RelatedManager": # reverse FK
                 reverse_name = getattr(self.__class__, name).related.field.name
                 for obj in filter_func(mgr.all()):

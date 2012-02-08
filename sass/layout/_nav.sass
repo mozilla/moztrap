@@ -48,9 +48,20 @@ $nav-link-hover-color : $red-dark
   +columns($account-width)
   +omega
   +leader(2.25)
+  +cond
   position: relative
   text-align: right
   z-index: 2
+  .fn
+    +demi
+  p
+    display: inline
+  ul
+    +delimited-list
+    &::before
+      content: "["
+    &::after
+      content: "]"
 
 // ---------------------------------------------------------------------------
 // Main Navigation.

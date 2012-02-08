@@ -26,7 +26,7 @@ from django import forms
 from ... import factories as F
 
 from cc.view.utils import ccforms
-from cc.model.core import models
+from cc import model
 
 
 
@@ -67,18 +67,65 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
 
 
 class BareTextareaTest(TestCase):
+    """Tests for BareTextarea."""
     def test_no_attrs(self):
+        """BareTextarea does not have rows or cols attributes."""
         self.assertEqual(ccforms.BareTextarea().attrs, {})
 
 
 
+class ProductForm(ccforms.CCModelForm):
+    """Sample CCModelForm"""
+    class Meta:
+        model = model.Product
+        fields = ["name"]
+
+
+
+class CCModelFormTest(TestCase):
+    """Tests for CCModelForm."""
+    def setUp(self):
+        """Setup for CCModelForm tests; create a user."""
+        self.user = F.UserFactory.create()
+
+
+    def test_new_instance_records_created_by(self):
+        """Adding a new instance records the created_by user."""
+        f = ProductForm({"name": "Foo"}, user=self.user)
+
+        product = f.save()
+
+        self.assertEqual(product.created_by, self.user)
+
+
+    def test_edited_instance_records_modified_by(self):
+        """Editing an instance records the modified_by user."""
+        p = F.ProductFactory.create()
+        f = ProductForm({"name": "Foo"}, instance=p, user=self.user)
+
+        product = f.save()
+
+        self.assertEqual(product.modified_by, self.user)
+
+
+    def test_no_commit(self):
+        """Can still pass commit=False."""
+        f = ProductForm({"name": "Foo"})
+
+        product = f.save(commit=False)
+
+        self.assertEqual(product.id, None)
+
+
+
 class ProductVersionForm(forms.Form):
+    """Sample form using CCModelChoiceField."""
     product = ccforms.CCModelChoiceField(
-        models.Product.objects.all(),
+        model.Product.objects.all(),
         label_from_instance=lambda p: "FooLabel {0}".format(unicode(p)),
         choice_attrs=lambda p: {"data-product-id": p.id}
         )
-    product2 = ccforms.CCModelChoiceField(models.Product.objects.all())
+    product2 = ccforms.CCModelChoiceField(model.Product.objects.all())
 
 
 

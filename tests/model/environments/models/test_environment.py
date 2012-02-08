@@ -32,3 +32,12 @@ class EnvironmentTest(TestCase):
             {"OS": ["OS X"], "Language": ["English"]})[0]
 
         self.assertEqual(unicode(e), u"English, OS X")
+
+
+    def test_ordered_elements(self):
+        """ordered_elements yields elements in category name order."""
+        e = F.EnvironmentFactory.create_full_set(
+            {"OS": ["OS X"], "Language": ["English"]})[0]
+
+        self.assertEqual(
+            [el.name for el in e.ordered_elements()], [u"English", u"OS X"])

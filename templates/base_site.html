@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load permissions %}
+
 {% block site %}
 
 {% include "_messages.html" %}
@@ -18,6 +20,7 @@
     <nav role="navigation">
       <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
+        {% if user|has_perm:"execution.execute" %}
         <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
           <a href="{% url runtests %}">Run Tests</a>
           <div class="secondary">
@@ -28,8 +31,9 @@
             </ol>
           </div>
         </li>
+        {% endif %}
 
-        {% if user %} {# @@@ more specific perms check? #}
+        {% if user %}
         <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
           <a href="{# @@@ url results #}">View Results</a>
           <div class="secondary">
@@ -63,7 +67,7 @@
               <li>
                 <ol class="tertiary">
                   <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
-                    <a href="{# @@@ url manage_products #}">Products</a>
+                    <a href="{% url manage_products %}">Products</a>
                   </li>
                   <li class="{% block managecycle-active-nav %}{% endblock managecycle-active-nav %}">
                     <a href="{# @@@ url manage_testcycles #}">Cycles</a>

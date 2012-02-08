@@ -34,7 +34,7 @@ from ....model.tags.models import Tag
 def tag_autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""
     text = request.GET.get("text")
-    product_id = request.GET.get("product")
+    product_id = request.GET.get("product-id")
     if text is not None:
         tags = Tag.objects.filter(name__icontains=text)
         if product_id is not None:
@@ -53,7 +53,7 @@ def tag_autocomplete(request):
                 "typedText": text,
                 "postText": post,
                 "id": tag.id,
-                "product": tag.product.id if tag.product else None,
+                "product-id": tag.product.id if tag.product else None,
                 "name": tag.name,
                 "type": "tag",
                 })

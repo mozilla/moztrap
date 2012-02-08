@@ -26,16 +26,12 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns(
     "cc.view.runtests.views",
 
-    url("^$", "select", name="runtests"),
-    url("^environment/(?P<run_id>\d+)/$",
+    url(r"^$", "select", name="runtests"),
+    url(r"^environment/(?P<run_id>\d+)/$",
         "set_environment",
         name="runtests_environment"),
-    url("^run/(?P<run_id>\d+)/$", "run", name="runtests_run"),
-
-    # finder -----------------------------------------------------------------
-    url(
-        "^_finder/environments/(?P<run_id>\d+)/$",
-        "finder_environments",
-        name="runtests_finder_environments")
+    url(r"^run/(?P<run_id>\d+)/env/(?P<env_id>\d+)/$",
+        "run",
+        name="runtests_run"),
 
 )

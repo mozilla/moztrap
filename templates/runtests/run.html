@@ -1,41 +1,28 @@
 {% extends 'runtests/base.html' %}
-{% load execution environment sort %}
 
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ product.api_name }}-{{ product.id }}">{{ product }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ cycle.api_name }}-{{ cycle.id }}">{{ cycle }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="{{ testrun.api_name }}-{{ testrun.id }}">{{ testrun }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-products-{{ product.id }}">{{ product }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-productversions-{{ productversion.id }}">{{ productversion.version }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-runs-{{ run.id }}">{{ run }}</a></li>
 <li>
   <ul class="envsettings">
-    {% for env in request.environments %}
-    <li>{{ env.name }}</li>
+    {% for element in environment.ordered_elements %}
+    <li>{{ element.name }}</li>
     {% endfor %}
   </ul>
 </li>
 {% endblock test-subnav %}
 
 {% block drilldown %}
-  {% include "runtests/_run_drilldown.html" with hasenv='true' %}
+  {% include "runtests/_run_drilldown.html" %}
 {% endblock drilldown %}
 
-{% block testcontent %}
-  <section id="run">
+{% block content %}
+  <section id="runtests" class="run listpage">
     <h2>Run Tests:</h2>
 
-    <div class="managelist">
+    {% include "runtests/list/_runtest_list.html" %}
 
-      {% include "runtests/_run_listordering.html" %}
-
-      <div class="items">
-        {% for includedtestcase in cases %}
-          {% run_case includedtestcase request.user request.environments %}
-        {% empty %}
-          <p class="empty">There are currently no items in this list...</p>
-        {% endfor %}
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
   </section>
-{% endblock testcontent %}
+{% endblock content %}

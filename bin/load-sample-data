@@ -1,3 +1,4 @@
+#!/bin/bash
 # Case Conductor is a Test Case Management system.
 # Copyright (C) 2011-12 Mozilla
 #
@@ -15,16 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-"""Template tags/filters for setting environment when running tests."""
-from django import template
-from django.core.urlresolvers import reverse
 
+# Load the sample data fixture.
 
-
-register = template.Library()
-
-
-
-@register.filter
-def set_environment_url(run):
-    return reverse("runtests_environment", kwargs={"run_id": run.id})
+python manage.py loaddata sample_data

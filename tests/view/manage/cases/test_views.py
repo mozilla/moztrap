@@ -19,35 +19,26 @@
 Tests for case management views.
 
 """
-from datetime import datetime
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from .... import factories as F
 from ....utils import refresh
-from ... import base
+from .. import base
 
 
 
-class CasesTest(base.ManageListViewTestCase):
+class CasesTest(base.ManageListViewFinderTestCase):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
+    perm = "manage_cases"
+    factory = F.CaseVersionFactory
 
 
     @property
     def url(self):
         """Shortcut for manage-cases url."""
         return reverse("manage_cases")
-
-
-    def test_lists_cases(self):
-        """Displays a list of cases."""
-        F.CaseVersionFactory.create(name="Foo Bar")
-
-        res = self.get()
-
-        res.mustcontain("Foo Bar")
 
 
     def test_lists_latest_versions(self):
@@ -64,47 +55,6 @@ class CasesTest(base.ManageListViewTestCase):
 
         self.assertNotInList(res, "Old Version")
         self.assertInList(res, "Latest Version")
-
-
-    def test_delete(self):
-        """Can delete objects from list."""
-        self.add_perm("manage_cases")
-
-        cv = F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-delete",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"}
-            )
-
-        self.assertTrue(bool(refresh(cv).deleted_on))
-
-
-    def test_delete_requires_manage_cases_permission(self):
-        """Deleting requires manage_cases permission."""
-        self.assertActionRequiresPermission("delete", "manage_cases")
-
-
-    def test_clone(self):
-        """Can clone objects in list."""
-        self.add_perm("manage_cases")
-
-        F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-clone",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        from cc.model import Case
-        self.assertEqual(Case.objects.count(), 2)
-
-
-    def test_clone_requires_manage_cases_permission(self):
-        """Cloning requires manage_cases permission."""
-        self.assertActionRequiresPermission("clone", "manage_cases")
 
 
     def test_activate(self):
@@ -179,7 +129,7 @@ class CasesTest(base.ManageListViewTestCase):
 
 
     def test_filter_by_name(self):
-        """Can filter by id."""
+        """Can filter by name."""
         F.CaseVersionFactory.create(name="Case 1")
         F.CaseVersionFactory.create(name="Case 2")
 
@@ -254,17 +204,6 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertNotInList(res, "Case 2")
 
 
-    def test_filter_by_creator(self):
-        """Can filter by creator."""
-        F.CaseVersionFactory.create(name="Case 1", user=self.user)
-        F.CaseVersionFactory.create(name="Case 2")
-
-        res = self.get(params={"filter-creator": self.user.id})
-
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
-
-
     def test_filter_by_env_elements(self):
         """Can filter by environment elements."""
         envs = F.EnvironmentFactory.create_full_set(
@@ -291,18 +230,6 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertNotInList(res, "Case 2")
 
 
-    def test_default_sort_by_last_created(self):
-        """Default sort is by latest created first."""
-        F.CaseVersionFactory.create(
-            name="Case 1", created_on=datetime(2012, 1, 21))
-        F.CaseVersionFactory.create(
-            name="Case 2", created_on=datetime(2012, 1, 22))
-
-        res = self.get()
-
-        self.assertOrderInList(res, "Case 2", "Case 1")
-
-
     def test_sort_by_status(self):
         """Can sort by status."""
         F.CaseVersionFactory.create(name="Case 1", status="draft")
@@ -323,38 +250,6 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertOrderInList(res, "Case 2", "Case 1")
 
 
-    def test_finder(self):
-        """Finder is present in context with list of products."""
-        p = F.ProductFactory.create(name="Foo Product")
-
-        res = self.get()
-
-        res.mustcontain("Foo Product")
-        res.mustcontain(
-            "data-sub-url="
-            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
-
-
-    def test_finder_ajax(self):
-        """Finder intercepts its ajax requests to return child obj lists."""
-        pv = F.ProductVersionFactory.create(version="1.0.1")
-
-        res = self.get(
-            params={
-                "finder": "1",
-                "col": "productversions",
-                "id": str(pv.product.id)
-                },
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertIn("1.0.1", res.json["html"])
-        self.assertIn(
-            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
-            res.json["html"]
-            )
-
-
 
 class CaseDetailTest(base.AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
@@ -366,7 +261,7 @@ class CaseDetailTest(base.AuthenticatedViewTestCase):
 
     @property
     def url(self):
-        """Shortcut for add-case-single url."""
+        """Shortcut for case-details url."""
         return reverse(
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
@@ -542,6 +437,9 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
 class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     """Tests for caseversion-clone view."""
+    csrf_checks = False
+
+
     def setUp(self):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
@@ -555,14 +453,6 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """Shortcut for caseversion-clone url."""
         return reverse(
             "manage_caseversion_clone", kwargs=dict(caseversion_id=self.cv.id))
-
-
-    def post(self, data, **kwargs):
-        """Shortcut for posting to this view."""
-        data["csrfmiddlewaretoken"] = "foo"
-        headers = kwargs.setdefault("headers", {})
-        headers["Cookie"] = "{0}=foo".format(settings.CSRF_COOKIE_NAME)
-        return super(CloneCaseVersionTest, self).post(data, **kwargs)
 
 
     def test_login_required(self):
@@ -599,9 +489,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """If no productversion id, redirects back to original caseversion."""
         res = self.post({}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=self.cv.id)
                 )
@@ -612,9 +502,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         """If bad productversion id, redirects back to original caseversion."""
         res = self.post({"productversion": 75}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=self.cv.id)
                 )
@@ -631,9 +521,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         res = self.post(
             {"productversion": target.productversion.id}, status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=target.id)
                 )
@@ -653,9 +543,9 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
         self.assertEqual(new.case, self.cv.case)
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse(
+        self.assertRedirects(
+            res,
+            reverse(
                 "manage_caseversion_edit",
                 kwargs=dict(caseversion_id=new.id)
                 )
@@ -770,10 +660,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
         form["description"] = "new desc"
         res = form.submit(status=302)
 
-        self.assertEqual(
-            res.headers["Location"],
-            "http://localhost:80" + reverse("manage_cases")
-            )
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Saved 'new name'.")
 

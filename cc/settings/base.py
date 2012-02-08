@@ -103,17 +103,18 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages"
+    "django.contrib.messages.context_processors.messages",
+    "session_csrf.context_processor",
 ]
 
 MIDDLEWARE_CLASSES = [
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "djangosecure.middleware.SecurityMiddleware",
     "django.middleware.transaction.TransactionMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "session_csrf.CsrfMiddleware",
 ]
 
 ROOT_URLCONF = "cc.view.urls"
@@ -139,6 +140,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "south",
+    "fixture_generator",
     "cc.model.core",
     "cc.model.library",
     "cc.model.environments",
@@ -182,6 +184,13 @@ LOGGING = {
     }
 }
 
+INSTALLED_APPS += ["registration"]
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "do-not-reply@example.com"
+
 INSTALLED_APPS += ["django_sha2"]
 
 INSTALLED_APPS += ["compressor"]
@@ -209,7 +218,7 @@ MIDDLEWARE_CLASSES.insert(
 INSTALLED_APPS += ["ajax_loading_overlay"]
 
 LOGIN_URL = "/users/login/"
-LOGIN_REDIRECT_URL = "/manage/cases/" # @@@ runtests
+LOGIN_REDIRECT_URL = "/"
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")

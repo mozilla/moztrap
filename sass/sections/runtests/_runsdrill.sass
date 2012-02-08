@@ -1,0 +1,20 @@
+.selectenvhead
+  @extend h2
+
+.runenvselect
+  +clearfix
+  +leader
+  .selectenvhead
+    +columns(12,24)
+    +padding-leader(.25)
+  form
+    +columns(12,24)
+    +omega(24)
+
+#runtests-environment-form
+  label
+    +columns(4,12)
+    text-align: right
+  select
+    +columns(8,12)
+    +omega(12)

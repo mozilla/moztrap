@@ -10,6 +10,7 @@ body.login
   #main
     +squish(5,5)
     +suffix(4)
+    padding-left: 0
 
   #brand
     +un-column
@@ -35,13 +36,26 @@ body.login
   .message
     +squish(6,6)
 
+  h2, p
+    +full(10)
+    +prefix(4,10)
+    color: $mid
+
   h2
-    +gone
+    +trailer
+
+  .forgot
+    +leader
+    +trailer(0)
+    +italic
+    text-align: right
 
   // Forms -------------------------------------------------------------------
 
   label
+    +box-sizing(border-box)
     +columns(4,10)
+    padding-left: rhythm(.5)
   input, .errorlist
     +columns(6,10)
     +omega(10)

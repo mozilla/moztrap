@@ -19,7 +19,7 @@ along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*jslint    browser:    true,
             indent:     4 */
-/*global    ich, jQuery */
+/*global    ich, jQuery, VALID_ENVIRONMENTS */
 
 var CC = (function (CC, $) {
 
@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
 
     // hide empty run-tests environments form on initial load
     CC.hideEmptyRuntestsEnv = function () {
-        $('.selectruns + .environment.empty').hide();
+        $('.runenvselect.empty').hide();
     };
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
@@ -41,25 +41,26 @@ var CC = (function (CC, $) {
 
     // Open hierarchical navigation directly to clicked breadcrumb link
     CC.breadcrumb = function (context) {
-        $(context).find('.colcontent').each(function () {
+        var finder = $(context);
+        finder.find('.runsdrill .colcontent').each(function () {
             $(this).data('originalHTML', $(this).html());
         });
-        $('.runtests-nav .secondary .breadcrumb').click(function () {
-            if (!$('.drilldown.details').hasClass('open')) {
-                $('.drilldown.details > .summary').click();
+        $('.runtests-nav .secondary .breadcrumb').click(function (e) {
+            if (!finder.hasClass('open')) {
+                finder.children('.summary').click();
             }
-            $(context).find('.colcontent').each(function () {
+            finder.find('.runsdrill .colcontent').each(function () {
                 $(this).html($(this).data('originalHTML'));
             });
-            $(context).find('#' + $(this).data('id')).click();
-            return false;
+            finder.find('#' + $(this).data('id')).click();
+            e.preventDefault();
         });
     };
 
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
-            tests = context.find('.item.action-ajax-replace'),
+            tests = context.find('.listitem.action-ajax-replace'),
             ajaxFormsInit = function (test) {
                 var forms = test.find('form');
 
@@ -73,7 +74,7 @@ var CC = (function (CC, $) {
                         if (response.html) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
-                            newTest.find('.details').andSelf().html5accordion();
+                            newTest.find('.details').html5accordion();
                             CC.autoFocus('.details.stepfail > .summary', newTest);
                             CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
@@ -90,17 +91,107 @@ var CC = (function (CC, $) {
     CC.failedTestBug = function (container) {
         var context = $(container);
 
-        context.on('change', '.item .stepfail input[type="radio"][name="bugs"]', function () {
+        context.on('change', '.listitem .stepfail input[type="radio"][name="bug"]', function () {
             var thisList = $(this).closest('.stepfail'),
                 newBug = thisList.find('input[type="radio"].newbug'),
-                newBugInput = thisList.find('input[type="url"][name="related_bug"]');
+                newBugInput = thisList.find('input[type="url"][name="bug"]');
 
             if (newBug.is(':checked')) {
-                newBugInput.removeAttr('disabled');
+                newBugInput.prop('disabled', false);
             } else {
-                newBugInput.attr('disabled', true);
+                newBugInput.prop('disabled', true);
             }
         });
+    };
+
+    // Filter environment form options
+    CC.filterEnvironments = function (container) {
+        var context = $(container),
+            triggers = context.find('select'),
+            doFilter;
+
+        if (context.length) {
+            triggers.each(function () {
+                var allopts = $(this).find('option').clone().removeAttr('selected');
+                $(this).data('allopts', allopts);
+            });
+
+            doFilter = function () {
+                var i,
+                    key = triggers.map(function () {
+                        if ($(this).find('option:selected').val()) {
+                            return parseInt($(this).find('option:selected').val(), 10);
+                        } else {
+                            return '';
+                        }
+                    }),
+                    filterCombos = function (elementOfArray, indexInArray) {
+                        if (elementOfArray[i] === null) {
+                            return true;
+                        } else {
+                            return elementOfArray[i] === key[i];
+                        }
+                    };
+
+                for (i = 0; i < key.length; i = i + 1) {
+                    if (key[i] === '') {
+                        key[i] = null;
+                    }
+                }
+
+                if (VALID_ENVIRONMENTS) {
+                    triggers.each(function () {
+                        var thisIndex = triggers.index($(this)),
+                            validOpts = [],
+                            acceptAll = false,
+                            allopts = $(this).data('allopts'),
+                            filteredValidCombos = VALID_ENVIRONMENTS,
+                            filteredOpts,
+                            selectedVal;
+
+                        for (i = 0; i < key.length; i = i + 1) {
+                            if (key[i] !== null && i !== thisIndex) {
+                                filteredValidCombos = $.grep(filteredValidCombos, filterCombos);
+                            }
+                        }
+
+                        validOpts = $.map(filteredValidCombos, function (elementOfArray, indexInArray) {
+                            if (elementOfArray[thisIndex] === null) {
+                                acceptAll = true;
+                            }
+                            return elementOfArray[thisIndex];
+                        });
+
+                        if ($(this).find('option:selected').val()) {
+                            selectedVal = $(this).find('option:selected').val();
+                        }
+
+                        if (acceptAll) {
+                            $(this).html(allopts);
+                        } else {
+                            filteredOpts = allopts.filter(function (index) {
+                                if ($(this).val() === '') {
+                                    return true;
+                                } else {
+                                    return $.inArray(parseInt($(this).val(), 10), validOpts) !== -1;
+                                }
+                            });
+                            $(this).html(filteredOpts);
+                        }
+
+                        if (selectedVal) {
+                            $(this).find('option').filter(function () {
+                                return $(this).val() === selectedVal;
+                            }).prop('selected', true);
+                        } else {
+                            $(this).find('option').first().prop('selected', true);
+                        }
+                    });
+                }
+            };
+
+            triggers.change(doFilter);
+        }
     };
 
     return CC;

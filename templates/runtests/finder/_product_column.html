@@ -3,10 +3,10 @@
 {% block finder-section-classes %}products{% if not productversion and not run %} focus{% endif %}{% endblock %}
 
 {% block finder-section-column-headers %}
-  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort_by="title" sort="asc" header="Products" %}
+  {% include "finder/_header.html" with tag="h3" class="bytitle" sort_type="string" sort_by="title" sortdir="asc" header="Products" %}
 {% endblock %}
 
 
 {% block finder-section-column-content %}
-  {% include "runtests/finder/_products.html" with active=product %}
+  {% include "runtests/finder/_products.html" with active=product colname="products" %}
 {% endblock %}

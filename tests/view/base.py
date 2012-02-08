@@ -16,26 +16,103 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Utility base TestCase for testing views.
+Utility base TestCase classes for testing views.
 
 """
-from django.test import TestCase
+from contextlib import contextmanager
 
-from django_webtest import WebTest
+from django.conf import settings
+
+from BeautifulSoup import BeautifulSoup
+import django_webtest
+from mock import patch
 
 from .. import factories as F
+from ..utils import Url
 
 
 
-class AuthenticatedViewTestCase(WebTest):
+@contextmanager
+def patch_session(session_data):
+    """Context manager to patch session vars."""
+    with patch(
+            "django.contrib.sessions.backends.cached_db."
+            "SessionStore._session_cache",
+            session_data,
+            create=True):
+        yield
+
+
+
+class WebTest(django_webtest.WebTest):
+    """Fix WebTest so it works with django-session-csrf."""
+    def _setup_auth_middleware(self):
+        """
+        Monkeypatch remote-user-auth middleware into MIDDLEWARE_CLASSES.
+
+        Places remote-user-auth middleware before session-csrf middleware, so
+        session-csrf sees the authenticated user.
+
+        """
+        auth_middleware = "django_webtest.middleware.WebtestUserMiddleware"
+        session_csrf_middleware = "session_csrf.CsrfMiddleware"
+        index = settings.MIDDLEWARE_CLASSES.index(session_csrf_middleware)
+        settings.MIDDLEWARE_CLASSES.insert(index, auth_middleware)
+
+
+
+class ViewTestCase(WebTest):
+    """Add some utility assertions and methods."""
+    # subclasses should provide a url property
+    url = None
+
+
+    def assertRedirects(self, response, path, status_code=302):
+        """An assertRedirects that works with WebTest."""
+        self.assertEqual(response.status_int, status_code)
+
+        self.assertEqual(
+            Url(response.headers["Location"]),
+            Url("http://localhost:80" + path)
+            )
+
+
+    def assertElement(self, html, element, *args, **kwargs):
+        """
+        Assert that an element is in an HTML snippet some number of times.
+
+        ``html`` is either an HTML string or a BeautifulSoup object.
+
+        ``element`` is the HTML tag name; extra arguments and keyword arguments
+        are passed on to BeautifulSoup as attribute selectors.
+
+        ``count`` keyword arg specifies the number of elements matching the
+        spec that are expected to be found; defaults to 1.
+
+        """
+        count = kwargs.pop("count", 1)
+        if isinstance(html, basestring):
+            html = BeautifulSoup(html)
+        actual = len(html.findAll(element, *args, **kwargs))
+        self.assertEqual(
+            actual,
+            count,
+            "Element {0}({1}, {2}) is in the list {3} times, not {4}.".format(
+                element, args, kwargs, actual, count)
+            )
+
+
+    def get(self, **kwargs):
+        """Shortcut for getting url."""
+        return self.app.get(self.url, **kwargs)
+
+
+
+class AuthenticatedViewTestCase(ViewTestCase):
     """Base test case for authenticated views."""
     def setUp(self):
         """Set-up for authenticated view test cases; create a user."""
         self.user = F.UserFactory.create()
-
-
-    # subclasses should provide a url property
-    url = None
 
 
     def get(self, **kwargs):
@@ -74,63 +151,3 @@ class FormViewTestCase(AuthenticatedViewTestCase):
     def get_form(self):
         """Get the manage list form."""
         return self.get().forms[self.form_id]
-
-
-
-class ManageListViewTestCase(FormViewTestCase):
-    """Base class for testing manage list views."""
-    def assertInList(self, response, name, count=1):
-        """Assert that item ``name`` is in the list ``count`` times."""
-        # One occurrence in the list = two occurrences of the name in HTML
-        actual = response.body.count(name)
-        self.assertEqual(
-            actual, count * 2,
-            "'{0}' is in the list {1} times, not {2}.".format(
-                name, actual, count))
-
-
-    def assertNotInList(self, response, name):
-        """Assert that item ``name`` is not in the list."""
-        self.assertInList(response, name, 0)
-
-
-    def assertOrderInList(self, response, *names):
-        """Assert that ``names`` appear in list in given order."""
-        indices = []
-        for name in names:
-            try:
-                indices.append((response.body.index(name), name))
-            except ValueError:
-                self.fail("{0} does not appear in response.".format(name))
-
-        actual_order = sorted(indices, key=lambda t: t[0])
-
-        self.assertEqual(
-            [t[1] for t in actual_order],
-            [t[1] for t in indices],
-            )
-
-
-    def assertActionRequiresPermission(self, action, permission):
-        """Assert that the given list action requires the given permission."""
-        cv = F.CaseVersionFactory.create()
-
-        form = self.get_form()
-
-        name = "action-{0}".format(action)
-
-        # action button not shown to the user
-        self.assertTrue(name not in form.fields)
-
-        # ...but if they cleverly submit it anyway they get a 403...
-        res = self.post(
-            {
-                name: str(cv.id),
-                "csrfmiddlewaretoken":
-                    form.fields.get("csrfmiddlewaretoken")[0].value
-                },
-            status=403,
-            )
-
-        # ...with a message about permissions.
-        res.mustcontain("permission")
