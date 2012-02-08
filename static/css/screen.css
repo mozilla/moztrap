@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #managecases .suites-title, .category-title, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #managecases .suites-title, #manageproducts .productversions-title, #manageproducts .testers-title, .category-title, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -1538,7 +1538,7 @@ body > div {
   background-image: url('../images/ui/trash.png?1326735333');
 }
 
-.detailslist, .itembody .envs, #managecases .suites {
+.detailslist, .itembody .envs, #managecases .suites, #manageproducts .productversions, #manageproducts .testers {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-height: 18em;
   overflow-y: auto;
@@ -3635,6 +3635,44 @@ body.login input, body.login .errorlist {
   margin-right: 1.099%;
 }
 #managecases .envs {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+
+#manageproducts .listordering {
+  padding-left: 1.5em;
+}
+#manageproducts .name, #manageproducts .byname, #manageproducts .description, #manageproducts .bydescription {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
+}
+#manageproducts .description, #manageproducts .bydescription {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#manageproducts .title {
+  font-weight: 500;
+  display: inline;
+}
+#manageproducts .iteminfo {
+  display: inline;
+  float: left;
+  width: 78.947%;
+  margin-right: 1.053%;
+}
+#manageproducts .productversions, #manageproducts .testers {
+  display: inline;
+  float: left;
+  width: 20%;
+  margin-right: 1.053%;
+}
+#manageproducts .productversions {
   display: inline;
   float: right;
   margin-right: 0;

@@ -64,7 +64,7 @@ def product_details(request, product_id):
     product = get_object_or_404(model.Product, pk=product_id)
     return TemplateResponse(
         request,
-        "manage/product/_product_details.html",
+        "manage/product/productlist/_product_details.html",
         {
             "product": product
             }
