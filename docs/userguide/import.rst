@@ -62,12 +62,14 @@ This is one of the test case formats supported in the bulk test case creator.
 Format::
 
     Test that <test title>
+    <description text>
     When <instruction>
     Then <expected result>
 
 Example::
 
     Test that I can write a test
+    This test tests that a user can write a test
     When I execute my first step instruction
     then the expected result is observed
     And when I execute mysecond step instruction
@@ -79,4 +81,24 @@ Markdown (future)
 Description:
 This will be another format for the bulk test case creator.
 
-Details TBD.
+Example::
+
+    Test case 1 title here
+    ======================
+    Description text here
+
+    * which can contain bullets
+    * **with formatting**
+       * indentation 
+       * [and links](www.example.com)
+
+    Steps
+    -----
+    1. Step 1 action
+        * Step 1 Expected Result
+    2. Step 2 action
+        * Step 2 Expected Result
+        
+    Test case 2 title here
+    ======================
+    ...
