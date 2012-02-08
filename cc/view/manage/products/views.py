@@ -45,7 +45,7 @@ from . import forms
 @lists.finder(ManageFinder)
 @lists.filter("products", filterset_class=ProductFilterSet)
 @lists.sort("products")
-@ajax("manage/product/_products_list.html")
+@ajax("manage/product/productlist/_products_list.html")
 def products_list(request):
     """List products."""
     return TemplateResponse(
