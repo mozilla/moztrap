@@ -1,6 +1,6 @@
 <ol class="steps">
   {% for step in itc.testCaseVersion.steps %}
-  <li>
+  <li class="stepitem">
     <p class="instruction">{{ step.instruction }}</p>
     <p class="outcome">{{ step.expectedResult }}</p>
   </li>

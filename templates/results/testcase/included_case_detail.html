@@ -32,7 +32,7 @@
 
       <ol class="steps">
         {% for step in includedcase.testCaseVersion.steps %}
-        <li>
+        <li class="stepitem">
           <p class="instruction">{{ step.instruction }}</p>
           <p class="outcome">{{ step.expectedResult }}</p>
         </li>

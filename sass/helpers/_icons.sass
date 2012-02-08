@@ -28,3 +28,12 @@
   @else
     +pad-icon($img)
     background-position: $smallpx
+
+// common icons
+.goto
+  #{$link}
+    +opacity(.5)
+    +icon('ui/arrow_right.png')
+    display: inline-block
+  #{$focus}
+    +opacity(1)

@@ -103,9 +103,6 @@
       .instruction
         color: $red
 
-  .steps li
-    position: relative
-
 .stepfail-summary
   +opacity(.25)
   +icon('ui/x.png')
@@ -124,11 +121,16 @@
   +box-shadow(rgba($red,$small) 0 0 $xsmallem inset)
   background: rgba($red-light,$xxxsmall)
   border-color: $red
-  .buglist
+  .buglist, .assign-buglist
     +no-style-list
     +columns(12,16)
-  .newbug-input-label
+  .newbug-input-label, .newbug-radio-label
     +gone
+  .newbug-radio
+    position: relative
+    top: rhythm(.25)
+  .newbug-input
+    width: 90%
   .form-actions
     +columns(4,16)
     +omega(16)

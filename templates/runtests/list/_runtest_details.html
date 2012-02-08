@@ -15,7 +15,7 @@
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   {% stepresult_for result step as stepresult %}
-  <li>
+  <li class="stepitem">
     <div class="step {{ stepresult.status }}">
       <p class="instruction">{{ step.instruction }}</p>
       <p class="outcome">{{ step.expected }}</p>
@@ -51,13 +51,9 @@
 
             {% with runcaseversion.caseversion.bug_urls as bug_urls %}
 
-              {% if bug_urls %}
-                <p>assign a bug to this result:</p>
-              {% endif %}
-
-              <ul class="buglist">
+              <ul class="assign-buglist">
                 {% for bug_url in bug_urls %}
-                  <li class="bug">
+                  <li class="assign-bug">
                     <input type="radio" name="bug" value="{{ bug_url }}" id="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}" />
                     <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-{{ forloop.counter }}">{{ bug_url }}</label>
                     {% if bug_url|is_url %}
@@ -67,11 +63,11 @@
                 {% endfor %}
                 <li class="newbug">
                   {% if bug_urls %}
-                    <input type="radio" name="bug" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
+                    <input type="radio" class="newbug-radio" name="bug" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
                     <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug-radio-label">link to a new bug</label>
                   {% endif %}
                   <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}" class="newbug-input-label">bug link</label>
-                  <input type="url" name="bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
+                  <input type="url" class="newbug-input" name="bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
                 </li>
               </ul>
 

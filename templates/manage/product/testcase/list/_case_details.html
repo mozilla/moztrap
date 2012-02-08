@@ -3,7 +3,7 @@
 
   <ol class="steps">
     {% for step in caseversion.steps.all %}
-    <li>
+    <li class="stepitem">
       <p class="instruction">{{ step.instruction }}</p>
       <p class="outcome">{{ step.expected }}</p>
     </li>
