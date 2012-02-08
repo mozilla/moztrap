@@ -1,0 +1,16 @@
+.add-product
+
+  .name-field, .description-field, .version-field, .profile-field
+    +columns(11,24)
+    label
+      +columns(2,11)
+    input, select, textarea, .errorlist
+      +columns(9,11)
+      +omega(11)
+
+  .version-field, .profile-field
+    +suffix(2,24)
+    +omega(24)
+
+  .form-actions
+    +suffix(2,24)

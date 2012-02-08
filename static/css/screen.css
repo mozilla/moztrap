@@ -3589,6 +3589,39 @@ body.login input, body.login .errorlist {
   opacity: 1;
 }
 
+.add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
+  display: inline;
+  float: left;
+  width: 45.263%;
+  margin-right: 1.053%;
+}
+.add-product .name-field label, .add-product .description-field label, .add-product .version-field label, .add-product .profile-field label {
+  display: inline;
+  float: left;
+  width: 16.279%;
+  margin-right: 2.326%;
+}
+.add-product .name-field input, .add-product .name-field select, .add-product .name-field textarea, .add-product .name-field .errorlist, .add-product .description-field input, .add-product .description-field select, .add-product .description-field textarea, .add-product .description-field .errorlist, .add-product .version-field input, .add-product .version-field select, .add-product .version-field textarea, .add-product .version-field .errorlist, .add-product .profile-field input, .add-product .profile-field select, .add-product .profile-field textarea, .add-product .profile-field .errorlist {
+  display: inline;
+  float: left;
+  width: 81.395%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-product .version-field, .add-product .profile-field {
+  padding-right: 8.421%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-product .form-actions {
+  padding-right: 8.421%;
+}
+
 #managecases .listordering {
   padding-left: 3.75em;
 }

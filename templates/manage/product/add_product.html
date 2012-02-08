@@ -7,8 +7,8 @@
     {% csrf_token %}
 
     {% include "forms/_field.html" with field=form.name %}
-    {% include "forms/_field.html" with field=form.description %}
     {% include "forms/_field.html" with field=form.version %}
+    {% include "forms/_field.html" with field=form.description %}
     {% include "forms/_field.html" with field=form.profile %}
 
     {% comment %}
