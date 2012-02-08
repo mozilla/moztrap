@@ -1327,8 +1327,16 @@ body > div {
   overflow: hidden;
   *zoom: 1;
   text-shadow: rgba(232, 233, 236, 0.444) 0 1px 0;
-  padding: 0.375em 0.375em 0.375em 0;
+  border-top-style: solid;
+  border-top-width: 0.071em;
+  padding-top: 0.304em;
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.304em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
   background: rgba(81, 105, 133, 0.444);
+  border-color: rgba(75, 87, 101, 0.667);
 }
 
 .sortitem {
@@ -1347,15 +1355,18 @@ body > div {
 .listnav {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   *zoom: 1;
-  margin-top: 0em;
-  padding-top: 0.375em;
-  padding-bottom: 0.375em;
-  margin-bottom: 0em;
+  border-top-style: solid;
+  border-top-width: 0.071em;
+  padding-top: 0.304em;
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.304em;
   padding-left: 0.5em;
   padding-right: 0.5em;
   text-shadow: rgba(232, 233, 236, 0.444) 0 1px 0;
   clear: both;
   background: rgba(81, 105, 133, 0.444);
+  border-color: rgba(75, 87, 101, 0.667);
   white-space: nowrap;
 }
 .listnav:after {
@@ -2030,6 +2041,7 @@ body > div {
 .itemlist {
   margin-bottom: 1.5em;
   border: 1px solid rgba(75, 87, 101, 0.667);
+  border-width: 0px 1px;
 }
 .itemlist .empty {
   margin-top: 0em;
