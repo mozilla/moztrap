@@ -37,7 +37,7 @@
 
     {% else %}
 
-      {% if result.status == result.STATUS.started or result.status == result.STATUS.failed %}
+      {% if result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
         <div class="stepfail details">
           <p class="summary stepfail-summary">fail</p>
           <form method="POST" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}" class="content">
