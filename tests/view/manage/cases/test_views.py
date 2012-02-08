@@ -366,7 +366,7 @@ class CaseDetailTest(base.AuthenticatedViewTestCase):
 
     @property
     def url(self):
-        """Shortcut for add-case-single url."""
+        """Shortcut for case-details url."""
         return reverse(
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
