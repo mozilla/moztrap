@@ -30,11 +30,18 @@
 
 .toggle
   +columns(6,24)
-  +leader(.25)
   text-transform: capitalize
   a
     #{$link}
-      display: block
+      +border-radius
+      +rhythm-borders(1px,.25)
+      +box-shadow(rgba($mid,$xxsmall) 0 0 $xsmallem inset)
+      +hpadding(1em)
+      color: rgba($base,$small)
+      border-color: rgba($base,$xxsmall)
+      display: inline-block
+    #{$focus}, .expanded &
+      +button-style($lightest)
 
 #filterform
   +padding-leader(.5)
