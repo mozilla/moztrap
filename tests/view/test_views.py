@@ -21,11 +21,11 @@ Tests for home view.
 """
 from django.core.urlresolvers import reverse
 
-from . import base
+from tests import case
 
 
 
-class HomeViewTest(base.AuthenticatedViewTestCase):
+class HomeViewTest(case.view.AuthenticatedViewTestCase):
     """Tests for home view."""
     @property
     def url(self):

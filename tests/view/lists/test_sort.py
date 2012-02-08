@@ -23,13 +23,14 @@ from mock import Mock
 
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
-from django.utils.unittest import TestCase
+
+from tests import case
 
 from ...utils import Url
 
 
 
-class SortDecoratorTest(TestCase):
+class SortDecoratorTest(case.TestCase):
     @property
     def sort(self):
         """The decorator factory under test."""
@@ -139,7 +140,7 @@ class SortDecoratorTest(TestCase):
 
 
 
-class SortTest(TestCase):
+class SortTest(case.TestCase):
     def cls(self, full_path, GET):
         """Construct mock request; instantiate and return Sort object."""
         request = Mock()

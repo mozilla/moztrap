@@ -19,24 +19,21 @@
 Tests for Product model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
-from ....utils import refresh
+from tests import case
 
 
 
-class ProductTest(TestCase):
+class ProductTest(case.DBTestCase):
     def test_unicode(self):
         """Unicode representation is name of Product"""
-        p = F.ProductFactory.build(name="Firefox")
+        p = self.F.ProductFactory.build(name="Firefox")
 
         self.assertEqual(unicode(p), u"Firefox")
 
 
     def test_clone_no_cases(self):
         """Cloning a Product does not clone test cases."""
-        c = F.CaseFactory()
+        c = self.F.CaseFactory()
 
         new = c.product.clone()
 
@@ -45,7 +42,7 @@ class ProductTest(TestCase):
 
     def test_clone_no_suites(self):
         """Cloning a Product does not clone test suites."""
-        s = F.SuiteFactory()
+        s = self.F.SuiteFactory()
 
         new = s.product.clone()
 
@@ -54,7 +51,7 @@ class ProductTest(TestCase):
 
     def test_clone_team(self):
         """Cloning a ProductVersion clones its team."""
-        p = F.ProductFactory(team=["One", "Two"])
+        p = self.F.ProductFactory(team=["One", "Two"])
 
         new = p.clone()
 
@@ -63,11 +60,11 @@ class ProductTest(TestCase):
 
     def test_reorder_versions(self):
         """reorder_versions method reorders versions correctly."""
-        p = F.ProductFactory()
-        v2 = F.ProductVersionFactory(product=p, version="1.2")
-        v1 = F.ProductVersionFactory(product=p, version="1.1")
+        p = self.F.ProductFactory()
+        v2 = self.F.ProductVersionFactory(product=p, version="1.2")
+        v1 = self.F.ProductVersionFactory(product=p, version="1.1")
 
         p.reorder_versions()
 
-        self.assertEqual(refresh(v1).order, 1)
-        self.assertEqual(refresh(v2).order, 2)
+        self.assertEqual(self.refresh(v1).order, 1)
+        self.assertEqual(self.refresh(v2).order, 2)

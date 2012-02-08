@@ -21,41 +21,40 @@ Tests for Environment admin.
 """
 from mock import patch
 
-from ...admin import AdminTestCase
-from .... import factories as F
+from tests import case
 
 
 
-class EnvironmentAdminTest(AdminTestCase):
+class EnvironmentAdminTest(case.admin.AdminTestCase):
     app_label = "environments"
     model_name = "environment"
 
 
     def test_changelist(self):
         """Environment changelist page loads without error, contains name."""
-        F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})
+        self.F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})
 
         self.get(self.changelist_url).mustcontain("Linux")
 
 
     def test_change_page(self):
         """Environment change page loads without error, contains name."""
-        e = F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})[0]
+        e = self.F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})[0]
 
         self.get(self.change_url(e)).mustcontain("Linux")
 
 
     def test_change_page_element(self):
         """Environment change page includes Element-m2m inline."""
-        e = F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})[0]
+        e = self.F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})[0]
 
         self.get(self.change_url(e)).mustcontain("Linux")
 
 
     def test_add_element_m2m_with_environment(self):
         """Can add elements when creating a new Environment"""
-        profile = F.ProfileFactory.create()
-        element = F.ElementFactory.create(name="Linux")
+        profile = self.F.ProfileFactory.create()
+        element = self.F.ElementFactory.create(name="Linux")
 
         # patching extra avoids need for JS to add element-m2m
         with patch(

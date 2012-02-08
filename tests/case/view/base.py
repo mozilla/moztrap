@@ -19,33 +19,18 @@
 Utility base TestCase classes for testing views.
 
 """
-from contextlib import contextmanager
-
 from django.conf import settings
 
 from BeautifulSoup import BeautifulSoup
 import django_webtest
-from mock import patch
 
-from .. import factories as F
-from ..utils import Url
-
-
-
-@contextmanager
-def patch_session(session_data):
-    """Context manager to patch session vars."""
-    with patch(
-            "django.contrib.sessions.backends.cached_db."
-            "SessionStore._session_cache",
-            session_data,
-            create=True):
-        yield
+from ...utils import Url
+from ..base import DBMixin
 
 
 
-class WebTest(django_webtest.WebTest):
-    """Fix WebTest so it works with django-session-csrf."""
+class WebTest(DBMixin, django_webtest.WebTest):
+    """Fix WebTest so it works with django-session-csrf, mixin db utilities."""
     def _setup_auth_middleware(self):
         """
         Monkeypatch remote-user-auth middleware into MIDDLEWARE_CLASSES.
@@ -112,7 +97,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
     """Base test case for authenticated views."""
     def setUp(self):
         """Set-up for authenticated view test cases; create a user."""
-        self.user = F.UserFactory.create()
+        self.user = self.F.UserFactory.create()
 
 
     def get(self, **kwargs):
@@ -129,8 +114,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
 
     def add_perm(self, codename):
         """Add named permission to user."""
-        from cc import model
-        perm = model.Permission.objects.get(codename=codename)
+        perm = self.model.Permission.objects.get(codename=codename)
         self.user.user_permissions.add(perm)
 
 

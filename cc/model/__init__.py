@@ -19,7 +19,7 @@
 All models.
 
 """
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import User, Group, Permission
 
 from .core.models import Product, ProductVersion
 from .environments.models import Environment, Profile, Element, Category

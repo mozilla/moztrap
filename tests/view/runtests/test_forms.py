@@ -19,26 +19,17 @@
 Tests for runtests forms.
 
 """
-from django.test import TestCase
-
-from ... import factories as F
+from tests import case
 
 
 
-class EnvironmentSelectionFormTest(TestCase):
+class EnvironmentSelectionFormTest(case.DBTestCase):
     """Tests for environment selection form."""
     @property
     def form(self):
         """The form class under test."""
         from cc.view.runtests.forms import EnvironmentSelectionForm
         return EnvironmentSelectionForm
-
-
-    @property
-    def model(self):
-        """The models."""
-        from cc import model
-        return model
 
 
     def test_no_extra_arguments(self):
@@ -50,7 +41,7 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_environments(self):
         """Can pass in queryset of environments."""
-        F.EnvironmentFactory.create_full_set(
+        self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"], "Browser": ["Opera", "Firefox"]})
         os = self.model.Category.objects.get(name="OS")
         browser = self.model.Category.objects.get(name="Browser")
@@ -73,7 +64,7 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_current(self):
         """Can pass in ID of current environment."""
-        envs = F.EnvironmentFactory.create_full_set(
+        envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"]})
         cat = self.model.Category.objects.get()
 
@@ -96,7 +87,7 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_save(self):
         """Save method returns ID of selected environment."""
-        envs = F.EnvironmentFactory.create_full_set(
+        envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"]})
         cat = self.model.Category.objects.get()
 
@@ -110,7 +101,7 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_invalid_environment(self):
         """Form validation error if invalid combination is selected."""
-        F.EnvironmentFactory.create_set(
+        self.F.EnvironmentFactory.create_set(
             ["OS", "Browser"], ["OS X", "Safari"], ["Windows", "IE"])
         windows = self.model.Element.objects.get(name="Windows")
         safari = self.model.Element.objects.get(name="Safari")
@@ -137,23 +128,25 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_superset_env(self):
         """Selecting a superset of the envs for a valid combo is valid."""
-        os = F.CategoryFactory.create(name="OS")
-        browser = F.CategoryFactory.create(name="Browser")
-        language = F.CategoryFactory.create(name="Language")
+        os = self.F.CategoryFactory.create(name="OS")
+        browser = self.F.CategoryFactory.create(name="Browser")
+        language = self.F.CategoryFactory.create(name="Language")
 
-        windows = F.ElementFactory.create(name="Windows", category=os)
-        linux = F.ElementFactory.create(name="Linux", category=os)
-        firefox = F.ElementFactory.create(name="Firefox", category=browser)
-        opera = F.ElementFactory.create(name="Opera", category=browser)
-        english = F.ElementFactory.create(name="English", category=language)
-        spanish = F.ElementFactory.create(name="Spanish", category=language)
+        windows = self.F.ElementFactory.create(name="Windows", category=os)
+        linux = self.F.ElementFactory.create(name="Linux", category=os)
+        firefox = self.F.ElementFactory.create(name="Firefox", category=browser)
+        opera = self.F.ElementFactory.create(name="Opera", category=browser)
+        english = self.F.ElementFactory.create(
+            name="English", category=language)
+        spanish = self.F.ElementFactory.create(
+            name="Spanish", category=language)
 
         # we only care about language for Opera/Linux, not Firefox/Windows
-        winff = F.EnvironmentFactory.create()
+        winff = self.F.EnvironmentFactory.create()
         winff.elements.add(windows, firefox)
-        linuxoperaenglish = F.EnvironmentFactory.create()
+        linuxoperaenglish = self.F.EnvironmentFactory.create()
         linuxoperaenglish.elements.add(linux, opera, english)
-        linuxoperaspanish = F.EnvironmentFactory.create()
+        linuxoperaspanish = self.F.EnvironmentFactory.create()
         linuxoperaspanish.elements.add(linux, opera, spanish)
 
         f = self.form(
@@ -170,20 +163,21 @@ class EnvironmentSelectionFormTest(TestCase):
 
     def test_incomplete_env(self):
         """A valid combo that does not include all categories is ok."""
-        os = F.CategoryFactory.create(name="OS")
-        browser = F.CategoryFactory.create(name="Browser")
-        language = F.CategoryFactory.create(name="Language")
+        os = self.F.CategoryFactory.create(name="OS")
+        browser = self.F.CategoryFactory.create(name="Browser")
+        language = self.F.CategoryFactory.create(name="Language")
 
-        windows = F.ElementFactory.create(name="Windows", category=os)
-        linux = F.ElementFactory.create(name="Linux", category=os)
-        firefox = F.ElementFactory.create(name="Firefox", category=browser)
-        opera = F.ElementFactory.create(name="Opera", category=browser)
-        english = F.ElementFactory.create(name="English", category=language)
-        F.ElementFactory.create(name="Spanish", category=language)
+        windows = self.F.ElementFactory.create(name="Windows", category=os)
+        linux = self.F.ElementFactory.create(name="Linux", category=os)
+        firefox = self.F.ElementFactory.create(name="Firefox", category=browser)
+        opera = self.F.ElementFactory.create(name="Opera", category=browser)
+        english = self.F.ElementFactory.create(
+            name="English", category=language)
+        self.F.ElementFactory.create(name="Spanish", category=language)
 
-        winff = F.EnvironmentFactory.create()
+        winff = self.F.EnvironmentFactory.create()
         winff.elements.add(windows, firefox)
-        linuxoperaenglish = F.EnvironmentFactory.create()
+        linuxoperaenglish = self.F.EnvironmentFactory.create()
         linuxoperaenglish.elements.add(linux, opera, english)
 
         f = self.form(

@@ -19,24 +19,26 @@
 Tests for CC base admin forms.
 
 """
-from django.test import TestCase
-
 from django.contrib.admin.sites import AdminSite
 
-from .... import factories as F
-
-from cc.model.ccadmin import CCModelForm, TeamModelAdmin
-from cc.model.core.models import ProductVersion
+from tests import case
 
 
 
-class CCModelFormTest(TestCase):
+class CCModelFormTest(case.DBTestCase):
     """Tests of CCModelForm."""
+    @property
+    def form(self):
+        """The form class under test."""
+        from cc.model.ccadmin import CCModelForm
+        return CCModelForm
+
+
     def test_commit(self):
         """CCModelForm passes in user when saving model with commit=True."""
-        u = F.UserFactory.create()
-        p = F.ProductFactory.create(name="Firefox")
-        f = CCModelForm(instance=p, data={"name": "Fennec"})
+        u = self.F.UserFactory.create()
+        p = self.F.ProductFactory.create(name="Firefox")
+        f = self.form(instance=p, data={"name": "Fennec"})
 
         p = f.save(commit=True, user=u)
 
@@ -45,9 +47,9 @@ class CCModelFormTest(TestCase):
 
     def test_no_commit(self):
         """CCModelForm patches save() so user is tracked w/ commit=False."""
-        u = F.UserFactory.create()
-        p = F.ProductFactory.create(name="Firefox")
-        f = CCModelForm(instance=p, data={"name": "Fennec"})
+        u = self.F.UserFactory.create()
+        p = self.F.ProductFactory.create(name="Firefox")
+        f = self.form(instance=p, data={"name": "Fennec"})
 
         p = f.save(commit=False, user=u)
         p.save()
@@ -56,11 +58,18 @@ class CCModelFormTest(TestCase):
 
 
 
-class TeamModelAdminTest(TestCase):
+class TeamModelAdminTest(case.DBTestCase):
     """Tests of TeamModelAdmin."""
+    @property
+    def admin(self):
+        """The model admin class under test."""
+        from cc.model.ccadmin import TeamModelAdmin
+        return TeamModelAdmin
+
+
     def test_fieldsets(self):
         """Sans declared fieldsets, puts team fields into Team fieldset."""
-        ma = TeamModelAdmin(ProductVersion, AdminSite())
+        ma = self.admin(self.model.ProductVersion, AdminSite())
 
         fs = ma.get_fieldsets(None, None)
 

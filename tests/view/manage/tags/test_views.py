@@ -21,12 +21,11 @@ Tests for tag management views.
 """
 from django.core.urlresolvers import reverse
 
-from .... import factories as F
-from ... import base
+from tests import case
 
 
 
-class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
+class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase):
     """Test for tags autocomplete view."""
     @property
     def url(self):
@@ -44,7 +43,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
 
     def test_matching_tags_json(self):
         """Returns list of matching tags in JSON."""
-        t = F.TagFactory.create(name="foo")
+        t = self.F.TagFactory.create(name="foo")
 
         res = self.get("o")
 
@@ -68,12 +67,12 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
 
     def test_not_wrong_product_tags(self):
         """Only tags for the correct product, or global tags, are returned."""
-        p1 = F.ProductFactory.create()
-        p2 = F.ProductFactory.create()
+        p1 = self.F.ProductFactory.create()
+        p2 = self.F.ProductFactory.create()
 
-        t1 = F.TagFactory.create(product=p1, name="t1")
-        F.TagFactory.create(product=p2, name="t2")
-        t3 = F.TagFactory.create(product=None, name="t3")
+        t1 = self.F.TagFactory.create(product=p1, name="t1")
+        self.F.TagFactory.create(product=p2, name="t2")
+        t3 = self.F.TagFactory.create(product=None, name="t3")
 
         res = self.app.get(
             self.url, user=self.user, params={"text": "t", "product-id": p1.id})
@@ -86,7 +85,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
 
     def test_case_insensitive(self):
         """Matching is case-insensitive, but pre/post are case-accurate."""
-        t = F.TagFactory.create(name="FooBar")
+        t = self.F.TagFactory.create(name="FooBar")
 
         res = self.get("oO")
 
@@ -110,7 +109,7 @@ class TagsAutocompleteTest(base.AuthenticatedViewTestCase):
 
     def test_no_query(self):
         """If no query is provided, no tags are returned."""
-        F.TagFactory.create(name="foo")
+        self.F.TagFactory.create(name="foo")
 
         res = self.get()
 

@@ -17,13 +17,12 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Tests for template tags/filters for running tests."""
 from django.template import Template, Context
-from django.test import TestCase
 
-from .... import factories as F
-
+from tests import case
 
 
-class ResultForTest(TestCase):
+
+class ResultForTest(case.DBTestCase):
     """Tests for the result_for template tag."""
     def result_for(self, runcaseversion, user, environment, render):
         """Execute template tag with given args and render given string."""
@@ -36,7 +35,7 @@ class ResultForTest(TestCase):
 
     def test_result_exists(self):
         """If the result already exists, it is returned."""
-        r = F.ResultFactory()
+        r = self.F.ResultFactory()
 
         self.assertEqual(
             self.result_for(
@@ -47,9 +46,9 @@ class ResultForTest(TestCase):
 
     def test_result_does_not_exist(self):
         """If the result does not exist, a new unsaved one is returned."""
-        rcv = F.RunCaseVersionFactory.create()
-        env = F.EnvironmentFactory.create()
-        user = F.UserFactory.create()
+        rcv = self.F.RunCaseVersionFactory.create()
+        env = self.F.EnvironmentFactory.create()
+        user = self.F.UserFactory.create()
 
         self.assertEqual(
             self.result_for(
@@ -63,7 +62,7 @@ class ResultForTest(TestCase):
 
 
 
-class StepResultForTest(TestCase):
+class StepResultForTest(case.DBTestCase):
     """Tests for the step_result_for template tag."""
     def result_for(self, result, step, render):
         """Execute template tag with given args and render given string."""
@@ -76,7 +75,7 @@ class StepResultForTest(TestCase):
 
     def test_stepresult_exists(self):
         """If the step result already exists, it is returned."""
-        sr = F.StepResultFactory()
+        sr = self.F.StepResultFactory()
 
         self.assertEqual(
             self.result_for(
@@ -87,8 +86,8 @@ class StepResultForTest(TestCase):
 
     def test_step_result_does_not_exist(self):
         """If the step result does not exist, a new unsaved one is returned."""
-        r = F.ResultFactory.create()
-        step = F.CaseStepFactory.create()
+        r = self.F.ResultFactory.create()
+        step = self.F.CaseStepFactory.create()
 
         self.assertEqual(
             self.result_for(
@@ -102,8 +101,8 @@ class StepResultForTest(TestCase):
 
     def test_result_does_not_exist(self):
         """If given result is not saved, unsaved step result is returned."""
-        r = F.ResultFactory.build()
-        step = F.CaseStepFactory.create()
+        r = self.F.ResultFactory.build()
+        step = self.F.CaseStepFactory.create()
 
         self.assertEqual(
             self.result_for(

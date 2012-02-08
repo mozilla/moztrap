@@ -19,25 +19,24 @@
 Tests for Element admin.
 
 """
-from ...admin import AdminTestCase
-from .... import factories as F
+from tests import case
 
 
 
-class ElementAdminTest(AdminTestCase):
+class ElementAdminTest(case.admin.AdminTestCase):
     app_label = "environments"
     model_name = "element"
 
 
     def test_changelist(self):
         """Element changelist page loads without error, contains name."""
-        F.ElementFactory.create(name="Linux")
+        self.F.ElementFactory.create(name="Linux")
 
         self.get(self.changelist_url).mustcontain("Linux")
 
 
     def test_change_page(self):
         """Element change page loads without error, contains name."""
-        e = F.ElementFactory.create(name="Linux")
+        e = self.F.ElementFactory.create(name="Linux")
 
         self.get(self.change_url(e)).mustcontain("Linux")

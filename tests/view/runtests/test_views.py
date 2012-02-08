@@ -25,14 +25,11 @@ from django.core.urlresolvers import reverse
 
 from mock import patch
 
-from ... import factories as F
-from ...utils import refresh
-
-from .. import base
+from tests import case
 
 
 
-class SelectTest(base.AuthenticatedViewTestCase):
+class SelectTest(case.view.AuthenticatedViewTestCase):
     """Tests for select-run view."""
     @property
     def url(self):
@@ -42,7 +39,8 @@ class SelectTest(base.AuthenticatedViewTestCase):
 
     def test_requires_execute_permission(self):
         """Requires execute permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
 
@@ -51,7 +49,7 @@ class SelectTest(base.AuthenticatedViewTestCase):
         """Finder is present in context with list of products."""
         self.add_perm("execute")
 
-        p = F.ProductFactory.create(name="Foo Product")
+        p = self.F.ProductFactory.create(name="Foo Product")
 
         res = self.get()
 
@@ -65,7 +63,7 @@ class SelectTest(base.AuthenticatedViewTestCase):
         """Finder intercepts its ajax requests to return child obj lists."""
         self.add_perm("execute")
 
-        pv = F.ProductVersionFactory.create(version="1.0.1")
+        pv = self.F.ProductVersionFactory.create(version="1.0.1")
 
         res = self.get(
             params={
@@ -84,12 +82,12 @@ class SelectTest(base.AuthenticatedViewTestCase):
 
 
 
-class SetEnvironmentTest(base.AuthenticatedViewTestCase):
+class SetEnvironmentTest(case.view.AuthenticatedViewTestCase):
     """Tests for set_environment view."""
     def setUp(self):
         """These tests all require a test run."""
         super(SetEnvironmentTest, self).setUp()
-        self.testrun = F.RunFactory.create(name="Foo Run")
+        self.testrun = self.F.RunFactory.create(name="Foo Run")
 
 
     @property
@@ -103,21 +101,15 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
     def envs(self):
         """A lazily-created sample set of environments."""
         if getattr(self, "_cached_envs", None) is None:
-            self._cached_envs = F.EnvironmentFactory.create_full_set(
+            self._cached_envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["Windows 7", "Ubuntu Linux"]})
         return self._cached_envs
 
 
-    @property
-    def model(self):
-        """The models."""
-        from cc import model
-        return model
-
-
     def test_requires_execute_permission(self):
         """Requires execute permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
 
@@ -137,7 +129,7 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
     def test_valid_environments(self):
         """JSON list of valid envs (as ordered element list) is in template."""
         self.add_perm("execute")
-        envs = F.EnvironmentFactory.create_set(
+        envs = self.F.EnvironmentFactory.create_set(
             ["OS", "Browser"], ["OS X", "Safari"], ["Windows", "IE"])
         self.testrun.environments.add(*envs)
 
@@ -222,13 +214,13 @@ class SetEnvironmentTest(base.AuthenticatedViewTestCase):
 
 
 
-class RunTestsTest(base.AuthenticatedViewTestCase):
+class RunTestsTest(case.view.AuthenticatedViewTestCase):
     """Tests for runtests view."""
     def setUp(self):
         """These tests all require a test run and envs, and execute perm."""
         super(RunTestsTest, self).setUp()
-        self.testrun = F.RunFactory.create(status="active")
-        self.envs = F.EnvironmentFactory.create_full_set(
+        self.testrun = self.F.RunFactory.create(status="active")
+        self.envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Windows 7", "Ubuntu Linux"]})
         self.testrun.environments.add(*self.envs)
         self.add_perm("execute")
@@ -242,13 +234,6 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             kwargs={"run_id": self.testrun.id, "env_id": self.envs[0].id})
 
 
-    @property
-    def model(self):
-        """The models."""
-        from cc import model
-        return model
-
-
     def create_rcv(self, **kwargs):
         """Create a runcaseversion for this run with given kwargs."""
         defaults = {
@@ -257,7 +242,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
             "caseversion__case__product": self.testrun.productversion.product,
             }
         defaults.update(kwargs)
-        return F.RunCaseVersionFactory.create(**defaults)
+        return self.F.RunCaseVersionFactory.create(**defaults)
 
 
     def create_result(self, **kwargs):
@@ -269,12 +254,13 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
         defaults.update(kwargs)
         if "runcaseversion" not in defaults:
             defaults["runcaseversion"] = self.create_rcv()
-        return F.ResultFactory.create(**defaults)
+        return self.F.ResultFactory.create(**defaults)
 
 
     def test_requires_execute_permission(self):
         """Requires execute permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
 
@@ -625,7 +611,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
     def test_fail_case(self):
         """Submit a "finishinvalidate" action for a case; redirects."""
-        step = F.CaseStepFactory.create(number=1)
+        step = self.F.CaseStepFactory.create(number=1)
         rcv = self.create_rcv(caseversion=step.caseversion)
         self.create_result(status="started", runcaseversion=rcv)
 
@@ -650,7 +636,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
     def test_fail_case_ajax(self):
         """Ajax post a "finishinvalidate" action; returns HTML snippet."""
-        step = F.CaseStepFactory.create(number=1)
+        step = self.F.CaseStepFactory.create(number=1)
         rcv = self.create_rcv(caseversion=step.caseversion)
         self.create_result(status="started", runcaseversion=rcv)
 
@@ -722,7 +708,7 @@ class RunTestsTest(base.AuthenticatedViewTestCase):
 
         self.assertRedirects(res, self.url)
 
-        result = refresh(result)
+        result = self.refresh(result)
 
         self.assertEqual(result.status, result.STATUS.invalidated)
         self.assertEqual(result.comment, "")

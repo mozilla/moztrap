@@ -22,14 +22,12 @@ Tests for Case/CaseVersion filtering.
 from mock import Mock
 
 from django.utils.datastructures import MultiValueDict
-from django.test import TestCase
 
-
-from .... import factories as F
+from tests import case
 
 
 
-class CaseVersionFilterSetTest(TestCase):
+class CaseVersionFilterSetTest(case.DBTestCase):
     """Tests for CaseVersionFilterSet and CaseVersionBoundFilterSet."""
     def bound(self, GET):
         """Return instance of bound filter set."""
@@ -49,7 +47,7 @@ class CaseVersionFilterSetTest(TestCase):
 
     def test_filtered_by_productversion(self):
         """If filtered by productversion, doesn't filter by latest=True."""
-        pv = F.ProductVersionFactory.create()
+        pv = self.F.ProductVersionFactory.create()
 
         fs = self.bound(MultiValueDict({"filter-productversion": [str(pv.id)]}))
 

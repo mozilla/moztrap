@@ -21,14 +21,8 @@ Testing utilities.
 """
 import urlparse
 
-
-
-def refresh(obj):
-    """
-    Return the given object as it currently exists in the database.
-
-    """
-    return obj.__class__._base_manager.get(pk=obj.pk)
+from contextlib import contextmanager
+from mock import patch
 
 
 
@@ -63,3 +57,15 @@ class Url(object):
 
     def __repr__(self):
         return "Url(%s)" % self.url
+
+
+
+@contextmanager
+def patch_session(session_data):
+    """Context manager to patch session vars."""
+    with patch(
+            "django.contrib.sessions.backends.cached_db."
+            "SessionStore._session_cache",
+            session_data,
+            create=True):
+        yield

@@ -21,21 +21,19 @@ Tests for case management forms.
 """
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
-from django.test import TestCase
 from django.utils.datastructures import MultiValueDict
 
 from django.contrib.auth.models import Permission
 
-from .... import factories as F
-from ....utils import refresh
+from tests import case
 
 
 
-class AddCaseFormTest(TestCase):
+class AddCaseFormTest(case.DBTestCase):
     """Tests for add-case form."""
     def setUp(self):
         """All add-case tests require at least one product version."""
-        self.productversion = F.ProductVersionFactory.create(version="1.0")
+        self.productversion = self.F.ProductVersionFactory.create(version="1.0")
         self.product = self.productversion.product
 
 
@@ -43,7 +41,7 @@ class AddCaseFormTest(TestCase):
     def user(self):
         """A lazily-created user."""
         if not hasattr(self, "_user"):
-            self._user = F.UserFactory.create()
+            self._user = self.F.UserFactory.create()
         return self._user
 
 
@@ -107,7 +105,7 @@ class AddCaseFormTest(TestCase):
     def test_wrong_product_version(self):
         """Selecting version of wrong product results in validation error."""
         data = self.get_form_data()
-        data["product"] = F.ProductFactory.create().id
+        data["product"] = self.F.ProductFactory.create().id
 
         form = self.form(data=data)
 
@@ -127,7 +125,7 @@ class AddCaseFormTest(TestCase):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
             Permission.objects.get(codename="manage_suite_cases"))
-        suite = F.SuiteFactory.create(product=self.product)
+        suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
         data["initial_suite"] = suite.id
@@ -141,7 +139,7 @@ class AddCaseFormTest(TestCase):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
             Permission.objects.get(codename="manage_suite_cases"))
-        suite = F.SuiteFactory.create() # some other product
+        suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
         data["initial_suite"] = suite.id
@@ -166,8 +164,8 @@ class AddCaseFormTest(TestCase):
 
     def test_tag(self):
         """Can tag a new case with some existing tags."""
-        t1 = F.TagFactory.create(name="foo")
-        t2 = F.TagFactory.create(name="bar")
+        t1 = self.F.TagFactory.create(name="foo")
+        t2 = self.F.TagFactory.create(name="bar")
         data = self.get_form_data()
         data.setlist("tag-tag", [t1.id, t2.id])
 
@@ -234,16 +232,16 @@ class AddCaseFormTest(TestCase):
 
     def test_and_later_versions(self):
         """Can add multiple versions of a test case at once."""
-        F.ProductVersionFactory.create(
+        self.F.ProductVersionFactory.create(
             product=self.product, version="0.5")
-        newer_version = F.ProductVersionFactory.create(
+        newer_version = self.F.ProductVersionFactory.create(
             product=self.product, version="1.1")
 
         # these versions from a different product should not be included
-        other_product = F.ProductFactory.create(name="Other Product")
-        F.ProductVersionFactory.create(version="2", product=other_product)
-        F.ProductVersionFactory.create(version="3", product=other_product)
-        F.ProductVersionFactory.create(version="4", product=other_product)
+        other_product = self.F.ProductFactory.create(name="Other Product")
+        self.F.ProductVersionFactory.create(version="2", product=other_product)
+        self.F.ProductVersionFactory.create(version="3", product=other_product)
+        self.F.ProductVersionFactory.create(version="4", product=other_product)
 
         data = self.get_form_data()
         data["and_later_versions"] = 1
@@ -257,11 +255,11 @@ class AddCaseFormTest(TestCase):
 
 
 
-class AddBulkCasesFormTest(TestCase):
+class AddBulkCasesFormTest(case.DBTestCase):
     """Tests for add-bulk-case form."""
     def setUp(self):
         """All add-bulk-case tests require at least one product version."""
-        self.productversion = F.ProductVersionFactory.create(version="1.0")
+        self.productversion = self.F.ProductVersionFactory.create(version="1.0")
         self.product = self.productversion.product
 
 
@@ -269,7 +267,7 @@ class AddBulkCasesFormTest(TestCase):
     def user(self):
         """A lazily-created user."""
         if not hasattr(self, "_user"):
-            self._user = F.UserFactory.create()
+            self._user = self.F.UserFactory.create()
         return self._user
 
 
@@ -338,7 +336,7 @@ class AddBulkCasesFormTest(TestCase):
     def test_wrong_product_version(self):
         """Selecting version of wrong product results in validation error."""
         data = self.get_form_data()
-        data["product"] = F.ProductFactory.create().id
+        data["product"] = self.F.ProductFactory.create().id
 
         form = self.form(data=data)
 
@@ -358,7 +356,7 @@ class AddBulkCasesFormTest(TestCase):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
             Permission.objects.get(codename="manage_suite_cases"))
-        suite = F.SuiteFactory.create(product=self.product)
+        suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
         data["initial_suite"] = suite.id
@@ -372,7 +370,7 @@ class AddBulkCasesFormTest(TestCase):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
             Permission.objects.get(codename="manage_suite_cases"))
-        suite = F.SuiteFactory.create() # some other product
+        suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
         data["initial_suite"] = suite.id
@@ -388,8 +386,8 @@ class AddBulkCasesFormTest(TestCase):
 
     def test_tag(self):
         """Can tag a new case with some existing tags."""
-        t1 = F.TagFactory.create(name="foo")
-        t2 = F.TagFactory.create(name="bar")
+        t1 = self.F.TagFactory.create(name="foo")
+        t2 = self.F.TagFactory.create(name="bar")
         data = self.get_form_data()
         data.setlist("tag-tag", [t1.id, t2.id])
 
@@ -445,16 +443,16 @@ class AddBulkCasesFormTest(TestCase):
 
     def test_and_later_versions(self):
         """Can add multiple versions of a test case at once."""
-        F.ProductVersionFactory.create(
+        self.F.ProductVersionFactory.create(
             product=self.product, version="0.5")
-        newer_version = F.ProductVersionFactory.create(
+        newer_version = self.F.ProductVersionFactory.create(
             product=self.product, version="1.1")
 
         # these versions from a different product should not be included
-        other_product = F.ProductFactory.create(name="Other Product")
-        F.ProductVersionFactory.create(version="2", product=other_product)
-        F.ProductVersionFactory.create(version="3", product=other_product)
-        F.ProductVersionFactory.create(version="4", product=other_product)
+        other_product = self.F.ProductFactory.create(name="Other Product")
+        self.F.ProductVersionFactory.create(version="2", product=other_product)
+        self.F.ProductVersionFactory.create(version="3", product=other_product)
+        self.F.ProductVersionFactory.create(version="4", product=other_product)
 
         data = self.get_form_data()
         data["and_later_versions"] = 1
@@ -468,13 +466,13 @@ class AddBulkCasesFormTest(TestCase):
 
 
 
-class EditCaseVersionFormTest(TestCase):
+class EditCaseVersionFormTest(case.DBTestCase):
     """Tests for EditCaseVersionForm."""
     @property
     def user(self):
         """A lazily-created user."""
         if not hasattr(self, "_user"):
-            self._user = F.UserFactory.create()
+            self._user = self.F.UserFactory.create()
         return self._user
 
 
@@ -487,9 +485,9 @@ class EditCaseVersionFormTest(TestCase):
 
     def test_initial(self):
         """Initial data is populated accurately."""
-        cv = F.CaseVersionFactory.create(
+        cv = self.F.CaseVersionFactory.create(
             name="a name", description="a desc", status="active")
-        F.CaseStepFactory.create(
+        self.F.CaseStepFactory.create(
             caseversion=cv, instruction="do this", expected="see that")
 
         form = self.form(instance=cv)
@@ -509,9 +507,9 @@ class EditCaseVersionFormTest(TestCase):
 
     def test_save_edits(self):
         """Can edit basic data and steps and save."""
-        cv = F.CaseVersionFactory.create(
+        cv = self.F.CaseVersionFactory.create(
             name="a name", description="a desc", status="draft")
-        step = F.CaseStepFactory.create(
+        step = self.F.CaseStepFactory.create(
             caseversion=cv, instruction="do this", expected="see that")
 
         form = self.form(
@@ -534,7 +532,7 @@ class EditCaseVersionFormTest(TestCase):
             )
 
         cv = form.save()
-        cv = refresh(cv)
+        cv = self.refresh(cv)
 
         self.assertEqual(cv.name, "new name")
         self.assertEqual(cv.description, "new desc")
@@ -549,11 +547,11 @@ class EditCaseVersionFormTest(TestCase):
         self.user.user_permissions.add(
             Permission.objects.get(codename="manage_tags"))
 
-        cv = F.CaseVersionFactory.create()
+        cv = self.F.CaseVersionFactory.create()
 
-        t1 = F.TagFactory.create(name="one")
-        t2 = F.TagFactory.create(name="two")
-        t3 = F.TagFactory.create(name="three")
+        t1 = self.F.TagFactory.create(name="one")
+        t2 = self.F.TagFactory.create(name="two")
+        t3 = self.F.TagFactory.create(name="three")
 
         cv.tags.add(t1, t2)
 
@@ -586,7 +584,7 @@ class EditCaseVersionFormTest(TestCase):
 
 
 
-class StepFormSetTest(TestCase):
+class StepFormSetTest(case.DBTestCase):
     """Tests for StepFormSet."""
     @property
     def formset(self):
@@ -598,7 +596,7 @@ class StepFormSetTest(TestCase):
     def bound(self, data, instance=None):
         """Return a formset, with instance, bound to data."""
         if instance is None:
-            instance = F.CaseVersionFactory.create()
+            instance = self.F.CaseVersionFactory.create()
         return self.formset(data=data, instance=instance)
 
 
@@ -611,7 +609,7 @@ class StepFormSetTest(TestCase):
 
     def test_existing(self):
         """Displays forms for existing steps when unbound."""
-        step = F.CaseStepFactory.create(instruction="do this")
+        step = self.F.CaseStepFactory.create(instruction="do this")
         fs = self.formset(instance=step.caseversion)
 
         self.assertEqual(len(fs), 1)
@@ -668,7 +666,7 @@ class StepFormSetTest(TestCase):
 
     def test_edit_existing(self):
         """Can edit existing steps."""
-        step = F.CaseStepFactory.create()
+        step = self.F.CaseStepFactory.create()
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "1",
@@ -686,7 +684,7 @@ class StepFormSetTest(TestCase):
 
     def test_delete_existing(self):
         """Can delete existing steps."""
-        step = F.CaseStepFactory.create()
+        step = self.F.CaseStepFactory.create()
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "0",
@@ -701,7 +699,7 @@ class StepFormSetTest(TestCase):
 
     def test_delete_existing_and_add_new(self):
         """Can delete an existing step and put a new one in its place."""
-        step = F.CaseStepFactory.create()
+        step = self.F.CaseStepFactory.create()
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "1",
@@ -719,8 +717,8 @@ class StepFormSetTest(TestCase):
 
     def test_intersperse_new(self):
         """Can add a new step in between existing ones."""
-        step1 = F.CaseStepFactory.create(instruction="one")
-        step2 = F.CaseStepFactory.create(
+        step1 = self.F.CaseStepFactory.create(instruction="one")
+        step2 = self.F.CaseStepFactory.create(
             instruction="two", caseversion=step1.caseversion)
         fs = self.bound(
             {
@@ -745,7 +743,7 @@ class StepFormSetTest(TestCase):
 
     def test_marks_created_by(self):
         """Steps are saved with created-by data."""
-        u = F.UserFactory.create()
+        u = self.F.UserFactory.create()
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "1",
@@ -762,8 +760,8 @@ class StepFormSetTest(TestCase):
 
     def test_marks_modified_by(self):
         """Steps are saved with modified-by data."""
-        u = F.UserFactory.create()
-        step = F.CaseStepFactory.create()
+        u = self.F.UserFactory.create()
+        step = self.F.CaseStepFactory.create()
         fs = self.bound(
             {
                 "steps-TOTAL_FORMS": "1",
@@ -776,4 +774,4 @@ class StepFormSetTest(TestCase):
             )
         fs.save(user=u)
 
-        self.assertEqual(refresh(step).modified_by, u)
+        self.assertEqual(self.refresh(step).modified_by, u)

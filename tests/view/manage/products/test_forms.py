@@ -19,13 +19,11 @@
 Tests for product-management forms.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
+from tests import case
 
 
 
-class EditProductFormTest(TestCase):
+class EditProductFormTest(case.DBTestCase):
     """Tests for EditProductForm."""
     @property
     def form(self):
@@ -36,8 +34,8 @@ class EditProductFormTest(TestCase):
 
     def test_edit_product(self):
         """Can edit product name and description, with modified-by user."""
-        p = F.ProductFactory(name="Take One", description="")
-        u = F.UserFactory()
+        p = self.F.ProductFactory(name="Take One", description="")
+        u = self.F.UserFactory()
 
         f = self.form(
             {"name": "Two", "description": "not blank"}, instance=p, user=u)
@@ -50,7 +48,7 @@ class EditProductFormTest(TestCase):
 
 
 
-class AddProductFormTest(TestCase):
+class AddProductFormTest(case.DBTestCase):
     """Tests for AddProductForm."""
     @property
     def form(self):
@@ -61,7 +59,7 @@ class AddProductFormTest(TestCase):
 
     def test_add_product(self):
         """Can add product, with version and created-by user."""
-        u = F.UserFactory()
+        u = self.F.UserFactory()
 
         f = self.form(
             {"name": "Two", "version": "1.0", "description": "not blank"},
@@ -81,8 +79,8 @@ class AddProductFormTest(TestCase):
 
     def test_add_product_with_profile(self):
         """Can add product with initial environment profile."""
-        profile = F.ProfileFactory.create()
-        envs = F.EnvironmentFactory.create_full_set(
+        profile = self.F.ProfileFactory.create()
+        envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["OS X", "Linux"]}, profile=profile)
 
         f = self.form({"name": "Two", "version": "1.0", "profile": profile.id})

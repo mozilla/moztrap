@@ -20,15 +20,15 @@ Tests for finder.
 
 """
 from django.template.response import TemplateResponse
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory
 
 from mock import Mock, patch
 
-from ... import factories as F
+from tests import case
 
 
 
-class FinderDecoratorTest(TestCase):
+class FinderDecoratorTest(case.DBTestCase):
     """Tests for the finder view decorator."""
     @property
     def finder(self):
@@ -146,20 +146,13 @@ class FinderDecoratorTest(TestCase):
 
 
 
-class FinderTest(TestCase):
+class FinderTest(case.DBTestCase):
     """Tests for Finder."""
     @property
     def ManageFinder(self):
         """ManageFinder; a sample finder subclass to exercise Finder."""
         from cc.view.manage.finders import ManageFinder
         return ManageFinder
-
-
-    @property
-    def model(self):
-        """Model classes."""
-        from cc import model
-        return model
 
 
     def test_columns_by_name(self):
@@ -309,7 +302,7 @@ class FinderTest(TestCase):
         """Without parent, objects is just pass-through to column objects."""
         f = self.ManageFinder()
 
-        p = F.ProductFactory.create()
+        p = self.F.ProductFactory.create()
 
         objects = f.objects("products")
 
@@ -320,8 +313,8 @@ class FinderTest(TestCase):
         """With parent, objects filters by parent."""
         f = self.ManageFinder()
 
-        pv = F.ProductVersionFactory.create()
-        F.ProductVersionFactory.create()
+        pv = self.F.ProductVersionFactory.create()
+        self.F.ProductVersionFactory.create()
 
         objects = f.objects("productversions", pv.product.pk)
 
@@ -332,8 +325,8 @@ class FinderTest(TestCase):
         """Parent filtering also works via m2m relationship."""
         f = self.ManageFinder()
 
-        rs = F.RunSuiteFactory.create()
-        F.SuiteFactory.create()
+        rs = self.F.RunSuiteFactory.create()
+        self.F.SuiteFactory.create()
 
         objects = f.objects("suites", rs.run.pk)
 
@@ -377,7 +370,7 @@ class FinderTest(TestCase):
 
 
 
-class ColumnTest(TestCase):
+class ColumnTest(case.DBTestCase):
     """Tests for finder Column."""
     @property
     def column(self):

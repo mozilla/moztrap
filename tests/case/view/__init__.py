@@ -16,15 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Element model.
+Utility base TestCase classes for testing views.
 
 """
-from tests import case
-
-
-
-class ElementTest(case.DBTestCase):
-    def test_unicode(self):
-        e = self.F.ElementFactory(name="Windows 7")
-
-        self.assertEqual(unicode(e), u"Windows 7")
+from .base import ViewTestCase, AuthenticatedViewTestCase, FormViewTestCase
+from . import manage

@@ -21,8 +21,6 @@ Utilities for filtering querysets in a view.
 """
 from collections import namedtuple
 from functools import wraps
-import urllib
-import urlparse
 
 from django.core.urlresolvers import reverse, resolve
 

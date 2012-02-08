@@ -19,31 +19,42 @@
 Tests for Case Conductor form utilities.
 
 """
-from django.test import TestCase
-
 from django import forms
 
-from ... import factories as F
-
-from cc.view.utils import ccforms
-from cc import model
+from tests import case
 
 
 
-class PersonForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
-    name = forms.CharField()
-    age = forms.IntegerField()
-
-    def clean(self):
-        if (self.cleaned_data.get("name") == "Shakespeare" and
-            self.cleaned_data.get("age", 0) < 400):
-            raise forms.ValidationError("Too young to be Shakespeare.")
-
+class CCFormsTestCase(case.DBTestCase):
+    """Base test case class for ccforms tests."""
+    @property
+    def ccforms(self):
+        """The module under test."""
+        from cc.view.utils import ccforms
+        return ccforms
 
 
-class TestNonFieldErrorsClassFormMixin(TestCase):
+
+class TestNonFieldErrorsClassFormMixin(CCFormsTestCase):
+    """Tests for NonFieldErrorsClassMixin."""
+    @property
+    def form(self):
+        """A sample descended form class."""
+        class PersonForm(self.ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+            name = forms.CharField()
+            age = forms.IntegerField()
+
+            def clean(self):
+                if (self.cleaned_data.get("name") == "Shakespeare" and
+                    self.cleaned_data.get("age", 0) < 400):
+                    raise forms.ValidationError("Too young to be Shakespeare.")
+
+        return PersonForm
+
+
     def test_non_field_errorlist(self):
-        form = PersonForm({"name": "Shakespeare", "age": "25"})
+        """Non-field-error list has nonfield class."""
+        form = self.form({"name": "Shakespeare", "age": "25"})
 
         nfe = form.non_field_errors()
 
@@ -51,7 +62,8 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
 
 
     def test_field_errorlist(self):
-        form = PersonForm({"name": "Joe"})
+        """Field error list does not have nonfield class."""
+        form = self.form({"name": "Joe"})
 
         fe = unicode(form["age"].errors)
 
@@ -60,38 +72,43 @@ class TestNonFieldErrorsClassFormMixin(TestCase):
 
 
     def test_no_nonfield_errors(self):
-        form = PersonForm({"name": "Joe", "age": "25"})
+        """Works if there are no nonfield errors."""
+        form = self.form({"name": "Joe", "age": "25"})
 
         self.assertEqual(unicode(form.non_field_errors()), u"")
 
 
 
-class BareTextareaTest(TestCase):
+class BareTextareaTest(CCFormsTestCase):
     """Tests for BareTextarea."""
     def test_no_attrs(self):
         """BareTextarea does not have rows or cols attributes."""
-        self.assertEqual(ccforms.BareTextarea().attrs, {})
+        self.assertEqual(self.ccforms.BareTextarea().attrs, {})
 
 
 
-class ProductForm(ccforms.CCModelForm):
-    """Sample CCModelForm"""
-    class Meta:
-        model = model.Product
-        fields = ["name"]
-
-
-
-class CCModelFormTest(TestCase):
+class CCModelFormTest(CCFormsTestCase):
     """Tests for CCModelForm."""
     def setUp(self):
         """Setup for CCModelForm tests; create a user."""
-        self.user = F.UserFactory.create()
+        self.user = self.F.UserFactory.create()
+
+
+    @property
+    def form(self):
+        """A sample descended form class."""
+        class ProductForm(self.ccforms.CCModelForm):
+            """Sample CCModelForm"""
+            class Meta:
+                model = self.model.Product
+                fields = ["name"]
+
+        return ProductForm
 
 
     def test_new_instance_records_created_by(self):
         """Adding a new instance records the created_by user."""
-        f = ProductForm({"name": "Foo"}, user=self.user)
+        f = self.form({"name": "Foo"}, user=self.user)
 
         product = f.save()
 
@@ -100,8 +117,8 @@ class CCModelFormTest(TestCase):
 
     def test_edited_instance_records_modified_by(self):
         """Editing an instance records the modified_by user."""
-        p = F.ProductFactory.create()
-        f = ProductForm({"name": "Foo"}, instance=p, user=self.user)
+        p = self.F.ProductFactory.create()
+        f = self.form({"name": "Foo"}, instance=p, user=self.user)
 
         product = f.save()
 
@@ -110,7 +127,7 @@ class CCModelFormTest(TestCase):
 
     def test_no_commit(self):
         """Can still pass commit=False."""
-        f = ProductForm({"name": "Foo"})
+        f = self.form({"name": "Foo"})
 
         product = f.save(commit=False)
 
@@ -118,46 +135,51 @@ class CCModelFormTest(TestCase):
 
 
 
-class ProductVersionForm(forms.Form):
-    """Sample form using CCModelChoiceField."""
-    product = ccforms.CCModelChoiceField(
-        model.Product.objects.all(),
-        label_from_instance=lambda p: "FooLabel {0}".format(unicode(p)),
-        choice_attrs=lambda p: {"data-product-id": p.id}
-        )
-    product2 = ccforms.CCModelChoiceField(model.Product.objects.all())
-
-
-
-class CCModelChoiceFieldTest(TestCase):
+class CCModelChoiceFieldTest(CCFormsTestCase):
     """Tests for CCModelChoiceField."""
+    @property
+    def form(self):
+        """A sample form using the field class under test."""
+        class ProductVersionForm(forms.Form):
+            """Sample form using CCModelChoiceField."""
+            product = self.ccforms.CCModelChoiceField(
+                self.model.Product.objects.all(),
+                label_from_instance=lambda p: "FooLabel {0}".format(unicode(p)),
+                choice_attrs=lambda p: {"data-product-id": p.id}
+                )
+            product2 = self.ccforms.CCModelChoiceField(
+                self.model.Product.objects.all())
+
+        return ProductVersionForm
+
+
     def test_label_from_instance(self):
         """Custom label_from_instance callable is used."""
-        F.ProductFactory(name="Bar")
-        s = unicode(ProductVersionForm()["product"])
+        self.F.ProductFactory(name="Bar")
+        s = unicode(self.form()["product"])
 
         self.assertIn(">FooLabel Bar<", s, s)
 
 
     def test_default_label_from_instance(self):
         """Default label_from_instance is unicode of instance."""
-        F.ProductFactory(name="Bar")
-        s = unicode(ProductVersionForm()["product2"])
+        self.F.ProductFactory(name="Bar")
+        s = unicode(self.form()["product2"])
 
         self.assertIn(">Bar<", s, s)
 
 
     def test_choice_attrs(self):
         """Custom choice_attrs callable is used."""
-        p = F.ProductFactory(name="Bar")
-        s = unicode(ProductVersionForm()["product"])
+        p = self.F.ProductFactory(name="Bar")
+        s = unicode(self.form()["product"])
 
         self.assertIn('data-product-id="{0}"'.format(p.id), s, s)
 
 
     def test_set_choices(self):
         """Can set choices explicitly."""
-        f = ProductVersionForm()
+        f = self.form()
         f.fields["product"].choices = [(1, "Foo")]
         s = unicode(f["product"])
 
@@ -166,13 +188,13 @@ class CCModelChoiceFieldTest(TestCase):
 
 
 
-class AutocompleteInputTest(TestCase):
+class AutocompleteInputTest(CCFormsTestCase):
     """Tests for AutocompleteInput."""
     def test_autocomplete_off(self):
         """Sets autocomplete attr to "off" to disable browser autocomplete."""
         self.assertIn(
             'autocomplete="off"',
-            ccforms.AutocompleteInput(url="foo").render("n", "")
+            self.ccforms.AutocompleteInput(url="foo").render("n", "")
             )
 
 
@@ -180,7 +202,7 @@ class AutocompleteInputTest(TestCase):
         """Sets data-autocomplete-url."""
         self.assertIn(
             'data-autocomplete-url="/foo/bar/"',
-            ccforms.AutocompleteInput(url="/foo/bar/").render("n", "")
+            self.ccforms.AutocompleteInput(url="/foo/bar/").render("n", "")
             )
 
 
@@ -188,5 +210,6 @@ class AutocompleteInputTest(TestCase):
         """Sets data-autocomplete-url from callable url argument."""
         self.assertIn(
             'data-autocomplete-url="/foo/bar/"',
-            ccforms.AutocompleteInput(url=lambda: "/foo/bar/").render("n", "")
+            self.ccforms.AutocompleteInput(
+                url=lambda: "/foo/bar/").render("n", "")
             )

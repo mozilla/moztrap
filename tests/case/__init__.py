@@ -16,15 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Element model.
+Utility base TestCase classes for Case Conductor.
 
 """
-from tests import case
+from django.utils.unittest import TestCase
 
-
-
-class ElementTest(case.DBTestCase):
-    def test_unicode(self):
-        e = self.F.ElementFactory(name="Windows 7")
-
-        self.assertEqual(unicode(e), u"Windows 7")
+from . import admin
+from . import view
+from .base import DBTestCase

@@ -24,11 +24,12 @@ from mock import Mock
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
 from django.utils.datastructures import MultiValueDict
-from django.utils.unittest import TestCase
+
+from tests import case
 
 
 
-class FiltersTestCase(TestCase):
+class FiltersTestCase(case.TestCase):
     """A test case for testing classes in the cc.view.lists.filters module."""
     @property
     def filters(self):
@@ -37,18 +38,19 @@ class FiltersTestCase(TestCase):
         return filters
 
 
-    @property
-    def model(self):
-        """Model classes."""
-        from cc import model
-        return model
-
 
 class FilterUrlTest(FiltersTestCase):
     """Tests for ``filter_url`` function."""
+    @property
+    def Product(self):
+        """The Product model."""
+        from cc.model import Product
+        return Product
+
+
     def test_urlpattern_name(self):
         """Can find filter url by url pattern name."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("manage_cases", p),
@@ -58,7 +60,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_view_function(self):
         """Can find filter url by view function."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         from cc.view.manage.cases.views import cases_list
 
@@ -70,7 +72,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_path(self):
         """Can find filter url by path."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("/manage/cases/", p),

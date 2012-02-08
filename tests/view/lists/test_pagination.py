@@ -20,14 +20,14 @@ Tests for pagination utilities.
 
 """
 from mock import Mock
-from django.test import TestCase
 
-from ... import factories as F
-from ...utils import Url
+from tests import case
+
+from tests.utils import Url
 
 
 
-class TestFromRequest(TestCase):
+class TestFromRequest(case.DBTestCase):
     """Tests for ``from_request`` function."""
     @property
     def func(self):
@@ -64,7 +64,7 @@ class TestFromRequest(TestCase):
 
 
 
-class TestPagesizeUrl(TestCase):
+class TestPagesizeUrl(case.TestCase):
     """Tests for ``pagesize_url`` function."""
     @property
     def func(self):
@@ -88,7 +88,7 @@ class TestPagesizeUrl(TestCase):
 
 
 
-class TestPagenumberUrl(TestCase):
+class TestPagenumberUrl(case.TestCase):
     """Tests for ``pagenumber_url`` function."""
     @property
     def func(self):
@@ -112,7 +112,7 @@ class TestPagenumberUrl(TestCase):
 
 
 
-class TestPager(TestCase):
+class TestPager(case.DBTestCase):
     """Tests for ``Pager`` class."""
     @property
     def pager(self):
@@ -242,7 +242,7 @@ class TestPager(TestCase):
     def test_objects(self):
         """.objects is list of objects on current page."""
         products = [
-            F.ProductFactory.create(name="Product {0}".format(i))
+            self.F.ProductFactory.create(name="Product {0}".format(i))
             for i in range(1, 5)
             ]
         p = self.pager(products[0].__class__.objects.all(), 3, 1)
@@ -359,7 +359,7 @@ class TestPager(TestCase):
 
 
 
-class TestPositiveInteger(TestCase):
+class TestPositiveInteger(case.TestCase):
     """Tests for ``positive_integer`` function."""
     @property
     def func(self):

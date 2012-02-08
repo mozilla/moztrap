@@ -22,13 +22,11 @@ Tests for login/logout/account views.
 from django.core import mail
 from django.core.urlresolvers import reverse
 
-from .. import base
-
-from ... import factories as F
+from tests import case
 
 
 
-class LoginTest(base.ViewTestCase):
+class LoginTest(case.view.ViewTestCase):
     """Tests for login view."""
     @property
     def url(self):
@@ -38,7 +36,7 @@ class LoginTest(base.ViewTestCase):
 
     def test_login(self):
         """Successful login redirects."""
-        F.UserFactory.create(username="test", password="sekrit")
+        self.F.UserFactory.create(username="test", password="sekrit")
 
         form = self.get().forms["loginform"]
         form["username"] = "test"
@@ -50,7 +48,7 @@ class LoginTest(base.ViewTestCase):
 
     def test_login_failed(self):
         """Failed login returns error message."""
-        F.UserFactory.create(username="test", password="sekrit")
+        self.F.UserFactory.create(username="test", password="sekrit")
 
         form = self.get().forms["loginform"]
         form["username"] = "test"
@@ -61,7 +59,7 @@ class LoginTest(base.ViewTestCase):
 
 
 
-class LogoutTest(base.ViewTestCase):
+class LogoutTest(case.view.ViewTestCase):
     """Tests for logout view."""
     @property
     def url(self):
@@ -71,7 +69,7 @@ class LogoutTest(base.ViewTestCase):
 
     def test_logout(self):
         """Successful logout redirects to login."""
-        F.UserFactory.create(username="test", password="sekrit")
+        self.F.UserFactory.create(username="test", password="sekrit")
 
         form = self.app.get(reverse("auth_login")).forms["loginform"]
         form["username"] = "test"
@@ -84,7 +82,7 @@ class LogoutTest(base.ViewTestCase):
 
 
 
-class PasswordChangeTest(base.AuthenticatedViewTestCase):
+class PasswordChangeTest(case.view.AuthenticatedViewTestCase):
     """Tests for change-password view."""
     def setUp(self):
         """Set password for user."""
@@ -112,12 +110,12 @@ class PasswordChangeTest(base.AuthenticatedViewTestCase):
 
 
 
-class PasswordResetTest(base.ViewTestCase):
+class PasswordResetTest(case.view.ViewTestCase):
     """Tests for reset-password view."""
     def setUp(self):
         """Create a user."""
         super(PasswordResetTest, self).setUp()
-        self.user = F.UserFactory.create(email="user@example.com")
+        self.user = self.F.UserFactory.create(email="user@example.com")
 
 
     @property
@@ -139,12 +137,12 @@ class PasswordResetTest(base.ViewTestCase):
 
 
 
-class PasswordResetConfirmTest(base.ViewTestCase):
+class PasswordResetConfirmTest(case.view.ViewTestCase):
     """Tests for reset-password-confirm view."""
     def setUp(self):
         """Create a user."""
         super(PasswordResetConfirmTest, self).setUp()
-        self.user = F.UserFactory.create(email="user@example.com")
+        self.user = self.F.UserFactory.create(email="user@example.com")
 
 
     @property
@@ -174,7 +172,7 @@ class PasswordResetConfirmTest(base.ViewTestCase):
 
 
 
-class RegisterTest(base.ViewTestCase):
+class RegisterTest(case.view.ViewTestCase):
     """Tests for register view."""
     @property
     def url(self):
@@ -196,7 +194,7 @@ class RegisterTest(base.ViewTestCase):
 
 
 
-class ActivateTest(base.ViewTestCase):
+class ActivateTest(case.view.ViewTestCase):
     @property
     def url(self):
         """Shortcut for activate url."""

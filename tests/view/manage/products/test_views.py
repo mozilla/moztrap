@@ -21,17 +21,18 @@ Tests for product management views.
 """
 from django.core.urlresolvers import reverse
 
-from .... import factories as F
-from ....utils import refresh
-from .. import base
+from tests import case
 
 
 
-class ProductsTest(base.ManageListViewFinderTestCase):
+class ProductsTest(case.view.manage.ListViewFinderTestCase):
     """Test for products manage list view."""
     form_id = "manage-products-form"
     perm = "manage_products"
-    factory = F.ProductFactory
+    @property
+    def factory(self):
+        """The model factory for this manage list."""
+        return self.F.ProductFactory
 
 
     @property
@@ -62,12 +63,12 @@ class ProductsTest(base.ManageListViewFinderTestCase):
 
 
 
-class ProductDetailTest(base.AuthenticatedViewTestCase):
+class ProductDetailTest(case.view.AuthenticatedViewTestCase):
     """Test for product-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a caseversion."""
         super(ProductDetailTest, self).setUp()
-        self.product = F.ProductFactory.create()
+        self.product = self.F.ProductFactory.create()
 
 
     @property
@@ -79,7 +80,7 @@ class ProductDetailTest(base.AuthenticatedViewTestCase):
 
     def test_details(self):
         """Returns details HTML snippet for given product."""
-        F.ProductVersionFactory.create(
+        self.F.ProductVersionFactory.create(
             product=self.product, version="0.8-alpha-1")
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
@@ -88,7 +89,7 @@ class ProductDetailTest(base.AuthenticatedViewTestCase):
 
 
 
-class AddProductTest(base.FormViewTestCase):
+class AddProductTest(case.view.FormViewTestCase):
     """Tests for add-case-single view."""
     form_id = "product-add-form"
 
@@ -103,13 +104,6 @@ class AddProductTest(base.FormViewTestCase):
         """Add manage-products permission to user."""
         super(AddProductTest, self).setUp()
         self.add_perm("manage_products")
-
-
-    @property
-    def model(self):
-        """The model."""
-        from cc import model
-        return model
 
 
     def test_success(self):
@@ -141,13 +135,14 @@ class AddProductTest(base.FormViewTestCase):
 
     def test_requires_manage_cases_permission(self):
         """Requires create-cases permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
-class EditProductTest(base.FormViewTestCase):
+class EditProductTest(case.view.FormViewTestCase):
     """Tests for edit-product view."""
     form_id = "product-edit-form"
 
@@ -155,7 +150,7 @@ class EditProductTest(base.FormViewTestCase):
     def setUp(self):
         """Setup for product edit tests; create a product, add perm."""
         super(EditProductTest, self).setUp()
-        self.product = F.ProductFactory.create()
+        self.product = self.F.ProductFactory.create()
         self.add_perm("manage_products")
 
 
@@ -168,7 +163,7 @@ class EditProductTest(base.FormViewTestCase):
 
     def test_requires_manage_products_permission(self):
         """Requires manage-cases permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
@@ -184,7 +179,7 @@ class EditProductTest(base.FormViewTestCase):
 
         res.follow().mustcontain("Saved 'new name'.")
 
-        p = refresh(self.product)
+        p = self.refresh(self.product)
         self.assertEqual(p.name, "new name")
         self.assertEqual(p.description, "new desc")
 

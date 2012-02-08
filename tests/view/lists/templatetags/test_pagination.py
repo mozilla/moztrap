@@ -22,13 +22,12 @@ Tests for pagination template tags and filters.
 from mock import Mock
 
 from django import template
-from django.test import TestCase
 
-from .... import factories as F
-
+from tests import case
 
 
-class PaginateTest(TestCase):
+
+class PaginateTest(case.DBTestCase):
     """Tests for paginate template tag."""
     def test_paginate(self):
         """Places Pager object in context with size/num from request."""
@@ -42,7 +41,7 @@ class PaginateTest(TestCase):
         request.GET = {"pagesize": 3, "pagenumber": 2}
 
         for i in range(1, 7):
-            F.TagFactory.create(name=str(i))
+            self.F.TagFactory.create(name=str(i))
         qs = Tag.objects.all()
 
         output = tpl.render(
@@ -51,7 +50,7 @@ class PaginateTest(TestCase):
         self.assertEqual(output, "4 5 6 ")
 
 
-class FilterTest(TestCase):
+class FilterTest(case.TestCase):
     """Tests for template filters."""
     def test_pagenumber_url(self):
         """``pagenumber_url`` filter updates pagenumber in URL."""

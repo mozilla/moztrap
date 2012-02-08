@@ -19,14 +19,12 @@
 Tests for Category model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
+from tests import case
 
 
 
-class CategoryTest(TestCase):
+class CategoryTest(case.DBTestCase):
     def test_unicode(self):
-        c = F.CategoryFactory(name="Operating System")
+        c = self.F.CategoryFactory(name="Operating System")
 
         self.assertEqual(unicode(c), u"Operating System")

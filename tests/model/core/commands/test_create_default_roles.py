@@ -22,15 +22,15 @@ Tests for management command to create default roles.
 from cStringIO import StringIO
 
 from django.core.management import call_command
-from django.test import TestCase
-
-from django.contrib.auth.models import Group
 
 from mock import patch
 
+from tests import case
 
 
-class CreateDefaultRolesTest(TestCase):
+
+
+class CreateDefaultRolesTest(case.DBTestCase):
     """Tests for create_default_roles management command."""
     def call_command(self, **kwargs):
         """Runs the management command under test and returns stdout output."""
@@ -45,7 +45,7 @@ class CreateDefaultRolesTest(TestCase):
         """Assert that the given set of group names, and only those, exist."""
 
         self.assertEqual(
-            set([g.name for g in Group.objects.all()]),
+            set([g.name for g in self.model.Group.objects.all()]),
             set(groups)
             )
 
@@ -59,7 +59,7 @@ class CreateDefaultRolesTest(TestCase):
 
     def test_skips_existing_roles(self):
         """Command skips roles that already exist."""
-        Group.objects.create(name="Tester")
+        self.model.Group.objects.create(name="Tester")
 
         output = self.call_command()
 
@@ -126,7 +126,7 @@ Role 'Tester' created.
 
     def test_skips_existing_roles_quietly(self):
         """Command skips roles with no output when verbosity 0."""
-        Group.objects.create(name="Tester")
+        self.model.Group.objects.create(name="Tester")
 
         output = self.call_command(verbosity=0)
 

@@ -21,9 +21,7 @@ Utility base TestCase for testing admin views.
 """
 from django.core.urlresolvers import reverse
 
-from ..view.base import WebTest
-
-from .. import factories as F
+from .view.base import WebTest
 
 
 
@@ -34,7 +32,7 @@ class AdminTestCase(WebTest):
 
     def setUp(self):
         """Set-up for all admin test cases."""
-        self.user = F.UserFactory.create(
+        self.user = self.F.UserFactory.create(
             is_staff=True, is_superuser=True)
 
 

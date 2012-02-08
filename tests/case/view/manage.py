@@ -16,27 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Utility base TestCase for testing manage views.
+Utility base TestCase classes for testing manage views.
 
 """
 from datetime import datetime
 
 from BeautifulSoup import BeautifulSoup
 
-from ... import factories as F
-from ...utils import refresh
-from .. import base
+from . import base
 
 
 
-# Allows this module to be a stand-in for tests.view.base
-ViewTestCase = base.ViewTestCase
-AuthenticatedViewTestCase = base.AuthenticatedViewTestCase
-FormViewTestCase = base.FormViewTestCase
-
-
-
-class ManageListViewTestCase(base.FormViewTestCase):
+class ListViewTestCase(base.FormViewTestCase):
     """Base class for testing manage list views."""
     # subclasses should specify these:
     perm = None          # required management permission codename
@@ -151,7 +142,7 @@ class ManageListViewTestCase(base.FormViewTestCase):
             headers={"X-Requested-With": "XMLHttpRequest"}
             )
 
-        self.assertTrue(bool(refresh(o).deleted_on))
+        self.assertTrue(bool(self.refresh(o).deleted_on))
 
 
     def test_delete_requires_permission(self):
@@ -204,11 +195,11 @@ class ManageListViewTestCase(base.FormViewTestCase):
 
 
 
-class ManageListViewFinderTestCase(ManageListViewTestCase):
+class ListViewFinderTestCase(ListViewTestCase):
     """Test case for manage lists with finder."""
     def test_finder(self):
         """Finder is present in context with list of products."""
-        p = F.ProductFactory.create(name="Foo Product")
+        p = self.F.ProductFactory.create(name="Foo Product")
 
         res = self.get()
 
@@ -220,7 +211,7 @@ class ManageListViewFinderTestCase(ManageListViewTestCase):
 
     def test_finder_ajax(self):
         """Finder intercepts its ajax requests to return child obj lists."""
-        pv = F.ProductVersionFactory.create(version="1.0.1")
+        pv = self.F.ProductVersionFactory.create(version="1.0.1")
 
         res = self.get(
             params={

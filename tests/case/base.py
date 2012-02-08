@@ -16,15 +16,39 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Element model.
+Utility base TestCase classes for Case Conductor.
 
 """
-from tests import case
+from django.test import TestCase
 
 
 
-class ElementTest(case.DBTestCase):
-    def test_unicode(self):
-        e = self.F.ElementFactory(name="Windows 7")
+class DBMixin(object):
+    """Mixin for Case Conductor test case classes that need the database."""
+    @property
+    def model(self):
+        """The data model."""
+        from cc import model
+        return model
 
-        self.assertEqual(unicode(e), u"Windows 7")
+
+    @property
+    def F(self):
+        """The model factories."""
+        from tests import factories
+        return factories
+
+
+    def refresh(self, obj):
+        """
+        Return the given object as it currently exists in the database.
+
+        """
+        return obj.__class__._base_manager.get(pk=obj.pk)
+
+
+
+
+class DBTestCase(DBMixin, TestCase):
+    """Base test case class for Case Conductor tests that need the database."""
+    pass

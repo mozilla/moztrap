@@ -19,15 +19,13 @@
 Tests for Tag model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
+from tests import case
 
 
 
-class TagTest(TestCase):
+class TagTest(case.DBTestCase):
     def test_unicode(self):
         """Unicode representation is name of Tag"""
-        t = F.TagFactory(name="security")
+        t = self.F.TagFactory(name="security")
 
         self.assertEqual(unicode(t), u"security")

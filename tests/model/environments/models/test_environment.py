@@ -19,16 +19,14 @@
 Tests for Environment model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
+from tests import case
 
 
 
-class EnvironmentTest(TestCase):
+class EnvironmentTest(case.DBTestCase):
     def test_unicode(self):
         """Unicode representation is concatenated element names."""
-        e = F.EnvironmentFactory.create_full_set(
+        e = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["OS X"], "Language": ["English"]})[0]
 
         self.assertEqual(unicode(e), u"English, OS X")
@@ -36,7 +34,7 @@ class EnvironmentTest(TestCase):
 
     def test_ordered_elements(self):
         """ordered_elements yields elements in category name order."""
-        e = F.EnvironmentFactory.create_full_set(
+        e = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["OS X"], "Language": ["English"]})[0]
 
         self.assertEqual(

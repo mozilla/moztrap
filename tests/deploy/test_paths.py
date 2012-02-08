@@ -21,13 +21,13 @@ Tests for deployment path-munging functions.
 """
 import os.path
 
-from django.utils.unittest import TestCase
-
 from mock import patch
 
+from tests import case
 
 
-class AddVendorLibTest(TestCase):
+
+class AddVendorLibTest(case.TestCase):
     """
     Tests for the ``add_vendor_lib`` function.
 

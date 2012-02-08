@@ -16,14 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.core.exceptions import MiddlewareNotUsed
-from django.utils.unittest import TestCase
 
-# not in Django 1.3, will be in 1.4
+# @@@ import from Django in 1.4
 from djangosecure.test_utils import override_settings
 from mock import patch, Mock
 
+from tests import case
 
-class AjaxTracebackMiddlewareTest(TestCase):
+
+
+class AjaxTracebackMiddlewareTest(case.TestCase):
     @property
     def middleware(self):
         from cc.debug.middleware import AjaxTracebackMiddleware
