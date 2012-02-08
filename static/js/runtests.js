@@ -93,11 +93,11 @@ var CC = (function (CC, $) {
 
         context.on('change', '.listitem .stepfail input[type="radio"][name="bug"]', function () {
             var thisList = $(this).closest('.stepfail'),
-                newBug = thisList.find('input[type="radio"].newbug'),
-                newBugInput = thisList.find('input[type="url"][name="bug"]');
+                newBug = thisList.find('input[type="radio"].newbug-radio'),
+                newBugInput = thisList.find('input[type="url"].newbug-input');
 
             if (newBug.is(':checked')) {
-                newBugInput.prop('disabled', false);
+                newBugInput.prop('disabled', false).focus();
             } else {
                 newBugInput.prop('disabled', true);
             }
