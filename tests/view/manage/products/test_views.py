@@ -22,7 +22,7 @@ Tests for product management views.
 from django.core.urlresolvers import reverse
 
 from .... import factories as F
-from ... import base
+from .. import base
 
 
 

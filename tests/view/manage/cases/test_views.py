@@ -24,7 +24,7 @@ from django.core.urlresolvers import reverse
 
 from .... import factories as F
 from ....utils import refresh
-from ... import base
+from .. import base
 
 
 
