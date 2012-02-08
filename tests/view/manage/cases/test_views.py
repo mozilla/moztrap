@@ -307,7 +307,7 @@ class AddCaseTest(base.FormViewTestCase):
         form["status"] = "active"
         res = form.submit(status=302)
 
-        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Test case 'Can log in.' added.")
 
@@ -335,7 +335,7 @@ class AddCaseTest(base.FormViewTestCase):
         """Requires create-cases permission."""
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
@@ -375,7 +375,7 @@ class AddBulkCaseTest(base.FormViewTestCase):
         form["status"] = "active"
         res = form.submit(status=302)
 
-        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Added 2 test cases.")
 
@@ -431,7 +431,7 @@ class AddBulkCaseTest(base.FormViewTestCase):
         """Requires create-cases permission."""
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
@@ -457,19 +457,19 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
 
     def test_login_required(self):
         """Requires login."""
-        response = self.app.post(
+        res = self.app.post(
             self.url,
             {"csrfmiddlewaretoken": "foo"},
             headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
             status=302,
             )
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_manage_cases_permission_required(self):
         """Requires manage cases permission."""
-        response = self.app.post(
+        res = self.app.post(
             self.url,
             {"csrfmiddlewaretoken": "foo"},
             headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
@@ -477,7 +477,7 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
             status=302,
             )
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_requires_post(self):
@@ -576,7 +576,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
         """Requires manage-cases permission."""
         res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_existing_version_links(self):
