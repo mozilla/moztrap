@@ -1,42 +1,29 @@
-<article id="product-id-{{ product.id }}" class="item details">
-  <header class="summary">
-    <h3 class="title">
-      {{ product.name }}
-    </h3>
-    <p class="preview">
-      {{ product.description }}
-    </p>
-    <div class="controls">
-      {% if "PERMISSION_PRODUCT_EDIT" in request.user.permissionCodes %}
-      <a href="{% url manage_product_edit product_id=product.id %}" title="edit">edit</a>
-      <a href="{% url manage_narrow_environments object_type='product' object_id=product.id %}" title="select environments" class="target">select environments</a>
-      <button title="delete" type="submit" name="action-delete" value="{{ product.id }}">delete</button>
-      {% endif %}
+{% load permissions %}
+
+<article id="product-id-{{ product.id }}" class="listitem">
+  <header class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"core.manage_products" %}
+          {% url manage_product_edit product_id=product.id as product_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=product_edit_url edit_name=product.name %}
+          {% include "manage/_narrow_env_link.html" with obj_type='product' obj_id=product.id %}
+          {% include "lists/controls/_clone.html" with clone_id=product.id clone_name=product.name %}
+          {% include "lists/controls/_delete.html" with delete_id=product.id delete_name=product.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ product.name }}">{{ product.name }}</h3>
+
+      <div class="description">{{ product.description }}</div>
+
     </div>
   </header>
-  <div class="content">
-    <p class="byline">
-      Created by <span class="fn">{{ product.timeline.createdBy.screenName }}</span>
-      on <time pubdate>{{ product.timeline.createDate|date }}</time>
-    </p>
-    <p class="description">
-      {{ product.description }}
-    </p>
-    <section class="components">
-      <h4><a href="{% url manage_testcycles %}?filter-product={{ product.id }}">Cycles in this product:</a></h4>
-      <ul>
-        {% for cycle in product.testcycles %}
-        <li><a href="{% url manage_testcycles %}?filter-product={{ product.id }}#cycle-id-{{ cycle.id }}">{{ cycle.name }}</a></li>
-        {% endfor %}
-      </ul>
-    </section>
-    <div class="testers">
-      <h4>testers</h4>
-      <ul>
-        {% for tester in product.team %}
-        <li> {{ tester.screenName }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
+
+  {% url manage_product_details product.id as details_url %}
+  {# _product_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
 </article>

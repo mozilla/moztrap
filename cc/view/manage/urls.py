@@ -26,6 +26,27 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns(
     "",
 
+    # product ---------------------------------------------------------------
+    # manage
+    url(r"^products/$",
+        "cc.view.manage.products.views.products_list",
+        name="manage_products"),
+
+    # ajax details
+    url(r"^products/_detail/(?P<product_id>\d+)/$",
+        "cc.view.manage.products.views.product_details",
+        name="manage_product_details"),
+
+    # add
+    url(r"^product/add/$",
+        "cc.view.manage.products.views.product_add",
+        name="manage_product_add"),
+
+    # edit
+    url(r"^product/(?P<product_id>\d+)/$",
+        "cc.view.manage.products.views.product_edit",
+        name="manage_product_edit"),
+
     # testcase ---------------------------------------------------------------
     # manage
     url(r"^cases/$",

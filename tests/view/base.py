@@ -82,6 +82,8 @@ class ViewTestCase(WebTest):
         """
         Assert that an element is in an HTML snippet some number of times.
 
+        ``html`` is either an HTML string or a BeautifulSoup object.
+
         ``element`` is the HTML tag name; extra arguments and keyword arguments
         are passed on to BeautifulSoup as attribute selectors.
 
@@ -90,7 +92,9 @@ class ViewTestCase(WebTest):
 
         """
         count = kwargs.pop("count", 1)
-        actual = len(BeautifulSoup(html).findAll(element, *args, **kwargs))
+        if isinstance(html, basestring):
+            html = BeautifulSoup(html)
+        actual = len(html.findAll(element, *args, **kwargs))
         self.assertEqual(
             actual,
             count,
@@ -159,10 +163,35 @@ class ManageListViewTestCase(FormViewTestCase):
     name_attr = "name"   # char attribute that should appear in list
 
 
+    def _make_soup(self, response):
+        """
+        Given an HTML or JSON response, return a BeautifulSoup object.
+
+        If the response is JSON, looks for the "html" key.
+
+        """
+        if "html" in response.content_type:
+            html = response.html
+        elif "json" in response.content_type:
+            html = BeautifulSoup(response.json["html"])
+        else:
+            self.fail(
+                "Response content-type {0} is neither JSON nor HTML.".format(
+                    response.content_type)
+                )
+
+        return html
+
+
     def assertInList(self, response, name, count=1):
         """Assert that item ``name`` is in the list ``count`` times."""
         self.assertElement(
-            response.body, "h3", "title", title=name, count=count)
+            self._make_soup(response).find("form", "itemlist"),
+            "h3",
+            "title",
+            title=name,
+            count=count
+            )
 
 
     def assertNotInList(self, response, name):
@@ -172,12 +201,17 @@ class ManageListViewTestCase(FormViewTestCase):
 
     def assertOrderInList(self, response, *names):
         """Assert that ``names`` appear in list in given order."""
+        soup = self._make_soup(response)
+
+        all_names = [el.text for el in soup.findAll("h3", "title")]
+
         indices = []
+
         for name in names:
             try:
-                indices.append((response.body.index(name), name))
+                indices.append((all_names.index(name), name))
             except ValueError:
-                self.fail("{0} does not appear in response.".format(name))
+                self.fail("{0} does not appear in list.".format(name))
 
         actual_order = sorted(indices, key=lambda t: t[0])
 
