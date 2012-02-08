@@ -1,23 +1,14 @@
 {% extends 'manage/product/product_base.html' %}
 
-{% block listcontent %}
-<section id="editproduct">
+{% block content %}
+<section class="edit-product">
   <h2>edit product</h2>
-  <a href="{% url manage_narrow_environments object_type='product' object_id=product.id %}" class="select-env-link">select environments</a>
   <form id="product-edit-form" method="POST">
     {% csrf_token %}
-    <ul class="basic">
-      <li>
-        {% include "forms/_field.html" with field=form.name %}
-      </li>
-      <li>
-        {% include "forms/_field.html" with field=form.description %}
-      </li>
-    </ul>
+    {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.description %}
 
-    {# @@@ put this on a separate page #}
-    {# include "manage/environment/_narrow_list.html" #}
-
+    {% comment %}
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
       <h3 class="summary">assign specific users to this product &raquo;</h3>
       <div>
@@ -25,10 +16,11 @@
         {% include "forms/_field.html" with field=form.team %}
       </div>
     </section>
+    {% endcomment %}
 
     <div class="form-actions">
       <button type="submit">save product</button>
     </div>
   </form>
 </section>
-{% endblock listcontent %}
+{% endblock content %}
