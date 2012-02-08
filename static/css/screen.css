@@ -3622,6 +3622,30 @@ body.login input, body.login .errorlist {
   padding-right: 8.421%;
 }
 
+.edit-product .name-field, .edit-product .description-field {
+  clear: both;
+  padding-right: 54.737%;
+}
+.edit-product .name-field label, .edit-product .description-field label {
+  display: inline;
+  float: left;
+  width: 16.279%;
+  margin-right: 2.326%;
+}
+.edit-product .name-field input, .edit-product .name-field textarea, .edit-product .name-field .errorlist, .edit-product .description-field input, .edit-product .description-field textarea, .edit-product .description-field .errorlist {
+  display: inline;
+  float: left;
+  width: 81.395%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.edit-product .form-actions {
+  padding-right: 54.737%;
+}
+
 #managecases .listordering {
   padding-left: 3.75em;
 }

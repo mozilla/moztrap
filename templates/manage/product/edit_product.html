@@ -3,7 +3,7 @@
 {% block content %}
 <section class="edit-product">
   <h2>edit product</h2>
-  <form id="product-edit-form" method="POST">
+  <form id="product-edit-form" method="POST" class="manage-form">
     {% csrf_token %}
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.description %}

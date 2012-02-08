@@ -14,3 +14,17 @@
 
   .form-actions
     +suffix(2,24)
+
+.edit-product
+
+  .name-field, .description-field
+    +full(24)
+    +suffix(13,24)
+    label
+      +columns(2,11)
+    input, textarea, .errorlist
+      +columns(9,11)
+      +omega(11)
+
+  .form-actions
+    +suffix(13,24)
