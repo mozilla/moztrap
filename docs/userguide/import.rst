@@ -3,17 +3,21 @@ Data Import Formats
 
 .. _data-import:
 
-**Note:** The data you choose to import must be encoded in UTF8.
+.. note::
 
-JSON 
+   Imported data should always be UTF-8 encoded.
+
+
+JSON
 ----
 
-JSON is a great way to import more complex sets of :ref:`cases <test-cases>` and
-:ref:`suites <test-suites>` for your product. One JSON file will be used per :ref:`product
-<products>` :ref:`version <product-versions>`. Simply use the user interface to create the
-:ref:`Product <products>` and :ref:`Version <product-versions>` that applies to the
-:ref:`cases <test-cases>` and :ref:`suites <test-suites>` to be imported. Then just import
-your JSON file to that :ref:`product version <product-versions>`.
+JSON is a great way to import more complex sets of :ref:`cases <test-cases>`
+and :ref:`suites <test-suites>` for your product. One JSON file will be used
+per :ref:`product <products>` :ref:`version <product-versions>`. Simply use the
+user interface to create the :ref:`Product <products>` and :ref:`Version
+<product-versions>` that applies to the :ref:`cases <test-cases>` and
+:ref:`suites <test-suites>` to be imported. Then just import your JSON file to
+that :ref:`product version <product-versions>`.
 
 Example::
 
@@ -44,12 +48,15 @@ Example::
         ]
     }
 
+
 CSV (future)
 ------------
 
-When importing from a spreadsheet or wiki set of test cases, this may prove a very useful
-format.  This doesn't handle multiple separate steps in test cases.  Rather, it presumes
-all steps are in a single step when imported to Case Conductor.
+When importing from a spreadsheet or wiki set of test cases, this may prove a
+very useful format.  This doesn't handle multiple separate steps in test cases.
+Rather, it presumes all steps are in a single step when imported to Case
+Conductor.
+
 
 Bulk Test Case Entry Formats
 ============================
@@ -74,11 +81,11 @@ Example::
     then the expected result is observed
     And when I execute mysecond step instruction
     Then the second step expected result is observed
-    
+
+
 Markdown (future)
 -----------------
 
-Description:
 This will be another format for the bulk test case creator.
 
 Example::
@@ -89,7 +96,7 @@ Example::
 
     * which can contain bullets
     * **with formatting**
-       * indentation 
+       * indentation
        * [and links](www.example.com)
 
     Steps
@@ -98,7 +105,7 @@ Example::
         * Step 1 Expected Result
     2. Step 2 action
         * Step 2 Expected Result
-        
+
     Test case 2 title here
     ======================
     ...
