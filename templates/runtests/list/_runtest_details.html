@@ -14,18 +14,18 @@
 
 <ol class="steps">
   {% for step in caseversion.steps.all %}
+  {% stepresult_for result step as stepresult %}
   <li>
-    <div class="step">
+    <div class="step {{ stepresult.status }}">
       <p class="instruction">{{ step.instruction }}</p>
       <p class="outcome">{{ step.expected }}</p>
     </div>
 
-    {% stepresult_for result step as stepresult %}
     {% if result.status == result.STATUS.failed and stepresult.status == stepresult.STATUS.failed %}
 
-      <div class="stepfail details failed open">
-        <p class="summary">failed</p>
-        <div class="faildesc fail-detail">
+      <div class="stepfail failed">
+        <p class="stepfail-summary">failed</p>
+        <div class="faildesc stepfail-content">
           <p>{{ result.comment }}</p>
           {% for bug in result.bug_urls %}
           <p class="bugurl">
@@ -40,12 +40,14 @@
       {% if result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
         <div class="stepfail details">
           <p class="summary stepfail-summary">fail</p>
-          <form method="POST" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}" class="content">
+          <form method="POST" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}" class="content stepfail-content">
             {% csrf_token %}
             <input type="hidden" name="stepnumber" value="{{ step.number }}">
 
-            <label for="fail-comment-{{ runcaseversion.id }}-{{ step.number }}">actual result:</label>
-            <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
+            <div class="formfield fail-field">
+              <label for="fail-comment-{{ runcaseversion.id }}-{{ step.number }}">actual result:</label>
+              <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
+            </div>
 
             {% with runcaseversion.caseversion.bug_urls as bug_urls %}
 
@@ -66,10 +68,9 @@
                 <li class="newbug">
                   {% if bug_urls %}
                     <input type="radio" name="bug" value="" id="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug" />
-                    <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug">link to a new bug</label>
-                  {% else %}
-                    <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}" class="newbug">link to a bug</label>
+                    <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug-radio-label">link to a new bug</label>
                   {% endif %}
+                  <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}" class="newbug-input-label">bug link</label>
                   <input type="url" name="bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
                 </li>
               </ul>

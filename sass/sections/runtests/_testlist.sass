@@ -22,7 +22,7 @@
     +demi
 
   .description, .steps
-    +prefix(4,24)
+    +pad(4,4,24)
 
   .description
     +italic
@@ -70,7 +70,7 @@
 
   .invalid-content, .invalid-form
     +full(24)
-    +prefix(4,24)
+    +pad(4,4,24)
     +trailer(0)
 
   .invalid-form
@@ -92,3 +92,58 @@
   &.open, &.invalidated
     .invalid-summary
       +button-style($yellow,'ui/warning.png')
+
+// ---------------------------------------------------------------------------
+// Step Fail
+.step
+  &.failed
+    .instruction
+      color: $red
+
+.steps li
+  position: relative
+  &:hover
+    .stepfail-summary
+      +opacity(.5)
+      #{$focus}
+        +opacity(1)
+        outline: 0
+  .open, .failed
+    .stepfail-summary
+      +opacity(1)
+
+.stepfail-summary
+  +opacity(0)
+  +icon('ui/x.png')
+  position: absolute
+  top: rhythm(1)
+  right: 100%
+  padding-right: gutter(16)
+  &.summary
+    cursor: pointer
+
+.stepfail-content
+  +clearfix
+  +border-radius
+  +rhythm-borders(1px,1)
+  +box-shadow(rgba($red,$small) 0 0 $xsmallem inset)
+  background: rgba($red-light,$xxxsmall)
+  border-color: $red
+  .buglist
+    +no-style-list
+    +columns(12,16)
+  .newbug-input-label
+    +gone
+  .form-actions
+    +columns(4,16)
+    +omega(16)
+    clear: none
+    padding: 0
+  .bugurl
+    @extend .bugchick
+    +trailer(0)
+
+.fail-field
+  label
+    +gone
+

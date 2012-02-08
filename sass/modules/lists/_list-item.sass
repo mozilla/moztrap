@@ -90,17 +90,22 @@
 .bugs-list, .files-list
   +no-style-list
 
+.filechick
+  @extend .chick
+  +icon('ui/clip.png',$notext:false)
+  padding-left: rhythm(1)
+
 .files-list
   .file
-    @extend .chick
-    +icon('ui/clip.png',$notext:false)
-    padding-left: rhythm(1)
+    @extend .filechick
+
+.bugchick
+  @extend .chick
+  +icon('ui/bug.png',$notext:false)
+  padding-left: rhythm(1.25)
+  background-color: $yellow-light
+  border-color: $yellow-darkest
 
 .bugs-list
   .bugurl
-    @extend .chick
-    +icon('ui/bug.png',$notext:false)
-    padding-left: rhythm(1.25)
-    background-color: $yellow-light
-    border-color: $yellow-darkest
-
+    @extend .bugchick
