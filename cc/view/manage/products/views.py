@@ -76,7 +76,7 @@ def product_details(request, product_id):
 def product_add(request):
     """Add a single case."""
     if request.method == "POST":
-        form = forms.ProductForm(request.POST, user=request.user)
+        form = forms.AddProductForm(request.POST, user=request.user)
         if form.is_valid():
             product = form.save()
             messages.success(
@@ -85,7 +85,7 @@ def product_add(request):
                 )
             return redirect("manage_products")
     else:
-        form = forms.ProductForm(user=request.user)
+        form = forms.AddProductForm(user=request.user)
     return TemplateResponse(
         request,
         "manage/product/add_product.html",
@@ -101,14 +101,14 @@ def product_edit(request, product_id):
     """Edit a product."""
     product = get_object_or_404(model.Product, pk=product_id)
     if request.method == "POST":
-        form = forms.ProductForm(
+        form = forms.EditProductForm(
             request.POST, instance=product, user=request.user)
         if form.is_valid():
             cv = form.save()
             messages.success(request, "Saved '{0}'.".format(cv.name))
             return redirect("manage_products")
     else:
-        form = forms.ProductForm(instance=product, user=request.user)
+        form = forms.EditProductForm(instance=product, user=request.user)
     return TemplateResponse(
         request,
         "manage/product/edit_product.html",

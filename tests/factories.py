@@ -279,7 +279,7 @@ class EnvironmentFactory(factory.Factory):
 
 
     @classmethod
-    def create_full_set(cls, categories):
+    def create_full_set(cls, categories, profile=None):
         """
         Create all possible environment combinations from given categories.
 
@@ -301,8 +301,12 @@ class EnvironmentFactory(factory.Factory):
 
         environments = []
 
+        env_kwargs = {}
+        if profile:
+            env_kwargs["profile"] = profile
+
         for elements in itertools.product(*element_lists):
-            env = cls.create()
+            env = cls.create(**env_kwargs)
             env.elements.add(*elements)
             environments.append(env)
 

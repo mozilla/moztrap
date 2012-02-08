@@ -28,10 +28,39 @@ from ...utils import ccforms
 
 
 
-class ProductForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
-    """Form for adding/editing products."""
+class EditProductForm(ccforms.NonFieldErrorsClassFormMixin,
+                      ccforms.CCModelForm):
+    """Form for editing products."""
     class Meta:
         model = model.Product
+        fields = ["name", "description"]
         widgets = {
-            "description": ccforms.BareTextarea
+            "name": forms.TextInput,
+            "description": ccforms.BareTextarea,
             }
+
+
+
+class AddProductForm(EditProductForm):
+    """Form for adding a product."""
+    version = forms.CharField(required=True)
+    profile = forms.ModelChoiceField(
+        queryset=model.Profile.objects.all(),
+        required=False,
+        widget=forms.Select)
+
+
+    def save(self):
+        """Save and return the new Product; also save initial version."""
+        product = super(AddProductForm, self).save()
+
+        version = model.ProductVersion.objects.create(
+            product=product,
+            version=self.cleaned_data["version"],
+            user=self.user)
+
+        profile = self.cleaned_data.get("profile")
+        if profile is not None:
+            version.environments.add(*profile.environments.all())
+
+        return product
