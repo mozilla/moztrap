@@ -19,8 +19,6 @@
 Tests for case management views.
 
 """
-from datetime import datetime
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -206,17 +204,6 @@ class CasesTest(base.ManageListViewFinderTestCase):
         self.assertNotInList(res, "Case 2")
 
 
-    def test_filter_by_creator(self):
-        """Can filter by creator."""
-        F.CaseVersionFactory.create(name="Case 1", user=self.user)
-        F.CaseVersionFactory.create(name="Case 2")
-
-        res = self.get(params={"filter-creator": self.user.id})
-
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
-
-
     def test_filter_by_env_elements(self):
         """Can filter by environment elements."""
         envs = F.EnvironmentFactory.create_full_set(
@@ -241,18 +228,6 @@ class CasesTest(base.ManageListViewFinderTestCase):
 
         self.assertInList(res, "Case 1")
         self.assertNotInList(res, "Case 2")
-
-
-    def test_default_sort_by_last_created(self):
-        """Default sort is by latest created first."""
-        F.CaseVersionFactory.create(
-            name="Case 1", created_on=datetime(2012, 1, 21))
-        F.CaseVersionFactory.create(
-            name="Case 2", created_on=datetime(2012, 1, 22))
-
-        res = self.get()
-
-        self.assertOrderInList(res, "Case 2", "Case 1")
 
 
     def test_sort_by_status(self):

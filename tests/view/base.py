@@ -20,6 +20,7 @@ Utility base TestCase for testing views.
 
 """
 from contextlib import contextmanager
+from datetime import datetime
 
 from django.conf import settings
 
@@ -262,6 +263,29 @@ class ManageListViewTestCase(FormViewTestCase):
     def test_clone_requires_manage_cases_permission(self):
         """Cloning requires manage_cases permission."""
         self.assertActionRequiresPermission("clone")
+
+
+    def test_filter_by_creator(self):
+        """Can filter by creator."""
+        self.factory.create(name="Foo 1", user=self.user)
+        self.factory.create(name="Foo 2")
+
+        res = self.get(params={"filter-creator": self.user.id})
+
+        self.assertInList(res, "Foo 1")
+        self.assertNotInList(res, "Foo 2")
+
+
+    def test_default_sort_by_last_created(self):
+        """Default sort is by latest created first."""
+        self.factory.create(
+            name="Foo 1", created_on=datetime(2012, 1, 21))
+        self.factory.create(
+            name="Foo 2", created_on=datetime(2012, 1, 22))
+
+        res = self.get()
+
+        self.assertOrderInList(res, "Foo 2", "Foo 1")
 
 
 
