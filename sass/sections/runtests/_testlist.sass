@@ -95,32 +95,27 @@
 
 // ---------------------------------------------------------------------------
 // Step Fail
-.step
-  &.failed
+#runtests
+  .step
     .instruction
-      color: $red
+      padding-left: rhythm(1)
+    &.failed
+      .instruction
+        color: $red
 
-.steps li
-  position: relative
-  &:hover
-    .stepfail-summary
-      +opacity(.5)
-      #{$focus}
-        +opacity(1)
-        outline: 0
-  .open, .failed
-    .stepfail-summary
-      +opacity(1)
+  .steps li
+    position: relative
 
 .stepfail-summary
-  +opacity(0)
+  +opacity(.25)
   +icon('ui/x.png')
   position: absolute
-  top: rhythm(1)
-  right: 100%
-  padding-right: gutter(16)
+  top: -1px
+  left: 0
   &.summary
     cursor: pointer
+  #{$focus}, .stepfail.open &, .stepfail.failed &
+    +opacity(1)
 
 .stepfail-content
   +clearfix

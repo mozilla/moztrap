@@ -4108,30 +4108,19 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/warning.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
-.step.failed .instruction {
+#runtests .step .instruction {
+  padding-left: 1.5em;
+}
+#runtests .step.failed .instruction {
   color: #b8282d;
 }
-
-.steps li {
+#runtests .steps li {
   position: relative;
-}
-.steps li:hover .stepfail-summary {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
-  opacity: 0.5;
-}
-.steps li:hover .stepfail-summary:focus, .steps li:hover .stepfail-summary:hover, .steps li:hover .stepfail-summary:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  outline: 0;
-}
-.steps li .open .stepfail-summary, .steps li .failed .stepfail-summary {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
 }
 
 .stepfail-summary {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+  opacity: 0.25;
   background-image: url('../images/ui/x.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -4147,12 +4136,15 @@ body.login input, body.login .errorlist {
   background-position: center;
   width: 1.5em;
   position: absolute;
-  top: 1.5em;
-  right: 100%;
-  padding-right: 1.587%;
+  top: -1px;
+  left: 0;
 }
 .stepfail-summary.summary {
   cursor: pointer;
+}
+.stepfail-summary:focus, .stepfail-summary:hover, .stepfail-summary:active, .stepfail.open .stepfail-summary, .stepfail.failed .stepfail-summary {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 
 .stepfail-content {
