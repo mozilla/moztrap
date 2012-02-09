@@ -19,16 +19,20 @@ user interface to create the :ref:`Product <products>` and :ref:`Version
 :ref:`suites <test-suites>` to be imported. Then just import your JSON file to
 that :ref:`product version <product-versions>`.
 
+The "suites" section is optional.  It's only needed if you want to apply a
+description to your suites.  All suites specified in cases will be created
+on the fly if they're not found.
+
 Example::
 
     {
-        "Suites": [
+        "suites": [
             {
                 "name": "suite name",
                 "description": "suite description"
             }
         ],
-        "Cases": [
+        "cases": [
             {
                 "title": "case title",
                 "description": "case description",
@@ -36,11 +40,11 @@ Example::
                 "suites": ["suite1 name", "suite2 name", "suite3 name"],
                 "steps": [
                     {
-                        "action": "action text",
+                        "instruction": "instruction text",
                         "expected": "expected text"
                     },
                     {
-                        "action": "action text",
+                        "instruction": "instruction text",
                         "expected": "expected text"
                     }
                 ]
