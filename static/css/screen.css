@@ -4368,6 +4368,10 @@ body.login input, body.login .errorlist {
 .stepfail-content .newbug-input {
   width: 90%;
 }
+.stepfail-content .newbug-input.disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+}
 .stepfail-content .form-actions {
   display: inline;
   float: left;
