@@ -66,7 +66,7 @@ def productversion_details(request, productversion_id):
         model.ProductVersion, pk=productversion_id)
     return TemplateResponse(
         request,
-        "manage/product/productversion/list/_product_details.html",
+        "manage/product/productversion/list/_productversion_details.html",
         {
             "productversion": productversion
             }
