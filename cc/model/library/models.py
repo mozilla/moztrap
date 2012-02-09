@@ -149,8 +149,11 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
         nullifies the constraint entirely, since NULL != NULL in SQL.
 
         """
-        dupes = CaseVersion.objects.filter(
-            productversion=self.productversion, case=self.case)
+        try:
+            dupes = CaseVersion.objects.filter(
+                productversion=self.productversion, case=self.case)
+        except (Case.DoesNotExist, ProductVersion.DoesNotExist):
+            return
         if self.pk is not None:
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():
@@ -246,8 +249,11 @@ class CaseStep(CCModel):
         nullifies the constraint entirely, since NULL != NULL in SQL.
 
         """
-        dupes = CaseStep.objects.filter(
-            caseversion=self.caseversion, number=self.number)
+        try:
+            dupes = CaseStep.objects.filter(
+                caseversion=self.caseversion, number=self.number)
+        except CaseVersion.DoesNotExist:
+            return
         if self.pk is not None:
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():
@@ -314,8 +320,11 @@ class SuiteCase(CCModel):
         nullifies the constraint entirely, since NULL != NULL in SQL.
 
         """
-        dupes = SuiteCase.objects.filter(
-            suite=self.suite, case=self.case)
+        try:
+            dupes = SuiteCase.objects.filter(
+                suite=self.suite, case=self.case)
+        except (Suite.DoesNotExist, Case.DoesNotExist):
+            return
         if self.pk is not None:
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():

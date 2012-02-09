@@ -326,6 +326,14 @@ class CaseVersionTest(case.DBTestCase):
             new.full_clean()
 
 
+    def test_unique_constraint_with_unset_case_and_productversion(self):
+        """Uniqueness checking doesn't blow up if case/productversion unset."""
+        new = self.model.CaseVersion()
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
     def test_unique_constraint_doesnt_prevent_edit(self):
         """Unique constraint still allows saving an edited existing object."""
         cv = self.F.CaseVersionFactory.create()
@@ -360,6 +368,14 @@ class CaseStepTest(case.DBTestCase):
 
         new = self.F.CaseStepFactory.build(
             caseversion=cs.caseversion, number=cs.number)
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
+    def test_unique_constraint_with_unset_caseversion(self):
+        """Uniqueness checking doesn't blow up if caseversion unset."""
+        new = self.model.CaseStep()
 
         with self.assertRaises(ValidationError):
             new.full_clean()

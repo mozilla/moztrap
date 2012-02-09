@@ -230,6 +230,14 @@ class ProductVersionTest(case.DBTestCase):
             new.full_clean()
 
 
+    def test_unique_constraint_with_unset_product(self):
+        """Unique-check doesn't blow up if product is unset."""
+        new = self.model.ProductVersion()
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
     def test_unique_constraint_doesnt_prevent_edit(self):
         """Unique constraint still allows saving an edited existing object."""
         pv = self.F.ProductVersionFactory.create()
