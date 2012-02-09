@@ -97,7 +97,7 @@ class JsonParser(object):
 
         # the total number of test cases that were imported
 
-        num_suites = self.parse_suites(product, json_data['suites'])
+        self.parse_suites(product, json_data['suites'])
 
         num_cases = 0
 
@@ -128,41 +128,24 @@ class JsonParser(object):
                 self.parse_tags(product, case_version, new_case['tags'])
 
                 # add this case to the suites
-                self.add_case_to_suites(product, case, new_case['suites'])
+                self.parse_suites(product, new_case['suites'], case)
 
 
                 # case has been created, increment our count for reporting
                 num_cases+=1
 
-        return ('Successfully imported %s cases and %s suites\n' %
-            (num_cases, num_suites))
+        return ('Successfully imported %s cases.\n' %
+            (num_cases))
 
-
-    def parse_suites(self, product, suite_list):
-        num_suites = 0
-
-        for new_suite in suite_list:
-            if not Suite.objects.filter(name=new_suite['name']).exists():
-                suite = Suite()
-                suite.product=product
-                suite.name = new_suite['name']
-                suite.description = new_suite['description']
-                suite.save()
-                num_suites+=1
-
-        return num_suites
 
     def parse_steps(self, case_version, step_list):
-        step_num = 1
-        for new_step in step_list:
+        for step_num, new_step in enumerate(step_list):
             casestep = CaseStep()
             casestep.caseversion = case_version
-            casestep.number = step_num
+            casestep.number = step_num+1
             casestep.instruction = new_step['instruction']
             casestep.expected = new_step['expected']
             casestep.save()
-
-            step_num +=1
 
 
     def parse_tags(self, product, case_version, tag_list):
@@ -181,18 +164,31 @@ class JsonParser(object):
 
             case_version.tags.add(tag)
 
-    def add_case_to_suites(self, product, case, suite_list):
-        """ Find the suite.  If it doesn't exist, then create it.  Either way,
-            add it to the case_version"""
+    def parse_suites(self, product, suite_list, case=None):
+        """ create the list of suites, if they don't already exist.
+        If a case is provided, add that case to the suites."""
 
         for new_suite in suite_list:
+            # this could be a dictionary, or just a list of strings.
+            new_desc = None
+            if isinstance(new_suite, dict):
+                new_name = new_suite['name']
+                new_desc = new_suite['description']
+            else:
+                new_name = new_suite
+
             try:
-               suite = Suite.objects.get(name=new_suite, product=product)
+               suite = Suite.objects.get(name=new_name, product=product)
 
             except Suite.DoesNotExist:
-               suite = Suite()
-               suite.product=product
-               suite.name = new_suite
-               suite.save()
 
-            SuiteCase.objects.create(case=case, suite=suite)
+                suite = Suite()
+                suite.product=product
+                suite.name = new_name
+                if new_desc:
+                    suite.description = new_desc
+                suite.save()
+
+            # if a case is provided, add it to this suite
+            if case:
+                SuiteCase.objects.create(case=case, suite=suite)
