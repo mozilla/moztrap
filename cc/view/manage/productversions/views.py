@@ -41,7 +41,7 @@ from . import forms
 @lists.actions(
     model.ProductVersion,
     ["delete", "clone"],
-    permission="core.manage_productversions")
+    permission="core.manage_products")
 @lists.finder(ManageFinder)
 @lists.filter("productversions", filterset_class=ProductVersionFilterSet)
 @lists.sort("productversions")
@@ -74,7 +74,7 @@ def productversion_details(request, productversion_id):
 
 
 
-@permission_required("core.manage_productversions")
+@permission_required("core.manage_products")
 def productversion_add(request):
     """Add a single case."""
     if request.method == "POST":
@@ -98,7 +98,7 @@ def productversion_add(request):
 
 
 
-@permission_required("core.manage_productversions")
+@permission_required("core.manage_products")
 def productversion_edit(request, productversion_id):
     """Edit a productversion."""
     productversion = get_object_or_404(

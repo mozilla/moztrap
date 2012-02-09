@@ -111,7 +111,7 @@ class UserFactory(factory.Factory):
     @classmethod
     def _prepare(cls, create, **kwargs):
         """Special handling for ``set_password`` method."""
-        password = kwargs.pop('password', None)
+        password = kwargs.pop("password", None)
         user = super(UserFactory, cls)._prepare(create, **kwargs)
         if password:
             user.set_password(password)
@@ -135,6 +135,21 @@ class ProductVersionFactory(TeamFactoryMixin,
 
     version = "1.0"
     product = factory.SubFactory(ProductFactory)
+
+
+    @classmethod
+    def create(cls, **kwargs):
+        """Handle name kwarg that is concatenated product name / version."""
+        name = kwargs.pop("name", None)
+        if name:
+            if ("version" in kwargs or
+                "product" in kwargs or
+                "product__name" in kwargs):
+                raise ValueError(
+                    "Can't provide both name and version/product/product__name")
+            else:
+                kwargs["product__name"], kwargs["version"] = name.rsplit(" ", 1)
+        return super(ProductVersionFactory, cls).create(**kwargs)
 
 
 

@@ -127,7 +127,7 @@ class ListViewTestCase(base.FormViewTestCase):
 
         res = self.get()
 
-        res.mustcontain("Foo Bar")
+        self.assertInList(res, "Foo Bar")
 
 
     def test_delete(self):

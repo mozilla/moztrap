@@ -34,4 +34,9 @@ class ProductVersionFilterSet(filters.FilterSet):
         filters.KeywordFilter("codename"),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
+        filters.ModelFilter(
+            "environment element",
+            lookup="environments__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
         ]

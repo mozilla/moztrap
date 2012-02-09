@@ -29,6 +29,8 @@ class ProductsTest(case.view.manage.ListViewFinderTestCase):
     """Test for products manage list view."""
     form_id = "manage-products-form"
     perm = "manage_products"
+
+
     @property
     def factory(self):
         """The model factory for this manage list."""
@@ -73,7 +75,7 @@ class ProductDetailTest(case.view.AuthenticatedViewTestCase):
 
     @property
     def url(self):
-        """Shortcut for add-case-single url."""
+        """Shortcut for product detail url."""
         return reverse(
             "manage_product_details", kwargs=dict(product_id=self.product.id))
 
@@ -90,7 +92,7 @@ class ProductDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 class AddProductTest(case.view.FormViewTestCase):
-    """Tests for add-case-single view."""
+    """Tests for add product view."""
     form_id = "product-add-form"
 
 
@@ -133,8 +135,8 @@ class AddProductTest(case.view.FormViewTestCase):
         res.mustcontain("This field is required.")
 
 
-    def test_requires_manage_cases_permission(self):
-        """Requires create-cases permission."""
+    def test_requires_manage_products_permission(self):
+        """Requires manage-products permission."""
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
@@ -162,7 +164,7 @@ class EditProductTest(case.view.FormViewTestCase):
 
 
     def test_requires_manage_products_permission(self):
-        """Requires manage-cases permission."""
+        """Requires manage-products permission."""
         res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
