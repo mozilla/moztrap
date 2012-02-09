@@ -2,6 +2,10 @@
   {% include "lists/_byline.html" with item=productversion %}
 </div>
 
+{% with productversion.team.all as team %}
+{% include "manage/product/_team.html" %}
+{% endwith %}
+
 {% with productversion.runs.all as runs %}
 {% if runs %}
   <div class="runs">
@@ -13,10 +17,6 @@
     </ul>
   </div>
 {% endif %}
-{% endwith %}
-
-{% with productversion.team.all as team %}
-{% include "manage/product/_team.html" %}
 {% endwith %}
 
 {% include "lists/_environments.html" with environments=productversion.environments %}

@@ -1,0 +1,30 @@
+#manageproductversions
+
+  .listordering
+    padding-left: rhythm(1)
+
+  .name, .byname
+    +columns(10)
+  .product, .byproduct, .codename, .bycodename
+    +columns(7,24)
+  .codename, .bycodename
+    +omega(24)
+
+  .title
+    +demi
+    display: inline
+
+  .iteminfo
+    +columns(12,24)
+
+  .runs, .envs, .testers
+    @extend .detailslist
+    +columns(4,24)
+  .envs
+    +omega(24)
+  .runs-title, .envs-title, .testers-title
+    @extend .detailstitle
+
+  .iteminfo
+    + .runs
+      +prefix(4,24)
