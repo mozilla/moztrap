@@ -60,7 +60,7 @@ var CC = (function (CC, $) {
     // Expand list item details on direct hashtag links
     CC.openListItemDetails = function () {
         if ($('.manage').length && window.location.hash && $(window.location.hash).length) {
-            $(window.location.hash).children('.summary').click();
+            $(window.location.hash).find('.summary').first().click();
         }
     };
 
