@@ -43,6 +43,7 @@ class Product(CCModel, TeamModel):
             ("manage_products", "Can add/edit/delete products."),
             ("manage_users", "Can add/edit/delete user accounts."),
             ]
+        ordering = ["name"]
 
 
     def clone(self, *args, **kwargs):
