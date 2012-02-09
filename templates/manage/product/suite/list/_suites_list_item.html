@@ -1,0 +1,39 @@
+{% load staticdata permissions %}
+
+<article id="suite-id-{{ suite.id }}" class="listitem {{ suite.status|status_class }}" data-details-url="{% url manage_suite_details suite.id %}">
+  <header class="itemhead">
+
+    {% include "manage/product/_status.html" with item=suite %}
+
+    <h3 class="name" title="{{ suite.name }}">{{ suite.name }}</h3>
+    <div class="product">{{ suite.product.name }}</div>
+
+    <div class="controls">
+      {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
+
+        {% url manage_suite_edit suite_id=suite.id as suite_edit_url %}
+        {% include "lists/controls/_edit.html" with edit_url=suite_edit_url edit_name=suite.name %}
+
+        {% if suite.status.DRAFT %}
+          {% include "manage/_narrow_env_link.html" with obj_type='suite' obj_id=suite.id %}
+        {% endif %}
+
+        {% include "lists/controls/_clone.html" with clone_id=suite.id clone_name=suite.name %}
+
+        {% if suite.status.DRAFT %}
+          {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
+        {% endif %}
+
+        {# @@@ requires modifications to case form <a href="#" title="create new test case in this suite">create new test case in this suite</a> #}
+      {% endif %}
+
+      {% url manage_testcases as testcases_url %}
+      {% include "lists/controls/_drill.html" with drill_url=testcases_url|add:"?filter-suite="|add:suite.id drill_action="manage" drill_children="cases" drill_name=suite.name %}
+
+    </div>
+  </header>
+
+  {# _suite_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

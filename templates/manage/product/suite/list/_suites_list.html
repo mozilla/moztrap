@@ -1,0 +1,15 @@
+{% include "manage/product/suite/list/_suites_listordering.html" %}
+
+<form method="POST" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% if suites %}
+    {% for suite in suites %}
+      {% include "manage/product/suite/list/_suites_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+</form>
+
+{% include "lists/_listnav.html" %}

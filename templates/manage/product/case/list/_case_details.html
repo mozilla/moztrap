@@ -1,0 +1,28 @@
+<div class="iteminfo">
+  {% include "manage/product/case/list/_case_byline.html" with item=caseversion %}
+
+  <ol class="steps">
+    {% for step in caseversion.steps.all %}
+    <li class="stepitem">
+      <p class="instruction">{{ step.instruction }}</p>
+      <p class="outcome">{{ step.expected }}</p>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+
+{% with caseversion.case.suites.all as suites %}
+{% if suites %}
+<div class="suites">
+  <h4 class="suites-title">Suites</h4>
+  <ul class="suite-list">
+    {% for suite in suites %}
+    <li><a href="#{{ suite.name|slugify }}" title="filter by {{ suite.name }}" class="filter-link suite" data-type="suite">{{ suite.name }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% include "lists/_environments.html" with environments=caseversion.environments %}
+{% include "lists/_associated_links.html" with bugs=caseversion.bug_urls attachments=caseversion.attachments %}

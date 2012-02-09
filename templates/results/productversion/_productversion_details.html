@@ -1,0 +1,17 @@
+<p class="drill">
+  See related <a href="{% url results_testruns %}?filter-productversion={{ productversion.id }}" title="test runs related to {{ productversion.name }}">test runs</a>
+  or <a href="{% url results_testcases %}?filter-productversion={{ productversion.id }}" title="test cases related to {{ productversion.name }}">test cases</a>.
+</p>
+<section class="envgroups">
+  {% include "lists/_environments.html" with environments=productversion.environmentgroups.environments %}
+</section>
+{% if productversion.team|length %}
+  <section class="testers">
+    <h4>testers</h4>
+    <ul>
+      {% for tester in productversion.team %}
+      <li>{{ tester.screenName }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}

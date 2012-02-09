@@ -130,15 +130,15 @@ var CC = (function (CC, $) {
             sectionContentSelector: '.colcontent',
             sectionClasses: [
                 'products',
-                'cycles',
+                'productversions',
                 'runs',
                 'cases'
             ],
             sectionItemSelectors: [
                 'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testrunincludedtestcase"]'
+                'input[name="productversion"]',
+                'input[name="run"]',
+                'input[name="runcaseversion"]'
             ]
         });
 
@@ -165,7 +165,7 @@ var CC = (function (CC, $) {
         });
         CC.formOptionsFilter({
             container: '#addrun',
-            trigger_sel: '#id_test_cycle',
+            trigger_sel: '#id_productversion',
             target_sel: '#id_suites'
         });
         CC.formOptionsFilter({
