@@ -45,12 +45,12 @@ from . import forms
 @lists.finder(ManageFinder)
 @lists.filter("productversions", filterset_class=ProductVersionFilterSet)
 @lists.sort("productversions")
-@ajax("manage/product/productversion/list/_productversions_list.html")
+@ajax("manage/productversion/list/_productversions_list.html")
 def productversions_list(request):
     """List productversions."""
     return TemplateResponse(
         request,
-        "manage/product/productversion/productversions.html",
+        "manage/productversion/productversions.html",
         {
             "productversions": model.ProductVersion.objects.select_related(
                 "product"),
@@ -66,7 +66,7 @@ def productversion_details(request, productversion_id):
         model.ProductVersion, pk=productversion_id)
     return TemplateResponse(
         request,
-        "manage/product/productversion/list/_productversion_details.html",
+        "manage/productversion/list/_productversion_details.html",
         {
             "productversion": productversion
             }
@@ -90,7 +90,7 @@ def productversion_add(request):
         form = forms.AddProductVersionForm(user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/productversion/add_productversion.html",
+        "manage/productversion/add_productversion.html",
         {
             "form": form
             }
@@ -115,7 +115,7 @@ def productversion_edit(request, productversion_id):
             instance=productversion, user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/productversion/edit_productversion.html",
+        "manage/productversion/edit_productversion.html",
         {
             "form": form,
             "productversion": productversion,

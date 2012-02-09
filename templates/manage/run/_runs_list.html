@@ -1,0 +1,65 @@
+{% load sort staticdata %}
+
+<div class="managelist action-ajax-replace">
+
+  {% include "manage/run/_runs_listordering.html" %}
+
+  <div class="items">
+    {% if runs %}
+        {% for run in runs %}
+        <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}" data-details-url="{% url manage_run_details run.id %}">
+          <header class="summary">
+            <p class="status">
+              {% if "PERMISSION_TEST_RUN_ACTIVATE" in request.user.permissionCodes %}
+                {% if run.status.DRAFT %}
+                <button title="activate" type="submit" name="action-activate" value="{{ run.id }}" class="draft">draft</button>
+                {% endif %}
+                {% if run.status.ACTIVE %}
+                <button title="disable" name="action-deactivate" value="{{ run.id }}" class="active">active</button>
+                {% endif %}
+                {% if run.status.LOCKED %}
+                <button title="activate" name="action-activate" value="{{ run.id }}" class="locked">disabled</button>
+                {% endif %}
+              {% else %}
+                {% if run.status.DRAFT %}
+                <span class="draft">draft</span>
+                {% endif %}
+                {% if run.status.ACTIVE %}
+                <span class="active">active</span>
+                {% endif %}
+                {% if run.status.LOCKED %}
+                <span class="locked">disabled</span>
+                {% endif %}
+              {% endif %}
+            </p>
+            <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+            <p class="cycle" title="{{ run.testCycle.name }}">{{ run.testCycle.name }}</p>
+            <p class="product">{{ run.product.name }}</p>
+            <time class="start">{{ run.startDate|date }}</time>
+            <time class="end">{{ run.endDate|date }}</time>
+            <div class="controls">
+              {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
+                <a href="{% url manage_run_edit run_id=run.id %}" title="edit">edit</a>
+                {% if run.status.DRAFT %}
+                <a href="{% url manage_narrow_environments object_type='run' object_id=run.id %}" title="select environments" class="target">select environments</a>
+                {% endif %}
+                <button title="clone" type="submit" name="action-clone" value="{{ run.id }}">clone</button>
+                {% if run.status.DRAFT %}
+                <button title="delete" type="submit" name="action-delete" value="{{ run.id }}">delete</button>
+                {% endif %}
+                {# @@@ requires modifications to suite form <a href="#" title="create new test suite in this run">create new test suite in this run</a> #}
+              {% endif %}
+            </div>
+          </header>
+          <div class="content">
+            {# _run_details.html loaded via ajax #}
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty">There are currently no items in this list...</p>
+    {% endif %}
+  </div>
+
+{% include "lists/_listnav.html" %}
+</div>

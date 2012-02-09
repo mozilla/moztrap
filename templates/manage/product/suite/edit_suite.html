@@ -1,9 +1,0 @@
-{% extends 'manage/product/suite/suite_form.html' %}
-
-{% block formtitle %}Edit "{{ suite.name }}"{% endblock %}
-
-{% block formtop %}
-{% if suite.status.DRAFT %}
-<a href="{% url manage_narrow_environments object_type='suite' object_id=suite.id %}" class="select-env-link">select environments</a>
-{% endif %}
-{% endblock %}

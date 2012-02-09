@@ -1,0 +1,16 @@
+{% extends 'manage/suite/base.html' %}
+
+{% block content %}
+
+<section id="managesuites" class="manage listpage">
+  <h2>Manage Test Suites</h2>
+
+  {% if "PERMISSION_TEST_SUITE_EDIT" in request.user.permissionCodes %}
+  <a href="{% url manage_suite_add %}" class="create">create test suite</a>
+  {% endif %}
+
+  {% include "lists/_filter.html" %}
+  {% include "manage/suite/list/_suites_list.html" %}
+
+</section>
+{% endblock content %}

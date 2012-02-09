@@ -1,0 +1,21 @@
+{% extends 'manage/run/base.html' %}
+
+{% block listcontent %}
+
+<section id="manageruns">
+  <h2>Manage Test Runs</h2>
+  {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
+  <a href="{% url manage_run_add %}" class="create">create test run</a>
+  {% endif %}
+
+  {% include "lists/_filter.html" %}
+
+  <form method="POST">
+    {% csrf_token %}
+
+    {% include "manage/run/_runs_list.html" %}
+
+  </form>
+
+</section>
+{% endblock listcontent %}

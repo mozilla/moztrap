@@ -1,0 +1,19 @@
+{% load pagination %}
+
+<form method="POST" id="manage-productversions-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/productversion/list/_productversions_listordering.html" %}
+
+  {% paginate productversions as pager %}
+  {% if pager.objects %}
+    {% for productversion in pager.objects %}
+      {% include "manage/productversion/list/_productversion_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

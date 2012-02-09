@@ -1,0 +1,20 @@
+{% extends 'manage/case/form/case_form.html' %}
+
+{% block versionedform %}
+  <div class="caseinfo-fields">
+    {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.description %}
+  </div>
+  {% include "manage/case/tag/_tagging.html" with formtype="single" %}
+  {% include "manage/_attachments.html" with obj=caseversion field=form.add_attachment %}
+  {% include "manage/case/form/_step_form.html" %}
+{% endblock versionedform %}
+
+
+{% block last %}
+<div style="display: none;">
+  <ul id="empty-step-form" class="empty-form">
+    {% include "manage/case/form/_step_form_item.html" with form=form.steps_formset.empty_form %}
+  </ul>
+</div>
+{% endblock %}

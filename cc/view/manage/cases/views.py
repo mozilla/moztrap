@@ -51,12 +51,12 @@ from . import forms
 @lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
 @lists.sort("caseversions")
-@ajax("manage/product/case/list/_cases_list.html")
+@ajax("manage/case/list/_cases_list.html")
 def cases_list(request):
     """List caseversions."""
     return TemplateResponse(
         request,
-        "manage/product/case/cases.html",
+        "manage/case/cases.html",
         {
             "caseversions": model.CaseVersion.objects.select_related("case"),
             }
@@ -70,7 +70,7 @@ def case_details(request, caseversion_id):
     caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)
     return TemplateResponse(
         request,
-        "manage/product/case/list/_case_details.html",
+        "manage/case/list/_case_details.html",
         {
             "caseversion": caseversion
             }
@@ -94,7 +94,7 @@ def case_add(request):
         form = forms.AddCaseForm(user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/case/add_case.html",
+        "manage/case/add_case.html",
         {
             "form": form
             }
@@ -119,7 +119,7 @@ def case_add_bulk(request):
         form = forms.AddBulkCaseForm(user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/case/add_case_bulk.html",
+        "manage/case/add_case_bulk.html",
         {
             "form": form
             }
@@ -146,7 +146,7 @@ def caseversion_edit(request, caseversion_id):
             instance=caseversion, user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/case/edit_case.html",
+        "manage/case/edit_case.html",
         {
             "form": form,
             "caseversion": caseversion,
