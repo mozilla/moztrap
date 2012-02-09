@@ -203,10 +203,22 @@ class SortTest(case.TestCase):
     def test_order_by_desc(self):
         """order_by property return "-field" for descending sort on "field"."""
         s = self.cls("path", {"sortfield": "name", "sortdirection": "desc"})
-        self.assertEqual(s.order_by, "-name")
+        self.assertEqual(s.order_by, ("-name",))
 
 
     def test_order_by_asc(self):
         """order_by property returns "field" for ascending sort on "field"."""
         s = self.cls("path", {"sortfield": "name", "sortdirection": "asc"})
-        self.assertEqual(s.order_by, "name")
+        self.assertEqual(s.order_by, ("name",))
+
+
+    def test_order_by_multiple_desc(self):
+        """order_by property prepends - to each field if multiple."""
+        s = self.cls("path", {"sortfield": "one,two", "sortdirection": "desc"})
+        self.assertEqual(s.order_by, ("-one", "-two"))
+
+
+    def test_order_by_multiple_asc(self):
+        """order_by property splits field by comma and returns multiple."""
+        s = self.cls("path", {"sortfield": "one,two", "sortdirection": "asc"})
+        self.assertEqual(s.order_by, ("one", "two"))
