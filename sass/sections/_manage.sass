@@ -3,21 +3,24 @@
 
 .create
   +box-sizing('border-box')
-  +columns(4,24)
+  +columns(5,24)
   +omega(24)
   +button-style($green-light,'ui/plus.png',$inset:true)
   display: block
   text-align: center
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
   #{$link}
     color: $base
 
 .create-options
-  +columns(8,24)
+  +columns(10,24)
   +omega(24)
   .create
-    +columns(4,8)
+    +columns(5,10)
     &:nth-child(odd)
-      +omega(8)
+      +omega(10)
     ~ .create
       +button-style($light,'ui/plus.png',$inset:true)
 
