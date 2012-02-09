@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,20 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Filtering for products.
+Template tags and filters for the finder.
 
 """
-from cc import model
-from cc.view.lists import filters
+from django.template import Library
+
+from .. import filters
 
 
 
-class ProductFilterSet(filters.FilterSet):
-    """FilterSet for Products."""
+register = Library()
 
 
-    filters = [
-        filters.KeywordFilter("name"),
-        filters.ModelFilter(
-            "creator", lookup="created_by", queryset=model.User.objects.all()),
-        ]
+
+@register.simple_tag
+def filter_url(view, obj):
+    """Template tag to get filtered url."""
+    return filters.filter_url(view, obj)

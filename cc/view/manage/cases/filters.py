@@ -19,11 +19,8 @@
 Filtering for cases.
 
 """
-from django.contrib.auth.models import User
-
-from .... import model
-
-from ...lists import filters
+from cc import model
+from cc.view.lists import filters
 
 
 
@@ -65,7 +62,7 @@ class CaseVersionFilterSet(filters.FilterSet):
             lookup="steps__expected",
             key="expected"),
         filters.ModelFilter(
-            "creator", lookup="created_by", queryset=User.objects.all()),
+            "creator", lookup="created_by", queryset=model.User.objects.all()),
         filters.ModelFilter(
             "environment element",
             lookup="environments__elements",

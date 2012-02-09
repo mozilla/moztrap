@@ -1,0 +1,22 @@
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=productversion %}
+</div>
+
+{% with productversion.runs.all as runs %}
+{% if runs %}
+  <div class="runs">
+    <h4 class="runs-title">Test Runs</h4>
+    <ul class="run-list">
+      {% for run in runs %}
+      <li><a href="#{# @@@ link to runs manage list #}" title="{{ run.name }}" class="run">{{ run }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+{% endwith %}
+
+{% with productversion.team.all as team %}
+{% include "manage/product/_team.html" %}
+{% endwith %}
+
+{% include "lists/_environments.html" with environments=caseversion.environments %}

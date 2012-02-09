@@ -28,6 +28,27 @@ urlpatterns = patterns(
 
     # product ---------------------------------------------------------------
     # manage
+    url(r"^productversions/$",
+        "cc.view.manage.productversions.views.productversions_list",
+        name="manage_productversions"),
+
+    # ajax details
+    url(r"^productversions/_detail/(?P<productversion_id>\d+)/$",
+        "cc.view.manage.productversions.views.productversion_details",
+        name="manage_productversion_details"),
+
+    # add
+    url(r"^productversion/add/$",
+        "cc.view.manage.productversions.views.productversion_add",
+        name="manage_productversion_add"),
+
+    # edit
+    url(r"^productversion/(?P<productversion_id>\d+)/$",
+        "cc.view.manage.productversions.views.productversion_edit",
+        name="manage_productversion_edit"),
+
+    # product ---------------------------------------------------------------
+    # manage
     url(r"^products/$",
         "cc.view.manage.products.views.products_list",
         name="manage_products"),

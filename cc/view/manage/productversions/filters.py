@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Filtering for products.
+Filtering for product versions.
 
 """
 from cc import model
@@ -24,12 +24,14 @@ from cc.view.lists import filters
 
 
 
-class ProductFilterSet(filters.FilterSet):
-    """FilterSet for Products."""
+class ProductVersionFilterSet(filters.FilterSet):
+    """FilterSet for Product versions."""
 
 
     filters = [
-        filters.KeywordFilter("name"),
+        filters.ModelFilter("product", queryset=model.Product.objects.all()),
+        filters.KeywordFilter("version"),
+        filters.KeywordFilter("codename"),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
         ]

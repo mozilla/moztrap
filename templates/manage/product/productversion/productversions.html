@@ -1,0 +1,21 @@
+{% extends 'manage/product/productversion/base.html' %}
+
+
+{% load permissions %}
+
+{% block content %}
+
+<section id="manageproductversions" class="manage listpage">
+  <h2>Manage Product Versions</h2>
+
+  {% if user|has_perm:"library.manage_products" %}
+  <div class="create-options">
+    <a href="{% url manage_productversion_add %}" class="create single">create a product version</a>
+  </div>
+  {% endif %}
+
+  {% include "lists/_filter.html" %}
+  {% include "manage/product/productversion/list/_productversions_list.html" %}
+
+</section>
+{% endblock content %}

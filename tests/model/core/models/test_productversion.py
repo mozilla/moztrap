@@ -30,11 +30,21 @@ from tests import case
 
 
 class ProductVersionTest(case.DBTestCase):
+    """Tests for ProductVersion model."""
     def test_unicode(self):
+        """Unicode representation is product name and version."""
         pv = self.F.ProductVersionFactory(
             product__name="Some Product", version="1.0")
 
         self.assertEqual(unicode(pv), u"Some Product 1.0")
+
+
+    def test_name(self):
+        """Productversion name is product name and version."""
+        pv = self.F.ProductVersionFactory(
+            product__name="Some Product", version="1.0")
+
+        self.assertEqual(pv.name, u"Some Product 1.0")
 
 
     def test_parent(self):

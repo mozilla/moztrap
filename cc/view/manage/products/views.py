@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Manage views for cases.
+Manage views for products.
 
 """
 from django.shortcuts import get_object_or_404, redirect

@@ -1,5 +1,5 @@
 # Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
+# Copyright (C) 2011-12 Mozilla
 #
 # This file is part of Case Conductor.
 #
@@ -16,20 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Filtering for products.
+Tests for queryset-filtering.
 
 """
-from cc import model
-from cc.view.lists import filters
+from django.template import Template, Context
+
+from mock import patch
+
+from tests import case
 
 
 
-class ProductFilterSet(filters.FilterSet):
-    """FilterSet for Products."""
+class FilterUrlTest(case.TestCase):
+    """Tests for filter_url template tag."""
+    @patch("cc.view.lists.filters.filter_url")
+    def test_pass_through(self, mock_filter_url):
+        """filter_url template tag is pass-through to filter_url function."""
+        t = Template("{% load filters %}{% filter_url 'manage_cases' prod %}")
+        product = object()
+        mock_filter_url.return_value = "some url"
+        res = t.render(Context({"prod": product}))
 
-
-    filters = [
-        filters.KeywordFilter("name"),
-        filters.ModelFilter(
-            "creator", lookup="created_by", queryset=model.User.objects.all()),
-        ]
+        self.assertEqual(res, "some url")
+        mock_filter_url.assert_called_with("manage_cases", product)

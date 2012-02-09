@@ -87,8 +87,15 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
     latest = models.BooleanField(default=False, editable=False)
 
 
+    @property
+    def name(self):
+        """A ProductVersion's name is its product name and version."""
+        return u"%s %s" % (self.product, self.version)
+
+
     def __unicode__(self):
-        return "%s %s" % (self.product, self.version)
+        """A ProductVersion's unicode representation is its name."""
+        return self.name
 
 
     class Meta:
