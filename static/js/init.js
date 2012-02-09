@@ -145,6 +145,9 @@ var CC = (function (CC, $) {
         // local.js
         CC.inputHadFocus();
 
+        // account.js
+        CC.changePwdCancel();
+
         // manage-results.js
         CC.toggleAdvancedFiltering('#filter');
         CC.loadListItemDetails();
