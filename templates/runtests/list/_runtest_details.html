@@ -67,7 +67,7 @@
                     <label for="bug-{{ runcaseversion.id }}-{{ step.number }}-new" class="newbug-radio-label">link to a new bug</label>
                   {% endif %}
                   <label for="related_bug-{{ runcaseversion.id }}-{{ step.number }}" class="newbug-input-label">bug link</label>
-                  <input type="url" class="newbug-input" name="bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug"{% if bug_urls %} disabled{% endif %}>
+                  <input type="url" class="newbug-input{% if bug_urls %} disabled{% endif %}" name="{% if bug_urls %}disabled-{% endif %}bug" value="" id="related_bug-{{ runcaseversion.id }}-{{ step.number }}" placeholder="optional URL of related bug">
                 </li>
               </ul>
 

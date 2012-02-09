@@ -97,10 +97,15 @@ var CC = (function (CC, $) {
                 newBugInput = thisList.find('input[type="url"].newbug-input');
 
             if (newBug.is(':checked')) {
-                newBugInput.prop('disabled', false).focus();
+                newBugInput.removeClass('disabled').attr('name', 'bug').focus();
             } else {
-                newBugInput.prop('disabled', true);
+                newBugInput.addClass('disabled').attr('name', 'disabled-bug');
             }
+        });
+
+        context.on('click', '.listitem .stepfail input[type="url"].newbug-input.disabled', function () {
+            var newBugRadio = $(this).siblings('.newbug-radio');
+            newBugRadio.click();
         });
     };
 
