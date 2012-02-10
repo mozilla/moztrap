@@ -1,6 +1,6 @@
 {% load pagination %}
 
-<form method="POST" id="manage-products-form" class="itemlist action-ajax-replace">
+<form method="POST" action="{{ request.get_full_path }}" id="manage-products-form" class="itemlist action-ajax-replace">
   {% csrf_token %}
 
   {% include "manage/product/list/_products_listordering.html" %}
