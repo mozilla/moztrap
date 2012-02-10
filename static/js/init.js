@@ -154,6 +154,10 @@ var CC = (function (CC, $) {
         CC.manageActionsAjax();
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
+        CC.listActionAjax(
+            '.manage, .results',
+            '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
+        );
 
         // manage-products.js
         CC.formOptionsFilter({

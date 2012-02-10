@@ -131,6 +131,28 @@ var CC = (function (CC, $) {
         });
     };
 
+    CC.listActionAjax = function (container, trigger) {
+        var context = $(container);
+
+        context.on('click', trigger, function (e) {
+            var url = $(this).attr('href'),
+                replaceList = $(this).closest('.action-ajax-replace');
+
+            replaceList.loadingOverlay();
+
+            $.get(url, function (response) {
+                var newList = $(response.html);
+                replaceList.loadingOverlay('remove');
+                if (response.html) {
+                    replaceList.replaceWith(newList);
+                    newList.find('.details').html5accordion();
+                }
+            });
+
+            e.preventDefault();
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
