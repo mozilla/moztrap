@@ -19,6 +19,8 @@
 Core form widgets, mixins, and fields for Case Conductor.
 
 """
+from functools import partial
+
 from django import forms
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.models import ModelChoiceIterator
@@ -71,13 +73,17 @@ class CCModelForm(floppyforms.ModelForm):
         super(CCModelForm, self).__init__(*args, **kwargs)
 
 
-    def save(self, commit=True):
-        """If commit is requested, pass the user into save()."""
+    def save(self, commit=True, user=None):
+        """If commiting, pass user into save(). Can supply user here as well."""
         instance = super(CCModelForm, self).save(commit=False)
 
+        user = user or self.user
+
         if commit:
-            instance.save(user=self.user)
+            instance.save(user=user)
             self.save_m2m()
+        else:
+            instance.save = partial(instance.save, user=user)
 
         return instance
 

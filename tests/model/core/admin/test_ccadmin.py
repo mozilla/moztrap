@@ -25,39 +25,6 @@ from tests import case
 
 
 
-class CCModelFormTest(case.DBTestCase):
-    """Tests of CCModelForm."""
-    @property
-    def form(self):
-        """The form class under test."""
-        from cc.model.ccadmin import CCModelForm
-        return CCModelForm
-
-
-    def test_commit(self):
-        """CCModelForm passes in user when saving model with commit=True."""
-        u = self.F.UserFactory.create()
-        p = self.F.ProductFactory.create(name="Firefox")
-        f = self.form(instance=p, data={"name": "Fennec"})
-
-        p = f.save(commit=True, user=u)
-
-        self.assertEqual(p.modified_by, u)
-
-
-    def test_no_commit(self):
-        """CCModelForm patches save() so user is tracked w/ commit=False."""
-        u = self.F.UserFactory.create()
-        p = self.F.ProductFactory.create(name="Firefox")
-        f = self.form(instance=p, data={"name": "Fennec"})
-
-        p = f.save(commit=False, user=u)
-        p.save()
-
-        self.assertEqual(p.modified_by, u)
-
-
-
 class TeamModelAdminTest(case.DBTestCase):
     """Tests of TeamModelAdmin."""
     @property

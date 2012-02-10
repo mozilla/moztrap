@@ -125,13 +125,27 @@ class CCModelFormTest(CCFormsTestCase):
         self.assertEqual(product.modified_by, self.user)
 
 
-    def test_no_commit(self):
-        """Can still pass commit=False."""
+    def test_commit_false_records_modified_by(self):
+        """modified_by user is still recorded even with commit=False."""
         f = self.form({"name": "Foo"})
 
-        product = f.save(commit=False)
+        product = f.save(commit=False, user=self.user)
 
-        self.assertEqual(product.id, None)
+        product.save()
+
+        self.assertEqual(product.modified_by, self.user)
+
+
+    def test_commit_false_allows_user_to_be_passed_in_later(self):
+        """With commit=False, user can be passed in at later save."""
+        u = self.F.UserFactory.create()
+        f = self.form({"name": "Foo"})
+
+        product = f.save(commit=False, user=u)
+
+        product.save(user=self.user)
+
+        self.assertEqual(product.modified_by, self.user)
 
 
 
