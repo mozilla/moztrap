@@ -1,12 +1,12 @@
 <div class="iteminfo">
   {% include "lists/_byline.html" with item=run %}
-</div>
 
-{% if run.description %}
-<p class="details">
-  {{ run.description }}
-</p>
-{% endif %}
+  {% if run.description %}
+  <p class="details">
+    {{ run.description }}
+  </p>
+  {% endif %}
+</div>
 
 {% with run.team.all as team %}
 {% include "manage/_team.html" %}
@@ -15,7 +15,7 @@
 {% with run.suites.all as suites %}
 {% if suites %}
   <div class="suites">
-    <h4 class="suites-title">Included Test Suites</h4>
+    <h4 class="suites-title">Included Suites</h4>
     <ul class="suite-list">
       {% for suite in suites %}
       <li><a href="#{# @@@ link to suites manage list #}" title="{{ suite.name }}" class="suite">{{ suite }}</a></li>
