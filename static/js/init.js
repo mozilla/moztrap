@@ -207,7 +207,8 @@ var CC = (function (CC, $) {
 
     $(window).load(function () {
         // manage-results.js
-        CC.openListItemDetails();
+        CC.openListItemDetails('.listpage');
+        CC.removeInitialFilterParams('#filter');
     });
 
     return CC;

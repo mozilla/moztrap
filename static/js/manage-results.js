@@ -58,9 +58,17 @@ var CC = (function (CC, $) {
     };
 
     // Expand list item details on direct hashtag links
-    CC.openListItemDetails = function () {
-        if ($('.manage').length && window.location.hash && $(window.location.hash).length) {
+    CC.openListItemDetails = function (context) {
+        if ($(context).length && window.location.hash && $(window.location.hash).length) {
             $(window.location.hash).find('.summary').first().click();
+            window.location.hash = '';
+        }
+    };
+
+    // Remove filter params from URL on page-load
+    CC.removeInitialFilterParams = function (context) {
+        if ($(context).length && window.location.search) {
+            window.history.replaceState(null, null, '?');
         }
     };
 
