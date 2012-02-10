@@ -17,9 +17,10 @@
 
       <h3 class="title" title="{{ product.name }}">{{ product.name }}</h3>
 
-      <div class="description">{{ product.description }}</div>
-
     </div>
+
+    <div class="description">{{ product.description }}</div>
+
   </header>
 
   {% url manage_product_details product.id as details_url %}

@@ -19,15 +19,16 @@
 
       <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
 
-      <div class="productversion">{{ run.productversion }}</div>
-      <div class="start">{{ run.start }}</div>
-      <div class="end">{{ run.end }}</div>
-
     </div>
+
+    <div class="productversion">{{ run.productversion }}</div>
+    <div class="start">{{ run.start }}</div>
+    <div class="end">{{ run.end }}</div>
+
   </header>
 
   {% url manage_run_details run.id as details_url %}
-  {# _product_details.html loaded via ajax #}
+  {# _run_details.html loaded via ajax #}
   {% include "lists/_itembody.html" %}
 
 </article>
