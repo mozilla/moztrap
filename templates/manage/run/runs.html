@@ -1,21 +1,18 @@
 {% extends 'manage/run/base.html' %}
 
-{% block listcontent %}
+{% load permissions %}
 
-<section id="manageruns">
+{% block content %}
+
+<section id="manageruns" class="manage listpage">
   <h2>Manage Test Runs</h2>
-  {% if "PERMISSION_TEST_RUN_EDIT" in request.user.permissionCodes %}
-  <a href="{% url manage_run_add %}" class="create">create test run</a>
+
+  {% if user|has_perm:"execution.manage_runs" %}
+    <a href="{% url manage_run_add %}" class="create single">create a test run</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
-
-  <form method="POST">
-    {% csrf_token %}
-
-    {% include "manage/run/_runs_list.html" %}
-
-  </form>
+  {% include "manage/run/list/_runs_list.html" %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}

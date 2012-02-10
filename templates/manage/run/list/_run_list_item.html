@@ -1,0 +1,33 @@
+{% load permissions %}
+
+<article id="run-id-{{ run.id }}" class="listitem">
+  {% include "manage/_status.html" with item=run permission="execution.manage_runs" %}
+
+  <header class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"execution.manage_runs" %}
+          {% url manage_run_edit run_id=run.id as run_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=run_edit_url edit_name=run.name %}
+          {% include "manage/_narrow_env_link.html" with obj_type='product' obj_id=run.id %}
+          {% include "lists/controls/_clone.html" with clone_id=run.id clone_name=run.name %}
+          {% include "lists/controls/_delete.html" with delete_id=run.id delete_name=run.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+
+      <div class="productversion">{{ run.productversion }}</div>
+      <div class="start">{{ run.start }}</div>
+      <div class="end">{{ run.end }}</div>
+
+    </div>
+  </header>
+
+  {% url manage_run_details run.id as details_url %}
+  {# _product_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

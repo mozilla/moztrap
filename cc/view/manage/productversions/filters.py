@@ -26,8 +26,6 @@ from cc.view.lists import filters
 
 class ProductVersionFilterSet(filters.FilterSet):
     """FilterSet for Product versions."""
-
-
     filters = [
         filters.ModelFilter("product", queryset=model.Product.objects.all()),
         filters.KeywordFilter("version"),

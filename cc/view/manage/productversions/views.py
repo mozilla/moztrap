@@ -25,10 +25,10 @@ from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .... import model
+from cc import model
 
-from ...lists import decorators as lists
-from ...utils.ajax import ajax
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
@@ -76,7 +76,7 @@ def productversion_details(request, productversion_id):
 
 @permission_required("core.manage_products")
 def productversion_add(request):
-    """Add a single case."""
+    """Add a product version."""
     if request.method == "POST":
         form = forms.AddProductVersionForm(request.POST, user=request.user)
         if form.is_valid():

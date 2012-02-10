@@ -67,8 +67,8 @@ class ProductVersionsTest(case.view.manage.ListViewFinderTestCase):
 
     def test_filter_by_product(self):
         """Can filter by product."""
-        one = self.factory.create(name="Foo 1.0", codename="One")
-        self.factory.create(name="Foo 2.0", codename="Two")
+        one = self.factory.create(name="Foo 1.0")
+        self.factory.create(name="Foo 2.0")
 
         res = self.get(params={"filter-product": str(one.product.id)})
 
@@ -128,14 +128,14 @@ class ProductVersionsTest(case.view.manage.ListViewFinderTestCase):
 class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
     """Test for productversion-detail ajax view."""
     def setUp(self):
-        """Setup for case details tests; create a caseversion."""
+        """Setup for case details tests; create a productversion."""
         super(ProductVersionDetailTest, self).setUp()
         self.productversion = self.F.ProductVersionFactory.create()
 
 
     @property
     def url(self):
-        """Shortcut for add-case-single url."""
+        """Shortcut for product version detail url."""
         return reverse(
             "manage_productversion_details",
             kwargs=dict(productversion_id=self.productversion.id)
@@ -160,6 +160,16 @@ class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("Foo Run")
+
+
+    def test_details_team(self):
+        """Details lists team."""
+        u = self.F.UserFactory.create(username="somebody")
+        self.productversion.add_to_team(u)
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("somebody")
 
 
 
@@ -233,12 +243,14 @@ class EditProductVersionTest(case.view.FormViewTestCase):
     def url(self):
         """Shortcut for edit-productversion url."""
         return reverse(
-            "manage_productversion_edit", kwargs=dict(productversion_id=self.productversion.id))
+            "manage_productversion_edit",
+            kwargs=dict(productversion_id=self.productversion.id))
 
 
     def test_requires_manage_products_permission(self):
         """Requires manage-products permission."""
-        res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 

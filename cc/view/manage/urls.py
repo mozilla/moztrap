@@ -28,6 +28,27 @@ urlpatterns = patterns(
 
     # product ---------------------------------------------------------------
     # manage
+    url(r"^products/$",
+        "cc.view.manage.products.views.products_list",
+        name="manage_products"),
+
+    # ajax details
+    url(r"^products/_detail/(?P<product_id>\d+)/$",
+        "cc.view.manage.products.views.product_details",
+        name="manage_product_details"),
+
+    # add
+    url(r"^product/add/$",
+        "cc.view.manage.products.views.product_add",
+        name="manage_product_add"),
+
+    # edit
+    url(r"^product/(?P<product_id>\d+)/$",
+        "cc.view.manage.products.views.product_edit",
+        name="manage_product_edit"),
+
+    # productversion ---------------------------------------------------------
+    # manage
     url(r"^productversions/$",
         "cc.view.manage.productversions.views.productversions_list",
         name="manage_productversions"),
@@ -47,26 +68,26 @@ urlpatterns = patterns(
         "cc.view.manage.productversions.views.productversion_edit",
         name="manage_productversion_edit"),
 
-    # product ---------------------------------------------------------------
+    # run --------------------------------------------------------------------
     # manage
-    url(r"^products/$",
-        "cc.view.manage.products.views.products_list",
-        name="manage_products"),
+    url(r"^runs/$",
+        "cc.view.manage.runs.views.runs_list",
+        name="manage_runs"),
 
     # ajax details
-    url(r"^products/_detail/(?P<product_id>\d+)/$",
-        "cc.view.manage.products.views.product_details",
-        name="manage_product_details"),
+    url(r"^runs/_detail/(?P<run_id>\d+)/$",
+        "cc.view.manage.runs.views.run_details",
+        name="manage_run_details"),
 
     # add
-    url(r"^product/add/$",
-        "cc.view.manage.products.views.product_add",
-        name="manage_product_add"),
+    url(r"^run/add/$",
+        "cc.view.manage.runs.views.run_add",
+        name="manage_run_add"),
 
     # edit
-    url(r"^product/(?P<product_id>\d+)/$",
-        "cc.view.manage.products.views.product_edit",
-        name="manage_product_edit"),
+    url(r"^run/(?P<run_id>\d+)/$",
+        "cc.view.manage.runs.views.run_edit",
+        name="manage_run_edit"),
 
     # testcase ---------------------------------------------------------------
     # manage

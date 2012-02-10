@@ -1,0 +1,19 @@
+{% load pagination %}
+
+<form method="POST" id="manage-runs-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/run/list/_runs_listordering.html" %}
+
+  {% paginate runs as pager %}
+  {% if pager.objects %}
+    {% for run in pager.objects %}
+      {% include "manage/run/list/_run_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

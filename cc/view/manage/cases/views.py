@@ -26,10 +26,10 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .... import model
+from cc import model
 
-from ...lists import decorators as lists
-from ...utils.ajax import ajax
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 

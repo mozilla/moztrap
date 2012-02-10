@@ -68,7 +68,7 @@ class ProductsTest(case.view.manage.ListViewFinderTestCase):
 class ProductDetailTest(case.view.AuthenticatedViewTestCase):
     """Test for product-detail ajax view."""
     def setUp(self):
-        """Setup for case details tests; create a caseversion."""
+        """Setup for case details tests; create a product."""
         super(ProductDetailTest, self).setUp()
         self.product = self.F.ProductFactory.create()
 
@@ -80,14 +80,24 @@ class ProductDetailTest(case.view.AuthenticatedViewTestCase):
             "manage_product_details", kwargs=dict(product_id=self.product.id))
 
 
-    def test_details(self):
-        """Returns details HTML snippet for given product."""
+    def test_details_versions(self):
+        """Details lists product versions."""
         self.F.ProductVersionFactory.create(
             product=self.product, version="0.8-alpha-1")
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("0.8-alpha-1")
+
+
+    def test_details_team(self):
+        """Details lists team."""
+        u = self.F.UserFactory.create(username="somebody")
+        self.product.add_to_team(u)
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("somebody")
 
 
 

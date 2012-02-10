@@ -1,25 +1,11 @@
 {% extends 'manage/run/run_form.html' %}
 
+{% block sectionid %}edit-run{% endblock %}
+{% block formid %}run-edit-form{% endblock %}
 {% block formtitle %}Edit "{{ run.name }}"{% endblock %}
 
 {% block formtop %}
-  {% if run.status.DRAFT %}
-  <a href="{% url manage_narrow_environments object_type='run' object_id=run.id %}" class="select-env-link">select environments</a>
-  {% endif %}
-{% endblock %}
-
-
-{% block suites %}
-  {% if form.suites %}
-    {{ block.super }}
-  {% else %}
-    <section class="suiteselect">
-      <h3>test suites in this test run</h3>
-      <ul>
-        {% for suite in run.suites %}
-        <li><a href="{% url manage_testsuites %}?filter-suite={{ suite.id }}#suite-id-{{ suite.id }}">{{ suite }}</li>
-        {% endfor %}
-      </ul>
-    </section>
+  {% if run.status == run.STATUS.draft %}
+  <a href="{# @@@ url manage_narrow_environments object_type='run' object_id=run.id #}" class="select-env-link">select environments</a>
   {% endif %}
 {% endblock %}
