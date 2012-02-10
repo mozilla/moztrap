@@ -1,6 +1,6 @@
 {% load pagination %}
 
-<nav class="listnav">
+<nav class="listnav" data-pagesize="{{ request|pagesize }}">
   <h3 class="navhead">List Navigation</h3>
   <p class="location">showing {{ pager.low }}-{{ pager.high }} of {{ pager.total }}</p>
   <ul class="pagination">

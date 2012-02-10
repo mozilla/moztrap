@@ -117,12 +117,23 @@ var CC = (function (CC, $) {
             filterForm = context.find('#filterform');
 
         filterForm.ajaxForm({
-            beforeSubmit: function (arr, form, options) {
-                context.find('.action-ajax-replace').loadingOverlay();
+            beforeSerialize: function (form, options) {
+                var replaceList = context.find('.action-ajax-replace'),
+                    pagesize = replaceList.find('.listnav').data('pagesize'),
+                    sortfield = replaceList.find('.listordering').data('sortfield'),
+                    sortdirection = replaceList.find('.listordering').data('sortdirection');
+
+                replaceList.loadingOverlay();
+
+                form.find('input[name="pagesize"]').val(pagesize);
+                form.find('input[name="sortfield"]').val(sortfield);
+                form.find('input[name="sortdirection"]').val(sortdirection);
             },
             success: function (response) {
                 var newList = $(response.html);
+
                 context.find('.action-ajax-replace').loadingOverlay('remove');
+
                 if (response.html) {
                     context.find('.action-ajax-replace').replaceWith(newList);
                     newList.find('.details').html5accordion();
@@ -131,6 +142,7 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Hijack Manage/Results list sorting and pagination links to use Ajax
     CC.listActionAjax = function (container, trigger) {
         var context = $(container);
 

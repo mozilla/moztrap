@@ -128,18 +128,7 @@ var CC = (function (CC, $) {
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'productversions',
-                'runs',
-                'cases'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="productversion"]',
-                'input[name="run"]',
-                'input[name="runcaseversion"]'
-            ]
+            numberCols: 4
         });
 
         // local.js
