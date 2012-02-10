@@ -91,7 +91,7 @@ def case_add(request):
                 )
             return redirect("manage_cases")
     else:
-        form = forms.AddCaseForm(user=request.user)
+        form = forms.AddCaseForm(user=request.user, initial=request.GET)
     return TemplateResponse(
         request,
         "manage/case/add_case.html",

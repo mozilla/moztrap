@@ -163,6 +163,48 @@ class SuitesTest(case.view.manage.ListViewFinderTestCase):
             )
 
 
+    def assertAddCaseLink(self, res, suite, count=1):
+        """Assert that given response contains link to add case in suite."""
+        self.assertElement(
+            res.html,
+            "a",
+            href="{0}?product={1}&initial_suite={2}".format(
+                reverse("manage_case_add"), str(suite.product.id), str(suite.id)
+                ),
+            count=count
+            )
+
+
+    def assertNoAddCaseLink(self, res, suite):
+        """Assert that response does not contain link to add case in suite."""
+        self.assertAddCaseLink(res, suite, 0)
+
+
+    def test_add_case_link(self):
+        """Contains link to add case in this suite (with proper perms)."""
+        self.add_perm("create_cases")
+        self.add_perm("manage_suite_cases")
+        s = self.factory.create(name="Foo")
+
+        self.assertAddCaseLink(self.get(), s)
+
+
+    def test_add_case_link_requires_manage_suite_case_perm(self):
+        """No link to add case in suite if no manage_suite_case perm."""
+        self.add_perm("create_cases")
+        s = self.factory.create(name="Foo")
+
+        self.assertNoAddCaseLink(self.get(), s)
+
+
+    def test_add_case_link_requires_create_cases_perm(self):
+        """No link to add case in suite if no create_cases perm."""
+        self.add_perm("manage_suite_cases")
+        s = self.factory.create(name="Foo")
+
+        self.assertNoAddCaseLink(self.get(), s)
+
+
 
 class SuiteDetailTest(case.view.AuthenticatedViewTestCase):
     """Test for suite-detail ajax view."""

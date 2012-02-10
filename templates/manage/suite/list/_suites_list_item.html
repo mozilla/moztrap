@@ -14,7 +14,9 @@
           {% include "manage/_narrow_env_link.html" with obj_type='product' obj_id=suite.id %}
           {% include "lists/controls/_clone.html" with clone_id=suite.id clone_name=suite.name %}
           {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
-          <a href="# {# @@@ #}" title="create new test case in this suite">create new test case in this suite</a>
+        {% endif %}
+        {% if user|has_perm:"library.manage_suite_cases" and user|has_perm:"library.create_cases" %}
+          <a href="{% url manage_case_add %}?product={{ suite.product.id }}&initial_suite={{ suite.id }}" title="create new test case in this suite">create new test case in this suite</a>
         {% endif %}
       </div>
 

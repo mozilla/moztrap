@@ -324,6 +324,16 @@ class AddCaseTest(case.view.FormViewTestCase):
         self.assertEqual(step.expected, "You should see a welcome message.")
 
 
+    def test_prepopulate_from_querystring(self):
+        """Can prepopulate the form via the GET querystring."""
+        self.add_perm("manage_suite_cases")
+
+        s = self.F.SuiteFactory.create()
+        form = self.get(params={"initial_suite": str(s.id)}).forms[self.form_id]
+
+        self.assertEqual(form.fields["initial_suite"][0].value, str(s.id))
+
+
     def test_error(self):
         """Bound form with errors is re-displayed."""
         res = self.get_form().submit()
