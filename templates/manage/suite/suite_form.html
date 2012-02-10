@@ -1,41 +1,20 @@
 {% extends 'manage/suite/base.html' %}
 
 {% block content %}
-<section id="addsuite">
+<section class="{% block sectionid %}{% endblock %}">
   <h2>{% block formtitle %}{% endblock %}</h2>
   {% block formtop %}{% endblock %}
-  <form id="suite-form" method="POST">
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
     {% csrf_token %}
-    {{ form.non_field_errors }}
-    <ul class="basic">
-      <li>
-        {{ form.name.errors }}
-        {{ form.name.label_tag }}
-        {{ form.name }}
-      </li>
-      <li>
-        {{ form.product.errors }}
-        {{ form.product.label_tag }}
-        {{ form.product }}
-      </li>
-      <li>
-        {{ form.description.errors }}
-        {{ form.description.label_tag }}
-        {{ form.description }}
-      </li>
-    </ul>
 
-    <section class="caseselect">
-      <h3>add test cases to your test suite</h3>
-        {{ form.cases.errors }}
-        {{ form.cases }}
-    </section>
+    {% include "forms/_field.html" with field=form.product %}
+    {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.description %}
+    {% include "forms/_field.html" with field=form.status %}
 
     <div class="form-actions">
-      <button type="submit">save test suite</button>
+      <button type="submit">save suite</button>
     </div>
-
   </form>
-
 </section>
 {% endblock content %}

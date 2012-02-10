@@ -89,6 +89,27 @@ urlpatterns = patterns(
         "cc.view.manage.runs.views.run_edit",
         name="manage_run_edit"),
 
+    # suite ------------------------------------------------------------------
+    # manage
+    url(r"^suites/$",
+        "cc.view.manage.suites.views.suites_list",
+        name="manage_suites"),
+
+    # ajax details
+    url(r"^suites/_detail/(?P<suite_id>\d+)/$",
+        "cc.view.manage.suites.views.suite_details",
+        name="manage_suite_details"),
+
+    # add
+    url(r"^suite/add/$",
+        "cc.view.manage.suites.views.suite_add",
+        name="manage_suite_add"),
+
+    # edit
+    url(r"^suite/(?P<suite_id>\d+)/$",
+        "cc.view.manage.suites.views.suite_edit",
+        name="manage_suite_edit"),
+
     # testcase ---------------------------------------------------------------
     # manage
     url(r"^cases/$",

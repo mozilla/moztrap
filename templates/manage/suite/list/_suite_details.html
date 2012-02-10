@@ -1,9 +1,9 @@
-{% include "lists/_byline.html" with item=suite %}
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=suite %}
+</div>
 
 {% if suite.description %}
-  <p class="description">{{ suite.description }}</p>
+<p class="details">
+  {{ suite.description }}
+</p>
 {% endif %}
-
-<div class="envgroups">
-  {% include "lists/_environments.html" with environments=suite.environmentgroups %}
-</div>

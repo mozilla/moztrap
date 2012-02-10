@@ -1,4 +1,4 @@
-{% include "manage/suite/list/_suites_listordering.html" %}
+{% load pagination %}
 
 <form method="POST" action="{{ request.get_full_path }}" id="manage-suites-form" class="itemlist action-ajax-replace">
   {% csrf_token %}
