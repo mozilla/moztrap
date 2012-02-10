@@ -3105,6 +3105,62 @@ body.login input, body.login .errorlist {
   #margin-left: -1em;
 }
 
+.add-run .product-version-field, .add-run .name-field, .add-run .description-field, .edit-run .product-version-field, .edit-run .name-field, .edit-run .description-field {
+  clear: both;
+  padding-right: 25.263%;
+}
+.add-run .product-version-field label, .add-run .name-field label, .add-run .description-field label, .edit-run .product-version-field label, .edit-run .name-field label, .edit-run .description-field label {
+  display: inline;
+  float: left;
+  width: 32.394%;
+  margin-right: 1.408%;
+}
+.add-run .product-version-field input, .add-run .product-version-field select, .add-run .product-version-field textarea, .add-run .product-version-field .errorlist, .add-run .name-field input, .add-run .name-field select, .add-run .name-field textarea, .add-run .name-field .errorlist, .add-run .description-field input, .add-run .description-field select, .add-run .description-field textarea, .add-run .description-field .errorlist, .edit-run .product-version-field input, .edit-run .product-version-field select, .edit-run .product-version-field textarea, .edit-run .product-version-field .errorlist, .edit-run .name-field input, .edit-run .name-field select, .edit-run .name-field textarea, .edit-run .name-field .errorlist, .edit-run .description-field input, .edit-run .description-field select, .edit-run .description-field textarea, .edit-run .description-field .errorlist {
+  display: inline;
+  float: left;
+  width: 66.197%;
+  margin-right: 1.408%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-run .start-field, .add-run .end-field, .edit-run .start-field, .edit-run .end-field {
+  display: inline;
+  float: left;
+  width: 28.421%;
+  margin-right: 1.053%;
+}
+.add-run .start-field label, .add-run .end-field label, .edit-run .start-field label, .edit-run .end-field label {
+  display: inline;
+  float: left;
+  width: 25.926%;
+  margin-right: 3.704%;
+}
+.add-run .start-field input, .add-run .start-field .errorlist, .add-run .end-field input, .add-run .end-field .errorlist, .edit-run .start-field input, .edit-run .start-field .errorlist, .edit-run .end-field input, .edit-run .end-field .errorlist {
+  display: inline;
+  float: left;
+  width: 70.37%;
+  margin-right: 3.704%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-run .start-field, .edit-run .start-field {
+  padding-left: 16.842%;
+}
+.add-run .end-field, .edit-run .end-field {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  padding-right: 25.263%;
+}
+.add-run .form-actions, .edit-run .form-actions {
+  padding-right: 25.263%;
+}
+
 .case-form .form-actions {
   clear: both;
   padding-left: 8.421%;

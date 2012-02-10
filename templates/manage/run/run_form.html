@@ -7,7 +7,7 @@
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
     {% csrf_token %}
 
-    {% include "forms/_field.html" with field=form.productversion %}
+    {% include "forms/_field.html" with field=form.productversion label="Product Version" %}
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.description %}
     {% include "forms/_field.html" with field=form.start %}

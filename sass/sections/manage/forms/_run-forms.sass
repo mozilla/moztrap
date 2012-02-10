@@ -1,0 +1,26 @@
+.add-run, .edit-run
+
+  .product-version-field, .name-field, .description-field
+    +full(24)
+    +suffix(6,24)
+    label
+      +columns(6,18)
+    input, select, textarea, .errorlist
+      +columns(12,18)
+      +omega(18)
+
+  .start-field, .end-field
+    +columns(7,24)
+    label
+      +columns(2,7)
+    input, .errorlist
+      +columns(5,7)
+      +omega(7)
+  .start-field
+    +prefix(4,24)
+  .end-field
+    +omega(24)
+    +suffix(6,24)
+
+  .form-actions
+    +suffix(6,24)
