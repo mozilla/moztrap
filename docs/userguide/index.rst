@@ -7,10 +7,11 @@ design decisions.
 .. toctree::
    :maxdepth: 2
 
-   products
-   library
    environments
-   import
    execution
-   teams
+   import
+   library
+   lists
+   products
    roles
+   teams
