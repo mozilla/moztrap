@@ -1,3 +1,5 @@
+{% load filters %}
+
 <div class="iteminfo">
   {% include "lists/_byline.html" with item=run %}
 
@@ -15,10 +17,10 @@
 {% with run.suites.all as suites %}
 {% if suites %}
   <div class="suites">
-    <h4 class="suites-title">Included Suites</h4>
+    <h4 class="suites-title"><a href="{% filter_url 'manage_suites' run %}">Included Suites</a></h4>
     <ul class="suite-list">
       {% for suite in suites %}
-      <li><a href="#{# @@@ link to suites manage list #}" title="{{ suite.name }}" class="suite">{{ suite }}</a></li>
+      <li><a href="{% filter_url 'manage_suites' run %}#suite-id-{{ suite.id }}" title="{{ suite.name }}" class="suite">{{ suite }}</a></li>
       {% endfor %}
     </ul>
   </div>
