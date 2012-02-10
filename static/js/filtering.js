@@ -1,0 +1,92 @@
+/*
+Case Conductor is a Test Case Management system.
+Copyright (C) 2011-2012 Mozilla
+
+This file is part of Case Conductor.
+
+Case Conductor is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Case Conductor is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/*jslint    browser:    true,
+            indent:     4 */
+/*global    ich, jQuery */
+
+var CC = (function (CC, $) {
+
+    'use strict';
+
+    // Shows/hides the advanced filtering
+    CC.toggleAdvancedFiltering = function (context) {
+        var advanced = $(context).find('.visual'),
+            toggleAdvanced = $(context).find('.toggle a');
+
+        toggleAdvanced.click(function (e) {
+            e.preventDefault();
+            advanced.toggleClass('compact expanded');
+        });
+    };
+
+    // Remove filter params from URL on page-load (to avoid "stuck" filters)
+    CC.removeInitialFilterParams = function (context) {
+        if ($(context).length && window.location.search) {
+            window.history.replaceState(null, null, '?');
+        }
+    };
+
+    // Tags, suites, environments act as filter-links on list pages
+    CC.directFilterLinks = function () {
+        $('.listpage').on('click', '.filter-link', function (e) {
+            var thisLink = $(this),
+                name = thisLink.text(),
+                type = thisLink.data('type');
+            $('#filterform').find('.filter-group[data-name="' + type + '"] .filter-item label').filter(function () {
+                return $(this).text() === name;
+            }).closest('.filter-item').children('input').click();
+            e.preventDefault();
+        });
+    };
+
+    // Prepare filter-form for ajax-submit
+    CC.filterFormAjax = function (container) {
+        var context = $(container),
+            filterForm = context.find('#filterform');
+
+        filterForm.ajaxForm({
+            beforeSerialize: function (form, options) {
+                var replaceList = context.find('.action-ajax-replace'),
+                    pagesize = replaceList.find('.listnav').data('pagesize'),
+                    sortfield = replaceList.find('.listordering').data('sortfield'),
+                    sortdirection = replaceList.find('.listordering').data('sortdirection');
+
+                replaceList.loadingOverlay();
+
+                form.find('input[name="pagesize"]').val(pagesize);
+                form.find('input[name="sortfield"]').val(sortfield);
+                form.find('input[name="sortdirection"]').val(sortdirection);
+            },
+            success: function (response) {
+                var newList = $(response.html);
+
+                context.find('.action-ajax-replace').loadingOverlay('remove');
+
+                if (response.html) {
+                    context.find('.action-ajax-replace').replaceWith(newList);
+                    newList.find('.details').html5accordion();
+                }
+            }
+        });
+    };
+
+    return CC;
+
+}(CC || {}, jQuery));

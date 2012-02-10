@@ -137,16 +137,18 @@ var CC = (function (CC, $) {
         // account.js
         CC.changePwdCancel();
 
-        // manage-results.js
-        CC.toggleAdvancedFiltering('#filter');
+        // listpages.js
         CC.loadListItemDetails();
         CC.manageActionsAjax();
-        CC.directFilterLinks();
-        CC.filterFormAjax('.manage, .results');
         CC.listActionAjax(
             '.manage, .results',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
+
+        // filtering.js
+        CC.toggleAdvancedFiltering('#filter');
+        CC.directFilterLinks();
+        CC.filterFormAjax('.manage, .results');
 
         // manage-products.js
         // CC.formOptionsFilter({
@@ -185,11 +187,11 @@ var CC = (function (CC, $) {
         });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.case-form .attach');
-        // CC.envNarrowing('#envnarrowlist');
 
         // manage-env.js
         // CC.createEnvProfile();
         // CC.editEnvProfile();
+        // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js
         // CC.manageTags('#managetags');
@@ -205,8 +207,10 @@ var CC = (function (CC, $) {
     });
 
     $(window).load(function () {
-        // manage-results.js
+        // listpages.js
         CC.openListItemDetails('.listpage');
+
+        // filtering.js
         CC.removeInitialFilterParams('#filter');
     });
 

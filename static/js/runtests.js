@@ -88,6 +88,7 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Enable/disable failed test bug URL input on-select
     CC.failedTestBug = function (container) {
         var context = $(container);
 

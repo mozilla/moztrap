@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
 
     'use strict';
 
-    // Filter form options for add-run and add-suite
+    // Filter form options based on trigger form selection
     CC.formOptionsFilter = function (opts) {
         var defaults = {
                 container: 'body',
@@ -105,6 +105,7 @@ var CC = (function (CC, $) {
         }
     };
 
+    // Filter product-specific tags when changing case product
     CC.filterProductTags = function (container) {
         var context = $(container),
             trigger = context.find('#id_product'),
@@ -128,6 +129,7 @@ var CC = (function (CC, $) {
         trigger.change(filterTags);
     };
 
+    // Adding/removing attachments on cases
     CC.testcaseAttachments = function (container) {
         var context = $(container),
             counter = 0,
@@ -169,26 +171,6 @@ var CC = (function (CC, $) {
             if (attachment.hasClass('new')) {
                 context.find('#' + inputID).remove();
                 attachment.remove();
-            }
-        });
-    };
-
-    CC.envNarrowing = function (container) {
-        var context = $(container),
-            bulkSelect = context.find('#bulk_select'),
-            inputs = context.find('input[type="checkbox"][name="environments"]');
-
-        bulkSelect.change(function () {
-            if ($(this).is(':checked')) {
-                inputs.prop('checked', true);
-            } else {
-                inputs.prop('checked', false);
-            }
-        });
-
-        inputs.change(function () {
-            if (inputs.not(':checked').length) {
-                bulkSelect.prop('checked', false);
             }
         });
     };

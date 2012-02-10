@@ -18,27 +18,14 @@ You should have received a copy of the GNU General Public License
 along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*jslint    browser:    true,
-            indent:     4,
-            confusion:  true,
-            regexp:     true */
-/*global    ich, jQuery, confirm */
+            indent:     4 */
+/*global    ich, jQuery */
 
 var CC = (function (CC, $) {
 
     'use strict';
 
-    CC.toggleAdvancedFiltering = function (context) {
-        var advanced = $(context).find('.visual'),
-            toggleAdvanced = $(context).find('.toggle a');
-
-        // Shows/hides the advanced filtering
-        toggleAdvanced.click(function (e) {
-            e.preventDefault();
-            advanced.toggleClass('compact expanded');
-        });
-    };
-
-    // Ajax-load manage and results list item contents
+    // Ajax-load list-page list item contents
     CC.loadListItemDetails = function () {
         $('.listpage').on('click', '.itemlist .listitem .details .summary', function (event) {
             var item = $(this),
@@ -62,13 +49,6 @@ var CC = (function (CC, $) {
         if ($(context).length && window.location.hash && $(window.location.hash).length) {
             $(window.location.hash).find('.summary').first().click();
             window.location.hash = '';
-        }
-    };
-
-    // Remove filter params from URL on page-load
-    CC.removeInitialFilterParams = function (context) {
-        if ($(context).length && window.location.search) {
-            window.history.replaceState(null, null, '?');
         }
     };
 
@@ -104,50 +84,6 @@ var CC = (function (CC, $) {
                 });
             }
         );
-    };
-
-    // Tags, suites, environments act as filter-links on list pages
-    CC.directFilterLinks = function () {
-        $('.listpage').on('click', '.filter-link', function (e) {
-            var thisLink = $(this),
-                name = thisLink.text(),
-                type = thisLink.data('type');
-            $('#filterform').find('.filter-group[data-name="' + type + '"] .filter-item label').filter(function () {
-                return $(this).text() === name;
-            }).closest('.filter-item').children('input').click();
-            e.preventDefault();
-        });
-    };
-
-    // Prepare filter-form for ajax-submit
-    CC.filterFormAjax = function (container) {
-        var context = $(container),
-            filterForm = context.find('#filterform');
-
-        filterForm.ajaxForm({
-            beforeSerialize: function (form, options) {
-                var replaceList = context.find('.action-ajax-replace'),
-                    pagesize = replaceList.find('.listnav').data('pagesize'),
-                    sortfield = replaceList.find('.listordering').data('sortfield'),
-                    sortdirection = replaceList.find('.listordering').data('sortdirection');
-
-                replaceList.loadingOverlay();
-
-                form.find('input[name="pagesize"]').val(pagesize);
-                form.find('input[name="sortfield"]').val(sortfield);
-                form.find('input[name="sortdirection"]').val(sortdirection);
-            },
-            success: function (response) {
-                var newList = $(response.html);
-
-                context.find('.action-ajax-replace').loadingOverlay('remove');
-
-                if (response.html) {
-                    context.find('.action-ajax-replace').replaceWith(newList);
-                    newList.find('.details').html5accordion();
-                }
-            }
-        });
     };
 
     // Hijack Manage/Results list sorting and pagination links to use Ajax
