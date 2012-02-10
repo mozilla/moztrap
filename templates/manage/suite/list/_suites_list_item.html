@@ -16,16 +16,15 @@
           {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
         {% endif %}
         {% if user|has_perm:"library.manage_suite_cases" and user|has_perm:"library.create_cases" %}
-          <a href="{% url manage_case_add %}?product={{ suite.product.id }}&initial_suite={{ suite.id }}" title="create new test case in this suite">create new test case in this suite</a>
+          <a href="{% url manage_case_add %}?product={{ suite.product.id }}&initial_suite={{ suite.id }}" title="create new test case in this suite" class="create-child-link">create new test case in this suite</a>
         {% endif %}
       </div>
 
       <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
 
-    </div>
-
-    <div class="casecount">
-      (<a href="{% filter_url 'manage_cases' suite %}" class="drill-link" title="manage all cases in {{ suite.name }}">{{ suite.case_count }}</a>)
+      <div class="casecount">
+        (<a href="{% filter_url 'manage_cases' suite %}" class="drill-link" title="manage all cases in {{ suite.name }}">{{ suite.case_count }} Cases</a>)
+      </div>
     </div>
 
     <div class="product">{{ suite.product }}</div>

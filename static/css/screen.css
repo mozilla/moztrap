@@ -1465,7 +1465,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link {
+.action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link, .create-child-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1476,7 +1476,7 @@ body > div {
   vertical-align: baseline;
   background: none;
 }
-.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionlink:focus, .edit-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionlink:hover, .edit-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .actionlink:active, .edit-link:active {
+.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .actionlink:active, .edit-link:active, .create-child-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1536,6 +1536,23 @@ body > div {
 }
 [name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
   background-image: url('../images/ui/trash.png?1326735333');
+}
+
+.create-child-link {
+  background-image: url('../images/ui/paper_plus.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
 }
 
 .detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites {
@@ -3911,6 +3928,32 @@ body.login input, body.login .errorlist {
 }
 #manageruns .iteminfo + .suites {
   padding-left: 17.582%;
+}
+
+#managesuites .listordering, #managesuites .itemhead, #managesuites .itembody .content {
+  padding-left: 3.75em;
+}
+#managesuites .name, #managesuites .byname-cases {
+  display: inline;
+  float: left;
+  width: 51.648%;
+  margin-right: 1.099%;
+}
+#managesuites .product, #managesuites .byproduct {
+  display: inline;
+  float: left;
+  width: 47.253%;
+  margin-right: 1.099%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#managesuites .title, #managesuites .casecount {
+  display: inline;
+}
+#managesuites .title {
+  font-weight: 500;
 }
 
 #managecases .listordering, #managecases .itemhead, #managecases .itembody .content {
