@@ -33,6 +33,14 @@ more info on how test case versions relate to Product Versions.
 An active test run can be disabled, which halts all execution of tests in that
 run until it is made active again.
 
+Cloning Test Runs
+~~~~~~~~~~~~~~~~~
+
+If you have a Test Run that you would like to apply to a different Product
+Version, you must clone the existing Test Run, then edit the new clone while it
+is still in draft mode. Once your changes are made, you can activate the new
+run to use it.
+
 
 .. _test-results:
 
