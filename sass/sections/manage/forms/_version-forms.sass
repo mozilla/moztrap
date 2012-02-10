@@ -1,20 +1,10 @@
 .add-productversion, .edit-productversion
 
-  .product-field, .form-actions
+  .product-field, .version-field, .codename-field, .form-actions
     +full(24)
-    +suffix(2,24)
-
-  .product-field
+    +pad(4,6,24)
     label
-      +columns(2,22)
-    select, .errorlist
-      +columns(20,22)
-      +omega(22)
-
-  .version-field, .codename-field
-    +columns(11,24)
-    label
-      +columns(2,11)
-    input, .errorlist
-      +columns(9,11)
-      +omega(11)
+      +columns(2,14)
+    input, select, .errorlist
+      +columns(12,14)
+      +omega(14)

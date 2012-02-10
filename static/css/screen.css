@@ -3040,65 +3040,45 @@ body.login input, body.login .errorlist {
 
 .edit-product .name-field, .edit-product .description-field {
   clear: both;
-  padding-right: 54.737%;
+  padding-left: 16.842%;
+  padding-right: 25.263%;
 }
 .edit-product .name-field label, .edit-product .description-field label {
   display: inline;
   float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
+  width: 12.727%;
+  margin-right: 1.818%;
 }
 .edit-product .name-field input, .edit-product .name-field textarea, .edit-product .name-field .errorlist, .edit-product .description-field input, .edit-product .description-field textarea, .edit-product .description-field .errorlist {
   display: inline;
   float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
+  width: 85.455%;
+  margin-right: 1.818%;
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
 }
 .edit-product .form-actions {
-  padding-right: 54.737%;
+  padding-right: 25.263%;
 }
 
-.add-productversion .product-field, .add-productversion .form-actions, .edit-productversion .product-field, .edit-productversion .form-actions {
+.add-productversion .product-field, .add-productversion .version-field, .add-productversion .codename-field, .add-productversion .form-actions, .edit-productversion .product-field, .edit-productversion .version-field, .edit-productversion .codename-field, .edit-productversion .form-actions {
   clear: both;
-  padding-right: 8.421%;
+  padding-left: 16.842%;
+  padding-right: 25.263%;
 }
-.add-productversion .product-field label, .edit-productversion .product-field label {
+.add-productversion .product-field label, .add-productversion .version-field label, .add-productversion .codename-field label, .add-productversion .form-actions label, .edit-productversion .product-field label, .edit-productversion .version-field label, .edit-productversion .codename-field label, .edit-productversion .form-actions label {
   display: inline;
   float: left;
-  width: 8.046%;
-  margin-right: 1.149%;
+  width: 12.727%;
+  margin-right: 1.818%;
 }
-.add-productversion .product-field select, .add-productversion .product-field .errorlist, .edit-productversion .product-field select, .edit-productversion .product-field .errorlist {
+.add-productversion .product-field input, .add-productversion .product-field select, .add-productversion .product-field .errorlist, .add-productversion .version-field input, .add-productversion .version-field select, .add-productversion .version-field .errorlist, .add-productversion .codename-field input, .add-productversion .codename-field select, .add-productversion .codename-field .errorlist, .add-productversion .form-actions input, .add-productversion .form-actions select, .add-productversion .form-actions .errorlist, .edit-productversion .product-field input, .edit-productversion .product-field select, .edit-productversion .product-field .errorlist, .edit-productversion .version-field input, .edit-productversion .version-field select, .edit-productversion .version-field .errorlist, .edit-productversion .codename-field input, .edit-productversion .codename-field select, .edit-productversion .codename-field .errorlist, .edit-productversion .form-actions input, .edit-productversion .form-actions select, .edit-productversion .form-actions .errorlist {
   display: inline;
   float: left;
-  width: 90.805%;
-  margin-right: 1.149%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  #margin-left: -1em;
-}
-.add-productversion .version-field, .add-productversion .codename-field, .edit-productversion .version-field, .edit-productversion .codename-field {
-  display: inline;
-  float: left;
-  width: 45.263%;
-  margin-right: 1.053%;
-}
-.add-productversion .version-field label, .add-productversion .codename-field label, .edit-productversion .version-field label, .edit-productversion .codename-field label {
-  display: inline;
-  float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
-}
-.add-productversion .version-field input, .add-productversion .version-field .errorlist, .add-productversion .codename-field input, .add-productversion .codename-field .errorlist, .edit-productversion .version-field input, .edit-productversion .version-field .errorlist, .edit-productversion .codename-field input, .edit-productversion .codename-field .errorlist {
-  display: inline;
-  float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
+  width: 85.455%;
+  margin-right: 1.818%;
   display: inline;
   float: right;
   margin-right: 0;
