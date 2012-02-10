@@ -7,5 +7,12 @@ design decisions.
 .. toctree::
    :maxdepth: 3
 
-   model/index
-   ui/index
+   model/products
+   model/library
+   model/execution
+   model/environments
+   model/teams
+   model/roles
+   ui/lists
+   ui/import
+
