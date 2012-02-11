@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Manage views for runs.
+Manage views for users.
 
 """
 from django.shortcuts import get_object_or_404, redirect
@@ -32,64 +32,49 @@ from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
-from .filters import RunFilterSet
+from .filters import UserFilterSet
 from . import forms
 
 
 
 @login_required
 @lists.actions(
-    model.Run,
-    ["delete", "clone", "activate", "deactivate"],
-    permission="execution.manage_runs")
+    model.User,
+    ["delete", "activate", "deactivate"],
+    permission="core.manage_users")
 @lists.finder(ManageFinder)
-@lists.filter("runs", filterset_class=RunFilterSet)
-@lists.sort("runs")
-@ajax("manage/run/list/_runs_list.html")
-def runs_list(request):
-    """List runs."""
+@lists.filter("users", filterset_class=UserFilterSet)
+@lists.sort("users")
+@ajax("manage/user/list/_users_list.html")
+def users_list(request):
+    """List users."""
     return TemplateResponse(
         request,
-        "manage/run/runs.html",
+        "manage/user/users.html",
         {
-            "runs": model.Run.objects.select_related(),
+            "users": model.User.objects.all(),
             }
         )
 
 
 
-@login_required
-def run_details(request, run_id):
-    """Get details snippet for a run."""
-    run = get_object_or_404(
-        model.Run, pk=run_id)
-    return TemplateResponse(
-        request,
-        "manage/run/list/_run_details.html",
-        {
-            "run": run
-            }
-        )
-
-
-
-@permission_required("execution.manage_runs")
-def run_add(request):
-    """Add a run."""
+@permission_required("core.manage_users")
+def user_add(request):
+    """Add a user."""
     if request.method == "POST":
-        form = forms.AddRunForm(request.POST, user=request.user)
+        form = forms.AddUserForm(request.POST)
         if form.is_valid():
-            run = form.save()
+            user = form.save()
             messages.success(
-                request, "Run '{0}' added.".format(
-                    run.name)
+                request, "User '{0}' added.".format(
+                    user.username)
                 )
-            return redirect("manage_runs")
+            return redirect("manage_users")
     else:
-        form = forms.AddRunForm(user=request.user)
+        form = forms.AddUserForm()
     return TemplateResponse(
         request,
-        "manage/run/add_run.html",
+        "manage/user/add_user.html",
         {
             "form": form
             }
@@ -97,26 +82,24 @@ def run_add(request):
 
 
 
-@permission_required("execution.manage_runs")
-def run_edit(request, run_id):
-    """Edit a run."""
-    run = get_object_or_404(
-        model.Run, pk=run_id)
+@permission_required("core.manage_users")
+def user_edit(request, user_id):
+    """Edit a user."""
+    user = get_object_or_404(model.User, pk=user_id)
     if request.method == "POST":
-        form = forms.EditRunForm(
-            request.POST, instance=run, user=request.user)
+        form = forms.EditUserForm(
+            request.POST, instance=user)
         if form.is_valid():
-            run = form.save()
-            messages.success(request, "Saved '{0}'.".format(run.name))
-            return redirect("manage_runs")
+            u = form.save()
+            messages.success(request, "Saved '{0}'.".format(u.username))
+            return redirect("manage_users")
     else:
-        form = forms.EditRunForm(
-            instance=run, user=request.user)
+        form = forms.EditUserForm(instance=user)
     return TemplateResponse(
         request,
-        "manage/run/edit_run.html",
+        "manage/user/edit_user.html",
         {
             "form": form,
-            "run": run,
+            "subject": user,
             }
         )

@@ -104,8 +104,8 @@ def product_edit(request, product_id):
         form = forms.EditProductForm(
             request.POST, instance=product, user=request.user)
         if form.is_valid():
-            cv = form.save()
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            product = form.save()
+            messages.success(request, "Saved '{0}'.".format(product.name))
             return redirect("manage_products")
     else:
         form = forms.EditProductForm(instance=product, user=request.user)

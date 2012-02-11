@@ -108,8 +108,8 @@ def suite_edit(request, suite_id):
         form = forms.EditSuiteForm(
             request.POST, instance=suite, user=request.user)
         if form.is_valid():
-            cv = form.save()
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            suite = form.save()
+            messages.success(request, "Saved '{0}'.".format(suite.name))
             return redirect("manage_suites")
     else:
         form = forms.EditSuiteForm(

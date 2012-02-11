@@ -107,8 +107,8 @@ def productversion_edit(request, productversion_id):
         form = forms.EditProductVersionForm(
             request.POST, instance=productversion, user=request.user)
         if form.is_valid():
-            cv = form.save()
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            pv = form.save()
+            messages.success(request, "Saved '{0}'.".format(pv.name))
             return redirect("manage_productversions")
     else:
         form = forms.EditProductVersionForm(

@@ -26,7 +26,11 @@ from tests import case
 
 
 
-class CasesTest(case.view.manage.ListViewFinderTestCase):
+class CasesTest(case.view.manage.ListViewTestCase,
+                case.view.manage.ListFinderTests,
+                case.view.manage.CCModelListTests,
+                case.view.manage.StatusListTests
+                ):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
     perm = "manage_cases"
@@ -66,46 +70,6 @@ class CasesTest(case.view.manage.ListViewFinderTestCase):
 
         self.assertNotInList(res, "Old Version")
         self.assertInList(res, "Latest Version")
-
-
-    def test_activate(self):
-        """Can activate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = self.F.CaseVersionFactory.create(status="draft")
-
-        self.get_form().submit(
-            name="action-activate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(self.refresh(cv).status, "active")
-
-
-    def test_activate_requires_manage_cases_permission(self):
-        """Activating requires manage_cases permission."""
-        self.assertActionRequiresPermission("activate", "manage_cases")
-
-
-    def test_deactivate(self):
-        """Can deactivate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = self.F.CaseVersionFactory.create(status="active")
-
-        self.get_form().submit(
-            name="action-deactivate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(self.refresh(cv).status, "disabled")
-
-
-    def test_deactivate_requires_manage_cases_permission(self):
-        """Deactivating requires manage_cases permission."""
-        self.assertActionRequiresPermission("deactivate", "manage_cases")
 
 
     def test_filter_by_status(self):
@@ -339,7 +303,7 @@ class AddCaseTest(case.view.FormViewTestCase):
         self.add_perm("manage_suite_cases")
 
         s = self.F.SuiteFactory.create()
-        form = self.get(params={"initial_suite": str(s.id)}).forms[self.form_id]
+        form = self.get_form(params={"initial_suite": str(s.id)})
 
         self.assertEqual(form.fields["initial_suite"][0].value, str(s.id))
 

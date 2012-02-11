@@ -115,8 +115,8 @@ class UserFactory(factory.Factory):
 
 
 
-class GroupFactory(factory.Factory):
-    FACTORY_FOR = model.Group
+class RoleFactory(factory.Factory):
+    FACTORY_FOR = model.Role
 
     name = factory.Sequence(lambda n: "test{0}".format(n))
 

@@ -1,0 +1,53 @@
+{% load permissions %}
+
+{# WARNING: `user` is the currently logged-in user, `subject` is the user in the list. #}
+
+<article id="user-id-{{ subject.id }}" class="listitem">
+
+  <div class="status">
+    {% if user|has_perm:"core.manage_users" %}
+
+      {% if subject.is_active %}
+        <button title="disable" type="submit" name="action-deactivate" value="{{ subject.id }}" class="active status-action">active</button>
+      {% else %}
+        <button title="activate" type="submit" name="action-activate" value="{{ subject.id }}" class="disabled status-action">disabled</button>
+      {% endif %}
+
+    {% else %}
+
+      {% if subject.is_active %}
+        <span class="active status-readonly">active</span>
+      {% else %}
+        <span class="disabled status-readonly">disabled</span>
+      {% endif %}
+
+    {% endif %}
+  </div>
+
+  <header class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"core.manage_users" %}
+          {% url manage_user_edit user_id=subject.id as user_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=user_edit_url edit_name=subject.name %}
+          {% include "lists/controls/_delete.html" with delete_id=subject.id delete_name=subject.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ subject.username }}">{{ subject.username }}</h3>
+
+    </div>
+
+    <div class="email">{{ subject.email }}</div>
+
+    <ul class="roles">
+      {% for role in subject.roles.all %}
+      <li>{{ role }}</li>
+      {% endfor %}
+    </ul>
+
+  </header>
+
+</article>

@@ -27,7 +27,7 @@ from . import base
 
 
 
-class ListViewBaseTestCase(base.FormViewTestCase):
+class ListViewTestCase(base.FormViewTestCase):
     """Base class for testing manage list views."""
     # subclasses should specify these:
     perm = None          # required management permission codename
@@ -166,7 +166,7 @@ class ListViewBaseTestCase(base.FormViewTestCase):
 
 
 
-class ListViewTestCase(ListViewBaseTestCase):
+class CCModelListTests(object):
     """Additional manage list view tests for CCModels."""
     def test_clone(self):
         """Can clone objects in list."""
@@ -213,9 +213,53 @@ class ListViewTestCase(ListViewBaseTestCase):
 
 
 
+class StatusListTests(object):
+    """Extra tests for manage lists with activated/deactivate actions."""
+    def test_activate(self):
+        """Can activate objects in list."""
+        self.add_perm(self.perm)
 
-class ListViewFinderTestCase(ListViewTestCase):
-    """Test case for manage lists with finder."""
+        s = self.factory.create(status="draft")
+
+        self.get_form().submit(
+            name="action-activate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertEqual(self.refresh(s).status, "active")
+
+
+    def test_activate_requires_permission(self):
+        """Activating requires appropriate permission."""
+        self.assertActionRequiresPermission("activate", self.perm)
+
+
+    def test_deactivate(self):
+        """Can deactivate objects in list."""
+        self.add_perm(self.perm)
+
+        s = self.factory.create(status="active")
+
+        self.get_form().submit(
+            name="action-deactivate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertEqual(self.refresh(s).status, "disabled")
+
+
+    def test_deactivate_requires_permission(self):
+        """Deactivating requires appropriate permission."""
+        self.assertActionRequiresPermission("deactivate", self.perm)
+
+
+
+
+
+class ListFinderTests(object):
+    """Extra tests for manage lists with finder."""
     def test_finder(self):
         """Finder is present in context with list of products."""
         p = self.F.ProductFactory.create(name="Foo Product")

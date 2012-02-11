@@ -26,6 +26,22 @@ from django.conf.urls.defaults import patterns, url
 urlpatterns = patterns(
     "",
 
+    # user ------------------------------------------------------------------
+    # manage
+    url(r"^users/$",
+        "cc.view.manage.users.views.users_list",
+        name="manage_users"),
+
+    # add
+    url(r"^user/add/$",
+        "cc.view.manage.users.views.user_add",
+        name="manage_user_add"),
+
+    # edit
+    url(r"^user/(?P<user_id>\d+)/$",
+        "cc.view.manage.users.views.user_edit",
+        name="manage_user_edit"),
+
     # product ---------------------------------------------------------------
     # manage
     url(r"^products/$",

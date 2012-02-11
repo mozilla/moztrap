@@ -25,7 +25,11 @@ from tests import case
 
 
 
-class SuitesTest(case.view.manage.ListViewFinderTestCase):
+class SuitesTest(case.view.manage.ListViewTestCase,
+                 case.view.manage.ListFinderTests,
+                 case.view.manage.CCModelListTests,
+                 case.view.manage.StatusListTests
+                 ):
     """Test for suites manage list view."""
     form_id = "manage-suites-form"
     perm = "manage_suites"

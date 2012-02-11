@@ -27,7 +27,11 @@ from tests import case
 
 
 
-class RunsTest(case.view.manage.ListViewFinderTestCase):
+class RunsTest(case.view.manage.ListViewTestCase,
+               case.view.manage.ListFinderTests,
+               case.view.manage.CCModelListTests,
+               case.view.manage.StatusListTests
+               ):
     """Test for runs manage list view."""
     form_id = "manage-runs-form"
     perm = "manage_runs"

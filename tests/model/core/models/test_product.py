@@ -24,6 +24,7 @@ from tests import case
 
 
 class ProductTest(case.DBTestCase):
+    """Tests for Product model."""
     def test_unicode(self):
         """Unicode representation is name of Product"""
         p = self.F.ProductFactory.build(name="Firefox")

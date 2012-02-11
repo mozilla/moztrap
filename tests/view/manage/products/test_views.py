@@ -25,7 +25,10 @@ from tests import case
 
 
 
-class ProductsTest(case.view.manage.ListViewFinderTestCase):
+class ProductsTest(case.view.manage.ListViewTestCase,
+                   case.view.manage.ListFinderTests,
+                   case.view.manage.CCModelListTests,
+                   ):
     """Test for products manage list view."""
     form_id = "manage-products-form"
     perm = "manage_products"

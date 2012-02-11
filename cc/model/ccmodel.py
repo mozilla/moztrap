@@ -28,9 +28,9 @@ from django.db import models, router
 from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 
-from django.contrib.auth.models import User
-
 from model_utils import Choices
+
+from .core.auth import User
 
 
 
