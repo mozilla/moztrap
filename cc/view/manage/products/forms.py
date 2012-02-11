@@ -28,9 +28,8 @@ from ...utils import ccforms
 
 
 
-class EditProductForm(ccforms.NonFieldErrorsClassFormMixin,
-                      ccforms.CCModelForm):
-    """Form for editing products."""
+class ProductForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+    """Base form for products."""
     class Meta:
         model = model.Product
         fields = ["name", "description"]
@@ -41,7 +40,13 @@ class EditProductForm(ccforms.NonFieldErrorsClassFormMixin,
 
 
 
-class AddProductForm(EditProductForm):
+class EditProductForm(ProductForm):
+    """Form for editing a product."""
+    pass
+
+
+
+class AddProductForm(ProductForm):
     """Form for adding a product."""
     version = forms.CharField(required=True)
     profile = forms.ModelChoiceField(
