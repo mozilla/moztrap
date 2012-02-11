@@ -7,7 +7,7 @@
 <section id="manageproducts" class="manage listpage">
   <h2>Manage Products</h2>
 
-  {% if user|has_perm:"library.manage_products" %}
+  {% if user|has_perm:"core.manage_products" %}
     <a href="{% url manage_product_add %}" class="create single">create a product</a>
   {% endif %}
 

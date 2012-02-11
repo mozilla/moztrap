@@ -30,6 +30,8 @@ class CasesTest(case.view.manage.ListViewFinderTestCase):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
     perm = "manage_cases"
+
+
     @property
     def factory(self):
         """The model factory for this manage list."""
@@ -40,6 +42,14 @@ class CasesTest(case.view.manage.ListViewFinderTestCase):
     def url(self):
         """Shortcut for manage-cases url."""
         return reverse("manage_cases")
+
+
+    def test_create_link(self):
+        """With proper perm, create links are there."""
+        self.add_perm("create_cases")
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create", count=2)
 
 
     def test_lists_latest_versions(self):

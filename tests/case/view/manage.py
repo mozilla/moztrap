@@ -27,7 +27,7 @@ from . import base
 
 
 
-class ListViewTestCase(base.FormViewTestCase):
+class ListViewBaseTestCase(base.FormViewTestCase):
     """Base class for testing manage list views."""
     # subclasses should specify these:
     perm = None          # required management permission codename
@@ -150,6 +150,24 @@ class ListViewTestCase(base.FormViewTestCase):
         self.assertActionRequiresPermission("delete")
 
 
+    def test_create_link(self):
+        """With proper perm, create link is there."""
+        self.add_perm(self.perm)
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create")
+
+
+    def test_create_link_requires_perms(self):
+        """Without proper perm, create link is not there."""
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create", count=0)
+
+
+
+class ListViewTestCase(ListViewBaseTestCase):
+    """Additional manage list view tests for CCModels."""
     def test_clone(self):
         """Can clone objects in list."""
         self.add_perm(self.perm)
@@ -166,8 +184,8 @@ class ListViewTestCase(base.FormViewTestCase):
             res.json["html"], "h3", "title", count=2)
 
 
-    def test_clone_requires_manage_cases_permission(self):
-        """Cloning requires manage_cases permission."""
+    def test_clone_requires_permission(self):
+        """Cloning requires appropriate permission."""
         self.assertActionRequiresPermission("clone")
 
 
@@ -192,6 +210,7 @@ class ListViewTestCase(base.FormViewTestCase):
         res = self.get()
 
         self.assertOrderInList(res, "Foo 2", "Foo 1")
+
 
 
 

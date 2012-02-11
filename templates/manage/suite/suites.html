@@ -7,7 +7,7 @@
 <section id="managesuites" class="manage listpage">
   <h2>Manage Test Suites</h2>
 
-  {% if user|has_perm:"execution.manage_suites" %}
+  {% if user|has_perm:"library.manage_suites" %}
     <a href="{% url manage_suite_add %}" class="create single">create a test suite</a>
   {% endif %}
 
