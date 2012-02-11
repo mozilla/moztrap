@@ -9,7 +9,6 @@
         {% if user|has_perm:"core.manage_products" %}
           {% url manage_product_edit product_id=product.id as product_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=product_edit_url edit_name=product.name %}
-          {% include "manage/_narrow_env_link.html" with obj_type='product' obj_id=product.id %}
           {% include "lists/controls/_clone.html" with clone_id=product.id clone_name=product.name %}
           {% include "lists/controls/_delete.html" with delete_id=product.id delete_name=product.name %}
         {% endif %}
