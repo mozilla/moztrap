@@ -40,6 +40,41 @@ class CCModelTestCase(case.DBTestCase):
 
 
 
+class UserDeleteTest(CCModelTestCase):
+    """Tests for deleting users, and the effect on CCModels."""
+    def test_delete_created_by_sets_null(self):
+        """Deleting the created_by user sets created_by to None."""
+        u = self.F.UserFactory()
+        p = self.F.ProductFactory(user=u)
+
+        u.delete()
+
+        self.assertEqual(self.refresh(p).created_by, None)
+
+
+    def test_delete_modified_by_sets_null(self):
+        """Deleting the modified_by user sets modified_by to None."""
+        p = self.F.ProductFactory()
+        u = self.F.UserFactory()
+        p.save(user=u)
+
+        u.delete()
+
+        self.assertEqual(self.refresh(p).modified_by, None)
+
+
+    def test_delete_deleted_by_sets_null(self):
+        """Deleting the deleted_by user sets deleted_by to None."""
+        p = self.F.ProductFactory()
+        u = self.F.UserFactory()
+        p.delete(user=u)
+
+        u.delete()
+
+        self.assertEqual(self.refresh(p).deleted_by, None)
+
+
+
 class CCModelMockNowTestCase(CCModelTestCase):
     """Base class for CCModel tests that need "now" mocked."""
     def setUp(self):
