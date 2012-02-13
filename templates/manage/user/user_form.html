@@ -5,13 +5,13 @@
 <section class="{% block sectionid %}{% endblock %}">
   <h2>{% block formtitle %}{% endblock %}</h2>
   {% block formtop %}{% endblock %}
-  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form user-form">
     {% csrf_token %}
 
     {% block topfields %}{% endblock %}
     {% include "forms/_field.html" with field=form.username %}
-    {% include "forms/_field.html" with field=form.email %}
     {% include "forms/_field.html" with field=form.is_active %}
+    {% include "forms/_field.html" with field=form.email %}
     {% include "forms/_field.html" with field=form.groups %}
 
     <div class="form-actions">

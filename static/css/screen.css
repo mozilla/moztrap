@@ -3022,6 +3022,43 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/crosshair.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
+.user-form .username-field {
+  display: inline;
+  float: left;
+  width: 74.737%;
+  margin-right: 1.053%;
+}
+.user-form .active-field {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  margin-top: 0.375em;
+}
+.user-form .e-mail-address-field, .user-form .roles-field, .user-form .form-actions {
+  padding-right: 25.263%;
+}
+.user-form .username-field label, .user-form .e-mail-address-field label, .user-form .roles-field label {
+  display: inline;
+  float: left;
+  width: 32.394%;
+  margin-right: 1.408%;
+}
+.user-form .username-field input, .user-form .username-field select, .user-form .username-field .errorlist, .user-form .e-mail-address-field input, .user-form .e-mail-address-field select, .user-form .e-mail-address-field .errorlist, .user-form .roles-field input, .user-form .roles-field select, .user-form .roles-field .errorlist {
+  display: inline;
+  float: left;
+  width: 66.197%;
+  margin-right: 1.408%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
   display: inline;
   float: left;
