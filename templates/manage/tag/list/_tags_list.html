@@ -1,0 +1,19 @@
+{% load pagination %}
+
+<form method="POST" action="{{ request.get_full_path }}" id="manage-tags-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/tag/list/_tags_listordering.html" %}
+
+  {% paginate tags as pager %}
+  {% if pager.objects %}
+    {% for tag in pager.objects %}
+      {% include "manage/tag/list/_tag_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

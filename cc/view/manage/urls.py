@@ -159,6 +159,27 @@ urlpatterns = patterns(
         name="manage_caseversion_clone"),
 
     # tags -------------------------------------------------------------------
+    # manage
+    url(r"^tags/$",
+        "cc.view.manage.tags.views.tags_list",
+        name="manage_tags"),
+
+    # ajax details
+    url(r"^tags/_detail/(?P<tag_id>\d+)/$",
+        "cc.view.manage.tags.views.tag_details",
+        name="manage_tag_details"),
+
+    # add
+    url(r"^tag/add/$",
+        "cc.view.manage.tags.views.tag_add",
+        name="manage_tag_add"),
+
+    # edit
+    url(r"^tag/(?P<tag_id>\d+)/$",
+        "cc.view.manage.tags.views.tag_edit",
+        name="manage_tag_edit"),
+
+    # autocomplete
     url(r"^tags/_autocomplete/",
         "cc.view.manage.tags.views.tag_autocomplete",
         name="manage_tags_autocomplete"),

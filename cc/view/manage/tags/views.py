@@ -23,10 +23,104 @@ import json
 
 from django.db.models import Q
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 
-from ....model.tags.models import Tag
+from cc import model
+
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
+
+from ..finders import ManageFinder
+
+from .filters import TagFilterSet
+from . import forms
+
+
+
+@login_required
+@lists.actions(
+    model.Tag,
+    ["delete", "clone"],
+    permission="tags.manage_tags")
+@lists.finder(ManageFinder)
+@lists.filter("tags", filterset_class=TagFilterSet)
+@lists.sort("tags")
+@ajax("manage/tag/list/_tags_list.html")
+def tags_list(request):
+    """List tags."""
+    return TemplateResponse(
+        request,
+        "manage/tag/tags.html",
+        {
+            "tags": model.Tag.objects.all(),
+            }
+        )
+
+
+
+@login_required
+def tag_details(request, tag_id):
+    """Get details snippet for a tag."""
+    tag = get_object_or_404(model.Tag, pk=tag_id)
+    return TemplateResponse(
+        request,
+        "manage/tag/list/_tag_details.html",
+        {
+            "tag": tag
+            }
+        )
+
+
+
+@permission_required("tags.manage_tags")
+def tag_add(request):
+    """Add a tag."""
+    if request.method == "POST":
+        form = forms.AddTagForm(request.POST, user=request.user)
+        if form.is_valid():
+            tag = form.save()
+            messages.success(
+                request, "Tag '{0}' added.".format(
+                    tag.name)
+                )
+            return redirect("manage_tags")
+    else:
+        form = forms.AddTagForm(user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/tag/add_tag.html",
+        {
+            "form": form
+            }
+        )
+
+
+
+@permission_required("tags.manage_tags")
+def tag_edit(request, tag_id):
+    """Edit a tag."""
+    tag = get_object_or_404(model.Tag, pk=tag_id)
+    if request.method == "POST":
+        form = forms.EditTagForm(
+            request.POST, instance=tag, user=request.user)
+        if form.is_valid():
+            tag = form.save()
+            messages.success(request, "Saved '{0}'.".format(tag.name))
+            return redirect("manage_tags")
+    else:
+        form = forms.EditTagForm(instance=tag, user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/tag/edit_tag.html",
+        {
+            "form": form,
+            "tag": tag,
+            }
+        )
 
 
 
@@ -36,7 +130,7 @@ def tag_autocomplete(request):
     text = request.GET.get("text")
     product_id = request.GET.get("product-id")
     if text is not None:
-        tags = Tag.objects.filter(name__icontains=text)
+        tags = model.Tag.objects.filter(name__icontains=text)
         if product_id is not None:
             tags = tags.filter(Q(product=product_id) | Q(product=None))
     else:

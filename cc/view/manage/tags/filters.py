@@ -16,28 +16,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Models for tags.
+Filtering for tags.
 
 """
-from django.db import models
-
-from ..ccmodel import CCModel
-from ..core.models import Product
+from cc import model
+from cc.view.lists import filters
 
 
 
-class Tag(CCModel):
-    """A tag."""
-    name = models.CharField(max_length=100)
-
-    # tags may be product-specific or global (in which case this FK is null)
-    product = models.ForeignKey(Product, blank=True, null=True)
-
-
-    def __unicode__(self):
-        """Unicode representation is name."""
-        return self.name
-
-
-    class Meta:
-        permissions = [("manage_tags", "Can add/edit/delete tags.")]
+class TagFilterSet(filters.FilterSet):
+    """FilterSet for Tags."""
+    filters = [
+        filters.KeywordFilter("name"),
+        filters.ModelFilter("product", queryset=model.Product.objects.all()),
+        filters.ModelFilter(
+            "creator", lookup="created_by", queryset=model.User.objects.all()),
+        ]

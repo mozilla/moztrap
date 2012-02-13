@@ -25,6 +25,203 @@ from tests import case
 
 
 
+class TagsTest(case.view.manage.ListViewTestCase,
+               case.view.manage.CCModelListTests,
+               ):
+    """Test for tags manage list view."""
+    form_id = "manage-tags-form"
+    perm = "manage_tags"
+
+
+    @property
+    def factory(self):
+        """The model factory for this manage list."""
+        return self.F.TagFactory
+
+
+    @property
+    def url(self):
+        """Shortcut for manage-tags url."""
+        return reverse("manage_tags")
+
+
+    def test_filter_by_name(self):
+        """Can filter by name."""
+        self.factory.create(name="Tag 1")
+        self.factory.create(name="Tag 2")
+
+        res = self.get(params={"filter-name": "1"})
+
+        self.assertInList(res, "Tag 1")
+        self.assertNotInList(res, "Tag 2")
+
+
+    def test_sort_by_name(self):
+        """Can sort by name."""
+        self.factory.create(name="Tag 1")
+        self.factory.create(name="Tag 2")
+
+        res = self.get(params={"sortfield": "name", "sortdirection": "desc"})
+
+        self.assertOrderInList(res, "Tag 2", "Tag 1")
+
+
+    def test_filter_by_product(self):
+        """Can filter by product."""
+        p = self.F.ProductFactory.create()
+        self.factory.create(name="Tag 1", product=p)
+        self.factory.create(name="Tag 2")
+
+        res = self.get(params={"filter-product": str(p.id)})
+
+        self.assertInList(res, "Tag 1")
+        self.assertNotInList(res, "Tag 2")
+
+
+    def test_sort_by_product(self):
+        """Can sort by product."""
+        pb = self.F.ProductFactory.create(name="B")
+        pa = self.F.ProductFactory.create(name="A")
+        self.factory.create(name="Tag 1", product=pb)
+        self.factory.create(name="Tag 2", product=pa)
+
+        res = self.get(params={"sortfield": "product", "sortdirection": "asc"})
+
+        self.assertOrderInList(res, "Tag 2", "Tag 1")
+
+
+
+class TagDetailTest(case.view.AuthenticatedViewTestCase):
+    """Test for tag-detail ajax view."""
+    def setUp(self):
+        """Setup for case details tests; create a tag."""
+        super(TagDetailTest, self).setUp()
+        self.tag = self.F.TagFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for tag detail url."""
+        return reverse(
+            "manage_tag_details", kwargs=dict(tag_id=self.tag.id))
+
+
+    def test_details_created_by(self):
+        """Details lists created_by."""
+        self.tag.created_by = self.F.UserFactory.create(username="foo_user")
+        self.tag.save()
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        self.assertIn("foo_user", res.json["html"])
+
+
+
+class AddTagTest(case.view.FormViewTestCase):
+    """Tests for add tag view."""
+    form_id = "tag-add-form"
+
+
+    @property
+    def url(self):
+        """Shortcut for add-tag url."""
+        return reverse("manage_tag_add")
+
+
+    def setUp(self):
+        """Add manage-tags permission to user."""
+        super(AddTagTest, self).setUp()
+        self.add_perm("manage_tags")
+
+
+    def test_success(self):
+        """Can add a tag with basic data, including a product."""
+        p = self.F.ProductFactory.create()
+        form = self.get_form()
+        form["name"] = "Some browser"
+        form["product"] = str(p.id)
+
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("manage_tags"))
+
+        res.follow().mustcontain("Tag 'Some browser' added.")
+
+        t = self.model.Tag.objects.get()
+        self.assertEqual(t.name, "Some browser")
+        self.assertEqual(t.product, p)
+
+
+    def test_error(self):
+        """Bound form with errors is re-displayed."""
+        res = self.get_form().submit()
+
+        self.assertEqual(res.status_int, 200)
+        res.mustcontain("This field is required.")
+
+
+    def test_requires_manage_tags_permission(self):
+        """Requires manage-tags permission."""
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
+
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+
+
+
+class EditTagTest(case.view.FormViewTestCase):
+    """Tests for edit-tag view."""
+    form_id = "tag-edit-form"
+
+
+    def setUp(self):
+        """Setup for tag edit tests; create a tag, add perm."""
+        super(EditTagTest, self).setUp()
+        self.tag = self.F.TagFactory.create()
+        self.add_perm("manage_tags")
+
+
+    @property
+    def url(self):
+        """Shortcut for edit-tag url."""
+        return reverse(
+            "manage_tag_edit", kwargs=dict(tag_id=self.tag.id))
+
+
+    def test_requires_manage_tags_permission(self):
+        """Requires manage-tags permission."""
+        res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
+
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+
+
+    def test_save_basic(self):
+        """Can save updates; redirects to manage tags list."""
+        p = self.F.ProductFactory.create()
+        form = self.get_form()
+        form["name"] = "new name"
+        form["product"] = str(p.id)
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("manage_tags"))
+
+        res.follow().mustcontain("Saved 'new name'.")
+
+        t = self.refresh(self.tag)
+        self.assertEqual(t.name, "new name")
+        self.assertEqual(t.product, p)
+
+
+    def test_errors(self):
+        """Test bound form redisplay with errors."""
+        form = self.get_form()
+        form["name"] = ""
+        res = form.submit(status=200)
+
+        res.mustcontain("This field is required.")
+
+
+
 class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase):
     """Test for tags autocomplete view."""
     @property
