@@ -3044,6 +3044,7 @@ body.login input, body.login .errorlist {
   margin-top: 0.375em;
 }
 .user-form .e-mail-address-field, .user-form .roles-field, .user-form .form-actions {
+  clear: both;
   padding-right: 25.263%;
 }
 .user-form .username-field .type, .user-form .e-mail-address-field .type, .user-form .roles-field .type {
