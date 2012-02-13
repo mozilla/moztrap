@@ -381,7 +381,7 @@ class EditRunTest(case.view.FormViewTestCase):
         res = self.get()
 
         div = res.html.find("div", "product-version-field")
-        self.assertEqual(div.find("span", "ro-value").text, unicode(pv))
+        self.assertEqual(div.find("span", "value").text, unicode(pv))
         self.assertEqual(
             div.find(
                 "input",
