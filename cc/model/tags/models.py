@@ -39,5 +39,12 @@ class Tag(CCModel):
         return self.name
 
 
+    def clone(self, *args, **kwargs):
+        """Clone tag; sets name prefix by default."""
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "Cloned: {0}".format(self.name))
+        return super(Tag, self).clone(*args, **kwargs)
+
+
     class Meta:
         permissions = [("manage_tags", "Can add/edit/delete tags.")]

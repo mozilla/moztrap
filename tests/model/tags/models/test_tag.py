@@ -29,3 +29,12 @@ class TagTest(case.DBTestCase):
         t = self.F.TagFactory(name="security")
 
         self.assertEqual(unicode(t), u"security")
+
+
+    def test_clone(self):
+        """Cloning sets 'cloned: ' prefix on name."""
+        t = self.F.TagFactory(name="foo")
+
+        new = t.clone()
+
+        self.assertEqual(new.name, "Cloned: foo")
