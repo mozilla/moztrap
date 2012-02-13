@@ -3821,6 +3821,53 @@ body.login input, body.login .errorlist {
   opacity: 1;
 }
 
+#manageusers .listordering, #manageusers .itemhead {
+  padding-left: 2.625em;
+}
+#manageusers .status {
+  margin-left: 0.375em;
+}
+#manageusers .name, #manageusers .byusername {
+  display: inline;
+  float: left;
+  width: 36.842%;
+  margin-right: 1.053%;
+}
+#manageusers .email, #manageusers .byemail {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+}
+#manageusers .roles, #manageusers .byroles {
+  list-style-type: none;
+  display: inline;
+  float: left;
+  width: 36.842%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#manageusers .roles, #manageusers .roles li, #manageusers .byroles, #manageusers .byroles li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#manageusers .roles li:after, #manageusers .byroles li:after {
+  content: ", ";
+}
+#manageusers .roles li:last-child:after, #manageusers .byroles li:last-child:after {
+  content: "";
+}
+#manageusers .roles li.last:after, #manageusers .byroles li.last:after {
+  content: "";
+}
+#manageusers .title {
+  display: inline;
+}
+
 #manageproducts .listordering {
   padding-left: 1.5em;
 }
