@@ -1,6 +1,6 @@
 .add-suite, .edit-suite
 
-  .product-field, .name-field, .description-field, .status-field
+  .product-field, .name-field, .description-field
     +full(24)
     +suffix(6,24)
     label
@@ -11,3 +11,12 @@
 
   .form-actions
     +suffix(6,24)
+  .status-field
+    +inline-block
+    width: columns(4,18)
+    margin-right: gutter(18)
+    label
+      +gone
+    select
+      +inline-block
+      vertical-align: baseline

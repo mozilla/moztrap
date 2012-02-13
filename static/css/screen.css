@@ -3195,17 +3195,17 @@ body.login input, body.login .errorlist {
   padding-right: 25.263%;
 }
 
-.add-suite .product-field, .add-suite .name-field, .add-suite .description-field, .add-suite .status-field, .edit-suite .product-field, .edit-suite .name-field, .edit-suite .description-field, .edit-suite .status-field {
+.add-suite .product-field, .add-suite .name-field, .add-suite .description-field, .edit-suite .product-field, .edit-suite .name-field, .edit-suite .description-field {
   clear: both;
   padding-right: 25.263%;
 }
-.add-suite .product-field label, .add-suite .name-field label, .add-suite .description-field label, .add-suite .status-field label, .edit-suite .product-field label, .edit-suite .name-field label, .edit-suite .description-field label, .edit-suite .status-field label {
+.add-suite .product-field label, .add-suite .name-field label, .add-suite .description-field label, .edit-suite .product-field label, .edit-suite .name-field label, .edit-suite .description-field label {
   display: inline;
   float: left;
   width: 32.394%;
   margin-right: 1.408%;
 }
-.add-suite .product-field input, .add-suite .product-field select, .add-suite .product-field textarea, .add-suite .product-field .errorlist, .add-suite .name-field input, .add-suite .name-field select, .add-suite .name-field textarea, .add-suite .name-field .errorlist, .add-suite .description-field input, .add-suite .description-field select, .add-suite .description-field textarea, .add-suite .description-field .errorlist, .add-suite .status-field input, .add-suite .status-field select, .add-suite .status-field textarea, .add-suite .status-field .errorlist, .edit-suite .product-field input, .edit-suite .product-field select, .edit-suite .product-field textarea, .edit-suite .product-field .errorlist, .edit-suite .name-field input, .edit-suite .name-field select, .edit-suite .name-field textarea, .edit-suite .name-field .errorlist, .edit-suite .description-field input, .edit-suite .description-field select, .edit-suite .description-field textarea, .edit-suite .description-field .errorlist, .edit-suite .status-field input, .edit-suite .status-field select, .edit-suite .status-field textarea, .edit-suite .status-field .errorlist {
+.add-suite .product-field input, .add-suite .product-field select, .add-suite .product-field textarea, .add-suite .product-field .errorlist, .add-suite .name-field input, .add-suite .name-field select, .add-suite .name-field textarea, .add-suite .name-field .errorlist, .add-suite .description-field input, .add-suite .description-field select, .add-suite .description-field textarea, .add-suite .description-field .errorlist, .edit-suite .product-field input, .edit-suite .product-field select, .edit-suite .product-field textarea, .edit-suite .product-field .errorlist, .edit-suite .name-field input, .edit-suite .name-field select, .edit-suite .name-field textarea, .edit-suite .name-field .errorlist, .edit-suite .description-field input, .edit-suite .description-field select, .edit-suite .description-field textarea, .edit-suite .description-field .errorlist {
   display: inline;
   float: left;
   width: 66.197%;
@@ -3217,6 +3217,25 @@ body.login input, body.login .errorlist {
 }
 .add-suite .form-actions, .edit-suite .form-actions {
   padding-right: 25.263%;
+}
+.add-suite .status-field, .edit-suite .status-field {
+  display: inline-block;
+  width: 21.127%;
+  margin-right: 1.408%;
+}
+.add-suite .status-field label, .edit-suite .status-field label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.add-suite .status-field select, .edit-suite .status-field select {
+  display: inline-block;
+  vertical-align: baseline;
 }
 
 .case-form .form-actions {
