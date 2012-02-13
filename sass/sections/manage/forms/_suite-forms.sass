@@ -3,9 +3,9 @@
   .product-field, .name-field, .description-field
     +full(24)
     +suffix(6,24)
-    label
+    .type
       +columns(6,18)
-    input, select, textarea, .errorlist
+    .value, .errorlist
       +columns(12,18)
       +omega(18)
 
@@ -15,8 +15,8 @@
     +inline-block
     width: columns(4,18)
     margin-right: gutter(18)
-    label
+    .type
       +gone
-    select
+    .value
       +inline-block
       vertical-align: baseline

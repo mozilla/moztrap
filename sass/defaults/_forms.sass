@@ -95,20 +95,24 @@ input
   +pie-clearfix
   +trailer(.5)
   position: relative
-  label
+  .type
     +bold
     +cond
     +leader(.25)
     text-align: right
     text-transform: capitalize
-  &.optional label
+  &.optional .type
     +demi
     color: rgba($base,.75)
   .isoptional
     +gone
   &.errors
-    label
+    .type
       color: $red
+
+  &.readonly .value
+    +padding-leader(.25)
+    +demi
 
 // ---------------------------------------------------------------------------
 // Form Helpers

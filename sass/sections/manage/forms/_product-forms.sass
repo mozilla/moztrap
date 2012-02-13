@@ -2,9 +2,9 @@
 
   .name-field, .description-field, .version-field, .profile-field
     +columns(11,24)
-    label
+    .type
       +columns(2,11)
-    input, select, textarea, .errorlist
+    .value, .errorlist
       +columns(9,11)
       +omega(11)
 
@@ -20,9 +20,9 @@
   .name-field, .description-field
     +full(24)
     +pad(4,6,24)
-    label
+    .type
       +columns(2,14)
-    input, textarea, .errorlist
+    .value, .errorlist
       +columns(12,14)
       +omega(14)
 
