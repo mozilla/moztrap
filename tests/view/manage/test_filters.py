@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for Case/CaseVersion filtering.
+Tests for filtering.
 
 """
 from mock import Mock
@@ -31,7 +31,7 @@ class CaseVersionFilterSetTest(case.DBTestCase):
     """Tests for CaseVersionFilterSet and CaseVersionBoundFilterSet."""
     def bound(self, GET):
         """Return instance of bound filter set."""
-        from cc.view.manage.cases.filters import CaseVersionFilterSet
+        from cc.view.filters import CaseVersionFilterSet
         return CaseVersionFilterSet().bind(GET)
 
 
