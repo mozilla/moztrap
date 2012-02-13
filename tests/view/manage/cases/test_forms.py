@@ -23,8 +23,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
 from django.utils.datastructures import MultiValueDict
 
-from django.contrib.auth.models import Permission
-
+from cc import model
 from tests import case
 
 
@@ -124,7 +123,7 @@ class AddCaseFormTest(case.DBTestCase):
     def test_initial_suite(self):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_suite_cases"))
+            model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
@@ -138,7 +137,7 @@ class AddCaseFormTest(case.DBTestCase):
     def test_wrong_suite_product(self):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_suite_cases"))
+            model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
@@ -177,7 +176,7 @@ class AddCaseFormTest(case.DBTestCase):
     def test_new_tag(self):
         """Can create a new case with a new tag, with correct perm."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_tags"))
+            model.Permission.objects.get(codename="manage_tags"))
         data = self.get_form_data()
         data.setlist("tag-newtag", ["baz"])
 
@@ -202,7 +201,7 @@ class AddCaseFormTest(case.DBTestCase):
     def test_data_allow_new(self):
         """add_tag field has data-allow-new set true with manage_tags perm."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_tags"))
+            model.Permission.objects.get(codename="manage_tags"))
 
         form = self.form(user=self.user)
 
@@ -355,7 +354,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     def test_initial_suite(self):
         """Can pick an initial suite for case to be in (with right perms)."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_suite_cases"))
+            model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create(product=self.product)
 
         data = self.get_form_data()
@@ -369,7 +368,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     def test_wrong_suite_product(self):
         """Selecting suite from wrong product results in validation error."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_suite_cases"))
+            model.Permission.objects.get(codename="manage_suite_cases"))
         suite = self.F.SuiteFactory.create() # some other product
 
         data = self.get_form_data()
@@ -399,7 +398,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     def test_new_tag(self):
         """Can create a new case with a new tag, with correct perm."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_tags"))
+            model.Permission.objects.get(codename="manage_tags"))
         data = self.get_form_data()
         data.setlist("tag-newtag", ["baz"])
 
@@ -425,7 +424,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     def test_data_allow_new(self):
         """add_tag field has data-allow-new set true with manage_tags perm."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_tags"))
+            model.Permission.objects.get(codename="manage_tags"))
 
         form = self.form(user=self.user)
 
@@ -545,7 +544,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
     def test_save_tags(self):
         """Can add/remove tags."""
         self.user.user_permissions.add(
-            Permission.objects.get(codename="manage_tags"))
+            model.Permission.objects.get(codename="manage_tags"))
 
         cv = self.F.CaseVersionFactory.create()
 

@@ -23,7 +23,7 @@ from tests import case
 
 
 
-class RunAdminTest(case.admin.AdminTestCase):
+class ProductVersionAdminTest(case.admin.AdminTestCase):
     app_label = "core"
     model_name = "productversion"
 

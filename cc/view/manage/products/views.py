@@ -25,10 +25,10 @@ from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .... import model
+from cc import model
 
-from ...lists import decorators as lists
-from ...utils.ajax import ajax
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
@@ -45,7 +45,7 @@ from . import forms
 @lists.finder(ManageFinder)
 @lists.filter("products", filterset_class=ProductFilterSet)
 @lists.sort("products")
-@ajax("manage/product/productlist/_products_list.html")
+@ajax("manage/product/list/_products_list.html")
 def products_list(request):
     """List products."""
     return TemplateResponse(
@@ -64,7 +64,7 @@ def product_details(request, product_id):
     product = get_object_or_404(model.Product, pk=product_id)
     return TemplateResponse(
         request,
-        "manage/product/productlist/_product_details.html",
+        "manage/product/list/_product_details.html",
         {
             "product": product
             }
@@ -74,7 +74,7 @@ def product_details(request, product_id):
 
 @permission_required("core.manage_products")
 def product_add(request):
-    """Add a single case."""
+    """Add a product."""
     if request.method == "POST":
         form = forms.AddProductForm(request.POST, user=request.user)
         if form.is_valid():
@@ -104,8 +104,8 @@ def product_edit(request, product_id):
         form = forms.EditProductForm(
             request.POST, instance=product, user=request.user)
         if form.is_valid():
-            cv = form.save()
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            product = form.save()
+            messages.success(request, "Saved '{0}'.".format(product.name))
             return redirect("manage_products")
     else:
         form = forms.EditProductForm(instance=product, user=request.user)

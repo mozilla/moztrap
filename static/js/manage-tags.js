@@ -6,6 +6,7 @@ var CC = (function (CC, $) {
 
     'use strict';
 
+    // Enable adding/editing tags on manage-tag page
     CC.manageTags = function (container) {
         var context = $(container),
             createTag = context.find('.create a'),

@@ -44,7 +44,7 @@ def sort(ctx_name, defaultfield=None, defaultdirection=DEFAULT):
                 return response
             ctx["sort"] = Sort(request, defaultfield, defaultdirection)
             try:
-                sortqs = ctx[ctx_name].order_by(ctx["sort"].order_by)
+                sortqs = ctx[ctx_name].order_by(*ctx["sort"].order_by)
                 str(sortqs.query) # hack to force evaluation of sort arguments
             except FieldError:
                 pass
@@ -61,7 +61,11 @@ def sort(ctx_name, defaultfield=None, defaultdirection=DEFAULT):
 class Sort(object):
     def __init__(self, request, defaultfield=None, defaultdirection=DEFAULT):
         """
-        Accepts the current request.
+        Accepts request, looks for GET keys "sortfield" and "sortdirection".
+
+        A "field" can actually be multiple field names concatenated with
+        commas, in which case all of those fields will be sorted on, in
+        descending priority order.
 
         """
         self.url_path = request.get_full_path()
@@ -98,7 +102,8 @@ class Sort(object):
 
     @property
     def order_by(self):
-        """Return the ``order_by`` clause appropriate for this sort."""
+        """Return the ``order_by`` tuple appropriate for this sort."""
+        fields = self.field.split(",")
         if self.direction == "desc":
-            return "-" + self.field
-        return self.field
+            return tuple(["-" + f for f in fields])
+        return tuple(fields)

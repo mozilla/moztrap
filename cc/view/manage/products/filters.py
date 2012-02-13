@@ -26,8 +26,6 @@ from cc.view.lists import filters
 
 class ProductFilterSet(filters.FilterSet):
     """FilterSet for Products."""
-
-
     filters = [
         filters.KeywordFilter("name"),
         filters.ModelFilter(

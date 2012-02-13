@@ -28,9 +28,9 @@ from django.db import models, router
 from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 
-from django.contrib.auth.models import User
-
 from model_utils import Choices
+
+from .core.auth import User
 
 
 
@@ -169,14 +169,14 @@ class CCModel(models.Model):
     """
     created_on = models.DateTimeField(default=utcnow)
     created_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
     modified_on = models.DateTimeField(default=utcnow)
     modified_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
     deleted_on = models.DateTimeField(db_index=True, blank=True, null=True)
     deleted_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
 
 

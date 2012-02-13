@@ -26,10 +26,16 @@ from tests import case
 
 
 
-class CasesTest(case.view.manage.ListViewFinderTestCase):
+class CasesTest(case.view.manage.ListViewTestCase,
+                case.view.manage.ListFinderTests,
+                case.view.manage.CCModelListTests,
+                case.view.manage.StatusListTests
+                ):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
     perm = "manage_cases"
+
+
     @property
     def factory(self):
         """The model factory for this manage list."""
@@ -40,6 +46,14 @@ class CasesTest(case.view.manage.ListViewFinderTestCase):
     def url(self):
         """Shortcut for manage-cases url."""
         return reverse("manage_cases")
+
+
+    def test_create_link(self):
+        """With proper perm, create links are there."""
+        self.add_perm("create_cases")
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create", count=2)
 
 
     def test_lists_latest_versions(self):
@@ -56,46 +70,6 @@ class CasesTest(case.view.manage.ListViewFinderTestCase):
 
         self.assertNotInList(res, "Old Version")
         self.assertInList(res, "Latest Version")
-
-
-    def test_activate(self):
-        """Can activate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = self.F.CaseVersionFactory.create(status="draft")
-
-        self.get_form().submit(
-            name="action-activate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(self.refresh(cv).status, "active")
-
-
-    def test_activate_requires_manage_cases_permission(self):
-        """Activating requires manage_cases permission."""
-        self.assertActionRequiresPermission("activate", "manage_cases")
-
-
-    def test_deactivate(self):
-        """Can deactivate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = self.F.CaseVersionFactory.create(status="active")
-
-        self.get_form().submit(
-            name="action-deactivate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(self.refresh(cv).status, "disabled")
-
-
-    def test_deactivate_requires_manage_cases_permission(self):
-        """Deactivating requires manage_cases permission."""
-        self.assertActionRequiresPermission("deactivate", "manage_cases")
 
 
     def test_filter_by_status(self):
@@ -322,6 +296,16 @@ class AddCaseTest(case.view.FormViewTestCase):
         step = cv.steps.get()
         self.assertEqual(step.instruction, "Type creds and click login.")
         self.assertEqual(step.expected, "You should see a welcome message.")
+
+
+    def test_prepopulate_from_querystring(self):
+        """Can prepopulate the form via the GET querystring."""
+        self.add_perm("manage_suite_cases")
+
+        s = self.F.SuiteFactory.create()
+        form = self.get_form(params={"initial_suite": str(s.id)})
+
+        self.assertEqual(form.fields["initial_suite"][0].value, str(s.id))
 
 
     def test_error(self):

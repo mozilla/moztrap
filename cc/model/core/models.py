@@ -43,6 +43,7 @@ class Product(CCModel, TeamModel):
             ("manage_products", "Can add/edit/delete products."),
             ("manage_users", "Can add/edit/delete user accounts."),
             ]
+        ordering = ["name"]
 
 
     def clone(self, *args, **kwargs):
@@ -132,8 +133,12 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
         nullifies the constraint entirely, since NULL != NULL in SQL.
 
         """
-        dupes = ProductVersion.objects.filter(
-            product=self.product, version=self.version)
+        try:
+            dupes = ProductVersion.objects.filter(
+                product=self.product, version=self.version)
+        except Product.DoesNotExist:
+            # product is not set or is invalid; dupes are not an issue.
+            return
         if self.pk is not None:
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():

@@ -1,0 +1,19 @@
+{% load pagination %}
+
+<form method="POST" action="{{ request.get_full_path }}" id="manage-suites-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/suite/list/_suites_listordering.html" %}
+
+  {% paginate suites as pager %}
+  {% if pager.objects %}
+    {% for suite in pager.objects %}
+      {% include "manage/suite/list/_suites_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

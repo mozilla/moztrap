@@ -25,27 +25,23 @@ from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
     "",
+    url(r"^$", "cc.view.manage.views.home", name="manage"),
 
-    # product ---------------------------------------------------------------
+    # user ------------------------------------------------------------------
     # manage
-    url(r"^productversions/$",
-        "cc.view.manage.productversions.views.productversions_list",
-        name="manage_productversions"),
-
-    # ajax details
-    url(r"^productversions/_detail/(?P<productversion_id>\d+)/$",
-        "cc.view.manage.productversions.views.productversion_details",
-        name="manage_productversion_details"),
+    url(r"^users/$",
+        "cc.view.manage.users.views.users_list",
+        name="manage_users"),
 
     # add
-    url(r"^productversion/add/$",
-        "cc.view.manage.productversions.views.productversion_add",
-        name="manage_productversion_add"),
+    url(r"^user/add/$",
+        "cc.view.manage.users.views.user_add",
+        name="manage_user_add"),
 
     # edit
-    url(r"^productversion/(?P<productversion_id>\d+)/$",
-        "cc.view.manage.productversions.views.productversion_edit",
-        name="manage_productversion_edit"),
+    url(r"^user/(?P<user_id>\d+)/$",
+        "cc.view.manage.users.views.user_edit",
+        name="manage_user_edit"),
 
     # product ---------------------------------------------------------------
     # manage
@@ -67,6 +63,69 @@ urlpatterns = patterns(
     url(r"^product/(?P<product_id>\d+)/$",
         "cc.view.manage.products.views.product_edit",
         name="manage_product_edit"),
+
+    # productversion ---------------------------------------------------------
+    # manage
+    url(r"^productversions/$",
+        "cc.view.manage.productversions.views.productversions_list",
+        name="manage_productversions"),
+
+    # ajax details
+    url(r"^productversions/_detail/(?P<productversion_id>\d+)/$",
+        "cc.view.manage.productversions.views.productversion_details",
+        name="manage_productversion_details"),
+
+    # add
+    url(r"^productversion/add/$",
+        "cc.view.manage.productversions.views.productversion_add",
+        name="manage_productversion_add"),
+
+    # edit
+    url(r"^productversion/(?P<productversion_id>\d+)/$",
+        "cc.view.manage.productversions.views.productversion_edit",
+        name="manage_productversion_edit"),
+
+    # run --------------------------------------------------------------------
+    # manage
+    url(r"^runs/$",
+        "cc.view.manage.runs.views.runs_list",
+        name="manage_runs"),
+
+    # ajax details
+    url(r"^runs/_detail/(?P<run_id>\d+)/$",
+        "cc.view.manage.runs.views.run_details",
+        name="manage_run_details"),
+
+    # add
+    url(r"^run/add/$",
+        "cc.view.manage.runs.views.run_add",
+        name="manage_run_add"),
+
+    # edit
+    url(r"^run/(?P<run_id>\d+)/$",
+        "cc.view.manage.runs.views.run_edit",
+        name="manage_run_edit"),
+
+    # suite ------------------------------------------------------------------
+    # manage
+    url(r"^suites/$",
+        "cc.view.manage.suites.views.suites_list",
+        name="manage_suites"),
+
+    # ajax details
+    url(r"^suites/_detail/(?P<suite_id>\d+)/$",
+        "cc.view.manage.suites.views.suite_details",
+        name="manage_suite_details"),
+
+    # add
+    url(r"^suite/add/$",
+        "cc.view.manage.suites.views.suite_add",
+        name="manage_suite_add"),
+
+    # edit
+    url(r"^suite/(?P<suite_id>\d+)/$",
+        "cc.view.manage.suites.views.suite_edit",
+        name="manage_suite_edit"),
 
     # testcase ---------------------------------------------------------------
     # manage

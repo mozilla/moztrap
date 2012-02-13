@@ -1,4 +1,4 @@
-<nav class="listordering">
+<nav class="listordering" data-sortfield="{{ sort.field }}" data-sortdirection="{{ sort.direction }}">
   <{{ navhead|default:"h3" }} class="navhead">List Ordering</{{ navhead|default:"h3" }}>
   <ul>
     {% block sortitems %}{% endblock sortitems %}

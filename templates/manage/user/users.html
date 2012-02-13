@@ -1,26 +1,18 @@
 {% extends 'manage/user/base.html' %}
 
-{% block page-notes %}
-<li>Platform does not permit deletion of users.</li>
-{{ block.super }}
-{% endblock %}
+{% load permissions %}
 
-{% block listcontent %}
-<section id="manageusers">
-  <h2>User Management</h2>
+{% block content %}
 
-  {% if "PERMISSION_USER_ACCOUNT_EDIT" in request.user.permissionCodes %}
-  <a href="{% url manage_user_add %}" class="create">create a user</a>
+<section id="manageusers" class="manage listpage">
+  <h2>Manage Users</h2>
+
+  {% if user|has_perm:"core.manage_users" %}
+    <a href="{% url manage_user_add %}" class="create single">create a user</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
-
-  <form method="POST">
-    {% csrf_token %}
-
-    {% include "manage/user/_users_list.html" %}
-
-  </form>
+  {% include "manage/user/list/_users_list.html" %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}

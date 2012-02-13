@@ -23,14 +23,64 @@ from django.conf import settings
 
 from BeautifulSoup import BeautifulSoup
 import django_webtest
+import django_webtest.backends
+
+from cc import model
 
 from ...utils import Url
 from ..base import DBMixin
 
 
 
+class WebtestUserBackend(django_webtest.backends.WebtestUserBackend):
+    """A version of WebtestUserBackend that returns our proxy User model."""
+    def authenticate(self, django_webtest_user):
+        """
+        The username passed as ``remote_user`` is considered trusted.  This
+        method simply returns the ``User`` object with the given username,
+        creating a new ``User`` object if ``create_unknown_user`` is ``True``.
+
+        Returns None if ``create_unknown_user`` is ``False`` and a ``User``
+        object with the given username is not found in the database.
+        """
+        if not django_webtest_user:
+            return
+        user = None
+        username = self.clean_username(django_webtest_user)
+
+        # Note that this could be accomplished in one try-except clause, but
+        # instead we use get_or_create when creating unknown users since it has
+        # built-in safeguards for multiple threads.
+        if self.create_unknown_user:
+            user, created = model.User.objects.get_or_create(username=username)
+            if created:
+                user = self.configure_user(user)
+        else:
+            try:
+                user = model.User.objects.get(username=username)
+            except model.User.DoesNotExist:
+                pass
+        return user
+
+
+    def get_user(self, user_id):
+        """Return instances of our User model."""
+        try:
+            return model.User.objects.get(pk=user_id)
+        except model.User.DoesNotExist:
+            return None
+
+
+
+
 class WebTest(DBMixin, django_webtest.WebTest):
     """Fix WebTest so it works with django-session-csrf, mixin db utilities."""
+    def _setup_auth_backend(self):
+        """Use our subclass of the remote user backend."""
+        backend_name = 'tests.case.view.base.WebtestUserBackend'
+        settings.AUTHENTICATION_BACKENDS.insert(0, backend_name)
+
+
     def _setup_auth_middleware(self):
         """
         Monkeypatch remote-user-auth middleware into MIDDLEWARE_CLASSES.
@@ -132,6 +182,6 @@ class FormViewTestCase(AuthenticatedViewTestCase):
     form_id = None
 
 
-    def get_form(self):
-        """Get the manage list form."""
-        return self.get().forms[self.form_id]
+    def get_form(self, *args, **kwargs):
+        """Get the manage list form; passes args/kwargs on to self.get()."""
+        return self.get(*args, **kwargs).forms[self.form_id]

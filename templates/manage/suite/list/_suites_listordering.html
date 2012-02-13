@@ -1,0 +1,7 @@
+{% extends 'lists/_listordering.html' %}
+
+{% block sortitems %}
+  {% include "lists/_sortitem.html" with sortname="status" sortID="status" %}
+  {% include "lists/_sortitem.html" with sortname="name (cases)" sortID="name" %}
+  {% include "lists/_sortitem.html" with sortname="product" sortID="product" %}
+{% endblock sortitems %}

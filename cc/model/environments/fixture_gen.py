@@ -18,10 +18,9 @@
 """Sample environments fixture generator."""
 import itertools
 
-from django.contrib.auth.models import User
-
 from fixture_generator import fixture_generator
 
+from ..core.auth import User
 from .models import Profile, Environment, Element, Category
 
 @fixture_generator(

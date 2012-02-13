@@ -1,0 +1,20 @@
+{% extends 'manage/suite/base.html' %}
+
+{% block content %}
+<section class="{% block sectionid %}{% endblock %}">
+  <h2>{% block formtitle %}{% endblock %}</h2>
+  {% block formtop %}{% endblock %}
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
+    {% csrf_token %}
+
+    {% include "forms/_field.html" with field=form.product %}
+    {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.description %}
+    {% include "forms/_field.html" with field=form.status %}
+
+    <div class="form-actions">
+      <button type="submit">save suite</button>
+    </div>
+  </form>
+</section>
+{% endblock content %}

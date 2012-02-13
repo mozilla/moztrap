@@ -26,12 +26,15 @@ from cc.view.lists import filters
 
 class ProductVersionFilterSet(filters.FilterSet):
     """FilterSet for Product versions."""
-
-
     filters = [
         filters.ModelFilter("product", queryset=model.Product.objects.all()),
         filters.KeywordFilter("version"),
         filters.KeywordFilter("codename"),
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
+        filters.ModelFilter(
+            "environment element",
+            lookup="environments__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
         ]

@@ -41,11 +41,11 @@ class CreateDefaultRolesTest(case.DBTestCase):
         return stdout.read()
 
 
-    def assertGroups(self, *groups):
+    def assertRoles(self, *groups):
         """Assert that the given set of group names, and only those, exist."""
 
         self.assertEqual(
-            set([g.name for g in self.model.Group.objects.all()]),
+            set([g.name for g in self.model.Role.objects.all()]),
             set(groups)
             )
 
@@ -54,30 +54,30 @@ class CreateDefaultRolesTest(case.DBTestCase):
         """Command creates expected roles."""
         self.call_command()
 
-        self.assertGroups("Tester", "Test Creator", "Test Manager", "Admin")
+        self.assertRoles("Tester", "Test Creator", "Test Manager", "Admin")
 
 
     def test_skips_existing_roles(self):
         """Command skips roles that already exist."""
-        self.model.Group.objects.create(name="Tester")
+        self.model.Role.objects.create(name="Tester")
 
         output = self.call_command()
 
         self.assertIn("Role 'Tester' already exists; skipping.", output)
 
-        self.assertGroups("Tester", "Test Creator", "Test Manager", "Admin")
+        self.assertRoles("Tester", "Test Creator", "Test Manager", "Admin")
 
 
     def test_unknown_permission(self):
         """Gracefully skips unknown permission."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.GROUPS",
+            "cc.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command()
 
         self.assertIn("Permission 'foo.foo' unknown; skipping.", output)
 
-        self.assertGroups("Foo")
+        self.assertRoles("Foo")
 
 
     def test_normal_output(self):
@@ -126,7 +126,7 @@ Role 'Tester' created.
 
     def test_skips_existing_roles_quietly(self):
         """Command skips roles with no output when verbosity 0."""
-        self.model.Group.objects.create(name="Tester")
+        self.model.Role.objects.create(name="Tester")
 
         output = self.call_command(verbosity=0)
 
@@ -136,7 +136,7 @@ Role 'Tester' created.
     def test_skips_unknown_permission_quietly(self):
         """Skips unknown permission silently with verbosity 0."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.GROUPS",
+            "cc.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command(verbosity=0)
 

@@ -159,6 +159,8 @@ CACHES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = ["cc.model.core.auth.ModelBackend"]
+
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 # A sample logging configuration. The only tangible logging

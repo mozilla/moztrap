@@ -127,7 +127,7 @@ class ListViewTestCase(base.FormViewTestCase):
 
         res = self.get()
 
-        res.mustcontain("Foo Bar")
+        self.assertInList(res, "Foo Bar")
 
 
     def test_delete(self):
@@ -150,6 +150,24 @@ class ListViewTestCase(base.FormViewTestCase):
         self.assertActionRequiresPermission("delete")
 
 
+    def test_create_link(self):
+        """With proper perm, create link is there."""
+        self.add_perm(self.perm)
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create")
+
+
+    def test_create_link_requires_perms(self):
+        """Without proper perm, create link is not there."""
+        res = self.get()
+
+        self.assertElement(res.html, "a", "create", count=0)
+
+
+
+class CCModelListTests(object):
+    """Additional manage list view tests for CCModels."""
     def test_clone(self):
         """Can clone objects in list."""
         self.add_perm(self.perm)
@@ -166,8 +184,8 @@ class ListViewTestCase(base.FormViewTestCase):
             res.json["html"], "h3", "title", count=2)
 
 
-    def test_clone_requires_manage_cases_permission(self):
-        """Cloning requires manage_cases permission."""
+    def test_clone_requires_permission(self):
+        """Cloning requires appropriate permission."""
         self.assertActionRequiresPermission("clone")
 
 
@@ -195,8 +213,53 @@ class ListViewTestCase(base.FormViewTestCase):
 
 
 
-class ListViewFinderTestCase(ListViewTestCase):
-    """Test case for manage lists with finder."""
+class StatusListTests(object):
+    """Extra tests for manage lists with activated/deactivate actions."""
+    def test_activate(self):
+        """Can activate objects in list."""
+        self.add_perm(self.perm)
+
+        s = self.factory.create(status="draft")
+
+        self.get_form().submit(
+            name="action-activate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertEqual(self.refresh(s).status, "active")
+
+
+    def test_activate_requires_permission(self):
+        """Activating requires appropriate permission."""
+        self.assertActionRequiresPermission("activate", self.perm)
+
+
+    def test_deactivate(self):
+        """Can deactivate objects in list."""
+        self.add_perm(self.perm)
+
+        s = self.factory.create(status="active")
+
+        self.get_form().submit(
+            name="action-deactivate",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertEqual(self.refresh(s).status, "disabled")
+
+
+    def test_deactivate_requires_permission(self):
+        """Deactivating requires appropriate permission."""
+        self.assertActionRequiresPermission("deactivate", self.perm)
+
+
+
+
+
+class ListFinderTests(object):
+    """Extra tests for manage lists with finder."""
     def test_finder(self):
         """Finder is present in context with list of products."""
         p = self.F.ProductFactory.create(name="Foo Product")

@@ -33,7 +33,7 @@ var CC = (function (CC, $) {
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('#suite-form .caseselect').multiselect();
+        // $('#suite-form .caseselect').multiselect();
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -72,27 +72,27 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        $('#editprofile .add-item').customAutocomplete({
-            textbox: '#env-elements-input',
-            inputList: '.env-element-list',
-            ajax: true,
-            url: $('#env-elements-input').data('autocomplete-url'),
-            hideFormActions: true,
-            expiredList: '.env-element-list',
-            inputType: 'element',
-            caseSensitive: true,
-            prefix: 'element'
-        });
-        $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
-            textbox: '#search-add',
-            inputList: '.groups .filter-group:not(.keyword)',
-            newInputList: '.groups .filter-group.keyword',
-            multipleCategories: true,
-            allowNew: true,
-            triggerSubmit: null,
-            inputsNeverRemoved: true,
-            prefix: 'filter'
-        });
+        // $('#editprofile .add-item').customAutocomplete({
+        //     textbox: '#env-elements-input',
+        //     inputList: '.env-element-list',
+        //     ajax: true,
+        //     url: $('#env-elements-input').data('autocomplete-url'),
+        //     hideFormActions: true,
+        //     expiredList: '.env-element-list',
+        //     inputType: 'element',
+        //     caseSensitive: true,
+        //     prefix: 'element'
+        // });
+        // $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
+        //     textbox: '#search-add',
+        //     inputList: '.groups .filter-group:not(.keyword)',
+        //     newInputList: '.groups .filter-group.keyword',
+        //     multipleCategories: true,
+        //     allowNew: true,
+        //     triggerSubmit: null,
+        //     inputsNeverRemoved: true,
+        //     prefix: 'filter'
+        // });
         $('.runsdrill').html5finder({
             loading: true,
             headerSelector: '.listordering',
@@ -121,26 +121,15 @@ var CC = (function (CC, $) {
             sectionContentSelector: '.colcontent',
             numberCols: 4
         });
-        $('.resultsdrill').html5finder({
-            loading: true,
-            horizontalScroll: true,
-            scrollContainer: '.finder',
-            headerSelector: '.listordering',
-            sectionSelector: '.col',
-            sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testrunincludedtestcase"]'
-            ]
-        });
+        // $('.resultsdrill').html5finder({
+        //     loading: true,
+        //     horizontalScroll: true,
+        //     scrollContainer: '.finder',
+        //     headerSelector: '.listordering',
+        //     sectionSelector: '.col',
+        //     sectionContentSelector: '.colcontent',
+        //     numberCols: 4
+        // });
 
         // local.js
         CC.inputHadFocus();
@@ -148,26 +137,32 @@ var CC = (function (CC, $) {
         // account.js
         CC.changePwdCancel();
 
-        // manage-results.js
-        CC.toggleAdvancedFiltering('#filter');
+        // listpages.js
         CC.loadListItemDetails();
         CC.manageActionsAjax();
+        CC.listActionAjax(
+            '.manage, .results',
+            '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
+        );
+
+        // filtering.js
+        CC.toggleAdvancedFiltering('#filter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
 
         // manage-products.js
-        CC.formOptionsFilter({
-            container: '#addsuite',
-            trigger_sel: '#id_product',
-            target_sel: '.multiunselected .select',
-            option_sel: '.selectitem',
-            multiselect_widget_bool: true
-        });
-        CC.formOptionsFilter({
-            container: '#addrun',
-            trigger_sel: '#id_test_cycle',
-            target_sel: '#id_suites'
-        });
+        // CC.formOptionsFilter({
+        //     container: '#addsuite',
+        //     trigger_sel: '#id_product',
+        //     target_sel: '.multiunselected .select',
+        //     option_sel: '.selectitem',
+        //     multiselect_widget_bool: true
+        // });
+        // CC.formOptionsFilter({
+        //     container: '#addrun',
+        //     trigger_sel: '#id_productversion',
+        //     target_sel: '#id_suites'
+        // });
         CC.formOptionsFilter({
             container: '#single-case-add',
             trigger_sel: '#id_product',
@@ -191,16 +186,15 @@ var CC = (function (CC, $) {
             optional: true
         });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
-        CC.testcaseAttachments('.attach');
-        CC.testcaseVersioning('#addcase');
-        CC.envNarrowing('#envnarrowlist');
+        CC.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
-        CC.createEnvProfile();
-        CC.editEnvProfile();
+        // CC.createEnvProfile();
+        // CC.editEnvProfile();
+        // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js
-        CC.manageTags('#managetags');
+        // CC.manageTags('#managetags');
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();
@@ -213,8 +207,11 @@ var CC = (function (CC, $) {
     });
 
     $(window).load(function () {
-        // manage-results.js
-        CC.openListItemDetails();
+        // listpages.js
+        CC.openListItemDetails('.listpage');
+
+        // filtering.js
+        CC.removeInitialFilterParams('#filter');
     });
 
     return CC;

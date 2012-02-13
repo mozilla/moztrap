@@ -25,10 +25,10 @@ from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .... import model
+from cc import model
 
-from ...lists import decorators as lists
-from ...utils.ajax import ajax
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
@@ -41,16 +41,16 @@ from . import forms
 @lists.actions(
     model.ProductVersion,
     ["delete", "clone"],
-    permission="core.manage_productversions")
+    permission="core.manage_products")
 @lists.finder(ManageFinder)
 @lists.filter("productversions", filterset_class=ProductVersionFilterSet)
 @lists.sort("productversions")
-@ajax("manage/product/productversion/list/_productversions_list.html")
+@ajax("manage/productversion/list/_productversions_list.html")
 def productversions_list(request):
     """List productversions."""
     return TemplateResponse(
         request,
-        "manage/product/productversion/productversions.html",
+        "manage/productversion/productversions.html",
         {
             "productversions": model.ProductVersion.objects.select_related(
                 "product"),
@@ -66,7 +66,7 @@ def productversion_details(request, productversion_id):
         model.ProductVersion, pk=productversion_id)
     return TemplateResponse(
         request,
-        "manage/product/productversion/list/_productversion_details.html",
+        "manage/productversion/list/_productversion_details.html",
         {
             "productversion": productversion
             }
@@ -74,9 +74,9 @@ def productversion_details(request, productversion_id):
 
 
 
-@permission_required("core.manage_productversions")
+@permission_required("core.manage_products")
 def productversion_add(request):
-    """Add a single case."""
+    """Add a product version."""
     if request.method == "POST":
         form = forms.AddProductVersionForm(request.POST, user=request.user)
         if form.is_valid():
@@ -90,7 +90,7 @@ def productversion_add(request):
         form = forms.AddProductVersionForm(user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/productversion/add_productversion.html",
+        "manage/productversion/add_productversion.html",
         {
             "form": form
             }
@@ -98,7 +98,7 @@ def productversion_add(request):
 
 
 
-@permission_required("core.manage_productversions")
+@permission_required("core.manage_products")
 def productversion_edit(request, productversion_id):
     """Edit a productversion."""
     productversion = get_object_or_404(
@@ -107,15 +107,15 @@ def productversion_edit(request, productversion_id):
         form = forms.EditProductVersionForm(
             request.POST, instance=productversion, user=request.user)
         if form.is_valid():
-            cv = form.save()
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            pv = form.save()
+            messages.success(request, "Saved '{0}'.".format(pv.name))
             return redirect("manage_productversions")
     else:
         form = forms.EditProductVersionForm(
             instance=productversion, user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/productversion/edit_productversion.html",
+        "manage/productversion/edit_productversion.html",
         {
             "form": form,
             "productversion": productversion,

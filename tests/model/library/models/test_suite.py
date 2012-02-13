@@ -60,6 +60,14 @@ class SuiteTest(case.DBTestCase):
             new.full_clean()
 
 
+    def test_unique_constraint_with_unset_case_and_suite(self):
+        """Uniqueness checking doesn't blow up if suite/case unset."""
+        new = self.model.SuiteCase()
+
+        with self.assertRaises(ValidationError):
+            new.full_clean()
+
+
     def test_unique_constraint_doesnt_prevent_edit(self):
         """Unique constraint still allows saving an edited existing object."""
         sc = self.F.SuiteCaseFactory.create()

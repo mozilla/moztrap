@@ -38,8 +38,8 @@
           <a href="{# @@@ url results #}">View Results</a>
           <div class="secondary">
             <ol>
-              <li class="{% block resultcycle-active-nav %}{% endblock resultcycle-active-nav %}">
-                <a href="{# @@@ url results_testcycles #}?filter-status=2">Test Cycles</a>
+              <li class="{% block resultproductversion-active-nav %}{% endblock resultproductversion-active-nav %}">
+                <a href="{# @@@ url results_productversions #}?filter-status=2">Product Versions</a>
               </li>
               <li class="{% block resultrun-active-nav %}{% endblock resultrun-active-nav %}">
                 <a href="{# @@@ url results_testruns #}">Test Runs</a>
@@ -52,11 +52,11 @@
         </li>
 
         <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %}">
-          <a href="{# @@@ url manage #}">Manage</a>
+          <a href="{% url manage %}">Manage</a>
           <div class="secondary">
             <ul>
               <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %}">
-                <a href="{# @@@ url manage_users #}">Users</a>
+                <a href="{% url manage_users %}">Users</a>
               </li>
               <li class="{% block managetag-active-nav %}{% endblock managetag-active-nav %}">
                 <a href="{# @@@ url manage_tags #}">Tags</a>
@@ -73,10 +73,10 @@
                     <a href="{% url manage_productversions %}">Versions</a>
                   </li>
                   <li class="{% block managerun-active-nav %}{% endblock managerun-active-nav %}">
-                    <a href="{# @@@ url manage_testruns #}">Runs</a>
+                    <a href="{% url manage_runs %}">Runs</a>
                   </li>
                   <li class="{% block managesuite-active-nav %}{% endblock managesuite-active-nav %}">
-                    <a href="{# @@@ url manage_testsuites #}">Suites</a>
+                    <a href="{% url manage_suites %}">Suites</a>
                   </li>
                   <li class="{% block managecase-active-nav %}{% endblock managecase-active-nav %}">
                     <a href="{% url manage_cases %}">Cases</a>

@@ -109,13 +109,13 @@ class RunTest(case.DBTestCase):
         self.assertNotEqual(new.runsuites.get(), rs)
 
 
-    def test_clone_included_caseversion(self):
-        """Cloning a run clones all member RunCaseVersions."""
+    def test_clone_no_run_caseversions(self):
+        """Cloning a run does not clone member RunCaseVersions."""
         rcv = self.F.RunCaseVersionFactory.create()
 
         new = rcv.run.clone()
 
-        self.assertNotEqual(new.runcaseversions.get(), rcv)
+        self.assertEqual(new.runcaseversions.count(), 0)
 
 
     def test_clone_environments(self):
@@ -148,15 +148,6 @@ class RunTest(case.DBTestCase):
         new = r.clone()
 
         self.assertEqual(len(new.team.all()), 2)
-
-
-    def test_clone_no_results(self):
-        """Cloning a run does not clone any results."""
-        r = self.F.ResultFactory.create()
-
-        new = r.runcaseversion.run.clone()
-
-        self.assertEqual(new.runcaseversions.get().results.count(), 0)
 
 
     def test_gets_productversion_envs(self):

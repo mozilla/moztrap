@@ -24,11 +24,10 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.db import connection, models
 
-from django.contrib.auth.models import User
-
 from model_utils import Choices
 
 from ..ccmodel import CCModel, TeamModel, DraftStatusModel, utcnow
+from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
@@ -79,7 +78,7 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def clone(self, *args, **kwargs):
         """Clone this Run with default cascade behavior."""
         kwargs.setdefault(
-            "cascade", ["runcaseversions", "runsuites", "environments", "team"])
+            "cascade", ["runsuites", "environments", "team"])
         overrides = kwargs.setdefault("overrides", {})
         overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))

@@ -45,11 +45,12 @@ class AddProductVersionForm(EditProductVersionForm):
     """Form for adding a productversion."""
     class Meta(EditProductVersionForm.Meta):
         fields = ["product", "version", "codename"]
-        widgets = {
-            "product": forms.Select,
-            "version": forms.TextInput,
-            "codename": forms.TextInput,
-            }
+        widgets = EditProductVersionForm.Meta.widgets.copy()
+        widgets.update(
+            {
+                "product": forms.Select,
+                }
+            )
 
 
     def __init__(self, *args, **kwargs):

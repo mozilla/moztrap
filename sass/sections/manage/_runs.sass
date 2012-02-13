@@ -1,0 +1,35 @@
+#manageruns
+
+  .listordering, .itemhead, .itembody .content
+    padding-left: rhythm(2.5)
+
+  .name, .byname
+    +columns(11,23)
+
+  .product-version, .byproduct-version,
+  .start-date, .bystart-date, .end-date, .byend-date
+    +columns(4,23)
+
+  .end-date, .byend-date
+    +omega(23)
+
+  .title
+    +demi
+    display: inline
+
+  .iteminfo
+    +columns(11,23)
+
+  .envs, .suites, .testers
+    +columns(4,23)
+  .envs
+    +omega(23)
+
+  .suites, .testers
+    @extend .detailslist
+  .suites-title, .testers-title
+    @extend .detailstitle
+
+  .iteminfo
+    + .suites
+      +prefix(4,23)
