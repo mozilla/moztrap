@@ -166,8 +166,23 @@ class FieldFilterTests(case.TestCase):
         self.assertTrue(self.ccforms.is_checkbox(f["awesome"]))
 
 
-    def test_detect_(self):
-        """``is_checkbox`` detects checkboxes."""
+    def test_detect_non_checkbox(self):
+        """``is_checkbox`` detects that select fields are not checkboxes."""
         f = self.form()
 
         self.assertFalse(self.ccforms.is_checkbox(f["level"]))
+
+
+    def test_is_readonly(self):
+        """`is_readonly` detects the presence of a True readonly attribute."""
+        f = self.form()
+        f.fields["level"].readonly = True
+
+        self.assertTrue(self.ccforms.is_readonly(f["level"]))
+
+
+    def test_is_not_readonly(self):
+        """`is_readonly` detects the absence of a True readonly attribute."""
+        f = self.form()
+
+        self.assertFalse(self.ccforms.is_readonly(f["level"]))

@@ -370,3 +370,22 @@ class EditRunTest(case.view.FormViewTestCase):
         res = form.submit(status=200)
 
         res.mustcontain("This field is required.")
+
+
+    def test_active_run_product_version_readonly(self):
+        """If editing active run, product version field is read only."""
+        self.testrun.status = self.testrun.STATUS.active
+        self.testrun.save()
+        pv = self.testrun.productversion
+
+        res = self.get()
+
+        div = res.html.find("div", "product-version-field")
+        self.assertEqual(div.find("span", "ro-value").text, unicode(pv))
+        self.assertEqual(
+            div.find(
+                "input",
+                attrs={"name": "productversion", "type": "hidden"}
+                )["value"],
+            unicode(pv.id)
+            )

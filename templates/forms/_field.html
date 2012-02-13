@@ -1,8 +1,8 @@
 {% load ccforms %}
-<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if read_only %} readonly{% endif %}{% if field.errors %} errors{% endif %}">
-  {% if read_only %}
-    <strong class="ro-label">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</dt>
-    <span class="ro-value">{{ field|value_text }}</dd>
+<div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field|is_readonly %} readonly{% endif %}{% if field.errors %} errors{% endif %}">
+  {% if field|is_readonly %}
+    <strong class="ro-label">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</strong>
+    <span class="ro-value">{{ field|value_text }}</span>
     {{ field.as_hidden }}
   {% else %}
 

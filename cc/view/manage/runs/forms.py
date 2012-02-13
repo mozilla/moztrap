@@ -68,6 +68,7 @@ class EditRunForm(RunForm):
             # can't change the product version of an active run.
              pvf.queryset = pvf.queryset.filter(
                  pk=self.instance.productversion_id)
+             pvf.readonly = True
         else:
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
