@@ -32,24 +32,24 @@ class ManageFinder(finder.Finder):
             "products",
             "_products.html",
             model.Product.objects.order_by("name"),
-            # @@@ "manage_productversions",
+            "manage_productversions",
             ),
         finder.Column(
             "productversions",
             "_productversions.html",
             model.ProductVersion.objects.all(),
-            # @@@ "manage_runs"
+            "manage_runs",
             ),
         finder.Column(
             "runs",
             "_runs.html",
             model.Run.objects.order_by("start"),
-            # @@@ "manage_suites"
+            "manage_suites",
             ),
         finder.Column(
             "suites",
             "_suites.html",
             model.Suite.objects.order_by("name"),
-            "manage_cases"
+            "manage_cases",
             ),
         ]
