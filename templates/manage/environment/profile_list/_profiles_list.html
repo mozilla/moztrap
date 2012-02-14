@@ -1,0 +1,19 @@
+{% load pagination %}
+
+<form method="POST" action="{{ request.get_full_path }}" id="manage-profiles-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/environment/profile_list/_profiles_listordering.html" %}
+
+  {% paginate profiles as pager %}
+  {% if pager.objects %}
+    {% for profile in pager.objects %}
+      {% include "manage/environment/profile_list/_profile_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

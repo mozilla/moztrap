@@ -1,20 +1,18 @@
 {% extends 'manage/environment/base.html' %}
 
-{% block listcontent %}
-<section id="manageprofiles">
+{% load permissions %}
+
+{% block content %}
+
+<section id="manageprofiles" class="manage listpage">
   <h2>Manage Environment Profiles</h2>
 
-  {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-  <a href="{% url manage_environment_add %}" class="create">create a profile</a>
+  {% if user|has_perm:"environments.manage_environments" %}
+    <a href="{# @@@ url manage_environment_add #}" class="create single">create a profile</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
+  {% include "manage/environment/profile_list/_profiles_list.html" %}
 
-  <form method="POST">
-    {% csrf_token %}
-
-    {% include "manage/environment/_profiles_list.html" %}
-
-  </form>
 </section>
-{% endblock listcontent %}
+{% endblock content %}

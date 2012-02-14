@@ -179,4 +179,10 @@ urlpatterns = patterns(
     url(r"^tags/_autocomplete/",
         "tags.views.tag_autocomplete",
         name="manage_tags_autocomplete"),
+
+    # environments -----------------------------------------------------------
+    # manage
+    url(r"^profiles/$",
+        "environments.views.profiles_list",
+        name="manage_profiles"),
 )
