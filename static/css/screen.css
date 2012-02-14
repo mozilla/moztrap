@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, .category-title, .multi-header, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, .category-title, .multi-header, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -1153,7 +1153,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .results-summary a, .completion {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1169,10 +1169,10 @@ body > div {
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
-.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited {
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
 }
-.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active {
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .results-summary a a:active, .completion a:active {
   color: #4f1114;
 }
 
@@ -1633,7 +1633,7 @@ body > div {
   background-image: url('../images/ui/arrow_left.png?1327353019');
 }
 
-.detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites {
+.detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites, #runresults .testers {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-height: 18em;
   overflow-y: auto;
@@ -2214,6 +2214,64 @@ body > div {
   background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   padding: 0;
+}
+
+.results-summary {
+  list-style-type: none;
+}
+.results-summary, .results-summary li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+.results-summary .context {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.results-summary a {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 0em;
+  width: 32%;
+  text-align: left;
+}
+.results-summary a::before {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+  margin-right: 0.375em;
+}
+.results-summary a:focus::before, .results-summary a:hover::before, .results-summary a:active::before {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+.results-summary a.invalidated {
+  background-color: #fef0bd;
+}
+.results-summary a.invalidated::before {
+  content: url('../images/ui/warning_sm.png?1326735333');
+}
+.results-summary a.failed {
+  background-color: #f5d1d2;
+}
+.results-summary a.failed::before {
+  content: url('../images/ui/x_sm.png?1326735333');
+}
+.results-summary a.passed {
+  background-color: #e4f5d1;
+}
+.results-summary a.passed::before {
+  content: url('../images/ui/check_sm.png?1326735333');
+}
+.results-summary a.zip {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
 }
 
 .itemlist {
@@ -4474,8 +4532,19 @@ body.login input, body.login .errorlist {
 .completion, .bycompletion {
   display: inline;
   float: left;
-  width: 3.297%;
+  width: 7.692%;
   margin-right: 1.099%;
+}
+
+.completion {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 0em;
+  text-align: center;
+}
+.completion::after {
+  content: "%";
 }
 
 .bycompletion {
@@ -4487,8 +4556,48 @@ body.login input, body.login .errorlist {
   content: "%";
 }
 
-#runresults .listordering, #runresults .itemhead {
+#runresults .listordering, #runresults .itemhead, #runresults .item-content {
   padding-left: 3.75em;
+}
+#runresults .name, #runresults .byname, #runresults .product-version, #runresults .byproduct-version, #runresults .results-summary, #runresults .byresults {
+  display: inline;
+  float: left;
+  width: 20.879%;
+  margin-right: 1.099%;
+}
+#runresults .start, #runresults .bystart, #runresults .end, #runresults .byend {
+  display: inline;
+  float: left;
+  width: 12.088%;
+  margin-right: 1.099%;
+}
+#runresults .results-summary, #runresults .byresults {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  text-align: right;
+}
+#runresults .name {
+  font-weight: 500;
+}
+#runresults .iteminfo {
+  display: inline;
+  float: left;
+  width: 56.044%;
+  margin-right: 1.099%;
+}
+#runresults .envs, #runresults .testers {
+  display: inline;
+  float: left;
+  width: 20.879%;
+  margin-right: 1.099%;
+}
+#runresults .envs {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
 }
 
 .runenvselect {

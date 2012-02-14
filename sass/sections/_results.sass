@@ -2,7 +2,15 @@
 // Results General
 
 .completion, .bycompletion
-  +columns(1,23)
+  +columns(2,23)
+
+.completion
+  @extend .chick
+  +box-sizing(border-box)
+  +trailer(0)
+  text-align: center
+  &::after
+    content: "%"
 
 .bycompletion
   overflow: hidden

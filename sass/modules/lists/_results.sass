@@ -1,0 +1,31 @@
+.results-summary
+  +inline-list
+  .context
+    +gone
+
+  a
+    @extend .chick
+    +box-sizing(border-box)
+    +trailer(0)
+    width: 32%
+    text-align: left
+    &::before
+      +opacity(.75)
+      margin-right: rhythm(.25)
+    #{$focus}
+      &::before
+        +opacity(1)
+    &.invalidated
+      background-color: $yellow-light
+      &::before
+        content: image-url('ui/warning_sm.png')
+    &.failed
+      background-color: $red-lightest
+      &::before
+        content: image-url('ui/x_sm.png')
+    &.passed
+      background-color: $green-lightest
+      &::before
+        content: image-url('ui/check_sm.png')
+    &.zip
+      +opacity(0)
