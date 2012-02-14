@@ -350,8 +350,15 @@ def result_summary(results):
     """
     states = Result.COMPLETED_STATES
 
+    result_ids = results.values_list("id", flat=True)
+
+    if not result_ids:
+        return dict((s, 0) for s in states)
+
     cols = ["COUNT(CASE WHEN status=%s THEN 1 ELSE NULL END)"] * len(states)
-    sql = "SELECT {0} FROM {1}".format(", ".join(cols), Result._meta.db_table)
+    sql = "SELECT {0} FROM {1} WHERE id IN ({2})".format(
+        ",".join(cols), Result._meta.db_table, ",".join(map(str, result_ids))
+        )
 
     cursor = connection.cursor()
     cursor.execute(sql, states)

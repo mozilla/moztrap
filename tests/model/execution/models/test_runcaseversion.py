@@ -161,6 +161,23 @@ class RunCaseVersionTest(case.DBTestCase):
                 }
             )
 
+
+    def test_result_summary_specific(self):
+        """``result_summary`` has results only from one runcaseversion."""
+        rcv = self.F.RunCaseVersionFactory()
+        self.F.ResultFactory(runcaseversion=rcv, status="passed")
+
+        rcv2 = self.F.RunCaseVersionFactory()
+
+        self.assertEqual(
+            rcv2.result_summary(),
+            {
+                "passed": 0,
+                "failed": 0,
+                "invalidated": 0,
+                }
+            )
+
     def test_result_summary_empty(self):
         """Empty slots in result summary still contain 0."""
         rcv = self.F.RunCaseVersionFactory()
