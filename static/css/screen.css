@@ -1597,6 +1597,9 @@ body > div {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-color: rgba(75, 87, 101, 0.296);
 }
+.itemhead p {
+  margin: 0;
+}
 .itemhead .tags {
   list-style-type: none;
 }
@@ -3926,6 +3929,26 @@ body.login input, body.login .errorlist {
   content: "";
 }
 #manageusers .title {
+  display: inline;
+}
+
+#managetags .itemhead {
+  padding-left: 0.75em;
+}
+#managetags .name, #managetags .byname, #managetags .product, #managetags .byproduct, #managetags .byline, #managetags .bybyline {
+  display: inline;
+  float: left;
+  width: 32.632%;
+  margin-right: 1.053%;
+}
+#managetags .byline, #managetags .bybyline {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#managetags .title {
+  font-weight: 500;
   display: inline;
 }
 

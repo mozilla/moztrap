@@ -1,7 +1,7 @@
 {% load permissions %}
 
 <article id="tag-id-{{ tag.id }}" class="listitem">
-  <header class="itemhead">
+  <div class="itemhead">
 
     <div class="name">
 
@@ -19,11 +19,7 @@
     </div>
 
     <div class="product">{{ tag.product }}</div>
+    {% include "lists/_byline.html" with item=tag %}
 
-  </header>
-
-  {% url manage_tag_details tag.id as details_url %}
-  {# _tag_details.html loaded via ajax #}
-  {% include "lists/_itembody.html" %}
-
+  </div>
 </article>
