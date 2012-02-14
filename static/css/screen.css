@@ -1153,7 +1153,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1169,23 +1169,23 @@ body > div {
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
-.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, #filter .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, #filter .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited {
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited {
   color: #4b5765;
 }
-.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, #filter .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, #filter .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, #filter .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active {
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active {
   color: #4f1114;
 }
 
-.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff {
+.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, #filter .compact .filter-item .content {
+.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1193,12 +1193,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, #filter .compact .filter-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, #filter .compact .filter-item .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1215,10 +1215,10 @@ body > div {
   width: 1.5em;
 }
 
-.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, #filter .compact .filter-item {
+.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item {
   display: inline;
 }
-.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, #filter .compact .filter-item .check {
+.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, .magicfilter .compact .filter-item .check, .selectsearch .compact .filter-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1228,10 +1228,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, #filter .compact .filter-item .onoff {
+.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, #filter .compact .filter-item .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff {
   display: inline-block;
 }
 
@@ -2668,13 +2668,13 @@ body > div {
   background-image: url('../images/ui/refresh.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
-#filter .textual {
+.magicfilter .textual, .selectsearch .textual {
   display: inline;
   float: left;
   width: 36.842%;
   margin-right: 1.053%;
 }
-#filter .textual label {
+.magicfilter .textual label, .selectsearch .textual label {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -2684,25 +2684,25 @@ body > div {
   width: 1px;
   border: 0;
 }
-#filter .onoff {
+.magicfilter .onoff, .selectsearch .onoff {
   white-space: nowrap;
 }
-#filter .compact .toggle a:link::after, #filter .compact .toggle a:visited::after {
+.magicfilter .compact .toggle a:link::after, .selectsearch .compact .toggle a:link::after, .magicfilter .compact .toggle a:visited::after, .selectsearch .compact .toggle a:visited::after {
   content: " »";
 }
-#filter .compact .filter-group, #filter .compact .filter-items {
+.magicfilter .compact .filter-group, .selectsearch .compact .filter-group, .magicfilter .compact .filter-items, .selectsearch .compact .filter-items {
   display: inline;
 }
-#filter .compact .filter-items {
+.magicfilter .compact .filter-items, .selectsearch .compact .filter-items {
   margin: 0;
 }
-#filter .compact .category-title, #filter .compact .addterm {
+.magicfilter .compact .category-title, .selectsearch .compact .category-title, .magicfilter .compact .addterm, .selectsearch .compact .addterm {
   display: none;
 }
-#filter .expanded .toggle a:link::before, #filter .expanded .toggle a:visited::before {
+.magicfilter .expanded .toggle a:link::before, .selectsearch .expanded .toggle a:link::before, .magicfilter .expanded .toggle a:visited::before, .selectsearch .expanded .toggle a:visited::before {
   content: "« ";
 }
-#filter .expanded .filter-group {
+.magicfilter .expanded .filter-group, .selectsearch .expanded .filter-group {
   display: inline;
   float: left;
   width: 11.579%;
@@ -2710,19 +2710,19 @@ body > div {
   margin-bottom: 0.75em;
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-#filter .expanded .filter-group.empty {
+.magicfilter .expanded .filter-group.empty, .selectsearch .expanded .filter-group.empty {
   display: none;
 }
-#filter .expanded .filter-group:nth-of-type(8n) {
+.magicfilter .expanded .filter-group:nth-of-type(8n), .selectsearch .expanded .filter-group:nth-of-type(8n) {
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
 }
-#filter .expanded .filter-group:nth-of-type(8n+1) {
+.magicfilter .expanded .filter-group:nth-of-type(8n+1), .selectsearch .expanded .filter-group:nth-of-type(8n+1) {
   clear: left;
 }
-#filter .expanded .long {
+.magicfilter .expanded .long, .selectsearch .expanded .long {
   overflow: hidden;
   height: 7.5em;
   min-height: 7.5em;
@@ -2730,35 +2730,35 @@ body > div {
   border-bottom: 1px solid rgba(81, 105, 133, 0.667);
   resize: vertical;
 }
-#filter .expanded .long:hover {
+.magicfilter .expanded .long:hover, .selectsearch .expanded .long:hover {
   overflow-y: auto;
 }
-#filter .expanded .check, #filter .expanded .content {
+.magicfilter .expanded .check, .selectsearch .expanded .check, .magicfilter .expanded .content, .selectsearch .expanded .content {
   display: none;
 }
-#filter .expanded .onoffswitch {
+.magicfilter .expanded .onoffswitch, .selectsearch .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
   padding-left: 28px;
 }
-#filter .expanded .onoff {
+.magicfilter .expanded .onoff, .selectsearch .expanded .onoff {
   display: block;
   background: url('../images/ui/x_sm.png?1326735333') no-repeat scroll 9px;
 }
-#filter .expanded .onoff:hover {
+.magicfilter .expanded .onoff:hover, .selectsearch .expanded .onoff:hover {
   font-weight: 500;
 }
-#filter .expanded .check:checked + .onoff {
+.magicfilter .expanded .check:checked + .onoff, .selectsearch .expanded .check:checked + .onoff {
   font-weight: 500;
   background-image: url('../images/ui/check_sm.png?1326735333');
 }
-#filter .expanded .check:checked + .onoff:hover {
+.magicfilter .expanded .check:checked + .onoff:hover, .selectsearch .expanded .check:checked + .onoff:hover {
   background-image: url('../images/ui/x_sm.png?1326735333');
 }
-#filter .keyword .content::before, #filter .keyword .onoffswitch::before {
+.magicfilter .keyword .content::before, .selectsearch .keyword .content::before, .magicfilter .keyword .onoffswitch::before, .selectsearch .keyword .onoffswitch::before {
   content: open-quote;
 }
-#filter .keyword .content::after, #filter .keyword .onoffswitch::after {
+.magicfilter .keyword .content::after, .selectsearch .keyword .content::after, .magicfilter .keyword .onoffswitch::after, .selectsearch .keyword .onoffswitch::after {
   content: close-quote;
 }
 
@@ -3236,17 +3236,17 @@ body.login input, body.login .errorlist {
   background-color: rgba(232, 233, 236, 0.296);
 }
 
-#filter.selectsearch {
+.selectsearch {
   clear: both;
   padding-right: 50.526%;
   *zoom: 1;
 }
-#filter.selectsearch:after {
+.selectsearch:after {
   content: "";
   display: table;
   clear: both;
 }
-#filter.selectsearch .textual {
+.selectsearch .textual {
   float: none;
   display: block;
   width: auto;
