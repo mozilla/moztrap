@@ -58,6 +58,15 @@ class ProfileTest(case.DBTestCase):
 
 
     def test_clone(self):
+        """Cloning a profile prefixes name with 'Cloned'."""
+        p = self.F.ProfileFactory.create(name="Foo")
+
+        new = p.clone()
+
+        self.assertEqual(new.name, "Cloned: Foo")
+
+
+    def test_clone_environments(self):
         """Cloning a profile clones member environments."""
         p = self.F.ProfileFactory.create()
         env = self.F.EnvironmentFactory.create_full_set(

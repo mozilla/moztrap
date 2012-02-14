@@ -69,6 +69,8 @@ class Profile(CCModel):
     def clone(self, *args, **kwargs):
         """Clone profile, with environments."""
         kwargs.setdefault("cascade", ["environments"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "Cloned: {0}".format(self.name))
         return super(Profile, self).clone(*args, **kwargs)
 
 
