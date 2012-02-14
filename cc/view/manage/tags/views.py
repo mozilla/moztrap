@@ -62,20 +62,6 @@ def tags_list(request):
 
 
 
-@login_required
-def tag_details(request, tag_id):
-    """Get details snippet for a tag."""
-    tag = get_object_or_404(model.Tag, pk=tag_id)
-    return TemplateResponse(
-        request,
-        "manage/tag/list/_tag_details.html",
-        {
-            "tag": tag
-            }
-        )
-
-
-
 @permission_required("tags.manage_tags")
 def tag_add(request):
     """Add a tag."""
