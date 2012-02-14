@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, .category-title, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, .category-title, .multi-header, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -2689,6 +2689,9 @@ body > div {
 #filter .compact .filter-group, #filter .compact .filter-items {
   display: inline;
 }
+#filter .compact .filter-items {
+  margin: 0;
+}
 #filter .compact .category-title, #filter .compact .addterm {
   display: none;
 }
@@ -3157,6 +3160,13 @@ body.login input, body.login .errorlist {
 
 .multiselect {
   clear: both;
+  *zoom: 1;
+  padding-top: 0.75em;
+}
+.multiselect:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .multiselect .itemhead, .multiselect .listordering {
   position: relative;
@@ -3183,23 +3193,34 @@ body.login input, body.login .errorlist {
   width: 1.5em;
 }
 
-.multiunselected, .multiselected {
+.multi-header {
+  margin-bottom: 0.75em;
+  padding: 0.375em 0.75em;
+}
+.multiunselected .multi-header {
+  background: rgba(203, 207, 214, 0.444);
+}
+.multiselected .multi-header {
+  position: absolute;
+  top: 0.75em;
+  left: 50.526%;
+}
+
+.selectbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   display: inline;
   float: left;
   width: 49.474%;
   margin-right: 1.053%;
 }
-
-.multiselected {
+.multiselected .selectbox {
   display: inline;
   float: right;
   margin-right: 0;
   #margin-left: -1em;
 }
-.multiselected .selectbox {
-  margin-top: 3em;
-}
-
 .selectbox .select {
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
@@ -3210,21 +3231,23 @@ body.login input, body.login .errorlist {
   background-color: rgba(232, 233, 236, 0.296);
 }
 
-.selectsearch .textual {
+#filter.selectsearch {
+  clear: both;
+  padding-right: 50.526%;
+  *zoom: 1;
+}
+#filter.selectsearch:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#filter.selectsearch .textual {
+  float: none;
+  display: block;
+  width: auto;
+  margin-right: auto;
+  clear: both;
   margin-bottom: 0.75em;
-}
-.selectsearch .textual label {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.selectsearch .visual {
-  display: none;
 }
 
 .selectitem {
@@ -3468,6 +3491,9 @@ body.login input, body.login .errorlist {
 .add-suite .status-field .value, .edit-suite .status-field .value {
   display: inline-block;
   vertical-align: baseline;
+}
+.add-suite .cases-field, .edit-suite .cases-field {
+  margin-bottom: 0em;
 }
 .add-suite .cases-field .status, .edit-suite .cases-field .status {
   left: 2.25em;

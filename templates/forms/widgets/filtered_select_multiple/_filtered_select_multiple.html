@@ -6,15 +6,15 @@
   {% icanhaz "filtered_multiselect_input" %}
 
   <section class="multiunselected">
-    <h4>available {{ name }}</h4>
+    <h4 class="multi-header">available {{ name }}</h4>
 
-    <div class="selectsearch">
+    <div id="filter" class="selectsearch">
       <div class="textual">
         <label for="search-add">filter available {{ name }}</label>
         <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available {{ name }}">
         <ul class="suggest"></ul>
       </div>
-      <div class="visual">
+      <div class="visual compact">
         {% for field in filters %}
         {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
         {% endfor %}
@@ -34,7 +34,7 @@
 
   </section>
   <section class="multiselected">
-    <h4>included {{ name }}</h4>
+    <h4 class="multi-header">included {{ name }}</h4>
 
     <div class="selectbox itemlist">
       {% include listordering_template with action="exclude" %}
