@@ -1,0 +1,33 @@
+{% load filters %}
+
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=run %}
+
+  {% if run.description %}
+  <p class="details">
+    {{ run.description }}
+  </p>
+  {% endif %}
+
+<p class="drill">
+  See related <a href="{# @@@ url results_cases #}?filter-run={{ run.id }}" title="test cases related to {{ run.name }}">test cases</a>.
+</p>
+
+{% if run.start or run.end %}
+  <div class="time">
+    {% if run.start %}
+      <p class="start">start date: <time>{{ run.start|date }}</time></p>
+    {% endif %}
+    {% if run.end %}
+      <p class="end">end date: <time>{{ run.end|date }}</time></p>
+    {% endif %}
+  </div>
+{% endif %}
+
+</div>
+
+{% with run.team.all as team %}
+{% include "manage/_team.html" %}
+{% endwith %}
+
+{% include "lists/_environments.html" with environments=run.environments %}

@@ -1,0 +1,26 @@
+{% load permissions %}
+
+<article id="run-id-{{ run.id }}" class="listitem">
+  {% include "results/_status.html" with item=run %}
+
+  <header class="itemhead">
+
+    <div class="completion" data-perc="{{ run.completion }}">{{ run.completion }}</div>
+
+    <div class="name">
+
+      <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+
+    </div>
+
+    <div class="product-version">{{ run.productversion }}</div>
+
+    {% include "results/_results_summary.html" with results=run.result_summary %}
+
+  </header>
+
+  {% url results_run_details run.id as details_url %}
+  {# _run_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

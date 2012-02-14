@@ -35,14 +35,11 @@
 
         {% if user %}
         <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
-          <a href="{# @@@ url results #}">View Results</a>
+          <a href="{% url results %}">View Results</a>
           <div class="secondary">
             <ol>
-              <li class="{% block resultproductversion-active-nav %}{% endblock resultproductversion-active-nav %}">
-                <a href="{# @@@ url results_productversions #}?filter-status=2">Product Versions</a>
-              </li>
               <li class="{% block resultrun-active-nav %}{% endblock resultrun-active-nav %}">
-                <a href="{# @@@ url results_testruns #}">Test Runs</a>
+                <a href="{% url results_runs %}">Test Runs</a>
               </li>
               <li class="{% block resultcase-active-nav %}{% endblock resultcase-active-nav %}">
                 <a href="{# @@@ url results_testcases #}">Test Cases</a>
