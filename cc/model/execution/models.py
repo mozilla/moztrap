@@ -138,7 +138,13 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
 
 class RunCaseVersion(HasEnvironmentsModel, CCModel):
-    """An ordered association between a Run and a CaseVersion."""
+    """
+    An ordered association between a Run and a CaseVersion.
+
+    RunCaseVersion objects are created to lock in the specific case-versions in
+    a run when the run is activated.
+
+    """
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
@@ -213,7 +219,13 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
 
 
 class RunSuite(CCModel):
-    """An ordered association between a Run and a Suite."""
+    """
+    An ordered association between a Run and a Suite.
+
+    The only direct impact of RunSuite instances is that they determine which
+    RunCaseVersions are created when the run is activated.
+
+    """
     run = models.ForeignKey(Run, related_name="runsuites")
     suite = models.ForeignKey(Suite, related_name="runsuites")
     order = models.IntegerField(default=0, db_index=True)
