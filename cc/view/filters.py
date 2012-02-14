@@ -128,6 +128,21 @@ class RunCaseVersionFilterSet(filters.FilterSet):
 
 
 
+class ResultFilterSet(filters.FilterSet):
+    """FilterSet for results."""
+    filters = [
+        filters.ChoicesFilter("status", choices=model.Result.STATUS),
+        filters.ModelFilter("tester", queryset=model.User.objects.all()),
+        filters.KeywordFilter("comment"),
+        filters.ModelFilter(
+            "environment element",
+            lookup="environment__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
+        ]
+
+
+
 class SuiteFilterSet(filters.FilterSet):
     """FilterSet for suites."""
     filters = [

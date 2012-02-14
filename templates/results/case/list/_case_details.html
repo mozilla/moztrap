@@ -2,7 +2,7 @@
   {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
 
   <p class="drill">
-    See related <a href="{# @@@ url results_results rcv_id=runcaseversion.id #}" title="test results related to {{ runcaseversion.caseversion.name }}">test results</a>.
+    See related <a href="{% url results_results rcv_id=runcaseversion.id %}" title="test results related to {{ runcaseversion.caseversion.name }}">test results</a>.
   </p>
 
   <ol class="steps">

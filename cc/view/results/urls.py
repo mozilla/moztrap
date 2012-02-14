@@ -55,7 +55,7 @@ urlpatterns = patterns(
     # results ----------------------------------------------------------------
 
     # list
-    # url(r"^case/(?P<rcv_id>\d+)/$",
-    #     "results.views.results_list",
-    #     name="results_results")
+    url(r"^case/(?P<rcv_id>\d+)/$",
+        "results.views.results_list",
+        name="results_results")
 )

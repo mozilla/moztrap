@@ -1,0 +1,11 @@
+{% extends 'lists/_itembody.html' %}
+
+{% block itembody-content %}
+  {# @@@ display individual step result info, bug urls... #}
+  {% if result.comment %}
+    <h4>notes</h4>
+    <blockquote class="comment">
+      {{ result.comment }}
+    </blockquote>
+  {% endif %}
+{% endblock itembody-content %}

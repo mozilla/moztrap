@@ -1,0 +1,22 @@
+<article id="result-id-{{ result.id }}" class="listitem{% if result.comment %} hasdetails{% endif %}">
+  <span class="{{ result.status }} status-readonly">{{ result.status }}</span>
+
+  <header class="itemhead">
+
+    <div class="tester">
+
+      <h3 class="title" title="{{ result.tester.username }}">{{ result.tester.username }}</h3>
+
+    </div>
+
+    <ul class="envlist">
+      {% for element in result.environment.ordered_elements %}
+      <li>{{ element }}</li>
+      {% endfor %}
+    </ul>
+
+  </header>
+
+  {% include "results/result/list/_result_details.html" %}
+
+</article>
