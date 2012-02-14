@@ -3162,6 +3162,7 @@ body.login input, body.login .errorlist {
   clear: both;
   *zoom: 1;
   padding-top: 0.75em;
+  position: relative;
 }
 .multiselect:after {
   content: "";
@@ -3449,8 +3450,29 @@ body.login input, body.login .errorlist {
   #margin-left: -1em;
   padding-right: 25.263%;
 }
-.add-run .form-actions, .edit-run .form-actions {
-  padding-right: 25.263%;
+.add-run .suites-field, .edit-run .suites-field {
+  margin-bottom: 0em;
+}
+.add-run .suites-field .name, .add-run .suites-field .byname, .edit-run .suites-field .name, .edit-run .suites-field .byname {
+  display: inline;
+  float: left;
+  width: 53.488%;
+  margin-right: 2.326%;
+}
+.add-run .suites-field .author, .add-run .suites-field .byauthor, .edit-run .suites-field .author, .edit-run .suites-field .byauthor {
+  display: inline;
+  float: left;
+  width: 44.186%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-run .suites-field .title, .edit-run .suites-field .title {
+  font-weight: 500;
+  display: inline;
+  font-style: normal;
 }
 
 .add-suite .product-field, .add-suite .name-field, .add-suite .description-field, .edit-suite .product-field, .edit-suite .name-field, .edit-suite .description-field {
