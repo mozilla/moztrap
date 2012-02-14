@@ -22,7 +22,7 @@
 
   </header>
 
-  {% url results_runcaseversion_details runcaseversion.id as details_url %}
+  {% url "results_runcaseversion_details" rcv_id=runcaseversion.id as details_url %}
   {# _case_details.html loaded via ajax #}
   {% include "lists/_itembody.html" %}
 
