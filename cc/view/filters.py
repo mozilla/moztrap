@@ -81,6 +81,53 @@ class RunFilterSet(filters.FilterSet):
 
 
 
+class RunCaseVersionFilterSet(filters.FilterSet):
+    """FilterSet for RunCaseVersions."""
+    filters = [
+        filters.ChoicesFilter(
+            "status",
+            lookup="caseversion__status",
+            choices=model.CaseVersion.STATUS),
+        filters.KeywordExactFilter(
+            "id", lookup="caseversion__case__id", coerce=int),
+        filters.KeywordFilter("name", lookup="caseversion__name"),
+        filters.ModelFilter(
+            "tag",
+            lookup="caseversion__tags",
+            queryset=model.Tag.objects.all()),
+        filters.ModelFilter(
+            "product",
+            lookup="caseversion__case__product",
+            queryset=model.Product.objects.all()),
+        filters.ModelFilter("run", queryset=model.Run.objects.all()),
+        filters.ModelFilter(
+            "product version",
+            lookup="run__productversion",
+            key="productversion",
+            queryset=model.ProductVersion.objects.all()),
+        filters.KeywordFilter(
+            "instruction", lookup="caseversion__steps__instruction"),
+        filters.KeywordFilter(
+            "expected result",
+            lookup="caseversion__steps__expected",
+            key="expected"),
+        filters.ModelFilter(
+            "creator",
+            lookup="caseversion__created_by",
+            queryset=model.User.objects.all()),
+        filters.ModelFilter(
+            "environment element",
+            lookup="environments__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
+        filters.ModelFilter(
+            "suite",
+            lookup="caseversion__case__suites",
+            queryset=model.Suite.objects.all()),
+        ]
+
+
+
 class SuiteFilterSet(filters.FilterSet):
     """FilterSet for suites."""
     filters = [

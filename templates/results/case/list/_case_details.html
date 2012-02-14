@@ -1,0 +1,20 @@
+<div class="iteminfo">
+  {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
+
+  <p class="drill">
+    See related <a href="{# @@@ url results_results rcv_id=runcaseversion.id #}" title="test results related to {{ runcaseversion.caseversion.name }}">test results</a>.
+  </p>
+
+  <ol class="steps">
+    {% for step in runcaseversion.caseversion.steps.all %}
+    <li class="stepitem">
+      <p class="instruction">{{ step.instruction }}</p>
+      <p class="outcome">{{ step.expected }}</p>
+    </li>
+    {% endfor %}
+  </ol>
+</div>
+
+{% include "lists/_team.html" with team=runcaseversion.testers %}
+{% include "lists/_environments.html" with environments=runcaseversion.environments %}
+{% include "lists/_associated_links.html" with bugs=runcaseversion.bug_urls attachments=runcaseversion.caseversion.attachments %}

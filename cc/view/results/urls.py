@@ -43,14 +43,14 @@ urlpatterns = patterns(
     # runcaseversions --------------------------------------------------------
 
     # list
-    # url(r"^cases/$",
-    #     "runcaseversions.views.runcaseversions_list",
-    #     name="results_runcaseversions"),
+    url(r"^cases/$",
+        "runcaseversions.views.runcaseversions_list",
+        name="results_runcaseversions"),
 
     # ajax detail
-    # url(r"^cases/_detail/(?P<rcv_id>\d+)/$",
-    #     "runcaseversions.views.runcaseversion_details",
-    #     name="results_runcaseversion_details"),
+    url(r"^cases/_detail/(?P<rcv_id>\d+)/$",
+        "runcaseversions.views.runcaseversion_details",
+        name="results_runcaseversion_details"),
 
     # results ----------------------------------------------------------------
 

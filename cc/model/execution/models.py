@@ -217,6 +217,12 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             return 0
 
 
+    def testers(self):
+        """Return list of testers with assigned / executed results."""
+        return User.objects.filter(
+            pk__in=self.results.values_list("tester", flat=True).distinct())
+
+
 
 class RunSuite(CCModel):
     """

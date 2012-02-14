@@ -1,0 +1,18 @@
+{% load pagination %}
+
+<div class="itemlist action-ajax-replace">
+
+  {% include "results/case/list/_cases_listordering.html" %}
+
+  {% paginate runcaseversions as pager %}
+  {% if pager.objects %}
+    {% for runcaseversion in pager.objects %}
+      {% include "results/case/list/_case_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</div>
