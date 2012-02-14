@@ -165,11 +165,6 @@ urlpatterns = patterns(
         "tags.views.tags_list",
         name="manage_tags"),
 
-    # ajax details
-    url(r"^tags/_detail/(?P<tag_id>\d+)/$",
-        "tags.views.tag_details",
-        name="manage_tag_details"),
-
     # add
     url(r"^tag/add/$",
         "tags.views.tag_add",

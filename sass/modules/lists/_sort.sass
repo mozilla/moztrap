@@ -36,12 +36,13 @@
 // Create a list-ordering navigation bar.
 
 .listordering
-  +clearfix
   +text-shadow(rgba($blue-hint,$xsmall) 0 1px 0)
   +h-borders(1px,.25)
   +hpadding(.5em)
   background: rgba($blue,$xsmall)
   border-color: rgba($blue-dark,$small)
+  ul
+    +clearfix
 
 .sortitem
   +columns(2,23)
