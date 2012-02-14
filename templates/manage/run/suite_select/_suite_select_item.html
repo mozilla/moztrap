@@ -1,6 +1,8 @@
 {% extends "forms/widgets/filtered_select_multiple/_filtered_select_multiple_item.html" %}
 
 {% block content %}
-<h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
-<p class="author fn">{{ item.created_by.username }}</p>
+<div class="name">
+  <h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
+</div>
+<div class="author vcard"><span class="fn">{{ item.created_by.username }}</span></div>
 {% endblock %}

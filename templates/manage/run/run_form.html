@@ -13,7 +13,7 @@
     {% include "forms/_field.html" with field=form.start %}
     {% include "forms/_field.html" with field=form.end %}
 
-    {% include "forms/_field.html" with field=form.suites %}
+    {% include "forms/_field.html" with field=form.suites nolabel=1 %}
 
     {% comment %}
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
