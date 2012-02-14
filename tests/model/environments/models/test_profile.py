@@ -67,3 +67,14 @@ class ProfileTest(case.DBTestCase):
 
         self.assertEqual(new.environments.count(), 1)
         self.assertNotEqual(new.environments.get(), env)
+
+
+    def test_categories(self):
+        """Categories method returns categories involved in the profile."""
+        p = self.F.ProfileFactory.create()
+        self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows", "OS X"], "Browser": ["Firefox", "Chrome"]},
+            profile=p)
+
+        self.assertEqual(
+            [c.name for c in p.categories()], ["Browser", "OS"])

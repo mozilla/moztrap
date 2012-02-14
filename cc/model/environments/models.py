@@ -72,6 +72,12 @@ class Profile(CCModel):
         return super(Profile, self).clone(*args, **kwargs)
 
 
+    def categories(self):
+        """Return an iterable of categories that are part of this profile."""
+        return Category.objects.filter(
+            elements__environments__profile=self).distinct().order_by("name")
+
+
 
 class Category(CCModel):
     """
@@ -125,7 +131,7 @@ class Environment(CCModel):
     profile = models.ForeignKey(
         Profile, blank=True, null=True, related_name="environments")
 
-    elements = models.ManyToManyField(Element)
+    elements = models.ManyToManyField(Element, related_name="environments")
 
 
     def __unicode__(self):
