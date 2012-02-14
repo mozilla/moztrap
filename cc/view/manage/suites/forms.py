@@ -32,6 +32,7 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
     cases = ccforms.CCModelMultipleChoiceField(
         queryset=model.Case.objects.all(),
         required=False,
+        choice_attrs=ccforms.product_id_attrs,
         widget=ccforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
             listordering_template=(
