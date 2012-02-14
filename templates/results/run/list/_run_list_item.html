@@ -1,11 +1,11 @@
-{% load permissions %}
+{% load results %}
 
 <article id="run-id-{{ run.id }}" class="listitem">
   {% include "results/_status.html" with item=run %}
 
   <header class="itemhead">
 
-    <div class="completion" data-perc="{{ run.completion }}">{{ run.completion }}</div>
+    <div class="completion" data-perc="{{ run.completion|percentage }}">{{ run.completion|percentage }}</div>
 
     <div class="name">
 
