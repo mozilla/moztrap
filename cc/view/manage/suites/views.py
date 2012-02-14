@@ -28,12 +28,12 @@ from django.contrib import messages
 
 from cc import model
 
+from cc.view.filters import SuiteFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
-from .filters import SuiteFilterSet
 from . import forms
 
 

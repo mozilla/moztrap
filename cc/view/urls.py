@@ -44,6 +44,9 @@ urlpatterns = patterns(
     # manage -----------------------------------------------------------------
     url(r"^manage/", include("cc.view.manage.urls")),
 
+    # results ----------------------------------------------------------------
+    url(r"^results/", include("cc.view.results.urls")),
+
     # admin ------------------------------------------------------------------
     url(r"^admin/", include(admin.site.urls)),
 

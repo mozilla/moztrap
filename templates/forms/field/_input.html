@@ -1,7 +1,5 @@
 {% load ccforms %}
 
-{% if classes %}
-  {{ field|classes:classes }}
-{% else %}
-  {{ field }}
-{% endif %}
+{% with classes|add:" value" as all_classes %}
+  {{ field|classes:all_classes }}
+{% endwith %}

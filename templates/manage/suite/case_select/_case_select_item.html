@@ -1,0 +1,16 @@
+{% extends "forms/widgets/filtered_select_multiple/_filtered_select_multiple_item.html" %}
+
+{% block content %}
+{% with item.latest_version as caseversion %}
+<p class="status">
+  <span class="{{ caseversion.status }}" title="{{ caseversion.status }}">{{ caseversion.status }}</span>
+</p>
+<h5 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h5>
+<ul class="tags">
+  {% for tag in caseversion.tags.all %}
+  <li><a href="#">{{ tag.name }}</a></li> {# links add a filter by that tag #}
+  {% endfor %}
+</ul>
+<p class="author fn">{{ item.created_by.username }}</p>
+{% endwith %}
+{% endblock %}

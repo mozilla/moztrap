@@ -161,6 +161,23 @@ class RunCaseVersionTest(case.DBTestCase):
                 }
             )
 
+
+    def test_result_summary_specific(self):
+        """``result_summary`` has results only from one runcaseversion."""
+        rcv = self.F.RunCaseVersionFactory()
+        self.F.ResultFactory(runcaseversion=rcv, status="passed")
+
+        rcv2 = self.F.RunCaseVersionFactory()
+
+        self.assertEqual(
+            rcv2.result_summary(),
+            {
+                "passed": 0,
+                "failed": 0,
+                "invalidated": 0,
+                }
+            )
+
     def test_result_summary_empty(self):
         """Empty slots in result summary still contain 0."""
         rcv = self.F.RunCaseVersionFactory()
@@ -179,7 +196,7 @@ class RunCaseVersionTest(case.DBTestCase):
         """``completion`` returns fraction of envs completed."""
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Windows", "Linux"]})
-        rcv = self.F.RunCaseVersionFactory(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(environments=envs)
 
         self.F.ResultFactory(
             runcaseversion=rcv, environment=envs[0], status="passed")
@@ -193,6 +210,18 @@ class RunCaseVersionTest(case.DBTestCase):
 
     def test_completion_percentage_empty(self):
         """If no envs, ``completion`` returns zero."""
-        rcv = self.F.RunCaseVersionFactory()
+        rcv = self.F.RunCaseVersionFactory.create()
 
         self.assertEqual(rcv.completion(), 0)
+
+
+    def test_testers(self):
+        """Testers method returns list of distinct testers of this rcv."""
+        t1 = self.F.UserFactory.create()
+        t2 = self.F.UserFactory.create()
+        rcv = self.F.RunCaseVersionFactory.create()
+        self.F.ResultFactory.create(tester=t1, runcaseversion=rcv)
+        self.F.ResultFactory.create(tester=t1, runcaseversion=rcv)
+        self.F.ResultFactory.create(tester=t2, runcaseversion=rcv)
+
+        self.assertEqual(set(rcv.testers()), set([t1, t2]))

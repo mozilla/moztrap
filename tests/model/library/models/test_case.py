@@ -282,7 +282,7 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(self.refresh(c).modified_by, u)
 
 
-    def test_instance_being_saved_is_updated(self):
+    def test_set_latest_instance_being_saved_is_updated(self):
         """Version being saved gets correct latest setting."""
         c = self.F.CaseFactory.create()
         p = c.product
@@ -292,6 +292,20 @@ class CaseVersionTest(case.DBTestCase):
             productversion__product=p, productversion__version="2", case=c)
 
         self.assertEqual(cv.latest, True)
+
+
+    def test_latest_version(self):
+        """Case.latest_version() gets latest version."""
+        c = self.F.CaseFactory.create()
+        p = c.product
+        self.F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="2", case=c)
+        self.F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="1", case=c)
+        cv = self.F.CaseVersionFactory.create(
+            productversion__product=p, productversion__version="3", case=c)
+
+        self.assertEqual(c.latest_version(), cv)
 
 
     def test_bug_urls(self):

@@ -5,16 +5,16 @@
 </div>
 
 {% with productversion.team.all as team %}
-{% include "manage/_team.html" %}
+{% include "lists/_team.html" %}
 {% endwith %}
 
 {% with productversion.runs.all as runs %}
 {% if runs %}
   <div class="runs">
-    <h4 class="runs-title"><a href="{% filter_url 'manage_runs' productversion %}">Test Runs</a></h4>
+    <h4 class="runs-title"><a href="{{ 'manage_runs'|filter_url:productversion }}">Test Runs</a></h4>
     <ul class="run-list">
       {% for run in runs %}
-      <li><a href="{% filter_url 'manage_runs' productversion %}#run-id-{{ run.id }}" title="{{ run.name }}" class="run">{{ run }}</a></li>
+      <li><a href="{{ 'manage_runs'|filter_url:productversion }}#run-id-{{ run.id }}" title="{{ run.name }}" class="run">{{ run }}</a></li>
       {% endfor %}
     </ul>
   </div>

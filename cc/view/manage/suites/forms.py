@@ -22,22 +22,47 @@ Management forms for suites.
 import floppyforms as forms
 
 from cc import model
+from cc.view.lists import filters
 from cc.view.utils import ccforms
 
+
+
+case_filters = [
+    filters.ChoicesFilter(
+        "status", choices=model.CaseVersion.STATUS),
+    filters.KeywordFilter("name"),
+    filters.ModelFilter(
+        "tag", lookup="tags", queryset=model.Tag.objects.all()),
+    filters.ModelFilter(
+        "author", queryset=model.User.objects.all()),
+    ]
+
+
+
+def formfield_callback(f, **kwargs):
+    if f.name == "cases":
+        kwargs["form_class"] = ccforms.CCModelMultipleChoiceField
+    return f.formfield(**kwargs)
 
 
 
 class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
     """Base form for adding/editing suites."""
+    formfield_callback = formfield_callback
+
+
     class Meta:
         model = model.Suite
-        # @@@ case selection
-        fields = ["product", "name", "description", "status"]
+        fields = ["product", "name", "description", "status", "cases"]
         widgets = {
             "product": forms.Select,
             "name": forms.TextInput,
             "description": ccforms.BareTextarea,
             "status": forms.Select,
+            "cases": ccforms.FilteredSelectMultiple(
+                choice_template=(
+                    "manage/suite/case_select/_case_select_item.html"),
+                filters=case_filters),
             }
 
 
@@ -51,12 +76,17 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
 
 class AddSuiteForm(SuiteForm):
     """Form for adding a suite."""
-    pass
+     # @@@ Django bug; shouldn't have to specify this for every subclass
+    formfield_callback = formfield_callback
 
 
 
 class EditSuiteForm(SuiteForm):
     """Form for editing a suite."""
+     # @@@ Django bug; shouldn't have to specify this for every subclass
+    formfield_callback = formfield_callback
+
+
     def __init__(self, *args, **kwargs):
         """Initialize EditSuiteForm; no changing product."""
         super(EditSuiteForm, self).__init__(*args, **kwargs)

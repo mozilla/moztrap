@@ -9,11 +9,12 @@
     +leader(.25)
 
   .e-mail-address-field, .roles-field, .form-actions
+    +full(24)
     +suffix(6,24)
 
   .username-field, .e-mail-address-field, .roles-field
-    label
+    .type
       +columns(6,18)
-    input, select, .errorlist
+    .value, .errorlist
       +columns(12,18)
       +omega(18)

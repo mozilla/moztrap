@@ -111,6 +111,17 @@ class EditRunFormTest(case.DBTestCase):
             )
 
 
+    def test_active_run_product_version_readonly(self):
+        """If editing active run, product version field is marked readonly."""
+        pv = self.F.ProductVersionFactory.create()
+        r = self.F.RunFactory(
+            status=self.model.Run.STATUS.active,
+            productversion__product=pv.product)
+
+        f = self.form(instance=r)
+        self.assertTrue(f.fields["productversion"].readonly)
+
+
     def test_active_run_no_edit_product_version(self):
         """Can't change product version of active run"""
         pv = self.F.ProductVersionFactory()

@@ -221,6 +221,24 @@ class RunTest(case.DBTestCase):
             )
 
 
+    def test_result_summary_specific(self):
+        """``result_summary`` doesn't return results from other runs."""
+        r = self.F.RunFactory()
+        rcv = self.F.RunCaseVersionFactory(run=r)
+        self.F.ResultFactory(runcaseversion=rcv, status="passed")
+
+        r2 = self.F.RunFactory()
+
+        self.assertEqual(
+            r2.result_summary(),
+            {
+                "passed": 0,
+                "failed": 0,
+                "invalidated": 0
+                }
+            )
+
+
     def test_completion_percentage(self):
         """``completion`` returns fraction of case/env combos completed."""
         envs = self.F.EnvironmentFactory.create_full_set(

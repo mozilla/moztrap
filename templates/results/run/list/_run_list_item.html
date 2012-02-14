@@ -1,0 +1,30 @@
+{% load results filters %}
+
+<article id="run-id-{{ run.id }}" class="listitem">
+  {% include "results/_status.html" with item=run %}
+
+  <header class="itemhead">
+
+    <div class="completion" data-perc="{{ run.completion|percentage }}">{{ run.completion|percentage }}</div>
+
+    <div class="name">
+
+      <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+
+    </div>
+
+    <div class="product-version">{{ run.productversion }}</div>
+    <div class="start">{{ run.start }}</div>
+    <div class="end">{{ run.end }}</div>
+
+    {% with "results_runcaseversions"|filter_url:run as detail_url %}
+    {% include "results/_results_summary.html" with results=run.result_summary %}
+    {% endwith %}
+
+  </header>
+
+  {% url results_run_details run.id as details_url %}
+  {# _run_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

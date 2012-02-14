@@ -1,13 +1,22 @@
 .add-suite, .edit-suite
 
-  .product-field, .name-field, .description-field, .status-field
+  .product-field, .name-field, .description-field
     +full(24)
     +suffix(6,24)
-    label
+    .type
       +columns(6,18)
-    input, select, textarea, .errorlist
+    .value, .errorlist
       +columns(12,18)
       +omega(18)
 
   .form-actions
     +suffix(6,24)
+  .status-field
+    +inline-block
+    width: columns(4,18)
+    margin-right: gutter(18)
+    .type
+      +gone
+    .value
+      +inline-block
+      vertical-align: baseline

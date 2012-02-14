@@ -1,48 +1,12 @@
 {% extends 'results/run/base.html' %}
 
-{% load sort staticdata %}
+{% block content %}
 
-{% block listcontent %}
-
-<section id="runresults">
+<section id="runresults" class="results listpage">
   <h2>Test Run Results</h2>
 
   {% include "lists/_filter.html" %}
+  {% include "results/run/list/_runs_list.html" %}
 
-  <form method="POST">
-    {% csrf_token %}
-
-    <div class="managelist">
-
-      {% include "results/run/_runs_listordering.html" %}
-
-      <div class="items">
-        {% if runs %}
-          {% for run in runs %}
-          <article id="run-id-{{ run.id }}" class="details item {{ run.status|status_class }}" data-details-url="{% url results_run_details run.id %}">
-            <header class="summary">
-              <p class="status">
-                <span class="{{ run.status|status_class }}">{{ run.status|lower }}</span>
-              </p>
-              <p class="completion" data-perc="{{ run.percentcomplete }}">{{ run.percentcomplete }}%</p>
-              <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
-              <p class="productversion" title="{{ run.productversion.name }}">{{ run.productversion.name }}</p>
-              <p class="product">{{ run.product.name }}</p>
-              {% include "results/_results_summary.html" with obj=run %}
-            </header>
-            <div class="content">
-              {# _run_details.html loaded via ajax #}
-            </div>
-          </article>
-          {% endfor %}
-        {% else %}
-          <p class="empty">There are currently no items in this list...</p>
-        {% endif %}
-      </div>
-
-      {% include "lists/_listnav.html" %}
-    </div>
-
-  </form>
 </section>
-{% endblock listcontent %}
+{% endblock content %}

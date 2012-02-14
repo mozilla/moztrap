@@ -150,6 +150,7 @@ INSTALLED_APPS = [
     "cc.view",
     "cc.view.lists",
     "cc.view.manage",
+    "cc.view.results",
     "cc.view.runtests",
 ]
 

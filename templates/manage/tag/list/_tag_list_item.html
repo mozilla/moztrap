@@ -1,0 +1,25 @@
+{% load permissions %}
+
+<article id="tag-id-{{ tag.id }}" class="listitem">
+  <div class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"tags.manage_tags" %}
+          {% url manage_tag_edit tag_id=tag.id as tag_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=tag_edit_url edit_name=tag.name %}
+          {% include "lists/controls/_clone.html" with clone_id=tag.id clone_name=tag.name %}
+          {% include "lists/controls/_delete.html" with delete_id=tag.id delete_name=tag.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ tag.name }}">{{ tag.name }}</h3>
+
+    </div>
+
+    <div class="product">{{ tag.product }}</div>
+    {% include "lists/_byline.html" with item=tag %}
+
+  </div>
+</article>

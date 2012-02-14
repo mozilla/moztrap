@@ -117,3 +117,9 @@ def is_checkbox(boundfield):
     """Returns True if this field's widget is a CheckboxInput."""
     return isinstance(
         boundfield.field.widget, forms.CheckboxInput)
+
+
+@register.filter
+def is_readonly(boundfield):
+    """Returns True if this field has a True readonly attribute."""
+    return getattr(boundfield.field, "readonly", False)
