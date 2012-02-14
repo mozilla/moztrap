@@ -61,7 +61,7 @@ class ResultsFinder(finder.Finder):
         CaseColumn(
             "cases",
             "_cases.html",
-            model.RunCaseVersion.objects.order_by("name"),
+            model.RunCaseVersion.objects.order_by("caseversion__name"),
             "results_results",
             ),
         ]
