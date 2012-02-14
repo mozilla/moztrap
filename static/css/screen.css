@@ -3230,6 +3230,11 @@ body.login input, body.login .errorlist {
 .selectitem {
   position: relative;
 }
+.selectitem:last-child {
+  -webkit-box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
+  -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
+  box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
+}
 
 .user-form .username-field {
   display: inline;
