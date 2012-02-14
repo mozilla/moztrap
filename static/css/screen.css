@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, .category-title, .multi-header, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -1633,7 +1633,7 @@ body > div {
   background-image: url('../images/ui/arrow_left.png?1327353019');
 }
 
-.detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites, #runresults .testers {
+.detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites, #runresults .testers, #caseresults .testers {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   max-height: 18em;
   overflow-y: auto;
@@ -4594,6 +4594,50 @@ body.login input, body.login .errorlist {
   margin-right: 1.099%;
 }
 #runresults .envs {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+
+#caseresults .listordering, #caseresults .itemhead, #caseresults .item-content {
+  padding-left: 3.75em;
+}
+#caseresults .name, #caseresults .byname {
+  display: inline;
+  float: left;
+  width: 25.275%;
+  margin-right: 1.099%;
+}
+#caseresults .run, #caseresults .byrun, #caseresults .product-version, #caseresults .byproduct-version, #caseresults .results-summary, #caseresults .byresults {
+  display: inline;
+  float: left;
+  width: 20.879%;
+  margin-right: 1.099%;
+}
+#caseresults .results-summary, #caseresults .byresults {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  text-align: right;
+}
+#caseresults .name {
+  font-weight: 500;
+}
+#caseresults .iteminfo {
+  display: inline;
+  float: left;
+  width: 56.044%;
+  margin-right: 1.099%;
+}
+#caseresults .envs, #caseresults .testers {
+  display: inline;
+  float: left;
+  width: 20.879%;
+  margin-right: 1.099%;
+}
+#caseresults .envs {
   display: inline;
   float: right;
   margin-right: 0;
