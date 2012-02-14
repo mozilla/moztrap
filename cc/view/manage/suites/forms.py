@@ -34,6 +34,8 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
         required=False,
         widget=ccforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
+            listordering_template=(
+                "manage/suite/case_select/_case_select_listordering.html"),
             filters=[
                 filters.ChoicesFilter(
                     "status", choices=model.CaseVersion.STATUS),

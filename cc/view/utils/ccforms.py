@@ -127,13 +127,22 @@ class FilteredSelectMultiple(CCSelectMultiple):
     choice_template_name = (
         "forms/widgets/filtered_select_multiple/"
         "_filtered_select_multiple_item.html")
+    listordering_template_name = (
+        "forms/widgets/filtered_select_multiple/"
+        "_filtered_select_multiple_listordering.html")
 
 
     def __init__(self, *args, **kwargs):
         self.filters = kwargs.pop("filters", [])
+
         choice_template_name = kwargs.pop("choice_template", None)
         if choice_template_name is not None:
             self.choice_template_name = choice_template_name
+
+        listordering_template_name = kwargs.pop("listordering_template", None)
+        if listordering_template_name is not None:
+            self.listordering_template_name = listordering_template_name
+
         super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
 
 
@@ -141,6 +150,7 @@ class FilteredSelectMultiple(CCSelectMultiple):
         ctx = super(FilteredSelectMultiple, self).get_context_data()
         ctx["filters"] = filters.FilterSet(self.filters).bind(MultiValueDict())
         ctx["choice_template"] = self.choice_template_name
+        ctx["listordering_template"] = self.listordering_template_name
         return ctx
 
 
