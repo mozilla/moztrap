@@ -86,6 +86,11 @@ class Case(CCModel):
             )
 
 
+    def latest_version(self):
+        """Return latest version of this case."""
+        return self.versions.get(latest=True)
+
+
 
     class Meta:
         permissions = [
