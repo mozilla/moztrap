@@ -121,15 +121,15 @@ var CC = (function (CC, $) {
             sectionContentSelector: '.colcontent',
             numberCols: 4
         });
-        // $('.resultsdrill').html5finder({
-        //     loading: true,
-        //     horizontalScroll: true,
-        //     scrollContainer: '.finder',
-        //     headerSelector: '.listordering',
-        //     sectionSelector: '.col',
-        //     sectionContentSelector: '.colcontent',
-        //     numberCols: 4
-        // });
+        $('.resultsdrill').html5finder({
+            loading: true,
+            horizontalScroll: true,
+            scrollContainer: '.finder',
+            headerSelector: '.listordering',
+            sectionSelector: '.col',
+            sectionContentSelector: '.colcontent',
+            numberCols: 4
+        });
 
         // local.js
         CC.inputHadFocus();

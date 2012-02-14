@@ -13,6 +13,8 @@
     {% include "forms/_field.html" with field=form.start %}
     {% include "forms/_field.html" with field=form.end %}
 
+    {% include "forms/_field.html" with field=form.suites %}
+
     {% comment %}
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
       <h3 class="summary">assign specific users to this product &raquo;</h3>

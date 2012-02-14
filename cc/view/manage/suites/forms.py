@@ -32,6 +32,7 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
     cases = ccforms.CCModelMultipleChoiceField(
         queryset=model.Case.objects.all(),
         required=False,
+        choice_attrs=ccforms.product_id_attrs,
         widget=ccforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
             listordering_template=(
@@ -47,23 +48,18 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
                 ],
             )
         )
+    product = ccforms.CCModelChoiceField(
+        queryset=model.Product.objects.all(),
+        choice_attrs=lambda p: {"data-product-id": p.id})
 
     class Meta:
         model = model.Suite
         fields = ["product", "name", "description", "status"]
         widgets = {
-            "product": forms.Select,
             "name": forms.TextInput,
             "description": ccforms.BareTextarea,
             "status": forms.Select,
             }
-
-
-    def __init__(self, *args, **kwargs):
-        """Initialize SuiteForm; set product choices."""
-        super(SuiteForm, self).__init__(*args, **kwargs)
-
-        self.fields["product"].queryset = model.Product.objects.all()
 
 
 

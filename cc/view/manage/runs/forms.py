@@ -22,6 +22,7 @@ Management forms for runs.
 import floppyforms as forms
 
 from cc import model
+from cc.view.lists import filters
 from cc.view.utils import ccforms
 
 
@@ -29,25 +30,35 @@ from cc.view.utils import ccforms
 
 class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
     """Base form for adding/editing runs."""
+    suites = ccforms.CCModelMultipleChoiceField(
+        queryset=model.Suite.objects.all(),
+        required=False,
+        choice_attrs=ccforms.product_id_attrs,
+        widget=ccforms.FilteredSelectMultiple(
+            choice_template="manage/run/suite_select/_suite_select_item.html",
+            listordering_template=(
+                "manage/run/suite_select/_suite_select_listordering.html"),
+            filters=[
+                filters.KeywordFilter("name"),
+                filters.ModelFilter(
+                    "author", queryset=model.User.objects.all()),
+                ],
+            )
+        )
+    productversion = ccforms.CCModelChoiceField(
+        queryset=model.ProductVersion.objects.all(),
+        choice_attrs=ccforms.product_id_attrs)
+
+
     class Meta:
         model = model.Run
-        # @@@ suite selection?
         fields = ["productversion", "name", "description", "start", "end"]
         widgets = {
-            "productversion": forms.Select,
             "name": forms.TextInput,
             "description": ccforms.BareTextarea,
             "start": forms.DateInput,
             "end": forms.DateInput,
             }
-
-
-    def __init__(self, *args, **kwargs):
-        """Initialize RunForm; set product version choices."""
-        super(RunForm, self).__init__(*args, **kwargs)
-
-        self.fields["productversion"].queryset = (
-            model.ProductVersion.objects.all())
 
 
 
@@ -73,3 +84,6 @@ class EditRunForm(RunForm):
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
                 product=self.instance.productversion.product)
+
+        self.initial["suites"] = list(
+            self.instance.suites.values_list("id", flat=True))

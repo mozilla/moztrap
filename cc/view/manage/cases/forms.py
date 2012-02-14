@@ -31,10 +31,6 @@ from ...utils import ccforms
 
 
 
-def product_id_attrs(obj):
-    return {"data-product-id": obj.product.id}
-
-
 class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     """
     Base form for all test case/version forms.
@@ -141,7 +137,8 @@ class BaseAddCaseForm(forms.Form):
         model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
     productversion = ccforms.CCModelChoiceField(
-        model.ProductVersion.objects.all(), choice_attrs=product_id_attrs)
+        model.ProductVersion.objects.all(),
+        choice_attrs=ccforms.product_id_attrs)
     and_later_versions = forms.BooleanField(initial=True, required=False)
 
 
@@ -152,7 +149,7 @@ class BaseAddCaseForm(forms.Form):
         if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
                 model.Suite.objects.all(),
-                choice_attrs=product_id_attrs,
+                choice_attrs=ccforms.product_id_attrs,
                 required=False)
 
 

@@ -200,6 +200,12 @@ class SmartLabel(StrAndUnicode):
 
 
 
+def product_id_attrs(obj):
+    """A ``choice_attrs`` function to label each item with its product ID."""
+    return {"data-product-id": obj.product.id}
+
+
+
 class CCModelChoiceField(forms.ModelChoiceField):
     """
     A ModelChoiceField where each choice object's label is a ``SmartLabel``.
