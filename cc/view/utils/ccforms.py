@@ -122,12 +122,18 @@ class FilteredSelectMultiple(CCSelectMultiple):
     A SelectMultiple widget that provides nice UI for filtering options.
 
     """
-    template_name = "forms/widgets/_filtered_select_multiple.html"
-    choice_template_name = "forms/widgets/_filtered_select_multiple_item.html"
+    template_name = (
+        "forms/widgets/filtered_select_multiple/_filtered_select_multiple.html")
+    choice_template_name = (
+        "forms/widgets/filtered_select_multiple/"
+        "_filtered_select_multiple_item.html")
 
 
     def __init__(self, *args, **kwargs):
         self.filters = kwargs.pop("filters", [])
+        choice_template_name = kwargs.pop("choice_template", None)
+        if choice_template_name is not None:
+            self.choice_template_name = choice_template_name
         super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
 
 

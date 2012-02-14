@@ -27,10 +27,6 @@ from cc.view.utils import ccforms
 
 
 
-class CasesFilteredSelectMultiple(ccforms.FilteredSelectMultiple):
-    choice_template_name = "forms/widgets/_select_cases_item.html"
-
-
 case_filters = [
     filters.ChoicesFilter(
         "status", choices=model.CaseVersion.STATUS),
@@ -63,7 +59,10 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
             "name": forms.TextInput,
             "description": ccforms.BareTextarea,
             "status": forms.Select,
-            "cases": CasesFilteredSelectMultiple(filters=case_filters),
+            "cases": ccforms.FilteredSelectMultiple(
+                choice_template=(
+                    "manage/suite/case_select/_case_select_item.html"),
+                filters=case_filters),
             }
 
 
