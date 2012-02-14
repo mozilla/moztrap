@@ -45,26 +45,20 @@ class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
                 ],
             )
         )
+    productversion = ccforms.CCModelChoiceField(
+        queryset=model.ProductVersion.objects.all(),
+        choice_attrs=ccforms.product_id_attrs)
 
 
     class Meta:
         model = model.Run
         fields = ["productversion", "name", "description", "start", "end"]
         widgets = {
-            "productversion": forms.Select,
             "name": forms.TextInput,
             "description": ccforms.BareTextarea,
             "start": forms.DateInput,
             "end": forms.DateInput,
             }
-
-
-    def __init__(self, *args, **kwargs):
-        """Initialize RunForm; set product version choices."""
-        super(RunForm, self).__init__(*args, **kwargs)
-
-        self.fields["productversion"].queryset = (
-            model.ProductVersion.objects.all())
 
 
 
@@ -90,3 +84,6 @@ class EditRunForm(RunForm):
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
                 product=self.instance.productversion.product)
+
+        self.initial["suites"] = list(
+            self.instance.suites.values_list("id", flat=True))
