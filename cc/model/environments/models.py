@@ -66,6 +66,12 @@ class Profile(CCModel):
         return new
 
 
+    def clone(self, *args, **kwargs):
+        """Clone profile, with environments."""
+        kwargs.setdefault("cascade", ["environments"])
+        return super(Profile, self).clone(*args, **kwargs)
+
+
 
 class Category(CCModel):
     """
@@ -139,6 +145,12 @@ class Environment(CCModel):
     def ordered_elements(self):
         """All elements in category name order."""
         return iter(self.elements.order_by("category__name"))
+
+
+    def clone(self, *args, **kwargs):
+        """Clone environment, including element relationships."""
+        kwargs.setdefault("cascade", ["elements"])
+        return super(Environment, self).clone(*args, **kwargs)
 
 
 

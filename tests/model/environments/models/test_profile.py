@@ -55,3 +55,15 @@ class ProfileTest(case.DBTestCase):
                     ]
                 )
             )
+
+
+    def test_clone(self):
+        """Cloning a profile clones member environments."""
+        p = self.F.ProfileFactory.create()
+        env = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Windows"]}, profile=p)[0]
+
+        new = p.clone()
+
+        self.assertEqual(new.environments.count(), 1)
+        self.assertNotEqual(new.environments.get(), env)
