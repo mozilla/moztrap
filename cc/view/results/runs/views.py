@@ -37,7 +37,7 @@ from cc.view.utils.ajax import ajax
 @login_required
 # @@@ @lists.finder(ResultsFinder)
 @lists.filter("runs", filterset_class=RunFilterSet)
-@lists.sort("runs")
+@lists.sort("runs", "start", "asc")
 @ajax("results/run/list/_runs_list.html")
 def runs_list(request):
     """List runs."""

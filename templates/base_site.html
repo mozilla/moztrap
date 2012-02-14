@@ -39,7 +39,7 @@
           <div class="secondary">
             <ol>
               <li class="{% block resultrun-active-nav %}{% endblock resultrun-active-nav %}">
-                <a href="{% url results_runs %}">Test Runs</a>
+                <a href="{% url results_runs %}?filter-status=active">Test Runs</a>
               </li>
               <li class="{% block resultcase-active-nav %}{% endblock resultcase-active-nav %}">
                 <a href="{% url results_runcaseversions %}">Test Cases</a>
