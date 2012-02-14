@@ -1,0 +1,42 @@
+.multiselect
+  +full(24)
+
+  .itemhead, .listordering
+    position: relative
+    padding-left: rhythm(1.5)
+
+  .byinclude
+    position: absolute
+    left: rhythm(.5)
+
+  .bulk-type
+    +icon('ui/grip.png')
+
+.multiunselected, .multiselected
+  +columns(12,24)
+
+.multiselected
+  +omega(24)
+  .selectbox
+    +leader(2)
+
+.selectbox
+  .select
+    +box-shadow(rgba($base,$small) 0 0 $smallem inset)
+    height: rhythm(12)
+    border-bottom: 1px solid
+    overflow-y: scroll
+    background-color: rgba($blue-hint,$xxsmall)
+
+.selectsearch
+  .textual
+    +trailer(.5)
+    label
+      +gone
+
+  // @@@ Bring it back!
+  .visual
+    display: none
+
+.selectitem
+  position: relative

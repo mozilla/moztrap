@@ -1471,7 +1471,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, [name="action-clone"], [name="action-delete"], .actionlink, .edit-link, .create-child-link {
+.action, .actionbutton, [name="action-clone"], [name="action-delete"], .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1482,7 +1482,7 @@ body > div {
   vertical-align: baseline;
   background: none;
 }
-.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .actionlink:active, .edit-link:active, .create-child-link:active {
+.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1502,6 +1502,12 @@ body > div {
   overflow: visible;
   background-position: center;
   width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.edit-link:focus, .edit-link:hover, .edit-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 
 [name="action-clone"] {
@@ -1519,8 +1525,12 @@ body > div {
   overflow: visible;
   background-position: center;
   width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
 }
 [name="action-clone"]:focus, [name="action-clone"]:hover, [name="action-clone"]:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
   background-image: url('../images/ui/clone.png?1326735333');
 }
 
@@ -1539,8 +1549,12 @@ body > div {
   overflow: visible;
   background-position: center;
   width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
 }
 [name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
   background-image: url('../images/ui/trash.png?1326735333');
 }
 
@@ -1559,6 +1573,60 @@ body > div {
   overflow: visible;
   background-position: center;
   width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.create-child-link:focus, .create-child-link:hover, .create-child-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.action-include {
+  background-image: url('../images/ui/arrow_right.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
+  opacity: 0.667;
+}
+.action-include:focus, .action-include:hover, .action-include:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/arrow_right.png?1326735333');
+}
+
+.action-exclude {
+  background-image: url('../images/ui/arrow_left.png?1327353019');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
+  opacity: 0.667;
+}
+.action-exclude:focus, .action-exclude:hover, .action-exclude:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/arrow_left.png?1327353019');
 }
 
 .detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites {
@@ -1735,6 +1803,62 @@ body > div {
   padding-left: 1.875em;
   background-color: #fef0bd;
   border-color: #a27f02;
+}
+
+.bulk-value {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.bulk-value:checked + .bulk-item {
+  background: #f0f9e6;
+}
+.bulk-value:checked + .bulk-item .bulk-type {
+  background-image: url('../images/ui/check.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 1.5em;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.bulk-type {
+  background-image: url('../images/ui/x.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 1.5em;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  display: block;
+  position: absolute;
+  top: 0.375em;
+  left: 0.375em;
+  z-index: 5;
 }
 
 .bystatus {
@@ -3031,6 +3155,82 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/crosshair.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
+.multiselect {
+  clear: both;
+}
+.multiselect .itemhead, .multiselect .listordering {
+  position: relative;
+  padding-left: 2.25em;
+}
+.multiselect .byinclude {
+  position: absolute;
+  left: 0.75em;
+}
+.multiselect .bulk-type {
+  background-image: url('../images/ui/grip.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 1.5em;
+}
+
+.multiunselected, .multiselected {
+  display: inline;
+  float: left;
+  width: 49.474%;
+  margin-right: 1.053%;
+}
+
+.multiselected {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.multiselected .selectbox {
+  margin-top: 3em;
+}
+
+.selectbox .select {
+  -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
+  -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
+  box-shadow: rgba(69, 69, 69, 0.667) 0 0 0.667em inset;
+  height: 18em;
+  border-bottom: 1px solid;
+  overflow-y: scroll;
+  background-color: rgba(232, 233, 236, 0.296);
+}
+
+.selectsearch .textual {
+  margin-bottom: 0.75em;
+}
+.selectsearch .textual label {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.selectsearch .visual {
+  display: none;
+}
+
+.selectitem {
+  position: relative;
+}
+
 .user-form .username-field {
   display: inline;
   float: left;
@@ -3245,9 +3445,6 @@ body.login input, body.login .errorlist {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-suite .form-actions, .edit-suite .form-actions {
-  padding-right: 25.263%;
-}
 .add-suite .status-field, .edit-suite .status-field {
   display: inline-block;
   width: 21.127%;
@@ -3266,6 +3463,35 @@ body.login input, body.login .errorlist {
 .add-suite .status-field .value, .edit-suite .status-field .value {
   display: inline-block;
   vertical-align: baseline;
+}
+.add-suite .cases-field .status, .edit-suite .cases-field .status {
+  left: 2.25em;
+  margin: 0;
+}
+.add-suite .cases-field .itemhead, .add-suite .cases-field .listordering, .edit-suite .cases-field .itemhead, .edit-suite .cases-field .listordering {
+  padding-left: 4.125em;
+}
+.add-suite .cases-field .name-tags, .add-suite .cases-field .byname-tags, .edit-suite .cases-field .name-tags, .edit-suite .cases-field .byname-tags {
+  display: inline;
+  float: left;
+  width: 72.093%;
+  margin-right: 2.326%;
+}
+.add-suite .cases-field .author, .add-suite .cases-field .byauthor, .edit-suite .cases-field .author, .edit-suite .cases-field .byauthor {
+  display: inline;
+  float: left;
+  width: 25.581%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-suite .cases-field .title, .edit-suite .cases-field .title {
+  font-weight: 500;
+  display: inline;
+  margin-right: 0.375em;
+  font-style: normal;
 }
 
 .case-form .form-actions {
