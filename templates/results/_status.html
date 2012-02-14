@@ -1,9 +1,11 @@
-{% if item.status == item.STATUS.draft %}
-<span class="draft status-readonly">draft</span>
-{% endif %}
-{% if item.status == item.STATUS.active %}
-<span class="active status-readonly">active</span>
-{% endif %}
-{% if item.status == item.STATUS.disabled %}
-<span class="disabled status-readonly">disabled</span>
-{% endif %}
+<div class="status">
+  {% if item.status == item.STATUS.draft %}
+  <span class="draft status-readonly">draft</span>
+  {% endif %}
+  {% if item.status == item.STATUS.active %}
+  <span class="active status-readonly">active</span>
+  {% endif %}
+  {% if item.status == item.STATUS.disabled %}
+  <span class="disabled status-readonly">disabled</span>
+  {% endif %}
+</div>
