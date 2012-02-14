@@ -25,12 +25,14 @@ from django import forms
 from django.forms.forms import NON_FIELD_ERRORS
 from django.forms.models import ModelChoiceIterator
 from django.forms.util import ErrorList
-#from django.utils.datastructures import MultiValueDict
+from django.utils.datastructures import MultiValueDict
 from django.utils.encoding import force_unicode, StrAndUnicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 import floppyforms
+
+from ..lists import filters
 
 
 
@@ -115,24 +117,25 @@ class CCSelectMultiple(floppyforms.SelectMultiple):
 
 
 
-# class FilteredSelectMultiple(CCSelectMultiple):
-#     """
-#     A SelectMultiple widget that provides UI for filtering options.
+class FilteredSelectMultiple(CCSelectMultiple):
+    """
+    A SelectMultiple widget that provides nice UI for filtering options.
 
-#     """
-#     template_name = "forms/widgets/_filtered_select_multiple.html"
-
-#     def __init__(self, *args, **kwargs):
-#         self.filters = kwargs.pop("filters", [])
-#         super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
+    """
+    template_name = "forms/widgets/_filtered_select_multiple.html"
+    choice_template_name = "forms/widgets/_filtered_select_multiple_item.html"
 
 
-#     def get_context_data(self):
-#         from .filters import Filter
-#         ctx = super(FilteredSelectMultiple, self).get_context_data()
-#         ctx["filter"] = Filter(MultiValueDict(), self.auth, *self.filters)
-#         ctx["choice_template"] = "forms/widgets/_filtered_select_multiple_item.html"
-#         return ctx
+    def __init__(self, *args, **kwargs):
+        self.filters = kwargs.pop("filters", [])
+        super(FilteredSelectMultiple, self).__init__(*args, **kwargs)
+
+
+    def get_context_data(self):
+        ctx = super(FilteredSelectMultiple, self).get_context_data()
+        ctx["filters"] = filters.FilterSet(self.filters).bind(MultiValueDict())
+        ctx["choice_template"] = self.choice_template_name
+        return ctx
 
 
 

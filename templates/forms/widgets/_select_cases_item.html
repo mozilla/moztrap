@@ -1,17 +1,16 @@
-{% extends "forms/_filtered_select_multiple_item.html" %}
+{% extends "forms/widgets/_filtered_select_multiple_item.html" %}
 
 {% block content %}
-{% with item.latestversion as version %}
+{% with item.latest_version as caseversion %}
 <p class="status">
-  <span class="{{ version.status|lower }}" title="{{ version.status|lower }}">{{ version.status|lower }}</span>
+  <span class="{{ caseversion.status }}" title="{{ caseversion.status }}">{{ caseversion.status }}</span>
 </p>
-<h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
-{# @@@ links add a filter? #}
+<h5 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h5>
 <ul class="tags">
-  {% for tag in version.tags %}
-  <li><a href="#">{{ tag.name }}</a></li>
+  {% for tag in caseversion.tags.all %}
+  <li><a href="#">{{ tag.name }}</a></li> {# links add a filter by that tag #}
   {% endfor %}
 </ul>
-<p class="author fn">{{ item.timeline.createdBy }}</p>
+<p class="author fn">{{ item.created_by.username }}</p>
 {% endwith %}
 {% endblock %}

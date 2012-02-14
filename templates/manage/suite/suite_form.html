@@ -11,6 +11,8 @@
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.description %}
 
+    {% include "forms/_field.html" with field=form.cases %}
+
     <div class="form-actions">
       {% include "forms/_field.html" with field=form.status %}
       <button type="submit">save suite</button>

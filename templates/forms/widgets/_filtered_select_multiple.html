@@ -12,7 +12,7 @@
       <ul class="suggest">
       </ul>
       <div class="groups">
-        {% for field in filter %}
+        {% for field in filters %}
         {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
         {% endfor %}
       </div>
