@@ -30,12 +30,12 @@ from cc.view.filters import ResultFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
-# @@@ from ..finders import ResultsFinder
+from ..finders import ResultsFinder
 
 
 
 @login_required
-# @@@ @lists.finder(ResultsFinder)
+@lists.finder(ResultsFinder)
 @lists.filter("results", filterset_class=ResultFilterSet)
 @lists.sort("results")
 @ajax("results/result/list/_results_list.html")

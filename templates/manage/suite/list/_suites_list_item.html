@@ -23,7 +23,7 @@
       <h3 class="title" title="{{ suite.name }}">{{ suite.name }}</h3>
 
       <div class="casecount">
-        (<a href="{% filter_url 'manage_cases' suite %}" class="drill-link" title="manage all cases in {{ suite.name }}">{{ suite.case_count }} Cases</a>)
+        (<a href="{{ 'manage_cases'|filter_url:suite }}" class="drill-link" title="manage all cases in {{ suite.name }}">{{ suite.case_count }} Cases</a>)
       </div>
     </div>
 

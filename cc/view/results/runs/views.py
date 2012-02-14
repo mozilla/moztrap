@@ -30,12 +30,12 @@ from cc.view.filters import RunFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
-# @@@ from ..finders import ResultsFinder
+from ..finders import ResultsFinder
 
 
 
 @login_required
-# @@@ @lists.finder(ResultsFinder)
+@lists.finder(ResultsFinder)
 @lists.filter("runs", filterset_class=RunFilterSet)
 @lists.sort("runs", "start", "asc")
 @ajax("results/run/list/_runs_list.html")

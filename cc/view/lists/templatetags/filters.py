@@ -29,7 +29,7 @@ register = Library()
 
 
 
-@register.simple_tag
+@register.filter
 def filter_url(view, obj):
-    """Template tag to get filtered url."""
+    """Template filter to get filtered url."""
     return filters.filter_url(view, obj)

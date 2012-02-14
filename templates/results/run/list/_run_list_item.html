@@ -1,4 +1,4 @@
-{% load results %}
+{% load results filters %}
 
 <article id="run-id-{{ run.id }}" class="listitem">
   {% include "results/_status.html" with item=run %}
@@ -17,7 +17,9 @@
     <div class="start">{{ run.start }}</div>
     <div class="end">{{ run.end }}</div>
 
+    {% with "results_runcaseversions"|filter_url:run as detail_url %}
     {% include "results/_results_summary.html" with results=run.result_summary %}
+    {% endwith %}
 
   </header>
 

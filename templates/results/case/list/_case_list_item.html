@@ -1,4 +1,5 @@
-{% load results %}
+{% load url from future %}
+{% load results filters %}
 
 <article id="runcaseversion-id-{{ runcaseversion.id }}" class="listitem">
   {% include "results/_status.html" with item=runcaseversion.caseversion %}
@@ -16,6 +17,7 @@
     <div class="run">{{ runcaseversion.run }}</div>
     <div class="product-version">{{ runcaseversion.run.productversion }}</div>
 
+    {% url "results_results" rcv_id=runcaseversion.id as detail_url %}
     {% include "results/_results_summary.html" with results=runcaseversion.result_summary %}
 
   </header>

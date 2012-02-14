@@ -10,7 +10,7 @@
   {% endif %}
 
   <p class="drill">
-    See related <a href="{% filter_url 'results_runcaseversions' run %}" title="test cases related to {{ run.name }}">test cases</a>.
+    See related <a href="{{ 'results_runcaseversions'|filter_url:run %}" title="test cases related to {{ run.name }}">test cases</a>.
   </p>
 
   {% if run.start or run.end %}
