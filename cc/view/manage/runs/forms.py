@@ -22,6 +22,7 @@ Management forms for runs.
 import floppyforms as forms
 
 from cc import model
+from cc.view.lists import filters
 from cc.view.utils import ccforms
 
 
@@ -29,9 +30,25 @@ from cc.view.utils import ccforms
 
 class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
     """Base form for adding/editing runs."""
+    suites = ccforms.CCModelMultipleChoiceField(
+        queryset=model.Suite.objects.all(),
+        required=False,
+        choice_attrs=ccforms.product_id_attrs,
+        widget=ccforms.FilteredSelectMultiple(
+            choice_template="manage/run/suite_select/_suite_select_item.html",
+            listordering_template=(
+                "manage/run/suite_select/_suite_select_listordering.html"),
+            filters=[
+                filters.KeywordFilter("name"),
+                filters.ModelFilter(
+                    "author", queryset=model.User.objects.all()),
+                ],
+            )
+        )
+
+
     class Meta:
         model = model.Run
-        # @@@ suite selection?
         fields = ["productversion", "name", "description", "start", "end"]
         widgets = {
             "productversion": forms.Select,

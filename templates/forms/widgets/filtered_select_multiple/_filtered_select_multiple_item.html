@@ -4,6 +4,7 @@
     <label for="bulk-select-{{ choice.0 }}" class="bulkselect" title="select or drag">bulk select {{ choice.0 }}</label>
     {% with choice.1.obj as item %}
     {% block content %}
+    <h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
     {% endblock %}
     {% endwith %}
   </div>
