@@ -1365,8 +1365,12 @@ body > div {
   border-color: rgba(75, 87, 101, 0.667);
 }
 .listordering ul {
-  overflow: hidden;
   *zoom: 1;
+}
+.listordering ul:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .sortitem {
@@ -4465,6 +4469,26 @@ body.login input, body.login .errorlist {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+
+.completion, .bycompletion {
+  display: inline;
+  float: left;
+  width: 3.297%;
+  margin-right: 1.099%;
+}
+
+.bycompletion {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bycompletion::before {
+  content: "%";
+}
+
+#runresults .listordering, #runresults .itemhead {
+  padding-left: 3.75em;
 }
 
 .runenvselect {

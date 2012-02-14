@@ -1,1 +1,17 @@
+// ---------------------------------------------------------------------------
+// Results General
+
+.completion, .bycompletion
+  +columns(1,23)
+
+.bycompletion
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  &::before
+    content: "%"
+
+// ---------------------------------------------------------------------------
+// Results Details
+
 @import results/runs
