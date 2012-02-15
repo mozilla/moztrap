@@ -1,0 +1,19 @@
+{% extends 'lists/_itembody.html' %}
+
+{% block itembody-content %}
+  <p class="name">
+    {{ category.name }}
+    {% include "lists/controls/_edit.html" with edit_url="#" edit_name=category.name %}
+  </p>
+  <ul class="elements">
+
+    {% for element in elements %}
+    {% include "manage/environment/element_select/_element_list_item.html" %}
+    {% endfor %}
+
+    <li class="add-element edit">
+      <label for="category-{{ category.id }}-new-element-name">add element</label>
+      <input type="text" name="new-element-name" value="" id="category-{{ category.id }}-new-element-name" placeholder="add an element" data-category-id="{{ category.id }}">
+    </li>
+  </ul>
+{% endblock itembody-content %}

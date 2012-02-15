@@ -1,20 +1,22 @@
-<article id="category-id-{{ category.id }}" class="item details action-ajax-replace">
-  <header class="summary">
-    <p class="bulk">
-      <input type="checkbox" name="bulk-select" value="category-{{ category.id }}" id="bulk-select-{{ category.id }}">
-      <label for="bulk-select-{{ category.id }}">bulk select for {{ category.name }}</label>
-    </p>
-    <h3 class="title">{{ category.name }}</h3>
-    <ul class="preview">
-      {% for element in elements %}
-      {% include "manage/environment/element_select/_element_preview_list_item.html" %}
-      {% endfor %}
-    </ul>
-    <div class="controls">
-      <button title="delete" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
-    </div>
-  </header>
-  <div class="content">
-    {% include "manage/environment/element_select/_category_list_item_content.html" %}
+<article id="category-id-{{ category.id }}" class="action-ajax-replace">
+  <input type="checkbox" name="bulk-select" class="bulk-value" value="category-{{ category.id }}" id="bulk-select-{{ category.id }}">
+  <div class="bulk-item listitem">
+    <label for="bulk-select-{{ category.id }}" class="bulk-type">bulk select for {{ category.name }}</label>
+
+    <header class="itemhead">
+      <div class="controls">
+        {% include "lists/controls/_delete.html" with delete_id=category.id delete_name=category.name %}
+      </div>
+
+      <h3 class="title">{{ category.name }}</h3>
+
+      <ul class="preview">
+        {% for element in elements %}
+        {% include "manage/environment/element_select/_element_preview_list_item.html" %}
+        {% endfor %}
+      </ul>
+    </header>
+
+    {% include "manage/environment/element_select/_category_list_item_detail.html" %}
   </div>
 </article>
