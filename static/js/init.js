@@ -151,13 +151,13 @@ var CC = (function (CC, $) {
         CC.filterFormAjax('.manage, .results');
 
         // manage-products.js
-        // CC.formOptionsFilter({
-        //     container: '#addsuite',
-        //     trigger_sel: '#id_product',
-        //     target_sel: '.multiunselected .select',
-        //     option_sel: '.selectitem',
-        //     multiselect_widget_bool: true
-        // });
+        CC.formOptionsFilter({
+            container: '#suite-add-form',
+            trigger_sel: '#id_product',
+            target_sel: '.multiunselected .select',
+            option_sel: '.selectitem',
+            multiselect_widget_bool: true
+        });
         // CC.formOptionsFilter({
         //     container: '#addrun',
         //     trigger_sel: '#id_productversion',

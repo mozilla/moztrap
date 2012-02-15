@@ -50,20 +50,24 @@ var CC = (function (CC, $) {
             allopts = target.find(options.option_sel).clone();
 
             filterFilters = function (items) {
-                context.find('.multiunselected .groups .filter-group:not(.keyword) input[type="checkbox"]').each(function () {
+                context.find('.multiunselected .visual .filter-group:not(.keyword) input[type="checkbox"]').each(function () {
                     var thisFilter = $(this),
                         type = thisFilter.data('name'),
-                        filter = thisFilter.siblings('label').text().toLowerCase(),
+                        filter = thisFilter.closest('.filter-item').find('.onoffswitch').text().toLowerCase(),
                         excludeThisFilter = false;
 
                     if (type === 'status') {
-                        if (!(items.filter(function () { return $(this).find('.status span').text().toLowerCase() === filter; }).length)) {
+                        if (!(items.find('.status span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
                     } else if (type === 'tag') {
                         if (!(items.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
+                    } else if (type === 'author') {
+                         if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                             excludeThisFilter = true;
+                         }
                     } else {
                         if (!(items.filter(function () { return $(this).find('.' + type).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
@@ -90,7 +94,7 @@ var CC = (function (CC, $) {
                     target.html(newopts);
                 }
                 if (options.multiselect_widget_bool) {
-                    context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                    context.find('.visual .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
                     context.find('.multiselected .select').empty();
                     filterFilters(newopts);
                 }
