@@ -101,6 +101,25 @@ class Category(CCModel):
         verbose_name_plural = "categories"
 
 
+    # @@@ there should be some way to annotate this onto a queryset efficiently
+    @property
+    def deletable(self):
+        """Return True if this category can be deleted, otherwise False."""
+        return not Environment.objects.filter(elements__category=self).exists()
+
+
+    # @@@ this protection should apply to queryset.delete as well
+    def delete(self, *args, **kwargs):
+        """Delete this category, or raise ProtectedError if its in use."""
+        if not self.deletable:
+            raise models.ProtectedError(
+                "Category '{0}' is in use and cannot be deleted.".format(
+                    self.name),
+                list(Environment.objects.filter(elements__category=self).all())
+                )
+        return super(Category, self).delete(*args, **kwargs)
+
+
 
 class Element(CCModel):
     """
@@ -114,6 +133,25 @@ class Element(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return self.name
+
+
+    # @@@ there should be some way to annotate this onto a queryset efficiently
+    @property
+    def deletable(self):
+        """Return True if this element can be deleted, otherwise False."""
+        return not self.environments.exists()
+
+
+    # @@@ this protection should apply to queryset.delete as well
+    def delete(self, *args, **kwargs):
+        """Delete this element, or raise ProtectedError if its in use."""
+        if not self.deletable:
+            raise models.ProtectedError(
+                "Element '{0}' is in use and cannot be deleted.".format(
+                    self.name),
+                list(self.environments.all())
+                )
+        return super(Element, self).delete(*args, **kwargs)
 
 
 
