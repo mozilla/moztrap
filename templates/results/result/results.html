@@ -5,7 +5,7 @@
 <section id="results" class="results listpage">
   <h2>Results for &ldquo;{{ runcaseversion.caseversion.name }}&rdquo;</h2>
 
-  <div class="details case-details {{ runcaseversion.caseversion.status }}">
+  <div class="case-details {{ runcaseversion.caseversion.status }}">
     <div class="summary">
       {% include "results/_status.html" with item=runcaseversion.caseversion %}
       <p class="run" title="{{ runcaseversion.run.name }}"><b>run:</b> {{ runcaseversion.run.name }}</p>
