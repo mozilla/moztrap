@@ -20,11 +20,24 @@
     content: "%"
 
 .drill-link
-  +button-style($green-light,'ui/open.png')
-  +trailer(.5)
-  display: inline-block
-  #{$link}
-    color: $base
+  .itemhead &
+    padding-left: rhythm(.25)
+    &::after
+      +opacity(.5)
+      +replace-text('ui/open.png')
+      content: " "
+      display: inline-block
+      vertical-align: top
+      width: rhythm(1)
+      height: rhythm(1)
+    &:hover::after
+      +opacity(1)
+  .item-content &
+    +button-style($green-light,'ui/open.png')
+    +trailer(.5)
+    display: inline-block
+    #{$link}
+      color: $base
 
 // ---------------------------------------------------------------------------
 // Results Details
