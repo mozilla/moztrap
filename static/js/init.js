@@ -139,7 +139,7 @@ var CC = (function (CC, $) {
 
         // listpages.js
         CC.loadListItemDetails();
-        CC.manageActionsAjax();
+        CC.manageActionsAjax('.manage, .manage-form');
         CC.listActionAjax(
             '.manage, .results',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'

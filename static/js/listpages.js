@@ -53,8 +53,8 @@ var CC = (function (CC, $) {
     };
 
     // Ajax for manage list actions (clone and delete)
-    CC.manageActionsAjax = function () {
-        $('.manage').on(
+    CC.manageActionsAjax = function (context) {
+        $(context).on(
             'click',
             'button[name^=action-]',
             function (e) {
