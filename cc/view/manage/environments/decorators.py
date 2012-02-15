@@ -86,12 +86,22 @@ def category_element_ajax_add_edit(view_func):
                         request, "Please enter a category name.")
                     data["no_replace"] = True
                 else:
-                    cat = model.Category.objects.create(
-                        name=new_category_name
-                        )
+                    if "category-id" in request.POST:
+                        cat = model.Category.objects.get(
+                            pk=request.POST.get("category-id")
+                            )
+                        cat.name = new_category_name
+                        cat.save()
+                    else:
+                        cat = model.Category.objects.create(
+                            name=new_category_name
+                            )
                     data["html"] = render_to_string(
                         template_name,
-                        {"category": cat},
+                        {
+                            "category": cat,
+                            "elements": cat.elements.order_by("name")
+                            },
                         RequestContext(request)
                         )
             elif "new-element-name" in request.POST:
@@ -120,7 +130,7 @@ def category_element_ajax_add_edit(view_func):
 
                     data["elem"] = render_to_string(
                         template_name,
-                        {"element": e},
+                        {"element": e, "name": "elements"},
                         RequestContext(request))
 
                     data["preview"] = render_to_string(
