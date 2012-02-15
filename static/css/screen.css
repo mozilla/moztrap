@@ -490,6 +490,75 @@ button {
   background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
+.buttoninlay, .toggle a:link, .toggle a:visited, #save-profile-name {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  -webkit-box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
+  -moz-box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
+  box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
+  padding-left: 1em;
+  padding-right: 1em;
+  max-width: 100%;
+  color: rgba(69, 69, 69, 0.667);
+  background: none;
+  border-color: rgba(69, 69, 69, 0.296);
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.buttoninlayfocus, .toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a, #save-profile-name:focus, #save-profile-name:hover, #save-profile-name:active {
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #666666;
+  background-color: white;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  cursor: pointer;
+}
+.buttoninlayfocus:hover, .toggle a:hover:focus, .toggle a:hover, .toggle a:hover:active, .expanded .toggle a:hover, #save-profile-name:hover:focus, #save-profile-name:hover, #save-profile-name:hover:active, .buttoninlayfocus:focus, .toggle a:focus, .toggle a:focus:hover, .toggle a:focus:active, .expanded .toggle a:focus, #save-profile-name:focus, #save-profile-name:focus:hover, #save-profile-name:focus:active {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+.buttoninlayfocus:active, .toggle a:active:focus, .toggle a:active:hover, .toggle a:active, .expanded .toggle a:active, #save-profile-name:active:focus, #save-profile-name:active:hover, #save-profile-name:active {
+  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+
 .input, textarea, select, input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
   font-family: "CambridgeRound", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 1em;
@@ -2596,72 +2665,6 @@ body > div {
   margin-right: 1.053%;
   text-transform: capitalize;
 }
-.toggle a:link, .toggle a:visited {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  -webkit-box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
-  -moz-box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
-  box-shadow: rgba(153, 153, 153, 0.296) 0 0 0.444em inset;
-  padding-left: 1em;
-  padding-right: 1em;
-  max-width: 100%;
-  color: rgba(69, 69, 69, 0.667);
-  border-color: rgba(69, 69, 69, 0.296);
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a {
-  font-weight: 500;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
-  color: #454545;
-  border-color: #666666;
-  background-color: white;
-  background-repeat: no-repeat;
-  padding-left: 1em;
-  padding-right: 1em;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  cursor: pointer;
-}
-.toggle a:focus:hover, .toggle a:focus:focus, .toggle a:hover:hover, .toggle a:hover:focus, .toggle a:active:hover, .toggle a:active:focus, .expanded .toggle a:hover, .expanded .toggle a:focus {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-}
-.toggle a:focus:active, .toggle a:hover:active, .toggle a:active:active, .expanded .toggle a:active {
-  background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-}
 
 #filterform {
   padding-top: 0.75em;
@@ -3394,27 +3397,42 @@ body.login input, body.login .errorlist {
 }
 
 .profile-form .name-field {
-  overflow: hidden;
-  *zoom: 1;
+  display: inline;
+  float: left;
+  width: 36.842%;
+  margin-right: 1.053%;
 }
 .profile-form .name-field .type {
   display: inline;
   float: left;
-  width: 7.368%;
-  margin-right: 1.053%;
+  width: 20%;
+  margin-right: 2.857%;
 }
 .profile-form .name-field .value {
   display: inline;
   float: left;
-  width: 49.474%;
-  margin-right: 1.053%;
+  width: 77.143%;
+  margin-right: 2.857%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
 }
-.profile-form .name-field .form-actions {
+.profile-form .name-field + .form-actions {
   display: inline;
   float: left;
-  width: 24.211%;
+  width: 62.105%;
   margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  padding-top: 0em;
+  clear: none;
   text-align: left;
+}
+.profile-form .itemlist, .profile-form #results .case-details, #results .profile-form .case-details {
+  clear: both;
 }
 
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {

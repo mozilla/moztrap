@@ -1,11 +1,23 @@
+#save-profile-name
+  @extend .buttoninlay
+  #{$focus}
+    @extend .buttoninlayfocus
+
 .profile-form
 
   .name-field
-    +clearfix
+    +columns(9,24)
     .type
-      +columns(2,24)
+      +columns(2,9)
     .value
-      +columns(12,24)
-    .form-actions
-      +columns(6,24)
+      +columns(7,9)
+      +omega(9)
+    + .form-actions
+      +columns(15,24)
+      +omega(24)
+      +padding-leader(0)
+      clear: none
       text-align: left
+
+  .itemlist
+    clear: both

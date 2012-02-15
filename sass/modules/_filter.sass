@@ -33,21 +33,9 @@
   text-transform: capitalize
   a
     #{$link}
-      +box-sizing(border-box)
-      +border-radius
-      +rhythm-borders(1px,.25)
-      +box-shadow(rgba($mid,$xxsmall) 0 0 $xsmallem inset)
-      +hpadding(1em)
-      max-width: 100%
-      color: rgba($base,$small)
-      border-color: rgba($base,$xxsmall)
-      display: inline-block
-      overflow: hidden
-      white-space: nowrap
-      text-overflow: ellipsis
-
+      @extend .buttoninlay
     #{$focus}, .expanded &
-      +button-style($lightest)
+      @extend .buttoninlayfocus
 
 #filterform
   +padding-leader(.5)
