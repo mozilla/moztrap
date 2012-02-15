@@ -37,11 +37,11 @@ from cc.view.lists.actions import get_action
 ACTION_TYPES = {
     "category": (
         model.Category,
-        "manage/environment/add_profile/_category_list_item.html",
+        "manage/environment/element_select/_category_list_item.html",
         ),
     "element": (
         model.Element,
-        "manage/environment/add_profile/_element_list_item.html",
+        "manage/environment/element_select/_element_list_item.html",
         ),
     }
 
@@ -97,7 +97,7 @@ def category_element_ajax_add_edit(view_func):
             elif "new-element-name" in request.POST:
                 template_name = ACTION_TYPES["element"][1]
                 preview_template_name = (
-                    "manage/environment/add_profile/"
+                    "manage/environment/element_select/"
                     "_element_preview_list_item.html")
                 new_element_name = request.POST.get("new-element-name")
 
@@ -115,7 +115,7 @@ def category_element_ajax_add_edit(view_func):
                     else:
                         e = model.Element.objects.create(
                             name=new_element_name,
-                            category=request.POST.get("category-id")
+                            category_id=request.POST.get("category-id")
                             )
 
                     data["elem"] = render_to_string(
