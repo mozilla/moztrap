@@ -98,6 +98,7 @@ class Category(CCModel):
 
 
     class Meta:
+        ordering = ["name"]
         verbose_name_plural = "categories"
 
 
@@ -133,6 +134,10 @@ class Element(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return self.name
+
+
+    class Meta:
+        ordering = ["name"]
 
 
     # @@@ there should be some way to annotate this onto a queryset efficiently

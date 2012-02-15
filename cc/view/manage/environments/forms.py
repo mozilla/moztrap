@@ -19,6 +19,8 @@
 Manage forms for environments.
 
 """
+from django.utils.datastructures import SortedDict
+
 import floppyforms as forms
 
 from .... import model
@@ -55,15 +57,16 @@ class EnvironmentElementSelectMultiple(ccforms.CCSelectMultiple):
         """Add category list, with elements for each category, to context."""
         ctx = super(EnvironmentElementSelectMultiple, self).get_context(
             *args, **kwargs)
-        # list of (category, elementlist) tuples
-        categories = []
+        # maps category to list of available elements
+        available = {}
         for c in ctx["choices"]:
             element = c[1].obj
-            category = element.category
-            if categories and categories[-1][0] == category:
-                categories[-1][1].append(element)
-            else:
-                categories.append((category, [element]))
+            available.setdefault(element.category, []).append(element)
+        # ensure we also include empty categories
+        categories = list(model.Category.objects.order_by("name"))
+        for category in categories:
+            # annotate with elements available in this widget
+            category.choice_elements = available.get(category, [])
         ctx["categories"] = categories
         ctx["selected_element_ids"] = set(map(int, ctx["value"]))
         return ctx

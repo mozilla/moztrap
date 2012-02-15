@@ -15,7 +15,7 @@
       </div>
 
       <ul class="preview">
-        {% for element in elements %}
+        {% for element in category.choice_elements %}
         {% include "manage/environment/element_select/_element_preview_list_item.html" %}
         {% endfor %}
       </ul>
