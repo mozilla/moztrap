@@ -37,6 +37,7 @@ from cc.view.utils.ajax import ajax
 from ..finders import ManageFinder
 
 from . import forms
+from .decorators import category_element_ajax_add_edit
 
 
 
@@ -76,6 +77,7 @@ def profile_details(request, profile_id):
 
 
 @permission_required("environments.manage_environments")
+@category_element_ajax_add_edit
 def profile_add(request):
     """Add an environment profile."""
     if request.method == "POST":
@@ -110,7 +112,7 @@ def profile_add(request):
 def profile_edit(request, profile_id):
     profile = get_object_or_404(model.Profile, pk=profile_id)
 
-    # @@@ should probably use a form
+    # @@@ should use a form, and support both ajax and non
     if request.is_ajax() and request.method == "POST":
         if "save-profile-name" in request.POST:
             new_name = request.POST.get("profile-name")
