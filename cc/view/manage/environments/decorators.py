@@ -100,7 +100,8 @@ def category_element_ajax_add_edit(view_func):
                         template_name,
                         {
                             "category": cat,
-                            "elements": cat.elements.order_by("name")
+                            "elements": cat.elements.order_by("name"),
+                            "name": "elements" # @@@ duplicated form field name
                             },
                         RequestContext(request)
                         )
@@ -130,7 +131,10 @@ def category_element_ajax_add_edit(view_func):
 
                     data["elem"] = render_to_string(
                         template_name,
-                        {"element": e, "name": "elements"},
+                        {
+                            "element": e,
+                            "name": "elements" # @@@ duplicated form field name
+                            },
                         RequestContext(request))
 
                     data["preview"] = render_to_string(
