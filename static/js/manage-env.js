@@ -178,18 +178,35 @@ var CC = (function (CC, $) {
                 elementId = thisElement.data('element-id'),
                 name = thisElement.find('label').text(),
                 checked = thisElement.find('input[name="elements"]').is(':checked'),
-                editThisElement = ich.env_profile_element_edit({
+                editThisElement = ich.env_profile_edit_input({
                     inputId: inputId,
-                    elementId: elementId,
+                    id: elementId,
                     name: name,
-                    checked: checked
+                    checked: checked,
+                    type: 'element'
                 });
             thisElement.replaceWith(editThisElement);
 
             event.preventDefault();
         });
 
-        context.on('keydown', '.bulkselectitem .element .editing input', function (event) {
+        context.on('click', '.bulkselectitem .item-content .name .edit-link', function (event) {
+            var thisName = $(this).closest('.name'),
+                categoryId = thisName.data('category-id'),
+                inputId = 'edit-category-id-' + categoryId,
+                name = thisName.data('category-name'),
+                editThisName = ich.env_profile_edit_input({
+                    inputId: inputId,
+                    id: categoryId,
+                    name: name,
+                    type: 'category'
+                });
+            thisName.replaceWith(editThisName);
+
+            event.preventDefault();
+        });
+
+        context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -231,6 +248,45 @@ var CC = (function (CC, $) {
                 } else {
                     $(ich.message({
                         message: "Please enter an element name.",
+                        tags: "error"
+                    })).appendTo($('#messages'));
+                    $('#messages').messages();
+                }
+                event.preventDefault();
+            }
+        });
+
+        context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
+            if (event.keyCode === CC.keycodes.ENTER) {
+                if ($(this).val().length) {
+                    var input = $(this),
+                        thisCategory = input.closest('.bulkselectitem'),
+                        name = input.val(),
+                        categoryId = input.data('category-id'),
+                        url = '',
+                        data = {},
+                        success = function (response) {
+                            var editedCat = $(response.html);
+
+                            if (!response.no_replace) {
+                                thisCategory.replaceWith(editedCat);
+                            }
+
+                            thisCategory.loadingOverlay('remove');
+                        };
+
+                    data['category-id'] = categoryId;
+                    data[input.attr('name')] = input.val();
+
+                    thisCategory.loadingOverlay();
+                    $.ajax(url, {
+                        type: "POST",
+                        data: data,
+                        success: success
+                    });
+                } else {
+                    $(ich.message({
+                        message: "Please enter a category name.",
                         tags: "error"
                     })).appendTo($('#messages'));
                     $('#messages').messages();
