@@ -158,11 +158,13 @@ var CC = (function (CC, $) {
             option_sel: '.selectitem',
             multiselect_widget_bool: true
         });
-        // CC.formOptionsFilter({
-        //     container: '#addrun',
-        //     trigger_sel: '#id_productversion',
-        //     target_sel: '#id_suites'
-        // });
+        CC.formOptionsFilter({
+            container: '#run-add-form',
+            trigger_sel: '#id_productversion',
+            target_sel: '.multiunselected .select',
+            option_sel: '.selectitem',
+            multiselect_widget_bool: true
+        });
         CC.formOptionsFilter({
             container: '#single-case-add',
             trigger_sel: '#id_product',
