@@ -159,30 +159,19 @@ var CC = (function (CC, $) {
             multiselect_widget_bool: true
         });
         CC.formOptionsFilter({
-            container: '#run-add-form',
+            container: '#run-add-form, #run-edit-form',
             trigger_sel: '#id_productversion',
             target_sel: '.multiunselected .select',
             option_sel: '.selectitem',
             multiselect_widget_bool: true
         });
         CC.formOptionsFilter({
-            container: '#single-case-add',
+            container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_productversion'
         });
         CC.formOptionsFilter({
-            container: '#single-case-add',
-            trigger_sel: '#id_product',
-            target_sel: '#id_initial_suite',
-            optional: true
-        });
-        CC.formOptionsFilter({
-            container: '#bulk-case-add',
-            trigger_sel: '#id_product',
-            target_sel: '#id_productversion'
-        });
-        CC.formOptionsFilter({
-            container: '#bulk-case-add',
+            container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_initial_suite',
             optional: true
@@ -191,7 +180,7 @@ var CC = (function (CC, $) {
         CC.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
-        // CC.createEnvProfile();
+        // CC.createEnvProfile('#profile-add-form');
         // CC.editEnvProfile();
         // CC.envNarrowing('#envnarrowlist');
 

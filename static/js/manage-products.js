@@ -100,7 +100,7 @@ var CC = (function (CC, $) {
                 }
             };
 
-            if (trigger.is('select')) {
+            if (trigger.is('select') && !(context.find('.multiselected .select').find(options.option_sel).length)) {
                 doFilter();
                 trigger.change(doFilter);
             } else if (options.multiselect_widget_bool) {

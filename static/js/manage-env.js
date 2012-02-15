@@ -26,8 +26,8 @@ var CC = (function (CC, $) {
 
     'use strict';
 
-    CC.createEnvProfile = function () {
-        var context = $('#addprofile'),
+    CC.createEnvProfile = function (container) {
+        var context = $(container),
             elements = context.find('.item .elements'),
             elementInputs = elements.find('.element-select input'),
             categoryInputs = context.find('.item .bulk input[id^="bulk-select-"]'),
