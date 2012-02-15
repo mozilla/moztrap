@@ -77,9 +77,11 @@ class EditRunForm(RunForm):
         pvf = self.fields["productversion"]
         if self.instance.status == model.Run.STATUS.active:
             # can't change the product version of an active run.
-             pvf.queryset = pvf.queryset.filter(
-                 pk=self.instance.productversion_id)
-             pvf.readonly = True
+            pvf.queryset = pvf.queryset.filter(
+                pk=self.instance.productversion_id)
+            pvf.readonly = True
+            # can't change suites of an active run either
+            self.fields["suites"].readonly = True
         else:
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(

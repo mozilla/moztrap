@@ -1,0 +1,13 @@
+{% load ccforms %}
+
+<strong class="type">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</strong>
+{% if field|is_multiple %}
+  <ul class="value">
+    {% for value in field|values_text %}
+      <li>{{ value }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <span class="value">{{ field|value_text }}</span>
+{% endif %}
+{{ field.as_hidden }}
