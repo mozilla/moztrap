@@ -1,9 +1,7 @@
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
 
-  <p class="drill">
-    See related <a href="{% url results_results rcv_id=runcaseversion.id %}" title="test results related to {{ runcaseversion.caseversion.name }}">test results</a>.
-  </p>
+  <a href="{% url results_results rcv_id=runcaseversion.id %}" class="drill-link" title="test results related to {{ runcaseversion.caseversion.name }}">See related test results.</a>
 
   <ol class="steps">
     {% for step in runcaseversion.caseversion.steps.all %}

@@ -9,9 +9,7 @@
   </p>
   {% endif %}
 
-  <p class="drill">
-    See related <a href="{{ 'results_runcaseversions'|filter_url:run }}" title="test cases related to {{ run.name }}">test cases</a>.
-  </p>
+  <a href="{{ 'results_runcaseversions'|filter_url:run }}" class="drill-link" title="test cases related to {{ run.name }}">See related test cases</a>
 
 </div>
 
