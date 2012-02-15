@@ -3543,6 +3543,22 @@ body.login input, body.login .errorlist {
   border: 0;
 }
 
+#editprofile .itemhead, #editprofile #results .case-details .summary, #results .case-details #editprofile .summary {
+  padding-left: 0.375em;
+}
+#editprofile .title {
+  font-weight: 500;
+  display: inline;
+}
+#editprofile .add-item .itemhead, #editprofile .add-item #results .case-details .summary, #results .case-details #editprofile .add-item .summary, #editprofile .add-item .item-content {
+  padding-left: 1.875em;
+}
+
+#add-environment-form {
+  padding-right: 50.526%;
+  margin-bottom: 0.375em;
+}
+
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
   display: inline;
   float: left;
