@@ -75,17 +75,20 @@ class EditRunForm(RunForm):
         super(EditRunForm, self).__init__(*args, **kwargs)
 
         pvf = self.fields["productversion"]
+        sf = self.fields["suites"]
         if self.instance.status == model.Run.STATUS.active:
             # can't change the product version of an active run.
             pvf.queryset = pvf.queryset.filter(
                 pk=self.instance.productversion_id)
             pvf.readonly = True
             # can't change suites of an active run either
-            self.fields["suites"].readonly = True
+            sf.readonly = True
         else:
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
-                product=self.instance.productversion.product)
+                product=self.instance.productversion.product_id)
+            sf.queryset = sf.queryset.filter(
+                product=self.instance.productversion.product_id)
 
         self.initial["suites"] = list(
             self.instance.suites.values_list("id", flat=True))
