@@ -33,13 +33,14 @@ class EditSuiteFormTest(case.DBTestCase):
 
 
     def test_edit_suite(self):
-        """Can edit suite, sets modified-by."""
+        """Can edit suite, including new product, sets modified-by."""
+        p = self.F.ProductFactory()
         s = self.F.SuiteFactory()
         u = self.F.UserFactory()
 
         f = self.form(
             {
-                "product": str(s.product.id),
+                "product": str(p.id),
                 "name": "new name",
                 "description": "new desc",
                 "status": "draft",
@@ -49,27 +50,31 @@ class EditSuiteFormTest(case.DBTestCase):
 
         suite = f.save()
 
+        self.assertEqual(suite.product, p)
         self.assertEqual(suite.name, "new name")
         self.assertEqual(suite.description, "new desc")
         self.assertEqual(suite.modified_by, u)
 
 
     def test_no_change_product_option(self):
-        """No option to change to different product."""
+        """No option to change to different product if there are cases."""
         self.F.ProductFactory.create()
         s = self.F.SuiteFactory()
+        self.F.SuiteCaseFactory(suite=s)
 
         f = self.form(instance=s)
         self.assertEqual(
             [c[0] for c in f.fields["product"].choices],
             ['', s.product.id]
             )
+        self.assertTrue(f.fields["product"].readonly)
 
 
     def test_no_edit_product(self):
-        """Can't change product"""
+        """Can't change product if there are cases"""
         p = self.F.ProductFactory()
         s = self.F.SuiteFactory()
+        self.F.SuiteCaseFactory(suite=s)
 
         f = self.form(
             {

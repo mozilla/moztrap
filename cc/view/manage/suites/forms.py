@@ -62,6 +62,17 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
             }
 
 
+    def save(self):
+        """Save the suite and case associations."""
+        suite = super(SuiteForm, self).save()
+
+        suite.suitecases.all().delete()
+        for i, case in enumerate(self.cleaned_data["cases"]):
+            model.SuiteCase.objects.create(suite=suite, case=case, order=i)
+
+        return suite
+
+
 
 class AddSuiteForm(SuiteForm):
     """Form for adding a suite."""
@@ -75,8 +86,15 @@ class EditSuiteForm(SuiteForm):
         """Initialize EditSuiteForm; no changing product."""
         super(EditSuiteForm, self).__init__(*args, **kwargs)
 
-        pf = self.fields["product"]
-        pf.queryset = pf.queryset.filter(pk=self.instance.product_id)
+        # for suites with cases in them, product is readonly and case options
+        # are filtered to that product
+        if self.instance.cases.exists():
+            pf = self.fields["product"]
+            pf.queryset = pf.queryset.filter(pk=self.instance.product_id)
+            pf.readonly = True
+
+            cf = self.fields["cases"]
+            cf.queryset = cf.queryset.filter(product=self.instance.product_id)
 
         self.initial["cases"] = list(
             self.instance.cases.values_list("id", flat=True))

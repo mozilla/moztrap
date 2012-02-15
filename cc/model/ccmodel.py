@@ -265,9 +265,9 @@ class CCModel(models.Model):
         return clone
 
 
-    def delete(self, user=None):
+    def delete(self, user=None, permanent=False):
         """
-        (Soft) delete this instance.
+        (Soft) delete this instance, unless permanent=True.
 
         """
         self._collector.delete(user)
@@ -292,6 +292,45 @@ class CCModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+
+class NotDeletedCount(models.Count):
+    """A Count on a related field that only counts not-deleted objects."""
+    def add_to_query(self, query, alias, col, source, is_summary):
+        """
+        Add the aggregate to the nominated query.
+
+        Expects col to be a tuple (which means this can only be used to count
+        related fields), and transforms it into a NotDeletedCountColumn.
+
+        """
+        try:
+            table, field = col
+        except ValueError:
+            raise ValueError("Must use NotDeletedCount with a related field.")
+        else:
+            col = NotDeletedCountColumn(table, field)
+        return super(NotDeletedCount, self).add_to_query(
+            query, alias, col, source, is_summary)
+
+
+
+class NotDeletedCountColumn(object):
+    """An object with an as_sql method that counts only not-deleted objects."""
+    def __init__(self, table, field):
+        """Initialize the column with a table and field name."""
+        self.table = table
+        self.field = field
+
+
+    def as_sql(self, qn, connection):
+        """Return CASE statement to select only not-deleted objects."""
+        return (
+            "CASE WHEN {0}.{1} IS NULL THEN {0}.{2} ELSE NULL END".format(
+                qn(self.table), qn("deleted_on"), qn(self.field)
+                )
+            )
 
 
 
