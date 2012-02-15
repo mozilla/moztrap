@@ -1,0 +1,22 @@
+<div class="itembody">
+  <div class="item-content">
+    <div class="env-management">
+      <label for="env-elements-input">add or remove environment elements</label>
+      <input type="text" name="text-filter" value="" id="env-elements-input" autocomplete="off" placeholder="add or remove environment elements" data-autocomplete-url="{% url manage_environment_autocomplete_elements %}">
+      <ul class="suggest">
+        {# (provided by filtering) icanhaz "autocomplete_suggestion" #}
+      </ul>
+    </div>
+
+    <form method="POST" id="add-environment-form">
+      {% csrf_token %}
+      <ul class="env-element-list">
+        {# (provided by filtering) icanhaz "autocomplete_input" #}
+      </ul>
+
+      <div class="form-actions">
+        <button type="submit" name="add-environment" id="add-environment" value="1">Add Environment</button>
+      </div>
+    </form>
+  </div>
+</div>

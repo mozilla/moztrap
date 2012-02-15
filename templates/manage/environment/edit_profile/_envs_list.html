@@ -14,11 +14,9 @@
     {% include "lists/_emptylist.html" %}
   {% endif %}
 
-  <article class="item add-item details">
-    <h3 class="summary">add an environment</h3>
-    <div class="content">
-      {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
-    </div>
+  <article class="listitem add-item details">
+    <h3 class="summary itemhead">add an environment</h3>
+    {% include "manage/environment/edit_profile/_env_list_item_detail_new.html" %}
   </article>
 
   {% include "lists/_listnav.html" with pager=pager %}
