@@ -1,0 +1,62 @@
+#results
+
+  .listordering, .itemhead, .item-content
+    padding-left: rhythm(1)
+
+  .resultsummary, .byresult
+    +columns(3,24)
+
+  .tester, .bytester
+    +columns(6,24)
+
+  .envlist, .byenvironment
+    +columns(15,24)
+
+  .envlist, .byenvironment
+    +omega(24)
+
+  .tester
+    +demi
+
+  .envlist
+    +delimited-list
+
+  .comment
+    +trailer(.5)
+    padding: 0
+
+  .case-details
+    @extend .itemlist
+    @extend .listitem
+    +full(24)
+    +clearfix
+    +trailer
+    border-width: 1px
+
+    .summary, .content
+      padding-left: rhythm(1.5)
+
+    .summary
+      @extend .itemhead
+      #{$focus}
+        outline: 0
+        cursor: pointer
+
+    .content
+      +padding-leader(.25)
+
+    .status
+      left: rhythm(.25)
+      margin: 0
+
+    .run, .product
+      +columns(10,24)
+    .results-summary
+      +columns(4,24)
+      +omega(24)
+      a
+        width: 32%
+
+    b
+      @extend .allcaps
+      +demi

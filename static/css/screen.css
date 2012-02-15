@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, #results .case-details b, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -1153,7 +1153,7 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .results-summary a, .completion {
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .resultsummary, .results-summary a, .completion {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1169,10 +1169,10 @@ body > div {
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
-.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .results-summary a a:visited, .completion a:visited {
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
 }
-.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .results-summary a a:active, .completion a:active {
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .resultsummary a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .resultsummary a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .resultsummary a:active, .results-summary a a:active, .completion a:active {
   color: #4f1114;
 }
 
@@ -1639,7 +1639,7 @@ body > div {
   overflow-y: auto;
 }
 
-.listitem {
+.listitem, #results .case-details {
   *zoom: 1;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(100%, rgba(153, 153, 153, 0.198)));
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.667), rgba(153, 153, 153, 0.198));
@@ -1650,16 +1650,16 @@ body > div {
   position: relative;
   background-color: rgba(232, 233, 236, 0.296);
 }
-.listitem:after {
+.listitem:after, #results .case-details:after {
   content: "";
   display: table;
   clear: both;
 }
-.listitem:hover {
+.listitem:hover, #results .case-details:hover {
   background-image: none;
 }
 
-.itemhead {
+.itemhead, #results .case-details .summary {
   overflow: hidden;
   *zoom: 1;
   padding-top: 0.375em;
@@ -1671,18 +1671,18 @@ body > div {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   border-color: rgba(75, 87, 101, 0.296);
 }
-.itemhead p {
+.itemhead p, #results .case-details .summary p {
   margin: 0;
 }
-.itemhead .tags {
+.itemhead .tags, #results .case-details .summary .tags {
   list-style-type: none;
 }
-.itemhead .tags, .itemhead .tags li {
+.itemhead .tags, #results .case-details .summary .tags, .itemhead .tags li, #results .case-details .summary .tags li {
   margin: 0px;
   padding: 0px;
   display: inline;
 }
-.itemhead .tag {
+.itemhead .tag, #results .case-details .summary .tag {
   margin-bottom: 0em;
   font-weight: normal;
 }
@@ -2216,6 +2216,46 @@ body > div {
   padding: 0;
 }
 
+.resultsummary, .results-summary a {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 0em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-transform: capitalize;
+  text-overflow: ellipsis;
+}
+.resultsummary::before, .results-summary a::before {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+  margin-right: 0.375em;
+}
+.resultsummary.started, .results-summary a.started {
+  background-color: #cbcfd6;
+}
+.resultsummary.started::before, .results-summary a.started::before {
+  content: url('../images/ui/power_sm.png?1329264134');
+}
+.resultsummary.invalidated, .results-summary a.invalidated {
+  background-color: #fef0bd;
+}
+.resultsummary.invalidated::before, .results-summary a.invalidated::before {
+  content: url('../images/ui/warning_sm.png?1326735333');
+}
+.resultsummary.failed, .results-summary a.failed {
+  background-color: #f5d1d2;
+}
+.resultsummary.failed::before, .results-summary a.failed::before {
+  content: url('../images/ui/x_sm.png?1326735333');
+}
+.resultsummary.passed, .results-summary a.passed {
+  background-color: #e4f5d1;
+}
+.resultsummary.passed::before, .results-summary a.passed::before {
+  content: url('../images/ui/check_sm.png?1326735333');
+}
+
 .results-summary {
   list-style-type: none;
 }
@@ -2235,51 +2275,20 @@ body > div {
   border: 0;
 }
 .results-summary a {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  margin-bottom: 0em;
   width: 32%;
   text-align: left;
-}
-.results-summary a::before {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
-  opacity: 0.75;
-  margin-right: 0.375em;
 }
 .results-summary a:focus::before, .results-summary a:hover::before, .results-summary a:active::before {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
-.results-summary a.invalidated {
-  background-color: #fef0bd;
-}
-.results-summary a.invalidated::before {
-  content: url('../images/ui/warning_sm.png?1326735333');
-}
-.results-summary a.failed {
-  background-color: #f5d1d2;
-}
-.results-summary a.failed::before {
-  content: url('../images/ui/x_sm.png?1326735333');
-}
-.results-summary a.passed {
-  background-color: #e4f5d1;
-}
-.results-summary a.passed::before {
-  content: url('../images/ui/check_sm.png?1326735333');
-}
-.results-summary a.zip {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-}
 
-.itemlist {
+.itemlist, #results .case-details {
   margin-bottom: 1.5em;
   border: 1px solid rgba(75, 87, 101, 0.667);
   border-width: 0px 1px;
 }
-.itemlist .empty {
+.itemlist .empty, #results .case-details .empty {
   margin-top: 0em;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
@@ -3231,7 +3240,7 @@ body.login input, body.login .errorlist {
   display: table;
   clear: both;
 }
-.multiselect .itemhead, .multiselect .listordering {
+.multiselect .itemhead, .multiselect #results .case-details .summary, #results .case-details .multiselect .summary, .multiselect .listordering {
   position: relative;
   padding-left: 2.25em;
 }
@@ -3583,7 +3592,7 @@ body.login input, body.login .errorlist {
   left: 2.25em;
   margin: 0;
 }
-.add-suite .cases-field .itemhead, .add-suite .cases-field .listordering, .edit-suite .cases-field .itemhead, .edit-suite .cases-field .listordering {
+.add-suite .cases-field .itemhead, .add-suite .cases-field #results .case-details .summary, #results .case-details .add-suite .cases-field .summary, .add-suite .cases-field .listordering, .edit-suite .cases-field .itemhead, .edit-suite .cases-field #results .case-details .summary, #results .case-details .edit-suite .cases-field .summary, .edit-suite .cases-field .listordering {
   padding-left: 4.125em;
 }
 .add-suite .cases-field .name-tags, .add-suite .cases-field .byname-tags, .edit-suite .cases-field .name-tags, .edit-suite .cases-field .byname-tags {
@@ -4248,7 +4257,7 @@ body.login input, body.login .errorlist {
   opacity: 1;
 }
 
-#manageusers .listordering, #manageusers .itemhead {
+#manageusers .listordering, #manageusers .itemhead, #manageusers #results .case-details .summary, #results .case-details #manageusers .summary {
   padding-left: 2.625em;
 }
 #manageusers .status {
@@ -4295,7 +4304,7 @@ body.login input, body.login .errorlist {
   display: inline;
 }
 
-#managetags .itemhead {
+#managetags .itemhead, #managetags #results .case-details .summary, #results .case-details #managetags .summary {
   padding-left: 0.75em;
 }
 #managetags .name, #managetags .byname, #managetags .byline, #managetags .bybyline {
@@ -4406,7 +4415,7 @@ body.login input, body.login .errorlist {
   padding-left: 16.842%;
 }
 
-#manageruns .listordering, #manageruns .itemhead, #manageruns .itembody .content {
+#manageruns .listordering, #manageruns .itemhead, #manageruns #results .case-details .summary, #results .case-details #manageruns .summary, #manageruns .itembody .content {
   padding-left: 3.75em;
 }
 #manageruns .name, #manageruns .byname {
@@ -4454,7 +4463,7 @@ body.login input, body.login .errorlist {
   padding-left: 17.582%;
 }
 
-#managesuites .listordering, #managesuites .itemhead, #managesuites .itembody .content {
+#managesuites .listordering, #managesuites .itemhead, #managesuites #results .case-details .summary, #results .case-details #managesuites .summary, #managesuites .itembody .content {
   padding-left: 3.75em;
 }
 #managesuites .name, #managesuites .byname-cases {
@@ -4480,7 +4489,7 @@ body.login input, body.login .errorlist {
   font-weight: 500;
 }
 
-#managecases .listordering, #managecases .itemhead, #managecases .itembody .content {
+#managecases .listordering, #managecases .itemhead, #managecases #results .case-details .summary, #results .case-details #managecases .summary, #managecases .itembody .content {
   padding-left: 3.75em;
 }
 #managecases .byname-tags, #managecases .name-tags {
@@ -4556,7 +4565,7 @@ body.login input, body.login .errorlist {
   content: "%";
 }
 
-#runresults .listordering, #runresults .itemhead, #runresults .item-content {
+#runresults .listordering, #runresults .itemhead, #runresults #results .case-details .summary, #results .case-details #runresults .summary, #runresults .item-content {
   padding-left: 3.75em;
 }
 #runresults .name, #runresults .byname, #runresults .product-version, #runresults .byproduct-version, #runresults .results-summary, #runresults .byresults {
@@ -4600,7 +4609,7 @@ body.login input, body.login .errorlist {
   #margin-left: -1em;
 }
 
-#caseresults .listordering, #caseresults .itemhead, #caseresults .item-content {
+#caseresults .listordering, #caseresults .itemhead, #caseresults #results .case-details .summary, #results .case-details #caseresults .summary, #caseresults .item-content {
   padding-left: 3.75em;
 }
 #caseresults .name, #caseresults .byname {
@@ -4642,6 +4651,101 @@ body.login input, body.login .errorlist {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+
+#results .listordering, #results .itemhead, #results .case-details .summary, #results .item-content {
+  padding-left: 1.5em;
+}
+#results .resultsummary, #results .results-summary a, .results-summary #results a, #results .byresult {
+  display: inline;
+  float: left;
+  width: 11.579%;
+  margin-right: 1.053%;
+}
+#results .tester, #results .bytester {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+}
+#results .envlist, #results .byenvironment {
+  display: inline;
+  float: left;
+  width: 62.105%;
+  margin-right: 1.053%;
+}
+#results .envlist, #results .byenvironment {
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#results .tester {
+  font-weight: 500;
+}
+#results .envlist {
+  list-style-type: none;
+}
+#results .envlist, #results .envlist li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+#results .envlist li:after {
+  content: ", ";
+}
+#results .envlist li:last-child:after {
+  content: "";
+}
+#results .envlist li.last:after {
+  content: "";
+}
+#results .comment {
+  margin-bottom: 0.75em;
+  padding: 0;
+}
+#results .case-details {
+  clear: both;
+  overflow: hidden;
+  *zoom: 1;
+  margin-bottom: 1.5em;
+  border-width: 1px;
+}
+#results .case-details .summary, #results .case-details .content {
+  padding-left: 2.25em;
+}
+#results .case-details .summary:focus, #results .case-details .summary:hover, #results .case-details .summary:active {
+  outline: 0;
+  cursor: pointer;
+}
+#results .case-details .content {
+  padding-top: 0.375em;
+}
+#results .case-details .status {
+  left: 0.375em;
+  margin: 0;
+}
+#results .case-details .run, #results .case-details .product {
+  display: inline;
+  float: left;
+  width: 41.053%;
+  margin-right: 1.053%;
+}
+#results .case-details .results-summary {
+  display: inline;
+  float: left;
+  width: 15.789%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#results .case-details .results-summary a {
+  width: 32%;
+}
+#results .case-details b {
+  font-weight: 500;
 }
 
 .runenvselect {
