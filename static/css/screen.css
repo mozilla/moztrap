@@ -2282,6 +2282,10 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
+.results-summary a.zip {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+}
 
 .itemlist, #results .case-details {
   margin-bottom: 1.5em;
