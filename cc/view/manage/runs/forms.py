@@ -61,6 +61,17 @@ class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
             }
 
 
+    def save(self):
+        """Save and return run, with suite associations."""
+        run = super(RunForm, self).save()
+
+        run.runsuites.all().delete(permanent=True)
+        for i, suite in enumerate(self.cleaned_data["suites"]):
+            model.RunSuite.objects.create(run=run, suite=suite, order=i)
+
+        return run
+
+
 
 class AddRunForm(RunForm):
     """Form for adding a run."""
