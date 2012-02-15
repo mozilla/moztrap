@@ -185,4 +185,9 @@ urlpatterns = patterns(
     url(r"^profiles/$",
         "environments.views.profiles_list",
         name="manage_profiles"),
+
+    # add
+    url(r"^profile/add/$",
+        "environments.views.profile_add",
+        name="manage_profile_add"),
 )

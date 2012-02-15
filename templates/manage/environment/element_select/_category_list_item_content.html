@@ -4,8 +4,8 @@
 </p>
 <ul class="elements">
 
-  {% for element in category.elements %}
-  {% include "manage/environment/add_profile/_element_list_item.html" %}
+  {% for element in elements %}
+  {% include "manage/environment/element_select/_element_list_item.html" %}
   {% endfor %}
 
   <li class="add-element edit">

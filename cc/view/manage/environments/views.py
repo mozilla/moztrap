@@ -19,9 +19,11 @@
 Manage views for environments.
 
 """
+from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 
 from cc import model
 
@@ -30,6 +32,8 @@ from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
+
+from . import forms
 
 
 
@@ -49,5 +53,29 @@ def profiles_list(request):
         "manage/environment/profiles.html",
         {
             "profiles": model.Profile.objects.all(),
+            }
+        )
+
+
+
+@permission_required("environments.manage_environments")
+def profile_add(request):
+    """Add an environment profile."""
+    if request.method == "POST":
+        form = forms.AddProfileForm(request.POST, user=request.user)
+        if form.is_valid():
+            profile = form.save()
+            messages.success(
+                request, "Profile '{0}' added.".format(
+                    profile.name)
+                )
+            return redirect("manage_profiles")
+    else:
+        form = forms.AddProfileForm(user=request.user)
+    return TemplateResponse(
+        request,
+        "manage/environment/add_profile.html",
+        {
+            "form": form
             }
         )
