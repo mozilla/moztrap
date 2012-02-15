@@ -147,7 +147,7 @@ var CC = (function (CC, $) {
                             var newelem = $(response.html);
                             if (!response.no_replace) {
                                 input.closest('.add-item').before(newelem);
-                                newelem.addClass('open').find('.details').andSelf().html5accordion();
+                                newelem.find('.details').addClass('open').html5accordion();
                                 input.val(null).closest('.add-item').find('.summary').first().click();
                                 newelem.find('.elements .add-element input[name="new-element-name"]').focus();
                             }
