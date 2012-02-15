@@ -4,11 +4,13 @@
     <label for="bulk-select-{{ category.id }}" class="bulk-type">bulk select for {{ category.name }}</label>
 
     <header class="itemhead">
-      <div class="controls">
-        <button title="delete {{ category.name }}" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
-      </div>
 
-      <h3 class="title">{{ category.name }}</h3>
+      <div class="name">
+        <div class="controls">
+          <button title="delete {{ category.name }}" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
+        </div>
+        <h3 class="title">{{ category.name }}</h3>
+      </div>
 
       <ul class="preview">
         {% for element in elements %}

@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, #results .case-details b, #runtests .result-action {
+.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, .add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary, #results .case-details b, #runtests .result-action {
   text-transform: uppercase;
 }
 
@@ -3441,6 +3441,106 @@ body.login input, body.login .errorlist {
 }
 .profile-form .itemlist, .profile-form #results .case-details, #results .profile-form .case-details {
   clear: both;
+}
+
+.preview {
+  list-style-type: none;
+}
+.preview, .preview li {
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+}
+.preview li:after {
+  content: ", ";
+}
+.preview li:last-child:after {
+  content: "";
+}
+.preview li.last:after {
+  content: "";
+}
+.preview .checked {
+  font-weight: 500;
+}
+
+.add-item {
+  background: #b3e37d;
+}
+.add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary {
+  font-weight: 500;
+  background: url('../images/ui/plus.png?1326735333') no-repeat scroll 0.375em;
+}
+.add-item:last-child {
+  border-bottom: 2.25em solid #a9b2bf;
+}
+.add-item:last-child .item-content {
+  border-bottom-style: solid;
+  border-bottom-width: 0.071em;
+  padding-bottom: 0.304em;
+  border-color: #8695a8;
+}
+
+#profile-add-form .itemhead, #profile-add-form #results .case-details .summary, #results .case-details #profile-add-form .summary, #profile-add-form .item-content, #profile-add-form .listordering {
+  padding-left: 2.625em;
+}
+#profile-add-form .bulk-type {
+  left: 1.125em;
+}
+#profile-add-form .name, #profile-add-form .byname {
+  display: inline;
+  float: left;
+  width: 34.066%;
+  margin-right: 1.099%;
+}
+#profile-add-form .title {
+  font-weight: 500;
+  display: inline;
+}
+#profile-add-form .byelements, #profile-add-form .preview {
+  display: inline;
+  float: left;
+  width: 64.835%;
+  margin-right: 1.099%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#profile-add-form .edit-name, #profile-add-form .add-name {
+  padding-right: 65.934%;
+  font-weight: 500;
+  margin-bottom: 0.75em;
+}
+#profile-add-form .elements {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  padding-right: 65.934%;
+}
+#profile-add-form .elements li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+#profile-add-form .element {
+  position: relative;
+}
+#profile-add-form .element .value {
+  position: absolute;
+  left: -1.875em;
+  top: 0.188em;
+}
+#profile-add-form .add-element .type {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {

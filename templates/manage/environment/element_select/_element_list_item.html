@@ -1,10 +1,6 @@
-<li class="element action-ajax-replace" data-element-id="{{ element.id }}">
-  <div class="element-select">
-    <input type="checkbox" name="{{ name }}" value="{{ element.id }}" id="element-{{ element.id }}"{% if element.id in selected_element_ids %} checked{% endif %}>
-    <label for="element-{{ element.id }}">{{ element.name }}</label>
-  </div>
-  <div class="element-controls">
-    <a href="#{{ element.id }}" title="edit {{ element.name }}" class="edit-link">edit</a>
-    <button title="delete {{ element.name }}" type="submit" name="action-delete" value="element-{{ element.id }}">delete</button>
-  </div>
+<li class="element formfield optional action-ajax-replace" data-element-id="{{ element.id }}">
+  <input type="checkbox" name="{{ name }}" class="value" value="{{ element.id }}" id="element-{{ element.id }}"{% if element.id in selected_element_ids %} checked{% endif %}>
+  <a href="#{{ element.id }}" title="edit {{ element.name }}" class="edit-link">edit</a>
+  <button title="delete {{ element.name }}" type="submit" name="action-delete" value="element-{{ element.id }}">delete</button>
+  <label for="element-{{ element.id }}" class="type">{{ element.name }}</label>
 </li>

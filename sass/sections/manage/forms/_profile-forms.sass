@@ -1,8 +1,3 @@
-#save-profile-name
-  @extend .buttoninlay
-  #{$focus}
-    @extend .buttoninlayfocus
-
 .profile-form
 
   .name-field
@@ -21,3 +16,65 @@
 
   .itemlist
     clear: both
+
+
+#save-profile-name
+  @extend .buttoninlay
+  #{$focus}
+    @extend .buttoninlayfocus
+
+.preview
+  +delimited-list
+  .checked
+    +demi
+
+.add-item
+  background: $green-light
+  .itemhead
+    @extend .allcaps
+    +demi
+    background: image-url('ui/plus.png') no-repeat scroll rhythm(.25)
+  &:last-child
+    border-bottom: rhythm(1.5) solid $blue-lighter
+    .item-content
+      +trailing-border(1px,.25)
+      border-color: $blue-light
+
+#profile-add-form
+
+  .itemhead, .item-content, .listordering
+    padding-left: rhythm(1.75)
+
+  .bulk-type
+    left: rhythm(.75)
+
+  .name, .byname
+    +columns(8,23)
+
+  .title
+    +demi
+    display: inline
+
+  .byelements, .preview
+    +columns(15,23)
+    +omega(23)
+
+  .edit-name, .add-name
+    +suffix(15,23)
+    +demi
+    +trailer(.5)
+
+  .elements
+    +no-style-list
+    +suffix(15,23)
+
+  .element
+    position: relative
+    .value
+      position: absolute
+      left: rhythm(-1.25)
+      top: rhythm(.125)
+
+  .add-element
+    .type
+      +gone
