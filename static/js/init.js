@@ -152,7 +152,7 @@ var CC = (function (CC, $) {
 
         // manage-products.js
         CC.formOptionsFilter({
-            container: '#suite-add-form',
+            container: '#suite-add-form, #suite-edit-form',
             trigger_sel: '#id_product',
             target_sel: '.multiunselected .select',
             option_sel: '.selectitem',
