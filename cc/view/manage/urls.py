@@ -186,6 +186,11 @@ urlpatterns = patterns(
         "environments.views.profiles_list",
         name="manage_profiles"),
 
+    # ajax details
+    url(r"^profiles/_detail/(?P<profile_id>\d+)/$",
+        "environments.views.profile_details",
+        name="manage_profile_details"),
+
     # add
     url(r"^profile/add/$",
         "environments.views.profile_add",

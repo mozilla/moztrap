@@ -1,7 +1,7 @@
 {% load permissions %}
 
 <article id="profile-id-{{ profile.id }}" class="listitem">
-  <div class="itemhead">
+  <header class="itemhead">
 
     <div class="name">
 
@@ -24,7 +24,10 @@
       {% endfor %}
     </ul>
 
-    {% include "lists/_byline.html" with item=profile %}
+  </header>
 
-  </div>
+  {% url manage_profile_details profile.id as details_url %}
+  {# _profile_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
 </article>

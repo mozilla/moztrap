@@ -19,7 +19,7 @@
 Manage views for environments.
 
 """
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -53,6 +53,20 @@ def profiles_list(request):
         "manage/environment/profiles.html",
         {
             "profiles": model.Profile.objects.all(),
+            }
+        )
+
+
+
+@login_required
+def profile_details(request, profile_id):
+    """Get details snippet for a profile."""
+    profile = get_object_or_404(model.Profile, pk=profile_id)
+    return TemplateResponse(
+        request,
+        "manage/environment/profile_list/_profile_details.html",
+        {
+            "profile": profile
             }
         )
 
