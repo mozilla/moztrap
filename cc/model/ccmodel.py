@@ -112,11 +112,13 @@ class CCQuerySet(QuerySet):
         return super(CCQuerySet, self).update(*args, **kwargs)
 
 
-    def delete(self, user=None):
+    def delete(self, user=None, permanent=False):
         """
-        Soft-delete all objects in this queryset.
+        Soft-delete all objects in this queryset, unless permanent=True.
 
         """
+        if permanent:
+            return super(CCQuerySet, self).delete()
         collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.delete(user)
@@ -270,6 +272,8 @@ class CCModel(models.Model):
         (Soft) delete this instance, unless permanent=True.
 
         """
+        if permanent:
+            return super(CCModel, self).delete()
         self._collector.delete(user)
 
 

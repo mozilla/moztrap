@@ -66,7 +66,7 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
         """Save the suite and case associations."""
         suite = super(SuiteForm, self).save()
 
-        suite.suitecases.all().delete()
+        suite.suitecases.all().delete(permanent=True)
         for i, case in enumerate(self.cleaned_data["cases"]):
             model.SuiteCase.objects.create(suite=suite, case=case, order=i)
 
