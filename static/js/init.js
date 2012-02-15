@@ -33,7 +33,7 @@ var CC = (function (CC, $) {
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        // $('#suite-form .caseselect').multiselect();
+        $('.multiselect').multiselect();
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -83,16 +83,16 @@ var CC = (function (CC, $) {
         //     caseSensitive: true,
         //     prefix: 'element'
         // });
-        // $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
-        //     textbox: '#search-add',
-        //     inputList: '.groups .filter-group:not(.keyword)',
-        //     newInputList: '.groups .filter-group.keyword',
-        //     multipleCategories: true,
-        //     allowNew: true,
-        //     triggerSubmit: null,
-        //     inputsNeverRemoved: true,
-        //     prefix: 'filter'
-        // });
+        $('.multiselect .multiunselected .selectsearch').customAutocomplete({
+            textbox: '#search-add',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
+            multipleCategories: true,
+            allowNew: true,
+            triggerSubmit: null,
+            inputsNeverRemoved: true,
+            prefix: 'filter'
+        });
         $('.runsdrill').html5finder({
             loading: true,
             headerSelector: '.listordering',

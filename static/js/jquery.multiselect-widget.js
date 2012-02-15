@@ -34,7 +34,7 @@
                         excludeThisItem = false;
                     filterLists.find(options.filterSel + ':checked').each(function () {
                         var type = $(this).data('name'),
-                            filter = $(this).siblings('label').text().toLowerCase();
+                            filter = $(this).closest('.filter-item').find('.onoffswitch').text().toLowerCase();
 
                         if (type === 'name') {
                             if (thisItem.find('.title').text().toLowerCase().indexOf(filter) === -1) {
@@ -46,6 +46,10 @@
                             }
                         } else if (type === 'tag') {
                             if (!(thisItem.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                                excludeThisItem = true;
+                            }
+                        } else if (type === 'author') {
+                            if (thisItem.find('.' + type).children('span').text().toLowerCase() !== filter) {
                                 excludeThisItem = true;
                             }
                         } else {
@@ -68,16 +72,11 @@
         });
 
         availableList.add(includedList).on('click', options.itemSel + ' .tags a', function (e) {
-            var tagName = $(this).text(),
-                suggestion = ich.autocomplete_suggestion({
-                    suggestions: true,
-                    id: tagName,
-                    type: 'tag',
-                    name: tagName,
-                    typedText: tagName
-                });
-            suggestion.appendTo(context.find(options.availableSel + ' .selectsearch .suggest')).find('a').click();
-            return false;
+            var tagName = $(this).text();
+            filterLists.filter('[data-name="tag"]').find('.onoffswitch').filter(function () {
+                return $(this).text().toLowerCase() === tagName;
+            }).closest('.filter-item').find(options.filterSel).prop('checked', true).change();
+            e.preventDefault();
         });
 
         availableList.add(includedList).sortable({
@@ -175,16 +174,15 @@
         // Sorting requires jQuery Element Sorter plugin ( http://plugins.jquery.com/project/ElementSort )
         headers.click(function (e) {
             var thisItemContainer = $(this).closest('section').find(options.itemListSel),
-                sortByClass = $(this).parent().attr('class').substring(2),
+                sortByClass = $(this).data('sort'),
                 direction;
 
             if ($(this).hasClass('asc') || $(this).hasClass('desc')) {
                 $(this).toggleClass('asc desc');
-                $(this).parent().siblings().find('a').removeClass('asc desc');
             } else {
                 $(this).addClass('asc');
-                $(this).parent().siblings().find('a').removeClass('asc desc');
             }
+            $(this).closest('.listordering').find('.sortlink').not($(this)).removeClass('asc desc');
             if ($(this).hasClass('asc')) {
                 direction = 'asc';
             }
@@ -196,24 +194,24 @@
                 direction: direction
             });
             $(this).blur();
-            return false;
+            e.preventDefault();
         });
     };
 
     /* Setup plugin defaults */
     $.fn.multiselect.defaults = {
-        filterListSel: '.groups .filter-group',
+        filterListSel: '.visual .filter-group',
         filterSel: 'input[type="checkbox"]',
         availableSel: '.multiunselected',
         includedSel: '.multiselected',
         itemSel: '.selectitem',
         itemListSel: '.select',
-        labelSel: '.bulkselect',
-        inputSel: '.item-input',
+        labelSel: '.bulk-type',
+        inputSel: '.bulk-value',
         bulkIncludeSel: '.multiunselected .listordering .action-include',
         bulkExcludeSel: '.multiselected .listordering .action-exclude',
-        headerSel: '.listordering li[class^="by"] a',
-        formSel: '#suite-form'
+        headerSel: '.listordering .sortlink',
+        formSel: '.manage-form'
     };
 
 }(jQuery));
