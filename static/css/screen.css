@@ -315,6 +315,16 @@ summary:focus {
 }
 .no-details details summary {
   display: inline;
+  cursor: pointer;
+  outline: 0;
+}
+.no-details details summary:focus {
+  outline: thin dotted #4f1114;
+}
+
+.details .summary {
+  cursor: pointer;
+  outline: 0;
 }
 
 /* Replaced ------------------------------------------------------------------ */
@@ -1151,8 +1161,6 @@ body > div {
   position: absolute;
   right: 0;
   top: -1.875em;
-  cursor: pointer;
-  outline: 0;
 }
 [role="banner"] .drilldown .summary:hover, [role="banner"] .drilldown .summary:focus {
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -4842,10 +4850,6 @@ body.login input, body.login .errorlist {
 }
 #results .case-details .summary, #results .case-details .content {
   padding-left: 2.25em;
-}
-#results .case-details .summary:focus, #results .case-details .summary:hover, #results .case-details .summary:active {
-  outline: 0;
-  cursor: pointer;
 }
 #results .case-details .content {
   padding-top: 0.375em;
