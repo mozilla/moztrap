@@ -117,7 +117,7 @@ class CCQuerySet(QuerySet):
         Soft-delete all objects in this queryset.
 
         """
-        collector = SoftDeleteCollector(using=self._db)
+        collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.delete(user)
 
@@ -127,7 +127,7 @@ class CCQuerySet(QuerySet):
         Undelete all objects in this queryset.
 
         """
-        collector = SoftDeleteCollector(using=self._db)
+        collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.undelete(user)
 
@@ -153,7 +153,7 @@ class CCManager(models.Manager):
 
     def get_query_set(self):
         """Return a ``CCQuerySet`` for all queries."""
-        qs = CCQuerySet(self.model, using=self._db)
+        qs = CCQuerySet(self.model, using=self.db)
         if not self._show_deleted:
             qs = qs.filter(deleted_on__isnull=True)
         return qs
