@@ -180,7 +180,7 @@ var CC = (function (CC, $) {
         CC.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
-        // CC.createEnvProfile('#profile-add-form');
+        CC.createEnvProfile('#profile-add-form');
         // CC.editEnvProfile();
         // CC.envNarrowing('#envnarrowlist');
 

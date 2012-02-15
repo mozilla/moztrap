@@ -28,28 +28,21 @@ var CC = (function (CC, $) {
 
     CC.createEnvProfile = function (container) {
         var context = $(container),
-            elements = context.find('.item .elements'),
-            elementInputs = elements.find('.element-select input'),
-            categoryInputs = context.find('.item .bulk input[id^="bulk-select-"]'),
-            profileNameInput = context.find('#profile_name'),
-            addElement = $('input[id$="-new-element-name"]'),
-            addCategory = $('input#new-category-name'),
-            editElementLink = elements.find('a[title="edit"]'),
-            editElement = elements.find('.editing input'),
+            elements = context.find('.bulkselectitem .elements .element'),
             updateLabels = function () {
-                context.find('.item .elements .element-select input').each(function () {
+                context.find('.bulkselectitem .elements input[name="elements"]').each(function () {
                     var thisID = $(this).attr('id');
                     if ($(this).is(':checked')) {
-                        $('label[for=' + thisID + ']').addClass('checked');
+                        context.find('label[for=' + thisID + ']').addClass('checked');
                     } else {
-                        $('label[for=' + thisID + ']').removeClass('checked');
+                        context.find('label[for=' + thisID + ']').removeClass('checked');
                     }
                 });
             },
             updateBulkInputs = function () {
-                context.find('.item .elements .element-select input').each(function () {
-                    if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
-                        $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
+                context.find('.bulkselectitem .elements input[name="elements"]').each(function () {
+                    if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
+                        $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
                     }
                 });
             };
@@ -58,67 +51,67 @@ var CC = (function (CC, $) {
         updateLabels();
         updateBulkInputs();
 
-        context.on('before-replace', '.item .elements', function (event, replacement) {
+        context.on('before-replace', '.bulkselectitem .element', function (event, replacement) {
             // Removes element preview (label) when element is deleted.
             // Other actions (other than delete) might also cause this to fire, with new HTML
             // (already parsed into jQuery object) in "replacement".
             if (!replacement.html()) {
                 var thisElement = $(event.target),
                     thisElementID = thisElement.data('element-id'),
-                    thisPreview = thisElement.closest('.item').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
+                    thisPreview = thisElement.closest('.bulkselectitem').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
                 thisPreview.detach();
-                if (thisElement.closest('.elements').find('input[name="element"]:checked').not(thisElement.closest('.action-ajax-replace').find('input[name="element"]')).length) {
-                    thisElement.closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
+                if (thisElement.closest('.elements').find('input[name="elements"]:checked').not(thisElement.find('input[name="elements"]')).length) {
+                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
                 } else {
-                    thisElement.closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', false);
+                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
                 }
             }
         });
 
-        context.on('keydown', '#profile_name', function (event) {
+        context.on('keydown', '#id_name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 event.preventDefault();
-                context.find('.form-actions button').focus();
+                context.find('.form-actions button[type="submit"]').focus();
             }
         });
 
-        context.on('change', '.item .elements .element-select input', function () {
+        context.on('change', '.bulkselectitem .element input[name="elements"]', function () {
             var thisID = $(this).attr('id');
             if ($(this).is(':checked')) {
-                $('label[for=' + thisID + ']').addClass('checked');
+                context.find('label[for=' + thisID + ']').addClass('checked');
             } else {
-                $('label[for=' + thisID + ']').removeClass('checked');
+                context.find('label[for=' + thisID + ']').removeClass('checked');
             }
-            if ($(this).closest('.elements').find('input[type="checkbox"]:checked').length) {
-                $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', true);
+            if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
+                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
             } else {
-                $(this).closest('.item').find('.bulk input[name="bulk-select"]').prop('checked', false);
+                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
             }
         });
 
-        context.on('change', '.item .bulk input[id^="bulk-select-"]', function () {
+        context.on('change', '.bulkselectitem .bulk-value', function () {
             if ($(this).is(':checked')) {
-                $(this).closest('.item').find('.elements input').prop('checked', true);
+                $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', true);
             } else {
-                $(this).closest('.item').find('.elements input').prop('checked', false);
+                $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', false);
             }
             updateLabels();
         });
 
-        context.on('keydown', 'input[id$="-new-element-name"]', function (event) {
+        context.on('keydown', '.bulkselectitem input[name="new-element-name"]', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         name = input.val(),
-                        loading = input.closest('.content'),
+                        loading = input.closest('.item-content'),
                         url = '',
                         data = {},
                         success = function (response) {
                             var newElem = $(response.elem),
                                 newPreview = $(response.preview);
                             if (!response.no_replace) {
-                                input.closest('.elements').children('li.add-element').before(newElem);
-                                input.closest('.item').find('.preview').append(newPreview);
+                                input.closest('.elements').find('.add-element').before(newElem);
+                                input.closest('.bulkselectitem').find('.preview').append(newPreview);
                                 input.val(null);
                             }
                             loading.loadingOverlay('remove');
@@ -143,20 +136,20 @@ var CC = (function (CC, $) {
             }
         });
 
-        context.on('keydown', 'input#new-category-name', function (event) {
+        context.on('keydown', '#new-category-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
-                        loading = input.closest('.content'),
+                        loading = input.closest('.item-content'),
                         url = '',
                         data = {},
                         success = function (response) {
                             var newelem = $(response.html);
                             if (!response.no_replace) {
-                                input.closest('.items').children('.add-item').before(newelem);
+                                input.closest('.add-item').before(newelem);
                                 newelem.addClass('open').find('.details').andSelf().html5accordion();
-                                input.val(null).closest('.item').find('.summary').click();
-                                newelem.find('.elements .add-element input').focus();
+                                input.val(null).closest('.add-item').find('.summary').first().click();
+                                newelem.find('.elements .add-element input[name="new-element-name"]').focus();
                             }
                             loading.loadingOverlay('remove');
                         };
@@ -179,12 +172,12 @@ var CC = (function (CC, $) {
             }
         });
 
-        context.on('click', '.item .elements a[title="edit"]', function (event) {
-            var thisElement = $(this).closest('li'),
-                inputId = thisElement.find('input').attr('id'),
+        context.on('click', '.bulkselectitem .element .edit-link', function (event) {
+            var thisElement = $(this).closest('.element'),
+                inputId = thisElement.find('input[name="elements"]').attr('id'),
                 elementId = thisElement.data('element-id'),
-                name = thisElement.find('label').html(),
-                checked = thisElement.find('input').is(':checked'),
+                name = thisElement.find('label').text(),
+                checked = thisElement.find('input[name="elements"]').is(':checked'),
                 editThisElement = ich.env_profile_element_edit({
                     inputId: inputId,
                     elementId: elementId,
@@ -196,7 +189,7 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
-        context.on('keydown', '.item .elements .editing input', function (event) {
+        context.on('keydown', '.bulkselectitem .element .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -204,7 +197,7 @@ var CC = (function (CC, $) {
                         name = input.val(),
                         inputId = input.attr('id'),
                         elementId = input.data('element-id'),
-                        preview = input.closest('.item').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
+                        preview = input.closest('.bulkselectitem').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
                         checked = input.data('checked'),
                         url = '',
                         data = {},
@@ -217,7 +210,7 @@ var CC = (function (CC, $) {
                                 preview.replaceWith(editedPreview);
 
                                 if (checked) {
-                                    $('#' + inputId).prop('checked', checked);
+                                    context.find('#' + inputId).prop('checked', checked);
                                     updateLabels();
                                 }
                                 input.val(null);
