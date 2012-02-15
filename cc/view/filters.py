@@ -236,3 +236,15 @@ class ProfileFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
         ]
+
+
+
+class EnvironmentFilterSet(filters.FilterSet):
+    """FilterSet for Environments."""
+    filters = [
+        filters.ModelFilter(
+            "environment element",
+            lookup="elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
+        ]

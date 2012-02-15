@@ -1,7 +1,10 @@
 {% extends 'manage/environment/base.html' %}
 
-{% block listcontent %}
-<section id="editprofile">
+{% load permissions %}
+
+{% block content %}
+
+<section id="editprofile" class="manage listpage">
   <h2>Edit Environment Profile</h2>
 
   <form method="POST" id="profile-name-form">
@@ -19,8 +22,7 @@
   </form>
 
   {% include "lists/_filter.html" %}
-
-  {% include 'manage/environment/edit_profile/_envs_list.html' %}
+  {% include "manage/environment/edit_profile/_envs_list.html" %}
 
 </section>
-{% endblock listcontent %}
+{% endblock content %}

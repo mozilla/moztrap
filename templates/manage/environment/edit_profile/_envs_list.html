@@ -1,23 +1,26 @@
-<div class="managelist action-ajax-replace">
+{% load pagination %}
+
+<form method="POST" action="{{ request.get_full_path }}" id="profile-environments-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
 
   {% include "manage/environment/edit_profile/_envs_listordering.html" %}
 
-  <div class="items">
-    <form method="POST">
-    {% for env in environments %}
-    {% include "manage/environment/edit_profile/_env_list_item.html" %}
+  {% paginate environments as pager %}
+  {% if pager.objects %}
+    {% for env in pager.objects %}
+      {% include "manage/environment/edit_profile/_env_list_item.html" %}
     {% endfor %}
-    </form>
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
 
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <article class="item add-item details">
-      <h3 class="summary">add an environment</h3>
-      <div class="content">
-        {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
-      </div>
-    </article>
-    {% endif %}
-  </div>
+  <article class="item add-item details">
+    <h3 class="summary">add an environment</h3>
+    <div class="content">
+      {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
+    </div>
+  </article>
 
-  {% include "lists/_listnav.html" %}
-</div>
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

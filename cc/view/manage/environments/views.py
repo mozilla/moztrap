@@ -19,6 +19,9 @@
 Manage views for environments.
 
 """
+import json
+
+from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 
@@ -27,7 +30,7 @@ from django.contrib import messages
 
 from cc import model
 
-from cc.view.filters import ProfileFilterSet
+from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
@@ -92,4 +95,84 @@ def profile_add(request):
         {
             "form": form
             }
+        )
+
+
+
+@permission_required("environments.manage_environments")
+@lists.filter("environments", filterset_class=EnvironmentFilterSet)
+@lists.actions(
+    model.Environment,
+    ["delete"],
+    permission="environments.manage_environments",
+    fall_through=True)
+@ajax("manage/environment/edit_profile/_envs_list.html")
+def profile_edit(request, profile_id):
+    profile = get_object_or_404(model.Profile, pk=profile_id)
+
+    # @@@ should probably use a form
+    if request.is_ajax() and request.method == "POST":
+        if "save-profile-name" in request.POST:
+            new_name = request.POST.get("profile-name")
+            data = {}
+            if not new_name:
+                messages.error(request, "Please enter a profile name.")
+                data["success"] = False
+            else:
+                profile.name = new_name
+                profile.save(user=request.user)
+                messages.success(request, "Profile name saved!")
+                data["success"] = True
+
+            return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+        elif "add-environment" in request.POST:
+            element_ids = request.POST.getlist("element")
+            if not element_ids:
+                messages.error(
+                    request, "Please select some environment elements.")
+            else:
+                env = model.Environment.objects.create(
+                    profile=profile, user=request.user)
+                env.elements.add(*element_ids)
+
+    return TemplateResponse(
+        request,
+        "manage/environment/edit_profile.html",
+        {
+            "profile": profile,
+            "environments": profile.environments.all(),
+            }
+        )
+
+
+@login_required
+def element_autocomplete(request):
+    text = request.GET.get("text")
+    elements = []
+    if text is not None:
+        elements = model.Environment.objects.filter(
+            name__icontains=text)
+    suggestions = []
+    for e in elements:
+        start = e.name.lower().index(text.lower())
+        pre = e.name[:start]
+        post = e.name[start+len(text):]
+        suggestions.append({
+                "preText": pre,
+                "typedText": text,
+                "postText": post,
+                "id": e.id,
+                "name": e.name,
+                "type": "element",
+                })
+    return HttpResponse(
+        json.dumps(
+            {
+                "suggestions": suggestions
+                }
+            ),
+        content_type="application/json",
         )

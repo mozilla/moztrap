@@ -2,7 +2,7 @@
   {% block env-body %}
   <h3 class="preview">
     <ul>
-      {% for element in env.elements %}
+      {% for element in env.ordered_elements %}
       <li>{{ element.name }}</li>
       {% endfor %}
     </ul>

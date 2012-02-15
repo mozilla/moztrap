@@ -195,4 +195,14 @@ urlpatterns = patterns(
     url(r"^profile/add/$",
         "environments.views.profile_add",
         name="manage_profile_add"),
+
+    # edit
+    url(r"^profile/(?P<profile_id>\d+)/$",
+        "environments.views.profile_edit",
+        name="manage_profile_edit"),
+
+    # autocomplete
+    url(r"^elements/_autocomplete/$",
+        "environments.views.element_autocomplete",
+        name="manage_environment_autocomplete_elements")
 )

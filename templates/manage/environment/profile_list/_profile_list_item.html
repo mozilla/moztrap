@@ -7,7 +7,7 @@
 
       <div class="controls">
         {% if user|has_perm:"environments.manage_environments" %}
-          {# @@@ url manage_profile_edit profile_id=profile.id as profile_edit_url #}
+          {% url manage_profile_edit profile_id=profile.id as profile_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=profile_edit_url edit_name=profile.name %}
           {% include "lists/controls/_clone.html" with clone_id=profile.id clone_name=profile.name %}
           {% include "lists/controls/_delete.html" with delete_id=profile.id delete_name=profile.name %}

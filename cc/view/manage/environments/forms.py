@@ -41,6 +41,7 @@ class ProfileForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
 
 class EditProfileForm(ProfileForm):
     """Form for editing a profile."""
+    # @@@ unused currently
     pass
 
 
