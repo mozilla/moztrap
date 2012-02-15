@@ -5,7 +5,7 @@
 
     <header class="itemhead">
       <div class="controls">
-        {% include "lists/controls/_delete.html" with delete_id=category.id delete_name=category.name %}
+        <button title="delete {{ category.name }}" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
       </div>
 
       <h3 class="title">{{ category.name }}</h3>

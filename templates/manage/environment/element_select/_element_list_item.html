@@ -4,7 +4,7 @@
     <label for="element-{{ element.id }}">{{ element.name }}</label>
   </div>
   <div class="element-controls">
-    {% include "lists/controls/_edit.html" with edit_url="#"|add:element.id edit_name=element.name %}
-    {% include "lists/controls/_delete.html" with delete_id=element.id delete_name=element.name %}
+    <a href="#{{ element.id }}" title="edit {{ element.name }}" class="edit-link">edit</a>
+    <button title="delete {{ element.name }}" type="submit" name="action-delete" value="element-{{ element.id }}">delete</button>
   </div>
 </li>
