@@ -3528,6 +3528,32 @@ body.login input, body.login .errorlist {
 .add-run .suites-field, .edit-run .suites-field {
   margin-bottom: 0em;
 }
+.add-run .suites-field.readonly, .edit-run .suites-field.readonly {
+  padding-right: 25.263%;
+}
+.add-run .suites-field.readonly .type, .edit-run .suites-field.readonly .type {
+  display: inline;
+  float: left;
+  width: 32.394%;
+  margin-right: 1.408%;
+}
+.add-run .suites-field.readonly .value, .edit-run .suites-field.readonly .value {
+  display: inline;
+  float: left;
+  width: 66.197%;
+  margin-right: 1.408%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  margin: 0;
+}
+.add-run .suites-field.readonly .value li, .edit-run .suites-field.readonly .value li {
+  margin-left: 1.5em;
+}
+.add-run .suites-field.readonly + .form-actions, .edit-run .suites-field.readonly + .form-actions {
+  padding-right: 25.263%;
+}
 .add-run .suites-field .name, .add-run .suites-field .byname, .edit-run .suites-field .name, .edit-run .suites-field .byname {
   display: inline;
   float: left;
