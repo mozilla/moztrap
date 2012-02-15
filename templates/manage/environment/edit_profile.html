@@ -7,16 +7,16 @@
 <section id="editprofile" class="manage listpage">
   <h2>Edit Environment Profile</h2>
 
-  <form method="POST" id="profile-name-form">
+  <form method="POST" id="profile-name-form" class="manage-form">
     {% csrf_token %}
 
-    <p class="profile-name">
-      <label for="profile-name">profile name</label>
-      <input type="text" name="profile-name" value="{{ profile.name }}" id="profile-name" placeholder="profile name" required>
-    </p>
+    <div class="formfield name-field">
+      <label for="profile-name" class="type">name</label>
+      <input type="text" name="profile-name" class="value" value="{{ profile.name }}" id="profile-name" placeholder="profile name" required>
+    </div>
 
     <div class="form-actions">
-    <button type="submit" name="save-profile-name" id="save-profile-name" value="1">Save</button>
+      <button type="submit" name="save-profile-name" id="save-profile-name" value="1">Save</button>
     </div>
 
   </form>
