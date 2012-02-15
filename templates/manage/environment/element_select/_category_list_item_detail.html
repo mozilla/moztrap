@@ -3,7 +3,7 @@
 {% block itembody-content %}
   <p class="name">
     {{ category.name }}
-    {% include "lists/controls/_edit.html" with edit_url="#" edit_name=category.name %}
+    <a href="#{{ category.id }}" title="edit {{ category.name }}" class="edit-link">edit</a>
   </p>
   <ul class="elements">
 
