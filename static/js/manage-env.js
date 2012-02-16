@@ -98,7 +98,7 @@ var CC = (function (CC, $) {
             updateLabels();
         });
 
-        context.on('keydown', '.bulkselectitem input[name="new-element-name"]', function (event) {
+        context.on('keydown', '.bulkselectitem .add-element input[name="new-element-name"]', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
@@ -186,6 +186,7 @@ var CC = (function (CC, $) {
                     type: 'element'
                 });
             thisElement.replaceWith(editThisElement);
+            $(editThisElement).data('replaced', thisElement);
 
             event.preventDefault();
         });
@@ -202,6 +203,7 @@ var CC = (function (CC, $) {
                     type: 'category'
                 });
             thisName.replaceWith(editThisName);
+            $(editThisName).data('replaced', thisName);
 
             event.preventDefault();
         });
@@ -209,42 +211,46 @@ var CC = (function (CC, $) {
         context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
-                    var input = $(this),
-                        thisElement = input.closest('.editing'),
-                        name = input.val(),
-                        inputId = input.attr('id'),
-                        elementId = input.data('element-id'),
-                        preview = input.closest('.bulkselectitem').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
-                        checked = input.data('checked'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var editedElem = $(response.elem),
-                                editedPreview = $(response.preview);
+                    if ($(this).val() !== $(this).data('original-value')) {
+                        var input = $(this),
+                            thisElement = input.closest('.editing'),
+                            name = input.val(),
+                            inputId = input.attr('id'),
+                            elementId = input.data('element-id'),
+                            preview = input.closest('.bulkselectitem').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
+                            checked = input.data('checked'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var editedElem = $(response.elem),
+                                    editedPreview = $(response.preview);
 
-                            if (!response.no_replace) {
-                                thisElement.replaceWith(editedElem);
-                                preview.replaceWith(editedPreview);
+                                if (!response.no_replace) {
+                                    thisElement.replaceWith(editedElem);
+                                    preview.replaceWith(editedPreview);
 
-                                if (checked) {
-                                    context.find('#' + inputId).prop('checked', checked);
-                                    updateLabels();
+                                    if (checked) {
+                                        context.find('#' + inputId).prop('checked', checked);
+                                        updateLabels();
+                                    }
+                                    input.val(null);
                                 }
-                                input.val(null);
-                            }
 
-                            thisElement.loadingOverlay('remove');
-                        };
+                                thisElement.loadingOverlay('remove');
+                            };
 
-                    data['element-id'] = elementId;
-                    data[input.attr('name')] = input.val();
+                        data['element-id'] = elementId;
+                        data[input.attr('name')] = input.val();
 
-                    thisElement.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
+                        thisElement.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(this).closest('.editing').replaceWith($(this).closest('.editing').data('replaced'));
+                    }
                 } else {
                     $(ich.message({
                         message: "Please enter an element name.",
@@ -259,34 +265,38 @@ var CC = (function (CC, $) {
         context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
-                    var input = $(this),
-                        thisCategory = input.closest('.bulkselectitem'),
-                        name = input.val(),
-                        nameKey = input.attr('name'),
-                        categoryId = input.data('category-id'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var editedCat = $(response.html);
+                    if ($(this).val() !== $(this).data('original-value')) {
+                        var input = $(this),
+                            thisCategory = input.closest('.bulkselectitem'),
+                            name = input.val(),
+                            nameKey = input.attr('name'),
+                            categoryId = input.data('category-id'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var editedCat = $(response.html);
 
-                            if (!response.no_replace) {
-                                thisCategory.replaceWith(editedCat);
-                                updateLabels();
-                                updateBulkInputs();
-                            }
+                                if (!response.no_replace) {
+                                    thisCategory.replaceWith(editedCat);
+                                    updateLabels();
+                                    updateBulkInputs();
+                                }
 
-                            thisCategory.loadingOverlay('remove');
-                        };
+                                thisCategory.loadingOverlay('remove');
+                            };
 
-                    data = thisCategory.find('input[name="elements"]').serializeArray();
-                    data.push({'name': 'category-id', 'value': categoryId}, {'name': nameKey, 'value': name});
+                        data = thisCategory.find('input[name="elements"]').serializeArray();
+                        data.push({'name': 'category-id', 'value': categoryId}, {'name': nameKey, 'value': name});
 
-                    thisCategory.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
+                        thisCategory.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(this).closest('.editing').replaceWith($(this).closest('.editing').data('replaced'));
+                    }
                 } else {
                     $(ich.message({
                         message: "Please enter a category name.",
