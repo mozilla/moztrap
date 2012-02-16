@@ -103,7 +103,7 @@ var CC = (function (CC, $) {
                 if ($(this).val().length) {
                     var input = $(this),
                         name = input.val(),
-                        loading = input.closest('.item-content'),
+                        loading = input.closest('.itembody'),
                         url = '',
                         data = {},
                         success = function (response) {
@@ -140,7 +140,7 @@ var CC = (function (CC, $) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
-                        loading = input.closest('.item-content'),
+                        loading = input.closest('.itembody'),
                         url = '',
                         data = {},
                         success = function (response) {
@@ -271,6 +271,8 @@ var CC = (function (CC, $) {
 
                             if (!response.no_replace) {
                                 thisCategory.replaceWith(editedCat);
+                                updateLabels();
+                                updateBulkInputs();
                             }
 
                             thisCategory.loadingOverlay('remove');
