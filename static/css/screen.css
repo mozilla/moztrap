@@ -3438,7 +3438,7 @@ body.login input, body.login .errorlist {
   clear: none;
   text-align: left;
 }
-.profile-form .itemlist, .profile-form #results .case-details, #results .profile-form .case-details {
+.profile-form .elements-field {
   clear: both;
 }
 
