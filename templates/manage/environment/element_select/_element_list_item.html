@@ -2,7 +2,7 @@
   <a href="#{{ element.id }}" title="edit {{ element.name }}" class="edit-link">edit</a>
   <input type="checkbox" name="{{ name }}" class="value" value="{{ element.id }}" id="element-{{ element.id }}"{% if element.id in selected_element_ids %} checked{% endif %}>
   {% if element.deletable %}
-  <button title="delete {{ element.name }}" type="submit" name="action-delete" value="element-{{ element.id }}">delete</button>
+  <button title="delete {{ element.name }}" type="submit" class="action-delete" name="action-delete" value="element-{{ element.id }}">delete</button>
   {% endif %}
   <label for="element-{{ element.id }}" class="type">{{ element.name }}</label>
 </li>

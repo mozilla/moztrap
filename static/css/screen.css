@@ -1597,7 +1597,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, [name="action-clone"], [name="action-delete"], .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1608,7 +1608,7 @@ body > div {
   vertical-align: baseline;
   background: none;
 }
-.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1636,7 +1636,7 @@ body > div {
   opacity: 1;
 }
 
-[name="action-clone"] {
+.action-clone {
   background-image: url('../images/ui/clone.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1654,13 +1654,13 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-[name="action-clone"]:focus, [name="action-clone"]:hover, [name="action-clone"]:active {
+.action-clone:focus, .action-clone:hover, .action-clone:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/clone.png?1326735333');
 }
 
-[name="action-delete"] {
+.action-delete {
   background-image: url('../images/ui/trash.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1678,10 +1678,34 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-[name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
+.action-delete:focus, .action-delete:hover, .action-delete:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/trash.png?1326735333');
+}
+
+.action-remove {
+  background-image: url('../images/ui/x.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.action-remove:focus, .action-remove:hover, .action-remove:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/x.png?1326735333');
 }
 
 .create-child-link {
