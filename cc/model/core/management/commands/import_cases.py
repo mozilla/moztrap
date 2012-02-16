@@ -22,11 +22,13 @@ import json
 from ....library.import_cases import CaseImporter
 
 class Command(BaseCommand):
-    args = '<product_name> <product_version> <filename>'
+    args = 'product_name product_version filename'
     help = 'Imports the cases from the JSON file into the specified Product Version'
 
 
     def handle(self, *args, **options):
+        #if len(args) < 3:
+        #    raise CommandError("expect: %s" % args)
 
         try:
             cases_text = open(args[2])
