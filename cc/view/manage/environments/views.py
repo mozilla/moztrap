@@ -131,7 +131,7 @@ def profile_edit(request, profile_id):
                 content_type="application/json")
 
         elif "add-environment" in request.POST:
-            element_ids = request.POST.getlist("element")
+            element_ids = request.POST.getlist("element-element")
             if not element_ids:
                 messages.error(
                     request, "Please select some environment elements.")
