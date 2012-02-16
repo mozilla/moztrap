@@ -2860,21 +2860,18 @@ body > div {
 .magicfilter .expanded .onoffswitch, .selectsearch .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
-  padding-left: 28px;
+  padding-left: 32px;
 }
 .magicfilter .expanded .onoff, .selectsearch .expanded .onoff {
   display: block;
-  background: url('../images/ui/x_sm.png?1326735333') no-repeat scroll 9px;
+  background: url('../images/ui/checkbox.png?1329414399') no-repeat scroll 9px;
 }
 .magicfilter .expanded .onoff:hover, .selectsearch .expanded .onoff:hover {
   font-weight: 500;
 }
 .magicfilter .expanded .check:checked + .onoff, .selectsearch .expanded .check:checked + .onoff {
   font-weight: 500;
-  background-image: url('../images/ui/check_sm.png?1326735333');
-}
-.magicfilter .expanded .check:checked + .onoff:hover, .selectsearch .expanded .check:checked + .onoff:hover {
-  background-image: url('../images/ui/x_sm.png?1326735333');
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
 }
 .magicfilter .keyword .content::before, .selectsearch .keyword .content::before, .magicfilter .keyword .onoffswitch::before, .selectsearch .keyword .onoffswitch::before {
   content: open-quote;
