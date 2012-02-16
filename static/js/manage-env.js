@@ -262,6 +262,7 @@ var CC = (function (CC, $) {
                     var input = $(this),
                         thisCategory = input.closest('.bulkselectitem'),
                         name = input.val(),
+                        nameKey = input.attr('name'),
                         categoryId = input.data('category-id'),
                         url = '',
                         data = {},
@@ -275,8 +276,8 @@ var CC = (function (CC, $) {
                             thisCategory.loadingOverlay('remove');
                         };
 
-                    data['category-id'] = categoryId;
-                    data[input.attr('name')] = input.val();
+                    data = thisCategory.find('input[name="elements"]').serializeArray();
+                    data.push({'name': 'category-id', 'value': categoryId}, {'name': nameKey, 'value': name});
 
                     thisCategory.loadingOverlay();
                     $.ajax(url, {
