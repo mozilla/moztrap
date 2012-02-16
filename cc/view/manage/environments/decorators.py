@@ -96,6 +96,7 @@ def category_element_ajax_add_edit(view_func):
                         cat = model.Category.objects.create(
                             name=new_category_name
                             )
+                    cat.choice_elements = cat.elements.order_by("name")
                     data["html"] = render_to_string(
                         template_name,
                         {
