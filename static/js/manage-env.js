@@ -183,7 +183,8 @@ var CC = (function (CC, $) {
                     id: elementId,
                     name: name,
                     checked: checked,
-                    type: 'element'
+                    type: 'element',
+                    element: 'li'
                 });
             thisElement.replaceWith(editThisElement);
             $(editThisElement).data('replaced', thisElement);
@@ -200,7 +201,8 @@ var CC = (function (CC, $) {
                     inputId: inputId,
                     id: categoryId,
                     name: name,
-                    type: 'category'
+                    type: 'category',
+                    element: 'div'
                 });
             thisName.replaceWith(editThisName);
             $(editThisName).data('replaced', thisName);
