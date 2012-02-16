@@ -278,6 +278,7 @@ var CC = (function (CC, $) {
 
                                 if (!response.no_replace) {
                                     thisCategory.replaceWith(editedCat);
+                                    editedCat.find('.details').addClass('open').html5accordion();
                                     updateLabels();
                                     updateBulkInputs();
                                 }
