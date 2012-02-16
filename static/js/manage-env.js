@@ -310,16 +310,17 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.editEnvProfile = function () {
-        var profileNameInput = $('#editprofile #profile-name-form .profile-name input'),
+    CC.editEnvProfile = function (container) {
+        var context = $(container),
+            profileNameInput = context.find('#profile-name'),
             profileName = profileNameInput.val(),
-            profileNameSubmit = $('#editprofile #profile-name-form .form-actions button[type="submit"]').hide(),
+            profileNameSubmit = context.find('#save-profile-name').hide(),
 
             addEnv = function () {
-                var replaceList = $('#editprofile .managelist.action-ajax-replace');
+                var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if ($('#editprofile #add-environment-form').length) {
-                    $('#editprofile #add-environment-form').ajaxForm({
+                if (replaceList.length && context.find('#add-environment-form').length) {
+                    context.find('#add-environment-form').ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
@@ -328,15 +329,16 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
-                                $('#editprofile .add-item').customAutocomplete({
+                                context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
-                                    suggestionList: '.suggest',
                                     inputList: '.env-element-list',
                                     ajax: true,
                                     url: $('#env-elements-input').data('autocomplete-url'),
                                     hideFormActions: true,
                                     expiredList: '.env-element-list',
-                                    inputType: 'element'
+                                    inputType: 'element',
+                                    caseSensitive: true,
+                                    prefix: 'element'
                                 });
                                 addEnv();
                                 newList.find('.details').html5accordion();
@@ -348,22 +350,23 @@ var CC = (function (CC, $) {
 
         addEnv();
 
-        $('#editprofile').on('after-replace', '.managelist.action-ajax-replace', function (event, replacement) {
-            // Re-attaches handlers to list after it is reloaded via Ajax.
+        context.on('after-replace', '.itemlist.action-ajax-replace', function (event, replacement) {
+            // Re-attaches handlers to list after it is reloaded via Ajax (on delete action).
             addEnv();
-            $('#editprofile .add-item').customAutocomplete({
+            context.find('.add-item').customAutocomplete({
                 textbox: '#env-elements-input',
-                suggestionList: '.suggest',
                 inputList: '.env-element-list',
                 ajax: true,
                 url: $('#env-elements-input').data('autocomplete-url'),
                 hideFormActions: true,
                 expiredList: '.env-element-list',
-                inputType: 'element'
+                inputType: 'element',
+                caseSensitive: true,
+                prefix: 'element'
             });
         });
 
-        $('#editprofile').on('keyup', '#profile-name-form .profile-name input', function (event) {
+        context.on('keyup', '#profile-name', function (event) {
             if ($(this).val() !== profileName) {
                 profileNameSubmit.fadeIn();
             } else {
@@ -371,14 +374,14 @@ var CC = (function (CC, $) {
             }
         });
 
-        $('#editprofile').on('keydown', '#profile-name-form .profile-name input', function (event) {
+        context.on('keydown', '#profile-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
         });
 
-        if ($('#editprofile #profile-name-form').length) {
-            $('#editprofile #profile-name-form').ajaxForm({
+        if (context.find('#profile-name-form').length) {
+            context.find('#profile-name-form').ajaxForm({
                 success: function (response) {
                     profileName = profileNameInput.val();
                     profileNameSubmit.fadeOut();

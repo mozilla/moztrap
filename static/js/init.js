@@ -72,17 +72,17 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        // $('#editprofile .add-item').customAutocomplete({
-        //     textbox: '#env-elements-input',
-        //     inputList: '.env-element-list',
-        //     ajax: true,
-        //     url: $('#env-elements-input').data('autocomplete-url'),
-        //     hideFormActions: true,
-        //     expiredList: '.env-element-list',
-        //     inputType: 'element',
-        //     caseSensitive: true,
-        //     prefix: 'element'
-        // });
+        $('#editprofile .add-item').customAutocomplete({
+            textbox: '#env-elements-input',
+            inputList: '.env-element-list',
+            ajax: true,
+            url: $('#env-elements-input').data('autocomplete-url'),
+            hideFormActions: true,
+            expiredList: '.env-element-list',
+            inputType: 'element',
+            caseSensitive: true,
+            prefix: 'element'
+        });
         $('.multiselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -181,7 +181,7 @@ var CC = (function (CC, $) {
 
         // manage-env.js
         CC.createEnvProfile('#profile-add-form');
-        // CC.editEnvProfile();
+        CC.editEnvProfile('#editprofile');
         // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js
