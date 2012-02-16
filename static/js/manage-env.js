@@ -190,8 +190,8 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
-        context.on('click', '.bulkselectitem .item-content .name .edit-link', function (event) {
-            var thisName = $(this).closest('.name'),
+        context.on('click', '.bulkselectitem .item-content .edit-name .edit-link', function (event) {
+            var thisName = $(this).closest('.edit-name'),
                 categoryId = thisName.data('category-id'),
                 inputId = 'edit-category-id-' + categoryId,
                 name = thisName.data('category-name'),
