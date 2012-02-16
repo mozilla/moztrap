@@ -96,11 +96,17 @@ def category_element_ajax_add_edit(view_func):
                         cat = model.Category.objects.create(
                             name=new_category_name
                             )
+                    # @@@ this ought to be only elements that were included in
+                    # the original widget queryset, but we don't have access to
+                    # that here. soon this whole editing-on-the-form thing will
+                    # go away anyway.
                     cat.choice_elements = cat.elements.order_by("name")
                     data["html"] = render_to_string(
                         template_name,
                         {
                             "category": cat,
+                            "selected_element_ids": set(
+                                request.POST.getlist("elements")),
                             "name": "elements" # @@@ duplicated form field name
                             },
                         RequestContext(request)
