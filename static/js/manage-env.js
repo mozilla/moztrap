@@ -40,11 +40,20 @@ var CC = (function (CC, $) {
                 });
             },
             updateBulkInputs = function () {
-                context.find('.bulkselectitem .elements input[name="elements"]').each(function () {
-                    if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
-                        $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
+                context.find('.bulkselectitem .bulk-value').each(function () {
+                    var bulkInput = $(this),
+                        thisCategory = bulkInput.closest('.bulkselectitem');
+                    if (thisCategory.find('.elements input[name="elements"]:checked').length) {
+                        bulkInput.prop('checked', true);
+                        if (thisCategory.find('.elements input[name="elements"]').length === thisCategory.find('.elements input[name="elements"]:checked').length) {
+                            bulkInput.removeClass('pseudo');
+                        } else {
+                            bulkInput.addClass('pseudo');
+                        }
+                    } else {
+                        bulkInput.prop('checked', false).removeClass('pseudo');
                     }
-                });
+                })
             };
 
         // some elements may load already checked
@@ -59,12 +68,9 @@ var CC = (function (CC, $) {
                 var thisElement = $(event.target),
                     thisElementID = thisElement.data('element-id'),
                     thisPreview = thisElement.closest('.bulkselectitem').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
-                thisPreview.detach();
-                if (thisElement.closest('.elements').find('input[name="elements"]:checked').not(thisElement.find('input[name="elements"]')).length) {
-                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
-                } else {
-                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
-                }
+                thisElement.find('input[name="elements"]').prop('checked', false);
+                thisPreview.remove();
+                updateBulkInputs();
             }
         });
 
@@ -76,17 +82,8 @@ var CC = (function (CC, $) {
         });
 
         context.on('change', '.bulkselectitem .element input[name="elements"]', function () {
-            var thisID = $(this).attr('id');
-            if ($(this).is(':checked')) {
-                context.find('label[for=' + thisID + ']').addClass('checked');
-            } else {
-                context.find('label[for=' + thisID + ']').removeClass('checked');
-            }
-            if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
-                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
-            } else {
-                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
-            }
+            updateLabels();
+            updateBulkInputs();
         });
 
         context.on('change', '.bulkselectitem .bulk-value', function () {
@@ -95,6 +92,7 @@ var CC = (function (CC, $) {
             } else {
                 $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', false);
             }
+            $(this).removeClass('pseudo');
             updateLabels();
         });
 
@@ -113,6 +111,7 @@ var CC = (function (CC, $) {
                                 input.closest('.elements').find('.add-element').before(newElem);
                                 input.closest('.bulkselectitem').find('.preview').append(newPreview);
                                 input.val(null);
+                                updateBulkInputs();
                             }
                             loading.loadingOverlay('remove');
                         };
