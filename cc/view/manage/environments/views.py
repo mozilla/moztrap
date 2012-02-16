@@ -155,7 +155,7 @@ def element_autocomplete(request):
     text = request.GET.get("text")
     elements = []
     if text is not None:
-        elements = model.Environment.objects.filter(
+        elements = model.Element.objects.filter(
             name__icontains=text)
     suggestions = []
     for e in elements:
