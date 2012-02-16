@@ -129,8 +129,8 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter an element name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
@@ -165,8 +165,8 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter a category name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
@@ -255,8 +255,8 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter an element name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
@@ -302,8 +302,8 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter a category name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }

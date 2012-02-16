@@ -28,7 +28,7 @@ var CC = (function (CC, $) {
     $(function () {
         // plugins
         $('.details:not(html)').html5accordion();
-        $('#messages').messages({
+        $('#messages ul').messages({
             handleAjax: true,
             closeLink: '.message'
         });
