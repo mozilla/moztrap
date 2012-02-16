@@ -106,7 +106,7 @@ def category_element_ajax_add_edit(view_func):
                         {
                             "category": cat,
                             "selected_element_ids": set(
-                                request.POST.getlist("elements")),
+                                map(int, request.POST.getlist("elements"))),
                             "name": "elements" # @@@ duplicated form field name
                             },
                         RequestContext(request)
