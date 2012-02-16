@@ -1275,7 +1275,19 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .resultsummary, .results-summary a, .completion {
+.chicklist, .bugs-list, .files-list, #add-environment-form .env-element-list {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.chicklist li, .bugs-list li, .files-list li, #add-environment-form .env-element-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .resultsummary, .results-summary a, .completion {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1291,23 +1303,23 @@ body > div {
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
-.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, #add-environment-form .element-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, #add-environment-form .element-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
 }
-.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .resultsummary a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .resultsummary a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .resultsummary a:active, .results-summary a a:active, .completion a:active {
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, #add-environment-form .element-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .resultsummary a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, #add-environment-form .element-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .resultsummary a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, #add-environment-form .element-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .resultsummary a:active, .results-summary a a:active, .completion a:active {
   color: #4f1114;
 }
 
-.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
+.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content {
+.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content, #add-environment-form .element-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1315,12 +1327,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1337,10 +1349,10 @@ body > div {
   width: 1.5em;
 }
 
-.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item {
+.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item, #add-environment-form .element-item {
   display: inline;
 }
-.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, .magicfilter .compact .filter-item .check, .selectsearch .compact .filter-item .check {
+.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, .magicfilter .compact .filter-item .check, .selectsearch .compact .filter-item .check, #add-environment-form .element-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1350,10 +1362,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
+.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;
 }
 
@@ -1915,18 +1927,6 @@ body > div {
   height: 1px;
   width: 1px;
   border: 0;
-}
-
-.bugs-list, .files-list {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-.bugs-list li, .files-list li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0;
 }
 
 .filechick, .files-list .file {
