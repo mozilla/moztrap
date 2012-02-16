@@ -27,7 +27,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
 from cc import model
-
+from cc.model.ccmodel import NotDeletedCount
 from cc.view.filters import SuiteFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
@@ -54,7 +54,7 @@ def suites_list(request):
         "manage/suite/suites.html",
         {
             "suites": model.Suite.objects.select_related().annotate(
-                case_count=Count("cases")),
+                case_count=NotDeletedCount("cases", distinct=True)),
             }
         )
 

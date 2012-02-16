@@ -1,0 +1,55 @@
+.multiselect
+  +full(24)
+  +pie-clearfix
+  +padding-leader(.5)
+  position: relative
+
+  .itemhead, .listordering
+    position: relative
+    padding-left: rhythm(1.5)
+
+  .byinclude
+    position: absolute
+    left: rhythm(.5)
+
+  .bulk-type
+    +icon('ui/grip.png')
+
+.multi-header
+  @extend .allcaps
+  +trailer(.5)
+  padding: rhythm(.25) rhythm(.5)
+  .multiunselected &
+    background: rgba($blue-lightest,$xsmall)
+  .multiselected &
+    position: absolute
+    top: rhythm(.5)
+    left: columns(12,24) + gutter(24)
+
+.selectbox
+  +box-sizing(border-box)
+  +columns(12,24)
+  .multiselected &
+    +omega(24)
+
+  .select
+    +box-shadow(rgba($base,$small) 0 0 $smallem inset)
+    height: rhythm(12)
+    border-bottom: 1px solid
+    overflow-y: scroll
+    background-color: rgba($blue-hint,$xxsmall)
+
+.selectsearch
+  @extend .magicfilter
+  +full(24)
+  +suffix(12,24)
+  +pie-clearfix
+  .textual
+    +un-column
+    +full(12)
+    +trailer(.5)
+
+.selectitem
+  position: relative
+  &:last-child
+    +box-shadow(rgba($base,$xxxsmall) 0 $xxsmallem $xxsmallem)

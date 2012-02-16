@@ -11,7 +11,7 @@
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.description %}
 
-    {% include "forms/_field.html" with field=form.cases %}
+    {% include "forms/_field.html" with field=form.cases nolabel=1 %}
 
     <div class="form-actions">
       {% include "forms/_field.html" with field=form.status %}

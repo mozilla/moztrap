@@ -1,0 +1,18 @@
+.bulk-value
+  +gone
+
+  &:checked
+    + .bulk-item
+      background: $green-hint
+      .bulk-type
+        +icon('ui/check.png')
+        +opacity(1)
+
+.bulk-type
+  +icon('ui/x.png')
+  +opacity(.5)
+  display: block
+  position: absolute
+  top: rhythm(.25)
+  left: rhythm(.25)
+  z-index: 5

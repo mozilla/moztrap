@@ -1,0 +1,7 @@
+{% load filters %}
+
+<div class="iteminfo">
+  {% include "lists/_byline.html" with item=profile %}
+</div>
+
+{% include "lists/_environments.html" with environments=profile.environments %}

@@ -112,6 +112,14 @@ class FieldFilterTests(case.TestCase):
                 self.form({"level": "a"})["level"]), "Advanced")
 
 
+    def test_values_text_choices(self):
+        """``values_text`` filter returns values of multiple select."""
+        f = self.form({"level": ["a", "b"]})
+
+        self.assertEqual(
+            self.ccforms.values_text(f["level"]), ["Advanced", "Beginner"])
+
+
     def test_classes(self):
         """``classes`` filter sets widget's class attr if not set."""
         bf = self.form()["name"]
@@ -186,3 +194,18 @@ class FieldFilterTests(case.TestCase):
         f = self.form()
 
         self.assertFalse(self.ccforms.is_readonly(f["level"]))
+
+
+    def test_is_multiple(self):
+        """`is_multiple` detects a SelectMultiple widget."""
+        f = self.form()
+        f.fields["level"].widget = forms.SelectMultiple()
+
+        self.assertTrue(self.ccforms.is_multiple(f["level"]))
+
+
+    def test_is_not_multiple(self):
+        """`is_multiple` detects a non-multiple widget."""
+        f = self.form()
+
+        self.assertFalse(self.ccforms.is_multiple(f["level"]))

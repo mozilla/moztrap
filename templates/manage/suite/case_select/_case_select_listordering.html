@@ -1,4 +1,7 @@
-<li class="bystatus"><a href="#">status</a></li>
-<li class="bytitle"><a href="#">name</a></li>
-<li class="bytags"><a href="#">tags</a></li>
-<li class="byauthor"><a href="#">author</a></li>
+{% extends 'forms/widgets/filtered_select_multiple/_filtered_select_multiple_listordering.html' %}
+
+{% block extra-sortitems %}
+  {% include "lists/_sortitem.html" with sortname="status" sortURL="#" %}
+  {% include "lists/_sortitem.html" with sortname="name [tags]" sortURL="#" %}
+  {% include "lists/_sortitem.html" with sortname="author" sortURL="#" %}
+{% endblock extra-sortitems %}

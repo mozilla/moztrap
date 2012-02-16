@@ -1,13 +1,8 @@
 <article id="result-id-{{ result.id }}" class="listitem{% if result.comment %} hasdetails{% endif %}">
-  <span class="{{ result.status }} status-readonly">{{ result.status }}</span>
-
   <header class="itemhead">
+    <span class="{{ result.status }} resultsummary">{{ result.status }}</span>
 
-    <div class="tester">
-
-      <h3 class="title" title="{{ result.tester.username }}">{{ result.tester.username }}</h3>
-
-    </div>
+    <h3 class="tester" title="{{ result.tester.username }}">{{ result.tester.username }}</h3>
 
     <ul class="envlist">
       {% for element in result.environment.ordered_elements %}
@@ -17,6 +12,8 @@
 
   </header>
 
-  {% include "results/result/list/_result_details.html" %}
+  {% if result.comment %}
+    {% include "results/result/list/_result_details.html" %}
+  {% endif %}
 
 </article>

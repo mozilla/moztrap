@@ -341,6 +341,27 @@ class DeleteTest(CCModelMockNowTestCase):
 
 
 
+class HardDeleteTest(case.DBTestCase):
+    """Tests for deletion with permanent=True."""
+    def test_instance(self):
+        """Can hard-delete an instance with permanent=True."""
+        p = self.F.ProductFactory.create()
+
+        p.delete(permanent=True)
+
+        self.assertEqual(self.model.Product._base_manager.count(), 0)
+
+
+    def test_queryset(self):
+        """Can hard-delete a queryset with permanent=True."""
+        self.F.ProductFactory.create()
+
+        self.model.Product.objects.all().delete(permanent=True)
+
+        self.assertEqual(self.model.Product._base_manager.count(), 0)
+
+
+
 class CascadeDeleteTest(CCModelTestCase):
     """Tests for cascading soft-delete."""
     def test_queryset_deleted_by_none(self):

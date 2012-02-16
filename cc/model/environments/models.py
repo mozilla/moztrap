@@ -45,7 +45,7 @@ class Profile(CCModel):
 
 
     @classmethod
-    def generate(cls, name, *elements):
+    def generate(cls, name, *elements, **kwargs):
         """
         Create profile of environments as Cartesian product of given elements.
 
@@ -57,13 +57,27 @@ class Profile(CCModel):
         for element in elements:
             by_category[element.category].append(element)
 
-        new = cls.objects.create(name=name)
+        new = cls.objects.create(name=name, **kwargs)
 
         for element_list in itertools.product(*by_category.values()):
             e = Environment.objects.create(profile=new)
             e.elements.add(*element_list)
 
         return new
+
+
+    def clone(self, *args, **kwargs):
+        """Clone profile, with environments."""
+        kwargs.setdefault("cascade", ["environments"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "Cloned: {0}".format(self.name))
+        return super(Profile, self).clone(*args, **kwargs)
+
+
+    def categories(self):
+        """Return an iterable of categories that are part of this profile."""
+        return Category.objects.filter(
+            elements__environments__profile=self).distinct().order_by("name")
 
 
 
@@ -84,7 +98,27 @@ class Category(CCModel):
 
 
     class Meta:
+        ordering = ["name"]
         verbose_name_plural = "categories"
+
+
+    # @@@ there should be some way to annotate this onto a queryset efficiently
+    @property
+    def deletable(self):
+        """Return True if this category can be deleted, otherwise False."""
+        return not Environment.objects.filter(elements__category=self).exists()
+
+
+    # @@@ this protection should apply to queryset.delete as well
+    def delete(self, *args, **kwargs):
+        """Delete this category, or raise ProtectedError if its in use."""
+        if not self.deletable:
+            raise models.ProtectedError(
+                "Category '{0}' is in use and cannot be deleted.".format(
+                    self.name),
+                list(Environment.objects.filter(elements__category=self).all())
+                )
+        return super(Category, self).delete(*args, **kwargs)
 
 
 
@@ -100,6 +134,29 @@ class Element(CCModel):
     def __unicode__(self):
         """Return unicode representation."""
         return self.name
+
+
+    class Meta:
+        ordering = ["name"]
+
+
+    # @@@ there should be some way to annotate this onto a queryset efficiently
+    @property
+    def deletable(self):
+        """Return True if this element can be deleted, otherwise False."""
+        return not self.environments.exists()
+
+
+    # @@@ this protection should apply to queryset.delete as well
+    def delete(self, *args, **kwargs):
+        """Delete this element, or raise ProtectedError if its in use."""
+        if not self.deletable:
+            raise models.ProtectedError(
+                "Element '{0}' is in use and cannot be deleted.".format(
+                    self.name),
+                list(self.environments.all())
+                )
+        return super(Element, self).delete(*args, **kwargs)
 
 
 
@@ -119,7 +176,7 @@ class Environment(CCModel):
     profile = models.ForeignKey(
         Profile, blank=True, null=True, related_name="environments")
 
-    elements = models.ManyToManyField(Element)
+    elements = models.ManyToManyField(Element, related_name="environments")
 
 
     def __unicode__(self):
@@ -139,6 +196,12 @@ class Environment(CCModel):
     def ordered_elements(self):
         """All elements in category name order."""
         return iter(self.elements.order_by("category__name"))
+
+
+    def clone(self, *args, **kwargs):
+        """Clone environment, including element relationships."""
+        kwargs.setdefault("cascade", ["elements"])
+        return super(Environment, self).clone(*args, **kwargs)
 
 
 

@@ -221,3 +221,30 @@ class TagFilterSet(filters.FilterSet):
         filters.ModelFilter(
             "creator", lookup="created_by", queryset=model.User.objects.all()),
         ]
+
+
+
+class ProfileFilterSet(filters.FilterSet):
+    """FilterSet for environment Profiles."""
+    filters = [
+        filters.KeywordFilter("name"),
+        filters.ModelFilter(
+            "environment element",
+            lookup="environments__elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
+        filters.ModelFilter(
+            "creator", lookup="created_by", queryset=model.User.objects.all()),
+        ]
+
+
+
+class EnvironmentFilterSet(filters.FilterSet):
+    """FilterSet for Environments."""
+    filters = [
+        filters.ModelFilter(
+            "environment element",
+            lookup="elements",
+            key="envelement",
+            queryset=model.Element.objects.all()),
+        ]

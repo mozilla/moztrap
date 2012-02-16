@@ -19,6 +19,8 @@
 All models.
 
 """
+from django.db.models import ProtectedError
+
 from registration.models import RegistrationProfile
 
 from .core.models import Product, ProductVersion

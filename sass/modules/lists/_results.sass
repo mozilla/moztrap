@@ -1,0 +1,42 @@
+.resultsummary
+  @extend .chick
+  +box-sizing(border-box)
+  +trailer(0)
+  overflow: hidden
+  white-space: nowrap
+  text-transform: capitalize
+  text-overflow: ellipsis
+  &::before
+    +opacity(.75)
+    margin-right: rhythm(.25)
+  &.started
+    background-color: $blue-lightest
+    &::before
+      content: image-url('ui/power_sm.png')
+  &.invalidated
+    background-color: $yellow-light
+    &::before
+      content: image-url('ui/warning_sm.png')
+  &.failed
+    background-color: $red-lightest
+    &::before
+      content: image-url('ui/x_sm.png')
+  &.passed
+    background-color: $green-lightest
+    &::before
+      content: image-url('ui/check_sm.png')
+
+.results-summary
+  +inline-list
+  .context
+    +gone
+
+  a
+    @extend .resultsummary
+    width: 32%
+    text-align: left
+    #{$focus}
+      &::before
+        +opacity(1)
+    &.zip
+      +opacity(0)

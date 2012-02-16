@@ -1,0 +1,47 @@
+// ---------------------------------------------------------------------------
+// Results General
+
+.completion, .bycompletion
+  +columns(2,23)
+
+.completion
+  @extend .chick
+  +box-sizing(border-box)
+  +trailer(0)
+  text-align: center
+  &::after
+    content: "%"
+
+.bycompletion
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  &::before
+    content: "%"
+
+.drill-link
+  .itemhead &
+    padding-left: rhythm(.25)
+    &::after
+      +opacity(.5)
+      +replace-text('ui/open.png')
+      content: " "
+      display: inline-block
+      vertical-align: top
+      width: rhythm(1)
+      height: rhythm(1)
+    &:hover::after
+      +opacity(1)
+  .item-content &
+    +button-style($green-light,'ui/open.png')
+    +trailer(.5)
+    display: inline-block
+    #{$link}
+      color: $base
+
+// ---------------------------------------------------------------------------
+// Results Details
+
+@import results/runs
+@import results/cases
+@import results/included

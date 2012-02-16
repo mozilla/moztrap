@@ -9,8 +9,6 @@
       +columns(12,18)
       +omega(18)
 
-  .form-actions
-    +suffix(6,24)
   .status-field
     +inline-block
     width: columns(4,18)
@@ -20,3 +18,24 @@
     .value
       +inline-block
       vertical-align: baseline
+
+  .cases-field
+    +trailer(0)
+
+    .status
+      left: rhythm(1.5)
+      margin: 0
+    .itemhead, .listordering
+      padding-left: rhythm(2.75)
+
+    .name-tags, .byname-tags
+      +columns(8,11)
+    .author, .byauthor
+      +columns(3,11)
+      +omega(11)
+
+    .title
+      +demi
+      display: inline
+      margin-right: rhythm(.25)
+      font-style: normal

@@ -23,5 +23,30 @@
     +omega(24)
     +suffix(6,24)
 
-  .form-actions
-    +suffix(6,24)
+  .suites-field
+    +trailer(0)
+
+    &.readonly
+      +suffix(6,24)
+      .type
+        +columns(6,18)
+      .value
+        +columns(12,18)
+        +omega(18)
+        margin: 0
+        li
+          margin-left: rhythm(1)
+      + .form-actions
+        +suffix(6,24)
+
+    .name, .byname
+      +columns(6,11)
+
+    .author, .byauthor
+      +columns(5,11)
+      +omega(11)
+
+    .title
+      +demi
+      display: inline
+      font-style: normal

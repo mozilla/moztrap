@@ -39,3 +39,13 @@ class EnvironmentTest(case.DBTestCase):
 
         self.assertEqual(
             [el.name for el in e.ordered_elements()], [u"English", u"OS X"])
+
+
+    def test_clone(self):
+        """Cloning an environment clones element relationships."""
+        e = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["OS X"], "Language": ["English"]})[0]
+
+        new = e.clone()
+
+        self.assertEqual(set(new.elements.all()), set(e.elements.all()))

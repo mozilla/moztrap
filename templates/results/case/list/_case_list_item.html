@@ -6,7 +6,7 @@
 
   <header class="itemhead">
 
-    <div class="completion" data-perc="{{ runcaseversion.completion|percentage }}">{{ runcaseversion.completion|percentage|percentage }}</div>
+    <div class="completion" data-perc="{{ runcaseversion.completion|percentage }}">{{ runcaseversion.completion|percentage }}</div>
 
     <div class="name">
 
@@ -22,7 +22,7 @@
 
   </header>
 
-  {% url results_runcaseversion_details runcaseversion.id as details_url %}
+  {% url "results_runcaseversion_details" rcv_id=runcaseversion.id as details_url %}
   {# _case_details.html loaded via ajax #}
   {% include "lists/_itembody.html" %}
 

@@ -1,9 +1,7 @@
 {% load ccforms %}
 <div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field|is_readonly %} readonly{% endif %}{% if field.errors %} errors{% endif %}">
   {% if field|is_readonly %}
-    <strong class="type">{% if label %}{{ label }}{% else %}{{ field|label_text }}{% endif %}</strong>
-    <span class="value">{{ field|value_text }}</span>
-    {{ field.as_hidden }}
+    {% include "forms/field/_readonly.html" %}
   {% else %}
 
     {% if field|is_checkbox %}

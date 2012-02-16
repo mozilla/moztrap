@@ -4,27 +4,25 @@
   {% icanhaz "autocomplete_suggestion" %}
   {% icanhaz "autocomplete_input" %}
   {% icanhaz "filtered_multiselect_input" %}
+
   <section class="multiunselected">
-    <h4>available {{ name }}</h4>
+    <h4 class="multi-header">available {{ name }}</h4>
+
     <div class="selectsearch">
-      <label for="search-add">filter available {{ name }}</label>
-      <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available {{ name }}">
-      <ul class="suggest">
-      </ul>
-      <div class="groups">
+      <div class="textual">
+        <label for="search-add">filter available {{ name }}</label>
+        <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available {{ name }}">
+        <ul class="suggest"></ul>
+      </div>
+      <div class="visual compact">
         {% for field in filters %}
         {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
         {% endfor %}
       </div>
     </div>
-    <div class="selectbox">
-      <nav class="listordering">
-        <h5 class="navhead">List Ordering</h5>
-        <ul>
-          <li class="byinclude"><button class="action-include" title="include selected">include selected</button></li>
-          {% include listordering_template %}
-        </ul>
-      </nav>
+
+    <div class="selectbox itemlist">
+      {% include listordering_template with action="include" %}
       <div class="select sortable">
         {% for choice in choices %}
         {% if choice.0 not in value %}
@@ -33,17 +31,13 @@
         {% endfor %}
       </div>
     </div>
+
   </section>
   <section class="multiselected">
-    <h4>included {{ name }}</h4>
-    <div class="selectbox">
-      <nav class="listordering">
-        <h5 class="navhead">List Ordering</h5>
-        <ul>
-          <li class="byexclude"><button class="action-exclude" title="remove selected">remove selected</button></li>
-          {% include listordering_template %}
-        </ul>
-      </nav>
+    <h4 class="multi-header">included {{ name }}</h4>
+
+    <div class="selectbox itemlist">
+      {% include listordering_template with action="exclude" %}
       <div class="select sortable" data-name="{{ name }}">
         {% for choice in choices %}
         {% if choice.0 in value %}
@@ -52,5 +46,6 @@
         {% endfor %}
       </div>
     </div>
+
   </section>
 </div>

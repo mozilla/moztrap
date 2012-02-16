@@ -5,18 +5,15 @@
 <section id="results" class="results listpage">
   <h2>Results for &ldquo;{{ runcaseversion.caseversion.name }}&rdquo;</h2>
 
-  <div class="details case-details {{ runcaseversion.caseversion.status }}">
+  <div class="case-details {{ runcaseversion.caseversion.status }}">
     <div class="summary">
-      <p class="status"><span class="{{ runcaseversion.caseversion.status }}">{{ runcaseversion.caseversion.status }}</span></p>
+      {% include "results/_status.html" with item=runcaseversion.caseversion %}
       <p class="run" title="{{ runcaseversion.run.name }}"><b>run:</b> {{ runcaseversion.run.name }}</p>
       <p class="product"><b>product:</b> {{ runcaseversion.caseversion.case.product.name }}</p>
       {% include "results/_results_summary.html" with results=runcaseversion.result_summary %}
     </div>
 
     <div class="content">
-
-      {% include "lists/_associated_links.html" with bugs=runcaseversion.caseversion.bug_urls attachments=runcaseversion.caseversion.attachments %}
-
       <ol class="steps">
         {% for step in runcaseversion.caseversion.steps.all %}
         <li class="stepitem">
@@ -25,6 +22,7 @@
         </li>
         {% endfor %}
       </ol>
+      {% include "lists/_associated_links.html" with bugs=runcaseversion.caseversion.bug_urls attachments=runcaseversion.caseversion.attachments %}
     </div>
   </div>
 

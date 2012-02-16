@@ -118,5 +118,23 @@ button
 .button
   +button-style
 
+.buttoninlay
+  +box-sizing(border-box)
+  +border-radius
+  +rhythm-borders(1px,.25)
+  +box-shadow(rgba($mid,$xxsmall) 0 0 $xsmallem inset)
+  +hpadding(1em)
+  max-width: 100%
+  color: rgba($base,$small)
+  background: none
+  border-color: rgba($base,$xxsmall)
+  display: inline-block
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+.buttoninlayfocus
+  +button-style($lightest)
+
 button
   @extend .button

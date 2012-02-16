@@ -2,8 +2,6 @@
 
 {% block env-actions %}
   <div class="controls">
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
     <button title="delete" type="submit" name="action-delete" value="{{ env.id }}">delete</button>
-    {% endif %}
   </div>
 {% endblock %}

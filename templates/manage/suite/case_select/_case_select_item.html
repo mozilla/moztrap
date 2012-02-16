@@ -2,15 +2,19 @@
 
 {% block content %}
 {% with item.latest_version as caseversion %}
-<p class="status">
-  <span class="{{ caseversion.status }}" title="{{ caseversion.status }}">{{ caseversion.status }}</span>
-</p>
-<h5 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h5>
-<ul class="tags">
-  {% for tag in caseversion.tags.all %}
-  <li><a href="#">{{ tag.name }}</a></li> {# links add a filter by that tag #}
-  {% endfor %}
-</ul>
-<p class="author fn">{{ item.created_by.username }}</p>
+
+{% include "manage/_status.html" with item=caseversion %}
+
+<div class="name-tags">
+  <h5 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h5>
+  <ul class="tags">
+    {% for tag in caseversion.tags.all %}
+    <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link tag" data-type="tag">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="author vcard"><span class="fn">{{ item.created_by.username }}</span></div>
+
 {% endwith %}
 {% endblock %}

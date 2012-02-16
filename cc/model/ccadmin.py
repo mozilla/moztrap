@@ -62,7 +62,7 @@ class CCModelAdmin(admin.ModelAdmin):
 
     def delete_selected(self, request, queryset):
         """Bypass soft delete and really delete selected instances."""
-        queryset.delete = partial(QuerySet.delete, queryset)
+        queryset.delete = partial(queryset.delete, permanent=True)
         return actions.delete_selected(self, request, queryset)
     delete_selected.short_description = (
         u"PERMANENTLY delete selected %(verbose_name_plural)s")

@@ -9,20 +9,7 @@
   </p>
   {% endif %}
 
-  <p class="drill">
-    See related <a href="{{ 'results_runcaseversions'|filter_url:run %}" title="test cases related to {{ run.name }}">test cases</a>.
-  </p>
-
-  {% if run.start or run.end %}
-    <div class="time">
-      {% if run.start %}
-        <p class="start">start date: <time>{{ run.start|date }}</time></p>
-        {% endif %}
-      {% if run.end %}
-        <p class="end">end date: <time>{{ run.end|date }}</time></p>
-      {% endif %}
-    </div>
-  {% endif %}
+  <a href="{{ 'results_runcaseversions'|filter_url:run }}" class="drill-link" title="test cases related to {{ run.name }}">See related test cases</a>
 
 </div>
 

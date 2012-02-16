@@ -1,0 +1,33 @@
+{% load permissions %}
+
+<article id="profile-id-{{ profile.id }}" class="listitem">
+  <header class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"environments.manage_environments" %}
+          {% url manage_profile_edit profile_id=profile.id as profile_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=profile_edit_url edit_name=profile.name %}
+          {% include "lists/controls/_clone.html" with clone_id=profile.id clone_name=profile.name %}
+          {% include "lists/controls/_delete.html" with delete_id=profile.id delete_name=profile.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ profile.name }}">{{ profile.name }}</h3>
+
+    </div>
+
+    <ul class="categories">
+      {% for cat in profile.categories %}
+      <li>{{ cat.name }}</li>
+      {% endfor %}
+    </ul>
+
+  </header>
+
+  {% url manage_profile_details profile.id as details_url %}
+  {# _profile_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

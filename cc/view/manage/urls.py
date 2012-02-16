@@ -179,4 +179,30 @@ urlpatterns = patterns(
     url(r"^tags/_autocomplete/",
         "tags.views.tag_autocomplete",
         name="manage_tags_autocomplete"),
+
+    # environments -----------------------------------------------------------
+    # manage
+    url(r"^profiles/$",
+        "environments.views.profiles_list",
+        name="manage_profiles"),
+
+    # ajax details
+    url(r"^profiles/_detail/(?P<profile_id>\d+)/$",
+        "environments.views.profile_details",
+        name="manage_profile_details"),
+
+    # add
+    url(r"^profile/add/$",
+        "environments.views.profile_add",
+        name="manage_profile_add"),
+
+    # edit
+    url(r"^profile/(?P<profile_id>\d+)/$",
+        "environments.views.profile_edit",
+        name="manage_profile_edit"),
+
+    # autocomplete
+    url(r"^elements/_autocomplete/$",
+        "environments.views.element_autocomplete",
+        name="manage_environment_autocomplete_elements")
 )
