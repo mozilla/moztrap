@@ -3545,6 +3545,9 @@ body.login input, body.login .errorlist {
   border-color: #8695a8;
 }
 
+#profile-add-form .itemlist, #profile-add-form #results .case-details, #results #profile-add-form .case-details {
+  margin-bottom: 0em;
+}
 #profile-add-form .itemhead, #profile-add-form #results .case-details .summary, #results .case-details #profile-add-form .summary, #profile-add-form .item-content, #profile-add-form .listordering {
   padding-left: 2.625em;
 }
