@@ -71,9 +71,17 @@
   .element
     position: relative
     .value
-      position: absolute
-      left: rhythm(-1.25)
-      top: rhythm(.125)
+      +gone
+      &:checked
+        + .type
+          +opacity(1)
+          background-image: image-url('ui/checkbox_checked.png')
+    .type
+      +opacity(.75)
+      background: image-url('ui/checkbox.png') no-repeat scroll left
+      padding-left: image-width('ui/checkbox.png') + $xxxsmallpx
+      #{$focus}
+        +opacity(1)
 
   .add-element
     .type

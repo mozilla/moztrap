@@ -3568,8 +3568,28 @@ body.login input, body.login .errorlist {
 }
 #profile-add-form .element .value {
   position: absolute;
-  left: -1.875em;
-  top: 0.188em;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+#profile-add-form .element .value:checked + .type {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
+}
+#profile-add-form .element .type {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+  background: url('../images/ui/checkbox.png?1329414399') no-repeat scroll left;
+  padding-left: 17px;
+}
+#profile-add-form .element .type:focus, #profile-add-form .element .type:hover, #profile-add-form .element .type:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 #profile-add-form .add-element .type {
   position: absolute;
