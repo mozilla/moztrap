@@ -45,7 +45,7 @@ class Profile(CCModel):
 
 
     @classmethod
-    def generate(cls, name, *elements):
+    def generate(cls, name, *elements, **kwargs):
         """
         Create profile of environments as Cartesian product of given elements.
 
@@ -57,7 +57,7 @@ class Profile(CCModel):
         for element in elements:
             by_category[element.category].append(element)
 
-        new = cls.objects.create(name=name)
+        new = cls.objects.create(name=name, **kwargs)
 
         for element_list in itertools.product(*by_category.values()):
             e = Environment.objects.create(profile=new)

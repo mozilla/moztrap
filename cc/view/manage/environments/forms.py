@@ -85,5 +85,6 @@ class AddProfileForm(ProfileForm):
         """Create and return the new profile."""
         return model.Profile.generate(
             self.cleaned_data["name"],
-            *self.cleaned_data["elements"]
+            *self.cleaned_data["elements"],
+            **{"user": self.user}
             )

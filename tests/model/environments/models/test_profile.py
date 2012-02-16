@@ -40,10 +40,13 @@ class ProfileTest(case.DBTestCase):
         firefox = self.F.ElementFactory(name="Firefox", category=browser)
         chrome = self.F.ElementFactory(name="Chrome", category=browser)
 
+        u = self.F.UserFactory.create()
+
         p = self.model.Profile.generate(
-            "New Profile", windows, linux, firefox, chrome)
+            "New Profile", windows, linux, firefox, chrome, user=u)
 
         self.assertEqual(p.name, "New Profile")
+        self.assertEqual(p.created_by, u)
         self.assertEqual(
             set([unicode(e) for e in p.environments.all()]),
             set(
