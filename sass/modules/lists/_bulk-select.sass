@@ -1,3 +1,19 @@
+.check-value
+  +gone
+  + .check-item::before
+    +opacity(.5)
+    +icon('ui/checkbox.png')
+    content: " "
+    display: inline-block
+    height: rhythm(1)
+    margin-right: rhythm(.25)
+    vertical-align: top
+
+  &:checked
+    + .check-item::before
+      +opacity(1)
+      background-image: image-url('ui/checkbox_checked.png')
+
 .bulk-value
   +gone
 

@@ -1,7 +1,7 @@
 {% extends 'lists/_itembody.html' %}
 
 {% block itembody-content %}
-  <p class="edit-name" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}">
+  <p class="category" data-category-id="{{ category.id }}" data-category-name="{{ category.name }}">
     <a href="#{{ category.id }}" title="edit {{ category.name }}" class="edit-link">edit</a>
     {{ category.name }}
   </p>

@@ -16,6 +16,9 @@
 
   .elements-field
     clear: both
+    &.errors
+      .type
+        color: $base
 
 
 #save-profile-name
@@ -45,11 +48,13 @@
   .itemlist
     +trailer(0)
 
-  .itemhead, .item-content, .listordering
-    padding-left: rhythm(1.75)
+  .itemhead, .listordering
+    padding-left: rhythm(2)
+  .item-content
+    padding-left: rhythm(3)
 
   .bulk-type
-    left: rhythm(.75)
+    left: rhythm(.875)
 
   .name, .byname
     +columns(8,23)
@@ -62,10 +67,19 @@
     +columns(15,23)
     +omega(23)
 
-  .edit-name, .add-name
-    +suffix(15,23)
+  .category
+    +clearfix
+    +suffix(12,23)
     +demi
+    +leader(.5)
     +trailer(.5)
+    // @@@ temporary
+    list-style: none
+    .type
+      +columns(2,11)
+    .value
+      +columns(9,11)
+      +omega(11)
 
   .elements
     +no-style-list
@@ -73,18 +87,12 @@
 
   .element
     position: relative
-    .value
+    .value[type="checkbox"]
       +gone
-      &:checked
-        + .type
-          +opacity(1)
-          background-image: image-url('ui/checkbox_checked.png')
-    .type
-      +opacity(.75)
-      background: image-url('ui/checkbox.png') no-repeat scroll left
-      padding-left: image-width('ui/checkbox.png') + $xxxsmallpx
-      #{$focus}
-        +opacity(1)
+
+    &.editing
+      .type
+        +gone
 
   .add-element
     .type
