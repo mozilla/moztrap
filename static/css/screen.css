@@ -1864,7 +1864,6 @@ body > div {
 }
 .itembody .item-content {
   clear: both;
-  overflow: hidden;
   *zoom: 1;
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
@@ -1872,6 +1871,11 @@ body > div {
   background: #e8e9ec;
   padding: 0.375em 0.375em 0.375em 1.5em;
   position: relative;
+}
+.itembody .item-content:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .itembody .byline {
   margin-bottom: 0.75em;
