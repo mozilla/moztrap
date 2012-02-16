@@ -5,14 +5,20 @@
     + .bulk-item
       background: $green-hint
       .bulk-type
-        +icon('ui/check.png')
+        background-image: image-url('ui/checkbox_checked.png')
         +opacity(1)
+    &.pseudo
+      + .bulk-item
+        .bulk-type
+          background-image: image-url('ui/checkbox_pseudo.png')
 
 .bulk-type
-  +icon('ui/x.png')
+  +icon('ui/checkbox.png')
   +opacity(.5)
   display: block
   position: absolute
   top: rhythm(.25)
   left: rhythm(.25)
   z-index: 5
+  #{$focus}
+    +opacity(1)

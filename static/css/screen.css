@@ -1945,26 +1945,16 @@ body > div {
   background: #f0f9e6;
 }
 .bulk-value:checked + .bulk-item .bulk-type {
-  background-image: url('../images/ui/check.png?1326735333');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: -119988px;
-  overflow: hidden;
-  text-align: left;
-  overflow: visible;
-  background-position: center;
-  width: 1.5em;
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
+.bulk-value:checked.pseudo + .bulk-item .bulk-type {
+  background-image: url('../images/ui/checkbox_pseudo.png?1329414711');
+}
 
 .bulk-type {
-  background-image: url('../images/ui/x.png?1326735333');
+  background-image: url('../images/ui/checkbox.png?1329414399');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1985,6 +1975,10 @@ body > div {
   top: 0.375em;
   left: 0.375em;
   z-index: 5;
+}
+.bulk-type:focus, .bulk-type:hover, .bulk-type:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 
 .bystatus {
