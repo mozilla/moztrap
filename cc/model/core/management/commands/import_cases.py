@@ -17,7 +17,9 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.core.management.base import BaseCommand, CommandError
 
-from ....library.jsonparse import JsonParser
+import json
+
+from ....library.import_cases import CaseImporter
 
 class Command(BaseCommand):
     args = '<product_name> <product_version> <filename>'
@@ -27,8 +29,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         try:
-            json_text = open(args[2])
+            cases_text = open(args[2])
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
-        self.stdout.write(JsonParser().parse(args[0], args[1], json_text))
+        # try to import this as JSON
+        try:
+            case_data = json.load(cases_text)
+
+        except ValueError as (strerror):
+            self.stderr.write('Could not parse the JSON because %s' %
+                 strerror)
+
+        # TODO: support importing as CSV.  Rather than returning an error above,
+        # just try CSV import instead.
+
+        self.stdout.write(CaseImporter().import_cases(args[0], args[1], case_data))

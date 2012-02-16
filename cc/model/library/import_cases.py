@@ -17,34 +17,27 @@
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.db import transaction
 
-import json
-
 from ..core.models import Product, ProductVersion
 from ..tags.models import Tag
 from models import Case, CaseVersion, CaseStep, Suite, SuiteCase
 
-""" Parser for json suites and cases either from a management command, the UI
+""" Importer for json suites and cases either from a management command, the UI
     or an external API.
 """
-class ParsingError(Exception):
-    pass
 
-
-
-class JsonParser(object):
+class CaseImporter(object):
     """
-    Parser for JSON Suites and Cases import.
-
-    Parses this format::
+    Importer for Suites and Cases.  The object should be structured like this.
+    The "suites" section is optional:
 
         {
-            "Suites": [
+            "suites": [
                 {
-                    "name": "fucci name",
+                    "name": "suite1 name",
                     "description": "suite description"
                 },
             ],
-            "Cases": [
+            "cases": [
                 {
                     "name": "case title",
                     "description": "case description",
@@ -62,50 +55,44 @@ class JsonParser(object):
 
     Instantiate a ``JsonParser`` and call its ``parse`` method::
 
-        parser = JsonParser()
-        data = parser.parse(text)
+        importer = CaseImporter()
+        data = importer.import_cases(product_name, product_version, case_data)
 
-    Returned data will be the count of Suites and Case imported and/or possibly
+    Returned data will be the count of cases imported and/or possibly
     an "error" key containing an error message encountered in parsing.
 
     """
     @transaction.commit_on_success
-    def parse(self, product_name, product_version, json_text):
+    def import_cases(self, product_name, product_version, case_data):
 
-        """Parse given json text and import it into the database. Then return
-        the status string of number of imported suites and cases, or an error.
+        """ Parse given json text and import it into the database. Then return
+            the status string of number of imported cases, or an error.
         """
 
         try:
             product = Product.objects.get(name=product_name)
+
         except Product.DoesNotExist:
             raise CommandError('Product "%s" does not exist' % product_name)
 
         try:
             product_version = ProductVersion.objects.get(version=product_version)
+
         except ProductVersion.DoesNotExist:
             raise CommandError('Product Version "%s" does not exist' %
                 product_version)
 
-        try:
-            json_data = json.load(json_text)
-            #self.stdout.write(json.dumps(new_cases, sort_keys=True, indent=4))
-        except ValueError as (strerror):
-            raise CommandError('Could not parse the JSON because %s' %
-                 strerror)
 
+        self.import_suites(product, case_data['suites'])
 
         # the total number of test cases that were imported
-
-        self.parse_suites(product, json_data['suites'])
-
         num_cases = 0
 
-        for new_case in json_data['cases']:
+        for new_case in case_data['cases']:
             # Don't re-import if we have the same case name and Product Version
             if not CaseVersion.objects.filter(name=new_case['name'],
-                                               productversion=product_version
-                                               ).exists():
+                                              productversion=product_version
+                                              ).exists():
 
                 # create the top-level case object which holds the versions
                 case = Case()
@@ -122,13 +109,15 @@ class JsonParser(object):
                 case_version.save()
 
                 # add the steps to this case version
-                self.parse_steps(case_version, new_case['steps'])
+                self.import_steps(case_version, new_case['steps'])
 
-                # add tags to this case, create tags as product specific
-                self.parse_tags(product, case_version, new_case['tags'])
+                # add tags to this case version,
+                # create tags as product specific
+                self.import_tags(product, case_version, new_case['tags'])
 
                 # add this case to the suites
-                self.parse_suites(product, new_case['suites'], case)
+                # if the suites don't exist, create them
+                self.import_suites(product, new_case['suites'], case)
 
 
                 # case has been created, increment our count for reporting
@@ -138,7 +127,9 @@ class JsonParser(object):
             (num_cases))
 
 
-    def parse_steps(self, case_version, step_list):
+    def import_steps(self, case_version, step_list):
+        """ add the steps to this case version"""
+
         for step_num, new_step in enumerate(step_list):
             casestep = CaseStep()
             casestep.caseversion = case_version
@@ -148,9 +139,9 @@ class JsonParser(object):
             casestep.save()
 
 
-    def parse_tags(self, product, case_version, tag_list):
-        """ Find the tag.  If it doesn't exist, then create it.  Either way,
-            add it to the case_version"""
+    def import_tags(self, product, case_version, tag_list):
+        """ Find the tag.  If it doesn't exist, then create it as product specific.
+            Either way, add it to the case_version"""
 
         for new_tag in tag_list:
             try:
@@ -164,21 +155,23 @@ class JsonParser(object):
 
             case_version.tags.add(tag)
 
-    def parse_suites(self, product, suite_list, case=None):
-        """ create the list of suites, if they don't already exist.
-        If a case is provided, add that case to the suites."""
+    def import_suites(self, product, suite_list, case=None):
+        """ Create each suite in the list, if it doesn't already exist.
+            If a case is provided, add that case to the suite."""
 
         for new_suite in suite_list:
-            # this could be a dictionary, or just a list of strings.
-            new_desc = None
+            # this could be a dictionary, if it's in the "suites" object
+            # or just a list of strings if it's listed for an individual case
+
             if isinstance(new_suite, dict):
                 new_name = new_suite['name']
                 new_desc = new_suite['description']
             else:
                 new_name = new_suite
+                new_desc = None
 
             try:
-               suite = Suite.objects.get(name=new_name, product=product)
+                suite = Suite.objects.get(name=new_name, product=product)
 
             except Suite.DoesNotExist:
 
