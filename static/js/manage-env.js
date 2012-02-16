@@ -53,7 +53,7 @@ var CC = (function (CC, $) {
                     } else {
                         bulkInput.prop('checked', false).removeClass('pseudo');
                     }
-                })
+                });
             };
 
         // some elements may load already checked
@@ -191,8 +191,8 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
-        context.on('click', '.bulkselectitem .item-content .edit-name .edit-link', function (event) {
-            var thisName = $(this).closest('.edit-name'),
+        context.on('click', '.bulkselectitem .item-content .category .edit-link', function (event) {
+            var thisName = $(this).closest('.category'),
                 categoryId = thisName.data('category-id'),
                 inputId = 'edit-category-id-' + categoryId,
                 name = thisName.data('category-name'),
