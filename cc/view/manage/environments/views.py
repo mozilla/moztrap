@@ -105,7 +105,7 @@ def profile_add(request):
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @lists.actions(
     model.Environment,
-    ["delete"],
+    ["remove_from_profile"],
     permission="environments.manage_environments",
     fall_through=True)
 @ajax("manage/environment/edit_profile/_envs_list.html")

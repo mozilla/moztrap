@@ -204,6 +204,36 @@ class Environment(CCModel):
         return super(Environment, self).clone(*args, **kwargs)
 
 
+    # @@@ there should be some way to annotate this onto a queryset efficiently
+    @property
+    def deletable(self):
+        """Return True if this environment can be deleted, otherwise False."""
+        from cc.model import ProductVersion
+        return not ProductVersion.objects.filter(environments=self).exists()
+
+
+    # @@@ this protection should apply to queryset.delete as well
+    def delete(self, *args, **kwargs):
+        """Delete this environment, or raise ProtectedError if its in use."""
+        if not self.deletable:
+            from cc.model import ProductVersion
+            raise models.ProtectedError(
+                "Environment '{0}' is in use and cannot be deleted.".format(
+                    str(self)),
+                list(ProductVersion.objects.filter(environments=self).all())
+                )
+        return super(Environment, self).delete(*args, **kwargs)
+
+
+    def remove_from_profile(self, user=None):
+        """Remove environment from its profile and delete it if not in use."""
+        if self.deletable:
+            self.delete(user=user)
+        else:
+            self.profile = None
+            self.save(force_update=True, user=user)
+
+
 
 class HasEnvironmentsModel(models.Model):
     """
