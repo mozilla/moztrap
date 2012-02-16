@@ -6,4 +6,5 @@
 
 {% block topfields %}
   {% include "forms/_field.html" with field=form.product %}
+  {% include "forms/_field.html" with field=form.clone_envs_from label="Copy environments from" %}
 {% endblock %}
