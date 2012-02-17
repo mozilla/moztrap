@@ -60,10 +60,10 @@ var CC = (function (CC, $) {
         updateLabels();
         updateBulkInputs();
 
+        // Removes element preview (label) when element is deleted.
+        // Other actions (other than delete) might also cause this to fire, with new HTML
+        // (already parsed into jQuery object) in "replacement".
         context.on('before-replace', '.bulkselectitem .element', function (event, replacement) {
-            // Removes element preview (label) when element is deleted.
-            // Other actions (other than delete) might also cause this to fire, with new HTML
-            // (already parsed into jQuery object) in "replacement".
             if (!replacement.html()) {
                 var thisElement = $(event.target),
                     thisElementID = thisElement.data('element-id'),
@@ -74,6 +74,7 @@ var CC = (function (CC, $) {
             }
         });
 
+        // ENTER in Name textbox shifts focus to submit button
         context.on('keydown', '#id_name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 event.preventDefault();
@@ -81,11 +82,13 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Update category labels and bulk-inputs when element changes
         context.on('change', '.bulkselectitem .element input[name="elements"]', function () {
             updateLabels();
             updateBulkInputs();
         });
 
+        // Select/de-select all elements when category bulk-input is selected/de-selected
         context.on('change', '.bulkselectitem .bulk-value', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', true);
@@ -96,6 +99,7 @@ var CC = (function (CC, $) {
             updateLabels();
         });
 
+        // Ajax-submit new elements
         context.on('keydown', '.bulkselectitem .add-element input[name="new-element-name"]', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
@@ -135,6 +139,7 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Ajax-submit new categories
         context.on('keydown', '#new-category-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
@@ -171,6 +176,7 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Replace element edit-link with editing input
         context.on('click', '.bulkselectitem .element .edit-link', function (event) {
             var thisElement = $(this).closest('.element'),
                 inputId = thisElement.find('input[name="elements"]').attr('id'),
@@ -191,6 +197,7 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
+        // Replace category name edit-link with editing input
         context.on('click', '.bulkselectitem .item-content .category .edit-link', function (event) {
             var thisName = $(this).closest('.category'),
                 categoryId = thisName.data('category-id'),
@@ -209,6 +216,7 @@ var CC = (function (CC, $) {
             event.preventDefault();
         });
 
+        // Ajax-submit edited element name
         context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
@@ -263,6 +271,7 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Ajax-submit edited category name
         context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
@@ -317,6 +326,7 @@ var CC = (function (CC, $) {
             profileName = profileNameInput.val(),
             profileNameSubmit = context.find('#save-profile-name').hide(),
 
+            // Setup add-env form for ajax-submit
             addEnv = function () {
                 var replaceList = context.find('.itemlist.action-ajax-replace');
 
@@ -350,6 +360,7 @@ var CC = (function (CC, $) {
 
         addEnv();
 
+        // Re-attach add-env form handlers after list is ajax-replaced (called in listpages.js)
         context.on('after-replace', '.itemlist.action-ajax-replace', function (event, replacement) {
             // Re-attaches handlers to list after it is reloaded via Ajax (on delete action).
             addEnv();
@@ -365,6 +376,7 @@ var CC = (function (CC, $) {
             });
         });
 
+        // Show/hide profile-name submit button when name is changed
         context.on('keyup', '#profile-name', function (event) {
             if ($(this).val() !== profileName) {
                 profileNameSubmit.fadeIn();
@@ -373,12 +385,14 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Prevent submission of profile-name form if value hasn't changed
         context.on('keydown', '#profile-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
         });
 
+        // Prepare profile-name form for ajax-submit
         if (context.find('#profile-name-form').length) {
             context.find('#profile-name-form').ajaxForm({
                 success: function (response) {

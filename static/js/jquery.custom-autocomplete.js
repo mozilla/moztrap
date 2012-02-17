@@ -50,7 +50,7 @@
                 textbox.removeClass('placeholder');
             },
 
-            // Submits form or adds no-inputs note when inputs change
+            // Submits form, adds no-inputs note, or shows/hides form-actions when inputs change
             inputsChanged = function () {
                 if (options.autoSubmit) {
                     options.triggerSubmit(context);
@@ -192,16 +192,21 @@
                 }
             };
 
+        // Hide suggestion-list on initial page-load
         suggestionList.hide();
 
+        // Optionally hide form-actions on initial page-load
         if (options.hideFormActions) {
             formActions.hide();
         }
 
+        // Optionally add fake placeholder text on initial page-load
+        // (this allows textbox to initially have focus and a placeholder)
         if (options.fakePlaceholder) {
             textbox.addClass('placeholder');
         }
 
+        // Set newInputList to inputList if only one category
         if (!options.multipleCategories && options.newInputList === null) {
             newInputList = context.find(options.inputList);
             newInputTextbox = newInputList.find(options.newInputTextbox);
@@ -268,6 +273,7 @@
                         removeFakePlaceholder();
                     }
                 }
+                // Submit form if textbox is empty and form-actions are visible
                 if (e.keyCode === keycodes.ENTER && textbox.val() === '' && formActions.is(':visible') && !options.autoSubmit) {
                     e.preventDefault();
                     options.triggerSubmit(context);
@@ -378,6 +384,7 @@
                 window.setTimeout(hideList, 150);
             });
 
+        // Optionally give textbox initial focus on page-load
         if (options.initialFocus) {
             textbox.focus();
         }
@@ -507,7 +514,6 @@
         // Allow adding new inputs via group-specific textbox
         newInputTextbox.each(function () {
             $(this).keydown(function (e) {
-                // ENTER performs submit action if textbox is empty and inputs have changed...
                 if (e.keyCode === keycodes.ENTER) {
                     e.preventDefault();
                     var thisTextbox = $(this),
@@ -540,6 +546,7 @@
                             thisTextbox.val(null);
                             thisText = null;
                         };
+                    // ENTER performs submit action if textbox is empty...
                     if (thisText === '' && formActions.is(':visible') && !options.autoSubmit) {
                         options.triggerSubmit(context);
                     } else if (thisText.length && thisText.trim() !== '') {
