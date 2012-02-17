@@ -20,9 +20,12 @@
     +gone
 
 .select-env-link
-  +button-style($yellow-lighter,'ui/crosshair.png',$inset:true)
-  +float(right)
-  +leader(-1.25)
+  h2 + &
+    +button-style($yellow-lighter,'ui/crosshair.png',$inset:true)
+    +float(right)
+    +leader(-1.25)
+  .controls &
+    +action-link('ui/crosshair.png')
 
 // ---------------------------------------------------------------------------
 
