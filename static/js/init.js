@@ -205,7 +205,7 @@ var CC = (function (CC, $) {
         CC.addEnvToProfile('#editprofile, #editproductversionenvs');
         CC.editEnvProfileName('#editprofile');
         CC.clientSideFilter({container: '#envnarrowing'});
-        // CC.envNarrowing('#envnarrowlist');
+        CC.bulkSelectEnvs('#envnarrowing');
 
         // manage-tags.js
         // CC.manageTags('#managetags');

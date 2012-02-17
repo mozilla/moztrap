@@ -135,6 +135,10 @@ var CC = (function (CC, $) {
                     items.show();
                 }
 
+                // Trigger after-filter event on itemList
+                itemList.trigger('after-filter');
+
+                // Update total item count
                 itemCount.text(items.filter(':visible').length);
             };
 
