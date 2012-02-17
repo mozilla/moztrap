@@ -3622,23 +3622,22 @@ body.login input, body.login .errorlist {
 #profile-add-form .category {
   overflow: hidden;
   *zoom: 1;
-  padding-right: 52.747%;
+  padding-right: 48.352%;
   font-weight: 500;
   margin-top: 0.75em;
   margin-bottom: 0.75em;
-  list-style: none;
 }
 #profile-add-form .category .type {
   display: inline;
   float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
+  width: 23.404%;
+  margin-right: 2.128%;
 }
 #profile-add-form .category .value {
   display: inline;
   float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
+  width: 74.468%;
+  margin-right: 2.128%;
   display: inline;
   float: right;
   margin-right: 0;
