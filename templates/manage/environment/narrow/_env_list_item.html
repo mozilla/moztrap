@@ -9,7 +9,7 @@
   <h3 class="preview">
     <ul>
       {% for element in env.ordered_elements %}
-      <li>{{ element.name }}</li>
+      <li data-type="envelement">{{ element.name }}</li>
       {% endfor %}
     </ul>
   </h3>

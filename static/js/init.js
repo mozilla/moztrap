@@ -47,6 +47,19 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
+        $('#clientfilter').customAutocomplete({
+            textbox: '#text-filter',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
+            multipleCategories: true,
+            allowNew: true,
+            newInputTextbox: 'input[type="text"]',
+            triggerSubmit: null,
+            fakePlaceholder: true,
+            initialFocus: true,
+            inputsNeverRemoved: true,
+            prefix: 'filter'
+        });
         $('.tagging').customAutocomplete({
             textbox: '#id_add_tags',
             ajax: true,
@@ -145,7 +158,7 @@ var CC = (function (CC, $) {
         );
 
         // filtering.js
-        CC.toggleAdvancedFiltering('#filter');
+        CC.toggleAdvancedFiltering('.magicfilter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
 
@@ -191,6 +204,7 @@ var CC = (function (CC, $) {
         CC.createEnvProfile('#profile-add-form');
         CC.addEnvToProfile('#editprofile, #editproductversionenvs');
         CC.editEnvProfileName('#editprofile');
+        CC.clientSideFilter({container: '#envnarrowing'});
         // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js
