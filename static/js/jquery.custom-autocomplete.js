@@ -270,78 +270,83 @@
                         removeFakePlaceholder();
                     }
                 }
-                // If the suggestion list is not visible...
-                if (!suggestionList.is(':visible')) {
-                    // ...prevent normal TAB function, and show suggestion list
-                    if (e.keyCode === keycodes.TAB && textbox.val() !== '' && suggestionList.find('li').length) {
-                        e.preventDefault();
-                        suggestionList.show();
-                    }
-                    // ...show suggestion list on ENTER
-                    if (e.keyCode === keycodes.ENTER) {
-                        e.preventDefault();
-                        if (suggestionList.find('li').length) {
-                            suggestionList.show();
-                        }
-                    }
-                    // ...show the suggestion list on arrow-keys
-                    if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
-                        if (suggestionList.find('li').length) {
-                            suggestionList.show();
-                        }
-                    }
-                // If the suggestion list is already visible...
+                if (e.keyCode === keycodes.ENTER && textbox.val() === '' && formActions.is(':visible') && !options.autoSubmit) {
+                    e.preventDefault();
+                    options.triggerSubmit(context);
                 } else {
-                    var thisInputName = suggestionList.find('.selected').data('name');
-                    // UP and DOWN move "active" suggestion
-                    if (e.keyCode === keycodes.UP) {
-                        e.preventDefault();
-                        if (!suggestionList.find('.selected').parent().is(':first-child')) {
-                            suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
-                        }
-                    }
-                    if (e.keyCode === keycodes.DOWN) {
-                        e.preventDefault();
-                        if (!suggestionList.find('.selected').parent().is(':last-child')) {
-                            suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
-                        }
-                    }
-                    // ENTER selects the "active" suggestion, if exists.
-                    if (e.keyCode === keycodes.ENTER) {
-                        e.preventDefault();
-                        if (suggestionList.find('.selected').length) {
-                            $.doTimeout(100, function () {
-                                if (ajaxCalls === ajaxResponses) {
-                                    suggestionList.find('.selected').click();
-                                    return false;
-                                }
-                                return true;
-                            });
-                        }
-                    }
-                    // TAB auto-completes the "active" suggestion if it isn't already completed...
-                    if (e.keyCode === keycodes.TAB) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase()) {
+                    // If the suggestion list is not visible...
+                    if (!suggestionList.is(':visible')) {
+                        // ...prevent normal TAB function, and show suggestion list
+                        if (e.keyCode === keycodes.TAB && textbox.val() !== '' && suggestionList.find('li').length) {
                             e.preventDefault();
-                            textbox.val(thisInputName);
-                        // ...otherwise, TAB selects the "active" suggestion (if exists)
-                        } else if (suggestionList.find('.selected').length) {
-                            e.preventDefault();
-                            suggestionList.find('.selected').click();
+                            suggestionList.show();
                         }
-                    }
-                    // RIGHT auto-completes the "active" suggestion if it isn't already completed
-                    // and the cursor is at the end of the textbox
-                    if (e.keyCode === keycodes.RIGHT) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
+                        // ...show suggestion list on ENTER
+                        if (e.keyCode === keycodes.ENTER) {
                             e.preventDefault();
-                            textbox.val(thisInputName);
+                            if (suggestionList.find('li').length) {
+                                suggestionList.show();
+                            }
                         }
-                    }
-                    // ESC hides the suggestion list
-                    if (e.keyCode === keycodes.ESC) {
-                        e.preventDefault();
-                        suggestionList.hide();
+                        // ...show the suggestion list on arrow-keys
+                        if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
+                            if (suggestionList.find('li').length) {
+                                suggestionList.show();
+                            }
+                        }
+                    // If the suggestion list is already visible...
+                    } else {
+                        var thisInputName = suggestionList.find('.selected').data('name');
+                        // UP and DOWN move "active" suggestion
+                        if (e.keyCode === keycodes.UP) {
+                            e.preventDefault();
+                            if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                                suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                            }
+                        }
+                        if (e.keyCode === keycodes.DOWN) {
+                            e.preventDefault();
+                            if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                                suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                            }
+                        }
+                        // ENTER selects the "active" suggestion, if exists.
+                        if (e.keyCode === keycodes.ENTER) {
+                            e.preventDefault();
+                            if (suggestionList.find('.selected').length) {
+                                $.doTimeout(100, function () {
+                                    if (ajaxCalls === ajaxResponses) {
+                                        suggestionList.find('.selected').click();
+                                        return false;
+                                    }
+                                    return true;
+                                });
+                            }
+                        }
+                        // TAB auto-completes the "active" suggestion if it isn't already completed...
+                        if (e.keyCode === keycodes.TAB) {
+                            if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase()) {
+                                e.preventDefault();
+                                textbox.val(thisInputName);
+                            // ...otherwise, TAB selects the "active" suggestion (if exists)
+                            } else if (suggestionList.find('.selected').length) {
+                                e.preventDefault();
+                                suggestionList.find('.selected').click();
+                            }
+                        }
+                        // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                        // and the cursor is at the end of the textbox
+                        if (e.keyCode === keycodes.RIGHT) {
+                            if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
+                                e.preventDefault();
+                                textbox.val(thisInputName);
+                            }
+                        }
+                        // ESC hides the suggestion list
+                        if (e.keyCode === keycodes.ESC) {
+                            e.preventDefault();
+                            suggestionList.hide();
+                        }
                     }
                 }
             })
@@ -540,7 +545,9 @@
                             thisTextbox.val(null);
                             thisText = null;
                         };
-                    if (thisText.length && thisText.trim() !== '') {
+                    if (thisText === '' && formActions.is(':visible') && !options.autoSubmit) {
+                        options.triggerSubmit(context);
+                    } else if (thisText.length && thisText.trim() !== '') {
                         // ...otherwise, if the input already exists, ENTER selects it...
                         if (existingInput.length) {
                             if (!existingInput.is(':checked')) {
