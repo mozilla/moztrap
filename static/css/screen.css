@@ -4013,10 +4013,14 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   vertical-align: baseline;
 }
 
+.edit-case .select-env-link {
+  margin-right: 8.421%;
+}
+
 .case-version-nav {
   clear: both;
   padding-right: 8.421%;
-  margin-top: -1.875em;
+  margin-top: 1.5em;
   text-align: right;
 }
 
