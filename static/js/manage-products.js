@@ -66,9 +66,9 @@ var CC = (function (CC, $) {
                             excludeThisFilter = true;
                         }
                     } else if (type === 'author') {
-                         if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
-                             excludeThisFilter = true;
-                         }
+                        if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
                     } else {
                         if (!(items.filter(function () { return $(this).find('.' + type).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
