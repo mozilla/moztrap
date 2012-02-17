@@ -175,6 +175,12 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
+        CC.formOptionsFilter({
+            container: '#productversion-add-form',
+            trigger_sel: '#id_product',
+            target_sel: '#id_clone_envs_from',
+            optional: true
+        });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.case-form .attach');
 
