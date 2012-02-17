@@ -179,7 +179,10 @@ var CC = (function (CC, $) {
             container: '#productversion-add-form',
             trigger_sel: '#id_product',
             target_sel: '#id_clone_envs_from',
-            optional: true
+            optional: true,
+            callback: function (context) {
+                context.find('#id_clone_envs_from option:last-child').prop('selected', true);
+            }
         });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.case-form .attach');
