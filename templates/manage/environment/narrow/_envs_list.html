@@ -1,4 +1,5 @@
-<div class="managelist" id="envnarrowlist">
+<form method="POST" class="itemlist" id="narrow-envs-form">
+  {% csrf_token %}
   {% include "manage/environment/narrow/_envs_listordering.html" %}
 
   <div class="items select">
@@ -7,9 +8,13 @@
     {% endfor %}
   </div>
 
-    <nav class="listnav">
-      <h3 class="navhead">List Navigation</h3>
-      <p class="location">showing {{ environments|length }}</p>
-    </nav>
+  <nav class="listnav">
+    <h3 class="navhead">List Navigation</h3>
+    <p class="location">showing {{ environments|length }}</p>
+  </nav>
 
-</div>
+  <div class="form-actions">
+    <button type="submit">save</button>
+  </div>
+
+</form>

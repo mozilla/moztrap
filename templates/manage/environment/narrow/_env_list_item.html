@@ -1,4 +1,4 @@
-{% extends 'manage/environment/_env_list_item.html' %}
+{% extends 'manage/environment/env_list/_env_list_item.html' %}
 
 {% block select %}selectitem{% endblock select %}
 
@@ -7,7 +7,7 @@
 <label for="environment-{{ env.id }}-select" class="item-select">
 <h3 class="preview">
   <ul>
-    {% for element in env.elements %}
+    {% for element in env.ordered_elements %}
     <li>{{ element.name }}</li>
     {% endfor %}
   </ul>

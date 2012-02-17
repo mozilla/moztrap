@@ -21,7 +21,7 @@ Manage views for environments.
 """
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 
@@ -183,6 +183,7 @@ def productversion_environments_edit(request, productversion_id):
         )
 
 
+
 @login_required
 def element_autocomplete(request):
     text = request.GET.get("text")
@@ -211,3 +212,39 @@ def element_autocomplete(request):
             ),
         content_type="application/json",
         )
+
+
+
+@login_required
+@ajax("manage/environment/narrow/_envs_list.html")
+def narrow_environments(request, object_type, object_id):
+    if object_type == "run":
+        model_class = model.Run
+    elif object_type == "caseversion":
+        model_class = model.CaseVersion
+    else:
+        raise Http404
+    obj = get_object_or_404(model_class, pk=object_id)
+
+    current_env_ids = set(obj.environments.values_list("id", flat=True))
+
+    if request.method == "POST":
+        env_ids = set(map(int, request.POST.getlist("environments")))
+
+        remove = current_env_ids.difference(env_ids)
+        add = env_ids.difference(current_env_ids)
+
+        obj.environments.add(*add)
+        obj.environments.remove(*remove)
+
+        return redirect("manage_%ss" % object_type)
+
+    return TemplateResponse(
+        request,
+        "manage/environment/narrowing.html",
+        {
+            "environments": obj.productversion.environments.all(),
+            "selected_env_ids": current_env_ids,
+            "filters": EnvironmentFilterSet().bind(), # for JS filtering
+            "obj": obj,
+            })
