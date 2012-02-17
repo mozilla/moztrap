@@ -21,21 +21,8 @@
         +opacity(1)
         background-image: image-url('ui/checkbox_checked.png')
 
-.bulk-value
-  +gone
 
-  &:checked
-    + .bulk-item
-      background: $green-hint
-      .bulk-type
-        background-image: image-url('ui/checkbox_checked.png')
-        +opacity(1)
-    &.pseudo
-      + .bulk-item
-        .bulk-type
-          background-image: image-url('ui/checkbox_pseudo.png')
-
-.bulk-type
+.bulkunchecked
   +icon('ui/checkbox.png')
   +opacity(.5)
   display: block
@@ -45,3 +32,35 @@
   z-index: 5
   #{$focus}
     +opacity(1)
+
+.bulkchecked
+  background-image: image-url('ui/checkbox_checked.png')
+  +opacity(1)
+
+.bulkpseudo
+  background-image: image-url('ui/checkbox_pseudo.png')
+
+.bulk-value, .bybulk-value
+  +gone
+
+.bulk-type, .bybulk-type
+  @extend .bulkunchecked
+
+.bulk-value
+  &:checked
+    + .bulk-item
+      background: $green-hint
+      .bulk-type
+        @extend .bulkchecked
+    &.pseudo
+      + .bulk-item
+        .bulk-type
+          @extend .bulkpseudo
+
+.bybulk-value
+  &:checked
+    + .bybulk-type
+      @extend .bulkchecked
+    &.pseudo
+      + .bybulk-type
+        @extend .bulkpseudo

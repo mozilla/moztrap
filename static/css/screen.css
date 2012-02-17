@@ -1495,6 +1495,7 @@ body > div {
   padding-bottom: 0.304em;
   padding-left: 0.5em;
   padding-right: 0.5em;
+  position: relative;
   background: rgba(81, 105, 133, 0.444);
   border-color: rgba(75, 87, 101, 0.667);
 }
@@ -2005,29 +2006,7 @@ body > div {
   background-image: url('../images/ui/checkbox_checked.png?1329413814');
 }
 
-.bulk-value {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.bulk-value:checked + .bulk-item {
-  background: #f0f9e6;
-}
-.bulk-value:checked + .bulk-item .bulk-type {
-  background-image: url('../images/ui/checkbox_checked.png?1329413814');
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-.bulk-value:checked.pseudo + .bulk-item .bulk-type {
-  background-image: url('../images/ui/checkbox_pseudo.png?1329414711');
-}
-
-.bulk-type {
+.bulkunchecked, .bulk-type, .bybulk-type {
   background-image: url('../images/ui/checkbox.png?1329414399');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -2050,9 +2029,34 @@ body > div {
   left: 0.375em;
   z-index: 5;
 }
-.bulk-type:focus, .bulk-type:hover, .bulk-type:active {
+.bulkunchecked:focus, .bulk-type:focus, .bybulk-type:focus, .bulkunchecked:hover, .bulk-type:hover, .bybulk-type:hover, .bulkunchecked:active, .bulk-type:active, .bybulk-type:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+
+.bulkchecked, .bulk-value:checked + .bulk-item .bulk-type, .bybulk-value:checked + .bybulk-type {
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.bulkpseudo, .bulk-value:checked.pseudo + .bulk-item .bulk-type, .bybulk-value:checked.pseudo + .bybulk-type {
+  background-image: url('../images/ui/checkbox_pseudo.png?1329414711');
+}
+
+.bulk-value, .bybulk-value {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.bulk-value:checked + .bulk-item {
+  background: #f0f9e6;
 }
 
 .bystatus {
@@ -3732,6 +3736,24 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #add-environment-form {
   padding-right: 50.526%;
   margin-bottom: 0.375em;
+}
+
+#narrow-envs-form .listordering, #narrow-envs-form .itemhead, #narrow-envs-form #results .case-details .summary, #results .case-details #narrow-envs-form .summary {
+  padding-left: 2.25em;
+}
+#narrow-envs-form .preview {
+  font-weight: 500;
+}
+#narrow-envs-form .preview ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+#narrow-envs-form .preview ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
 }
 
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
