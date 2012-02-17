@@ -150,6 +150,39 @@ def profile_edit(request, profile_id):
         )
 
 
+
+@permission_required("core.manage_products")
+@lists.filter("environments", filterset_class=EnvironmentFilterSet)
+@ajax("manage/environment/productversion/_envs_list.html")
+def productversion_environments_edit(request, productversion_id):
+    productversion = get_object_or_404(
+        model.ProductVersion, pk=productversion_id)
+
+    # @@@ should use a form, and support both ajax and non
+    if request.is_ajax() and request.method == "POST":
+        if "add-environment" in request.POST:
+            element_ids = request.POST.getlist("element-element")
+            if not element_ids:
+                messages.error(
+                    request, "Please select some environment elements.")
+            else:
+                env = model.Environment.objects.create(user=request.user)
+                env.elements.add(*element_ids)
+            productversion.environments.add(env)
+        elif "action-remove" in request.POST:
+            env_id = request.POST.get("action-remove")
+            productversion.environments.remove(env_id)
+
+    return TemplateResponse(
+        request,
+        "manage/environment/productversion.html",
+        {
+            "productversion": productversion,
+            "environments": productversion.environments.all(),
+            }
+        )
+
+
 @login_required
 def element_autocomplete(request):
     text = request.GET.get("text")

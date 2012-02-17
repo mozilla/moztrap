@@ -1,0 +1,18 @@
+{% extends 'manage/environment/base.html' %}
+
+{% load permissions %}
+
+{% block content %}
+
+<section id="editproductversionenvs" class="manage listpage">
+  <h2>Edit "{{ productversion }}" Environments</h2>
+
+  {% include "lists/_filter.html" %}
+  {% include "manage/environment/productversion/_envs_list.html" %}
+
+</section>
+
+<div class="form-actions">
+  <a href="{% url manage_productversion_edit productversion_id=productversion.id %}" class="done-link">Done Editing</a>
+</div>
+{% endblock content %}

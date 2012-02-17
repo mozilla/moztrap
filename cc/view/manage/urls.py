@@ -201,6 +201,11 @@ urlpatterns = patterns(
         "environments.views.profile_edit",
         name="manage_profile_edit"),
 
+    # edit
+    url(r"^productversion/(?P<productversion_id>\d+)/environments/$",
+        "environments.views.productversion_environments_edit",
+        name="manage_productversion_environments"),
+
     # autocomplete
     url(r"^elements/_autocomplete/$",
         "environments.views.element_autocomplete",

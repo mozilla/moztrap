@@ -5,5 +5,5 @@
 {% block formtitle %}Edit "{{ productversion.name }}" Version{% endblock %}
 
 {% block formtop %}
-<a href="{# @@@ url manage_narrow_environments object_type='productversion' object_id=productversion.id #}" class="select-env-link">select environments</a>
+<a href="{% url manage_productversion_environments productversion_id=productversion.id %}" class="select-env-link">select environments</a>
 {% endblock %}
