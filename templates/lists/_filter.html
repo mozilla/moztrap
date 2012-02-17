@@ -1,6 +1,6 @@
 {% load icanhaz pagination %}
 
-<nav id="filter" class="magicfilter">
+<nav id="{% block filterid %}filter{% endblock %}" class="magicfilter">
   <h3 class="navhead">List Filtering</h3>
     <div class="textual">
       <label for="text-filter">filter</label>
