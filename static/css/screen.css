@@ -3718,14 +3718,14 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   border: 0;
 }
 
-#editprofile .itemhead, #editprofile #results .case-details .summary, #results .case-details #editprofile .summary {
+.envlist .itemhead, .envlist #results .case-details .summary, #results .case-details .envlist .summary {
   padding-left: 0.375em;
 }
-#editprofile .title {
+.envlist .title {
   font-weight: 500;
   display: inline;
 }
-#editprofile .add-item .itemhead, #editprofile .add-item #results .case-details .summary, #results .case-details #editprofile .add-item .summary, #editprofile .add-item .item-content {
+.envlist .add-item .itemhead, .envlist .add-item #results .case-details .summary, #results .case-details .envlist .add-item .summary, .envlist .add-item .item-content {
   padding-left: 1.875em;
 }
 
