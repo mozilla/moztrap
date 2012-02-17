@@ -209,13 +209,11 @@
         }
 
         // Selecting/unselecting an input returns focus to textbox and hides suggestion-list
-        if (options.inputsNeverRemoved) {
-            inputList.add(newInputList).on('change', options.inputs, function () {
-                textbox.focus();
-                suggestionList.hide();
-                inputsChanged();
-            });
-        }
+        inputList.add(newInputList).on('change', options.inputs, function () {
+            textbox.focus();
+            suggestionList.hide();
+            inputsChanged();
+        });
 
         textbox
             .keyup(function (e) {
@@ -482,7 +480,6 @@
                     }
                 }
                 // Empty the textbox, and empty and hide the suggestion list
-                inputsChanged();
                 textbox.val(null);
                 typedText = null;
                 suggestionList.empty().hide();
@@ -535,13 +532,11 @@
                             }
                             $('#id-' + prefix + '-' + typeName + '-' + index.toString()).prop('checked', true).change();
                             inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
-                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         },
                         selectInput = function () {
                             existingInput.prop('checked', true).change();
-                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         };
