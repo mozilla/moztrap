@@ -161,6 +161,7 @@ var CC = (function (CC, $) {
         CC.toggleAdvancedFiltering('.magicfilter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
+        CC.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
         CC.formOptionsFilter({
@@ -204,7 +205,6 @@ var CC = (function (CC, $) {
         CC.createEnvProfile('#profile-add-form');
         CC.addEnvToProfile('#editprofile, #editproductversionenvs');
         CC.editEnvProfileName('#editprofile');
-        CC.clientSideFilter({container: '#envnarrowing'});
         CC.bulkSelectEnvs('#envnarrowing');
 
         // manage-tags.js
