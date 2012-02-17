@@ -24,9 +24,12 @@
             keycodes = $.fn.customAutocomplete.keycodes,
             context = $(this),
             textbox = context.find(options.textbox),
+            formActions = context.find(options.formActions),
             suggestionList = context.find(options.suggestionList),
             inputList = context.find(options.inputList),
             newInputList = context.find(options.newInputList),
+            origInputs = inputList.html(),
+            origNewInputs = newInputList.html(),
             inputs = inputList.add(newInputList).find(options.inputs),
             newInputTextbox = newInputList.find(options.newInputTextbox),
             placeholder = textbox.attr('placeholder'),
@@ -51,6 +54,14 @@
             inputsChanged = function () {
                 if (options.autoSubmit) {
                     options.triggerSubmit(context);
+                }
+
+                if (options.hideFormActions) {
+                    if (inputList.html() !== origInputs && newInputList.html() !== origNewInputs) {
+                        formActions.fadeIn();
+                    } else {
+                        formActions.fadeOut();
+                    }
                 }
 
                 if (options.noInputsNote) {
@@ -182,6 +193,10 @@
             };
 
         suggestionList.hide();
+
+        if (options.hideFormActions) {
+            formActions.hide();
+        }
 
         if (options.fakePlaceholder) {
             textbox.addClass('placeholder');
@@ -563,11 +578,13 @@
         inputs: 'input[type="checkbox"]',               // Selector for inputs
         suggestionList: '.suggest',                     // Selector for list of autocomplete suggestions
         inputList: '.visual',                           // Selector for list of inputs
+        formActions: '.form-actions',                   // Select for form-actions (only needed if ``hideFormActions: true``)
         ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
         url: null,                                      // Ajax url (only needed if ``ajax: true``)
         triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
             context.find('.form-actions button[type="submit"]').click();
         },
+        hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
         autoSubmit: false,                              // Set ``true`` if form should be submitted on every input change
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
         allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed

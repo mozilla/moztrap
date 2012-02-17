@@ -78,7 +78,6 @@ var CC = (function (CC, $) {
             ajax: true,
             url: $('#env-elements-input').data('autocomplete-url'),
             hideFormActions: true,
-            expiredList: '.env-element-list',
             inputType: 'element',
             caseSensitive: true,
             prefix: 'element'
