@@ -19,31 +19,34 @@ from django.core.management.base import BaseCommand, CommandError
 
 import json
 
-from ....library.import_cases import CaseImporter
+from ....library.case_importer import CaseImporter
 
 class Command(BaseCommand):
-    args = 'product_name product_version filename'
-    help = 'Imports the cases from the JSON file into the specified Product Version'
+    args = '<product_name> <product_version> <filename>'
+    help = 'Imports the cases from a JSON file into the specified Product Version'
 
 
     def handle(self, *args, **options):
-        #if len(args) < 3:
-        #    raise CommandError("expect: %s" % args)
+        if len(args) < 3:
+            raise CommandError("Usage: %s" % self.args)
 
         try:
-            cases_text = open(args[2])
+            with open(args[2]) as cases_text:
+
+                # try to import this as JSON
+                try:
+                    case_data = json.load(cases_text)
+
+                except ValueError as (strerror):
+                    self.stderr.write('Could not parse the JSON because %s' %
+                         strerror)
+
+                # TODO: support importing as CSV.  Rather than returning an error above,
+                # just try CSV import instead.
+
+                self.stdout.write(CaseImporter().import_cases(args[0], args[1], case_data))
+
+
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
-        # try to import this as JSON
-        try:
-            case_data = json.load(cases_text)
-
-        except ValueError as (strerror):
-            self.stderr.write('Could not parse the JSON because %s' %
-                 strerror)
-
-        # TODO: support importing as CSV.  Rather than returning an error above,
-        # just try CSV import instead.
-
-        self.stdout.write(CaseImporter().import_cases(args[0], args[1], case_data))

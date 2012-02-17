@@ -88,6 +88,9 @@ class CaseImporter(object):
         # the total number of test cases that were imported
         num_cases = 0
 
+        # the result of what was done.
+        result_str = ''
+
         for new_case in case_data['cases']:
             # Don't re-import if we have the same case name and Product Version
             if not CaseVersion.objects.filter(name=new_case['name'],
@@ -123,8 +126,14 @@ class CaseImporter(object):
                 # case has been created, increment our count for reporting
                 num_cases+=1
 
-        return ('Successfully imported %s cases.\n' %
+            else:
+                result_str += ('skipping: product version "%s" already has a case named "%s".\n' %
+                    (product_version.name, new_case['name']))
+
+        result_str += ('Successfully imported %s cases.\n' %
             (num_cases))
+
+        return(result_str)
 
 
     def import_steps(self, case_version, step_list):
