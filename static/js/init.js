@@ -72,7 +72,7 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        $('#editprofile .add-item').customAutocomplete({
+        $('#editprofile .add-item, #editproductversionenvs .add-item').customAutocomplete({
             textbox: '#env-elements-input',
             inputList: '.env-element-list',
             ajax: true,
@@ -189,7 +189,8 @@ var CC = (function (CC, $) {
 
         // manage-env.js
         CC.createEnvProfile('#profile-add-form');
-        CC.editEnvProfile('#editprofile');
+        CC.addEnvToProfile('#editprofile, #editproductversionenvs');
+        CC.editEnvProfileName('#editprofile');
         // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js

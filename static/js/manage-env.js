@@ -320,11 +320,8 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.editEnvProfile = function (container) {
+    CC.addEnvToProfile = function (container) {
         var context = $(container),
-            profileNameInput = context.find('#profile-name'),
-            profileName = profileNameInput.val(),
-            profileNameSubmit = context.find('#save-profile-name').hide(),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
@@ -375,6 +372,13 @@ var CC = (function (CC, $) {
                 prefix: 'element'
             });
         });
+    };
+
+    CC.editEnvProfileName = function (container) {
+        var context = $(container),
+            profileNameInput = context.find('#profile-name'),
+            profileName = profileNameInput.val(),
+            profileNameSubmit = context.find('#save-profile-name').hide();
 
         // Show/hide profile-name submit button when name is changed
         context.on('keyup', '#profile-name', function (event) {
