@@ -19,7 +19,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 import json
 
-from ....library.case_importer import CaseImporter
+from cc.model.core.models import Product, ProductVersion
+from cc.model.library.case_importer import CaseImporter
 
 class Command(BaseCommand):
     args = '<product_name> <product_version> <filename>'
@@ -28,7 +29,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if len(args) < 3:
-            raise CommandError("Usage: %s" % self.args)
+            raise CommandError("Usage: {1}".format(self.args)
 
         try:
             with open(args[2]) as cases_text:
@@ -37,14 +38,30 @@ class Command(BaseCommand):
                 try:
                     case_data = json.load(cases_text)
 
-                except ValueError as (strerror):
-                    self.stderr.write('Could not parse the JSON because %s' %
-                         strerror)
+                except ValueError as e:
+                    raise CommandError(
+                        "Could not parse JSON because {1}".format(e))
 
-                # TODO: support importing as CSV.  Rather than returning an error above,
+                # @@@: support importing as CSV.  Rather than returning an error above,
                 # just try CSV import instead.
 
-                self.stdout.write(CaseImporter().import_cases(args[0], args[1], case_data))
+
+                try:
+                    product = Product.objects.get(name=args[0])
+
+                except Product.DoesNotExist:
+                    raise CommandError('Product "{1}" does not exist'.format(args[0]))
+
+                try:
+                    product_version = ProductVersion.objects.get(product=product, version=args[1])
+
+                except ProductVersion.DoesNotExist:
+                    raise CommandError('Product Version "{1}" does not exist'.format(
+                        product_version))
+
+                result = CaseImporter().import_cases(product_version, case_data)
+                "\n".join(lines)
+                self.stdout.write()
 
 
         except IOError as (errno, strerror):

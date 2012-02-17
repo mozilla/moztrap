@@ -15,20 +15,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+"""Importer suites and cases from a dictionary."""
+
 from django.db import transaction
 
 from ..core.models import Product, ProductVersion
+from ..core.auth import User
 from ..tags.models import Tag
-from models import Case, CaseVersion, CaseStep, Suite, SuiteCase
+from .models import Case, CaseVersion, CaseStep, Suite, SuiteCase
 
-""" Importer for json suites and cases either from a management command, the UI
-    or an external API.
-"""
 
 class CaseImporter(object):
     """
     Importer for Suites and Cases.  The object should be structured like this.
-    The "suites" section is optional:
+    The "suites" section is optional::
 
         {
             "suites": [
@@ -54,99 +54,117 @@ class CaseImporter(object):
             ]
         }
 
-    Instantiate a ``JsonParser`` and call its ``parse`` method::
+    Instantiate a ``CaseImporter`` and call its ``import`` method::
 
         importer = CaseImporter()
-        data = importer.import_cases(product_name, product_version, case_data)
+        data = importer.import_data(product_name, product_version, case_data)
 
     Returned data will be the count of cases imported and/or possibly
     an "error" key containing an error message encountered in parsing.
 
     """
-    @transaction.commit_on_success
-    def import_cases(self, product_name, product_version, case_data):
 
-        """ Parse given json text and import it into the database. Then return
-            the status string of number of imported cases, or an error.
+    @transaction.commit_on_success
+    def import_data(self, product_version, case_data):
+        """
+        Import the given dictionary object into the database. Then return
+        an object that has the number of imported and skipped items.
+
         """
 
-        try:
-            product = Product.objects.get(name=product_name)
-
-        except Product.DoesNotExist:
-            raise CommandError('Product "%s" does not exist' % product_name)
-
-        try:
-            product_version = ProductVersion.objects.get(version=product_version)
-
-        except ProductVersion.DoesNotExist:
-            raise CommandError('Product Version "%s" does not exist' %
-                product_version)
-
-
-        self.import_suites(product, case_data['suites'])
-
         # the total number of test cases that were imported
-        num_cases = 0
+        self.num_cases = 0
+        self.num_suites = 0
+        self.skipped=[]
 
-        # the result of what was done.
-        result_str = ''
+        if 'suites' in case_data:
+            self.import_suites(product_version.product, case_data['suites'])
 
-        for new_case in case_data['cases']:
+        # no reason why the data couldn't include ONLY suites.  So function
+        # gracefully if no cases.
+        if 'cases' in case_data:
+            self.import_cases(product_version, case_data['cases'])
+
+        return {"cases": self.num_cases,
+                "suites": self.num_suites,
+                "skipped": skipped}
+
+    def import_cases(self, product_version, case_list):
+        """
+        Import the cases section of case_data.  This may include suites that each
+        case belongs to.
+
+        """
+
+        for new_case in case_list:
+            if not 'name' in new_case:
+                self.skipped.append('"name" field required for a case: {1}'.format(new_case))
+                continue
+
             # Don't re-import if we have the same case name and Product Version
-            if not CaseVersion.objects.filter(name=new_case['name'],
-                                              productversion=product_version
-                                              ).exists():
+            if CaseVersion.objects.filter(name=new_case['name'],
+                                          productversion=product_version
+                                          ).exists():
 
-                # create the top-level case object which holds the versions
-                case = Case()
-                case.product=product
-                case.save()
+                self.skipped.append('product version "{1}" already has a case named "{2}".'.format(
+                    product_version.name, new_case['name']))
+                continue
 
-                # create the case version which holds the details
-                case_version = CaseVersion()
-                case_version.productversion = product_version
-                case_version.case = case
-                case_version.name = new_case['name']
-                case_version.description = new_case['description']
 
-                case_version.save()
+            # create the top-level case object which holds the versions
+            case = Case.objects.create(product=product)
 
-                # add the steps to this case version
+            # create the case version which holds the details
+            case_version = CaseVersion.objects.create(productversion = product_version,
+                                                      case = case,
+                                                      name = new_case['name'])
+
+            case_version.description = new_case.get('description', None)
+
+            if 'created_by' in new_case:
+                try:
+                    user = User.objects.get(email=new_case['created_by'])
+                    case_version.created_by = user
+
+                except User.DoesNotExist:
+                    result_str += 'user with email "{1}" does not exist. Setting created_by to None for {2}\n'.format(
+                        new_case['created_by'], new_case['name'])
+
+
+
+            case_version.save()
+
+            # add the steps to this case version
+            if 'steps' in new_case:
                 self.import_steps(case_version, new_case['steps'])
 
-                # add tags to this case version,
-                # create tags as product specific
+            # add tags to this case version,
+            # create tags as product specific
+            if 'tags' in new_case:
                 self.import_tags(product, case_version, new_case['tags'])
 
-                # add this case to the suites
-                # if the suites don't exist, create them
-                self.import_suites(product, new_case['suites'], case)
+            # add this case to the suites
+            # if the suites don't exist, create them
+            if 'suites' in new_case:
+                self.import_suites(product,
+                                   [{"name": x} for x in new_case['suites']],
+                                   case)
 
 
-                # case has been created, increment our count for reporting
-                num_cases+=1
+            # case has been created, increment our count for reporting
+            self.num_cases+=1
 
-            else:
-                result_str += ('skipping: product version "%s" already has a case named "%s".\n' %
-                    (product_version.name, new_case['name']))
 
-        result_str += ('Successfully imported %s cases.\n' %
-            (num_cases))
-
-        return(result_str)
 
 
     def import_steps(self, case_version, step_list):
         """ add the steps to this case version"""
 
         for step_num, new_step in enumerate(step_list):
-            casestep = CaseStep()
-            casestep.caseversion = case_version
-            casestep.number = step_num+1
-            casestep.instruction = new_step['instruction']
-            casestep.expected = new_step['expected']
-            casestep.save()
+            casestep = CaseStep.objects.create(caseversion = case_version,
+                                               number = step_num+1,
+                                               instruction = new_step['instruction'],
+                                               expected = new_step['expected']
 
 
     def import_tags(self, product, case_version, tag_list):
@@ -154,14 +172,12 @@ class CaseImporter(object):
             Either way, add it to the case_version"""
 
         for new_tag in tag_list:
-            try:
-               tag = Tag.objects.get(name=new_tag, product=product)
+            tag, created = Tag.objects.get_or_create(name=new_tag)
 
-            except Tag.DoesNotExist:
-               tag = Tag()
-               tag.product=product
-               tag.name = new_tag
-               tag.save()
+            # if we created this here, make it product specific
+            if created:
+                tag.product=product
+                tag.save()
 
             case_version.tags.add(tag)
 
@@ -173,24 +189,18 @@ class CaseImporter(object):
             # this could be a dictionary, if it's in the "suites" object
             # or just a list of strings if it's listed for an individual case
 
-            if isinstance(new_suite, dict):
-                new_name = new_suite['name']
-                new_desc = new_suite['description']
-            else:
-                new_name = new_suite
-                new_desc = None
+            if not 'name' in new_suite:
+                skipped.append('can\'t import suite "{1}" without a name').format(
+                               new_suite)
+                    continue
 
-            try:
-                suite = Suite.objects.get(name=new_name, product=product)
+            suite, created = Suite.objects.get_or_create(name=new_name, product=product)
+            if not suite.description:
+                suite.description = new_suite.get('description', None)
+            suite.save()
 
-            except Suite.DoesNotExist:
-
-                suite = Suite()
-                suite.product=product
-                suite.name = new_name
-                if new_desc:
-                    suite.description = new_desc
-                suite.save()
+            if created:
+                self.num_suites +=1
 
             # if a case is provided, add it to this suite
             if case:
