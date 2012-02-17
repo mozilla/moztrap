@@ -43,6 +43,7 @@ class CaseImporter(object):
                     "description": "case description",
                     "tags": ["tag1", "tag2", "tag3"],
                     "suites": ["suite1 name", "suite2 name", "suite3 name"],
+                    "created_by": "cdawson@mozilla.com"
                     "steps": [
                         {
                             "action": "action text",

@@ -19,11 +19,7 @@ user interface to create the :ref:`Product <products>` and :ref:`Version
 :ref:`suites <test-suites>` to be imported. Then just import your JSON file to
 that :ref:`product version <product-versions>`.
 
-The "suites" section is optional.  It's only needed if you want to apply a
-description to your suites.  All suites specified in cases will be created
-on the fly if they're not found.
-
-Example::
+Simple Example::
 
     {
         "suites": [
@@ -38,6 +34,7 @@ Example::
                 "description": "case description",
                 "tags": ["tag1", "tag2", "tag3"],
                 "suites": ["suite1 name", "suite2 name", "suite3 name"],
+                "created_by": "cdawson@mozilla.com",
                 "steps": [
                     {
                         "instruction": "instruction text",
@@ -51,6 +48,29 @@ Example::
             }
         ]
     }
+
+Some fields are optional, such as the top-level "suites" section. It's only
+needed if you want to apply a description to your suites. All suites specified
+in cases will be created on the fly if they're not found. The only required
+field is the top-level cases section and the case title and single step
+for each.
+
+Minimal Example::
+
+{
+    "cases": [
+        {
+            "title": "case1 title"
+            "steps": [
+                {
+                    "instruction": "instruction text",
+                    "expected": "expected text"
+                }
+            ]
+        }
+    ]
+}
+
 
 
 CSV (future)
