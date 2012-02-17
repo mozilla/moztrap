@@ -6,6 +6,6 @@
 
 {% block formtop %}
   {% if run.status == run.STATUS.draft %}
-  <a href="{# @@@ url manage_narrow_environments object_type='run' object_id=run.id #}" class="select-env-link">select environments</a>
+  <a href="{% url manage_narrow_environments object_type='run' object_id=run.id %}" class="select-env-link">select environments</a>
   {% endif %}
 {% endblock %}

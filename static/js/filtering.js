@@ -82,6 +82,7 @@ var CC = (function (CC, $) {
                 if (response.html) {
                     context.find('.action-ajax-replace').replaceWith(newList);
                     newList.find('.details').html5accordion();
+                    newList.trigger('after-replace', [newList]);
                 }
             }
         });

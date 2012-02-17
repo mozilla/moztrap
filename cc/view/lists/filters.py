@@ -23,6 +23,7 @@ from collections import namedtuple
 from functools import wraps
 
 from django.core.urlresolvers import reverse, resolve
+from django.utils.datastructures import MultiValueDict
 
 
 
@@ -98,7 +99,7 @@ def filter(ctx_name, filters=None, filterset_class=None):
 
 class BoundFilterSet(object):
     """A FilterSet plus actual filtering data."""
-    def __init__(self, filterset, data):
+    def __init__(self, filterset, data=None):
         """
         Initialize a BoundFilterSet.
 
@@ -106,7 +107,7 @@ class BoundFilterSet(object):
         ``data`` is a dictionary mapping filter keys to lists of values.
 
         """
-        self.data = data
+        self.data = data or {}
         self.filterset = filterset
         self.filters = self.filterset.filters
         self.boundfilters = [BoundFilter(f, self.data) for f in self.filters]
@@ -152,7 +153,7 @@ class FilterSet(object):
         self.prefix = prefix
 
 
-    def bind(self, GET):
+    def bind(self, GET=None):
         """
         Return BoundFilterSet (or subclass) for given filter data.
 
@@ -161,6 +162,7 @@ class FilterSet(object):
         ``self.prefix``` will be ignored.
 
         """
+        GET = GET or MultiValueDict()
         return self.bound_class(
             self,
             dict(

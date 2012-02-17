@@ -11,7 +11,6 @@
         {% if user|has_perm:"library.manage_suites" %}
           {% url manage_suite_edit suite_id=suite.id as suite_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=suite_edit_url edit_name=suite.name %}
-          {% include "manage/_narrow_env_link.html" with obj_type='product' obj_id=suite.id %}
           {% include "lists/controls/_clone.html" with clone_id=suite.id clone_name=suite.name %}
           {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
         {% endif %}

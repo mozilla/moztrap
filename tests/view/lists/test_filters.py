@@ -225,7 +225,7 @@ class FilterSetTest(FiltersTestCase):
     def test_bind(self):
         """``bind`` method returns BoundFilterSet."""
         fs = self.filters.FilterSet()
-        bfs = fs.bind(MultiValueDict())
+        bfs = fs.bind()
 
         self.assertIsInstance(bfs, self.filters.BoundFilterSet)
         self.assertIs(bfs.filterset, fs)
@@ -240,7 +240,7 @@ class FilterSetTest(FiltersTestCase):
             bound_class = MyBoundFilterSet
 
         fs = MyFilterSet()
-        bfs = fs.bind(MultiValueDict())
+        bfs = fs.bind()
 
         self.assertIsInstance(bfs, MyBoundFilterSet)
 
@@ -316,7 +316,7 @@ class BoundFilterSetTest(FiltersTestCase):
     def test_boundfilters(self):
         """``self.boundfilters`` has a BoundFilter for each given Filter."""
         fs = self.filters.FilterSet([self.filters.Filter("name")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(len(bfs.boundfilters), 1)
         self.assertIsInstance(bfs.boundfilters[0], self.filters.BoundFilter)
@@ -326,7 +326,7 @@ class BoundFilterSetTest(FiltersTestCase):
     def test_iteration_yields_boundfilters(self):
         """Iterating over a BoundFilterSet yields its BoundFilters."""
         fs = self.filters.FilterSet([self.filters.Filter("name")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(list(bfs), bfs.boundfilters)
 
@@ -339,7 +339,7 @@ class BoundFilterSetTest(FiltersTestCase):
                 ]
 
         fs = MyFilterSet([self.filters.Filter("two")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(len(bfs), 2)
 

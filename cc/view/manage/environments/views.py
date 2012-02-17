@@ -21,7 +21,7 @@ Manage views for environments.
 """
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 
@@ -105,7 +105,7 @@ def profile_add(request):
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @lists.actions(
     model.Environment,
-    ["delete"],
+    ["remove_from_profile"],
     permission="environments.manage_environments",
     fall_through=True)
 @ajax("manage/environment/edit_profile/_envs_list.html")
@@ -131,7 +131,7 @@ def profile_edit(request, profile_id):
                 content_type="application/json")
 
         elif "add-environment" in request.POST:
-            element_ids = request.POST.getlist("element")
+            element_ids = request.POST.getlist("element-element")
             if not element_ids:
                 messages.error(
                     request, "Please select some environment elements.")
@@ -150,12 +150,46 @@ def profile_edit(request, profile_id):
         )
 
 
+
+@permission_required("core.manage_products")
+@lists.filter("environments", filterset_class=EnvironmentFilterSet)
+@ajax("manage/environment/productversion/_envs_list.html")
+def productversion_environments_edit(request, productversion_id):
+    productversion = get_object_or_404(
+        model.ProductVersion, pk=productversion_id)
+
+    # @@@ should use a form, and support both ajax and non
+    if request.is_ajax() and request.method == "POST":
+        if "add-environment" in request.POST:
+            element_ids = request.POST.getlist("element-element")
+            if not element_ids:
+                messages.error(
+                    request, "Please select some environment elements.")
+            else:
+                env = model.Environment.objects.create(user=request.user)
+                env.elements.add(*element_ids)
+            productversion.environments.add(env)
+        elif "action-remove" in request.POST:
+            env_id = request.POST.get("action-remove")
+            productversion.environments.remove(env_id)
+
+    return TemplateResponse(
+        request,
+        "manage/environment/productversion.html",
+        {
+            "productversion": productversion,
+            "environments": productversion.environments.all(),
+            }
+        )
+
+
+
 @login_required
 def element_autocomplete(request):
     text = request.GET.get("text")
     elements = []
     if text is not None:
-        elements = model.Environment.objects.filter(
+        elements = model.Element.objects.filter(
             name__icontains=text)
     suggestions = []
     for e in elements:
@@ -178,3 +212,39 @@ def element_autocomplete(request):
             ),
         content_type="application/json",
         )
+
+
+
+@login_required
+@ajax("manage/environment/narrow/_envs_list.html")
+def narrow_environments(request, object_type, object_id):
+    if object_type == "run":
+        model_class = model.Run
+    elif object_type == "caseversion":
+        model_class = model.CaseVersion
+    else:
+        raise Http404
+    obj = get_object_or_404(model_class, pk=object_id)
+
+    current_env_ids = set(obj.environments.values_list("id", flat=True))
+
+    if request.method == "POST":
+        env_ids = set(map(int, request.POST.getlist("environments")))
+
+        remove = current_env_ids.difference(env_ids)
+        add = env_ids.difference(current_env_ids)
+
+        obj.environments.add(*add)
+        obj.environments.remove(*remove)
+
+        return redirect("manage_%ss" % object_type)
+
+    return TemplateResponse(
+        request,
+        "manage/environment/narrowing.html",
+        {
+            "environments": obj.productversion.environments.all(),
+            "selected_env_ids": current_env_ids,
+            "filters": EnvironmentFilterSet().bind(), # for JS filtering
+            "obj": obj,
+            })

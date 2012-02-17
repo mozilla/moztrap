@@ -6,5 +6,5 @@
 
 {% block extra-fields %}
   {# this form field renders element_select/_element_select.html #}
-  {% include "forms/_field.html" with field=form.elements nolabel=1 %}
+  {% include "forms/_field.html" with field=form.elements nolabel=1 errorsfirst=1 %}
 {% endblock %}

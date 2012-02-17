@@ -1,5 +1,10 @@
 {% load ccforms %}
 <div class="formfield {% if label %}{{ label|slugify }}{% else %}{{ field|label_text|slugify }}{% endif %}-field{% if field|optional %} optional{% endif %}{% if field|is_readonly %} readonly{% endif %}{% if field.errors %} errors{% endif %}">
+
+  {% if errorsfirst %}
+    {{ field.errors }}
+  {% endif %}
+
   {% if field|is_readonly %}
     {% include "forms/field/_readonly.html" %}
   {% else %}
@@ -12,7 +17,9 @@
       {% include "forms/field/_input.html" %}
     {% endif %}
 
-    {{ field.errors }}
+    {% if not errorsfirst %}
+      {{ field.errors }}
+    {% endif %}
 
   {% endif %}
 </div>

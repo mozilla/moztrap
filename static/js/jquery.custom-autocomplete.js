@@ -24,9 +24,12 @@
             keycodes = $.fn.customAutocomplete.keycodes,
             context = $(this),
             textbox = context.find(options.textbox),
+            formActions = context.find(options.formActions),
             suggestionList = context.find(options.suggestionList),
             inputList = context.find(options.inputList),
             newInputList = context.find(options.newInputList),
+            origInputs = inputList.html(),
+            origNewInputs = newInputList.html(),
             inputs = inputList.add(newInputList).find(options.inputs),
             newInputTextbox = newInputList.find(options.newInputTextbox),
             placeholder = textbox.attr('placeholder'),
@@ -47,10 +50,18 @@
                 textbox.removeClass('placeholder');
             },
 
-            // Submits form or adds no-inputs note when inputs change
+            // Submits form, adds no-inputs note, or shows/hides form-actions when inputs change
             inputsChanged = function () {
                 if (options.autoSubmit) {
                     options.triggerSubmit(context);
+                }
+
+                if (options.hideFormActions) {
+                    if (inputList.html() !== origInputs && newInputList.html() !== origNewInputs) {
+                        formActions.fadeIn();
+                    } else {
+                        formActions.fadeOut();
+                    }
                 }
 
                 if (options.noInputsNote) {
@@ -181,12 +192,21 @@
                 }
             };
 
+        // Hide suggestion-list on initial page-load
         suggestionList.hide();
 
+        // Optionally hide form-actions on initial page-load
+        if (options.hideFormActions) {
+            formActions.hide();
+        }
+
+        // Optionally add fake placeholder text on initial page-load
+        // (this allows textbox to initially have focus and a placeholder)
         if (options.fakePlaceholder) {
             textbox.addClass('placeholder');
         }
 
+        // Set newInputList to inputList if only one category
         if (!options.multipleCategories && options.newInputList === null) {
             newInputList = context.find(options.inputList);
             newInputTextbox = newInputList.find(options.newInputTextbox);
@@ -194,13 +214,11 @@
         }
 
         // Selecting/unselecting an input returns focus to textbox and hides suggestion-list
-        if (options.inputsNeverRemoved) {
-            inputList.add(newInputList).on('change', options.inputs, function () {
-                textbox.focus();
-                suggestionList.hide();
-                inputsChanged();
-            });
-        }
+        inputList.add(newInputList).on('change', options.inputs, function () {
+            textbox.focus();
+            suggestionList.hide();
+            inputsChanged();
+        });
 
         textbox
             .keyup(function (e) {
@@ -255,78 +273,84 @@
                         removeFakePlaceholder();
                     }
                 }
-                // If the suggestion list is not visible...
-                if (!suggestionList.is(':visible')) {
-                    // ...prevent normal TAB function, and show suggestion list
-                    if (e.keyCode === keycodes.TAB && textbox.val() !== '' && suggestionList.find('li').length) {
-                        e.preventDefault();
-                        suggestionList.show();
-                    }
-                    // ...show suggestion list on ENTER
-                    if (e.keyCode === keycodes.ENTER) {
-                        e.preventDefault();
-                        if (suggestionList.find('li').length) {
-                            suggestionList.show();
-                        }
-                    }
-                    // ...show the suggestion list on arrow-keys
-                    if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
-                        if (suggestionList.find('li').length) {
-                            suggestionList.show();
-                        }
-                    }
-                // If the suggestion list is already visible...
+                // Submit form if textbox is empty and form-actions are visible
+                if (e.keyCode === keycodes.ENTER && textbox.val() === '' && formActions.is(':visible') && !options.autoSubmit) {
+                    e.preventDefault();
+                    options.triggerSubmit(context);
                 } else {
-                    var thisInputName = suggestionList.find('.selected').data('name');
-                    // UP and DOWN move "active" suggestion
-                    if (e.keyCode === keycodes.UP) {
-                        e.preventDefault();
-                        if (!suggestionList.find('.selected').parent().is(':first-child')) {
-                            suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
-                        }
-                    }
-                    if (e.keyCode === keycodes.DOWN) {
-                        e.preventDefault();
-                        if (!suggestionList.find('.selected').parent().is(':last-child')) {
-                            suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
-                        }
-                    }
-                    // ENTER selects the "active" suggestion, if exists.
-                    if (e.keyCode === keycodes.ENTER) {
-                        e.preventDefault();
-                        if (suggestionList.find('.selected').length) {
-                            $.doTimeout(100, function () {
-                                if (ajaxCalls === ajaxResponses) {
-                                    suggestionList.find('.selected').click();
-                                    return false;
-                                }
-                                return true;
-                            });
-                        }
-                    }
-                    // TAB auto-completes the "active" suggestion if it isn't already completed...
-                    if (e.keyCode === keycodes.TAB) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase()) {
+                    // If the suggestion list is not visible...
+                    if (!suggestionList.is(':visible')) {
+                        // ...prevent normal TAB function, and show suggestion list
+                        if (e.keyCode === keycodes.TAB && textbox.val() !== '' && suggestionList.find('li').length) {
                             e.preventDefault();
-                            textbox.val(thisInputName);
-                        // ...otherwise, TAB selects the "active" suggestion (if exists)
-                        } else if (suggestionList.find('.selected').length) {
-                            e.preventDefault();
-                            suggestionList.find('.selected').click();
+                            suggestionList.show();
                         }
-                    }
-                    // RIGHT auto-completes the "active" suggestion if it isn't already completed
-                    // and the cursor is at the end of the textbox
-                    if (e.keyCode === keycodes.RIGHT) {
-                        if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
+                        // ...show suggestion list on ENTER
+                        if (e.keyCode === keycodes.ENTER) {
                             e.preventDefault();
-                            textbox.val(thisInputName);
+                            if (suggestionList.find('li').length) {
+                                suggestionList.show();
+                            }
                         }
-                    }
-                    // ESC hides the suggestion list
-                    if (e.keyCode === keycodes.ESC) {
-                        e.preventDefault();
-                        suggestionList.hide();
+                        // ...show the suggestion list on arrow-keys
+                        if (e.keyCode === keycodes.UP || e.keyCode === keycodes.DOWN || e.keyCode === keycodes.LEFT || e.keyCode === keycodes.RIGHT) {
+                            if (suggestionList.find('li').length) {
+                                suggestionList.show();
+                            }
+                        }
+                    // If the suggestion list is already visible...
+                    } else {
+                        var thisInputName = suggestionList.find('.selected').data('name');
+                        // UP and DOWN move "active" suggestion
+                        if (e.keyCode === keycodes.UP) {
+                            e.preventDefault();
+                            if (!suggestionList.find('.selected').parent().is(':first-child')) {
+                                suggestionList.find('.selected').removeClass('selected').parent().prev().children('a').addClass('selected');
+                            }
+                        }
+                        if (e.keyCode === keycodes.DOWN) {
+                            e.preventDefault();
+                            if (!suggestionList.find('.selected').parent().is(':last-child')) {
+                                suggestionList.find('.selected').removeClass('selected').parent().next().children('a').addClass('selected');
+                            }
+                        }
+                        // ENTER selects the "active" suggestion, if exists.
+                        if (e.keyCode === keycodes.ENTER) {
+                            e.preventDefault();
+                            if (suggestionList.find('.selected').length) {
+                                $.doTimeout(100, function () {
+                                    if (ajaxCalls === ajaxResponses) {
+                                        suggestionList.find('.selected').click();
+                                        return false;
+                                    }
+                                    return true;
+                                });
+                            }
+                        }
+                        // TAB auto-completes the "active" suggestion if it isn't already completed...
+                        if (e.keyCode === keycodes.TAB) {
+                            if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase()) {
+                                e.preventDefault();
+                                textbox.val(thisInputName);
+                            // ...otherwise, TAB selects the "active" suggestion (if exists)
+                            } else if (suggestionList.find('.selected').length) {
+                                e.preventDefault();
+                                suggestionList.find('.selected').click();
+                            }
+                        }
+                        // RIGHT auto-completes the "active" suggestion if it isn't already completed
+                        // and the cursor is at the end of the textbox
+                        if (e.keyCode === keycodes.RIGHT) {
+                            if (thisInputName && textbox.val().toLowerCase() !== thisInputName.toString().toLowerCase() && textbox.get(0).selectionStart === textbox.val().length) {
+                                e.preventDefault();
+                                textbox.val(thisInputName);
+                            }
+                        }
+                        // ESC hides the suggestion list
+                        if (e.keyCode === keycodes.ESC) {
+                            e.preventDefault();
+                            suggestionList.hide();
+                        }
                     }
                 }
             })
@@ -360,6 +384,7 @@
                 window.setTimeout(hideList, 150);
             });
 
+        // Optionally give textbox initial focus on page-load
         if (options.initialFocus) {
             textbox.focus();
         }
@@ -462,7 +487,6 @@
                     }
                 }
                 // Empty the textbox, and empty and hide the suggestion list
-                inputsChanged();
                 textbox.val(null);
                 typedText = null;
                 suggestionList.empty().hide();
@@ -490,7 +514,6 @@
         // Allow adding new inputs via group-specific textbox
         newInputTextbox.each(function () {
             $(this).keydown(function (e) {
-                // ENTER performs submit action if textbox is empty and inputs have changed...
                 if (e.keyCode === keycodes.ENTER) {
                     e.preventDefault();
                     var thisTextbox = $(this),
@@ -515,17 +538,18 @@
                             }
                             $('#id-' + prefix + '-' + typeName + '-' + index.toString()).prop('checked', true).change();
                             inputs = inputs.add('#id-' + prefix + '-' + typeName + '-' + index.toString());
-                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         },
                         selectInput = function () {
                             existingInput.prop('checked', true).change();
-                            inputsChanged();
                             thisTextbox.val(null);
                             thisText = null;
                         };
-                    if (thisText.length && thisText.trim() !== '') {
+                    // ENTER performs submit action if textbox is empty...
+                    if (thisText === '' && formActions.is(':visible') && !options.autoSubmit) {
+                        options.triggerSubmit(context);
+                    } else if (thisText.length && thisText.trim() !== '') {
                         // ...otherwise, if the input already exists, ENTER selects it...
                         if (existingInput.length) {
                             if (!existingInput.is(':checked')) {
@@ -563,11 +587,13 @@
         inputs: 'input[type="checkbox"]',               // Selector for inputs
         suggestionList: '.suggest',                     // Selector for list of autocomplete suggestions
         inputList: '.visual',                           // Selector for list of inputs
+        formActions: '.form-actions',                   // Select for form-actions (only needed if ``hideFormActions: true``)
         ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
         url: null,                                      // Ajax url (only needed if ``ajax: true``)
         triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
             context.find('.form-actions button[type="submit"]').click();
         },
+        hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
         autoSubmit: false,                              // Set ``true`` if form should be submitted on every input change
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
         allowNew: false,                                // Set ``true`` if new inputs (neither existing nor returned via Ajax) are allowed

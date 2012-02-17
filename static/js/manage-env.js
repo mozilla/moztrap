@@ -40,9 +40,18 @@ var CC = (function (CC, $) {
                 });
             },
             updateBulkInputs = function () {
-                context.find('.bulkselectitem .elements input[name="elements"]').each(function () {
-                    if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
-                        $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
+                context.find('.bulkselectitem .bulk-value').each(function () {
+                    var bulkInput = $(this),
+                        thisCategory = bulkInput.closest('.bulkselectitem');
+                    if (thisCategory.find('.elements input[name="elements"]:checked').length) {
+                        bulkInput.prop('checked', true);
+                        if (thisCategory.find('.elements input[name="elements"]').length === thisCategory.find('.elements input[name="elements"]:checked').length) {
+                            bulkInput.removeClass('pseudo');
+                        } else {
+                            bulkInput.addClass('pseudo');
+                        }
+                    } else {
+                        bulkInput.prop('checked', false).removeClass('pseudo');
                     }
                 });
             };
@@ -51,23 +60,21 @@ var CC = (function (CC, $) {
         updateLabels();
         updateBulkInputs();
 
+        // Removes element preview (label) when element is deleted.
+        // Other actions (other than delete) might also cause this to fire, with new HTML
+        // (already parsed into jQuery object) in "replacement".
         context.on('before-replace', '.bulkselectitem .element', function (event, replacement) {
-            // Removes element preview (label) when element is deleted.
-            // Other actions (other than delete) might also cause this to fire, with new HTML
-            // (already parsed into jQuery object) in "replacement".
             if (!replacement.html()) {
                 var thisElement = $(event.target),
                     thisElementID = thisElement.data('element-id'),
                     thisPreview = thisElement.closest('.bulkselectitem').find('.preview label[for="element-' + thisElementID + '"]').parent('li');
-                thisPreview.detach();
-                if (thisElement.closest('.elements').find('input[name="elements"]:checked').not(thisElement.find('input[name="elements"]')).length) {
-                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
-                } else {
-                    thisElement.closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
-                }
+                thisElement.find('input[name="elements"]').prop('checked', false);
+                thisPreview.remove();
+                updateBulkInputs();
             }
         });
 
+        // ENTER in Name textbox shifts focus to submit button
         context.on('keydown', '#id_name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 event.preventDefault();
@@ -75,35 +82,30 @@ var CC = (function (CC, $) {
             }
         });
 
+        // Update category labels and bulk-inputs when element changes
         context.on('change', '.bulkselectitem .element input[name="elements"]', function () {
-            var thisID = $(this).attr('id');
-            if ($(this).is(':checked')) {
-                context.find('label[for=' + thisID + ']').addClass('checked');
-            } else {
-                context.find('label[for=' + thisID + ']').removeClass('checked');
-            }
-            if ($(this).closest('.elements').find('input[name="elements"]:checked').length) {
-                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', true);
-            } else {
-                $(this).closest('.bulkselectitem').find('.bulk-value').prop('checked', false);
-            }
+            updateLabels();
+            updateBulkInputs();
         });
 
+        // Select/de-select all elements when category bulk-input is selected/de-selected
         context.on('change', '.bulkselectitem .bulk-value', function () {
             if ($(this).is(':checked')) {
                 $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', true);
             } else {
                 $(this).closest('.bulkselectitem').find('.element input[name="elements"]').prop('checked', false);
             }
+            $(this).removeClass('pseudo');
             updateLabels();
         });
 
-        context.on('keydown', '.bulkselectitem input[name="new-element-name"]', function (event) {
+        // Ajax-submit new elements
+        context.on('keydown', '.bulkselectitem .add-element input[name="new-element-name"]', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         name = input.val(),
-                        loading = input.closest('.item-content'),
+                        loading = input.closest('.itembody'),
                         url = '',
                         data = {},
                         success = function (response) {
@@ -113,6 +115,7 @@ var CC = (function (CC, $) {
                                 input.closest('.elements').find('.add-element').before(newElem);
                                 input.closest('.bulkselectitem').find('.preview').append(newPreview);
                                 input.val(null);
+                                updateBulkInputs();
                             }
                             loading.loadingOverlay('remove');
                         };
@@ -129,18 +132,19 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter an element name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
         });
 
+        // Ajax-submit new categories
         context.on('keydown', '#new-category-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
-                        loading = input.closest('.item-content'),
+                        loading = input.closest('.itembody'),
                         url = '',
                         data = {},
                         success = function (response) {
@@ -165,13 +169,14 @@ var CC = (function (CC, $) {
                     $(ich.message({
                         message: "Please enter a category name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
         });
 
+        // Replace element edit-link with editing input
         context.on('click', '.bulkselectitem .element .edit-link', function (event) {
             var thisElement = $(this).closest('.element'),
                 inputId = thisElement.find('input[name="elements"]').attr('id'),
@@ -183,15 +188,18 @@ var CC = (function (CC, $) {
                     id: elementId,
                     name: name,
                     checked: checked,
-                    type: 'element'
+                    type: 'element',
+                    element: 'li'
                 });
             thisElement.replaceWith(editThisElement);
+            $(editThisElement).data('replaced', thisElement);
 
             event.preventDefault();
         });
 
-        context.on('click', '.bulkselectitem .item-content .name .edit-link', function (event) {
-            var thisName = $(this).closest('.name'),
+        // Replace category name edit-link with editing input
+        context.on('click', '.bulkselectitem .item-content .category .edit-link', function (event) {
+            var thisName = $(this).closest('.category'),
                 categoryId = thisName.data('category-id'),
                 inputId = 'edit-category-id-' + categoryId,
                 name = thisName.data('category-name'),
@@ -199,113 +207,131 @@ var CC = (function (CC, $) {
                     inputId: inputId,
                     id: categoryId,
                     name: name,
-                    type: 'category'
+                    type: 'category',
+                    element: 'div'
                 });
             thisName.replaceWith(editThisName);
+            $(editThisName).data('replaced', thisName);
 
             event.preventDefault();
         });
 
+        // Ajax-submit edited element name
         context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
-                    var input = $(this),
-                        thisElement = input.closest('.editing'),
-                        name = input.val(),
-                        inputId = input.attr('id'),
-                        elementId = input.data('element-id'),
-                        preview = input.closest('.bulkselectitem').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
-                        checked = input.data('checked'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var editedElem = $(response.elem),
-                                editedPreview = $(response.preview);
+                    if ($(this).val() !== $(this).data('original-value')) {
+                        var input = $(this),
+                            thisElement = input.closest('.editing'),
+                            name = input.val(),
+                            inputId = input.attr('id'),
+                            elementId = input.data('element-id'),
+                            preview = input.closest('.bulkselectitem').find('.preview').find('label[for="' + inputId + '"]').closest('li'),
+                            checked = input.data('checked'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var editedElem = $(response.elem),
+                                    editedPreview = $(response.preview);
 
-                            if (!response.no_replace) {
-                                thisElement.replaceWith(editedElem);
-                                preview.replaceWith(editedPreview);
+                                if (!response.no_replace) {
+                                    thisElement.replaceWith(editedElem);
+                                    preview.replaceWith(editedPreview);
 
-                                if (checked) {
-                                    context.find('#' + inputId).prop('checked', checked);
-                                    updateLabels();
+                                    if (checked) {
+                                        context.find('#' + inputId).prop('checked', checked);
+                                        updateLabels();
+                                    }
+                                    input.val(null);
                                 }
-                                input.val(null);
-                            }
 
-                            thisElement.loadingOverlay('remove');
-                        };
+                                thisElement.loadingOverlay('remove');
+                            };
 
-                    data['element-id'] = elementId;
-                    data[input.attr('name')] = input.val();
+                        data['element-id'] = elementId;
+                        data[input.attr('name')] = input.val();
 
-                    thisElement.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
+                        thisElement.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(this).closest('.editing').replaceWith($(this).closest('.editing').data('replaced'));
+                    }
                 } else {
                     $(ich.message({
                         message: "Please enter an element name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
         });
 
+        // Ajax-submit edited category name
         context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
             if (event.keyCode === CC.keycodes.ENTER) {
                 if ($(this).val().length) {
-                    var input = $(this),
-                        thisCategory = input.closest('.bulkselectitem'),
-                        name = input.val(),
-                        categoryId = input.data('category-id'),
-                        url = '',
-                        data = {},
-                        success = function (response) {
-                            var editedCat = $(response.html);
+                    if ($(this).val() !== $(this).data('original-value')) {
+                        var input = $(this),
+                            thisCategory = input.closest('.bulkselectitem'),
+                            name = input.val(),
+                            nameKey = input.attr('name'),
+                            categoryId = input.data('category-id'),
+                            url = '',
+                            data = {},
+                            success = function (response) {
+                                var editedCat = $(response.html);
 
-                            if (!response.no_replace) {
-                                thisCategory.replaceWith(editedCat);
-                            }
+                                if (!response.no_replace) {
+                                    thisCategory.replaceWith(editedCat);
+                                    editedCat.find('.details').addClass('open').html5accordion();
+                                    updateLabels();
+                                    updateBulkInputs();
+                                }
 
-                            thisCategory.loadingOverlay('remove');
-                        };
+                                thisCategory.loadingOverlay('remove');
+                            };
 
-                    data['category-id'] = categoryId;
-                    data[input.attr('name')] = input.val();
+                        data = thisCategory.find('input[name="elements"]').serializeArray();
+                        data.push({'name': 'category-id', 'value': categoryId}, {'name': nameKey, 'value': name});
 
-                    thisCategory.loadingOverlay();
-                    $.ajax(url, {
-                        type: "POST",
-                        data: data,
-                        success: success
-                    });
+                        thisCategory.loadingOverlay();
+                        $.ajax(url, {
+                            type: "POST",
+                            data: data,
+                            success: success
+                        });
+                    } else {
+                        $(this).closest('.editing').replaceWith($(this).closest('.editing').data('replaced'));
+                    }
                 } else {
                     $(ich.message({
                         message: "Please enter a category name.",
                         tags: "error"
-                    })).appendTo($('#messages'));
-                    $('#messages').messages();
+                    })).appendTo($('#messages ul'));
+                    $('#messages ul').messages();
                 }
                 event.preventDefault();
             }
         });
     };
 
-    CC.editEnvProfile = function () {
-        var profileNameInput = $('#editprofile #profile-name-form .profile-name input'),
+    CC.editEnvProfile = function (container) {
+        var context = $(container),
+            profileNameInput = context.find('#profile-name'),
             profileName = profileNameInput.val(),
-            profileNameSubmit = $('#editprofile #profile-name-form .form-actions button[type="submit"]').hide(),
+            profileNameSubmit = context.find('#save-profile-name').hide(),
 
+            // Setup add-env form for ajax-submit
             addEnv = function () {
-                var replaceList = $('#editprofile .managelist.action-ajax-replace');
+                var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if ($('#editprofile #add-environment-form').length) {
-                    $('#editprofile #add-environment-form').ajaxForm({
+                if (replaceList.length && context.find('#add-environment-form').length) {
+                    context.find('#add-environment-form').ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
@@ -314,15 +340,15 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
-                                $('#editprofile .add-item').customAutocomplete({
+                                context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
-                                    suggestionList: '.suggest',
                                     inputList: '.env-element-list',
                                     ajax: true,
                                     url: $('#env-elements-input').data('autocomplete-url'),
                                     hideFormActions: true,
-                                    expiredList: '.env-element-list',
-                                    inputType: 'element'
+                                    inputType: 'element',
+                                    caseSensitive: true,
+                                    prefix: 'element'
                                 });
                                 addEnv();
                                 newList.find('.details').html5accordion();
@@ -334,22 +360,24 @@ var CC = (function (CC, $) {
 
         addEnv();
 
-        $('#editprofile').on('after-replace', '.managelist.action-ajax-replace', function (event, replacement) {
-            // Re-attaches handlers to list after it is reloaded via Ajax.
+        // Re-attach add-env form handlers after list is ajax-replaced (called in listpages.js)
+        context.on('after-replace', '.itemlist.action-ajax-replace', function (event, replacement) {
+            // Re-attaches handlers to list after it is reloaded via Ajax (on delete action).
             addEnv();
-            $('#editprofile .add-item').customAutocomplete({
+            context.find('.add-item').customAutocomplete({
                 textbox: '#env-elements-input',
-                suggestionList: '.suggest',
                 inputList: '.env-element-list',
                 ajax: true,
                 url: $('#env-elements-input').data('autocomplete-url'),
                 hideFormActions: true,
-                expiredList: '.env-element-list',
-                inputType: 'element'
+                inputType: 'element',
+                caseSensitive: true,
+                prefix: 'element'
             });
         });
 
-        $('#editprofile').on('keyup', '#profile-name-form .profile-name input', function (event) {
+        // Show/hide profile-name submit button when name is changed
+        context.on('keyup', '#profile-name', function (event) {
             if ($(this).val() !== profileName) {
                 profileNameSubmit.fadeIn();
             } else {
@@ -357,14 +385,16 @@ var CC = (function (CC, $) {
             }
         });
 
-        $('#editprofile').on('keydown', '#profile-name-form .profile-name input', function (event) {
+        // Prevent submission of profile-name form if value hasn't changed
+        context.on('keydown', '#profile-name', function (event) {
             if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
         });
 
-        if ($('#editprofile #profile-name-form').length) {
-            $('#editprofile #profile-name-form').ajaxForm({
+        // Prepare profile-name form for ajax-submit
+        if (context.find('#profile-name-form').length) {
+            context.find('#profile-name-form').ajaxForm({
                 success: function (response) {
                     profileName = profileNameInput.val();
                     profileNameSubmit.fadeOut();

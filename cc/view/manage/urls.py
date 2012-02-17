@@ -150,12 +150,12 @@ urlpatterns = patterns(
         name="manage_case_add_bulk"),
 
     # edit
-    url(r"^case/version/(?P<caseversion_id>\d+)/$",
+    url(r"^caseversion/(?P<caseversion_id>\d+)/$",
         "cases.views.caseversion_edit",
         name="manage_caseversion_edit"),
 
     # new version
-    url(r"^case/version/(?P<caseversion_id>\d+)/clone/$",
+    url(r"^caseversion/(?P<caseversion_id>\d+)/clone/$",
         "cases.views.caseversion_clone",
         name="manage_caseversion_clone"),
 
@@ -200,6 +200,16 @@ urlpatterns = patterns(
     url(r"^profile/(?P<profile_id>\d+)/$",
         "environments.views.profile_edit",
         name="manage_profile_edit"),
+
+    # edit productversion environments
+    url(r"^productversion/(?P<productversion_id>\d+)/environments/$",
+        "environments.views.productversion_environments_edit",
+        name="manage_productversion_environments"),
+
+    # narrow run or caseversion environments
+    url(r"^(?P<object_type>run|caseversion)/(?P<object_id>\d+)/environments/$",
+        "environments.views.narrow_environments",
+        name="manage_narrow_environments"),
 
     # autocomplete
     url(r"^elements/_autocomplete/$",

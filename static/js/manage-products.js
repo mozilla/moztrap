@@ -36,7 +36,8 @@ var CC = (function (CC, $) {
                 target_sel: '.target',
                 option_sel: 'option',
                 multiselect_widget_bool: false,
-                optional: false
+                optional: false,
+                callback: null
             },
             options = $.extend({}, defaults, opts),
             context = $(options.container),
@@ -65,9 +66,9 @@ var CC = (function (CC, $) {
                             excludeThisFilter = true;
                         }
                     } else if (type === 'author') {
-                         if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
-                             excludeThisFilter = true;
-                         }
+                        if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
                     } else {
                         if (!(items.filter(function () { return $(this).find('.' + type).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
@@ -97,6 +98,9 @@ var CC = (function (CC, $) {
                     context.find('.visual .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
                     context.find('.multiselected .select').empty();
                     filterFilters(newopts);
+                }
+                if (options.callback) {
+                    options.callback(context);
                 }
             };
 

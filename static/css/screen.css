@@ -1275,7 +1275,19 @@ body > div {
   padding-bottom: 1.5em;
 }
 
-.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .resultsummary, .results-summary a, .completion {
+.chicklist, .bugs-list, .files-list, #add-environment-form .env-element-list {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+.chicklist li, .bugs-list li, .files-list li, #add-environment-form .env-element-list li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
+}
+
+.chick, .actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff, .tag, .filechick, .files-list .file, .bugchick, .bugs-list .bugurl, .stepfail-content .bugurl, .resultsummary, .results-summary a, .completion {
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
   -ms-border-radius: 0.296em;
@@ -1291,23 +1303,23 @@ body > div {
   border: 1px solid #8695a8;
   background-color: #cbcfd6;
 }
-.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
+.chick a:link, .actionchick a:link, .chickcheck .onoff a:link, .reversecheck .onoff a:link, .versioned .attachment-item .onoff a:link, .tag-item .onoff a:link, .magicfilter .compact .filter-item .onoff a:link, .selectsearch .compact .filter-item .onoff a:link, #add-environment-form .element-item .onoff a:link, .tag a:link, .filechick a:link, .files-list .file a:link, .bugchick a:link, .bugs-list .bugurl a:link, .stepfail-content .bugurl a:link, .resultsummary a:link, .results-summary a a:link, .completion a:link, .chick a:visited, .actionchick a:visited, .chickcheck .onoff a:visited, .reversecheck .onoff a:visited, .versioned .attachment-item .onoff a:visited, .tag-item .onoff a:visited, .magicfilter .compact .filter-item .onoff a:visited, .selectsearch .compact .filter-item .onoff a:visited, #add-environment-form .element-item .onoff a:visited, .tag a:visited, .filechick a:visited, .files-list .file a:visited, .bugchick a:visited, .bugs-list .bugurl a:visited, .stepfail-content .bugurl a:visited, .resultsummary a:visited, .results-summary a a:visited, .completion a:visited {
   color: #4b5765;
 }
-.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .resultsummary a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .resultsummary a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .resultsummary a:active, .results-summary a a:active, .completion a:active {
+.chick a:focus, .actionchick a:focus, .chickcheck .onoff a:focus, .reversecheck .onoff a:focus, .versioned .attachment-item .onoff a:focus, .tag-item .onoff a:focus, .magicfilter .compact .filter-item .onoff a:focus, .selectsearch .compact .filter-item .onoff a:focus, #add-environment-form .element-item .onoff a:focus, .tag a:focus, .filechick a:focus, .files-list .file a:focus, .bugchick a:focus, .bugs-list .bugurl a:focus, .stepfail-content .bugurl a:focus, .resultsummary a:focus, .results-summary a a:focus, .completion a:focus, .chick a:hover, .actionchick a:hover, .chickcheck .onoff a:hover, .reversecheck .onoff a:hover, .versioned .attachment-item .onoff a:hover, .tag-item .onoff a:hover, .magicfilter .compact .filter-item .onoff a:hover, .selectsearch .compact .filter-item .onoff a:hover, #add-environment-form .element-item .onoff a:hover, .tag a:hover, .filechick a:hover, .files-list .file a:hover, .bugchick a:hover, .bugs-list .bugurl a:hover, .stepfail-content .bugurl a:hover, .resultsummary a:hover, .results-summary a a:hover, .completion a:hover, .chick a:active, .actionchick a:active, .chickcheck .onoff a:active, .reversecheck .onoff a:active, .versioned .attachment-item .onoff a:active, .tag-item .onoff a:active, .magicfilter .compact .filter-item .onoff a:active, .selectsearch .compact .filter-item .onoff a:active, #add-environment-form .element-item .onoff a:active, .tag a:active, .filechick a:active, .files-list .file a:active, .bugchick a:active, .bugs-list .bugurl a:active, .stepfail-content .bugurl a:active, .resultsummary a:active, .results-summary a a:active, .completion a:active {
   color: #4f1114;
 }
 
-.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
+.actionchick, .chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   padding-right: 1.5em;
 }
 
-.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content {
+.chickcontent, .chickcheck .content, .reversecheck .content, .versioned .attachment-item .content, .tag-item .content, .magicfilter .compact .filter-item .content, .selectsearch .compact .filter-item .content, #add-environment-form .element-item .content {
   border-right: 1px solid #a9b2bf;
   padding-right: 0.375em;
 }
 
-.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
+.chickaction, .chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1315,12 +1327,12 @@ body > div {
   opacity: 0.5;
   right: 0;
 }
-.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover {
+.chickaction:hover, .chicktoggle:hover, .chickcheck .onoffswitch:hover, .reversecheck .onoffswitch:hover, .versioned .attachment-item .onoffswitch:hover, .tag-item .onoffswitch:hover, .magicfilter .compact .filter-item .onoffswitch:hover, .selectsearch .compact .filter-item .onoffswitch:hover, #add-environment-form .element-item .onoffswitch:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch {
+.chicktoggle, .chickcheck .onoffswitch, .reversecheck .onoffswitch, .versioned .attachment-item .onoffswitch, .tag-item .onoffswitch, .magicfilter .compact .filter-item .onoffswitch, .selectsearch .compact .filter-item .onoffswitch, #add-environment-form .element-item .onoffswitch {
   background-image: url('../images/ui/x_sm.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1337,10 +1349,10 @@ body > div {
   width: 1.5em;
 }
 
-.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item {
+.chickcheck, .reversecheck, .versioned .attachment-item, .tag-item, .magicfilter .compact .filter-item, .selectsearch .compact .filter-item, #add-environment-form .element-item {
   display: inline;
 }
-.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, .magicfilter .compact .filter-item .check, .selectsearch .compact .filter-item .check {
+.chickcheck .check, .reversecheck .check, .versioned .attachment-item .check, .tag-item .check, .magicfilter .compact .filter-item .check, .selectsearch .compact .filter-item .check, #add-environment-form .element-item .check {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -1350,10 +1362,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff {
+.chickcheck .onoff, .reversecheck .onoff, .versioned .attachment-item .onoff, .tag-item .onoff, .magicfilter .compact .filter-item .onoff, .selectsearch .compact .filter-item .onoff, #add-environment-form .element-item .onoff {
   display: none;
 }
-.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff {
+.chickcheck .check:checked + .onoff, .reversecheck .check:checked + .onoff, .versioned .attachment-item .check:checked + .onoff, .tag-item .check:checked + .onoff, .magicfilter .compact .filter-item .check:checked + .onoff, .selectsearch .compact .filter-item .check:checked + .onoff, #add-environment-form .element-item .check:checked + .onoff {
   display: inline-block;
 }
 
@@ -1597,7 +1609,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, [name="action-clone"], [name="action-delete"], .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1608,7 +1620,7 @@ body > div {
   vertical-align: baseline;
   background: none;
 }
-.action:focus, .actionbutton:focus, [name="action-clone"]:focus, [name="action-delete"]:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, [name="action-clone"]:hover, [name="action-delete"]:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, [name="action-clone"]:active, [name="action-delete"]:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1636,7 +1648,7 @@ body > div {
   opacity: 1;
 }
 
-[name="action-clone"] {
+.action-clone {
   background-image: url('../images/ui/clone.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1654,13 +1666,13 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-[name="action-clone"]:focus, [name="action-clone"]:hover, [name="action-clone"]:active {
+.action-clone:focus, .action-clone:hover, .action-clone:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/clone.png?1326735333');
 }
 
-[name="action-delete"] {
+.action-delete {
   background-image: url('../images/ui/trash.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -1678,10 +1690,34 @@ body > div {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
   opacity: 0.296;
 }
-[name="action-delete"]:focus, [name="action-delete"]:hover, [name="action-delete"]:active {
+.action-delete:focus, .action-delete:hover, .action-delete:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/trash.png?1326735333');
+}
+
+.action-remove {
+  background-image: url('../images/ui/x.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.action-remove:focus, .action-remove:hover, .action-remove:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/x.png?1326735333');
 }
 
 .create-child-link {
@@ -1840,7 +1876,6 @@ body > div {
 }
 .itembody .item-content {
   clear: both;
-  overflow: hidden;
   *zoom: 1;
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 6px inset;
@@ -1848,6 +1883,11 @@ body > div {
   background: #e8e9ec;
   padding: 0.375em 0.375em 0.375em 1.5em;
   position: relative;
+}
+.itembody .item-content:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .itembody .byline {
   margin-bottom: 0.75em;
@@ -1889,18 +1929,6 @@ body > div {
   border: 0;
 }
 
-.bugs-list, .files-list {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  list-style: none;
-}
-.bugs-list li, .files-list li {
-  list-style-image: none;
-  list-style-type: none;
-  margin-left: 0;
-}
-
 .filechick, .files-list .file {
   background-image: url('../images/ui/clip.png?1326735333');
   background-repeat: no-repeat;
@@ -1929,6 +1957,45 @@ body > div {
   padding-left: 1.875em;
   background-color: #fef0bd;
   border-color: #a27f02;
+}
+
+.check-value {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.check-value + .check-item::before {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  background-image: url('../images/ui/checkbox.png?1329414399');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 1.5em;
+  content: " ";
+  display: inline-block;
+  height: 1.5em;
+  margin-right: 0.375em;
+  vertical-align: top;
+}
+.check-value:checked + .check-item::before {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
 }
 
 .bulk-value {
@@ -2860,21 +2927,18 @@ body > div {
 .magicfilter .expanded .onoffswitch, .selectsearch .expanded .onoffswitch {
   display: block;
   padding: 0 0.375em;
-  padding-left: 28px;
+  padding-left: 32px;
 }
 .magicfilter .expanded .onoff, .selectsearch .expanded .onoff {
   display: block;
-  background: url('../images/ui/x_sm.png?1326735333') no-repeat scroll 9px;
+  background: url('../images/ui/checkbox.png?1329414399') no-repeat scroll 9px;
 }
 .magicfilter .expanded .onoff:hover, .selectsearch .expanded .onoff:hover {
   font-weight: 500;
 }
 .magicfilter .expanded .check:checked + .onoff, .selectsearch .expanded .check:checked + .onoff {
   font-weight: 500;
-  background-image: url('../images/ui/check_sm.png?1326735333');
-}
-.magicfilter .expanded .check:checked + .onoff:hover, .selectsearch .expanded .check:checked + .onoff:hover {
-  background-image: url('../images/ui/x_sm.png?1326735333');
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
 }
 .magicfilter .keyword .content::before, .selectsearch .keyword .content::before, .magicfilter .keyword .onoffswitch::before, .selectsearch .keyword .onoffswitch::before {
   content: open-quote;
@@ -3455,7 +3519,7 @@ body.login input, body.login .errorlist {
   width: 20%;
   margin-right: 2.857%;
 }
-.profile-form .name-field .value {
+.profile-form .name-field .value, .profile-form .name-field .errorlist {
   display: inline;
   float: left;
   width: 77.143%;
@@ -3480,6 +3544,9 @@ body.login input, body.login .errorlist {
 }
 .profile-form .elements-field {
   clear: both;
+}
+.profile-form .elements-field.errors .type {
+  color: #454545;
 }
 
 .preview {
@@ -3520,11 +3587,17 @@ body.login input, body.login .errorlist {
   border-color: #8695a8;
 }
 
-#profile-add-form .itemhead, #profile-add-form #results .case-details .summary, #results .case-details #profile-add-form .summary, #profile-add-form .item-content, #profile-add-form .listordering {
-  padding-left: 2.625em;
+#profile-add-form .itemlist, #profile-add-form #results .case-details, #results #profile-add-form .case-details {
+  margin-bottom: 0em;
+}
+#profile-add-form .itemhead, #profile-add-form #results .case-details .summary, #results .case-details #profile-add-form .summary, #profile-add-form .listordering {
+  padding-left: 3em;
+}
+#profile-add-form .item-content {
+  padding-left: 4.5em;
 }
 #profile-add-form .bulk-type {
-  left: 1.125em;
+  left: 1.313em;
 }
 #profile-add-form .name, #profile-add-form .byname {
   display: inline;
@@ -3546,10 +3619,30 @@ body.login input, body.login .errorlist {
   margin-right: 0;
   #margin-left: -1em;
 }
-#profile-add-form .edit-name, #profile-add-form .add-name {
-  padding-right: 65.934%;
+#profile-add-form .category {
+  overflow: hidden;
+  *zoom: 1;
+  padding-right: 52.747%;
   font-weight: 500;
+  margin-top: 0.75em;
   margin-bottom: 0.75em;
+  list-style: none;
+}
+#profile-add-form .category .type {
+  display: inline;
+  float: left;
+  width: 16.279%;
+  margin-right: 2.326%;
+}
+#profile-add-form .category .value {
+  display: inline;
+  float: left;
+  width: 81.395%;
+  margin-right: 2.326%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
 }
 #profile-add-form .elements {
   margin: 0;
@@ -3566,7 +3659,7 @@ body.login input, body.login .errorlist {
 #profile-add-form .element {
   position: relative;
 }
-#profile-add-form .element .value {
+#profile-add-form .element .value[type="checkbox"] {
   position: absolute;
   clip: rect(0 0 0 0);
   overflow: hidden;
@@ -3576,20 +3669,15 @@ body.login input, body.login .errorlist {
   width: 1px;
   border: 0;
 }
-#profile-add-form .element .value:checked + .type {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background-image: url('../images/ui/checkbox_checked.png?1329413814');
-}
-#profile-add-form .element .type {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
-  opacity: 0.75;
-  background: url('../images/ui/checkbox.png?1329414399') no-repeat scroll left;
-  padding-left: 17px;
-}
-#profile-add-form .element .type:focus, #profile-add-form .element .type:hover, #profile-add-form .element .type:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
+#profile-add-form .element.editing .type {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
 }
 #profile-add-form .add-element .type {
   position: absolute;
@@ -3676,22 +3764,21 @@ body.login input, body.login .errorlist {
   padding-right: 25.263%;
 }
 
-.add-productversion .product-field, .add-productversion .version-field, .add-productversion .codename-field, .add-productversion .form-actions, .edit-productversion .product-field, .edit-productversion .version-field, .edit-productversion .codename-field, .edit-productversion .form-actions {
+.add-productversion .product-field, .add-productversion .version-field, .add-productversion .codename-field, .add-productversion .form-actions, .add-productversion .copy-environments-from-field, .edit-productversion .product-field, .edit-productversion .version-field, .edit-productversion .codename-field, .edit-productversion .form-actions, .edit-productversion .copy-environments-from-field {
   clear: both;
-  padding-left: 16.842%;
   padding-right: 25.263%;
 }
-.add-productversion .product-field .type, .add-productversion .version-field .type, .add-productversion .codename-field .type, .add-productversion .form-actions .type, .edit-productversion .product-field .type, .edit-productversion .version-field .type, .edit-productversion .codename-field .type, .edit-productversion .form-actions .type {
+.add-productversion .product-field .type, .add-productversion .version-field .type, .add-productversion .codename-field .type, .add-productversion .form-actions .type, .add-productversion .copy-environments-from-field .type, .edit-productversion .product-field .type, .edit-productversion .version-field .type, .edit-productversion .codename-field .type, .edit-productversion .form-actions .type, .edit-productversion .copy-environments-from-field .type {
   display: inline;
   float: left;
-  width: 12.727%;
-  margin-right: 1.818%;
+  width: 32.394%;
+  margin-right: 1.408%;
 }
-.add-productversion .product-field .value, .add-productversion .product-field .errorlist, .add-productversion .version-field .value, .add-productversion .version-field .errorlist, .add-productversion .codename-field .value, .add-productversion .codename-field .errorlist, .add-productversion .form-actions .value, .add-productversion .form-actions .errorlist, .edit-productversion .product-field .value, .edit-productversion .product-field .errorlist, .edit-productversion .version-field .value, .edit-productversion .version-field .errorlist, .edit-productversion .codename-field .value, .edit-productversion .codename-field .errorlist, .edit-productversion .form-actions .value, .edit-productversion .form-actions .errorlist {
+.add-productversion .product-field .value, .add-productversion .product-field .errorlist, .add-productversion .version-field .value, .add-productversion .version-field .errorlist, .add-productversion .codename-field .value, .add-productversion .codename-field .errorlist, .add-productversion .form-actions .value, .add-productversion .form-actions .errorlist, .add-productversion .copy-environments-from-field .value, .add-productversion .copy-environments-from-field .errorlist, .edit-productversion .product-field .value, .edit-productversion .product-field .errorlist, .edit-productversion .version-field .value, .edit-productversion .version-field .errorlist, .edit-productversion .codename-field .value, .edit-productversion .codename-field .errorlist, .edit-productversion .form-actions .value, .edit-productversion .form-actions .errorlist, .edit-productversion .copy-environments-from-field .value, .edit-productversion .copy-environments-from-field .errorlist {
   display: inline;
   float: left;
-  width: 85.455%;
-  margin-right: 1.818%;
+  width: 66.197%;
+  margin-right: 1.408%;
   display: inline;
   float: right;
   margin-right: 0;

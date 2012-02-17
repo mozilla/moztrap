@@ -28,7 +28,7 @@ var CC = (function (CC, $) {
     $(function () {
         // plugins
         $('.details:not(html)').html5accordion();
-        $('#messages').messages({
+        $('#messages ul').messages({
             handleAjax: true,
             closeLink: '.message'
         });
@@ -72,17 +72,16 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        // $('#editprofile .add-item').customAutocomplete({
-        //     textbox: '#env-elements-input',
-        //     inputList: '.env-element-list',
-        //     ajax: true,
-        //     url: $('#env-elements-input').data('autocomplete-url'),
-        //     hideFormActions: true,
-        //     expiredList: '.env-element-list',
-        //     inputType: 'element',
-        //     caseSensitive: true,
-        //     prefix: 'element'
-        // });
+        $('#editprofile .add-item').customAutocomplete({
+            textbox: '#env-elements-input',
+            inputList: '.env-element-list',
+            ajax: true,
+            url: $('#env-elements-input').data('autocomplete-url'),
+            hideFormActions: true,
+            inputType: 'element',
+            caseSensitive: true,
+            prefix: 'element'
+        });
         $('.multiselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -176,12 +175,21 @@ var CC = (function (CC, $) {
             target_sel: '#id_initial_suite',
             optional: true
         });
+        CC.formOptionsFilter({
+            container: '#productversion-add-form',
+            trigger_sel: '#id_product',
+            target_sel: '#id_clone_envs_from',
+            optional: true,
+            callback: function (context) {
+                context.find('#id_clone_envs_from option:last-child').prop('selected', true);
+            }
+        });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
         CC.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
         CC.createEnvProfile('#profile-add-form');
-        // CC.editEnvProfile();
+        CC.editEnvProfile('#editprofile');
         // CC.envNarrowing('#envnarrowlist');
 
         // manage-tags.js

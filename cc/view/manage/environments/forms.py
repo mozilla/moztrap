@@ -19,8 +19,6 @@
 Manage forms for environments.
 
 """
-from django.utils.datastructures import SortedDict
-
 import floppyforms as forms
 
 from .... import model
@@ -78,7 +76,8 @@ class AddProfileForm(ProfileForm):
     elements = ccforms.CCModelMultipleChoiceField(
         queryset=model.Element.objects.order_by(
             "category", "name").select_related(),
-        widget=EnvironmentElementSelectMultiple)
+        widget=EnvironmentElementSelectMultiple,
+        error_messages={"required": "Please select at least one element."})
 
 
     def save(self):

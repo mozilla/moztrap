@@ -3,9 +3,3 @@
 {% block sectionid %}edit-suite{% endblock %}
 {% block formid %}suite-edit-form{% endblock %}
 {% block formtitle %}Edit "{{ suite.name }}"{% endblock %}
-
-{% block formtop %}
-{% if suite.status.DRAFT %}
-<a href="{# @@@ url manage_narrow_environments object_type='suite' object_id=suite.id #}" class="select-env-link">select environments</a>
-{% endif %}
-{% endblock %}

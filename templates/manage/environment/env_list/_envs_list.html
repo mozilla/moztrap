@@ -1,0 +1,26 @@
+{% load pagination %}
+
+<div class="itemlist action-ajax-replace">
+  <form method="POST" action="{{ request.get_full_path }}" id="">
+    {% csrf_token %}
+
+    {% include "manage/environment/env_list/_envs_listordering.html" %}
+
+    {% paginate environments as pager %}
+    {% if pager.objects %}
+      {% for env in pager.objects %}
+        {% block env-list-item %}
+        {% endblock %}
+      {% endfor %}
+    {% else %}
+      {% include "lists/_emptylist.html" %}
+    {% endif %}
+  </form>
+
+  <article class="listitem add-item details">
+    <h3 class="summary itemhead">add an environment</h3>
+    {% include "manage/environment/env_list/_env_list_item_detail_new.html" %}
+  </article>
+
+  {% include "lists/_listnav.html" with pager=pager %}
+</div>

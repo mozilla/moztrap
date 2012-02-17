@@ -1,0 +1,7 @@
+{% extends 'manage/environment/env_list/_env_list_item.html' %}
+
+{% block env-actions %}
+  <div class="controls">
+    <button title="delete" type="submit" class="action-remove" name="action-remove" value="{{ env.id }}">remove</button>
+  </div>
+{% endblock %}

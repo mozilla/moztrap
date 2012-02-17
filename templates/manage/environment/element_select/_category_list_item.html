@@ -8,7 +8,7 @@
       <div class="name">
         {% if category.deletable %}
         <div class="controls">
-          <button title="delete {{ category.name }}" type="submit" name="action-delete" value="category-{{ category.id }}">delete</button>
+          <button title="delete {{ category.name }}" type="submit" class="action-delete" name="action-delete" value="category-{{ category.id }}">delete</button>
         </div>
         {% endif %}
         <h3 class="title">{{ category.name }}</h3>

@@ -122,17 +122,15 @@
     .onoffswitch
       display: block
       padding: 0 rhythm(.25)
-      +pad-icon('ui/x_sm.png')
+      +pad-icon('ui/checkbox.png')
     .onoff
       display: block
-      background: image-url('ui/x_sm.png') no-repeat scroll $smallpx
+      background: image-url('ui/checkbox.png') no-repeat scroll $smallpx
       &:hover
         +demi
     .check:checked + .onoff
       +demi
-      background-image: image-url('ui/check_sm.png')
-      &:hover
-        background-image: image-url('ui/x_sm.png')
+      background-image: image-url('ui/checkbox_checked.png')
 
   // Keywords
   .keyword
