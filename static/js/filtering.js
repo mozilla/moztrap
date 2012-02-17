@@ -96,13 +96,15 @@ var CC = (function (CC, $) {
                 filterLists: '.visual .filter-group',
                 filterSel: 'input[type="checkbox"]',
                 itemList: '.itemlist .items',
-                itemSel: '.listitem'
+                itemSel: '.listitem',
+                itemCountSel: '.itemlist .listnav .itemcount'
             },
             options = $.extend({}, defaults, opts),
             context = $(options.container),
             filtering = context.find(options.filterContainer),
             filterLists = filtering.find(options.filterLists),
             itemList = context.find(options.itemList),
+            itemCount = context.find(options.itemCountSel),
             items,
             filters,
             filterItems = function () {
@@ -132,6 +134,8 @@ var CC = (function (CC, $) {
                 } else {
                     items.show();
                 }
+
+                itemCount.text(items.filter(':visible').length);
             };
 
         filterLists.on('change', options.filterSel, filterItems);
