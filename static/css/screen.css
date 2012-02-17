@@ -1969,7 +1969,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.check-value + .check-item::before {
+.check-value + .check-item {
+  position: relative;
+}
+.check-value + .check-item .type::before {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-image: url('../images/ui/checkbox.png?1329414399');
@@ -1987,12 +1990,16 @@ body > div {
   background-position: center;
   width: 1.5em;
   content: " ";
+  position: absolute;
+  left: -1.875em;
+  top: 0;
   display: inline-block;
+  width: 1.5em;
   height: 1.5em;
   margin-right: 0.375em;
   vertical-align: top;
 }
-.check-value:checked + .check-item::before {
+.check-value:checked + .check-item .type::before {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/checkbox_checked.png?1329413814');
