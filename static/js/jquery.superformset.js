@@ -175,7 +175,6 @@
                 }
                 // If a post-add callback was supplied, call it with the added form:
                 if (options.added) { options.added(row); }
-                return false;
             };
 
         $$.each(function (i) {
@@ -228,7 +227,7 @@
             parent.after(options.addLink);
             addButton = parent.next();
             if (hideAddButton) { addButton.hide(); }
-            addButton.click(function () {
+            addButton.click(function (e) {
                 var formCount = parseInt(totalForms.val(), 10),
                     row = options.formTemplate.clone(true).addClass('new-row');
                 if (options.addAnimationSpeed) {
@@ -244,7 +243,7 @@
                 if (!showAddButton()) { $(this).hide(); }
                 // If a post-add callback was supplied, call it with the added form:
                 if (options.added) { options.added(row); }
-                return false;
+                e.preventDefault();
             });
         }
 
