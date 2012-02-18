@@ -207,9 +207,6 @@ var CC = (function (CC, $) {
         CC.editEnvProfileName('#editprofile');
         CC.bulkSelectEnvs('#envnarrowing');
 
-        // manage-tags.js
-        // CC.manageTags('#managetags');
-
         // runtests.js
         CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary', '#runtests');
