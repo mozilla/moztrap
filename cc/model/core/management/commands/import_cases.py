@@ -59,11 +59,12 @@ class Command(BaseCommand):
                     raise CommandError('Product Version "{1}" does not exist'.format(
                         product_version))
 
-                result = CaseImporter().import_cases(product_version, case_data)
-                "\n".join(lines)
-                self.stdout.write()
+                self.write_result(CaseImporter().import_cases(product_version, case_data))
 
 
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
+    def write_result(self, result):
+        "\n".join(lines)
+        self.stdout.write()
