@@ -4,9 +4,9 @@
 /*global    jQuery, ich */
 
 /**
- * jQuery Custom Autocomplete 0.1
+ * jQuery Custom Autocomplete 0.2
  *
- * Copyright (c) 2011, Jonny Gerig Meyer
+ * Copyright (c) 2012, Jonny Gerig Meyer
  * All rights reserved.
  *
  * Licensed under the New BSD License
