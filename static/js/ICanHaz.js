@@ -1,18 +1,61 @@
 /*!
-ICanHaz.js version 0.9 -- by @HenrikJoreteg
+ICanHaz.js version 0.10 -- by @HenrikJoreteg
 More info at: http://icanhazjs.com
 */
-(function ($) {
-/*!
-  mustache.js -- Logic-less templates in JavaScript
-
-  by @janl (MIT Licensed, https://github.com/janl/mustache.js/blob/master/LICENSE).
+(function () {
+/*
+  mustache.js — Logic-less templates in JavaScript
 
   See http://mustache.github.com/ for more info.
 */
 
-var Mustache = function() {
-  var Renderer = function() {};
+var Mustache = function () {
+  var _toString = Object.prototype.toString;
+
+  Array.isArray = Array.isArray || function (obj) {
+    return _toString.call(obj) == "[object Array]";
+  }
+
+  var _trim = String.prototype.trim, trim;
+
+  if (_trim) {
+    trim = function (text) {
+      return text == null ? "" : _trim.call(text);
+    }
+  } else {
+    var trimLeft, trimRight;
+
+    // IE doesn't match non-breaking spaces with \s.
+    if ((/\S/).test("\xA0")) {
+      trimLeft = /^[\s\xA0]+/;
+      trimRight = /[\s\xA0]+$/;
+    } else {
+      trimLeft = /^\s+/;
+      trimRight = /\s+$/;
+    }
+
+    trim = function (text) {
+      return text == null ? "" :
+        text.toString().replace(trimLeft, "").replace(trimRight, "");
+    }
+  }
+
+  var escapeMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;'
+  };
+
+  function escapeHTML(string) {
+    return String(string).replace(/&(?!\w+;)|[<>"']/g, function (s) {
+      return escapeMap[s] || s;
+    });
+  }
+
+  var regexCache = {};
+  var Renderer = function () {};
 
   Renderer.prototype = {
     otag: "{{",
@@ -24,16 +67,16 @@ var Mustache = function() {
     },
     context: {},
 
-    render: function(template, context, partials, in_recursion) {
+    render: function (template, context, partials, in_recursion) {
       // reset buffer & set context
-      if(!in_recursion) {
+      if (!in_recursion) {
         this.context = context;
         this.buffer = []; // TODO: make this non-lazy
       }
 
       // fail fast
-      if(!this.includes("", template)) {
-        if(in_recursion) {
+      if (!this.includes("", template)) {
+        if (in_recursion) {
           return template;
         } else {
           this.send(template);
@@ -41,44 +84,64 @@ var Mustache = function() {
         }
       }
 
+      // get the pragmas together
       template = this.render_pragmas(template);
+
+      // render the template
       var html = this.render_section(template, context, partials);
-      if(in_recursion) {
-        return this.render_tags(html, context, partials, in_recursion);
+
+      // render_section did not find any sections, we still need to render the tags
+      if (html === false) {
+        html = this.render_tags(template, context, partials, in_recursion);
       }
 
-      this.render_tags(html, context, partials, in_recursion);
+      if (in_recursion) {
+        return html;
+      } else {
+        this.sendLines(html);
+      }
     },
 
     /*
       Sends parsed lines
     */
-    send: function(line) {
-      if(line != "") {
+    send: function (line) {
+      if (line !== "") {
         this.buffer.push(line);
+      }
+    },
+
+    sendLines: function (text) {
+      if (text) {
+        var lines = text.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+          this.send(lines[i]);
+        }
       }
     },
 
     /*
       Looks for %PRAGMAS
     */
-    render_pragmas: function(template) {
+    render_pragmas: function (template) {
       // no pragmas
-      if(!this.includes("%", template)) {
+      if (!this.includes("%", template)) {
         return template;
       }
 
       var that = this;
-      var regex = new RegExp(this.otag + "%([\\w-]+) ?([\\w]+=[\\w]+)?" +
-            this.ctag);
-      return template.replace(regex, function(match, pragma, options) {
-        if(!that.pragmas_implemented[pragma]) {
-          throw({message: 
+      var regex = this.getCachedRegex("render_pragmas", function (otag, ctag) {
+        return new RegExp(otag + "%([\\w-]+) ?([\\w]+=[\\w]+)?" + ctag, "g");
+      });
+
+      return template.replace(regex, function (match, pragma, options) {
+        if (!that.pragmas_implemented[pragma]) {
+          throw({message:
             "This implementation of mustache doesn't understand the '" +
             pragma + "' pragma"});
         }
         that.pragmas[pragma] = {};
-        if(options) {
+        if (options) {
           var opts = options.split("=");
           that.pragmas[pragma][opts[0]] = opts[1];
         }
@@ -90,12 +153,12 @@ var Mustache = function() {
     /*
       Tries to find a partial in the curent scope and render it
     */
-    render_partial: function(name, context, partials) {
-      name = this.trim(name);
-      if(!partials || partials[name] === undefined) {
+    render_partial: function (name, context, partials) {
+      name = trim(name);
+      if (!partials || partials[name] === undefined) {
         throw({message: "unknown_partial '" + name + "'"});
       }
-      if(typeof(context[name]) != "object") {
+      if (!context || typeof context[name] != "object") {
         return this.render(partials[name], context, partials, true);
       }
       return this.render(partials[name], context[name], partials, true);
@@ -104,64 +167,94 @@ var Mustache = function() {
     /*
       Renders inverted (^) and normal (#) sections
     */
-    render_section: function(template, context, partials) {
-      if(!this.includes("#", template) && !this.includes("^", template)) {
-        return template;
+    render_section: function (template, context, partials) {
+      if (!this.includes("#", template) && !this.includes("^", template)) {
+        // did not render anything, there were no sections
+        return false;
       }
 
       var that = this;
-      // CSW - Added "+?" so it finds the tighest bound, not the widest
-      var regex = new RegExp(this.otag + "(\\^|\\#)\\s*(.+)\\s*" + this.ctag +
-              "\n*([\\s\\S]+?)" + this.otag + "\\/\\s*\\2\\s*" + this.ctag +
-              "\\s*", "mg");
+
+      var regex = this.getCachedRegex("render_section", function (otag, ctag) {
+        // This regex matches _the first_ section ({{#foo}}{{/foo}}), and captures the remainder
+        return new RegExp(
+          "^([\\s\\S]*?)" +         // all the crap at the beginning that is not {{*}} ($1)
+
+          otag +                    // {{
+          "(\\^|\\#)\\s*(.+)\\s*" + //  #foo (# == $2, foo == $3)
+          ctag +                    // }}
+
+          "\n*([\\s\\S]*?)" +       // between the tag ($2). leading newlines are dropped
+
+          otag +                    // {{
+          "\\/\\s*\\3\\s*" +        //  /foo (backreference to the opening tag).
+          ctag +                    // }}
+
+          "\\s*([\\s\\S]*)$",       // everything else in the string ($4). leading whitespace is dropped.
+
+        "g");
+      });
+
 
       // for each {{#foo}}{{/foo}} section do...
-      return template.replace(regex, function(match, type, name, content) {
-        var value = that.find(name, context);
-        if(type == "^") { // inverted section
-          if(!value || that.is_array(value) && value.length === 0) {
+      return template.replace(regex, function (match, before, type, name, content, after) {
+        // before contains only tags, no sections
+        var renderedBefore = before ? that.render_tags(before, context, partials, true) : "",
+
+        // after may contain both sections and tags, so use full rendering function
+            renderedAfter = after ? that.render(after, context, partials, true) : "",
+
+        // will be computed below
+            renderedContent,
+
+            value = that.find(name, context);
+
+        if (type === "^") { // inverted section
+          if (!value || Array.isArray(value) && value.length === 0) {
             // false or empty list, render it
-            return that.render(content, context, partials, true);
+            renderedContent = that.render(content, context, partials, true);
           } else {
-            return "";
+            renderedContent = "";
           }
-        } else if(type == "#") { // normal section
-          if(that.is_array(value)) { // Enumerable, Let's loop!
-            return that.map(value, function(row) {
-              return that.render(content, that.create_context(row),
-                partials, true);
+        } else if (type === "#") { // normal section
+          if (Array.isArray(value)) { // Enumerable, Let's loop!
+            renderedContent = that.map(value, function (row) {
+              return that.render(content, that.create_context(row), partials, true);
             }).join("");
-          } else if(that.is_object(value)) { // Object, Use it as subcontext!
-            return that.render(content, that.create_context(value),
+          } else if (that.is_object(value)) { // Object, Use it as subcontext!
+            renderedContent = that.render(content, that.create_context(value),
               partials, true);
-          } else if(typeof value === "function") {
+          } else if (typeof value == "function") {
             // higher order section
-            return value.call(context, content, function(text) {
+            renderedContent = value.call(context, content, function (text) {
               return that.render(text, context, partials, true);
             });
-          } else if(value) { // boolean section
-            return that.render(content, context, partials, true);
+          } else if (value) { // boolean section
+            renderedContent = that.render(content, context, partials, true);
           } else {
-            return "";
+            renderedContent = "";
           }
         }
+
+        return renderedBefore + renderedContent + renderedAfter;
       });
     },
 
     /*
       Replace {{foo}} and friends with values from our view
     */
-    render_tags: function(template, context, partials, in_recursion) {
+    render_tags: function (template, context, partials, in_recursion) {
       // tit for tat
       var that = this;
 
-      var new_regex = function() {
-        return new RegExp(that.otag + "(=|!|>|\\{|%)?([^\\/#\\^]+?)\\1?" +
-          that.ctag + "+", "g");
+      var new_regex = function () {
+        return that.getCachedRegex("render_tags", function (otag, ctag) {
+          return new RegExp(otag + "(=|!|>|&|\\{|%)?([^#\\^]+?)\\1?" + ctag + "+", "g");
+        });
       };
 
       var regex = new_regex();
-      var tag_replace_callback = function(match, operator, name) {
+      var tag_replace_callback = function (match, operator, name) {
         switch(operator) {
         case "!": // ignore comments
           return "";
@@ -172,33 +265,34 @@ var Mustache = function() {
         case ">": // render partial
           return that.render_partial(name, context, partials);
         case "{": // the triple mustache is unescaped
+        case "&": // & operator is an alternative unescape method
           return that.find(name, context);
         default: // escape the value
-          return that.escape(that.find(name, context));
+          return escapeHTML(that.find(name, context));
         }
       };
       var lines = template.split("\n");
       for(var i = 0; i < lines.length; i++) {
         lines[i] = lines[i].replace(regex, tag_replace_callback, this);
-        if(!in_recursion) {
+        if (!in_recursion) {
           this.send(lines[i]);
         }
       }
 
-      if(in_recursion) {
+      if (in_recursion) {
         return lines.join("\n");
       }
     },
 
-    set_delimiters: function(delimiters) {
+    set_delimiters: function (delimiters) {
       var dels = delimiters.split(" ");
       this.otag = this.escape_regex(dels[0]);
       this.ctag = this.escape_regex(dels[1]);
     },
 
-    escape_regex: function(text) {
+    escape_regex: function (text) {
       // thank you Simon Willison
-      if(!arguments.callee.sRE) {
+      if (!arguments.callee.sRE) {
         var specials = [
           '/', '.', '*', '+', '?', '|',
           '(', ')', '[', ']', '{', '}', '\\'
@@ -214,8 +308,8 @@ var Mustache = function() {
       find `name` in current `context`. That is find me a value
       from the view object
     */
-    find: function(name, context) {
-      name = this.trim(name);
+    find: function (name, context) {
+      name = trim(name);
 
       // Checks whether a value is thruthy or false or 0
       function is_kinda_truthy(bool) {
@@ -223,53 +317,61 @@ var Mustache = function() {
       }
 
       var value;
-      if(is_kinda_truthy(context[name])) {
-        value = context[name];
-      } else if(is_kinda_truthy(this.context[name])) {
-        value = this.context[name];
+
+      // check for dot notation eg. foo.bar
+      if (name.match(/([a-z_]+)\./ig)) {
+        var childValue = this.walk_context(name, context);
+        if (is_kinda_truthy(childValue)) {
+          value = childValue;
+        }
+      } else {
+        if (is_kinda_truthy(context[name])) {
+          value = context[name];
+        } else if (is_kinda_truthy(this.context[name])) {
+          value = this.context[name];
+        }
       }
 
-      if(typeof value === "function") {
+      if (typeof value == "function") {
         return value.apply(context);
       }
-      if(value !== undefined) {
+      if (value !== undefined) {
         return value;
       }
       // silently ignore unkown variables
       return "";
     },
 
+    walk_context: function (name, context) {
+      var path = name.split('.');
+      // if the var doesn't exist in current context, check the top level context
+      var value_context = (context[path[0]] != undefined) ? context : this.context;
+      var value = value_context[path.shift()];
+      while (value != undefined && path.length > 0) {
+        value_context = value;
+        value = value[path.shift()];
+      }
+      // if the value is a function, call it, binding the correct context
+      if (typeof value == "function") {
+        return value.apply(value_context);
+      }
+      return value;
+    },
+
     // Utility methods
 
     /* includes tag */
-    includes: function(needle, haystack) {
+    includes: function (needle, haystack) {
       return haystack.indexOf(this.otag + needle) != -1;
     },
 
-    /*
-      Does away with nasty characters
-    */
-    escape: function(s) {
-      s = String(s === null ? "" : s);
-      return s.replace(/&(?!\w+;)|["<>\\]/g, function(s) {
-        switch(s) {
-        case "&": return "&amp;";
-        case "\\": return "\\\\";
-        case '"': return '\"';
-        case "<": return "&lt;";
-        case ">": return "&gt;";
-        default: return s;
-        }
-      });
-    },
-
     // by @langalex, support for arrays of strings
-    create_context: function(_context) {
-      if(this.is_object(_context)) {
+    create_context: function (_context) {
+      if (this.is_object(_context)) {
         return _context;
       } else {
         var iterator = ".";
-        if(this.pragmas["IMPLICIT-ITERATOR"]) {
+        if (this.pragmas["IMPLICIT-ITERATOR"]) {
           iterator = this.pragmas["IMPLICIT-ITERATOR"].iterator;
         }
         var ctx = {};
@@ -278,25 +380,14 @@ var Mustache = function() {
       }
     },
 
-    is_object: function(a) {
+    is_object: function (a) {
       return a && typeof a == "object";
-    },
-
-    is_array: function(a) {
-      return Object.prototype.toString.call(a) === '[object Array]';
-    },
-
-    /*
-      Gets rid of leading and trailing whitespace
-    */
-    trim: function(s) {
-      return s.replace(/^\s*|\s*$/g, "");
     },
 
     /*
       Why, why, why? Because IE. Cry, cry cry.
     */
-    map: function(array, fn) {
+    map: function (array, fn) {
       if (typeof array.map == "function") {
         return array.map(fn);
       } else {
@@ -307,95 +398,145 @@ var Mustache = function() {
         }
         return r;
       }
+    },
+
+    getCachedRegex: function (name, generator) {
+      var byOtag = regexCache[this.otag];
+      if (!byOtag) {
+        byOtag = regexCache[this.otag] = {};
+      }
+
+      var byCtag = byOtag[this.ctag];
+      if (!byCtag) {
+        byCtag = byOtag[this.ctag] = {};
+      }
+
+      var regex = byCtag[name];
+      if (!regex) {
+        regex = byCtag[name] = generator(this.otag, this.ctag);
+      }
+
+      return regex;
     }
   };
 
   return({
     name: "mustache.js",
-    version: "0.3.0",
+    version: "0.4.0",
 
     /*
       Turns a template and view into HTML
     */
-    to_html: function(template, view, partials, send_fun) {
+    to_html: function (template, view, partials, send_fun) {
       var renderer = new Renderer();
-      if(send_fun) {
+      if (send_fun) {
         renderer.send = send_fun;
       }
-      renderer.render(template, view, partials);
-      if(!send_fun) {
+      renderer.render(template, view || {}, partials);
+      if (!send_fun) {
         return renderer.buffer.join("\n");
       }
     }
   });
-}();/*!
+}();
+/*!
   ICanHaz.js -- by @HenrikJoreteg
 */
-/*global jQuery  */
-function ICanHaz() {
-    var self = this;
-    self.VERSION = "0.9";
-    self.templates = {};
-    self.partials = {};
-    
-    // public function for adding templates
-    // We're enforcing uniqueness to avoid accidental template overwrites.
-    // If you want a different template, it should have a different name.
-    self.addTemplate = function (name, templateString) {
-        if (self[name]) throw "Invalid name: " + name + ".";
-        if (self.templates[name]) throw "Template \" + name + \" exists";
+/*global  */
+(function () {
+    function trim(stuff) {
+        if (''.trim) return stuff.trim();
+        else return stuff.replace(/^\s+/, '').replace(/\s+$/, '');
+    }
+    var ich = {
+        VERSION: "0.10",
+        templates: {},
         
-        self.templates[name] = templateString;
-        self[name] = function (data, raw) {
-            data = data || {};
-            var result = Mustache.to_html(self.templates[name], data, self.partials);
-            return raw ? result : $(result);
-        };       
+        // grab jquery or zepto if it's there
+        $: (typeof window !== 'undefined') ? window.jQuery || window.Zepto || null : null,
+        
+        // public function for adding templates
+        // can take a name and template string arguments
+        // or can take an object with name/template pairs
+        // We're enforcing uniqueness to avoid accidental template overwrites.
+        // If you want a different template, it should have a different name.
+        addTemplate: function (name, templateString) {
+            if (typeof name === 'object') {
+                for (var template in name) {
+                    this.addTemplate(template, name[template]);
+                }
+                return;
+            }
+            if (ich[name]) {
+                console.error("Invalid name: " + name + "."); 
+            } else if (ich.templates[name]) {
+                console.error("Template \"" + name + "  \" exists");
+            } else {
+                ich.templates[name] = templateString;
+                ich[name] = function (data, raw) {
+                    data = data || {};
+                    var result = Mustache.to_html(ich.templates[name], data, ich.templates);
+                    return (ich.$ && !raw) ? ich.$(result) : result;
+                };
+            }
+        },
+        
+        // clears all retrieval functions and empties cache
+        clearAll: function () {
+            for (var key in ich.templates) {
+                delete ich[key];
+            }
+            ich.templates = {};
+        },
+        
+        // clears/grabs
+        refresh: function () {
+            ich.clearAll();
+            ich.grabTemplates();
+        },
+        
+        // grabs templates from the DOM and caches them.
+        // Loop through and add templates.
+        // Whitespace at beginning and end of all templates inside <script> tags will 
+        // be trimmed. If you want whitespace around a partial, add it in the parent, 
+        // not the partial. Or do it explicitly using <br/> or &nbsp;
+        grabTemplates: function () {        
+            var i, 
+                scripts = document.getElementsByTagName('script'), 
+                script,
+                trash = [];
+            for (i = 0, l = scripts.length; i < l; i++) {
+                script = scripts[i];
+                if (script && script.innerHTML && script.id && (script.type === "text/html" || script.type === "text/x-icanhaz")) {
+                    ich.addTemplate(script.id, trim(script.innerHTML));
+                    trash.unshift(script);
+                }
+            }
+            for (i = 0, l = trash.length; i < l; i++) {
+                trash[i].parentNode.removeChild(trash[i]);
+            }
+        }
     };
     
-    // public function for adding partials
-    self.addPartial = function (name, templateString) {
-        if (self.partials[name]) {
-            throw "Partial \" + name + \" exists";
+    // Use CommonJS if applicable
+    if (typeof require !== 'undefined') {
+        module.exports = ich;
+    } else {
+        // else attach it to the window
+        window.ich = ich;
+    }
+    
+    if (typeof document !== 'undefined') {
+        if (ich.$) {
+            ich.$(function () {
+                ich.grabTemplates();
+            });
         } else {
-            self.partials[name] = templateString;
+            document.addEventListener('DOMContentLoaded', function () {
+                ich.grabTemplates();
+            }, true);
         }
-    };
-    
-    // grabs templates from the DOM and caches them.
-    // Loop through and add templates.
-    // Whitespace at beginning and end of all templates inside <script> tags will 
-    // be trimmed. If you want whitespace around a partial, add it in the parent, 
-    // not the partial. Or do it explicitly using <br/> or &nbsp;
-    self.grabTemplates = function () {        
-        $('script[type="text/html"]').each(function (a, b) {
-            var script = $((typeof a === 'number') ? b : a), // Zepto doesn't bind this
-                text = (''.trim) ? script.html().trim() : $.trim(script.html());
-            
-            self[script.hasClass('partial') ? 'addPartial' : 'addTemplate'](script.attr('id'), text);
-            script.remove();
-        });
-    };
-    
-    // clears all retrieval functions and empties caches
-    self.clearAll = function () {
-        for (var key in self.templates) {
-            delete self[key];
-        }
-        self.templates = {};
-        self.partials = {};
-    };
-    
-    self.refresh = function () {
-        self.clearAll();
-        self.grabTemplates();
-    };
-}
-
-window.ich = new ICanHaz();
-
-// init itself on document ready
-$(function () {
-    ich.grabTemplates();
-});
-})(window.jQuery || window.Zepto);
+    }
+        
+})();
+})();
