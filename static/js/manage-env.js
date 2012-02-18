@@ -320,11 +320,8 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.editEnvProfile = function (container) {
+    CC.addEnvToProfile = function (container) {
         var context = $(container),
-            profileNameInput = context.find('#profile-name'),
-            profileName = profileNameInput.val(),
-            profileNameSubmit = context.find('#save-profile-name').hide(),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
@@ -375,6 +372,13 @@ var CC = (function (CC, $) {
                 prefix: 'element'
             });
         });
+    };
+
+    CC.editEnvProfileName = function (container) {
+        var context = $(container),
+            profileNameInput = context.find('#profile-name'),
+            profileName = profileNameInput.val(),
+            profileNameSubmit = context.find('#save-profile-name').hide();
 
         // Show/hide profile-name submit button when name is changed
         context.on('keyup', '#profile-name', function (event) {
@@ -404,24 +408,42 @@ var CC = (function (CC, $) {
         }
     };
 
-    CC.envNarrowing = function (container) {
+    // Bulk-select for visible (filtered) environments
+    CC.bulkSelectEnvs = function (container) {
         var context = $(container),
             bulkSelect = context.find('#bulk_select'),
-            inputs = context.find('input[type="checkbox"][name="environments"]');
+            items = context.find('.itemlist .items .listitem'),
+            inputs = items.find('input.bulk-value[name="environments"]'),
+            updateBulkSelect = function () {
+                if (inputs.filter(':visible:checked').length) {
+                    bulkSelect.prop('checked', true);
+                    if (inputs.filter(':visible').length === inputs.filter(':visible:checked').length) {
+                        bulkSelect.removeClass('pseudo');
+                    } else {
+                        bulkSelect.addClass('pseudo');
+                    }
+                } else {
+                    bulkSelect.prop('checked', false).removeClass('pseudo');
+                }
+            };
 
+        // Select-all/none on bulk-select change
         bulkSelect.change(function () {
             if ($(this).is(':checked')) {
-                inputs.prop('checked', true);
+                inputs.filter(':visible').prop('checked', true);
             } else {
-                inputs.prop('checked', false);
+                inputs.filter(':visible').prop('checked', false);
             }
+            bulkSelect.removeClass('pseudo');
         });
 
+        // Update bulk-select on input change
         inputs.change(function () {
-            if (inputs.not(':checked').length) {
-                bulkSelect.prop('checked', false);
-            }
+            updateBulkSelect();
         });
+
+        // Update bulk-select after filter-change
+        context.on('after-filter', '.itemlist .items', updateBulkSelect);
     };
 
     return CC;

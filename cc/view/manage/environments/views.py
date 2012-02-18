@@ -220,8 +220,10 @@ def element_autocomplete(request):
 def narrow_environments(request, object_type, object_id):
     if object_type == "run":
         model_class = model.Run
+        redirect_to = "manage_runs"
     elif object_type == "caseversion":
         model_class = model.CaseVersion
+        redirect_to = "manage_cases"
     else:
         raise Http404
     obj = get_object_or_404(model_class, pk=object_id)
@@ -237,7 +239,9 @@ def narrow_environments(request, object_type, object_id):
         obj.environments.add(*add)
         obj.environments.remove(*remove)
 
-        return redirect("manage_%ss" % object_type)
+        messages.success(request, "Saved environments for '{0}'".format(obj))
+
+        return redirect(redirect_to)
 
     return TemplateResponse(
         request,

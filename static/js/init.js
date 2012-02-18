@@ -47,6 +47,19 @@ var CC = (function (CC, $) {
             inputsNeverRemoved: true,
             prefix: 'filter'
         });
+        $('#clientfilter').customAutocomplete({
+            textbox: '#text-filter',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
+            multipleCategories: true,
+            allowNew: true,
+            newInputTextbox: 'input[type="text"]',
+            triggerSubmit: null,
+            fakePlaceholder: true,
+            initialFocus: true,
+            inputsNeverRemoved: true,
+            prefix: 'filter'
+        });
         $('.tagging').customAutocomplete({
             textbox: '#id_add_tags',
             ajax: true,
@@ -72,7 +85,7 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        $('#editprofile .add-item').customAutocomplete({
+        $('#editprofile .add-item, #editproductversionenvs .add-item').customAutocomplete({
             textbox: '#env-elements-input',
             inputList: '.env-element-list',
             ajax: true,
@@ -145,9 +158,10 @@ var CC = (function (CC, $) {
         );
 
         // filtering.js
-        CC.toggleAdvancedFiltering('#filter');
+        CC.toggleAdvancedFiltering('.magicfilter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
+        CC.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
         CC.formOptionsFilter({
@@ -189,11 +203,9 @@ var CC = (function (CC, $) {
 
         // manage-env.js
         CC.createEnvProfile('#profile-add-form');
-        CC.editEnvProfile('#editprofile');
-        // CC.envNarrowing('#envnarrowlist');
-
-        // manage-tags.js
-        // CC.manageTags('#managetags');
+        CC.addEnvToProfile('#editprofile, #editproductversionenvs');
+        CC.editEnvProfileName('#editprofile');
+        CC.bulkSelectEnvs('#envnarrowing');
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();

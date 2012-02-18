@@ -3,9 +3,9 @@
 /*global    jQuery */
 
 /**
- * jQuery SuperFormset 0.1
+ * jQuery SuperFormset 0.2
  *
- * Copyright (c) 2011, Jonny Gerig Meyer
+ * Copyright (c) 2012, Jonny Gerig Meyer
  * All rights reserved.
  *
  * @requires jQuery 1.2.6 or later

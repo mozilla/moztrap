@@ -3,9 +3,9 @@
 /*global    jQuery, ich */
 
 /**
- * jQuery Multiselect Widget 0.1
+ * jQuery Multiselect Widget 0.2
  *
- * Copyright (c) 2011, Jonny Gerig Meyer
+ * Copyright (c) 2012, Jonny Gerig Meyer
  * All rights reserved.
  *
  * Licensed under the New BSD License

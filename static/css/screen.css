@@ -1495,6 +1495,7 @@ body > div {
   padding-bottom: 0.304em;
   padding-left: 0.5em;
   padding-right: 0.5em;
+  position: relative;
   background: rgba(81, 105, 133, 0.444);
   border-color: rgba(75, 87, 101, 0.667);
 }
@@ -1609,7 +1610,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-clone, .action-delete, .action-remove, .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1620,7 +1621,7 @@ body > div {
   vertical-align: baseline;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1969,7 +1970,10 @@ body > div {
   width: 1px;
   border: 0;
 }
-.check-value + .check-item::before {
+.check-value + .check-item {
+  position: relative;
+}
+.check-value + .check-item .type::before {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
   background-image: url('../images/ui/checkbox.png?1329414399');
@@ -1987,40 +1991,22 @@ body > div {
   background-position: center;
   width: 1.5em;
   content: " ";
+  position: absolute;
+  left: -1.875em;
+  top: 0;
   display: inline-block;
+  width: 1.5em;
   height: 1.5em;
   margin-right: 0.375em;
   vertical-align: top;
 }
-.check-value:checked + .check-item::before {
+.check-value:checked + .check-item .type::before {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
   background-image: url('../images/ui/checkbox_checked.png?1329413814');
 }
 
-.bulk-value {
-  position: absolute;
-  clip: rect(0 0 0 0);
-  overflow: hidden;
-  margin: -1px;
-  padding: 0;
-  height: 1px;
-  width: 1px;
-  border: 0;
-}
-.bulk-value:checked + .bulk-item {
-  background: #f0f9e6;
-}
-.bulk-value:checked + .bulk-item .bulk-type {
-  background-image: url('../images/ui/checkbox_checked.png?1329413814');
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-.bulk-value:checked.pseudo + .bulk-item .bulk-type {
-  background-image: url('../images/ui/checkbox_pseudo.png?1329414711');
-}
-
-.bulk-type {
+.bulkunchecked, .bulk-type, .bybulk-type {
   background-image: url('../images/ui/checkbox.png?1329414399');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -2043,9 +2029,34 @@ body > div {
   left: 0.375em;
   z-index: 5;
 }
-.bulk-type:focus, .bulk-type:hover, .bulk-type:active {
+.bulkunchecked:focus, .bulk-type:focus, .bybulk-type:focus, .bulkunchecked:hover, .bulk-type:hover, .bybulk-type:hover, .bulkunchecked:active, .bulk-type:active, .bybulk-type:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+}
+
+.bulkchecked, .bulk-value:checked + .bulk-item .bulk-type, .bybulk-value:checked + .bybulk-type {
+  background-image: url('../images/ui/checkbox_checked.png?1329413814');
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.bulkpseudo, .bulk-value:checked.pseudo + .bulk-item .bulk-type, .bybulk-value:checked.pseudo + .bybulk-type {
+  background-image: url('../images/ui/checkbox_pseudo.png?1329414711');
+}
+
+.bulk-value, .bybulk-value {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+
+.bulk-value:checked + .bulk-item {
+  background: #f0f9e6;
 }
 
 .bystatus {
@@ -3296,7 +3307,7 @@ body.login input, body.login .errorlist {
   border: 0;
 }
 
-.select-env-link {
+h2 + .select-env-link, .selectenvhead + .select-env-link {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -3330,7 +3341,7 @@ body.login input, body.login .errorlist {
   float: right;
   margin-top: -1.875em;
 }
-.select-env-link:hover, .select-env-link:focus {
+h2 + .select-env-link:hover, .selectenvhead + .select-env-link:hover, h2 + .select-env-link:focus, .selectenvhead + .select-env-link:focus {
   background-image: url('../images/ui/crosshair.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: url('../images/ui/crosshair.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
@@ -3338,13 +3349,35 @@ body.login input, body.login .errorlist {
   background-image: url('../images/ui/crosshair.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.select-env-link:active {
+h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/crosshair.png?1326735333'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: url('../images/ui/crosshair.png?1326735333'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/crosshair.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+.controls .select-env-link {
+  background-image: url('../images/ui/crosshair.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: -119988px;
+  overflow: hidden;
+  text-align: left;
+  overflow: visible;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.controls .select-env-link:focus, .controls .select-env-link:hover, .controls .select-env-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
 }
 
 .multiselect {
@@ -3622,23 +3655,22 @@ body.login input, body.login .errorlist {
 #profile-add-form .category {
   overflow: hidden;
   *zoom: 1;
-  padding-right: 52.747%;
+  padding-right: 48.352%;
   font-weight: 500;
   margin-top: 0.75em;
   margin-bottom: 0.75em;
-  list-style: none;
 }
 #profile-add-form .category .type {
   display: inline;
   float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
+  width: 23.404%;
+  margin-right: 2.128%;
 }
 #profile-add-form .category .value {
   display: inline;
   float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
+  width: 74.468%;
+  margin-right: 2.128%;
   display: inline;
   float: right;
   margin-right: 0;
@@ -3690,20 +3722,38 @@ body.login input, body.login .errorlist {
   border: 0;
 }
 
-#editprofile .itemhead, #editprofile #results .case-details .summary, #results .case-details #editprofile .summary {
+.envlist .itemhead, .envlist #results .case-details .summary, #results .case-details .envlist .summary {
   padding-left: 0.375em;
 }
-#editprofile .title {
+.envlist .title {
   font-weight: 500;
   display: inline;
 }
-#editprofile .add-item .itemhead, #editprofile .add-item #results .case-details .summary, #results .case-details #editprofile .add-item .summary, #editprofile .add-item .item-content {
+.envlist .add-item .itemhead, .envlist .add-item #results .case-details .summary, #results .case-details .envlist .add-item .summary, .envlist .add-item .item-content {
   padding-left: 1.875em;
 }
 
 #add-environment-form {
   padding-right: 50.526%;
   margin-bottom: 0.375em;
+}
+
+#narrow-envs-form .listordering, #narrow-envs-form .itemhead, #narrow-envs-form #results .case-details .summary, #results .case-details #narrow-envs-form .summary {
+  padding-left: 2.25em;
+}
+#narrow-envs-form .preview {
+  font-weight: 500;
+}
+#narrow-envs-form .preview ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+}
+#narrow-envs-form .preview ul li {
+  list-style-image: none;
+  list-style-type: none;
+  margin-left: 0;
 }
 
 .add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
@@ -3985,10 +4035,14 @@ body.login input, body.login .errorlist {
   vertical-align: baseline;
 }
 
+.edit-case .select-env-link {
+  margin-right: 8.421%;
+}
+
 .case-version-nav {
   clear: both;
   padding-right: 8.421%;
-  margin-top: -1.875em;
+  margin-top: 1.5em;
   text-align: right;
 }
 

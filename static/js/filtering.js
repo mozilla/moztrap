@@ -88,6 +88,63 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Filter list of items by hiding/showing based on selected filter-inputs
+    CC.clientSideFilter = function (opts) {
+        var defaults = {
+                container: 'body',
+                filterContainer: '#clientfilter',
+                filterLists: '.visual .filter-group',
+                filterSel: 'input[type="checkbox"]',
+                itemList: '.itemlist .items',
+                itemSel: '.listitem',
+                itemCountSel: '.itemlist .listnav .itemcount'
+            },
+            options = $.extend({}, defaults, opts),
+            context = $(options.container),
+            filtering = context.find(options.filterContainer),
+            filterLists = filtering.find(options.filterLists),
+            itemList = context.find(options.itemList),
+            itemCount = context.find(options.itemCountSel),
+            items,
+            filters,
+            filterItems = function () {
+                items = itemList.find(options.itemSel);
+                filters = filterLists.find(options.filterSel + ':checked');
+
+                if (filters.length) {
+                    items.each(function () {
+                        var thisItem = $(this),
+                            includeThisItem = false;
+
+                        filters.each(function () {
+                            var filterType = $(this).data('name'),
+                                filterName = $(this).closest('.filter-item').find('.content').text();
+
+                            if (thisItem.find('[data-type="' + filterType + '"]').filter(function () { return $(this).text() === filterName; }).length) {
+                                includeThisItem = true;
+                            }
+                        });
+
+                        if (includeThisItem) {
+                            thisItem.show();
+                        } else {
+                            thisItem.hide();
+                        }
+                    });
+                } else {
+                    items.show();
+                }
+
+                // Trigger after-filter event on itemList
+                itemList.trigger('after-filter');
+
+                // Update total item count
+                itemCount.text(items.filter(':visible').length);
+            };
+
+        filterLists.on('change', options.filterSel, filterItems);
+    };
+
     return CC;
 
 }(CC || {}, jQuery));
