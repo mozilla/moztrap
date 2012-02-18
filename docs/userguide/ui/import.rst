@@ -57,19 +57,18 @@ for each.
 
 Minimal Example::
 
-{
-    "cases": [
-        {
-            "title": "case1 title"
-            "steps": [
-                {
-                    "instruction": "instruction text",
-                    "expected": "expected text"
-                }
-            ]
-        }
-    ]
-}
+    {
+        "cases": [
+            {
+                "title": "case1 title"
+                "steps": [
+                    {
+                        "instruction": "instruction text",
+                    }
+                ]
+            }
+        ]
+    }
 
 
 

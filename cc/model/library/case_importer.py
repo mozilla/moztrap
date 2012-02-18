@@ -76,6 +76,7 @@ class CaseImporter(object):
         self.num_cases = 0
         self.num_suites = 0
         self.skipped=[]
+        self.warnings=[]
 
         if 'suites' in case_data:
             self.import_suites(product_version.product, case_data['suites'])
@@ -87,7 +88,8 @@ class CaseImporter(object):
 
         return {"cases": self.num_cases,
                 "suites": self.num_suites,
-                "skipped": skipped}
+                "skipped": skipped,
+                "warnings": warnings}
 
     def import_cases(self, product_version, case_list):
         """
@@ -117,14 +119,15 @@ class CaseImporter(object):
             # create the case version which holds the details
             case_version = CaseVersion.objects.create(productversion = product_version,
                                                       case = case,
-                                                      name = new_case['name'])
+                                                      name = new_case['name'],
+                                                      description = new_case.get('description', None))
 
-            case_version.description = new_case.get('description', None)
 
             if 'created_by' in new_case:
                 try:
                     user = User.objects.get(email=new_case['created_by'])
                     case_version.created_by = user
+                    case_version.save()
 
                 except User.DoesNotExist:
                     result_str += 'user with email "{1}" does not exist. Setting created_by to None for {2}\n'.format(
@@ -132,11 +135,11 @@ class CaseImporter(object):
 
 
 
-            case_version.save()
-
             # add the steps to this case version
             if 'steps' in new_case:
                 self.import_steps(case_version, new_case['steps'])
+            else:
+                warnings.append("case has no steps: {1}".format(case_version))
 
             # add tags to this case version,
             # create tags as product specific
@@ -157,19 +160,30 @@ class CaseImporter(object):
 
 
 
-    def import_steps(self, case_version, step_list):
-        """ add the steps to this case version"""
+    def import_steps(self, case_version, step_data):
+        """
+        Add the steps to this case version.
+        Instruction is a required field for a step, but expected is optional.
 
-        for step_num, new_step in enumerate(step_list):
-            casestep = CaseStep.objects.create(caseversion = case_version,
-                                               number = step_num+1,
-                                               instruction = new_step['instruction'],
-                                               expected = new_step['expected']
+        """
 
+        for step_num, new_step in enumerate(step_data):
+            if 'instruction' in new_step:
+                casestep = CaseStep.objects.create(caseversion = case_version,
+                                                   number = step_num+1,
+                                                   instruction = new_step['instruction'],
+                                                   expected = new_step.get('expected', None)
+            else:
+                raise ValueError("instruction required for every step: {1}".format(
+                    new_step
+                ))
 
     def import_tags(self, product, case_version, tag_list):
-        """ Find the tag.  If it doesn't exist, then create it as product specific.
-            Either way, add it to the case_version"""
+        """
+        Find the tag.  If it doesn't exist, then create it as product specific.
+        Either way, add it to the case_version
+
+        """
 
         for new_tag in tag_list:
             tag, created = Tag.objects.get_or_create(name=new_tag)
@@ -181,11 +195,14 @@ class CaseImporter(object):
 
             case_version.tags.add(tag)
 
-    def import_suites(self, product, suite_list, case=None):
-        """ Create each suite in the list, if it doesn't already exist.
-            If a case is provided, add that case to the suite."""
+    def import_suites(self, product, suite_data, case=None):
+        """
+        Create each suite in the list, if it doesn't already exist.
+        If a case is provided, add that case to the suite.
 
-        for new_suite in suite_list:
+        """
+
+        for new_suite in suite_data:
             # this could be a dictionary, if it's in the "suites" object
             # or just a list of strings if it's listed for an individual case
 

@@ -66,5 +66,13 @@ class Command(BaseCommand):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
     def write_result(self, result):
-        "\n".join(lines)
-        self.stdout.write()
+        skipped =
+
+        result = [
+            "\n  ".join(result['skipped'].insert(0, "Skipped:")),
+            "\n  ".join(result['warnings'].insert(0, "Warnings:")),
+            "\nImported {1} cases".format(result['cases']),
+            "\nImported {1} suites".format(result['suites']),
+        ]
+
+        self.stdout.write("\n".join(result))
