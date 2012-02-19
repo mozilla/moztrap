@@ -1,6 +1,13 @@
 Development
 ===========
 
+Coding standards
+----------------
+
+See the :doc:`standards` for help writing code that will maintain a consistent
+style and quality with the rest of the codebase.
+
+
 User registration
 -----------------
 
