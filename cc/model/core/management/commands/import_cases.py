@@ -24,12 +24,13 @@ from cc.model.library.case_importer import CaseImporter
 
 class Command(BaseCommand):
     args = '<product_name> <product_version> <filename>'
-    help = 'Imports the cases from a JSON file into the specified Product Version'
+    help = ('Imports the cases from a JSON file into '
+            'the specified Product Version')
 
 
     def handle(self, *args, **options):
         if len(args) < 3:
-            raise CommandError("Usage: {1}".format(self.args)
+            raise CommandError("Usage: {0}".format(self.args))
 
         try:
             with open(args[2]) as cases_text:
@@ -40,39 +41,46 @@ class Command(BaseCommand):
 
                 except ValueError as e:
                     raise CommandError(
-                        "Could not parse JSON because {1}".format(e))
+                        "Could not parse JSON because {0}".format(str(e)))
 
-                # @@@: support importing as CSV.  Rather than returning an error above,
-                # just try CSV import instead.
+                # @@@: support importing as CSV.  Rather than returning an
+                # error above, just try CSV import instead.
 
 
                 try:
                     product = Product.objects.get(name=args[0])
 
                 except Product.DoesNotExist:
-                    raise CommandError('Product "{1}" does not exist'.format(args[0]))
+                    raise CommandError('Product "{0}" does not exist'.format(
+                        args[0]))
 
                 try:
-                    product_version = ProductVersion.objects.get(product=product, version=args[1])
+                    product_version = ProductVersion.objects.get(
+                        product=product, version=args[1])
 
                 except ProductVersion.DoesNotExist:
-                    raise CommandError('Product Version "{1}" does not exist'.format(
+                    raise CommandError(
+                        'Product Version "{0}" does not exist'.format(
                         product_version))
 
-                self.write_result(CaseImporter().import_cases(product_version, case_data))
+                self.write_result(CaseImporter().import_data(
+                    product_version, case_data))
 
 
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
     def write_result(self, result):
-        skipped =
 
-        result = [
-            "\n  ".join(result['skipped'].insert(0, "Skipped:")),
-            "\n  ".join(result['warnings'].insert(0, "Warnings:")),
-            "\nImported {1} cases".format(result['cases']),
-            "\nImported {1} suites".format(result['suites']),
+        result['skipped'].insert(0, "Skipped:")
+        result['warnings'].insert(0, "Warnings:")
+
+        output = [
+            "\n  ".join(result['skipped']),
+            "\n  ".join(result['warnings']),
+            "Imported {0} cases".format(result['cases']),
+            "Imported {0} suites".format(result['suites']),
+            "\n"
         ]
 
-        self.stdout.write("\n".join(result))
+        self.stdout.write("\n".join(output))
