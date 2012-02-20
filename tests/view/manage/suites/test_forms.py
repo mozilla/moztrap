@@ -94,6 +94,51 @@ class EditSuiteFormTest(case.DBTestCase):
             )
 
 
+    def test_add_cases(self):
+        """Can add cases to a suite."""
+        s = self.F.SuiteFactory()
+        c = self.F.CaseFactory(product=s.product)
+
+        f = self.form(
+            {
+                "product": str(s.product.id),
+                "name": s.name,
+                "description": s.description,
+                "status": s.status,
+                "cases": [str(c.id)],
+                },
+            instance=s,
+            )
+
+        self.assertTrue(f.is_valid())
+        suite = f.save()
+
+        self.assertEqual(set(suite.cases.all()), set([c]))
+
+
+    def test_edit_cases(self):
+        """Can edit cases of a suite."""
+        s = self.F.SuiteFactory.create()
+        self.F.SuiteCaseFactory.create(suite=s)
+        c = self.F.CaseFactory.create(product=s.product)
+
+        f = self.form(
+            {
+                "product": str(s.product.id),
+                "name": s.name,
+                "description": s.description,
+                "status": s.status,
+                "cases": [str(c.id)],
+                },
+            instance=s,
+            )
+
+        self.assertTrue(f.is_valid())
+        suite = f.save()
+
+        self.assertEqual(set(suite.cases.all()), set([c]))
+
+
 
 class AddSuiteFormTest(case.DBTestCase):
     """Tests for AddSuiteForm."""
@@ -125,3 +170,47 @@ class AddSuiteFormTest(case.DBTestCase):
         self.assertEqual(suite.name, "Foo")
         self.assertEqual(suite.description, "foo desc")
         self.assertEqual(suite.created_by, u)
+
+
+    def test_add_with_cases(self):
+        """Can add cases to a new suite."""
+        c = self.F.CaseFactory()
+
+        f = self.form(
+            {
+                "product": str(c.product.id),
+                "name": "some name",
+                "description": "some desc",
+                "status": "draft",
+                "cases": [str(c.id)],
+                },
+            )
+
+        self.assertTrue(f.is_valid())
+        suite = f.save()
+
+        self.assertEqual(set(suite.cases.all()), set([c]))
+
+
+    def test_product_id_attrs(self):
+        """Product and cases options have data-product-id."""
+        case = self.F.CaseFactory.create()
+
+        f = self.form()
+
+        self.assertEqual(
+            [
+                c[1].attrs["data-product-id"]
+                for c in f.fields["product"].choices
+                if c[0]
+                ],
+            [case.product.id]
+            )
+        self.assertEqual(
+            [
+                c[1].attrs["data-product-id"]
+                for c in f.fields["cases"].choices
+                if c[0]
+                ],
+            [case.product.id]
+            )

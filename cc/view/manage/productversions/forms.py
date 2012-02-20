@@ -49,10 +49,7 @@ class AddProductVersionForm(EditProductVersionForm):
     clone_envs_from = ccforms.CCModelChoiceField(
         required=False,
         queryset=model.ProductVersion.objects.all(),
-        choice_attrs=lambda pv: {
-            "data-product-id": pv.product.id,
-            "data-order": pv.order
-            }
+        choice_attrs=ccforms.product_id_attrs,
         )
 
 
