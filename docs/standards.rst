@@ -65,20 +65,6 @@ Line length
 Limit all lines to a maximum of 79 characters.
 
 
-Whitespace
-''''''''''
-
-Use four-space indents. No tabs.
-
-Strip all trailing whitespace. Configure your editor to show trailing
-whitespace, or automatically strip it on save. ``git diff --check`` will also
-warn about trailing whitespace.
-
-Empty lines consisting of only whitespace are also considered "trailing
-whitespace". Empty lines should *not* be "indented" with trailing whitespace to
-match surrounding code indentation.
-
-
 Docstrings
 ''''''''''
 
@@ -111,6 +97,63 @@ and opened with a double colon.
 Always use triple double-quotes for enclosing docstrings.
 
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
+
+Imports
+'''''''
+
+Outside of test code, prefer module-level imports to imports within a function
+or method. If the latter are necessary to avoid circular imports, consider
+reorganizing the dependency hierarchy of the modules involved to avoid the
+circular dependency.
+
+Module-level imports should all occur at the top of the module, prior to any
+other code in the module. The following types of imports should appear in the
+following order (omitted if not present), each group of imports separated from
+the next by a single blank line:
+
+1. Python standard library imports.
+
+2. Django core imports.
+
+3. Django contrib imports.
+
+4. Other third-party module imports.
+
+5. Imports from other modules in Case Conductor.
+
+Within each group, order imports alphabetically.
+
+For imports from within Case Conductor, use explicit relative imports for
+imports from the same package or the parent package (i.e. where the explicit
+relative import path begins with one or two dots). For more distant imports,
+it's usually more readable to give the full absolute path. Thus, for code in
+``cc.view.manage.runs.views``, you could do ``from .forms import AddRunForm``
+and ``from ..cases.forms import AddCaseForm``, but it's probably better to do
+``from cc.view.lists import decorators`` rather than ``from ....lists import
+decorators``; more than two dots become difficult to distinguish visually.
+
+Never use implicit relative imports; if an import does not begin with a dot, it
+should be a top-level module. In other words, if ``models.py`` is a sibling
+module, always ``from . import models``, never just ``import models``.
+
+
+Whitespace
+''''''''''
+
+Use four-space indents. No tabs.
+
+Strip all trailing whitespace. Configure your editor to show trailing
+whitespace, or automatically strip it on save. ``git diff --check`` will also
+warn about trailing whitespace.
+
+Empty lines consisting of only whitespace are also considered "trailing
+whitespace". Empty lines should *not* be "indented" with trailing whitespace to
+match surrounding code indentation.
+
+Separate classes and module-level functions with three blank lines. Separate
+class methods with two blank lines. Single blank lines may be used within
+functions and methods to logically group lines of code.
 
 
 Line continuations
