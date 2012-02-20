@@ -1,12 +1,6 @@
 Coding Standards
 ================
 
-A consistent coding style helps make code easier to read and maintain. Many of
-these rules are a matter of preference and an alternative choice would be
-equally fine, but follow them anyway for the sake of consistency within this
-codebase.
-
-
 Python
 ------
 
@@ -48,6 +42,11 @@ between tests and are difficult to maintain.
 
 Style
 ~~~~~
+
+A consistent coding style helps make code easier to read and maintain. Many of
+these rules are a matter of preference and an alternative choice would be
+equally fine, but follow them anyway for the sake of consistency within this
+codebase.
 
 If in doubt, follow :pep:`8`, Python's own style guide.
 
@@ -116,14 +115,13 @@ Line continuations
 ''''''''''''''''''
 
 Never use backslash line continuations, use Python's implicit line
-continuations within brackets/braces/parentheses. If necessary, prefer a line
-continuation within extraneous grouping parentheses to a backslash
-continuation.
+continuations within brackets/braces/parentheses. If necessary, prefer
+extraneous grouping parentheses to a backslash continuation.
 
 All indents should be exactly four spaces.
 
 The first place to wrap a long line is immediately after the first opening
-parenthesis or brace, or bracket::
+parenthesis, brace or bracket::
 
     foo.some_long_method_name(
         arg_one, arg_two, arg_three, keyword="arg")
@@ -152,10 +150,21 @@ addition/removal of items with full-line cut/paste). For example::
         "something else": "foo",
         }
     
-    my_list_comprension = [
+    my_list_comprehension = [
         x[0] for x in my_list_of_tuples
         if x[1] is not None
         ]
+
+
+One exception to the four-space indents rule is when a line continuation occurs
+in an ``if`` test or another block-opening clause. In this case, indent the
+hanging lines eight spaces to avoid visual confusion between the line
+continuations and the start of the code block::
+
+    if (something and
+            something_else and
+            something_else_again):
+        do_something()
 
 
 Comments
@@ -172,9 +181,8 @@ or the API improved so the behavior is less surprising, before adding a
 comment.
 
 Use ``@@@`` in a comment to mark code that requires future attention. This
-should be avoided everywhere but in feature branches, but sometimes it's
-unavoidable. This marker should always appear with explanation of why more
-attention is needed, or what is missing from the current code.
+marker should always appear with explanation of why more attention is needed,
+or what is missing from the current code.
 
 
 Quotes
