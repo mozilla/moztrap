@@ -44,8 +44,8 @@ Style
 ~~~~~
 
 A consistent coding style helps make code easier to read and maintain. Many of
-these rules are a matter of preference and an alternative choice would be
-equally fine, but follow them anyway for the sake of consistency within this
+these rules are a matter of preference and an alternate choice would serve
+equally well, but follow them anyway for the sake of consistency within this
 codebase.
 
 If in doubt, follow :pep:`8`, Python's own style guide.
@@ -198,4 +198,4 @@ Javascript
 
 Javascript code should pass `JSLint`_.
 
-.. _ JSLint: http://www.jslint.com
+.. _JSLint: http://www.jslint.com
