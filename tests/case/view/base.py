@@ -132,8 +132,9 @@ class ViewTestCase(WebTest):
         self.assertEqual(
             actual,
             count,
-            "Element {0}({1}, {2}) is in the list {3} times, not {4}.".format(
-                element, args, kwargs, actual, count)
+            "Element {0}({1}, {2}) is in the list {3} times, not {4}. "
+            "Full HTML: {5}".format(
+                element, args, kwargs, actual, count, html)
             )
 
 
@@ -185,3 +186,116 @@ class FormViewTestCase(AuthenticatedViewTestCase):
     def get_form(self, *args, **kwargs):
         """Get the manage list form; passes args/kwargs on to self.get()."""
         return self.get(*args, **kwargs).forms[self.form_id]
+
+
+
+class ListViewTestCase(AuthenticatedViewTestCase):
+    """Base class for testing list views."""
+    # subclasses should specify these:
+    factory = None       # factory for creating objects in this list
+    name_attr = "name"   # char attribute that should appear in list
+
+
+    def _make_soup(self, response):
+        """
+        Given an HTML or JSON response, return a BeautifulSoup object.
+
+        If the response is JSON, looks for the "html" key.
+
+        """
+        if "html" in response.content_type:
+            html = response.html
+        elif "json" in response.content_type:
+            html = BeautifulSoup(response.json["html"])
+        else:
+            self.fail(
+                "Response content-type {0} is neither JSON nor HTML.".format(
+                    response.content_type)
+                )
+
+        return html
+
+
+    def assertInList(self, response, name, count=1):
+        """Assert that item ``name`` is in the list ``count`` times."""
+        soup = self._make_soup(response)
+        itemlist = soup.find(True, "itemlist")
+        if itemlist is None:
+            self.fail("itemlist not found in: {0}".format(soup))
+        self.assertElement(
+            itemlist,
+            "h3",
+            title=name,
+            count=count
+            )
+
+
+    def assertNotInList(self, response, name):
+        """Assert that item ``name`` is not in the list."""
+        self.assertInList(response, name, 0)
+
+
+    def assertOrderInList(self, response, *names):
+        """Assert that ``names`` appear in list in given order."""
+        soup = self._make_soup(response)
+
+        all_names = [el.text for el in soup.findAll("h3", title=True)]
+
+        indices = []
+
+        for name in names:
+            try:
+                indices.append((all_names.index(name), name))
+            except ValueError:
+                self.fail("{0} does not appear in list.".format(name))
+
+        actual_order = sorted(indices, key=lambda t: t[0])
+
+        self.assertEqual(
+            [t[1] for t in actual_order],
+            [t[1] for t in indices],
+            )
+
+
+    def test_list(self):
+        """Displays a list of objects."""
+        self.factory.create(**{self.name_attr: "Foo Bar"})
+
+        res = self.get()
+
+        self.assertInList(res, "Foo Bar")
+
+
+
+class ListFinderTests(object):
+    """Extra tests for manage lists with finder."""
+    def test_finder(self):
+        """Finder is present in context with list of products."""
+        p = self.F.ProductFactory.create(name="Foo Product")
+
+        res = self.get()
+
+        res.mustcontain("Foo Product")
+        res.mustcontain(
+            "data-sub-url="
+            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
+
+
+    def test_finder_ajax(self):
+        """Finder intercepts its ajax requests to return child obj lists."""
+        pv = self.F.ProductVersionFactory.create(version="1.0.1")
+
+        res = self.get(
+            params={
+                "finder": "1",
+                "col": "productversions",
+                "id": str(pv.product.id)
+                },
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertIn("1.0.1", res.json["html"])
+        self.assertIn(
+            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
+            res.json["html"]
+            )
