@@ -312,9 +312,8 @@ class NotDeletedCount(models.Count):
         try:
             table, field = col
         except ValueError:
-            raise ValueError("Must use NotDeletedCount with a related field.")
-        else:
-            col = NotDeletedCountColumn(table, field)
+            table, field = None, col
+        col = NotDeletedCountColumn(table, field)
         return super(NotDeletedCount, self).add_to_query(
             query, alias, col, source, is_summary)
 
@@ -330,11 +329,14 @@ class NotDeletedCountColumn(object):
 
     def as_sql(self, qn, connection):
         """Return CASE statement to select only not-deleted objects."""
-        return (
-            "CASE WHEN {0}.{1} IS NULL THEN {0}.{2} ELSE NULL END".format(
-                qn(self.table), qn("deleted_on"), qn(self.field)
-                )
-            )
+        field = qn(self.field)
+        deleted_on = qn("deleted_on")
+        if self.table is not None:
+            table = qn(self.table)
+            field = "{0}.{1}".format(table, field)
+            deleted_on = "{0}.{1}".format(table, deleted_on)
+        return "CASE WHEN {0} IS NULL THEN {1} ELSE NULL END".format(
+            deleted_on, field)
 
 
 
