@@ -1,6 +1,8 @@
 Coding Standards
 ================
 
+.. contents:: :local:
+
 Python
 ------
 

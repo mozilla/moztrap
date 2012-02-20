@@ -1,6 +1,12 @@
 Development
 ===========
 
+.. toctree::
+   :hidden:
+
+   standards
+
+
 Coding standards
 ----------------
 
