@@ -3,6 +3,13 @@ Coding Standards
 
 .. contents:: :local:
 
+License blocks
+--------------
+
+Every code file (including Python, Javascript, and Sass, but excluding
+templates) should begin with the standard license comment header block.
+
+
 Python
 ------
 
@@ -51,12 +58,6 @@ equally well, but follow them anyway for the sake of consistency within this
 codebase.
 
 If in doubt, follow :pep:`8`, Python's own style guide.
-
-
-License blocks
-''''''''''''''
-
-Every code module should include the standard license comment header block.
 
 
 Line length
