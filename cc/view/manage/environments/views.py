@@ -165,7 +165,7 @@ def productversion_environments_edit(request, productversion_id):
             else:
                 env = model.Environment.objects.create(user=request.user)
                 env.elements.add(*element_ids)
-            productversion.environments.add(env)
+                productversion.environments.add(env)
         elif "action-remove" in request.POST:
             env_id = request.POST.get("action-remove")
             productversion.environments.remove(env_id)

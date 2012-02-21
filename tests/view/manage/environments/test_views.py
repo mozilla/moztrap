@@ -500,7 +500,7 @@ class EditProfileViewTest(case.view.FormViewTestCase):
 
     def test_blank_post(self):
         """Posting with no action key does nothing."""
-        res = self.ajax_post("profile-name-form", {})
+        res = self.ajax_post(self.form_id, {})
 
         self.assertEqual(res.status_int, 200)
 
@@ -575,6 +575,135 @@ class EditProfileViewTest(case.view.FormViewTestCase):
         env = self.profile.environments.get()
         self.assertEqual(set(env.elements.all()), set([e1, e2]))
         self.assertEqual(env.profile, self.profile)
+
+
+    def test_no_elements(self):
+        """Add env with no elements results in error message."""
+        res = self.ajax_post(
+            "add-environment-form",
+            {"add-environment": "1"},
+            )
+
+        self.assertEqual(
+            res.json["messages"],
+            [
+                {
+                    "message": "Please select some environment elements.",
+                    "level": 40,
+                    "tags": "error",
+                    }
+                ],
+            )
+
+
+
+class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
+    """
+    Tests for editing environments of a product version.
+
+    Which is really mostly a manage-list of environments.
+
+    """
+    form_id = "productversion-environments-form"
+
+
+    def setUp(self):
+        """Setup; create a product version, give user permission."""
+        super(EditProductVersionEnvironmentsViewTest, self).setUp()
+        self.productversion = self.F.ProductVersionFactory.create()
+        self.add_perm("manage_products")
+
+
+    def factory(self, **kwargs):
+        """Create an environment for this productversion."""
+        env = self.F.EnvironmentFactory.create(**kwargs)
+        self.productversion.environments.add(env)
+        return env
+
+
+    @property
+    def url(self):
+        """Shortcut for edit-productversion-envs url."""
+        return reverse(
+            "manage_productversion_environments",
+            kwargs={"productversion_id": self.productversion.id}
+            )
+
+
+    def test_filter_by_env_elements(self):
+        """Can filter by environment elements."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.productversion.environments.add(*envs)
+
+        res = self.get(
+            params={"filter-envelement": envs[0].elements.get().id})
+
+        res.mustcontain("Linux")
+        self.assertNotIn(res.body, "Windows")
+
+
+    def test_remove(self):
+        """Can remove environments from productversion."""
+        self.factory()
+
+        self.get_form().submit(
+            name="action-remove",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
+
+        self.assertEqual(self.productversion.environments.count(), 0)
+
+
+    def test_manage_products_permission_required(self):
+        """Requires manage products permission."""
+        res = self.app.get(self.url)
+
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+
+
+    def ajax_post(self, form_id, data):
+        """Post given data from given form via Ajax, along with CSRF token."""
+        form = self.get().forms[form_id]
+        defaults = {
+            "csrfmiddlewaretoken": form.fields.get(
+                "csrfmiddlewaretoken")[0].value,
+            }
+        defaults.update(data)
+
+        return self.post(
+            defaults,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+
+    def test_blank_post(self):
+        """Posting with no action key does nothing."""
+        res = self.ajax_post(self.form_id, {})
+
+        self.assertEqual(res.status_int, 200)
+
+
+    def test_add_environment(self):
+        """Can add an environment from arbitrary elements."""
+        e1 = self.F.ElementFactory.create(name="Linux")
+        e2 = self.F.ElementFactory.create(name="Firefox")
+        self.F.ElementFactory.create()
+
+        res = self.ajax_post(
+            "add-environment-form",
+            {
+                "add-environment": "1",
+                "element-element": [str(e1.id), str(e2.id)],
+                },
+            )
+
+        self.assertIn("Linux", res.json["html"])
+        self.assertIn("Firefox", res.json["html"])
+        env = self.productversion.environments.get()
+        self.assertEqual(set(env.elements.all()), set([e1, e2]))
+        self.assertEqual(self.productversion.environments.get(), env)
 
 
     def test_no_elements(self):
