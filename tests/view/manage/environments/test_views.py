@@ -20,6 +20,9 @@ Tests for environment management views.
 
 """
 from django.core.urlresolvers import reverse
+from django.http import Http404
+
+from mock import Mock
 
 from tests import case
 
@@ -795,3 +798,137 @@ class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
         res = self.get()
 
         self.assertEqual(res.json, {"suggestions": []})
+
+
+
+class NarrowEnvironmentsViewTests(object):
+    """Common tests for narrow-environments view."""
+    form_id = "narrow-envs-form"
+    # subclasses should set these
+    factory = None
+    object_type = None
+    redirect_to = None
+
+
+    def setUp(self):
+        """Setup - create an object of the right type."""
+        super(NarrowEnvironmentsViewTests, self).setUp()
+        self.object = self.factory()
+
+
+    @property
+    def url(self):
+        "Shortcut for narrow-environments url."""
+        return reverse(
+            "manage_narrow_environments",
+            kwargs={
+                "object_type": self.object_type,
+                "object_id": self.object.id,
+                }
+            )
+
+
+    def test_unknown_object_type(self):
+        """Passing an unknown object_type raises 404."""
+        # Have to test this by calling the view func directly, as the URL
+        # pattern prevents a bad object_type from getting through.
+        from cc.view.manage.environments.views import narrow_environments
+        req = Mock()
+        req.user = self.user
+
+        with self.assertRaises(Http404):
+            narrow_environments(req, "foo", "1")
+
+
+    def test_list_parent_envs(self):
+        """Lists parent productversion environments; mine selected."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows", "OS X"]})
+        self.object.productversion.environments.add(envs[0], envs[1])
+        self.object.environments.add(envs[0])
+
+        res = self.get()
+
+        # parent env also assigned to object is selected
+        self.assertElement(
+            res.html,
+            "input",
+            attrs={
+                "type": "checkbox",
+                "name": "environments",
+                "value": str(envs[0].id),
+                "checked": True,
+                },
+            )
+        # parent env not assigned to object is not selected
+        self.assertElement(
+            res.html,
+            "input",
+            attrs={
+                "type": "checkbox",
+                "name": "environments",
+                "value": str(envs[1].id),
+                "checked": None,
+                },
+            )
+        # not a parent env; not in list at all
+        self.assertElement(
+            res.html,
+            "input",
+            attrs={
+                "type": "checkbox",
+                "name": "environments",
+                "value": str(envs[2].id),
+                },
+            count=0,
+            )
+
+
+    def test_set_envs(self):
+        """Can set object's environments."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows", "OS X"]})
+        self.object.productversion.environments.add(envs[0], envs[1])
+        self.object.environments.add(envs[0])
+
+        form = self.get_form()
+        for field in form.fields["environments"]:
+            if field.value is None:
+                field.value = str(envs[1].id)
+            else:
+                field.value = None
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse(self.redirect_to))
+        self.assertEqual(self.object.environments.get(), envs[1])
+
+
+
+
+class NarrowRunEnvironmentsTest(NarrowEnvironmentsViewTests,
+                                case.view.FormViewTestCase
+                                ):
+    """Tests for narrowing run environments."""
+    object_type = "run"
+    redirect_to = "manage_runs"
+
+
+    @property
+    def factory(self):
+        """Run factory."""
+        return self.F.RunFactory
+
+
+
+class NarrowCaseVersionEnvironmentsTest(NarrowEnvironmentsViewTests,
+                                        case.view.FormViewTestCase
+                                        ):
+    """Tests for narrowing caseversion environments."""
+    object_type = "caseversion"
+    redirect_to = "manage_cases"
+
+
+    @property
+    def factory(self):
+        """CaseVersion factory."""
+        return self.F.CaseVersionFactory
