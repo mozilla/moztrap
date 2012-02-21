@@ -132,7 +132,7 @@ class ViewTestCase(WebTest):
         self.assertEqual(
             actual,
             count,
-            "Element {0}({1}, {2}) is in the list {3} times, not {4}. "
+            "Element {0}({1}, {2}) is present {3} times, not {4}. "
             "Full HTML: {5}".format(
                 element, args, kwargs, actual, count, html)
             )
@@ -196,7 +196,7 @@ class ListViewTestCase(AuthenticatedViewTestCase):
     name_attr = "name"   # char attribute that should appear in list
 
 
-    def _make_soup(self, response):
+    def soup(self, response):
         """
         Given an HTML or JSON response, return a BeautifulSoup object.
 
@@ -218,7 +218,7 @@ class ListViewTestCase(AuthenticatedViewTestCase):
 
     def assertInList(self, response, name, count=1):
         """Assert that item ``name`` is in the list ``count`` times."""
-        soup = self._make_soup(response)
+        soup = self.soup(response)
         itemlist = soup.find(True, "itemlist")
         if itemlist is None:
             self.fail("itemlist not found in: {0}".format(soup))
@@ -237,7 +237,7 @@ class ListViewTestCase(AuthenticatedViewTestCase):
 
     def assertOrderInList(self, response, *names):
         """Assert that ``names`` appear in list in given order."""
-        soup = self._make_soup(response)
+        soup = self.soup(response)
 
         all_names = [el.text for el in soup.findAll("h3", title=True)]
 
