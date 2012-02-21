@@ -34,8 +34,6 @@ from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
-from ..finders import ManageFinder
-
 from . import forms
 from .decorators import category_element_ajax_add_edit
 
@@ -46,7 +44,6 @@ from .decorators import category_element_ajax_add_edit
     model.Profile,
     ["delete", "clone"],
     permission="environments.manage_environments")
-@lists.finder(ManageFinder)
 @lists.filter("profiles", filterset_class=ProfileFilterSet)
 @lists.sort("profiles")
 @ajax("manage/environment/profile_list/_profiles_list.html")
