@@ -20,16 +20,16 @@ from django.core.management.base import BaseCommand, CommandError
 import json
 
 from cc.model.core.models import Product, ProductVersion
-from cc.model.library.case_importer import CaseImporter
+from cc.model.library.importer import Importer
 
 class Command(BaseCommand):
-    args = '<product_name> <product_version> <filename>'
-    help = ('Imports the cases from a JSON file into '
-            'the specified Product Version')
+    args = "<product_name> <product_version> <filename>"
+    help = ("Imports the cases from a JSON file into "
+            "the specified Product Version")
 
 
     def handle(self, *args, **options):
-        if len(args) < 3:
+        if not len(args) == 3:
             raise CommandError("Usage: {0}".format(self.args))
 
         try:
@@ -63,24 +63,30 @@ class Command(BaseCommand):
                         'Product Version "{0}" does not exist'.format(
                         product_version))
 
-                self.write_result(CaseImporter().import_data(
+                self.write_result(Importer().import_data(
                     product_version, case_data))
 
 
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
 
+
     def write_result(self, result):
+        """
+        Print the result to the command line.  Format will look like this:
 
-        result['skipped'].insert(0, "Skipped:")
-        result['warnings'].insert(0, "Warnings:")
+        Skipped: bad steps in case: case title4: instruction required...
+        Skipped: "name" field required for a case: {u'suites': [u'ERROR ...
+        Warning: no steps in case: case title3
+        Imported 3 cases
+        Imported 5 suites
 
-        output = [
-            "\n  ".join(result['skipped']),
-            "\n  ".join(result['warnings']),
-            "Imported {0} cases".format(result['cases']),
-            "Imported {0} suites".format(result['suites']),
-            "\n"
-        ]
+        """
+
+        output = ["Skipped: " + x for x in result["skipped"]]
+        output.extend(["Warning: " + x for x in result["warnings"]])
+        output.append("Imported {0} cases".format(result["cases"]))
+        output.append("Imported {0} suites".format(result["suites"]))
+        output.append("")
 
         self.stdout.write("\n".join(output))

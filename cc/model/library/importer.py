@@ -25,7 +25,7 @@ from ..tags.models import Tag
 from .models import Case, CaseVersion, CaseStep, Suite, SuiteCase
 
 
-class CaseImporter(object):
+class Importer(object):
     """
     Importer for Suites and Cases.  The object should be structured like this.
     The "suites" or "cases" sections are optional::
@@ -87,17 +87,17 @@ class CaseImporter(object):
         # this a a mapping of cases to suites that we will build and,
         # then use in the final stage to finally link up
 
-        if 'suites' in case_data:
+        if "suites" in case_data:
             self.suite_map = {
-                    x['name']: {'description': x['description']} for x in \
-                    case_data['suites']}
+                    x["name"]: {"description": x["description"]} for x in \
+                    case_data["suites"]}
         else:
             self.suite_map = {}
 
         # no reason why the data couldn't include ONLY suites.  So function
         # gracefully if no cases.
-        if 'cases' in case_data:
-            self.import_cases(product_version, case_data['cases'])
+        if "cases" in case_data:
+            self.import_cases(product_version, case_data["cases"])
 
         # now create the suites and add cases to them where mapped
         self.import_mapped_suites(product_version.product)
@@ -118,20 +118,20 @@ class CaseImporter(object):
 
         for new_case in case_list:
 
-            if not 'name' in new_case:
+            if not "name" in new_case:
                 self.skipped.append(
                     '"name" field required for a case: {0}'.format(new_case)
                 )
                 continue
 
             # Don't re-import if we have the same case name and Product Version
-            if CaseVersion.objects.filter(name=new_case['name'],
+            if CaseVersion.objects.filter(name=new_case["name"],
                                           productversion=product_version
                                           ).exists():
 
                 self.skipped.append(
                     ('product "{0}" already has a case named "{1}".'.format(
-                        product_version.product.name, new_case['name'])))
+                        product_version.product.name, new_case["name"])))
 
                 continue
 
@@ -149,14 +149,13 @@ class CaseImporter(object):
             case_version = CaseVersion.objects.create(
                 productversion = product_version,
                 case = case,
-                name = new_case['name'],
-                description = new_case.get('description',
-                None))
+                name = new_case["name"],
+                description = new_case.get("description", ""))
 
 
-            if 'created_by' in new_case:
+            if "created_by" in new_case:
                 try:
-                    user = User.objects.get(email=new_case['created_by'])
+                    user = User.objects.get(email=new_case["created_by"])
                     case_version.created_by = user
                     case_version.save()
 
@@ -164,29 +163,29 @@ class CaseImporter(object):
                     self.warnings.append(
                         ('user with email "{0}" does not exist. '
                         'Setting created_by to None for {1}\n').format(
-                        new_case['created_by'], new_case['name']))
+                        new_case["created_by"], new_case["name"]))
 
 
 
             # add the steps to this case version
-            if 'steps' in new_case:
+            if "steps" in new_case:
                 try:
-                    self.import_steps(case_version, new_case['steps'])
+                    self.import_steps(case_version, new_case["steps"])
                 except ValueError as e:
                     self.skipped.append("bad steps in case: {0}: {1}".format(
                         case_version, e))
                     transaction.savepoint_rollback(sid)
                     continue
             else:
-                warnings.append("no steps in case: {0}".format(case_version))
+                self.warnings.append("no steps in case: {0}".format(case_version))
 
             # map the tags to the case version
-            if 'tags' in new_case:
-                self.map_tags(case_version, new_case['tags'])
+            if "tags" in new_case:
+                self.map_tags(case_version, new_case["tags"])
 
             # map this case to the suite
-            if 'suites' in new_case:
-                self.map_suites(case, new_case['suites'])
+            if "suites" in new_case:
+                self.map_suites(case, new_case["suites"])
 
             # case has been created, increment our count for reporting
             self.num_cases+=1
@@ -204,12 +203,12 @@ class CaseImporter(object):
         """
 
         for step_num, new_step in enumerate(step_data):
-            if 'instruction' in new_step:
+            if "instruction" in new_step:
                 casestep = CaseStep.objects.create(
                         caseversion = case_version,
                         number = step_num+1,
-                        instruction = new_step['instruction'],
-                        expected = new_step.get('expected', None))
+                        instruction = new_step["instruction"],
+                        expected = new_step.get("expected", None))
             else:
                 raise ValueError(
                     "instruction required for every step: {0}".format(
@@ -255,7 +254,7 @@ class CaseImporter(object):
 
         for suite_name in suite_data:
             suite = self.suite_map.setdefault(suite_name, {})
-            cases = suite.setdefault('cases', [])
+            cases = suite.setdefault("cases", [])
             cases.append(case)
 
     def import_mapped_suites(self, product):
@@ -264,14 +263,14 @@ class CaseImporter(object):
             suite, created = Suite.objects.get_or_create(name=suite_name,
                                                          product=product)
             if not suite.description:
-                suite.description = suite_data.get('description', '')
+                suite.description = suite_data.get("description", "")
             suite.save()
 
             if created:
                 self.num_suites +=1
 
             # now add any cases the suite may have specified
-            if 'cases' in suite_data:
-                for case in suite_data['cases']:
+            if "cases" in suite_data:
+                for case in suite_data["cases"]:
                     SuiteCase.objects.create(case=case, suite=suite)
 
