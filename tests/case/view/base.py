@@ -259,7 +259,7 @@ class ListViewTestCase(AuthenticatedViewTestCase):
 
     def test_list(self):
         """Displays a list of objects."""
-        self.factory.create(**{self.name_attr: "Foo Bar"})
+        self.factory(**{self.name_attr: "Foo Bar"})
 
         res = self.get()
 

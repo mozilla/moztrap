@@ -1,7 +1,7 @@
 {% load pagination %}
 
 <div class="itemlist envlist action-ajax-replace">
-  <form method="POST" action="{{ request.get_full_path }}" id="">
+  <form method="POST" action="{{ request.get_full_path }}" id="{% block formid %}{% endblock %}">
     {% csrf_token %}
 
     {% include "manage/environment/env_list/_envs_listordering.html" %}

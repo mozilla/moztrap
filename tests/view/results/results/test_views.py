@@ -32,12 +32,6 @@ class ResultsViewTest(case.view.ListViewTestCase,
     name_attr = "tester__username"
 
 
-    @property
-    def factory(self):
-        """The Result factory."""
-        return self.F.ResultFactory
-
-
     def setUp(self):
         """Results list view requires a runcaseversion."""
         super(ResultsViewTest, self).setUp()
@@ -50,25 +44,16 @@ class ResultsViewTest(case.view.ListViewTestCase,
         return reverse("results_results", kwargs={"rcv_id": self.rcv.id})
 
 
-    def create_result(self, **kwargs):
+    def factory(self, **kwargs):
         """Create a result for this test case's runcaseversion."""
         kwargs.setdefault("runcaseversion", self.rcv)
         return self.F.ResultFactory.create(**kwargs)
 
 
-    def test_list(self):
-        """Displays a list of objects."""
-        self.create_result(tester__username="Foo Bar")
-
-        res = self.get()
-
-        self.assertInList(res, "Foo Bar")
-
-
     def test_filter_by_status(self):
         """Can filter by status."""
-        self.create_result(status="passed", tester__username="Tester 1")
-        self.create_result(status="failed", tester__username="Tester 2")
+        self.factory(status="passed", tester__username="Tester 1")
+        self.factory(status="failed", tester__username="Tester 2")
 
         res = self.get(params={"filter-status": "failed"})
 
@@ -78,8 +63,8 @@ class ResultsViewTest(case.view.ListViewTestCase,
 
     def test_filter_by_tester(self):
         """Can filter by tester."""
-        r = self.create_result(tester__username="Tester 1")
-        self.create_result(tester__username="Tester 2")
+        r = self.factory(tester__username="Tester 1")
+        self.factory(tester__username="Tester 2")
 
         res = self.get(params={"filter-tester": str(r.tester.id)})
 
@@ -89,8 +74,8 @@ class ResultsViewTest(case.view.ListViewTestCase,
 
     def test_filter_by_comment(self):
         """Can filter by name."""
-        self.create_result(comment="foo", tester__username="Tester 1")
-        self.create_result(comment="bar", tester__username="Tester 2")
+        self.factory(comment="foo", tester__username="Tester 1")
+        self.factory(comment="bar", tester__username="Tester 2")
 
         res = self.get(params={"filter-comment": "fo"})
 
@@ -102,9 +87,9 @@ class ResultsViewTest(case.view.ListViewTestCase,
         """Can filter by environment elements."""
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"]})
-        self.create_result(
+        self.factory(
             tester__username="Tester 1", environment=envs[0])
-        self.create_result(
+        self.factory(
             tester__username="Tester 2", environment=envs[1])
 
         res = self.get(
@@ -116,8 +101,8 @@ class ResultsViewTest(case.view.ListViewTestCase,
 
     def test_sort_by_status(self):
         """Can sort by status."""
-        self.create_result(tester__username="Tester 1", status="passed")
-        self.create_result(tester__username="Tester 2", status="failed")
+        self.factory(tester__username="Tester 1", status="passed")
+        self.factory(tester__username="Tester 2", status="failed")
 
         res = self.get(
             params={"sortfield": "status", "sortdirection": "asc"})
@@ -127,8 +112,8 @@ class ResultsViewTest(case.view.ListViewTestCase,
 
     def test_sort_by_tester(self):
         """Can sort by tester."""
-        self.create_result(tester__username="Tester 1")
-        self.create_result(tester__username="Tester 2")
+        self.factory(tester__username="Tester 1")
+        self.factory(tester__username="Tester 2")
 
         res = self.get(
             params={"sortfield": "tester__username", "sortdirection": "desc"}

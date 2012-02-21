@@ -418,3 +418,179 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
             )
 
         self.assertEqual(self.refresh(e).name, "FooElement")
+
+
+
+class EditProfileViewTest(case.view.FormViewTestCase):
+    """
+    Tests for editing an environment profile.
+
+    Which is really mostly a manage-list of environments.
+
+    """
+    form_id = "profile-environments-form"
+
+
+    def setUp(self):
+        """Setup for edit-profile; create a profile, give user permission."""
+        super(EditProfileViewTest, self).setUp()
+        self.profile = self.F.ProfileFactory.create()
+        self.add_perm("manage_environments")
+
+
+    def factory(self, **kwargs):
+        """Create an environment for this profile."""
+        kwargs.setdefault("profile", self.profile)
+        return self.F.EnvironmentFactory.create(**kwargs)
+
+
+    @property
+    def url(self):
+        """Shortcut for edit-profile url."""
+        return reverse(
+            "manage_profile_edit", kwargs={"profile_id": self.profile.id})
+
+
+    def test_filter_by_env_elements(self):
+        """Can filter by environment elements."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]}, profile=self.profile)
+
+        res = self.get(
+            params={"filter-envelement": envs[0].elements.get().id})
+
+        res.mustcontain("Linux")
+        self.assertNotIn(res.body, "Windows")
+
+
+    def test_remove(self):
+        """Can remove environments from profile."""
+        o = self.factory()
+
+        self.get_form().submit(
+            name="action-remove_from_profile",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
+
+        self.assertEqual(self.refresh(o).deleted_by, self.user)
+
+
+    def test_manage_environments_permission_required(self):
+        """Requires manage environments permission."""
+        res = self.app.get(self.url)
+
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+
+
+    def ajax_post(self, form_id, data):
+        """Post given data from given form via Ajax, along with CSRF token."""
+        form = self.get().forms[form_id]
+        defaults = {
+            "csrfmiddlewaretoken": form.fields.get(
+                "csrfmiddlewaretoken")[0].value,
+            }
+        defaults.update(data)
+
+        return self.post(
+            defaults,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+
+    def test_blank_post(self):
+        """Posting with no action key does nothing."""
+        res = self.ajax_post("profile-name-form", {})
+
+        self.assertEqual(res.status_int, 200)
+
+
+    def test_save_profile_name(self):
+        """Can change the profile name."""
+        res = self.ajax_post(
+            "profile-name-form",
+            {
+                "save-profile-name": "1",
+                "profile-name": "FooProf",
+                },
+            )
+
+        self.assertEqual(
+            res.json,
+            {
+                "messages": [
+                    {
+                        "message": "Profile name saved!",
+                        "level": 25,
+                        "tags": "success",
+                        }
+                    ],
+                "success": True,
+                }
+            )
+        self.assertEqual(self.refresh(self.profile).name, "FooProf")
+
+
+    def test_blank_profile_name(self):
+        """Blank profile name results in error message."""
+        res = self.ajax_post(
+            "profile-name-form",
+            {
+                "save-profile-name": "1",
+                "profile-name": "",
+                },
+            )
+
+        self.assertEqual(
+            res.json,
+            {
+                "messages": [
+                    {
+                        "message": "Please enter a profile name.",
+                        "level": 40,
+                        "tags": "error",
+                        }
+                    ],
+                "success": False,
+                }
+            )
+
+
+    def test_add_environment(self):
+        """Can add an environment from arbitrary elements."""
+        e1 = self.F.ElementFactory.create(name="Linux")
+        e2 = self.F.ElementFactory.create(name="Firefox")
+        self.F.ElementFactory.create()
+
+        res = self.ajax_post(
+            "add-environment-form",
+            {
+                "add-environment": "1",
+                "element-element": [str(e1.id), str(e2.id)],
+                },
+            )
+
+        self.assertIn("Linux", res.json["html"])
+        self.assertIn("Firefox", res.json["html"])
+        env = self.profile.environments.get()
+        self.assertEqual(set(env.elements.all()), set([e1, e2]))
+        self.assertEqual(env.profile, self.profile)
+
+
+    def test_no_elements(self):
+        """Add env with no elements results in error message."""
+        res = self.ajax_post(
+            "add-environment-form",
+            {"add-environment": "1"},
+            )
+
+        self.assertEqual(
+            res.json["messages"],
+            [
+                {
+                    "message": "Please select some environment elements.",
+                    "level": 40,
+                    "tags": "error",
+                    }
+                ],
+            )
