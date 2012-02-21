@@ -46,7 +46,7 @@ class Importer(object):
                     "created_by": "cdawson@mozilla.com"
                     "steps": [
                         {
-                            "action": "action text",
+                            "instruction": "insruction text",
                             "expected": "expected text"
                         },
                     ]
@@ -54,9 +54,9 @@ class Importer(object):
             ]
         }
 
-    Instantiate a ``CaseImporter`` and call its ``import`` method::
+    Instantiate a ``Importer`` and call its ``import_data`` method::
 
-        importer = CaseImporter()
+        importer = Importer()
         data = importer.import_data(product_version, case_data)
 
     Returned data will be a dictionary with the following:
