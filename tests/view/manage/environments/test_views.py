@@ -723,3 +723,75 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
                     }
                 ],
             )
+
+
+
+class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
+    """Test for elements autocomplete view."""
+    @property
+    def url(self):
+        """Shortcut for element-autocomplete url."""
+        return reverse("manage_environment_autocomplete_elements")
+
+
+    def get(self, query=None):
+        """Shortcut for getting element-autocomplete url authenticated."""
+        url = self.url
+        if query is not None:
+            url = url + "?text=" + query
+        return self.app.get(url, user=self.user)
+
+
+    def test_matching_elements_json(self):
+        """Returns list of matching elements in JSON."""
+        e = self.F.ElementFactory.create(name="foo")
+
+        res = self.get("o")
+
+        self.assertEqual(
+            res.json,
+            {
+                "suggestions": [
+                    {
+                        "id": e.id,
+                        "name": "foo",
+                        "postText": "o",
+                        "preText": "f",
+                        "type": "element",
+                        "typedText": "o",
+                        }
+                    ]
+                }
+            )
+
+
+    def test_case_insensitive(self):
+        """Matching is case-insensitive, but pre/post are case-accurate."""
+        e = self.F.ElementFactory.create(name="FooBar")
+
+        res = self.get("oO")
+
+        self.assertEqual(
+            res.json,
+            {
+                "suggestions": [
+                    {
+                        "id": e.id,
+                        "name": "FooBar",
+                        "postText": "Bar",
+                        "preText": "F",
+                        "type": "element",
+                        "typedText": "oO",
+                        }
+                    ]
+                }
+            )
+
+
+    def test_no_query(self):
+        """If no query is provided, no elements are returned."""
+        self.F.ElementFactory.create(name="foo")
+
+        res = self.get()
+
+        self.assertEqual(res.json, {"suggestions": []})
