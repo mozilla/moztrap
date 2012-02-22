@@ -20,7 +20,7 @@ from django.core.management.base import BaseCommand, CommandError
 import json
 
 from cc.model.core.models import Product, ProductVersion
-from cc.model.library.importer import Importer
+from cc.model.library.importer import Importer, ImportResult
 
 class Command(BaseCommand):
     args = "<product_name> <product_version> <filename>"
@@ -72,21 +72,7 @@ class Command(BaseCommand):
 
 
     def write_result(self, result):
-        """
-        Print the result to the command line.  Format will look like this:
-
-        Skipped: bad steps in case: case title4: instruction required...
-        Skipped: "name" field required for a case: {u'suites': [u'ERROR ...
-        Warning: no steps in case: case title3
-        Imported 3 cases
-        Imported 5 suites
-
-        """
-
-        output = ["Skipped: " + x for x in result["skipped"]]
-        output.extend(["Warning: " + x for x in result["warnings"]])
-        output.append("Imported {0} cases".format(result["cases"]))
-        output.append("Imported {0} suites".format(result["suites"]))
-        output.append("")
-
-        self.stdout.write("\n".join(output))
+        """Print the result to the command line."""
+        result_list = result.get_as_list()
+        result_list.append("")
+        self.stdout.write("\n".join(result_list))
