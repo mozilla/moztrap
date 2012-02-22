@@ -27,8 +27,10 @@ from .models import Case, CaseVersion, CaseStep, Suite, SuiteCase
 
 class Importer(object):
     """
-    Importer for Suites and Cases.  The object should be structured like this.
-    The "suites" or "cases" sections are optional::
+    Importer for Suites and Cases.
+
+    The "suites" or "cases" sections are optional.
+    The object should be structured like this::
 
         {
             "suites": [
@@ -54,70 +56,94 @@ class Importer(object):
             ]
         }
 
-    Instantiate a ``Importer`` and call its ``import_data`` method::
+    Instantiate an ``Importer`` and call its ``import_data`` method::
 
         importer = Importer()
-        data = importer.import_data(product_version, case_data)
+        data = importer.import_data(productversion, case_data)
 
-    Returned data will be a dictionary with the following:
+    Returned data will be an ImportResult object with the following data:
 
     * cases: the number of cases imported
     * suites: the number of suites imported
     * skipped: list of items that could not be imported and some
       explanation why
     * warnings: list of warnings about the imported items, if any.
+
     """
 
+    def __init__(self):
+
+        # cache of user emails
+        self.user_cache = UserCache()
+
     @transaction.commit_on_success
-    def import_data(self, product_version, case_data):
+    def import_data(self, productversion, case_data):
         """
-        Import the given dictionary object into the database. Then return
-        an object that has the number of imported and skipped items.
+        Import the top-level dictionary of cases and suites.
+
+        Return an object that has the number of imported and skipped items.
+
         """
 
         # the result object used to keep track of import status
         result = ImportResult()
 
         # map of tags to caseversions so we can reduce lookups on the tags
-        self.tag_map = {}
+        tag_importer = TagImporter(productversion.product)
 
-        # this a a mapping of cases to suites that we will build and,
-        # then use in the final stage to finally link up
-
-        self.suite_map = {}
+        # map of suites to cases.  Map the initial dict, if one exists.
+        suite_importer = SuiteImporter(productversion.product)
         if "suites" in case_data:
-            for suite in case_data["suites"]:
-                if "name" in suite:
-                    self.suite_map[suite["name"]] = {
-                        "description": suite.get("description", "")
-                        }
-                else:
-                    result.warn(
-                        ImportResult.SKIP_SUITE_NO_NAME,
-                        suite,
-                        )
+            result.append(suite_importer.map_dict_list(case_data["suites"]))
 
 
         # no reason why the data couldn't include ONLY suites.  So function
         # gracefully if no cases.
         if "cases" in case_data:
             result.append(self.import_cases(
-                product_version,
+                productversion,
                 case_data["cases"],
+                suite_importer,
+                tag_importer,
                 ))
 
         # now create the suites and add cases to them where mapped
-        result.append(self.import_mapped_suites(product_version.product))
+        result.append(suite_importer.import_map())
 
         # now create the tags and add case versions to them where mapped
-        self.import_mapped_tags(product_version.product)
+        tag_importer.import_map()
 
         return result
 
-    def import_cases(self, product_version, case_list):
+    def import_cases(self, productversion, case_list,
+        suite_importer, tag_importer):
         """
-        Import the cases section of case_data.  This may include
-        suites that each case belongs to.
+        Import the test cases in the data.
+
+        This may include suites and tags that each case belongs to.  If a case
+        has no name, it will be skipped.  If a case has no steps, it will
+        be imported, but a warning will be given.  All fields are optional
+        with the exception of a name.
+
+        Case data should be in this format::
+
+            "cases": [
+                {
+                    "name": "case title",
+                    "description": "case description",
+                    "tags": ["tag1", "tag2", "tag3"],
+                    "suites": ["suite1 name", "suite2 name", "suite3 name"],
+                    "created_by": "cdawson@mozilla.com"
+                    "steps": [
+                        {
+                            "instruction": "insruction text",
+                            "expected": "expected text"
+                        },
+                    ]
+                }
+            ]
+
+
         """
 
         result = ImportResult()
@@ -132,9 +158,10 @@ class Importer(object):
                 continue
 
             # Don't re-import if we have the same case name and Product Version
-            if CaseVersion.objects.filter(name=new_case["name"],
-                                          productversion=product_version
-                                          ).exists():
+            if CaseVersion.objects.filter(
+                name=new_case["name"],
+                productversion=productversion,
+                ).exists():
 
                 result.warn(
                     ImportResult.SKIP_CASE_NAME_CONFLICT,
@@ -143,6 +170,9 @@ class Importer(object):
 
                 continue
 
+            user = ""
+            if "created_by" in new_case:
+                user = self.user_cache.get(new_case["created_by"], result)
 
             # the case looks good so far, but there may be a problem with
             # one of the steps.  So, create a savepoint in case something
@@ -151,34 +181,22 @@ class Importer(object):
             sid = transaction.savepoint()
 
             # create the top-level case object which holds the versions
-            case = Case.objects.create(product=product_version.product)
+            case = Case.objects.create(product=productversion.product)
 
             # create the case version which holds the details
-            case_version = CaseVersion.objects.create(
-                productversion = product_version,
-                case = case,
-                name = new_case["name"],
-                description = new_case.get("description", ""))
-
-
-            if "created_by" in new_case:
-                try:
-                    user = User.objects.get(email=new_case["created_by"])
-                    case_version.created_by = user
-                    case_version.save()
-
-                except User.DoesNotExist:
-                    result.warn(
-                        ImportResult.WARN_USER_NOT_FOUND,
-                        new_case,
-                        )
-
+            caseversion = CaseVersion.objects.create(
+                productversion=productversion,
+                case=case,
+                name=new_case["name"],
+                description=new_case.get("description", ""),
+                created_by=user,
+                )
 
 
             # add the steps to this case version
             if "steps" in new_case:
                 try:
-                    self.import_steps(case_version, new_case["steps"])
+                    self.import_steps(caseversion, new_case["steps"])
                 except ValueError as e:
                     result.warn(
                         e,
@@ -189,16 +207,16 @@ class Importer(object):
             else:
                 result.warn(
                     ImportResult.WARN_NO_STEPS,
-                    case_version,
+                    caseversion,
                     )
 
             # map the tags to the case version
             if "tags" in new_case:
-                self.map_tags(case_version, new_case["tags"])
+                tag_importer.map_name_list(caseversion, new_case["tags"])
 
             # map this case to the suite
             if "suites" in new_case:
-                self.map_suites(case, new_case["suites"])
+                suite_importer.map_name_list(case, new_case["suites"])
 
             # case has been created, increment our count for reporting
             result.newcase()
@@ -210,76 +228,165 @@ class Importer(object):
         return result
 
 
-    def import_steps(self, case_version, step_data):
+    def import_steps(self, caseversion, step_data):
         """
         Add the steps to this case version.
+
         Instruction is a required field for a step, but expected is optional.
+
         """
 
         for step_num, new_step in enumerate(step_data):
             if "instruction" in new_step:
                 casestep = CaseStep.objects.create(
-                        caseversion = case_version,
-                        number = step_num+1,
-                        instruction = new_step["instruction"],
-                        expected = new_step.get("expected", None))
+                    caseversion=caseversion,
+                    number=step_num+1,
+                    instruction=new_step["instruction"],
+                    expected=new_step.get("expected", ""),
+                    )
             else:
                 raise ValueError(ImportResult.SKIP_STEP_NO_INSTRUCTION)
 
-    def map_tags(self, case_version, tag_data):
+class UserCache:
+
+    def __init__(self):
+        self.cache = {}
+
+    def get_user(self, email, result):
+        """
+        Return the user object that matches the email.
+
+        If the email is already in the cache, then return that user.
+        If this method had already searched for the user and not found it,
+        then it will have registered a warning already, and will only warn
+        for that user once.  In that case, it will save the user of ""
+        in the cache and subsequent calls for that user will return ""
+
+        """
+
+        if email in self.cache:
+            return self.cache[email]
+
+        else:
+            try:
+                user = User.objects.get(email=new_case["created_by"])
+                self.cache[email] = user
+
+            except User.DoesNotExist:
+                result.warn(
+                    ImportResult.WARN_USER_NOT_FOUND,
+                    new_case,
+                    )
+                self.cache[email] = ""
+
+
+class MapBase:
+    """Base for both types of maps"""
+
+    def __init__(self, product):
+        self.product = product
+        self.map = {}
+
+class TagImporter(MapBase):
+    """Imports suites based on lists and dicts of suites used to build it."""
+
+    def map_name_list(self, caseversion, tag_data):
+        """Map a simple list of tag names"""
+
         for tag_name in tag_data:
-            case_versions = self.tag_map.setdefault(tag_name, [])
-            case_versions.append(case_version)
+            caseversions = self.map.setdefault(tag_name, [])
+            caseversions.append(caseversion)
 
-    def import_mapped_tags(self, product):
+    def import_map(self):
         """
-        If there's a non-product specific tag, apply that.  If there's not,
-        then create this tag as product specific.
+        Import all mapped tags.
+
+        It's hard to know if the user would want to share their
+        tags with other products and prefer non-product specific tags
+        to product specific ones.  So, to be safe, we will always use
+        only product-specific tags.
+
         """
 
-        for tag_name, case_versions in self.tag_map.items():
-            tag, created = Tag.objects.get_or_create(name=tag_name,
-                                                     product=None)
+        for tag_name, caseversions in self.map.items():
+            tag, created = Tag.objects.get_or_create(
+                name=tag_name,
+                product=self.product,
+                )
 
-            # if we created this here, make it product specific
-            if created:
-                tag.product=product
+            for caseversion in caseversions:
+                caseversion.tags.add(tag)
 
-            for case_version in case_versions:
-                case_version.tags.add(tag)
+class SuiteImporter(MapBase):
+    """
+    Imports suites based on lists and dicts of suites used to build it.
 
+    The internal dict looks like this::
 
-    def map_suites(self, case, suite_data):
-        """
-        This map will looks like this::
-
-            {
-                "suitename": {
-                    "description": "foo",
-                    "cases": [case1, case2]
-                }
+        {
+            "suitename": {
+                "description": "foo",
+                "cases": [case1, case2]
             }
+        }
 
-        suite_data is a list of suite names
+    """
 
-        """
+    def map_name_list(self, case, suite_data):
+        """Map a simple list of Suite names."""
 
         for suite_name in suite_data:
-            suite = self.suite_map.setdefault(suite_name, {})
+            suite = self.map.setdefault(suite_name, {})
             cases = suite.setdefault("cases", [])
             cases.append(case)
 
-    def import_mapped_suites(self, product):
+    def map_dict_list(self, suite_data):
+        """
+        Map a list of suite dictionary objects.
+
+        Map a dict that looks like this::
+
+            "suites": [
+                {
+                    "description": "suite description",
+                    "name": "suite1 name"
+                },
+                {
+                    "description": "suite description",
+                    "name": "top-level suite name"
+                }
+            ]
+
+        Suites without names will be skipped.
+
+        """
 
         result = ImportResult()
 
-        for suite_name, suite_data in self.suite_map.items():
+        for suite in suite_data:
+            if "name" in suite:
+                self.map[suite["name"]] = {
+                    "description": suite.get("description", "")
+                    }
+            else:
+                result.warn(
+                    ImportResult.SKIP_SUITE_NO_NAME,
+                    suite,
+                    )
+        return result
 
-            suite, created = Suite.objects.get_or_create(name=suite_name,
-                                                         product=product)
-            if not suite.description:
-                suite.description = suite_data.get("description", "")
-            suite.save()
+    def import_map(self):
+        """Import all mapped suites."""
+
+        result = ImportResult()
+
+        for suite_name, suite_data in self.map.items():
+
+            suite, created = Suite.objects.get_or_create(
+                name=suite_name,
+                product=self.product,
+                defaults={"description": suite_data.get("description", "")},
+                )
 
             if created:
                 result.newsuite()
@@ -290,7 +397,15 @@ class Importer(object):
                     SuiteCase.objects.create(case=case, suite=suite)
         return result
 
+
 class ImportResult:
+    """
+    Results of the import process.
+
+    This may be for a small part of the process, or the process as a whole.
+    ImportResults can be merged with the append() method.
+
+    """
 
     SKIP_SUITE_NO_NAME = "Skipped: Name field required for Suite"
     SKIP_CASE_NO_NAME = "Skipped: Name field required for Case"
@@ -319,13 +434,13 @@ class ImportResult:
     def append(self, result):
         """Append the results object into this results object."""
 
-        new_data = result.get_results()
+        new_data = result.get_as_dict()
 
         self.newcase(new_data["cases"])
         self.newsuite(new_data["suites"])
         self.warnings.extend(new_data["warnings"])
 
-    def get_results(self):
+    def get_as_dict(self):
         return {
             "cases": self.num_cases,
             "suites": self.num_suites,
@@ -333,8 +448,11 @@ class ImportResult:
             }
 
     def get_as_list(self):
-        result_list = ["{0}: {1}".format(x["reason"], x["item"])
-            for x in self.warnings]
+        result_list = [
+            "{0}: {1}".format(x["reason"], x["item"])
+            for x in self.warnings
+            ]
+
         result_list.append("Imported {0} cases".format(self.num_cases))
         result_list.append("Imported {0} suites".format(self.num_suites))
         return result_list
