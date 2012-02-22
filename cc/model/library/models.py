@@ -111,7 +111,7 @@ class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
     # denormalized for queries
     latest = models.BooleanField(default=False, editable=False)
 
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True, related_name="caseversions")
     # True if this case's envs have been narrowed from the product version.
     envs_narrowed = models.BooleanField(default=False)
 
