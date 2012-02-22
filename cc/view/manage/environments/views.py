@@ -34,8 +34,6 @@ from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
 
-from ..finders import ManageFinder
-
 from . import forms
 from .decorators import category_element_ajax_add_edit
 
@@ -46,7 +44,6 @@ from .decorators import category_element_ajax_add_edit
     model.Profile,
     ["delete", "clone"],
     permission="environments.manage_environments")
-@lists.finder(ManageFinder)
 @lists.filter("profiles", filterset_class=ProfileFilterSet)
 @lists.sort("profiles")
 @ajax("manage/environment/profile_list/_profiles_list.html")
@@ -168,7 +165,7 @@ def productversion_environments_edit(request, productversion_id):
             else:
                 env = model.Environment.objects.create(user=request.user)
                 env.elements.add(*element_ids)
-            productversion.environments.add(env)
+                productversion.environments.add(env)
         elif "action-remove" in request.POST:
             env_id = request.POST.get("action-remove")
             productversion.environments.remove(env_id)

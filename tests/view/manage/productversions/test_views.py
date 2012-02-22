@@ -26,7 +26,7 @@ from tests import case
 
 
 class ProductVersionsTest(case.view.manage.ListViewTestCase,
-                          case.view.manage.ListFinderTests,
+                          case.view.ListFinderTests,
                           case.view.manage.CCModelListTests,
                           ):
     """Test for productversions manage list view."""

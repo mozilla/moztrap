@@ -27,7 +27,7 @@ from tests import case
 
 
 class CasesTest(case.view.manage.ListViewTestCase,
-                case.view.manage.ListFinderTests,
+                case.view.ListFinderTests,
                 case.view.manage.CCModelListTests,
                 case.view.manage.StatusListTests
                 ):

@@ -227,3 +227,20 @@ class AutocompleteInputTest(CCFormsTestCase):
             self.ccforms.AutocompleteInput(
                 url=lambda: "/foo/bar/").render("n", "")
             )
+
+
+
+class FilteredSelectMultipleTest(CCFormsTestCase):
+    """Tests for FilteredSelectMultiple."""
+    def test_override_choice_template(self):
+        """Can override choice_template in context at initialization."""
+        fsm = self.ccforms.FilteredSelectMultiple(choice_template="foo")
+
+        self.assertEqual(fsm.get_context_data()["choice_template"], "foo")
+
+
+    def test_override_listordering_template(self):
+        """Can override listordering_template in context at initialization."""
+        fsm = self.ccforms.FilteredSelectMultiple(listordering_template="foo")
+
+        self.assertEqual(fsm.get_context_data()["listordering_template"], "foo")

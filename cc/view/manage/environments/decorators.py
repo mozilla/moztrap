@@ -24,13 +24,14 @@ Decorator for ajaxily editing/adding environment categories and elements.
 from functools import wraps
 import json
 
-from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
+from django.contrib import messages
+
 from cc import model
-from cc.view.lists.actions import get_action
 
 
 
@@ -53,31 +54,16 @@ def category_element_ajax_add_edit(view_func):
         if request.is_ajax() and request.method == "POST":
             data = {}
 
-            action_data = get_action(request.POST)
-            if action_data:
-                action, obj_spec = action_data
-                if action in ["delete"]:
-                    obj_type, obj_id = obj_spec.split("-")
+            if "action-delete" in request.POST:
+                try:
+                    obj_type, obj_id = request.POST["action-delete"].split("-")
                     model_class, template_name = ACTION_TYPES[obj_type]
-                    try:
-                        obj = model_class.objects.get(pk=obj_id)
-                    except model_class.DoesNotExist:
-                        data["no_replace"] = True
-                        success = False
-                    else:
-                        getattr(obj, action)(user=request.user)
-                        success = True
-
-                    if action == "delete":
-                        if success:
-                            data["html"] = ""
-                        else:
-                            data["no_replace"] = True
-                    else:
-                        data["html"] = render_to_string(
-                            template_name,
-                            {obj_type: obj},
-                            RequestContext(request))
+                    obj = model_class.objects.get(pk=obj_id)
+                except (KeyError, ValueError, ObjectDoesNotExist):
+                    data["no_replace"] = True
+                else:
+                    obj.delete(user=request.user)
+                    data["html"] = ""
             elif "new-category-name" in request.POST:
                 template_name = ACTION_TYPES["category"][1]
                 new_category_name = request.POST.get("new-category-name")

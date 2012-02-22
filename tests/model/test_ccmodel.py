@@ -16,12 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for ``CCModel`` (and by extension ``CCManager``,
-``NotDeletedCCManager``, and ``CCQuerySet``).
+Tests for ``CCModel`` and related classes.
 
-These tests use the ``Product`` model (and ``Suite`` for cascade-delete
-tests), as its a simple model inherited from ``CCModel``, and this
-avoids the need for a test-only model.
+These tests use the ``Product`` model (and ``Suite`` for cascade-delete tests),
+as its a simple model inherited from ``CCModel``, and this avoids the need for
+a test-only model.
 
 """
 import datetime
@@ -685,3 +684,44 @@ class DraftStatusModelTest(case.DBTestCase):
         r.deactivate(user=u)
 
         self.assertEqual(self.refresh(r).modified_by, u)
+
+
+
+class NotDeletedCountTest(case.DBTestCase):
+    """Tests for NotDeletedCount aggregate."""
+    @property
+    def NotDeletedCount(self):
+        """The aggregate class under test."""
+        from cc.model.ccmodel import NotDeletedCount
+        return NotDeletedCount
+
+
+    def test_counts_not_deleted(self):
+        """Counts only not-deleted related objects."""
+        pv = self.F.ProductVersionFactory.create()
+        self.F.ProductVersionFactory.create(product=pv.product)
+        pv.delete()
+
+        p = self.model.Product.objects.annotate(
+            num_versions=self.NotDeletedCount("versions")).get()
+
+        self.assertEqual(p.num_versions, 1)
+
+
+    def test_aggregate_annotation(self):
+        """Works when aggregating over an annotation."""
+        from django.db.models import Count
+
+        pv1 = self.F.ProductVersionFactory.create()
+        self.F.ProductVersionFactory.create()
+        pv1.product.delete()
+
+        # In this case we are intentionally selecting all products, and
+        # counting all versions (even deleted ones) in the initial num_versions
+        # annotation. What we want to test is that the final aggregation counts
+        # only not-deleted products.
+        res = self.model.Product.everything.annotate(
+            num_versions=Count("versions")).aggregate(
+            products_with_versions=self.NotDeletedCount("num_versions"))
+
+        self.assertEqual(res, {"products_with_versions": 1})

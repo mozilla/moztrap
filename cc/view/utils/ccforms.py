@@ -164,6 +164,7 @@ class CCModelChoiceIterator(ModelChoiceIterator):
 
     """
     def choice(self, obj):
+        """Return the choice tuple for the given object."""
         return (
             self.field.prepare_value(obj),
             SmartLabel(
