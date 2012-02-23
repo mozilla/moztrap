@@ -30,6 +30,7 @@ Copy local.sample.py to local.py and modify as needed.
 #         "ENGINE": "django.db.backends.mysql",
 #         "NAME": "caseconductor",
 #         "USER": environ.get("USER", ""),
+#         "HOST": "", # empty string == localhost
 #         "PASSWORD": "",
 #         "STORAGE_ENGINE": "InnoDB",
 #         # remove this after initial syncdb --migrate
