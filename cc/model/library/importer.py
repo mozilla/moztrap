@@ -83,42 +83,41 @@ class Importer(object):
         # the result object used to keep track of import status
         result = ImportResult()
 
-        # map of tags to caseversions so we can reduce lookups on the tags
-        tag_importer = TagImporter(productversion.product)
-
         # map of suites to cases.  Map the initial dict, if one exists.
-        suite_importer = SuiteImporter(productversion.product)
+        suite_importer = None
         if "suites" in case_data:
+            suite_importer = SuiteImporter(productversion.product)
             result.append(suite_importer.map_dict_list(case_data["suites"]))
 
 
         # no reason why the data couldn't include ONLY suites.  So function
         # gracefully if no cases.
         if "cases" in case_data:
-            case_importer = CaseImporter(suite_importer, tag_importer)
-            result.append(case_importer.import_cases(
-                productversion,
-                case_data["cases"],
-                ))
+            case_importer = CaseImporter(productversion, suite_importer)
+            result.append(case_importer.import_cases(case_data["cases"]))
 
         # now create the suites and add cases to them where mapped
-        result.append(suite_importer.import_map())
-
-        # now create the tags and add case versions to them where mapped
-        tag_importer.import_map()
+        if suite_importer:
+            result.append(suite_importer.import_map())
 
         return result
 
 class CaseImporter:
+    """Imports cases and links to or creates associated tags, suites."""
 
-    def __init__(self, suite_importer, tag_importer):
-        self.suite_importer = suite_importer
-        self.tag_importer = tag_importer
+    def __init__(self, productversion, suite_importer=None):
+
+        self.productversion = productversion
+        self.suite_importer = (suite_importer if suite_importer
+            else SuiteImporter(productversion.product))
+
+        # map of tags to caseversions so we can reduce lookups on the tags
+        self.tag_importer = TagImporter(self.productversion.product)
 
         # cache of user emails
         self.user_cache = UserCache()
 
-    def import_cases(self, productversion, case_dict_list):
+    def import_cases(self, case_dict_list):
         """
         Import the test cases in the data.
 
@@ -162,7 +161,7 @@ class CaseImporter:
             # Don't re-import if we have the same case name and Product Version
             if CaseVersion.objects.filter(
                 name=new_case["name"],
-                productversion=productversion,
+                productversion=self.productversion,
                 ).exists():
 
                 result.warn(
@@ -181,11 +180,11 @@ class CaseImporter:
             sid = transaction.savepoint()
 
             # create the top-level case object which holds the versions
-            case = Case.objects.create(product=productversion.product)
+            case = Case.objects.create(product=self.productversion.product)
 
             # create the case version which holds the details
             caseversion = CaseVersion.objects.create(
-                productversion=productversion,
+                productversion=self.productversion,
                 case=case,
                 name=new_case["name"],
                 description=new_case.get("description", ""),
@@ -224,6 +223,12 @@ class CaseImporter:
             # this case went ok.  We'll save it as complete in the overall
             # transaction.
             transaction.savepoint_commit(sid)
+
+            # now create the tags and add case versions to them where mapped
+            self.tag_importer.import_map()
+
+            # now create the suites and add cases to them where mapped
+            self.suite_importer.import_map()
 
         return result
 
@@ -339,6 +344,9 @@ class TagImporter(MapBase):
 
             tag.caseversions.add(*caseversions)
 
+        # we have imported these items.  clear them out now.
+        self.map.clear()
+
 class SuiteImporter(MapBase):
     """
     Imports suites based on lists and dicts of suites used to build it.
@@ -417,6 +425,10 @@ class SuiteImporter(MapBase):
             if "cases" in suite_data:
                 for case in suite_data["cases"]:
                     SuiteCase.objects.create(case=case, suite=suite)
+
+        # we have imported (or warned on) these items, so reset ourself.
+        self.map.clear()
+
         return result
 
 
