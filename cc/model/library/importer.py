@@ -71,11 +71,6 @@ class Importer(object):
 
     """
 
-    def __init__(self):
-
-        # cache of user emails
-        self.user_cache = UserCache()
-
     @transaction.commit_on_success
     def import_data(self, productversion, case_data):
         """
@@ -100,11 +95,10 @@ class Importer(object):
         # no reason why the data couldn't include ONLY suites.  So function
         # gracefully if no cases.
         if "cases" in case_data:
-            result.append(self.import_cases(
+            case_importer = CaseImporter(suite_importer, tag_importer)
+            result.append(case_importer.import_cases(
                 productversion,
                 case_data["cases"],
-                suite_importer,
-                tag_importer,
                 ))
 
         # now create the suites and add cases to them where mapped
@@ -115,8 +109,16 @@ class Importer(object):
 
         return result
 
-    def import_cases(self, productversion, case_list,
-        suite_importer, tag_importer):
+class CaseImporter:
+
+    def __init__(self, suite_importer, tag_importer):
+        self.suite_importer = suite_importer
+        self.tag_importer = tag_importer
+
+        # cache of user emails
+        self.user_cache = UserCache()
+
+    def import_cases(self, productversion, case_dict_list):
         """
         Import the test cases in the data.
 
@@ -148,7 +150,7 @@ class Importer(object):
 
         result = ImportResult()
 
-        for new_case in case_list:
+        for new_case in case_dict_list:
 
             if not "name" in new_case:
                 result.warn(
@@ -170,9 +172,7 @@ class Importer(object):
 
                 continue
 
-            user = ""
-            if "created_by" in new_case:
-                user = self.user_cache.get_user(new_case["created_by"], result)
+            user = self.user_cache.get_user(new_case, result)
 
             # the case looks good so far, but there may be a problem with
             # one of the steps.  So, create a savepoint in case something
@@ -212,11 +212,11 @@ class Importer(object):
 
             # map the tags to the case version
             if "tags" in new_case:
-                tag_importer.map_name_list(caseversion, new_case["tags"])
+                self.tag_importer.map_name_list(caseversion, new_case["tags"])
 
             # map this case to the suite
             if "suites" in new_case:
-                suite_importer.map_name_list(case, new_case["suites"])
+                self.suite_importer.map_name_list(case, new_case["suites"])
 
             # case has been created, increment our count for reporting
             result.newcase()
@@ -252,17 +252,23 @@ class UserCache:
     def __init__(self):
         self.cache = {}
 
-    def get_user(self, email, result):
+    def get_user(self, single_case_data, result):
         """
-        Return the user object that matches the email.
+        Return the user object that matches the email in the case, if any.
 
+        If the single_case_data has no "created_by" field, return None.
         If the email is already in the cache, then return that user.
         If this method had already searched for the user and not found it,
         then it will have registered a warning already, and will only warn
-        for that user once.  In that case, it will save the user of ""
-        in the cache and subsequent calls for that user will return ""
+        for that user once.  In that case, it will save the user of None
+        in the cache and subsequent calls for that user will return None
 
         """
+
+        if "created_by" in single_case_data:
+            email = single_case_data["created_by"]
+        else:
+            return None
 
         if email in self.cache:
             return self.cache[email]
@@ -277,7 +283,7 @@ class UserCache:
                     ImportResult.WARN_USER_NOT_FOUND,
                     new_case,
                     )
-                self.cache[email] = ""
+                self.cache[email] = None
 
         return self.cache[email]
 
@@ -302,18 +308,34 @@ class TagImporter(MapBase):
         """
         Import all mapped tags.
 
-        It's hard to know if the user would want to share their
-        tags with other products and prefer non-product specific tags
-        to product specific ones.  So, to be safe, we will always use
-        only product-specific tags.
+        The UI should prevent creating global and product tags of the same
+        name.  However, we check for that, just in case.
+
+        Use or create tags in this order of priority:
+
+            * product tag
+            * global tag
+            * create new product tag
 
         """
 
         for tag_name, caseversions in self.map.items():
-            tag, created = Tag.objects.get_or_create(
+            tag_list = Tag.objects.filter(
                 name=tag_name,
-                product=self.product,
-                )
+                product__in=[None, self.product],
+                ).order_by("-product")
+
+            # If there is a product tag, it will be sorted to first.
+            # If not, then the only item will be the global one, so
+            # use that.
+            if tag_list.count() > 0:
+                tag = tag_list[0]
+
+            else:
+                tag = Tag.objects.create(
+                    name=tag_name,
+                    product=self.product,
+                    )
 
             tag.caseversions.add(*caseversions)
 
