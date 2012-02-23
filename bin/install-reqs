@@ -22,7 +22,7 @@ in requirements/dist, based on requirements files in requirements/.
 
 Usage: %s [install_type]
 
-install_type, if present should be one of "dev" or "prod" (defaults to "dev").
+install_type, if present should be one of "all" or "pure" (defaults to "all").
 
 """
 import os.path
@@ -34,7 +34,7 @@ def main(base_dir, argv):
     reqs_dir = os.path.join(base_dir, "requirements")
     dist_dir = os.path.join(reqs_dir, "dist")
 
-    install_type = "dev"
+    install_type = "all"
 
     if len(argv[1:]):
         if argv[1] in ["-h", "-?", "--help"]:

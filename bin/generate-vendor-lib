@@ -39,7 +39,7 @@ def main(base_dir, argv):
     reqs_dir = os.path.join(base_dir, "requirements")
     dist_dir = os.path.join(reqs_dir, "dist")
 
-    install_type = "prod-pure"
+    install_type = "pure"
 
     args = argv[1:]
     if args and args[0] in ["-h", "-?", "--help"]:

@@ -1,5 +1,0 @@
-# Requirements for a live/staging/qa deploy.
-
--r pure.txt
--r compiled.txt
--r prod-base.txt
