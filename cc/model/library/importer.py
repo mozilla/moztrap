@@ -172,7 +172,7 @@ class Importer(object):
 
             user = ""
             if "created_by" in new_case:
-                user = self.user_cache.get(new_case["created_by"], result)
+                user = self.user_cache.get_user(new_case["created_by"], result)
 
             # the case looks good so far, but there may be a problem with
             # one of the steps.  So, create a savepoint in case something
@@ -189,7 +189,7 @@ class Importer(object):
                 case=case,
                 name=new_case["name"],
                 description=new_case.get("description", ""),
-                created_by=user,
+                user=user,
                 )
 
 
@@ -269,7 +269,7 @@ class UserCache:
 
         else:
             try:
-                user = User.objects.get(email=new_case["created_by"])
+                user = User.objects.get(email=email)
                 self.cache[email] = user
 
             except User.DoesNotExist:
@@ -279,6 +279,7 @@ class UserCache:
                     )
                 self.cache[email] = ""
 
+        return self.cache[email]
 
 class MapBase:
     """Base for both types of maps"""
