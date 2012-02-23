@@ -37,9 +37,17 @@ that ``.pth`` files are processed.  A WSGI entry-point script is provided in
 ``cc/deploy/vendor_wsgi.py`` that makes the necessary ``sys.path`` adjustments,
 as well as a version of ``manage.py`` in ``vendor-manage.py``.
 
-If you are using ``bin/install-reqs`` to install dependencies into your
-production environment, you can use ``bin/install-reqs prod`` to avoid
-installing some development dependencies that aren't needed in production.
+If you are using the vendor library and you want to run the Case Conductor
+tests, ``bin/test`` won't work as it uses ``manage.py``. Instead run ``python
+vendor-manage.py test``.
+
+If you need code coverage metrics (and you have the ``coverage`` module
+installed; it isn't included in the vendor library as it has a compiled
+extension), use this::
+
+    coverage run vendor-manage.py test
+    coverage html
+    firefox htmlcov/index.html
 
 
 Security
