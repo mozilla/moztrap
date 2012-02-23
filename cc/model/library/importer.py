@@ -315,8 +315,7 @@ class TagImporter(MapBase):
                 product=self.product,
                 )
 
-            for caseversion in caseversions:
-                caseversion.tags.add(tag)
+            tag.caseversions.add(*caseversions)
 
 class SuiteImporter(MapBase):
     """
