@@ -19,14 +19,16 @@ django-sha2==0.4
 django-session-csrf==0.5
 django-registration==0.8-alpha-1
 
-# really only needed in development
+# only needed for running the tests
 mock==0.7.2
 WebTest==1.3.3
 django-webtest==1.4.3
 WebOb==1.2b2
 factory_boy==1.0.4.moz2
 django-inmemorystorage==0.1.1
+
+# only needed for bin/regenerate-sample-data
 django-fixture-generator==0.2.0.cc.1
 
-# usually only needed in production
+# only needed if cache backend is set to memcached
 python-memcached==1.47
