@@ -118,13 +118,3 @@ Copy local.sample.py to local.py and modify as needed.
 #        "KEY_PREFIX": "", # add a global key prefix here if necessary
 #    }
 #}
-
-
-# If a mail server is not available at localhost:25, set these to appropriate
-# values:
-#EMAIL_HOST = ""
-#EMAIL_PORT = ""
-# If the mail server configured above requires authentication and/or TLS:
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = ""
-#EMAIL_HOST_PASSWORD = ""
