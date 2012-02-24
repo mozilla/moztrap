@@ -112,9 +112,10 @@ Copy local.sample.py to local.py and modify as needed.
 # options. For faster caching, install pylibmc in place of python-memcached and
 # replace MemcachedCache with PyLibMCCache.
 #CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#        'LOCATION': '127.0.0.1:11211',
+#    "default": {
+#        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+#        "LOCATION": "127.0.0.1:11211",
+#        "KEY_PREFIX": "", # add a global key prefix here if necessary
 #    }
 #}
 
