@@ -67,13 +67,28 @@ Static assets
 -------------
 
 This app uses Django's `staticfiles contrib app`_ for collecting static assets
-from reusable components into a single directory for production serving.  Run
-``./manage.py collectstatic`` to collect all static assets into the
-``collected-assets`` directory (or whatever ``STATIC_ROOT`` is set to in
-``settings/local.py``), and make those collected assets available by HTTP at
-the URL ``STATIC_URL`` is set to.
+from reusable components into a single directory for production serving, and
+uses `django-compressor`_ to compress and minify them. Follow these steps to
+deploy the static assets into production:
+
+1. Ensure that ``COMPRESS_ENABLED`` and ``COMPRESS_OFFLINE`` are both
+   uncommented and set to ``True`` in ``cc/settings/local.py``.
+
+2. Run ``python manage.py collectstatic`` to collect all static assets into the
+   ``collected-assets`` directory (or whatever ``STATIC_ROOT`` is set to in
+   ``cc/settings/local.py``).
+
+3. Run ``python manage.py compress`` to minify and concatenate static assets.
+
+4. Make the entire resulting contents of ``STATIC_ROOT`` available over HTTP at
+   the URL ``STATIC_URL`` is set to.
+
+If deploying to multiple static assets servers, probably steps 1-3 should be
+run once on a deployment or build server, and then the contents of
+``STATIC_ROOT`` copied to each web server.
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
+.. _django-compressor: http://django_compressor.readthedocs.org/en/latest/index.html
 
 Database performance tweak
 --------------------------
