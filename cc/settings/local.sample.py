@@ -30,6 +30,7 @@ Copy local.sample.py to local.py and modify as needed.
 #         "ENGINE": "django.db.backends.mysql",
 #         "NAME": "caseconductor",
 #         "USER": environ.get("USER", ""),
+#         "HOST": "", # empty string == localhost
 #         "PASSWORD": "",
 #         "STORAGE_ENGINE": "InnoDB",
 #         # remove this after initial syncdb --migrate
@@ -111,18 +112,9 @@ Copy local.sample.py to local.py and modify as needed.
 # options. For faster caching, install pylibmc in place of python-memcached and
 # replace MemcachedCache with PyLibMCCache.
 #CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#        'LOCATION': '127.0.0.1:11211',
+#    "default": {
+#        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+#        "LOCATION": "127.0.0.1:11211",
+#        "KEY_PREFIX": "", # add a global key prefix here if necessary
 #    }
 #}
-
-
-# If a mail server is not available at localhost:25, set these to appropriate
-# values:
-#EMAIL_HOST = ""
-#EMAIL_PORT = ""
-# If the mail server configured above requires authentication and/or TLS:
-#EMAIL_USE_TLS = True
-#EMAIL_HOST_USER = ""
-#EMAIL_HOST_PASSWORD = ""
