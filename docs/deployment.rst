@@ -10,8 +10,9 @@ You'll also need to serve the `static assets`_; `Apache`_ or `nginx`_ can do
 this.
 
 You'll need a functioning SMTP server for sending user registration
-confirmation emails; configure the ``EMAIL_*`` settings in your
-``cc/settings/local.py`` to the appropriate values for your server.
+confirmation emails; configure the ``EMAIL_*`` settings and
+``DEFAULT_FROM_EMAIL`` in your ``cc/settings/local.py`` to the appropriate
+values for your server.
 
 In addition to the notes here, you should read through all comments in
 ``cc/settings/local.sample.py`` and make appropriate adjustments to your
