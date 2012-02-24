@@ -5,7 +5,8 @@ dependencies.
 """
 import os, sys
 
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+base_dir = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, base_dir)
 
 from cc.deploy.paths import add_vendor_lib
