@@ -15,12 +15,46 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
+"""
+Import Suite and Case data for a given Product Version.
+
+The "suites" or "cases" sections are optional.
+The data must be in JSON format and structured like this::
+
+    {
+        "suites": [
+            {
+                "name": "suite1 name",
+                "description": "suite description"
+            }
+        ]
+        "cases": [
+            {
+                "name": "case title",
+                "description": "case description",
+                "tags": ["tag1", "tag2", "tag3"],
+                "suites": ["suite1 name", "suite2 name", "suite3 name"],
+                "created_by": "cdawson@mozilla.com"
+                "steps": [
+                    {
+                        "instruction": "insruction text",
+                        "expected": "expected text"
+                    }
+                ]
+            }
+        ]
+    }
+
+"""
+
 from django.core.management.base import BaseCommand, CommandError
 
 import json
 
 from cc.model.core.models import Product, ProductVersion
 from cc.model.library.importer import Importer, ImportResult
+
+
 
 class Command(BaseCommand):
     args = "<product_name> <product_version> <filename>"
@@ -31,6 +65,22 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not len(args) == 3:
             raise CommandError("Usage: {0}".format(self.args))
+
+        try:
+            product = Product.objects.get(name=args[0])
+
+        except Product.DoesNotExist:
+            raise CommandError('Product "{0}" does not exist'.format(
+                args[0]))
+
+        try:
+            product_version = ProductVersion.objects.get(
+                product=product, version=args[1])
+
+        except ProductVersion.DoesNotExist:
+            raise CommandError(
+                'Product Version "{0}" does not exist'.format(
+                product_version))
 
         try:
             with open(args[2]) as cases_text:
@@ -47,32 +97,12 @@ class Command(BaseCommand):
                 # error above, just try CSV import instead.
 
 
-                try:
-                    product = Product.objects.get(name=args[0])
+                result_list = Importer().import_data(
+                    product_version, case_data).get_as_list()
+                result_list.append("")
 
-                except Product.DoesNotExist:
-                    raise CommandError('Product "{0}" does not exist'.format(
-                        args[0]))
-
-                try:
-                    product_version = ProductVersion.objects.get(
-                        product=product, version=args[1])
-
-                except ProductVersion.DoesNotExist:
-                    raise CommandError(
-                        'Product Version "{0}" does not exist'.format(
-                        product_version))
-
-                self.write_result(Importer().import_data(
-                    product_version, case_data))
+                self.stdout.write("\n".join(result_list))
 
 
         except IOError as (errno, strerror):
             raise CommandError("I/O error({0}): {1}".format(errno, strerror))
-
-
-    def write_result(self, result):
-        """Print the result to the command line."""
-        result_list = result.get_as_list()
-        result_list.append("")
-        self.stdout.write("\n".join(result_list))

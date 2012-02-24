@@ -49,27 +49,9 @@ Simple Example::
         ]
     }
 
-Some fields are optional, such as the top-level "suites" section. It's only
-needed if you want to apply a description to your suites. All suites specified
-in cases will be created on the fly if they're not found. The only required
-field is the top-level cases section and the case title and single step
-for each.
-
-Minimal Example::
-
-    {
-        "cases": [
-            {
-                "title": "case1 title"
-                "steps": [
-                    {
-                        "instruction": "instruction text",
-                    }
-                ]
-            }
-        ]
-    }
-
+Both top-level sections ("suites" and "cases") are optional.  However, if either
+section is included, each item requires a "name" field value.  Other than that,
+all fields are optional.
 
 
 CSV (future)
