@@ -73,7 +73,6 @@ class Importer(object):
 
     """
 
-    @transaction.commit_on_success
     def import_data(self, productversion, case_data):
         """
         Import the top-level dictionary of cases and suites.
@@ -95,7 +94,7 @@ class Importer(object):
         suite_importer = None
         if "suites" in case_data:
             suite_importer = SuiteImporter(productversion.product)
-            result.append(suite_importer.add_dicts(case_data["suites"]))
+            suite_importer.add_dicts(case_data["suites"])
 
 
         # no reason why the data couldn't include ONLY suites.  So function
@@ -136,13 +135,14 @@ class CaseImporter(object):
         self.suite_importer = (suite_importer if suite_importer
             else SuiteImporter(productversion.product))
 
-        # map of tags to caseversions so we can reduce lookups on the tags
+        # the object responsible for importing tags
         self.tag_importer = TagImporter(self.productversion.product)
 
         # cache of user emails
         self.user_cache = UserCache()
 
 
+    @transaction.commit_on_success
     def import_cases(self, case_dict_list):
         """
         Import the test cases in the data.
@@ -197,9 +197,17 @@ class CaseImporter(object):
 
                 continue
 
-            user = None
             if "created_by" in new_case:
-                user = self.user_cache.get_user(new_case["created_by"], result)
+                try:
+                    email = new_case["created_by"]
+                    user = self.user_cache.get_user(email)
+
+                except User.DoesNotExist:
+                    result.warn(
+                        ImportResult.WARN_USER_NOT_FOUND,
+                        email,
+                        )
+                    user = None
 
             # the case looks good so far, but there may be a problem with
             # one of the steps.  So, create a savepoint in case something
@@ -229,6 +237,11 @@ class CaseImporter(object):
                         e.args[0],
                         new_case,
                         )
+
+                    # not all DB engines support rollbacks, so delete
+                    # the items, just in case
+                    case.delete(permanent=True)
+
                     transaction.savepoint_rollback(sid)
                     continue
             else:
@@ -302,7 +315,7 @@ class UserCache(object):
         self.cache = {}
 
 
-    def get_user(self, email, result):
+    def get_user(self, email):
         """
         Return the user object that matches the email in the case, if any.
 
@@ -313,9 +326,9 @@ class UserCache(object):
 
         If the email is already in the cache, then return that user.
         If this method had already searched for the user and not found it,
-        then it will have registered a warning already, and will only warn
-        for that user once.  In that case, it will save the user of None
-        in the cache and subsequent calls for that user will return None
+        then it will thrown an exception once.  In that case, it will save
+        the user of None in the cache and subsequent calls for that user
+        will return None.
 
         """
 
@@ -327,12 +340,9 @@ class UserCache(object):
                 user = User.objects.get(email=email)
                 self.cache[email] = user
 
-            except User.DoesNotExist:
-                result.warn(
-                    ImportResult.WARN_USER_NOT_FOUND,
-                    new_case,
-                    )
+            except User.DoesNotExist as e:
                 self.cache[email] = None
+                raise e
 
         return self.cache[email]
 
@@ -343,6 +353,7 @@ class MappedImporterBase(object):
 
     def __init__(self, product):
         """Store the Product, and create the internal map."""
+
         self.product = product
         self.map = {}
 
@@ -426,6 +437,18 @@ class SuiteImporter(MappedImporterBase):
 
     """
 
+    def __init__(self, product):
+        """
+        Construct a SuiteImporter
+
+        Create a result object to keep track of any issues with adding
+        and importing as we go.
+
+        """
+
+        super(SuiteImporter, self).__init__(product)
+        self.result = ImportResult()
+
     def add_names(self, case, suite_names):
         """
         Add a simple list of Suite names.
@@ -471,25 +494,20 @@ class SuiteImporter(MappedImporterBase):
 
         """
 
-        result = ImportResult()
-
         for suite in suite_dicts:
             try:
                 suite = self.map.setdefault(suite["name"], {})
                 suite.setdefault("description", suite.get("description", ""))
 
             except KeyError:
-                result.warn(
+                self.result.warn(
                     ImportResult.SKIP_SUITE_NO_NAME,
                     suite,
                     )
-        return result
 
 
     def import_suites(self):
         """Import all mapped suites."""
-
-        result = ImportResult()
 
         for suite_name, suite_data in self.map.items():
 
@@ -500,7 +518,7 @@ class SuiteImporter(MappedImporterBase):
                 )
 
             if created:
-                result.num_suites += 1
+                self.result.num_suites += 1
 
             # now add any cases the suite may have specified
             if "cases" in suite_data:
@@ -510,7 +528,7 @@ class SuiteImporter(MappedImporterBase):
         # we have imported (or warned on) these items, so reset ourself.
         self.map.clear()
 
-        return result
+        return self.result
 
 
 
