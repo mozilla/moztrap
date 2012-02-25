@@ -709,7 +709,13 @@ class NotDeletedCountTest(case.DBTestCase):
 
 
     def test_aggregate_annotation(self):
-        """Works when aggregating over an annotation."""
+        """
+        Works when aggregating over an annotation.
+
+        This is a bit of an artificially-constructed test in order to cover a
+        certain edge case in the aggregation code.
+
+        """
         from django.db.models import Count
 
         pv1 = self.F.ProductVersionFactory.create()
@@ -725,3 +731,32 @@ class NotDeletedCountTest(case.DBTestCase):
             products_with_versions=self.NotDeletedCount("num_versions"))
 
         self.assertEqual(res, {"products_with_versions": 1})
+
+
+
+class OptimisticLockingTest(case.DBTestCase):
+    """Test optimistic locking to avoid silent overwrite on concurrent edits."""
+    def test_concurrency_error(self):
+        """Save raises ConcurrencyError if version does not match the DB."""
+        p = self.F.ProductFactory()
+
+        p2 = self.model.Product.objects.get()
+        p2.name = "Name One"
+        p2.save()
+
+        p.name = "Name Two"
+
+        with self.assertRaises(self.model.ConcurrencyError):
+            p.save()
+
+
+    def test_queryset_update_increments_version(self):
+        """Update via queryset increments version in database, not just save."""
+        p = self.F.ProductFactory()
+
+        self.model.Product.objects.update(name="Name One")
+
+        p.name = "Name Two"
+
+        with self.assertRaises(self.model.ConcurrencyError):
+            p.save()

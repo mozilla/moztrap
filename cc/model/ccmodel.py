@@ -34,6 +34,11 @@ from .core.auth import User
 
 
 
+class ConcurrencyError(Exception):
+    pass
+
+
+
 def utcnow():
     return datetime.datetime.utcnow()
 
@@ -109,6 +114,8 @@ class CCQuerySet(QuerySet):
         if not kwargs.pop("notrack", False):
             kwargs["modified_by"] = kwargs.pop("user", None)
             kwargs["modified_on"] = utcnow()
+        # increment the concurrency control version for all updated objects
+        kwargs["cc_version"] = models.F("cc_version") + 1
         return super(CCQuerySet, self).update(*args, **kwargs)
 
 
@@ -180,6 +187,9 @@ class CCModel(models.Model):
     deleted_by = models.ForeignKey(
         User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
+    # for optimistic concurrency control
+    cc_version = models.IntegerField(default=0)
+
 
 
     # default manager returns all objects, so admin can see all
@@ -190,7 +200,10 @@ class CCModel(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Save this instance, recording modified timestamp and user.
+        Save this instance.
+
+        Records modified timestamp and user, and raises ConcurrencyError if an
+        out-of-date version is being saved.
 
         """
         if not kwargs.pop("notrack", False):
@@ -202,7 +215,25 @@ class CCModel(models.Model):
             if not (self.pk is None and self.modified_by is not None):
                 self.modified_by = user
             self.modified_on = now
-        return super(CCModel, self).save(*args, **kwargs)
+
+        # CCModels always have an auto-PK and we don't set PKs explicitly, so
+        # we can assume that a set PK means this should be an update.
+        if kwargs.get("force_update") or self.id is not None:
+            non_pks = [f for f in self._meta.local_fields if not f.primary_key]
+            # This isn't a race condition because the save will only take
+            # effect if previous_version is actually up to date.
+            previous_version = self.cc_version
+            self.cc_version += 1
+            values = [(f, None, f.pre_save(self, False)) for f in non_pks]
+            rows = self.__class__.objects.filter(
+                id=self.id, cc_version=previous_version)._update(values)
+            if not rows:
+                raise ConcurrencyError(
+                    "No row with id {0} and version {1} updated.".format(
+                        self.id, previous_version)
+                    )
+        else:
+            return super(CCModel, self).save(*args, **kwargs)
 
 
     def clone(self, cascade=None, overrides=None, user=None):
@@ -366,8 +397,9 @@ class TeamModel(models.Model):
     def add_to_team(self, *users):
         """Add given users to this object's team (not to parent team)."""
         self.own_team.add(*users)
+        self.__class__.objects.filter(pk=self.pk).update(has_team=True)
         self.has_team = True
-        self.save()
+        self.cc_version += 1
 
 
     @property
