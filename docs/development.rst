@@ -35,9 +35,15 @@ environment::
 To view test coverage data, load ``htmlcov/index.html`` in your browser after
 running the tests.
 
-To run just a particular test module::
+To run just a particular test module, give the dotted path to the module::
 
-    bin/test tests.core.models.test_product
+    bin/test tests.model.core.models.test_product
+
+Give a dotted path to a package to run all tests within that package, including
+in submodules::
+
+    bin/test tests.model.core
+
 
 
 Compass/Sass
