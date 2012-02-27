@@ -24,6 +24,8 @@ In addition to the notes here, you should read through all comments in
 .. _gunicorn: http://gunicorn.org
 
 
+.. _vendor library:
+
 Dependencies
 ------------
 
