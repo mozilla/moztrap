@@ -143,6 +143,7 @@ class CCModelForm(floppyforms.ModelForm):
                     u"in the meantime. Please review their changes and save "
                     u"yours again if they still apply."
                     ])
+            self.data["cc_version"] = self.instance.cc_version
             return None
 
         return instance

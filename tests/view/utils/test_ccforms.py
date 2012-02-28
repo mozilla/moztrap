@@ -224,6 +224,45 @@ class CCModelFormTest(CCFormsTestCase):
         self.assertIsInstance(f.errors["__all__"], f.error_class)
 
 
+    def test_save_if_valid_redisplay_updates_version(self):
+        """
+        On a concurrency error, redisplayed form can be successfully submitted.
+
+        Rather than redisplaying the form with the known-to-be-out-of-date
+        version, we redisplay it with the updated version.
+
+        """
+        p = self.F.ProductFactory.create()
+        submitted_version = p.cc_version
+        p.name = "Foo"
+        p.save()
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            )
+
+        self.assertIsNone(f.save_if_valid())
+        self.assertEqual(f["cc_version"].value(), p.cc_version)
+
+
+    def test_save_if_valid_race_redisplay_updates_version(self):
+        """On a race concurrency error, redisplayed form can be submitted."""
+        p = self.F.ProductFactory.create()
+
+        p2 = self.model.Product.objects.get()
+        p2.name = "Foo"
+        p2.save()
+
+        f = self.form(
+            {"name": "New", "cc_version": str(p.cc_version)},
+            instance=p,
+            )
+
+        self.assertIsNone(f.save_if_valid())
+        self.assertEqual(f["cc_version"].value(), p2.cc_version)
+
+
     def test_save_if_valid_concurrent_race(self):
         """
         save_if_valid adds an error message on a rare race-condition edit.
