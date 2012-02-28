@@ -44,9 +44,9 @@ methods require exactly the same setup.
 
 Never use external data fixtures for test data; use the object factories in
 ``tests.factories`` (available as ``self.F`` on every
-``tests.cases.TestCase``.) If a large amount of interconnected data is needed,
-write helper methods. External data fixtures introduce unnecessary dependencies
-between tests and are difficult to maintain.
+``tests.cases.DBTestCase``.) If a large amount of interconnected data is
+needed, write helper methods. External data fixtures introduce unnecessary
+dependencies between tests and are difficult to maintain.
 
 
 Style

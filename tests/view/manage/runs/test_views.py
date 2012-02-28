@@ -158,6 +158,19 @@ class AddRunTest(case.view.FormViewTestCase):
         res.mustcontain("This field is required.")
 
 
+    def test_non_field_error(self):
+        """Non-field errors are displayed"""
+        form = self.get_form()
+
+        form["start"] = "2012-3-1"
+        form["end"] = "2012-2-1"
+
+        res = form.submit()
+
+        self.assertEqual(res.status_int, 200)
+        res.mustcontain("Start date must be prior to end date.")
+
+
     def test_requires_manage_runs_permission(self):
         """Requires manage-runs permission."""
         res = self.app.get(
