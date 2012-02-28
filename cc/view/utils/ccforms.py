@@ -91,9 +91,10 @@ class CCModelForm(floppyforms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize ModelForm. Pull out user kwarg."""
+        """Initialize ModelForm. Pull out user kwarg, hide cc_version field."""
         self.user = kwargs.pop("user", None)
         super(CCModelForm, self).__init__(*args, **kwargs)
+        self.fields["cc_version"].widget = floppyforms.HiddenInput()
 
 
     def save(self, commit=True, user=None):

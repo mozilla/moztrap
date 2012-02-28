@@ -320,6 +320,13 @@ class CCModelFormTest(CCFormsTestCase):
         self.assertEqual(f["cc_version"].value(), p.cc_version)
 
 
+    def test_cc_version_hidden(self):
+        """cc_version field renders as a hidden input."""
+        f = self.form()
+
+        self.assertIn("hidden", unicode(f["cc_version"]))
+
+
 
 class CCModelChoiceFieldTest(CCFormsTestCase):
     """Tests for CCModelChoiceField."""
