@@ -138,11 +138,20 @@ class CCModelForm(floppyforms.ModelForm):
         try:
             instance = self.save(user=user)
         except model.ConcurrencyError:
-            self._errors[NON_FIELD_ERRORS] = self.error_class([
-                    u"Another user saved changes to this object "
-                    u"in the meantime. Please review their changes and save "
-                    u"yours again if they still apply."
-                    ])
+            self._errors[NON_FIELD_ERRORS] = self.error_class(
+                [
+                    # The link here takes advantage of the fact that an empty
+                    # href links to the current page; if they reload a fresh
+                    # copy of the current page (an edit form), it will show the
+                    # other user's changes.
+                    mark_safe(
+                        u"Another user saved changes to this object in the "
+                        u'meantime. Please <a href="">review their changes</a> '
+                        u"and save yours again if they still apply."
+                        )
+                    ]
+                )
+            self.data = self.data.copy()
             self.data["cc_version"] = self.instance.cc_version
             return None
 

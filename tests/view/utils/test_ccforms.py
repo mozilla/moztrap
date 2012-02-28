@@ -214,9 +214,9 @@ class CCModelFormTest(CCFormsTestCase):
             f.errors,
             {
                 "__all__": [
-                    "Another user saved changes to this object "
-                    "in the meantime. Please review their changes and save "
-                    "yours again if they still apply."
+                    u"Another user saved changes to this object in the "
+                    u'meantime. Please <a href="">review their changes</a> '
+                    u"and save yours again if they still apply."
                     ]
                 }
             )
@@ -289,9 +289,9 @@ class CCModelFormTest(CCFormsTestCase):
             f.errors,
             {
                 "__all__": [
-                    u"Another user saved changes to this object "
-                    u"in the meantime. Please review their changes and save "
-                    u"yours again if they still apply."
+                    u"Another user saved changes to this object in the "
+                    u'meantime. Please <a href="">review their changes</a> '
+                    u"and save yours again if they still apply."
                     ]
                 }
             )
