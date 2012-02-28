@@ -8,29 +8,30 @@ Quickstart
 
 Case Conductor requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5+.
 
-(These quickstart instructions assume that you have `virtualenv`_ and
-`virtualenvwrapper`_; if you'd rather just install everything globally, skip
-step 2; you may have to prepend ``sudo`` to step 3 in that case.)
+These steps assume that you have `git`_, `virtualenv`_, `virtualenvwrapper`_,
+and a compilation toolchain available (with the `Python`_ and `MySQL`_ client
+development header files), and that you have a local `MySQL`_ server running
+which your shell user has permission to create databases in. See the full
+:doc:`installation` documentation for details and troubleshooting.
 
 1. ``git clone --recursive git://github.com/mozilla/caseconductor``
-2. ``mkvirtualenv caseconductor``
-3. ``bin/install-reqs``
-4. ``echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql``
-5. ``./manage.py syncdb --migrate``
-6. ``./manage.py create_default_roles``
-7. ``./manage.py runserver``
-8. Visit http://localhost:8000 in your browser.
+2. ``cd caseconductor && git checkout 0.8.X``
+3. ``mkvirtualenv caseconductor``
+4. ``bin/install-reqs``
+5. ``echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql``
+6. ``./manage.py syncdb --migrate``
+7. ``./manage.py create_default_roles``
+8. ``./manage.py runserver``
+9. Visit http://localhost:8000 in your browser.
 
 Congratulations! If that all worked, you have a functioning instance of Case
 Conductor for local testing, experimentation, and :doc:`development
 <development>`.
 
-See the full :doc:`installation` documentation for details and troubleshooting
-of the above steps.
-
 Please read the :doc:`deployment` documentation for important security and
 other considerations before deploying a public instance of Case Conductor.
 
+.. _git: http://git-scm.com
 .. _Python: http://www.python.org
 .. _MySQL: http://www.mysql.com
 .. _virtualenv: http://www.virtualenv.org
@@ -44,6 +45,7 @@ Contents
    :maxdepth: 2
 
    installation
+   upgrading
    development
    deployment
    userguide/index
