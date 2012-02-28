@@ -45,6 +45,7 @@ Contents
    :maxdepth: 2
 
    installation
+   upgrading
    development
    deployment
    userguide/index
