@@ -1,29 +1,11 @@
-{% extends 'manage/product/base.html' %}
+{% extends 'manage/product/product_form.html' %}
 
-{% block content %}
-<section class="add-product">
-  <h2>create a new product</h2>
-  <form id="product-add-form" method="POST" class="manage-form product-form">
-    {% csrf_token %}
+{% block sectionclass %}add-product{% endblock %}
+{% block formid %}product-add-form{% endblock %}
 
-    {% include "forms/_field.html" with field=form.name %}
-    {% include "forms/_field.html" with field=form.version %}
-    {% include "forms/_field.html" with field=form.description %}
-    {% include "forms/_field.html" with field=form.profile %}
-
-    {% comment %}
-    <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
-      <h3 class="summary">assign specific users to this product &raquo;</h3>
-      <div>
-        {# @@@ needs the slick multiple-select widget #}
-        {% include "forms/_field.html" with field=form.team %}
-      </div>
-    </section>
-    {% endcomment %}
-
-    <div class="form-actions">
-      <button type="submit">create product</button>
-    </div>
-  </form>
-</section>
-{% endblock content %}
+{% block fields %}
+  {% include "forms/_field.html" with field=form.name %}
+  {% include "forms/_field.html" with field=form.version %}
+  {% include "forms/_field.html" with field=form.description %}
+  {% include "forms/_field.html" with field=form.profile %}
+{% endblock %}
