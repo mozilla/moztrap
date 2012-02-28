@@ -195,6 +195,18 @@ class EditTagTest(case.view.FormViewTestCase):
         res.mustcontain("This field is required.")
 
 
+    def test_concurrency_error(self):
+        """Concurrency error is displayed."""
+        form = self.get_form()
+
+        self.tag.save()
+
+        form["name"] = "New"
+        res = form.submit(status=200)
+
+        res.mustcontain("Another user saved changes to this object")
+
+
 
 class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase):
     """Test for tags autocomplete view."""

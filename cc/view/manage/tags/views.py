@@ -67,8 +67,8 @@ def tag_add(request):
     """Add a tag."""
     if request.method == "POST":
         form = forms.AddTagForm(request.POST, user=request.user)
-        if form.is_valid():
-            tag = form.save()
+        tag = form.save_if_valid()
+        if tag is not None:
             messages.success(
                 request, "Tag '{0}' added.".format(
                     tag.name)
@@ -93,8 +93,8 @@ def tag_edit(request, tag_id):
     if request.method == "POST":
         form = forms.EditTagForm(
             request.POST, instance=tag, user=request.user)
-        if form.is_valid():
-            tag = form.save()
+        tag = form.save_if_valid()
+        if tag is not None:
             messages.success(request, "Saved '{0}'.".format(tag.name))
             return redirect("manage_tags")
     else:

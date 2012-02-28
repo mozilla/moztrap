@@ -40,7 +40,14 @@ class EditTagFormTest(case.DBTestCase):
         u = self.F.UserFactory.create()
 
         f = self.form(
-            {"name": "Two", "product": str(p2.id)}, instance=t, user=u)
+            {
+                "name": "Two",
+                "product": str(p2.id),
+                "cc_version": str(t.cc_version),
+                },
+            instance=t,
+            user=u,
+            )
 
         tag = f.save()
 
@@ -107,7 +114,7 @@ class AddTagFormTest(case.DBTestCase):
         u = self.F.UserFactory()
 
         f = self.form(
-            {"name": "Two", "product": str(p.id)},
+            {"name": "Two", "product": str(p.id), "cc_version": "0"},
             user=u)
 
         tag = f.save()
