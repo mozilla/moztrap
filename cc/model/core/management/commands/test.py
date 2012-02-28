@@ -15,19 +15,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-import os, sys
-from optparse import make_option
+import sys
 
 from django.core.management.commands.test import Command as TestCommand
 
-import coverage
 from south.management.commands import patch_for_test_db_setup
 
 
 
 class Command(TestCommand):
-    help = 'Runs the test modules, cases, or methods specified by dotted path on the command line, or does test discovery if no arguments are given.'
-    args = '[dotted-path ...]'
+    help = (
+        "Runs the test modules, cases, or methods specified "
+        "by dotted path on the command line, or does test "
+        "discovery if no arguments are given."
+        )
+    args = "[dotted-path ...]"
 
     requires_model_validation = False
 
