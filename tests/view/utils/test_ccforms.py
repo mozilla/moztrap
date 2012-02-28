@@ -231,6 +231,8 @@ class CCModelFormTest(CCFormsTestCase):
         Rather than redisplaying the form with the known-to-be-out-of-date
         version, we redisplay it with the updated version.
 
+        Need to pass in a QueryDict here, as immutability is relevant.
+
         """
         p = self.F.ProductFactory.create()
         submitted_version = p.cc_version
@@ -254,8 +256,9 @@ class CCModelFormTest(CCFormsTestCase):
         p2.name = "Foo"
         p2.save()
 
+        from django.http import QueryDict
         f = self.form(
-            {"name": "New", "cc_version": str(p.cc_version)},
+            QueryDict("name=New&cc_version={0}".format(p.cc_version)),
             instance=p,
             )
 
