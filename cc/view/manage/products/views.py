@@ -103,9 +103,9 @@ def product_edit(request, product_id):
     if request.method == "POST":
         form = forms.EditProductForm(
             request.POST, instance=product, user=request.user)
-        product = form.save_if_valid()
-        if product is not None:
-            messages.success(request, "Saved '{0}'.".format(product.name))
+        saved_product = form.save_if_valid()
+        if saved_product is not None:
+            messages.success(request, "Saved '{0}'.".format(saved_product.name))
             return redirect("manage_products")
     else:
         form = forms.EditProductForm(instance=product, user=request.user)

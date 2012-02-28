@@ -47,6 +47,7 @@ class EditRunFormTest(case.DBTestCase):
                 "description": "new desc",
                 "start": "1/3/2012",
                 "end": "1/10/2012",
+                "cc_version": str(r.cc_version),
                 },
             instance=r,
             user=u)
@@ -75,6 +76,7 @@ class EditRunFormTest(case.DBTestCase):
                 "start": r.start.strftime("%m/%d/%Y"),
                 "end": "",
                 "suites": [str(s.id)],
+                "cc_version": str(r.cc_version),
                 },
             instance=r,
             )
@@ -99,6 +101,7 @@ class EditRunFormTest(case.DBTestCase):
                 "start": r.start.strftime("%m/%d/%Y"),
                 "end": "",
                 "suites": [str(s.id)],
+                "cc_version": str(r.cc_version),
                 },
             instance=r,
             )
@@ -132,6 +135,7 @@ class EditRunFormTest(case.DBTestCase):
                 "description": "new desc",
                 "start": "1/3/2012",
                 "end": "1/10/2012",
+                "cc_version": str(r.cc_version),
                 },
             instance=r,
             )
@@ -181,6 +185,7 @@ class EditRunFormTest(case.DBTestCase):
                 "description": "new desc",
                 "start": "1/3/2012",
                 "end": "1/10/2012",
+                "cc_version": str(r.cc_version),
                 },
             instance=r,
             )
@@ -215,6 +220,7 @@ class AddRunFormTest(case.DBTestCase):
                 "description": "foo desc",
                 "start": "1/3/2012",
                 "end": "1/10/2012",
+                "cc_version": "0",
                 },
             user=u
             )
@@ -242,6 +248,7 @@ class AddRunFormTest(case.DBTestCase):
                 "start": "1/3/2012",
                 "end": "",
                 "suites": [str(s.id)],
+                "cc_version": "0",
                 },
             )
 

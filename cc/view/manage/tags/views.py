@@ -93,9 +93,9 @@ def tag_edit(request, tag_id):
     if request.method == "POST":
         form = forms.EditTagForm(
             request.POST, instance=tag, user=request.user)
-        tag = form.save_if_valid()
-        if tag is not None:
-            messages.success(request, "Saved '{0}'.".format(tag.name))
+        saved_tag = form.save_if_valid()
+        if saved_tag is not None:
+            messages.success(request, "Saved '{0}'.".format(saved_tag.name))
             return redirect("manage_tags")
     else:
         form = forms.EditTagForm(instance=tag, user=request.user)

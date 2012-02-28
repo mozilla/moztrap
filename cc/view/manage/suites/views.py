@@ -106,9 +106,9 @@ def suite_edit(request, suite_id):
     if request.method == "POST":
         form = forms.EditSuiteForm(
             request.POST, instance=suite, user=request.user)
-        suite = form.save_if_valid()
-        if suite is not None:
-            messages.success(request, "Saved '{0}'.".format(suite.name))
+        saved_suite = form.save_if_valid()
+        if saved_suite is not None:
+            messages.success(request, "Saved '{0}'.".format(saved_suite.name))
             return redirect("manage_suites")
     else:
         form = forms.EditSuiteForm(

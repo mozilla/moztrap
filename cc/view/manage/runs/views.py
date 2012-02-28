@@ -78,8 +78,8 @@ def run_add(request):
     """Add a run."""
     if request.method == "POST":
         form = forms.AddRunForm(request.POST, user=request.user)
-        if form.is_valid():
-            run = form.save()
+        run = form.save_if_valid()
+        if run is not None:
             messages.success(
                 request, "Run '{0}' added.".format(
                     run.name)
@@ -105,9 +105,9 @@ def run_edit(request, run_id):
     if request.method == "POST":
         form = forms.EditRunForm(
             request.POST, instance=run, user=request.user)
-        if form.is_valid():
-            run = form.save()
-            messages.success(request, "Saved '{0}'.".format(run.name))
+        saved_run = form.save_if_valid()
+        if saved_run is not None:
+            messages.success(request, "Saved '{0}'.".format(saved_run.name))
             return redirect("manage_runs")
     else:
         form = forms.EditRunForm(

@@ -248,3 +248,15 @@ class EditRunTest(case.view.FormViewTestCase):
                 )["value"],
             unicode(pv.id)
             )
+
+
+    def test_concurrency_error(self):
+        """Concurrency error is displayed."""
+        form = self.get_form()
+
+        self.testrun.save()
+
+        form["name"] = "New"
+        res = form.submit(status=200)
+
+        res.mustcontain("Another user saved changes to this object")
