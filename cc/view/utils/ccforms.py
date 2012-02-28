@@ -81,14 +81,27 @@ class CCModelForm(floppyforms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        """Pull user out of ModelForm initialization keyword arguments."""
+        """Initialize ModelForm. Pull out user kwarg, set initial cc_version."""
         self.user = kwargs.pop("user", None)
         super(CCModelForm, self).__init__(*args, **kwargs)
         self.initial["cc_version"] = self.instance.cc_version
 
 
     def save(self, commit=True, user=None):
-        """If commiting, pass user into save(). Can supply user here as well."""
+        """
+        Save and return this form's instance.
+
+        If committing, pass user into save(). Can supply user here as well.
+
+        Update instance with form-provided version before saving. This method
+        can raise ``ConcurrencyError``; calling code not prepared to catch and
+        handle ``ConcurrencyError`` should use ``save_if_valid`` instead.
+
+        """
+        assert self.is_valid()
+
+        self.instance.cc_version = self.cleaned_data["cc_version"]
+
         instance = super(CCModelForm, self).save(commit=False)
 
         user = user or self.user
@@ -113,8 +126,6 @@ class CCModelForm(floppyforms.ModelForm):
         """
         if not self.is_valid():
             return None
-
-        self.instance.cc_version = self.cleaned_data["cc_version"]
 
         try:
             instance = self.save(user=user)

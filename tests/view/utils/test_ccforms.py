@@ -152,6 +152,22 @@ class CCModelFormTest(CCFormsTestCase):
         self.assertEqual(product.modified_by, self.user)
 
 
+    def test_save_concurrent(self):
+        """save will raise ConcurrencyError if there was a concurrent edit."""
+        p = self.F.ProductFactory.create()
+        submitted_version = p.cc_version
+        p.name = "Foo"
+        p.save()
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            )
+
+        with self.assertRaises(self.model.ConcurrencyError):
+            f.save()
+
+
     def test_save_if_valid_not_valid(self):
         """save_if_valid returns None if there are errors."""
         f = self.form({"name": "", "cc_version": "0"})
