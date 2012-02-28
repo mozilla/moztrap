@@ -22,7 +22,6 @@ CC ModelAdmin and InlineModelAdmin for use with CCModel.
 from itertools import chain
 from functools import partial
 
-from django.db.models.query import QuerySet
 from django.forms.models import BaseInlineFormSet
 
 from django.contrib import admin
