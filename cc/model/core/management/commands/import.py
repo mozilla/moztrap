@@ -52,7 +52,7 @@ from django.core.management.base import BaseCommand, CommandError
 import json
 
 from cc.model.core.models import Product, ProductVersion
-from cc.model.library.importer import Importer, ImportResult
+from cc.model.library.importer import Importer
 
 
 
@@ -70,8 +70,7 @@ class Command(BaseCommand):
             product = Product.objects.get(name=args[0])
 
         except Product.DoesNotExist:
-            raise CommandError('Product "{0}" does not exist'.format(
-                args[0]))
+            raise CommandError('Product "{0}" does not exist'.format(args[0]))
 
         try:
             product_version = ProductVersion.objects.get(
@@ -79,30 +78,31 @@ class Command(BaseCommand):
 
         except ProductVersion.DoesNotExist:
             raise CommandError(
-                'Product Version "{0}" does not exist'.format(
-                product_version))
+                'Version "{0}" of product "{1}" does not exist'.format(
+                    args[1], args[0])
+                )
 
         try:
-            with open(args[2]) as cases_text:
+            with open(args[2]) as fh:
 
                 # try to import this as JSON
                 try:
-                    case_data = json.load(cases_text)
+                    case_data = json.load(fh)   # pragma: no branch
 
                 except ValueError as e:
                     raise CommandError(
-                        "Could not parse JSON because {0}".format(str(e)))
+                        "Could not parse JSON: {0}".format(str(e)))
 
                 # @@@: support importing as CSV.  Rather than returning an
                 # error above, just try CSV import instead.
 
-
-                result_list = Importer().import_data(
-                    product_version, case_data).get_as_list()
-                result_list.append("")
-
-                self.stdout.write("\n".join(result_list))
-
-
         except IOError as (errno, strerror):
-            raise CommandError("I/O error({0}): {1}".format(errno, strerror))
+            raise CommandError(
+                'Could not open "{0}", I/O error {1}: {2}'.format(
+                    args[2], errno, strerror)
+                )
+
+        result_list = Importer().import_data(
+            product_version, case_data).get_as_list()
+        result_list.append("")
+        self.stdout.write("\n".join(result_list))

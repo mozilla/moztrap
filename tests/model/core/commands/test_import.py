@@ -19,7 +19,10 @@
 Tests for management command to import cases.
 
 """
+from contextlib import contextmanager
 from cStringIO import StringIO
+import os
+from tempfile import mkstemp
 
 from django.core.management import call_command
 
@@ -33,108 +36,129 @@ from tests import case
 class ImportCasesTest(case.DBTestCase):
     """Tests for import_cases management command."""
 
-    def call_command(self, **kwargs):
-        """Runs the management command under test and returns stdout output."""
+    def call_command(self, *args):
+        """
+        Runs the management command and returns (stdout, stderr) output.
+
+        Also patch ``sys.exit`` so a ``CommandError`` doesn't cause an exit.
+
+        """
         with patch("sys.stdout", StringIO()) as stdout:
-            call_command("import_cases", **kwargs)
+            with patch("sys.stderr", StringIO()) as stderr:
+                with patch("sys.exit"):
+                    call_command("import", *args)
 
         stdout.seek(0)
-        return stdout.read()
+        stderr.seek(0)
+        return (stdout.read(), stderr.read())
+
+
+    @contextmanager
+    def tempfile(self, contents):
+        """
+        Write given contents to a temporary file, yielding its path.
+
+        Used as a context manager; automatically deletes the temporary file
+        when context manager exits.
+
+        """
+        (fd, path) = mkstemp()
+        fh = os.fdopen(fd, "w")
+        fh.write(contents)
+        fh.close()
+
+        try:
+            yield path
+        finally:
+            os.remove(path)
 
 
     def test_no_args(self):
         """Command shows usage."""
-        self.call_command()
-
-        self.assertRoles("Tester", "Test Creator", "Test Manager", "Admin")
-
-    def test_imports_all_new(self):
-        pass
-
-    def test_imports_skip_existing(self):
-        pass
-
-    def test_skips_existing_roles(self):
-        """Command skips roles that already exist."""
-        self.model.Role.objects.create(name="Tester")
-
-        output = self.call_command()
-
-        self.assertIn("Role 'Tester' already exists; skipping.", output)
-
-        self.assertRoles("Tester", "Test Creator", "Test Manager", "Admin")
-
-
-    def test_unknown_permission(self):
-        """Gracefully skips unknown permission."""
-        with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
-            {"Foo": ["foo.foo"]}):
-            output = self.call_command()
-
-        self.assertIn("Permission 'foo.foo' unknown; skipping.", output)
-
-        self.assertRoles("Foo")
-
-
-    def test_normal_output(self):
-        """Test output when all roles are created."""
         output = self.call_command()
 
         self.assertEqual(
             output,
-            """Role 'Test Creator' created.
-  Permission 'library.create_cases' added.
-  Permission 'library.manage_suite_cases' added.
-  Permission 'execution.execute' added.
-Role 'Admin' created.
-  Permission 'core.manage_products' added.
-  Permission 'core.manage_users' added.
-  Permission 'library.manage_cases' added.
-  Permission 'library.manage_suites' added.
-  Permission 'tags.manage_tags' added.
-  Permission 'execution.manage_runs' added.
-  Permission 'execution.review_results' added.
-  Permission 'environments.manage_environments' added.
-  Permission 'library.create_cases' added.
-  Permission 'library.manage_suite_cases' added.
-  Permission 'execution.execute' added.
-Role 'Test Manager' created.
-  Permission 'library.manage_cases' added.
-  Permission 'library.manage_suites' added.
-  Permission 'tags.manage_tags' added.
-  Permission 'execution.manage_runs' added.
-  Permission 'execution.review_results' added.
-  Permission 'environments.manage_environments' added.
-  Permission 'library.create_cases' added.
-  Permission 'library.manage_suite_cases' added.
-  Permission 'execution.execute' added.
-Role 'Tester' created.
-  Permission 'execution.execute' added.
-""")
+            (
+                "",
+                "Error: Usage: <product_name> <product_version> <filename>\n",
+                )
+            )
 
 
-    def test_creates_all_quietly(self):
-        """Test output when verbosity=0."""
-        output = self.call_command(verbosity=0)
+    def test_bad_product(self):
+        """Error if given non-existent product name."""
+        output = self.call_command("Foo", "1.0", "file.json")
 
-        self.assertEqual(output, "")
-
-
-    def test_skips_existing_roles_quietly(self):
-        """Command skips roles with no output when verbosity 0."""
-        self.model.Role.objects.create(name="Tester")
-
-        output = self.call_command(verbosity=0)
-
-        self.assertEqual(output, "")
+        self.assertEqual(
+            output,
+            (
+                "",
+                'Error: Product "Foo" does not exist\n',
+                )
+            )
 
 
-    def test_skips_unknown_permission_quietly(self):
-        """Skips unknown permission silently with verbosity 0."""
-        with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
-            {"Foo": ["foo.foo"]}):
-            output = self.call_command(verbosity=0)
+    def test_bad_productversion(self):
+        """Error if given non-existent product version."""
+        self.F.ProductFactory.create(name="Foo")
 
-        self.assertEqual(output, "")
+        output = self.call_command("Foo", "1.0", "file.json")
+
+        self.assertEqual(
+            output,
+            (
+                "",
+                'Error: Version "1.0" of product "Foo" does not exist\n',
+                )
+            )
+
+
+    def test_bad_file(self):
+        """Error if given nonexistent file."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        output = self.call_command("Foo", "1.0", "does/not/exist.json")
+
+        self.assertEqual(
+            output,
+            (
+                "",
+                (
+                    'Error: Could not open "does/not/exist.json", '
+                    "I/O error 2: No such file or directory\n"
+                    ),
+                )
+            )
+
+
+    def test_bad_json(self):
+        """Error if file contains malformed JSON."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        with self.tempfile("{") as path:
+            output = self.call_command("Foo", "1.0", path)
+
+
+        self.assertEqual(
+            output,
+            (
+                "",
+                (
+                    "Error: Could not parse JSON: "
+                    "Expecting property name: line 1 column 1 (char 1)\n"
+                    ),
+                )
+            )
+
+
+    def test_success(self):
+        """Successful import prints summary data and creates objects."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        with self.tempfile("{}") as path:
+            output = self.call_command("Foo", "1.0", path)
+
+
+
+        self.assertEqual(output, ("Imported 0 cases\nImported 0 suites\n", ""))
