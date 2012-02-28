@@ -19,7 +19,6 @@
 
 from django.db import transaction
 
-from ..core.models import Product, ProductVersion
 from ..core.auth import User
 from ..tags.models import Tag
 from .models import Case, CaseVersion, CaseStep, Suite, SuiteCase
@@ -49,7 +48,7 @@ class Importer(object):
                     "created_by": "cdawson@mozilla.com"
                     "steps": [
                         {
-                            "instruction": "insruction text",
+                            "instruction": "instruction text",
                             "expected": "expected text"
                         },
                     ]
@@ -197,6 +196,7 @@ class CaseImporter(object):
 
                 continue
 
+            user = None
             if "created_by" in new_case:
                 try:
                     email = new_case["created_by"]
@@ -207,7 +207,6 @@ class CaseImporter(object):
                         ImportResult.WARN_USER_NOT_FOUND,
                         email,
                         )
-                    user = None
 
             # the case looks good so far, but there may be a problem with
             # one of the steps.  So, create a savepoint in case something
