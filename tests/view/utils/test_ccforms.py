@@ -87,6 +87,18 @@ class BareTextareaTest(CCFormsTestCase):
 
 
 
+class ProductIdAttrsTest(CCFormsTestCase):
+    """Tests for product_id_attrs."""
+    def test_product_id_attr(self):
+        """Returns dict with data-product-id."""
+        pv = self.F.ProductVersionFactory.create()
+        self.assertEqual(
+            self.ccforms.product_id_attrs(pv),
+            {"data-product-id": pv.product.id},
+            )
+
+
+
 class CCModelFormTest(CCFormsTestCase):
     """Tests for CCModelForm."""
     def setUp(self):
