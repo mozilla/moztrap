@@ -44,6 +44,7 @@ class EditSuiteFormTest(case.DBTestCase):
                 "name": "new name",
                 "description": "new desc",
                 "status": "draft",
+                "cc_version": str(s.cc_version),
                 },
             instance=s,
             user=u)
@@ -82,6 +83,7 @@ class EditSuiteFormTest(case.DBTestCase):
                 "name": "new name",
                 "description": "new desc",
                 "status": "draft",
+                "cc_version": str(s.cc_version),
                 },
             instance=s,
             )
@@ -106,6 +108,7 @@ class EditSuiteFormTest(case.DBTestCase):
                 "description": s.description,
                 "status": s.status,
                 "cases": [str(c.id)],
+                "cc_version": str(s.cc_version),
                 },
             instance=s,
             )
@@ -129,6 +132,7 @@ class EditSuiteFormTest(case.DBTestCase):
                 "description": s.description,
                 "status": s.status,
                 "cases": [str(c.id)],
+                "cc_version": str(s.cc_version),
                 },
             instance=s,
             )
@@ -160,6 +164,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "name": "Foo",
                 "description": "foo desc",
                 "status": "draft",
+                "cc_version": "0",
                 },
             user=u
             )
@@ -183,6 +188,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "description": "some desc",
                 "status": "draft",
                 "cases": [str(c.id)],
+                "cc_version": "0",
                 },
             )
 

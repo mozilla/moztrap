@@ -6,6 +6,7 @@
   {% block formtop %}{% endblock %}
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
     {% csrf_token %}
+    {{ form.cc_version }}
     {{ form.non_field_errors }}
 
     {% include "forms/_field.html" with field=form.product %}

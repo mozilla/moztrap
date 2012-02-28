@@ -301,7 +301,7 @@ class EditSuiteTest(case.view.FormViewTestCase):
     def setUp(self):
         """Setup for edit tests; create suite, add perm."""
         super(EditSuiteTest, self).setUp()
-        self.testsuite = self.F.SuiteFactory.create()
+        self.suite = self.F.SuiteFactory.create()
         self.add_perm("manage_suites")
 
 
@@ -309,7 +309,7 @@ class EditSuiteTest(case.view.FormViewTestCase):
     def url(self):
         """Shortcut for edit-suite url."""
         return reverse(
-            "manage_suite_edit", kwargs=dict(suite_id=self.testsuite.id))
+            "manage_suite_edit", kwargs=dict(suite_id=self.suite.id))
 
 
     def test_requires_manage_suites_permission(self):
@@ -330,7 +330,7 @@ class EditSuiteTest(case.view.FormViewTestCase):
 
         res.follow().mustcontain("Saved 'New Foo'.")
 
-        r = self.refresh(self.testsuite)
+        r = self.refresh(self.suite)
         self.assertEqual(r.name, "New Foo")
 
 
@@ -342,3 +342,15 @@ class EditSuiteTest(case.view.FormViewTestCase):
         res = form.submit(status=200)
 
         res.mustcontain("This field is required.")
+
+
+    def test_concurrency_error(self):
+        """Concurrency error is displayed."""
+        form = self.get_form()
+
+        self.suite.save()
+
+        form["name"] = "New"
+        res = form.submit(status=200)
+
+        res.mustcontain("Another user saved changes to this object")
