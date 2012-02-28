@@ -138,11 +138,11 @@ class CCModelForm(floppyforms.ModelForm):
         try:
             instance = self.save(user=user)
         except model.ConcurrencyError:
-            self._errors[NON_FIELD_ERRORS] = [
-                u"Another user saved changes to this object "
-                u"in the meantime. Please review their changes and save "
-                u"yours again if they still apply."
-                ]
+            self._errors[NON_FIELD_ERRORS] = self.error_class([
+                    u"Another user saved changes to this object "
+                    u"in the meantime. Please review their changes and save "
+                    u"yours again if they still apply."
+                    ])
             return None
 
         return instance

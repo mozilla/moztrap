@@ -220,6 +220,8 @@ class CCModelFormTest(CCFormsTestCase):
                     ]
                 }
             )
+        # Added error uses proper error list class
+        self.assertIsInstance(f.errors["__all__"], f.error_class)
 
 
     def test_save_if_valid_concurrent_race(self):
