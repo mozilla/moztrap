@@ -21,6 +21,7 @@ Tests for management command to import cases.
 """
 from contextlib import contextmanager
 from cStringIO import StringIO
+import json
 import os
 from tempfile import mkstemp
 
@@ -156,9 +157,11 @@ class ImportCasesTest(case.DBTestCase):
         """Successful import prints summary data and creates objects."""
         self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
 
-        with self.tempfile("{}") as path:
+        data = {
+            "cases": [{"name": "Foo", "steps": [{"instruction": "do this"}]}]}
+
+        with self.tempfile(json.dumps(data)) as path:
             output = self.call_command("Foo", "1.0", path)
 
-
-
-        self.assertEqual(output, ("Imported 0 cases\nImported 0 suites\n", ""))
+        self.assertEqual(output, ("Imported 1 cases\nImported 0 suites\n", ""))
+        self.assertEqual(self.model.CaseVersion.objects.get().name, "Foo")
