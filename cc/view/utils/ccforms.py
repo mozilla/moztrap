@@ -68,6 +68,16 @@ class BareTextarea(floppyforms.Textarea):
 
 
 
+class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
+    def __new__(cls, name, bases, attrs):
+        """Construct a CCModelForm subclass; ensure it has cc_version field."""
+        meta = attrs.get("Meta")
+        if meta and meta.fields and "cc_version" not in meta.fields:
+            meta.fields.append("cc_version")
+        return super(CCModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
+
+
+
 class CCModelForm(floppyforms.ModelForm):
     """
     A ModelForm for CCModels.
@@ -77,14 +87,13 @@ class CCModelForm(floppyforms.ModelForm):
     correctly handle concurrency errors.
 
     """
-    cc_version = forms.IntegerField(initial=0, widget=forms.HiddenInput)
+    __metaclass__ = CCModelFormMetaclass
 
 
     def __init__(self, *args, **kwargs):
-        """Initialize ModelForm. Pull out user kwarg, set initial cc_version."""
+        """Initialize ModelForm. Pull out user kwarg."""
         self.user = kwargs.pop("user", None)
         super(CCModelForm, self).__init__(*args, **kwargs)
-        self.initial["cc_version"] = self.instance.cc_version
 
 
     def save(self, commit=True, user=None):
@@ -93,14 +102,12 @@ class CCModelForm(floppyforms.ModelForm):
 
         If committing, pass user into save(). Can supply user here as well.
 
-        Update instance with form-provided version before saving. This method
-        can raise ``ConcurrencyError``; calling code not prepared to catch and
-        handle ``ConcurrencyError`` should use ``save_if_valid`` instead.
+        This method can raise ``ConcurrencyError``; calling code not prepared
+        to catch and handle ``ConcurrencyError`` should use ``save_if_valid``
+        instead.
 
         """
         assert self.is_valid()
-
-        self.instance.cc_version = self.cleaned_data["cc_version"]
 
         instance = super(CCModelForm, self).save(commit=False)
 
