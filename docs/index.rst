@@ -6,7 +6,8 @@ Case Conductor is a test case manager.
 Quickstart
 ----------
 
-Case Conductor requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5+.
+Case Conductor requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5.1+ with the InnoDB
+backend.
 
 These steps assume that you have `git`_, `virtualenv`_, `virtualenvwrapper`_,
 and a compilation toolchain available (with the `Python`_ and `MySQL`_ client
