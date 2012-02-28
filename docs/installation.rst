@@ -43,6 +43,10 @@ also requires the Python development headers (``apt-get install python-dev`` on
 Ubuntu) and the MySQL client development headers (``apt-get install
 libmysqlclient-dev`` on Ubuntu).
 
+If you are lacking the Python development headers, you will get the error
+``Python.h: No such file or directory``. If you are lacking the MySQL client
+development files, you will get an error that ``mysql_config`` cannot be found.
+
 
 Using operating system packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,10 +93,11 @@ you can just run ``mysqladmin create caseconductor`` instead).
 If you get an error here, your shell user may not have permissions to create a
 MySQL database. In that case, you'll need to append ``-u someuser`` to the end
 of that command, where ``someuser`` is a MySQL user who does have permission to
-create databases. And before going on to step 5, you'll also need to create a
-``cc/settings/local.py`` file that specifies the database username to use. See
-``cc/settings/local.sample.py`` for a sample that can be copied to
-``cc/settings/local.py`` and modified as needed.
+create databases (in many cases ``-u root`` will work). If you have to use
+``-u`` to create the database, then before going on to step 5 you'll also need
+to create a ``cc/settings/local.py`` file (copy the sample provided at
+``cc/settings/local.sample.py``), and uncomment the ``DATABASES`` setting,
+changing the ``USER`` key to the same username you passed to ``-u``.
 
 
 Create the database tables
