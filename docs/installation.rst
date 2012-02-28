@@ -14,6 +14,11 @@ the root of the clone, run::
 
     git submodule init; git submodule update
 
+If you want to run the latest and greatest code, the default ``master`` branch
+is what you want. If you want to run a stable release branch, switch to it now::
+
+    git checkout 0.8.X
+
 
 Install the Python dependencies
 -------------------------------
