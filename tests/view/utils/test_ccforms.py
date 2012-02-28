@@ -108,7 +108,7 @@ class CCModelFormTest(CCFormsTestCase):
 
     def test_new_instance_records_created_by(self):
         """Adding a new instance records the created_by user."""
-        f = self.form({"name": "Foo"}, user=self.user)
+        f = self.form({"name": "Foo", "cc_version": "0"}, user=self.user)
 
         product = f.save()
 
@@ -118,7 +118,11 @@ class CCModelFormTest(CCFormsTestCase):
     def test_edited_instance_records_modified_by(self):
         """Editing an instance records the modified_by user."""
         p = self.F.ProductFactory.create()
-        f = self.form({"name": "Foo"}, instance=p, user=self.user)
+        f = self.form(
+            {"name": "Foo", "cc_version": str(p.cc_version)},
+            instance=p,
+            user=self.user,
+            )
 
         product = f.save()
 
@@ -127,7 +131,7 @@ class CCModelFormTest(CCFormsTestCase):
 
     def test_commit_false_records_modified_by(self):
         """modified_by user is still recorded even with commit=False."""
-        f = self.form({"name": "Foo"})
+        f = self.form({"name": "Foo", "cc_version": "0"})
 
         product = f.save(commit=False, user=self.user)
 
@@ -139,13 +143,153 @@ class CCModelFormTest(CCFormsTestCase):
     def test_commit_false_allows_user_to_be_passed_in_later(self):
         """With commit=False, user can be passed in at later save."""
         u = self.F.UserFactory.create()
-        f = self.form({"name": "Foo"})
+        f = self.form({"name": "Foo", "cc_version": "0"})
 
         product = f.save(commit=False, user=u)
 
         product.save(user=self.user)
 
         self.assertEqual(product.modified_by, self.user)
+
+
+    def test_save_if_valid_not_valid(self):
+        """save_if_valid returns None if there are errors."""
+        f = self.form({"name": "", "cc_version": "0"})
+
+        self.assertIsNone(f.save_if_valid())
+        self.assertEqual(f.errors, {"name": [u"This field is required."]})
+        self.assertEqual(self.model.Product.objects.count(), 0)
+
+
+    def test_save_if_valid_concurrent(self):
+        """
+        save_if_valid adds an error message on a concurrent edit.
+
+        This tests the case where the concurrent edit happened before this form
+        was submitted at all. So the model instance fetched and passed to the
+        form is actually up to date, but the submitted form data contains an
+        older ``cc_version``.
+
+        """
+        p = self.F.ProductFactory.create()
+        submitted_version = p.cc_version
+        p.name = "Foo"
+        p.save()
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            )
+
+        self.assertIsNone(f.save_if_valid())
+        self.assertEqual(
+            f.errors,
+            {
+                "__all__": [
+                    "Another user saved changes to this object "
+                    "in the meantime. Please review their changes and save "
+                    "yours again if they still apply."
+                    ]
+                }
+            )
+
+
+    def test_save_if_valid_concurrent_race(self):
+        """
+        save_if_valid adds an error message on a rare race-condition edit.
+
+        This tests the much less common situation where the concurrent edit is
+        actually saved to the database in between the fetching of the form's
+        instance and the validation of the form, so both the form's instance
+        and the submitted data have an out-of-date version.
+
+        """
+        p = self.F.ProductFactory.create()
+
+        p2 = self.model.Product.objects.get()
+        p2.name = "Foo"
+        p2.save()
+
+        f = self.form({"name": "New", "cc_version": str(p.cc_version)}, instance=p)
+
+        self.assertIsNone(f.save_if_valid())
+        self.assertEqual(
+            f.errors,
+            {
+                "__all__": [
+                    u"Another user saved changes to this object "
+                    u"in the meantime. Please review their changes and save "
+                    u"yours again if they still apply."
+                    ]
+                }
+            )
+
+
+    def test_save_if_valid_success(self):
+        """save_if_valid saves and returns the object on success."""
+        p = self.F.ProductFactory.create()
+        submitted_version = p.cc_version
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            )
+
+        product = f.save_if_valid()
+
+        self.assertEqual(product, p)
+        self.assertEqual(product.name, "New")
+        self.assertEqual(f.errors, {})
+
+
+    def test_save_if_valid_accepts_user(self):
+        """save_if_valid accepts current user and saves with it."""
+        p = self.F.ProductFactory.create()
+        u = self.F.UserFactory.create()
+        submitted_version = p.cc_version
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            )
+
+        product = f.save_if_valid(user=u)
+
+        self.assertEqual(product.modified_by, u)
+
+
+    def test_save_if_valid_respects_init_user(self):
+        """save_if_valid uses user passed in on form instantiation."""
+        p = self.F.ProductFactory.create()
+        u = self.F.UserFactory.create()
+        submitted_version = p.cc_version
+
+        f = self.form(
+            {"name": "New", "cc_version": str(submitted_version)},
+            instance=p,
+            user=u,
+            )
+
+        product = f.save_if_valid()
+
+        self.assertEqual(product.modified_by, u)
+
+
+    def test_cc_version_default(self):
+        """With no instance, cc_version field defaults to 0."""
+        f = self.form()
+
+        self.assertEqual(f["cc_version"].value(), 0)
+
+
+    def test_cc_version_initial(self):
+        """With an instance, cc_version initial value is from instance."""
+        p = self.F.ProductFactory.create()
+        p.save() # make the version nonzero
+
+        f = self.form(instance=p)
+
+        self.assertEqual(f["cc_version"].value(), p.cc_version)
 
 
 

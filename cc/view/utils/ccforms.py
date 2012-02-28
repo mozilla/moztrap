@@ -32,6 +32,7 @@ from django.utils.safestring import mark_safe
 
 import floppyforms
 
+from cc import model
 from ..lists import filters
 
 
@@ -68,11 +69,22 @@ class BareTextarea(floppyforms.Textarea):
 
 
 class CCModelForm(floppyforms.ModelForm):
-    """A ModelForm that knows about the current user and passes it to save."""
+    """
+    A ModelForm for CCModels.
+
+    Knows about the current user and passes it to model save. Knows about
+    optimistic locking, and implements ``save_if_valid`` to allow views to
+    correctly handle concurrency errors.
+
+    """
+    cc_version = forms.IntegerField(initial=0, widget=forms.HiddenInput)
+
+
     def __init__(self, *args, **kwargs):
         """Pull user out of ModelForm initialization keyword arguments."""
         self.user = kwargs.pop("user", None)
         super(CCModelForm, self).__init__(*args, **kwargs)
+        self.initial["cc_version"] = self.instance.cc_version
 
 
     def save(self, commit=True, user=None):
@@ -86,6 +98,33 @@ class CCModelForm(floppyforms.ModelForm):
             self.save_m2m()
         else:
             instance.save = partial(instance.save, user=user)
+
+        return instance
+
+
+    def save_if_valid(self, user=None):
+        """
+        Save and return the instance if the form is valid, None if not valid.
+
+        If the form is otherwise valid but the save fails due to another
+        concurrent save getting there first, return None and add an explanatory
+        error to self.errors.
+
+        """
+        if not self.is_valid():
+            return None
+
+        self.instance.cc_version = self.cleaned_data["cc_version"]
+
+        try:
+            instance = self.save(user=user)
+        except model.ConcurrencyError:
+            self._errors[NON_FIELD_ERRORS] = [
+                u"Another user saved changes to this object "
+                u"in the meantime. Please review their changes and save "
+                u"yours again if they still apply."
+                ]
+            return None
 
         return instance
 
