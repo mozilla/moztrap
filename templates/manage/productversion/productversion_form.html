@@ -2,11 +2,13 @@
 
 
 {% block content %}
-<section class="{% block sectionid %}{% endblock %}">
+<section class="{% block sectionclass %}{% endblock %}">
   <h2>{% block formtitle %}{% endblock %}</h2>
   {% block formtop %}{% endblock %}
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
     {% csrf_token %}
+    {{ form.cc_version }}
+    {{ form.non_field_errors }}
 
     {% block topfields %}{% endblock %}
     {% include "forms/_field.html" with field=form.version %}

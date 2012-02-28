@@ -38,7 +38,14 @@ class EditProductVersionFormTest(case.DBTestCase):
         u = self.F.UserFactory()
 
         f = self.form(
-            {"version": "2.0", "codename": "New"}, instance=p, user=u)
+            {
+                "version": "2.0",
+                "codename": "New",
+                "cc_version": str(p.cc_version)
+                },
+            instance=p,
+            user=u,
+            )
 
         productversion = f.save()
 
@@ -69,7 +76,8 @@ class AddProductVersionFormTest(case.DBTestCase):
                 "product": str(pv.product.id),
                 "version": "2.0",
                 "clone_envs_from": str(pv.id),
-                "codename": "Foo"
+                "codename": "Foo",
+                "cc_version": "0",
                 },
             user=u
             )

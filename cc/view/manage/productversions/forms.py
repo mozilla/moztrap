@@ -58,9 +58,9 @@ class AddProductVersionForm(EditProductVersionForm):
         widgets = EditProductVersionForm.Meta.widgets.copy()
 
 
-    def save(self):
+    def save(self, user=None):
         """Save and return product version; copy envs."""
-        pv = super(AddProductVersionForm, self).save(user=self.user)
+        pv = super(AddProductVersionForm, self).save(user=user)
 
         clone_envs_from = self.cleaned_data.get("clone_envs_from")
         if clone_envs_from:
