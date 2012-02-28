@@ -15,7 +15,7 @@ which your shell user has permission to create databases in. See the full
 :doc:`installation` documentation for details and troubleshooting.
 
 1. ``git clone --recursive git://github.com/mozilla/caseconductor``
-2. ``cd caseconductor && git checkout 0.8.X``
+2. ``cd caseconductor``
 3. ``mkvirtualenv caseconductor``
 4. ``bin/install-reqs``
 5. ``echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql``
