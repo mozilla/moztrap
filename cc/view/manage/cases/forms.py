@@ -126,6 +126,7 @@ class BaseCaseVersionForm(forms.Form):
             for uf in self.files.getlist("add_attachment"):
                 model.CaseAttachment.objects.create(
                     attachment=uf,
+                    name=uf.name,
                     caseversion=caseversion,
                     user=self.user,
                     )

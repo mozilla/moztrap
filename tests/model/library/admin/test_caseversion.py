@@ -54,7 +54,7 @@ class CaseVersionAdminTest(case.admin.AdminTestCase):
 
     def test_change_page_attachment(self):
         """CaseVersion change page includes CaseAttachment inline."""
-        a = self.F.CaseAttachmentFactory.create(attachment__name="FooBar")
+        a = self.F.CaseAttachmentFactory.create(name="FooBar")
 
         self.get(self.change_url(a.caseversion)).mustcontain("FooBar")
 

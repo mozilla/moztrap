@@ -592,9 +592,9 @@ class EditCaseVersionFormTest(case.DBTestCase):
         cv = self.F.CaseVersionFactory.create()
 
         a1 = self.F.CaseAttachmentFactory.create(
-            caseversion=cv, attachment__name="Foo1")
+            caseversion=cv, name="Foo1")
         self.F.CaseAttachmentFactory.create(
-            caseversion=cv, attachment__name="Foo2")
+            caseversion=cv, name="Foo2")
 
         form = self.form(
             instance=cv,

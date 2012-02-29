@@ -431,14 +431,14 @@ class CaseAttachmentTest(case.DBTestCase):
     """Tests for the CaseAttachment model."""
     def test_unicode(self):
         """Unicode representation is name."""
-        ca = self.F.CaseAttachmentFactory(attachment__name="afile.txt")
+        ca = self.F.CaseAttachmentFactory(name="afile.txt")
 
         self.assertEqual(unicode(ca), "afile.txt")
 
 
     def test_name(self):
         """``name`` property is basename of attached file name."""
-        ca = self.F.CaseAttachmentFactory(attachment__name="thefile.txt")
+        ca = self.F.CaseAttachmentFactory(name="thefile.txt")
 
         self.assertEqual(ca.name, "thefile.txt")
 

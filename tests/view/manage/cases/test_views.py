@@ -632,7 +632,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
     def test_existing_attachments(self):
         """Form prepopulates with remove checkboxes for existing attachments."""
         ca = self.F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
@@ -692,7 +692,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
     def test_remove_attachments(self):
         """Can remove attachments."""
         ca = self.F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
