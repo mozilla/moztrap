@@ -23,6 +23,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 
 from tests import case
+from tests.utils import patch_session
 
 
 
@@ -56,6 +57,59 @@ class LoginTest(case.view.ViewTestCase):
         res = form.submit(status=200)
 
         res.mustcontain("Please enter a correct username and password")
+
+
+    def test_display_captcha(self):
+        """Sixth login attempt within a minute returns form with captcha."""
+        res = self.get()
+        for i in range(6):
+            res = res.forms["loginform"].submit()
+
+        form = res.forms["loginform"]
+
+        self.assertIn("captcha", form.fields)
+
+
+    def test_bad_captcha(self):
+        """Bad value for captcha fails login, even with correct user/pw."""
+        self.F.UserFactory.create(username="test", password="sekrit")
+
+        session_data = {}
+
+        with patch_session(session_data):
+            res = self.get()
+            for i in range(6):
+                res = res.forms["loginform"].submit()
+
+            form = res.forms["loginform"]
+            answer = session_data["auth_captcha_answer"]
+            form["captcha"] = answer + 1 # oops, wrong answer!
+            form["username"] = "test"
+            form["password"] = "sekrit"
+            res = form.submit(status=200)
+
+        res.mustcontain("not the answer we were looking for")
+
+
+    def test_good_captcha(self):
+        """Good value for captcha allows login."""
+        self.F.UserFactory.create(username="test", password="sekrit")
+
+        session_data = {}
+
+        with patch_session(session_data):
+            res = self.get()
+            for i in range(6):
+                res = res.forms["loginform"].submit()
+
+            form = res.forms["loginform"]
+            answer = session_data["auth_captcha_answer"]
+            form["captcha"] = answer
+            form["username"] = "test"
+            form["password"] = "sekrit"
+            res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("home"))
 
 
 
