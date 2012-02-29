@@ -29,6 +29,8 @@ from django.contrib.auth import forms as auth_forms
 import floppyforms as forms
 from registration import forms as registration_forms
 
+from cc import model
+
 
 
 def check_password(pw):
@@ -90,6 +92,25 @@ class RegistrationForm(registration_forms.RegistrationForm):
     def clean_password1(self):
         """Enforce minimum password strength rules."""
         return check_password(self.cleaned_data["password1"])
+
+
+
+class PasswordResetForm(auth_forms.PasswordResetForm):
+    """A password reset form that doesn't reveal valid users."""
+    def clean_email(self):
+        """No validation that the email address exists."""
+        return self.cleaned_data["email"]
+
+
+    def save(self, *args, **kwargs):
+        """Fetch the affected users here before sending reset emails."""
+        email = self.cleaned_data["email"]
+        # super's save expects self.users_cache to be set.
+        self.users_cache = model.User.objects.filter(
+            email__iexact=email, is_active=True)
+
+        return super(PasswordResetForm, self).save(*args, **kwargs)
+
 
 
 

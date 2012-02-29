@@ -74,6 +74,7 @@ def password_change(request):
 def password_reset(request):
     response = auth_views.password_reset(
         request,
+        password_reset_form=forms.PasswordResetForm,
         template_name="users/password_reset_form.html",
         email_template_name="registration/password_reset_email.txt",
         # @@@ enable this in Django 1.4
@@ -82,7 +83,12 @@ def password_reset(request):
         )
 
     if response.status_code == 302:
-        messages.success(request, "Password reset email sent.")
+        messages.success(
+            request,
+            u"Password reset email sent; check your email."
+            u"If you don't receive an email, verify that you are entering the "
+            u"email addres you signed up with, and try again."
+            )
 
     return response
 
