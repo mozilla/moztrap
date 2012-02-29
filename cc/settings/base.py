@@ -139,6 +139,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.admin",
+    "django.contrib.humanize",
     "south",
     "cc.model.core",
     "cc.model.library",
@@ -188,7 +189,7 @@ LOGGING = {
 
 INSTALLED_APPS += ["registration"]
 
-ACCOUNT_ACTIVATION_DAYS = 7
+ACCOUNT_ACTIVATION_DAYS = 1
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEFAULT_FROM_EMAIL = "do-not-reply@example.com"
@@ -203,6 +204,7 @@ INSTALLED_APPS += ["floppyforms"]
 
 INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 15 * 60 # 15 minutes
 SECURE_FRAME_DENY = True
 
 MINIMUM_PASSWORD_CHARS = 8
