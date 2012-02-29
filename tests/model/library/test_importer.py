@@ -230,7 +230,7 @@ class ImporterTest(case.DBTestCase):
     def test_create_caseversion_existing_suite(self):
         """A case that uses an existing suite."""
 
-        # need a tag to exist, so the import can find it.
+        # need a suite to exist, so the import can find it.
         suite = self.model.Suite.objects.create(
             name="FooSuite",
             product=self.pv.product,
