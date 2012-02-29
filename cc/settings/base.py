@@ -205,6 +205,16 @@ INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
 SECURE_FRAME_DENY = True
 
+MINIMUM_PASSWORD_CHARS = 8
+PASSWORD_REQUIRE_ALPHA_NUMERIC = True
+FORBIDDEN_PASSWORDS = [
+    "password",
+    "password1",
+    "pass",
+    "123",
+    "test"
+    ] # @@@ get full list from InfraSec
+
 INSTALLED_APPS += ["icanhaz"]
 ICANHAZ_DIRS = [join(BASE_PATH, "jstemplates")]
 

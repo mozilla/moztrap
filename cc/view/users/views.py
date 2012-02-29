@@ -127,6 +127,7 @@ def register(request):
     response = registration_views.register(
         request,
         backend="registration.backends.default.DefaultBackend",
+        form_class=forms.RegistrationForm,
         template_name="users/registration_form.html",
         success_url=reverse("home"),
         )

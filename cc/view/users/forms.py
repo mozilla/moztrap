@@ -22,29 +22,74 @@ Account-related forms.
 import operator
 import random
 
+from django.conf import settings
+
 from django.contrib.auth import forms as auth_forms
 
 import floppyforms as forms
+from registration import forms as registration_forms
 
 
 
-class UpdateLabelMixin(object):
-    """Mixin class to change confirmation pw field label on auth forms."""
+def check_password(pw):
+    """
+    Enforce password strength rules.
+
+    Returns the password if it passes, otherwises raises ``ValidationError``.
+
+    """
+    if len(pw) < settings.MINIMUM_PASSWORD_CHARS:
+        raise forms.ValidationError(
+            "Your password must be a minimum of {0} characters.".format(
+                settings.MINIMUM_PASSWORD_CHARS)
+            )
+    if (settings.PASSWORD_REQUIRE_ALPHA_NUMERIC and
+        not (any(c.isdigit() for c in pw) and any(c.isalpha() for c in pw))
+        ):
+        raise forms.ValidationError(
+            "Your password must contain both letters and numbers.")
+    if pw in settings.FORBIDDEN_PASSWORDS:
+        raise forms.ValidationError(
+            "That password is too easily guessed; please choose a different one.")
+    return pw
+
+
+class SetPasswordFormMixin(object):
+    """
+    Mixin class for password-changing forms.
+
+    Enforces password strength rules, sets label for password confirmation
+    field.
+
+    """
     def __init__(self, *args, **kwargs):
         """After form initialization, change label for new_password2 field."""
-        super(UpdateLabelMixin, self).__init__(*args, **kwargs)
+        super(SetPasswordFormMixin, self).__init__(*args, **kwargs)
 
         self.fields["new_password2"].label = "New password (again)"
 
 
+    def clean_new_password1(self):
+        """Enforce minimum password strength rules."""
+        return check_password(self.cleaned_data["new_password1"])
 
-class SetPasswordForm(UpdateLabelMixin, auth_forms.SetPasswordForm):
+
+
+class SetPasswordForm(SetPasswordFormMixin, auth_forms.SetPasswordForm):
     pass
 
 
 
-class ChangePasswordForm(UpdateLabelMixin, auth_forms.PasswordChangeForm):
+class ChangePasswordForm(SetPasswordFormMixin, auth_forms.PasswordChangeForm):
     pass
+
+
+
+class RegistrationForm(registration_forms.RegistrationForm):
+    """A registration form that enforces our password rules."""
+    def clean_password1(self):
+        """Enforce minimum password strength rules."""
+        return check_password(self.cleaned_data["password1"])
 
 
 

@@ -22,6 +22,9 @@ Tests for login/logout/account views.
 from django.core import mail
 from django.core.urlresolvers import reverse
 
+# @@@ import from Django in 1.4
+from djangosecure.test_utils import override_settings
+
 from tests import case
 from tests.utils import patch_session
 
@@ -136,8 +139,70 @@ class LogoutTest(case.view.ViewTestCase):
 
 
 
-class PasswordChangeTest(case.view.AuthenticatedViewTestCase):
+class PasswordStrengthTests(object):
+    """Mixin tests for any view that sets or changes a password."""
+    # subclasses should set
+    form_id = None
+    extra_form_data = {}
+    password_fields = ["new_password1", "new_password2"]
+
+
+    def get_form(self):
+        """Shortcut to get the form."""
+        return self.get().forms[self.form_id]
+
+
+    def submit_form(self, password, status):
+        """Submit form with given password and return response."""
+        form = self.get_form()
+        for k, v in self.extra_form_data.items():
+            form[k] = v
+        for fn in self.password_fields:
+            form[fn] = password
+        return form.submit(status=status)
+
+
+    @override_settings(MINIMUM_PASSWORD_CHARS=10)
+    def test_minimum_password_length(self):
+        """Passwords must meet the minimum length."""
+        res = self.submit_form("abcdef123", status=200)
+
+        res.mustcontain("Your password must be a minimum of 10 characters")
+
+
+    @override_settings(PASSWORD_REQUIRE_ALPHA_NUMERIC=True)
+    def test_password_require_numeric(self):
+        """If enabled, passwords require numbers + letters, not just letters."""
+        res = self.submit_form("abcdefgh", status=200)
+
+        res.mustcontain("Your password must contain both letters and numbers")
+
+
+    @override_settings(PASSWORD_REQUIRE_ALPHA_NUMERIC=True)
+    def test_password_require_alpha(self):
+        """If enabled, passwords require numbers + letters, not just numbers."""
+        res = self.submit_form("12345678", status=200)
+
+        res.mustcontain("Your password must contain both letters and numbers")
+
+
+    @override_settings(FORBIDDEN_PASSWORDS=["abcdef123"])
+    def test_forbidden_passwords(self):
+        """Some passwords are explicitly forbidden."""
+        res = self.submit_form("abcdef123", status=200)
+
+        res.mustcontain("That password is too easily guessed")
+
+
+
+class PasswordChangeTest(PasswordStrengthTests,
+                         case.view.AuthenticatedViewTestCase
+                         ):
     """Tests for change-password view."""
+    form_id = "changepasswordform"
+    extra_form_data = {"old_password": "sekrit"}
+
+
     def setUp(self):
         """Set password for user."""
         super(PasswordChangeTest, self).setUp()
@@ -153,12 +218,7 @@ class PasswordChangeTest(case.view.AuthenticatedViewTestCase):
 
     def test_change_password(self):
         """Get a confirmation message after changing password."""
-        form = self.get().forms["changepasswordform"]
-        form["old_password"] = "sekrit"
-        form["new_password1"] = "foo"
-        form["new_password2"] = "foo"
-
-        res = form.submit(status=302).follow().follow()
+        res = self.submit_form("sekrit123", status=302).follow().follow()
 
         res.mustcontain("Password changed")
 
@@ -191,8 +251,11 @@ class PasswordResetTest(case.view.ViewTestCase):
 
 
 
-class PasswordResetConfirmTest(case.view.ViewTestCase):
+class PasswordResetConfirmTest(PasswordStrengthTests, case.view.ViewTestCase):
     """Tests for reset-password-confirm view."""
+    form_id = "setpasswordform"
+
+
     def setUp(self):
         """Create a user."""
         super(PasswordResetConfirmTest, self).setUp()
@@ -216,18 +279,19 @@ class PasswordResetConfirmTest(case.view.ViewTestCase):
 
     def test_reset_password_confirm(self):
         """Get a confirmation message after resetting password."""
-        form = self.get().forms["setpasswordform"]
-        form["new_password1"] = "foo"
-        form["new_password2"] = "foo"
-
-        res = form.submit(status=302).follow().follow()
+        res = self.submit_form("sekrit123", status=302).follow().follow()
 
         res.mustcontain("Password changed")
 
 
 
-class RegisterTest(case.view.ViewTestCase):
+class RegisterTest(PasswordStrengthTests, case.view.ViewTestCase):
     """Tests for register view."""
+    form_id = "accountform"
+    extra_form_data = {"username": "new", "email": "new@example.com"}
+    password_fields = ["password1", "password2"]
+
+
     @property
     def url(self):
         """Shortcut for register url."""
@@ -236,13 +300,7 @@ class RegisterTest(case.view.ViewTestCase):
 
     def test_register(self):
         """Get a confirmation message after registering."""
-        form = self.get().forms["accountform"]
-        form["username"] = "new"
-        form["email"] = "new@example.com"
-        form["password1"] = "sekrit"
-        form["password2"] = "sekrit"
-
-        res = form.submit(status=302).follow().follow()
+        res = self.submit_form("sekrit123", status=302).follow().follow()
 
         res.mustcontain("Check your email for an account activation link")
 
@@ -256,8 +314,8 @@ class ActivateTest(case.view.ViewTestCase):
             reverse("registration_register")).forms["accountform"]
         form["username"] = "new"
         form["email"] = "new@example.com"
-        form["password1"] = "sekrit"
-        form["password2"] = "sekrit"
+        form["password1"] = "sekrit123"
+        form["password2"] = "sekrit123"
         form.submit(status=302)
 
         for line in mail.outbox[0].body.splitlines():
