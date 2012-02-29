@@ -58,8 +58,9 @@ from cc.model.library.importer import Importer
 
 class Command(BaseCommand):
     args = "<product_name> <product_version> <filename>"
-    help = ("Imports the cases from a JSON file into "
-            "the specified Product Version")
+    help = (
+        "Imports the cases from a JSON file into "
+        "the specified Product Version")
 
 
     def handle(self, *args, **options):

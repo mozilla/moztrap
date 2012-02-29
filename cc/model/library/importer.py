@@ -61,7 +61,7 @@ class Importer(object):
         importer = Importer()
         import_result = importer.import_data(productversion, case_data)
 
-    Returned value will be an ImportResult object with the following
+    Returned value will be an ``ImportResult`` object with the following
     attributes:
 
     * cases: the number of cases imported
@@ -89,7 +89,7 @@ class Importer(object):
         # the result object used to keep track of import status
         result = ImportResult()
 
-        # map of suites to cases.  Map the initial dict, if one exists.
+        # importer for suites.
         suite_importer = None
         if "suites" in case_data:
             suite_importer = SuiteImporter(productversion.product)
@@ -102,7 +102,7 @@ class Importer(object):
             case_importer = CaseImporter(productversion, suite_importer)
             result.append(case_importer.import_cases(case_data["cases"]))
 
-        # now create the suites and add cases to them where mapped
+        # now create the suites and add cases to them
         if suite_importer:
             result.append(suite_importer.import_suites())
 
@@ -131,8 +131,8 @@ class CaseImporter(object):
         """
 
         self.productversion = productversion
-        self.suite_importer = (suite_importer if suite_importer
-            else SuiteImporter(productversion.product))
+        self.suite_importer = (suite_importer or
+            SuiteImporter(productversion.product))
 
         # the object responsible for importing tags
         self.tag_importer = TagImporter(self.productversion.product)
@@ -226,7 +226,6 @@ class CaseImporter(object):
                 user=user,
                 )
 
-
             # add the steps to this case version
             if "steps" in new_case:
                 try:
@@ -237,10 +236,6 @@ class CaseImporter(object):
                         new_case,
                         )
 
-                    # not all DB engines support rollbacks, so delete
-                    # the items, just in case
-                    case.delete(permanent=True)
-
                     transaction.savepoint_rollback(sid)
                     continue
             else:
@@ -249,11 +244,9 @@ class CaseImporter(object):
                     caseversion,
                     )
 
-            # map the tags to the case version
             if "tags" in new_case:
                 self.tag_importer.add_names(caseversion, new_case["tags"])
 
-            # map this case to the suite
             if "suites" in new_case:
                 self.suite_importer.add_names(case, new_case["suites"])
 
@@ -264,11 +257,11 @@ class CaseImporter(object):
             # transaction.
             transaction.savepoint_commit(sid)
 
-            # now create the tags and add case versions to them where mapped
+            # now create the tags and add case versions to them
             self.tag_importer.import_tags()
 
-            # now create the suites and add cases to them where mapped
-            self.suite_importer.import_suites()
+            # now create the suites and add cases to them
+            result.append(self.suite_importer.import_suites())
 
         return result
 
@@ -301,7 +294,7 @@ class CaseImporter(object):
 
 class UserCache(object):
     """
-    Cache / map of emails to User objects.
+    Cache of emails to User objects.
 
     If an email was searched for, but no matching User object was found,
     then cache None so we don't keep looking for it.
@@ -347,8 +340,11 @@ class UserCache(object):
 
 
 
-class MappedImporterBase(object):
-    """Base for Importer classes that use a map"""
+class TagImporter(object):
+    """
+    Imports suites based on lists and dicts of suites used to build it.
+
+    """
 
     def __init__(self, product):
         """Store the Product, and create the internal map."""
@@ -356,13 +352,6 @@ class MappedImporterBase(object):
         self.product = product
         self.map = {}
 
-
-
-class TagImporter(MappedImporterBase):
-    """
-    Imports suites based on lists and dicts of suites used to build it.
-
-    """
 
     def add_names(self, caseversion, tag_names):
         """
@@ -421,7 +410,7 @@ class TagImporter(MappedImporterBase):
 
 
 
-class SuiteImporter(MappedImporterBase):
+class SuiteImporter(object):
     """
     Imports suites based on lists and dicts of suites used to build it.
 
@@ -440,13 +429,16 @@ class SuiteImporter(MappedImporterBase):
         """
         Construct a SuiteImporter
 
-        Create a result object to keep track of any issues with adding
-        and importing as we go.
+        Store the Product, and create the internal map.  Also create a
+        result object to keep track of any issues with adding and importing
+        as we go.
 
         """
 
-        super(SuiteImporter, self).__init__(product)
+        self.product = product
+        self.map = {}
         self.result = ImportResult()
+
 
     def add_names(self, case, suite_names):
         """
@@ -493,15 +485,18 @@ class SuiteImporter(MappedImporterBase):
 
         """
 
-        for suite in suite_dicts:
+        for suite_dict in suite_dicts:
             try:
-                suite = self.map.setdefault(suite["name"], {})
-                suite.setdefault("description", suite.get("description", ""))
+                suite = self.map.setdefault(suite_dict["name"], {})
+                suite.setdefault(
+                    "description",
+                    suite_dict.get("description", ""),
+                    )
 
             except KeyError:
                 self.result.warn(
                     ImportResult.SKIP_SUITE_NO_NAME,
-                    suite,
+                    suite_dict,
                     )
 
 
@@ -581,27 +576,9 @@ class ImportResult(object):
     def append(self, result):
         """Append the results object into this results object."""
 
-        new_data = result.get_as_dict()
-
-        self.num_cases += new_data["cases"]
-        self.num_suites += new_data["suites"]
-        self.warnings.extend(new_data["warnings"])
-
-
-    def get_as_dict(self):
-        """
-        Return a dictionary with the following fields:
-
-        * cases
-        * suites
-        * warnings
-
-        """
-        return {
-            "cases": self.num_cases,
-            "suites": self.num_suites,
-            "warnings": self.warnings,
-            }
+        self.num_cases += result.num_cases
+        self.num_suites += result.num_suites
+        self.warnings.extend(result.warnings)
 
 
     def get_as_list(self):
