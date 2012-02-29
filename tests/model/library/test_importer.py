@@ -102,8 +102,63 @@ class ImporterTest(case.DBTestCase):
         self.assertEqual(result.warnings, [])
 
 
+    def test_create_two_caseversions_same_user(self):
+        """Two caseversions that both use the same user."""
+
+        # need a user to exist, so the import can find it.
+        user = self.model.User.objects.create(
+            username="FooUser",
+            email="sumbudee@mozilla.com",
+            )
+
+
+        result = self.import_data(
+                {
+                "cases": [
+                        {
+                        "created_by": "sumbudee@mozilla.com",
+                        "name": "Foo",
+                        "steps": [
+                                {
+                                "instruction": "action text",
+                                "expected": "expected text"
+                            }
+                        ],
+                        },
+                        {
+                        "created_by": "sumbudee@mozilla.com",
+                        "name": "Bar",
+                        "steps": [
+                                {
+                                "instruction": "action text",
+                                "expected": "expected text"
+                            }
+                        ],
+                        }
+                ]
+            }
+        )
+
+        cv1 = self.model.CaseVersion.objects.get(name="Foo")
+        self.assertEqual(cv1.name, "Foo")
+        self.assertEqual(cv1.created_by, user)
+        self.assertEqual(cv1.productversion, self.pv)
+        self.assertEqual(cv1.case.product, self.pv.product)
+
+        cv2 = self.model.CaseVersion.objects.get(name="Bar")
+        self.assertEqual(cv2.name, "Bar")
+        self.assertEqual(cv2.created_by, user)
+        self.assertEqual(cv2.productversion, self.pv)
+        self.assertEqual(cv2.case.product, self.pv.product)
+
+
+        self.assertEqual(result.num_cases, 2)
+        self.assertEqual(result.num_suites, 0)
+        self.assertEqual(result.warnings, [])
+
+
     def test_create_caseversion_no_existing_user(self):
-        """A case with a user that does not exist in the db."""
+        """A caseversion with a user that does not exist in the db."""
 
         result = self.import_data(
             {
@@ -133,6 +188,80 @@ class ImporterTest(case.DBTestCase):
             result.warnings[0]["reason"],
             ImportResult.WARN_USER_NOT_FOUND,
             )
+
+
+    def test_create_caseversion_existing_tag(self):
+        """A caseversion that uses an existing product tag"""
+
+        # need a tag to exist, so the import can find it.
+        tag = self.model.Tag.objects.create(
+            name="FooTag",
+            product=self.pv.product,
+            )
+
+        result = self.import_data(
+                {
+                "cases": [
+                        {
+                        "name": "Foo",
+                        "steps": [
+                                {
+                                "instruction": "action text",
+                                "expected": "expected text"
+                            }
+                        ],
+                        "tags": ["FooTag"],
+                        }
+                ]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.name, "Foo")
+        self.assertEqual(cv.tags.get(), tag)
+        self.assertEqual(cv.productversion, self.pv)
+        self.assertEqual(cv.case.product, self.pv.product)
+
+        self.assertEqual(result.num_cases, 1)
+        self.assertEqual(result.num_suites, 0)
+        self.assertEqual(result.warnings, [])
+
+
+    def test_create_caseversion_existing_suite(self):
+        """A case that uses an existing suite."""
+
+        # need a tag to exist, so the import can find it.
+        suite = self.model.Suite.objects.create(
+            name="FooSuite",
+            product=self.pv.product,
+            )
+
+        result = self.import_data(
+                {
+                "cases": [
+                        {
+                        "name": "Foo",
+                        "steps": [
+                                {
+                                "instruction": "action text",
+                                "expected": "expected text"
+                            }
+                        ],
+                        "suites": ["FooSuite"],
+                        }
+                ]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.name, "Foo")
+        self.assertEqual(cv.case.suites.get(), suite)
+        self.assertEqual(cv.productversion, self.pv)
+        self.assertEqual(cv.case.product, self.pv.product)
+
+        self.assertEqual(result.num_cases, 1)
+        self.assertEqual(result.num_suites, 0)
+        self.assertEqual(result.warnings, [])
 
 
     def test_case_no_name_skip(self):
