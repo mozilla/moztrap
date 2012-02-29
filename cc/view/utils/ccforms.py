@@ -68,6 +68,50 @@ class BareTextarea(floppyforms.Textarea):
 
 
 
+class SaveIfValidMixin(object):
+    """
+    Form mixin class providing optimistic-locking-aware save_if_valid method.
+
+    Can be mixed in to any form class with a ``save`` method (that accepts a
+    user), a ``self.instance`` attribute, and a ``cc_version`` field.
+
+    """
+    def save_if_valid(self, user=None):
+        """
+        Save and return the instance if the form is valid, None if not valid.
+
+        If the form is otherwise valid but the save fails due to another
+        concurrent save getting there first, return None and add an explanatory
+        error to self.errors.
+
+        """
+        if not self.is_valid():
+            return None
+
+        try:
+            instance = self.save(user=user)
+        except model.ConcurrencyError:
+            self._errors[NON_FIELD_ERRORS] = self.error_class(
+                [
+                    # The link here takes advantage of the fact that an empty
+                    # href links to the current page; if they reload a fresh
+                    # copy of the current page (an edit form), it will show the
+                    # other user's changes.
+                    mark_safe(
+                        u"Another user saved changes to this object in the "
+                        u'meantime. Please <a href="">review their changes</a> '
+                        u"and save yours again if they still apply."
+                        )
+                    ]
+                )
+            self.data = self.data.copy()
+            self.data["cc_version"] = self.instance.cc_version
+            return None
+
+        return instance
+
+
+
 class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
     def __new__(cls, name, bases, attrs):
         """Construct a CCModelForm subclass; ensure it has cc_version field."""
@@ -78,7 +122,7 @@ class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
 
 
 
-class CCModelForm(floppyforms.ModelForm):
+class CCModelForm(SaveIfValidMixin, floppyforms.ModelForm):
     """
     A ModelForm for CCModels.
 
@@ -119,41 +163,6 @@ class CCModelForm(floppyforms.ModelForm):
             self.save_m2m()
         else:
             instance.save = partial(instance.save, user=user)
-
-        return instance
-
-
-    def save_if_valid(self, user=None):
-        """
-        Save and return the instance if the form is valid, None if not valid.
-
-        If the form is otherwise valid but the save fails due to another
-        concurrent save getting there first, return None and add an explanatory
-        error to self.errors.
-
-        """
-        if not self.is_valid():
-            return None
-
-        try:
-            instance = self.save(user=user)
-        except model.ConcurrencyError:
-            self._errors[NON_FIELD_ERRORS] = self.error_class(
-                [
-                    # The link here takes advantage of the fact that an empty
-                    # href links to the current page; if they reload a fresh
-                    # copy of the current page (an edit form), it will show the
-                    # other user's changes.
-                    mark_safe(
-                        u"Another user saved changes to this object in the "
-                        u'meantime. Please <a href="">review their changes</a> '
-                        u"and save yours again if they still apply."
-                        )
-                    ]
-                )
-            self.data = self.data.copy()
-            self.data["cc_version"] = self.instance.cc_version
-            return None
 
         return instance
 
