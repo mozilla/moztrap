@@ -116,8 +116,10 @@ class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
     def __new__(cls, name, bases, attrs):
         """Construct a CCModelForm subclass; ensure it has cc_version field."""
         meta = attrs.get("Meta")
-        if meta and meta.fields and "cc_version" not in meta.fields:
-            meta.fields.append("cc_version")
+        if meta:
+            fields = getattr(meta, "fields", None)
+            if fields is not None and "cc_version" not in fields:
+                fields.append("cc_version")
         return super(CCModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
 
 
