@@ -40,7 +40,12 @@ class AddProfileFormTest(case.DBTestCase):
         u = self.F.UserFactory.create()
 
         f = self.form(
-            {"elements": [str(e1.id), str(e2.id)], "name": "Foo"}, user=u)
+            {
+                "elements": [str(e1.id), str(e2.id)],
+                "name": "Foo",
+                "cc_version": "0"},
+            user=u,
+            )
         self.assertTrue(f.is_valid())
         p = f.save()
 

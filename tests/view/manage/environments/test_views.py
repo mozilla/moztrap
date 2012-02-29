@@ -904,7 +904,6 @@ class NarrowEnvironmentsViewTests(object):
 
 
 
-
 class NarrowRunEnvironmentsTest(NarrowEnvironmentsViewTests,
                                 case.view.FormViewTestCase
                                 ):
