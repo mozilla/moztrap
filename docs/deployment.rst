@@ -26,8 +26,8 @@ In addition to the notes here, you should read through all comments in
 
 .. _vendor library:
 
-Dependencies
-------------
+Vendor library
+--------------
 
 For deployment scenarios where pip-installing dependencies into a Python
 environment (as ``bin/install-reqs`` does) is not preferred, a pre-installed
