@@ -1,7 +1,15 @@
+{% load markup %}
+
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
 
   <a href="{% url results_results rcv_id=runcaseversion.id %}" class="drill-link" title="test results related to {{ runcaseversion.caseversion.name }}">See related test results.</a>
+
+  {% if runcaseversion.caseversion.description %}
+    <p class="description">
+        {{ runcaseversion.caseversion.description|markdown }}
+    </p>
+  {% endif %}
 
   <ol class="steps">
     {% for step in runcaseversion.caseversion.steps.all %}

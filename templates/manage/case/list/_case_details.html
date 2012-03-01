@@ -1,5 +1,14 @@
+{% load markup %}
+
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=caseversion %}
+
+
+  {% if caseversion.description %}
+    <p class="description">
+        {{ caseversion.description|markdown }}
+    </p>
+  {% endif %}
 
   <ol class="steps">
     {% for step in caseversion.steps.all %}
