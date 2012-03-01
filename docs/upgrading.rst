@@ -14,6 +14,19 @@ code on all branches and then switch to the branch you want::
     git checkout 0.9.X
 
 
+Updating dependencies
+---------------------
+
+Run ``git submodule update`` to get the latest version of the dependency
+submodules, and then ``bin/install-reqs`` to install them into your
+environment. Both of these commands are idempotent; there's no harm in running
+them every time, whether there have been any dependency changes or not.
+
+If you are using the :ref:`vendor library`, ``bin/install-reqs`` is not
+necessary, the submodule update will get the latest version of the vendored
+dependencies.
+
+
 Database migrations
 -------------------
 
