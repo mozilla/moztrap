@@ -14,6 +14,19 @@ code on all branches and then switch to the branch you want::
     git checkout 0.9.X
 
 
+Updating dependencies
+---------------------
+
+Run ``git submodule update`` to get the latest version of the dependency
+submodules, and then ``bin/install-reqs`` to install them into your
+environment. Both of these commands are idempotent; there's no harm in running
+them every time, whether there have been any dependency changes or not.
+
+If you are using the :ref:`vendor library`, ``bin/install-reqs`` is not
+necessary, the submodule update will get the latest version of the vendored
+dependencies.
+
+
 Database migrations
 -------------------
 
@@ -21,6 +34,18 @@ It's possible that the changes you pulled in may have included one or more new
 database migration scripts. To run any pending migrations::
 
     python manage.py syncdb --migrate
+
+This command is idempotent, so there's no harm in running it after every
+upgrade, whether it's necessary or not.
+
+.. warning::
+
+   It is possible that a database migration will include the creation of a new
+   database table. If you've commented out the ``SET storage_engine=InnoDB``
+   ``init_command`` in your ``cc/settings/local.py`` for performance reasons
+   (see :ref:`database-performance-tweak`), you should uncomment it before
+   running any migrations, to ensure that all new tables are created as
+   ``InnoDB`` tables.
 
 
 .. _git: http://git-scm.com

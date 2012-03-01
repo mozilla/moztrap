@@ -26,8 +26,8 @@ In addition to the notes here, you should read through all comments in
 
 .. _vendor library:
 
-Dependencies
-------------
+Vendor library
+--------------
 
 For deployment scenarios where pip-installing dependencies into a Python
 environment (as ``bin/install-reqs`` does) is not preferred, a pre-installed
@@ -92,6 +92,9 @@ run once on a deployment or build server, and then the contents of
 
 .. _staticfiles contrib app: http://docs.djangoproject.com/en/dev/howto/static-files/
 .. _django-compressor: http://django_compressor.readthedocs.org/en/latest/index.html
+
+
+.. _database-performance-tweak:
 
 Database performance tweak
 --------------------------

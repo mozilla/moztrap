@@ -3889,6 +3889,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 }
 .add-run .suites-field, .edit-run .suites-field {
   margin-bottom: 0em;
+  clear: both;
 }
 .add-run .suites-field.readonly, .edit-run .suites-field.readonly {
   padding-right: 25.263%;
