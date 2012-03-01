@@ -35,6 +35,9 @@ database migration scripts. To run any pending migrations::
 
     python manage.py syncdb --migrate
 
+This command is idempotent, so there's no harm in running it after every
+upgrade, whether it's necessary or not.
+
 
 .. _git: http://git-scm.com
 .. _GitHub repository: https://github.com/mozilla/caseconductor/
