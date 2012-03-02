@@ -32,4 +32,4 @@ from django.utils.unittest import TestCase
 
 from . import admin
 from . import view
-from .base import DBTestCase
+from .base import DBTestCase, TransactionTestCase

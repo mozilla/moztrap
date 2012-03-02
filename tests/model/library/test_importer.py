@@ -21,8 +21,8 @@ from cc.model.library.importer import ImportResult
 
 
 
-class ImporterTest(case.DBTestCase):
-    """Tests for ``Importer``."""
+class ImporterTestBase(object):
+    """Common base class for importer tests."""
     def setUp(self):
         """Setup for importer tests; create a product version."""
         self.pv = self.F.ProductVersionFactory.create()
@@ -34,6 +34,8 @@ class ImporterTest(case.DBTestCase):
         return Importer().import_data(self.pv, case_data)
 
 
+class ImporterTest(ImporterTestBase, case.DBTestCase):
+    """Tests for ``Importer``."""
     def test_create_caseversion(self):
         """Successful import creates a caseversion with expected values."""
         self.import_data(
@@ -386,32 +388,6 @@ class ImporterTest(case.DBTestCase):
         self.assertEqual(result.warnings, [])
 
 
-    def test_step_no_instruction_skip(self):
-        """Skip import on case with step and no instruction."""
-
-        """
-        @@@ Need this to be in a class extending the the TransactionTestCase
-        base class.  The case should be something like this:
-
-        result = self.import_data(
-            {
-                "cases": [
-                    {
-                        "name": "Foo",
-                        "steps": [{"expected": "did this"}]
-                        }
-                    ]
-                }
-            )
-
-        self.assertEqual(result.num_cases, 0)
-        self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
-
-        cv = self.model.CaseVersion.objects.all()
-        self.assertFalse(list(cv))
-        """
-
     def test_create_suite(self):
         """Successful import creates a suite with expected values."""
         self.import_data(
@@ -480,3 +456,27 @@ class ImporterTest(case.DBTestCase):
 
 
 
+class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
+    """Tests for ``Importer`` transactional behavior."""
+    def test_step_no_instruction_skip(self):
+        """Skip import on case with step and no instruction."""
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "steps": [{"expected": "did this"}]
+                        }
+                    ]
+                }
+            )
+
+        self.assertEqual(result.num_cases, 0)
+        self.assertEqual(result.num_suites, 0)
+        self.assertEqual(
+            result.warnings[0]["reason"],
+            ImportResult.SKIP_STEP_NO_INSTRUCTION,
+            )
+
+        cv = self.model.CaseVersion.objects.all()
+        self.assertFalse(list(cv))

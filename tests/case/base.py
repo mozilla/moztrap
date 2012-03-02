@@ -19,7 +19,7 @@
 Utility base TestCase classes for Case Conductor.
 
 """
-from django.test import TestCase
+from django import test as django_test
 
 
 
@@ -49,6 +49,12 @@ class DBMixin(object):
 
 
 
-class DBTestCase(DBMixin, TestCase):
+class DBTestCase(DBMixin, django_test.TestCase):
     """Base test case class for Case Conductor tests that need the database."""
+    pass
+
+
+
+class TransactionTestCase(DBMixin, django_test.TransactionTestCase):
+    """Base test case class for tests testing transactional behavior."""
     pass
