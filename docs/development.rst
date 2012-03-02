@@ -7,6 +7,10 @@ Development
    standards
 
 
+The :doc:`upgrading` documentation is also applicable to updating your
+development checkout of Case Conductor.
+
+
 Coding standards
 ----------------
 
@@ -119,3 +123,158 @@ If you've modified one of the above files, you can regenerate the fixture by
 running ``bin/regenerate-sample-data``.
 
 .. _django-fixture-generator: http://github.com/alex/django-fixture-generator
+
+
+Adding or updating a dependency
+-------------------------------
+
+Adding a new dependency (or updating an existing one to a newer version)
+involves a few steps, since the requirements files and both submodules (the
+requirements tarballs submodule in ``requirements/dist`` and the :ref:`vendor
+library` submodule in ``requirements/vendor``) must be updated.
+
+
+Preparing your checkout
+~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, the submodules are both checked out via a read-only anonymous URL,
+so that anyone can check them out. In order to push commits to the submodules,
+you'll need to switch the push url to use ssh. Make this change as follows::
+
+    cd requirements/dist
+    git remote set-url --push origin git@github.com:mozilla/caseconductor-reqs
+
+    cd ../vendor
+    git remote set-url --push origin git@github.com:mozilla/caseconductor-vendor-lib
+
+This assumes that you have permission to push to the primary
+``caseconductor-reqs`` and ``caseconductor-vendor-lib`` repositories. If
+instead you have made your own forks of one or both of these repositories,
+adjust the above URLs to push to your fork.
+
+
+Adding the dependency tarball
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assuming the new dependency is a Python package available on `PyPI`_ (for the
+sake of this example we'll assume that we want the `2.1.1 version of the
+Markdown package`_), from the root of your Case Conductor checkout run this
+command in order to download the tarball into ``requirements/dist``::
+
+    pip install -d requirements/dist Markdown==2.1.1
+
+This should add the ``Markdown-2.1.1.tar.gz`` file into
+``requirements/dist``. We want to add this file and commit the change to the
+submodule. First, though, we need to ensure that we are actually committing on
+a branch in the submodule, since by default git does not check out submodules
+on a branch.
+
+In most cases, you can just check out the ``master`` branch of the submodule
+and commit there::
+
+    cd requirements/dist
+    git checkout master
+    git add Markdown-2.1.1.tar.gz
+    # "git rm" the older Markdown tarball, if you're updating
+    git commit -m "Add Markdown 2.1.1."
+    git push
+
+.. note::
+
+   If you are working on a release branch of Case Conductor rather than the
+   master branch, you may find that updating the submodule to ``master``
+   updates the version of some dependency to a more recent version, and your
+   branch of Case Conductor is not prepared for this dependency update. In that
+   case rather than updating to the submodule's master branch, you should
+   create a new branch of the submodule with a name matching the branch of Case
+   Conductor you are working on; replace ``git checkout master`` in the above
+   with e.g. ``git branch 0.8.X``. (If you've already done the ``git checkout
+   master``, go back out to the Case Conductor repo root and ``git submodule
+   update`` to get back to the pinned commit of the submodule, then ``cd
+   requirements/dist`` and ``git branch 0.8.X``.) If you create your own branch
+   of the submodule, you may need to also replace ``git push`` with e.g. ``git
+   push -u origin 0.8.X``).
+
+   Similarly, if you are working on a feature branch, and your feature branch
+   requires a newer version of a dependency, it is preferable to make a branch
+   of the submodule. The master branch of Case Conductor is tied to a specific
+   commit of the submodule, so it won't create an immediate problem if you just
+   push to the submodule's master branch; but if some other feature on the
+   master branch must also update a dependency, there could be a problem if
+   everyone is just pushing to the submodule's master branch. (If you are just
+   adding a dependency, not changing the version of an existing one, this
+   really isn't an issue, as having the extra tarball around won't hurt
+   anything for another branch).
+
+
+Updating the requirements file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If your added dependency is a pure-Python dependency (no compiled C
+extensions), add an entry to ``requirements/pure.txt`` like
+``Markdown==2.1.1``.
+
+If your added dependency does require compilation, add it to
+``requirements/compiled.txt`` instead.
+
+If you are just updating the version of an existing dependency, find the
+existing requirement line and change the version.
+
+
+Updating the vendor library
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+   This step is only necessary for pure-Python dependencies. Compiled
+   dependencies should not be included in the vendor library.
+
+.. note::
+
+   Due to a bug in pip, this step currently must be done within an empty
+   ``--no-site-packages`` `virtualenv`_. (Virtualenv 1.7+ automatically creates
+   ``--no-site-packages`` envs by default; with an earlier version you must use
+   the ``--no-site-packages`` flag).
+
+   If you've correctly created and activated a ``-no-site-packages``
+   virtualenv, ``pip freeze`` should show only the ``wsgiref`` package (which
+   is part of the Python standard library).
+
+Now, from the root of the Case Conductor repo, run::
+
+    bin/generate-vendor-lib
+    cd requirements/vendor
+    git status
+
+The only changed files shown here should be the new Python files for your added
+dependency (or, if upgrading a dependency, possibly some added/modified/removed
+files, but nothing outside the one upgraded package).
+
+If that is the case, commit your changes and push using the same steps as shown
+above for the ``requirements/dist`` submodule (and the same branching
+considerations).
+
+
+Pulling it all together
+~~~~~~~~~~~~~~~~~~~~~~~
+
+At this point, if you run ``git status`` in the root of the Case Conductor
+repo, you should see three modifications: a modification to
+``requirements/pure.txt`` and ``(new commits)`` in the ``requirements/dist``
+and ``requirements/vendor`` submodules (or, if you added a compiled module, a
+modification to ``requirements/compiled.txt`` and ``(new commits)`` only in
+``requirements/dist``).
+
+Add these changes, commit, push, and you're done!
+
+::
+
+    git add requirements/
+    git ci -m "Add Markdown 2.1.1 dependency."
+    git push
+
+
+
+.. _PyPI: http://pypi.python.org/pypi/
+.. _2.1.1 version of the Markdown package: http://pypi.python.org/pypi/Markdown/2.1.1
+.. _virtualenv: http://www.virtualenv.org
