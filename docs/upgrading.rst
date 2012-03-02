@@ -2,16 +2,19 @@ Upgrading
 =========
 
 To upgrade, simply use `git`_ to pull in the newer code from the `GitHub
-repository`_::
+repository`_ and update the submodules::
 
     git pull
+    git submodule update
 
 If you are on a stable release branch (e.g. ``0.8.X``) and you want to update
 to a newer release branch (e.g. ``0.9.X``), make sure you've fetched the latest
-code on all branches and then switch to the branch you want::
+code on all branches, switch to the branch you want, and update to the correct
+version of the submodules for that branch::
 
     git fetch
     git checkout 0.9.X
+    git submodule update
 
 
 Updating dependencies
