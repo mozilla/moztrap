@@ -96,12 +96,13 @@
 // ---------------------------------------------------------------------------
 // Step Fail
 #runtests
-  .step
-    .instruction
-      padding-left: rhythm(1)
-    &.failed
+  .started, .failed
+    .step
       .instruction
-        color: $red
+        padding-left: rhythm(1)
+  .step.failed
+    .instruction
+      color: $red
 
 .stepfail-summary
   +opacity(.25)

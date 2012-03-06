@@ -5871,7 +5871,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/warning.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
-#runtests .step .instruction {
+#runtests .started .step .instruction, #runtests .failed .step .instruction {
   padding-left: 1.5em;
 }
 #runtests .step.failed .instruction {
