@@ -1,6 +1,10 @@
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=caseversion %}
 
+  <p class="description">
+    {{ caseversion.description }}
+  </p>
+
   <ol class="steps">
     {% for step in caseversion.steps.all %}
     <li class="stepitem">
