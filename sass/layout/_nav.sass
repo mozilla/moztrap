@@ -41,17 +41,29 @@ $nav-link-hover-color : $red-dark
 .navhead
   +gone
 
-// ---------------------------------------------------------------------------
-// Account Navigation.
 
-#accountnav
+// ---------------------------------------------------------------------------
+// Open Web App
+
+#owa, #accountnav
   +columns($account-width)
   +omega
-  +leader(2.25)
   +cond
   position: relative
   text-align: right
   z-index: 2
+
+#owa
+  +leader(.5)
+  a
+    +button-style($blue-lightest,'ui/cloud_up.png')
+
+// ---------------------------------------------------------------------------
+// Account Navigation.
+
+#accountnav
+  +leader(.75)
+  clear: right
   .fn
     +demi
   p
