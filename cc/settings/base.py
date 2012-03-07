@@ -140,6 +140,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "django.contrib.humanize",
+    "django.contrib.markup",
     "south",
     "cc.model.core",
     "cc.model.library",

@@ -397,6 +397,24 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase):
         self.assertElement(
             res.json["html"], "button", attrs={"name": "action-finishsucceed"})
 
+    def test_description(self):
+        """Returns details HTML snippet for given caseversion"""
+
+        rcv = self.create_rcv(
+            caseversion__name="Foo Case",
+            caseversion__description="_Valmorphanize_",
+            )
+
+        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+
+        res = form.submit(
+            name="action-start",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200
+        )
+
+        res.mustcontain("<em>Valmorphanize</em>")
 
     def test_post_no_action_redirect(self):
         """POST with no action does nothing and redirects."""
