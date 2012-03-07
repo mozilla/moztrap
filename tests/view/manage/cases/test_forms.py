@@ -493,13 +493,19 @@ class EditCaseVersionFormTest(case.DBTestCase):
 
         self.assertEqual(
             form.initial,
-            {"name": "a name", "description": "a desc", "status": "active"})
+            {
+                "name": "a name",
+                "description": "a desc",
+                "status": "active",
+                "cc_version": cv.cc_version,
+                }
+            )
         self.assertEqual(
             form.steps_formset.forms[0].initial,
             {
                 "caseversion": cv.id,
                 "instruction": "do this",
-                "expected": "see that"
+                "expected": "see that",
                 }
             )
 
@@ -518,6 +524,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                     "name": ["new name"],
                     "description": ["new desc"],
                     "status": ["active"],
+                    "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],
                     "steps-INITIAL_FORMS": ["1"],
                     "steps-0-id": [""],
@@ -562,6 +569,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                     "name": ["new name"],
                     "description": ["new desc"],
                     "status": ["active"],
+                    "cc_version": str(cv.cc_version),
                     "tag-tag": [t2.id, t3.id],
                     "tag-newtag": ["foo"],
                     "steps-TOTAL_FORMS": ["0"],
@@ -580,6 +588,63 @@ class EditCaseVersionFormTest(case.DBTestCase):
 
     def test_save_attachments(self):
         """Can add/remove attachments."""
+
+        cv = self.F.CaseVersionFactory.create()
+
+        a1 = self.F.CaseAttachmentFactory.create(
+            caseversion=cv, name="Foo1")
+        self.F.CaseAttachmentFactory.create(
+            caseversion=cv, name="Foo2")
+
+        form = self.form(
+            instance=cv,
+            user=self.user,
+            data=MultiValueDict(
+                {
+                    "name": ["new name"],
+                    "description": ["new desc"],
+                    "status": ["active"],
+                    "cc_version": [str(cv.cc_version)],
+                    "remove-attachment": [str(a1.id)],
+                    "steps-TOTAL_FORMS": ["0"],
+                    "steps-INITIAL_FORMS": ["0"],
+                    }
+                ),
+            files=MultiValueDict(
+                {"add_attachment": [SimpleUploadedFile("Foo3", "contents")]})
+            )
+
+        cv = form.save()
+
+        self.assertEqual(
+            set([ca.name for ca in cv.attachments.all()]),
+            set(["Foo2", "Foo3"])
+            )
+
+
+    def test_concurrent_save(self):
+        """Saving edits to out-of-date version returns None and sets error."""
+        cv = self.F.CaseVersionFactory.create(
+            name="a name", description="a desc", status="draft")
+        submitted_version = cv.cc_version
+        cv.save() # increments the concurrency-control version
+
+        form = self.form(
+            instance=cv,
+            data=MultiValueDict(
+                {
+                    "name": ["new name"],
+                    "description": ["new desc"],
+                    "status": ["active"],
+                    "cc_version": str(submitted_version),
+                    "steps-TOTAL_FORMS": ["0"],
+                    "steps-INITIAL_FORMS": ["0"],
+                    }
+                )
+            )
+
+        self.assertIsNone(form.save_if_valid())
+        self.assertIn("Another user saved changes", form.errors["__all__"][0])
 
 
 

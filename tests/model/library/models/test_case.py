@@ -294,6 +294,19 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(cv.latest, True)
 
 
+    def test_skip_set_latest(self):
+        """Passing skip_set_latest to save skips setting latest version."""
+        cv1 = self.F.CaseVersionFactory.create(productversion__version="1")
+        pv2 = self.F.ProductVersionFactory.create(
+            product=cv1.productversion.product, version="2")
+        cv2 = self.model.CaseVersion(case=cv1.case, productversion=pv2)
+        cv2.save(skip_set_latest=True)
+
+        # latest attributes are wrong because we didn't update them
+        self.assertEqual(self.refresh(cv1).latest, True)
+        self.assertEqual(self.refresh(cv2).latest, False)
+
+
     def test_latest_version(self):
         """Case.latest_version() gets latest version."""
         c = self.F.CaseFactory.create()
@@ -418,14 +431,14 @@ class CaseAttachmentTest(case.DBTestCase):
     """Tests for the CaseAttachment model."""
     def test_unicode(self):
         """Unicode representation is name."""
-        ca = self.F.CaseAttachmentFactory(attachment__name="afile.txt")
+        ca = self.F.CaseAttachmentFactory(name="afile.txt")
 
         self.assertEqual(unicode(ca), "afile.txt")
 
 
     def test_name(self):
         """``name`` property is basename of attached file name."""
-        ca = self.F.CaseAttachmentFactory(attachment__name="thefile.txt")
+        ca = self.F.CaseAttachmentFactory(name="thefile.txt")
 
         self.assertEqual(ca.name, "thefile.txt")
 

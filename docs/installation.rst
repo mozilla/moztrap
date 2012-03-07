@@ -72,7 +72,7 @@ Once you have the compiled requirements installed, install the rest of the
 requirements using ``bin/install-reqs pure``; this installs only the
 pure-Python requirements and doesn't attempt to compile the compiled
 ones. Alternatively, you can skip ``bin/install-reqs`` entirely and use the
-provided :ref:`vendor library<vendor library>`.
+provided :ref:`vendor library`.
 
 
 .. _virtualenv: http://www.virtualenv.org
@@ -134,3 +134,6 @@ You can access Case Conductor in your browser at http://localhost:8000.
 For a production deployment of Case Conductor, please read the
 :doc:`deployment` documentation for important security and other
 considerations.
+
+For notes on upgrading to a more recent Case Conductor, see the
+:doc:`upgrading` documentation.

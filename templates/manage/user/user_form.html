@@ -7,6 +7,7 @@
   {% block formtop %}{% endblock %}
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form user-form">
     {% csrf_token %}
+    {{ form.non_field_errors }}
 
     {% block topfields %}{% endblock %}
     {% include "forms/_field.html" with field=form.username %}

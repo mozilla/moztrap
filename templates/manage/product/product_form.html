@@ -1,21 +1,17 @@
-{% extends 'manage/run/base.html' %}
+{% extends 'manage/product/base.html' %}
 
 {% block content %}
-<section class="{% block sectionid %}{% endblock %}">
-  <h2>{% block formtitle %}{% endblock %}</h2>
-  {% block formtop %}{% endblock %}
-  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
+<section class="{% block sectionclass %}{% endblock %}">
+  <h2>create a new product</h2>
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form product-form">
     {% csrf_token %}
     {{ form.cc_version }}
     {{ form.non_field_errors }}
 
-    {% include "forms/_field.html" with field=form.productversion label="Product Version" %}
+    {% block fields %}
     {% include "forms/_field.html" with field=form.name %}
     {% include "forms/_field.html" with field=form.description %}
-    {% include "forms/_field.html" with field=form.start %}
-    {% include "forms/_field.html" with field=form.end %}
-
-    {% include "forms/_field.html" with field=form.suites nolabel=1 %}
+    {% endblock %}
 
     {% comment %}
     <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
@@ -28,7 +24,7 @@
     {% endcomment %}
 
     <div class="form-actions">
-      <button type="submit">save run</button>
+      <button type="submit">save product</button>
     </div>
   </form>
 </section>

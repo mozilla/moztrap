@@ -316,3 +316,13 @@ class RunCaseVersionDetailTest(case.view.AuthenticatedViewTestCase):
         res.mustcontain(
             reverse("results_results", kwargs={"rcv_id": self.rcv.id})
             )
+
+    def test_description(self):
+        """Returns details HTML snippet for given caseversion"""
+
+        cv = self.F.CaseVersionFactory.create(description="_Valmorphanize_")
+        self.rcv = self.F.RunCaseVersionFactory.create(caseversion=cv)
+
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("<em>Valmorphanize</em>")

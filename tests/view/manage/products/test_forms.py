@@ -38,7 +38,14 @@ class EditProductFormTest(case.DBTestCase):
         u = self.F.UserFactory()
 
         f = self.form(
-            {"name": "Two", "description": "not blank"}, instance=p, user=u)
+            {
+                "name": "Two",
+                "description": "not blank",
+                "cc_version": str(p.cc_version),
+                },
+            instance=p,
+            user=u,
+            )
 
         product = f.save()
 
@@ -62,7 +69,12 @@ class AddProductFormTest(case.DBTestCase):
         u = self.F.UserFactory()
 
         f = self.form(
-            {"name": "Two", "version": "1.0", "description": "not blank"},
+            {
+                "name": "Two",
+                "version": "1.0",
+                "description": "not blank",
+                "cc_version": "0",
+                },
             user=u)
 
         product = f.save()
@@ -83,7 +95,14 @@ class AddProductFormTest(case.DBTestCase):
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["OS X", "Linux"]}, profile=profile)
 
-        f = self.form({"name": "Two", "version": "1.0", "profile": profile.id})
+        f = self.form(
+            {
+                "name": "Two",
+                "version": "1.0",
+                "profile": profile.id,
+                "cc_version": "0",
+                }
+            )
 
         version = f.save().versions.get()
 

@@ -243,12 +243,26 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase):
 
     def test_details(self):
         """Returns details HTML snippet for given caseversion."""
-        self.F.CaseStepFactory.create(caseversion=self.cv, instruction="Frobnigate.")
+        self.F.CaseStepFactory.create(
+            caseversion=self.cv,
+            instruction="Frobnigate.",
+            )
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("Frobnigate.")
 
+    def test_description(self):
+        """Returns details HTML snippet for given caseversion"""
+        desc_markdown = "_Valmorphanize_"
+
+        self.cv = self.F.CaseVersionFactory.create(
+            name="FooBar",
+            description=desc_markdown,
+            )
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("<em>Valmorphanize</em>")
 
 
 class AddCaseTest(case.view.FormViewTestCase):
@@ -632,7 +646,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
     def test_existing_attachments(self):
         """Form prepopulates with remove checkboxes for existing attachments."""
         ca = self.F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
@@ -692,7 +706,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
     def test_remove_attachments(self):
         """Can remove attachments."""
         ca = self.F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
@@ -709,3 +723,15 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
         res = form.submit(status=200)
 
         res.mustcontain("This field is required.")
+
+
+    def test_concurrency_error(self):
+        """Concurrency error is displayed."""
+        form = self.get_form()
+
+        self.cv.save()
+
+        form["name"] = "New"
+        res = form.submit(status=200)
+
+        res.mustcontain("Another user saved changes to this object")

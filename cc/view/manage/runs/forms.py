@@ -61,13 +61,15 @@ class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
             }
 
 
-    def save(self):
+    def save(self, user=None):
         """Save and return run, with suite associations."""
-        run = super(RunForm, self).save()
+        user = user or self.user
+        run = super(RunForm, self).save(user=user)
 
         run.runsuites.all().delete(permanent=True)
         for i, suite in enumerate(self.cleaned_data["suites"]):
-            model.RunSuite.objects.create(run=run, suite=suite, order=i)
+            model.RunSuite.objects.create(
+                run=run, suite=suite, order=i, user=user)
 
         return run
 

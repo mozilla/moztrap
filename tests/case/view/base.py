@@ -178,7 +178,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
 
 
 class FormViewTestCase(AuthenticatedViewTestCase):
-    """Base class for testing any view with a form."""
+    """Base class for testing any authenticated view with a form."""
     # subclasses should override
     form_id = None
 

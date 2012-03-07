@@ -55,14 +55,16 @@ class AddProductForm(ProductForm):
         widget=forms.Select)
 
 
-    def save(self):
+    def save(self, user=None):
         """Save and return the new Product; also save initial version."""
-        product = super(AddProductForm, self).save()
+        user = user or self.user
+
+        product = super(AddProductForm, self).save(user=user)
 
         version = model.ProductVersion.objects.create(
             product=product,
             version=self.cleaned_data["version"],
-            user=self.user)
+            user=user)
 
         profile = self.cleaned_data.get("profile")
         if profile is not None:

@@ -137,8 +137,8 @@ def caseversion_edit(request, caseversion_id):
             request.FILES,
             instance=caseversion,
             user=request.user)
-        if form.is_valid():
-            cv = form.save()
+        cv = form.save_if_valid()
+        if cv is not None:
             messages.success(request, "Saved '{0}'.".format(cv.name))
             return redirect("manage_cases")
     else:

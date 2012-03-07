@@ -79,8 +79,8 @@ def profile_add(request):
     """Add an environment profile."""
     if request.method == "POST":
         form = forms.AddProfileForm(request.POST, user=request.user)
-        if form.is_valid():
-            profile = form.save()
+        profile = form.save_if_valid()
+        if profile is not None:
             messages.success(
                 request, "Profile '{0}' added.".format(
                     profile.name)
@@ -236,7 +236,7 @@ def narrow_environments(request, object_type, object_id):
         obj.environments.add(*add)
         obj.environments.remove(*remove)
 
-        messages.success(request, "Saved environments for '{0}'".format(obj))
+        messages.success(request, u"Saved environments for '{0}'".format(obj))
 
         return redirect(redirect_to)
 

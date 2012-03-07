@@ -195,6 +195,7 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
 class CaseAttachmentFactory(factory.Factory):
     FACTORY_FOR = model.CaseAttachment
 
+    name = "somefile.txt"
     caseversion = factory.SubFactory(CaseVersionFactory)
 
 
@@ -202,8 +203,8 @@ class CaseAttachmentFactory(factory.Factory):
     def _prepare(cls, create, **kwargs):
         """Special handling for attachment so we can set name and contents."""
         attachment = kwargs.pop("attachment", None)
-        attachment_name = kwargs.pop("attachment__name", "somefile.txt")
-        attachment_content = kwargs.pop("attachment__content", "some content")
+        attachment_name = kwargs.get("name", "somefile.txt")
+        attachment_content = kwargs.pop("content", "some content")
         if attachment is None:
             attachment = SimpleUploadedFile(attachment_name, attachment_content)
         obj = super(CaseAttachmentFactory, cls)._prepare(create, **kwargs)

@@ -32,6 +32,7 @@ from django.utils.safestring import mark_safe
 
 import floppyforms
 
+from cc import model
 from ..lists import filters
 
 
@@ -67,16 +68,94 @@ class BareTextarea(floppyforms.Textarea):
 
 
 
-class CCModelForm(floppyforms.ModelForm):
-    """A ModelForm that knows about the current user and passes it to save."""
+class SaveIfValidMixin(object):
+    """
+    Form mixin class providing optimistic-locking-aware save_if_valid method.
+
+    Can be mixed in to any form class with a ``save`` method (that accepts a
+    user), a ``self.instance`` attribute, and a ``cc_version`` field.
+
+    """
+    def save_if_valid(self, user=None):
+        """
+        Save and return the instance if the form is valid, None if not valid.
+
+        If the form is otherwise valid but the save fails due to another
+        concurrent save getting there first, return None and add an explanatory
+        error to self.errors.
+
+        """
+        if not self.is_valid():
+            return None
+
+        try:
+            instance = self.save(user=user)
+        except model.ConcurrencyError:
+            self._errors[NON_FIELD_ERRORS] = self.error_class(
+                [
+                    # The link here takes advantage of the fact that an empty
+                    # href links to the current page; if they reload a fresh
+                    # copy of the current page (an edit form), it will show the
+                    # other user's changes.
+                    mark_safe(
+                        u"Another user saved changes to this object in the "
+                        u'meantime. Please <a href="">review their changes</a> '
+                        u"and save yours again if they still apply."
+                        )
+                    ]
+                )
+            self.data = self.data.copy()
+            self.data["cc_version"] = self.instance.cc_version
+            return None
+
+        return instance
+
+
+
+class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
+    def __new__(cls, name, bases, attrs):
+        """Construct a CCModelForm subclass; ensure it has cc_version field."""
+        meta = attrs.get("Meta")
+        if meta:
+            fields = getattr(meta, "fields", None)
+            if fields is not None and "cc_version" not in fields:
+                fields.append("cc_version")
+        return super(CCModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
+
+
+
+class CCModelForm(SaveIfValidMixin, floppyforms.ModelForm):
+    """
+    A ModelForm for CCModels.
+
+    Knows about the current user and passes it to model save. Knows about
+    optimistic locking, and implements ``save_if_valid`` to allow views to
+    correctly handle concurrency errors.
+
+    """
+    __metaclass__ = CCModelFormMetaclass
+
+
     def __init__(self, *args, **kwargs):
-        """Pull user out of ModelForm initialization keyword arguments."""
+        """Initialize ModelForm. Pull out user kwarg, hide cc_version field."""
         self.user = kwargs.pop("user", None)
         super(CCModelForm, self).__init__(*args, **kwargs)
+        self.fields["cc_version"].widget = floppyforms.HiddenInput()
 
 
     def save(self, commit=True, user=None):
-        """If commiting, pass user into save(). Can supply user here as well."""
+        """
+        Save and return this form's instance.
+
+        If committing, pass user into save(). Can supply user here as well.
+
+        This method can raise ``ConcurrencyError``; calling code not prepared
+        to catch and handle ``ConcurrencyError`` should use ``save_if_valid``
+        instead.
+
+        """
+        assert self.is_valid()
+
         instance = super(CCModelForm, self).save(commit=False)
 
         user = user or self.user

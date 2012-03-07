@@ -80,10 +80,10 @@ class AddProfileForm(ProfileForm):
         error_messages={"required": "Please select at least one element."})
 
 
-    def save(self):
+    def save(self, user=None):
         """Create and return the new profile."""
         return model.Profile.generate(
             self.cleaned_data["name"],
             *self.cleaned_data["elements"],
-            **{"user": self.user}
+            **{"user": user or self.user}
             )

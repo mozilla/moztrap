@@ -1,6 +1,7 @@
 {% extends 'lists/_itembody.html' %}
 
 {% load execution urls %}
+{% load markup %}
 
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
@@ -8,7 +9,7 @@
 
 {% if caseversion.description %}
   <p class="description">
-    {{ caseversion.description }}
+    {{ caseversion.description|markdown }}
   </p>
 {% endif %}
 

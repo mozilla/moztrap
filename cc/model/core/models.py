@@ -73,6 +73,7 @@ class Product(CCModel, TeamModel):
             if version == update_instance:
                 update_instance.order = version.order
                 update_instance.latest = version.latest
+                update_instance.cc_version += 1
         # now we have to update latest caseversions too, @@@ too slow?
         for case in self.cases.all():
             case.set_latest_version()
