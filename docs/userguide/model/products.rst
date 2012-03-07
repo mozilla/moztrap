@@ -10,7 +10,8 @@ Case Conductor data model relates to a Product either directly or indirectly.
 .. _product-versions:
 
 Products have a list of *versions*; every :ref:`test run <test-runs>` and
-:ref:`test case <test-cases>` applies to a particular version of the product.
+:ref:`test case version<test-cases>` applies to a particular version of the
+product.
 
 When a new **Product Version** is created, all test cases for that Product will
 get a new version to match the new **Product Version**.

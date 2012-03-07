@@ -71,13 +71,13 @@ At the highest level, a product version's environment profile describes the
 full set of environments that the product version supports and should be tested
 in.
 
-A test run or test case by default inherits the full environment profile of its
-product version, but its profile can be narrowed from the product version's
-profile. For instance, if a particular test case only applies to the Windows
-port of the product, all non-Windows environments could be eliminated from that
-test case's environment profile. Similarly, a test run could be designated as
-Esperanto-only, and all non-Esperanto environments would be removed from its
-profile (ok, that's not very likely).
+A test run or test case version by default inherits the full environment
+profile of its product version, but its profile can be narrowed from the
+product version's profile. For instance, if a particular test case version only
+applies to the Windows port of the product, all non-Windows environments could
+be eliminated from that test case's environment profile. Similarly, a test run
+could be designated as Esperanto-only, and all non-Esperanto environments would
+be removed from its profile (ok, that's not very likely).
 
 The environment profile of a test case or test run is limited to a subset of
 the parent product version's profile - it doesn't make sense to write a test
@@ -94,11 +94,11 @@ Windows Esperanto environments.
 Thus, the inheritance tree for environment profiles looks something like a
 diamond::
 
-    Product Version
+    product-version
       /        \
-     Run      Case
+     run    case-version
       \        /
-    executable Case
+    executable-case-version
 
 
 Cascades
