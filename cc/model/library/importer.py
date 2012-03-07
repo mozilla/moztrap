@@ -66,12 +66,11 @@ class Importer(object):
 
     * cases: the number of cases imported
     * suites: the number of suites imported
-    * skipped: list of items that could not be imported and some
-      explanation why
     * warnings: list of warnings about the imported items, if any.
 
     """
 
+    @transaction.commit_on_success
     def import_data(self, productversion, case_data):
         """
         Import the top-level dictionary of cases and suites.
@@ -131,8 +130,9 @@ class CaseImporter(object):
         """
 
         self.productversion = productversion
-        self.suite_importer = (suite_importer or
-            SuiteImporter(productversion.product))
+        self.suite_importer = (
+            suite_importer or SuiteImporter(productversion.product)
+            )
 
         # the object responsible for importing tags
         self.tag_importer = TagImporter(self.productversion.product)
@@ -141,7 +141,6 @@ class CaseImporter(object):
         self.user_cache = UserCache()
 
 
-    @transaction.commit_on_success
     def import_cases(self, case_dict_list):
         """
         Import the test cases in the data.

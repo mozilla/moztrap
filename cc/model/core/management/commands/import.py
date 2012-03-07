@@ -69,14 +69,12 @@ class Command(BaseCommand):
 
         try:
             product = Product.objects.get(name=args[0])
-
         except Product.DoesNotExist:
             raise CommandError('Product "{0}" does not exist'.format(args[0]))
 
         try:
             product_version = ProductVersion.objects.get(
                 product=product, version=args[1])
-
         except ProductVersion.DoesNotExist:
             raise CommandError(
                 'Version "{0}" of product "{1}" does not exist'.format(
@@ -89,7 +87,6 @@ class Command(BaseCommand):
                 # try to import this as JSON
                 try:
                     case_data = json.load(fh)   # pragma: no branch
-
                 except ValueError as e:
                     raise CommandError(
                         "Could not parse JSON: {0}".format(str(e)))

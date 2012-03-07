@@ -16,7 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Tests for suite/case importer."""
+
+from unittest import TestCase
+
 from tests import case
+
 from cc.model.library.importer import ImportResult
 
 
@@ -43,7 +47,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 "cases": [
                     {
                         "name": "Foo",
-                        "steps": [{"instruction": "do this"}]
+                        "steps": [{"instruction": "do this"}],
                         }
                     ]
                 }
@@ -55,33 +59,36 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         self.assertEqual(cv.case.product, self.pv.product)
 
 
-    def test_create_caseversion_all_fields(self):
-        """
-        A case with all fields filled, including match with existing email.
-        """
-
-        # need a user to exist, so the import can find it.
-        user = self.model.User.objects.create(
-            username="FooUser",
-            email="sumbudee@mozilla.com",
+    def test_create_caseversion_description(self):
+        """Test the description field of a new test case"""
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "description": "case description",
+                        "name": "Foo",
+                        "steps": [{"instruction": "do this"}],
+                        }
+                    ]
+                }
             )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.description, "case description")
+        self.assertEqual(result.num_cases, 1)
+
+
+    def test_create_caseversion_tags(self):
+        """Test that case tags get created and assigned"""
+
         new_tags = ["tag1", "tag2", "tag3"]
-        new_suites = ["suite1 name", "suite2 name", "suite3 name"]
 
         result = self.import_data(
             {
                 "cases": [
                     {
-                        "created_by": "sumbudee@mozilla.com",
-                        "description": "case description",
                         "name": "Foo",
-                        "steps": [
-                            {
-                                "instruction": "action text",
-                                "expected": "expected text"
-                            }
-                        ],
-                        "suites": new_suites,
+                        "steps": [{"instruction": "do this"}],
                         "tags": new_tags,
                         }
                     ]
@@ -89,19 +96,56 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
-        self.assertEqual(cv.description, "case description")
-        self.assertEqual(cv.created_by, user)
 
         case_tags = sorted([tag.name for tag in cv.tags.all()])
         self.assertEqual(case_tags, new_tags)
-
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
         self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 3)
-        self.assertEqual(result.warnings, [])
+
+
+    def test_create_caseversion_suites(self):
+        """Test that case tags get created and assigned"""
+
+        new_suites = ["suite1 name", "suite2 name", "suite3 name"]
+
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "steps": [{"instruction": "do this"}],
+                        "suites": new_suites,
+                        }
+                    ]
+                }
+            )
+
+        cv = self.model.CaseVersion.objects.get()
+        case_suites = sorted([suite.name for suite in cv.case.suites.all()])
+        self.assertEqual(case_suites, new_suites)
+        self.assertEqual(result.num_cases, 1)
+
+
+    def test_create_caseversion_existing_user(self):
+        """A case with created_by field filled with existing user"""
+
+        # need a user to exist, so the import can find it.
+        user = self.F.UserFactory.create(email="sumbudee@mozilla.com")
+
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "created_by": "sumbudee@mozilla.com",
+                        "name": "Foo",
+                        "steps": [{"instruction": "do this"}]
+                        }
+                    ]
+                }
+            )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.created_by, user)
+        self.assertEqual(result.num_cases, 1)
 
 
     def test_create_two_caseversions_same_user(self):
@@ -113,50 +157,30 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             email="sumbudee@mozilla.com",
             )
 
-
-        result = self.import_data(
+        case_data= {
+            "cases": [
                 {
-                "cases": [
-                        {
-                        "created_by": "sumbudee@mozilla.com",
-                        "name": "Foo",
-                        "steps": [
-                                {
-                                "instruction": "action text",
-                                "expected": "expected text"
-                            }
-                        ],
-                        },
-                        {
-                        "created_by": "sumbudee@mozilla.com",
-                        "name": "Bar",
-                        "steps": [
-                                {
-                                "instruction": "action text",
-                                "expected": "expected text"
-                            }
-                        ],
-                        }
+                    "created_by": "sumbudee@mozilla.com",
+                    "name": "Foo",
+                    "steps": [{"instruction": "do this"}],
+                    },
+                {
+                    "created_by": "sumbudee@mozilla.com",
+                    "name": "Bar",
+                    "steps": [{"instruction": "do this"}],
+                    }
                 ]
             }
-        )
+
+        with self.assertNumQueries(17):
+           result = self.import_data(case_data)
+
 
         cv1 = self.model.CaseVersion.objects.get(name="Foo")
-        self.assertEqual(cv1.name, "Foo")
         self.assertEqual(cv1.created_by, user)
-        self.assertEqual(cv1.productversion, self.pv)
-        self.assertEqual(cv1.case.product, self.pv.product)
-
         cv2 = self.model.CaseVersion.objects.get(name="Bar")
-        self.assertEqual(cv2.name, "Bar")
         self.assertEqual(cv2.created_by, user)
-        self.assertEqual(cv2.productversion, self.pv)
-        self.assertEqual(cv2.case.product, self.pv.product)
-
-
         self.assertEqual(result.num_cases, 2)
-        self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
 
 
     def test_create_caseversion_no_existing_user(self):
@@ -168,24 +192,15 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                     {
                         "created_by": "sumbudee@mozilla.com",
                         "name": "Foo",
-                        "steps": [
-                            {
-                                "instruction": "action text",
-                            }
-                        ],
+                        "steps": [{"instruction": "do this"}],
                         }
                     ]
                 }
             )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
         self.assertEqual(cv.created_by, None)
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
         self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 0)
         self.assertEqual(
             result.warnings[0]["reason"],
             ImportResult.WARN_USER_NOT_FOUND,
@@ -206,12 +221,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 "cases": [
                         {
                         "name": "Foo",
-                        "steps": [
-                                {
-                                "instruction": "action text",
-                                "expected": "expected text"
-                            }
-                        ],
+                        "steps": [{"instruction": "do this"}],
                         "tags": ["FooTag"],
                         }
                 ]
@@ -219,14 +229,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
         self.assertEqual(cv.tags.get(), tag)
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
         self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
 
 
     def test_create_caseversion_existing_suite(self):
@@ -243,12 +247,7 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 "cases": [
                         {
                         "name": "Foo",
-                        "steps": [
-                                {
-                                "instruction": "action text",
-                                "expected": "expected text"
-                            }
-                        ],
+                        "steps": [{"instruction": "do this"}],
                         "suites": ["FooSuite"],
                         }
                 ]
@@ -256,14 +255,9 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
         self.assertEqual(cv.case.suites.get(), suite)
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
         self.assertEqual(result.num_cases, 1)
         self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
 
 
     def test_case_no_name_skip(self):
@@ -278,11 +272,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 }
             )
 
-        cv = self.model.CaseVersion.objects.all()
-        self.assertFalse(list(cv))
-
+        self.assertFalse(list(self.model.CaseVersion.objects.all()))
         self.assertEqual(result.num_cases, 0)
-        self.assertEqual(result.num_suites, 0)
         self.assertEqual(
             result.warnings[0]["reason"],
             ImportResult.SKIP_CASE_NO_NAME,
@@ -291,6 +282,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
 
     def test_case_name_conflict_skip(self):
         """A case with same name already exists."""
+        self.F.CaseVersionFactory.create(productversion=self.pv, name="Foo")
+
         case_to_import = {
             "cases": [
                 {
@@ -299,17 +292,9 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 ]
             }
 
-        self.import_data(case_to_import)
         result = self.import_data(case_to_import)
 
-
-        cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
         self.assertEqual(result.num_cases, 0)
-        self.assertEqual(result.num_suites, 0)
         self.assertEqual(
             result.warnings[0]["reason"],
             ImportResult.SKIP_CASE_NAME_CONFLICT,
@@ -329,12 +314,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
-
+        self.assertEqual(cv.steps.count(), 0)
         self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 0)
         self.assertEqual(result.warnings[0]["item"], cv)
         self.assertEqual(
             result.warnings[0]["reason"],
@@ -372,20 +353,13 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             )
 
         cv = self.model.CaseVersion.objects.get()
-        self.assertEqual(cv.name, "Foo")
-        self.assertEqual(cv.productversion, self.pv)
-        self.assertEqual(cv.case.product, self.pv.product)
 
-        #@@@ Placeholder till Carl tells me the graceful way to do this...  :)
-        case_steps = cv.steps.order_by("instruction")
-        for step in case_steps:
-            i = step.number - 1
-            self.assertEqual(step.instruction, new_steps[i]["instruction"])
-            self.assertEqual(step.expected, new_steps[i]["expected"])
-
-        self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
+        self.assertEqual(
+            [(s.number, s.instruction, s.expected) for s in cv.steps.order_by(
+                "number")],
+            [(i + 1, s["instruction"], s["expected"]) for i, s in enumerate(
+                new_steps)],
+            )
 
 
     def test_create_suite(self):
@@ -418,19 +392,12 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 }
             )
 
-        s = self.model.Suite.objects.all()
-        self.assertFalse(list(s))
-
-        self.assertEqual(result.num_cases, 0)
+        self.assertFalse(self.model.Suite.objects.count(), 0)
         self.assertEqual(result.num_suites, 0)
         self.assertEqual(
             result.warnings[0]["reason"],
             ImportResult.SKIP_SUITE_NO_NAME,
             )
-
-
-    def test_existing_and_new_suite(self):
-        pass
 
 
     def test_result_object(self):
@@ -445,10 +412,6 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                     ]
                 }
             )
-
-        self.assertEqual(result.num_cases, 1)
-        self.assertEqual(result.num_suites, 0)
-        self.assertEqual(result.warnings, [])
 
         result_list = result.get_as_list()
         self.assertTrue("Imported 1 cases" in result_list)
@@ -471,12 +434,11 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
                 }
             )
 
+        cv = self.model.CaseVersion.objects.all()
+        self.assertFalse(list(cv))
         self.assertEqual(result.num_cases, 0)
-        self.assertEqual(result.num_suites, 0)
         self.assertEqual(
             result.warnings[0]["reason"],
             ImportResult.SKIP_STEP_NO_INSTRUCTION,
             )
 
-        cv = self.model.CaseVersion.objects.all()
-        self.assertFalse(list(cv))
