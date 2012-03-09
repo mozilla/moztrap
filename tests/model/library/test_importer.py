@@ -21,7 +21,9 @@ from unittest import TestCase
 
 from tests import case
 
-from cc.model.library.importer import ImportResult
+from mock import patch, Mock
+
+from cc.model.library.importer import ImportResult, SuiteImporter
 
 
 
@@ -548,8 +550,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             )
 
         s = self.model.Suite.objects.get()
-        self.assertEqual(s.name, "Foo")
         self.assertEqual(s.description, "indescribable")
+        self.assertEqual(s.name, "Foo")
 
 
     def test_suite_no_name_skip(self):
@@ -593,8 +595,51 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
 
 class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
     """Tests for ``Importer`` transactional behavior."""
-    # @@@ This test won't work till we upgrade to Django 1.4
 
+    @patch.object(SuiteImporter, 'import_suites')
+    def test_unknown_exception_rollback(self, new_import_suites):
+        """
+        An unknown exception is thrown by the import_suites method of
+        SuiteImporter, so the entire transaction is rolled back and no
+        cases are imported.
+        """
+
+        case_suite_data = {
+            "suites": [
+                    {
+                    "name": "FooSuite",
+                    "description": "indescribable"
+                }
+            ],
+            "cases": [
+                    {
+                    "name": "FooCase",
+                    "steps": [{"instruction": "do this"}]
+                },
+                    {
+                    "name": "BarCase",
+                    "steps": [{"instruction": "do this"}]
+                }
+            ]
+        }
+
+        def side_effect():
+            raise Exception("Surprise!")
+
+        new_import_suites.side_effect = side_effect
+
+        err = None
+        try:
+            result = self.import_data(case_suite_data)
+        except Exception, e:
+            err = e
+
+        self.assertEqual(str(err), "Surprise!")
+        self.assertEqual(self.model.Case.objects.count(), 0)
+        self.assertEqual(self.model.CaseVersion.objects.count(), 0)
+
+
+    # @@@ This test won't work till we upgrade to Django 1.4
 #    def test_step_no_instruction_skip(self):
 #
 #        """Skip import on case with step and no instruction."""

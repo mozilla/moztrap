@@ -70,6 +70,7 @@ class Importer(object):
 
     """
 
+    @transaction.commit_on_success
     def import_data(self, productversion, case_data):
         """
         Import the top-level dictionary of cases and suites.
@@ -139,7 +140,6 @@ class CaseImporter(object):
         # cache of user emails
         self.user_cache = UserCache()
 
-    @transaction.commit_on_success
     def import_cases(self, case_dict_list):
         """
         Import the test cases in the data.

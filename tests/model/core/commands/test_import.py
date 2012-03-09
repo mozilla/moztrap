@@ -140,17 +140,7 @@ class ImportCasesTest(case.DBTestCase):
         with self.tempfile("{") as path:
             output = self.call_command("Foo", "1.0", path)
 
-
-        self.assertEqual(
-            output,
-            (
-                "",
-                (
-                    "Error: Could not parse JSON: "
-                    "Expecting property name: line 1 column 1 (char 1)\n"
-                    ),
-                )
-            )
+        self.assertIn("Error: Could not parse JSON: Expecting", output[1])
 
 
     def test_success(self):
