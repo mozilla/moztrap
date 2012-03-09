@@ -623,18 +623,17 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
             ]
         }
 
-        def side_effect():
-            raise Exception("Surprise!")
+        class SurpriseException(RuntimeError):
+            pass
+        def raise_exception():
+            raise SurpriseException("Surprise!")
+        new_import_suites.side_effect = raise_exception
 
-        new_import_suites.side_effect = side_effect
-
-        err = None
-        try:
-            result = self.import_data(case_suite_data)
-        except Exception, e:
-            err = e
-
-        self.assertEqual(str(err), "Surprise!")
+        self.assertRaises(
+            SurpriseException,
+            self.import_data,
+            (case_suite_data),
+            )
         self.assertEqual(self.model.Case.objects.count(), 0)
         self.assertEqual(self.model.CaseVersion.objects.count(), 0)
 
