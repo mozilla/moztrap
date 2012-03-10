@@ -21,7 +21,7 @@ from unittest import TestCase
 
 from tests import case
 
-from mock import patch, Mock
+from mock import patch
 
 from cc.model.library.importer import ImportResult, SuiteImporter
 

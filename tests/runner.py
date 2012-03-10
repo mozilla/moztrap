@@ -21,6 +21,8 @@ from django.utils.importlib import import_module
 from django.utils.unittest import TestCase
 from django.utils.unittest.loader import defaultTestLoader
 
+from case import TransactionTestCase
+
 
 
 class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
@@ -44,4 +46,4 @@ class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
             for test in extra_tests:
                 suite.addTest(test)
 
-        return reorder_suite(suite, (TestCase,))
+        return reorder_suite(suite, (TestCase, TransactionTestCase,))
