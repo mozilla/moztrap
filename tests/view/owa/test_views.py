@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for login/logout/account views.
+Tests for open web app views.
 
 """
 import json
@@ -46,13 +46,16 @@ class ManifestTest(WebTest):
         res = self.get(status=200)
 
         self.assertEqual(
-            res.headers["Content-Type"], "application/x-web-app-manifest+json", 
+            res.headers["Content-Type"], "application/x-web-app-manifest+json",
             res.headers)
-        
+
         # content-type isn't normal JSON, so I must parse the JSON
         # directly, rather than using res.json["name"]
 
-        self.assertEqual(json.loads(res.body)["name"], "Case Conductor")
+        self.assertEqual(
+            json.loads(res.body)["description"],
+            "A Test Case and Results management System.",
+            )
 
 
 class RegisterTest(WebTest):
