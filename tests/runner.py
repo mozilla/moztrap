@@ -16,14 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.conf import settings
+from django.test import TestCase, TransactionTestCase
 from django.test.simple import DjangoTestSuiteRunner, reorder_suite
 from django.utils.importlib import import_module
-from django.utils.unittest import TestCase
 from django.utils.unittest.loader import defaultTestLoader
 
-from case import TransactionTestCase
-
-
+from tests import case
 
 class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
     def build_suite(self, test_labels, extra_tests=None, **kwargs):
@@ -46,4 +44,11 @@ class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
             for test in extra_tests:
                 suite.addTest(test)
 
-        return reorder_suite(suite, (TestCase, TransactionTestCase,))
+
+        #@@@ fixing imports helped a lot.  But one test is still failing
+        # Tried adding case.TestCase in here, but that didn't seem to help
+        # that last case in test_bad_sort_field.  Could the test have an error?
+        return reorder_suite(suite, (
+            TestCase,
+            TransactionTestCase,
+            ))
