@@ -29,6 +29,8 @@
   +hpadding(rhythm(1),rhythm(.25))
   +cond
   border-color: rgba($blue-dark,$xxsmall)
+  p
+    margin: 0
 
   .tags
     +inline-list
@@ -42,7 +44,7 @@
 
 .itembody
 
-  > .summary
+  .item-summary
     +opacity(.5)
     +icon('ui/angle_right.png')
     +padding-leader(.25)
@@ -51,19 +53,21 @@
     top: 0
     left: 0
     width: rhythm(1)
+    cursor: pointer
     #{$focus}
       +opacity(1)
 
-  > .content
+  .item-content
     +full(24)
-    +clearfix
+    +pie-clearfix
     +box-shadow(rgba($base,$small) 0 0 $xsmallpx inset)
     background: $blue-hint
     padding: rhythm(.25) rhythm(.25) rhythm(.25) rhythm(1)
     position: relative
 
-  .byline
+  .byline, .description
     +trailer(.5)
+  .byline
     +italic
 
   .envs
@@ -87,19 +91,24 @@
   +gone
 
 .bugs-list, .files-list
-  +no-style-list
+  @extend .chicklist
+
+.filechick
+  @extend .chick
+  +icon('ui/clip.png',$notext:false)
+  padding-left: rhythm(1)
 
 .files-list
   .file
-    @extend .chick
-    +icon('ui/clip.png',$notext:false)
-    padding-left: rhythm(1)
+    @extend .filechick
+
+.bugchick
+  @extend .chick
+  +icon('ui/bug.png',$notext:false)
+  padding-left: rhythm(1.25)
+  background-color: $yellow-light
+  border-color: $yellow-darkest
 
 .bugs-list
   .bugurl
-    @extend .chick
-    +icon('ui/bug.png',$notext:false)
-    padding-left: rhythm(1.25)
-    background-color: $yellow-light
-    border-color: $yellow-darkest
-
+    @extend .bugchick

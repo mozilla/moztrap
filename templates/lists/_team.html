@@ -1,0 +1,10 @@
+{% if team %}
+  <div class="testers">
+    <h4 class="testers-title">testers</h4>
+    <ul class="tester-list">
+      {% for tester in team %}
+      <li> {{ tester }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

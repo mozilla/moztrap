@@ -17,16 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Generate a vendor-lib in the specified directory, including all project
-requirements. Removes and recreates any "lib/" subdirectory of the target
-directory.
+
+Generate a vendor-lib in requirements/vendor, including all pure-Python
+project requirements (excludes those listed in requirements/compiled.txt). 
+Removes and recreates any "requirements/vendor/lib/".
 
 Due to bugs in pip's "--ignore-installed" flag, this should always be run
 inside an empty no-site-packages virtualenv.
 
-Usage: %s directory-path [install-type]
-
-install_type is the requirements file to use; defaults to "prod-pure".
+Usage: %s
 
 """
 import os.path
@@ -40,16 +39,14 @@ def main(base_dir, argv):
     reqs_dir = os.path.join(base_dir, "requirements")
     dist_dir = os.path.join(reqs_dir, "dist")
 
-    install_type = "prod"
+    install_type = "pure"
 
     args = argv[1:]
-    if not args or args[0] in ["-h", "-?", "--help"]:
+    if args and args[0] in ["-h", "-?", "--help"]:
         print __doc__ % argv[0]
         return 0
-    else:
-        target_dir = os.path.join(args[0], "lib")
-        if len(args) > 1:
-            install_type = args[1]
+
+    target_dir = os.path.join(base_dir, "requirements", "vendor", "lib")
 
     reqs_file = os.path.join(reqs_dir, "%s.txt" % install_type)
     if not os.path.isfile(reqs_file):

@@ -1,0 +1,11 @@
+{% extends 'manage/run/run_form.html' %}
+
+{% block sectionid %}edit-run{% endblock %}
+{% block formid %}run-edit-form{% endblock %}
+{% block formtitle %}Edit "{{ run.name }}"{% endblock %}
+
+{% block formtop %}
+  {% if run.status == run.STATUS.draft %}
+  <a href="{% url manage_narrow_environments object_type='run' object_id=run.id %}" class="select-env-link">select environments</a>
+  {% endif %}
+{% endblock %}

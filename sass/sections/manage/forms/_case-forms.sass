@@ -9,16 +9,20 @@
     +inline-block
     width: columns(4,20)
     margin-right: gutter(20)
-    label
+    .type
       +gone
-    select
+    .value
       +inline-block
       vertical-align: baseline
+
+.edit-case
+  .select-env-link
+    margin-right: columns(2,24) +gutter(24)
 
 .case-version-nav
   +full(24)
   +suffix(2,24)
-  +leader(-1.25)
+  +leader
   text-align: right
 
 .case-version-head
@@ -78,17 +82,17 @@
 
   .product-field
     +columns(11,24)
-    label
+    .type
       +columns(2,11)
-    select, .errorlist
+    .value, .errorlist
       +columns(9,11)
       +omega(11)
 
   .version-field
     +columns(7,24)
-    label
+    .type
       +columns(2,7)
-    select, .errorlist
+    .value, .errorlist
       +columns(5,7)
       +omega(7)
 
@@ -98,9 +102,9 @@
 
   .suite-field
     +full(24)
-    label
+    .type
       +columns(2,24)
-    select, .errorlist
+    .value, .errorlist
       +columns(20,24)
 
 // ---------------------------------------------------------------------------
@@ -112,9 +116,9 @@
     +columns(11,24)
 
   .name-field, .description-field
-    label
+    .type
       +columns(2,11)
-    input, textarea, .errorlist
+    .value, .errorlist
       +columns(9,11)
       +omega(11)
 
@@ -128,9 +132,9 @@
 
   .add-tags-field
     +full(11)
-    label
+    .type
       +columns(2,11)
-    input, .errorlist
+    .value, .errorlist
       +columns(9,11)
       +omega(11)
     .suggest
@@ -164,9 +168,9 @@
 
   .cases-field
     +columns(13,24)
-    label
+    .type
       +columns(2,13)
-    textarea, .errorlist
+    .value, .errorlist
       +columns(11,13)
       +omega(13)
       min-height: rhythm(10)
@@ -202,7 +206,7 @@
     +columns(10,20)
     &.expected-field
       +omega(20)
-  textarea
+  .value
     min-height: rhythm(3)
 
   .removefields

@@ -1,0 +1,41 @@
+.add-suite, .edit-suite
+
+  .product-field, .name-field, .description-field
+    +full(24)
+    +suffix(6,24)
+    .type
+      +columns(6,18)
+    .value, .errorlist
+      +columns(12,18)
+      +omega(18)
+
+  .status-field
+    +inline-block
+    width: columns(4,18)
+    margin-right: gutter(18)
+    .type
+      +gone
+    .value
+      +inline-block
+      vertical-align: baseline
+
+  .cases-field
+    +trailer(0)
+
+    .status
+      left: rhythm(1.5)
+      margin: 0
+    .itemhead, .listordering
+      padding-left: rhythm(2.75)
+
+    .name-tags, .byname-tags
+      +columns(8,11)
+    .author, .byauthor
+      +columns(3,11)
+      +omega(11)
+
+    .title
+      +demi
+      display: inline
+      margin-right: rhythm(.25)
+      font-style: normal

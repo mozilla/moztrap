@@ -1,0 +1,51 @@
+{% load icanhaz %}
+
+<div class="multiselect">
+  {% icanhaz "autocomplete_suggestion" %}
+  {% icanhaz "autocomplete_input" %}
+  {% icanhaz "filtered_multiselect_input" %}
+
+  <section class="multiunselected">
+    <h4 class="multi-header">available {{ name }}</h4>
+
+    <div class="selectsearch">
+      <div class="textual">
+        <label for="search-add">filter available {{ name }}</label>
+        <input type="text" name="search" value="" id="search-add" autocomplete="off" placeholder="filter available {{ name }}">
+        <ul class="suggest"></ul>
+      </div>
+      <div class="visual compact">
+        {% for field in filters %}
+        {% include "lists/_filter_group.html" with advanced=0 prefix="filter" %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="selectbox itemlist">
+      {% include listordering_template with action="include" %}
+      <div class="select sortable">
+        {% for choice in choices %}
+        {% if choice.0 not in value %}
+        {% include choice_template %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+  </section>
+  <section class="multiselected">
+    <h4 class="multi-header">included {{ name }}</h4>
+
+    <div class="selectbox itemlist">
+      {% include listordering_template with action="exclude" %}
+      <div class="select sortable" data-name="{{ name }}">
+        {% for choice in choices %}
+        {% if choice.0 in value %}
+        {% include choice_template %}
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+  </section>
+</div>

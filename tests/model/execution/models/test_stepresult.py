@@ -19,26 +19,22 @@
 Tests for StepResult model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
-
-from cc.model.execution.models import Result, StepResult
+from tests import case
 
 
 
-class StepResultTest(TestCase):
+class StepResultTest(case.DBTestCase):
     def test_unicode(self):
-        env = F.EnvironmentFactory.create_full_set(
+        env = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["OS X"], "Language": ["English"]})[0]
 
-        step = F.CaseStepFactory.create(
+        step = self.F.CaseStepFactory.create(
             caseversion__name="Open URL")
 
-        sr = F.StepResultFactory.create(
-            status=StepResult.STATUS.passed,
+        sr = self.F.StepResultFactory.create(
+            status=self.model.StepResult.STATUS.passed,
             step=step,
-            result__status=Result.STATUS.started,
+            result__status=self.model.Result.STATUS.started,
             result__runcaseversion__run__name="FF10",
             result__runcaseversion__caseversion=step.caseversion,
             result__tester__username="tester",

@@ -19,6 +19,8 @@
 Forms for test execution.
 
 """
+import json
+
 import floppyforms as forms
 
 from ... import model
@@ -109,3 +111,8 @@ class EnvironmentSelectionForm(forms.Form):
     def save(self):
         """Return selected environment ID."""
         return self.cleaned_data["environment"]
+
+
+    def valid_environments_json(self):
+        """Return lists of element IDs representing valid envs, as JSON."""
+        return json.dumps(self.elementids_by_envid.values())

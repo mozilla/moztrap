@@ -21,11 +21,11 @@ Tests for sort template filters.
 """
 from mock import Mock
 
-from django.utils.unittest import TestCase
+from tests import case
 
 
 
-class FilterTest(TestCase):
+class FilterTest(case.TestCase):
     """Tests for sort template filters."""
     @property
     def sort(self):

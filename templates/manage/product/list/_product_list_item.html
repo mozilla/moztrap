@@ -1,0 +1,29 @@
+{% load permissions %}
+
+<article id="product-id-{{ product.id }}" class="listitem">
+  <header class="itemhead">
+
+    <div class="name">
+
+      <div class="controls">
+        {% if user|has_perm:"core.manage_products" %}
+          {% url manage_product_edit product_id=product.id as product_edit_url %}
+          {% include "lists/controls/_edit.html" with edit_url=product_edit_url edit_name=product.name %}
+          {% include "lists/controls/_clone.html" with clone_id=product.id clone_name=product.name %}
+          {% include "lists/controls/_delete.html" with delete_id=product.id delete_name=product.name %}
+        {% endif %}
+      </div>
+
+      <h3 class="title" title="{{ product.name }}">{{ product.name }}</h3>
+
+    </div>
+
+    <div class="description">{{ product.description }}</div>
+
+  </header>
+
+  {% url manage_product_details product.id as details_url %}
+  {# _product_details.html loaded via ajax #}
+  {% include "lists/_itembody.html" %}
+
+</article>

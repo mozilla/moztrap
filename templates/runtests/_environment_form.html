@@ -1,18 +1,16 @@
-{% load environment %}
-
-{% if environments_json %}
+{% if envform %}
 <script>
-VALID_ENVIRONMENTS = {{ environments_json }};
+VALID_ENVIRONMENTS = {{ envform.valid_environments_json }};
 </script>
 {% endif %}
 
-<div class="runenvselect {% if not form %}empty{% endif %}">
-  {% if form %}
+<div class="runenvselect {% if not envform %}empty{% endif %}">
+  {% if envform %}
     <h3 class="selectenvhead">Set your environment</h3>
-    <form id="runtests-environment-form" method="POST" action="{{ run|set_environment_url }}">
+    <form id="runtests-environment-form" method="POST" action="{% url runtests_environment run_id=run.id %}">
       {% csrf_token %}
-      {{ form.non_field_errors }}
-      {% for field in form %}
+      {{ envform.non_field_errors }}
+      {% for field in envform %}
         {% include "forms/_field.html" with field=field %}
       {% endfor %}
       <div class="form-actions">

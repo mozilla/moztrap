@@ -1,0 +1,14 @@
+<article id="env-id-{{ env.id }}" class="listitem {% block select %}{% endblock select %}">
+  {% block env-body %}
+  <div class="itemhead">
+    {% block env-actions %}{% endblock %}
+    <h3 class="title">
+      <ul class="preview">
+        {% for element in env.ordered_elements %}
+        <li>{{ element.name }}</li>
+        {% endfor %}
+      </ul>
+    </h3>
+  </div>
+  {% endblock %}
+</article>

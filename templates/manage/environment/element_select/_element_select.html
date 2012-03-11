@@ -1,0 +1,16 @@
+{% load icanhaz %}
+
+<div class="elementselect itemlist">
+  {% include "manage/environment/element_select/_categories_listordering.html" %}
+
+  {% icanhaz "env_profile_edit_input" %}
+
+  {% for category in categories %}
+  {% include "manage/environment/element_select/_category_list_item.html" %}
+  {% endfor %}
+
+  <article class="listitem add-item details">
+    <h3 class="summary itemhead">add a category</h3>
+    {% include "manage/environment/element_select/_category_list_item_detail_new.html" %}
+  </article>
+</div>

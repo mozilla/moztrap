@@ -21,11 +21,12 @@ Tests for ajax view utilities.
 """
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
-from django.utils.unittest import TestCase
+
+from tests import case
 
 
 
-class AjaxTest(TestCase):
+class AjaxTest(case.TestCase):
     @property
     def ajax(self):
         """The decorator-factory under test."""

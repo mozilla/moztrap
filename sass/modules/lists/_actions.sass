@@ -23,21 +23,38 @@
 // ---------------------------------------------------------------------------
 // Action Details
 
-=action-button($img)
+=action-button($img,$o:$xxsmall)
   @extend .actionbutton
   +icon($img,$small:true)
+  +opacity($o)
   #{$focus}
+    +opacity(1)
     background-image: image-url($img)
 
-=action-link($img)
+=action-link($img,$o:$xxsmall)
   @extend .actionlink
   +icon($img,$small:true)
+  +opacity($o)
+  #{$focus}
+    +opacity(1)
 
 .edit-link
   +action-link('ui/pencil.png')
 
-[name="action-clone"]
+.action-clone
   +action-button('ui/clone.png')
 
-[name="action-delete"]
+.action-delete
   +action-button('ui/trash.png')
+
+.action-remove
+  +action-button('ui/x.png')
+
+.create-child-link
+  +action-link('ui/paper_plus.png')
+
+.action-include
+  +action-button('ui/arrow_right.png',$small)
+
+.action-exclude
+  +action-button('ui/arrow_left.png',$small)

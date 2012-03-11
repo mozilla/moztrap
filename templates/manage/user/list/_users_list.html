@@ -1,0 +1,20 @@
+{% load pagination %}
+
+<form method="POST" action="{{ request.get_full_path }}" id="manage-users-form" class="itemlist action-ajax-replace">
+  {% csrf_token %}
+
+  {% include "manage/user/list/_users_listordering.html" %}
+
+  {% paginate users as pager %}
+  {% if pager.objects %}
+    {# can't call it user, that's the currently-logged-in user #}
+    {% for subject in pager.objects %}
+      {% include "manage/user/list/_user_list_item.html" %}
+    {% endfor %}
+  {% else %}
+    {% include "lists/_emptylist.html" %}
+  {% endif %}
+
+  {% include "lists/_listnav.html" with pager=pager %}
+
+</form>

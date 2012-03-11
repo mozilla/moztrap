@@ -1,9 +1,7 @@
-{% extends 'manage/environment/_env_list_item.html' %}
+{% extends 'manage/environment/env_list/_env_list_item.html' %}
 
 {% block env-actions %}
   <div class="controls">
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <button title="delete" type="submit" name="action-delete" value="{{ env.id }}">delete</button>
-    {% endif %}
+    <button title="delete" type="submit" class="action-remove" name="action-remove_from_profile" value="{{ env.id }}">remove from profile</button>
   </div>
 {% endblock %}

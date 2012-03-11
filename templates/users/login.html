@@ -9,14 +9,29 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
     <div class="formfields">
-      {% for field in form %}
-      {% include "forms/_field.html" %}
-      {% endfor %}
+      {% include "forms/_field.html" with field=form.username %}
+      {% include "forms/_field.html" with field=form.password %}
+      {% if form.captcha %}
+
+      <p>
+        Your account or IP address has failed too many login attempts
+        recently. In order to keep your account secure, we need to verify that
+        you're a real human, not an automated account-cracking bot. Please
+        answer the simple math question below:
+      </p>
+
+      {% include "forms/_field.html" with field=form.captcha %}
+
+      {% endif %}
     </div>
     <div class="form-actions">
-      <a href="{# @@@ url register #}">register</a> or
+      <a href="{% url registration_register %}">register</a> or
       <button type="submit">login</button>
     </div>
+    <p class="forgot">
+      Forgot your password?
+      <a href="{% url auth_password_reset %}">Reset it</a>.
+    </p>
   </form>
 </section>
 {% endblock content %}

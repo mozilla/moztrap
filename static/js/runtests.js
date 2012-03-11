@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
 
     // hide empty run-tests environments form on initial load
     CC.hideEmptyRuntestsEnv = function () {
-        $('.selectruns + .environment.empty').hide();
+        $('.runenvselect.empty').hide();
     };
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
@@ -41,25 +41,26 @@ var CC = (function (CC, $) {
 
     // Open hierarchical navigation directly to clicked breadcrumb link
     CC.breadcrumb = function (context) {
-        $(context).find('.colcontent').each(function () {
+        var finder = $(context);
+        finder.find('.runsdrill .colcontent').each(function () {
             $(this).data('originalHTML', $(this).html());
         });
-        $('.runtests-nav .secondary .breadcrumb').click(function () {
-            if (!$('.drilldown.details').hasClass('open')) {
-                $('.drilldown.details > .summary').click();
+        $('.runtests-nav .secondary .breadcrumb').click(function (e) {
+            if (!finder.hasClass('open')) {
+                finder.children('.summary').click();
             }
-            $(context).find('.colcontent').each(function () {
+            finder.find('.runsdrill .colcontent').each(function () {
                 $(this).html($(this).data('originalHTML'));
             });
-            $(context).find('#' + $(this).data('id')).click();
-            return false;
+            finder.find('#' + $(this).data('id')).click();
+            e.preventDefault();
         });
     };
 
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
-            tests = context.find('.item.action-ajax-replace'),
+            tests = context.find('.listitem.action-ajax-replace'),
             ajaxFormsInit = function (test) {
                 var forms = test.find('form');
 
@@ -73,7 +74,7 @@ var CC = (function (CC, $) {
                         if (response.html) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
-                            newTest.find('.details').andSelf().html5accordion();
+                            newTest.find('.details').html5accordion();
                             CC.autoFocus('.details.stepfail > .summary', newTest);
                             CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
@@ -87,19 +88,25 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Enable/disable failed test bug URL input on-select
     CC.failedTestBug = function (container) {
         var context = $(container);
 
-        context.on('change', '.item .stepfail input[type="radio"][name="bugs"]', function () {
+        context.on('change', '.listitem .stepfail input[type="radio"][name="bug"]', function () {
             var thisList = $(this).closest('.stepfail'),
-                newBug = thisList.find('input[type="radio"].newbug'),
-                newBugInput = thisList.find('input[type="url"][name="related_bug"]');
+                newBug = thisList.find('input[type="radio"].newbug-radio'),
+                newBugInput = thisList.find('input[type="url"].newbug-input');
 
             if (newBug.is(':checked')) {
-                newBugInput.removeAttr('disabled');
+                newBugInput.removeClass('disabled').attr('name', 'bug').focus();
             } else {
-                newBugInput.attr('disabled', true);
+                newBugInput.addClass('disabled').attr('name', 'disabled-bug');
             }
+        });
+
+        context.on('click', '.listitem .stepfail input[type="url"].newbug-input.disabled', function () {
+            var newBugRadio = $(this).siblings('.newbug-radio');
+            newBugRadio.click();
         });
     };
 

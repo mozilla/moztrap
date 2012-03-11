@@ -1,0 +1,9 @@
+{% extends 'manage/productversion/productversion_form.html' %}
+
+{% block sectionclass %}edit-productversion{% endblock %}
+{% block formid %}productversion-edit-form{% endblock %}
+{% block formtitle %}Edit "{{ productversion.name }}" Version{% endblock %}
+
+{% block formtop %}
+<a href="{% url manage_productversion_environments productversion_id=productversion.id %}" class="select-env-link">select environments</a>
+{% endblock %}

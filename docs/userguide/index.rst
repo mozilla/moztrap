@@ -5,12 +5,14 @@ This guide provides documentation of Case Conductor's underlying concepts and
 design decisions.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
-   products
-   library
-   environments
-   import
-   execution
-   teams
-   roles
+   model/products
+   model/library
+   model/execution
+   model/environments
+   model/teams
+   model/roles
+   ui/lists
+   ui/import
+

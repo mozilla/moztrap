@@ -1,41 +1,10 @@
-{% extends 'manage/environment/base.html' %}
+{% extends 'manage/environment/profile_form.html' %}
 
-{% load icanhaz sort %}
+{% block sectionid %}add-profile{% endblock %}
+{% block formid %}profile-add-form{% endblock %}
+{% block formtitle %}create a new environment profile{% endblock %}
 
-{% block listcontent %}
-<section id="addprofile">
-  <h2>Create An Environment Profile</h2>
-
-  <form method="POST">
-    {% csrf_token %}
-
-    <p class="profile-name">
-      <label for="profile_name">profile name</label>
-      <input type="text" name="profile_name" value="{{ profile_name }}" id="profile_name" autocomplete="off" placeholder="profile name" required>
-    </p>
-
-    <div class="managelist">
-      {% include "manage/environment/add_profile/_categories_listordering.html" %}
-
-      <div class="items">
-        {% icanhaz "env_profile_element_edit" %}
-
-        {% for category in categories %}
-        {% include "manage/environment/add_profile/_category_list_item.html" %}
-        {% endfor %}
-
-        <article class="item add-item details">
-          <div class="content">
-            {% include "manage/environment/add_profile/_category_list_item_content_new.html" %}
-          </div>
-          <h3 class="summary">add a category</h3>
-        </article>
-      </div>
-    </div>
-
-    <div class="form-actions">
-      <button type="submit">auto-generate environments</button>
-    </div>
-  </form>
-</section>
-{% endblock listcontent %}
+{% block extra-fields %}
+  {# this form field renders element_select/_element_select.html #}
+  {% include "forms/_field.html" with field=form.elements nolabel=1 errorsfirst=1 %}
+{% endblock %}

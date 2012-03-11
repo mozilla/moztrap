@@ -43,6 +43,7 @@ class Product(CCModel, TeamModel):
             ("manage_products", "Can add/edit/delete products."),
             ("manage_users", "Can add/edit/delete user accounts."),
             ]
+        ordering = ["name"]
 
 
     def clone(self, *args, **kwargs):
@@ -72,6 +73,7 @@ class Product(CCModel, TeamModel):
             if version == update_instance:
                 update_instance.order = version.order
                 update_instance.latest = version.latest
+                update_instance.cc_version += 1
         # now we have to update latest caseversions too, @@@ too slow?
         for case in self.cases.all():
             case.set_latest_version()
@@ -87,8 +89,15 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
     latest = models.BooleanField(default=False, editable=False)
 
 
+    @property
+    def name(self):
+        """A ProductVersion's name is its product name and version."""
+        return u"%s %s" % (self.product, self.version)
+
+
     def __unicode__(self):
-        return "%s %s" % (self.product, self.version)
+        """A ProductVersion's unicode representation is its name."""
+        return self.name
 
 
     class Meta:
@@ -125,8 +134,12 @@ class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
         nullifies the constraint entirely, since NULL != NULL in SQL.
 
         """
-        dupes = ProductVersion.objects.filter(
-            product=self.product, version=self.version)
+        try:
+            dupes = ProductVersion.objects.filter(
+                product=self.product, version=self.version)
+        except Product.DoesNotExist:
+            # product is not set or is invalid; dupes are not an issue.
+            return
         if self.pk is not None:
             dupes = dupes.exclude(pk=self.pk)
         if dupes.exists():

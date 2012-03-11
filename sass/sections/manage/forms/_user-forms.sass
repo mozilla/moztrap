@@ -1,0 +1,20 @@
+.user-form
+
+  .username-field
+    +columns(18,24)
+
+  .active-field
+    +columns(6,24)
+    +omega(24)
+    +leader(.25)
+
+  .e-mail-address-field, .roles-field, .form-actions
+    +full(24)
+    +suffix(6,24)
+
+  .username-field, .e-mail-address-field, .roles-field
+    .type
+      +columns(6,18)
+    .value, .errorlist
+      +columns(12,18)
+      +omega(18)

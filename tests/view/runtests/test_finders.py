@@ -19,13 +19,11 @@
 Tests for runtests finder.
 
 """
-from django.test import TestCase
-
-from ... import factories as F
+from tests import case
 
 
 
-class RunTestsFinderTest(TestCase):
+class RunTestsFinderTest(case.DBTestCase):
     """Tests for RunTestsFinder."""
     @property
     def finder(self):
@@ -34,17 +32,10 @@ class RunTestsFinderTest(TestCase):
         return RunTestsFinder
 
 
-    @property
-    def model(self):
-        """The models."""
-        from cc import model
-        return model
-
-
     def test_child_query_url(self):
         """child_query_url returns environments URL for a run, not None."""
         f = self.finder()
-        r = F.RunFactory.create()
+        r = self.F.RunFactory.create()
 
         url = f.child_query_url(r)
 
@@ -55,7 +46,7 @@ class RunTestsFinderTest(TestCase):
     def test_child_query_url_non_run(self):
         """Given anything but a run, child_query_url defers to Finder."""
         f = self.finder()
-        r = F.RunFactory.create()
+        r = self.F.RunFactory.create()
 
         url = f.child_query_url(r.productversion)
 

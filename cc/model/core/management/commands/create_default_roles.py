@@ -21,38 +21,38 @@ Management command to create default roles, if they don't exist.
 """
 from django.core.management.base import NoArgsCommand
 
-from django.contrib.auth.models import Group, Permission
+from cc.model.core.auth import Role, Permission
 
 
 
-GROUPS = {}
+ROLES = {}
 
 # Testers have read-only permissions, aside from running tests.
-GROUPS["Tester"] = [
+ROLES["Tester"] = [
     "execution.execute",
     ]
 
 # Test Creators can create new test cases and add/remove them from suites.
-GROUPS["Test Creator"] = [
+ROLES["Test Creator"] = [
     "library.create_cases",
     "library.manage_suite_cases",
-    ] + GROUPS["Tester"]
+    ] + ROLES["Tester"]
 
 # Test Managers can fully manage cases, suites, runs, environments, etc.
-GROUPS["Test Manager"] = [
+ROLES["Test Manager"] = [
     "library.manage_cases",
     "library.manage_suites",
     "tags.manage_tags",
     "execution.manage_runs",
     "execution.review_results",
     "environments.manage_environments",
-    ] + GROUPS["Test Creator"]
+    ] + ROLES["Test Creator"]
 
 # Admins can also manage users and products
-GROUPS["Admin"] = [
+ROLES["Admin"] = [
     "core.manage_products",
     "core.manage_users",
-    ] + GROUPS["Test Manager"]
+    ] + ROLES["Test Manager"]
 
 
 
@@ -62,15 +62,15 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         verbosity = int(options.get('verbosity', 1))
 
-        for group_name, perms in GROUPS.iteritems():
-            group, created = Group.objects.get_or_create(name=group_name)
+        for role_name, perms in ROLES.iteritems():
+            role, created = Role.objects.get_or_create(name=role_name)
             if not created:
                 if verbosity:
-                    print("Role %r already exists; skipping." % group_name)
+                    print("Role %r already exists; skipping." % role_name)
                 continue
 
             if verbosity:
-                print("Role %r created." % group_name)
+                print("Role %r created." % role_name)
 
             for perm_label in perms:
                 app_label, codename = perm_label.split(".")
@@ -83,7 +83,7 @@ class Command(NoArgsCommand):
                         print("  Permission %r unknown; skipping." % perm_label)
                     continue
 
-                group.permissions.add(perm)
+                role.permissions.add(perm)
 
                 if verbosity:
                     print("  Permission %r added." % perm_label)

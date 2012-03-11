@@ -3,3 +3,6 @@
 
 py-bcrypt==0.2
 MySQL-python==1.2.3
+
+# only needed for getting test code coverage
+coverage==3.5.1

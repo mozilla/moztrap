@@ -24,11 +24,10 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.db import connection, models
 
-from django.contrib.auth.models import User
-
 from model_utils import Choices
 
 from ..ccmodel import CCModel, TeamModel, DraftStatusModel, utcnow
+from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
@@ -79,7 +78,7 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def clone(self, *args, **kwargs):
         """Clone this Run with default cascade behavior."""
         kwargs.setdefault(
-            "cascade", ["runcaseversions", "runsuites", "environments", "team"])
+            "cascade", ["runsuites", "environments", "team"])
         overrides = kwargs.setdefault("overrides", {})
         overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))
@@ -139,7 +138,13 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
 
 class RunCaseVersion(HasEnvironmentsModel, CCModel):
-    """An ordered association between a Run and a CaseVersion."""
+    """
+    An ordered association between a Run and a CaseVersion.
+
+    RunCaseVersion objects are created to lock in the specific case-versions in
+    a run when the run is activated.
+
+    """
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
@@ -212,9 +217,21 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             return 0
 
 
+    def testers(self):
+        """Return list of testers with assigned / executed results."""
+        return User.objects.filter(
+            pk__in=self.results.values_list("tester", flat=True).distinct())
+
+
 
 class RunSuite(CCModel):
-    """An ordered association between a Run and a Suite."""
+    """
+    An ordered association between a Run and a Suite.
+
+    The only direct impact of RunSuite instances is that they determine which
+    RunCaseVersions are created when the run is activated.
+
+    """
     run = models.ForeignKey(Run, related_name="runsuites")
     suite = models.ForeignKey(Suite, related_name="runsuites")
     order = models.IntegerField(default=0, db_index=True)
@@ -351,8 +368,15 @@ def result_summary(results):
     """
     states = Result.COMPLETED_STATES
 
+    result_ids = results.values_list("id", flat=True)
+
+    if not result_ids:
+        return dict((s, 0) for s in states)
+
     cols = ["COUNT(CASE WHEN status=%s THEN 1 ELSE NULL END)"] * len(states)
-    sql = "SELECT {0} FROM {1}".format(", ".join(cols), Result._meta.db_table)
+    sql = "SELECT {0} FROM {1} WHERE id IN ({2})".format(
+        ",".join(cols), Result._meta.db_table, ",".join(map(str, result_ids))
+        )
 
     cursor = connection.cursor()
     cursor.execute(sql, states)

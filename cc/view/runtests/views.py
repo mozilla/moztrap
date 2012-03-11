@@ -82,9 +82,8 @@ def set_environment(request, run_id):
         request,
         "runtests/environment.html",
         {
-            "form": form,
+            "envform": form,
             "run": run,
-            "environments_json": json.dumps(form.elementids_by_envid.values())
             }
         )
 
@@ -193,6 +192,10 @@ def run(request, run_id, env_id):
         else:
             return redirect(request.get_full_path())
 
+    envform = EnvironmentSelectionForm(
+        current=environment.id, environments=run.environments.all())
+
+
     return TemplateResponse(
         request,
         "runtests/run.html",
@@ -201,6 +204,7 @@ def run(request, run_id, env_id):
             "product": run.productversion.product,
             "productversion": run.productversion,
             "run": run,
+            "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
                 "caseversion"),
             "finder": {

@@ -1,0 +1,66 @@
+.check-value
+  +gone
+  + .check-item
+    position: relative
+    .type::before
+      +opacity(.5)
+      +icon('ui/checkbox.png')
+      content: " "
+      position: absolute
+      left: rhythm(-1.25)
+      top: 0
+      display: inline-block
+      width: rhythm(1)
+      height: rhythm(1)
+      margin-right: rhythm(.25)
+      vertical-align: top
+
+  &:checked
+    + .check-item
+      .type::before
+        +opacity(1)
+        background-image: image-url('ui/checkbox_checked.png')
+
+
+.bulkunchecked
+  +icon('ui/checkbox.png')
+  +opacity(.5)
+  display: block
+  position: absolute
+  top: rhythm(.25)
+  left: rhythm(.25)
+  z-index: 5
+  #{$focus}
+    +opacity(1)
+
+.bulkchecked
+  background-image: image-url('ui/checkbox_checked.png')
+  +opacity(1)
+
+.bulkpseudo
+  background-image: image-url('ui/checkbox_pseudo.png')
+
+.bulk-value, .bybulk-value
+  +gone
+
+.bulk-type, .bybulk-type
+  @extend .bulkunchecked
+
+.bulk-value
+  &:checked
+    + .bulk-item
+      background: $green-hint
+      .bulk-type
+        @extend .bulkchecked
+    &.pseudo
+      + .bulk-item
+        .bulk-type
+          @extend .bulkpseudo
+
+.bybulk-value
+  &:checked
+    + .bybulk-type
+      @extend .bulkchecked
+    &.pseudo
+      + .bybulk-type
+        @extend .bulkpseudo

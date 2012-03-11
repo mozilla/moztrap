@@ -29,12 +29,13 @@
   background: rgba($light,.5)
 
 .toggle
-  +columns(6,24)
-  +leader(.25)
+  +columns(5,24)
   text-transform: capitalize
   a
     #{$link}
-      display: block
+      @extend .buttoninlay
+    #{$focus}, .expanded &
+      @extend .buttoninlayfocus
 
 #filterform
   +padding-leader(.5)
@@ -55,10 +56,10 @@
   button
     +button-style($green,'ui/refresh.png')
 
-#filter
+.magicfilter
 
   .textual
-    +columns(10,24)
+    +columns(9,24)
     label
       +gone
 
@@ -71,13 +72,14 @@
     .toggle
       a
         #{$link}
-          &::before
-            content: "show "
           &::after
             content: " »"
 
     .filter-group, .filter-items
       display: inline
+
+    .filter-items
+      margin: 0
 
     .category-title, .addterm
       display: none
@@ -92,9 +94,7 @@
       a
         #{$link}
           &::before
-            content: "« hide "
-          &::after
-            content: ""
+            content: "« "
 
     .filter-group
       +columns(3,24)
@@ -122,17 +122,15 @@
     .onoffswitch
       display: block
       padding: 0 rhythm(.25)
-      +pad-icon('ui/x_sm.png')
+      +pad-icon('ui/checkbox.png')
     .onoff
       display: block
-      background: image-url('ui/x_sm.png') no-repeat scroll $smallpx
+      background: image-url('ui/checkbox.png') no-repeat scroll $smallpx
       &:hover
         +demi
     .check:checked + .onoff
       +demi
-      background-image: image-url('ui/check_sm.png')
-      &:hover
-        background-image: image-url('ui/x_sm.png')
+      background-image: image-url('ui/checkbox_checked.png')
 
   // Keywords
   .keyword

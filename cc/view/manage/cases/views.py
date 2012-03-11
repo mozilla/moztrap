@@ -26,14 +26,14 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
-from .... import model
+from cc import model
 
-from ...lists import decorators as lists
-from ...utils.ajax import ajax
+from cc.view.filters import CaseVersionFilterSet
+from cc.view.lists import decorators as lists
+from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder
 
-from .filters import CaseVersionFilterSet
 from . import forms
 
 
@@ -51,12 +51,12 @@ from . import forms
 @lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
 @lists.sort("caseversions")
-@ajax("manage/product/testcase/list/_cases_list.html")
+@ajax("manage/case/list/_cases_list.html")
 def cases_list(request):
     """List caseversions."""
     return TemplateResponse(
         request,
-        "manage/product/testcase/cases.html",
+        "manage/case/cases.html",
         {
             "caseversions": model.CaseVersion.objects.select_related("case"),
             }
@@ -70,7 +70,7 @@ def case_details(request, caseversion_id):
     caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)
     return TemplateResponse(
         request,
-        "manage/product/testcase/list/_case_details.html",
+        "manage/case/list/_case_details.html",
         {
             "caseversion": caseversion
             }
@@ -91,10 +91,10 @@ def case_add(request):
                 )
             return redirect("manage_cases")
     else:
-        form = forms.AddCaseForm(user=request.user)
+        form = forms.AddCaseForm(user=request.user, initial=request.GET)
     return TemplateResponse(
         request,
-        "manage/product/testcase/add_case.html",
+        "manage/case/add_case.html",
         {
             "form": form
             }
@@ -119,7 +119,7 @@ def case_add_bulk(request):
         form = forms.AddBulkCaseForm(user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/testcase/add_case_bulk.html",
+        "manage/case/add_case_bulk.html",
         {
             "form": form
             }
@@ -137,8 +137,8 @@ def caseversion_edit(request, caseversion_id):
             request.FILES,
             instance=caseversion,
             user=request.user)
-        if form.is_valid():
-            cv = form.save()
+        cv = form.save_if_valid()
+        if cv is not None:
             messages.success(request, "Saved '{0}'.".format(cv.name))
             return redirect("manage_cases")
     else:
@@ -146,7 +146,7 @@ def caseversion_edit(request, caseversion_id):
             instance=caseversion, user=request.user)
     return TemplateResponse(
         request,
-        "manage/product/testcase/edit_case.html",
+        "manage/case/edit_case.html",
         {
             "form": form,
             "caseversion": caseversion,

@@ -21,34 +21,32 @@ Tests for CaseVersion admin.
 """
 from mock import patch
 
-from ...admin import AdminTestCase
-from ....utils import refresh
-from .... import factories as F
+from tests import case
 
 
 
-class CaseVersionAdminTest(AdminTestCase):
+class CaseVersionAdminTest(case.admin.AdminTestCase):
     app_label = "library"
     model_name = "caseversion"
 
 
     def test_changelist(self):
         """CaseVersion changelist page loads without error, contains name."""
-        F.CaseVersionFactory.create(name="Can load a website")
+        self.F.CaseVersionFactory.create(name="Can load a website")
 
         self.get(self.changelist_url).mustcontain("Can load a website")
 
 
     def test_change_page(self):
         """CaseVersion change page loads without error, contains name."""
-        p = F.CaseVersionFactory.create(name="Can load a website")
+        p = self.F.CaseVersionFactory.create(name="Can load a website")
 
         self.get(self.change_url(p)).mustcontain("Can load a website")
 
 
     def test_change_page_step(self):
         """CaseVersion change page includes CaseStep inline."""
-        s = F.CaseStepFactory.create(instruction="Type a URL in the address bar")
+        s = self.F.CaseStepFactory.create(instruction="Type a URL in the address bar")
 
         self.get(self.change_url(s.caseversion)).mustcontain(
             "Type a URL in the address bar")
@@ -56,15 +54,15 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_change_page_attachment(self):
         """CaseVersion change page includes CaseAttachment inline."""
-        a = F.CaseAttachmentFactory.create(attachment__name="FooBar")
+        a = self.F.CaseAttachmentFactory.create(name="FooBar")
 
         self.get(self.change_url(a.caseversion)).mustcontain("FooBar")
 
 
     def test_change_page_tag(self):
         """CaseVersion change page includes CaseTag inline."""
-        t = F.TagFactory.create(name="some tag")
-        c = F.CaseVersionFactory.create()
+        t = self.F.TagFactory.create(name="some tag")
+        c = self.F.CaseVersionFactory.create()
         c.tags.add(t)
 
         self.get(self.change_url(c)).mustcontain("some tag")
@@ -72,14 +70,14 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def get_envs(self):
         """Returns an Environment."""
-        return F.EnvironmentFactory.create_set(["OS"], ["Linux"])
+        return self.F.EnvironmentFactory.create_set(["OS"], ["Linux"])
 
 
     def test_add_step_with_caseversion(self):
         """Can add inline step along with new caseversion."""
         envs = self.get_envs()
-        pv = F.ProductVersionFactory.create()
-        case = F.CaseFactory.create(product=pv.product)
+        pv = self.F.ProductVersionFactory.create()
+        case = self.F.CaseFactory.create(product=pv.product)
 
         # patching extra avoids need for JS to add step
         with patch("cc.model.library.admin.CaseStepInline.extra", 1):
@@ -87,7 +85,7 @@ class CaseVersionAdminTest(AdminTestCase):
             form["case"] = str(case.id)
             form["productversion"] = str(pv.id)
             form["name"] = "Some case"
-            form["environments"] = str(envs[0].id)
+            form["environments"] = [str(envs[0].id)]
             form["steps-0-number"] = "1"
             form["steps-0-instruction"] = "An instruction"
             form["steps-0-expected"] = "A result"
@@ -100,7 +98,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_add_step_tracks_user(self):
         """Adding a CaseStep via inline tracks created-by user."""
-        cv = F.CaseVersionFactory.create()
+        cv = self.F.CaseVersionFactory.create()
         cv.environments.add(*self.get_envs())
 
         # patching extra avoids need for JS to submit new step
@@ -119,7 +117,7 @@ class CaseVersionAdminTest(AdminTestCase):
 
     def test_change_step_tracks_user(self):
         """Modifying a CaseStep via inline tracks modified-by user."""
-        s = F.CaseStepFactory.create(
+        s = self.F.CaseStepFactory.create(
             instruction="Type a URL in the address bar")
         s.caseversion.environments.add(*self.get_envs())
 
@@ -128,12 +126,12 @@ class CaseVersionAdminTest(AdminTestCase):
         res = form.submit()
         self.assertEqual(res.status_int, 302)
 
-        self.assertEqual(refresh(s).modified_by, self.user)
+        self.assertEqual(self.refresh(s).modified_by, self.user)
 
 
     def test_delete_step_tracks_user(self):
         """Deleting a CaseStep via inline tracks modified-by user."""
-        s = F.CaseStepFactory.create()
+        s = self.F.CaseStepFactory.create()
         s.caseversion.environments.add(*self.get_envs())
 
         form = self.get(self.change_url(s.caseversion)).forms[0]
@@ -141,4 +139,4 @@ class CaseVersionAdminTest(AdminTestCase):
         res = form.submit()
         self.assertEqual(res.status_int, 302)
 
-        self.assertEqual(refresh(s).deleted_by, self.user)
+        self.assertEqual(self.refresh(s).deleted_by, self.user)

@@ -19,9 +19,6 @@
 
 /* Links ---------------------------------------------------------------------
 
-$link   :   "&:link, &:visited"
-$focus  :   "&:focus, &:hover, &:active"
-
 =focus-default
   outline: thin dotted $accent
 
@@ -136,6 +133,15 @@ summary
       display: none
     summary
       display: $summary-display
+      cursor: pointer
+      outline: 0
+      &:focus
+        +focus-default
+
+.details
+  .summary
+    cursor: pointer
+    outline: 0
 
 /* Replaced ------------------------------------------------------------------
 

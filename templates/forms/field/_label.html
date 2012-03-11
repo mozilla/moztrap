@@ -1,7 +1,9 @@
 {% load ccforms %}
 
-{% if label %}
-  {{ field|label:label }}
-{% else %}
-  {{ field|label }}
+{% if not nolabel %}
+  {% if label %}
+    {{ field|label:label }}
+  {% else %}
+    {{ field|label }}
+  {% endif %}
 {% endif %}

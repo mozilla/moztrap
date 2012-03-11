@@ -30,6 +30,7 @@ from ..ccmodel import CCModel
 class Attachment(CCModel):
     """Abstract base class for an attachment."""
     attachment = models.FileField(upload_to="attachments/%Y/%m/%d/")
+    name = models.CharField(max_length=250)
 
 
     def __unicode__(self):
@@ -45,9 +46,3 @@ class Attachment(CCModel):
     def url(self):
         """Shortcut property to access file attachment url."""
         return self.attachment.url
-
-
-    @property
-    def name(self):
-        """Shortcut property to access file attachment basename."""
-        return basename(self.attachment.name)

@@ -19,20 +19,25 @@
 Tests for ``HasEnvironmentsModel``.
 
 """
-from django.test import TestCase
-
-from cc.model.environments.models import HasEnvironmentsModel
+from tests import case
 
 
 
-class HasEnvironmentsModelTest(TestCase):
+class HasEnvironmentsModelTest(case.TestCase):
     """Tests for HasEnvironmentsModel base class."""
+    @property
+    def model_class(self):
+        """The abstract model class under test."""
+        from cc.model.environments.models import HasEnvironmentsModel
+        return HasEnvironmentsModel
+
+
     def test_parent(self):
         """parent property is None in base class."""
-        t = HasEnvironmentsModel()
+        t = self.model_class()
         self.assertIsNone(t.parent)
 
 
     def test_cascade_envs_to(self):
         """cascade_envs_to returns empty dict in base class."""
-        self.assertEqual(HasEnvironmentsModel.cascade_envs_to([], True), {})
+        self.assertEqual(self.model_class.cascade_envs_to([], True), {})

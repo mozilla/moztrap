@@ -28,12 +28,12 @@ var CC = (function (CC, $) {
     $(function () {
         // plugins
         $('.details:not(html)').html5accordion();
-        $('#messages').messages({
+        $('#messages ul').messages({
             handleAjax: true,
             closeLink: '.message'
         });
         $('input[placeholder], textarea[placeholder]').placeholder();
-        $('#suite-form .caseselect').multiselect();
+        $('.multiselect').multiselect();
         $('#filter').customAutocomplete({
             textbox: '#text-filter',
             inputList: '.visual .filter-group:not(.keyword)',
@@ -42,6 +42,19 @@ var CC = (function (CC, $) {
             allowNew: true,
             autoSubmit: true,
             newInputTextbox: 'input[type="text"]',
+            fakePlaceholder: true,
+            initialFocus: true,
+            inputsNeverRemoved: true,
+            prefix: 'filter'
+        });
+        $('#clientfilter').customAutocomplete({
+            textbox: '#text-filter',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
+            multipleCategories: true,
+            allowNew: true,
+            newInputTextbox: 'input[type="text"]',
+            triggerSubmit: null,
             fakePlaceholder: true,
             initialFocus: true,
             inputsNeverRemoved: true,
@@ -72,21 +85,20 @@ var CC = (function (CC, $) {
             noInputsNote: true,
             prefix: 'tag'
         });
-        $('#editprofile .add-item').customAutocomplete({
+        $('#editprofile .add-item, #editproductversionenvs .add-item').customAutocomplete({
             textbox: '#env-elements-input',
             inputList: '.env-element-list',
             ajax: true,
             url: $('#env-elements-input').data('autocomplete-url'),
             hideFormActions: true,
-            expiredList: '.env-element-list',
             inputType: 'element',
             caseSensitive: true,
             prefix: 'element'
         });
-        $('#suite-form .caseselect .multiunselected .selectsearch').customAutocomplete({
+        $('.multiselect .multiunselected .selectsearch').customAutocomplete({
             textbox: '#search-add',
-            inputList: '.groups .filter-group:not(.keyword)',
-            newInputList: '.groups .filter-group.keyword',
+            inputList: '.visual .filter-group:not(.keyword)',
+            newInputList: '.visual .filter-group.keyword',
             multipleCategories: true,
             allowNew: true,
             triggerSubmit: null,
@@ -128,90 +140,89 @@ var CC = (function (CC, $) {
             headerSelector: '.listordering',
             sectionSelector: '.col',
             sectionContentSelector: '.colcontent',
-            sectionClasses: [
-                'products',
-                'cycles',
-                'runs',
-                'cases'
-            ],
-            sectionItemSelectors: [
-                'input[name="product"]',
-                'input[name="testcycle"]',
-                'input[name="testrun"]',
-                'input[name="testrunincludedtestcase"]'
-            ]
+            numberCols: 4
         });
 
         // local.js
         CC.inputHadFocus();
 
-        // manage-results.js
-        CC.toggleAdvancedFiltering('#filter');
+        // account.js
+        CC.changePwdCancel();
+
+        // listpages.js
         CC.loadListItemDetails();
-        CC.manageActionsAjax();
+        CC.manageActionsAjax('.manage, .manage-form');
+        CC.listActionAjax(
+            '.manage, .results',
+            '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
+        );
+
+        // filtering.js
+        CC.toggleAdvancedFiltering('.magicfilter');
         CC.directFilterLinks();
-        CC.filterFormAjax('.listpage');
+        CC.filterFormAjax('.manage, .results');
+        CC.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
         CC.formOptionsFilter({
-            container: '#addsuite',
+            container: '#suite-add-form, #suite-edit-form',
             trigger_sel: '#id_product',
             target_sel: '.multiunselected .select',
             option_sel: '.selectitem',
             multiselect_widget_bool: true
         });
         CC.formOptionsFilter({
-            container: '#addrun',
-            trigger_sel: '#id_test_cycle',
-            target_sel: '#id_suites'
+            container: '#run-add-form, #run-edit-form',
+            trigger_sel: '#id_productversion',
+            target_sel: '.multiunselected .select',
+            option_sel: '.selectitem',
+            multiselect_widget_bool: true
         });
         CC.formOptionsFilter({
-            container: '#single-case-add',
+            container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_productversion'
         });
         CC.formOptionsFilter({
-            container: '#single-case-add',
+            container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_initial_suite',
             optional: true
         });
         CC.formOptionsFilter({
-            container: '#bulk-case-add',
+            container: '#productversion-add-form',
             trigger_sel: '#id_product',
-            target_sel: '#id_productversion'
-        });
-        CC.formOptionsFilter({
-            container: '#bulk-case-add',
-            trigger_sel: '#id_product',
-            target_sel: '#id_initial_suite',
-            optional: true
+            target_sel: '#id_clone_envs_from',
+            optional: true,
+            callback: function (context) {
+                context.find('#id_clone_envs_from option:last-child').prop('selected', true);
+            }
         });
         CC.filterProductTags('#single-case-add, #bulk-case-add');
-        CC.testcaseAttachments('.attach');
-        CC.testcaseVersioning('#addcase');
-        CC.envNarrowing('#envnarrowlist');
+        CC.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
-        CC.createEnvProfile();
-        CC.editEnvProfile();
-
-        // manage-tags.js
-        CC.manageTags('#managetags');
+        CC.createEnvProfile('#profile-add-form');
+        CC.addEnvToProfile('#editprofile, #editproductversionenvs');
+        CC.editEnvProfileName('#editprofile');
+        CC.bulkSelectEnvs('#envnarrowing');
 
         // runtests.js
         CC.hideEmptyRuntestsEnv();
-        CC.autoFocus('.details.stepfail > .summary', '#run');
-        CC.autoFocus('.details.testinvalid > .summary', '#run');
-        CC.runTests('#run');
-        CC.breadcrumb('.runsdrill');
-        CC.failedTestBug('#run');
+        CC.autoFocus('.details.stepfail > .summary', '#runtests');
+        CC.autoFocus('.details.testinvalid > .summary', '#runtests');
+        CC.runTests('#runtests');
+        CC.breadcrumb('.drilldown');
+        CC.failedTestBug('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
     });
 
     $(window).load(function () {
-        // manage-results.js
-        CC.openListItemDetails();
+        // listpages.js
+        CC.openListItemDetails('.listpage');
+
+        // filtering.js
+        CC.removeInitialFilterParams('#filter');
     });
 
     return CC;

@@ -1,7 +1,7 @@
 {% load ccforms %}
 
 {% if id %}
-  <label for="{{ id }}">
+  <label for="{{ id }}" class="type">
     {{ label_text }}
     {% if field|optional %}
       <span class="isoptional">optional</span>

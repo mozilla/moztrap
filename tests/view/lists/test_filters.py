@@ -24,11 +24,12 @@ from mock import Mock
 from django.template.response import TemplateResponse
 from django.test import RequestFactory
 from django.utils.datastructures import MultiValueDict
-from django.utils.unittest import TestCase
+
+from tests import case
 
 
 
-class FiltersTestCase(TestCase):
+class FiltersTestCase(case.TestCase):
     """A test case for testing classes in the cc.view.lists.filters module."""
     @property
     def filters(self):
@@ -37,18 +38,19 @@ class FiltersTestCase(TestCase):
         return filters
 
 
-    @property
-    def model(self):
-        """Model classes."""
-        from cc import model
-        return model
-
 
 class FilterUrlTest(FiltersTestCase):
     """Tests for ``filter_url`` function."""
+    @property
+    def Product(self):
+        """The Product model."""
+        from cc.model import Product
+        return Product
+
+
     def test_urlpattern_name(self):
         """Can find filter url by url pattern name."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("manage_cases", p),
@@ -58,7 +60,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_view_function(self):
         """Can find filter url by view function."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         from cc.view.manage.cases.views import cases_list
 
@@ -70,7 +72,7 @@ class FilterUrlTest(FiltersTestCase):
 
     def test_path(self):
         """Can find filter url by path."""
-        p = self.model.Product(pk=2)
+        p = self.Product(pk=2)
 
         self.assertEqual(
             self.filters.filter_url("/manage/cases/", p),
@@ -223,7 +225,7 @@ class FilterSetTest(FiltersTestCase):
     def test_bind(self):
         """``bind`` method returns BoundFilterSet."""
         fs = self.filters.FilterSet()
-        bfs = fs.bind(MultiValueDict())
+        bfs = fs.bind()
 
         self.assertIsInstance(bfs, self.filters.BoundFilterSet)
         self.assertIs(bfs.filterset, fs)
@@ -238,7 +240,7 @@ class FilterSetTest(FiltersTestCase):
             bound_class = MyBoundFilterSet
 
         fs = MyFilterSet()
-        bfs = fs.bind(MultiValueDict())
+        bfs = fs.bind()
 
         self.assertIsInstance(bfs, MyBoundFilterSet)
 
@@ -314,7 +316,7 @@ class BoundFilterSetTest(FiltersTestCase):
     def test_boundfilters(self):
         """``self.boundfilters`` has a BoundFilter for each given Filter."""
         fs = self.filters.FilterSet([self.filters.Filter("name")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(len(bfs.boundfilters), 1)
         self.assertIsInstance(bfs.boundfilters[0], self.filters.BoundFilter)
@@ -324,7 +326,7 @@ class BoundFilterSetTest(FiltersTestCase):
     def test_iteration_yields_boundfilters(self):
         """Iterating over a BoundFilterSet yields its BoundFilters."""
         fs = self.filters.FilterSet([self.filters.Filter("name")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(list(bfs), bfs.boundfilters)
 
@@ -337,7 +339,7 @@ class BoundFilterSetTest(FiltersTestCase):
                 ]
 
         fs = MyFilterSet([self.filters.Filter("two")])
-        bfs = self.filters.BoundFilterSet(fs, MultiValueDict())
+        bfs = self.filters.BoundFilterSet(fs)
 
         self.assertEqual(len(bfs), 2)
 

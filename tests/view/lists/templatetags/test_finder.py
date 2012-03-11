@@ -21,11 +21,11 @@ Tests for finder template filters.
 """
 from mock import Mock
 
-from django.utils.unittest import TestCase
+from tests import case
 
 
 
-class FilterTest(TestCase):
+class FilterTest(case.TestCase):
     """Tests for finder template filters."""
     @property
     def finder(self):

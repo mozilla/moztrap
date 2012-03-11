@@ -1,0 +1,16 @@
+{% load icanhaz %}
+
+<div class="attach">
+  {% icanhaz "case_attachment" %}
+  {% icanhaz "case_attachment_input" %}
+
+  {% include "forms/_field.html" with field=field label="add attachment" %}
+
+  <ul class="attachlist">
+    {% if obj %}
+      {% for attachment in obj.attachments.all %}
+        {% include "manage/_attachment_item.html" with attachment=attachment %}
+      {% endfor %}
+    {% endif %}
+  </ul>
+</div>

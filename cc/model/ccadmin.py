@@ -22,13 +22,13 @@ CC ModelAdmin and InlineModelAdmin for use with CCModel.
 from itertools import chain
 from functools import partial
 
-from django.db.models.query import QuerySet
-from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet
 
 from django.contrib import admin
 from django.contrib.admin import actions
 from django.contrib.admin.util import flatten_fieldsets
+
+from cc.view.utils.ccforms import CCModelForm
 
 
 
@@ -61,14 +61,14 @@ class CCModelAdmin(admin.ModelAdmin):
 
     def delete_selected(self, request, queryset):
         """Bypass soft delete and really delete selected instances."""
-        queryset.delete = partial(QuerySet.delete, queryset)
+        queryset.delete = partial(queryset.delete, permanent=True)
         return actions.delete_selected(self, request, queryset)
     delete_selected.short_description = (
         u"PERMANENTLY delete selected %(verbose_name_plural)s")
 
 
     def save_model(self, request, obj, form, change):
-        """ Given a model instance save it to the database."""
+        """Given a model instance save it to the database."""
         obj.save(user=request.user)
 
 
@@ -195,18 +195,6 @@ class CCInlineFormSet(BaseInlineFormSet):
         if hasattr(self, "user"):
             obj.delete = partial(obj.delete, user=self.user)
         return obj
-
-
-
-class CCModelForm(ModelForm):
-    def save(self, commit=True, user=None):
-        """Save and return this form's model instance."""
-        instance = super(CCModelForm, self).save(commit=False)
-        if commit:
-            instance.save(user=user)
-        else:
-            instance.save = partial(instance.save, user=user)
-        return instance
 
 
 

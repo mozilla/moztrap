@@ -1,6 +1,6 @@
 {% load icanhaz pagination %}
 
-<nav id="filter">
+<nav id="{% block filterid %}filter{% endblock %}" class="magicfilter">
   <h3 class="navhead">List Filtering</h3>
     <div class="textual">
       <label for="text-filter">filter</label>
@@ -12,7 +12,7 @@
 
     <section class="visual compact">
       <h4 class="toggle"><a href="#">Advanced Filtering</a></h4>
-      <form method="GET" id="filterform">
+      <form method="GET" id="filterform" autocomplete="off">
         {# preserve pagination and sort state, if any #}
         {# re-filtering should jump back to page 1 #}
         <input type="hidden" name="pagenumber" value="1">

@@ -1,0 +1,30 @@
+#caseresults
+
+  .listordering, .itemhead, .item-content
+    padding-left: rhythm(2.5)
+
+  .name, .byname,
+    +columns(6,23)
+
+  .run, .byrun, .product-version, .byproduct-version, .results-summary, .byresults
+    +columns(5,23)
+
+  .results-summary, .byresults
+    +omega(23)
+    text-align: right
+
+  .name
+    +demi
+
+  .iteminfo
+    +columns(13,23)
+
+  .envs, .testers
+    +columns(5,23)
+  .envs
+    +omega(23)
+
+  .testers
+    @extend .detailslist
+  .testers-title
+    @extend .detailstitle

@@ -1,16 +1,17 @@
-{% extends 'manage/environment/_env_list_item.html' %}
+{% extends 'manage/environment/env_list/_env_list_item.html' %}
 
 {% block select %}selectitem{% endblock select %}
 
 {% block env-body %}
-<input type="checkbox" name="environments" value="{{ env.id }}" class="item-input" id="environment-{{ env.id }}-select"{% if env.id in selected_env_ids %} checked{% endif %}>
-<label for="environment-{{ env.id }}-select" class="item-select">
-<h3 class="preview">
-  <ul>
-    {% for element in env.elements %}
-    <li>{{ element.name }}</li>
-    {% endfor %}
-  </ul>
-</h3>
-</label>
+<input type="checkbox" name="environments" class="bulk-value" value="{{ env.id }}" id="environment-{{ env.id }}-select"{% if env.id in selected_env_ids %} checked{% endif %}>
+<div class="bulk-item itemhead">
+  <label for="environment-{{ env.id }}-select" class="bulk-type">bulk select</label>
+  <h3 class="preview">
+    <ul>
+      {% for element in env.ordered_elements %}
+      <li data-type="envelement">{{ element.name }}</li>
+      {% endfor %}
+    </ul>
+  </h3>
+</div>
 {% endblock %}

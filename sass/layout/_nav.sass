@@ -41,16 +41,39 @@ $nav-link-hover-color : $red-dark
 .navhead
   +gone
 
+
+// ---------------------------------------------------------------------------
+// Open Web App
+
+#owa, #accountnav
+  +columns($account-width)
+  +omega
+  +cond
+  position: relative
+  text-align: right
+  z-index: 2
+
+#owa
+  +leader(.5)
+  a
+    +button-style($blue-lightest,'ui/cloud_up.png')
+
 // ---------------------------------------------------------------------------
 // Account Navigation.
 
 #accountnav
-  +columns($account-width)
-  +omega
-  +leader(2.25)
-  position: relative
-  text-align: right
-  z-index: 2
+  +leader(.75)
+  clear: right
+  .fn
+    +demi
+  p
+    display: inline
+  ul
+    +delimited-list
+    &::before
+      content: "["
+    &::after
+      content: "]"
 
 // ---------------------------------------------------------------------------
 // Main Navigation.
@@ -170,8 +193,6 @@ $nav-link-hover-color : $red-dark
       position: absolute
       right: 0
       top: - rhythm(1.25)
-      cursor: pointer
-      outline: 0
     &.open
       .summary
         +button-style($yellow-dark,'ui/minus.png',true,$small:true)

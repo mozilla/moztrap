@@ -1,0 +1,53 @@
+.add-run, .edit-run
+
+  .product-version-field, .name-field, .description-field
+    +full(24)
+    +suffix(6,24)
+    .type
+      +columns(6,18)
+    .value, .errorlist
+      +columns(12,18)
+      +omega(18)
+
+  .start-field, .end-field
+    +columns(7,24)
+    .type
+      +columns(2,7)
+    .value, .errorlist
+      +columns(5,7)
+      +omega(7)
+
+  .start-field
+    +prefix(4,24)
+  .end-field
+    +omega(24)
+    +suffix(6,24)
+
+  .suites-field
+    +trailer(0)
+    clear: both
+
+    &.readonly
+      +suffix(6,24)
+      .type
+        +columns(6,18)
+      .value
+        +columns(12,18)
+        +omega(18)
+        margin: 0
+        li
+          margin-left: rhythm(1)
+      + .form-actions
+        +suffix(6,24)
+
+    .name, .byname
+      +columns(6,11)
+
+    .author, .byauthor
+      +columns(5,11)
+      +omega(11)
+
+    .title
+      +demi
+      display: inline
+      font-style: normal

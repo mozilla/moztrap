@@ -23,15 +23,9 @@ import itertools
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from django.contrib.auth.models import User, Permission
-
 import factory
 
-from cc.model.core import models as core_models
-from cc.model.environments import models as environment_models
-from cc.model.execution import models as execution_models
-from cc.model.library import models as library_models
-from cc.model.tags import models as tag_models
+from cc import model
 
 
 
@@ -73,7 +67,7 @@ class TeamFactoryMixin(object):
         if team is not None:
             users = []
             for user_or_name in team:
-                if isinstance(user_or_name, User):
+                if isinstance(user_or_name, model.User):
                     user = user_or_name
                 else:
                     user = UserFactory.create(username=user_or_name)
@@ -84,7 +78,7 @@ class TeamFactoryMixin(object):
 
 
 class UserFactory(factory.Factory):
-    FACTORY_FOR = User
+    FACTORY_FOR = model.User
 
     username = factory.Sequence(lambda n: "test{0}".format(n))
 
@@ -97,11 +91,11 @@ class UserFactory(factory.Factory):
         if permissions is not None:
             perms = []
             for perm_or_name in permissions:
-                if isinstance(perm_or_name, Permission):
+                if isinstance(perm_or_name, model.Permission):
                     perm = perm_or_name
                 else:
                     app_label, codename = perm_or_name.split(".", 1)
-                    perm = Permission.objects.get(
+                    perm = model.Permission.objects.get(
                         content_type__app_label=app_label, codename=codename)
                 perms.append(perm)
             obj.user_permissions.add(*perms)
@@ -111,7 +105,7 @@ class UserFactory(factory.Factory):
     @classmethod
     def _prepare(cls, create, **kwargs):
         """Special handling for ``set_password`` method."""
-        password = kwargs.pop('password', None)
+        password = kwargs.pop("password", None)
         user = super(UserFactory, cls)._prepare(create, **kwargs)
         if password:
             user.set_password(password)
@@ -121,8 +115,15 @@ class UserFactory(factory.Factory):
 
 
 
+class RoleFactory(factory.Factory):
+    FACTORY_FOR = model.Role
+
+    name = factory.Sequence(lambda n: "test{0}".format(n))
+
+
+
 class ProductFactory(TeamFactoryMixin, factory.Factory):
-    FACTORY_FOR = core_models.Product
+    FACTORY_FOR = model.Product
 
     name = "Test Product"
 
@@ -131,15 +132,30 @@ class ProductFactory(TeamFactoryMixin, factory.Factory):
 class ProductVersionFactory(TeamFactoryMixin,
                             EnvironmentsFactoryMixin,
                             factory.Factory):
-    FACTORY_FOR = core_models.ProductVersion
+    FACTORY_FOR = model.ProductVersion
 
     version = "1.0"
     product = factory.SubFactory(ProductFactory)
 
 
+    @classmethod
+    def create(cls, **kwargs):
+        """Handle name kwarg that is concatenated product name / version."""
+        name = kwargs.pop("name", None)
+        if name:
+            if ("version" in kwargs or
+                "product" in kwargs or
+                "product__name" in kwargs):
+                raise ValueError(
+                    "Can't provide both name and version/product/product__name")
+            else:
+                kwargs["product__name"], kwargs["version"] = name.rsplit(" ", 1)
+        return super(ProductVersionFactory, cls).create(**kwargs)
+
+
 
 class SuiteFactory(factory.Factory):
-    FACTORY_FOR = library_models.Suite
+    FACTORY_FOR = model.Suite
 
     name = "Test Suite"
     product = factory.SubFactory(ProductFactory)
@@ -147,14 +163,14 @@ class SuiteFactory(factory.Factory):
 
 
 class CaseFactory(factory.Factory):
-    FACTORY_FOR = library_models.Case
+    FACTORY_FOR = model.Case
 
     product = factory.SubFactory(ProductFactory)
 
 
 
 class SuiteCaseFactory(factory.Factory):
-    FACTORY_FOR = library_models.SuiteCase
+    FACTORY_FOR = model.SuiteCase
 
     suite = factory.SubFactory(SuiteFactory)
     case = factory.SubFactory(
@@ -165,7 +181,7 @@ class SuiteCaseFactory(factory.Factory):
 
 
 class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
-    FACTORY_FOR = library_models.CaseVersion
+    FACTORY_FOR = model.CaseVersion
 
     name = "Test Case Version"
     productversion = factory.SubFactory(ProductVersionFactory)
@@ -177,8 +193,9 @@ class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
 
 
 class CaseAttachmentFactory(factory.Factory):
-    FACTORY_FOR = library_models.CaseAttachment
+    FACTORY_FOR = model.CaseAttachment
 
+    name = "somefile.txt"
     caseversion = factory.SubFactory(CaseVersionFactory)
 
 
@@ -186,8 +203,8 @@ class CaseAttachmentFactory(factory.Factory):
     def _prepare(cls, create, **kwargs):
         """Special handling for attachment so we can set name and contents."""
         attachment = kwargs.pop("attachment", None)
-        attachment_name = kwargs.pop("attachment__name", "somefile.txt")
-        attachment_content = kwargs.pop("attachment__content", "some content")
+        attachment_name = kwargs.get("name", "somefile.txt")
+        attachment_content = kwargs.pop("content", "some content")
         if attachment is None:
             attachment = SimpleUploadedFile(attachment_name, attachment_content)
         obj = super(CaseAttachmentFactory, cls)._prepare(create, **kwargs)
@@ -199,7 +216,7 @@ class CaseAttachmentFactory(factory.Factory):
 
 
 class CaseStepFactory(factory.Factory):
-    FACTORY_FOR = library_models.CaseStep
+    FACTORY_FOR = model.CaseStep
 
     instruction = "Test step instruction"
     caseversion = factory.SubFactory(CaseVersionFactory)
@@ -215,21 +232,21 @@ class CaseStepFactory(factory.Factory):
 
 
 class ProfileFactory(factory.Factory):
-    FACTORY_FOR = environment_models.Profile
+    FACTORY_FOR = model.Profile
 
     name = "Test Profile"
 
 
 
 class CategoryFactory(factory.Factory):
-    FACTORY_FOR = environment_models.Category
+    FACTORY_FOR = model.Category
 
     name = "Test Category"
 
 
 
 class ElementFactory(factory.Factory):
-    FACTORY_FOR = environment_models.Element
+    FACTORY_FOR = model.Element
 
     name = "Test Element"
     category = factory.SubFactory(CategoryFactory)
@@ -237,7 +254,7 @@ class ElementFactory(factory.Factory):
 
 
 class EnvironmentFactory(factory.Factory):
-    FACTORY_FOR = environment_models.Environment
+    FACTORY_FOR = model.Environment
 
     profile = factory.SubFactory(ProfileFactory)
 
@@ -279,7 +296,7 @@ class EnvironmentFactory(factory.Factory):
 
 
     @classmethod
-    def create_full_set(cls, categories):
+    def create_full_set(cls, categories, profile=None):
         """
         Create all possible environment combinations from given categories.
 
@@ -301,8 +318,12 @@ class EnvironmentFactory(factory.Factory):
 
         environments = []
 
+        env_kwargs = {}
+        if profile:
+            env_kwargs["profile"] = profile
+
         for elements in itertools.product(*element_lists):
-            env = cls.create()
+            env = cls.create(**env_kwargs)
             env.elements.add(*elements)
             environments.append(env)
 
@@ -311,7 +332,7 @@ class EnvironmentFactory(factory.Factory):
 
 
 class RunFactory(TeamFactoryMixin, EnvironmentsFactoryMixin, factory.Factory):
-    FACTORY_FOR = execution_models.Run
+    FACTORY_FOR = model.Run
 
     name = "Test Run"
     productversion = factory.SubFactory(ProductVersionFactory)
@@ -319,7 +340,7 @@ class RunFactory(TeamFactoryMixin, EnvironmentsFactoryMixin, factory.Factory):
 
 
 class RunCaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
-    FACTORY_FOR = execution_models.RunCaseVersion
+    FACTORY_FOR = model.RunCaseVersion
 
     run = factory.SubFactory(RunFactory)
     caseversion = factory.SubFactory(
@@ -330,7 +351,7 @@ class RunCaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
 
 
 class RunSuiteFactory(factory.Factory):
-    FACTORY_FOR = execution_models.RunSuite
+    FACTORY_FOR = model.RunSuite
 
     run = factory.SubFactory(RunFactory)
     suite = factory.SubFactory(
@@ -341,7 +362,7 @@ class RunSuiteFactory(factory.Factory):
 
 
 class ResultFactory(factory.Factory):
-    FACTORY_FOR = execution_models.Result
+    FACTORY_FOR = model.Result
 
     tester = factory.SubFactory(UserFactory)
     runcaseversion = factory.SubFactory(RunCaseVersionFactory)
@@ -350,7 +371,7 @@ class ResultFactory(factory.Factory):
 
 
 class StepResultFactory(factory.Factory):
-    FACTORY_FOR = execution_models.StepResult
+    FACTORY_FOR = model.StepResult
 
     result = factory.SubFactory(ResultFactory)
     step = factory.SubFactory(CaseStepFactory)
@@ -358,6 +379,6 @@ class StepResultFactory(factory.Factory):
 
 
 class TagFactory(factory.Factory):
-    FACTORY_FOR = tag_models.Tag
+    FACTORY_FOR = model.Tag
 
     name = "Test Tag"

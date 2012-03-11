@@ -1,0 +1,24 @@
+#manageproducts
+
+  .listordering
+    padding-left: rhythm(1)
+
+  .name, .byname, .description, .bydescription
+    +columns(12,24)
+  .description, .bydescription
+    +omega(24)
+
+  .title
+    +demi
+    display: inline
+
+  .iteminfo
+    +columns(19,24)
+
+  .productversions, .testers
+    @extend .detailslist
+    +columns(5,24)
+  .productversions
+    +omega(24)
+  .productversions-title, .testers-title
+    @extend .detailstitle

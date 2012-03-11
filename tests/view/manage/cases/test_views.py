@@ -19,20 +19,27 @@
 Tests for case management views.
 
 """
-from datetime import datetime
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
-from .... import factories as F
-from ....utils import refresh
-from ... import base
+from tests import case
 
 
 
-class CasesTest(base.ManageListViewTestCase):
+class CasesTest(case.view.manage.ListViewTestCase,
+                case.view.ListFinderTests,
+                case.view.manage.CCModelListTests,
+                case.view.manage.StatusListTests
+                ):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
+    perm = "manage_cases"
+
+
+    @property
+    def factory(self):
+        """The model factory for this manage list."""
+        return self.F.CaseVersionFactory
 
 
     @property
@@ -41,20 +48,19 @@ class CasesTest(base.ManageListViewTestCase):
         return reverse("manage_cases")
 
 
-    def test_lists_cases(self):
-        """Displays a list of cases."""
-        F.CaseVersionFactory.create(name="Foo Bar")
-
+    def test_create_link(self):
+        """With proper perm, create links are there."""
+        self.add_perm("create_cases")
         res = self.get()
 
-        res.mustcontain("Foo Bar")
+        self.assertElement(res.html, "a", "create", count=2)
 
 
     def test_lists_latest_versions(self):
         """Lists only latest version of each case."""
-        cv = F.CaseVersionFactory.create(
+        cv = self.F.CaseVersionFactory.create(
             name="Old Version", productversion__version="1.0")
-        F.CaseVersionFactory.create(
+        self.F.CaseVersionFactory.create(
             name="Latest Version",
             case=cv.case,
             productversion__product=cv.productversion.product,
@@ -66,91 +72,10 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertInList(res, "Latest Version")
 
 
-    def test_delete(self):
-        """Can delete objects from list."""
-        self.add_perm("manage_cases")
-
-        cv = F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-delete",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"}
-            )
-
-        self.assertTrue(bool(refresh(cv).deleted_on))
-
-
-    def test_delete_requires_manage_cases_permission(self):
-        """Deleting requires manage_cases permission."""
-        self.assertActionRequiresPermission("delete", "manage_cases")
-
-
-    def test_clone(self):
-        """Can clone objects in list."""
-        self.add_perm("manage_cases")
-
-        F.CaseVersionFactory.create()
-
-        self.get_form().submit(
-            name="action-clone",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        from cc.model import Case
-        self.assertEqual(Case.objects.count(), 2)
-
-
-    def test_clone_requires_manage_cases_permission(self):
-        """Cloning requires manage_cases permission."""
-        self.assertActionRequiresPermission("clone", "manage_cases")
-
-
-    def test_activate(self):
-        """Can activate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = F.CaseVersionFactory.create(status="draft")
-
-        self.get_form().submit(
-            name="action-activate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(refresh(cv).status, "active")
-
-
-    def test_activate_requires_manage_cases_permission(self):
-        """Activating requires manage_cases permission."""
-        self.assertActionRequiresPermission("activate", "manage_cases")
-
-
-    def test_deactivate(self):
-        """Can deactivate objects in list."""
-        self.add_perm("manage_cases")
-
-        cv = F.CaseVersionFactory.create(status="active")
-
-        self.get_form().submit(
-            name="action-deactivate",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertEqual(refresh(cv).status, "disabled")
-
-
-    def test_deactivate_requires_manage_cases_permission(self):
-        """Deactivating requires manage_cases permission."""
-        self.assertActionRequiresPermission("deactivate", "manage_cases")
-
-
     def test_filter_by_status(self):
         """Can filter by status."""
-        F.CaseVersionFactory.create(status="draft", name="Case 1")
-        F.CaseVersionFactory.create(status="active", name="Case 2")
+        self.F.CaseVersionFactory.create(status="draft", name="Case 1")
+        self.F.CaseVersionFactory.create(status="active", name="Case 2")
 
         res = self.get(params={"filter-status": "draft"})
 
@@ -160,8 +85,8 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_id(self):
         """Can filter by id."""
-        cv1 = F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(name="Case 2")
+        cv1 = self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 2")
 
         res = self.get(params={"filter-id": cv1.case.id})
 
@@ -171,7 +96,7 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_bad_id(self):
         """Attempt to filter by non-integer id is ignored."""
-        F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 1")
 
         res = self.get(params={"filter-id": "foo"})
 
@@ -179,9 +104,9 @@ class CasesTest(base.ManageListViewTestCase):
 
 
     def test_filter_by_name(self):
-        """Can filter by id."""
-        F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(name="Case 2")
+        """Can filter by name."""
+        self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 2")
 
         res = self.get(params={"filter-name": "1"})
 
@@ -191,10 +116,10 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_tag(self):
         """Can filter by tag."""
-        t = F.TagFactory.create()
-        cv = F.CaseVersionFactory.create(name="Case 1")
+        t = self.F.TagFactory.create()
+        cv = self.F.CaseVersionFactory.create(name="Case 1")
         cv.tags.add(t)
-        F.CaseVersionFactory.create(name="Case 2")
+        self.F.CaseVersionFactory.create(name="Case 2")
 
         res = self.get(params={"filter-tag": t.id})
 
@@ -204,8 +129,8 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_product(self):
         """Can filter by product."""
-        cv = F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(name="Case 2")
+        cv = self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 2")
 
         res = self.get(params={"filter-product": cv.case.product.id})
 
@@ -215,8 +140,8 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_productversion(self):
         """Can filter by product version; no implicit filter by latest."""
-        cv = F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(
+        cv = self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(
             name="Case 2",
             case=cv.case,
             productversion__product=cv.productversion.product,
@@ -230,9 +155,9 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_step_instruction(self):
         """Can filter by step instruction."""
-        F.CaseStepFactory.create(
+        self.F.CaseStepFactory.create(
             caseversion__name="Case 1", instruction="do this")
-        F.CaseStepFactory.create(
+        self.F.CaseStepFactory.create(
             caseversion__name="Case 2", instruction="do that")
 
         res = self.get(params={"filter-instruction": "this"})
@@ -243,9 +168,9 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_step_expected_result(self):
         """Can filter by step expected result."""
-        F.CaseStepFactory.create(
+        self.F.CaseStepFactory.create(
             caseversion__name="Case 1", expected="see this")
-        F.CaseStepFactory.create(
+        self.F.CaseStepFactory.create(
             caseversion__name="Case 2", expected="see that")
 
         res = self.get(params={"filter-expected": "this"})
@@ -254,23 +179,12 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertNotInList(res, "Case 2")
 
 
-    def test_filter_by_creator(self):
-        """Can filter by creator."""
-        F.CaseVersionFactory.create(name="Case 1", user=self.user)
-        F.CaseVersionFactory.create(name="Case 2")
-
-        res = self.get(params={"filter-creator": self.user.id})
-
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
-
-
     def test_filter_by_env_elements(self):
         """Can filter by environment elements."""
-        envs = F.EnvironmentFactory.create_full_set(
+        envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"]})
-        F.CaseVersionFactory.create(name="Case 1", environments=envs)
-        F.CaseVersionFactory.create(name="Case 2", environments=envs[1:])
+        self.F.CaseVersionFactory.create(name="Case 1", environments=envs)
+        self.F.CaseVersionFactory.create(name="Case 2", environments=envs[1:])
 
         res = self.get(
             params={"filter-envelement": envs[0].elements.all()[0].id})
@@ -281,9 +195,9 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_filter_by_suite(self):
         """Can filter by suite."""
-        cv = F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(name="Case 2")
-        sc = F.SuiteCaseFactory.create(case=cv.case)
+        cv = self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 2")
+        sc = self.F.SuiteCaseFactory.create(case=cv.case)
 
         res = self.get(params={"filter-suite": sc.suite.id})
 
@@ -291,22 +205,10 @@ class CasesTest(base.ManageListViewTestCase):
         self.assertNotInList(res, "Case 2")
 
 
-    def test_default_sort_by_last_created(self):
-        """Default sort is by latest created first."""
-        F.CaseVersionFactory.create(
-            name="Case 1", created_on=datetime(2012, 1, 21))
-        F.CaseVersionFactory.create(
-            name="Case 2", created_on=datetime(2012, 1, 22))
-
-        res = self.get()
-
-        self.assertOrderInList(res, "Case 2", "Case 1")
-
-
     def test_sort_by_status(self):
         """Can sort by status."""
-        F.CaseVersionFactory.create(name="Case 1", status="draft")
-        F.CaseVersionFactory.create(name="Case 2", status="active")
+        self.F.CaseVersionFactory.create(name="Case 1", status="draft")
+        self.F.CaseVersionFactory.create(name="Case 2", status="active")
 
         res = self.get(params={"sortfield": "status", "sortdirection": "asc"})
 
@@ -315,73 +217,55 @@ class CasesTest(base.ManageListViewTestCase):
 
     def test_sort_by_name(self):
         """Can sort by name."""
-        F.CaseVersionFactory.create(name="Case 1")
-        F.CaseVersionFactory.create(name="Case 2")
+        self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name="Case 2")
 
         res = self.get(params={"sortfield": "name", "sortdirection": "desc"})
 
         self.assertOrderInList(res, "Case 2", "Case 1")
 
 
-    def test_finder(self):
-        """Finder is present in context with list of products."""
-        p = F.ProductFactory.create(name="Foo Product")
 
-        res = self.get()
-
-        res.mustcontain("Foo Product")
-        res.mustcontain(
-            "data-sub-url="
-            '"?finder=1&amp;col=productversions&amp;id={0}"'.format(p.id))
-
-
-    def test_finder_ajax(self):
-        """Finder intercepts its ajax requests to return child obj lists."""
-        pv = F.ProductVersionFactory.create(version="1.0.1")
-
-        res = self.get(
-            params={
-                "finder": "1",
-                "col": "productversions",
-                "id": str(pv.product.id)
-                },
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            )
-
-        self.assertIn("1.0.1", res.json["html"])
-        self.assertIn(
-            'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
-            res.json["html"]
-            )
-
-
-
-class CaseDetailTest(base.AuthenticatedViewTestCase):
+class CaseDetailTest(case.view.AuthenticatedViewTestCase):
     """Test for case-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a caseversion."""
         super(CaseDetailTest, self).setUp()
-        self.cv = F.CaseVersionFactory.create()
+        self.cv = self.F.CaseVersionFactory.create()
 
 
     @property
     def url(self):
-        """Shortcut for add-case-single url."""
+        """Shortcut for case-details url."""
         return reverse(
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
 
     def test_details(self):
         """Returns details HTML snippet for given caseversion."""
-        F.CaseStepFactory.create(caseversion=self.cv, instruction="Frobnigate.")
+        self.F.CaseStepFactory.create(
+            caseversion=self.cv,
+            instruction="Frobnigate.",
+            )
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
         res.mustcontain("Frobnigate.")
 
+    def test_description(self):
+        """Returns details HTML snippet for given caseversion"""
+        desc_markdown = "_Valmorphanize_"
+
+        self.cv = self.F.CaseVersionFactory.create(
+            name="FooBar",
+            description=desc_markdown,
+            )
+        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+
+        res.mustcontain("<em>Valmorphanize</em>")
 
 
-class AddCaseTest(base.FormViewTestCase):
+class AddCaseTest(case.view.FormViewTestCase):
     """Tests for add-case-single view."""
     form_id = "single-case-add"
 
@@ -400,7 +284,7 @@ class AddCaseTest(base.FormViewTestCase):
 
     def test_success(self):
         """Can add a test case with basic data, including a step."""
-        pv = F.ProductVersionFactory.create()
+        pv = self.F.ProductVersionFactory.create()
 
         form = self.get_form()
         form["product"] = pv.product.id
@@ -412,7 +296,7 @@ class AddCaseTest(base.FormViewTestCase):
         form["status"] = "active"
         res = form.submit(status=302)
 
-        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Test case 'Can log in.' added.")
 
@@ -428,6 +312,16 @@ class AddCaseTest(base.FormViewTestCase):
         self.assertEqual(step.expected, "You should see a welcome message.")
 
 
+    def test_prepopulate_from_querystring(self):
+        """Can prepopulate the form via the GET querystring."""
+        self.add_perm("manage_suite_cases")
+
+        s = self.F.SuiteFactory.create()
+        form = self.get_form(params={"initial_suite": str(s.id)})
+
+        self.assertEqual(form.fields["initial_suite"][0].value, str(s.id))
+
+
     def test_error(self):
         """Bound form with errors is re-displayed."""
         res = self.get_form().submit()
@@ -438,13 +332,14 @@ class AddCaseTest(base.FormViewTestCase):
 
     def test_requires_create_cases_permission(self):
         """Requires create-cases permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
-class AddBulkCaseTest(base.FormViewTestCase):
+class AddBulkCaseTest(case.view.FormViewTestCase):
     """Tests for add-case-bulk view."""
     form_id = "bulk-case-add"
 
@@ -463,7 +358,7 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
     def test_success(self):
         """Can add a test case or two with basic data, including a step."""
-        pv = F.ProductVersionFactory.create()
+        pv = self.F.ProductVersionFactory.create()
 
         form = self.get_form()
         form["product"] = pv.product.id
@@ -480,7 +375,7 @@ class AddBulkCaseTest(base.FormViewTestCase):
         form["status"] = "active"
         res = form.submit(status=302)
 
-        self.assertEqual(res["Location"], "http://testserver/manage/cases/")
+        self.assertRedirects(res, reverse("manage_cases"))
 
         res.follow().mustcontain("Added 2 test cases.")
 
@@ -508,7 +403,7 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
     def test_success_single(self):
         """Confirmation message for single add is grammatically correct."""
-        pv = F.ProductVersionFactory.create()
+        pv = self.F.ProductVersionFactory.create()
 
         form = self.get_form()
         form["product"] = pv.product.id
@@ -534,13 +429,14 @@ class AddBulkCaseTest(base.FormViewTestCase):
 
     def test_requires_create_cases_permission(self):
         """Requires create-cases permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
-class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
+class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
     """Tests for caseversion-clone view."""
     csrf_checks = False
 
@@ -548,7 +444,7 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
     def setUp(self):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
-        self.cv = F.CaseVersionFactory.create(
+        self.cv = self.F.CaseVersionFactory.create(
             name="Can log in", productversion__product__name="Case Conductor")
         self.add_perm("manage_cases")
 
@@ -562,27 +458,27 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
 
     def test_login_required(self):
         """Requires login."""
-        response = self.app.post(
+        res = self.app.post(
             self.url,
             {"csrfmiddlewaretoken": "foo"},
             headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
             status=302,
             )
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_manage_cases_permission_required(self):
         """Requires manage cases permission."""
-        response = self.app.post(
+        res = self.app.post(
             self.url,
             {"csrfmiddlewaretoken": "foo"},
             headers={"Cookie": "{0}=foo".format(settings.CSRF_COOKIE_NAME)},
-            user=F.UserFactory.create(),
+            user=self.F.UserFactory.create(),
             status=302,
             )
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_requires_post(self):
@@ -618,7 +514,7 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
 
     def test_already_exists(self):
         """If target caseversion already exists, redirect to edit it."""
-        target = F.CaseVersionFactory.create(
+        target = self.F.CaseVersionFactory.create(
             case=self.cv.case,
             productversion__product=self.cv.productversion.product,
             productversion__version="2.0")
@@ -637,7 +533,7 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
 
     def test_clone(self):
         """If target caseversion doesn't exist yet, clone this one to it."""
-        pv = F.ProductVersionFactory.create(
+        pv = self.F.ProductVersionFactory.create(
             product=self.cv.productversion.product, version="2.0")
 
         res = self.post({"productversion": pv.id}, status=302)
@@ -658,7 +554,7 @@ class CloneCaseVersionTest(base.AuthenticatedViewTestCase):
 
 
 
-class EditCaseVersionTest(base.FormViewTestCase):
+class EditCaseVersionTest(case.view.FormViewTestCase):
     """Tests for edit-caseversion view."""
     form_id = "single-case-edit"
 
@@ -666,7 +562,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
     def setUp(self):
         """Setup for caseversion edit tests; create a caseversion, add perm."""
         super(EditCaseVersionTest, self).setUp()
-        self.cv = F.CaseVersionFactory.create()
+        self.cv = self.F.CaseVersionFactory.create()
         self.add_perm("manage_cases")
 
 
@@ -679,14 +575,15 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_requires_manage_cases_permission(self):
         """Requires manage-cases permission."""
-        res = self.app.get(self.url, user=F.UserFactory.create(), status=302)
+        res = self.app.get(
+            self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
     def test_existing_version_links(self):
         """Page has links to edit other existing versions."""
-        other_cv = F.CaseVersionFactory.create(
+        other_cv = self.F.CaseVersionFactory.create(
             case=self.cv.case,
             productversion__product=self.cv.case.product,
             productversion__version="2.0"
@@ -704,7 +601,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_clone_version_buttons(self):
         """Page has buttons for creating new versions."""
-        other_pv = F.ProductVersionFactory.create(
+        other_pv = self.F.ProductVersionFactory.create(
             product=self.cv.case.product, version="2.0")
 
         form = self.get().forms["case-version-list-form"]
@@ -733,8 +630,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
     def test_existing_tags(self):
         """Form prepopulates with existing tags."""
         tags = [
-            F.TagFactory.create(name="one"),
-            F.TagFactory.create(name="two")
+            self.F.TagFactory.create(name="one"),
+            self.F.TagFactory.create(name="two")
             ]
         self.cv.tags.add(*tags)
 
@@ -748,8 +645,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_existing_attachments(self):
         """Form prepopulates with remove checkboxes for existing attachments."""
-        ca = F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+        ca = self.F.CaseAttachmentFactory.create(
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
@@ -769,7 +666,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
         res.follow().mustcontain("Saved 'new name'.")
 
-        cv = refresh(self.cv)
+        cv = self.refresh(self.cv)
         self.assertEqual(cv.name, "new name")
         self.assertEqual(cv.description, "new desc")
         self.assertEqual(cv.status, "active")
@@ -777,7 +674,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_edit_step(self):
         """Can edit a step."""
-        step = F.CaseStepFactory(
+        step = self.F.CaseStepFactory(
             caseversion=self.cv, instruction="do this", expected="see that")
 
         form = self.get_form()
@@ -785,7 +682,7 @@ class EditCaseVersionTest(base.FormViewTestCase):
         form["steps-0-expected"] = ""
         form.submit(status=302)
 
-        step = refresh(step)
+        step = self.refresh(step)
         self.assertEqual(step.instruction, "do something else")
         self.assertEqual(step.expected, "")
         self.assertEqual(step.modified_by, self.user)
@@ -794,8 +691,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
     def test_remove_tags(self):
         """Can remove tags."""
         tags = [
-            F.TagFactory.create(name="one"),
-            F.TagFactory.create(name="two")
+            self.F.TagFactory.create(name="one"),
+            self.F.TagFactory.create(name="two")
             ]
         self.cv.tags.add(*tags)
 
@@ -808,8 +705,8 @@ class EditCaseVersionTest(base.FormViewTestCase):
 
     def test_remove_attachments(self):
         """Can remove attachments."""
-        ca = F.CaseAttachmentFactory.create(
-            caseversion=self.cv, attachment__name="sample.csv")
+        ca = self.F.CaseAttachmentFactory.create(
+            caseversion=self.cv, name="sample.csv")
         self.cv.attachments.add(ca)
 
         form = self.get_form()
@@ -826,3 +723,15 @@ class EditCaseVersionTest(base.FormViewTestCase):
         res = form.submit(status=200)
 
         res.mustcontain("This field is required.")
+
+
+    def test_concurrency_error(self):
+        """Concurrency error is displayed."""
+        form = self.get_form()
+
+        self.cv.save()
+
+        form["name"] = "New"
+        res = form.submit(status=200)
+
+        res.mustcontain("Another user saved changes to this object")

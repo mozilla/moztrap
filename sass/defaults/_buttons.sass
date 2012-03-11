@@ -52,6 +52,10 @@ button
     $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
     $border   : darken(desaturate($c,25),15)
+
+    @if lightness($border) > 40%
+      $border : change-color($border,$lightness:40%)
+
     +demi
     +border-radius
     +rhythm-borders(1px,.25)
@@ -114,5 +118,29 @@ button
 .button
   +button-style
 
+.buttoninlay
+  +box-sizing(border-box)
+  +border-radius
+  +rhythm-borders(1px,.25)
+  +box-shadow(rgba($mid,$xxsmall) 0 0 $xsmallem inset)
+  +hpadding(1em)
+  max-width: 100%
+  color: rgba($base,$small)
+  background: none
+  border-color: rgba($base,$xxsmall)
+  display: inline-block
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+.buttoninlayfocus
+  +button-style($lightest)
+
 button
   @extend .button
+
+.done-link
+  +button-style
+  display: inline-block
+  #{$link}
+    color: $base

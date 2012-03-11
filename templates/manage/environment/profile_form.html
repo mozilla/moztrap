@@ -1,0 +1,21 @@
+{% extends 'manage/environment/base.html' %}
+
+{% block content %}
+<section class="{% block sectionid %}{% endblock %}">
+  <h2>{% block formtitle %}{% endblock %}</h2>
+  {% block formtop %}{% endblock %}
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form profile-form">
+    {% csrf_token %}
+    {{ form.cc_version }}
+    {{ form.non_field_errors }}
+
+    {% include "forms/_field.html" with field=form.name %}
+
+    {% block extra-fields %}{% endblock %}
+
+    <div class="form-actions">
+      <button type="submit">save profile</button>
+    </div>
+  </form>
+</section>
+{% endblock content %}

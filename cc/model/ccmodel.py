@@ -28,9 +28,14 @@ from django.db import models, router
 from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
 
-from django.contrib.auth.models import User
-
 from model_utils import Choices
+
+from .core.auth import User
+
+
+
+class ConcurrencyError(Exception):
+    pass
 
 
 
@@ -109,15 +114,19 @@ class CCQuerySet(QuerySet):
         if not kwargs.pop("notrack", False):
             kwargs["modified_by"] = kwargs.pop("user", None)
             kwargs["modified_on"] = utcnow()
+        # increment the concurrency control version for all updated objects
+        kwargs["cc_version"] = models.F("cc_version") + 1
         return super(CCQuerySet, self).update(*args, **kwargs)
 
 
-    def delete(self, user=None):
+    def delete(self, user=None, permanent=False):
         """
-        Soft-delete all objects in this queryset.
+        Soft-delete all objects in this queryset, unless permanent=True.
 
         """
-        collector = SoftDeleteCollector(using=self._db)
+        if permanent:
+            return super(CCQuerySet, self).delete()
+        collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.delete(user)
 
@@ -127,7 +136,7 @@ class CCQuerySet(QuerySet):
         Undelete all objects in this queryset.
 
         """
-        collector = SoftDeleteCollector(using=self._db)
+        collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.undelete(user)
 
@@ -153,7 +162,7 @@ class CCManager(models.Manager):
 
     def get_query_set(self):
         """Return a ``CCQuerySet`` for all queries."""
-        qs = CCQuerySet(self.model, using=self._db)
+        qs = CCQuerySet(self.model, using=self.db)
         if not self._show_deleted:
             qs = qs.filter(deleted_on__isnull=True)
         return qs
@@ -169,14 +178,17 @@ class CCModel(models.Model):
     """
     created_on = models.DateTimeField(default=utcnow)
     created_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
 
     modified_on = models.DateTimeField(default=utcnow)
     modified_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
     deleted_on = models.DateTimeField(db_index=True, blank=True, null=True)
     deleted_by = models.ForeignKey(
-        User, blank=True, null=True, related_name="+")
+        User, blank=True, null=True, related_name="+", on_delete=models.SET_NULL)
+
+    # for optimistic concurrency control
+    cc_version = models.IntegerField(default=0)
 
 
 
@@ -188,7 +200,10 @@ class CCModel(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Save this instance, recording modified timestamp and user.
+        Save this instance.
+
+        Records modified timestamp and user, and raises ConcurrencyError if an
+        out-of-date version is being saved.
 
         """
         if not kwargs.pop("notrack", False):
@@ -200,7 +215,25 @@ class CCModel(models.Model):
             if not (self.pk is None and self.modified_by is not None):
                 self.modified_by = user
             self.modified_on = now
-        return super(CCModel, self).save(*args, **kwargs)
+
+        # CCModels always have an auto-PK and we don't set PKs explicitly, so
+        # we can assume that a set PK means this should be an update.
+        if kwargs.get("force_update") or self.id is not None:
+            non_pks = [f for f in self._meta.local_fields if not f.primary_key]
+            # This isn't a race condition because the save will only take
+            # effect if previous_version is actually up to date.
+            previous_version = self.cc_version
+            self.cc_version += 1
+            values = [(f, None, f.pre_save(self, False)) for f in non_pks]
+            rows = self.__class__.objects.filter(
+                id=self.id, cc_version=previous_version)._update(values)
+            if not rows:
+                raise ConcurrencyError(
+                    "No row with id {0} and version {1} updated.".format(
+                        self.id, previous_version)
+                    )
+        else:
+            return super(CCModel, self).save(*args, **kwargs)
 
 
     def clone(self, cascade=None, overrides=None, user=None):
@@ -265,11 +298,13 @@ class CCModel(models.Model):
         return clone
 
 
-    def delete(self, user=None):
+    def delete(self, user=None, permanent=False):
         """
-        (Soft) delete this instance.
+        (Soft) delete this instance, unless permanent=True.
 
         """
+        if permanent:
+            return super(CCModel, self).delete()
         self._collector.delete(user)
 
 
@@ -292,6 +327,47 @@ class CCModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+
+class NotDeletedCount(models.Count):
+    """A Count on a related field that only counts not-deleted objects."""
+    def add_to_query(self, query, alias, col, source, is_summary):
+        """
+        Add the aggregate to the nominated query.
+
+        Expects col to be a tuple (which means this can only be used to count
+        related fields), and transforms it into a NotDeletedCountColumn.
+
+        """
+        try:
+            table, field = col
+        except ValueError:
+            table, field = None, col
+        col = NotDeletedCountColumn(table, field)
+        return super(NotDeletedCount, self).add_to_query(
+            query, alias, col, source, is_summary)
+
+
+
+class NotDeletedCountColumn(object):
+    """An object with an as_sql method that counts only not-deleted objects."""
+    def __init__(self, table, field):
+        """Initialize the column with a table and field name."""
+        self.table = table
+        self.field = field
+
+
+    def as_sql(self, qn, connection):
+        """Return CASE statement to select only not-deleted objects."""
+        field = qn(self.field)
+        deleted_on = qn("deleted_on")
+        if self.table is not None:
+            table = qn(self.table)
+            field = "{0}.{1}".format(table, field)
+            deleted_on = "{0}.{1}".format(table, deleted_on)
+        return "CASE WHEN {0} IS NULL THEN {1} ELSE NULL END".format(
+            deleted_on, field)
 
 
 
@@ -321,8 +397,9 @@ class TeamModel(models.Model):
     def add_to_team(self, *users):
         """Add given users to this object's team (not to parent team)."""
         self.own_team.add(*users)
+        self.__class__.objects.filter(pk=self.pk).update(has_team=True)
         self.has_team = True
-        self.save()
+        self.cc_version += 1
 
 
     @property

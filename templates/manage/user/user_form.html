@@ -1,34 +1,23 @@
 {% extends 'manage/user/base.html' %}
 
-{% block listcontent %}
-<section id="adduser">
+
+{% block content %}
+<section class="{% block sectionid %}{% endblock %}">
   <h2>{% block formtitle %}{% endblock %}</h2>
-
-  <form id="user-add-form" method="POST">
+  {% block formtop %}{% endblock %}
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form user-form">
     {% csrf_token %}
-
     {{ form.non_field_errors }}
 
-    <ul class="basic">
-      <li class="given-name">{% include "forms/_field.html" with field=form.firstName %}</li>
-      <li class="family-name">{% include "forms/_field.html" with field=form.lastName %}</li>
-      <li class="nickname">{% include "forms/_field.html" with field=form.screenName %}</li>
-      <li class="email">{% include "forms/_field.html" with field=form.email %}</li>
-      <li class="password">{% include "forms/_field.html" with field=form.password %}</li>
-    </ul>
-
-    <section class="roleselect details{% if form.roles.errors or form.roles.value %} open{% endif %}">
-      <h3 class="summary">assign roles to this user &raquo;</h3>
-      <div>
-        {# @@@ needs the slick multiple-select widget #}
-        {% include "forms/_field.html" with field=form.roles %}
-      </div>
-    </section>
+    {% block topfields %}{% endblock %}
+    {% include "forms/_field.html" with field=form.username %}
+    {% include "forms/_field.html" with field=form.is_active %}
+    {% include "forms/_field.html" with field=form.email %}
+    {% include "forms/_field.html" with field=form.groups %}
 
     <div class="form-actions">
-      <button type="submit">save</button>
+      <button type="submit">save user</button>
     </div>
-
   </form>
 </section>
-{% endblock listcontent %}
+{% endblock content %}

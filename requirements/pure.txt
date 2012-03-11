@@ -1,8 +1,8 @@
 # Pure python dependencies.
 Django==1.3.1
 
-South==0.7.3
-django_compressor==1.1.1
+South==0.7.3.hg1008
+django_compressor==1.1.2
 django-appconf==0.4.1
 BeautifulSoup==3.2.0
 slimmer==0.1.30
@@ -17,3 +17,20 @@ django-messages-ui==0.1.4
 django-ajax-loading-overlay==0.1.1
 django-sha2==0.4
 django-session-csrf==0.5
+django-registration==0.8-alpha-1
+django-ratelimit==0.1.post1
+Markdown==2.1.1
+
+# only needed for running the tests
+mock==0.7.2
+WebTest==1.3.3
+django-webtest==1.4.3
+WebOb==1.2b2
+factory_boy==1.0.4.moz2
+django-inmemorystorage==0.1.1
+
+# only needed for bin/regenerate-sample-data
+django-fixture-generator==0.2.0.cc.1
+
+# only needed if cache backend is set to memcached
+python-memcached==1.47

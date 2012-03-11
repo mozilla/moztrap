@@ -2,9 +2,9 @@
 
 {% block test-subnav %}
 <li><a href="{% url runtests %}">Run Tests</a></li>
-<li><a href="#" class="breadcrumb" data-id="product-{{ product.id }}">{{ product }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="productversion-{{ productversion.id }}">{{ productversion.version }}</a></li>
-<li><a href="#" class="breadcrumb" data-id="run-{{ run.id }}">{{ run }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-products-{{ product.id }}">{{ product }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-productversions-{{ productversion.id }}">{{ productversion.version }}</a></li>
+<li><a href="#" class="breadcrumb" data-id="finder-runs-{{ run.id }}">{{ run }}</a></li>
 <li>
   <ul class="envsettings">
     {% for element in environment.ordered_elements %}

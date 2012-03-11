@@ -1,5 +1,5 @@
 {% extends "runtests/finder/_item.html" %}
 
 {% block columns %}
-<span class="title" title="{{ object.version }}" data-order="{{ object.order }}">{{ object.version }}</span>
+<span class="title" title="{{ object.version }}" data-product="{{ object.product }}" data-order="{{ object.order }}">{{ object.version }}</span>
 {% endblock %}

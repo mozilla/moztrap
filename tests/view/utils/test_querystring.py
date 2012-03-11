@@ -19,11 +19,11 @@
 Tests for querystring utilities.
 
 """
-from django.utils.unittest import TestCase
+from tests import case
 
 
 
-class TestUpdateQueryString(TestCase):
+class TestUpdateQueryString(case.TestCase):
     @property
     def func(self):
         from cc.view.utils.querystring import update_querystring

@@ -31,10 +31,6 @@ from ...utils import ccforms
 
 
 
-def product_id_attrs(obj):
-    return {"data-product-id": obj.product.id}
-
-
 class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
     """
     Base form for all test case/version forms.
@@ -130,6 +126,7 @@ class BaseCaseVersionForm(forms.Form):
             for uf in self.files.getlist("add_attachment"):
                 model.CaseAttachment.objects.create(
                     attachment=uf,
+                    name=uf.name,
                     caseversion=caseversion,
                     user=self.user,
                     )
@@ -141,7 +138,8 @@ class BaseAddCaseForm(forms.Form):
         model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
     productversion = ccforms.CCModelChoiceField(
-        model.ProductVersion.objects.all(), choice_attrs=product_id_attrs)
+        model.ProductVersion.objects.all(),
+        choice_attrs=ccforms.product_id_attrs)
     and_later_versions = forms.BooleanField(initial=True, required=False)
 
 
@@ -152,7 +150,7 @@ class BaseAddCaseForm(forms.Form):
         if self.user and self.user.has_perm("library.manage_suite_cases"):
             self.fields["initial_suite"] = ccforms.CCModelChoiceField(
                 model.Suite.objects.all(),
-                choice_attrs=product_id_attrs,
+                choice_attrs=ccforms.product_id_attrs,
                 required=False)
 
 
@@ -310,8 +308,14 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
 
 
 
-class EditCaseVersionForm(BaseCaseVersionForm, BaseCaseForm):
+class EditCaseVersionForm(ccforms.SaveIfValidMixin,
+                          BaseCaseVersionForm,
+                          BaseCaseForm,
+                          ):
     """Form for editing a case version."""
+    cc_version = forms.IntegerField(widget=forms.HiddenInput)
+
+
     def __init__(self, *args, **kwargs):
         """Initialize EditCaseVersionForm, pulling instance from kwargs."""
         self.instance = kwargs.pop("instance", None)
@@ -320,12 +324,14 @@ class EditCaseVersionForm(BaseCaseVersionForm, BaseCaseForm):
         initial["name"] = self.instance.name
         initial["description"] = self.instance.description
         initial["status"] = self.instance.status
+        initial["cc_version"] = self.instance.cc_version
 
         super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
 
-    def save(self):
+    def save(self, user=None):
         """Save the edited caseversion."""
+        user = user or self.user
         assert self.is_valid()
 
         version_kwargs = self.cleaned_data.copy()
@@ -340,7 +346,7 @@ class EditCaseVersionForm(BaseCaseVersionForm, BaseCaseForm):
         self.save_new_tags(self.instance.case.product)
         self.save_tags(self.instance)
         self.save_attachments(self.instance)
-        self.steps_formset.save(user=self.user)
+        self.steps_formset.save(user=user)
 
         return self.instance
 

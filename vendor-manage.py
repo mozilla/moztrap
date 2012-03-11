@@ -23,7 +23,7 @@ Runs a Django management command, using the vendor library.
 
 """
 import os, sys
-from deploy.paths import add_vendor_lib
+from cc.deploy.paths import add_vendor_lib
 
 if __name__ == "__main__":
     add_vendor_lib()

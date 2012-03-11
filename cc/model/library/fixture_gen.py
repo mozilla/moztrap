@@ -16,10 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Sample cases and suites fixture generator."""
-from django.contrib.auth.models import User
-
 from fixture_generator import fixture_generator
 
+from ..core.auth import User
 from ..core.models import Product
 from ..tags.models import Tag
 

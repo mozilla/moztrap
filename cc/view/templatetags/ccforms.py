@@ -64,11 +64,16 @@ def value_text(boundfield):
     """Return the value for given boundfield as human-readable text."""
     val = boundfield.value()
     # If choices is set, use the display label
-    return str(dict((
-                o[:2] for o in
-                getattr(boundfield.field, "choices", [])
-                )).get(
-            val, val))
+    return unicode(dict(getattr(boundfield.field, "choices", [])).get(val, val))
+
+
+@register.filter
+def values_text(boundfield):
+    """Return the values for given multiple-select as human-readable text."""
+    val = boundfield.value()
+    # If choices is set, use the display label
+    choice_dict = dict(getattr(boundfield.field, "choices", []))
+    return [unicode(choice_dict.get(v, v)) for v in val]
 
 
 @register.filter
@@ -114,6 +119,19 @@ def attr(boundfield, attrval):
 
 @register.filter
 def is_checkbox(boundfield):
-    """Returns True if this field's widget is a CheckboxInput."""
+    """Return True if this field's widget is a CheckboxInput."""
     return isinstance(
         boundfield.field.widget, forms.CheckboxInput)
+
+
+@register.filter
+def is_readonly(boundfield):
+    """Return True if this field has a True readonly attribute."""
+    return getattr(boundfield.field, "readonly", False)
+
+
+
+@register.filter
+def is_multiple(boundfield):
+    """Return True if this field has multiple values."""
+    return isinstance(boundfield.field.widget, forms.SelectMultiple)

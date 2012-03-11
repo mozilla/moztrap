@@ -19,14 +19,12 @@
 Tests for RunSuite model.
 
 """
-from django.test import TestCase
-
-from .... import factories as F
+from tests import case
 
 
 
-class RunSuiteTest(TestCase):
+class RunSuiteTest(case.DBTestCase):
     def test_unicode(self):
-        rs = F.RunSuiteFactory(run__name="FF10", suite__name="Speed")
+        rs = self.F.RunSuiteFactory(run__name="FF10", suite__name="Speed")
 
         self.assertEqual(unicode(rs), u"Suite 'Speed' included in run 'FF10'")

@@ -10,7 +10,7 @@
 
 // Make room for an icon to the left of the text.
 =pad-icon($img)
-  padding-left: image-width($img) + $xsmallpx*2
+  padding-left: image-width($img) + $smallpx*2
 
 // Add an icon, with or without text and a background.
 =icon($img, $color:false, $notext:true, $small:false)
@@ -27,4 +27,13 @@
     +replace-width($img,$small)
   @else
     +pad-icon($img)
-    background-position: $xsmallpx
+    background-position: $smallpx
+
+// common icons
+.goto
+  #{$link}
+    +opacity(.5)
+    +icon('ui/arrow_right.png')
+    display: inline-block
+  #{$focus}
+    +opacity(1)

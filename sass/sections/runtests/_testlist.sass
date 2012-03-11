@@ -1,0 +1,149 @@
+// ---------------------------------------------------------------------------
+// Runtest list basics
+#runtests
+
+  .listordering
+    padding-left: rhythm(1)
+
+  .item-summary
+    +padding-leader(.5)
+    +padding-trailer(.5)
+
+  .results, .byresults
+    +columns(4,24)
+  .result-action
+    @extend .allcaps
+    width: 100%
+
+  .name, .byname
+    +columns(16,24)
+  .name
+    +adjust-font-size-to($medpx,1.5)
+    +demi
+
+  .description, .steps
+    +pad(4,4,24)
+
+  .description
+    +italic
+
+// ---------------------------------------------------------------------------
+// Result action buttons
+.result-action
+  text-align: left
+  &.start
+    +button-style($blue-lighter,'ui/power.png')
+  &.pass
+    +button-style($green-light,'ui/check.png')
+  &.passed
+    +button-style($green-dark,'ui/check.png')
+  &.failed
+    +button-style($red,'ui/x.png')
+  &.invalidated
+    +button-style($yellow-darker,'ui/check.png')
+  &.restart
+    +box-shadow($base 0 0 $xxsmallem inset)
+    +text-shadow(rgba($base,$small) 0 -1px 0)
+    color: $lightest
+    #{$focus}
+      +button-style($yellow,'ui/refresh.png')
+
+// ---------------------------------------------------------------------------
+// Test Invalid
+.testinvalid
+
+  .invalid-summary
+    +demi
+    +box-sizing(border-box)
+    +columns(4,24)
+    +omega(24)
+    +trailer(0)
+    +rhythm-borders(1px,.25)
+    +icon('ui/warning.png',$notext:false)
+    border-color: rgba($base,$xxxsmall)
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    cursor: pointer
+    &:hover
+      +button-style($light,'ui/warning.png',$inset:true)
+
+  .invalid-content, .invalid-form
+    +full(24)
+    +pad(4,4,24)
+    +trailer(0)
+
+  .invalid-form
+    +padding-leader(1)
+    .invalid-label
+      +gone
+    .invalid
+      +button-style($yellow-dark)
+    .form-actions
+      +padding-leader(.25)
+      +trailer(.75)
+
+  .invalid-content
+    +italic
+    &::before
+      content: image-url('ui/warning.png')
+      vertical-align: middle
+
+  &.open, &.invalidated
+    .invalid-summary
+      +button-style($yellow,'ui/warning.png')
+
+// ---------------------------------------------------------------------------
+// Step Fail
+#runtests
+  .started, .failed
+    .step
+      .instruction
+        padding-left: rhythm(1)
+  .step.failed
+    .instruction
+      color: $red
+
+.stepfail-summary
+  +opacity(.25)
+  +icon('ui/x.png')
+  position: absolute
+  top: -1px
+  left: 0
+  &.summary
+    cursor: pointer
+  #{$focus}, .stepfail.open &, .stepfail.failed &
+    +opacity(1)
+
+.stepfail-content
+  +clearfix
+  +border-radius
+  +rhythm-borders(1px,1)
+  +box-shadow(rgba($red,$small) 0 0 $xsmallem inset)
+  background: rgba($red-light,$xxxsmall)
+  border-color: $red
+  .buglist, .assign-buglist
+    +no-style-list
+    +columns(12,16)
+  .newbug-input-label, .newbug-radio-label
+    +gone
+  .newbug-radio
+    position: relative
+    top: rhythm(.25)
+  .newbug-input
+    width: 90%
+    &.disabled
+      +opacity(.5)
+  .form-actions
+    +columns(4,16)
+    +omega(16)
+    clear: none
+    padding: 0
+  .bugurl
+    @extend .bugchick
+    +trailer(0)
+
+.fail-field
+  label
+    +gone
+

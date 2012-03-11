@@ -23,11 +23,12 @@ from mock import Mock
 
 from django.http import HttpResponse
 from django.test import RequestFactory
-from django.utils.unittest import TestCase
+
+from tests import case
 
 
 
-class ActionsTest(TestCase):
+class ActionsTest(case.TestCase):
     """Tests for list-actions decorator."""
     @property
     def actions(self):

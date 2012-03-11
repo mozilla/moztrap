@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
 
     'use strict';
 
-    // Filter form options for add-run and add-suite
+    // Filter form options based on trigger form selection
     CC.formOptionsFilter = function (opts) {
         var defaults = {
                 container: 'body',
@@ -36,7 +36,8 @@ var CC = (function (CC, $) {
                 target_sel: '.target',
                 option_sel: 'option',
                 multiselect_widget_bool: false,
-                optional: false
+                optional: false,
+                callback: null
             },
             options = $.extend({}, defaults, opts),
             context = $(options.container),
@@ -50,18 +51,22 @@ var CC = (function (CC, $) {
             allopts = target.find(options.option_sel).clone();
 
             filterFilters = function (items) {
-                context.find('.multiunselected .groups .filter-group:not(.keyword) input[type="checkbox"]').each(function () {
+                context.find('.multiunselected .visual .filter-group:not(.keyword) input[type="checkbox"]').each(function () {
                     var thisFilter = $(this),
                         type = thisFilter.data('name'),
-                        filter = thisFilter.siblings('label').text().toLowerCase(),
+                        filter = thisFilter.closest('.filter-item').find('.onoffswitch').text().toLowerCase(),
                         excludeThisFilter = false;
 
                     if (type === 'status') {
-                        if (!(items.filter(function () { return $(this).find('.status span').text().toLowerCase() === filter; }).length)) {
+                        if (!(items.find('.status span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
                     } else if (type === 'tag') {
                         if (!(items.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
+                            excludeThisFilter = true;
+                        }
+                    } else if (type === 'author') {
+                        if (!(items.find('.author span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
                     } else {
@@ -90,13 +95,16 @@ var CC = (function (CC, $) {
                     target.html(newopts);
                 }
                 if (options.multiselect_widget_bool) {
-                    context.find('.groups .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
+                    context.find('.visual .filter-group input[type="checkbox"]:checked').prop('checked', false).change();
                     context.find('.multiselected .select').empty();
                     filterFilters(newopts);
                 }
+                if (options.callback) {
+                    options.callback(context);
+                }
             };
 
-            if (trigger.is('select')) {
+            if (trigger.is('select') && !(context.find('.multiselected .select').find(options.option_sel).length)) {
                 doFilter();
                 trigger.change(doFilter);
             } else if (options.multiselect_widget_bool) {
@@ -105,6 +113,7 @@ var CC = (function (CC, $) {
         }
     };
 
+    // Filter product-specific tags when changing case product
     CC.filterProductTags = function (container) {
         var context = $(container),
             trigger = context.find('#id_product'),
@@ -128,6 +137,7 @@ var CC = (function (CC, $) {
         trigger.change(filterTags);
     };
 
+    // Adding/removing attachments on cases
     CC.testcaseAttachments = function (container) {
         var context = $(container),
             counter = 0,
@@ -169,151 +179,6 @@ var CC = (function (CC, $) {
             if (attachment.hasClass('new')) {
                 context.find('#' + inputID).remove();
                 attachment.remove();
-            }
-        });
-    };
-
-    CC.testcaseVersioning = function (container) {
-        var context = $(container),
-            versionList = context.find('.versioning .version-select'),
-            versions = versionList.find('.version'),
-            versionLabels = versions.find('.item-select'),
-            versionHeader = versionList.find('.summary strong'),
-            url = window.location.pathname,
-            dirty = false,
-            tags = context.find('.versioned .tagging .visual').html();
-
-        versions.each(function () {
-            var thisVersion = $(this),
-                runlist = thisVersion.find('.item-select .runs .runlist'),
-                runs = runlist.children('li'),
-                moreRunsLink = ich.case_versioning_more_runs_link();
-
-            if (runs.length > 2) {
-                moreRunsLink.click(function (e) {
-                    if ($(this).hasClass('open')) {
-                        $(this).html('more runs &raquo;').removeClass('open');
-                        runs.filter(':gt(1)').slideUp();
-                    } else {
-                        $(this).html('fewer runs &raquo;').addClass('open');
-                        runs.filter(':gt(1)').slideDown();
-                    }
-                    return false;
-                });
-                runlist.after(moreRunsLink);
-            }
-        });
-
-        versionLabels.click(function (e) {
-            var clickedVersion = $(this).closest('.version'),
-                newVersion,
-                newVersionID,
-                currentVersionID,
-                newURL,
-                updateVersion;
-            if (clickedVersion.find('.item-input').is(':checked')) {
-                versionList.find('.summary').click();
-            } else {
-                newVersion = clickedVersion.data('version');
-                newVersionID = clickedVersion.data('version-id');
-                currentVersionID = url.split('/')[3];
-                newURL = url.replace(currentVersionID, newVersionID);
-                updateVersion = function (data) {
-                    if (data.html) {
-                        var newHTML = $(data.html).hide(),
-                            prefix = newHTML.find('ol.steplist').data('prefix');
-                        context.find('.versioned').fadeOut('fast', function () {
-                            versionList.find('.summary').click();
-                            $(this).replaceWith(newHTML);
-                            versionHeader.text('v' + newVersion.toString());
-                            if (clickedVersion.is(':last-child')) {
-                                versionHeader.append(' (latest)');
-                            } else {
-                                versionHeader.append(' (obsolete)');
-                            }
-                            dirty = false;
-                            newHTML.fadeIn('fast', function () {
-                                $(this).find('ol.steplist').formset({
-                                    prefix: prefix,
-                                    formTemplate: '#empty-step-form .step-form-item',
-                                    formSelector: '.step-form-item',
-                                    deleteLink: '<a class="removefields" href="javascript:void(0)">remove</a>',
-                                    deleteLinkSelector: '.removefields',
-                                    addAnimationSpeed: 'normal',
-                                    removeAnimationSpeed: 'fast',
-                                    autoAdd: true,
-                                    alwaysShowExtra: true,
-                                    deleteOnlyActive: true,
-                                    insertAbove: true
-                                });
-                                context.customAutocomplete({
-                                    textbox: 'input[name="text-tag"]',
-                                    ajax: true,
-                                    url: $('#addcase input[name="text-tag"]').data('autocomplete-url'),
-                                    triggerSubmit: null,
-                                    allowNew: true,
-                                    inputType: 'tag',
-                                    noInputsNote: true
-                                });
-                                CC.testcaseAttachments('#single-case-form .attachments');
-                                tags = context.find('.versioned .tagging .visual').html();
-                            });
-                        });
-                        context.find('#single-case-form').attr('action', url);
-                    }
-                };
-
-                if (dirty || context.find('.versioned .tagging .visual').html() !== tags) {
-                    if (confirm("You have made changes to the form that will be lost if you switch versions. Are you sure you want to continue?")) {
-                        context.find('.versioned').loadingOverlay();
-                        url = newURL;
-                        $.get(url, updateVersion);
-                    } else {
-                        e.preventDefault();
-                    }
-                } else {
-                    context.find('.versioned').loadingOverlay();
-                    url = newURL;
-                    $.get(url, updateVersion);
-                }
-            }
-        });
-
-        context
-            .on(
-                'change',
-                '.versioned #id_description, .versioned .steps-form:not(.extra-row) textarea, .versioned input[name="attachment"]',
-                function () {
-                    dirty = true;
-                }
-            )
-            .on(
-                'click',
-                '.versioned a.removefields, .versioned a.insert-step',
-                function () {
-                    dirty = true;
-                }
-            );
-
-        versionList.find('.summary').click(function () { $(this).blur(); });
-    };
-
-    CC.envNarrowing = function (container) {
-        var context = $(container),
-            bulkSelect = context.find('#bulk_select'),
-            inputs = context.find('input[type="checkbox"][name="environments"]');
-
-        bulkSelect.change(function () {
-            if ($(this).is(':checked')) {
-                inputs.prop('checked', true);
-            } else {
-                inputs.prop('checked', false);
-            }
-        });
-
-        inputs.change(function () {
-            if (inputs.not(':checked').length) {
-                bulkSelect.prop('checked', false);
             }
         });
     };

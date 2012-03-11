@@ -21,11 +21,11 @@ Tests for bulk test-case parser.
 """
 import textwrap
 
-from django.utils.unittest import TestCase
+from tests import case
 
 
 
-class ParseBulkTest(TestCase):
+class ParseBulkTest(case.TestCase):
     """Tests for BulkParser."""
     @property
     def parser(self):

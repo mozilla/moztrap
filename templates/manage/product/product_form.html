@@ -1,0 +1,31 @@
+{% extends 'manage/product/base.html' %}
+
+{% block content %}
+<section class="{% block sectionclass %}{% endblock %}">
+  <h2>create a new product</h2>
+  <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form product-form">
+    {% csrf_token %}
+    {{ form.cc_version }}
+    {{ form.non_field_errors }}
+
+    {% block fields %}
+    {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.description %}
+    {% endblock %}
+
+    {% comment %}
+    <section class="userselect details{% if form.team.errors or form.team.value %} open{% endif %}">
+      <h3 class="summary">assign specific users to this product &raquo;</h3>
+      <div>
+        {# @@@ needs the slick multiple-select widget #}
+        {% include "forms/_field.html" with field=form.team %}
+      </div>
+    </section>
+    {% endcomment %}
+
+    <div class="form-actions">
+      <button type="submit">save product</button>
+    </div>
+  </form>
+</section>
+{% endblock content %}

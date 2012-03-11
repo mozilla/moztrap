@@ -1,15 +1,18 @@
 {% extends 'manage/tag/base.html' %}
 
+{% load permissions %}
+
 {% block content %}
+
 <section id="managetags" class="manage listpage">
   <h2>Manage Tags</h2>
 
-  {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-  <div class="create"><a href="#">create a tag</a></div>
+  {% if user|has_perm:"tags.manage_tags" %}
+    <a href="{% url manage_tag_add %}" class="create single">create a tag</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
-  {% include "manage/tag/_tags_list.html" %}
+  {% include "manage/tag/list/_tags_list.html" %}
 
 </section>
 {% endblock content %}

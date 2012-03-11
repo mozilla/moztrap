@@ -19,9 +19,13 @@
 All models.
 
 """
-from django.contrib.auth.models import User, Permission
+from django.db.models import ProtectedError
 
+from registration.models import RegistrationProfile
+
+from .ccmodel import ConcurrencyError
 from .core.models import Product, ProductVersion
+from .core.auth import User, Role, Permission
 from .environments.models import Environment, Profile, Element, Category
 from .execution.models import Run, RunSuite, RunCaseVersion, Result, StepResult
 from .library.bulk import BulkParser

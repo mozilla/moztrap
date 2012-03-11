@@ -1,0 +1,34 @@
+{% extends 'results/result/base.html' %}
+
+{% block content %}
+
+<section id="results" class="results listpage">
+  <h2>Results for &ldquo;{{ runcaseversion.caseversion.name }}&rdquo;</h2>
+
+  <div class="case-details {{ runcaseversion.caseversion.status }}">
+    <div class="summary">
+      {% include "results/_status.html" with item=runcaseversion.caseversion %}
+      <p class="run" title="{{ runcaseversion.run.name }}"><b>run:</b> {{ runcaseversion.run.name }}</p>
+      <p class="product"><b>product:</b> {{ runcaseversion.caseversion.case.product.name }}</p>
+      {% include "results/_results_summary.html" with results=runcaseversion.result_summary %}
+    </div>
+
+    <div class="content">
+      <ol class="steps">
+        {% for step in runcaseversion.caseversion.steps.all %}
+        <li class="stepitem">
+          <p class="instruction">{{ step.instruction }}</p>
+          <p class="outcome">{{ step.expected }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% include "lists/_associated_links.html" with bugs=runcaseversion.caseversion.bug_urls attachments=runcaseversion.caseversion.attachments %}
+    </div>
+  </div>
+
+
+  {% include "lists/_filter.html" %}
+  {% include "results/result/list/_results_list.html" %}
+
+</section>
+{% endblock content %}

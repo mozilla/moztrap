@@ -1,9 +1,5 @@
-{% load results %}
-
-{% with obj.resultsummary as results and obj|results_detail_url as detail_url %}
-<ul class="results">
-  <li><a href="{{ detail_url }}" class="invalidated {% if results.INVALIDATED == 0 %}zip{% endif %}" title="invalid">{{ results.INVALIDATED }} <span>invalid</span></a></li>
-  <li><a href="{{ detail_url }}" class="failed {% if results.FAILED == 0 %}zip{% endif %}" title="failed">{{ results.FAILED }} <span>failed</span></a></li>
-  <li><a href="{{ detail_url }}" class="passed {% if results.PASSED == 0 %}zip{% endif %}" title="passed">{{ results.PASSED }} <span>passed</span></a></li>
+<ul class="results-summary">
+  <li><a href="{{ detail_url }}" class="invalidated {% if results.invalidated == 0 %}zip{% endif %}" title="invalid">{{ results.invalidated }} <span class="context">invalid</span></a></li>
+  <li><a href="{{ detail_url }}" class="failed {% if results.failed == 0 %}zip{% endif %}" title="failed">{{ results.failed }} <span class="context">failed</span></a></li>
+  <li><a href="{{ detail_url }}" class="passed {% if results.passed == 0 %}zip{% endif %}" title="passed">{{ results.passed }} <span class="context">passed</span></a></li>
 </ul>
-{% endwith %}

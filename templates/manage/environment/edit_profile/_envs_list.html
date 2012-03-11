@@ -1,23 +1,7 @@
-<div class="managelist action-ajax-replace">
+{% extends "manage/environment/env_list/_envs_list.html" %}
 
-  {% include "manage/environment/edit_profile/_envs_listordering.html" %}
+{% block formid %}profile-environments-form{% endblock %}
 
-  <div class="items">
-    <form method="POST">
-    {% for env in environments %}
-    {% include "manage/environment/edit_profile/_env_list_item.html" %}
-    {% endfor %}
-    </form>
-
-    {% if "PERMISSION_ENVIRONMENT_EDIT" in request.user.permissionCodes %}
-    <article class="item add-item details">
-      <h3 class="summary">add an environment</h3>
-      <div class="content">
-        {% include "manage/environment/edit_profile/_env_list_item_content_new.html" %}
-      </div>
-    </article>
-    {% endif %}
-  </div>
-
-  {% include "lists/_listnav.html" %}
-</div>
+{% block env-list-item %}
+{% include "manage/environment/edit_profile/_env_list_item.html" %}
+{% endblock %}

@@ -18,7 +18,9 @@
 """Sample products fixture generator."""
 from django.core.management import call_command
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User as BaseUser, Group
+
+from .auth import User, Role
 
 from fixture_generator import fixture_generator
 
@@ -52,14 +54,15 @@ def sample_products():
     cc8.environments.add(*webenvs.environments.all())
 
 
-@fixture_generator(Group, User)
+# have to pass fixture-generator the real concrete models
+@fixture_generator(Group, BaseUser)
 def sample_users():
     call_command("create_default_roles", verbosity=0)
 
-    tester_group = Group.objects.get(name="Tester")
-    creator_group = Group.objects.get(name="Test Creator")
-    manager_group = Group.objects.get(name="Test Manager")
-    admin_group = Group.objects.get(name="Admin")
+    tester_role = Role.objects.get(name="Tester")
+    creator_role = Role.objects.get(name="Test Creator")
+    manager_role = Role.objects.get(name="Test Manager")
+    admin_role = Role.objects.get(name="Admin")
 
     # create and delete one user so we avoid using id=1 in the fixture; would
     # overwrite the default superuser that may have been created on syncdb.
@@ -75,7 +78,7 @@ def sample_users():
         user.set_password("testpw")
         user.save()
 
-    tester.groups.add(tester_group)
-    creator.groups.add(creator_group)
-    manager.groups.add(manager_group)
-    admin.groups.add(admin_group)
+    tester.roles.add(tester_role)
+    creator.roles.add(creator_role)
+    manager.roles.add(manager_role)
+    admin.roles.add(admin_role)
