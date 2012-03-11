@@ -41,13 +41,14 @@ def manifest(request):
                     "url": "http://quality.mozilla.org"
                  }
              }
-    return HttpResponse(json.dumps(manifest), content_type="application/x-web-app-manifest+json")
+    return HttpResponse(
+        json.dumps(manifest),
+        content_type="application/x-web-app-manifest+json",
+        )
 
 def self_register(request):
-    return TemplateResponse(
-           request,
-           "owa/self_register.html",
-           {"manifest_url": request.build_absolute_uri(reverse("owa_manifest"))}
-           )
+    return TemplateResponse(request, "owa/self_register.html", {
+        "manifest_url": request.build_absolute_uri(reverse("owa_manifest")),
+        })
 
 
