@@ -121,10 +121,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   display: inline-block;
@@ -1241,10 +1240,9 @@ body > div {
   background-color: #75b828;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1291,10 +1289,9 @@ body > div {
   background-color: #fdc90d;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/minus.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -1393,10 +1390,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -1505,9 +1501,9 @@ body > div {
 }
 
 .sortlink:link::after, .sortlink:visited::after {
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
   background-image: url('../images/ui/angle_up.png?1326735333');
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -1687,10 +1683,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -1710,10 +1705,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -1734,10 +1728,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -1758,10 +1751,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -1782,10 +1774,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -1805,10 +1796,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
@@ -1829,10 +1819,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
@@ -1909,10 +1898,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   padding-top: 0.375em;
@@ -1959,10 +1947,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2038,10 +2025,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   content: " ";
@@ -2069,10 +2055,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
@@ -2125,10 +2110,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   display: block;
@@ -2144,10 +2128,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2160,10 +2143,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2176,10 +2158,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2192,10 +2173,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2208,10 +2188,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2244,10 +2223,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: #cbcfd6;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2267,10 +2245,9 @@ body > div {
   background-color: #a9b2bf;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2297,10 +2274,9 @@ body > div {
   background-color: #cceca7;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2320,10 +2296,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: #cceca7;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2343,10 +2318,9 @@ body > div {
   background-color: #b3e37d;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2373,10 +2347,9 @@ body > div {
   background-color: #fef0bd;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2396,10 +2369,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: #fef0bd;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -2419,10 +2391,9 @@ body > div {
   background-color: #fee58b;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2449,10 +2420,9 @@ body > div {
   background-color: #cceca7;
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
@@ -2765,10 +2735,9 @@ body > div {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
@@ -3420,10 +3389,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 14px;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
@@ -3462,10 +3430,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
 }
@@ -4622,10 +4589,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   position: absolute;
@@ -4688,10 +4654,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   display: inline-block;
@@ -5079,9 +5044,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .itemhead .drill-link::after, #results .case-details .summary .drill-link::after {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
   background-image: url('../images/ui/open.png?1326735333');
   background-repeat: no-repeat;
   background-position: 50% 50%;
@@ -5889,10 +5854,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  text-indent: -119988px;
+  text-indent: 110%;
+  white-space: nowrap;
   overflow: hidden;
-  text-align: left;
-  overflow: visible;
   background-position: center;
   width: 1.5em;
   position: absolute;
