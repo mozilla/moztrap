@@ -724,6 +724,18 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   list-style-type: none;
   margin-left: 0;
 }
+form > .errorlist {
+  margin-bottom: 0.75em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  font-weight: 700;
+  padding: 0.375em 0.75em;
+  background: #b8282d;
+  color: white;
+}
 
 .form-actions {
   padding-top: 0.75em;
@@ -3045,6 +3057,9 @@ body.login .forgot {
   font-style: italic;
   text-align: right;
 }
+body.login form > .errorlist {
+  margin-left: 41.026%;
+}
 body.login label {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -3055,7 +3070,7 @@ body.login label {
   margin-right: 2.564%;
   padding-left: 0.75em;
 }
-body.login input, body.login .errorlist {
+body.login input, body.login .formfield .errorlist {
   display: inline;
   float: left;
   width: 58.974%;
