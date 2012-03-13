@@ -1,6 +1,6 @@
 {% load permissions %}
 
-<article id="run-id-{{ run.id }}" class="listitem">
+<article id="run-id-{{ run.id }}" class="listitem" data-title="{{ run.name }}">
   {% include "manage/_status.html" with item=run permission="execution.manage_runs" %}
 
   <header class="itemhead">
