@@ -1,5 +1,7 @@
 {% extends "forms/widgets/filtered_select_multiple/_filtered_select_multiple_item.html" %}
 
+{% block extra-attrs %}data-title="{{ choice.1.obj.name }}"{% endblock %}
+
 {% block content %}
 <div class="name">
   <h5 class="title" title="{{ item.name }}">{{ item.name }}</h5>
