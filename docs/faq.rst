@@ -3,7 +3,8 @@
 Frequently Asked Questions
 ==========================
 
-1. **Some or all of my test cases don't show up when I execute my test run**
+1. **Some or all of my test cases don't show up when I execute my test run.
+Why?**
 
   - Your :ref:`test cases <test-cases>` or :ref:`test suites <test-suites>` may
     not have been active at the time the :ref:`test run <test-runs>` was made
@@ -17,7 +18,7 @@ Frequently Asked Questions
     reflect that, simply clone the existing test run, and activate it. Your
     newly active cases and suites will be reflected.
 
-2. **When I type in a filter, I don't see the results I expected**
+2. **When I type in a filter, I don't see the results I expected.  Why?**
 
   - When you type text into the simple search field, you'll see a drop-down
     list showing some possible choices.  On the right of that list is the field
