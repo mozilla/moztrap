@@ -22,7 +22,6 @@ Open Web Apps view.
 import json
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 
@@ -45,10 +44,3 @@ def manifest(request):
         json.dumps(manifest),
         content_type="application/x-web-app-manifest+json",
         )
-
-def self_register(request):
-    return TemplateResponse(request, "owa/self_register.html", {
-        "manifest_url": request.build_absolute_uri(reverse("owa_manifest")),
-        })
-
-

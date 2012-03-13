@@ -21,8 +21,8 @@ Form-rendering tags and filters.
 """
 from django import forms
 from django import template
-from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.template.loader import render_to_string
 
 
 
@@ -34,4 +34,3 @@ register = template.Library()
 def owa_manifest_url(request):
     """Return the url to register the manifest as an open web app"""
     return request.build_absolute_uri(reverse("owa_manifest"))
-

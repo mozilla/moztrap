@@ -28,9 +28,5 @@ urlpatterns = patterns(
 
     # open web apps ----------------------------------------------------------
     url("^manifest.webapp", "manifest", name="owa_manifest"),
-    url("^register/", "self_register", name="owa_register"),
 
 )
-
-
-
