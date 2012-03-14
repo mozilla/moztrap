@@ -56,25 +56,3 @@ class ManifestTest(WebTest):
             json.loads(res.body)["description"],
             "A Test Case and Results management System.",
             )
-
-
-class RegisterTest(WebTest):
-    """Tests for register view."""
-    @property
-    def url(self):
-        """Shortcut for owa register url."""
-        return reverse("owa_register")
-
-
-    def get(self, **kwargs):
-        """Shortcut for getting register url."""
-        return self.app.get(self.url, **kwargs)
-
-
-    def test_registration_page(self):
-        """registration page is returned."""
-
-        res = self.get(status=200)
-
-        res.mustcontain("Register as an Open Web App")
-
