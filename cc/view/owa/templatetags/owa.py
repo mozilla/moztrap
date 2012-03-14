@@ -16,13 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Form-rendering tags and filters.
+Open Web App template tags and filters.
 
 """
-from django import forms
 from django import template
 from django.core.urlresolvers import reverse
-from django.template.loader import render_to_string
 
 
 
@@ -32,5 +30,5 @@ register = template.Library()
 
 @register.filter
 def owa_manifest_url(request):
-    """Return the url to register the manifest as an open web app"""
+    """Return the full absolute url for the open web app manifest."""
     return request.build_absolute_uri(reverse("owa_manifest"))
