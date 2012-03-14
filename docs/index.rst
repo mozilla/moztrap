@@ -50,7 +50,6 @@ Contents
    development
    deployment
    userguide/index
-   faq
 
 
 Indices and tables
