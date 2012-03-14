@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Tests for suite/case importer."""
-
-from unittest import TestCase
-
 from tests import case
 
 from mock import patch
@@ -629,11 +626,9 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
             raise SurpriseException("Surprise!")
         new_import_suites.side_effect = raise_exception
 
-        self.assertRaises(
-            SurpriseException,
-            self.import_data,
-            (case_suite_data),
-            )
+        with self.assertRaises(SurpriseException):
+            self.import_data(case_suite_data)
+
         self.assertEqual(self.model.Case.objects.count(), 0)
         self.assertEqual(self.model.CaseVersion.objects.count(), 0)
 
