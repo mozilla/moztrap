@@ -18,8 +18,8 @@
   {% stepresult_for result step as stepresult %}
   <li class="stepitem">
     <div class="step {{ stepresult.status }}">
-      <p class="instruction">{{ step.instruction }}</p>
-      <p class="outcome">{{ step.expected }}</p>
+      <div class="instruction">{{ step.instruction|markdown }}</div>
+      <div class="outcome">{{ step.expected|markdown }}</div>
     </div>
 
     {% if result.status == result.STATUS.failed and stepresult.status == stepresult.STATUS.failed %}

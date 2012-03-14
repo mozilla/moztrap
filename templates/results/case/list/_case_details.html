@@ -18,8 +18,8 @@
   <ol class="steps">
     {% for step in runcaseversion.caseversion.steps.all %}
     <li class="stepitem">
-      <p class="instruction">{{ step.instruction }}</p>
-      <p class="outcome">{{ step.expected }}</p>
+      <div class="instruction">{{ step.instruction|markdown }}</div>
+      <div class="outcome">{{ step.expected|markdown }}</div>
     </li>
     {% endfor %}
   </ol>

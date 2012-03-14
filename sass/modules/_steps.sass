@@ -4,8 +4,13 @@
     +trailer(.5)
     position: relative
   .instruction, .outcome
-    +trailer(0)
-  .instruction
-    +demi
+    p
+      +trailer(0)
+    &::before
+      +float(left)
+      +demi
+      content: "»"
+      margin-right: rhythm(.25)
+      color: $base
   .outcome
-    +italic
+    color: rgba($base,$small)

@@ -2988,14 +2988,19 @@ body > div {
   margin-bottom: 0.75em;
   position: relative;
 }
-.steps .instruction, .steps .outcome {
+.steps .instruction p, .steps .outcome p {
   margin-bottom: 0em;
 }
-.steps .instruction {
+.steps .instruction::before, .steps .outcome::before {
+  display: inline;
+  float: left;
   font-weight: 500;
+  content: "»";
+  margin-right: 0.375em;
+  color: #454545;
 }
 .steps .outcome {
-  font-style: italic;
+  color: rgba(69, 69, 69, 0.667);
 }
 
 body.login > div {
