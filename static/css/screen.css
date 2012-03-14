@@ -5352,10 +5352,11 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   width: 66.316%;
   margin-right: 1.053%;
 }
-#runtests .name {
+#runtests .title {
   font-size: 1.5em;
   line-height: 1.5em;
   font-weight: 500;
+  display: inline;
 }
 #runtests .description, #runtests .steps {
   padding-left: 16.842%;

@@ -23,7 +23,19 @@
       {% endif %}
     </form>
 
-    <h3 class="name" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+    <div class="name">
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
+      <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link tag" data-type="tag">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
 
     {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
       <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
