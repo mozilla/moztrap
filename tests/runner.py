@@ -21,7 +21,7 @@ from django.test.simple import DjangoTestSuiteRunner, reorder_suite
 from django.utils.importlib import import_module
 from django.utils.unittest.loader import defaultTestLoader
 
-from tests import case
+
 
 class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
     def build_suite(self, test_labels, extra_tests=None, **kwargs):
@@ -44,10 +44,6 @@ class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
             for test in extra_tests:
                 suite.addTest(test)
 
-
-        #@@@ fixing imports helped a lot.  But one test is still failing
-        # Tried adding case.TestCase in here, but that didn't seem to help
-        # that last case in test_bad_sort_field.  Could the test have an error?
         return reorder_suite(suite, (
             TestCase,
             TransactionTestCase,
