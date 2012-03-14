@@ -215,6 +215,9 @@ var CC = (function (CC, $) {
         CC.breadcrumb('.drilldown');
         CC.failedTestBug('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
+
+        // owa.js
+        CC.owa();
     });
 
     $(window).load(function () {
