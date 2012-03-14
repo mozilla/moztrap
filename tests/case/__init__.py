@@ -28,8 +28,6 @@ View and admin test case classes (using WebTest) are available from the view
 and admin sub-modules.
 
 """
-from django.utils.unittest import TestCase
-
 from . import admin
 from . import view
-from .base import DBTestCase
+from .base import TestCase, DBTestCase, TransactionTestCase
