@@ -30,7 +30,7 @@ from ...utils import Url
 
 
 
-class SortDecoratorTest(case.TestCase):
+class SortDecoratorTest(case.DBTestCase):
     @property
     def sort(self):
         """The decorator factory under test."""
@@ -104,6 +104,7 @@ class SortDecoratorTest(case.TestCase):
         req = RequestFactory().get(
             "/a/url", {"sortfield": "foo", "sortdirection": "asc"})
         from cc.model.core.models import Product # has no "foo" field
+
         qs = Product.objects.all()
         res = self.on_template_response({"ctx_name": qs}, request=req)
 
