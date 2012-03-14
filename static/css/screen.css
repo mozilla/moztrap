@@ -2212,10 +2212,51 @@ body > div {
   -webkit-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
   box-shadow: rgba(69, 69, 69, 0.667) 0 0 4px inset;
+}
+.status .status-readonly, .status .status-select {
   display: inline-block;
 }
-.status .draft.status-readonly {
-  background-image: url('../images/ui/power.png?1326735333');
+.status .status-select {
+  position: relative;
+}
+.status .status-title {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid rgba(72, 78, 85, 0.667);
+}
+.status .status-options {
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 633.333%;
+  padding: 0.75em;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 900;
+}
+.status .status-action {
+  margin-bottom: 0.375em;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.status .status-action:last-child {
+  margin-bottom: 0em;
+}
+.status .draft.status-readonly, .status .draft .status-title {
+  background-image: url('../images/ui/draft.png?1331766439');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2242,52 +2283,38 @@ body > div {
   text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   color: #454545;
   border-color: #666666;
-  background-color: #a9b2bf;
+  background-color: #cbcfd6;
   background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
   background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+  padding-left: 32px;
+  background-position: 9px, left;
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  cursor: pointer;
 }
-.status .draft.status-action:focus, .status .draft.status-action:hover, .status .draft.status-action:active {
-  font-weight: 500;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
-  color: #454545;
-  border-color: #698e3e;
-  background-color: #cceca7;
-  background-repeat: no-repeat;
-  background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+.status .draft.status-action:hover, .status .draft.status-action:focus {
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.status .active.status-readonly {
+.status .draft.status-action:active {
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/draft.png?1331766439'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/draft.png?1331766439'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+.status .active.status-readonly, .status .active .status-title {
   background-image: url('../images/ui/power.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -2315,52 +2342,38 @@ body > div {
   text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   color: #454545;
   border-color: #698e3e;
-  background-color: #b3e37d;
+  background-color: #cceca7;
   background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
   background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
+  padding-left: 32px;
+  background-position: 9px, left;
   background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+  cursor: pointer;
 }
-.status .active.status-action:focus, .status .active.status-action:hover, .status .active.status-action:active {
-  font-weight: 500;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
-  color: #454545;
-  border-color: #b0901c;
-  background-color: #fef0bd;
-  background-repeat: no-repeat;
-  background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+.status .active.status-action:hover, .status .active.status-action:focus {
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.status .disabled.status-readonly {
+.status .active.status-action:active {
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/power.png?1326735333'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/power.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+.status .disabled.status-readonly, .status .disabled .status-title {
   background-image: url('../images/ui/lock.png?1326735333');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
@@ -2388,50 +2401,36 @@ body > div {
   text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   color: #454545;
   border-color: #b0901c;
-  background-color: #fee58b;
+  background-color: #fef0bd;
   background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
   background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
+  padding-left: 32px;
+  background-position: 9px, left;
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+  cursor: pointer;
 }
-.status .disabled.status-action:focus, .status .disabled.status-action:hover, .status .disabled.status-action:active {
-  font-weight: 500;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  border-style: solid;
-  border-width: 0.071em;
-  padding: 0.304em;
-  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
-  color: #454545;
-  border-color: #698e3e;
-  background-color: #cceca7;
-  background-repeat: no-repeat;
-  background-repeat: no-repeat;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-  background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
-  background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
-  padding: 0;
+.status .disabled.status-action:hover, .status .disabled.status-action:focus {
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+}
+.status .disabled.status-action:active {
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
+  background-image: url('../images/ui/lock.png?1326735333'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
+  background-image: url('../images/ui/lock.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
 .resultsummary, .results-summary a {
