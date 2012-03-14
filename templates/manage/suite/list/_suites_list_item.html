@@ -1,6 +1,6 @@
 {% load permissions filters %}
 
-<article id="suite-id-{{ suite.id }}" class="listitem">
+<article id="suite-id-{{ suite.id }}" class="listitem" data-title="{{ suite.name }}">
   {% include "manage/_status.html" with item=suite permission="library.manage_suites" %}
 
   <header class="itemhead">

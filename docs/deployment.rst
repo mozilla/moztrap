@@ -99,12 +99,14 @@ run once on a deployment or build server, and then the contents of
 Database performance tweak
 --------------------------
 
-In order to ensure that all database tables are created with the InnoDB storage
-engine, Case Conductor's default settings file sets the database driver option
-"init_command" to "SET storage_engine=InnoDB". This causes the SET command to
-be run on each database connection, which is an unnecessary slowdown once all
-tables have been created. Thus, on a production server, you should comment this
-option from your ``cc/settings/local.py`` file's ``DATABASES`` setting after
-you've run ``python manage.py syncdb --migrate`` to create all tables
-(uncomment it before running ``python manage.py syncdb`` or ``python manage.py
-migrate`` after an update to the Case Conductor codebase).
+In order to ensure that all database tables are created with the InnoDB
+storage engine, Case Conductor's default settings file sets the database
+driver option "init_command" to "SET storage_engine=InnoDB".  This causes
+the SET command to be run on each database connection, which is an
+unnecessary slowdown once all tables have been created.  Thus, on a
+production server, you should comment this option from your
+``cc/settings/local.py`` file's ``DATABASES`` setting after you've run
+``python manage.py syncdb --migrate`` to create all tables (uncomment it
+before running ``python manage.py syncdb`` or ``python manage.py migrate``
+after an update to the Case Conductor codebase, or before trying to run the
+tests).

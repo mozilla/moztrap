@@ -1,4 +1,4 @@
-<article{% for k, v in choice.1.attrs.items %} {{ k }}="{{ v }}"{% endfor %} class="selectitem">
+<article{% for k, v in choice.1.attrs.items %} {{ k }}="{{ v }}"{% endfor %} class="selectitem" {% block extra-attrs %}{% endblock %}>
   <input type="checkbox" name="bulk-select" value="{{ choice.0 }}" class="bulk-value" id="bulk-select-{{ choice.0 }}" {{ checked }}>
   <div class="listitem itemhead bulk-item">
     <label for="bulk-select-{{ choice.0 }}" class="bulk-type" title="select or drag">bulk select {{ choice.0 }}</label>

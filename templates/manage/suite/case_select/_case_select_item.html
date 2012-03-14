@@ -1,5 +1,7 @@
 {% extends "forms/widgets/filtered_select_multiple/_filtered_select_multiple_item.html" %}
 
+{% block extra-attrs %}data-title="{{ choice.1.obj.latest_version.name }}"{% endblock %}
+
 {% block content %}
 {% with item.latest_version as caseversion %}
 

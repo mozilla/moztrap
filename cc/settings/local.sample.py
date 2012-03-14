@@ -33,7 +33,6 @@ Copy local.sample.py to local.py and modify as needed.
 #         "HOST": "", # empty string == localhost
 #         "PASSWORD": "",
 #         "STORAGE_ENGINE": "InnoDB",
-#         # remove this after initial syncdb --migrate
 #         "OPTIONS": {
 #                 "init_command": "SET storage_engine=InnoDB",
 #             },

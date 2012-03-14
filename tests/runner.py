@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 from django.conf import settings
+from django.test import TestCase, TransactionTestCase
 from django.test.simple import DjangoTestSuiteRunner, reorder_suite
 from django.utils.importlib import import_module
-from django.utils.unittest import TestCase
 from django.utils.unittest.loader import defaultTestLoader
 
 
@@ -44,4 +44,7 @@ class DiscoveryDjangoTestSuiteRunner(DjangoTestSuiteRunner):
             for test in extra_tests:
                 suite.addTest(test)
 
-        return reorder_suite(suite, (TestCase,))
+        return reorder_suite(suite, (
+            TestCase,
+            TransactionTestCase,
+            ))
