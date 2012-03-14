@@ -1569,6 +1569,40 @@ body > div {
   letter-spacing: 0;
 }
 
+.bybulk-open {
+  position: absolute;
+  left: 0;
+  width: auto;
+  margin: 0;
+}
+.bybulk-open a:link, .bybulk-open a:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  background-image: url('../images/ui/angle_right.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-position: center;
+  width: 1.5em;
+  display: block;
+}
+.bybulk-open a:focus, .bybulk-open a:hover, .bybulk-open a:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+}
+.bybulk-open a.open:link, .bybulk-open a.open:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/angle_down.png?1326735333');
+}
+
 .listnav {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   *zoom: 1;
