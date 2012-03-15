@@ -32,7 +32,7 @@ var CC = (function (CC, $) {
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
     CC.autoFocus = function (trigger, context) {
-        $(context).find(trigger).click(function () {
+        $(context).on('click', trigger, function () {
             if ($(this).parent().hasClass('open')) {
                 $(this).parent().find('textarea').focus();
             }
@@ -75,8 +75,6 @@ var CC = (function (CC, $) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
                             newTest.find('.details').html5accordion();
-                            CC.autoFocus('.details.stepfail > .summary', newTest);
-                            CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
                     }
                 });
