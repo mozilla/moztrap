@@ -211,8 +211,9 @@ var CC = (function (CC, $) {
         CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary', '#runtests');
         CC.autoFocus('.details.testinvalid > .summary', '#runtests');
-        CC.runTests('#runtests');
         CC.breadcrumb('.drilldown');
+        CC.expandAllTests('#runtests');
+        CC.runTests('#runtests');
         CC.failedTestBug('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
     });

@@ -57,6 +57,31 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Expand all tests on bulk-open
+    CC.expandAllTests = function (container) {
+        var context = $(container),
+            trigger = context.find('.itemlist .listordering .bybulk-open > a'),
+            target = context.find('.itemlist .listitem .itembody.details');
+
+        trigger.click(function (e) {
+            trigger.toggleClass('open');
+            if (trigger.hasClass('open')) {
+                target.each(function () {
+                    if (!($(this).hasClass('open'))) {
+                        $(this).children('.item-summary').click();
+                    }
+                });
+            } else {
+                target.each(function () {
+                    if ($(this).hasClass('open')) {
+                        $(this).children('.item-summary').click();
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+    };
+
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
