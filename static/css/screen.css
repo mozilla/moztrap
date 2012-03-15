@@ -2991,16 +2991,16 @@ body > div {
 .steps .instruction p, .steps .outcome p {
   margin-bottom: 0em;
 }
-.steps .instruction::before, .steps .outcome::before {
+.steps .outcome {
+  color: rgba(69, 69, 69, 0.667);
+}
+.steps .outcome::before {
   display: inline;
   float: left;
   font-weight: 500;
   content: "»";
   margin-right: 0.375em;
   color: #454545;
-}
-.steps .outcome {
-  color: rgba(69, 69, 69, 0.667);
 }
 
 body.login > div {

@@ -6,11 +6,11 @@
   .instruction, .outcome
     p
       +trailer(0)
+  .outcome
+    color: rgba($base,$small)
     &::before
       +float(left)
       +demi
       content: "»"
       margin-right: rhythm(.25)
       color: $base
-  .outcome
-    color: rgba($base,$small)
