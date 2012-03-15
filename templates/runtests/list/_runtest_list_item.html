@@ -37,6 +37,8 @@
       {% endwith %}
     </div>
 
+    <div class="suites">@@@ wireframed suite names</div>
+
     {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
       <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
 

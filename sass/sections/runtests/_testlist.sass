@@ -16,11 +16,16 @@
     width: 100%
 
   .name, .byname
-    +columns(16,24)
+    +columns(10,24)
   .title
     +adjust-font-size-to($medpx,1.5)
     +demi
     display: inline
+
+  .suites, .bysuites
+    +columns(6,24)
+  .suites
+    +padding-leader(.25)
 
   .description, .steps
     +pad(4,4,24)
