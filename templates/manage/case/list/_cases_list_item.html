@@ -1,6 +1,6 @@
 {% load permissions %}
 
-<article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}">
+<article id="case-id-{{ caseversion.id }}" class="listitem {{ caseversion.status|slugify }}" data-title="{{ caseversion.name }}">
   {% include "manage/_status.html" with item=caseversion permission="library.manage_cases" %}
 
   <header class="itemhead">

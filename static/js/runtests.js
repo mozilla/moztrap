@@ -32,7 +32,7 @@ var CC = (function (CC, $) {
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
     CC.autoFocus = function (trigger, context) {
-        $(context).find(trigger).click(function () {
+        $(context).on('click', trigger, function () {
             if ($(this).parent().hasClass('open')) {
                 $(this).parent().find('textarea').focus();
             }
@@ -57,6 +57,45 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Expand all tests on bulk-open
+    CC.expandAllTests = function (container) {
+        var context = $(container),
+            trigger = context.find('.itemlist .listordering .bybulk-open > a'),
+            target,
+            updateTrigger = function () {
+                if (context.find('.itemlist .listitem .itembody.details').length === context.find('.itemlist .listitem .itembody.details.open').length) {
+                    trigger.addClass('open');
+                } else {
+                    trigger.removeClass('open');
+                }
+            };
+
+        trigger.click(function (e) {
+            target = context.find('.itemlist .listitem .itembody.details');
+            trigger.toggleClass('open');
+            if (trigger.hasClass('open')) {
+                target.each(function () {
+                    if (!($(this).hasClass('open'))) {
+                        $(this).children('.item-summary').click();
+                    }
+                });
+            } else {
+                target.each(function () {
+                    if ($(this).hasClass('open')) {
+                        $(this).children('.item-summary').click();
+                    }
+                });
+            }
+            e.preventDefault();
+        });
+
+        context.on('click', '.itemlist .listitem .itembody.details > .item-summary.summary', function () {
+            updateTrigger();
+        });
+
+        updateTrigger();
+    };
+
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
@@ -75,8 +114,6 @@ var CC = (function (CC, $) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
                             newTest.find('.details').html5accordion();
-                            CC.autoFocus('.details.stepfail > .summary', newTest);
-                            CC.autoFocus('.details.testinvalid > .summary', newTest);
                         }
                     }
                 });

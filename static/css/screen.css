@@ -723,6 +723,18 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   list-style-type: none;
   margin-left: 0;
 }
+form > .errorlist {
+  margin-bottom: 0.75em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  font-weight: 700;
+  padding: 0.375em 0.75em;
+  background: #b8282d;
+  color: white;
+}
 
 .form-actions {
   padding-top: 0.75em;
@@ -1567,6 +1579,40 @@ body > div {
   white-space: nowrap;
   text-transform: capitalize;
   letter-spacing: 0;
+}
+
+.bybulk-open {
+  position: absolute;
+  left: 0;
+  width: auto;
+  margin: 0;
+}
+.bybulk-open a:link, .bybulk-open a:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  background-image: url('../images/ui/angle_right.png?1326735333');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-position: center;
+  width: 1.5em;
+  display: block;
+}
+.bybulk-open a:focus, .bybulk-open a:hover, .bybulk-open a:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=75);
+  opacity: 0.75;
+}
+.bybulk-open a.open:link, .bybulk-open a.open:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  background-image: url('../images/ui/angle_down.png?1326735333');
 }
 
 .listnav {
@@ -3073,6 +3119,9 @@ body.login .forgot {
   font-style: italic;
   text-align: right;
 }
+body.login form > .errorlist {
+  margin-left: 41.026%;
+}
 body.login label {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -3083,7 +3132,7 @@ body.login label {
   margin-right: 2.564%;
   padding-left: 0.75em;
 }
-body.login input, body.login .errorlist {
+body.login input, body.login .formfield .errorlist {
   display: inline;
   float: left;
   width: 58.974%;
@@ -5841,11 +5890,12 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-image: url('../images/ui/warning.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
 
-#runtests .started .step .instruction, #runtests .failed .step .instruction {
+#runtests .started .instruction {
   padding-left: 1.5em;
 }
 #runtests .step.failed .instruction {
   color: #b8282d;
+  padding-left: 1.5em;
 }
 
 .stepfail-summary {
