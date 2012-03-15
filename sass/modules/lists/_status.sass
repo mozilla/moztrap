@@ -55,14 +55,25 @@
     border: 1px solid rgba($blue-darker,$small)
 
   .status-options
+    +leader(.25)
     +border-radius
+    +box-shadow($lightest 0 0 rhythm(.25))
     position: absolute
     top: 100%
-    left: 0
+    left: rhythm(-.25)
     width: columns(5,1)
     padding: rhythm(.5)
     background: rgba(0,0,0,.75)
     z-index: 900
+    &::after
+      +rotate(135deg)
+      +background(linear-gradient(45deg, rgba(0,0,0,.75), rgba(0,0,0,.75) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0)))
+      content: ' '
+      display: block
+      position: absolute
+      top: rhythm(-.25)
+      width: rhythm(.5)
+      height: rhythm(.5)
 
   .status-action
     +trailer(.25)
