@@ -16,7 +16,7 @@
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   {% stepresult_for result step as stepresult %}
-  <li class="stepitem">
+  <li class="stepitem" data-step-number="{{ step.number }}">
     <div class="step {{ stepresult.status }}">
       <div class="instruction">{{ step.instruction|markdown }}</div>
       <div class="outcome">{{ step.expected|markdown }}</div>
@@ -47,7 +47,7 @@
 
             <div class="formfield fail-field">
               <label for="fail-comment-{{ runcaseversion.id }}-{{ step.number }}">actual result:</label>
-              <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
+              <textarea class="fail-input" name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
             </div>
 
             {% with runcaseversion.caseversion.bug_urls as bug_urls %}
