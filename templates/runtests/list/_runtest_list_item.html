@@ -6,47 +6,60 @@
 <article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}">
 
   <div class="itemhead">
-    <form method="POST" id="test-status-form-{{ runcaseversion.id }}" class="results">
+    <div class="results">
+      <span class="result {{ result.status }}">{{ result.status }}</span>
+    </div>
+
+    <div class="name">
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+
+      {% if result.status == result.STATUS.invalidated %}
+        <p class="invalid-note">{{ result.comment }}</p>
+      {% endif %}
+
+      {% if result.status == result.STATUS.failed %}
+        <p class="failed-note">{{ result.comment }}</p>
+        {% if result.bug_urls %}
+          <ul class="buglist">
+            {% for bug in result.bug_urls %}
+              <li class="bugurl">
+                {% include "bugs/bug.html" %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
+    </div>
+
+    <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
       {% csrf_token %}
 
       {% if result.status == result.STATUS.assigned %}
-        <button class="start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
+        <button class="action-start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
       {% endif %}
       {% if result.status == result.STATUS.started %}
-        <button class="pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
+        <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
       {% endif %}
-
       {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-        <button class="result-action restart {{ result.status }}" value="{{ runcaseversion.id }}" name="action-restart" title="test {{ result.status }} (restart test)">
-          {{ result.status }}
-        </button>
+        <button class="action-restart result-action" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
       {% endif %}
     </form>
 
-    <h3 class="name" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
-
-    {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
-      <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
-
-        <p class="summary invalid-summary" title="invalid or unclear">invalid or unclear</p>
-
-        {% if result.status == result.STATUS.invalidated %}
-          <p class="invalid-content">
-            {{ result.comment }}
-          </p>
-        {% else %}
-          <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
-            {% csrf_token %}
-            <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
-            <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
-            <div class="form-actions">
-              <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
-            </div>
-          </form>
-        {% endif %}
-
+    {% if result.status == result.STATUS.started %}
+      <div class="testinvalid details">
+        <p class="summary invalid-summary" title="invalid or unclear">invalid</p>
+        <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
+          {% csrf_token %}
+          <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
+          <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
+          <div class="form-actions">
+            <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
+          </div>
+        </form>
       </div>
     {% endif %}
+
   </div>
 
   {% include "runtests/list/_runtest_details.html" %}

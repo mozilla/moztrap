@@ -9,110 +9,124 @@
     +padding-leader(.5)
     +padding-trailer(.5)
 
-  .results, .byresults
-    +columns(4,24)
+  .results, .byresults, .result-action, .invalid-summary
+    +columns(3,24)
   .result-action
-    @extend .allcaps
-    width: 100%
+    +omega(24)
 
   .name, .byname
-    +columns(16,24)
-  .name
+    +columns(15,24)
+    .buglist
+      @extend .chicklist
+      padding-left: rhythm(.25)
+      display: inline
+    .bugurl
+      @extend .bugchick
+      +trailer(0)
+
+  .title, .invalid-note, .failed-note
+    display: inline
+  .title
     +adjust-font-size-to($medpx,1.5)
     +demi
+  .invalid-note, .failed-note
+    +italic
+    &::before
+      padding-left: rhythm(.25)
+      content: "["
+    &::after
+      content: "]"
 
   .description, .steps
-    +pad(4,4,24)
+    +pad(3,5,24)
 
   .description
     +italic
 
 // ---------------------------------------------------------------------------
-// Result action buttons
-.result-action
+// Result Status
+.result-action, .invalid-summary
+  @extend .allcaps
   text-align: left
-  &.start
-    +button-style($blue-lighter,'ui/power.png')
-  &.pass
-    +button-style($green-light,'ui/check.png')
-  &.passed
-    +button-style($green-dark,'ui/check.png')
-  &.failed
-    +button-style($red,'ui/x.png')
-  &.invalidated
-    +button-style($yellow-darker,'ui/check.png')
-  &.restart
-    +box-shadow($base 0 0 $xxsmallem inset)
-    +text-shadow(rgba($base,$small) 0 -1px 0)
-    color: $lightest
-    #{$focus}
-      +button-style($yellow,'ui/refresh.png')
+
+.results
+  .result
+    @extend .allcaps
+    +rhythm-borders(1px,.25)
+    +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
+    +demi
+    display: block
+    border-color: rgba($blue-dark,$small)
+  .assigned
+    +icon('ui/clock.png',$blue-hint,$notext:false)
+  .started
+    +icon('ui/clock.png',$blue-lightest,$notext:false)
+  .invalidated
+    +icon('ui/warning.png',$yellow-lighter,$notext:false)
+  .passed
+    +icon('ui/check.png',$green-light,$notext:false)
+  .failed
+    +icon('ui/x.png',$red-lighter,$notext:false)
+
+// ---------------------------------------------------------------------------
+// Result action buttons
+.action-start
+  +button-style($blue-lighter,'ui/power.png')
+.action-pass
+  +button-style($green-light,'ui/check.png')
+.action-restart
+  +button-style($blue-hint,'ui/refresh.png')
 
 // ---------------------------------------------------------------------------
 // Test Invalid
 .testinvalid
 
   .invalid-summary
-    +demi
-    +box-sizing(border-box)
-    +columns(4,24)
-    +omega(24)
-    +trailer(0)
-    +rhythm-borders(1px,.25)
-    +icon('ui/warning.png',$notext:false)
-    border-color: rgba($base,$xxxsmall)
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-    cursor: pointer
-    &:hover
-      +button-style($light,'ui/warning.png',$inset:true)
-
-  .invalid-content, .invalid-form
-    +full(24)
-    +pad(4,4,24)
-    +trailer(0)
+    +box-sizing('border-box')
+    +button-style($yellow,'ui/warning.png')
 
   .invalid-form
-    +padding-leader(1)
+    +full(24)
+    +pad(3,3,24)
+    +trailer(0)
+    +padding-leader(.5)
     .invalid-label
       +gone
     .invalid
       +button-style($yellow-dark)
     .form-actions
       +padding-leader(.25)
-      +trailer(.75)
-
-  .invalid-content
-    +italic
-    &::before
-      content: image-url('ui/warning.png')
-      vertical-align: middle
-
-  &.open, &.invalidated
-    .invalid-summary
-      +button-style($yellow,'ui/warning.png')
+      +trailer(.5)
 
 // ---------------------------------------------------------------------------
 // Step Fail
 #runtests
-  .started
-    .instruction
-      padding-left: rhythm(1)
   .step.failed
-    .instruction
+    .instruction, .outcome
       color: $red
-      padding-left: rhythm(1)
+
+.stepfail
+  .buglist, .assign-buglist
+    +no-style-list
+    +columns(12,16)
+  .bugurl
+    @extend .bugchick
+    +trailer(0)
 
 .stepfail-summary
-  +opacity(.25)
-  +icon('ui/x.png')
+  @extend .allcaps
+  +opacity(.5)
+  +box-sizing('border-box')
+  +icon('ui/x.png',$notext:false)
+  +demi
+  +cond
   position: absolute
-  top: -1px
-  left: 0
-  &.summary
-    cursor: pointer
-  #{$focus}, .stepfail.open &, .stepfail.failed &
+  top: 0
+  left: 0 - columns(3,16) - gutter(16)
+  width: columns(3,16)
+  cursor: pointer
+  color: $red
+  &:hover, .stepfail.open &
     +opacity(1)
 
 .stepfail-content
@@ -120,11 +134,8 @@
   +border-radius
   +rhythm-borders(1px,1)
   +box-shadow(rgba($red,$small) 0 0 $xsmallem inset)
-  background: rgba($red-light,$xxxsmall)
+  background: rgba($red-lightest,$xxxsmall)
   border-color: $red
-  .buglist, .assign-buglist
-    +no-style-list
-    +columns(12,16)
   .newbug-input-label, .newbug-radio-label
     +gone
   .newbug-radio
@@ -139,11 +150,7 @@
     +omega(16)
     clear: none
     padding: 0
-  .bugurl
-    @extend .bugchick
-    +trailer(0)
 
 .fail-field
   label
     +gone
-
