@@ -2249,6 +2249,7 @@ body > div {
   padding: 0.75em;
   background: rgba(0, 0, 0, 0.75);
   z-index: 900;
+  display: none;
 }
 .status .status-options::after {
   -webkit-transform: rotate(135deg);
@@ -2279,7 +2280,7 @@ body > div {
   margin-bottom: 0em;
 }
 .status .draft.status-readonly, .status .draft .status-title {
-  background-image: url('../images/ui/draft.png?1331832802');
+  background-image: url('../images/ui/draft.png?1331920059');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2313,29 +2314,29 @@ body > div {
   background-repeat: no-repeat;
   padding-left: 32px;
   background-position: 9px, left;
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
 .status .draft.status-action:hover, .status .draft.status-action:focus {
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1331832802'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1331832802'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1331832802'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1331832802'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1331920059'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1331920059'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1331920059'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1331920059'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
 .status .draft.status-action:active {
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/draft.png?1331832802'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1331832802'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/draft.png?1331920059'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1331920059'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
 }
 .status .active.status-readonly, .status .active .status-title {
   background-image: url('../images/ui/power.png?1326735333');
