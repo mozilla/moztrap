@@ -156,6 +156,7 @@ var CC = (function (CC, $) {
             '.manage, .results',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
+        CC.itemStatusDropdown('.manage');
 
         // filtering.js
         CC.toggleAdvancedFiltering('.magicfilter');

@@ -3,8 +3,8 @@
 <div class="status">
   {% if permission and user|has_perm:permission %}
 
-    <div class="{{ item.status }} status-select details">
-      <div class="status-title summary">{{ item.status }}</div>
+    <div class="{{ item.status }} status-select">
+      <div class="status-title">{{ item.status }}</div>
       <div class="status-options">
         {% if item.status != item.STATUS.draft %}
           <button type="submit" name="action-draft" value="{{ item.id }}" class="draft status-action">draft</button>
