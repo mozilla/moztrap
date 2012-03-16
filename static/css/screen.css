@@ -1590,7 +1590,7 @@ body > div {
 .bybulk-open a:link, .bybulk-open a:visited {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  background-image: url('../images/ui/angle_right.png?1326735333');
+  background-image: url('../images/ui/item_all_closed.png?1331918974');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1612,7 +1612,7 @@ body > div {
 .bybulk-open a.open:link, .bybulk-open a.open:visited {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-  background-image: url('../images/ui/angle_down.png?1326735333');
+  background-image: url('../images/ui/item_all_open.png?1331919021');
 }
 
 .listnav {
@@ -1936,7 +1936,7 @@ body > div {
 .itembody .item-summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  background-image: url('../images/ui/angle_right.png?1326735333');
+  background-image: url('../images/ui/item_closed.png?1331918450');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1985,7 +1985,7 @@ body > div {
 .itembody.open > .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-  background-image: url('../images/ui/angle_down.png?1326735333');
+  background-image: url('../images/ui/item_open.png?1331918428');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
