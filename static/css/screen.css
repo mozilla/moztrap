@@ -4682,11 +4682,10 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   position: absolute;
   left: 0;
   right: 0;
-  padding-left: 111.392%;
   top: -1.75em;
   color: inherit;
   text-transform: uppercase;
-  text-align: center;
+  text-align: right;
 }
 .step-form-item .insert-step::after {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
@@ -4700,21 +4699,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   border-bottom: 2px dashed rgba(72, 78, 85, 0.444);
 }
 .step-form-item .insert-step::before {
-  background-image: url('../images/ui/arrow_left.png?1327353019');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-  display: inline-block;
-  content: "<";
+  content: url('../images/ui/arrow_left.png?1327353019');
   padding-right: 0.4em;
 }
 .step-form-item .insert-step:focus, .step-form-item .insert-step:hover, .step-form-item .insert-step:active {
