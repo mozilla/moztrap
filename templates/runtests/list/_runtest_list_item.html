@@ -6,7 +6,7 @@
 <article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}">
 
   <div class="itemhead">
-    <form method="POST" id="test-status-form-{{ runcaseversion.id }}" class="results">
+    <form method="POST" id="test-status-form-{{ runcaseversion.id }}" class="results" data-title="{{ caseversion.name }}">
       {% csrf_token %}
 
       {% if result.status == result.STATUS.assigned %}
