@@ -16,9 +16,6 @@
   {% if result.status == result.STATUS.started %}
     <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass all</button>
   {% endif %}
-  {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-    <button class="action-restart result-action" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
-  {% endif %}
 </form>
 
 {% if caseversion.description %}

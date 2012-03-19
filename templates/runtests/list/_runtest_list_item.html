@@ -7,8 +7,20 @@
 
   <div class="itemhead">
     <div class="results">
-      <span class="result {{ result.status }}">{{ result.status }}</span>
+      <span class="result {{ result.status }}">
+        {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
+          pending
+        {% else %}
+          {{ result.status }}
+        {% endif %}
+      </span>
     </div>
+
+    {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
+      <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
+        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
+      </form>
+    {% endif %}
 
     <div class="name">
       <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>

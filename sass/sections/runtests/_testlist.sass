@@ -12,9 +12,11 @@
   .results, .byresults
     +columns(3,24)
 
+  .restart
+    +columns(1,24)
+
   .name, .byname
     +columns(15,24)
-    +prefix(1,24)
   .name
     .buglist
       @extend .chicklist
@@ -24,6 +26,9 @@
       @extend .bugchick
       +trailer(0)
 
+  .results + .name, .byname
+    +prefix(1,24)
+
   .title, .invalid-note, .failed-note
     display: inline
   .title
@@ -31,11 +36,6 @@
     +demi
   .invalid-note, .failed-note
     +italic
-    &::before
-      padding-left: rhythm(.25)
-      content: "["
-    &::after
-      content: "]"
 
   .description
     +columns(16,24)
@@ -54,21 +54,23 @@
 .results
   .result
     @extend .allcaps
-    +rhythm-borders(1px,.25)
-    +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
     +demi
     display: block
+  .assigned, .started
+    +padding-leader(.25)
+    +padding-trailer(.25)
+    +icon('ui/clock.png',$notext:false)
+  .invalidated, .passed, .failed
+    +rhythm-borders(1px,.25)
+    +box-shadow(rgba($base,$xsmall) 0 1px $xxxsmallpx inset)
+    +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
     border-color: rgba($blue-dark,$small)
-  .assigned
-    +icon('ui/clock.png',$blue-hint,$notext:false)
-  .started
-    +icon('ui/clock.png',$blue-lightest,$notext:false)
   .invalidated
     +icon('ui/warning.png',$yellow-lighter,$notext:false)
   .passed
-    +icon('ui/check.png',$green-light,$notext:false)
+    +icon('ui/check.png',$green-lightest,$notext:false)
   .failed
-    +icon('ui/x.png',$red-lighter,$notext:false)
+    +icon('ui/x.png',$red-lightest,$notext:false)
 
 // ---------------------------------------------------------------------------
 // Result action buttons
@@ -82,11 +84,13 @@
   white-space: nowrap
 
 .action-start
-  +button-style($blue-lighter,'ui/power.png')
+  +button-style($blue-light,'ui/power.png')
 .action-pass
   +button-style($green-light,'ui/check.png')
+
 .action-restart
-  +button-style($blue-hint,'ui/refresh.png')
+  +button-style($blue-hint,'ui/refresh.png',$notext:true)
+  width: 100%
 
 // ---------------------------------------------------------------------------
 // Test Invalid
@@ -94,7 +98,7 @@
 
   .invalid-summary
     +box-sizing('border-box')
-    +button-style($yellow,'ui/warning.png',$notext:true)
+    +button-style($yellow-light,'ui/warning.png',$notext:true)
     +columns(1,24)
     +trailer(0)
 
@@ -128,15 +132,13 @@
 .stepfail-summary
   @extend .allcaps
   +box-sizing('border-box')
-  +button-style($light,'ui/x.png')
+  +button-style($red-lightest,'ui/x.png')
   +cond
   position: absolute
   top: rhythm(-.25)
   left: 0 - columns(4,16) - gutter(16)
   width: columns(3,16)
   white-space: nowrap
-  &:hover, .stepfail.open &
-    +button-style($red-lightest,'ui/x.png')
 
 .stepfail-content
   +clearfix
