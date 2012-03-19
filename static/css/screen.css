@@ -5561,7 +5561,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
   color: #454545;
   border-color: #666666;
-  background-color: #8695a8;
+  background-color: #a9b2bf;
   background-repeat: no-repeat;
   padding-left: 1em;
   padding-right: 1em;
