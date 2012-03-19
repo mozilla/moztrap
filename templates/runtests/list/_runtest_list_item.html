@@ -31,35 +31,6 @@
       {% endif %}
 
     </div>
-
-    <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
-      {% csrf_token %}
-
-      {% if result.status == result.STATUS.assigned %}
-        <button class="action-start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
-      {% endif %}
-      {% if result.status == result.STATUS.started %}
-        <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
-      {% endif %}
-      {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-        <button class="action-restart result-action" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
-      {% endif %}
-    </form>
-
-    {% if result.status == result.STATUS.started %}
-      <div class="testinvalid details">
-        <p class="summary invalid-summary" title="invalid or unclear">invalid</p>
-        <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
-          {% csrf_token %}
-          <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
-          <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
-          <div class="form-actions">
-            <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
-          </div>
-        </form>
-      </div>
-    {% endif %}
-
   </div>
 
   {% include "runtests/list/_runtest_details.html" %}

@@ -5,17 +5,17 @@
   .listordering
     padding-left: rhythm(1)
 
-  .item-summary
+  .item-summary, .item-content
     +padding-leader(.5)
     +padding-trailer(.5)
 
-  .results, .byresults, .result-action, .invalid-summary
+  .results, .byresults
     +columns(3,24)
-  .result-action
-    +omega(24)
 
   .name, .byname
     +columns(15,24)
+    +prefix(1,24)
+  .name
     .buglist
       @extend .chicklist
       padding-left: rhythm(.25)
@@ -37,18 +37,20 @@
     &::after
       content: "]"
 
-  .description, .steps
-    +pad(3,5,24)
-
   .description
+    +columns(16,24)
+    +suffix(4,24)
+    +omega(24)
+    +padding-leader(.25)
+    +trailer(0)
     +italic
+
+  .steps
+    +full(24)
+    +pad(4,4,24)
 
 // ---------------------------------------------------------------------------
 // Result Status
-.result-action, .invalid-summary
-  @extend .allcaps
-  text-align: left
-
 .results
   .result
     @extend .allcaps
@@ -70,6 +72,15 @@
 
 // ---------------------------------------------------------------------------
 // Result action buttons
+.result-action, .invalid-summary
+  @extend .allcaps
+  +cond
+  text-align: left
+
+.result-action
+  +columns(3,24)
+  white-space: nowrap
+
 .action-start
   +button-style($blue-lighter,'ui/power.png')
 .action-pass
@@ -83,13 +94,14 @@
 
   .invalid-summary
     +box-sizing('border-box')
-    +button-style($yellow,'ui/warning.png')
+    +button-style($yellow,'ui/warning.png',$notext:true)
+    +columns(1,24)
+    +trailer(0)
 
   .invalid-form
     +full(24)
-    +pad(3,3,24)
+    +pad(3,4,24)
     +trailer(0)
-    +padding-leader(.5)
     .invalid-label
       +gone
     .invalid
@@ -115,27 +127,21 @@
 
 .stepfail-summary
   @extend .allcaps
-  +opacity(.5)
   +box-sizing('border-box')
-  +icon('ui/x.png',$notext:false)
-  +demi
+  +button-style($light,'ui/x.png')
   +cond
   position: absolute
-  top: 0
-  left: 0 - columns(3,16) - gutter(16)
+  top: rhythm(-.25)
+  left: 0 - columns(4,16) - gutter(16)
   width: columns(3,16)
-  cursor: pointer
-  color: $red
+  white-space: nowrap
   &:hover, .stepfail.open &
-    +opacity(1)
+    +button-style($red-lightest,'ui/x.png')
 
 .stepfail-content
   +clearfix
-  +border-radius
-  +rhythm-borders(1px,1)
-  +box-shadow(rgba($red,$small) 0 0 $xsmallem inset)
-  background: rgba($red-lightest,$xxxsmall)
-  border-color: $red
+  +padding-leader(.5)
+  +padding-trailer(1)
   .newbug-input-label, .newbug-radio-label
     +gone
   .newbug-radio
@@ -150,6 +156,8 @@
     +omega(16)
     clear: none
     padding: 0
+  .fail
+    +button-style($red-lighter)
 
 .fail-field
   label
