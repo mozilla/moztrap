@@ -153,7 +153,6 @@ INSTALLED_APPS = [
     "cc.view.manage",
     "cc.view.results",
     "cc.view.runtests",
-    "cc.view.owa",
 ]
 
 CACHES = {
