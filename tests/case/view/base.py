@@ -139,7 +139,10 @@ class ViewTestCase(WebTest):
 
 
     def get(self, **kwargs):
-        """Shortcut for getting url."""
+        """Shortcut for getting url; supports `ajax` boolean kwarg."""
+        if kwargs.pop("ajax", False):
+            kwargs.setdefault("headers", {}).setdefault(
+                "X-Requested-With", "XMLHttpRequest")
         return self.app.get(self.url, **kwargs)
 
 
@@ -154,7 +157,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
     def get(self, **kwargs):
         """Shortcut for getting url, authenticated."""
         kwargs.setdefault("user", self.user)
-        return self.app.get(self.url, **kwargs)
+        return super(AuthenticatedViewTestCase, self).get(**kwargs)
 
 
     def post(self, data, **kwargs):

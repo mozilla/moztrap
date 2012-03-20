@@ -16,6 +16,13 @@
     </div>
 
     <div class="content">
+
+      {% if runcaseversion.caseversion.description %}
+        <p class="description">
+          {{ runcaseversion.caseversion.description|markdown }}
+        </p>
+      {% endif %}
+
       <ol class="steps">
         {% for step in runcaseversion.caseversion.steps.all %}
         <li class="stepitem">

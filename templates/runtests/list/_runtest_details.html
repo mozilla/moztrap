@@ -1,7 +1,6 @@
 {% extends 'lists/_itembody.html' %}
 
-{% load execution urls %}
-{% load markup %}
+{% load execution urls markup %}
 
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
@@ -41,7 +40,7 @@
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   {% stepresult_for result step as stepresult %}
-  <li class="stepitem">
+  <li class="stepitem" data-step-number="{{ step.number }}">
     <div class="step {{ stepresult.status }}">
       <div class="instruction">{{ step.instruction|markdown }}</div>
       <div class="outcome">{{ step.expected|markdown }}</div>

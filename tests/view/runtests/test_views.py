@@ -265,6 +265,33 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase):
         self.assertIn("login", res.headers["Location"])
 
 
+    def test_markdown_safe(self):
+        """Raw HTML and markdown attributes are escaped."""
+        rcv = self.create_rcv(caseversion__description="<script>")
+        self.F.CaseStepFactory.create(
+            caseversion=rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            )
+
+        res = self.get()
+
+        self.assertEqual(
+            unicode(res.html.find("div", "description").find("p")),
+            "<p>&lt;script&gt;</p>"
+            )
+
+        step = res.html.find("li", {"data-step-number": "1"})
+        self.assertEqual(
+            unicode(step.find("div", "instruction").find("p")),
+            "<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>"
+            )
+        self.assertEqual(
+            unicode(step.find("div", "outcome").find("p")),
+            "<p>{@onclick=alert(1)}paragraph</p>",
+            )
+
+
     def test_bad_run_id_404(self):
         """Bad run id returns 404."""
         url = reverse("runtests_environment", kwargs={"run_id": 9999})
