@@ -241,28 +241,29 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase):
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
 
-    def test_details(self):
-        """Returns details HTML snippet for given caseversion."""
+    def test_description(self):
+        """Details includes description, markdownified safely."""
+        self.cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
+        res = self.get(ajax=True)
+
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
+
+
+    def test_step(self):
+        """Details includes steps, markdownified safely."""
         self.F.CaseStepFactory.create(
             caseversion=self.cv,
-            instruction="Frobnigate.",
-            )
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
 
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res = self.get(ajax=True)
 
-        res.mustcontain("Frobnigate.")
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
 
-    def test_description(self):
-        """Returns details HTML snippet for given caseversion"""
-        desc_markdown = "_Valmorphanize_"
-
-        self.cv = self.F.CaseVersionFactory.create(
-            name="FooBar",
-            description=desc_markdown,
-            )
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
-
-        res.mustcontain("<em>Valmorphanize</em>")
 
 
 class AddCaseTest(case.view.FormViewTestCase):

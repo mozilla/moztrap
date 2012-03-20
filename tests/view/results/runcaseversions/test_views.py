@@ -279,16 +279,6 @@ class RunCaseVersionDetailTest(case.view.AuthenticatedViewTestCase):
             )
 
 
-    def test_details_steps(self):
-        """Details lists case steps."""
-        self.F.CaseStepFactory.create(
-            instruction="fooinstr", caseversion=self.rcv.caseversion)
-
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
-
-        res.mustcontain("fooinstr")
-
-
     def test_details_envs(self):
         """Details lists envs."""
         self.rcv.environments.add(
@@ -317,12 +307,27 @@ class RunCaseVersionDetailTest(case.view.AuthenticatedViewTestCase):
             reverse("results_results", kwargs={"rcv_id": self.rcv.id})
             )
 
+
     def test_description(self):
-        """Returns details HTML snippet for given caseversion"""
-
-        cv = self.F.CaseVersionFactory.create(description="_Valmorphanize_")
+        """Details includes description, markdownified safely."""
+        cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
         self.rcv = self.F.RunCaseVersionFactory.create(caseversion=cv)
+        res = self.get(ajax=True)
 
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
 
-        res.mustcontain("<em>Valmorphanize</em>")
+
+    def test_step(self):
+        """Details includes steps, markdownified safely."""
+        self.F.CaseStepFactory.create(
+            caseversion=self.rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
+
+        res = self.get(ajax=True)
+
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
