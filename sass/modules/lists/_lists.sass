@@ -31,7 +31,11 @@
     width: 0px 1px
 
   .empty
-    +rhythm(0,1,1,0)
-    +italic
+    +padding-leader
+    +padding-trailer
     +hpadding
+  .empty-notice
+    +italic
     color: rgba($base,$small)
+    &:only-child
+      +trailer(0)

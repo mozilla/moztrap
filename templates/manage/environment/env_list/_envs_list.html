@@ -13,7 +13,9 @@
         {% endblock %}
       {% endfor %}
     {% else %}
-      {% include "lists/_emptylist.html" %}
+      {% block env-list-empty %}
+        {% include "lists/_emptylist.html" %}
+      {% endblock env-list-empty %}
     {% endif %}
   </form>
 
