@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load permissions %}
+{% load permissions owa %}
 
 {% block site %}
 
@@ -15,6 +15,7 @@
   </h1>
 
   {% block site-navigation %}
+    <div id="owa"><a href="#" data-url="{{ request|owa_manifest_url }}">Install as Open Web App</a></div>
     {% include "_accountnav.html" %}
 
     <nav role="navigation">
