@@ -159,6 +159,7 @@ var CC = (function (CC, $) {
 
         // filtering.js
         CC.toggleAdvancedFiltering('.magicfilter');
+        CC.preventCaching('#filter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
         CC.clientSideFilter({container: '#envnarrowing'});
