@@ -29,30 +29,27 @@ var CC = (function (CC, $) {
     CC.owa = function () {
         var trigger = $('#owa a'),
             url = trigger.data('url'),
-            installCallback = function (result) {
+            installCallback = function () {
                 // great - display a message, or redirect to a launch page
                 var msg = 'Successfully registered!';
                 ich.message({message: msg, tags: 'success'}).appendTo($('#messages ul'));
                 $('#messages ul').messages();
             },
-            errorCallback = function (result) {
+            errorCallback = function () {
                 // whoops - result.code and result.message have details
-                var msg = 'Unable to register due to ' + result.code + ': ' + result.message;
+                var msg = 'Could not install: ' + this.error;
                 ich.message({message: msg, tags: 'error'}).appendTo($('#messages ul'));
                 $('#messages ul').messages();
             },
-            register = function () {
-                navigator.mozApps.install(
-                    url,
-                    {},
-                    installCallback,
-                    errorCallback
-                );
-            };
+            result;
 
         trigger.click(function (e) {
             e.preventDefault();
-            if (url) { register(); }
+            if (url) {
+                result = navigator.mozApps.install(url, {});
+                result.onsuccess = installCallback;
+                result.onerror = errorCallback;
+            }
         });
     };
 
