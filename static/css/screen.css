@@ -1104,6 +1104,7 @@ body > div {
   font-weight: 500;
 }
 #accountnav p {
+  margin: 0;
   display: inline-block;
 }
 #accountnav ul {
