@@ -2328,6 +2328,7 @@ body > div {
   width: 1.5em;
   height: 1.5em;
   border: 1px solid rgba(72, 78, 85, 0.667);
+  cursor: pointer;
 }
 .status .status-options {
   margin-top: 0.375em;
