@@ -851,8 +851,16 @@ class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
             narrow_environments(req, "foo", "1")
 
 
+    def test_requires_perm(self):
+        """Narrowing envs requires manage perm on appropriate model."""
+        res = self.get(status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
     def test_list_parent_envs(self):
         """Lists parent productversion environments; mine selected."""
+        self.add_perm(self.perm)
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows", "OS X"]})
         self.object.productversion.environments.add(envs[0], envs[1])
@@ -897,6 +905,7 @@ class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
 
     def test_set_envs(self):
         """Can set object's environments."""
+        self.add_perm(self.perm)
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows", "OS X"]})
         self.object.productversion.environments.add(envs[0], envs[1])
@@ -921,6 +930,7 @@ class NarrowRunEnvironmentsTest(NarrowEnvironmentsViewTests,
     """Tests for narrowing run environments."""
     object_type = "run"
     redirect_to = "manage_runs"
+    perm = "manage_runs"
 
 
     @property
@@ -936,6 +946,7 @@ class NarrowCaseVersionEnvironmentsTest(NarrowEnvironmentsViewTests,
     """Tests for narrowing caseversion environments."""
     object_type = "caseversion"
     redirect_to = "manage_cases"
+    perm = "manage_cases"
 
 
     @property

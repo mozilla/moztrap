@@ -27,6 +27,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
 from cc import model
@@ -227,11 +228,17 @@ def narrow_environments(request, object_type, object_id):
     if object_type == "run":
         model_class = model.Run
         redirect_to = "manage_runs"
+        perm = "execution.manage_runs"
     elif object_type == "caseversion":
         model_class = model.CaseVersion
         redirect_to = "manage_cases"
+        perm = "library.manage_cases"
     else:
         raise Http404
+
+    if not request.user.has_perm(perm):
+        return redirect_to_login(request.path)
+
     obj = get_object_or_404(model_class, pk=object_id)
 
     current_env_ids = set(obj.environments.values_list("id", flat=True))
