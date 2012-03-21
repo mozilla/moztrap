@@ -27,6 +27,7 @@ from tests import case
 
 
 class AjaxTest(case.TestCase):
+    """Tests for ajax template-swapping view decorator."""
     @property
     def ajax(self):
         """The decorator-factory under test."""
@@ -44,7 +45,6 @@ class AjaxTest(case.TestCase):
         return view
 
 
-    """Tests for ajax template-swapping view decorator."""
     def test_swaps_template(self):
         """Decorator changes TemplateResponse to given template, if ajax."""
         request = RequestFactory().get(
