@@ -31,6 +31,7 @@ from django.contrib.auth.decorators import permission_required
 
 from ... import model
 
+from ..filters import RunTestsRunCaseVersionFilterSet
 from ..lists import decorators as lists
 from ..utils.ajax import ajax
 
@@ -106,6 +107,7 @@ ACTIONS = {
 @never_cache
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
+@lists.filter("runcaseversions", filterset_class=RunTestsRunCaseVersionFilterSet)
 @lists.sort("runcaseversions")
 def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
