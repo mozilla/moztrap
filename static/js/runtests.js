@@ -147,6 +147,17 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Clicking anywhere on test header expands test
+    CC.expandTestDetails = function (container) {
+        var context = $(container);
+
+        context.on('click', '.itemlist .listitem .itemhead', function (e) {
+            if (!($(e.target).is('button'))) {
+                $(this).closest('.listitem').find('.itembody .item-summary').click();
+            }
+        });
+    };
+
     // Filter environment form options
     CC.filterEnvironments = function (container) {
         var context = $(container),

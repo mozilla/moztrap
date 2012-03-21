@@ -216,6 +216,7 @@ var CC = (function (CC, $) {
         CC.expandAllTests('#runtests');
         CC.runTests('#runtests');
         CC.failedTestBug('#runtests');
+        CC.expandTestDetails('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
     });
 
