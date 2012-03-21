@@ -551,7 +551,7 @@ button {
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   cursor: pointer;
 }
-.buttoninlayfocus:hover, .toggle a:hover:focus, .toggle a:hover, .toggle a:hover:active, .expanded .toggle a:hover, #save-profile-name:hover:focus, #save-profile-name:hover, #save-profile-name:hover:active, .buttoninlayfocus:focus, .toggle a:focus, .toggle a:focus:hover, .toggle a:focus:active, .expanded .toggle a:focus, #save-profile-name:focus, #save-profile-name:focus:hover, #save-profile-name:focus:active {
+.buttoninlayfocus:hover, .toggle a:hover, #save-profile-name:hover, .buttoninlayfocus:focus, .toggle a:focus, #save-profile-name:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.444)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
@@ -559,7 +559,7 @@ button {
   background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.444) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
 }
-.buttoninlayfocus:active, .toggle a:active:focus, .toggle a:active:hover, .toggle a:active, .expanded .toggle a:active, #save-profile-name:active:focus, #save-profile-name:active:hover, #save-profile-name:active {
+.buttoninlayfocus:active, .toggle a:active, #save-profile-name:active {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.198)));
   background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
   background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.198));
@@ -758,6 +758,18 @@ form > .errorlist {
   text-align: right;
 }
 
+@-moz-keyframes loading {
+  0% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
+    opacity: 0.25;
+  }
+
+  100% {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+  }
+}
+
 @-webkit-keyframes loading {
   0% {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
@@ -770,7 +782,7 @@ form > .errorlist {
   }
 }
 
-@-moz-keyframes loading {
+@-o-keyframes loading {
   0% {
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
     opacity: 0.25;
