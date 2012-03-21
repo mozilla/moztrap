@@ -21,7 +21,7 @@
       <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
         {% if user|has_perm:"execution.execute" %}
-        <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
+        <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %} nav-tests">
           <a href="{% url runtests %}">Run Tests</a>
           <div class="secondary">
             <ol>
@@ -34,7 +34,7 @@
         {% endif %}
 
         {% if user %}
-        <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
+        <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %} nav-results">
           <a href="{% url results %}">View Results</a>
           <div class="secondary">
             <ol>
@@ -48,7 +48,7 @@
           </div>
         </li>
 
-        <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %}">
+        <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %} nav-manage">
           <a href="{% url manage %}">Manage</a>
           <div class="secondary">
             <ul class="global">
@@ -65,7 +65,7 @@
               </li>
               <li>
                 <ol class="tertiary">
-                  <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
+                  <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %} nav-products">
                     <a href="{% url manage_products %}">Products</a>
                   </li>
                   <li class="{% block manageproductversion-active-nav %}{% endblock manageproductversion-active-nav %}">

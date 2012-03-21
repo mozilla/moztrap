@@ -88,12 +88,20 @@ $nav-link-hover-color : $red-dark
 // ---------------------------------------------------------------------------
 // Main Navigation.
 
-=nav-icon($img)
-  a
+=nav-icon($img,$fimg:false,$primary:false)
+  > a
     #{$link}
-      background: image-url($img) no-repeat scroll left
-      padding-left: image-width($img) + $xxxsmallpx
-
+      background-image: image-url($img)
+      background-repeat: no-repeat
+      @if $primary
+        background-position: $xsmallpx
+        padding-left: image-width($img) + $xsmallpx + $xxxsmallpx
+      @else
+        background-position: left
+        padding-left: image-width($img) + $xxxsmallpx
+    @if $fimg
+      #{$focus}
+        background-image: image-url($fimg)
 
 [role="navigation"]
   +pie-clearfix
@@ -108,12 +116,20 @@ $nav-link-hover-color : $red-dark
     #{$link}
       display: inline-block
 
+  .nav-tests
+    +nav-icon('ui/stopwatch.png',$primary:true)
+  .nav-results
+    +nav-icon('ui/chart.png',$primary:true)
+  .nav-manage
+    +nav-icon('ui/gear.png',$primary:true)
   .nav-users
-    +nav-icon('ui/people.png')
+    +nav-icon('ui/people_25.png','ui/people.png')
   .nav-tags
-    +nav-icon('ui/tag.png')
+    +nav-icon('ui/tag_25.png','ui/tag.png')
   .nav-envs
-    +nav-icon('ui/tree.png')
+    +nav-icon('ui/tree_25.png','ui/tree.png')
+  .nav-products
+    +nav-icon('ui/barcode_25.png','ui/barcode.png')
 
 // Primary ----------------------------------------------------------------
 .primary
@@ -141,7 +157,7 @@ $nav-link-hover-color : $red-dark
   > .active
     > a
       @extend .navlightlink
-      background: $nav-background
+      background-color: $nav-background
       &:hover::after
         display: none
 
@@ -176,16 +192,22 @@ $nav-link-hover-color : $red-dark
       +hpadding(rhythm(.5))
     &:last-child::after
       display: none
+
+  .tertiary
+    li:last-child::after
+      content: ")"
+      display: inline
+
   ul, ol
     li::after
       content: "|"
+    .nav-products::after
+      content: "("
 
   .global
     > li
       &::after
         content: ""
-      &.nav-envs::after
-        content: "|"
 
   .active &
     display: block
