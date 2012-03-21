@@ -62,18 +62,27 @@ $nav-link-hover-color : $red-dark
 // Account Navigation.
 
 #accountnav
-  +leader(.75)
+  +leader(2.25)
   clear: right
   .fn
     +demi
   p
-    display: inline
+    display: inline-block
   ul
     +delimited-list
     &::before
       content: "["
     &::after
       content: "]"
+  .help
+    +box-shadow(rgba($blue-light,$small) 0 0 $xxsmallem inset)
+    +rhythm-borders(1px,.25)
+    +icon('ui/question_circle.png',rgba($blue-lighter,$small),$notext:false)
+    +demi
+    padding-right: rhythm(.5)
+    border-color: $blue-light
+    #{$focus}
+      background-color: rgba($yellow,$xsmall)
 
 // ---------------------------------------------------------------------------
 // Main Navigation.
