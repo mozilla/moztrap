@@ -37,7 +37,17 @@
       {% endwith %}
     </div>
 
-    <div class="suites">@@@ wireframed suite names</div>
+    <div class="suites">
+      {% with runcaseversion.suites.all as suites %}
+      {% if suites %}
+      <ul>
+        {% for suite in suites %}
+        <li><a href="" title="filter by {{ suite }}" class="filter-link suite" data-type="suite">{{ suite }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
 
     {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
       <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
