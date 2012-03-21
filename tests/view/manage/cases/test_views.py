@@ -29,7 +29,8 @@ from tests import case
 class CasesTest(case.view.manage.ListViewTestCase,
                 case.view.ListFinderTests,
                 case.view.manage.CCModelListTests,
-                case.view.manage.StatusListTests
+                case.view.manage.StatusListTests,
+                case.view.NoCacheTest,
                 ):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
@@ -226,7 +227,9 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
 
 
-class CaseDetailTest(case.view.AuthenticatedViewTestCase):
+class CaseDetailTest(case.view.AuthenticatedViewTestCase,
+                     case.view.NoCacheTest,
+                     ):
     """Test for case-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a caseversion."""
@@ -241,31 +244,34 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase):
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
 
-    def test_details(self):
-        """Returns details HTML snippet for given caseversion."""
+    def test_description(self):
+        """Details includes description, markdownified safely."""
+        self.cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
+        res = self.get(ajax=True)
+
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
+
+
+    def test_step(self):
+        """Details includes steps, markdownified safely."""
         self.F.CaseStepFactory.create(
             caseversion=self.cv,
-            instruction="Frobnigate.",
-            )
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
 
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res = self.get(ajax=True)
 
-        res.mustcontain("Frobnigate.")
-
-    def test_description(self):
-        """Returns details HTML snippet for given caseversion"""
-        desc_markdown = "_Valmorphanize_"
-
-        self.cv = self.F.CaseVersionFactory.create(
-            name="FooBar",
-            description=desc_markdown,
-            )
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
-
-        res.mustcontain("<em>Valmorphanize</em>")
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
 
 
-class AddCaseTest(case.view.FormViewTestCase):
+
+class AddCaseTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for add-case-single view."""
     form_id = "single-case-add"
 
@@ -339,7 +345,9 @@ class AddCaseTest(case.view.FormViewTestCase):
 
 
 
-class AddBulkCaseTest(case.view.FormViewTestCase):
+class AddBulkCaseTest(case.view.FormViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
     """Tests for add-case-bulk view."""
     form_id = "bulk-case-add"
 
@@ -554,7 +562,9 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class EditCaseVersionTest(case.view.FormViewTestCase):
+class EditCaseVersionTest(case.view.FormViewTestCase,
+                          case.view.NoCacheTest,
+                          ):
     """Tests for edit-caseversion view."""
     form_id = "single-case-edit"
 

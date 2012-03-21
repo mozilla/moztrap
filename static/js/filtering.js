@@ -43,6 +43,16 @@ var CC = (function (CC, $) {
         }
     };
 
+    // Prevent Firefox javascript state caching
+    // See https://developer.mozilla.org/En/Using_Firefox_1.5_caching
+    CC.preventCaching = function (context) {
+        if ($(context).length) {
+            $(window).bind('unload.caching', function () {
+                return true;
+            });
+        }
+    };
+
     // Tags, suites, environments act as filter-links on list pages
     CC.directFilterLinks = function () {
         $('.listpage').on('click', '.filter-link', function (e) {

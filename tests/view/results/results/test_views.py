@@ -50,6 +50,31 @@ class ResultsViewTest(case.view.ListViewTestCase,
         return self.F.ResultFactory.create(**kwargs)
 
 
+    def test_description(self):
+        """Includes description, markdownified safely."""
+        cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
+        self.rcv = self.F.RunCaseVersionFactory.create(caseversion=cv)
+        res = self.get()
+
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
+
+
+    def test_step(self):
+        """Includes steps, markdownified safely."""
+        self.F.CaseStepFactory.create(
+            caseversion=self.rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
+
+        res = self.get()
+
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
+
+
     def test_filter_by_status(self):
         """Can filter by status."""
         self.factory(status="passed", tester__username="Tester 1")

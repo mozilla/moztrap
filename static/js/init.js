@@ -160,6 +160,7 @@ var CC = (function (CC, $) {
 
         // filtering.js
         CC.toggleAdvancedFiltering('.magicfilter');
+        CC.preventCaching('#filter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
         CC.clientSideFilter({container: '#envnarrowing'});
@@ -212,8 +213,9 @@ var CC = (function (CC, $) {
         CC.hideEmptyRuntestsEnv();
         CC.autoFocus('.details.stepfail > .summary', '#runtests');
         CC.autoFocus('.details.testinvalid > .summary', '#runtests');
-        CC.runTests('#runtests');
         CC.breadcrumb('.drilldown');
+        CC.expandAllTests('#runtests');
+        CC.runTests('#runtests');
         CC.failedTestBug('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
     });

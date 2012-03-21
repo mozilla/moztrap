@@ -29,7 +29,9 @@ from tests import case
 
 
 
-class SelectTest(case.view.AuthenticatedViewTestCase):
+class SelectTest(case.view.AuthenticatedViewTestCase,
+                 case.view.NoCacheTest,
+                 ):
     """Tests for select-run view."""
     @property
     def url(self):
@@ -82,7 +84,9 @@ class SelectTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class SetEnvironmentTest(case.view.AuthenticatedViewTestCase):
+class SetEnvironmentTest(case.view.AuthenticatedViewTestCase,
+                         case.view.NoCacheTest,
+                         ):
     """Tests for set_environment view."""
     def setUp(self):
         """These tests all require a test run."""
@@ -214,7 +218,9 @@ class SetEnvironmentTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class RunTestsTest(case.view.AuthenticatedViewTestCase):
+class RunTestsTest(case.view.AuthenticatedViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for runtests view."""
     def setUp(self):
         """These tests all require a test run and envs, and execute perm."""
@@ -263,6 +269,33 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase):
             self.url, user=self.F.UserFactory.create(), status=302)
 
         self.assertIn("login", res.headers["Location"])
+
+
+    def test_markdown_safe(self):
+        """Raw HTML and markdown attributes are escaped."""
+        rcv = self.create_rcv(caseversion__description="<script>")
+        self.F.CaseStepFactory.create(
+            caseversion=rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            )
+
+        res = self.get()
+
+        self.assertEqual(
+            unicode(res.html.find("div", "description").find("p")),
+            "<p>&lt;script&gt;</p>"
+            )
+
+        step = res.html.find("li", {"data-step-number": "1"})
+        self.assertEqual(
+            unicode(step.find("div", "instruction").find("p")),
+            "<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>"
+            )
+        self.assertEqual(
+            unicode(step.find("div", "outcome").find("p")),
+            "<p>{@onclick=alert(1)}paragraph</p>",
+            )
 
 
     def test_bad_run_id_404(self):

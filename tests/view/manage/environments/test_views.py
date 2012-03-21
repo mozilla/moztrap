@@ -30,6 +30,7 @@ from tests import case
 
 class ProfilesViewTest(case.view.manage.ListViewTestCase,
                        case.view.manage.CCModelListTests,
+                       case.view.NoCacheTest,
                        ):
     """Tests for environment profiles manage list."""
     form_id = "manage-profiles-form"
@@ -87,7 +88,9 @@ class ProfilesViewTest(case.view.manage.ListViewTestCase,
 
 
 
-class ProfileDetailTest(case.view.AuthenticatedViewTestCase):
+class ProfileDetailTest(case.view.AuthenticatedViewTestCase,
+                        case.view.NoCacheTest,
+                        ):
     """Test for profile-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a profile."""
@@ -115,7 +118,9 @@ class ProfileDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddProfileTest(case.view.FormViewTestCase):
+class AddProfileTest(case.view.FormViewTestCase,
+                     case.view.NoCacheTest,
+                     ):
     """Tests for add profile view."""
     form_id = "profile-add-form"
 
@@ -424,7 +429,9 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class EditProfileViewTest(case.view.FormViewTestCase):
+class EditProfileViewTest(case.view.FormViewTestCase,
+                          case.view.NoCacheTest,
+                          ):
     """
     Tests for editing an environment profile.
 
@@ -600,7 +607,9 @@ class EditProfileViewTest(case.view.FormViewTestCase):
 
 
 
-class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
+class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
+                                             case.view.NoCacheTest,
+                                             ):
     """
     Tests for editing environments of a product version.
 
@@ -729,7 +738,9 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
 
 
 
-class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
+class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase,
+                               case.view.NoCacheTest,
+                               ):
     """Test for elements autocomplete view."""
     @property
     def url(self):
@@ -801,7 +812,7 @@ class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class NarrowEnvironmentsViewTests(object):
+class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
     """Common tests for narrow-environments view."""
     form_id = "narrow-envs-form"
     # subclasses should set these

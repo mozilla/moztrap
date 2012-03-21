@@ -139,7 +139,10 @@ class ViewTestCase(WebTest):
 
 
     def get(self, **kwargs):
-        """Shortcut for getting url."""
+        """Shortcut for getting url; supports `ajax` boolean kwarg."""
+        if kwargs.pop("ajax", False):
+            kwargs.setdefault("headers", {}).setdefault(
+                "X-Requested-With", "XMLHttpRequest")
         return self.app.get(self.url, **kwargs)
 
 
@@ -154,7 +157,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
     def get(self, **kwargs):
         """Shortcut for getting url, authenticated."""
         kwargs.setdefault("user", self.user)
-        return self.app.get(self.url, **kwargs)
+        return super(AuthenticatedViewTestCase, self).get(**kwargs)
 
 
     def post(self, data, **kwargs):
@@ -299,3 +302,12 @@ class ListFinderTests(object):
             'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
             res.json["html"]
             )
+
+
+
+class NoCacheTest(object):
+    """Test that a given view marks it's responses as uncacheable."""
+    def test_never_cache(self):
+        res = self.get()
+
+        self.assertEqual(res.headers["Cache-Control"], "max-age=0")

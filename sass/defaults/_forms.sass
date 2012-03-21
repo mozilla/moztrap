@@ -91,6 +91,19 @@ input
 // ---------------------------------------------------------------------------
 // Form Layouts
 
+.fieldset
+  +padding-leader
+  clear: both
+
+.legend
+  @extend .allcaps
+  +leading-border($xxxsmallpx,1)
+  +trailer
+  +demi
+  border:
+    style: dashed
+    color: rgba($mid,$small)
+
 .formfield
   +pie-clearfix
   +trailer(.5)
@@ -121,6 +134,13 @@ input
   +no-style-list
   +italic
   color: $red
+  form > &
+    +trailer(.5)
+    +border-radius
+    +bold
+    padding: rhythm(.25) rhythm(.5)
+    background: $red
+    color: $lightest
 
 .form-actions
   +padding-leader(.5)

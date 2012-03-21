@@ -634,25 +634,25 @@ class ImporterTransactionTest(ImporterTestBase, case.TransactionTestCase):
 
 
     # @@@ This test won't work till we upgrade to Django 1.4
-#    def test_step_no_instruction_skip(self):
-#
-#        """Skip import on case with step and no instruction."""
-#        result = self.import_data(
-#            {
-#                "cases": [
-#                    {
-#                        "name": "Foo",
-#                        "steps": [{"expected": "did this"}]
-#                        }
-#                    ]
-#                }
-#            )
-#
-#        cv = self.model.CaseVersion.objects.all()
-#        self.assertFalse(list(cv))
-#        self.assertEqual(result.num_cases, 0)
-#        self.assertEqual(
-#            result.warnings[0]["reason"],
-#            ImportResult.SKIP_STEP_NO_INSTRUCTION,
-#            )
+    def test_step_no_instruction_skip(self):
+        """Skip import on case with step and no instruction."""
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "steps": [{"expected": "did this"}]
+                        }
+                    ]
+                }
+            )
+
+        # @@@ The savepoint-rollback won't work until Django 1.4.
+        # cv = self.model.CaseVersion.objects.all()
+        # self.assertFalse(list(cv))
+        # self.assertEqual(result.num_cases, 0)
+        self.assertEqual(
+            result.warnings[0]["reason"],
+            ImportResult.SKIP_STEP_NO_INSTRUCTION,
+            )
 

@@ -1,25 +1,24 @@
 {% extends 'lists/_itembody.html' %}
 
-{% load execution urls %}
-{% load markup %}
+{% load execution urls markup %}
 
 {% block extra-itembody-classes %}{% if result.status == result.STATUS.started %}open{% endif %}{% endblock %}
 
 {% block itembody-content %}
 
 {% if caseversion.description %}
-  <p class="description">
+  <div class="description">
     {{ caseversion.description|markdown }}
-  </p>
+  </div>
 {% endif %}
 
 <ol class="steps">
   {% for step in caseversion.steps.all %}
   {% stepresult_for result step as stepresult %}
-  <li class="stepitem">
+  <li class="stepitem" data-step-number="{{ step.number }}">
     <div class="step {{ stepresult.status }}">
-      <p class="instruction">{{ step.instruction }}</p>
-      <p class="outcome">{{ step.expected }}</p>
+      <div class="instruction">{{ step.instruction|markdown }}</div>
+      <div class="outcome">{{ step.expected|markdown }}</div>
     </div>
 
     {% if result.status == result.STATUS.failed and stepresult.status == stepresult.STATUS.failed %}
@@ -47,7 +46,7 @@
 
             <div class="formfield fail-field">
               <label for="fail-comment-{{ runcaseversion.id }}-{{ step.number }}">actual result:</label>
-              <textarea name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
+              <textarea class="fail-input" name="comment" id="fail-comment-{{ runcaseversion.id }}-{{ step.number }}" placeholder="please explain the actual results of this step." required></textarea>
             </div>
 
             {% with runcaseversion.caseversion.bug_urls as bug_urls %}
