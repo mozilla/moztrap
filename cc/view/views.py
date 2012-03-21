@@ -21,11 +21,11 @@ Case Conductor home view.
 """
 from django.shortcuts import redirect
 
-from django.contrib.auth.decorators import login_required
+from .utils.auth import login_maybe_required
 
 
 
-@login_required
+@login_maybe_required
 def home(request):
     """Home view; redirects to run-tests or results depending on permissions."""
     if request.user.has_perm("execution.execute"):

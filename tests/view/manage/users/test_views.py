@@ -34,6 +34,12 @@ class UsersTest(case.view.manage.ListViewTestCase,
     name_attr = "username"
 
 
+    def setUp(self):
+        """Any access to this view requires manage_users perm."""
+        super(UsersTest, self).setUp()
+        self.add_perm(self.perm)
+
+
     @property
     def factory(self):
         """The model factory for this manage list."""
@@ -46,10 +52,18 @@ class UsersTest(case.view.manage.ListViewTestCase,
         return reverse("manage_users")
 
 
+    def test_create_link_requires_perms(self):
+        """This test from superclass doesn't apply here."""
+        pass
+
+
+    def test_delete_requires_permission(self):
+        """This test from superclass doesn't apply here."""
+        pass
+
+
     def test_activate(self):
         """Can activate objects in list."""
-        self.add_perm(self.perm)
-
         s = self.factory.create(is_active=False, username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(
@@ -63,8 +77,6 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
     def test_deactivate(self):
         """Can deactivate objects in list."""
-        self.add_perm(self.perm)
-
         s = self.factory.create(is_active=True, username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(
@@ -78,8 +90,6 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
     def test_delete(self):
         """Can delete objects from list."""
-        self.add_perm(self.perm)
-
         o = self.factory.create(username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(

@@ -22,7 +22,7 @@ Results views for runs.
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from cc.view.utils.auth import login_maybe_required
 
 from cc import model
 
@@ -34,7 +34,7 @@ from ..finders import ResultsFinder
 
 
 
-@login_required
+@login_maybe_required
 @lists.finder(ResultsFinder)
 @lists.filter("runs", filterset_class=RunFilterSet)
 @lists.sort("runs", "start", "asc")
@@ -51,7 +51,7 @@ def runs_list(request):
 
 
 
-@login_required
+@login_maybe_required
 def run_details(request, run_id):
     """Get details snippet for a run."""
     run = get_object_or_404(

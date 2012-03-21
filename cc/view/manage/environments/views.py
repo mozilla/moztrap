@@ -34,6 +34,7 @@ from cc import model
 from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from . import forms
 from .decorators import category_element_ajax_add_edit
@@ -41,7 +42,7 @@ from .decorators import category_element_ajax_add_edit
 
 
 @never_cache
-@login_required
+@login_maybe_required
 @lists.actions(
     model.Profile,
     ["delete", "clone"],
@@ -62,7 +63,7 @@ def profiles_list(request):
 
 
 @never_cache
-@login_required
+@login_maybe_required
 def profile_details(request, profile_id):
     """Get details snippet for a profile."""
     profile = get_object_or_404(model.Profile, pk=profile_id)
