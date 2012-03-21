@@ -1,7 +1,7 @@
 {% load urls %}
 
 {% if bug|is_url %}
-<a href="{{ bug }}">{{ bug }}</a>
+<a href="{{ bug }}" target="_blank" title="open '{{ bug }}' in a new window">{{ bug }}</a>
 {% else %}
 {{ bug }}
 {% endif %}
