@@ -48,7 +48,7 @@ from . import forms
     fall_through=True)
 @lists.actions(
     model.CaseVersion,
-    ["clone", "activate", "deactivate"],
+    ["clone", "activate", "draft", "deactivate"],
     permission="library.manage_cases")
 @lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)

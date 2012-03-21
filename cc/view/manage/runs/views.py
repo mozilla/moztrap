@@ -42,7 +42,7 @@ from . import forms
 @login_required
 @lists.actions(
     model.Run,
-    ["delete", "clone", "activate", "deactivate"],
+    ["delete", "clone", "activate", "draft", "deactivate"],
     permission="execution.manage_runs")
 @lists.finder(ManageFinder)
 @lists.filter("runs", filterset_class=RunFilterSet)

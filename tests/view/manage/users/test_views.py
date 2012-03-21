@@ -26,7 +26,6 @@ from tests import case
 
 
 class UsersTest(case.view.manage.ListViewTestCase,
-                case.view.manage.StatusListTests,
                 case.view.NoCacheTest,
                 ):
     """Test for users manage list view."""

@@ -42,7 +42,7 @@ from . import forms
 @login_required
 @lists.actions(
     model.Suite,
-    ["delete", "clone", "activate", "deactivate"],
+    ["delete", "clone", "activate", "draft", "deactivate"],
     permission="library.manage_suites")
 @lists.finder(ManageFinder)
 @lists.filter("suites", filterset_class=SuiteFilterSet)
