@@ -29,6 +29,16 @@
         <p class="invalid-note">{{ result.comment }}</p>
       {% endif %}
 
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
+      <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link tag" data-type="tag">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
       {% if result.status == result.STATUS.failed %}
         <p class="failed-note">{{ result.comment }}</p>
         {% if result.bug_urls %}
