@@ -87,8 +87,13 @@ $nav-link-hover-color : $red-dark
 
 // ---------------------------------------------------------------------------
 // Main Navigation.
-//
-// No styleguide reference.
+
+=nav-icon($img)
+  a
+    #{$link}
+      background: image-url($img) no-repeat scroll left
+      padding-left: image-width($img) + $xxxsmallpx
+
 
 [role="navigation"]
   +pie-clearfix
@@ -102,6 +107,13 @@ $nav-link-hover-color : $red-dark
   a
     #{$link}
       display: inline-block
+
+  .nav-users
+    +nav-icon('ui/people.png')
+  .nav-tags
+    +nav-icon('ui/tag.png')
+  .nav-envs
+    +nav-icon('ui/crosshair.png')
 
 // Primary ----------------------------------------------------------------
 .primary
@@ -164,12 +176,16 @@ $nav-link-hover-color : $red-dark
       +hpadding(rhythm(.5))
     &:last-child::after
       display: none
-  ul
+  ul, ol
     li::after
       content: "|"
-  ol
-    li::after
-      content: "»"
+
+  .global
+    > li
+      &::after
+        content: ""
+      &.nav-envs::after
+        content: "|"
 
   .active &
     display: block

@@ -1184,6 +1184,18 @@ body > div {
 [role="navigation"] a:link, [role="navigation"] a:visited {
   display: inline-block;
 }
+[role="navigation"] .nav-users a:link, [role="navigation"] .nav-users a:visited {
+  background: url('../images/ui/people.png?1332363728') no-repeat scroll left;
+  padding-left: 17px;
+}
+[role="navigation"] .nav-tags a:link, [role="navigation"] .nav-tags a:visited {
+  background: url('../images/ui/tag.png?1332363831') no-repeat scroll left;
+  padding-left: 15px;
+}
+[role="navigation"] .nav-envs a:link, [role="navigation"] .nav-envs a:visited {
+  background: url('../images/ui/crosshair.png?1326735333') no-repeat scroll left;
+  padding-left: 17px;
+}
 
 .primary > li:first-child {
   margin-left: 9.278%;
@@ -1257,11 +1269,14 @@ body > div {
 .secondary li:last-child::after {
   display: none;
 }
-.secondary ul li::after {
+.secondary ul li::after, .secondary ol li::after {
   content: "|";
 }
-.secondary ol li::after {
-  content: "»";
+.secondary .global > li::after {
+  content: "";
+}
+.secondary .global > li.nav-envs::after {
+  content: "|";
 }
 .active .secondary {
   display: block;
@@ -1490,6 +1505,16 @@ body > div {
 }
 
 .tag {
+  background-image: url('../images/ui/tag.png?1332363831');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  padding-left: 22px;
+  background-position: 6px;
   background-color: #e4f5d1;
   border-color: #75b828;
 }
