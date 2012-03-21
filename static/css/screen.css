@@ -1381,6 +1381,7 @@ body > div {
   position: absolute;
   right: 0;
   top: -1.875em;
+  text-indent: 200%;
 }
 [role="banner"] .drilldown .summary:hover, [role="banner"] .drilldown .summary:focus {
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
