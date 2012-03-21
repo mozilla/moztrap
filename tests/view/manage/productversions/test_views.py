@@ -28,6 +28,7 @@ from tests import case
 class ProductVersionsTest(case.view.manage.ListViewTestCase,
                           case.view.ListFinderTests,
                           case.view.manage.CCModelListTests,
+                          case.view.NoCacheTest,
                           ):
     """Test for productversions manage list view."""
     form_id = "manage-productversions-form"
@@ -128,7 +129,9 @@ class ProductVersionsTest(case.view.manage.ListViewTestCase,
 
 
 
-class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
+class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase,
+                               case.view.NoCacheTest,
+                               ):
     """Test for productversion-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a productversion."""
@@ -176,7 +179,9 @@ class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddProductVersionTest(case.view.FormViewTestCase):
+class AddProductVersionTest(case.view.FormViewTestCase,
+                            case.view.NoCacheTest,
+                            ):
     """Tests for add product version view."""
     form_id = "productversion-add-form"
 
@@ -229,7 +234,9 @@ class AddProductVersionTest(case.view.FormViewTestCase):
 
 
 
-class EditProductVersionTest(case.view.FormViewTestCase):
+class EditProductVersionTest(case.view.FormViewTestCase,
+                             case.view.NoCacheTest,
+                             ):
     """Tests for edit-productversion view."""
     form_id = "productversion-edit-form"
 
