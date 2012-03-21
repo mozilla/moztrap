@@ -218,6 +218,8 @@ FORBIDDEN_PASSWORDS = [
     "test"
     ] # @@@ get full list from InfraSec
 
+ALLOW_ANONYMOUS_ACCESS = False
+
 INSTALLED_APPS += ["icanhaz"]
 ICANHAZ_DIRS = [join(BASE_PATH, "jstemplates")]
 
