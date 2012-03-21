@@ -441,3 +441,43 @@ class RunActivationTest(case.DBTestCase):
 
         self.assertCaseVersions(r, [])
         self.assertEqual(self.refresh(r).status, "active")
+
+
+    def test_source_suite(self):
+        """Sets source suites for each runcaseversion."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(list(rcv.suites.all()), [ts])
+
+
+    def test_multiple_source_suites(self):
+        """Sets source suites for a caseversion in multiple included suites."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts1 = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
+
+        ts2 = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts2, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts1, run=r)
+        self.F.RunSuiteFactory.create(suite=ts2, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(set(rcv.suites.all()), set([ts1, ts2]))
