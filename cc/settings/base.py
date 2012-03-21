@@ -140,7 +140,6 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "django.contrib.humanize",
-    "django.contrib.markup",
     "south",
     "cc.model.core",
     "cc.model.library",
@@ -150,6 +149,7 @@ INSTALLED_APPS = [
     "cc.model.tags",
     "cc.view",
     "cc.view.lists",
+    "cc.view.markup",
     "cc.view.manage",
     "cc.view.results",
     "cc.view.runtests",
@@ -205,7 +205,7 @@ INSTALLED_APPS += ["floppyforms"]
 
 INSTALLED_APPS += ["djangosecure"]
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = 15 * 60 # 15 minutes
+SESSION_COOKIE_AGE = 8 * 60 * 60 # 8 hours
 SECURE_FRAME_DENY = True
 
 MINIMUM_PASSWORD_CHARS = 8

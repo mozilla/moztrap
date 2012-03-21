@@ -232,11 +232,10 @@
     +adjust-font-size-to($small-normpx)
     +transition(opacity 300ms)
     +stretch-x
-    +prefix(22,20)
     top: rhythm(-.75,$smallpx)
     color: inherit
     text-transform: uppercase
-    text-align: center
+    text-align: right
     &::after
       +opacity(0)
       content: " "
@@ -247,9 +246,7 @@
       height: rhythm(.5,$small-normpx)
       border-bottom: 2px dashed rgba($blue-darker,$xsmall)
     &::before
-      +icon('ui/arrow_left.png')
-      +inline-block
-      content: '<'
+      content: image-url('ui/arrow_left.png')
       padding-right: .4em
     #{$focus}
       +opacity(1)

@@ -5,7 +5,11 @@
 
 {% block fields %}
   {% include "forms/_field.html" with field=form.name %}
-  {% include "forms/_field.html" with field=form.version %}
   {% include "forms/_field.html" with field=form.description %}
-  {% include "forms/_field.html" with field=form.profile %}
+
+  <div class="fieldset">
+    <h3 class="legend">create a version of your product</h3>
+    {% include "forms/_field.html" with field=form.version %}
+    {% include "forms/_field.html" with field=form.profile label="environments" %}
+  </div>
 {% endblock %}

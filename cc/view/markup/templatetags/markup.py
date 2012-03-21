@@ -16,15 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Utility base TestCase classes for testing views.
+Markup-related template tags and filters.
 
 """
-from .base import (
-    ViewTestCase,
-    AuthenticatedViewTestCase,
-    FormViewTestCase,
-    ListViewTestCase,
-    ListFinderTests,
-    NoCacheTest,
-    )
-from . import manage
+from django import template
+from django.utils.encoding import force_unicode
+from django.utils.safestring import mark_safe
+
+import markdown2
+
+
+
+register = template.Library()
+
+
+
+@register.filter
+def markdown(text):
+    return mark_safe(
+        force_unicode(
+            markdown2.markdown(text, safe_mode="escape")))
+markdown.is_safe = True

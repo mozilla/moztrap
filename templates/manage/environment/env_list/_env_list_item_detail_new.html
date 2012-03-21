@@ -3,8 +3,8 @@
     <form method="POST" id="add-environment-form">
 
       <div class="add-elements-field formfield optional">
-        <label for="env-elements-input" class="type">add or remove environment elements</label>
-        <input type="text" name="text-filter" class="value" value="" id="env-elements-input" autocomplete="off" placeholder="add or remove environment elements" data-autocomplete-url="{% url manage_environment_autocomplete_elements %}">
+        <label for="env-elements-input" class="type">include one or more elements</label>
+        <input type="text" name="text-filter" class="value" value="" id="env-elements-input" autocomplete="off" placeholder="such as 'linux', 'firefox', or 'spanish'" data-autocomplete-url="{% url manage_environment_autocomplete_elements %}">
         <ul class="suggest">
           {# (provided by filtering) icanhaz "autocomplete_suggestion" #}
         </ul>
@@ -16,7 +16,7 @@
       </ul>
 
       <div class="form-actions">
-        <button type="submit" name="add-environment" id="add-environment" value="1">Add Environment</button>
+        <button type="submit" name="add-environment" id="add-environment" value="1">Save Environment</button>
       </div>
     </form>
   </div>

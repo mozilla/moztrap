@@ -21,6 +21,7 @@ Manage views for cases.
 """
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -38,6 +39,7 @@ from . import forms
 
 
 
+@never_cache
 @login_required
 @lists.actions(
     model.Case,
@@ -64,6 +66,7 @@ def cases_list(request):
 
 
 
+@never_cache
 @login_required
 def case_details(request, caseversion_id):
     """Get details snippet for a caseversion."""
@@ -78,6 +81,7 @@ def case_details(request, caseversion_id):
 
 
 
+@never_cache
 @permission_required("library.create_cases")
 def case_add(request):
     """Add a single case."""
@@ -102,6 +106,7 @@ def case_add(request):
 
 
 
+@never_cache
 @permission_required("library.create_cases")
 def case_add_bulk(request):
     """Add cases in bulk."""
@@ -127,6 +132,7 @@ def case_add_bulk(request):
 
 
 
+@never_cache
 @permission_required("library.manage_cases")
 def caseversion_edit(request, caseversion_id):
     """Edit a caseversion."""

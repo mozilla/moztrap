@@ -53,3 +53,21 @@
   white-space: nowrap
   text-transform: capitalize
   letter-spacing: 0
+
+.bybulk-open
+  position: absolute
+  left: 0
+  width: auto
+  margin: 0
+  a
+    #{$link}
+      +opacity(.5)
+      +icon('ui/item_all_closed.png')
+      display: block
+    #{$focus}
+      +opacity(.75)
+    &.open
+      #{$link}
+        +opacity(1)
+        background-image: image-url('ui/item_all_open.png')
+

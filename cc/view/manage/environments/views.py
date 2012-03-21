@@ -24,6 +24,7 @@ import json
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
@@ -39,6 +40,7 @@ from .decorators import category_element_ajax_add_edit
 
 
 
+@never_cache
 @login_required
 @lists.actions(
     model.Profile,
@@ -59,6 +61,7 @@ def profiles_list(request):
 
 
 
+@never_cache
 @login_required
 def profile_details(request, profile_id):
     """Get details snippet for a profile."""
@@ -73,6 +76,7 @@ def profile_details(request, profile_id):
 
 
 
+@never_cache
 @permission_required("environments.manage_environments")
 @category_element_ajax_add_edit
 def profile_add(request):
@@ -98,6 +102,7 @@ def profile_add(request):
 
 
 
+@never_cache
 @permission_required("environments.manage_environments")
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @lists.actions(
@@ -148,6 +153,7 @@ def profile_edit(request, profile_id):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @ajax("manage/environment/productversion/_envs_list.html")
@@ -181,6 +187,7 @@ def productversion_environments_edit(request, productversion_id):
 
 
 
+@never_cache
 @login_required
 def element_autocomplete(request):
     text = request.GET.get("text")
@@ -212,6 +219,7 @@ def element_autocomplete(request):
 
 
 
+@never_cache
 @login_required
 @ajax("manage/environment/narrow/_envs_list.html")
 def narrow_environments(request, object_type, object_id):

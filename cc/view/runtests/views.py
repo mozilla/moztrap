@@ -24,6 +24,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
@@ -39,6 +40,7 @@ from .forms import EnvironmentSelectionForm
 
 
 
+@never_cache
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 def select(request):
@@ -51,6 +53,7 @@ def select(request):
 
 
 
+@never_cache
 @permission_required("execution.execute")
 @ajax("runtests/_environment_form.html")
 def set_environment(request, run_id):
@@ -100,6 +103,7 @@ ACTIONS = {
 
 
 
+@never_cache
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.sort("runcaseversions")
