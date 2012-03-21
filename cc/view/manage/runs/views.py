@@ -21,6 +21,7 @@ Manage views for runs.
 """
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
@@ -37,6 +38,7 @@ from . import forms
 
 
 
+@never_cache
 @login_required
 @lists.actions(
     model.Run,
@@ -58,6 +60,7 @@ def runs_list(request):
 
 
 
+@never_cache
 @login_required
 def run_details(request, run_id):
     """Get details snippet for a run."""
@@ -73,6 +76,7 @@ def run_details(request, run_id):
 
 
 
+@never_cache
 @permission_required("execution.manage_runs")
 def run_add(request):
     """Add a run."""
@@ -97,6 +101,7 @@ def run_add(request):
 
 
 
+@never_cache
 @permission_required("execution.manage_runs")
 def run_edit(request, run_id):
     """Edit a run."""

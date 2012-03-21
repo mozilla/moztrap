@@ -1,19 +1,14 @@
 .add-product
 
-  .name-field, .description-field, .version-field, .profile-field
-    +columns(11,24)
+  .name-field, .description-field, .version-field, .environments-field
+    +full(24)
     .type
-      +columns(2,11)
+      +columns(6,24)
     .value, .errorlist
-      +columns(9,11)
-      +omega(11)
-
-  .version-field, .profile-field
-    +suffix(2,24)
-    +omega(24)
+      +columns(12,24)
 
   .form-actions
-    +suffix(2,24)
+    +suffix(6,24)
 
 .edit-product
 

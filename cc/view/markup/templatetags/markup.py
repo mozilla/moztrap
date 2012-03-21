@@ -16,17 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-URLconf for open web apps
+Markup-related template tags and filters.
 
 """
-from django.conf.urls.defaults import patterns, url
+from django import template
+from django.utils.encoding import force_unicode
+from django.utils.safestring import mark_safe
+
+import markdown2
 
 
 
-urlpatterns = patterns(
-    "cc.view.owa.views",
+register = template.Library()
 
-    # open web apps ----------------------------------------------------------
-    url("^manifest.webapp", "manifest", name="owa_manifest"),
 
-)
+
+@register.filter
+def markdown(text):
+    return mark_safe(
+        force_unicode(
+            markdown2.markdown(text, safe_mode="escape")))
+markdown.is_safe = True

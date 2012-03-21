@@ -147,7 +147,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   clear: both;
 }
 
-.allcaps, h1, h2, .selectenvhead, caption, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, .add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary, #results .case-details b, .results .result, .result-action, .invalid-summary, .stepfail-summary {
+.allcaps, h1, h2, .selectenvhead, caption, .legend, #page-status::before, .detailstitle, .itembody .envs-title, #manageproducts .productversions-title, #manageproducts .testers-title, #manageproductversions .runs-title, #manageproductversions .envs-title, #manageproductversions .testers-title, #manageruns .suites-title, #manageruns .testers-title, #managecases .suites-title, #runresults .testers-title, #caseresults .testers-title, .category-title, .multi-header, .add-item .itemhead, .add-item #results .case-details .summary, #results .case-details .add-item .summary, #results .case-details b, .results .result, .result-action, .invalid-summary, .stepfail-summary {
   text-transform: uppercase;
 }
 
@@ -670,6 +670,21 @@ select:not([multiple]) {
 
 input[type="text"], input[type="password"], input[type="email"], input[type="url"], input[type="tel"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="time"], input[type="number"], input[type="search"], input[type="color"] {
   height: 2.25em;
+}
+
+.fieldset {
+  padding-top: 1.5em;
+  clear: both;
+}
+
+.legend {
+  border-top-style: solid;
+  border-top-width: 0.214em;
+  padding-top: 1.286em;
+  margin-bottom: 1.5em;
+  font-weight: 500;
+  border-style: dashed;
+  border-color: rgba(153, 153, 153, 0.667);
 }
 
 .formfield {
@@ -1594,7 +1609,7 @@ body > div {
 .bybulk-open a:link, .bybulk-open a:visited {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  background-image: url('../images/ui/item_all_closed.png?1331920261');
+  background-image: url('../images/ui/item_all_closed.png?1332350122');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1617,7 +1632,7 @@ body > div {
 .bybulk-open a.open:link, .bybulk-open a.open:visited {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-  background-image: url('../images/ui/item_all_open.png?1331920261');
+  background-image: url('../images/ui/item_all_open.png?1332350122');
 }
 
 .listnav {
@@ -1948,7 +1963,7 @@ body > div {
 .itembody .item-summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
   opacity: 0.5;
-  background-image: url('../images/ui/item_closed.png?1331920261');
+  background-image: url('../images/ui/item_closed.png?1332350122');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1998,7 +2013,7 @@ body > div {
 .itembody.open > .summary {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-  background-image: url('../images/ui/item_open.png?1331920261');
+  background-image: url('../images/ui/item_open.png?1332350122');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -3865,37 +3880,23 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-left: 0;
 }
 
-.add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .profile-field {
+.add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .environments-field {
+  clear: both;
+}
+.add-product .name-field .type, .add-product .description-field .type, .add-product .version-field .type, .add-product .environments-field .type {
   display: inline;
   float: left;
-  width: 45.263%;
+  width: 24.211%;
   margin-right: 1.053%;
 }
-.add-product .name-field .type, .add-product .description-field .type, .add-product .version-field .type, .add-product .profile-field .type {
+.add-product .name-field .value, .add-product .name-field .errorlist, .add-product .description-field .value, .add-product .description-field .errorlist, .add-product .version-field .value, .add-product .version-field .errorlist, .add-product .environments-field .value, .add-product .environments-field .errorlist {
   display: inline;
   float: left;
-  width: 16.279%;
-  margin-right: 2.326%;
-}
-.add-product .name-field .value, .add-product .name-field .errorlist, .add-product .description-field .value, .add-product .description-field .errorlist, .add-product .version-field .value, .add-product .version-field .errorlist, .add-product .profile-field .value, .add-product .profile-field .errorlist {
-  display: inline;
-  float: left;
-  width: 81.395%;
-  margin-right: 2.326%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  #margin-left: -1em;
-}
-.add-product .version-field, .add-product .profile-field {
-  padding-right: 8.421%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  #margin-left: -1em;
+  width: 49.474%;
+  margin-right: 1.053%;
 }
 .add-product .form-actions {
-  padding-right: 8.421%;
+  padding-right: 25.263%;
 }
 
 .edit-product .name-field, .edit-product .description-field {
@@ -5476,6 +5477,11 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-top: 0.375em;
   margin-bottom: 0em;
   font-style: italic;
+}
+#runtests .description .id {
+  display: inline;
+  float: left;
+  margin-right: 0.75em;
 }
 #runtests .steps {
   clear: both;

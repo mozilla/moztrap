@@ -25,6 +25,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
@@ -41,6 +42,7 @@ from . import forms
 
 
 
+@never_cache
 @login_required
 @lists.actions(
     model.Tag,
@@ -62,6 +64,7 @@ def tags_list(request):
 
 
 
+@never_cache
 @permission_required("tags.manage_tags")
 def tag_add(request):
     """Add a tag."""
@@ -86,6 +89,7 @@ def tag_add(request):
 
 
 
+@never_cache
 @permission_required("tags.manage_tags")
 def tag_edit(request, tag_id):
     """Edit a tag."""
@@ -110,6 +114,7 @@ def tag_edit(request, tag_id):
 
 
 
+@never_cache
 @login_required
 def tag_autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""

@@ -26,7 +26,8 @@ from tests import case
 
 
 class UsersTest(case.view.manage.ListViewTestCase,
-                case.view.manage.StatusListTests
+                case.view.manage.StatusListTests,
+                case.view.NoCacheTest,
                 ):
     """Test for users manage list view."""
     form_id = "manage-users-form"
@@ -170,7 +171,9 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
 
 
-class AddUserTest(case.view.FormViewTestCase):
+class AddUserTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for add user view."""
     form_id = "user-add-form"
 
@@ -225,7 +228,9 @@ class AddUserTest(case.view.FormViewTestCase):
 
 
 
-class EditUserTest(case.view.FormViewTestCase):
+class EditUserTest(case.view.FormViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for edit-user view."""
     form_id = "user-edit-form"
 

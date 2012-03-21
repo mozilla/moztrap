@@ -159,6 +159,7 @@ var CC = (function (CC, $) {
 
         // filtering.js
         CC.toggleAdvancedFiltering('.magicfilter');
+        CC.preventCaching('#filter');
         CC.directFilterLinks();
         CC.filterFormAjax('.manage, .results');
         CC.clientSideFilter({container: '#envnarrowing'});
@@ -216,9 +217,6 @@ var CC = (function (CC, $) {
         CC.runTests('#runtests');
         CC.failedTestBug('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
-
-        // owa.js
-        CC.owa();
     });
 
     $(window).load(function () {

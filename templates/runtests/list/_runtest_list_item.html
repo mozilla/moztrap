@@ -3,7 +3,7 @@
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
 
-<article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}">
+<article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
@@ -28,6 +28,9 @@
       {% if result.status == result.STATUS.invalidated %}
         <p class="invalid-note">{{ result.comment }}</p>
       {% endif %}
+      {% if result.status == result.STATUS.failed %}
+        <p class="failed-note">{{ result.comment }}</p>
+      {% endif %}
 
       {% with caseversion.tags.all as tags %}
       {% if tags %}
@@ -40,7 +43,6 @@
       {% endwith %}
 
       {% if result.status == result.STATUS.failed %}
-        <p class="failed-note">{{ result.comment }}</p>
         {% if result.bug_urls %}
           <ul class="buglist">
             {% for bug in result.bug_urls %}
@@ -52,6 +54,18 @@
         {% endif %}
       {% endif %}
 
+    </div>
+
+    <div class="suites">
+      {% with runcaseversion.suites.all as suites %}
+      {% if suites %}
+      <ul>
+        {% for suite in suites %}
+        <li><a href="" title="filter by {{ suite }}" class="filter-link suite" data-type="suite">{{ suite }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
     </div>
   </div>
 

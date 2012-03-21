@@ -50,7 +50,4 @@ urlpatterns = patterns(
     # admin ------------------------------------------------------------------
     url(r"^admin/", include(admin.site.urls)),
 
-    # open web apps-----------------------------------------------------------
-    url("^owa/", include("cc.view.owa.urls")),
-    
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
