@@ -6,6 +6,8 @@
 
 {% block itembody-content %}
 
+{% block id %}<strong>#{{ caseversion.case.id }}</strong>{% endblock id %}
+
 {% if caseversion.description %}
   <div class="description">
     {{ caseversion.description|markdown }}
