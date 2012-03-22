@@ -67,7 +67,8 @@ Environment Edit Fields
 * **save profile** - Clicking this will auto-generate all combinations of the
   categories and elements you chose above.  You will then be taken to a screen
   where you can pare the list of environments down to only the ones you truly
-  want to have included in the profile.
+  want to have included in the profile.  See **Auto-generation** below for
+  more info.
 
 
 Auto-generation
@@ -149,3 +150,15 @@ applies to that case.
 :ref:`Test results<test-results>`, once recorded, are never deleted, even if
 their corresponding environment is removed from their product version or run's
 environment profile.
+
+Select Environments
+^^^^^^^^^^^^^^^^^^^
+
+This page allows you to narrow the list of environments for a given object.
+This can be a :ref:`product version <product-versions>`,
+:ref:`test run <test-runs>`, :ref:`test suite <test-suites>`, or
+:ref:`test case <test-cases>`.  See **Inheritance** and **Cascades** above for
+a detailed explanation.  In this dialog, you can uncheck any environments that
+you do not want to apply the version/run/suite/case in question.  You can also
+add environments back in that may have been previously removed.  Just check or
+uncheck items to include / exclude them.
