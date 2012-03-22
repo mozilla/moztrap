@@ -9,10 +9,7 @@
 <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
   {% csrf_token %}
 
-  {% if result.status == result.STATUS.assigned %}
-    <button class="action-start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
-  {% endif %}
-  {% if result.status == result.STATUS.started %}
+  {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
     <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass test</button>
   {% endif %}
 </form>
@@ -24,7 +21,7 @@
   </div>
 {% endif %}
 
-{% if result.status == result.STATUS.started %}
+{% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
   <div class="testinvalid details">
     <p class="summary invalid-summary" title="mark test as invalid or unclear">invalid</p>
     <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
@@ -47,7 +44,7 @@
       <div class="outcome">{{ step.expected|markdown }}</div>
     </div>
 
-    {% if result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
+    {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
       <div class="stepfail details">
         <p class="summary stepfail-summary">fail step</p>
         <form method="POST" id="test-fail-form-{{ runcaseversion.id }}-{{ step.number }}" class="content stepfail-content">
