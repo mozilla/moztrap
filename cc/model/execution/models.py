@@ -267,7 +267,7 @@ class Result(CCModel):
     environment = models.ForeignKey(Environment, related_name="results")
     status = models.CharField(
         max_length=50, db_index=True, choices=STATUS, default=STATUS.assigned)
-    started = models.DateTimeField(default=utcnow)
+    started = models.DateTimeField(blank=True, null=True)
     completed = models.DateTimeField(blank=True, null=True)
     comment = models.TextField(blank=True)
 
@@ -307,6 +307,8 @@ class Result(CCModel):
         """Mark this result passed."""
         self.status = self.STATUS.passed
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.save(force_update=True, user=user)
 
 
@@ -315,6 +317,8 @@ class Result(CCModel):
         self.status = self.STATUS.invalidated
         self.comment = comment
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.save(force_update=True, user=user)
 
 
@@ -322,6 +326,8 @@ class Result(CCModel):
         """Mark this result failed."""
         self.status = self.STATUS.failed
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.comment = comment
         if stepnumber:
             try:

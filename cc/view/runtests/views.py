@@ -156,17 +156,11 @@ def run(request, run_id, env_id):
                 result = rcv.results.get(
                     tester=request.user, environment=environment)
             except model.Result.DoesNotExist:
-                if action == "start":
-                    result = model.Result.objects.create(
-                        runcaseversion=rcv,
-                        tester=request.user,
-                        environment=environment,
-                        user=request.user)
-                else:
-                    messages.error(
-                        request,
-                        "Can't finish a result that was never started.")
-                    break
+                result = model.Result.objects.create(
+                    runcaseversion=rcv,
+                    tester=request.user,
+                    environment=environment,
+                    user=request.user)
 
             for argname in defaults.keys():
                 try:

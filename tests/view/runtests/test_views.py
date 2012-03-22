@@ -542,7 +542,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
 
     def test_post_missing_result(self):
-        """POST an action other than start to a missing result; message."""
+        """Can pass/fail/invalid a not-yet-existing result."""
         result = self.create_result(status="started")
         rcv = result.runcaseversion
 
@@ -554,11 +554,13 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         self.assertRedirects(res, self.url)
 
-        res.follow().mustcontain("finish a result that was never started")
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.passed)
 
 
     def test_post_missing_result_ajax(self):
-        """Ajax POST to missing action results in message, fixed HTML."""
+        """Can pass/fail/invalid a not-yet-existing result via ajax."""
         result = self.create_result(status="started")
         rcv = result.runcaseversion
 
@@ -571,11 +573,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-start"})
-        self.assertIn(
-            "finish a result that was never started",
-            res.json["messages"][0]["message"]
-            )
+            res.json["html"], "button", attrs={"name": "action-restart"})
 
 
     def test_pass_case(self):
