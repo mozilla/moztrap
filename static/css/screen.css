@@ -2428,12 +2428,12 @@ body > div {
   -ms-transform: rotate(135deg);
   -o-transform: rotate(135deg);
   transform: rotate(135deg);
-  background: -webkit-gradient(linear, 45deg, 45deg, color-stop(0%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0)));
-  background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
-  background: -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
-  background: -o-linear-gradient(45deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
-  background: -ms-linear-gradient(45deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
-  background: linear-gradient(45deg, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0)));
+  background: -webkit-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -moz-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -o-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -ms-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
   content: " ";
   display: block;
   position: absolute;
