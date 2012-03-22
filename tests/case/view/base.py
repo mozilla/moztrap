@@ -302,3 +302,12 @@ class ListFinderTests(object):
             'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
             res.json["html"]
             )
+
+
+
+class NoCacheTest(object):
+    """Test that a given view marks it's responses as uncacheable."""
+    def test_never_cache(self):
+        res = self.get()
+
+        self.assertEqual(res.headers["Cache-Control"], "max-age=0")

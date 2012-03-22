@@ -24,8 +24,10 @@ import json
 from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
 from cc import model
@@ -33,13 +35,15 @@ from cc import model
 from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from . import forms
 from .decorators import category_element_ajax_add_edit
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 @lists.actions(
     model.Profile,
     ["delete", "clone"],
@@ -59,7 +63,8 @@ def profiles_list(request):
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 def profile_details(request, profile_id):
     """Get details snippet for a profile."""
     profile = get_object_or_404(model.Profile, pk=profile_id)
@@ -73,6 +78,7 @@ def profile_details(request, profile_id):
 
 
 
+@never_cache
 @permission_required("environments.manage_environments")
 @category_element_ajax_add_edit
 def profile_add(request):
@@ -98,6 +104,7 @@ def profile_add(request):
 
 
 
+@never_cache
 @permission_required("environments.manage_environments")
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @lists.actions(
@@ -148,6 +155,7 @@ def profile_edit(request, profile_id):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 @lists.filter("environments", filterset_class=EnvironmentFilterSet)
 @ajax("manage/environment/productversion/_envs_list.html")
@@ -181,6 +189,7 @@ def productversion_environments_edit(request, productversion_id):
 
 
 
+@never_cache
 @login_required
 def element_autocomplete(request):
     text = request.GET.get("text")
@@ -212,17 +221,24 @@ def element_autocomplete(request):
 
 
 
+@never_cache
 @login_required
 @ajax("manage/environment/narrow/_envs_list.html")
 def narrow_environments(request, object_type, object_id):
     if object_type == "run":
         model_class = model.Run
         redirect_to = "manage_runs"
+        perm = "execution.manage_runs"
     elif object_type == "caseversion":
         model_class = model.CaseVersion
         redirect_to = "manage_cases"
+        perm = "library.manage_cases"
     else:
         raise Http404
+
+    if not request.user.has_perm(perm):
+        return redirect_to_login(request.path)
+
     obj = get_object_or_404(model_class, pk=object_id)
 
     current_env_ids = set(obj.environments.values_list("id", flat=True))

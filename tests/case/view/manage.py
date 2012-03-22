@@ -164,6 +164,26 @@ class StatusListTests(object):
         self.assertActionRequiresPermission("activate", self.perm)
 
 
+    def test_draft(self):
+        """Can make-draft objects in list."""
+        self.add_perm(self.perm)
+
+        s = self.factory.create(status="active")
+
+        self.get_form().submit(
+            name="action-draft",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            )
+
+        self.assertEqual(self.refresh(s).status, "draft")
+
+
+    def test_draft_requires_permission(self):
+        """Resetting to draft requires appropriate permission."""
+        self.assertActionRequiresPermission("draft", self.perm)
+
+
     def test_deactivate(self):
         """Can deactivate objects in list."""
         self.add_perm(self.perm)

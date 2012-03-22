@@ -21,8 +21,9 @@ Manage views for productversions.
 """
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -30,6 +31,7 @@ from cc import model
 from cc.view.filters import ProductVersionFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 
@@ -37,7 +39,8 @@ from . import forms
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 @lists.actions(
     model.ProductVersion,
     ["delete", "clone"],
@@ -59,7 +62,8 @@ def productversions_list(request):
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 def productversion_details(request, productversion_id):
     """Get details snippet for a productversion."""
     productversion = get_object_or_404(
@@ -74,6 +78,7 @@ def productversion_details(request, productversion_id):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 def productversion_add(request):
     """Add a product version."""
@@ -98,6 +103,7 @@ def productversion_add(request):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 def productversion_edit(request, productversion_id):
     """Edit a productversion."""

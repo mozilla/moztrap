@@ -34,6 +34,7 @@ class RunsTest(case.view.manage.ListViewTestCase,
                case.view.ListFinderTests,
                case.view.manage.CCModelListTests,
                case.view.manage.StatusListTests,
+               case.view.NoCacheTest,
                ):
     """Test for runs manage list view."""
     form_id = "manage-runs-form"
@@ -53,7 +54,9 @@ class RunsTest(case.view.manage.ListViewTestCase,
 
 
 
-class RunDetailTest(case.view.AuthenticatedViewTestCase):
+class RunDetailTest(case.view.AuthenticatedViewTestCase,
+                    case.view.NoCacheTest,
+                    ):
     """Test for run-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a run."""
@@ -110,7 +113,9 @@ class RunDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddRunTest(case.view.FormViewTestCase):
+class AddRunTest(case.view.FormViewTestCase,
+                 case.view.NoCacheTest,
+                 ):
     """Tests for add run view."""
     form_id = "run-add-form"
 
@@ -180,7 +185,9 @@ class AddRunTest(case.view.FormViewTestCase):
 
 
 
-class EditRunTest(case.view.FormViewTestCase):
+class EditRunTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for edit-run view."""
     form_id = "run-edit-form"
 

@@ -25,8 +25,9 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -34,6 +35,7 @@ from cc import model
 from cc.view.filters import TagFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 
@@ -41,7 +43,8 @@ from . import forms
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 @lists.actions(
     model.Tag,
     ["delete", "clone"],
@@ -62,6 +65,7 @@ def tags_list(request):
 
 
 
+@never_cache
 @permission_required("tags.manage_tags")
 def tag_add(request):
     """Add a tag."""
@@ -86,6 +90,7 @@ def tag_add(request):
 
 
 
+@never_cache
 @permission_required("tags.manage_tags")
 def tag_edit(request, tag_id):
     """Edit a tag."""
@@ -110,7 +115,8 @@ def tag_edit(request, tag_id):
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 def tag_autocomplete(request):
     """Return autocomplete list of existing tags in JSON format."""
     text = request.GET.get("text")

@@ -21,8 +21,9 @@ Manage views for products.
 """
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -30,6 +31,7 @@ from cc import model
 from cc.view.filters import ProductFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 
@@ -37,7 +39,8 @@ from . import forms
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 @lists.actions(
     model.Product,
     ["delete", "clone"],
@@ -58,7 +61,8 @@ def products_list(request):
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 def product_details(request, product_id):
     """Get details snippet for a product."""
     product = get_object_or_404(model.Product, pk=product_id)
@@ -72,6 +76,7 @@ def product_details(request, product_id):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 def product_add(request):
     """Add a product."""
@@ -96,6 +101,7 @@ def product_add(request):
 
 
 
+@never_cache
 @permission_required("core.manage_products")
 def product_edit(request, product_id):
     """Edit a product."""

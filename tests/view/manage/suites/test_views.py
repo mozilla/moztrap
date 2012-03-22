@@ -28,7 +28,8 @@ from tests import case
 class SuitesTest(case.view.manage.ListViewTestCase,
                  case.view.ListFinderTests,
                  case.view.manage.CCModelListTests,
-                 case.view.manage.StatusListTests
+                 case.view.manage.StatusListTests,
+                 case.view.NoCacheTest,
                  ):
     """Test for suites manage list view."""
     form_id = "manage-suites-form"
@@ -210,7 +211,9 @@ class SuitesTest(case.view.manage.ListViewTestCase,
 
 
 
-class SuiteDetailTest(case.view.AuthenticatedViewTestCase):
+class SuiteDetailTest(case.view.AuthenticatedViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
     """Test for suite-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a suite."""
@@ -238,7 +241,9 @@ class SuiteDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddSuiteTest(case.view.FormViewTestCase):
+class AddSuiteTest(case.view.FormViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for add suite view."""
     form_id = "suite-add-form"
 
@@ -293,7 +298,9 @@ class AddSuiteTest(case.view.FormViewTestCase):
 
 
 
-class EditSuiteTest(case.view.FormViewTestCase):
+class EditSuiteTest(case.view.FormViewTestCase,
+                    case.view.NoCacheTest,
+                    ):
     """Tests for edit-suite view."""
     form_id = "suite-edit-form"
 

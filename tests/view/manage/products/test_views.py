@@ -28,6 +28,7 @@ from tests import case
 class ProductsTest(case.view.manage.ListViewTestCase,
                    case.view.ListFinderTests,
                    case.view.manage.CCModelListTests,
+                   case.view.NoCacheTest,
                    ):
     """Test for products manage list view."""
     form_id = "manage-products-form"
@@ -68,7 +69,9 @@ class ProductsTest(case.view.manage.ListViewTestCase,
 
 
 
-class ProductDetailTest(case.view.AuthenticatedViewTestCase):
+class ProductDetailTest(case.view.AuthenticatedViewTestCase,
+                        case.view.NoCacheTest,
+                        ):
     """Test for product-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a product."""
@@ -104,7 +107,9 @@ class ProductDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddProductTest(case.view.FormViewTestCase):
+class AddProductTest(case.view.FormViewTestCase,
+                     case.view.NoCacheTest,
+                     ):
     """Tests for add product view."""
     form_id = "product-add-form"
 
@@ -157,7 +162,9 @@ class AddProductTest(case.view.FormViewTestCase):
 
 
 
-class EditProductTest(case.view.FormViewTestCase):
+class EditProductTest(case.view.FormViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
     """Tests for edit-product view."""
     form_id = "product-edit-form"
 

@@ -29,7 +29,9 @@ from tests import case
 
 
 
-class SelectTest(case.view.AuthenticatedViewTestCase):
+class SelectTest(case.view.AuthenticatedViewTestCase,
+                 case.view.NoCacheTest,
+                 ):
     """Tests for select-run view."""
     @property
     def url(self):
@@ -82,7 +84,9 @@ class SelectTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class SetEnvironmentTest(case.view.AuthenticatedViewTestCase):
+class SetEnvironmentTest(case.view.AuthenticatedViewTestCase,
+                         case.view.NoCacheTest,
+                         ):
     """Tests for set_environment view."""
     def setUp(self):
         """These tests all require a test run."""
@@ -214,7 +218,9 @@ class SetEnvironmentTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class RunTestsTest(case.view.AuthenticatedViewTestCase):
+class RunTestsTest(case.view.AuthenticatedViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for runtests view."""
     def setUp(self):
         """These tests all require a test run and envs, and execute perm."""

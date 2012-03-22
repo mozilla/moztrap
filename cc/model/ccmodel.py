@@ -431,6 +431,12 @@ class DraftStatusModel(models.Model):
         self.save(force_update=True, user=user)
 
 
+    def draft(self, user=None):
+        """Reset this object to draft status."""
+        self.status = self.STATUS.draft
+        self.save(force_update=True, user=user)
+
+
     def deactivate(self, user=None):
         """Deactivate this object."""
         self.status = self.STATUS.disabled

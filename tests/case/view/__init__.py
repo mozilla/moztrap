@@ -25,5 +25,6 @@ from .base import (
     FormViewTestCase,
     ListViewTestCase,
     ListFinderTests,
+    NoCacheTest,
     )
 from . import manage

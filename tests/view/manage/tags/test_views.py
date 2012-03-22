@@ -27,6 +27,7 @@ from tests import case
 
 class TagsTest(case.view.manage.ListViewTestCase,
                case.view.manage.CCModelListTests,
+               case.view.NoCacheTest,
                ):
     """Test for tags manage list view."""
     form_id = "manage-tags-form"
@@ -91,7 +92,9 @@ class TagsTest(case.view.manage.ListViewTestCase,
 
 
 
-class AddTagTest(case.view.FormViewTestCase):
+class AddTagTest(case.view.FormViewTestCase,
+                 case.view.NoCacheTest,
+                 ):
     """Tests for add tag view."""
     form_id = "tag-add-form"
 
@@ -143,7 +146,9 @@ class AddTagTest(case.view.FormViewTestCase):
 
 
 
-class EditTagTest(case.view.FormViewTestCase):
+class EditTagTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for edit-tag view."""
     form_id = "tag-edit-form"
 
@@ -208,7 +213,9 @@ class EditTagTest(case.view.FormViewTestCase):
 
 
 
-class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase):
+class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase,
+                           case.view.NoCacheTest,
+                           ):
     """Test for tags autocomplete view."""
     @property
     def url(self):

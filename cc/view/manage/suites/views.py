@@ -21,8 +21,9 @@ Manage views for suites.
 """
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
+from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -30,6 +31,7 @@ from cc.model.ccmodel import NotDeletedCount
 from cc.view.filters import SuiteFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 
@@ -37,10 +39,11 @@ from . import forms
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 @lists.actions(
     model.Suite,
-    ["delete", "clone", "activate", "deactivate"],
+    ["delete", "clone", "activate", "draft", "deactivate"],
     permission="library.manage_suites")
 @lists.finder(ManageFinder)
 @lists.filter("suites", filterset_class=SuiteFilterSet)
@@ -59,7 +62,8 @@ def suites_list(request):
 
 
 
-@login_required
+@never_cache
+@login_maybe_required
 def suite_details(request, suite_id):
     """Get details snippet for a suite."""
     suite = get_object_or_404(
@@ -74,6 +78,7 @@ def suite_details(request, suite_id):
 
 
 
+@never_cache
 @permission_required("library.manage_suites")
 def suite_add(request):
     """Add a suite."""
@@ -98,6 +103,7 @@ def suite_add(request):
 
 
 
+@never_cache
 @permission_required("library.manage_suites")
 def suite_edit(request, suite_id):
     """Edit a suite."""
