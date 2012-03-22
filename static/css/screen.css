@@ -927,7 +927,7 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/64x64.png?1327444929') no-repeat top center;
+  background: url('../images/64x64.png?1332459281') no-repeat top center;
 }
 #brand .wordmark {
   font-size: 1.5em;
@@ -1137,7 +1137,7 @@ body > div {
   border-style: solid;
   border-width: 0.071em;
   padding: 0.304em;
-  background-image: url('../images/ui/question_circle.png?1332360036');
+  background-image: url('../images/ui/question_circle.png?1332458582');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -1185,65 +1185,62 @@ body > div {
   display: inline-block;
 }
 [role="navigation"] .nav-tests > a:link, [role="navigation"] .nav-tests > a:visited {
-  background-image: url('../images/ui/stopwatch.png?1332372894');
+  background-image: url('../images/ui/stopwatch.png?1332458582');
   background-repeat: no-repeat;
   background-position: 6px;
   padding-left: 23px;
 }
 [role="navigation"] .nav-results > a:link, [role="navigation"] .nav-results > a:visited {
-  background-image: url('../images/ui/chart.png?1332371800');
+  background-image: url('../images/ui/chart.png?1332458582');
   background-repeat: no-repeat;
   background-position: 6px;
   padding-left: 23px;
 }
 [role="navigation"] .nav-manage > a:link, [role="navigation"] .nav-manage > a:visited {
-  background-image: url('../images/ui/gear.png?1332371598');
+  background-image: url('../images/ui/gear.png?1332458582');
   background-repeat: no-repeat;
   background-position: 6px;
   padding-left: 23px;
 }
 [role="navigation"] .nav-users > a:link, [role="navigation"] .nav-users > a:visited {
-  background-image: url('../images/ui/people_25.png?1332372090');
+  background-image: url('../images/ui/people_25.png?1332458582');
   background-repeat: no-repeat;
   background-position: left;
   padding-left: 17px;
 }
 [role="navigation"] .nav-users > a:focus, [role="navigation"] .nav-users > a:hover, [role="navigation"] .nav-users > a:active {
-  background-image: url('../images/ui/people.png?1332363728');
+  background-image: url('../images/ui/people.png?1332458582');
 }
 [role="navigation"] .nav-tags > a:link, [role="navigation"] .nav-tags > a:visited {
-  background-image: url('../images/ui/tag_25.png?1332371966');
+  background-image: url('../images/ui/tag_25.png?1332458582');
   background-repeat: no-repeat;
   background-position: left;
   padding-left: 17px;
 }
 [role="navigation"] .nav-tags > a:focus, [role="navigation"] .nav-tags > a:hover, [role="navigation"] .nav-tags > a:active {
-  background-image: url('../images/ui/tag.png?1332363831');
+  background-image: url('../images/ui/tag.png?1332458582');
 }
 [role="navigation"] .nav-envs > a:link, [role="navigation"] .nav-envs > a:visited {
-  background-image: url('../images/ui/tree_25.png?1332371998');
+  background-image: url('../images/ui/tree_25.png?1332458582');
   background-repeat: no-repeat;
   background-position: left;
   padding-left: 17px;
 }
 [role="navigation"] .nav-envs > a:focus, [role="navigation"] .nav-envs > a:hover, [role="navigation"] .nav-envs > a:active {
-  background-image: url('../images/ui/tree.png?1332368848');
+  background-image: url('../images/ui/tree.png?1332458582');
 }
 [role="navigation"] .nav-products > a:link, [role="navigation"] .nav-products > a:visited {
-  background-image: url('../images/ui/barcode_25.png?1332372052');
+  background-image: url('../images/ui/barcode_25.png?1332458582');
   background-repeat: no-repeat;
   background-position: left;
   padding-left: 17px;
 }
 [role="navigation"] .nav-products > a:focus, [role="navigation"] .nav-products > a:hover, [role="navigation"] .nav-products > a:active {
-  background-image: url('../images/ui/barcode.png?1332370508');
+  background-image: url('../images/ui/barcode.png?1332458582');
 }
 
 .primary > li:first-child {
   margin-left: 9.278%;
-}
-.primary > li:first-child > a {
-  margin-left: -0.75em;
 }
 .primary > li > a:link, .primary > li > a:visited {
   font-weight: 500;
@@ -1552,7 +1549,7 @@ body > div {
 }
 
 .tag {
-  background-image: url('../images/ui/tag.png?1332363831');
+  background-image: url('../images/ui/tag.png?1332458582');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2451,7 +2448,7 @@ body > div {
   margin-bottom: 0em;
 }
 .status .draft.status-readonly, .status .draft .status-title {
-  background-image: url('../images/ui/draft.png?1332358986');
+  background-image: url('../images/ui/draft.png?1332458582');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -2485,29 +2482,29 @@ body > div {
   background-repeat: no-repeat;
   padding-left: 24px;
   background-position: 9px, left;
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
 .status .draft.status-action:hover, .status .draft.status-action:focus {
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1332358986'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1332358986'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1332358986'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/draft.png?1332358986'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1332458582'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1332458582'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1332458582'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/draft.png?1332458582'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
 .status .draft.status-action:active {
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/draft.png?1332358986'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/draft.png?1332358986'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/draft.png?1332458582'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/draft.png?1332458582'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
 }
 .status .active.status-readonly, .status .active .status-title {
   background-image: url('../images/ui/power.png?1326735333');
@@ -3240,7 +3237,7 @@ body.login #brand .logo {
   top: 1.5em;
   width: 100%;
   height: 9em;
-  background: url('../images/126x126.png?1327444929') no-repeat scroll center center;
+  background: url('../images/126x126.png?1332459294') no-repeat scroll center center;
 }
 body.login #brand .wordmark {
   font-size: 1.5em;
@@ -3552,12 +3549,12 @@ h2 + .select-env-link, .selectenvhead + .select-env-link {
   background-repeat: no-repeat;
   padding-left: 24px;
   background-position: 9px, left;
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
   -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 0 9px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 0 9px inset;
@@ -3567,23 +3564,23 @@ h2 + .select-env-link, .selectenvhead + .select-env-link {
   margin-top: -1.875em;
 }
 h2 + .select-env-link:hover, .selectenvhead + .select-env-link:hover, h2 + .select-env-link:focus, .selectenvhead + .select-env-link:focus {
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/tree.png?1332368848'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/tree.png?1332368848'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/tree.png?1332368848'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
-  background-image: url('../images/ui/tree.png?1332368848'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/tree.png?1332458582'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/tree.png?1332458582'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/tree.png?1332458582'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/tree.png?1332458582'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
 h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
-  background-image: url('../images/ui/tree.png?1332368848'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
-  background-image: url('../images/ui/tree.png?1332368848'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/tree.png?1332458582'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/tree.png?1332458582'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
 }
 .controls .select-env-link {
-  background-image: url('../images/ui/tree.png?1332368848');
+  background-image: url('../images/ui/tree.png?1332458582');
   background-repeat: no-repeat;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
