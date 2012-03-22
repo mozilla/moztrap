@@ -22,7 +22,7 @@
     </div>
 
     <div class="selectbox itemlist">
-      {% include listordering_template with action="include" %}
+      {% include listordering_template with multiID='unselected' %}
       <div class="select sortable">
         {% for choice in choices %}
         {% if choice.0 not in value %}
@@ -37,7 +37,7 @@
     <h4 class="multi-header">included {{ name }}</h4>
 
     <div class="selectbox itemlist">
-      {% include listordering_template with action="exclude" %}
+      {% include listordering_template with multiID='selected' %}
       <div class="select sortable" data-name="{{ name }}">
         {% for choice in choices %}
         {% if choice.0 in value %}
@@ -48,4 +48,8 @@
     </div>
 
   </section>
+  <div class="include-exclude">
+    <button class="action-include" title="include selected">include selected</button></li>
+    <button class="action-exclude" title="remove selected">remove selected</button>
+  </div>
 </div>

@@ -1,14 +1,7 @@
 {% extends 'lists/_listordering.html' %}
 
 {% block sortitems %}
-  <li class="byinclude">
-  {% if action == "include" %}
-    <button class="action-include" title="include selected">include selected</button></li>
-  {% endif %}
-  {% if action == "exclude" %}
-    <button class="action-exclude" title="remove selected">remove selected</button>
-  {% endif %}
-  </li>
+  {% include "lists/_sortitem.html" with sortname="bulk" multiID=multiID %}
   {% block extra-sortitems %}
     {% include "lists/_sortitem.html" with sortname="name" sortID="name" %}
   {% endblock extra-sortitems %}

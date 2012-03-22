@@ -1370,6 +1370,7 @@ body > div {
   overflow: hidden;
   background-position: center;
   width: 1.5em;
+  text-indent: 200%;
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: url('../images/ui/columns.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: url('../images/ui/columns.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
@@ -1420,6 +1421,7 @@ body > div {
   overflow: hidden;
   background-position: center;
   width: 1.5em;
+  text-indent: 200%;
   background-image: url('../images/ui/minus.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: url('../images/ui/minus.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: url('../images/ui/minus.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
@@ -1828,7 +1830,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-clone, .action-delete, .action-remove, .action-include, .action-exclude, .actionlink, .edit-link, .create-child-link, .controls .select-env-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1839,7 +1841,7 @@ body > div {
   vertical-align: text-bottom;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .action-include:focus, .action-exclude:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .action-include:hover, .action-exclude:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .action-include:active, .action-exclude:active, .actionlink:active, .edit-link:active, .create-child-link:active, .controls .select-env-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1955,52 +1957,6 @@ body > div {
 .create-child-link:focus, .create-child-link:hover, .create-child-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
-}
-
-.action-include {
-  background-image: url('../images/ui/arrow_right.png?1326735333');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 14px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
-  opacity: 0.667;
-}
-.action-include:focus, .action-include:hover, .action-include:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background-image: url('../images/ui/arrow_right.png?1326735333');
-}
-
-.action-exclude {
-  background-image: url('../images/ui/arrow_left.png?1327353019');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 14px;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=67);
-  opacity: 0.667;
-}
-.action-exclude:focus, .action-exclude:hover, .action-exclude:active {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  background-image: url('../images/ui/arrow_left.png?1327353019');
 }
 
 .detailslist, .itembody .envs, #manageproducts .productversions, #manageproducts .testers, #manageproductversions .runs, #manageproductversions .envs, #manageproductversions .testers, #manageruns .suites, #manageruns .testers, #managecases .suites, #runresults .testers, #caseresults .testers {
@@ -2266,6 +2222,9 @@ body > div {
 
 .bulk-value:checked + .bulk-item {
   background: #f0f9e6;
+}
+.multiselected .bulk-value:checked + .bulk-item {
+  background: #f5d1d2;
 }
 
 .bystatus {
@@ -3623,21 +3582,6 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   position: absolute;
   left: 0.75em;
 }
-.multiselect .bulk-type {
-  background-image: url('../images/ui/grip.png?1326735333');
-  background-repeat: no-repeat;
-  -webkit-border-radius: 0.296em;
-  -moz-border-radius: 0.296em;
-  -ms-border-radius: 0.296em;
-  -o-border-radius: 0.296em;
-  border-radius: 0.296em;
-  background-color: false;
-  text-indent: 110%;
-  white-space: nowrap;
-  overflow: hidden;
-  background-position: center;
-  width: 1.5em;
-}
 
 .multi-header {
   margin-bottom: 0.75em;
@@ -3649,7 +3593,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .multiselected .multi-header {
   position: absolute;
   top: 0.75em;
-  left: 50.526%;
+  left: 54.737%;
 }
 
 .selectbox {
@@ -3658,7 +3602,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   box-sizing: border-box;
   display: inline;
   float: left;
-  width: 49.474%;
+  width: 45.263%;
   margin-right: 1.053%;
 }
 .multiselected .selectbox {
@@ -3674,12 +3618,37 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   height: 18em;
   border-bottom: 1px solid;
   overflow-y: scroll;
-  background-color: rgba(232, 233, 236, 0.296);
+}
+.selectbox .select:empty {
+  position: relative;
+}
+.selectbox .select:empty::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-style: italic;
+  padding: 1.5em;
+  color: #b8282d;
+  text-align: center;
+}
+.multiunselected .selectbox .select {
+  background-color: rgba(245, 209, 210, 0.296);
+}
+.multiunselected .selectbox .select:empty::after {
+  content: "No available items.";
+}
+.multiselected .selectbox .select {
+  background-color: rgba(228, 245, 209, 0.296);
+}
+.multiselected .selectbox .select:empty::after {
+  content: "No included items. Drag items here (or select and transfer multiple) to include them.";
 }
 
 .selectsearch {
   clear: both;
-  padding-right: 50.526%;
+  padding-right: 54.737%;
   *zoom: 1;
 }
 .selectsearch:after {
@@ -3698,11 +3667,120 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 
 .selectitem {
   position: relative;
+  background-color: #e8e9ec;
+  cursor: move;
 }
 .selectitem:last-child {
   -webkit-box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
   -moz-box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
   box-shadow: rgba(69, 69, 69, 0.198) 0 0.296em 0.296em;
+}
+
+.include-exclude {
+  display: inline;
+  float: left;
+  width: 7.368%;
+  margin-right: 1.053%;
+  padding-top: 6em;
+}
+
+.action-include {
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #698e3e;
+  background-color: #b3e37d;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-position: center;
+  width: 1.5em;
+  text-indent: 200%;
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+}
+.action-include:hover, .action-include:focus {
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+.action-include:active {
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_right.png?1326735333'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
+
+.action-exclude {
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #8e3e41;
+  background-color: #eca7a9;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-position: center;
+  width: 1.5em;
+  text-indent: 200%;
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+}
+.action-exclude:hover, .action-exclude:focus {
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+.action-exclude:active {
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/arrow_left.png?1327353019'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
+
+.action-include, .action-exclude {
+  margin-bottom: 1.5em;
+  width: 100%;
 }
 
 .user-form .username-field {
@@ -4193,6 +4271,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .add-suite .cases-field .status, .edit-suite .cases-field .status {
   left: 2.25em;
   margin: 0;
+}
+.add-suite .cases-field .bystatus, .edit-suite .cases-field .bystatus {
+  margin-left: -1.875em;
 }
 .add-suite .cases-field .itemhead, .add-suite .cases-field #results .case-details .summary, #results .case-details .add-suite .cases-field .summary, .add-suite .cases-field .listordering, .edit-suite .cases-field .itemhead, .edit-suite .cases-field #results .case-details .summary, #results .case-details .edit-suite .cases-field .summary, .edit-suite .cases-field .listordering {
   padding-left: 4.125em;
