@@ -712,7 +712,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         result = self.create_result(status="passed")
         rcv = result.runcaseversion
 
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+        form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
@@ -731,7 +731,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         result = self.create_result(status="passed")
         rcv = result.runcaseversion
 
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+        form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
         res = form.submit(
             name="action-restart",
