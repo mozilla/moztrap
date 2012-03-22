@@ -3,27 +3,24 @@
 <div class="status">
   {% if permission and user|has_perm:permission %}
 
-    {% if item.status == item.STATUS.draft %}
-    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="draft status-action">draft</button>
-    {% endif %}
-    {% if item.status == item.STATUS.active %}
-    <button title="disable" type="submit" name="action-deactivate" value="{{ item.id }}" class="active status-action">active</button>
-    {% endif %}
-    {% if item.status == item.STATUS.disabled %}
-    <button title="activate" type="submit" name="action-activate" value="{{ item.id }}" class="disabled status-action">disabled</button>
-    {% endif %}
+    <div class="{{ item.status }} status-select">
+      <div class="status-title">{{ item.status }}</div>
+      <div class="status-options">
+        {% if item.status != item.STATUS.draft %}
+          <button type="submit" name="action-draft" value="{{ item.id }}" class="draft status-action">draft</button>
+        {% endif %}
+        {% if item.status != item.STATUS.active %}
+          <button type="submit" name="action-activate" value="{{ item.id }}" class="active status-action">activate</button>
+        {% endif %}
+        {% if item.status != item.STATUS.disabled %}
+          <button type="submit" name="action-deactivate" value="{{ item.id }}" class="disabled status-action">disable</button>
+        {% endif %}
+      </div>
+    </div>
 
   {% else %}
 
-    {% if item.status == item.STATUS.draft %}
-    <span class="draft status-readonly">draft</span>
-    {% endif %}
-    {% if item.status == item.STATUS.active %}
-    <span class="active status-readonly">active</span>
-    {% endif %}
-    {% if item.status == item.STATUS.disabled %}
-    <span class="disabled status-readonly">disabled</span>
-    {% endif %}
+    <span class="{{ item.status }} status-readonly">{{ item.status }}</span>
 
   {% endif %}
 </div>

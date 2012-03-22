@@ -24,7 +24,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -32,6 +32,7 @@ from cc import model
 from cc.view.filters import CaseVersionFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 
@@ -40,7 +41,7 @@ from . import forms
 
 
 @never_cache
-@login_required
+@login_maybe_required
 @lists.actions(
     model.Case,
     ["delete"],
@@ -48,7 +49,7 @@ from . import forms
     fall_through=True)
 @lists.actions(
     model.CaseVersion,
-    ["clone", "activate", "deactivate"],
+    ["clone", "activate", "draft", "deactivate"],
     permission="library.manage_cases")
 @lists.finder(ManageFinder)
 @lists.filter("caseversions", filterset_class=CaseVersionFilterSet)
@@ -67,7 +68,7 @@ def cases_list(request):
 
 
 @never_cache
-@login_required
+@login_maybe_required
 def case_details(request, caseversion_id):
     """Get details snippet for a caseversion."""
     caseversion = get_object_or_404(model.CaseVersion, pk=caseversion_id)

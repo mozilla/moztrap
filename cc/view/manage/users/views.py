@@ -23,7 +23,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
@@ -39,7 +39,7 @@ from . import forms
 
 
 @never_cache
-@login_required
+@permission_required("core.manage_users")
 @lists.actions(
     model.User,
     ["delete", "activate", "deactivate"],

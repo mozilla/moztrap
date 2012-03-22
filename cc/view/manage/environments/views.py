@@ -27,6 +27,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
 from cc import model
@@ -34,6 +35,7 @@ from cc import model
 from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
 from cc.view.utils.ajax import ajax
+from cc.view.utils.auth import login_maybe_required
 
 from . import forms
 from .decorators import category_element_ajax_add_edit
@@ -41,7 +43,7 @@ from .decorators import category_element_ajax_add_edit
 
 
 @never_cache
-@login_required
+@login_maybe_required
 @lists.actions(
     model.Profile,
     ["delete", "clone"],
@@ -62,7 +64,7 @@ def profiles_list(request):
 
 
 @never_cache
-@login_required
+@login_maybe_required
 def profile_details(request, profile_id):
     """Get details snippet for a profile."""
     profile = get_object_or_404(model.Profile, pk=profile_id)
@@ -226,11 +228,17 @@ def narrow_environments(request, object_type, object_id):
     if object_type == "run":
         model_class = model.Run
         redirect_to = "manage_runs"
+        perm = "execution.manage_runs"
     elif object_type == "caseversion":
         model_class = model.CaseVersion
         redirect_to = "manage_cases"
+        perm = "library.manage_cases"
     else:
         raise Http404
+
+    if not request.user.has_perm(perm):
+        return redirect_to_login(request.path)
+
     obj = get_object_or_404(model_class, pk=object_id)
 
     current_env_ids = set(obj.environments.values_list("id", flat=True))

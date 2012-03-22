@@ -22,7 +22,7 @@ Results views for runcaseversions.
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from cc.view.utils.auth import login_maybe_required
 
 from cc import model
 
@@ -34,7 +34,7 @@ from ..finders import ResultsFinder
 
 
 
-@login_required
+@login_maybe_required
 @lists.finder(ResultsFinder)
 @lists.filter("runcaseversions", filterset_class=RunCaseVersionFilterSet)
 @lists.sort("runcaseversions")
@@ -51,7 +51,7 @@ def runcaseversions_list(request):
 
 
 
-@login_required
+@login_maybe_required
 def runcaseversion_details(request, rcv_id):
     """Get details snippet for a runcaseversion."""
     runcaseversion = get_object_or_404(

@@ -16,17 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Home management view.
+Authentication view decorators.
 
 """
-from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.conf import settings
 
-from cc.view.utils.auth import login_maybe_required
-
+from django.contrib.auth.decorators import login_required
 
 
-@login_maybe_required
-def home(request):
-    """Manage home redirects to list of test runs, with finder open."""
-    return redirect(reverse("manage_runs") + "?openfinder=1")
+
+def login_maybe_required(viewfunc):
+    """no-op if settings.ALLOW_ANONYMOUS_ACCESS, else login_required"""
+    if settings.ALLOW_ANONYMOUS_ACCESS:
+        return viewfunc
+    return login_required(viewfunc)

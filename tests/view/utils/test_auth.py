@@ -16,45 +16,52 @@
 # You should have received a copy of the GNU General Public License
 # along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Tests for ajax view utilities.
+Tests for auth view utilities.
 
 """
-from django.template.response import TemplateResponse
+from django.http import HttpResponse
 from django.test import RequestFactory
+
+from django.contrib.auth.models import AnonymousUser
+
+# @@@ import from Django in 1.4
+from djangosecure.test_utils import override_settings
 
 from tests import case
 
 
 
 class AjaxTest(case.TestCase):
-    """Tests for ajax template-swapping view decorator."""
     @property
-    def ajax(self):
+    def login_maybe_required(self):
         """The decorator-factory under test."""
-        from cc.view.utils.ajax import ajax
-        return ajax
+        from cc.view.utils.auth import login_maybe_required
+        return login_maybe_required
 
 
     @property
     def view(self):
-        """A simple TemplateResponse-returning view, decorated with @ajax."""
-        @self.ajax("ajax_template.html")
+        """A simple view, decorated with @login_maybe_required."""
+        @self.login_maybe_required
         def view(request):
-            return TemplateResponse(request, "normal_template.html")
+            return HttpResponse("success")
 
         return view
 
 
-    def test_swaps_template(self):
-        """Decorator changes TemplateResponse to given template, if ajax."""
-        request = RequestFactory().get(
-            "/", HTTP_X_REQUESTED_WITH="XMLHttpRequest")
+    @override_settings(ALLOW_ANONYMOUS_ACCESS=False)
+    def test_no_anonymous(self):
+        """With no anonymous access, decorator requires login."""
+        request = RequestFactory().get("/")
+        request.user = AnonymousUser()
         response = self.view(request)
-        self.assertEqual(response.template_name, "ajax_template.html")
+        self.assertEqual(response.status_code, 302)
 
 
-    def test_only_ajax(self):
-        """Decorator has no effect on non-Ajax response."""
+    @override_settings(ALLOW_ANONYMOUS_ACCESS=True)
+    def test_anonymous(self):
+        """With anonymous access allowed, decorator is no-op."""
         request = RequestFactory().get("/")
         response = self.view(request)
-        self.assertEqual(response.template_name, "normal_template.html")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, "success")

@@ -110,3 +110,13 @@ production server, you should comment this option from your
 before running ``python manage.py syncdb`` or ``python manage.py migrate``
 after an update to the Case Conductor codebase, or before trying to run the
 tests).
+
+
+Anonymous access
+----------------
+
+By default all access to the site requires authentication. If the
+``ALLOW_ANONYMOUS_ACCESS`` setting is set to ``True`` in
+``cc/settings/local.py``, anonymous users will be able to read-only browse the
+management and test-results pages (but will not be able to submit test results
+or modify anything).

@@ -23,11 +23,7 @@ from functools import wraps
 
 
 def ajax(template_name):
-    """
-    A view decorator that will swap in an alternative template name for any
-    TemplateResponse to an ajax request.
-
-    """
+    """Swaps in an alternative template name for any ajax TemplateResponse."""
     def decorator(view_func):
         @wraps(view_func)
         def _wrapped_view(request, *args, **kwargs):

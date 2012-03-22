@@ -26,6 +26,12 @@
     left: rhythm(-1.5)
     right: 0
 
+=status($color,$icon)
+  &.status-readonly, .status-title
+    +icon($icon,$color)
+  &.status-action
+    +button-style($color,$icon)
+
 .status
   position: absolute
   width: rhythm(1)
@@ -36,35 +42,55 @@
 
   .status-readonly
     +box-shadow(rgba($base,$small) 0 0 $xxsmallpx inset)
+  .status-readonly, .status-select
     display: inline-block
+  .status-select
+    position: relative
+
+  .status-title
+    +box-sizing(border-box)
+    +border-radius
+    width: rhythm(1)
+    height: rhythm(1)
+    border: 1px solid rgba($blue-darker,$small)
+    cursor: pointer
+
+  .status-options
+    +leader(.25)
+    +border-radius
+    +box-shadow($lightest 0 0 rhythm(.25))
+    position: absolute
+    top: 100%
+    left: rhythm(-.25)
+    width: columns(5,1)
+    padding: rhythm(.5)
+    background: rgba(0,0,0,.75)
+    z-index: 900
+    display: none
+    &::after
+      +rotate(135deg)
+      +background(linear-gradient(bottom left, rgba(0,0,0,.75), rgba(0,0,0,.75) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0)))
+      content: ' '
+      display: block
+      position: absolute
+      top: rhythm(-.25)
+      width: rhythm(.5)
+      height: rhythm(.5)
+
+  .status-action
+    +trailer(.25)
+    display: block
+    width: 100%
+    text-align: left
+    &:last-child
+      +trailer(0)
 
   .draft
-    &.status-readonly
-      +icon('ui/power.png',$blue-lightest)
-    &.status-action
-      +button-style($blue-lighter,'ui/power.png',$hover:false,$notext:true)
-      padding: 0
-      #{$focus}
-        +button-style($green-lighter,'ui/power.png',$hover:false,$notext:true)
-        padding: 0
+    +status($blue-lightest,'ui/draft.png')
 
   .active
-    &.status-readonly
-      +icon('ui/power.png',$green-lighter)
-    &.status-action
-      +button-style($green-light,'ui/power.png',$hover:false,$notext:true)
-      padding: 0
-      #{$focus}
-        +button-style($yellow-light,'ui/power.png',$hover:false,$notext:true)
-        padding: 0
+    +status($green-lighter,'ui/power.png')
 
   .disabled
-    &.status-readonly
-      +icon('ui/lock.png',$yellow-light)
-    &.status-action
-      +button-style($yellow,'ui/lock.png',$hover:false,$notext:true)
-      padding: 0
-      #{$focus}
-        +button-style($green-lighter,'ui/lock.png',$hover:false,$notext:true)
-        padding: 0
+    +status($yellow-light,'ui/lock.png')
 

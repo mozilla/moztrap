@@ -22,7 +22,7 @@ Results views for runcaseversions.
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
-from django.contrib.auth.decorators import login_required
+from cc.view.utils.auth import login_maybe_required
 
 from cc import model
 
@@ -34,7 +34,7 @@ from ..finders import ResultsFinder
 
 
 
-@login_required
+@login_maybe_required
 @lists.finder(ResultsFinder)
 @lists.filter("results", filterset_class=ResultFilterSet)
 @lists.sort("results")

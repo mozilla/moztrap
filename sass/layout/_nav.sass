@@ -62,23 +62,46 @@ $nav-link-hover-color : $red-dark
 // Account Navigation.
 
 #accountnav
-  +leader(.75)
+  +leader(2.25)
   clear: right
   .fn
     +demi
   p
-    display: inline
+    margin: 0
+    display: inline-block
   ul
     +delimited-list
     &::before
       content: "["
     &::after
       content: "]"
+  .help
+    +box-shadow(rgba($blue-light,$small) 0 0 $xxsmallem inset)
+    +rhythm-borders(1px,.25)
+    +icon('ui/question_circle.png',rgba($blue-lighter,$small),$notext:false)
+    +demi
+    padding-right: rhythm(.5)
+    border-color: $blue-light
+    #{$focus}
+      background-color: rgba($yellow,$xsmall)
 
 // ---------------------------------------------------------------------------
 // Main Navigation.
-//
-// No styleguide reference.
+
+=nav-icon($img,$fimg:false,$primary:false)
+  > a
+    #{$link}
+      background-image: image-url($img)
+      background-repeat: no-repeat
+      @if $primary
+        background-position: $xsmallpx
+        padding-left: image-width($img) + $xsmallpx + $xxxsmallpx
+      @else
+        background-position: left
+        padding-left: image-width($img) + $xxxsmallpx
+    @if $fimg
+      #{$focus}
+        background-image: image-url($fimg)
 
 [role="navigation"]
   +pie-clearfix
@@ -92,6 +115,21 @@ $nav-link-hover-color : $red-dark
   a
     #{$link}
       display: inline-block
+
+  .nav-tests
+    +nav-icon('ui/stopwatch.png',$primary:true)
+  .nav-results
+    +nav-icon('ui/chart.png',$primary:true)
+  .nav-manage
+    +nav-icon('ui/gear.png',$primary:true)
+  .nav-users
+    +nav-icon('ui/people_25.png','ui/people.png')
+  .nav-tags
+    +nav-icon('ui/tag_25.png','ui/tag.png')
+  .nav-envs
+    +nav-icon('ui/tree_25.png','ui/tree.png')
+  .nav-products
+    +nav-icon('ui/barcode_25.png','ui/barcode.png')
 
 // Primary ----------------------------------------------------------------
 .primary
@@ -119,7 +157,7 @@ $nav-link-hover-color : $red-dark
   > .active
     > a
       @extend .navlightlink
-      background: $nav-background
+      background-color: $nav-background
       &:hover::after
         display: none
 
@@ -154,12 +192,22 @@ $nav-link-hover-color : $red-dark
       +hpadding(rhythm(.5))
     &:last-child::after
       display: none
-  ul
+
+  .tertiary
+    li:last-child::after
+      content: ")"
+      display: inline
+
+  ul, ol
     li::after
       content: "|"
-  ol
-    li::after
-      content: "»"
+    .nav-products::after
+      content: "("
+
+  .global
+    > li
+      &::after
+        content: ""
 
   .active &
     display: block
@@ -189,13 +237,14 @@ $nav-link-hover-color : $red-dark
     position: relative
 
     .summary
-      +button-style($green,'ui/columns.png',true,$small:true)
+      +button-style($green,'ui/columns.png',true,$issmall:true)
       position: absolute
       right: 0
       top: - rhythm(1.25)
+      text-indent: 200%
     &.open
       .summary
-        +button-style($yellow-dark,'ui/minus.png',true,$small:true)
+        +button-style($yellow-dark,'ui/minus.png',true,$issmall:true)
 
     .content
       +padding-leader

@@ -109,6 +109,46 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Show/hide item-status dropdown
+    CC.itemStatusDropdown = function (container) {
+        var context = $(container),
+            counter = 0;
+
+        context.on('click', '.itemlist .listitem .status .status-select .status-title', function (e) {
+            var summary = $(this),
+                status = summary.closest('.status-select'),
+                details = status.find('.status-options'),
+                thisCounter = status.data('counter');
+
+            status.toggleClass('open');
+
+            if (status.hasClass('open')) {
+                details.slideDown('fast');
+                if (!thisCounter) {
+                    counter = counter + 1;
+                    thisCounter = counter;
+                    status.data('counter', thisCounter);
+                }
+                $(document).on('click.statusDropdown.' + thisCounter, function (e) {
+                    if ($(e.target).parents().andSelf().index(status) === -1) {
+                        if (status.hasClass('open')) {
+                            status.removeClass('open');
+                            details.slideUp('fast');
+                        }
+                        $(document).off('click.statusDropdown.' + thisCounter);
+                    }
+                });
+            } else {
+                details.slideUp('fast');
+                $(document).off('click.statusDropdown.' + thisCounter);
+            }
+        });
+
+        context.on('before-replace', '.itemlist.action-ajax-replace', function () {
+            $(document).off('click.statusDropdown');
+        });
+    };
+
     return CC;
 
 }(CC || {}, jQuery));

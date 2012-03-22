@@ -657,6 +657,15 @@ class DraftStatusModelTest(case.DBTestCase):
         self.assertEqual(self.refresh(r).status, "active")
 
 
+    def test_draft(self):
+        """Test the draft method."""
+        r = self.F.RunFactory.create(status="active")
+
+        r.draft()
+
+        self.assertEqual(self.refresh(r).status, "draft")
+
+
     def test_deactivate(self):
         """Test the deactivate method."""
         r = self.F.RunFactory.create(status="active")
@@ -672,6 +681,16 @@ class DraftStatusModelTest(case.DBTestCase):
         u = self.F.UserFactory.create()
 
         r.activate(user=u)
+
+        self.assertEqual(self.refresh(r).modified_by, u)
+
+
+    def test_draft_by_user(self):
+        """Test the draft method with a user."""
+        r = self.F.RunFactory.create(status="active")
+        u = self.F.UserFactory.create()
+
+        r.draft(user=u)
 
         self.assertEqual(self.refresh(r).modified_by, u)
 
