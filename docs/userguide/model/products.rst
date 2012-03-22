@@ -7,11 +7,9 @@ The core object in Case Conductor is the **Product**. A Product itself is little
 more than a name and optional description, but almost every other object in the
 Case Conductor data model relates to a Product either directly or indirectly.
 
-.. _product-versions:
-
-Products have a list of *versions*; every :ref:`test run <test-runs>` and
-:ref:`test case version<test-cases>` applies to a particular version of the
-product.
+Products have a list of :ref:`versions <product-versions>`; every
+:ref:`test run <test-runs>` and :ref:`test case version<test-cases>` applies
+to a particular version of the product.
 
 .. _product-edit-fields:
 
