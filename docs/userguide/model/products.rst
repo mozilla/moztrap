@@ -13,6 +13,30 @@ Products have a list of *versions*; every :ref:`test run <test-runs>` and
 :ref:`test case version<test-cases>` applies to a particular version of the
 product.
 
+.. _product-edit-fields:
+
+Product Edit Fields
+^^^^^^^^^^^^^^^^^^^
+
+* **Name** - The name of the Product. (Firefox, Thunderbird, etc)
+* **Description** - (optional) A brief description of the product.
+* **Version** - Every Product must have at least one Product Version.  Many
+  Products will end up with several Product Versions. (1.0, 2.0, 2.5,
+  etc).  If this is a web project and you don't want several versions, feel
+  free to call this whatever you like (Production, Current, etc.).
+* **Environments** - This is a pre-existing collection of environments called
+  an :ref:`Environment Profile <environment-profiles>`.  You can specify this
+  at creation time, or later.  Note that the set of environments can be
+  different for different Product Versions because the needs of your product
+  may change over time.  When you want to update the list of supported
+  environments, you do this on the Product Version rather than the Product
+  itself.
+
+.. _product-versions:
+
+Product Versions
+================
+
 When a new **Product Version** is created, all test cases for that Product will
 get a new version to match the new **Product Version**.
 
@@ -37,21 +61,21 @@ string "dev" orders before "alpha" and "beta" (so *2.1dev* is prior to *2.1a*).
 Product versions can also optionally have a *code name* that does not impact
 their ordering.
 
-.. _product-edit-fields:
+.. _product-version-edit-fields:
 
-Product Edit Fields
-^^^^^^^^^^^^^^^^^^^
+Product Version Edit Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* **Name** - The name of the Product. (Firefox, Thunderbird, etc)
-* **Description** - (optional) A brief description of the product.
-* **Version** - Every Product must have at least one Product Version.  Many
-  Products will end up with several Product Versions. (1.0, 2.0, 2.5,
-  etc).  If this is a web project and you don't want several versions, feel
-  free to call this whatever you like (Production, Current, etc.).
-* **Environments** - This is a pre-existing collection of environments called
-  an :ref:`Environment Profile <environment-profiles>`.  You can specify this
-  at creation time, or later.  Note that the set of environments can be
-  different for different Product Versions because the needs of your product
-  may change over time.  When you want to update the list of supported
-  environments, you do this on the Product Version rather than the Product
-  itself.
+* **Product** - The Product that this is a version of.
+* **Copy Environments From** - (optional) Environments apply to each product
+  version.  Each version can have a unique set of environments.  But commonly,
+  they are very close, and the set of environments evolves over time.  This
+  field allows you to choose which existing product version to copy the
+  environments from.  You can then add or remove from the list of environments
+  for this version.
+* **Version** - The name of the new version.  See
+  :ref:`product versions <product-versions>` for more info on how order of
+  versions works.
+* **Codename** - (optional) This can be any text and is only used as a
+  reference in the summary list of versions when there is another name for a
+  version.  For instance, for Mac OS 10.7, the Codename is *Lion*.

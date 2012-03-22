@@ -45,6 +45,30 @@ the set of environments relevant for testing that particular product version,
 test run, or test case. These profiles are
 :ref:`inherited<environment-inheritance>`.
 
+.. _environment-edit-fields:
+
+Environment Edit Fields
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Name** - The name of the :ref:`Environment Profile <environment-profiles>`.
+  This name is what you'll see when selecting environments for a
+  :ref:`product version <product-versions>`.
+* **Table**
+  * **Name** - The name of each
+    :ref:`environment category <environment-categories>`.  Select the
+    environment categories you want to include in your profile.  You can create
+    new categories as you need them (see **Add a Category** below)
+  * **Elements** - The :ref:`environment elements <environment-elements>` that
+    exist in this category.  You can select **all** elements from a category,
+    or specific ones.  You can also create new ones, as you need.
+  * **Add a Category** - Click this bar to add a new
+    :ref:`environment category <environment-categories>`.  Just type the new
+    category name in the field and hit enter.  You can then add elements to it.
+* **save profile** - Clicking this will auto-generate all combinations of the
+  categories and elements you chose above.  You will then be taken to a screen
+  where you can pare the list of environments down to only the ones you truly
+  want to have included in the profile.
+
 
 Auto-generation
 ---------------
