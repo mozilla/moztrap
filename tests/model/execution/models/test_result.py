@@ -89,7 +89,8 @@ class ResultTest(case.DBTestCase):
 
     def test_finishsucceed(self):
         """Finishsucceed marks status passed and sets completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
@@ -97,6 +98,21 @@ class ResultTest(case.DBTestCase):
 
         r = self.refresh(r)
         self.assertEqual(r.status, "passed")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishsucceed_not_started(self):
+        """Finishsucceed w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishsucceed()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "passed")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
@@ -112,7 +128,8 @@ class ResultTest(case.DBTestCase):
 
     def test_finishinvalidate(self):
         """Finishinvalidate sets status invalidated and completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
@@ -120,6 +137,21 @@ class ResultTest(case.DBTestCase):
 
         r = self.refresh(r)
         self.assertEqual(r.status, "invalidated")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishinvalidate_not_started(self):
+        """Finishinvalidate w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishinvalidate()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "invalidated")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
@@ -144,7 +176,8 @@ class ResultTest(case.DBTestCase):
 
     def test_finishfail(self):
         """Finishfail sets status failed and completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
@@ -152,6 +185,21 @@ class ResultTest(case.DBTestCase):
 
         r = self.refresh(r)
         self.assertEqual(r.status, "failed")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishfail_not_started(self):
+        """Finishfail w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishfail()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "failed")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
