@@ -5,7 +5,10 @@
 {% block content %}
 
 <section id="managecases" class="manage listpage">
-  <h2>Manage Test Cases</h2>
+  <h2>
+    Manage Test Cases
+    {% include "_helplink.html" with helpURL="library.html#test-cases" %}
+  </h2>
 
   {% if user|has_perm:"library.create_cases" %}
   <div class="create-options">

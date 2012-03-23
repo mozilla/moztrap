@@ -9,7 +9,10 @@
   {% icanhaz "autocomplete_input" %}
   {% icanhaz "autocomplete_no_inputs" %}
 
-  <h2>{% block formtitle %}{% endblock formtitle %}</h2>
+  <h2>
+    {% block formtitle %}{% endblock formtitle %}
+    {% include "_helplink.html" with helpURL="library.html#case-edit-fields" %}
+  </h2>
 
   {% block caseversions %}
   {% endblock caseversions %}

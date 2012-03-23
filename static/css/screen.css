@@ -4785,6 +4785,10 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   display: table;
   clear: both;
 }
+.versioned .attach .help-link {
+  display: inline;
+  float: right;
+}
 .versioned .add-attachment-field {
   display: inline;
   float: right;
