@@ -2,14 +2,7 @@
 
 {% block empty-options %}
   <div class="populate-field formfield">
-    <label class="type">populate with environments from</label>
-    <select class="value">
-      <option>-----------</option>
-      <option>profile 1</option>
-      <option>profile 2</option>
-      <option>other version 1</option>
-      <option>other version 2</option>
-    </select>
-    <button class="action-submit">Populate</button>
+    {% include "forms/_field.html" with field=populate_form.source %}
+    <button class="action-submit" name="populate" value="1">Populate</button>
   </div>
 {% endblock empty-options %}

@@ -737,6 +737,55 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
             )
 
 
+    def test_populate(self):
+        """Can populate a productversion's envs from a profile."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+        self.assertIn("Windows", res.json["html"])
+
+        self.assertEqual(
+            [unicode(e) for e in self.productversion.environments.all()],
+            [u"Windows"],
+            )
+
+
+    def test_populate_error(self):
+        """Error message on failure to populate envs."""
+        profile = self.F.ProfileFactory.create()
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+
+        profile.delete()
+
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+
+        self.assertEqual(
+            res.json["messages"][0],
+            {
+                "message": (
+                    "Unable to populate environments. "
+                    "Please select a different source."
+                    ),
+                "level": 30,
+                "tags": "warning",
+                }
+            )
+
+
 
 class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase,
                                case.view.NoCacheTest,
