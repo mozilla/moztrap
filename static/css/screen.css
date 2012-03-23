@@ -958,6 +958,7 @@ body > div {
   width: 25.926%;
   height: 4.5em;
   background: url('../images/64x64.png?1332478397') no-repeat top center;
+  z-index: 100;
 }
 #brand .wordmark {
   font-size: 1.5em;
