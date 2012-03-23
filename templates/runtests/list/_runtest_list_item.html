@@ -3,7 +3,7 @@
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
 
-<article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}" data-title="{{ caseversion.name }}">
+<article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
