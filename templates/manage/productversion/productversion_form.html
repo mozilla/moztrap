@@ -3,7 +3,11 @@
 
 {% block content %}
 <section class="{% block sectionclass %}{% endblock %}">
-  <h2>{% block formtitle %}{% endblock %}</h2>
+  <h2>
+    {% block formtitle %}{% endblock %}
+    {% include "_helplink.html" with helpURL="products.html#product-version-edit-fields" %}
+  </h2>
+
   {% block formtop %}{% endblock %}
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form">
     {% csrf_token %}

@@ -1,5 +1,8 @@
 <aside class="envs">
-  <h4 class="envs-title">environments</h4>
+  <h4 class="envs-title">
+    environments
+    {% include "_helplink.html" with helpURL="environments.html" %}
+  </h4>
   <ul class="envlist">
     {% for env in environments.all %}
     <li>
