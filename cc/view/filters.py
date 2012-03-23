@@ -122,7 +122,35 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             queryset=model.Element.objects.all()),
         filters.ModelFilter(
             "suite",
-            lookup="caseversion__case__suites",
+            lookup="suites",
+            queryset=model.Suite.objects.all()),
+        ]
+
+
+
+class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
+    """FilterSet for RunCaseVersions while running tests."""
+    filters = [
+        filters.KeywordExactFilter(
+            "id", lookup="caseversion__case__id", coerce=int),
+        filters.KeywordFilter("name", lookup="caseversion__name"),
+        filters.ModelFilter(
+            "tag",
+            lookup="caseversion__tags",
+            queryset=model.Tag.objects.all()),
+        filters.KeywordFilter(
+            "instruction", lookup="caseversion__steps__instruction"),
+        filters.KeywordFilter(
+            "expected result",
+            lookup="caseversion__steps__expected",
+            key="expected"),
+        filters.ModelFilter(
+            "creator",
+            lookup="caseversion__created_by",
+            queryset=model.User.objects.all()),
+        filters.ModelFilter(
+            "suite",
+            lookup="suites",
             queryset=model.Suite.objects.all()),
         ]
 

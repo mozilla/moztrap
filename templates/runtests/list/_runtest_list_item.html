@@ -3,50 +3,71 @@
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
 
-<article id="test-id-{{ runcaseversion.id }}" class="listitem action-ajax-replace {{ result.status }}" data-title="{{ caseversion.name }}">
+<article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
-    <form method="POST" id="test-status-form-{{ runcaseversion.id }}" class="results">
-      {% csrf_token %}
-
-      {% if result.status == result.STATUS.assigned %}
-        <button class="start result-action" value="{{ runcaseversion.id }}" name="action-start">start</button>
-      {% endif %}
-      {% if result.status == result.STATUS.started %}
-        <button class="pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass</button>
-      {% endif %}
-
-      {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
-        <button class="result-action restart {{ result.status }}" value="{{ runcaseversion.id }}" name="action-restart" title="test {{ result.status }} (restart test)">
-          {{ result.status }}
-        </button>
-      {% endif %}
-    </form>
-
-    <h3 class="name" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
-
-    {% if result.status == result.STATUS.started or result.status == result.STATUS.invalidated %}
-      <div class="testinvalid details{% if result.status == result.STATUS.invalidated %} invalidated open{% endif %}">
-
-        <p class="summary invalid-summary" title="invalid or unclear">invalid or unclear</p>
-
-        {% if result.status == result.STATUS.invalidated %}
-          <p class="invalid-content">
-            {{ result.comment }}
-          </p>
+    <div class="results">
+      <span class="result {{ result.status }}">
+        {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
+          pending
         {% else %}
-          <form method="POST" id="test-invalid-form-{{ runcaseversion.id }}" class="invalid-form">
-            {% csrf_token %}
-            <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
-            <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
-            <div class="form-actions">
-              <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
-            </div>
-          </form>
+          {{ result.status }}
         {% endif %}
+      </span>
+    </div>
 
-      </div>
+    {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
+      <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
+        {% csrf_token %}
+        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
+      </form>
     {% endif %}
+
+    <div class="name">
+      <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
+
+      {% if result.status == result.STATUS.invalidated %}
+        <p class="invalid-note">{{ result.comment }}</p>
+      {% endif %}
+      {% if result.status == result.STATUS.failed %}
+        <p class="failed-note">{{ result.comment }}</p>
+      {% endif %}
+
+      {% with caseversion.tags.all as tags %}
+      {% if tags %}
+      <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="#{{ tag|slugify }}" title="filter by {{ tag }}" class="filter-link tag" data-type="tag">{{ tag }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+
+      {% if result.status == result.STATUS.failed %}
+        {% if result.bug_urls %}
+          <ul class="buglist">
+            {% for bug in result.bug_urls %}
+              <li class="bugurl">
+                {% include "bugs/bug.html" %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
+    </div>
+
+    <div class="suites">
+      {% with runcaseversion.suites.all as suites %}
+      {% if suites %}
+      <ul>
+        {% for suite in suites %}
+        <li><a href="" title="filter by {{ suite }}" class="filter-link suite" data-type="suite">{{ suite }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
   </div>
 
   {% include "runtests/list/_runtest_details.html" %}

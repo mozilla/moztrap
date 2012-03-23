@@ -23,6 +23,7 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 
+from BeautifulSoup import BeautifulSoup
 from mock import patch
 
 from tests import case
@@ -263,6 +264,16 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         return self.F.ResultFactory.create(**defaults)
 
 
+    def test_ajax_get(self):
+        """Getting page via ajax returns just itemlist."""
+        res = self.get(ajax=True, status=200)
+
+        soup = BeautifulSoup(res.json["html"])
+
+        # outermost element is class "itemlist"
+        self.assertIn("itemlist", soup.findChild()["class"])
+
+
     def test_requires_execute_permission(self):
         """Requires execute permission."""
         res = self.app.get(
@@ -383,24 +394,6 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         res.mustcontain("Foo Case")
 
 
-    def test_start_case(self):
-        """Submit a "start" action for a case; redirects."""
-        rcv = self.create_rcv()
-
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
-
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(name="action-start", index=0, status=302)
-
-        self.assertRedirects(res, self.url)
-
-        result = rcv.results.get(tester=self.user, environment=self.envs[0])
-
-        self.assertEqual(result.status, result.STATUS.started)
-        self.assertEqual(result.started, datetime(2012, 2, 3))
-
-
     def test_redirect_preserves_sort(self):
         """Redirect after non-Ajax post preserves sort params."""
         rcv = self.create_rcv()
@@ -409,26 +402,10 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             params={"sortfield": "name"}, status=200).forms[
             "test-status-form-{0}".format(rcv.id)]
 
-        res = form.submit(name="action-start", index=0, status=302)
+        res = form.submit(name="action-finishsucceed", index=0, status=302)
 
         self.assertRedirects(res, self.url + "?sortfield=name")
 
-
-    def test_start_case_ajax(self):
-        """Submit a "start" action for a case via Ajax; returns HTML snippet."""
-        rcv = self.create_rcv()
-
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
-
-        res = form.submit(
-            name="action-start",
-            index=0,
-            headers={"X-Requested-With": "XMLHttpRequest"},
-            status=200
-            )
-
-        self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-finishsucceed"})
 
     def test_description(self):
         """Returns details HTML snippet for given caseversion"""
@@ -441,7 +418,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
         res = form.submit(
-            name="action-start",
+            name="action-finishsucceed",
             index=0,
             headers={"X-Requested-With": "XMLHttpRequest"},
             status=200
@@ -480,12 +457,12 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
-        # we patched the actions dictionary so "start" will not be valid
-        res = form.submit(name="action-start", index=0, status=302)
+        # we patched the actions dictionary so "finishsucceed" will not be valid
+        res = form.submit(name="action-finishsucceed", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
-        res.follow().mustcontain("start is not a valid action")
+        res.follow().mustcontain("finishsucceed is not a valid action")
 
 
     @patch("cc.view.runtests.views.ACTIONS", {})
@@ -495,15 +472,15 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
-        # we patched the actions dictionary so "start" will not be valid
+        # we patched the actions dictionary so "finishsucceed" will not be valid
         res = form.submit(
-            name="action-start", index=0,
+            name="action-finishsucceed", index=0,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
         self.assertEqual(res.json["html"], "")
         self.assertEqual(res.json["no_replace"], True)
         self.assertEqual(
-            res.json["messages"][0]["message"], "start is not a valid action.")
+            res.json["messages"][0]["message"], "finishsucceed is not a valid action.")
 
 
     def test_post_bad_rcv_id_redirect(self):
@@ -514,7 +491,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         rcv.delete()
 
-        res = form.submit(name="action-start", index=0, status=302)
+        res = form.submit(name="action-finishsucceed", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
@@ -530,7 +507,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         rcv.delete()
 
         res = form.submit(
-            name="action-start", index=0,
+            name="action-finishsucceed", index=0,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
         self.assertEqual(res.json["html"], "")
@@ -542,7 +519,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
 
     def test_post_missing_result(self):
-        """POST an action other than start to a missing result; message."""
+        """Can pass/fail/invalid a not-yet-existing result."""
         result = self.create_result(status="started")
         rcv = result.runcaseversion
 
@@ -554,11 +531,13 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         self.assertRedirects(res, self.url)
 
-        res.follow().mustcontain("finish a result that was never started")
+        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+
+        self.assertEqual(result.status, result.STATUS.passed)
 
 
     def test_post_missing_result_ajax(self):
-        """Ajax POST to missing action results in message, fixed HTML."""
+        """Can pass/fail/invalid a not-yet-existing result via ajax."""
         result = self.create_result(status="started")
         rcv = result.runcaseversion
 
@@ -571,11 +550,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-start"})
-        self.assertIn(
-            "finish a result that was never started",
-            res.json["messages"][0]["message"]
-            )
+            res.json["html"], "button", attrs={"name": "action-restart"})
 
 
     def test_pass_case(self):
@@ -712,7 +687,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         result = self.create_result(status="passed")
         rcv = result.runcaseversion
 
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+        form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
         with patch("cc.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
@@ -731,7 +706,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         result = self.create_result(status="passed")
         rcv = result.runcaseversion
 
-        form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
+        form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
         res = form.submit(
             name="action-restart",

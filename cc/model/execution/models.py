@@ -107,13 +107,18 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    rcv = RunCaseVersion(
-                        run=self, caseversion=caseversion, order=order)
-                    envs = rcv._inherited_environment_ids
+                    envs = _environment_intersection(self, caseversion)
                     if envs:
-                        rcv.save(force_insert=True, inherit_envs=False)
-                        rcv.environments.add(*envs)
-                        order += 1
+                        try:
+                            rcv = RunCaseVersion.objects.get(
+                                run=self, caseversion=caseversion)
+                        except RunCaseVersion.DoesNotExist:
+                            rcv = RunCaseVersion(
+                                run=self, caseversion=caseversion, order=order)
+                            rcv.save(force_insert=True, inherit_envs=False)
+                            rcv.environments.add(*envs)
+                            order += 1
+                        rcv.suites.add(runsuite.suite)
 
 
     def result_summary(self):
@@ -137,6 +142,16 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
 
 
+def _environment_intersection(run, caseversion):
+    """Intersection of run/caseversion environment IDs."""
+    run_env_ids = set(
+        run.environments.values_list("id", flat=True))
+    case_env_ids = set(
+        caseversion.environments.values_list("id", flat=True))
+    return run_env_ids.intersection(case_env_ids)
+
+
+
 class RunCaseVersion(HasEnvironmentsModel, CCModel):
     """
     An ordered association between a Run and a CaseVersion.
@@ -147,6 +162,7 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
     """
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
+    suites = models.ManyToManyField(Suite, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
 
 
@@ -171,16 +187,6 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
             ]
 
 
-    @property
-    def _inherited_environment_ids(self):
-        """Intersection of run/caseversion environment IDs."""
-        run_env_ids = set(
-            self.run.environments.values_list("id", flat=True))
-        case_env_ids = set(
-            self.caseversion.environments.values_list("id", flat=True))
-        return run_env_ids.intersection(case_env_ids)
-
-
     def save(self, *args, **kwargs):
         """
         Save instance; new instances get intersection of run/case environments.
@@ -194,7 +200,8 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
         ret = super(RunCaseVersion, self).save(*args, **kwargs)
 
         if adding and inherit_envs:
-            self.environments.add(*self._inherited_environment_ids)
+            self.environments.add(
+                *_environment_intersection(self.run, self.caseversion))
 
         return ret
 
@@ -260,7 +267,7 @@ class Result(CCModel):
     environment = models.ForeignKey(Environment, related_name="results")
     status = models.CharField(
         max_length=50, db_index=True, choices=STATUS, default=STATUS.assigned)
-    started = models.DateTimeField(default=utcnow)
+    started = models.DateTimeField(blank=True, null=True)
     completed = models.DateTimeField(blank=True, null=True)
     comment = models.TextField(blank=True)
 
@@ -300,6 +307,8 @@ class Result(CCModel):
         """Mark this result passed."""
         self.status = self.STATUS.passed
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.save(force_update=True, user=user)
 
 
@@ -308,6 +317,8 @@ class Result(CCModel):
         self.status = self.STATUS.invalidated
         self.comment = comment
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.save(force_update=True, user=user)
 
 
@@ -315,6 +326,8 @@ class Result(CCModel):
         """Mark this result failed."""
         self.status = self.STATUS.failed
         self.completed = utcnow()
+        if not self.started:
+            self.started = utcnow()
         self.comment = comment
         if stepnumber:
             try:

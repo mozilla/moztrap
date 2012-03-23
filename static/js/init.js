@@ -153,7 +153,7 @@ var CC = (function (CC, $) {
         CC.loadListItemDetails();
         CC.manageActionsAjax('.manage, .manage-form');
         CC.listActionAjax(
-            '.manage, .results',
+            '.manage, .results, .run',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
         CC.itemStatusDropdown('.manage');
@@ -162,7 +162,7 @@ var CC = (function (CC, $) {
         CC.toggleAdvancedFiltering('.magicfilter');
         CC.preventCaching('#filter');
         CC.directFilterLinks();
-        CC.filterFormAjax('.manage, .results');
+        CC.filterFormAjax('.manage, .results, .run');
         CC.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
@@ -217,6 +217,7 @@ var CC = (function (CC, $) {
         CC.expandAllTests('#runtests');
         CC.runTests('#runtests');
         CC.failedTestBug('#runtests');
+        CC.expandTestDetails('#runtests');
         CC.filterEnvironments('#runtests-environment-form');
     });
 
