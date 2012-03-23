@@ -23,6 +23,7 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 
+from BeautifulSoup import BeautifulSoup
 from mock import patch
 
 from tests import case
@@ -261,6 +262,16 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         if "runcaseversion" not in defaults:
             defaults["runcaseversion"] = self.create_rcv()
         return self.F.ResultFactory.create(**defaults)
+
+
+    def test_ajax_get(self):
+        """Getting page via ajax returns just itemlist."""
+        res = self.get(ajax=True, status=200)
+
+        soup = BeautifulSoup(res.json["html"])
+
+        # outermost element is class "itemlist"
+        self.assertIn("itemlist", soup.findChild()["class"])
 
 
     def test_requires_execute_permission(self):
