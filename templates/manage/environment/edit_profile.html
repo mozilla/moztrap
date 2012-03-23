@@ -5,7 +5,7 @@
 {% block content %}
 
 <section id="editprofile" class="manage listpage">
-  <h2>Edit Environment Profile</h2>
+  <h2>Edit Environment Profile  {% include "_helplink.html" with helpURL="environments.html#environment-edit-fields" %}</h2>
 
   <form method="POST" id="profile-name-form" class="manage-form profile-form">
     {% csrf_token %}

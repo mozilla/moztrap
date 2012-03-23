@@ -5,7 +5,7 @@
 {% block content %}
 
 <section id="manageprofiles" class="manage listpage">
-  <h2>Manage Environment Profiles</h2>
+  <h2>Manage Environment Profiles {% include "_helplink.html" with helpURL="environments.html" %}</h2>
 
   {% if user|has_perm:"environments.manage_environments" %}
     <a href="{% url manage_profile_add %}" class="create single">create a profile</a>

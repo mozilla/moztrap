@@ -2,7 +2,7 @@
 
 {% block content %}
 <section id="envnarrowing" class="manage listpage">
-  <h2>Select Environments for {{ obj }}</h2>
+  <h2>Select Environments for {{ obj }}  {% include "_helplink.html" with helpURL="environments.html#select-environments" %}</h2>
 
   {% include "lists/_clientfilter.html" %}
 
