@@ -18,7 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*jslint    browser:    true,
-            indent:     4 */
+            indent:     4,
+            confusion:  true */
 /*global    ich, jQuery */
 
 var CC = (function (CC, $) {
@@ -102,6 +103,7 @@ var CC = (function (CC, $) {
                 if (response.html) {
                     replaceList.replaceWith(newList);
                     newList.find('.details').html5accordion();
+                    newList.trigger('after-replace', [newList]);
                 }
             });
 

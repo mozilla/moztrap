@@ -181,9 +181,10 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
         """Can filter by suite."""
         rcv = self.F.RunCaseVersionFactory.create(caseversion__name="Case 1")
         self.F.RunCaseVersionFactory.create(caseversion__name="Case 2")
-        sc = self.F.SuiteCaseFactory.create(case=rcv.caseversion.case)
+        ts = self.F.SuiteFactory.create(product=rcv.run.productversion.product)
+        rcv.suites.add(ts)
 
-        res = self.get(params={"filter-suite": sc.suite.id})
+        res = self.get(params={"filter-suite": ts.id})
 
         self.assertInList(res, "Case 1")
         self.assertNotInList(res, "Case 2")

@@ -31,6 +31,7 @@ from django.contrib.auth.decorators import permission_required
 
 from ... import model
 
+from ..filters import RunTestsRunCaseVersionFilterSet
 from ..lists import decorators as lists
 from ..utils.ajax import ajax
 
@@ -106,7 +107,9 @@ ACTIONS = {
 @never_cache
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
+@lists.filter("runcaseversions", filterset_class=RunTestsRunCaseVersionFilterSet)
 @lists.sort("runcaseversions")
+@ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
 
@@ -154,17 +157,11 @@ def run(request, run_id, env_id):
                 result = rcv.results.get(
                     tester=request.user, environment=environment)
             except model.Result.DoesNotExist:
-                if action == "start":
-                    result = model.Result.objects.create(
-                        runcaseversion=rcv,
-                        tester=request.user,
-                        environment=environment,
-                        user=request.user)
-                else:
-                    messages.error(
-                        request,
-                        "Can't finish a result that was never started.")
-                    break
+                result = model.Result.objects.create(
+                    runcaseversion=rcv,
+                    tester=request.user,
+                    environment=environment,
+                    user=request.user)
 
             for argname in defaults.keys():
                 try:

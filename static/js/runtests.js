@@ -99,7 +99,7 @@ var CC = (function (CC, $) {
     // Ajax submit runtest forms
     CC.runTests = function (container) {
         var context = $(container),
-            tests = context.find('.listitem.action-ajax-replace'),
+            tests = context.find('.listitem'),
             ajaxFormsInit = function (test) {
                 var forms = test.find('form');
 
@@ -117,11 +117,20 @@ var CC = (function (CC, $) {
                         }
                     }
                 });
+            },
+            ajaxifyTests = function () {
+                tests.each(function () {
+                    var thisTest = $(this);
+                    ajaxFormsInit(thisTest);
+                });
             };
 
-        tests.each(function () {
-            var thisTest = $(this);
-            ajaxFormsInit(thisTest);
+        ajaxifyTests();
+
+        // Re-attach ajax-form handlers after list is ajax-replaced (sorting/filtering called in listpages.js)
+        context.on('after-replace', '.itemlist.action-ajax-replace', function (event, replacement) {
+            tests = context.find('.listitem');
+            ajaxifyTests();
         });
     };
 
@@ -144,6 +153,17 @@ var CC = (function (CC, $) {
         context.on('click', '.listitem .stepfail input[type="url"].newbug-input.disabled', function () {
             var newBugRadio = $(this).siblings('.newbug-radio');
             newBugRadio.click();
+        });
+    };
+
+    // Clicking anywhere on test header expands test
+    CC.expandTestDetails = function (container) {
+        var context = $(container);
+
+        context.on('click', '.itemlist .listitem .itemhead', function (e) {
+            if (!($(e.target).is('button') || $(e.target).is('.filter-link'))) {
+                $(this).closest('.listitem').find('.itembody .item-summary').click();
+            }
         });
     };
 
