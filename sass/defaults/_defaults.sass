@@ -27,3 +27,15 @@
 @import forms
 
 @import ../apps/apps
+
+// ---------------------------------------------------------------------------
+// help links
+
+.help-link
+  #{$link}
+    +opacity(.5)
+    +transition(opacity 300ms)
+    +icon('ui/question_circle.png')
+    display: inline-block
+  #{$focus}
+    +opacity(1)

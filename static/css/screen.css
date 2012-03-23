@@ -892,6 +892,34 @@ form > .errorlist {
   display: none;
 }
 
+.help-link:link, .help-link:visited {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  -webkit-transition: opacity 300ms;
+  -moz-transition: opacity 300ms;
+  -ms-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  transition: opacity 300ms;
+  background-image: url('../images/ui/question_circle.png?1332458582');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-position: center;
+  width: 1.5em;
+  display: inline-block;
+}
+.help-link:focus, .help-link:hover, .help-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
 body > div {
   overflow: hidden;
   *zoom: 1;
