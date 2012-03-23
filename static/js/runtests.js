@@ -161,7 +161,7 @@ var CC = (function (CC, $) {
         var context = $(container);
 
         context.on('click', '.itemlist .listitem .itemhead', function (e) {
-            if (!($(e.target).is('button'))) {
+            if (!($(e.target).is('button') || $(e.target).is('.filter-link'))) {
                 $(this).closest('.listitem').find('.itembody .item-summary').click();
             }
         });
