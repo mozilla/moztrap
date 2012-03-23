@@ -112,6 +112,16 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                         try:
                             rcv = RunCaseVersion.objects.get(
                                 run=self, caseversion=caseversion)
+                        except RunCaseVersion.MultipleObjectsReturned:
+                            dupes = list(
+                                RunCaseVersion.objects.filter(
+                                    run=self, caseversion=caseversion)
+                                )
+                            rcv = dupes.pop()
+                            for dupe in dupes:
+                                rcv.environments.add(*dupe.environments.all())
+                                dupe.results.update(runcaseversion=rcv)
+                                dupe.delete(permanent=True)
                         except RunCaseVersion.DoesNotExist:
                             rcv = RunCaseVersion(
                                 run=self, caseversion=caseversion, order=order)

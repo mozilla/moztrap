@@ -481,3 +481,32 @@ class RunActivationTest(case.DBTestCase):
 
         rcv = r.runcaseversions.get()
         self.assertEqual(set(rcv.suites.all()), set([ts1, ts2]))
+
+
+    def test_removes_duplicate_runcaseversions(self):
+        """
+        Re-activating a run that has dupe runcaseversions cleans them up.
+
+        Environments for both are merged, and results from both are preserved.
+
+        """
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv1 = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            )
+        rcv1.environments.remove(self.envs[0])
+        self.F.ResultFactory.create(runcaseversion=rcv1)
+        rcv2 = self.F.RunCaseVersionFactory.create(
+            caseversion=rcv1.caseversion, run=r)
+        self.F.ResultFactory.create(runcaseversion=rcv2)
+        ts = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(set(rcv.environments.all()), set(self.envs))
+        self.assertEqual(rcv.results.count(), 2)
