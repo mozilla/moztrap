@@ -159,19 +159,19 @@
         });
 
         bulkInclude.click(function (e) {
-            var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked'),
-                thisBulkSel = availableList.closest('.itemlist').find(options.bulkSel);
+            var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(includedList);
-            updateBulkSel(thisBulkSel, availableList);
+            updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
+            updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
             e.preventDefault();
         });
 
         bulkExclude.click(function (e) {
-            var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked'),
-                thisBulkSel = includedList.closest('.itemlist').find(options.bulkSel);
+            var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(availableList);
             filterLists.find(options.filterSel + ':checked').prop('checked', false).change();
-            updateBulkSel(thisBulkSel, includedList);
+            updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
+            updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
             e.preventDefault();
         });
 
