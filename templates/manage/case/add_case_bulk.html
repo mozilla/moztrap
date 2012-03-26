@@ -11,18 +11,24 @@
   <div class="bulk-field">
     {% include "forms/_field.html" with field=form.cases %}
     <section class="fieldhelp">
-      <h3>Keyword Instructions</h3>
+      <h3>Instructions</h3>
       <p>
-        Use the following <strong>keywords</strong> and line-breaks to format your test&nbsp;cases.<br />
-        (All fields are required. Keywords are not case&nbsp;sensitive.)
+        Use the following <strong>keywords</strong> and line-breaks to format your test&nbsp;cases.
+        (Keywords are not case&nbsp;sensitive.)
       </p>
-      <ol>
-        <li>"<strong>Test that</strong>" - One line <em>naming</em> your test&nbsp;case.</li>
-        <li>One or more lines of <em>description</em> in any&nbsp;format.</li>
-        <li>"<strong>When</strong>" - One or more lines describing a single step&nbsp;<em>instruction</em>.</li>
-        <li>"<strong>Then</strong>" - One or more lines describing the expected <em>result</em> of that&nbsp;step.</li>
-        <li>Repeat 3-4 as needed for multiple steps, or begin a new test case with "<strong>Test&nbsp;that</strong>".</li>
-      </ol>
+      <p>
+        <strong>Test that</strong> this will become the <em>title</em> of my first&nbsp;case.<br />
+        I may add one or more lines of <em>description</em> to a&nbsp;case.<br />
+        <strong>When</strong> I add one or more lines describing a step&nbsp;<em>instruction</em>.<br />
+        <strong>Then</strong> I must also add one or more lines describing the expected&nbsp;<em>outcome</em>.<br />
+        <strong>When</strong> I repeat for additional step&nbsp;<em>instructions</em>.<br />
+        <strong>Then</strong> I also repeat for expected&nbsp;<em>outcomes</em>.<br />
+      </p>
+      <p>
+        <strong>Test that</strong> I can add multiple test cases at once.<br />
+        This will become my second test case<br />
+        (if I complete it by adding steps)...
+      </p>
     </section>
   </div>
 {% endblock versionedform %}

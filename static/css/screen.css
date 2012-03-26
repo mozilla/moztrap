@@ -4845,6 +4845,16 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: rgba(69, 69, 69, 0.667);
 }
+.versioned .bulk-field .fieldhelp h3 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
 .versioned .cases-field {
   display: inline;
   float: left;
@@ -4866,7 +4876,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
-  min-height: 15em;
+}
+.versioned .cases-field .value {
+  min-height: 18em;
 }
 
 .step-form .steplist {
