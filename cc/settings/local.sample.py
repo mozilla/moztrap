@@ -42,6 +42,8 @@ Copy local.sample.py to local.py and modify as needed.
 #DEBUG = False
 #TEMPLATE_DEBUG = False
 
+#SITE_URL="http://localhost:8000"
+
 # This email address will get emailed on 500 server errors.
 #ADMINS = [
 #    ("Some One", "someone@mozilla.com"),
