@@ -40,8 +40,12 @@
   {% stepresult_for result step as stepresult %}
   <li class="stepitem" data-step-number="{{ step.number }}">
     <div class="step {{ stepresult.status }}">
-      <div class="instruction">{{ step.instruction|markdown }}</div>
-      <div class="outcome">{{ step.expected|markdown }}</div>
+      {% if step.instruction %}
+        <div class="instruction">{{ step.instruction|markdown }}</div>
+      {% endif %}
+      {% if step.expected %}
+        <div class="outcome">{{ step.expected|markdown }}</div>
+      {% endif %}
     </div>
 
     {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}{# @@@ or result.status == result.STATUS.failed #}
