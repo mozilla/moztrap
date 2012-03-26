@@ -107,28 +107,48 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    envs = _environment_intersection(self, caseversion)
-                    if envs:
-                        try:
-                            rcv = RunCaseVersion.objects.get(
-                                run=self, caseversion=caseversion)
-                        except RunCaseVersion.MultipleObjectsReturned:
-                            dupes = list(
-                                RunCaseVersion.objects.filter(
-                                    run=self, caseversion=caseversion)
-                                )
-                            rcv = dupes.pop()
-                            for dupe in dupes:
-                                rcv.environments.add(*dupe.environments.all())
-                                dupe.results.update(runcaseversion=rcv)
-                                dupe.delete(permanent=True)
-                        except RunCaseVersion.DoesNotExist:
-                            rcv = RunCaseVersion(
-                                run=self, caseversion=caseversion, order=order)
-                            rcv.save(force_insert=True, inherit_envs=False)
-                            rcv.environments.add(*envs)
-                            order += 1
-                        rcv.suites.add(runsuite.suite)
+                    if self._add_caseversion(
+                            caseversion, runsuite.suite, order):
+                        order += 1
+
+
+    def _add_caseversion(self, caseversion, suite, order):
+        """
+        Add given caseversion to this run, from given suite, at given order.
+
+        Returns True if the caseversion was actually added (or found to already
+        exist), else False.
+
+        """
+        envs = _environment_intersection(self, caseversion)
+        if not envs:
+            return False
+        found = False
+        try:
+            rcv = RunCaseVersion.objects.get(
+                run=self, caseversion=caseversion)
+            found = True
+        except RunCaseVersion.MultipleObjectsReturned:
+            dupes = list(
+                RunCaseVersion.objects.filter(
+                    run=self, caseversion=caseversion)
+                )
+            rcv = dupes.pop()
+            for dupe in dupes:
+                rcv.environments.add(*dupe.environments.all())
+                dupe.results.update(runcaseversion=rcv)
+                dupe.delete(permanent=True)
+            found = True
+        except RunCaseVersion.DoesNotExist:
+            rcv = RunCaseVersion(
+                run=self, caseversion=caseversion, order=order)
+            rcv.save(force_insert=True, inherit_envs=False)
+            rcv.environments.add(*envs)
+        if found:
+            rcv.order = order
+            rcv.save()
+        rcv.suites.add(suite)
+        return True
 
 
     def result_summary(self):
