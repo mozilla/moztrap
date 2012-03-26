@@ -704,9 +704,15 @@ input[type="text"], input[type="password"], input[type="email"], input[type="url
   text-align: right;
   text-transform: capitalize;
 }
+.formfield .type::after {
+  content: "*";
+}
 .formfield.optional .type {
   font-weight: 500;
   color: rgba(69, 69, 69, 0.75);
+}
+.formfield.optional .type::after {
+  content: "";
 }
 .formfield .isoptional {
   position: absolute;
