@@ -649,10 +649,11 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
         self.productversion.environments.add(*envs)
 
         res = self.get(
+            ajax=True,
             params={"filter-envelement": envs[0].elements.get().id})
 
         res.mustcontain("Linux")
-        self.assertNotIn(res.body, "Windows")
+        self.assertNotIn("Windows", res.json["html"])
 
 
     def test_remove(self):
@@ -735,6 +736,19 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
                     }
                 ],
             )
+
+
+    def test_no_populate_form_if_filtered_to_none(self):
+        """If pv has envs but view's filtered to show none, no populate form."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.productversion.environments.add(envs[0])
+
+        res = self.get(
+            ajax=True,
+            params={"filter-envelement": envs[1].elements.get().id})
+
+        self.assertNotIn("populate", res.json["html"])
 
 
     def test_populate(self):

@@ -191,14 +191,17 @@ def productversion_environments_edit(request, productversion_id):
                     "Please select a different source.",
                     )
 
+    if form is None and not productversion.environments.exists():
+        form = forms.PopulateProductVersionEnvsForm(
+            productversion=productversion)
+
     return TemplateResponse(
         request,
         "manage/environment/productversion.html",
         {
             "productversion": productversion,
             "environments": productversion.environments.all(),
-            "populate_form": form or forms.PopulateProductVersionEnvsForm(
-                productversion=productversion),
+            "populate_form": form,
             }
         )
 
