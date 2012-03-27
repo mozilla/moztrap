@@ -1,22 +1,3 @@
-/*
-Case Conductor is a Test Case Management system.
-Copyright (C) 2011-2012 Mozilla
-
-This file is part of Case Conductor.
-
-Case Conductor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Case Conductor is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-*/
 /*jslint    browser:    true,
             indent:     4,
             confusion:  true */
@@ -320,15 +301,15 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.addEnvToProfile = function (container) {
+    CC.addEnvToProfile = function (container, form) {
         var context = $(container),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
                 var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if (replaceList.length && context.find('#add-environment-form').length) {
-                    context.find('#add-environment-form').ajaxForm({
+                if (replaceList.length && context.find(form).length) {
+                    context.find(form).ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
@@ -337,6 +318,7 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
+                                $('#filter').find('input.check:checked').prop('checked', false).change();
                                 context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
                                     inputList: '.env-element-list',

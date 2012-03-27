@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for environment management views.
 
@@ -649,10 +632,11 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
         self.productversion.environments.add(*envs)
 
         res = self.get(
+            ajax=True,
             params={"filter-envelement": envs[0].elements.get().id})
 
         res.mustcontain("Linux")
-        self.assertNotIn(res.body, "Windows")
+        self.assertNotIn("Windows", res.json["html"])
 
 
     def test_remove(self):
@@ -734,6 +718,68 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
                     "tags": "error",
                     }
                 ],
+            )
+
+
+    def test_no_populate_form_if_filtered_to_none(self):
+        """If pv has envs but view's filtered to show none, no populate form."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.productversion.environments.add(envs[0])
+
+        res = self.get(
+            ajax=True,
+            params={"filter-envelement": envs[1].elements.get().id})
+
+        self.assertNotIn("populate", res.json["html"])
+
+
+    def test_populate(self):
+        """Can populate a productversion's envs from a profile."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+        self.assertIn("Windows", res.json["html"])
+
+        self.assertEqual(
+            [unicode(e) for e in self.productversion.environments.all()],
+            [u"Windows"],
+            )
+
+
+    def test_populate_error(self):
+        """Error message on failure to populate envs."""
+        profile = self.F.ProfileFactory.create()
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+
+        profile.delete()
+
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+
+        self.assertEqual(
+            res.json["messages"][0],
+            {
+                "message": (
+                    "Unable to populate environments. "
+                    "Please select a different source."
+                    ),
+                "level": 30,
+                "tags": "warning",
+                }
             )
 
 

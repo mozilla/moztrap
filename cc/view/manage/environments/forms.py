@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Manage forms for environments.
 
@@ -87,3 +70,43 @@ class AddProfileForm(ProfileForm):
             *self.cleaned_data["elements"],
             **{"user": user or self.user}
             )
+
+
+
+class PopulateProductVersionEnvsForm(ccforms.NonFieldErrorsClassFormMixin,
+                                     forms.Form,
+                                     ):
+    """Form for populating the envs of a productversion."""
+    source = forms.ChoiceField(
+        label="Populate with environments from", choices=[])
+
+
+    def __init__(self, *args, **kwargs):
+        """Initialize form; takes productversion kwarg, sets source choices."""
+        self.productversion = kwargs.pop("productversion")
+
+        super(PopulateProductVersionEnvsForm, self).__init__(*args, **kwargs)
+
+        choices = []
+        self.choice_map = {}
+        for pv in self.productversion.product.versions.exclude(
+                pk=self.productversion.pk):
+            key = "productversion-{0}".format(pv.pk)
+            choices.append((key, unicode(pv)))
+            self.choice_map[key] = pv
+
+        for profile in model.Profile.objects.all():
+            key = "profile-{0}".format(profile.pk)
+            choices.append((key, unicode(profile)))
+            self.choice_map[key] = profile
+
+        self.fields["source"].choices = choices
+
+
+    def save(self):
+        """Save envs from selected source to productversion."""
+        source = self.choice_map[self.cleaned_data["source"]]
+
+        self.productversion.environments.add(*source.environments.all())
+
+        return self.productversion

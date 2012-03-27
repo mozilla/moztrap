@@ -2739,14 +2739,17 @@ body > div {
   border-width: 0px 1px;
 }
 .itemlist .empty, #results .case-details .empty {
-  margin-top: 0em;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
-  margin-bottom: 0em;
-  font-style: italic;
   padding-left: 1.5em;
   padding-right: 1.5em;
+}
+.itemlist .empty-notice, #results .case-details .empty-notice {
+  font-style: italic;
   color: rgba(69, 69, 69, 0.667);
+}
+.itemlist .empty-notice:only-child, #results .case-details .empty-notice:only-child {
+  margin-bottom: 0em;
 }
 
 .widefinder, .finder[data-cols="4"], .finder[data-cols="5"], .finder[data-cols="6"], .finder[data-cols="7"], .finder[data-cols="8"], .finder[data-cols="9"], .finder[data-cols="10"] {
@@ -4112,6 +4115,17 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .envlist .add-item .itemhead, .envlist .add-item #results .case-details .summary, #results .case-details .envlist .add-item .summary, .envlist .add-item .item-content {
   padding-left: 1.875em;
 }
+.envlist .populate-field {
+  margin-bottom: 1.5em;
+  text-align: center;
+}
+.envlist .populate-field .type, .envlist .populate-field .value, .envlist .populate-field .action-submit {
+  display: inline-block;
+}
+.envlist .populate-field .value {
+  width: auto;
+  min-width: 25.275%;
+}
 
 #add-environment-form {
   padding-right: 50.526%;
@@ -4845,6 +4859,16 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   font-family: "CambridgeRoundCond", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: rgba(69, 69, 69, 0.667);
 }
+.versioned .bulk-field .fieldhelp h3 {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
 .versioned .cases-field {
   display: inline;
   float: left;
@@ -4866,7 +4890,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
-  min-height: 15em;
+}
+.versioned .cases-field .value {
+  min-height: 18em;
 }
 
 .step-form .steplist {

@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Manage views for environments.
 
@@ -163,7 +146,8 @@ def productversion_environments_edit(request, productversion_id):
     productversion = get_object_or_404(
         model.ProductVersion, pk=productversion_id)
 
-    # @@@ should use a form, and support both ajax and non
+    # @@@ should use a form for all, and support both ajax and non
+    form = None
     if request.is_ajax() and request.method == "POST":
         if "add-environment" in request.POST:
             element_ids = request.POST.getlist("element-element")
@@ -177,6 +161,22 @@ def productversion_environments_edit(request, productversion_id):
         elif "action-remove" in request.POST:
             env_id = request.POST.get("action-remove")
             productversion.environments.remove(env_id)
+        elif "populate" in request.POST:
+            form = forms.PopulateProductVersionEnvsForm(
+                request.POST, productversion=productversion)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Populated environments.")
+            else:
+                messages.warning(
+                    request,
+                    "Unable to populate environments. "
+                    "Please select a different source.",
+                    )
+
+    if form is None and not productversion.environments.exists():
+        form = forms.PopulateProductVersionEnvsForm(
+            productversion=productversion)
 
     return TemplateResponse(
         request,
@@ -184,6 +184,7 @@ def productversion_environments_edit(request, productversion_id):
         {
             "productversion": productversion,
             "environments": productversion.environments.all(),
+            "populate_form": form,
             }
         )
 

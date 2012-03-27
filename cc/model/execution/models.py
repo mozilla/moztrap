@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Models for test execution (runs, results).
 
@@ -95,8 +78,12 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def _lock_case_versions(self):
         """Select caseversions from suites, create runcaseversions."""
         order = 1
+        rcv_ids = set()
+        preexisting_rcv_ids = set(
+            self.runcaseversions.values_list("id", flat=True))
         for runsuite in RunSuite.objects.filter(
-                run=self).order_by("order").select_related("suite"):
+                run=self, suite__status=Suite.STATUS.active).order_by(
+                "order").select_related("suite"):
             for suitecase in SuiteCase.objects.filter(
                     suite=runsuite.suite).order_by(
                     "order").select_related("case"):
@@ -107,28 +94,54 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    envs = _environment_intersection(self, caseversion)
-                    if envs:
-                        try:
-                            rcv = RunCaseVersion.objects.get(
-                                run=self, caseversion=caseversion)
-                        except RunCaseVersion.MultipleObjectsReturned:
-                            dupes = list(
-                                RunCaseVersion.objects.filter(
-                                    run=self, caseversion=caseversion)
-                                )
-                            rcv = dupes.pop()
-                            for dupe in dupes:
-                                rcv.environments.add(*dupe.environments.all())
-                                dupe.results.update(runcaseversion=rcv)
-                                dupe.delete(permanent=True)
-                        except RunCaseVersion.DoesNotExist:
-                            rcv = RunCaseVersion(
-                                run=self, caseversion=caseversion, order=order)
-                            rcv.save(force_insert=True, inherit_envs=False)
-                            rcv.environments.add(*envs)
-                            order += 1
-                        rcv.suites.add(runsuite.suite)
+                    rcv_id = self._add_caseversion(
+                        caseversion, runsuite.suite, order)
+                    if rcv_id is not None:
+                        order += 1
+                        rcv_ids.add(rcv_id)
+        self.runcaseversions.filter(
+            id__in=preexisting_rcv_ids.difference(rcv_ids)).delete()
+
+
+    def _add_caseversion(self, caseversion, suite, order):
+        """
+        Add given caseversion to this run, from given suite, at given order.
+
+        Returns runcaseversion ID if the caseversion was actually added (or
+        found to already exist), else None.
+
+        """
+        envs = _environment_intersection(self, caseversion)
+        if not envs:
+            return None
+        found = False
+        try:
+            rcv = RunCaseVersion.objects.get(
+                run=self, caseversion=caseversion)
+            found = True
+        except RunCaseVersion.MultipleObjectsReturned:
+            dupes = list(
+                RunCaseVersion.objects.filter(
+                    run=self, caseversion=caseversion)
+                )
+            rcv = dupes.pop()
+            for dupe in dupes:
+                dupe.results.update(runcaseversion=rcv)
+                dupe.delete(permanent=True)
+            found = True
+        except RunCaseVersion.DoesNotExist:
+            rcv = RunCaseVersion(
+                run=self, caseversion=caseversion, order=order)
+            rcv.save(force_insert=True, inherit_envs=False)
+            rcv.environments.add(*envs)
+        if found:
+            rcv.order = order
+            rcv.save()
+            current_envs = set(rcv.environments.values_list("id", flat=True))
+            rcv.environments.remove(*current_envs.difference(envs))
+            rcv.environments.add(*envs.difference(current_envs))
+        rcv.suites.add(suite)
+        return rcv.id
 
 
     def result_summary(self):
