@@ -51,6 +51,6 @@ urlpatterns = patterns(
     url(r"^admin/", include(admin.site.urls)),
 
     # browserid --------------------------------------------------------------
-    url(r'^browserid/', include('django_browserid.urls')),
+    url(r"^browserid/", include("cc.view.users.browserid_urls")),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
