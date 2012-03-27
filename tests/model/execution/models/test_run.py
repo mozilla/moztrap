@@ -289,7 +289,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv9, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -306,8 +306,28 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="draft")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertCaseVersions(r, [])
+
+
+    def test_only_active_suite(self):
+        """Only test cases in an active suite are considered."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="draft")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="locked")
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
@@ -323,7 +343,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv9, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -343,7 +363,7 @@ class RunActivationTest(case.DBTestCase):
             case=tc, productversion=self.pv8, status="active")
         tcv1.remove_envs(*self.envs[:2])
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -367,9 +387,9 @@ class RunActivationTest(case.DBTestCase):
         tcv3 = self.F.CaseVersionFactory.create(
             case=tc3, productversion=self.pv8, status="active")
 
-        ts1 = self.F.SuiteFactory.create(product=self.p)
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts1, case=tc3, order=1)
-        ts2 = self.F.SuiteFactory.create(product=self.p)
+        ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts2, case=tc2, order=1)
         self.F.SuiteCaseFactory.create(suite=ts2, case=tc1, order=2)
 
@@ -397,7 +417,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8, status="active")
@@ -414,7 +434,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8, status="disabled")
@@ -432,7 +452,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -450,10 +470,10 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts1 = self.F.SuiteFactory.create(product=self.p)
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
 
-        ts2 = self.F.SuiteFactory.create(product=self.p)
+        ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts2, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -484,7 +504,7 @@ class RunActivationTest(case.DBTestCase):
         rcv2 = self.F.RunCaseVersionFactory.create(
             caseversion=rcv1.caseversion, run=r)
         self.F.ResultFactory.create(runcaseversion=rcv2)
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
         r.environments.remove(self.envs[0])
@@ -504,7 +524,7 @@ class RunActivationTest(case.DBTestCase):
             caseversion__productversion=self.pv8,
             caseversion__status="active",
             )
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
         rcv.caseversion.environments.remove(self.envs[0])
@@ -523,7 +543,7 @@ class RunActivationTest(case.DBTestCase):
             caseversion__status="draft",
             )
         self.F.ResultFactory.create(runcaseversion=rcv)
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
 
@@ -542,7 +562,7 @@ class RunActivationTest(case.DBTestCase):
             caseversion__productversion=self.pv8,
             caseversion__status="draft",
             )
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
         rcv.caseversion.environments.remove(self.envs[0])

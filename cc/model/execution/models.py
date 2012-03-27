@@ -82,7 +82,8 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         preexisting_rcv_ids = set(
             self.runcaseversions.values_list("id", flat=True))
         for runsuite in RunSuite.objects.filter(
-                run=self).order_by("order").select_related("suite"):
+                run=self, suite__status=Suite.STATUS.active).order_by(
+                "order").select_related("suite"):
             for suitecase in SuiteCase.objects.filter(
                     suite=runsuite.suite).order_by(
                     "order").select_related("case"):
