@@ -95,6 +95,9 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def _lock_case_versions(self):
         """Select caseversions from suites, create runcaseversions."""
         order = 1
+        rcv_ids = set()
+        preexisting_rcv_ids = set(
+            self.runcaseversions.values_list("id", flat=True))
         for runsuite in RunSuite.objects.filter(
                 run=self).order_by("order").select_related("suite"):
             for suitecase in SuiteCase.objects.filter(
@@ -107,22 +110,26 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 except CaseVersion.DoesNotExist:
                     pass
                 else:
-                    if self._add_caseversion(
-                            caseversion, runsuite.suite, order):
+                    rcv_id = self._add_caseversion(
+                        caseversion, runsuite.suite, order)
+                    if rcv_id is not None:
                         order += 1
+                        rcv_ids.add(rcv_id)
+        self.runcaseversions.filter(
+            id__in=preexisting_rcv_ids.difference(rcv_ids)).delete()
 
 
     def _add_caseversion(self, caseversion, suite, order):
         """
         Add given caseversion to this run, from given suite, at given order.
 
-        Returns True if the caseversion was actually added (or found to already
-        exist), else False.
+        Returns runcaseversion ID if the caseversion was actually added (or
+        found to already exist), else None.
 
         """
         envs = _environment_intersection(self, caseversion)
         if not envs:
-            return False
+            return None
         found = False
         try:
             rcv = RunCaseVersion.objects.get(
@@ -135,7 +142,6 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 )
             rcv = dupes.pop()
             for dupe in dupes:
-                rcv.environments.add(*dupe.environments.all())
                 dupe.results.update(runcaseversion=rcv)
                 dupe.delete(permanent=True)
             found = True
@@ -147,8 +153,11 @@ class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         if found:
             rcv.order = order
             rcv.save()
+            current_envs = set(rcv.environments.values_list("id", flat=True))
+            rcv.environments.remove(*current_envs.difference(envs))
+            rcv.environments.add(*envs.difference(current_envs))
         rcv.suites.add(suite)
-        return True
+        return rcv.id
 
 
     def result_summary(self):
