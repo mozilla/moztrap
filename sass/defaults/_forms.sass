@@ -114,9 +114,13 @@ input
     +leader(.25)
     text-align: right
     text-transform: capitalize
+    &::after
+      content: "*"
   &.optional .type
     +demi
     color: rgba($base,.75)
+    &::after
+      content: ""
   .isoptional
     +gone
   &.errors

@@ -470,7 +470,7 @@ class RunActivationTest(case.DBTestCase):
         """
         Re-activating a run that has dupe runcaseversions cleans them up.
 
-        Environments for both are merged, and results from both are preserved.
+        Environments are set to current values; all results are preserved.
 
         """
         r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
@@ -479,7 +479,7 @@ class RunActivationTest(case.DBTestCase):
             caseversion__productversion=self.pv8,
             caseversion__status="active",
             )
-        rcv1.environments.remove(self.envs[0])
+        rcv1.environments.remove(self.envs[1])
         self.F.ResultFactory.create(runcaseversion=rcv1)
         rcv2 = self.F.RunCaseVersionFactory.create(
             caseversion=rcv1.caseversion, run=r)
@@ -487,9 +487,67 @@ class RunActivationTest(case.DBTestCase):
         ts = self.F.SuiteFactory.create(product=self.p)
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
+        r.environments.remove(self.envs[0])
 
         r.activate()
 
         rcv = r.runcaseversions.get()
-        self.assertEqual(set(rcv.environments.all()), set(self.envs))
+        self.assertEqual(set(rcv.environments.all()), set(self.envs[1:]))
         self.assertEqual(rcv.results.count(), 2)
+
+
+    def test_updates_envs_on_previously_included_rcv(self):
+        """Re-activating updates envs on previously-included caseversions."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            )
+        ts = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+        rcv.caseversion.environments.remove(self.envs[0])
+
+        r.activate()
+
+        self.assertEqual(set(rcv.environments.all()), set(self.envs[1:]))
+
+
+    def test_removes_draft_caseversions_and_their_results(self):
+        """Re-activating removes caseversions that are now draft."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="draft",
+            )
+        self.F.ResultFactory.create(runcaseversion=rcv)
+        ts = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertEqual(r.runcaseversions.count(), 0)
+        self.assertEqual(
+            self.model.Result.objects.filter(runcaseversion__run=r).count(), 0)
+
+
+    def test_removes_no_env_overlap_caseversions(self):
+        """Re-activating removes caseversions that now have no env overlap."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="draft",
+            )
+        ts = self.F.SuiteFactory.create(product=self.p)
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+        rcv.caseversion.environments.remove(self.envs[0])
+        r.environments.remove(*self.envs[1:])
+
+        r.activate()
+
+        self.assertEqual(r.runcaseversions.count(), 0)
