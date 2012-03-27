@@ -99,6 +99,27 @@ class LoginTest(case.view.ViewTestCase):
 
 
 
+class BrowserIDTest(case.view.ViewTestCase):
+    """Tests for BrowserID verify view."""
+    def test_fail_redirect(self):
+        """Failed BrowserID verification redirects without losing 'next'."""
+        url = reverse("auth_login") + "?next=/foo"
+        form = self.app.get(url).forms["browserid-form"]
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, url)
+
+
+    def test_fail_message(self):
+        """Failed BrowserID verification has a message for the user."""
+        url = reverse("auth_login") + "?next=/foo"
+        form = self.app.get(url).forms["browserid-form"]
+        res = form.submit(status=302).follow()
+
+        self.assertContains(res, "Unable to sign in with that email address")
+
+
+
 class LogoutTest(case.view.ViewTestCase):
     """Tests for logout view."""
     @property
