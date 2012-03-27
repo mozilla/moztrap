@@ -301,15 +301,15 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.addEnvToProfile = function (container) {
+    CC.addEnvToProfile = function (container, form) {
         var context = $(container),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
                 var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if (replaceList.length && context.find('#add-environment-form').length) {
-                    context.find('#add-environment-form').ajaxForm({
+                if (replaceList.length && context.find(form).length) {
+                    context.find(form).ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
@@ -318,6 +318,7 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
+                                $('#filter').find('input.check:checked').prop('checked', false).change();
                                 context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
                                     inputList: '.env-element-list',

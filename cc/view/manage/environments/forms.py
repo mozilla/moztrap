@@ -70,3 +70,43 @@ class AddProfileForm(ProfileForm):
             *self.cleaned_data["elements"],
             **{"user": user or self.user}
             )
+
+
+
+class PopulateProductVersionEnvsForm(ccforms.NonFieldErrorsClassFormMixin,
+                                     forms.Form,
+                                     ):
+    """Form for populating the envs of a productversion."""
+    source = forms.ChoiceField(
+        label="Populate with environments from", choices=[])
+
+
+    def __init__(self, *args, **kwargs):
+        """Initialize form; takes productversion kwarg, sets source choices."""
+        self.productversion = kwargs.pop("productversion")
+
+        super(PopulateProductVersionEnvsForm, self).__init__(*args, **kwargs)
+
+        choices = []
+        self.choice_map = {}
+        for pv in self.productversion.product.versions.exclude(
+                pk=self.productversion.pk):
+            key = "productversion-{0}".format(pv.pk)
+            choices.append((key, unicode(pv)))
+            self.choice_map[key] = pv
+
+        for profile in model.Profile.objects.all():
+            key = "profile-{0}".format(profile.pk)
+            choices.append((key, unicode(profile)))
+            self.choice_map[key] = profile
+
+        self.fields["source"].choices = choices
+
+
+    def save(self):
+        """Save envs from selected source to productversion."""
+        source = self.choice_map[self.cleaned_data["source"]]
+
+        self.productversion.environments.add(*source.environments.all())
+
+        return self.productversion

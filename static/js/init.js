@@ -186,7 +186,7 @@ var CC = (function (CC, $) {
 
         // manage-env.js
         CC.createEnvProfile('#profile-add-form');
-        CC.addEnvToProfile('#editprofile, #editproductversionenvs');
+        CC.addEnvToProfile('#editprofile, #editproductversionenvs', '#add-environment-form, #productversion-environments-form');
         CC.editEnvProfileName('#editprofile');
         CC.bulkSelectEnvs('#envnarrowing');
 

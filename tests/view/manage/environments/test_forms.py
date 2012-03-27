@@ -62,3 +62,59 @@ class AddProfileFormTest(case.DBTestCase):
         rendered = unicode(f["elements"])
         self.assertIn('id="element-{0}">'.format(unsel.id), rendered)
         self.assertIn('id="element-{0}" checked>'.format(sel.id), rendered)
+
+
+
+class PopulateProductVersionEnvsFormTest(case.DBTestCase):
+    """Tests for PopulateProductVersionEnvsForm."""
+    def setUp(self):
+        """All these tests need a productversion."""
+        super(PopulateProductVersionEnvsFormTest, self).setUp()
+        self.pv = self.F.ProductVersionFactory.create()
+
+
+    @property
+    def PopulateProductVersionEnvsForm(self):
+        """The form class under test."""
+        from cc.view.manage.environments import forms
+        return forms.PopulateProductVersionEnvsForm
+
+
+    def test_populate_from_profile(self):
+        """Can populate pv's envs from a profile."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "profile-{0}".format(profile.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in pv.environments.all()], [u"Windows"])
+
+
+    def test_populate_from_other_version(self):
+        """Can populate pv's envs from another version of the same product."""
+        pv2 = self.F.ProductVersionFactory.create(product=self.pv.product)
+        pv2.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "productversion-{0}".format(pv2.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in pv.environments.all()], [u"Windows"])
