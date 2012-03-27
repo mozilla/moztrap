@@ -320,15 +320,15 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.addEnvToProfile = function (container) {
+    CC.addEnvToProfile = function (container, form) {
         var context = $(container),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
                 var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if (replaceList.length && context.find('#add-environment-form').length) {
-                    context.find('#add-environment-form').ajaxForm({
+                if (replaceList.length && context.find(form).length) {
+                    context.find(form).ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
