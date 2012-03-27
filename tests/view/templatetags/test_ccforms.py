@@ -149,11 +149,6 @@ class FieldFilterTests(case.TestCase):
         self.assertTrue(self.ccforms.optional(self.form()["level"]))
 
 
-    def test_optional_boolean(self):
-        """A non-"required" BooleanField should not be marked optional."""
-        self.assertFalse(self.ccforms.optional(self.form()["awesome"]))
-
-
     def test_attr(self):
         """``attr`` filter sets an attribute."""
         self.assertIn(

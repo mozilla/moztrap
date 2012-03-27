@@ -87,15 +87,7 @@ def classes(boundfield, classes):
 
 @register.filter
 def optional(boundfield):
-    """
-    Return True if given boundfield should be marked optional, False otherwise.
-
-    For boolean fields, "required" means "must be checked", so non-required
-    boolean fields should not be marked "optional" in the UI.
-
-    """
-    if isinstance(boundfield.field, forms.BooleanField):
-        return False
+    """Return True if given boundfield is optional, else False."""
     return not boundfield.field.required
 
 
