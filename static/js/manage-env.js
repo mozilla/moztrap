@@ -337,6 +337,7 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
+                                $('#filter').find('input.check:checked').prop('checked', false).change();
                                 context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
                                     inputList: '.env-element-list',
