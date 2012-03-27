@@ -244,4 +244,4 @@ LOGIN_REDIRECT_URL = "/"
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
 
-SITE_URL = 'http://localhost:8000'
+SITE_URL = "http://localhost:8000"
