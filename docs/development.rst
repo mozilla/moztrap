@@ -250,9 +250,9 @@ The only changed files shown here should be the new Python files for your added
 dependency (or, if upgrading a dependency, possibly some added/modified/removed
 files, but nothing outside the one upgraded package).
 
-If that is the case, commit your changes and push using the same steps as shown
-above for the ``requirements/dist`` submodule (and the same branching
-considerations).
+If that is the case, commit your changes to the master branch (or the branch
+you chose earlier) and push using the same steps as shown above for the
+``requirements/dist`` submodule.
 
 
 Pulling it all together

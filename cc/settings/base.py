@@ -123,6 +123,7 @@ INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.admin",
     "django.contrib.humanize",
+    "django_browserid",
     "south",
     "cc.model.core",
     "cc.model.library",
@@ -144,7 +145,10 @@ CACHES = {
     }
 }
 
-AUTHENTICATION_BACKENDS = ["cc.model.core.auth.ModelBackend"]
+AUTHENTICATION_BACKENDS = [
+    "cc.model.core.auth.ModelBackend",
+    "django_browserid.auth.BrowserIDBackend",
+    ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
@@ -222,3 +226,5 @@ LOGIN_REDIRECT_URL = "/"
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
+
+SITE_URL = "http://localhost:8000"

@@ -33,5 +33,11 @@
       <a href="{% url auth_password_reset %}">Reset it</a>.
     </p>
   </form>
+  <a id="browserid" href="#">BrowserID</a>
+  <form method="POST" action="{% url browserid_verify %}" id="browserid-form">
+    {% csrf_token %}
+    <input type="hidden" name="assertion" id="id_assertion" />
+    <input type="hidden" name="next" id="id_next" value="{{ next }}" />
+  </form>
 </section>
 {% endblock content %}

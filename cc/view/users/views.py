@@ -4,17 +4,38 @@ Account-related views.
 """
 from functools import partial
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
 
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import REDIRECT_FIELD_NAME, views as auth_views
 from django.contrib import messages
 
+from django_browserid.views import Verify as BaseVerify
 from ratelimit.decorators import ratelimit
 from registration import views as registration_views
 from session_csrf import anonymous_csrf
 
 from . import forms
 
+
+
+class Verify(BaseVerify):
+    """BrowserID verification view."""
+    def login_failure(self):
+        """Handle a failed login."""
+        messages.error(
+            self.request,
+            "Unable to sign in with that email address; "
+            "have you registered an account?"
+            )
+        return redirect(
+            "{0}?{1}={2}".format(
+                settings.LOGIN_URL,
+                REDIRECT_FIELD_NAME,
+                self.request.REQUEST.get(REDIRECT_FIELD_NAME, "/"),
+                )
+            )
 
 
 @anonymous_csrf
