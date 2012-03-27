@@ -37,6 +37,7 @@
   <form method="POST" action="{% url browserid_verify %}">
     {% csrf_token %}
     <input type="hidden" name="assertion" id="id_assertion" />
+    <input type="hidden" name="next" id="id_next" value="{{ next }}" />
   </form>
 </section>
 {% endblock content %}

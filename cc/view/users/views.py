@@ -4,10 +4,11 @@ Account-related views.
 """
 from functools import partial
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import REDIRECT_FIELD_NAME, views as auth_views
 from django.contrib import messages
 
 from django_browserid.views import Verify as BaseVerify
@@ -28,7 +29,13 @@ class Verify(BaseVerify):
             "Unable to sign in with that email address; "
             "have you registered an account?"
             )
-        return redirect(self.request.get_full_path())
+        return redirect(
+            "{0}?{1}={2}".format(
+                settings.LOGIN_URL,
+                REDIRECT_FIELD_NAME,
+                self.request.REQUEST.get(REDIRECT_FIELD_NAME, "/"),
+                )
+            )
 
 
 @anonymous_csrf
