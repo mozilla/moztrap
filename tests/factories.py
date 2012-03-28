@@ -64,6 +64,7 @@ class UserFactory(factory.Factory):
     FACTORY_FOR = model.User
 
     username = factory.Sequence(lambda n: "test{0}".format(n))
+    email = factory.Sequence(lambda n: "test{0}@example.com".format(n))
 
 
     @classmethod

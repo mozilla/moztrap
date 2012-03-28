@@ -9,6 +9,9 @@ from django.contrib.auth.models import User as BaseUser, Group, Permission
 from registration.models import RegistrationProfile
 
 
+# monkeypatch the User model to ensure unique email addresses
+BaseUser._meta.get_field("email")._unique = True
+
 
 class User(BaseUser):
     """Proxy for contrib.auth User that adds action methods and roles alias."""

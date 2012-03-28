@@ -77,6 +77,18 @@ class RegistrationForm(registration_forms.RegistrationForm):
         return check_password(self.cleaned_data["password1"])
 
 
+    def clean_email(self):
+        """
+        Validate that the email is not already in use.
+
+        """
+        try:
+            model.User.objects.get(email=self.cleaned_data["email"])
+        except model.User.DoesNotExist:
+            return self.cleaned_data["email"]
+        raise forms.ValidationError(u"A user with that email already exists.")
+
+
 
 class PasswordResetForm(auth_forms.PasswordResetForm):
     """A password reset form that doesn't reveal valid users."""
