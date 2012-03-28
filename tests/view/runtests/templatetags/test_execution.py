@@ -1,5 +1,9 @@
 """Tests for template tags/filters for running tests."""
+import datetime
+
 from django.template import Template, Context
+
+import mock
 
 from tests import case
 
@@ -25,6 +29,68 @@ class ResultForTest(case.DBTestCase):
                 r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
             str(r.id)
             )
+
+
+    def test_dupe_results_keeps_completed(self):
+        """If dupe results exists, keep the one that's completed."""
+        r = self.F.ResultFactory(status="passed")
+        self.F.ResultFactory(
+            tester=r.tester,
+            runcaseversion=r.runcaseversion,
+            environment=r.environment,
+            )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
+
+
+    def test_dupe_complete_results_keeps_latest(self):
+        """If dupe completed results exists, keep the last-modified."""
+
+        with mock.patch("cc.model.ccmodel.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            r = self.F.ResultFactory(
+                status="passed",
+                )
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            r2 = self.F.ResultFactory(
+                tester=r.tester,
+                runcaseversion=r.runcaseversion,
+                environment=r.environment,
+                status="failed",
+                )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r2.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
+
+
+    def test_dupe_incomplete_results_keeps_latest(self):
+        """If dupe incomplete results exists, keep the last-modified."""
+
+        with mock.patch("cc.model.ccmodel.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            r = self.F.ResultFactory()
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            r2 = self.F.ResultFactory(
+                tester=r.tester,
+                runcaseversion=r.runcaseversion,
+                environment=r.environment,
+                )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r2.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
 
 
     def test_result_does_not_exist(self):
