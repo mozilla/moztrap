@@ -9,7 +9,7 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
     <div class="formfields">
-      {% include "forms/_field.html" with field=form.username %}
+      {% include "forms/_field.html" with field=form.username label="Username or email" %}
       {% include "forms/_field.html" with field=form.password %}
       {% if form.captcha %}
 

@@ -33,6 +33,19 @@ class LoginTest(case.view.ViewTestCase):
         self.assertRedirects(res, reverse("home"))
 
 
+    def test_email_login(self):
+        """Can log in with email address."""
+        self.F.UserFactory.create(
+            username="test", email="test@example.com", password="sekrit")
+
+        form = self.get().forms["loginform"]
+        form["username"] = "test@example.com"
+        form["password"] = "sekrit"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("home"))
+
+
     def test_login_failed(self):
         """Failed login returns error message."""
         self.F.UserFactory.create(username="test", password="sekrit")

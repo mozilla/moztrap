@@ -2,6 +2,8 @@
 Proxy User and Role models.
 
 """
+from django.db.models import Q
+
 from django.contrib.auth.backends import ModelBackend as DjangoModelBackend
 # Permission is imported solely so other places can import it from here
 from django.contrib.auth.models import User as BaseUser, Group, Permission
@@ -60,15 +62,14 @@ Role = Group
 
 
 class ModelBackend(DjangoModelBackend):
-    """Authentication backend that returns instances of our proxy User model."""
+    """Accepts username or email and returns our proxy User model."""
     def authenticate(self, username=None, password=None):
         """Return User for given credentials, or None."""
-        try:
-            user = User.objects.get(username=username)
+        candidates = User.objects.filter(Q(username=username) | Q(email=username))
+        for user in candidates:
             if user.check_password(password):
                 return user
-        except User.DoesNotExist:
-            return None
+        return None
 
 
     def get_user(self, user_id):
