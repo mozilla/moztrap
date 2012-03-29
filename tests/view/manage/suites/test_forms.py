@@ -146,7 +146,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "product": str(p.id),
                 "name": "Foo",
                 "description": "foo desc",
-                "status": "draft",
+                "status": "active",
                 "cc_version": "0",
                 },
             user=u
@@ -160,6 +160,13 @@ class AddSuiteFormTest(case.DBTestCase):
         self.assertEqual(suite.created_by, u)
 
 
+    def test_initial_state(self):
+        """New suites should default to active state."""
+        form = self.form()
+
+        self.assertEqual(form["status"].value(), "active")
+
+
     def test_add_with_cases(self):
         """Can add cases to a new suite."""
         c = self.F.CaseFactory()
@@ -169,7 +176,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "product": str(c.product.id),
                 "name": "some name",
                 "description": "some desc",
-                "status": "draft",
+                "status": "active",
                 "cases": [str(c.id)],
                 "cc_version": "0",
                 },
