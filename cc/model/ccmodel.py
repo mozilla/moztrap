@@ -403,9 +403,18 @@ class DraftStatusModel(models.Model):
 
     """
     STATUS = Choices("draft", "active", "disabled")
+    DEFAULT_STATUS = STATUS.draft
+
 
     status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
+        max_length=30, db_index=True, choices=STATUS)
+
+
+    def save(self, *args, **kwargs):
+        """Set default status before saving."""
+        if not self.status:
+            self.status = self.DEFAULT_STATUS
+        return super(DraftStatusModel, self).save(*args, **kwargs)
 
 
     def activate(self, user=None):
