@@ -67,15 +67,13 @@ class CreateDefaultRolesTest(case.DBTestCase):
         """Test output when all roles are created."""
         output = self.call_command()
 
-        self.assertEqual(
-            output,
-            """Role 'Test Creator' created.
+        expected = """Role 'Test Creator' created.
   Permission 'library.create_cases' added.
   Permission 'library.manage_suite_cases' added.
   Permission 'execution.execute' added.
 Role 'Admin' created.
-  Permission 'core.manage_products' added.
   Permission 'core.manage_users' added.
+  Permission 'core.manage_products' added.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
@@ -86,6 +84,7 @@ Role 'Admin' created.
   Permission 'library.manage_suite_cases' added.
   Permission 'execution.execute' added.
 Role 'Test Manager' created.
+  Permission 'core.manage_products' added.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
@@ -97,7 +96,9 @@ Role 'Test Manager' created.
   Permission 'execution.execute' added.
 Role 'Tester' created.
   Permission 'execution.execute' added.
-""")
+"""
+
+        self.assertEqual(output, expected)
 
 
     def test_creates_all_quietly(self):

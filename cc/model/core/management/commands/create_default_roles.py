@@ -23,6 +23,7 @@ ROLES["Test Creator"] = [
 
 # Test Managers can fully manage cases, suites, runs, environments, etc.
 ROLES["Test Manager"] = [
+    "core.manage_products",
     "library.manage_cases",
     "library.manage_suites",
     "tags.manage_tags",
@@ -33,7 +34,6 @@ ROLES["Test Manager"] = [
 
 # Admins can also manage users and products
 ROLES["Admin"] = [
-    "core.manage_products",
     "core.manage_users",
     ] + ROLES["Test Manager"]
 
