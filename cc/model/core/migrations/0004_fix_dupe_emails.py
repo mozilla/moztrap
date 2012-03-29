@@ -16,7 +16,7 @@ class Migration(DataMigration):
 
         for email in dupe_emails:
             i = 0
-            for user in orm.User.objects.filter(email=email).order_by("id"):
+            for user in orm["auth.User"].objects.filter(email=email).order_by("id"):
                 if i:
                     user.email = email + u"-dupe-" + unicode(i)
                     user.save()
