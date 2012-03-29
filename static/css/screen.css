@@ -3364,6 +3364,7 @@ body.login input, body.login .formfield .errorlist {
   display: inline-block;
   margin: 0 0.198em;
   width: 79px;
+  vertical-align: top;
 }
 
 .create {
