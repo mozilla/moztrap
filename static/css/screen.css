@@ -970,6 +970,7 @@ body > div {
   font-size: 1.5em;
   line-height: 2em;
   margin-left: 29.63%;
+  text-transform: none;
 }
 
 [role="main"] {
@@ -3289,8 +3290,8 @@ body.login #brand .logo {
   background: url('../images/126x126.png?1332478397') no-repeat scroll center center;
 }
 body.login #brand .wordmark {
-  font-size: 1.5em;
-  line-height: 2em;
+  font-size: 2.286em;
+  line-height: 1.313em;
   margin: 0;
   padding: 0;
   border: 0;
