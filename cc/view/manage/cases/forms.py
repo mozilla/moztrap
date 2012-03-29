@@ -23,7 +23,9 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 
     """
     status = forms.CharField(
-        widget=forms.Select(choices=model.CaseVersion.STATUS))
+        widget=forms.Select(choices=model.CaseVersion.STATUS),
+        initial=model.CaseVersion._meta.get_field("status").default,
+        )
     add_tags = forms.CharField(
         widget=ccforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
