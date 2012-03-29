@@ -3253,6 +3253,14 @@ body.login #main {
   padding-right: 16.495%;
   padding-left: 0;
 }
+body.login #main h2, body.login #main .selectenvhead, body.login #main p {
+  clear: both;
+  padding-left: 41.026%;
+  color: #999999;
+}
+body.login #main h2, body.login #main .selectenvhead {
+  margin-bottom: 1.5em;
+}
 body.login #brand {
   float: none;
   display: block;
@@ -3288,16 +3296,8 @@ body.login #brand .wordmark {
   border: 0;
 }
 body.login .message {
-  margin-left: 25.773%;
-  margin-right: 25.773%;
-}
-body.login h2, body.login .selectenvhead, body.login p {
-  clear: both;
-  padding-left: 41.026%;
-  color: #999999;
-}
-body.login h2, body.login .selectenvhead {
-  margin-bottom: 1.5em;
+  margin-left: 13.402%;
+  margin-right: 13.402%;
 }
 body.login .forgot {
   margin-bottom: 0em;
@@ -3358,7 +3358,7 @@ body.login input, body.login .formfield .errorlist {
   text-indent: 110%;
   white-space: nowrap;
   overflow: hidden;
-  background-image: url('../images/browserid.png?1333052607');
+  background-image: url('../images/browserid.png?1333055482');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   display: inline-block;
