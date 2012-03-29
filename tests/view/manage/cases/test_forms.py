@@ -44,7 +44,7 @@ class AddCaseFormTest(case.DBTestCase):
             "steps-INITIAL_FORMS": [0],
             "steps-0-instruction": ["Fill in form and submit."],
             "steps-0-expected": ["You should get a welcome email."],
-            "status": ["draft"],
+            "status": ["active"],
             }
         return MultiValueDict(defaults)
 
@@ -61,7 +61,6 @@ class AddCaseFormTest(case.DBTestCase):
         html = unicode(self.form()["productversion"])
 
         self.assertIn('data-product-id="{0}"'.format(self.product.id), html)
-
 
 
     def test_success(self):
@@ -82,6 +81,13 @@ class AddCaseFormTest(case.DBTestCase):
         self.assertEqual(cv.case.created_by, self.user)
         self.assertEqual(cv.created_by, self.user)
         self.assertEqual(cv.steps.get().created_by, self.user)
+
+
+    def test_initial_state(self):
+        """New cases should default to active state."""
+        form = self.form()
+
+        self.assertEqual(form["status"].value(), "active")
 
 
     def test_wrong_product_version(self):

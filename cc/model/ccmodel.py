@@ -10,6 +10,7 @@ import datetime
 from django.db import models, router
 from django.db.models.deletion import Collector
 from django.db.models.query import QuerySet
+from django.db.models.signals import class_prepared
 
 from model_utils import Choices
 
@@ -403,9 +404,11 @@ class DraftStatusModel(models.Model):
 
     """
     STATUS = Choices("draft", "active", "disabled")
+    DEFAULT_STATUS = STATUS.draft
+
 
     status = models.CharField(
-        max_length=30, db_index=True, choices=STATUS, default=STATUS.draft)
+        max_length=30, db_index=True, choices=STATUS, default=DEFAULT_STATUS)
 
 
     def activate(self, user=None):
@@ -428,3 +431,13 @@ class DraftStatusModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+
+def set_default_status(sender, **kwargs):
+    """Set the default status on a DraftStatusModel subclass."""
+    if issubclass(sender, DraftStatusModel):
+        sender._meta.get_field("status").default = sender.DEFAULT_STATUS
+
+
+class_prepared.connect(set_default_status)

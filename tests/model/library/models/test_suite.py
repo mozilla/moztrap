@@ -32,6 +32,13 @@ class SuiteTest(case.DBTestCase):
         self.assertEqual(new.status, "draft")
 
 
+    def test_default_active(self):
+        """New suite defaults to active state."""
+        s = self.F.SuiteFactory()
+
+        self.assertEqual(s.status, "active")
+
+
     def test_unique_constraint(self):
         """Can't have two SuiteCases with same suite and case."""
         sc = self.F.SuiteCaseFactory.create()

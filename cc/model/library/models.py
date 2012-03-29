@@ -87,6 +87,8 @@ class Case(CCModel):
 
 class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
     """A version of a test case."""
+    DEFAULT_STATUS = DraftStatusModel.STATUS.active
+
     productversion = models.ForeignKey(
         ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
@@ -260,6 +262,8 @@ class CaseStep(CCModel):
 
 class Suite(CCModel, DraftStatusModel):
     """An ordered suite of test cases."""
+    DEFAULT_STATUS = DraftStatusModel.STATUS.active
+
     product = models.ForeignKey(Product, related_name="suites")
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)

@@ -129,6 +129,13 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(len(new.environments.all()), 2)
 
 
+    def test_default_active(self):
+        """New CaseVersion defaults to active state."""
+        cv = self.F.CaseVersionFactory()
+
+        self.assertEqual(cv.status, "active")
+
+
     def test_gets_productversion_envs(self):
         """A new caseversion inherits environments of its product version."""
         pv = self.F.ProductVersionFactory(environments={"OS": ["Windows", "Linux"]})

@@ -83,6 +83,13 @@ class RunTest(case.DBTestCase):
         self.assertEqual(new.status, "draft")
 
 
+    def test_default_draft(self):
+        """New run defaults to draft state."""
+        r = self.F.RunFactory.create()
+
+        self.assertEqual(r.status, "draft")
+
+
     def test_clone_included_suite(self):
         """Cloning a run clones member RunSuites."""
         rs = self.F.RunSuiteFactory.create()
