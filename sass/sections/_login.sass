@@ -45,10 +45,23 @@ body.login
     +trailer
 
   .forgot
-    +leader
     +trailer(0)
     +italic
     text-align: right
+
+  .browserid
+    +leader(1.5)
+    +trailer(.5)
+    +pre(2,10)
+    +post(-2,10)
+    +rhythm-borders(1px,1)
+    +border-radius
+    +box-shadow(rgba($base,$xxsmall) 0 0 $xxsmallem inset)
+    +text-shadow(rgba($lightest,$small) 0 1px 0)
+    +demi
+    color: rgba($dark,$small)
+    border-color: $blue-light
+    background: $blue-hint image-url('noise.png') repeat scroll
 
   // Forms -------------------------------------------------------------------
 
@@ -62,3 +75,14 @@ body.login
   input, .formfield .errorlist
     +columns(6,10)
     +omega(10)
+
+#loginform
+  .password-field
+    +trailer(0)
+
+#browserid
+  +replace-text('browserid.png')
+  display: inline-block
+  margin: 0 $xxxsmallem
+  width: image-width('browserid.png')
+

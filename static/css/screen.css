@@ -3300,10 +3300,31 @@ body.login h2, body.login .selectenvhead {
   margin-bottom: 1.5em;
 }
 body.login .forgot {
-  margin-top: 1.5em;
   margin-bottom: 0em;
   font-style: italic;
   text-align: right;
+}
+body.login .browserid {
+  margin-top: 2.25em;
+  margin-bottom: 0.75em;
+  margin-left: 20.513%;
+  margin-right: -20.513%;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 1.429em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  -webkit-box-shadow: rgba(69, 69, 69, 0.296) 0 0 0.296em inset;
+  -moz-box-shadow: rgba(69, 69, 69, 0.296) 0 0 0.296em inset;
+  box-shadow: rgba(69, 69, 69, 0.296) 0 0 0.296em inset;
+  text-shadow: rgba(255, 255, 255, 0.667) 0 1px 0;
+  font-weight: 500;
+  color: rgba(69, 69, 69, 0.667);
+  border-color: #8695a8;
+  background: #e8e9ec url('../images/noise.png?1326735333') repeat scroll;
 }
 body.login form > .errorlist {
   margin-left: 41.026%;
@@ -3327,6 +3348,22 @@ body.login input, body.login .formfield .errorlist {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+
+#loginform .password-field {
+  margin-bottom: 0em;
+}
+
+#browserid {
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  background-image: url('../images/browserid.png?1333052607');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  display: inline-block;
+  margin: 0 0.198em;
+  width: 79px;
 }
 
 .create {
