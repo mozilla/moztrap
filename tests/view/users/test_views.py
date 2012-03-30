@@ -187,6 +187,16 @@ class BrowserIDTest(case.view.ViewTestCase):
         res.mustcontain("User with this Username already exists.")
 
 
+    def test_auto_username_logout(self):
+        """A user with an auto-username can logout."""
+        self.new_browserid()
+        user = self.model.User.objects.get()
+
+        res = self.app.get(url=reverse("auth_logout"), user=user)
+
+        self.assertRedirects(res, reverse("auth_login"))
+
+
 
 class LogoutTest(case.view.ViewTestCase):
     """Tests for logout view."""

@@ -19,6 +19,7 @@
       {% endfor %}
     </div>
     <div class="form-actions">
+      <a href="{% url auth_logout %}?next={{ next }}">cancel</a> or
       <button type="submit">continue!</button>
     </div>
   </form>
