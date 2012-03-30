@@ -11,6 +11,7 @@ from django.contrib.auth.backends import ModelBackend as DjangoModelBackend
 # Permission is imported solely so other places can import it from here
 from django.contrib.auth.models import User as BaseUser, Group, Permission
 
+from django_browserid.auth import BrowserIDBackend as BaseBrowserIDBackend
 from registration.models import RegistrationProfile
 
 
@@ -74,6 +75,20 @@ class ModelBackend(DjangoModelBackend):
                 return user
         return None
 
+
+    def get_user(self, user_id):
+        """Return User for given ID, or None."""
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
+
+
+class BrowserIDBackend(BaseBrowserIDBackend):
+    """BrowserID backend that returns our proxy user."""
+    def filter_users_by_email(self, email):
+        """Return all users matching the specified email."""
+        return User.objects.filter(email=email)
 
     def get_user(self, user_id):
         """Return User for given ID, or None."""

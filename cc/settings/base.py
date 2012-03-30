@@ -148,7 +148,7 @@ CACHES = {
 
 AUTHENTICATION_BACKENDS = [
     "cc.model.core.auth.ModelBackend",
-    "django_browserid.auth.BrowserIDBackend",
+    "cc.model.core.auth.BrowserIDBackend",
     ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
