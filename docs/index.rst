@@ -1,12 +1,12 @@
-Welcome to Case Conductor
+Welcome to MozTrap
 =========================
 
-Case Conductor is a test case manager.
+MozTrap is a test case manager.
 
 Quickstart
 ----------
 
-Case Conductor requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5.1+ with the InnoDB
+MozTrap requires `Python`_ 2.6 or 2.7 and `MySQL`_ 5.1+ with the InnoDB
 backend.
 
 These steps assume that you have `git`_, `virtualenv`_, `virtualenvwrapper`_,
@@ -15,11 +15,11 @@ development header files), and that you have a local `MySQL`_ server running
 which your shell user has permission to create databases in. See the full
 :doc:`installation` documentation for details and troubleshooting.
 
-1. ``git clone --recursive git://github.com/mozilla/caseconductor``
-2. ``cd caseconductor``
-3. ``mkvirtualenv caseconductor``
+1. ``git clone --recursive git://github.com/mozilla/moztrap``
+2. ``cd moztrap``
+3. ``mkvirtualenv moztrap``
 4. ``bin/install-reqs``
-5. ``echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql``
+5. ``echo "CREATE DATABASE moztrap CHARACTER SET utf8" | mysql``
 6. ``./manage.py syncdb --migrate``
 7. ``./manage.py create_default_roles``
 8. ``./manage.py runserver``
@@ -30,7 +30,7 @@ Conductor for local testing, experimentation, and :doc:`development
 <development>`.
 
 Please read the :doc:`deployment` documentation for important security and
-other considerations before deploying a public instance of Case Conductor.
+other considerations before deploying a public instance of MozTrap.
 
 .. _git: http://git-scm.com
 .. _Python: http://www.python.org

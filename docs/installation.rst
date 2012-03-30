@@ -4,9 +4,9 @@ Installation
 Clone the repository
 --------------------
 
-First, clone the `Case Conductor repository`_.
+First, clone the `MozTrap repository`_.
 
-.. _Case Conductor repository: https://github.com/mozilla/caseconductor
+.. _MozTrap repository: https://github.com/mozilla/moztrap
 
 Dependency source distribution tarballs are stored in a git submodule, so you
 either need to clone with the ``--recursive`` option, or after cloning, from
@@ -32,7 +32,7 @@ Installing the dependencies requires `pip`_ 1.0 or higher. `pip`_ is
 automatically available in a `virtualenv`_; if not using `virtualenv`_ you may
 need to install it yourself.
 
-A few of Case Conductor's dependencies include C code and must be
+A few of MozTrap's dependencies include C code and must be
 compiled. These requirements are listed in ``requirements/compiled.txt``. You
 can either compile them yourself (the default option) or use pre-compiled
 packages provided by your operating system vendor.
@@ -90,10 +90,10 @@ You'll need a MySQL database. If you have a local MySQL server and your user
 has rights to create databases on it, just run this command to create the
 database::
 
-    echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql
+    echo "CREATE DATABASE moztrap CHARACTER SET utf8" | mysql
 
 (If you are sure that UTF-8 is the default character set for your MySQL server,
-you can just run ``mysqladmin create caseconductor`` instead).
+you can just run ``mysqladmin create moztrap`` instead).
 
 If you get an error here, your shell user may not have permissions to create a
 MySQL database. In that case, you'll need to append ``-u someuser`` to the end
@@ -129,11 +129,11 @@ not be used in production.
 All done!
 ---------
 
-You can access Case Conductor in your browser at http://localhost:8000.
+You can access MozTrap in your browser at http://localhost:8000.
 
-For a production deployment of Case Conductor, please read the
+For a production deployment of MozTrap, please read the
 :doc:`deployment` documentation for important security and other
 considerations.
 
-For notes on upgrading to a more recent Case Conductor, see the
+For notes on upgrading to a more recent MozTrap, see the
 :doc:`upgrading` documentation.

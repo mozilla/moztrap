@@ -121,11 +121,11 @@ the next by a single blank line:
 
 4. Other third-party module imports.
 
-5. Imports from other modules in Case Conductor.
+5. Imports from other modules in MozTrap.
 
 Within each group, order imports alphabetically.
 
-For imports from within Case Conductor, use explicit relative imports for
+For imports from within MozTrap, use explicit relative imports for
 imports from the same package or the parent package (i.e. where the explicit
 relative import path begins with one or two dots). For more distant imports,
 it's usually more readable to give the full absolute path. Thus, for code in
@@ -171,10 +171,10 @@ parenthesis, brace or bracket::
 
     foo.some_long_method_name(
         arg_one, arg_two, arg_three, keyword="arg")
-    
+
     my_dict = {
         "foo": "bar", "boo": "baz"}
-    
+
     my_list_comprehension = [
         x[0] for x in my_list_of_tuples]
 
@@ -189,13 +189,13 @@ addition/removal of items with full-line cut/paste). For example::
         baz=baz_arg,
         something_else="foo",
         )
-    
+
     my_dict = {
         "foo": "bar",
         "boo": "baz",
         "something else": "foo",
         }
-    
+
     my_list_comprehension = [
         x[0] for x in my_list_of_tuples
         if x[1] is not None
