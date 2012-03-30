@@ -98,6 +98,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "session_csrf.CsrfMiddleware",
+    "cc.view.users.middleware.SetUsernameMiddleware",
 ]
 
 ROOT_URLCONF = "cc.view.urls"
