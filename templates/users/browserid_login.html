@@ -1,5 +1,7 @@
 {% extends 'users/login.html' %}
 
+{% block logintype %}logintype-browserid{% endblock logintype %}
+
 {% block login-content %}
   <div class="browserid">
     <a id="browserid" href="#">Sign in</a> with <a href="https://browserid.org/">Mozilla Persona</a>.

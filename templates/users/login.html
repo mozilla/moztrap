@@ -3,7 +3,7 @@
 {% block title %}Login | {{ block.super }}{% endblock title %}
 
 {% block content %}
-<section id="login">
+<section id="login" class="{% block logintype %}logintype-form{% endblock logintype %}">
   <h2>Login</h2>
   {% block login-content %}
   <form method="POST" id="loginform">
