@@ -118,7 +118,7 @@ class BrowserIDTest(case.view.ViewTestCase):
     @property
     def url(self):
         """Shortcut for login url with a next URL."""
-        return reverse("auth_login") + "?next=/"
+        return reverse("auth_login")
 
 
     def new_browserid(self, email="test@example.com"):

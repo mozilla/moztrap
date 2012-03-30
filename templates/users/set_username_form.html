@@ -11,7 +11,7 @@
 
   <form method="POST" id="setusernameform">
     {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="hidden" name="next" value="{{ next|default:'/' }}" />
     {{ form.non_field_errors }}
     <div class="formfields">
       {% for field in form %}
@@ -19,7 +19,7 @@
       {% endfor %}
     </div>
     <div class="form-actions">
-      <a href="{% url auth_logout %}?next={{ next }}">cancel</a> or
+      <a href="{% url auth_logout %}?next={{ next|default:'/' }}">cancel</a> or
       <button type="submit">continue!</button>
     </div>
   </form>
