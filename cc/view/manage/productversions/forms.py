@@ -29,7 +29,7 @@ class AddProductVersionForm(EditProductVersionForm):
     product = ccforms.CCModelChoiceField(
         queryset=model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
-    clone_envs_from = ccforms.CCModelChoiceField(  # pragma: no cover
+    clone_from = ccforms.CCModelChoiceField(  # pragma: no cover
         required=False,
         queryset=model.ProductVersion.objects.all(),
         choice_attrs=ccforms.product_id_attrs,
@@ -46,9 +46,9 @@ class AddProductVersionForm(EditProductVersionForm):
         """Save and return product version; copy envs."""
         pv = super(AddProductVersionForm, self).save(user=user)
 
-        clone_envs_from = self.cleaned_data.get("clone_envs_from")
-        if clone_envs_from:
-            pv.environments.add(*clone_envs_from.environments.all())
+        clone_from = self.cleaned_data.get("clone_from")
+        if clone_from:
+            pv.environments.add(*clone_from.environments.all())
 
         return pv
 

@@ -58,7 +58,7 @@ class AddProductVersionFormTest(case.DBTestCase):
             {
                 "product": str(pv.product.id),
                 "version": "2.0",
-                "clone_envs_from": str(pv.id),
+                "clone_from": str(pv.id),
                 "codename": "Foo",
                 "cc_version": "0",
                 },
