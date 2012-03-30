@@ -120,3 +120,13 @@ By default all access to the site requires authentication. If the
 ``cc/settings/local.py``, anonymous users will be able to read-only browse the
 management and test-results pages (but will not be able to submit test results
 or modify anything).
+
+
+Login type
+----------
+
+By default Case Conductor uses `BrowserID`_ for all logins, but it also
+supports conventional username/password logins. To switch to username/password
+logins, just set ``USE_BROWSERID`` to ``False`` in ``cc/settings/local.py``.
+
+.. _BrowserID: http://browserid.org
