@@ -121,10 +121,13 @@ class BaseAddCaseForm(forms.Form):
     """Base form for adding cases."""
     product = ccforms.CCModelChoiceField(
         model.Product.objects.all(),
-        choice_attrs=lambda p: {"data-product-id": p.id})
+        choice_attrs=lambda p: {"data-product-id": p.id},
+        )
     productversion = ccforms.CCModelChoiceField(
         model.ProductVersion.objects.all(),
-        choice_attrs=ccforms.product_id_attrs)
+        choice_attrs=ccforms.product_id_attrs,
+        label_from_instance=lambda pv: pv.version,
+        )
     and_later_versions = forms.BooleanField(initial=True, required=False)
 
 

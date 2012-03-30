@@ -29,10 +29,11 @@ class AddProductVersionForm(EditProductVersionForm):
     product = ccforms.CCModelChoiceField(
         queryset=model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
-    clone_envs_from = ccforms.CCModelChoiceField(
+    clone_envs_from = ccforms.CCModelChoiceField(  # pragma: no cover
         required=False,
         queryset=model.ProductVersion.objects.all(),
         choice_attrs=ccforms.product_id_attrs,
+        label_from_instance=lambda pv: pv.version,
         )
 
 
