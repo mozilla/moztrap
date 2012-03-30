@@ -28,6 +28,9 @@ Copy local.sample.py to local.py and modify as needed.
 # This must be changed to the correct live deployment URL.
 #SITE_URL = "http://localhost:8000"
 
+# Uncomment this to use username/password logins instead of BrowserID/Persona.
+#USE_BROWSERID = False
+
 # This email address will get emailed on 500 server errors.
 #ADMINS = [
 #    ("Some One", "someone@mozilla.com"),

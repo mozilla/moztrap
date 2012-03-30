@@ -46,6 +46,8 @@ def login(request):
         "template_name": "users/login.html",
         "authentication_form": forms.CaptchaAuthenticationForm,
         }
+    if settings.USE_BROWSERID:
+        kwargs["template_name"] = "users/browserid_login.html"
     # the contrib.auth login view doesn't pass request into the bound form,
     # but CaptchaAuthenticationForm needs it, so we ensure it's passed in
     if request.method == "POST":

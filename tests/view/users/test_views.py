@@ -2,6 +2,7 @@
 Tests for login/logout/account views.
 
 """
+from django.conf import settings
 from django.core import mail
 from django.core.urlresolvers import reverse
 
@@ -14,6 +15,7 @@ from tests.utils import patch_session
 
 
 
+@mock.patch.object(settings, "USE_BROWSERID", False)
 class LoginTest(case.view.ViewTestCase):
     """Tests for login view."""
     @property
@@ -113,6 +115,7 @@ class LoginTest(case.view.ViewTestCase):
 
 
 
+@mock.patch.object(settings, "USE_BROWSERID", True)
 class BrowserIDTest(case.view.ViewTestCase):
     """Tests for BrowserID verify view."""
     @property

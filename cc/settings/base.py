@@ -88,6 +88,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     "session_csrf.context_processor",
+    "cc.view.users.context_processors.browserid",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -230,3 +231,5 @@ TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
 
 SITE_URL = "http://localhost:8000"
 BROWSERID_CREATE_USER = "cc.model.core.auth.browserid_create_user"
+
+USE_BROWSERID = True
