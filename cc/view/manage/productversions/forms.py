@@ -49,6 +49,7 @@ class AddProductVersionForm(EditProductVersionForm):
         clone_from = self.cleaned_data.get("clone_from")
         if clone_from:
             pv.environments.add(*clone_from.environments.all())
+            for cv in clone_from.caseversions.all():
+                cv.clone(overrides={"productversion": pv, "name": cv.name})
 
         return pv
-
