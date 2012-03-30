@@ -117,8 +117,20 @@ class BrowserIDTest(case.view.ViewTestCase):
     """Tests for BrowserID verify view."""
     @property
     def url(self):
-        """Shortcut for login url."""
+        """Shortcut for login url with a next URL."""
         return reverse("auth_login") + "?next=/"
+
+
+    def new_browserid(self, email="test@example.com"):
+        """Create a new user via browserID login; return the redirect."""
+        with mock.patch("django_browserid.auth.verify") as verify:
+            verify.return_value = {"email": email}
+
+            form = self.get().forms["browserid-form"]
+            form["assertion"].force_value("foo")
+            res = form.submit(status=302)
+
+        return res
 
 
     def test_fail_redirect(self):
@@ -138,17 +150,41 @@ class BrowserIDTest(case.view.ViewTestCase):
         self.assertContains(res, "Unable to sign in with that email address")
 
 
-    @mock.patch("django_browserid.auth.verify")
-    def test_success_new_user(self, verify):
+    def test_new_user(self):
         """Successful new BrowserID login creates User with auto username."""
-        verify.return_value = {"email": "test@example.com"}
-
-        form = self.get().forms["browserid-form"]
-        form["assertion"].force_value("foo")
-        form.submit(status=302)
+        self.new_browserid()
 
         user = self.model.User.objects.get()
         self.assertTrue(user.username.startswith(":auto:"))
+
+
+    def test_set_username_initial(self):
+        """A new browserID user gets a set-username form, initially blank."""
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+
+        self.assertEqual(form.fields["username"][0].value, "")
+
+
+    def test_set_username(self):
+        """A new browserID user is prompted to set their username, and can."""
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+        form["username"] = "tester"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, "/")
+        user = self.model.User.objects.get()
+        self.assertEqual(user.username, "tester")
+
+
+    def test_set_username_error(self):
+        """A new browserID user gets an error if they choose an in-use name."""
+        self.F.UserFactory.create(username="tester")
+
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+        form["username"] = "tester"
+        res = form.submit(status=200)
+
+        res.mustcontain("User with this Username already exists.")
 
 
 

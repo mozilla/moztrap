@@ -109,7 +109,7 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
 
 
 class SetUsernameForm(forms.ModelForm):
-    """A form for a user without a username to pick one."""
+    """A form for a user with an auto-username to pick one."""
     class Meta:
         model = model.User
         fields = ["username"]
