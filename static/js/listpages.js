@@ -3,12 +3,12 @@
             confusion:  true */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // Ajax-load list-page list item contents
-    CC.loadListItemDetails = function () {
+    MT.loadListItemDetails = function () {
         $('.listpage').on('click', '.itemlist .listitem .details .summary', function (event) {
             var item = $(this),
                 content = item.siblings('.content'),
@@ -27,7 +27,7 @@ var CC = (function (CC, $) {
     };
 
     // Expand list item details on direct hashtag links
-    CC.openListItemDetails = function (context) {
+    MT.openListItemDetails = function (context) {
         if ($(context).length && window.location.hash && $(window.location.hash).length) {
             $(window.location.hash).find('.summary').first().click();
             window.location.hash = '';
@@ -35,7 +35,7 @@ var CC = (function (CC, $) {
     };
 
     // Ajax for manage list actions (clone and delete)
-    CC.manageActionsAjax = function (context) {
+    MT.manageActionsAjax = function (context) {
         $(context).on(
             'click',
             'button[name^=action-]',
@@ -69,7 +69,7 @@ var CC = (function (CC, $) {
     };
 
     // Hijack Manage/Results list sorting and pagination links to use Ajax
-    CC.listActionAjax = function (container, trigger) {
+    MT.listActionAjax = function (container, trigger) {
         var context = $(container);
 
         context.on('click', trigger, function (e) {
@@ -93,7 +93,7 @@ var CC = (function (CC, $) {
     };
 
     // Show/hide item-status dropdown
-    CC.itemStatusDropdown = function (container) {
+    MT.itemStatusDropdown = function (container) {
         var context = $(container),
             counter = 0;
 
@@ -132,6 +132,6 @@ var CC = (function (CC, $) {
         });
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

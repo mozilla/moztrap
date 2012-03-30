@@ -2,12 +2,12 @@
             indent:     4 */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // Shows/hides the advanced filtering
-    CC.toggleAdvancedFiltering = function (context) {
+    MT.toggleAdvancedFiltering = function (context) {
         var advanced = $(context).find('.visual'),
             toggleAdvanced = $(context).find('.toggle a');
 
@@ -18,7 +18,7 @@ var CC = (function (CC, $) {
     };
 
     // Remove filter params from URL on page-load (to avoid "stuck" filters)
-    CC.removeInitialFilterParams = function (context) {
+    MT.removeInitialFilterParams = function (context) {
         if ($(context).length && window.location.search) {
             window.history.replaceState(null, null, '?');
         }
@@ -26,7 +26,7 @@ var CC = (function (CC, $) {
 
     // Prevent Firefox javascript state caching
     // See https://developer.mozilla.org/En/Using_Firefox_1.5_caching
-    CC.preventCaching = function (context) {
+    MT.preventCaching = function (context) {
         if ($(context).length) {
             $(window).bind('unload.caching', function () {
                 return true;
@@ -35,7 +35,7 @@ var CC = (function (CC, $) {
     };
 
     // Tags, suites, environments act as filter-links on list pages
-    CC.directFilterLinks = function () {
+    MT.directFilterLinks = function () {
         $('.listpage').on('click', '.filter-link', function (e) {
             var thisLink = $(this),
                 name = thisLink.text(),
@@ -48,7 +48,7 @@ var CC = (function (CC, $) {
     };
 
     // Prepare filter-form for ajax-submit
-    CC.filterFormAjax = function (container) {
+    MT.filterFormAjax = function (container) {
         var context = $(container),
             filterForm = context.find('#filterform');
 
@@ -80,7 +80,7 @@ var CC = (function (CC, $) {
     };
 
     // Filter list of items by hiding/showing based on selected filter-inputs
-    CC.clientSideFilter = function (opts) {
+    MT.clientSideFilter = function (opts) {
         var defaults = {
                 container: 'body',
                 filterContainer: '#clientfilter',
@@ -136,6 +136,6 @@ var CC = (function (CC, $) {
         filterLists.on('change', options.filterSel, filterItems);
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));
