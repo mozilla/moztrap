@@ -11,7 +11,7 @@ Copy local.sample.py to local.py and modify as needed.
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "caseconductor",
+#         "NAME": "moztrap",
 #         "USER": environ.get("USER", ""),
 #         "HOST": "", # empty string == localhost
 #         "PASSWORD": "",

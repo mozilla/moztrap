@@ -20,7 +20,7 @@ Case Conductor
 ==============
 
 This is the Case Conductor test case management system.  It lives at
-https://github.com/mozilla/caseconductor/.
+https://github.com/mozilla/moztrap/.
 
 
 Documentation
@@ -40,16 +40,16 @@ To build and view an HTML version of the documentation::
 Related repositories
 --------------------
 
-There are `Selenium`_ tests for Case Conductor in the `caseconductor-tests`_
+There are `Selenium`_ tests for Case Conductor in the `moztrap-tests`_
 repository.
 
 Case Conductor's Python dependencies are available as sdist tarballs in the
-`caseconductor-reqs`_ repository, and as an unpacked vendor library in the
-`caseconductor-vendor-lib`_ repository. These are included as submodules of
+`moztrap-reqs`_ repository, and as an unpacked vendor library in the
+`moztrap-vendor-lib`_ repository. These are included as submodules of
 this repository, at ``requirements/dist`` and ``requirements/vendor``
 respectively.
 
 .. _Selenium: http://seleniumhq.org
-.. _caseconductor-tests: https://github.com/mozilla/caseconductor-tests
-.. _caseconductor-reqs: https://github.com/mozilla/caseconductor-reqs
-.. _caseconductor-vendor-lib: https://github.com/mozilla/caseconductor-vendor-lib
+.. _moztrap-tests: https://github.com/mozilla/moztrap-tests
+.. _moztrap-reqs: https://github.com/mozilla/moztrap-reqs
+.. _moztrap-vendor-lib: https://github.com/mozilla/moztrap-vendor-lib
