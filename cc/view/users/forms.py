@@ -108,6 +108,32 @@ class PasswordResetForm(auth_forms.PasswordResetForm):
 
 
 
+class SetUsernameForm(forms.ModelForm):
+    """A form for a user with an auto-username to pick one."""
+    username = forms.RegexField(
+        regex=r'^[\w.@+-]+$',
+        max_length=30,
+        label="Username",
+        error_messages={
+            "invalid": (
+                "This value must contain only letters, "
+                "numbers and underscores."
+                )
+            },
+        )
+
+    class Meta:
+        model = model.User
+        fields = ["username"]
+
+
+    def __init__(self, *args, **kwargs):
+        """Clear the initial value of the username field."""
+        super(SetUsernameForm, self).__init__(*args, **kwargs)
+
+        self.initial["username"] = ""
+
+
 
 OPERATORS = {
     "plus": operator.add,

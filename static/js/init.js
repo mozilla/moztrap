@@ -2,7 +2,7 @@
             indent:     4 */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
@@ -101,7 +101,7 @@ var CC = (function (CC, $) {
                 $.get(ajaxUrl, function (data) {
                     environments.loadingOverlay('remove');
                     environments.replaceWith(data.html);
-                    CC.filterEnvironments('#runtests-environment-form');
+                    MT.filterEnvironments('#runtests-environment-form');
                 });
             }
         });
@@ -125,54 +125,54 @@ var CC = (function (CC, $) {
         });
 
         // local.js
-        CC.inputHadFocus();
+        MT.inputHadFocus();
 
         // account.js
-        CC.changePwdCancel();
+        MT.changePwdCancel();
 
         // listpages.js
-        CC.loadListItemDetails();
-        CC.manageActionsAjax('.manage, .manage-form');
-        CC.listActionAjax(
+        MT.loadListItemDetails();
+        MT.manageActionsAjax('.manage, .manage-form');
+        MT.listActionAjax(
             '.manage, .results, .run',
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
-        CC.itemStatusDropdown('.manage');
+        MT.itemStatusDropdown('.manage');
 
         // filtering.js
-        CC.toggleAdvancedFiltering('.magicfilter');
-        CC.preventCaching('#filter');
-        CC.directFilterLinks();
-        CC.filterFormAjax('.manage, .results, .run');
-        CC.clientSideFilter({container: '#envnarrowing'});
+        MT.toggleAdvancedFiltering('.magicfilter');
+        MT.preventCaching('#filter');
+        MT.directFilterLinks();
+        MT.filterFormAjax('.manage, .results, .run');
+        MT.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
-        CC.formOptionsFilter({
+        MT.formOptionsFilter({
             container: '#suite-add-form, #suite-edit-form',
             trigger_sel: '#id_product',
             target_sel: '.multiunselected .select',
             option_sel: '.selectitem',
             multiselect_widget_bool: true
         });
-        CC.formOptionsFilter({
+        MT.formOptionsFilter({
             container: '#run-add-form, #run-edit-form',
             trigger_sel: '#id_productversion',
             target_sel: '.multiunselected .select',
             option_sel: '.selectitem',
             multiselect_widget_bool: true
         });
-        CC.formOptionsFilter({
+        MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_productversion'
         });
-        CC.formOptionsFilter({
+        MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_initial_suite',
             optional: true
         });
-        CC.formOptionsFilter({
+        MT.formOptionsFilter({
             container: '#productversion-add-form',
             trigger_sel: '#id_product',
             target_sel: '#id_clone_envs_from',
@@ -181,35 +181,35 @@ var CC = (function (CC, $) {
                 context.find('#id_clone_envs_from option:last-child').prop('selected', true);
             }
         });
-        CC.filterProductTags('#single-case-add, #bulk-case-add');
-        CC.testcaseAttachments('.case-form .attach');
+        MT.filterProductTags('#single-case-add, #bulk-case-add');
+        MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js
-        CC.createEnvProfile('#profile-add-form');
-        CC.addEnvToProfile('#editprofile, #editproductversionenvs', '#add-environment-form, #productversion-environments-form');
-        CC.editEnvProfileName('#editprofile');
-        CC.bulkSelectEnvs('#envnarrowing');
+        MT.createEnvProfile('#profile-add-form');
+        MT.addEnvToProfile('#editprofile, #editproductversionenvs', '#add-environment-form, #productversion-environments-form');
+        MT.editEnvProfileName('#editprofile');
+        MT.bulkSelectEnvs('#envnarrowing');
 
         // runtests.js
-        CC.hideEmptyRuntestsEnv();
-        CC.autoFocus('.details.stepfail > .summary', '#runtests');
-        CC.autoFocus('.details.testinvalid > .summary', '#runtests');
-        CC.breadcrumb('.drilldown');
-        CC.expandAllTests('#runtests');
-        CC.runTests('#runtests');
-        CC.failedTestBug('#runtests');
-        CC.expandTestDetails('#runtests');
-        CC.filterEnvironments('#runtests-environment-form');
+        MT.hideEmptyRuntestsEnv();
+        MT.autoFocus('.details.stepfail > .summary', '#runtests');
+        MT.autoFocus('.details.testinvalid > .summary', '#runtests');
+        MT.breadcrumb('.drilldown');
+        MT.expandAllTests('#runtests');
+        MT.runTests('#runtests');
+        MT.failedTestBug('#runtests');
+        MT.expandTestDetails('#runtests');
+        MT.filterEnvironments('#runtests-environment-form');
     });
 
     $(window).load(function () {
         // listpages.js
-        CC.openListItemDetails('.listpage');
+        MT.openListItemDetails('.listpage');
 
         // filtering.js
-        CC.removeInitialFilterParams('#filter');
+        MT.removeInitialFilterParams('#filter');
     });
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

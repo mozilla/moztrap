@@ -19,6 +19,7 @@ urlpatterns = patterns(
     url(r"^reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
         "password_reset_confirm",
         name="auth_password_reset_confirm"),
+    url(r"^set_name/$", "set_username", name="auth_set_username"),
 
     # registration -----------------------------------------------------------
 

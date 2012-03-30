@@ -2,12 +2,12 @@
             indent:     4 */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // Store keycode variables for easier readability
-    CC.keycodes = {
+    MT.keycodes = {
         SPACE: 32,
         ENTER: 13,
         TAB: 9,
@@ -24,12 +24,12 @@ var CC = (function (CC, $) {
     };
 
     // add class "hadfocus" to inputs and textareas on blur
-    CC.inputHadFocus = function () {
+    MT.inputHadFocus = function () {
         $(document).on('blur', 'input:not([type=radio], [type=checkbox]), textarea', function () {
             $(this).addClass('hadfocus');
         });
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

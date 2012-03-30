@@ -4,12 +4,12 @@
             regexp:     true */
 /*global    ich, jQuery, confirm */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // Filter form options based on trigger form selection
-    CC.formOptionsFilter = function (opts) {
+    MT.formOptionsFilter = function (opts) {
         var defaults = {
                 container: 'body',
                 data_attr: 'product-id',
@@ -95,7 +95,7 @@ var CC = (function (CC, $) {
     };
 
     // Filter product-specific tags when changing case product
-    CC.filterProductTags = function (container) {
+    MT.filterProductTags = function (container) {
         var context = $(container),
             trigger = context.find('#id_product'),
             tags,
@@ -119,7 +119,7 @@ var CC = (function (CC, $) {
     };
 
     // Adding/removing attachments on cases
-    CC.testcaseAttachments = function (container) {
+    MT.testcaseAttachments = function (container) {
         var context = $(container),
             counter = 0,
             label = context.find('label[for="id_add_attachment"]'),
@@ -164,6 +164,6 @@ var CC = (function (CC, $) {
         });
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));
