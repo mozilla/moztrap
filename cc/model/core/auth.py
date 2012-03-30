@@ -2,6 +2,9 @@
 Proxy User and Role models.
 
 """
+import base64
+import hashlib
+
 from django.db.models import Q
 
 from django.contrib.auth.backends import ModelBackend as DjangoModelBackend
@@ -78,3 +81,18 @@ class ModelBackend(DjangoModelBackend):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+
+
+AUTO_USERNAME_PREFIX = ":auto:"
+USERNAME_MAX_LENGTH = User._meta.get_field("username").max_length
+DIGEST_LENGTH = USERNAME_MAX_LENGTH - len(AUTO_USERNAME_PREFIX)
+
+
+
+def browserid_create_user(email):
+    """Create and return a new User for a new BrowserID login."""
+    digest = base64.urlsafe_b64encode(hashlib.sha1(email).digest())
+    username = AUTO_USERNAME_PREFIX + digest[:DIGEST_LENGTH]
+
+    return User.objects.create_user(username=username, email=email)

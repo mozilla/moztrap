@@ -98,6 +98,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "session_csrf.CsrfMiddleware",
+    "cc.view.users.middleware.SetUsernameMiddleware",
 ]
 
 ROOT_URLCONF = "cc.view.urls"
@@ -228,3 +229,4 @@ TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
 
 SITE_URL = "http://localhost:8000"
+BROWSERID_CREATE_USER = "cc.model.core.auth.browserid_create_user"
