@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 # @@@ import from Django in 1.4
 from djangosecure.test_utils import override_settings
+import mock
 
 from tests import case
 from tests.utils import patch_session
@@ -114,6 +115,12 @@ class LoginTest(case.view.ViewTestCase):
 
 class BrowserIDTest(case.view.ViewTestCase):
     """Tests for BrowserID verify view."""
+    @property
+    def url(self):
+        """Shortcut for login url."""
+        return reverse("auth_login") + "?next=/"
+
+
     def test_fail_redirect(self):
         """Failed BrowserID verification redirects without losing 'next'."""
         url = reverse("auth_login") + "?next=/foo"
@@ -125,11 +132,23 @@ class BrowserIDTest(case.view.ViewTestCase):
 
     def test_fail_message(self):
         """Failed BrowserID verification has a message for the user."""
-        url = reverse("auth_login") + "?next=/foo"
-        form = self.app.get(url).forms["browserid-form"]
+        form = self.get().forms["browserid-form"]
         res = form.submit(status=302).follow()
 
         self.assertContains(res, "Unable to sign in with that email address")
+
+
+    @mock.patch("django_browserid.auth.verify")
+    def test_success_new_user(self, verify):
+        """Successful new BrowserID login creates User with auto username."""
+        verify.return_value = {"email": "test@example.com"}
+
+        form = self.get().forms["browserid-form"]
+        form["assertion"].force_value("foo")
+        form.submit(status=302)
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.username.startswith(":auto:"))
 
 
 
