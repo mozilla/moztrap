@@ -175,10 +175,10 @@ var MT = (function (MT, $) {
         MT.formOptionsFilter({
             container: '#productversion-add-form',
             trigger_sel: '#id_product',
-            target_sel: '#id_clone_envs_from',
+            target_sel: '#id_clone_from',
             optional: true,
             callback: function (context) {
-                context.find('#id_clone_envs_from option:last-child').prop('selected', true);
+                context.find('#id_clone_from option:last-child').prop('selected', true);
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');

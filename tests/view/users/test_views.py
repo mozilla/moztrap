@@ -201,6 +201,7 @@ class BrowserIDTest(case.view.ViewTestCase):
 
 
 
+@mock.patch.object(settings, "USE_BROWSERID", False)
 class LogoutTest(case.view.ViewTestCase):
     """Tests for logout view."""
     @property
