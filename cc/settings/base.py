@@ -127,6 +127,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_browserid",
     "south",
+    "preferences",
     "cc.model.core",
     "cc.model.library",
     "cc.model.environments",
@@ -228,6 +229,10 @@ LOGIN_REDIRECT_URL = "/"
 
 TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
+
+SOUTH_MIGRATION_MODULES = {
+    "preferences": "cc.model.migrations.preferences",
+    }
 
 SITE_URL = "http://localhost:8000"
 BROWSERID_CREATE_USER = "cc.model.core.auth.browserid_create_user"

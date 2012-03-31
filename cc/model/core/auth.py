@@ -12,7 +12,9 @@ from django.contrib.auth.backends import ModelBackend as DjangoModelBackend
 from django.contrib.auth.models import User as BaseUser, Group, Permission
 
 from django_browserid.auth import BrowserIDBackend as BaseBrowserIDBackend
+from preferences import preferences
 from registration.models import RegistrationProfile
+from registration.signals import user_registered
 
 
 # monkeypatch the User model to ensure unique email addresses
@@ -110,4 +112,20 @@ def browserid_create_user(email):
     digest = base64.urlsafe_b64encode(hashlib.sha1(email).digest())
     username = AUTO_USERNAME_PREFIX + digest[:DIGEST_LENGTH]
 
-    return User.objects.create_user(username=username, email=email)
+    user = User.objects.create_user(username=username, email=email)
+    add_new_user_role(user)
+
+    return user
+
+
+
+def add_new_user_role(user, **kwargs):
+    role = preferences.CorePreferences.default_new_user_role
+    if role is not None:
+        # Have to use groups, not roles, because registration doesn't send our
+        # proxy User with its signal.
+        user.groups.add(role)
+
+
+
+user_registered.connect(add_new_user_role)
