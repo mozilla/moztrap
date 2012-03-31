@@ -4206,16 +4206,16 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-left: 0;
 }
 
-.add-product .name-field, .add-product .description-field, .add-product .version-field, .add-product .environments-field {
+.add-product .formfield {
   clear: both;
 }
-.add-product .name-field .type, .add-product .description-field .type, .add-product .version-field .type, .add-product .environments-field .type {
+.add-product .formfield .type {
   display: inline;
   float: left;
   width: 24.211%;
   margin-right: 1.053%;
 }
-.add-product .name-field .value, .add-product .name-field .errorlist, .add-product .description-field .value, .add-product .description-field .errorlist, .add-product .version-field .value, .add-product .version-field .errorlist, .add-product .environments-field .value, .add-product .environments-field .errorlist {
+.add-product .formfield .value, .add-product .formfield .errorlist {
   display: inline;
   float: left;
   width: 49.474%;
@@ -4225,18 +4225,18 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-right: 25.263%;
 }
 
-.edit-product .name-field, .edit-product .description-field {
+.edit-product .formfield {
   clear: both;
   padding-left: 16.842%;
   padding-right: 25.263%;
 }
-.edit-product .name-field .type, .edit-product .description-field .type {
+.edit-product .formfield .type {
   display: inline;
   float: left;
   width: 12.727%;
   margin-right: 1.818%;
 }
-.edit-product .name-field .value, .edit-product .name-field .errorlist, .edit-product .description-field .value, .edit-product .description-field .errorlist {
+.edit-product .formfield .value, .edit-product .formfield .errorlist {
   display: inline;
   float: left;
   width: 85.455%;
@@ -4250,17 +4250,17 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-right: 25.263%;
 }
 
-.add-productversion .product-field, .add-productversion .version-field, .add-productversion .codename-field, .add-productversion .form-actions, .add-productversion .copy-environments-and-cases-from-field, .edit-productversion .product-field, .edit-productversion .version-field, .edit-productversion .codename-field, .edit-productversion .form-actions, .edit-productversion .copy-environments-and-cases-from-field {
+.add-productversion .formfield, .add-productversion .form-actions, .edit-productversion .formfield, .edit-productversion .form-actions {
   clear: both;
   padding-right: 25.263%;
 }
-.add-productversion .product-field .type, .add-productversion .version-field .type, .add-productversion .codename-field .type, .add-productversion .form-actions .type, .add-productversion .copy-environments-and-cases-from-field .type, .edit-productversion .product-field .type, .edit-productversion .version-field .type, .edit-productversion .codename-field .type, .edit-productversion .form-actions .type, .edit-productversion .copy-environments-and-cases-from-field .type {
+.add-productversion .formfield .type, .add-productversion .form-actions .type, .edit-productversion .formfield .type, .edit-productversion .form-actions .type {
   display: inline;
   float: left;
   width: 32.394%;
   margin-right: 1.408%;
 }
-.add-productversion .product-field .value, .add-productversion .product-field .errorlist, .add-productversion .version-field .value, .add-productversion .version-field .errorlist, .add-productversion .codename-field .value, .add-productversion .codename-field .errorlist, .add-productversion .form-actions .value, .add-productversion .form-actions .errorlist, .add-productversion .copy-environments-and-cases-from-field .value, .add-productversion .copy-environments-and-cases-from-field .errorlist, .edit-productversion .product-field .value, .edit-productversion .product-field .errorlist, .edit-productversion .version-field .value, .edit-productversion .version-field .errorlist, .edit-productversion .codename-field .value, .edit-productversion .codename-field .errorlist, .edit-productversion .form-actions .value, .edit-productversion .form-actions .errorlist, .edit-productversion .copy-environments-and-cases-from-field .value, .edit-productversion .copy-environments-and-cases-from-field .errorlist {
+.add-productversion .formfield .value, .add-productversion .formfield .errorlist, .add-productversion .form-actions .value, .add-productversion .form-actions .errorlist, .edit-productversion .formfield .value, .edit-productversion .formfield .errorlist, .edit-productversion .form-actions .value, .edit-productversion .form-actions .errorlist {
   display: inline;
   float: left;
   width: 66.197%;
