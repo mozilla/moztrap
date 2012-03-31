@@ -48,17 +48,18 @@ class AddProductVersionFormTest(case.DBTestCase):
 
 
     def test_add_productversion(self):
-        """Can add productversion; sets created-by user."""
-        pv = self.F.ProductVersionFactory(version="1.0")
+        """Can add productversion; sets created-by user, clones envs/cases."""
+        pv = self.F.ProductVersionFactory.create(version="1.0")
         envs = self.F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})
         pv.environments.add(*envs)
+        cv = self.F.CaseVersionFactory.create(productversion=pv)
         u = self.F.UserFactory()
 
         f = self.form(
             {
                 "product": str(pv.product.id),
                 "version": "2.0",
-                "clone_envs_from": str(pv.id),
+                "clone_from": str(pv.id),
                 "codename": "Foo",
                 "cc_version": "0",
                 },
@@ -71,6 +72,9 @@ class AddProductVersionFormTest(case.DBTestCase):
 
         self.assertEqual(productversion.product, pv.product)
         self.assertEqual(set(productversion.environments.all()), set(envs))
+        new_cv = productversion.caseversions.get()
+        self.assertEqual(new_cv.case, cv.case)
+        self.assertEqual(new_cv.name, cv.name)
         self.assertEqual(productversion.version, "2.0")
         self.assertEqual(productversion.codename, "Foo")
         self.assertEqual(productversion.created_by, u)

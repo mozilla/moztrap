@@ -3,11 +3,11 @@
             confusion:  true */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
-    CC.createEnvProfile = function (container) {
+    MT.createEnvProfile = function (container) {
         var context = $(container),
             elements = context.find('.bulkselectitem .elements .element'),
             updateLabels = function () {
@@ -57,7 +57,7 @@ var CC = (function (CC, $) {
 
         // ENTER in Name textbox shifts focus to submit button
         context.on('keydown', '#id_name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 event.preventDefault();
                 context.find('.form-actions button[type="submit"]').focus();
             }
@@ -82,7 +82,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit new elements
         context.on('keydown', '.bulkselectitem .add-element input[name="new-element-name"]', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         name = input.val(),
@@ -122,7 +122,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit new categories
         context.on('keydown', '#new-category-name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         loading = input.closest('.itembody'),
@@ -199,7 +199,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit edited element name
         context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     if ($(this).val() !== $(this).data('original-value')) {
                         var input = $(this),
@@ -254,7 +254,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit edited category name
         context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     if ($(this).val() !== $(this).data('original-value')) {
                         var input = $(this),
@@ -301,7 +301,7 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.addEnvToProfile = function (container, form) {
+    MT.addEnvToProfile = function (container, form) {
         var context = $(container),
 
             // Setup add-env form for ajax-submit
@@ -356,7 +356,7 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.editEnvProfileName = function (container) {
+    MT.editEnvProfileName = function (container) {
         var context = $(container),
             profileNameInput = context.find('#profile-name'),
             profileName = profileNameInput.val(),
@@ -373,7 +373,7 @@ var CC = (function (CC, $) {
 
         // Prevent submission of profile-name form if value hasn't changed
         context.on('keydown', '#profile-name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
+            if (event.keyCode === MT.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
         });
@@ -391,7 +391,7 @@ var CC = (function (CC, $) {
     };
 
     // Bulk-select for visible (filtered) environments
-    CC.bulkSelectEnvs = function (container) {
+    MT.bulkSelectEnvs = function (container) {
         var context = $(container),
             bulkSelect = context.find('#bulk_select'),
             items = context.find('.itemlist .items .listitem'),
@@ -428,6 +428,6 @@ var CC = (function (CC, $) {
         context.on('after-filter', '.itemlist .items', updateBulkSelect);
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

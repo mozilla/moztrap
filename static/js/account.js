@@ -2,12 +2,12 @@
             indent:     4 */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // cancel button on change-password pages triggers browser back event
-    CC.changePwdCancel = function () {
+    MT.changePwdCancel = function () {
         var context = $('#changepasswordform'),
             cancel = context.find('.form-actions .cancel');
 
@@ -18,6 +18,6 @@ var CC = (function (CC, $) {
         });
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

@@ -6,9 +6,10 @@ from functools import partial
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django_browserid.views import Verify as BaseVerify
@@ -45,6 +46,8 @@ def login(request):
         "template_name": "users/login.html",
         "authentication_form": forms.CaptchaAuthenticationForm,
         }
+    if settings.USE_BROWSERID:
+        kwargs["template_name"] = "users/browserid_login.html"
     # the contrib.auth login view doesn't pass request into the bound form,
     # but CaptchaAuthenticationForm needs it, so we ensure it's passed in
     if request.method == "POST":
@@ -147,3 +150,19 @@ def register(request):
             request, "Check your email for an account activation link.")
 
     return response
+
+
+
+@login_required
+def set_username(request):
+    next = request.REQUEST.get("next", "/")
+    if request.method == "POST":
+        form = forms.SetUsernameForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect(next)
+    else:
+        form = forms.SetUsernameForm(instance=request.user)
+
+    return render(
+        request, "users/set_username_form.html", {"form": form, "next": next})

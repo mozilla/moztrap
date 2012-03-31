@@ -24,6 +24,27 @@ In addition to the notes here, you should read through all comments in
 .. _gunicorn: http://gunicorn.org
 
 
+
+Logins
+------
+
+By default all access to the site requires authentication. If the
+``ALLOW_ANONYMOUS_ACCESS`` setting is set to ``True`` in
+``cc/settings/local.py``, anonymous users will be able to read-only browse the
+management and test-results pages (but will not be able to submit test results
+or modify anything).
+
+By default Case Conductor uses `BrowserID`_ for all logins, but it also
+supports conventional username/password logins. To switch to username/password
+logins, just set ``USE_BROWSERID`` to ``False`` in ``cc/settings/local.py``.
+
+If using BrowserID (the default), you need to make sure that your ``SITE_URL``
+is set correctly in ``cc/settings/local.py``, or BrowserID logins will not
+work.
+
+.. _BrowserID: http://browserid.org
+
+
 .. _vendor library:
 
 Vendor library
@@ -110,13 +131,3 @@ production server, you should comment this option from your
 before running ``python manage.py syncdb`` or ``python manage.py migrate``
 after an update to the MozTrap codebase, or before trying to run the
 tests).
-
-
-Anonymous access
-----------------
-
-By default all access to the site requires authentication. If the
-``ALLOW_ANONYMOUS_ACCESS`` setting is set to ``True`` in
-``cc/settings/local.py``, anonymous users will be able to read-only browse the
-management and test-results pages (but will not be able to submit test results
-or modify anything).

@@ -106,3 +106,29 @@ class ModelBackendTest(case.DBTestCase):
         res = self.backend.get_user(-1)
 
         self.assertIsNone(res)
+
+
+
+class BrowserIDBackendTest(case.DBTestCase):
+    """Tests for our custom BrowserIDBackend."""
+    @property
+    def backend(self):
+        """An instance of the backend class under test."""
+        from cc.model.core.auth import BrowserIDBackend
+        return BrowserIDBackend()
+
+
+    def test_get_user(self):
+        """Can get a user with correct user_id."""
+        u = self.F.UserFactory.create()
+
+        res = self.backend.get_user(u.id)
+
+        self.assertEqual(res, u)
+
+
+    def test_get_user_bad_id(self):
+        """Cannot get a user with bad user_id."""
+        res = self.backend.get_user(-1)
+
+        self.assertIsNone(res)

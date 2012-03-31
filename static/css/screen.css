@@ -963,7 +963,7 @@ body > div {
   left: 0;
   width: 25.926%;
   height: 4.5em;
-  background: url('../images/64x64.png?1332478397') no-repeat top center;
+  background: url('../images/64x64.png?1333146618') no-repeat top center;
   z-index: 100;
 }
 #brand .wordmark {
@@ -3278,23 +3278,28 @@ body.login #brand {
 body.login #brand a:link, body.login #brand a:visited {
   margin-left: 37.895%;
   margin-right: 37.895%;
-  padding-top: 10.5em;
+  padding-top: 9.375em;
   margin-bottom: 0.75em;
   display: block;
   position: relative;
+  color: #999999;
+}
+body.login #brand a:focus, body.login #brand a:hover, body.login #brand a:active {
+  color: #516985;
 }
 body.login #brand .logo {
   top: 1.5em;
   width: 100%;
   height: 9em;
-  background: url('../images/126x126.png?1332478397') no-repeat scroll center center;
+  background: url('../images/126x126.png?1333146618') no-repeat scroll center center;
 }
 body.login #brand .wordmark {
-  font-size: 2.286em;
-  line-height: 1.313em;
+  font-size: 3.357em;
+  line-height: 1.34em;
   margin: 0;
   padding: 0;
   border: 0;
+  text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0, rgba(69, 69, 69, 0.667) 0 -1px 0;
 }
 body.login .message {
   margin-left: 13.402%;
@@ -3305,8 +3310,43 @@ body.login .forgot {
   font-style: italic;
   text-align: right;
 }
-body.login .browserid {
-  margin-top: 2.25em;
+
+.logintype-form form > .errorlist {
+  margin-left: 41.026%;
+}
+.logintype-form label {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  float: left;
+  width: 38.462%;
+  margin-right: 2.564%;
+  padding-left: 0.75em;
+}
+.logintype-form input, .logintype-form .formfield .errorlist {
+  display: inline;
+  float: left;
+  width: 58.974%;
+  margin-right: 2.564%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+
+.logintype-browserid h2, .logintype-browserid .selectenvhead {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  border: 0;
+}
+.logintype-browserid .browserid {
+  margin-top: 0.75em;
   margin-bottom: 0.75em;
   margin-left: 20.513%;
   margin-right: -20.513%;
@@ -3326,29 +3366,6 @@ body.login .browserid {
   color: rgba(69, 69, 69, 0.667);
   border-color: #8695a8;
   background: #e8e9ec url('../images/noise.png?1326735333') repeat scroll;
-}
-body.login form > .errorlist {
-  margin-left: 41.026%;
-}
-body.login label {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  display: inline;
-  float: left;
-  width: 38.462%;
-  margin-right: 2.564%;
-  padding-left: 0.75em;
-}
-body.login input, body.login .formfield .errorlist {
-  display: inline;
-  float: left;
-  width: 58.974%;
-  margin-right: 2.564%;
-  display: inline;
-  float: right;
-  margin-right: 0;
-  #margin-left: -1em;
 }
 
 #loginform .password-field {

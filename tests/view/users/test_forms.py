@@ -30,3 +30,27 @@ class RegistrationFormTest(case.DBTestCase):
 
         self.assertEqual(
             form.errors["email"], [u"A user with that email already exists."])
+
+
+
+class SetUsernameFormTest(case.DBTestCase):
+    """Tests for SetUsernameForm."""
+    @property
+    def SetUsernameForm(self):
+        """The form class under test."""
+        from cc.view.users.forms import SetUsernameForm
+        return SetUsernameForm
+
+
+    def test_invalid_chars(self):
+        """Validation error for invalid username characters."""
+        self.F.UserFactory.create()
+
+        form = self.SetUsernameForm({"username": ":foo:"})
+
+        self.assertFalse(form.is_valid())
+
+        self.assertEqual(
+            form.errors["username"],
+            [u"This value must contain only letters, numbers and underscores."],
+            )

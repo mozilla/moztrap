@@ -88,6 +88,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     "session_csrf.context_processor",
+    "cc.view.users.context_processors.browserid",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -98,6 +99,7 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "session_csrf.CsrfMiddleware",
+    "cc.view.users.middleware.SetUsernameMiddleware",
 ]
 
 ROOT_URLCONF = "cc.view.urls"
@@ -147,7 +149,7 @@ CACHES = {
 
 AUTHENTICATION_BACKENDS = [
     "cc.model.core.auth.ModelBackend",
-    "django_browserid.auth.BrowserIDBackend",
+    "cc.model.core.auth.BrowserIDBackend",
     ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
@@ -228,3 +230,6 @@ TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
 
 SITE_URL = "http://localhost:8000"
+BROWSERID_CREATE_USER = "cc.model.core.auth.browserid_create_user"
+
+USE_BROWSERID = True

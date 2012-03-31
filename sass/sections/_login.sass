@@ -27,18 +27,22 @@ body.login
     a
       #{$link}
         +squish(9,9,24)
-        +padding-leader(7)
+        +padding-leader(6.25)
         +trailer(.5)
         display: block
         position: relative
+        color: $mid
+      #{$focus}
+        color: $alt
     .logo
       top: rhythm(1)
       width: 100%
       height: rhythm(6)
       background: image-url('126x126.png') no-repeat scroll center center
     .wordmark
-      +adjust-font-size-to($largepx)
+      +adjust-font-size-to($xlargepx)
       +reset-box-model
+      +text-shadow(rgba($lightest,$xsmall) 0 1px 0, rgba($base,$small) 0 -1px 0)
 
   .message
     +squish(3,3)
@@ -48,8 +52,24 @@ body.login
     +italic
     text-align: right
 
+// Forms -------------------------------------------------------------------
+.logintype-form
+  form
+    > .errorlist
+      +push(4,10)
+  label
+    +box-sizing(border-box)
+    +columns(4,10)
+    padding-left: rhythm(.5)
+  input, .formfield .errorlist
+    +columns(6,10)
+    +omega(10)
+
+.logintype-browserid
+  h2
+    +gone
   .browserid
-    +leader(1.5)
+    +leader(.5)
     +trailer(.5)
     +pre(2,10)
     +post(-2,10)
@@ -61,20 +81,6 @@ body.login
     color: rgba($dark,$small)
     border-color: $blue-light
     background: $blue-hint image-url('noise.png') repeat scroll
-
-  // Forms -------------------------------------------------------------------
-
-  form
-    > .errorlist
-      +push(4,10)
-
-  label
-    +box-sizing(border-box)
-    +columns(4,10)
-    padding-left: rhythm(.5)
-  input, .formfield .errorlist
-    +columns(6,10)
-    +omega(10)
 
 #loginform
   .password-field
