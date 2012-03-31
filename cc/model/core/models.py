@@ -10,7 +10,7 @@ from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
 from ..ccmodel import CCModel, TeamModel
-from .auth import Group
+from .auth import Role
 
 
 
@@ -184,7 +184,7 @@ def by_version(productversion):
 class CorePreferences(Preferences):
     __module__ = "preferences.models"
 
-    default_new_user_role = models.ForeignKey(Group, blank=True, null=True)
+    default_new_user_role = models.ForeignKey(Role, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "core preferences"

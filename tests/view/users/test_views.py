@@ -161,6 +161,20 @@ class BrowserIDTest(case.view.ViewTestCase):
         self.assertTrue(user.username.startswith(":auto:"))
 
 
+    def test_new_user_role(self):
+        """New user has default new user role."""
+        from preferences import preferences
+        cp = preferences.CorePreferences
+        role = self.F.RoleFactory.create()
+        cp.default_new_user_role = role
+        cp.save()
+
+        self.new_browserid()
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.roles.get(), role)
+
+
     def test_set_username_initial(self):
         """A new browserID user gets a set-username form, initially blank."""
         form = self.new_browserid().follow().follow().forms["setusernameform"]
@@ -401,6 +415,20 @@ class RegisterTest(PasswordStrengthTests, case.view.ViewTestCase):
         res = self.submit_form("sekrit123", status=302).follow().follow()
 
         res.mustcontain("Check your email for an account activation link")
+
+
+    def test_new_user_role(self):
+        """New user has default new user role."""
+        from preferences import preferences
+        cp = preferences.CorePreferences
+        role = self.F.RoleFactory.create()
+        cp.default_new_user_role = role
+        cp.save()
+
+        self.submit_form("sekrit123", status=302)
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.roles.get(), role)
 
 
 
