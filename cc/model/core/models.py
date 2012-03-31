@@ -6,9 +6,11 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from pkg_resources import parse_version
+from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
 from ..ccmodel import CCModel, TeamModel
+from .auth import Group
 
 
 
@@ -176,3 +178,13 @@ def by_version(productversion):
 
     """
     return parse_version(productversion.version)
+
+
+
+class CorePreferences(Preferences):
+    __module__ = "preferences.models"
+
+    default_new_user_role = models.ForeignKey(Group, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "core preferences"
