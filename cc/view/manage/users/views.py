@@ -6,12 +6,12 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
 
 from cc.view.lists import decorators as lists
+from cc.view.users.decorators import permission_required
 from cc.view.utils.ajax import ajax
 
 from ..finders import ManageFinder

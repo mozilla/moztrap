@@ -7,13 +7,13 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
 
 from cc import model
 
 from cc.view.filters import CaseVersionFilterSet
 from cc.view.lists import decorators as lists
+from cc.view.users.decorators import permission_required
 from cc.view.utils.ajax import ajax
 from cc.view.utils.auth import login_maybe_required
 

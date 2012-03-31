@@ -9,7 +9,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
@@ -17,6 +17,7 @@ from cc import model
 
 from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
 from cc.view.lists import decorators as lists
+from cc.view.users.decorators import permission_required
 from cc.view.utils.ajax import ajax
 from cc.view.utils.auth import login_maybe_required
 
