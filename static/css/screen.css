@@ -3310,11 +3310,10 @@ body.login .forgot {
   font-style: italic;
   text-align: right;
 }
-
-.logintype-form form > .errorlist {
+body.login form > .errorlist {
   margin-left: 41.026%;
 }
-.logintype-form label {
+body.login .formfield .type {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -3324,7 +3323,7 @@ body.login .forgot {
   margin-right: 2.564%;
   padding-left: 0.75em;
 }
-.logintype-form input, .logintype-form .formfield .errorlist {
+body.login .formfield .value, body.login .formfield .errorlist {
   display: inline;
   float: left;
   width: 58.974%;

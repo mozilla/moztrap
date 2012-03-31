@@ -52,19 +52,20 @@ body.login
     +italic
     text-align: right
 
-// Forms -------------------------------------------------------------------
-.logintype-form
+  // Forms -------------------------------------------------------------------
   form
     > .errorlist
       +push(4,10)
-  label
-    +box-sizing(border-box)
-    +columns(4,10)
-    padding-left: rhythm(.5)
-  input, .formfield .errorlist
-    +columns(6,10)
-    +omega(10)
+  .formfield
+    .type
+      +box-sizing(border-box)
+      +columns(4,10)
+      padding-left: rhythm(.5)
+    .value, .errorlist
+      +columns(6,10)
+      +omega(10)
 
+// BrowserID -----------------------------------------------------------------
 .logintype-browserid
   h2
     +gone
