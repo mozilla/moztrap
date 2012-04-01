@@ -52,12 +52,12 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
 
 
     def test_filter_by_bad_id(self):
-        """Attempt to filter by non-integer id is ignored."""
+        """Attempt to filter by non-integer id returns no cases."""
         self.F.RunCaseVersionFactory.create(caseversion__name="Case 1")
 
         res = self.get(params={"filter-id": "foo"})
 
-        self.assertInList(res, "Case 1")
+        self.assertNotInList(res, "Case 1")
 
 
     def test_filter_by_name(self):
