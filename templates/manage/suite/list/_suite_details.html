@@ -1,9 +1,11 @@
+{% load markup %}
+
 <div class="iteminfo">
   {% include "lists/_byline.html" with item=suite %}
 
   {% if suite.description %}
   <p class="details">
-    {{ suite.description }}
+    {{ suite.description|markdown }}
   </p>
   {% endif %}
 </div>

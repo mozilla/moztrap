@@ -214,13 +214,13 @@ class SuiteDetailTest(case.view.AuthenticatedViewTestCase,
 
 
     def test_details_description(self):
-        """Details lists description."""
-        self.testsuite.description = "foodesc"
+        """Details includes description, markdownified safely."""
+        self.testsuite.description = "_foodesc_ <script>"
         self.testsuite.save()
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
-        res.mustcontain("foodesc")
+        res.mustcontain("<em>foodesc</em> &lt;script&gt;")
 
 
 
