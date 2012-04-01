@@ -122,6 +122,11 @@ urlpatterns = patterns(
         "cases.views.case_details",
         name="manage_case_details"),
 
+    # case id redirect
+    url(r"^case/(?P<case_id>\d+)/$",
+        "cases.views.case_id_redirect",
+        name="manage_case"),
+
     # add
     url(r"^case/add/$",
         "cases.views.case_add",

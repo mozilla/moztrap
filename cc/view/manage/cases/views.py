@@ -2,6 +2,8 @@
 Manage views for cases.
 
 """
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
@@ -62,6 +64,15 @@ def case_details(request, caseversion_id):
             "caseversion": caseversion
             }
         )
+
+
+
+@login_maybe_required
+def case_id_redirect(request, case_id):
+    """Given case ID redirect to latest version in manage list."""
+    cv = get_object_or_404(model.CaseVersion, case=case_id, latest=True)
+    return HttpResponseRedirect(
+        "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id))
 
 
 
