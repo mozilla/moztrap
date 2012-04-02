@@ -271,10 +271,7 @@ class Filter(object):
 
     def values(self, data):
         """Given data dict, return list of selected values."""
-        return [
-            v for v in map(self.coerce, data.get(self.key, []))
-            if v is not None
-            ]
+        return [v for v in map(self.coerce, data.get(self.key, []))]
 
 
     def coerce(self, value):
@@ -286,6 +283,7 @@ class Filter(object):
         integers.
 
         Should return None if a value cannot be coerced.
+
         """
         if self._coerce_func is None:
             return value

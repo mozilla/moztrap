@@ -79,12 +79,12 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
 
     def test_filter_by_bad_id(self):
-        """Attempt to filter by non-integer id is ignored."""
+        """Attempt to filter by non-integer id returns no items."""
         self.F.CaseVersionFactory.create(name="Case 1")
 
         res = self.get(params={"filter-id": "foo"})
 
-        self.assertInList(res, "Case 1")
+        self.assertNotInList(res, "Case 1")
 
 
     def test_filter_by_name(self):
@@ -252,6 +252,42 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase,
 
 
 
+class CaseTest(case.view.AuthenticatedViewTestCase):
+    """Tests for case-id redirect view."""
+    def setUp(self):
+        """Setup for case-url tests; creates a case."""
+        super(CaseTest, self).setUp()
+        self.case = self.F.CaseFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for case-id redirect view."""
+        return reverse("manage_case", kwargs=dict(case_id=self.case.id))
+
+
+    def test_redirect(self):
+        """Redirects to show latest version of this case in manage list."""
+        self.F.CaseVersionFactory(
+            productversion__version="1.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+        cv = self.F.CaseVersionFactory(
+            productversion__version="2.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+
+        res = self.get()
+
+        self.assertRedirects(
+            res,
+            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            )
+
+
+
 class AddCaseTest(case.view.FormViewTestCase,
                   case.view.NoCacheTest,
                   ):
@@ -324,7 +360,7 @@ class AddCaseTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -423,7 +459,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -469,7 +505,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
             status=302,
             )
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_requires_post(self):
@@ -571,7 +607,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_existing_version_links(self):

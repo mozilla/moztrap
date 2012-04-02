@@ -10,12 +10,12 @@ from django.template.response import TemplateResponse
 from django.views.decorators.cache import never_cache
 
 from django.contrib import messages
-from django.contrib.auth.decorators import permission_required
 
 from ... import model
 
 from ..filters import RunTestsRunCaseVersionFilterSet
 from ..lists import decorators as lists
+from ..users.decorators import permission_required
 from ..utils.ajax import ajax
 
 from .finders import RunTestsFinder

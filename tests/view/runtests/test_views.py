@@ -28,7 +28,7 @@ class SelectTest(case.view.AuthenticatedViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, "/")
 
 
     def test_finder(self):
@@ -99,7 +99,7 @@ class SetEnvironmentTest(case.view.AuthenticatedViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, "/")
 
 
     def test_form_choices(self):
@@ -262,7 +262,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertIn("login", res.headers["Location"])
+        self.assertRedirects(res, "/")
 
 
     def test_markdown_safe(self):

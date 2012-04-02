@@ -57,13 +57,13 @@ class RunDetailTest(case.view.AuthenticatedViewTestCase,
 
 
     def test_details_description(self):
-        """Details lists description."""
-        self.testrun.description = "foodesc"
+        """Details includes description, markdownified safely."""
+        self.testrun.description = "_foodesc_ <script>"
         self.testrun.save()
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
-        res.mustcontain("foodesc")
+        res.mustcontain("<em>foodesc</em> &lt;script&gt;")
 
 
     def test_details_envs(self):
@@ -164,7 +164,7 @@ class AddRunTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -194,7 +194,7 @@ class EditRunTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

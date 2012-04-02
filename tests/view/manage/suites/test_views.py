@@ -214,13 +214,13 @@ class SuiteDetailTest(case.view.AuthenticatedViewTestCase,
 
 
     def test_details_description(self):
-        """Details lists description."""
-        self.testsuite.description = "foodesc"
+        """Details includes description, markdownified safely."""
+        self.testsuite.description = "_foodesc_ <script>"
         self.testsuite.save()
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
-        res.mustcontain("foodesc")
+        res.mustcontain("<em>foodesc</em> &lt;script&gt;")
 
 
 
@@ -277,7 +277,7 @@ class AddSuiteTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -307,7 +307,7 @@ class EditSuiteTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

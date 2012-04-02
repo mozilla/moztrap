@@ -484,7 +484,7 @@ class FilterTest(FiltersTestCase):
         """Can force values to be coerced."""
         f = self.filters.Filter("name", coerce=int)
 
-        self.assertEqual(f.values({"name": ["1", "two"]}), [1])
+        self.assertEqual(f.values({"name": ["1", "two"]}), [1, None])
 
 
 

@@ -23,6 +23,7 @@ markdown2==1.1.1
 certifi==0.0.4
 requests==0.9.1
 django-browserid==0.2
+django-preferences==0.0.5.moz1
 
 # only needed for running the tests
 mock==0.7.2

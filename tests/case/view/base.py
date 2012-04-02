@@ -3,6 +3,7 @@ Utility base TestCase classes for testing views.
 
 """
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from BeautifulSoup import BeautifulSoup
 import django_webtest
@@ -157,9 +158,9 @@ class AuthenticatedViewTestCase(ViewTestCase):
 
     def test_login_required(self):
         """Requires login."""
-        response = self.app.get(self.url, status=302)
+        res = self.app.get(self.url, status=302)
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 

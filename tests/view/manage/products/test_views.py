@@ -141,7 +141,7 @@ class AddProductTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -170,7 +170,7 @@ class EditProductTest(case.view.FormViewTestCase,
         """Requires manage-products permission."""
         res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

@@ -151,7 +151,7 @@ class AddProfileTest(case.view.FormViewTestCase,
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -471,9 +471,9 @@ class EditProfileViewTest(case.view.FormViewTestCase,
 
     def test_manage_environments_permission_required(self):
         """Requires manage environments permission."""
-        res = self.app.get(self.url)
+        res = self.app.get(self.url, user=self.F.UserFactory.create())
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def ajax_post(self, form_id, data):
@@ -654,9 +654,9 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
 
     def test_manage_products_permission_required(self):
         """Requires manage products permission."""
-        res = self.app.get(self.url)
+        res = self.app.get(self.url, user=self.F.UserFactory.create())
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def ajax_post(self, form_id, data):
