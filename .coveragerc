@@ -4,11 +4,11 @@ branch = True
 [report]
 omit =
   */migrations/*
-  cc/deploy/wsgi.py
-  cc/deploy/vendor_wsgi.py
-  cc/settings/base.py
-  cc/settings/default.py
-  cc/settings/local.py
-  cc/settings/local.sample.py
+  moztrap/deploy/wsgi.py
+  moztrap/deploy/vendor_wsgi.py
+  moztrap/settings/base.py
+  moztrap/settings/default.py
+  moztrap/settings/local.py
+  moztrap/settings/local.sample.py
 include =
-  cc/**/*.py
+  moztrap/**/*.py

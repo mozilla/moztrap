@@ -1,6 +1,6 @@
 .sass-cache
 collected-assets/*
-cc/settings/local.py
+moztrap/settings/local.py
 htmlcov/*
 media/*
 docs/_build/*
