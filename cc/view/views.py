@@ -1,5 +1,5 @@
 """
-Case Conductor home view.
+MozTrap home view.
 
 """
 from django.shortcuts import redirect

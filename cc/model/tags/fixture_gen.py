@@ -11,7 +11,7 @@ def sample_tags():
     admin = User.objects.get(username="admin")
     manager = User.objects.get(username="manager")
 
-    cc = Product.objects.get(name="Case Conductor")
+    cc = Product.objects.get(name="MozTrap")
 
     Tag.objects.create(name="registration", product=cc, user=manager)
 

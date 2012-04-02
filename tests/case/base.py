@@ -1,5 +1,5 @@
 """
-Utility base TestCase classes for Case Conductor.
+Utility base TestCase classes for MozTrap.
 
 """
 from django import test as django_test
@@ -10,7 +10,7 @@ import mock
 
 
 class DBMixin(object):
-    """Mixin for Case Conductor test case classes that need the database."""
+    """Mixin for MozTrap test case classes that need the database."""
     @property
     def model(self):
         """The data model."""
@@ -36,7 +36,7 @@ class DBMixin(object):
 
 
 class DBTestCase(DBMixin, django_test.TestCase):
-    """Base test case class for Case Conductor tests that need the database."""
+    """Base test case class for MozTrap tests that need the database."""
     pass
 
 

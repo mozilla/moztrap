@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-# Install Ruby gems required to compile Case Conductor Sass to CSS.
+# Install Ruby gems required to compile MozTrap Sass to CSS.
 
 vfile=$1
 

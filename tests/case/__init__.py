@@ -1,5 +1,5 @@
 """
-Utility base TestCase classes for Case Conductor.
+Utility base TestCase classes for MozTrap.
 
 django.utils.unittest.TestCase provides a bare TestCase class for tests that
 don't access the database or need any of the other Django TestCase class

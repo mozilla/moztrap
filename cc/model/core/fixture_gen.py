@@ -27,7 +27,7 @@ def sample_products():
 
     webenvs = Profile.objects.get(name="Website Testing Environments")
 
-    cc = Product.objects.create(name="Case Conductor", user=admin)
+    cc = Product.objects.create(name="MozTrap", user=admin)
     cc6 = ProductVersion.objects.create(version="0.6", product=cc, user=admin)
     cc6.environments.add(*webenvs.environments.all())
     cc7 = ProductVersion.objects.create(version="0.7", product=cc, user=admin)

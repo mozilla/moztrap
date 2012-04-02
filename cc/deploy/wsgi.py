@@ -1,4 +1,4 @@
-"WSGI entry-point for Case Conductor."""
+"WSGI entry-point for MozTrap."""
 import os, sys
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

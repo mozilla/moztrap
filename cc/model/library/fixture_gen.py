@@ -15,7 +15,7 @@ def sample_cases():
     manager = User.objects.get(username="manager")
     creator = User.objects.get(username="creator")
 
-    cc = Product.objects.get(name="Case Conductor")
+    cc = Product.objects.get(name="MozTrap")
     cc6 = cc.versions.get(version="0.6")
     cc7 = cc.versions.get(version="0.7")
     cc8 = cc.versions.get(version="0.8")

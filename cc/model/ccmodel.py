@@ -1,5 +1,5 @@
 """
-Common model behavior for all Case Conductor models.
+Common model behavior for all MozTrap models.
 
 Soft-deletion (including cascade) and tracking of user and timestamp for model
 creation, modification, and soft-deletion.
@@ -155,7 +155,7 @@ class CCManager(models.Manager):
 
 class CCModel(models.Model):
     """
-    Common base abstract model for all Case Conductor models.
+    Common base abstract model for all MozTrap models.
 
     Tracks user and timestamp for creation, modification, and (soft) deletion.
 

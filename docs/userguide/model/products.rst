@@ -3,9 +3,9 @@
 Products
 ========
 
-The core object in Case Conductor is the **Product**. A Product itself is little
+The core object in MozTrap is the **Product**. A Product itself is little
 more than a name and optional description, but almost every other object in the
-Case Conductor data model relates to a Product either directly or indirectly.
+MozTrap data model relates to a Product either directly or indirectly.
 
 Products have a list of :ref:`versions <product-versions>`; every
 :ref:`test run <test-runs>` and :ref:`test case version<test-cases>` applies

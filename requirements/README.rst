@@ -2,12 +2,12 @@ Requirements files
 ==================
 
 pure.txt
-   The pure-Python dependencies of Case Conductor. This is the requirements
+   The pure-Python dependencies of MozTrap. This is the requirements
    file used to generate the bundled vendor library in
    ``requirements/vendor``.
 
 compiled.txt
-   The compiled core dependencies of Case Conductor.
+   The compiled core dependencies of MozTrap.
 
 all.txt
    Includes both ``pure.txt`` and ``compiled.txt``. This is the

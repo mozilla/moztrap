@@ -59,8 +59,7 @@ CSV (future)
 
 When importing from a spreadsheet or wiki set of test cases, this may prove a
 very useful format.  This doesn't handle multiple separate steps in test cases.
-Rather, it presumes all steps are in a single step when imported to Case
-Conductor.
+Rather, it presumes all steps are in a single step when imported to MozTrap.
 
 
 Bulk Test Case Entry Formats
