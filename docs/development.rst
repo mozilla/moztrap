@@ -114,10 +114,12 @@ will not overwrite that superuser.
 Regenerating the sample data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The sample data fixture is generated using `django-fixture-generator`_ via the
-code in ``cc/model/core/fixture_gen.py``,
-``cc/model/environments/fixture_gen.py``, ``cc/model/tags/fixture_gen.py``,
-``cc/model/library/fixture_gen.py`` and ``cc/model/execution/fixture_gen.py``.
+The sample data fixture is generated using `django-fixture-generator`_ via
+the code in ``moztrap/model/core/fixture_gen.py``,
+``moztrap/model/environments/fixture_gen.py``,
+``moztrap/model/tags/fixture_gen.py``,
+``moztrap/model/library/fixture_gen.py`` and
+``moztrap/model/execution/fixture_gen.py``.
 
 If you've modified one of the above files, you can regenerate the fixture by
 running ``bin/regenerate-sample-data``.

@@ -100,8 +100,8 @@ MySQL database. In that case, you'll need to append ``-u someuser`` to the end
 of that command, where ``someuser`` is a MySQL user who does have permission to
 create databases (in many cases ``-u root`` will work). If you have to use
 ``-u`` to create the database, then before going on to step 5 you'll also need
-to create a ``cc/settings/local.py`` file (copy the sample provided at
-``cc/settings/local.sample.py``), and uncomment the ``DATABASES`` setting,
+to create a ``moztrap/settings/local.py`` file (copy the sample provided at
+``moztrap/settings/local.sample.py``), and uncomment the ``DATABASES`` setting,
 changing the ``USER`` key to the same username you passed to ``-u``.
 
 

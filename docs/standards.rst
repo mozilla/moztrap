@@ -125,14 +125,15 @@ the next by a single blank line:
 
 Within each group, order imports alphabetically.
 
-For imports from within MozTrap, use explicit relative imports for
-imports from the same package or the parent package (i.e. where the explicit
-relative import path begins with one or two dots). For more distant imports,
-it's usually more readable to give the full absolute path. Thus, for code in
-``cc.view.manage.runs.views``, you could do ``from .forms import AddRunForm``
-and ``from ..cases.forms import AddCaseForm``, but it's probably better to do
-``from cc.view.lists import decorators`` rather than ``from ....lists import
-decorators``; more than two dots become difficult to distinguish visually.
+For imports from within MozTrap, use explicit relative imports for imports
+from the same package or the parent package (i.e.  where the explicit
+relative import path begins with one or two dots).  For more distant
+imports, it's usually more readable to give the full absolute path.  Thus,
+for code in ``moztrap.view.manage.runs.views``, you could do ``from .forms
+import AddRunForm`` and ``from ..cases.forms import AddCaseForm``, but it's
+probably better to do ``from moztrap.view.lists import decorators`` rather
+than ``from ....lists import decorators``; more than two dots become
+difficult to distinguish visually.
 
 Never use implicit relative imports; if an import does not begin with a dot, it
 should be a top-level module. In other words, if ``models.py`` is a sibling
