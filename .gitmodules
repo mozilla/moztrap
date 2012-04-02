@@ -1,6 +1,6 @@
 [submodule "requirements/dist"]
 	path = requirements/dist
-	url = git://github.com/mozilla/caseconductor-reqs.git
+	url = git://github.com/mozilla/moztrap-reqs.git
 [submodule "requirements/vendor"]
 	path = requirements/vendor
-	url = git://github.com/mozilla/caseconductor-vendor-lib.git
+	url = git://github.com/mozilla/moztrap-vendor-lib.git
