@@ -9,7 +9,7 @@ from tests import case
 
 
 class TagsTest(case.view.manage.ListViewTestCase,
-               case.view.manage.CCModelListTests,
+               case.view.manage.MTModelListTests,
                case.view.NoCacheTest,
                ):
     """Test for tags manage list view."""

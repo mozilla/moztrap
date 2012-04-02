@@ -6,14 +6,14 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 from ..attachments.models import Attachment
-from ..ccmodel import CCModel, DraftStatusModel
+from ..mtmodel import MTModel, DraftStatusModel
 from ..core.models import Product, ProductVersion
 from ..environments.models import HasEnvironmentsModel
 from ..tags.models import Tag
 
 
 
-class Case(CCModel):
+class Case(MTModel):
     """A test case for a given product."""
     product = models.ForeignKey(Product, related_name="cases")
 
@@ -85,7 +85,7 @@ class Case(CCModel):
 
 
 
-class CaseVersion(CCModel, DraftStatusModel, HasEnvironmentsModel):
+class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
     """A version of a test case."""
     DEFAULT_STATUS = DraftStatusModel.STATUS.active
 
@@ -219,7 +219,7 @@ class CaseAttachment(Attachment):
 
 
 
-class CaseStep(CCModel):
+class CaseStep(MTModel):
     """A step of a test case."""
     caseversion = models.ForeignKey(CaseVersion, related_name="steps")
     number = models.IntegerField()
@@ -260,7 +260,7 @@ class CaseStep(CCModel):
 
 
 
-class Suite(CCModel, DraftStatusModel):
+class Suite(MTModel, DraftStatusModel):
     """An ordered suite of test cases."""
     DEFAULT_STATUS = DraftStatusModel.STATUS.active
 
@@ -290,7 +290,7 @@ class Suite(CCModel, DraftStatusModel):
 
 
 
-class SuiteCase(CCModel):
+class SuiteCase(MTModel):
     """Association between a test case and a suite."""
     suite = models.ForeignKey(Suite, related_name="suitecases")
     case = models.ForeignKey(Case, related_name="suitecases")

@@ -95,34 +95,34 @@ class SaveIfValidMixin(object):
 
 
 
-class CCModelFormMetaclass(forms.models.ModelFormMetaclass):
+class MTModelFormMetaclass(forms.models.ModelFormMetaclass):
     def __new__(cls, name, bases, attrs):
-        """Construct a CCModelForm subclass; ensure it has cc_version field."""
+        """Construct a MTModelForm subclass; ensure it has cc_version field."""
         meta = attrs.get("Meta")
         if meta:
             fields = getattr(meta, "fields", None)
             if fields is not None and "cc_version" not in fields:
                 fields.append("cc_version")
-        return super(CCModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
+        return super(MTModelFormMetaclass, cls).__new__(cls, name, bases, attrs)
 
 
 
-class CCModelForm(SaveIfValidMixin, floppyforms.ModelForm):
+class MTModelForm(SaveIfValidMixin, floppyforms.ModelForm):
     """
-    A ModelForm for CCModels.
+    A ModelForm for MTModels.
 
     Knows about the current user and passes it to model save. Knows about
     optimistic locking, and implements ``save_if_valid`` to allow views to
     correctly handle concurrency errors.
 
     """
-    __metaclass__ = CCModelFormMetaclass
+    __metaclass__ = MTModelFormMetaclass
 
 
     def __init__(self, *args, **kwargs):
         """Initialize ModelForm. Pull out user kwarg, hide cc_version field."""
         self.user = kwargs.pop("user", None)
-        super(CCModelForm, self).__init__(*args, **kwargs)
+        super(MTModelForm, self).__init__(*args, **kwargs)
         self.fields["cc_version"].widget = floppyforms.HiddenInput()
 
 
@@ -139,7 +139,7 @@ class CCModelForm(SaveIfValidMixin, floppyforms.ModelForm):
         """
         assert self.is_valid()
 
-        instance = super(CCModelForm, self).save(commit=False)
+        instance = super(MTModelForm, self).save(commit=False)
 
         user = user or self.user
 
@@ -153,9 +153,9 @@ class CCModelForm(SaveIfValidMixin, floppyforms.ModelForm):
 
 
 
-class CCSelect(floppyforms.Select):
+class MTSelect(floppyforms.Select):
     """
-    A Select widget for use with ``CCModelChoiceField``.
+    A Select widget for use with ``MTModelChoiceField``.
 
     Rendered by a template that expects each choice option's label to have an
     ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
@@ -166,9 +166,9 @@ class CCSelect(floppyforms.Select):
 
 
 
-class CCSelectMultiple(floppyforms.SelectMultiple):
+class MTSelectMultiple(floppyforms.SelectMultiple):
     """
-    A SelectMultiple widget for use with ``CCModelChoiceField``.
+    A SelectMultiple widget for use with ``MTModelChoiceField``.
 
     Rendered by a template that expects each choice option's label to have an
     ``attrs`` attribute: a dictionary of arbitrary attributes to be assigned to
@@ -179,7 +179,7 @@ class CCSelectMultiple(floppyforms.SelectMultiple):
 
 
 
-class FilteredSelectMultiple(CCSelectMultiple):
+class FilteredSelectMultiple(MTSelectMultiple):
     """
     A SelectMultiple widget that provides nice UI for filtering options.
 
@@ -217,9 +217,9 @@ class FilteredSelectMultiple(CCSelectMultiple):
 
 
 
-class CCModelChoiceIterator(ModelChoiceIterator):
+class MTModelChoiceIterator(ModelChoiceIterator):
     """
-    ModelChoiceIterator for use with ``CCModelChoiceField````.
+    ModelChoiceIterator for use with ``MTModelChoiceField````.
 
     Returns a ``SmartLabel`` for each choice, with attrs based on the
     ``choice_attrs`` method of the field.
@@ -269,7 +269,7 @@ def product_id_attrs(obj):
 
 
 
-class CCModelChoiceField(forms.ModelChoiceField):
+class MTModelChoiceField(forms.ModelChoiceField):
     """
     A ModelChoiceField where each choice object's label is a ``SmartLabel``.
 
@@ -279,7 +279,7 @@ class CCModelChoiceField(forms.ModelChoiceField):
     attributes, respectively.
 
     """
-    widget = CCSelect
+    widget = MTSelect
 
 
     def __init__(self, *args, **kwargs):
@@ -289,22 +289,22 @@ class CCModelChoiceField(forms.ModelChoiceField):
 
         self.custom_choice_attrs = kwargs.pop("choice_attrs", None)
 
-        super(CCModelChoiceField, self).__init__(*args, **kwargs)
+        super(MTModelChoiceField, self).__init__(*args, **kwargs)
 
 
     def label_from_instance(self, obj):
         """Use custom label_from_instance method if provided."""
         if self.custom_label_from_instance is not None:
             return self.custom_label_from_instance(obj)
-        return super(CCModelChoiceField, self).label_from_instance(obj)
+        return super(MTModelChoiceField, self).label_from_instance(obj)
 
 
     def _get_choices(self):
-        """Use CCModelChoiceIterator."""
+        """Use MTModelChoiceIterator."""
         if hasattr(self, "_choices"):
             return self._choices
 
-        return CCModelChoiceIterator(self)
+        return MTModelChoiceIterator(self)
 
 
     choices = property(_get_choices, forms.ChoiceField._set_choices)
@@ -318,9 +318,9 @@ class CCModelChoiceField(forms.ModelChoiceField):
 
 
 
-class CCModelMultipleChoiceField(forms.ModelMultipleChoiceField,
-                                 CCModelChoiceField):
-    widget = CCSelectMultiple
+class MTModelMultipleChoiceField(forms.ModelMultipleChoiceField,
+                                 MTModelChoiceField):
+    widget = MTSelectMultiple
 
 
 

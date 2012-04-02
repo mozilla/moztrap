@@ -10,7 +10,7 @@ from tests import case
 
 class ProductsTest(case.view.manage.ListViewTestCase,
                    case.view.ListFinderTests,
-                   case.view.manage.CCModelListTests,
+                   case.view.manage.MTModelListTests,
                    case.view.NoCacheTest,
                    ):
     """Test for products manage list view."""

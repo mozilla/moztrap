@@ -6,13 +6,13 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class EditProductVersionForm(ccforms.NonFieldErrorsClassFormMixin,
-                             ccforms.CCModelForm):
+class EditProductVersionForm(mtforms.NonFieldErrorsClassFormMixin,
+                             mtforms.MTModelForm):
     """Form for editing productversions."""
     class Meta:
         model = model.ProductVersion
@@ -26,13 +26,13 @@ class EditProductVersionForm(ccforms.NonFieldErrorsClassFormMixin,
 
 class AddProductVersionForm(EditProductVersionForm):
     """Form for adding a productversion."""
-    product = ccforms.CCModelChoiceField(
+    product = mtforms.MTModelChoiceField(
         queryset=model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
-    clone_from = ccforms.CCModelChoiceField(  # pragma: no cover
+    clone_from = mtforms.MTModelChoiceField(  # pragma: no cover
         required=False,
         queryset=model.ProductVersion.objects.all(),
-        choice_attrs=ccforms.product_id_attrs,
+        choice_attrs=mtforms.product_id_attrs,
         label_from_instance=lambda pv: pv.version,
         )
 

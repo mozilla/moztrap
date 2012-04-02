@@ -15,7 +15,7 @@ from ...lists.runs import RunsListTests
 class RunsTest(case.view.manage.ListViewTestCase,
                RunsListTests,
                case.view.ListFinderTests,
-               case.view.manage.CCModelListTests,
+               case.view.manage.MTModelListTests,
                case.view.manage.StatusListTests,
                case.view.NoCacheTest,
                ):

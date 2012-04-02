@@ -6,12 +6,12 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class ProfileForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+class ProfileForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for profiles."""
     class Meta:
         model = model.Profile
@@ -29,7 +29,7 @@ class EditProfileForm(ProfileForm):
 
 
 
-class EnvironmentElementSelectMultiple(ccforms.CCSelectMultiple):
+class EnvironmentElementSelectMultiple(mtforms.MTSelectMultiple):
     """A widget for selecting multiple environment elements."""
     template_name = "manage/environment/element_select/_element_select.html"
 
@@ -56,7 +56,7 @@ class EnvironmentElementSelectMultiple(ccforms.CCSelectMultiple):
 
 class AddProfileForm(ProfileForm):
     """Form for adding a profile."""
-    elements = ccforms.CCModelMultipleChoiceField(
+    elements = mtforms.MTModelMultipleChoiceField(
         queryset=model.Element.objects.order_by(
             "category", "name").select_related(),
         widget=EnvironmentElementSelectMultiple,
@@ -73,7 +73,7 @@ class AddProfileForm(ProfileForm):
 
 
 
-class PopulateProductVersionEnvsForm(ccforms.NonFieldErrorsClassFormMixin,
+class PopulateProductVersionEnvsForm(mtforms.NonFieldErrorsClassFormMixin,
                                      forms.Form,
                                      ):
     """Form for populating the envs of a productversion."""

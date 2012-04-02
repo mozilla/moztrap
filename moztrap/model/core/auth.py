@@ -31,7 +31,7 @@ class User(BaseUser):
         """
         Delete this user.
 
-        We ignore the passed-in user since User is not a CCModel and doesn't
+        We ignore the passed-in user since User is not a MTModel and doesn't
         track created_by / modified_by.
 
         We have to delete registration profiles manually, to avoid

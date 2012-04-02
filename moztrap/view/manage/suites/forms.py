@@ -6,17 +6,17 @@ import floppyforms as forms
 
 from moztrap import model
 from moztrap.view.lists import filters
-from moztrap.view.utils import ccforms
+from moztrap.view.utils import mtforms
 
 
 
-class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing suites."""
-    cases = ccforms.CCModelMultipleChoiceField(
+    cases = mtforms.MTModelMultipleChoiceField(
         queryset=model.Case.objects.all(),
         required=False,
-        choice_attrs=ccforms.product_id_attrs,
-        widget=ccforms.FilteredSelectMultiple(
+        choice_attrs=mtforms.product_id_attrs,
+        widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
             listordering_template=(
                 "manage/suite/case_select/_case_select_listordering.html"),
@@ -31,7 +31,7 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
                 ],
             )
         )
-    product = ccforms.CCModelChoiceField(
+    product = mtforms.MTModelChoiceField(
         queryset=model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id})
 
@@ -40,7 +40,7 @@ class SuiteForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
         fields = ["product", "name", "description", "status"]
         widgets = {
             "name": forms.TextInput,
-            "description": ccforms.BareTextarea,
+            "description": mtforms.BareTextarea,
             "status": forms.Select,
             }
 

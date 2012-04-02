@@ -6,12 +6,12 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class TagForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+class TagForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for tags."""
     class Meta:
         model = model.Tag

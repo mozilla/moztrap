@@ -75,7 +75,7 @@ class SoftDeleteCollector(Collector):
 
 
 
-class CCQuerySet(QuerySet):
+class MTQuerySet(QuerySet):
     """
     Implements modification tracking and soft deletes on bulk update/delete.
 
@@ -87,7 +87,7 @@ class CCQuerySet(QuerySet):
         user = kwargs.pop("user", None)
         kwargs["created_by"] = user
         kwargs["modified_by"] = user
-        return super(CCQuerySet, self).create(*args, **kwargs)
+        return super(MTQuerySet, self).create(*args, **kwargs)
 
 
     def update(self, *args, **kwargs):
@@ -100,7 +100,7 @@ class CCQuerySet(QuerySet):
             kwargs["modified_on"] = utcnow()
         # increment the concurrency control version for all updated objects
         kwargs["cc_version"] = models.F("cc_version") + 1
-        return super(CCQuerySet, self).update(*args, **kwargs)
+        return super(MTQuerySet, self).update(*args, **kwargs)
 
 
     def delete(self, user=None, permanent=False):
@@ -109,7 +109,7 @@ class CCQuerySet(QuerySet):
 
         """
         if permanent:
-            return super(CCQuerySet, self).delete()
+            return super(MTQuerySet, self).delete()
         collector = SoftDeleteCollector(using=self.db)
         collector.collect(self)
         collector.delete(user)
@@ -126,34 +126,34 @@ class CCQuerySet(QuerySet):
 
 
 
-class CCManager(models.Manager):
+class MTManager(models.Manager):
     """
-    Manager using ``CCQuerySet`` and optionally hiding deleted objects.
+    Manager using ``MTQuerySet`` and optionally hiding deleted objects.
 
     By making show_deleted an instantiation argument, and defaulting it to
     False, we can achieve something a bit subtle: the instantiated default
-    manager on a CCModel shows all objects, including deleted one (meaning the
+    manager on a MTModel shows all objects, including deleted one (meaning the
     admin will show deleted objects, so they can be undeleted). But
     related-object managers (which subclass the default manager class) will
     still hide deleted objects.
 
     """
     def __init__(self, *args, **kwargs):
-        """Instantiate a CCManager, pulling out the ``show_deleted`` arg."""
+        """Instantiate a MTManager, pulling out the ``show_deleted`` arg."""
         self._show_deleted = kwargs.pop("show_deleted", False)
-        super(CCManager, self).__init__(*args, **kwargs)
+        super(MTManager, self).__init__(*args, **kwargs)
 
 
     def get_query_set(self):
-        """Return a ``CCQuerySet`` for all queries."""
-        qs = CCQuerySet(self.model, using=self.db)
+        """Return a ``MTQuerySet`` for all queries."""
+        qs = MTQuerySet(self.model, using=self.db)
         if not self._show_deleted:
             qs = qs.filter(deleted_on__isnull=True)
         return qs
 
 
 
-class CCModel(models.Model):
+class MTModel(models.Model):
     """
     Common base abstract model for all MozTrap models.
 
@@ -177,9 +177,9 @@ class CCModel(models.Model):
 
 
     # default manager returns all objects, so admin can see all
-    everything = CCManager(show_deleted=True)
+    everything = MTManager(show_deleted=True)
     # ...but "objects", for use in most code, returns only not-deleted
-    objects = CCManager(show_deleted=False)
+    objects = MTManager(show_deleted=False)
 
 
     def save(self, *args, **kwargs):
@@ -200,7 +200,7 @@ class CCModel(models.Model):
                 self.modified_by = user
             self.modified_on = now
 
-        # CCModels always have an auto-PK and we don't set PKs explicitly, so
+        # MTModels always have an auto-PK and we don't set PKs explicitly, so
         # we can assume that a set PK means this should be an update.
         if kwargs.get("force_update") or self.id is not None:
             non_pks = [f for f in self._meta.local_fields if not f.primary_key]
@@ -217,7 +217,7 @@ class CCModel(models.Model):
                         self.id, previous_version)
                     )
         else:
-            return super(CCModel, self).save(*args, **kwargs)
+            return super(MTModel, self).save(*args, **kwargs)
 
 
     def clone(self, cascade=None, overrides=None, user=None):
@@ -288,7 +288,7 @@ class CCModel(models.Model):
 
         """
         if permanent:
-            return super(CCModel, self).delete()
+            return super(MTModel, self).delete()
         self._collector.delete(user)
 
 

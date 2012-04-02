@@ -9,12 +9,12 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+class BaseCaseForm(mtforms.NonFieldErrorsClassFormMixin, forms.Form):
     """
     Base form for all test case/version forms.
 
@@ -27,7 +27,7 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         initial=model.CaseVersion._meta.get_field("status").default,
         )
     add_tags = forms.CharField(
-        widget=ccforms.AutocompleteInput(
+        widget=mtforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
         required=False)
 
@@ -62,7 +62,7 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
         new_tags = self.data.getlist("tag-newtag")
 
         for name in new_tags:
-            # @@@ should pass in user here, need CCQuerySet.get_or_create
+            # @@@ should pass in user here, need MTQuerySet.get_or_create
             t, created = model.Tag.objects.get_or_create(
                 name=name, product=product)
             tags.add(t.id)
@@ -81,7 +81,7 @@ class BaseCaseForm(ccforms.NonFieldErrorsClassFormMixin, forms.Form):
 class BaseCaseVersionForm(forms.Form):
     """Base form class for AddCaseForm and EditCaseVersionForm."""
     name = forms.CharField(max_length=200)
-    description = forms.CharField(required=False, widget=ccforms.BareTextarea)
+    description = forms.CharField(required=False, widget=mtforms.BareTextarea)
 
     add_attachment = forms.FileField(required=False)
 
@@ -119,13 +119,13 @@ class BaseCaseVersionForm(forms.Form):
 
 class BaseAddCaseForm(forms.Form):
     """Base form for adding cases."""
-    product = ccforms.CCModelChoiceField(
+    product = mtforms.MTModelChoiceField(
         model.Product.objects.all(),
         choice_attrs=lambda p: {"data-product-id": p.id},
         )
-    productversion = ccforms.CCModelChoiceField(
+    productversion = mtforms.MTModelChoiceField(
         model.ProductVersion.objects.all(),
-        choice_attrs=ccforms.product_id_attrs,
+        choice_attrs=mtforms.product_id_attrs,
         label_from_instance=lambda pv: pv.version,
         )
     and_later_versions = forms.BooleanField(initial=True, required=False)
@@ -136,9 +136,9 @@ class BaseAddCaseForm(forms.Form):
         super(BaseAddCaseForm, self).__init__(*args, **kwargs)
 
         if self.user and self.user.has_perm("library.manage_suite_cases"):
-            self.fields["initial_suite"] = ccforms.CCModelChoiceField(
+            self.fields["initial_suite"] = mtforms.MTModelChoiceField(
                 model.Suite.objects.all(),
-                choice_attrs=ccforms.product_id_attrs,
+                choice_attrs=mtforms.product_id_attrs,
                 required=False)
 
 
@@ -216,7 +216,7 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 
 class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
     """Form for adding test cases in bulk."""
-    cases = forms.CharField(widget=ccforms.BareTextarea)
+    cases = forms.CharField(widget=mtforms.BareTextarea)
 
 
     def clean_cases(self):
@@ -296,7 +296,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
 
 
 
-class EditCaseVersionForm(ccforms.SaveIfValidMixin,
+class EditCaseVersionForm(mtforms.SaveIfValidMixin,
                           BaseCaseVersionForm,
                           BaseCaseForm,
                           ):
@@ -340,12 +340,12 @@ class EditCaseVersionForm(ccforms.SaveIfValidMixin,
 
 
 
-class StepForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
+class StepForm(mtforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
     class Meta:
         model = model.CaseStep
         widgets = {
-            "instruction": ccforms.BareTextarea,
-            "expected": ccforms.BareTextarea,
+            "instruction": mtforms.BareTextarea,
+            "expected": mtforms.BareTextarea,
             }
         fields = ["caseversion", "instruction", "expected"]
 

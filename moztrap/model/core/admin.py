@@ -2,12 +2,12 @@ from django.contrib import admin
 
 from preferences.admin import PreferencesAdmin
 
-from ..ccadmin import CCTabularInline, TeamModelAdmin
+from ..mtadmin import MTTabularInline, TeamModelAdmin
 from .models import Product, ProductVersion, CorePreferences
 
 
 
-class ProductVersionInline(CCTabularInline):
+class ProductVersionInline(MTTabularInline):
     model = ProductVersion
     extra = 0
 

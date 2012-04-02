@@ -9,7 +9,7 @@ from django.db import connection, models
 
 from model_utils import Choices
 
-from ..ccmodel import CCModel, TeamModel, DraftStatusModel, utcnow
+from ..mtmodel import MTModel, TeamModel, DraftStatusModel, utcnow
 from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
@@ -17,7 +17,7 @@ from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
 
 
 
-class Run(CCModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
+class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     """A test run."""
     productversion = models.ForeignKey(ProductVersion, related_name="runs")
     name = models.CharField(max_length=200)
@@ -175,7 +175,7 @@ def _environment_intersection(run, caseversion):
 
 
 
-class RunCaseVersion(HasEnvironmentsModel, CCModel):
+class RunCaseVersion(HasEnvironmentsModel, MTModel):
     """
     An ordered association between a Run and a CaseVersion.
 
@@ -254,7 +254,7 @@ class RunCaseVersion(HasEnvironmentsModel, CCModel):
 
 
 
-class RunSuite(CCModel):
+class RunSuite(MTModel):
     """
     An ordered association between a Run and a Suite.
 
@@ -277,7 +277,7 @@ class RunSuite(CCModel):
 
 
 
-class Result(CCModel):
+class Result(MTModel):
     """A result of a User running a RunCaseVersion in an Environment."""
     STATUS = Choices("assigned", "started", "passed", "failed", "invalidated")
     REVIEW = Choices("pending", "reviewed")
@@ -380,7 +380,7 @@ class Result(CCModel):
 
 
 
-class StepResult(CCModel):
+class StepResult(MTModel):
     """A result of a particular step in a test case."""
     STATUS = Choices("passed", "failed", "invalidated")
 

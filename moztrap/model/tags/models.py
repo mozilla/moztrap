@@ -4,12 +4,12 @@ Models for tags.
 """
 from django.db import models
 
-from ..ccmodel import CCModel
+from ..mtmodel import MTModel
 from ..core.models import Product
 
 
 
-class Tag(CCModel):
+class Tag(MTModel):
     """A tag."""
     name = models.CharField(max_length=100)
 

@@ -12,7 +12,7 @@ from tests import case
 
 
 class ProfilesViewTest(case.view.manage.ListViewTestCase,
-                       case.view.manage.CCModelListTests,
+                       case.view.manage.MTModelListTests,
                        case.view.NoCacheTest,
                        ):
     """Tests for environment profiles manage list."""

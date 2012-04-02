@@ -1,5 +1,5 @@
 """
-CC ModelAdmin and InlineModelAdmin for use with CCModel.
+MT ModelAdmin and InlineModelAdmin for use with MTModel.
 
 """
 from itertools import chain
@@ -11,11 +11,11 @@ from django.contrib import admin
 from django.contrib.admin import actions
 from django.contrib.admin.util import flatten_fieldsets
 
-from moztrap.view.utils.ccforms import CCModelForm
+from moztrap.view.utils.mtforms import MTModelForm
 
 
 
-class CCModelAdmin(admin.ModelAdmin):
+class MTModelAdmin(admin.ModelAdmin):
     list_display = ["__unicode__", "deleted_on"]
     readonly_fields = [
         "created_on",
@@ -57,7 +57,7 @@ class CCModelAdmin(admin.ModelAdmin):
 
     def save_formset(self, request, form, formset, change):
         """Given an inline formset save it to the database."""
-        if isinstance(formset, CCInlineFormSet):
+        if isinstance(formset, MTInlineFormSet):
             formset.save(user=request.user)
         else:
             formset.save()
@@ -86,7 +86,7 @@ class CCModelAdmin(admin.ModelAdmin):
             ("deleted_on", "deleted_by"),
             ]
 
-        fieldsets = super(CCModelAdmin, self).get_fieldsets(
+        fieldsets = super(MTModelAdmin, self).get_fieldsets(
             *args, **kwargs)[:]
 
         if not self.declared_fieldsets:
@@ -106,7 +106,7 @@ class CCModelAdmin(admin.ModelAdmin):
         return fieldsets
 
 
-class TeamModelAdmin(CCModelAdmin):
+class TeamModelAdmin(MTModelAdmin):
     def get_fieldsets(self, *args, **kwargs):
         """
         Get fieldsets for the add/change form.
@@ -151,39 +151,39 @@ class TeamModelAdmin(CCModelAdmin):
 
 
 
-class CCInlineFormSet(BaseInlineFormSet):
+class MTInlineFormSet(BaseInlineFormSet):
     def save(self, *args, **kwargs):
         """Save model instances for each form in the formset."""
         # stash the user for use by ``save_new`` and ``save_existing``
         self.user = kwargs.pop("user", None)
-        return super(CCInlineFormSet, self).save(*args, **kwargs)
+        return super(MTInlineFormSet, self).save(*args, **kwargs)
 
 
     def save_new(self, form, commit=True):
         """Saves and returns a new model instance for the given form."""
         form.save = partial(form.save, user=self.user)
-        return super(CCInlineFormSet, self).save_new(form, commit)
+        return super(MTInlineFormSet, self).save_new(form, commit)
 
 
     def save_existing(self, form, instance, commit=True):
         """Saves and returns an existing model instance for the given form."""
         form.save = partial(form.save, user=self.user)
-        return super(CCInlineFormSet, self).save_existing(
+        return super(MTInlineFormSet, self).save_existing(
             form, instance, commit)
 
 
     def _existing_object(self, pk):
         """Retrieve an existing inline object by pk."""
-        obj = super(CCInlineFormSet, self)._existing_object(pk)
+        obj = super(MTInlineFormSet, self)._existing_object(pk)
         if hasattr(self, "user"):
             obj.delete = partial(obj.delete, user=self.user)
         return obj
 
 
 
-class CCInlineModelAdmin(object):
-    formset = CCInlineFormSet
-    form = CCModelForm
+class MTInlineModelAdmin(object):
+    formset = MTInlineFormSet
+    form = MTModelForm
     # metadata fields are too much cruft for an inline
     exclude = [
         "created_on",
@@ -203,10 +203,10 @@ class CCInlineModelAdmin(object):
 
 
 
-class CCTabularInline(CCInlineModelAdmin, admin.TabularInline):
+class MTTabularInline(MTInlineModelAdmin, admin.TabularInline):
     pass
 
 
 
-class CCStackedInline(CCInlineModelAdmin, admin.StackedInline):
+class MTStackedInline(MTInlineModelAdmin, admin.StackedInline):
     pass

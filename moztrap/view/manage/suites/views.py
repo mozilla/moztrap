@@ -9,7 +9,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib import messages
 
 from moztrap import model
-from moztrap.model.ccmodel import NotDeletedCount
+from moztrap.model.mtmodel import NotDeletedCount
 from moztrap.view.filters import SuiteFilterSet
 from moztrap.view.lists import decorators as lists
 from moztrap.view.users.decorators import permission_required

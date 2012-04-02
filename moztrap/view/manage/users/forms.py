@@ -6,12 +6,12 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class UserForm(ccforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
+class UserForm(mtforms.NonFieldErrorsClassFormMixin, forms.ModelForm):
     """Base form for users."""
     class Meta:
         model = model.User

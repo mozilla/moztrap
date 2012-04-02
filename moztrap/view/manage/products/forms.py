@@ -6,19 +6,19 @@ import floppyforms as forms
 
 from .... import model
 
-from ...utils import ccforms
+from ...utils import mtforms
 
 
 
 
-class ProductForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+class ProductForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for products."""
     class Meta:
         model = model.Product
         fields = ["name", "description"]
         widgets = {
             "name": forms.TextInput,
-            "description": ccforms.BareTextarea,
+            "description": mtforms.BareTextarea,
             }
 
 

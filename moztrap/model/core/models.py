@@ -9,12 +9,12 @@ from pkg_resources import parse_version
 from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
-from ..ccmodel import CCModel, TeamModel
+from ..mtmodel import MTModel, TeamModel
 from .auth import Role
 
 
 
-class Product(CCModel, TeamModel):
+class Product(MTModel, TeamModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
 
@@ -65,7 +65,7 @@ class Product(CCModel, TeamModel):
 
 
 
-class ProductVersion(CCModel, TeamModel, HasEnvironmentsModel):
+class ProductVersion(MTModel, TeamModel, HasEnvironmentsModel):
     product = models.ForeignKey(Product, related_name="versions")
     version = models.CharField(max_length=100)
     codename = models.CharField(max_length=100, blank=True)

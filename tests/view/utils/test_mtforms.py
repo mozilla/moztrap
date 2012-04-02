@@ -8,22 +8,22 @@ from tests import case
 
 
 
-class CCFormsTestCase(case.DBTestCase):
-    """Base test case class for ccforms tests."""
+class MTFormsTestCase(case.DBTestCase):
+    """Base test case class for mtforms tests."""
     @property
-    def ccforms(self):
+    def mtforms(self):
         """The module under test."""
-        from moztrap.view.utils import ccforms
-        return ccforms
+        from moztrap.view.utils import mtforms
+        return mtforms
 
 
 
-class TestNonFieldErrorsClassFormMixin(CCFormsTestCase):
+class TestNonFieldErrorsClassFormMixin(MTFormsTestCase):
     """Tests for NonFieldErrorsClassMixin."""
     @property
     def form(self):
         """A sample descended form class."""
-        class PersonForm(self.ccforms.NonFieldErrorsClassFormMixin, forms.Form):
+        class PersonForm(self.mtforms.NonFieldErrorsClassFormMixin, forms.Form):
             name = forms.CharField()
             age = forms.IntegerField()
 
@@ -62,38 +62,38 @@ class TestNonFieldErrorsClassFormMixin(CCFormsTestCase):
 
 
 
-class BareTextareaTest(CCFormsTestCase):
+class BareTextareaTest(MTFormsTestCase):
     """Tests for BareTextarea."""
     def test_no_attrs(self):
         """BareTextarea does not have rows or cols attributes."""
-        self.assertEqual(self.ccforms.BareTextarea().attrs, {})
+        self.assertEqual(self.mtforms.BareTextarea().attrs, {})
 
 
 
-class ProductIdAttrsTest(CCFormsTestCase):
+class ProductIdAttrsTest(MTFormsTestCase):
     """Tests for product_id_attrs."""
     def test_product_id_attr(self):
         """Returns dict with data-product-id."""
         pv = self.F.ProductVersionFactory.create()
         self.assertEqual(
-            self.ccforms.product_id_attrs(pv),
+            self.mtforms.product_id_attrs(pv),
             {"data-product-id": pv.product.id},
             )
 
 
 
-class CCModelFormTest(CCFormsTestCase):
-    """Tests for CCModelForm."""
+class MTModelFormTest(MTFormsTestCase):
+    """Tests for MTModelForm."""
     def setUp(self):
-        """Setup for CCModelForm tests; create a user."""
+        """Setup for MTModelForm tests; create a user."""
         self.user = self.F.UserFactory.create()
 
 
     @property
     def form(self):
         """A sample descended form class."""
-        class ProductForm(self.ccforms.CCModelForm):
-            """Sample CCModelForm"""
+        class ProductForm(self.mtforms.MTModelForm):
+            """Sample MTModelForm"""
             class Meta:
                 model = self.model.Product
                 fields = ["name"]
@@ -355,19 +355,19 @@ class CCModelFormTest(CCFormsTestCase):
 
 
 
-class CCModelChoiceFieldTest(CCFormsTestCase):
-    """Tests for CCModelChoiceField."""
+class MTModelChoiceFieldTest(MTFormsTestCase):
+    """Tests for MTModelChoiceField."""
     @property
     def form(self):
         """A sample form using the field class under test."""
         class ProductVersionForm(forms.Form):
-            """Sample form using CCModelChoiceField."""
-            product = self.ccforms.CCModelChoiceField(
+            """Sample form using MTModelChoiceField."""
+            product = self.mtforms.MTModelChoiceField(
                 self.model.Product.objects.all(),
                 label_from_instance=lambda p: "FooLabel {0}".format(unicode(p)),
                 choice_attrs=lambda p: {"data-product-id": p.id}
                 )
-            product2 = self.ccforms.CCModelChoiceField(
+            product2 = self.mtforms.MTModelChoiceField(
                 self.model.Product.objects.all())
 
         return ProductVersionForm
@@ -408,13 +408,13 @@ class CCModelChoiceFieldTest(CCFormsTestCase):
 
 
 
-class AutocompleteInputTest(CCFormsTestCase):
+class AutocompleteInputTest(MTFormsTestCase):
     """Tests for AutocompleteInput."""
     def test_autocomplete_off(self):
         """Sets autocomplete attr to "off" to disable browser autocomplete."""
         self.assertIn(
             'autocomplete="off"',
-            self.ccforms.AutocompleteInput(url="foo").render("n", "")
+            self.mtforms.AutocompleteInput(url="foo").render("n", "")
             )
 
 
@@ -422,7 +422,7 @@ class AutocompleteInputTest(CCFormsTestCase):
         """Sets data-autocomplete-url."""
         self.assertIn(
             'data-autocomplete-url="/foo/bar/"',
-            self.ccforms.AutocompleteInput(url="/foo/bar/").render("n", "")
+            self.mtforms.AutocompleteInput(url="/foo/bar/").render("n", "")
             )
 
 
@@ -430,23 +430,23 @@ class AutocompleteInputTest(CCFormsTestCase):
         """Sets data-autocomplete-url from callable url argument."""
         self.assertIn(
             'data-autocomplete-url="/foo/bar/"',
-            self.ccforms.AutocompleteInput(
+            self.mtforms.AutocompleteInput(
                 url=lambda: "/foo/bar/").render("n", "")
             )
 
 
 
-class FilteredSelectMultipleTest(CCFormsTestCase):
+class FilteredSelectMultipleTest(MTFormsTestCase):
     """Tests for FilteredSelectMultiple."""
     def test_override_choice_template(self):
         """Can override choice_template in context at initialization."""
-        fsm = self.ccforms.FilteredSelectMultiple(choice_template="foo")
+        fsm = self.mtforms.FilteredSelectMultiple(choice_template="foo")
 
         self.assertEqual(fsm.get_context_data()["choice_template"], "foo")
 
 
     def test_override_listordering_template(self):
         """Can override listordering_template in context at initialization."""
-        fsm = self.ccforms.FilteredSelectMultiple(listordering_template="foo")
+        fsm = self.mtforms.FilteredSelectMultiple(listordering_template="foo")
 
         self.assertEqual(fsm.get_context_data()["listordering_template"], "foo")

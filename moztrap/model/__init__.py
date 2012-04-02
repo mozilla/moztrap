@@ -6,7 +6,7 @@ from django.db.models import ProtectedError
 
 from registration.models import RegistrationProfile
 
-from .ccmodel import ConcurrencyError
+from .mtmodel import ConcurrencyError
 from .core.models import Product, ProductVersion
 from .core.auth import User, Role, Permission
 from .environments.models import Environment, Profile, Element, Category

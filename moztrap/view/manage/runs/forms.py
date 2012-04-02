@@ -6,18 +6,18 @@ import floppyforms as forms
 
 from moztrap import model
 from moztrap.view.lists import filters
-from moztrap.view.utils import ccforms
+from moztrap.view.utils import mtforms
 
 
 
 
-class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
+class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing runs."""
-    suites = ccforms.CCModelMultipleChoiceField(
+    suites = mtforms.MTModelMultipleChoiceField(
         queryset=model.Suite.objects.all(),
         required=False,
-        choice_attrs=ccforms.product_id_attrs,
-        widget=ccforms.FilteredSelectMultiple(
+        choice_attrs=mtforms.product_id_attrs,
+        widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/run/suite_select/_suite_select_item.html",
             listordering_template=(
                 "manage/run/suite_select/_suite_select_listordering.html"),
@@ -28,9 +28,9 @@ class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
                 ],
             )
         )
-    productversion = ccforms.CCModelChoiceField(
+    productversion = mtforms.MTModelChoiceField(
         queryset=model.ProductVersion.objects.all(),
-        choice_attrs=ccforms.product_id_attrs)
+        choice_attrs=mtforms.product_id_attrs)
 
 
     class Meta:
@@ -38,7 +38,7 @@ class RunForm(ccforms.NonFieldErrorsClassFormMixin, ccforms.CCModelForm):
         fields = ["productversion", "name", "description", "start", "end"]
         widgets = {
             "name": forms.TextInput,
-            "description": ccforms.BareTextarea,
+            "description": mtforms.BareTextarea,
             "start": forms.DateInput,
             "end": forms.DateInput,
             }

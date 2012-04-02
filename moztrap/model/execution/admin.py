@@ -4,25 +4,25 @@ Admin config for execution models.
 """
 from django.contrib import admin
 
-from ..ccadmin import (
-    CCModelAdmin, TeamModelAdmin, CCTabularInline, CCStackedInline)
+from ..mtadmin import (
+    MTModelAdmin, TeamModelAdmin, MTTabularInline, MTStackedInline)
 from . import models
 
 
 
-class RunCaseVersionInline(CCTabularInline):
+class RunCaseVersionInline(MTTabularInline):
     model = models.RunCaseVersion
     extra = 0
 
 
 
-class RunSuiteInline(CCTabularInline):
+class RunSuiteInline(MTTabularInline):
     model = models.RunSuite
     extra = 0
 
 
 
-class ResultInline(CCStackedInline):
+class ResultInline(MTStackedInline):
     model = models.Result
     extra = 0
     fieldsets = [(None, {"fields": [
@@ -36,7 +36,7 @@ class ResultInline(CCStackedInline):
 
 
 
-class StepResultInline(CCTabularInline):
+class StepResultInline(MTTabularInline):
     model = models.StepResult
     extra = 0
 
@@ -55,7 +55,7 @@ class RunAdmin(TeamModelAdmin):
 
 
 
-class ResultAdmin(CCModelAdmin):
+class ResultAdmin(MTModelAdmin):
     fieldsets = [(None, {"fields": [
                     "runcaseversion",
                     ("tester", "environment"),
@@ -70,5 +70,5 @@ class ResultAdmin(CCModelAdmin):
 
 admin.site.register(models.Run, RunAdmin)
 admin.site.register(
-    models.RunCaseVersion, CCModelAdmin, inlines=[ResultInline])
+    models.RunCaseVersion, MTModelAdmin, inlines=[ResultInline])
 admin.site.register(models.Result, ResultAdmin)

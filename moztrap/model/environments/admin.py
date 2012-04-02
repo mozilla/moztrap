@@ -4,27 +4,27 @@ Admin config for environment models.
 """
 from django.contrib import admin
 
-from ..ccadmin import CCModelAdmin, CCTabularInline
+from ..mtadmin import MTModelAdmin, MTTabularInline
 from . import models
 
 
 
-class ElementInline(CCTabularInline):
+class ElementInline(MTTabularInline):
     model = models.Element
     extra = 0
 
 
 
-# not CCTabularInline because auto-generated through model is not CCModel
+# not MTTabularInline because auto-generated through model is not MTModel
 class EnvironmentElementInline(admin.TabularInline):
     model = models.Environment.elements.through
     extra = 0
 
 
 
-admin.site.register(models.Profile, CCModelAdmin)
-admin.site.register(models.Category, CCModelAdmin, inlines=[ElementInline])
-admin.site.register(models.Element, CCModelAdmin)
+admin.site.register(models.Profile, MTModelAdmin)
+admin.site.register(models.Category, MTModelAdmin, inlines=[ElementInline])
+admin.site.register(models.Element, MTModelAdmin)
 admin.site.register(
-    models.Environment, CCModelAdmin,
+    models.Environment, MTModelAdmin,
     inlines=[EnvironmentElementInline], exclude=["elements"])

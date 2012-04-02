@@ -6,11 +6,11 @@ from os.path import basename
 
 from django.db import models
 
-from ..ccmodel import CCModel
+from ..mtmodel import MTModel
 
 
 
-class Attachment(CCModel):
+class Attachment(MTModel):
     """Abstract base class for an attachment."""
     attachment = models.FileField(upload_to="attachments/%Y/%m/%d/")
     name = models.CharField(max_length=250)

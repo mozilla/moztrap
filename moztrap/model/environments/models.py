@@ -7,11 +7,11 @@ from collections import defaultdict
 
 from django.db import models
 
-from ..ccmodel import CCModel
+from ..mtmodel import MTModel
 
 
 
-class Profile(CCModel):
+class Profile(MTModel):
     """
     A set of Environments for a type of product.
 
@@ -64,7 +64,7 @@ class Profile(CCModel):
 
 
 
-class Category(CCModel):
+class Category(MTModel):
     """
     A category of parallel environment elements.
 
@@ -105,7 +105,7 @@ class Category(CCModel):
 
 
 
-class Element(CCModel):
+class Element(MTModel):
     """
     An individual environment factor (e.g. "OS X" or "English").
 
@@ -143,7 +143,7 @@ class Element(CCModel):
 
 
 
-class Environment(CCModel):
+class Environment(MTModel):
     """
     A collection of elements representing a testing environment.
 

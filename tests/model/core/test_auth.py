@@ -21,7 +21,7 @@ class UserTest(case.DBTestCase):
 
 
     def test_can_pass_user_to_delete(self):
-        """Can pass user to User.delete() even though its not a CCModel."""
+        """Can pass user to User.delete() even though its not a MTModel."""
         u = self.F.UserFactory.create()
 
         u.delete(user=u)
