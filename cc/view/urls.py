@@ -1,5 +1,5 @@
 """
-Case Conductor root URLconf.
+MozTrap root URLconf.
 
 """
 from django.conf.urls.defaults import patterns, url, include

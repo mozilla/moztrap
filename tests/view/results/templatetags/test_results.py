@@ -1,5 +1,5 @@
 """
-Tests for Case Conductor results-views template tags and filters.
+Tests for MozTrap results-views template tags and filters.
 
 """
 from tests import case

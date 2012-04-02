@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CaseConductordoc'
+htmlhelp_basename = 'MozTrapdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -178,7 +178,7 @@ htmlhelp_basename = 'CaseConductordoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'CaseConductor.tex', u'MozTrap Documentation',
+  ('index', 'MozTrap.tex', u'MozTrap Documentation',
    u'Mozilla', 'manual'),
 ]
 

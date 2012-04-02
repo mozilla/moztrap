@@ -34,7 +34,7 @@ By default all access to the site requires authentication. If the
 management and test-results pages (but will not be able to submit test results
 or modify anything).
 
-By default Case Conductor uses `BrowserID`_ for all logins, but it also
+By default MozTrap uses `BrowserID`_ for all logins, but it also
 supports conventional username/password logins. To switch to username/password
 logins, just set ``USE_BROWSERID`` to ``False`` in ``cc/settings/local.py``.
 

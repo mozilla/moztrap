@@ -1,5 +1,5 @@
 """
-Tests for Case Conductor form utilities.
+Tests for MozTrap form utilities.
 
 """
 from django import forms

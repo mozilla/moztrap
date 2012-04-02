@@ -1,5 +1,5 @@
 """
-Tests for Case Conductor permissions template tags and filters.
+Tests for MozTrap permissions template tags and filters.
 
 """
 from tests import case

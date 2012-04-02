@@ -1,5 +1,5 @@
 """
-Tests for Case Conductor form-rendering template tags and filters.
+Tests for MozTrap form-rendering template tags and filters.
 
 """
 from mock import patch

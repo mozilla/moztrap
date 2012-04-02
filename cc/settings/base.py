@@ -1,5 +1,5 @@
 """
-Default Django settings for Case Conductor project.
+Default Django settings for MozTrap project.
 
 """
 from os.path import dirname, join, abspath
