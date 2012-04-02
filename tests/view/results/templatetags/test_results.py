@@ -11,7 +11,7 @@ class PercentageFilterTest(case.TestCase):
     @property
     def filter(self):
         """The template filter under test."""
-        from cc.view.results.templatetags.results import percentage
+        from moztrap.view.results.templatetags.results import percentage
         return percentage
 
 

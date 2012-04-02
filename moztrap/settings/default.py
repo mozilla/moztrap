@@ -9,7 +9,7 @@ CACHES["default"]["VERSION"] = 1
 
 if DEBUG:
     MIDDLEWARE_CLASSES.insert(
-        0, "cc.debug.middleware.AjaxTracebackMiddleware")
+        0, "moztrap.debug.middleware.AjaxTracebackMiddleware")
 
     LOGGING["handlers"]["console"] = {
         "level": "DEBUG",

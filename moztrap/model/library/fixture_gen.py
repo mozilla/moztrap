@@ -15,14 +15,14 @@ def sample_cases():
     manager = User.objects.get(username="manager")
     creator = User.objects.get(username="creator")
 
-    cc = Product.objects.get(name="MozTrap")
-    cc6 = cc.versions.get(version="0.6")
-    cc7 = cc.versions.get(version="0.7")
-    cc8 = cc.versions.get(version="0.8")
+    mt = Product.objects.get(name="MozTrap")
+    mt6 = mt.versions.get(version="0.6")
+    mt7 = mt.versions.get(version="0.7")
+    mt8 = mt.versions.get(version="0.8")
 
     registration = Tag.objects.get(name="registration")
 
-    login = Case.objects.create(product=cc, user=manager)
+    login = Case.objects.create(product=mt, user=manager)
     login_data = {
         "name": "Can log in.",
         "case": login,
@@ -40,13 +40,13 @@ def sample_cases():
             "expected": "See a welcome message in the upper right.",
             },
         ]
-    for pv in [cc6, cc7, cc8]:
+    for pv in [mt6, mt7, mt8]:
         cv = CaseVersion.objects.create(**dict(login_data, productversion=pv))
         for i, step_data in enumerate(login_steps):
             CaseStep.objects.create(
                 **dict(step_data, caseversion=cv, number=i, user=manager))
 
-    register = Case.objects.create(product=cc, user=creator)
+    register = Case.objects.create(product=mt, user=creator)
     register_data = {
         "name": "Can register.",
         "case": register,
@@ -64,10 +64,10 @@ def sample_cases():
             "expected": "Receive a verification email.",
             },
         ]
-    for pv in [cc7, cc8]:
+    for pv in [mt7, mt8]:
         cv = CaseVersion.objects.create(
             **dict(register_data, productversion=pv))
-        if pv is cc8:
+        if pv is mt8:
             cv.tags.add(registration)
         for i, step_data in enumerate(register_steps, 1):
             CaseStep.objects.create(

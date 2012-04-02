@@ -3,7 +3,7 @@ from tests import case
 
 from mock import patch
 
-from cc.model.library.importer import ImportResult, SuiteImporter
+from moztrap.model.library.importer import ImportResult, SuiteImporter
 
 
 
@@ -16,7 +16,7 @@ class ImporterTestBase(object):
 
     def import_data(self, case_data):
         """Instantiate ``Importer``, call ``import_data`` and return result."""
-        from cc.model.library.importer import Importer
+        from moztrap.model.library.importer import Importer
         return Importer().import_data(self.pv, case_data)
 
 

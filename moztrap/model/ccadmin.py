@@ -11,7 +11,7 @@ from django.contrib import admin
 from django.contrib.admin import actions
 from django.contrib.admin.util import flatten_fieldsets
 
-from cc.view.utils.ccforms import CCModelForm
+from moztrap.view.utils.ccforms import CCModelForm
 
 
 

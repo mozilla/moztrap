@@ -8,7 +8,7 @@ from django.views.generic.simple import direct_to_template
 
 
 urlpatterns = patterns(
-    "cc.view.users.views",
+    "moztrap.view.users.views",
 
     # auth -------------------------------------------------------------------
 

@@ -191,7 +191,7 @@ class Environment(CCModel):
     @property
     def deletable(self):
         """Return True if this environment can be deleted, otherwise False."""
-        from cc.model import ProductVersion
+        from moztrap.model import ProductVersion
         return not ProductVersion.objects.filter(environments=self).exists()
 
 
@@ -199,7 +199,7 @@ class Environment(CCModel):
     def delete(self, *args, **kwargs):
         """Delete this environment, or raise ProtectedError if its in use."""
         if not self.deletable:
-            from cc.model import ProductVersion
+            from moztrap.model import ProductVersion
             raise models.ProtectedError(
                 "Environment '{0}' is in use and cannot be deleted.".format(
                     str(self)),

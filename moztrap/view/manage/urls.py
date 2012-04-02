@@ -7,7 +7,7 @@ from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns(
-    "cc.view.manage",
+    "moztrap.view.manage",
 
     url(r"^$", "views.home", name="manage"),
 

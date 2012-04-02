@@ -88,7 +88,7 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "django.contrib.auth.context_processors.auth",
     "django.contrib.messages.context_processors.messages",
     "session_csrf.context_processor",
-    "cc.view.users.context_processors.browserid",
+    "moztrap.view.users.context_processors.browserid",
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -99,10 +99,10 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "session_csrf.CsrfMiddleware",
-    "cc.view.users.middleware.SetUsernameMiddleware",
+    "moztrap.view.users.middleware.SetUsernameMiddleware",
 ]
 
-ROOT_URLCONF = "cc.view.urls"
+ROOT_URLCONF = "moztrap.view.urls"
 
 TEMPLATE_DIRS = [
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -128,18 +128,18 @@ INSTALLED_APPS = [
     "django_browserid",
     "south",
     "preferences",
-    "cc.model.core",
-    "cc.model.library",
-    "cc.model.environments",
-    "cc.model.execution",
-    "cc.model.attachments",
-    "cc.model.tags",
-    "cc.view",
-    "cc.view.lists",
-    "cc.view.markup",
-    "cc.view.manage",
-    "cc.view.results",
-    "cc.view.runtests",
+    "moztrap.model.core",
+    "moztrap.model.library",
+    "moztrap.model.environments",
+    "moztrap.model.execution",
+    "moztrap.model.attachments",
+    "moztrap.model.tags",
+    "moztrap.view",
+    "moztrap.view.lists",
+    "moztrap.view.markup",
+    "moztrap.view.manage",
+    "moztrap.view.results",
+    "moztrap.view.runtests",
 ]
 
 CACHES = {
@@ -149,8 +149,8 @@ CACHES = {
 }
 
 AUTHENTICATION_BACKENDS = [
-    "cc.model.core.auth.ModelBackend",
-    "cc.model.core.auth.BrowserIDBackend",
+    "moztrap.model.core.auth.ModelBackend",
+    "moztrap.model.core.auth.BrowserIDBackend",
     ]
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
@@ -231,10 +231,10 @@ TEST_RUNNER = "tests.runner.DiscoveryDjangoTestSuiteRunner"
 TEST_DISCOVERY_ROOT = join(BASE_PATH, "tests")
 
 SOUTH_MIGRATION_MODULES = {
-    "preferences": "cc.model.migrations.preferences",
+    "preferences": "moztrap.model.migrations.preferences",
     }
 
 SITE_URL = "http://localhost:8000"
-BROWSERID_CREATE_USER = "cc.model.core.auth.browserid_create_user"
+BROWSERID_CREATE_USER = "moztrap.model.core.auth.browserid_create_user"
 
 USE_BROWSERID = True

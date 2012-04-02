@@ -13,7 +13,7 @@ class CCFormsTestCase(case.DBTestCase):
     @property
     def ccforms(self):
         """The module under test."""
-        from cc.view.utils import ccforms
+        from moztrap.view.utils import ccforms
         return ccforms
 
 

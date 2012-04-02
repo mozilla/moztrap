@@ -63,7 +63,7 @@ class ModelBackendTest(case.DBTestCase):
     @property
     def backend(self):
         """An instance of the backend class under test."""
-        from cc.model.core.auth import ModelBackend
+        from moztrap.model.core.auth import ModelBackend
         return ModelBackend()
 
 
@@ -114,7 +114,7 @@ class BrowserIDBackendTest(case.DBTestCase):
     @property
     def backend(self):
         """An instance of the backend class under test."""
-        from cc.model.core.auth import BrowserIDBackend
+        from moztrap.model.core.auth import BrowserIDBackend
         return BrowserIDBackend()
 
 

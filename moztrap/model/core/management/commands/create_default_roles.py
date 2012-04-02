@@ -4,7 +4,7 @@ Management command to create default roles, if they don't exist.
 """
 from django.core.management.base import NoArgsCommand
 
-from cc.model.core.auth import Role, Permission
+from moztrap.model.core.auth import Role, Permission
 
 
 

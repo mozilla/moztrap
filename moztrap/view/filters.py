@@ -2,7 +2,7 @@
 List filtering options.
 
 """
-from cc import model
+from moztrap import model
 
 from .lists import filters
 

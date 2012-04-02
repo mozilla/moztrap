@@ -5,7 +5,7 @@ Authentication-related middleware.
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
-from cc.model.core.auth import AUTO_USERNAME_PREFIX
+from moztrap.model.core.auth import AUTO_USERNAME_PREFIX
 
 from . import views
 

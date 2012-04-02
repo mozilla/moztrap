@@ -13,7 +13,7 @@ class TeamModelAdminTest(case.DBTestCase):
     @property
     def admin(self):
         """The model admin class under test."""
-        from cc.model.ccadmin import TeamModelAdmin
+        from moztrap.model.ccadmin import TeamModelAdmin
         return TeamModelAdmin
 
 

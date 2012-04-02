@@ -12,7 +12,7 @@ from django.contrib.auth import forms as auth_forms
 import floppyforms as forms
 from registration import forms as registration_forms
 
-from cc import model
+from moztrap import model
 
 
 

@@ -11,7 +11,7 @@ class HasEnvironmentsModelTest(case.TestCase):
     @property
     def model_class(self):
         """The abstract model class under test."""
-        from cc.model.environments.models import HasEnvironmentsModel
+        from moztrap.model.environments.models import HasEnvironmentsModel
         return HasEnvironmentsModel
 
 

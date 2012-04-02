@@ -17,7 +17,7 @@ class AddVendorLibTest(case.TestCase):
     """
     def add_vendor_lib(self):
         """Import and call the function."""
-        from cc.deploy.paths import add_vendor_lib
+        from moztrap.deploy.paths import add_vendor_lib
         add_vendor_lib()
 
 
@@ -26,11 +26,11 @@ class AddVendorLibTest(case.TestCase):
         Patch sys.path and site.addsitedir so function has no global impact.
 
         """
-        patcher = patch("cc.deploy.paths.sys.path", ["/some/path"])
+        patcher = patch("moztrap.deploy.paths.sys.path", ["/some/path"])
         self.sys_path = patcher.start()
         self.addCleanup(patcher.stop)
 
-        patcher = patch("cc.deploy.paths.site.addsitedir")
+        patcher = patch("moztrap.deploy.paths.site.addsitedir")
         self.addsitedir = patcher.start()
         self.addCleanup(patcher.stop)
 

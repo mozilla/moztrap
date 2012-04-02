@@ -41,7 +41,7 @@ class EnvironmentAdminTest(case.admin.AdminTestCase):
 
         # patching extra avoids need for JS to add element-m2m
         with patch(
-            "cc.model.environments.admin.EnvironmentElementInline.extra", 1):
+            "moztrap.model.environments.admin.EnvironmentElementInline.extra", 1):
 
             form = self.get(self.add_url).forms[0]
             form["profile"] = str(profile.id)

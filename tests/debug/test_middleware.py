@@ -11,7 +11,7 @@ from tests import case
 class AjaxTracebackMiddlewareTest(case.TestCase):
     @property
     def middleware(self):
-        from cc.debug.middleware import AjaxTracebackMiddleware
+        from moztrap.debug.middleware import AjaxTracebackMiddleware
         return AjaxTracebackMiddleware
 
 

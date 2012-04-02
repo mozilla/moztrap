@@ -4,9 +4,9 @@ Management forms for suites.
 """
 import floppyforms as forms
 
-from cc import model
-from cc.view.lists import filters
-from cc.view.utils import ccforms
+from moztrap import model
+from moztrap.view.lists import filters
+from moztrap.view.utils import ccforms
 
 
 

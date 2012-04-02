@@ -15,7 +15,7 @@ class TestFromRequest(case.DBTestCase):
     @property
     def func(self):
         """The function under test."""
-        from cc.view.lists.pagination import from_request
+        from moztrap.view.lists.pagination import from_request
         return from_request
 
 
@@ -52,7 +52,7 @@ class TestPagesizeUrl(case.TestCase):
     @property
     def func(self):
         """The function under test."""
-        from cc.view.lists.pagination import pagesize_url
+        from moztrap.view.lists.pagination import pagesize_url
         return pagesize_url
 
 
@@ -76,7 +76,7 @@ class TestPagenumberUrl(case.TestCase):
     @property
     def func(self):
         """The function under test."""
-        from cc.view.lists.pagination import pagenumber_url
+        from moztrap.view.lists.pagination import pagenumber_url
         return pagenumber_url
 
 
@@ -100,7 +100,7 @@ class TestPager(case.DBTestCase):
     @property
     def pager(self):
         """The class under test."""
-        from cc.view.lists.pagination import Pager
+        from moztrap.view.lists.pagination import Pager
         return Pager
 
 
@@ -347,7 +347,7 @@ class TestPositiveInteger(case.TestCase):
     @property
     def func(self):
         """The function under test."""
-        from cc.view.lists.pagination import positive_integer
+        from moztrap.view.lists.pagination import positive_integer
         return positive_integer
 
 

@@ -16,24 +16,24 @@ session_csrf.monkeypatch()
 
 urlpatterns = patterns(
     "",
-    url(r"^$", "cc.view.views.home", name="home"),
+    url(r"^$", "moztrap.view.views.home", name="home"),
 
     # runtests ---------------------------------------------------------------
-    url(r"^runtests/", include("cc.view.runtests.urls")),
+    url(r"^runtests/", include("moztrap.view.runtests.urls")),
 
     # users ------------------------------------------------------------------
-    url(r"^users/", include("cc.view.users.urls")),
+    url(r"^users/", include("moztrap.view.users.urls")),
 
     # manage -----------------------------------------------------------------
-    url(r"^manage/", include("cc.view.manage.urls")),
+    url(r"^manage/", include("moztrap.view.manage.urls")),
 
     # results ----------------------------------------------------------------
-    url(r"^results/", include("cc.view.results.urls")),
+    url(r"^results/", include("moztrap.view.results.urls")),
 
     # admin ------------------------------------------------------------------
     url(r"^admin/", include(admin.site.urls)),
 
     # browserid --------------------------------------------------------------
-    url(r"^browserid/", include("cc.view.users.browserid_urls")),
+    url(r"^browserid/", include("moztrap.view.users.browserid_urls")),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

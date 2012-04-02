@@ -14,7 +14,7 @@ class FieldFilterTests(case.TestCase):
     @property
     def ccforms(self):
         """The module under test."""
-        from cc.view.templatetags import ccforms
+        from moztrap.view.templatetags import ccforms
         return ccforms
 
 
@@ -37,7 +37,7 @@ class FieldFilterTests(case.TestCase):
         self.assertIn('placeholder="Placeholder"', unicode(bf))
 
 
-    @patch("cc.view.templatetags.ccforms.render_to_string")
+    @patch("moztrap.view.templatetags.ccforms.render_to_string")
     def test_label(self, render_to_string):
         """``label`` filter renders field label from template."""
         render_to_string.return_value = "<label>something</label>"
@@ -56,7 +56,7 @@ class FieldFilterTests(case.TestCase):
             )
 
 
-    @patch("cc.view.templatetags.ccforms.render_to_string")
+    @patch("moztrap.view.templatetags.ccforms.render_to_string")
     def test_label_override(self, render_to_string):
         """label filter allows overriding the label text."""
         bf = self.form()["name"]

@@ -8,13 +8,13 @@ from django.views.decorators.cache import never_cache
 
 from django.contrib import messages
 
-from cc import model
-from cc.model.ccmodel import NotDeletedCount
-from cc.view.filters import SuiteFilterSet
-from cc.view.lists import decorators as lists
-from cc.view.users.decorators import permission_required
-from cc.view.utils.ajax import ajax
-from cc.view.utils.auth import login_maybe_required
+from moztrap import model
+from moztrap.model.ccmodel import NotDeletedCount
+from moztrap.view.filters import SuiteFilterSet
+from moztrap.view.lists import decorators as lists
+from moztrap.view.users.decorators import permission_required
+from moztrap.view.utils.ajax import ajax
+from moztrap.view.utils.auth import login_maybe_required
 
 from ..finders import ManageFinder
 

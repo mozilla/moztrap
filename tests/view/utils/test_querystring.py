@@ -9,7 +9,7 @@ from tests import case
 class TestUpdateQueryString(case.TestCase):
     @property
     def func(self):
-        from cc.view.utils.querystring import update_querystring
+        from moztrap.view.utils.querystring import update_querystring
         return update_querystring
 
 

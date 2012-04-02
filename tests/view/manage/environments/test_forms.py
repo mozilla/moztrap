@@ -11,7 +11,7 @@ class AddProfileFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.environments.forms import AddProfileForm
+        from moztrap.view.manage.environments.forms import AddProfileForm
         return AddProfileForm
 
 
@@ -76,7 +76,7 @@ class PopulateProductVersionEnvsFormTest(case.DBTestCase):
     @property
     def PopulateProductVersionEnvsForm(self):
         """The form class under test."""
-        from cc.view.manage.environments import forms
+        from moztrap.view.manage.environments import forms
         return forms.PopulateProductVersionEnvsForm
 
 

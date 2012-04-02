@@ -16,7 +16,7 @@ class ActionsTest(case.TestCase):
     @property
     def actions(self):
         """The decorator under test."""
-        from cc.view.lists.actions import actions
+        from moztrap.view.lists.actions import actions
         return actions
 
 

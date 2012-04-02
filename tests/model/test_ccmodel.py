@@ -64,7 +64,7 @@ class CCModelMockNowTestCase(CCModelTestCase):
         super(CCModelMockNowTestCase, self).setUp()
 
         self.utcnow = datetime.datetime(2011, 12, 13, 22, 39)
-        patcher = patch("cc.model.ccmodel.datetime")
+        patcher = patch("moztrap.model.ccmodel.datetime")
         self.mock_utcnow = patcher.start().datetime.utcnow
         self.mock_utcnow.return_value = self.utcnow
         self.addCleanup(patcher.stop)
@@ -420,7 +420,7 @@ class CascadeDeleteTest(CCModelTestCase):
         s = self.F.SuiteFactory.create(product=p)
         # need to patch utcnow because MySQL doesn't give us better than
         # one-second resolution on datetimes.
-        with patch("cc.model.ccmodel.datetime") as mock_dt:
+        with patch("moztrap.model.ccmodel.datetime") as mock_dt:
             mock_dt.datetime.utcnow.return_value = datetime.datetime(
                 2011, 12, 13, 10, 23, 58)
             s.delete()
@@ -496,7 +496,7 @@ class CascadeUndeleteTest(UndeleteMixin, CCModelTestCase):
         s = self.F.SuiteFactory.create(product=p)
         # need to patch utcnow because MySQL doesn't give us better than
         # one-second resolution on datetimes.
-        with patch("cc.model.ccmodel.datetime") as mock_dt:
+        with patch("moztrap.model.ccmodel.datetime") as mock_dt:
             mock_dt.datetime.utcnow.return_value = datetime.datetime(
                 2011, 12, 13, 10, 23, 58)
             s.delete()
@@ -520,7 +520,7 @@ class CloneTest(UndeleteMixin, CCModelTestCase):
             p.clone(cascade=["name"])
 
 
-    @patch("cc.model.ccmodel.datetime")
+    @patch("moztrap.model.ccmodel.datetime")
     def test_updates_created_on(self, mock_dt):
         """Cloned objects get a new created-on timestamp."""
         mock_dt.datetime.utcnow.return_value = datetime.datetime(
@@ -545,7 +545,7 @@ class CloneTest(UndeleteMixin, CCModelTestCase):
         self.assertEqual(new.created_by, u2)
 
 
-    @patch("cc.model.ccmodel.datetime")
+    @patch("moztrap.model.ccmodel.datetime")
     def test_updates_modified_on(self, mock_dt):
         """Cloned objects get a new modified-on timestamp."""
         mock_dt.datetime.utcnow.return_value = datetime.datetime(
@@ -612,7 +612,7 @@ class TeamModelTest(case.DBTestCase):
     """Tests for TeamModel base class."""
     @property
     def TeamModel(self):
-        from cc.model.ccmodel import TeamModel
+        from moztrap.model.ccmodel import TeamModel
         return TeamModel
 
 
@@ -694,7 +694,7 @@ class NotDeletedCountTest(case.DBTestCase):
     @property
     def NotDeletedCount(self):
         """The aggregate class under test."""
-        from cc.model.ccmodel import NotDeletedCount
+        from moztrap.model.ccmodel import NotDeletedCount
         return NotDeletedCount
 
 

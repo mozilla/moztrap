@@ -7,7 +7,7 @@ from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns(
-    "cc.view.runtests.views",
+    "moztrap.view.runtests.views",
 
     url(r"^$", "select", name="runtests"),
     url(r"^environment/(?P<run_id>\d+)/$",

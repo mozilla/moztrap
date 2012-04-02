@@ -14,7 +14,7 @@ class DBMixin(object):
     @property
     def model(self):
         """The data model."""
-        from cc import model
+        from moztrap import model
         return model
 
 

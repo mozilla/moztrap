@@ -5,7 +5,7 @@ Home management view.
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
-from cc.view.utils.auth import login_maybe_required
+from moztrap.view.utils.auth import login_maybe_required
 
 
 

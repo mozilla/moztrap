@@ -889,7 +889,7 @@ class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
         """Passing an unknown object_type raises 404."""
         # Have to test this by calling the view func directly, as the URL
         # pattern prevents a bad object_type from getting through.
-        from cc.view.manage.environments.views import narrow_environments
+        from moztrap.view.manage.environments.views import narrow_environments
         req = Mock()
         req.user = self.user
 

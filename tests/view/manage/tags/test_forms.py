@@ -11,7 +11,7 @@ class EditTagFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.tags.forms import EditTagForm
+        from moztrap.view.manage.tags.forms import EditTagForm
         return EditTagForm
 
 
@@ -87,7 +87,7 @@ class AddTagFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.tags.forms import AddTagForm
+        from moztrap.view.manage.tags.forms import AddTagForm
         return AddTagForm
 
 

@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 
 from django.contrib import messages
 
-from cc import model
+from moztrap import model
 
 
 

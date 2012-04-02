@@ -13,7 +13,7 @@ class CaseColumnTest(case.DBTestCase):
     @property
     def column(self):
         """The Column class under test."""
-        from cc.view.results.finders import CaseColumn
+        from moztrap.view.results.finders import CaseColumn
         return CaseColumn
 
 

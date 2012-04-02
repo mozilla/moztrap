@@ -15,7 +15,7 @@ from django.utils.safestring import mark_safe
 
 import floppyforms
 
-from cc import model
+from moztrap import model
 from ..lists import filters
 
 

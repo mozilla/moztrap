@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
 from django.utils.datastructures import MultiValueDict
 
-from cc import model
+from moztrap import model
 from tests import case
 
 
@@ -30,7 +30,7 @@ class AddCaseFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import AddCaseForm
+        from moztrap.view.manage.cases.forms import AddCaseForm
         return AddCaseForm
 
 
@@ -262,7 +262,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import AddBulkCaseForm
+        from moztrap.view.manage.cases.forms import AddBulkCaseForm
         return AddBulkCaseForm
 
 
@@ -467,7 +467,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import EditCaseVersionForm
+        from moztrap.view.manage.cases.forms import EditCaseVersionForm
         return EditCaseVersionForm
 
 
@@ -642,7 +642,7 @@ class StepFormSetTest(case.DBTestCase):
     @property
     def formset(self):
         """The class under test."""
-        from cc.view.manage.cases.forms import StepFormSet
+        from moztrap.view.manage.cases.forms import StepFormSet
         return StepFormSet
 
 

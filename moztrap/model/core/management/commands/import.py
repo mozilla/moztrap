@@ -34,8 +34,8 @@ from django.core.management.base import BaseCommand, CommandError
 
 import json
 
-from cc.model.core.models import Product, ProductVersion
-from cc.model.library.importer import Importer
+from moztrap.model.core.models import Product, ProductVersion
+from moztrap.model.library.importer import Importer
 
 
 

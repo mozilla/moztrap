@@ -11,7 +11,7 @@ class PermissionFilterTest(case.DBTestCase):
     @property
     def permissions(self):
         """The templatetags module under test."""
-        from cc.view.templatetags import permissions
+        from moztrap.view.templatetags import permissions
         return permissions
 
 

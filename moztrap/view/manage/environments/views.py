@@ -13,13 +13,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 
-from cc import model
+from moztrap import model
 
-from cc.view.filters import ProfileFilterSet, EnvironmentFilterSet
-from cc.view.lists import decorators as lists
-from cc.view.users.decorators import permission_required
-from cc.view.utils.ajax import ajax
-from cc.view.utils.auth import login_maybe_required
+from moztrap.view.filters import ProfileFilterSet, EnvironmentFilterSet
+from moztrap.view.lists import decorators as lists
+from moztrap.view.users.decorators import permission_required
+from moztrap.view.utils.ajax import ajax
+from moztrap.view.utils.auth import login_maybe_required
 
 from . import forms
 from .decorators import category_element_ajax_add_edit

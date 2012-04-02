@@ -2,7 +2,7 @@
 Settings for tests.
 
 """
-from cc.settings.default import *
+from moztrap.settings.default import *
 
 DEFAULT_FILE_STORAGE = "tests.storage.MemoryStorage"
 ALLOW_ANONYMOUS_ACCESS = False

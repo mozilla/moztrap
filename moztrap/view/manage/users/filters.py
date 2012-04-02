@@ -2,8 +2,8 @@
 Filtering for users.
 
 """
-from cc import model
-from cc.view.lists import filters
+from moztrap import model
+from moztrap.view.lists import filters
 
 
 
