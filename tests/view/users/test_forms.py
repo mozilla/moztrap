@@ -11,7 +11,7 @@ class RegistrationFormTest(case.DBTestCase):
     @property
     def RegistrationForm(self):
         """The form class under test."""
-        from cc.view.users.forms import RegistrationForm
+        from moztrap.view.users.forms import RegistrationForm
         return RegistrationForm
 
 
@@ -38,7 +38,7 @@ class SetUsernameFormTest(case.DBTestCase):
     @property
     def SetUsernameForm(self):
         """The form class under test."""
-        from cc.view.users.forms import SetUsernameForm
+        from moztrap.view.users.forms import SetUsernameForm
         return SetUsernameForm
 
 

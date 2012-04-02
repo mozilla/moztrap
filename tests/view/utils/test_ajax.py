@@ -14,7 +14,7 @@ class AjaxTest(case.TestCase):
     @property
     def ajax(self):
         """The decorator-factory under test."""
-        from cc.view.utils.ajax import ajax
+        from moztrap.view.utils.ajax import ajax
         return ajax
 
 

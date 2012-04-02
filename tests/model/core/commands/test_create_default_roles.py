@@ -54,7 +54,7 @@ class CreateDefaultRolesTest(case.DBTestCase):
     def test_unknown_permission(self):
         """Gracefully skips unknown permission."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
+            "moztrap.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command()
 
@@ -120,7 +120,7 @@ Role 'Tester' created.
     def test_skips_unknown_permission_quietly(self):
         """Skips unknown permission silently with verbosity 0."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
+            "moztrap.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command(verbosity=0)
 

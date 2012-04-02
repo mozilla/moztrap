@@ -11,7 +11,7 @@ class EditSuiteFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.suites.forms import EditSuiteForm
+        from moztrap.view.manage.suites.forms import EditSuiteForm
         return EditSuiteForm
 
 
@@ -132,7 +132,7 @@ class AddSuiteFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.suites.forms import AddSuiteForm
+        from moztrap.view.manage.suites.forms import AddSuiteForm
         return AddSuiteForm
 
 

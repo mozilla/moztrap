@@ -21,7 +21,7 @@ class UserTest(case.DBTestCase):
 
 
     def test_can_pass_user_to_delete(self):
-        """Can pass user to User.delete() even though its not a CCModel."""
+        """Can pass user to User.delete() even though its not a MTModel."""
         u = self.F.UserFactory.create()
 
         u.delete(user=u)
@@ -63,7 +63,7 @@ class ModelBackendTest(case.DBTestCase):
     @property
     def backend(self):
         """An instance of the backend class under test."""
-        from cc.model.core.auth import ModelBackend
+        from moztrap.model.core.auth import ModelBackend
         return ModelBackend()
 
 
@@ -114,7 +114,7 @@ class BrowserIDBackendTest(case.DBTestCase):
     @property
     def backend(self):
         """An instance of the backend class under test."""
-        from cc.model.core.auth import BrowserIDBackend
+        from moztrap.model.core.auth import BrowserIDBackend
         return BrowserIDBackend()
 
 

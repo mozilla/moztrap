@@ -13,11 +13,11 @@ from tests import case
 
 
 class FiltersTestCase(case.TestCase):
-    """A test case for testing classes in the cc.view.lists.filters module."""
+    """A test case for testing classes in the moztrap.view.lists.filters module."""
     @property
     def filters(self):
         """The module under test."""
-        from cc.view.lists import filters
+        from moztrap.view.lists import filters
         return filters
 
 
@@ -27,7 +27,7 @@ class FilterUrlTest(FiltersTestCase):
     @property
     def Product(self):
         """The Product model."""
-        from cc.model import Product
+        from moztrap.model import Product
         return Product
 
 
@@ -45,7 +45,7 @@ class FilterUrlTest(FiltersTestCase):
         """Can find filter url by view function."""
         p = self.Product(pk=2)
 
-        from cc.view.manage.cases.views import cases_list
+        from moztrap.view.manage.cases.views import cases_list
 
         self.assertEqual(
             self.filters.filter_url(cases_list, p),

@@ -165,7 +165,7 @@ class ProductVersionTest(case.DBTestCase):
             )
 
 
-    @patch("cc.model.ccmodel.datetime")
+    @patch("moztrap.model.mtmodel.datetime")
     def test_reorder_versions_does_not_change_modified_on(self, mock_dt):
         """Updating latest product version does not change modified_on."""
         mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 30)
@@ -246,7 +246,7 @@ class SortByVersionTest(case.DBTestCase):
     """
     def assertOrder(self, *versions):
         """Assert that ``by_version`` orders given versions as listed."""
-        from cc.model.core.models import by_version
+        from moztrap.model.core.models import by_version
         objs = [
             self.F.ProductVersionFactory(version=v) for v in reversed(versions)
             ]

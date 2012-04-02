@@ -13,7 +13,7 @@ class EditRunFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.runs.forms import EditRunForm
+        from moztrap.view.manage.runs.forms import EditRunForm
         return EditRunForm
 
 
@@ -187,7 +187,7 @@ class AddRunFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.runs.forms import AddRunForm
+        from moztrap.view.manage.runs.forms import AddRunForm
         return AddRunForm
 
 

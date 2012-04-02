@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 import factory
 
-from cc import model
+from moztrap import model
 
 
 

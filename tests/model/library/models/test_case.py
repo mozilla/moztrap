@@ -247,7 +247,7 @@ class CaseVersionTest(case.DBTestCase):
             )
 
 
-    @patch("cc.model.ccmodel.datetime")
+    @patch("moztrap.model.mtmodel.datetime")
     def test_update_latest_version_does_not_change_modified_on(self, mock_dt):
         """Updating latest case version does not change modified_on."""
         mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 30)

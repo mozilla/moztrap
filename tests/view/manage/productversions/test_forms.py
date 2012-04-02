@@ -11,7 +11,7 @@ class EditProductVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.productversions.forms import EditProductVersionForm
+        from moztrap.view.manage.productversions.forms import EditProductVersionForm
         return EditProductVersionForm
 
 
@@ -43,7 +43,7 @@ class AddProductVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.productversions.forms import AddProductVersionForm
+        from moztrap.view.manage.productversions.forms import AddProductVersionForm
         return AddProductVersionForm
 
 

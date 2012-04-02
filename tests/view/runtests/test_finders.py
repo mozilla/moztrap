@@ -11,7 +11,7 @@ class RunTestsFinderTest(case.DBTestCase):
     @property
     def finder(self):
         """The Finder class under test."""
-        from cc.view.runtests.finders import RunTestsFinder
+        from moztrap.view.runtests.finders import RunTestsFinder
         return RunTestsFinder
 
 

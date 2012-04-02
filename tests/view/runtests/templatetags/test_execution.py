@@ -51,7 +51,7 @@ class ResultForTest(case.DBTestCase):
     def test_dupe_complete_results_keeps_latest(self):
         """If dupe completed results exists, keep the last-modified."""
 
-        with mock.patch("cc.model.ccmodel.utcnow") as mock_utcnow:
+        with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
             r = self.F.ResultFactory(
                 status="passed",
@@ -75,7 +75,7 @@ class ResultForTest(case.DBTestCase):
     def test_dupe_incomplete_results_keeps_latest(self):
         """If dupe incomplete results exists, keep the last-modified."""
 
-        with mock.patch("cc.model.ccmodel.utcnow") as mock_utcnow:
+        with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
             r = self.F.ResultFactory()
             mock_utcnow.return_value = datetime.datetime(2012, 3, 25)

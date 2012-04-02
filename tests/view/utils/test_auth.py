@@ -18,7 +18,7 @@ class AjaxTest(case.TestCase):
     @property
     def login_maybe_required(self):
         """The decorator-factory under test."""
-        from cc.view.utils.auth import login_maybe_required
+        from moztrap.view.utils.auth import login_maybe_required
         return login_maybe_required
 
 

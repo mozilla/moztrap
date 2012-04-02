@@ -12,7 +12,7 @@ from tests import case
 
 class FilterUrlTest(case.TestCase):
     """Tests for filter_url template filter."""
-    @patch("cc.view.lists.filters.filter_url")
+    @patch("moztrap.view.lists.filters.filter_url")
     def test_pass_through(self, mock_filter_url):
         """filter_url template filter is pass-through to filter_url function."""
         t = Template("{% load filters %}{{ 'manage_cases'|filter_url:prod }}")

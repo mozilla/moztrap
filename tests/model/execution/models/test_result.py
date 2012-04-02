@@ -51,7 +51,7 @@ class ResultTest(case.DBTestCase):
         """Start method marks status started and sets started timestamp."""
         r = self.F.ResultFactory.create()
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.start()
 
@@ -75,7 +75,7 @@ class ResultTest(case.DBTestCase):
         r = self.F.ResultFactory.create(
             status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishsucceed()
 
@@ -89,7 +89,7 @@ class ResultTest(case.DBTestCase):
         """Finishsucceed w/out start also sets started timestamp."""
         r = self.F.ResultFactory.create(status="assigned")
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishsucceed()
 
@@ -114,7 +114,7 @@ class ResultTest(case.DBTestCase):
         r = self.F.ResultFactory.create(
             status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishinvalidate()
 
@@ -128,7 +128,7 @@ class ResultTest(case.DBTestCase):
         """Finishinvalidate w/out start also sets started timestamp."""
         r = self.F.ResultFactory.create(status="assigned")
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishinvalidate()
 
@@ -162,7 +162,7 @@ class ResultTest(case.DBTestCase):
         r = self.F.ResultFactory.create(
             status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishfail()
 
@@ -176,7 +176,7 @@ class ResultTest(case.DBTestCase):
         """Finishfail w/out start also sets started timestamp."""
         r = self.F.ResultFactory.create(status="assigned")
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishfail()
 
@@ -261,7 +261,7 @@ class ResultTest(case.DBTestCase):
         r = self.F.ResultFactory.create(
             status="passed", started=datetime(2011, 12, 1))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.restart()
 

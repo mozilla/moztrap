@@ -1,5 +1,5 @@
 """
-Tests for CC base admin forms.
+Tests for MT base admin forms.
 
 """
 from django.contrib.admin.sites import AdminSite
@@ -13,7 +13,7 @@ class TeamModelAdminTest(case.DBTestCase):
     @property
     def admin(self):
         """The model admin class under test."""
-        from cc.model.ccadmin import TeamModelAdmin
+        from moztrap.model.mtadmin import TeamModelAdmin
         return TeamModelAdmin
 
 

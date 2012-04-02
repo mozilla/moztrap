@@ -14,7 +14,7 @@ class CaseVersionFilterSetTest(case.DBTestCase):
     """Tests for CaseVersionFilterSet and CaseVersionBoundFilterSet."""
     def bound(self, GET):
         """Return instance of bound filter set."""
-        from cc.view.filters import CaseVersionFilterSet
+        from moztrap.view.filters import CaseVersionFilterSet
         return CaseVersionFilterSet().bind(GET)
 
 

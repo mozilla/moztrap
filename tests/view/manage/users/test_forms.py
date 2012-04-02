@@ -11,7 +11,7 @@ class EditUserFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.users.forms import EditUserForm
+        from moztrap.view.manage.users.forms import EditUserForm
         return EditUserForm
 
 
@@ -46,7 +46,7 @@ class AddUserFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.users.forms import AddUserForm
+        from moztrap.view.manage.users.forms import AddUserForm
         return AddUserForm
 
 

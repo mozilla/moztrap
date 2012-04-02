@@ -12,7 +12,7 @@ class ParseBulkTest(case.TestCase):
     """Tests for BulkParser."""
     @property
     def parser(self):
-        from cc.model.library.bulk import BulkParser
+        from moztrap.model.library.bulk import BulkParser
         return BulkParser
 
 

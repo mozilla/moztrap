@@ -13,7 +13,7 @@ class FilterTest(case.TestCase):
     @property
     def finder(self):
         """The templatetag module under test."""
-        from cc.view.lists.templatetags import finder
+        from moztrap.view.lists.templatetags import finder
         return finder
 
 

@@ -9,7 +9,7 @@ from BeautifulSoup import BeautifulSoup
 import django_webtest
 import django_webtest.backends
 
-from cc import model
+from moztrap import model
 
 from ...utils import Url
 from ..base import DBMixin

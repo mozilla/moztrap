@@ -11,7 +11,7 @@ from tests import case
 
 class CasesTest(case.view.manage.ListViewTestCase,
                 case.view.ListFinderTests,
-                case.view.manage.CCModelListTests,
+                case.view.manage.MTModelListTests,
                 case.view.manage.StatusListTests,
                 case.view.NoCacheTest,
                 ):
@@ -325,7 +325,7 @@ class AddCaseTest(case.view.FormViewTestCase,
 
         res.follow().mustcontain("Test case 'Can log in.' added.")
 
-        from cc.model import CaseVersion
+        from moztrap.model import CaseVersion
         cv = CaseVersion.objects.get()
         self.assertEqual(cv.case.product, pv.product)
         self.assertEqual(cv.productversion, pv)
@@ -406,7 +406,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase,
 
         res.follow().mustcontain("Added 2 test cases.")
 
-        from cc.model import CaseVersion
+        from moztrap.model import CaseVersion
         cv1, cv2 = list(CaseVersion.objects.all())
 
         self.assertEqual(cv1.case.product, pv.product)

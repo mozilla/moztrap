@@ -13,7 +13,7 @@ class FilterTest(case.TestCase):
     @property
     def markup(self):
         """The templatetag module under test."""
-        from cc.view.markup.templatetags import markup
+        from moztrap.view.markup.templatetags import markup
         return markup
 
 

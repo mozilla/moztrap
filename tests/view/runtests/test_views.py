@@ -433,7 +433,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         self.assertEqual(res.json["no_replace"], True)
 
 
-    @patch("cc.view.runtests.views.ACTIONS", {})
+    @patch("moztrap.view.runtests.views.ACTIONS", {})
     def test_post_bad_action_redirect(self):
         """POST with bad action does nothing but message and redirects."""
         rcv = self.create_rcv()
@@ -448,7 +448,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         res.follow().mustcontain("finishsucceed is not a valid action")
 
 
-    @patch("cc.view.runtests.views.ACTIONS", {})
+    @patch("moztrap.view.runtests.views.ACTIONS", {})
     def test_post_bad_action_ajax(self):
         """Ajax POST with bad action sets message and returns no HTML."""
         rcv = self.create_rcv()
@@ -543,7 +543,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             res = form.submit(name="action-finishsucceed", index=0, status=302)
 
@@ -583,7 +583,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form["comment"] = "it ain't valid"
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             res = form.submit(
                 name="action-finishinvalidate", index=0, status=302)
@@ -629,7 +629,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form["comment"] = "it didn't pass"
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             res = form.submit(
                 name="action-finishfail", index=0, status=302)
@@ -672,7 +672,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             res = form.submit(name="action-restart", index=0, status=302)
 

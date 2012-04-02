@@ -63,7 +63,7 @@ class CaseVersionAdminTest(case.admin.AdminTestCase):
         case = self.F.CaseFactory.create(product=pv.product)
 
         # patching extra avoids need for JS to add step
-        with patch("cc.model.library.admin.CaseStepInline.extra", 1):
+        with patch("moztrap.model.library.admin.CaseStepInline.extra", 1):
             form = self.get(self.add_url).forms[0]
             form["case"] = str(case.id)
             form["productversion"] = str(pv.id)
@@ -85,7 +85,7 @@ class CaseVersionAdminTest(case.admin.AdminTestCase):
         cv.environments.add(*self.get_envs())
 
         # patching extra avoids need for JS to submit new step
-        with patch("cc.model.library.admin.CaseStepInline.extra", 1):
+        with patch("moztrap.model.library.admin.CaseStepInline.extra", 1):
             form = self.get(self.change_url(cv)).forms[0]
             form["steps-0-number"] = "1"
             form["steps-0-instruction"] = "An instruction"

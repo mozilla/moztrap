@@ -14,7 +14,7 @@ class PaginateTest(case.DBTestCase):
     """Tests for paginate template tag."""
     def test_paginate(self):
         """Places Pager object in context with size/num from request."""
-        from cc.model.tags.models import Tag
+        from moztrap.model.tags.models import Tag
 
         tpl = template.Template(
             "{% load pagination %}{% paginate queryset as pager %}"
@@ -37,7 +37,7 @@ class FilterTest(case.TestCase):
     """Tests for template filters."""
     def test_pagenumber_url(self):
         """``pagenumber_url`` filter updates pagenumber in URL."""
-        from cc.view.lists.templatetags.pagination import pagenumber_url
+        from moztrap.view.lists.templatetags.pagination import pagenumber_url
         request = Mock()
         request.get_full_path.return_value = (
             "http://localhost/?pagenumber=2&pagesize=10")
@@ -48,7 +48,7 @@ class FilterTest(case.TestCase):
 
     def test_pagesize_url(self):
         """``pagesize_url`` updates pagesize in URL (and jumps to page 1)."""
-        from cc.view.lists.templatetags.pagination import pagesize_url
+        from moztrap.view.lists.templatetags.pagination import pagesize_url
         request = Mock()
         request.get_full_path.return_value = (
             "http://localhost/?pagenumber=2&pagesize=10")
@@ -59,7 +59,7 @@ class FilterTest(case.TestCase):
 
     def test_pagenumber(self):
         """``pagenumber`` gets the pagenumber from the request."""
-        from cc.view.lists.templatetags.pagination import pagenumber
+        from moztrap.view.lists.templatetags.pagination import pagenumber
         request = Mock()
         request.GET = {"pagenumber": 2, "pagesize": 10}
         self.assertEqual(pagenumber(request), 2)
@@ -67,7 +67,7 @@ class FilterTest(case.TestCase):
 
     def test_pagesize(self):
         """``pagenumber`` gets the pagenumber from the request."""
-        from cc.view.lists.templatetags.pagination import pagesize
+        from moztrap.view.lists.templatetags.pagination import pagesize
         request = Mock()
         request.GET = {"pagenumber": 2, "pagesize": 10}
         self.assertEqual(pagesize(request), 10)

@@ -16,7 +16,7 @@ def main():
 
     imports = [
         "import datetime",
-        "from cc import model",
+        "from moztrap import model",
         ]
 
     for imp in imports:

@@ -11,7 +11,7 @@ class EnvironmentSelectionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.runtests.forms import EnvironmentSelectionForm
+        from moztrap.view.runtests.forms import EnvironmentSelectionForm
         return EnvironmentSelectionForm
 
 

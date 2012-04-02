@@ -78,8 +78,8 @@ class ListViewTestCase(base.FormViewTestCase, base.ListViewTestCase):
 
 
 
-class CCModelListTests(object):
-    """Additional manage list view tests for CCModels."""
+class MTModelListTests(object):
+    """Additional manage list view tests for MTModels."""
     def test_clone(self):
         """Can clone objects in list."""
         self.add_perm(self.perm)

@@ -16,7 +16,7 @@ class FilterTest(case.TestCase):
     @property
     def urls(self):
         """The templatetag module under test."""
-        from cc.view.templatetags import urls
+        from moztrap.view.templatetags import urls
         return urls
 
 
