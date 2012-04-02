@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-# Run Case Conductor tests, with coverage measurement.
+# Run MozTrap tests, with coverage measurement.
 
 export DJANGO_SETTINGS_MODULE="tests.settings"
 coverage run manage.py test $*

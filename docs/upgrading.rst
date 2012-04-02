@@ -52,4 +52,4 @@ upgrade, whether it's necessary or not.
 
 
 .. _git: http://git-scm.com
-.. _GitHub repository: https://github.com/mozilla/caseconductor/
+.. _GitHub repository: https://github.com/mozilla/moztrap/

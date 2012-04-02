@@ -1,5 +1,5 @@
 """
-Default Django settings for Case Conductor project.
+Default Django settings for MozTrap project.
 
 """
 from os.path import dirname, join, abspath
@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "caseconductor",
+        "NAME": "moztrap",
         "USER": environ.get("USER", ""),
         "PASSWORD": "",
         "OPTIONS": {

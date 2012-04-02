@@ -3,7 +3,7 @@
 Working with Lists
 ==================
 
-Much of the navigation in Case Conductor is done with lists. When managing
+Much of the navigation in MozTrap is done with lists. When managing
 things like :ref:`Test Cases<test-cases>`, it is possible to have a very long
 list of items.
 

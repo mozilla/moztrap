@@ -472,7 +472,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
         self.cv = self.F.CaseVersionFactory.create(
-            name="Can log in", productversion__product__name="Case Conductor")
+            name="Can log in", productversion__product__name="MozTrap")
         self.add_perm("manage_cases")
 
 
@@ -566,7 +566,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         res = self.post({"productversion": pv.id}, status=302)
 
         res.follow().mustcontain(
-            "Created new version of 'Can log in' for Case Conductor 2.0.")
+            "Created new version of 'Can log in' for MozTrap 2.0.")
 
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)

@@ -34,7 +34,7 @@ By default all access to the site requires authentication. If the
 management and test-results pages (but will not be able to submit test results
 or modify anything).
 
-By default Case Conductor uses `BrowserID`_ for all logins, but it also
+By default MozTrap uses `BrowserID`_ for all logins, but it also
 supports conventional username/password logins. To switch to username/password
 logins, just set ``USE_BROWSERID`` to ``False`` in ``cc/settings/local.py``.
 
@@ -61,7 +61,7 @@ that ``.pth`` files are processed.  A WSGI entry-point script is provided in
 ``cc/deploy/vendor_wsgi.py`` that makes the necessary ``sys.path`` adjustments,
 as well as a version of ``manage.py`` in ``vendor-manage.py``.
 
-If you are using the vendor library and you want to run the Case Conductor
+If you are using the vendor library and you want to run the MozTrap
 tests, ``bin/test`` won't work as it uses ``manage.py``. Instead run ``python
 vendor-manage.py test``.
 
@@ -121,7 +121,7 @@ Database performance tweak
 --------------------------
 
 In order to ensure that all database tables are created with the InnoDB
-storage engine, Case Conductor's default settings file sets the database
+storage engine, MozTrap's default settings file sets the database
 driver option "init_command" to "SET storage_engine=InnoDB".  This causes
 the SET command to be run on each database connection, which is an
 unnecessary slowdown once all tables have been created.  Thus, on a
@@ -129,5 +129,5 @@ production server, you should comment this option from your
 ``cc/settings/local.py`` file's ``DATABASES`` setting after you've run
 ``python manage.py syncdb --migrate`` to create all tables (uncomment it
 before running ``python manage.py syncdb`` or ``python manage.py migrate``
-after an update to the Case Conductor codebase, or before trying to run the
+after an update to the MozTrap codebase, or before trying to run the
 tests).

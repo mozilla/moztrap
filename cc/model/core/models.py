@@ -1,5 +1,5 @@
 """
-Core Case Conductor models (Product).
+Core MozTrap models (Product).
 
 """
 from django.core.exceptions import ValidationError

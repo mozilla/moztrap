@@ -1,5 +1,5 @@
 """
-Core form widgets, mixins, and fields for Case Conductor.
+Core form widgets, mixins, and fields for MozTrap.
 
 """
 from functools import partial
