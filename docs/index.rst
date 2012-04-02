@@ -1,5 +1,5 @@
 Welcome to MozTrap
-=========================
+==================
 
 MozTrap is a test case manager.
 
@@ -25,9 +25,8 @@ which your shell user has permission to create databases in. See the full
 8. ``./manage.py runserver``
 9. Visit http://localhost:8000 in your browser.
 
-Congratulations! If that all worked, you have a functioning instance of Case
-Conductor for local testing, experimentation, and :doc:`development
-<development>`.
+Congratulations! If that all worked, you have a functioning instance of MozTrap
+for local testing, experimentation, and :doc:`development <development>`.
 
 Please read the :doc:`deployment` documentation for important security and
 other considerations before deploying a public instance of MozTrap.

@@ -181,19 +181,18 @@ and commit there::
 
 .. note::
 
-   If you are working on a release branch of MozTrap rather than the
-   master branch, you may find that updating the submodule to ``master``
-   updates the version of some dependency to a more recent version, and your
-   branch of MozTrap is not prepared for this dependency update. In that
-   case rather than updating to the submodule's master branch, you should
-   create a new branch of the submodule with a name matching the branch of Case
-   Conductor you are working on; replace ``git checkout master`` in the above
-   with e.g. ``git branch 0.8.X``. (If you've already done the ``git checkout
-   master``, go back out to the MozTrap repo root and ``git submodule
-   update`` to get back to the pinned commit of the submodule, then ``cd
-   requirements/dist`` and ``git branch 0.8.X``.) If you create your own branch
-   of the submodule, you may need to also replace ``git push`` with e.g. ``git
-   push -u origin 0.8.X``).
+   If you are working on a release branch of MozTrap rather than the master
+   branch, you may find that updating the submodule to ``master`` updates the
+   version of some dependency to a more recent version, and your branch of
+   MozTrap is not prepared for this dependency update. In that case rather than
+   updating to the submodule's master branch, you should create a new branch of
+   the submodule with a name matching the branch of MozTrap you are working on;
+   replace ``git checkout master`` in the above with e.g. ``git branch
+   0.8.X``. (If you've already done the ``git checkout master``, go back out to
+   the MozTrap repo root and ``git submodule update`` to get back to the pinned
+   commit of the submodule, then ``cd requirements/dist`` and ``git branch
+   0.8.X``.) If you create your own branch of the submodule, you may need to
+   also replace ``git push`` with e.g. ``git push -u origin 0.8.X``).
 
    Similarly, if you are working on a feature branch, and your feature branch
    requires a newer version of a dependency, it is preferable to make a branch

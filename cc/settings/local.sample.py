@@ -73,8 +73,8 @@ Copy local.sample.py to local.py and modify as needed.
 # stored. Defaults to absolute filesystem path to "media/" directory.
 #MEDIA_ROOT = ""
 
-# Base URL where user-uploaded files will be served. In production mode, Case
-# Conductor will not serve these files; the front-end webserver must be
+# Base URL where user-uploaded files will be served. In production mode,
+# MozTrap will not serve these files; the front-end webserver must be
 # configured to serve the files at ``MEDIA_ROOT`` at this URL. Defaults to
 # "/media/".
 #MEDIA_URL = ""
