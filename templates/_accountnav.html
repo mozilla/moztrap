@@ -19,7 +19,9 @@
       {# @@@ <li><a href="#">Account Settings</a></li> #}
     {% else %}
       <li><a href="{% url auth_login %}?next={{ request.path }}" class="signin">Sign In</a></li>
-      <li><a href="{% url registration_register %}">Register</a></li>
+      {% if not USE_BROWSERID %}
+        <li><a href="{% url registration_register %}">Register</a></li>
+      {% endif %}
     {% endif %}
   </ul>
   <p><a href="http://readthedocs.org/docs/moztrap/en/latest/userguide/index.html" target="_blank" class="help">Help</a></p>
