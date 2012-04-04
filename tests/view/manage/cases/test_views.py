@@ -287,6 +287,27 @@ class CaseTest(case.view.AuthenticatedViewTestCase):
             )
 
 
+    def test_deleted_version(self):
+        """Excludes deleted versions from consideration."""
+        self.F.CaseVersionFactory(
+            productversion__version="1.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            ).delete()
+        cv = self.F.CaseVersionFactory(
+            productversion__version="2.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+
+        res = self.get()
+
+        self.assertRedirects(
+            res,
+            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            )
+
+
 
 class AddCaseTest(case.view.FormViewTestCase,
                   case.view.NoCacheTest,
