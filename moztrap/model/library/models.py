@@ -157,7 +157,8 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
 
     def clone(self, *args, **kwargs):
         """
-        Clone this CaseVersion, cascading steps, attachments, tags.
+        Clone this CaseVersion, cascading steps, attachments, tags.  Cloned
+        CaseVersions take on the status of their source CaseVersion.
 
         Only one CaseVersion can exist for a given case/productversion
         combination; thus if neither a new case nor a new productversion is
@@ -168,7 +169,6 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
         overrides = kwargs.setdefault("overrides", {})
-        overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))
         if "productversion" not in overrides and "case" not in overrides:
             overrides["case"] = self.case.clone(cascade=[])

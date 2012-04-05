@@ -69,13 +69,13 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(new.name, "two")
 
 
-    def test_clone_sets_draft_state(self):
-        """Clone of active caseversion is still draft."""
+    def test_clone_gets_source_state(self):
+        """Clone of active caseversion is still active."""
         cv = self.F.CaseVersionFactory(status="active")
 
         new = cv.clone()
 
-        self.assertEqual(new.status, "draft")
+        self.assertEqual(new.status, "active")
 
 
     def test_clone_steps(self):
