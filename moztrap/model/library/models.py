@@ -16,6 +16,7 @@ from ..tags.models import Tag
 class Case(MTModel):
     """A test case for a given product."""
     product = models.ForeignKey(Product, related_name="cases")
+    idprefix = models.CharField(max_length=25, blank=True)
 
 
     def __unicode__(self):
