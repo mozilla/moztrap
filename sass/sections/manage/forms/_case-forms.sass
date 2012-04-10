@@ -78,9 +78,10 @@
 // Versioning
 
 .versioning
+  +pie-clearfix
   +trailer(2)
 
-  .product-field
+  .product-field, .suite-field, .id-prefix-field
     +columns(11,24)
     .type
       +columns(2,11)
@@ -99,13 +100,6 @@
   .and-later-versions-field
     +columns(4,24)
     +padding-leader(.25)
-
-  .suite-field
-    +full(24)
-    .type
-      +columns(2,24)
-    .value, .errorlist
-      +columns(20,24)
 
 // ---------------------------------------------------------------------------
 // Versioned
