@@ -30,6 +30,7 @@ class BaseCaseForm(mtforms.NonFieldErrorsClassFormMixin, forms.Form):
         widget=mtforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
         required=False)
+    idprefix = forms.CharField(max_length=200, required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -179,10 +180,16 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 
         version_kwargs = self.cleaned_data.copy()
         product = version_kwargs.pop("product")
+        idprefix = version_kwargs.pop("idprefix")
 
         self.save_new_tags(product)
 
-        case = model.Case.objects.create(product=product, user=self.user)
+        case = model.Case.objects.create(
+            product=product,
+            user=self.user,
+            idprefix=idprefix,
+            )
+
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
 
