@@ -321,6 +321,8 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         initial["status"] = self.instance.status
         initial["cc_version"] = self.instance.cc_version
 
+        initial["idprefix"] = self.instance.case.idprefix
+
         super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
 
@@ -333,8 +335,13 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         del version_kwargs["add_tags"]
         del version_kwargs["add_attachment"]
 
+        idprefix = version_kwargs.pop("idprefix")
+
         for k, v in version_kwargs.items():
             setattr(self.instance, k, v)
+
+        self.instance.case.idprefix = idprefix
+        self.instance.case.save(force_update=True)
 
         self.instance.save(force_update=True)
 
