@@ -193,7 +193,8 @@ class CaseVersionFilterSet(filters.FilterSet):
 
     filters = [
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
-        filters.KeywordExactFilter("id", lookup="case__id", coerce=int),
+        #filters.KeywordExactFilter("id", lookup="case__id", coerce=int),
+        filters.DelimitedStringIntFilter("id", lookup=["case__idprefix","case__id"]),
         filters.KeywordFilter("name"),
         filters.ModelFilter(
             "tag", lookup="tags", queryset=model.Tag.objects.all()),

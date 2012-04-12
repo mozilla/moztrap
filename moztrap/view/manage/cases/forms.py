@@ -258,6 +258,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
         assert self.is_valid()
 
         product = self.cleaned_data["product"]
+        idprefix = self.cleaned_data["idprefix"]
 
         self.save_new_tags(product)
 
@@ -271,7 +272,11 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
         cases = []
 
         for case_data in self.cleaned_data["cases"]:
-            case = model.Case.objects.create(product=product, user=self.user)
+            case = model.Case.objects.create(
+                product=product,
+                user=self.user,
+                idprefix=idprefix,
+                )
 
             version_kwargs = case_data.copy()
             steps_data = version_kwargs.pop("steps")

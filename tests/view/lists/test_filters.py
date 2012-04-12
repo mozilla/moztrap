@@ -610,3 +610,15 @@ class KeywordFilterTest(FiltersTestCase):
 
         self.assertEqual(qs.filter.call_count, 0)
         self.assertEqual(qs.distinct.call_count, 0)
+
+class DelimitedStringIntFilterTest(FiltersTestCase):
+    """
+    prefix and ID
+    prefix only
+    ID only
+    id when case has no prefix
+    2 cases have 2 different prefixes OR'ed
+    2 cases with no prefixes, IDs OR'ed
+
+
+    """

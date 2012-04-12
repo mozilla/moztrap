@@ -388,3 +388,47 @@ class KeywordFilter(KeywordExactFilter):
             return queryset.distinct()
 
         return queryset
+
+
+
+class DelimitedStringIntFilter(Filter):
+    """
+    A string and an int, separated by a delimiter.
+    Values are split by the right-most occurrance of delimeter and ANDed
+    across fields.  Must match exactly by either the prefix or prefix + suffix
+    ``lookup`` must be a pair of fields to lookup for prefix and suffix
+    ``key`` must also be a pair of keys used
+    """
+
+    delimiter = "-"
+
+    def filter(self, queryset, values):
+
+        for value in values:
+
+            # split the prefix from the id
+            prefix, sep, suffix = value.rpartition(self.delimiter)
+
+            # if there is a prefix of abc-xyz, then we don't want to
+            # try searching in the int field for xyz, presume it's all
+            # the prefix
+            # also, if the user put the delimiter at the end, strip it off
+            if not suffix.isdecimal():
+                prefix = value.rstrip(self.delimiter)
+                suffix = None
+
+            kwargs = {}
+
+            if prefix:
+                kwargs["{0}__exact".format(self.lookup[0])] = prefix
+            if suffix:
+                kwargs["{0}__exact".format(self.lookup[1])] = suffix
+
+            queryset = queryset.filter(**kwargs)
+
+        if values:
+            return queryset.distinct()
+
+        return queryset
+
+
