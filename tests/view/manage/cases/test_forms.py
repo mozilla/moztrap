@@ -38,6 +38,7 @@ class AddCaseFormTest(case.DBTestCase):
         defaults = {
             "product": [self.product.id],
             "productversion": [self.productversion.id],
+            "idprefix": ["pref"],
             "name": ["Can register."],
             "description": ["A user can sign up for the site."],
             "steps-TOTAL_FORMS": [1],
@@ -514,6 +515,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                 {
                     "name": ["new name"],
                     "description": ["new desc"],
+                    "idprefix": ["pref"],
                     "status": ["active"],
                     "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],
