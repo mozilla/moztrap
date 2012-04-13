@@ -4,7 +4,6 @@ Tests for queryset-filtering.
 """
 
 from tests import case
-from moztrap.model.library.models import CaseVersion
 from moztrap.view.lists.cases import PrefixIDFilter
 
 
@@ -15,19 +14,13 @@ class PrefixIDFilterTest(case.DBTestCase):
     def create_testdata(self):
         testdata = {}
 
-        testdata["cv1"] = self.F.CaseVersionFactory.create(
-            name="CV 1",
-            case=self.F.CaseFactory.create(idprefix="pre"),
-            )
+        testdata["cv1"] = self.F.CaseVersionFactory.create(name="CV 1",
+            case=self.F.CaseFactory.create(idprefix="pre"))
         testdata["cv2"] = self.F.CaseVersionFactory.create(name="CV 2")
-        testdata["cv3"] = self.F.CaseVersionFactory.create(
-            name="CV 3",
-            case=self.F.CaseFactory.create(idprefix="moz"),
-            )
-        testdata["cv4"] = self.F.CaseVersionFactory.create(
-            name="CV 4",
-            case=self.F.CaseFactory.create(idprefix="moz"),
-            )
+        testdata["cv3"] = self.F.CaseVersionFactory.create(name="CV 3",
+            case=self.F.CaseFactory.create(idprefix="moz"))
+        testdata["cv4"] = self.F.CaseVersionFactory.create(name="CV 4",
+            case=self.F.CaseFactory.create(idprefix="moz"))
 
         return testdata
 
@@ -38,7 +31,7 @@ class PrefixIDFilterTest(case.DBTestCase):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            [u"pre-{0}".format(td["cv1"].id)],
+            [u"pre-{0}".format(td["cv1"].case.id)],
             )
 
         self.assertEqual(res.get().name, "CV 1")
@@ -59,7 +52,7 @@ class PrefixIDFilterTest(case.DBTestCase):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            [unicode(td["cv1"].id)],
+            [unicode(td["cv1"].case.id)],
             )
 
         self.assertEqual(res.get().name, "CV 1")
@@ -71,7 +64,7 @@ class PrefixIDFilterTest(case.DBTestCase):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            [u"pre", unicode(td["cv2"].id)],
+            [u"pre", unicode(td["cv2"].case.id)],
             )
 
         self.assertEqual([x.name for x in res.all()], ["CV 1", "CV 2"])
@@ -83,7 +76,7 @@ class PrefixIDFilterTest(case.DBTestCase):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            [unicode(td["cv2"].id)],
+            [unicode(td["cv2"].case.id)],
             )
 
         self.assertEqual(res.get().name, "CV 2")
