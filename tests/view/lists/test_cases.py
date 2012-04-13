@@ -12,10 +12,6 @@ from moztrap.view.lists.cases import PrefixIDFilter
 class PrefixIDFilterTest(case.DBTestCase):
     """Tests for PrefixIDFilter"""
 
-    @property
-    def AllCaseVersions(self):
-        return self.model.CaseVersion.objects.all
-
     def create_testdata(self):
         testdata = {}
 
@@ -34,6 +30,7 @@ class PrefixIDFilterTest(case.DBTestCase):
             )
 
         return testdata
+
 
     def test_prefix_and_id(self):
         """prefix and ID"""
