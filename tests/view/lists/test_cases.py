@@ -1,8 +1,8 @@
 """
-Tests for queryset-filtering.
+Tests for test case queryset-filtering by ID and with optional ID prefix.
 
 """
-
+from sets import Set
 from tests import case
 from moztrap.view.lists.cases import PrefixIDFilter
 
@@ -25,14 +25,19 @@ class PrefixIDFilterTest(case.DBTestCase):
         return testdata
 
 
-    def test_prefix_and_id(self):
-        """prefix and ID"""
-        td = self.create_testdata()
+    def filter(self, criteria):
         f = PrefixIDFilter("id")
         res = f.filter(
             self.model.CaseVersion.objects.all(),
-            [u"pre-{0}".format(td["cv1"].case.id)],
+            criteria,
             )
+        return res
+
+
+    def test_prefix_and_id(self):
+        """prefix and ID"""
+        td = self.create_testdata()
+        res = self.filter([u"pre-{0}".format(td["cv1"].case.id)])
 
         self.assertEqual(res.get().name, "CV 1")
 
@@ -40,8 +45,7 @@ class PrefixIDFilterTest(case.DBTestCase):
     def test_prefix_only(self):
         """prefix only"""
         self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(self.model.CaseVersion.objects.all(), [u"pre"])
+        res = self.filter([u"pre"])
 
         self.assertEqual(res.get().name, "CV 1")
 
@@ -49,58 +53,49 @@ class PrefixIDFilterTest(case.DBTestCase):
     def test_id_only(self):
         """ID only"""
         td = self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(
-            self.model.CaseVersion.objects.all(),
-            [unicode(td["cv1"].case.id)],
-            )
+        res = self.filter([unicode(td["cv1"].case.id)])
 
         self.assertEqual(res.get().name, "CV 1")
 
 
-    def test_id_from_cv1_prefix_from_cv2(self):
-        """ID from cv 1, prefix from cv2 gets both"""
+    def test_id_and_prefix_from_different_cases_gets_both(self):
+        """ID from one case and prefix from a different case gets both"""
         td = self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(
-            self.model.CaseVersion.objects.all(),
-            [u"pre", unicode(td["cv2"].case.id)],
-            )
+        res = self.filter([u"pre", unicode(td["cv2"].case.id)])
 
-        self.assertEqual([x.name for x in res.all()], ["CV 1", "CV 2"])
+        self.assertEqual(
+            Set([x.name for x in res.all()]),
+            Set(["CV 1", "CV 2"]),
+            )
 
 
     def test_id_case_without_prefix(self):
         """id when case has no prefix"""
         td = self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(
-            self.model.CaseVersion.objects.all(),
-            [unicode(td["cv2"].case.id)],
-            )
+        res = self.filter([unicode(td["cv2"].case.id)])
 
         self.assertEqual(res.get().name, "CV 2")
 
 
     def test_cases_different_prefix_return_both(self):
-        """3 cases have 2 different prefixes OR'ed"""
+        """
+        3 cases have 2 different prefixes returns cases from both prefixes.
+        """
         self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(
-            self.model.CaseVersion.objects.all(),
-            [u"pre", u"moz"],
-            )
+        res = self.filter([u"pre", u"moz"])
 
-        self.assertEqual([x.name for x in res.all()], ["CV 1", "CV 3", "CV 4"])
+        self.assertEqual(
+            Set([x.name for x in res.all()]),
+            Set(["CV 1", "CV 3", "CV 4"]),
+            )
 
 
     def test_cases_same_prefix_return_both(self):
         """2 cases with no prefixes, IDs OR'ed"""
         self.create_testdata()
-        f = PrefixIDFilter("id")
-        res = f.filter(
-            self.model.CaseVersion.objects.all(),
-            [u"moz"],
-            )
+        res = self.filter([u"moz"])
 
-        self.assertEqual([x.name for x in res.all()], ["CV 3", "CV 4"])
+        self.assertEqual(
+            Set([x.name for x in res.all()]),
+            Set(["CV 3", "CV 4"]),
+            )

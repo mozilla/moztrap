@@ -8,7 +8,7 @@ class PrefixIDFilter(KeywordFilter):
     across prefix and ID.  Must match exactly the prefix or the ID, or both, if
     both are provided.
 
-    if more than one of these filters is used, they are ORed with each other.rbi
+    if more than one of these filters is used, they are ORed with each other.
     """
 
 

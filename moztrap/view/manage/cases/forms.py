@@ -345,8 +345,9 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         for k, v in version_kwargs.items():
             setattr(self.instance, k, v)
 
-        self.instance.case.idprefix = idprefix
-        self.instance.case.save(force_update=True)
+        if self.instance.case.idprefix != idprefix:
+            self.instance.case.idprefix = idprefix
+            self.instance.case.save(force_update=True)
 
         self.instance.save(force_update=True)
 
