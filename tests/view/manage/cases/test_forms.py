@@ -475,7 +475,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
     def test_initial(self):
         """Initial data is populated accurately."""
         cv = self.F.CaseVersionFactory.create(
-            case__prefix="pref",
+            case__idprefix="pref",
             name="a name",
             description="a desc",
             status="active",

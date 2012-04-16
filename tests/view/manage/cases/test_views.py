@@ -232,7 +232,7 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase,
         self.cv = self.F.CaseVersionFactory.create(case__idprefix="moo")
         res = self.get(ajax=True)
 
-        res.mustcontain("#moo-{0}".format(c.id))
+        res.mustcontain("#moo-{0}".format(self.cv.case.id))
 
 
     def test_id_no_prefix(self):
