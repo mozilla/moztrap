@@ -4797,13 +4797,13 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   width: 45.263%;
   margin-right: 1.053%;
 }
-.versioned .name-field .type, .versioned .description-field .type {
+.versioned .name-field .type, .versioned .description-field .type, .versioned .id-prefix-field .type {
   display: inline;
   float: left;
   width: 16.279%;
   margin-right: 2.326%;
 }
-.versioned .name-field .value, .versioned .name-field .errorlist, .versioned .description-field .value, .versioned .description-field .errorlist {
+.versioned .name-field .value, .versioned .name-field .errorlist, .versioned .description-field .value, .versioned .description-field .errorlist, .versioned .id-prefix-field .value, .versioned .id-prefix-field .errorlist {
   display: inline;
   float: left;
   width: 81.395%;

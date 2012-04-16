@@ -21,8 +21,8 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    {% block versioningform %}
     <div class="versioning">
+    {% block versioningform %}
       {% include "forms/_field.html" with field=form.product %}
       {% include "forms/_field.html" with field=form.productversion label="Version" %}
       {% include "forms/_field.html" with field=form.and_later_versions %}
@@ -30,8 +30,8 @@
       {% include "forms/_field.html" with field=form.initial_suite label="Suite" %}
       {% include "forms/_field.html" with field=form.idprefix label="ID Prefix" %}
       {% endif %}
-    </div>
     {% endblock versioningform %}
+    </div>
 
     <div class="versioned">
       {% block versionedform %}{% endblock %}
