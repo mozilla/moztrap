@@ -30,6 +30,10 @@ Case Edit Fields
 * **Suite** - (optional) The existing suite to which you want this case to
   belong.
   You can also add cases to suites later.
+* **ID Prefix** - (optional) A string that will be displayed as part of the
+  case ID.  This can be a component name, or any string that is pertinent.
+  This is also supported when filtering by ID.  You can filter by the prefix
+  only, by the ID, or by the prefix-ID combination.
 * **Name** - The summary name for the case.
 * **Description** - Any description, pre-conditions, links or notes to
   associate with the case.  This field is displayed while running the test.
