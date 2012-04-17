@@ -227,6 +227,22 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase,
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
 
+    def test_id_prefix(self):
+        """Details shows the id prefix"""
+        self.cv = self.F.CaseVersionFactory.create(case__idprefix="moo")
+        res = self.get(ajax=True)
+
+        res.mustcontain("#moo-{0}".format(self.cv.case.id))
+
+
+    def test_id_no_prefix(self):
+        """Details show the id properly when no prefix is specified."""
+        self.cv = self.F.CaseVersionFactory.create()
+        res = self.get(ajax=True)
+
+        res.mustcontain("#{0}".format(self.cv.case.id))
+
+
     def test_description(self):
         """Details includes description, markdownified safely."""
         self.cv = self.F.CaseVersionFactory.create(

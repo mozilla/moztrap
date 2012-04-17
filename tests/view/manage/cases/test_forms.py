@@ -38,6 +38,7 @@ class AddCaseFormTest(case.DBTestCase):
         defaults = {
             "product": [self.product.id],
             "productversion": [self.productversion.id],
+            "idprefix": ["pref"],
             "name": ["Can register."],
             "description": ["A user can sign up for the site."],
             "steps-TOTAL_FORMS": [1],
@@ -474,7 +475,11 @@ class EditCaseVersionFormTest(case.DBTestCase):
     def test_initial(self):
         """Initial data is populated accurately."""
         cv = self.F.CaseVersionFactory.create(
-            name="a name", description="a desc", status="active")
+            case__idprefix="pref",
+            name="a name",
+            description="a desc",
+            status="active",
+            )
         self.F.CaseStepFactory.create(
             caseversion=cv, instruction="do this", expected="see that")
 
@@ -485,6 +490,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
             {
                 "name": "a name",
                 "description": "a desc",
+                "idprefix": "pref",
                 "status": "active",
                 "cc_version": cv.cc_version,
                 }
@@ -512,6 +518,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                 {
                     "name": ["new name"],
                     "description": ["new desc"],
+                    "idprefix": ["pref"],
                     "status": ["active"],
                     "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],

@@ -5,6 +5,7 @@ List filtering options.
 from moztrap import model
 
 from .lists import filters
+from .lists import cases
 
 
 
@@ -193,7 +194,7 @@ class CaseVersionFilterSet(filters.FilterSet):
 
     filters = [
         filters.ChoicesFilter("status", choices=model.CaseVersion.STATUS),
-        filters.KeywordExactFilter("id", lookup="case__id", coerce=int),
+        cases.PrefixIDFilter("id"),
         filters.KeywordFilter("name"),
         filters.ModelFilter(
             "tag", lookup="tags", queryset=model.Tag.objects.all()),

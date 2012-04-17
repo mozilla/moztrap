@@ -1,3 +1,3 @@
 {% extends 'lists/_byline.html' %}
 
-{% block id %}<strong><a href="{% url manage_case case_id=item.case.id %}">#{{ item.case.id }}</a></strong>{% endblock id %}
+{% block id %}<strong><a href="{% url manage_case case_id=item.case.id %}">#{% if item.case.idprefix %}{{ item.case.idprefix }}-{% endif %}{{ item.case.id }}</a></strong>{% endblock id %}

@@ -30,6 +30,7 @@ class BaseCaseForm(mtforms.NonFieldErrorsClassFormMixin, forms.Form):
         widget=mtforms.AutocompleteInput(
             url=lambda: reverse("manage_tags_autocomplete")),
         required=False)
+    idprefix = forms.CharField(max_length=200, required=False)
 
 
     def __init__(self, *args, **kwargs):
@@ -179,10 +180,16 @@ class AddCaseForm(BaseAddCaseForm, BaseCaseVersionForm, BaseCaseForm):
 
         version_kwargs = self.cleaned_data.copy()
         product = version_kwargs.pop("product")
+        idprefix = version_kwargs.pop("idprefix")
 
         self.save_new_tags(product)
 
-        case = model.Case.objects.create(product=product, user=self.user)
+        case = model.Case.objects.create(
+            product=product,
+            user=self.user,
+            idprefix=idprefix,
+            )
+
         version_kwargs["case"] = case
         version_kwargs["user"] = self.user
 
@@ -251,6 +258,7 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
         assert self.is_valid()
 
         product = self.cleaned_data["product"]
+        idprefix = self.cleaned_data["idprefix"]
 
         self.save_new_tags(product)
 
@@ -264,7 +272,11 @@ class AddBulkCaseForm(BaseAddCaseForm, BaseCaseForm):
         cases = []
 
         for case_data in self.cleaned_data["cases"]:
-            case = model.Case.objects.create(product=product, user=self.user)
+            case = model.Case.objects.create(
+                product=product,
+                user=self.user,
+                idprefix=idprefix,
+                )
 
             version_kwargs = case_data.copy()
             steps_data = version_kwargs.pop("steps")
@@ -314,6 +326,8 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         initial["status"] = self.instance.status
         initial["cc_version"] = self.instance.cc_version
 
+        initial["idprefix"] = self.instance.case.idprefix
+
         super(EditCaseVersionForm, self).__init__(*args, **kwargs)
 
 
@@ -326,8 +340,14 @@ class EditCaseVersionForm(mtforms.SaveIfValidMixin,
         del version_kwargs["add_tags"]
         del version_kwargs["add_attachment"]
 
+        idprefix = version_kwargs.pop("idprefix")
+
         for k, v in version_kwargs.items():
             setattr(self.instance, k, v)
+
+        if self.instance.case.idprefix != idprefix:
+            self.instance.case.idprefix = idprefix
+            self.instance.case.save(force_update=True)
 
         self.instance.save(force_update=True)
 
