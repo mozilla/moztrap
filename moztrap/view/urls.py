@@ -8,11 +8,25 @@ from django.conf import settings
 
 from django.contrib import admin
 
+from tastypie.api import Api
+
+from moztrap.model.execution.api import RunResource, RunCaseVersionResource, \
+    RunCasesDetailResource, CaseVersionResource, ResultResource
+
 admin.autodiscover()
 
 import session_csrf
 session_csrf.monkeypatch()
 
+v1_api = Api(api_name='v1')
+v1_api.register(RunResource())
+v1_api.register(RunCaseVersionResource())
+v1_api.register(RunCasesDetailResource())
+v1_api.register(CaseVersionResource())
+v1_api.register(ResultResource())
+
+
+run_resource = RunResource()
 
 urlpatterns = patterns(
     "",
@@ -36,4 +50,7 @@ urlpatterns = patterns(
     # browserid --------------------------------------------------------------
     url(r"^browserid/", include("moztrap.view.users.browserid_urls")),
 
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # api --------------------------------------------------------------------
+    url(r"^api/", include(v1_api.urls)),
+
+    ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

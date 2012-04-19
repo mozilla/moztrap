@@ -128,6 +128,7 @@ INSTALLED_APPS = [
     "django_browserid",
     "south",
     "preferences",
+    "tastypie",
     "moztrap.model.core",
     "moztrap.model.library",
     "moztrap.model.environments",
