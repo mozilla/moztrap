@@ -103,6 +103,8 @@ def run(request, run_id, env_id):
             "Please select a different test run.")
         return redirect("runtests")
 
+    # if an environment hasn't been set in this session yet, then ask the
+    # user for one
     try:
         environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:
@@ -136,6 +138,8 @@ def run(request, run_id, env_id):
                     "{0} is not a valid run/caseversion ID.".format(rcv_id))
                 break
 
+            # check if there are existing results for this user/env combination
+            # and if not, then create them.
             try:
                 result = rcv.results.get(
                     tester=request.user, environment=environment)
