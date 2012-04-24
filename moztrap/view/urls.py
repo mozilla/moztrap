@@ -10,12 +10,12 @@ from django.contrib import admin
 
 from tastypie.api import Api
 
-from moztrap.model.execution.api import RunResource, RunCasesResource
-#    RunCaseVersionResource, \
-#    RunCasesDetailResource, ResultResource
+from moztrap.model.execution.api import RunResource, RunCasesResource, \
+    RunEnvironmentsResource
+
 from moztrap.model.environments.api import EnvironmentResource
-from moztrap.model.library.api import CaseVersionResource
-from moztrap.model.core.api import ProductVersionResource
+#from moztrap.model.library.api import CaseVersionResource
+from moztrap.model.core.api import ProductResource, ProductVersionResource
 
 admin.autodiscover()
 
@@ -25,12 +25,12 @@ session_csrf.monkeypatch()
 v1_api = Api(api_name='v1')
 v1_api.register(RunResource())
 v1_api.register(RunCasesResource())
-##v1_api.register(RunCaseVersionResource())
-##v1_api.register(RunCasesDetailResource())
+v1_api.register(RunEnvironmentsResource())
+
 #v1_api.register(ResultResource())
-v1_api.register(CaseVersionResource())
+#v1_api.register(CaseVersionResource())
 v1_api.register(EnvironmentResource())
-#v1_api.register(ProductResource())
+v1_api.register(ProductResource())
 v1_api.register(ProductVersionResource())
 
 
