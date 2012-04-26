@@ -1,5 +1,6 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.authorization import DjangoAuthorization, Authorization
 
 from .models import Run, RunCaseVersion, Result
 from ..core.api import ProductVersionResource
@@ -40,6 +41,7 @@ class RunResource(ModelResource):
 class RunCasesResource(RunResource):
     """ Fetch a test run with all its associated cases. """
 
+
     def dehydrate(self, bundle):
         bundle = super(RunCasesResource, self).dehydrate(bundle)
 
@@ -62,6 +64,12 @@ class RunCasesResource(RunResource):
         bundle.data["cases"] = cases
 
         return bundle
+
+class SubmitResultsResource(ModelResource):
+
+    class Meta:
+        authorization = DjangoAuthorization()
+
 
 
 # run/<id>/environments
