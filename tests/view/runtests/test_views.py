@@ -376,6 +376,18 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         res.mustcontain("Foo Case")
 
+    def test_runcaseversion_env_narrowed(self):
+        """Lists only correct env runcaseversions."""
+        self.create_rcv(caseversion__name="Env0 Case", environments=[self.envs[0]])
+        self.create_rcv(caseversion__name="Env1 Case", environments=[self.envs[1]])
+
+        res = self.get(status=200)
+
+        res.mustcontain("Env0 Case")
+        self.assertNotIn(
+            "Env1 Case",
+            res,
+        )
 
     def test_redirect_preserves_sort(self):
         """Redirect after non-Ajax post preserves sort params."""
