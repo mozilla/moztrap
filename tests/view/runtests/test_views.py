@@ -230,6 +230,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             "run": self.testrun,
             "caseversion__productversion": self.testrun.productversion,
             "caseversion__case__product": self.testrun.productversion.product,
+            "environments": self.envs,
             }
         defaults.update(kwargs)
         return self.F.RunCaseVersionFactory.create(**defaults)
