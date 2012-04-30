@@ -354,7 +354,7 @@
             }
           }, timeout);
         }
-        
+
         var onMessage = function(origin, method, m) {
           // if an observer was specified at allocation time, invoke it
           if (typeof cfg.gotMessageObserver === 'function') {
@@ -656,7 +656,10 @@
     // checking Mobile Firefox (Fennec)
     function isFennec() {
       try {
-        return (navigator.userAgent.indexOf('Fennec/') != -1);
+        // We must check for both XUL and Java versions of Fennec.  Both have
+        // distinct UA strings.
+        return (userAgent.indexOf('Fennec/') != -1) ||  // XUL
+                 (userAgent.indexOf('Firefox/') != -1 && userAgent.indexOf('Android') != -1);   // Java
       } catch(e) {};
       return false;
     }
@@ -767,12 +770,13 @@
             try {
               var d = JSON.parse(e.data);
               if (d.a === 'ready') messageTarget.postMessage(req, origin);
-              else if (d.a === 'error') cb(d.d);
-              else if (d.a === 'response') {
+              else if (d.a === 'error') {
+                if (cb) { cb(d.d); cb = null; }
+              } else if (d.a === 'response') {
                 removeListener(window, 'message', onMessage);
                 removeListener(window, 'unload', cleanup);
                 cleanup();
-                cb(null, d.d);
+                if (cb) { cb(null, d.d); cb = null; }
               }
             } catch(e) { }
           };
@@ -831,7 +835,7 @@
           ieNosupport = ieVersion > -1 && ieVersion < 8;
 
       if(ieNosupport) {
-        return "IE_VERSION";
+        return "BAD_IE_VERSION";
       }
     }
 
@@ -840,29 +844,54 @@
     }
 
     function checkLocalStorage() {
-      var localStorage = 'localStorage' in win && win['localStorage'] !== null;
-      if(!localStorage) {
-        return "LOCALSTORAGE";
+      // Firefox/Fennec/Chrome blow up when trying to access or
+      // write to localStorage. We must do two explicit checks, first
+      // whether the browser has localStorage.  Second, we must check
+      // whether the localStorage can be written to.  Firefox (at v11)
+      // throws an exception when querying win['localStorage']
+      // when cookies are disabled. Chrome (v17) excepts when trying to
+      // write to localStorage when cookies are disabled. If an
+      // exception is thrown, then localStorage is disabled. If no
+      // exception is thrown, hasLocalStorage will be true if the
+      // browser supports localStorage and it can be written to.
+      try {
+        var hasLocalStorage = 'localStorage' in win
+                        // Firefox will except here if cookies are disabled.
+                        && win['localStorage'] !== null;
+
+        if(hasLocalStorage) {
+          // browser has localStorage, check if it can be written to. If
+          // cookies are disabled, some browsers (Chrome) will except here.
+          win['localStorage'].setItem("test", "true");
+          win['localStorage'].removeItem("test");
+        }
+        else {
+          // Browser does not have local storage.
+          return "LOCALSTORAGE_NOT_SUPPORTED";
+        }
+      } catch(e) {
+          return "LOCALSTORAGE_DISABLED";
       }
     }
 
     function checkPostMessage() {
       if(!win.postMessage) {
-        return "POSTMESSAGE";
+        return "POSTMESSAGE_NOT_SUPPORTED";
       }
     }
 
     function checkJSON() {
       if(!(window.JSON && window.JSON.stringify && window.JSON.parse)) {
-        return "JSON";
+        return "JSON_NOT_SUPPORTED";
       }
     }
 
     function isSupported() {
-      reason = checkLocalStorage() || checkPostMessage() || checkJSON() || explicitNosupport();
+      reason = explicitNosupport() || checkLocalStorage() || checkPostMessage() || checkJSON();
 
       return !reason;
     }
+
 
     function getNoSupportReason() {
       return reason;
@@ -890,126 +919,240 @@
     };
   }());
 
-
-  // this is for calls that are non-interactive
-  function _open_hidden_iframe(doc) {
-    var iframe = doc.createElement("iframe");
-    iframe.style.display = "none";
-    doc.body.appendChild(iframe);
-    iframe.src = ipServer + "/communication_iframe";
-    return iframe;
-  }
-
-  /**
-   * The meat and potatoes of the verified email protocol
-   */
-
-
   if (!navigator.id) {
     navigator.id = {};
   }
 
-  if (!navigator.id.getVerifiedEmail || navigator.id._getVerifiedEmailIsShimmed) {
+  if (!navigator.id.request || navigator.id._shimmed) {
     var ipServer = "https://browserid.org";
-    var isFennec = navigator.userAgent.indexOf('Fennec/') != -1;
+    var userAgent = navigator.userAgent;
+    // We must check for both XUL and Java versions of Fennec.  Both have
+    // distinct UA strings.
+    var isFennec = (userAgent.indexOf('Fennec/') != -1) ||  // XUL
+                     (userAgent.indexOf('Firefox/') != -1 && userAgent.indexOf('Android') != -1);   // Java
+
     var windowOpenOpts =
       (isFennec ? undefined :
-       "menubar=0,location=1,resizable=0,scrollbars=0,status=0,dialog=1,width=700,height=375");
+       "menubar=0,location=1,resizable=1,scrollbars=1,status=0,dialog=1,width=700,height=375");
 
     var w;
 
-    navigator.id.get = function(callback, options) {
-      if (typeof callback !== 'function') {
-        throw "navigator.id.get() requires a callback argument";
+    // table of registered observers
+    var observers = {
+      login: null,
+      logout: null,
+      ready: null
+    };
+
+    var compatMode = undefined;
+    function checkCompat(requiredMode) {
+      if (requiredMode === true) {
+        // this deprecation warning should be re-enabled when the .watch and .request APIs become final.
+        // try { console.log("this site uses deprecated APIs (see documentation for navigator.id.request())"); } catch(e) { }
       }
 
-      if (options && options.silent) {
-        _noninteractiveCall('getPersistentAssertion', { }, function(rv) {
-          callback(rv);
-        }, function(e, msg) {
-          callback(null);
+      if (compatMode === undefined) compatMode = requiredMode;
+      else if (compatMode != requiredMode) {
+        throw "you cannot combine the navigator.id.watch() API with navigator.id.getVerifiedEmail() or navigator.id.get()" +
+              "this site should instead use navigator.id.request() and navigator.id.watch()";
+      }
+    }
+
+    var commChan;
+
+    // this is for calls that are non-interactive
+    function _open_hidden_iframe() {
+      try {
+        if (!commChan) {
+          var doc = window.document;
+          var iframe = doc.createElement("iframe");
+          iframe.style.display = "none";
+          doc.body.appendChild(iframe);
+          iframe.src = ipServer + "/communication_iframe";
+          commChan = Channel.build({
+            window: iframe.contentWindow,
+            origin: ipServer,
+            scope: "mozid_ni",
+            onReady: function() {
+              // once the channel is set up, we'll fire a loaded message.  this is the
+              // cutoff point where we'll say if 'setLoggedInUser' was not called before
+              // this point, then it wont be called (XXX: optimize and improve me)
+              commChan.call({
+                method: 'loaded',
+                success: function(){
+                  if (observers.ready) observers.ready();
+                }, error: function() {
+                }
+              });
+            }
+          });
+
+          commChan.bind('logout', function(trans, params) {
+            if (observers.logout) observers.logout();
+          });
+
+          commChan.bind('login', function(trans, params) {
+            if (observers.login) observers.login(params);
+          });
+        }
+      } catch(e) {
+        // channel building failed!  this is probably an unsupported browser.  let's ignore
+        // the error and allow higher level code to handle user messaging.
+        commChan = undefined;
+      }
+    }
+
+    function internalWatch(options) {
+      if (typeof options !== 'object') return;
+
+      if (options.onlogin && typeof options.onlogin !== 'function' ||
+          options.onlogout && typeof options.onlogout !== 'function' ||
+          options.onready && typeof options.onready !== 'function')
+      {
+        throw "non-function where function expected in parameters to navigator.id.watch()";
+      }
+
+      observers.login = options.onlogin || null;
+      observers.logout = options.onlogout || null;
+      observers.ready = options.onready || null;
+
+      _open_hidden_iframe();
+
+      // check that the commChan was properly initialized before interacting with it.
+      // on unsupported browsers commChan might still be undefined, in which case
+      // we let the dialog display the "unsupported browser" message upon spawning.
+      if (typeof options.email !== 'undefined' && commChan) {
+        commChan.notify({
+          method: 'loggedInUser',
+          params: options.email
         });
-      } else {
-        // focus an existing window
-        if (w) {
+      }
+    }
+
+    function internalRequest(options) {
+      // focus an existing window
+      if (w) {
+        try {
+          w.focus();
+        }
+        catch(e) {
+          /* IE7 blows up here, do nothing */
+        }
+        return;
+      }
+
+      if (!BrowserSupport.isSupported()) {
+        var reason = BrowserSupport.getNoSupportReason(),
+        url = "unsupported_dialog";
+
+        if(reason === "LOCALSTORAGE_DISABLED") {
+          url = "cookies_disabled";
+        }
+
+        w = window.open(
+          ipServer + "/" + url,
+          null,
+          windowOpenOpts);
+        return;
+      }
+
+      // notify the iframe that the dialog is running so we
+      // don't do duplicative work
+      if (commChan) commChan.notify({ method: 'dialog_running' });
+
+      w = WinChan.open({
+        url: ipServer + '/sign_in',
+        relay_url: ipServer + '/relay',
+        window_features: windowOpenOpts,
+        params: {
+          method: "get",
+          params: options
+        }
+      }, function(err, r) {
+        // unpause the iframe to detect future changes in login state
+        if (commChan) {
+          // update the loggedInUser in the case that an assertion was generated, as
+          // this will prevent the comm iframe from thinking that state has changed
+          // and generating a new assertion.  IF, however, this request is not a success,
+          // then we do not change the loggedInUser - and we will let the comm frame determine
+          // if generating a logout event is the right thing to do
+          if (!err && r && r.email) {
+            commChan.notify({ method: 'loggedInUser', params: r.email });
+          }
+          commChan.notify({ method: 'dialog_complete' });
+        }
+
+        // clear the window handle
+        w = undefined;
+        if (!err && r && r.assertion) {
           try {
-            w.focus();
+            if (observers.login) observers.login(r.assertion);
+          } catch(e) {
+            // client's observer threw an exception
           }
-          catch(e) {
-            /* IE7 blows up here, do nothing */
-          }
-          return;
         }
 
-        if (!BrowserSupport.isSupported()) {
-          w = window.open(
-            ipServer + "/unsupported_dialog",
-            null,
-            windowOpenOpts);
-          return;
-        }
-
-        w = WinChan.open({
-          url: ipServer + '/sign_in',
-          relay_url: ipServer + '/relay',
-          window_features: windowOpenOpts,
-          params: {
-            method: "get",
-            params: options
-          }
-        }, function(err, r) {
-          // clear the window handle
-          w = undefined;
-          // ignore err!
-          callback(err ? null : (r ? r : null));
-        });
-      }
-    };
-
-    navigator.id.getVerifiedEmail = function (callback, options) {
-      if (options) {
-        throw "getVerifiedEmail doesn't accept options.  use navigator.id.get() instead.";
-      }
-      navigator.id.get(callback);
-    };
-
-    navigator.id.logout = function(callback) {
-      _noninteractiveCall('logout', { }, function(rv) {
-        callback(rv);
-      }, function() {
-        callback(null);
+        // complete
+        if (options && options.onclose) options.onclose();
+        delete options.onclose;
       });
     };
 
-    var _noninteractiveCall = function(method, args, onsuccess, onerror) {
-      var doc = window.document;
-      var ni_iframe = _open_hidden_iframe(doc);
-
-      var chan = Channel.build({window: ni_iframe.contentWindow, origin: ipServer, scope: "mozid_ni"});
-
-      function cleanup() {
-        chan.destroy();
-        chan = undefined;
-        doc.body.removeChild(ni_iframe);
-      }
-
-      chan.call({
-        method: method,
-        params: args,
-        success: function(rv) {
-          if (onsuccess) {
-            onsuccess(rv);
-          }
-          cleanup();
+    navigator.id = {
+      // The experimental API, not yet final
+      experimental: {
+        request: function(options) {
+          checkCompat(false);
+          return internalRequest(options);
         },
-        error: function(code, msg) {
-          if (onerror) onerror(code, msg);
-          cleanup();
+        watch: function(options) {
+          checkCompat(false);
+          internalWatch(options);
         }
-      });
+      },
+      // logout from the current website
+      // NOTE: callback argument will be deprecated when experimental API lands, to
+      //       be replaced with the .onlogout observer of the watch api.
+      logout: function(callback) {
+        // allocate iframe if it is not allocated
+        _open_hidden_iframe();
+        // send logout message
+        commChan.notify({ method: 'logout' });
+        if (typeof callback === 'function') setTimeout(callback, 0);
+      },
+      // get an assertion
+      get: function(callback, options) {
+        options = options || {};
+        checkCompat(true);
+        internalWatch({
+          onlogin: function(assertion) {
+            if (callback) {
+              callback(assertion);
+              callback = null
+            }
+          }
+        });
+        options.onclose = function() {
+          if (callback) {
+            callback(null);
+            callback = null;
+          }
+          internalWatch({});
+        };
+        if (options && options.silent) {
+          if (callback) setTimeout(function() { callback(null); }, 0);
+        } else {
+          internalRequest(options);
+        }
+      },
+      // backwards compatibility with old API
+      getVerifiedEmail: function(callback) {
+        checkCompat(true);
+        navigator.id.get(callback);
+      },
+      // required for forwards compatibility with native implementations
+      _shimmed: true
     };
-
-    navigator.id._getVerifiedEmailIsShimmed = true;
   }
 }());
 
