@@ -86,8 +86,9 @@
 {% endblock body %}
 
 <!-- JavaScript -->
-{% compress js %}
 {% block js %}
+<script src="https://browserid.org/include.js"></script>
+{% compress js %}
 <script src="{{ STATIC_URL }}js/jquery-1.7.2.js"></script>
 <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.mockjax.js"></script>
@@ -97,7 +98,6 @@
 <script src="{{ STATIC_URL }}js/jquery.placeholder.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.superformset.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.sorter.js"></script>
-<script src="{{ STATIC_URL }}js/browserid-include.js"></script>
 <script src="{{ STATIC_URL }}browserid/browserid.js"></script>
 <script src="{{ STATIC_URL }}html5accordion/jquery.html5accordion.js"></script>
 <script src="{{ STATIC_URL }}messages_ui/jquery.messages-ui.js"></script>
@@ -115,8 +115,8 @@
 <script src="{{ STATIC_URL }}js/manage-env.js"></script>
 <script src="{{ STATIC_URL }}js/runtests.js"></script>
 <script src="{{ STATIC_URL }}js/init.js"></script>
-{% endblock %}
 {% endcompress %}
+{% endblock %}
 
 {% block last %}
 {% endblock %}
