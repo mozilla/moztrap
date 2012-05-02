@@ -230,6 +230,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             "run": self.testrun,
             "caseversion__productversion": self.testrun.productversion,
             "caseversion__case__product": self.testrun.productversion.product,
+            "environments": self.envs,
             }
         defaults.update(kwargs)
         return self.F.RunCaseVersionFactory.create(**defaults)
@@ -375,6 +376,21 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         res = self.get(status=200)
 
         res.mustcontain("Foo Case")
+
+
+    def test_runcaseversions_env_narrowed(self):
+        """Lists only correct env runcaseversions."""
+        self.create_rcv(
+            caseversion__name="Env0 Case", environments=self.envs[:1])
+        self.create_rcv(
+            caseversion__name="Env1 Case", environments=self.envs[1:])
+        self.create_rcv(caseversion__name="EnvAll Case")
+
+        res = self.get(status=200)
+
+        res.mustcontain("Env0 Case")
+        res.mustcontain("EnvAll Case")
+        self.assertNotIn("Env1 Case", res)
 
 
     def test_redirect_preserves_sort(self):

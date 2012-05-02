@@ -190,7 +190,7 @@ def run(request, run_id, env_id):
             "run": run,
             "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
-                "caseversion"),
+                "caseversion").filter(environments=environment),
             "finder": {
                 # finder decorator populates top column (products), we
                 # prepopulate the other two columns
