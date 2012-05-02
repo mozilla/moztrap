@@ -14,6 +14,14 @@ confirmation emails; configure the ``EMAIL_*`` settings and
 ``DEFAULT_FROM_EMAIL`` in your ``moztrap/settings/local.py`` to the appropriate
 values for your server.
 
+The default local-memory `cache backend`_ is not suitable for use with a
+production (multi-process) webserver; you'll get CSRF errors on login because
+the CSRF token won't be found in the cache. You need an out-of-process cache
+backend: memcached or Redis is recommended for production deployment. The
+Django file or database cache backends may also work for a small deployment
+that is not performance-sensitive. Configure the ``CACHE_BACKENDS`` setting in
+``moztrap/settings/local.py`` for the cache backend you want to use.
+
 In addition to the notes here, you should read through all comments in
 ``moztrap/settings/local.sample.py`` and make appropriate adjustments to your
 ``moztrap/settings/local.py`` before deploying this app into production.
@@ -22,6 +30,7 @@ In addition to the notes here, you should read through all comments in
 .. _mod_wsgi: http://modwsgi.org
 .. _nginx: http://nginx.org
 .. _gunicorn: http://gunicorn.org
+.. _cache backend: http://docs.djangoproject.com/en/dev/topics/cache/
 
 
 
