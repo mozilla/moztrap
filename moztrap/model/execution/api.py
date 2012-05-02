@@ -81,7 +81,7 @@ class ResultsResource(ModelResource):
 
     class Meta:
 
-        queryset = Results.objects.all()
+        queryset = Result.objects.all()
         resource_name = 'results'
         list_allowed_methods = ['post']
         authentication = ApiKeyAuthentication()
