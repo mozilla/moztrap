@@ -206,12 +206,10 @@ class BrowserIDTest(case.view.ViewTestCase):
 
     def test_auto_username_logout(self):
         """A user with an auto-username can logout."""
-        self.new_browserid()
-        user = self.model.User.objects.get()
+        logoutform = self.new_browserid().follow().follow().forms["logoutform"]
+        res = logoutform.submit().follow()
 
-        res = self.app.get(url=reverse("auth_logout"), user=user)
-
-        self.assertRedirects(res, reverse("auth_login"))
+        self.assertRedirects(res, reverse("auth_login") + "?next=/")
 
 
 
@@ -224,18 +222,19 @@ class LogoutTest(case.view.ViewTestCase):
         return reverse("auth_logout")
 
 
-    def test_logout(self):
-        """Successful logout redirects to login."""
-        self.F.UserFactory.create(username="test", password="sekrit")
+    def test_get_405(self):
+        """GETting the logout view results in HTTP 405 Method Not Allowed."""
+        self.get(status=405)
 
-        form = self.app.get(reverse("auth_login")).forms["loginform"]
-        form["username"] = "test"
-        form["password"] = "sekrit"
-        form.submit()
 
-        res = self.get(status=302)
+    def test_logout_redirect(self):
+        """Successful logout POST redirects to the page you were on."""
+        user = self.F.UserFactory.create()
 
-        self.assertRedirects(res, reverse("auth_login"))
+        form = self.app.get("/manage/runs/", user=user).forms["logoutform"]
+        res = form.submit()
+
+        self.assertRedirects(res, "/manage/runs/")
 
 
 
