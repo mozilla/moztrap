@@ -8,6 +8,9 @@ from django.conf import settings
 
 from django.contrib import admin
 
+from moztrap.model import mtadmin
+
+admin.site = mtadmin.MTAdminSite()
 admin.autodiscover()
 
 import session_csrf
