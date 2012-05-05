@@ -5,13 +5,41 @@ MT ModelAdmin and InlineModelAdmin for use with MTModel.
 from itertools import chain
 from functools import partial
 
+from django.conf import settings
 from django.forms.models import BaseInlineFormSet
+from django.views.decorators.cache import never_cache
 
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import actions
 from django.contrib.admin.util import flatten_fieldsets
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.views import redirect_to_login
 
 from moztrap.view.utils.mtforms import MTModelForm
+
+
+
+class MTAdminSite(admin.AdminSite):
+    """MozTrap admin site class."""
+    @never_cache
+    def login(self, request, extra_context=None):
+        """Displays the login form for the given HttpRequest."""
+        if request.user.is_authenticated():
+            messages.warning(
+                request,
+                "Your account does not have permissions to access that page. "
+                "Please log in with a different account, or visit a different "
+                "page. "
+                )
+        return redirect_to_login(
+            request.get_full_path(),
+            settings.LOGIN_URL,
+            REDIRECT_FIELD_NAME,
+            )
+
+
+
+site = MTAdminSite()
 
 
 

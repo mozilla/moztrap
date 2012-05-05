@@ -2,9 +2,34 @@
 Tests for MT base admin forms.
 
 """
+from django.core.urlresolvers import reverse
+
 from django.contrib.admin.sites import AdminSite
 
 from tests import case
+
+
+
+class MTAdminSiteTest(case.view.ViewTestCase):
+    """Tests of MTAdminSite"""
+    @property
+    def url(self):
+        return reverse("admin:index")
+
+
+    def test_login_redirect(self):
+        """No-user redirects to front-end login page with ?next parameter."""
+        res = self.get()
+
+        self.assertRedirects(res, "/users/login/?next=/admin/")
+
+
+    def test_login_redirect_message(self):
+        """Non-admin user redirects to login with message."""
+        res = self.get(user=self.F.UserFactory.create())
+
+        self.assertRedirects(res, "/users/login/?next=/admin/")
+        res.follow().mustcontain("have permission")
 
 
 
