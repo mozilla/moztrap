@@ -11,11 +11,13 @@ from django.contrib import admin
 from tastypie.api import Api
 
 from moztrap.model.execution.api import RunResource, RunCasesResource, \
-    RunEnvironmentsResource
+    RunEnvironmentsResource, RunCaseVersionResource, ResultResource, \
+    StepResultResource
 
-from moztrap.model.environments.api import EnvironmentResource
-#from moztrap.model.library.api import CaseVersionResource
-from moztrap.model.core.api import ProductResource, ProductVersionResource
+from moztrap.model.environments.api import EnvironmentResource, ElementResource
+from moztrap.model.core.api import ProductResource, ProductVersionResource, UserResource
+
+from moztrap.model.library.api import CaseVersionResource, CaseResource
 
 admin.autodiscover()
 
@@ -26,12 +28,19 @@ v1_api = Api(api_name='v1')
 v1_api.register(RunResource())
 v1_api.register(RunCasesResource())
 v1_api.register(RunEnvironmentsResource())
+v1_api.register(RunCaseVersionResource())
+v1_api.register(ResultResource())
+v1_api.register(StepResultResource())
 
-#v1_api.register(ResultResource())
-#v1_api.register(CaseVersionResource())
+v1_api.register(CaseResource())
+v1_api.register(CaseVersionResource())
+
 v1_api.register(EnvironmentResource())
+v1_api.register(ElementResource())
+
 v1_api.register(ProductResource())
 v1_api.register(ProductVersionResource())
+v1_api.register(UserResource())
 
 
 

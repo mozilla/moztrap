@@ -15,6 +15,7 @@ class ProductResource(ModelResource):
         filtering = {"name": (ALL)}
 
 
+
 class ProductVersionResource(ModelResource):
     """
     Fetch the versions for the specified test product
@@ -22,6 +23,7 @@ class ProductVersionResource(ModelResource):
     """
 
     product = fields.ForeignKey(ProductResource, "product")
+
 
     class Meta:
         queryset = ProductVersion.objects.all()
@@ -39,19 +41,26 @@ class ProductVersionResource(ModelResource):
 
 
 
+class UserResource(ModelResource):
+
+
+    class Meta:
+        queryset = User.objects.all()
+        fields = ["username", "resource_uri"]
+        # Add it here.
+        authentication = BasicAuthentication()
+        authorization = DjangoAuthorization()
+
+
+
 class ReportResultsAuthorization(Authorization):
+
+
     def is_authorized(self, request, object=None):
-        if request.user.has_perm("Can run tests and report results."):
+        if request.user.has_perm("execution.EXECUTE"):
             return True
         else:
             return False
 
 
-class UserResource(ModelResource):
-    class Meta:
-        queryset = User.objects.all()
-        resource_name = 'auth/user'
-        excludes = ['email', 'password', 'is_superuser']
-        # Add it here.
-        authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
+
