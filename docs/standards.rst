@@ -3,13 +3,6 @@ Coding Standards
 
 .. contents:: :local:
 
-License blocks
---------------
-
-Every code file (including Python, Javascript, and Sass, but excluding
-templates) should begin with the standard license comment header block.
-
-
 Python
 ------
 

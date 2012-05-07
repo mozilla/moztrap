@@ -19,6 +19,9 @@ from moztrap.model.core.api import ProductResource, ProductVersionResource, User
 
 from moztrap.model.library.api import CaseVersionResource, CaseResource
 
+from moztrap.model import mtadmin
+
+admin.site = mtadmin.MTAdminSite()
 admin.autodiscover()
 
 import session_csrf

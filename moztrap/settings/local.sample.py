@@ -95,10 +95,11 @@ Copy local.sample.py to local.py and modify as needed.
 #COMPRESS_OFFLINE = True
 
 # Uncomment this (and modify LOCATION appropriately) to use memcached rather
-# than local-memory cache. See
-# http://docs.djangoproject.com/en/dev/topics/cache/ for more configuration
-# options. For faster caching, install pylibmc in place of python-memcached and
-# replace MemcachedCache with PyLibMCCache.
+# than local-memory cache. This (or some other out-of-process cache backend) is
+# required if running MozTrap under a multi-process webserver such as
+# Apache/mod_wsgi. See http://docs.djangoproject.com/en/dev/topics/cache/ for
+# more configuration options. For faster caching, install pylibmc in place of
+# python-memcached and replace MemcachedCache with PyLibMCCache.
 #CACHES = {
 #    "default": {
 #        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
