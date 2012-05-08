@@ -1,7 +1,9 @@
+from tastypie.resources import ALL
 from tastypie import fields
 from tastypie.resources import ModelResource
 
 from .models import CaseVersion, Case
+from ..environments.api import EnvironmentResource
 
 
 class CaseResource(ModelResource):
@@ -14,10 +16,12 @@ class CaseResource(ModelResource):
 class CaseVersionResource(ModelResource):
 
     case = fields.ForeignKey(CaseResource, "case")
+    environments = fields.ToManyField(EnvironmentResource, "environments")
 
     class Meta:
         queryset = CaseVersion.objects.all()
         fields = ["id", "name", "description", "resource_uri", "case"]
+        filtering = {"environments": (ALL)}
 
 
 

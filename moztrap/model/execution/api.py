@@ -3,9 +3,8 @@ from tastypie import fields
 from tastypie.authorization import DjangoAuthorization, Authorization
 from tastypie.authentication import ApiKeyAuthentication, Authentication
 
-from json import loads
-
 from .models import Run, RunCaseVersion, Result, StepResult
+from ..environments.models import Environment
 from ..core.api import ProductVersionResource, UserResource
 from ..core.auth import User
 from ..environments.api import EnvironmentResource
@@ -13,12 +12,11 @@ from ..library.api import CaseVersionResource
 
 
 
-# /run/
 class RunResource(ModelResource):
     """ Fetch the test runs for the specified product and version. """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
-    environments = fields.ToManyField(EnvironmentResource, "environments")
+#    environments = fields.ToManyField(EnvironmentResource, "environments")
 
     class Meta:
         queryset = Run.objects.all()
@@ -34,7 +32,6 @@ class RunResource(ModelResource):
             ]
         filtering = {
             "productversion": (ALL_WITH_RELATIONS),
-            "product_version_name": ("exact"),
             "status": ("exact"),
         }
 
@@ -47,7 +44,36 @@ class RunResource(ModelResource):
 
 
 
+class RunEnvironmentsResource(RunResource):
+    """Fetch a test run with all its associated environments"""
+
+    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
+
+    class Meta:
+        queryset = Run.objects.all()
+        fields = [
+            "id",
+            "name",
+            "description",
+            "resource_uri",
+            "status",
+            "environments",
+            ]
+
+
+
 class RunCaseVersionResource(ModelResource):
+    """
+    RunCaseVersion represents the connection between a run and a caseversion.
+
+    It is possible to return a result for each runcaseversion.  So the result
+    will sit as a peer to the caseversion under the runcaseversion.
+
+    How do I post this, then?  Not this this url.  presumably with the results URL,
+    but I will need to have a link to the appropriate runcaseversion within each Result as a ForeignKey?
+
+    """
+
     run = fields.ForeignKey(RunResource, "run")
     caseversion = fields.ForeignKey(CaseVersionResource, "caseversion", full=True)
 
@@ -55,45 +81,15 @@ class RunCaseVersionResource(ModelResource):
         queryset = RunCaseVersion.objects.all()
         filtering = {
             "run": (ALL_WITH_RELATIONS),
+            "caseversion": (ALL_WITH_RELATIONS),
             }
-        fields = {"id", "resource_uri"}
+        fields = {"id", "run", "run_id"}
 
-
-
-# /run/<id>/cases
-class RunCasesResource(RunResource):
-    """
-    Fetch a test run with all its associated cases.
-
-    @@@ - This is returning just the caseversions, but not possibly associated
-    results.  Would we want to return any existing results for the caseversion/
-    env/user combo, too?  So that the client could see that some already
-    existed?  For automation, that may not matter but if someone used this in
-    some other type of client tool, they likely would so they don't repeat
-    existing tests.
-    """
 
     def dehydrate(self, bundle):
-        bundle = super(RunCasesResource, self).dehydrate(bundle)
 
-        # get cases for this run
-        caseversions = bundle.obj.caseversions.all()
-        cases = []
-        for caseversion in caseversions:
-            case = caseversion.case
-            prefix_dash_id = "{0}-{1}".format(
-                case.idprefix,
-                case.id,
-                ) if not case.idprefix == "" else case.id
-
-            cases.append({
-                "id": case.id,
-                "prefix_id": prefix_dash_id,
-                "name": caseversion.name,
-                "description": caseversion.description,
-            })
-        bundle.data["cases"] = cases
-
+        # give the id of the run for convenience
+        bundle.data["run_id"] = bundle.obj.run.id
         return bundle
 
 
@@ -111,88 +107,63 @@ class StepResultResource(ModelResource):
 
 
 class ResultResource(ModelResource):
-    environment = fields.ForeignKey(EnvironmentResource, "environment", full=True)
-    runcaseversion = fields.ForeignKey(RunCaseVersionResource, "runcaseversion", full=True)
-    tester = fields.ForeignKey(UserResource, "tester", full=True)
+    environment = fields.ForeignKey(EnvironmentResource, "environment")
+    runcaseversion = fields.ForeignKey(RunCaseVersionResource, "runcaseversion")
+    tester = fields.ForeignKey(UserResource, "tester")
     stepresults = fields.ToManyField(StepResultResource, "stepresults", full=True)
 
     class Meta:
 
         queryset = Result.objects.all()
         resource_name = 'result'
-        #list_allowed_methods = ['put']
+        list_allowed_methods = ['patch']
         authentication = Authentication()
         authorization = Authorization()
 #        authentication = ApiKeyAuthentication()
 #        authorization = DjangoAuthorization()
 
-        filtering = {
-            "runcaseversion": (ALL_WITH_RELATIONS),
-            "environment": (ALL),
-            }
-        fields = {
-            "id",
-            "resource_uri",
-            "runcaseversion",
-            "environment",
-            "status",
-            "tester",
-            "comment",
-            "stepresults"
-            }
 
-    # I don't think I need this.  should be able to just POST the data.
-    def x_put_list(self, request, **kwargs):
+    def obj_create(self, bundle, request=None, **kwargs):
         """
-        Create the new Resource object for the caseversions and environments
-        provided in each Result object of the JSON.
-
-        It's possible that the result already exists for this user/caseversion/
-        env combination.  So in that case we would want to update that result.
+        This is where I need to do the creation of the results objects myself.  I should call
+        the set status field to "do the right things" like I talked about with Carl.
 
         """
-#        assert False, request.raw_post_data
-        result_list = loads(request.PUT.values()[0])
+#        return super(ResultResource, self).obj_create(bundle, request, **kwargs)
 
-        run_id = request.GET.get("run_id")
+        data = bundle.data.copy()
 
-        for item in result_list:
-            rcv = RunCaseVersion.objects.get(run=run_id, caseversion=caseversion_id)
+        rcv = RunCaseVersion.objects.get(pk=data.pop("runcaseversion"))
+        env = Environment.objects.get(pk=data.pop("environment"))
+        tester = User.objects.get(pk=data.pop("tester"))
+        user = User.objects.get(username=request.GET.get("username"))
 
-            result, created = Result.objects.get_or_create(
-#                user=request.user,
-#                tester = request.user,
-                runcaseversion=rcv,
-                user = User.objects.get(username="camd"),
-                environment__id=item["environment_id"],
-                )
+        data["user"] = user
 
-            # just call method on result to set status instead
-            assert False
-            result.status = item.status
-            result.comment = item.comment
+        result = Result(
+            runcaseversion=rcv,
+            environment=env,
+            tester=tester,
+            created_by=user,
+        )
+        result.save()
 
-            #@@@ - support bug_url
-            result.save()
+        status_methods = {
+            "passed": result.finishsucceed,
+            "failed": result.finishfail,
+            "invalidated": result.finishinvalidate,
+            }
 
+        set_status = status_methods[data.pop("status")]
+        set_status(**data)
 
-
-class RunEnvironmentsResource(RunResource):
-    """Fetch a test run with all its associated environments"""
-
-    def dehydrate(self, bundle):
-        bundle = super(RunEnvironmentsResource, self).dehydrate(bundle)
-
-        environments = bundle.obj.environments.all()
-        runenvs = []
-        for env in environments:
-            runenvs.append({
-                "id": env.id,
-                "environment": [x.name for x in env.elements.all()],
-            })
-
-        bundle.data["environments"] = runenvs
+        bundle.obj = result
         return bundle
+
+
+
+
+
 
 """
 Authentication:  use API Key.

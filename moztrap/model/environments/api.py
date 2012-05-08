@@ -18,6 +18,7 @@ class EnvironmentResource(ModelResource):
     class Meta:
         queryset = Environment.objects.all()
         fields = ["id", "resource_uri"]
+        filtering = {"elements"}
 
 
 
