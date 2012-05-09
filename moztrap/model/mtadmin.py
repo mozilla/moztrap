@@ -7,6 +7,7 @@ from functools import partial
 
 from django.conf import settings
 from django.forms.models import BaseInlineFormSet
+from django.shortcuts import redirect
 from django.views.decorators.cache import never_cache
 
 from django.contrib import admin, messages
@@ -37,6 +38,18 @@ class MTAdminSite(admin.AdminSite):
             REDIRECT_FIELD_NAME,
             )
 
+
+    @never_cache
+    def logout(self, request, extra_context=None):
+        """
+        Make admin 'logout' a no-op.
+
+        We replace the link with a "back to MozTrap" link.
+
+        The default AdminSite.logout implementation exposes us to logout CSRF.
+
+        """
+        return redirect("home")
 
 
 site = MTAdminSite()
