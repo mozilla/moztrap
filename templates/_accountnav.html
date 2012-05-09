@@ -12,7 +12,8 @@
   </p>
   <ul class="account-links">
     {% if request.user.is_authenticated %}
-      <li><a href="{% url auth_logout %}?next={{ request.path }}" class="signout">Sign Out</a></li>
+      <li><form action="{% url auth_logout %}?next={{ request.path }}" method="POST" class="signout" id="logoutform">{% csrf_token %}<button type="submit">Sign Out</button></form></li>
+
       {% if not USE_BROWSERID %}
         <li><a href="{% url auth_password_change %}" class="changepwd">Password</a></li>
       {% endif %}

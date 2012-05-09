@@ -1168,6 +1168,22 @@ body > div {
 #accountnav ul::after {
   content: "]";
 }
+#accountnav form {
+  display: inline;
+}
+#accountnav button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-shadow: none;
+  display: inline;
+  background: none;
+  color: #516985;
+  font-weight: normal;
+}
+#accountnav button:focus, #accountnav button:hover, #accountnav button:active {
+  color: #4f1114;
+}
 #accountnav .help {
   -webkit-box-shadow: rgba(134, 149, 168, 0.667) 0 0 0.296em inset;
   -moz-box-shadow: rgba(134, 149, 168, 0.667) 0 0 0.296em inset;
