@@ -32,6 +32,27 @@ class MTAdminSiteTest(case.view.ViewTestCase):
         res.follow().mustcontain("have permission")
 
 
+    def test_logout_doesnt(self):
+        """
+        Admin 'logout' view just redirects to home.
+
+        The default version exposes us to logout CSRF. We remove the admin
+        logout link to, but we still need to neuter the actual view since
+        removing it from the url patterns is a pain.
+
+        """
+        from django.contrib.auth.signals import user_logged_out
+        def handler(*args, **kwargs):
+            self.fail("User logged out, should not have been.")
+        user_logged_out.connect(handler, weak=True)
+
+        user = self.F.UserFactory.create(is_staff=True)
+
+        res = self.app.get(reverse("admin:logout"), user=user)
+
+        self.assertRedirects(res, "/")
+
+
 
 class TeamModelAdminTest(case.DBTestCase):
     """Tests of TeamModelAdmin."""
