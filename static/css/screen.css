@@ -3400,6 +3400,32 @@ body.login .formfield .value, body.login .formfield .errorlist {
   vertical-align: top;
 }
 
+#setusername {
+  overflow: hidden;
+  *zoom: 1;
+}
+#setusername .form-actions {
+  float: right;
+}
+#setusername .action-cancel-setusername {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #516985;
+  background: none;
+  font-weight: normal;
+}
+#setusername .action-cancel-setusername:focus, #setusername .action-cancel-setusername:hover, #setusername .action-cancel-setusername:active {
+  color: #4f1114;
+}
+#setusername #logoutform {
+  float: right;
+  padding: 1.125em 0.4em;
+}
+#setusername #logoutform::after {
+  content: " or ";
+}
+
 .create {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

@@ -19,12 +19,12 @@
       {% endfor %}
     </div>
     <div class="form-actions">
-      <button type="submit">continue!</button>
+      <button type="submit" class="action-setusername">continue!</button>
     </div>
   </form>
   <form method="POST" action="{% url auth_logout %}?next={{ next|default:'/' }}" id="logoutform">
     {% csrf_token %}
-    <button type="submit">cancel</button>
+    <button type="submit" class="action-cancel-setusername">cancel</button>
   </form>
 </section>
 {% endblock content %}
