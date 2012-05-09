@@ -10,7 +10,7 @@ from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
 from ..mtmodel import MTModel, TeamModel
-from .auth import Role
+from .auth import Role, User
 
 
 
@@ -188,3 +188,13 @@ class CorePreferences(Preferences):
 
     class Meta:
         verbose_name_plural = "core preferences"
+
+
+
+class ApiKey(MTModel):
+    owner = models.ForeignKey(User, related_name="api_keys")
+    key = models.CharField(max_length=36, unique=True)
+    active = models.BooleanField(default=True, db_index=True)
+
+    def __unicode__(self):
+        return self.key
