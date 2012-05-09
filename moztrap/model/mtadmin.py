@@ -65,6 +65,7 @@ class MTModelAdmin(admin.ModelAdmin):
         "modified_by",
         "deleted_on",
         "deleted_by",
+        "cc_version",
         ]
     actions = ["delete", "undelete", "delete_selected"]
 
@@ -119,6 +120,7 @@ class MTModelAdmin(admin.ModelAdmin):
 
         """
         meta_fields = [
+            ("cc_version",),
             ("created_on", "created_by"),
             ("modified_on", "modified_by"),
             ]
