@@ -17,6 +17,7 @@ class RunResource(MTModelResource):
     """ Fetch the test runs for the specified product and version. """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
+    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
 
     class Meta:
         queryset = Run.objects.all()
@@ -41,6 +42,18 @@ class RunResource(MTModelResource):
         bundle.data['product_name'] = pv.product.name
 
         return bundle
+
+
+    def dispatch_detail(self, request, **kwargs):
+        """For details, we want the full info on environments for the run """
+        self.fields["environments"].full=True
+        return super(RunResource, self).dispatch_detail(request, **kwargs)
+
+
+    def dispatch_list(self, request, **kwargs):
+        """For list, we don't want the full info on environments """
+        self.fields["environments"].full=False
+        return super(RunResource, self).dispatch_list(request, **kwargs)
 
 
 

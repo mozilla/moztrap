@@ -54,6 +54,7 @@ class RunResourceTest(case.api.ApiTestCase):
         for exp_run in [r1, r2]:
             exp_objects.append({
                 u"description" : unicode(exp_run.description),
+                u'environments': [],
                 u"id" : unicode(exp_run.id),
                 u"name" : unicode(exp_run.name),
                 u"product_name" : unicode(pv.product.name),
