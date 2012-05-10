@@ -1,10 +1,11 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from tastypie.authorization import DjangoAuthorization, Authorization
-from tastypie.authentication import ApiKeyAuthentication, Authentication
+from tastypie.authorization import Authorization
+from tastypie.authentication import Authentication
 
 from .models import Run, RunCaseVersion, Result, StepResult
-from ..core.api import ProductVersionResource, UserResource
+from ..core.api import (ProductVersionResource, UserResource,
+                        ReportResultsAuthorization, MTApiKeyAuthentication)
 from ..core.auth import User
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
@@ -43,8 +44,9 @@ class RunResource(MTModelResource):
 
         return bundle
 
+    #TODO @@@ Cookbook for Tastypie
     """
-    TODO @@@ Cookbook item for Tastypie docs.
+    Cookbook item for Tastypie docs.
     Want full=false in the list endpoint and full=True in
     the detail endpoint
     """
@@ -100,10 +102,9 @@ class ResultResource(ModelResource):
         queryset = Result.objects.all()
         resource_name = 'result'
         list_allowed_methods = ['patch']
-#        authentication = Authentication()
-#        authorization = Authorization()
-        authentication = ApiKeyAuthentication()
-        authorization = DjangoAuthorization()
+
+        authentication = MTApiKeyAuthentication()
+        authorization = ReportResultsAuthorization()
 
 
     def obj_create(self, bundle, request=None, **kwargs):

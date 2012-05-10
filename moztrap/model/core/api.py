@@ -1,10 +1,37 @@
-from tastypie.authentication import BasicAuthentication, Authentication
+from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import DjangoAuthorization, Authorization
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
-from .models import Product, ProductVersion
+from .models import Product, ProductVersion, ApiKey
+
 from .auth import User
+
+
+
+class MTApiKeyAuthentication(ApiKeyAuthentication):
+
+
+    def get_key(self, user, api_key):
+        try:
+            ApiKey.objects.get(owner=user, key=api_key, active=True)
+
+        except:
+            return self._unauthorized()
+
+        return True
+
+
+
+class ReportResultsAuthorization(Authorization):
+
+
+    def is_authorized(self, request, object=None):
+        if request.user.has_perm("execution.EXECUTE"):
+            return True
+        else:
+            return False
+
 
 
 class ProductResource(ModelResource):
@@ -47,20 +74,10 @@ class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
         fields = ["username", "resource_uri"]
-        # Add it here.
-        authentication = BasicAuthentication()
-        authorization = DjangoAuthorization()
 
-
-
-class ReportResultsAuthorization(Authorization):
-
-
-    def is_authorized(self, request, object=None):
-        if request.user.has_perm("execution.EXECUTE"):
-            return True
-        else:
-            return False
+        authentication = MTApiKeyAuthentication()
+        # TODO @@@ not clear what kind of auth to use here.
+#        authorization = ReportResultsAuthorization()
 
 
 
