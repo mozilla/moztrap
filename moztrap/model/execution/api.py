@@ -43,7 +43,11 @@ class RunResource(MTModelResource):
 
         return bundle
 
-
+    """
+    TODO @@@ Cookbook item for Tastypie docs.
+    Want full=false in the list endpoint and full=True in
+    the detail endpoint
+    """
     def dispatch_detail(self, request, **kwargs):
         """For details, we want the full info on environments for the run """
         self.fields["environments"].full=True
@@ -63,9 +67,6 @@ class RunCaseVersionResource(ModelResource):
 
     It is possible to return a result for each runcaseversion.  So the result
     will sit as a peer to the caseversion under the runcaseversion.
-
-    How do I post this, then?  Not this this url.  presumably with the results URL,
-    but I will need to have a link to the appropriate runcaseversion within each Result as a ForeignKey?
 
     """
 
@@ -99,19 +100,20 @@ class ResultResource(ModelResource):
         queryset = Result.objects.all()
         resource_name = 'result'
         list_allowed_methods = ['patch']
-        authentication = Authentication()
-        authorization = Authorization()
-#        authentication = ApiKeyAuthentication()
-#        authorization = DjangoAuthorization()
+#        authentication = Authentication()
+#        authorization = Authorization()
+        authentication = ApiKeyAuthentication()
+        authorization = DjangoAuthorization()
 
 
     def obj_create(self, bundle, request=None, **kwargs):
         """
-        This is where I need to do the creation of the results objects myself.  I should call
-        the set status field to "do the right things" like I talked about with Carl.
+        Manually create the proper results objects.
+
+        This is necessary because we have special handler methods for
+        setting the statuses which we want to keep DRY.
 
         """
-#        return super(ResultResource, self).obj_create(bundle, request, **kwargs)
 
         data = bundle.data.copy()
 
