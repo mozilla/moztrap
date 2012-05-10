@@ -11,8 +11,7 @@ from django.contrib import admin
 from tastypie.api import Api
 
 from moztrap.model.execution.api import RunResource, \
-    RunEnvironmentsResource, RunCaseVersionResource, ResultResource, \
-    StepResultResource
+    RunCaseVersionResource, ResultResource
 
 from moztrap.model.environments.api import EnvironmentResource, ElementResource
 from moztrap.model.core.api import ProductResource, ProductVersionResource, UserResource
@@ -31,12 +30,8 @@ session_csrf.monkeypatch()
 v1_api = Api(api_name=MTModelResource.API_VERSION)
 
 v1_api.register(RunResource())
-
-# @@@ TODO probably don't need this.  use EnvironmentResource directly, filtered on run?
-v1_api.register(RunEnvironmentsResource())
 v1_api.register(RunCaseVersionResource())
 v1_api.register(ResultResource())
-v1_api.register(StepResultResource())
 
 v1_api.register(CaseResource())
 v1_api.register(CaseVersionResource())

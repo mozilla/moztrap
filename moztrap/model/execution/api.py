@@ -3,13 +3,13 @@ from tastypie import fields
 from tastypie.authorization import DjangoAuthorization, Authorization
 from tastypie.authentication import ApiKeyAuthentication, Authentication
 
-from ..mtresource import MTModelResource
 from .models import Run, RunCaseVersion, Result, StepResult
-from ..environments.models import Environment
 from ..core.api import ProductVersionResource, UserResource
 from ..core.auth import User
 from ..environments.api import EnvironmentResource
+from ..environments.models import Environment
 from ..library.api import CaseVersionResource
+from ..mtresource import MTModelResource
 
 
 
@@ -17,7 +17,6 @@ class RunResource(MTModelResource):
     """ Fetch the test runs for the specified product and version. """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
-#    environments = fields.ToManyField(EnvironmentResource, "environments")
 
     class Meta:
         queryset = Run.objects.all()
@@ -42,24 +41,6 @@ class RunResource(MTModelResource):
         bundle.data['product_name'] = pv.product.name
 
         return bundle
-
-
-
-class RunEnvironmentsResource(RunResource):
-    """Fetch a test run with all its associated environments"""
-
-    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
-
-    class Meta:
-        queryset = Run.objects.all()
-        fields = [
-            "id",
-            "name",
-            "description",
-            "resource_uri",
-            "status",
-            "environments",
-            ]
 
 
 
@@ -95,23 +76,10 @@ class RunCaseVersionResource(ModelResource):
 
 
 
-class StepResultResource(ModelResource):
-
-    class Meta:
-        queryset = StepResult.objects.all()
-        fields = {
-            "bug_url",
-            "status",
-            "resource_uri",
-            }
-
-
-
 class ResultResource(ModelResource):
     environment = fields.ForeignKey(EnvironmentResource, "environment")
     runcaseversion = fields.ForeignKey(RunCaseVersionResource, "runcaseversion")
     tester = fields.ForeignKey(UserResource, "tester")
-    stepresults = fields.ToManyField(StepResultResource, "stepresults", full=True)
 
     class Meta:
 
