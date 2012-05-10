@@ -3,6 +3,7 @@ from tastypie import fields
 from tastypie.authorization import DjangoAuthorization, Authorization
 from tastypie.authentication import ApiKeyAuthentication, Authentication
 
+from ..mtresource import MTModelResource
 from .models import Run, RunCaseVersion, Result, StepResult
 from ..environments.models import Environment
 from ..core.api import ProductVersionResource, UserResource
@@ -12,7 +13,7 @@ from ..library.api import CaseVersionResource
 
 
 
-class RunResource(ModelResource):
+class RunResource(MTModelResource):
     """ Fetch the test runs for the specified product and version. """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")

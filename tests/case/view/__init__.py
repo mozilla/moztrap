@@ -9,5 +9,6 @@ from .base import (
     ListViewTestCase,
     ListFinderTests,
     NoCacheTest,
+    WebTest,
     )
 from . import manage

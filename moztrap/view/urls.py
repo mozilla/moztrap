@@ -20,6 +20,7 @@ from moztrap.model.core.api import ProductResource, ProductVersionResource, User
 from moztrap.model.library.api import CaseVersionResource, CaseResource
 
 from moztrap.model import mtadmin
+from moztrap.model.mtresource import MTModelResource
 
 admin.site = mtadmin.MTAdminSite()
 admin.autodiscover()
@@ -27,8 +28,11 @@ admin.autodiscover()
 import session_csrf
 session_csrf.monkeypatch()
 
-v1_api = Api(api_name='v1')
+v1_api = Api(api_name=MTModelResource.API_VERSION)
+
 v1_api.register(RunResource())
+
+# @@@ TODO probably don't need this.  use EnvironmentResource directly, filtered on run?
 v1_api.register(RunEnvironmentsResource())
 v1_api.register(RunCaseVersionResource())
 v1_api.register(ResultResource())
@@ -71,6 +75,6 @@ urlpatterns = patterns(
     url(r"^browserid/", include("moztrap.view.users.browserid_urls")),
 
     # api --------------------------------------------------------------------
-    url(r"^api/", include(v1_api.urls)),
+    url(r"^api/", include(v1_api.urls), name="api_dispatch"),
 
     ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
