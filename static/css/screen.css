@@ -1168,6 +1168,22 @@ body > div {
 #accountnav ul::after {
   content: "]";
 }
+#accountnav form {
+  display: inline;
+}
+#accountnav button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-shadow: none;
+  display: inline;
+  background: none;
+  color: #516985;
+  font-weight: normal;
+}
+#accountnav button:focus, #accountnav button:hover, #accountnav button:active {
+  color: #4f1114;
+}
 #accountnav .help {
   -webkit-box-shadow: rgba(134, 149, 168, 0.667) 0 0 0.296em inset;
   -moz-box-shadow: rgba(134, 149, 168, 0.667) 0 0 0.296em inset;
@@ -3382,6 +3398,32 @@ body.login .formfield .value, body.login .formfield .errorlist {
   margin: 0 0.198em;
   width: 79px;
   vertical-align: top;
+}
+
+#setusername {
+  overflow: hidden;
+  *zoom: 1;
+}
+#setusername .form-actions {
+  float: right;
+}
+#setusername .action-cancel-setusername {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #516985;
+  background: none;
+  font-weight: normal;
+}
+#setusername .action-cancel-setusername:focus, #setusername .action-cancel-setusername:hover, #setusername .action-cancel-setusername:active {
+  color: #4f1114;
+}
+#setusername #logoutform {
+  float: right;
+  padding: 1.125em 0.4em;
+}
+#setusername #logoutform::after {
+  content: " or ";
 }
 
 .create {

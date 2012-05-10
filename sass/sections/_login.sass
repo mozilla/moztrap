@@ -94,3 +94,19 @@ body.login
   width: image-width('browserid.png')
   vertical-align: top
 
+#setusername    
+  +clearfix
+  .form-actions
+    float: right
+  .action-cancel-setusername
+    +reset-box-model
+    color: $alt
+    background: none
+    font-weight: normal
+    #{$focus}
+      color: $accent
+  #logoutform
+    float: right
+    padding: rhythm(.75) .4em
+    &::after
+      content: ' or '

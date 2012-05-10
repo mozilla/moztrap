@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'MozTrap admin' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'MozTrap administration' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+  [ <a href="{% url 'home' %}">{% trans 'Back to MozTrap' %}</a> ]
+{% endblock %}

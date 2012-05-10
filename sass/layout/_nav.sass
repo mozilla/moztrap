@@ -56,6 +56,17 @@ $nav-link-hover-color : $red-dark
       content: "["
     &::after
       content: "]"
+  form
+    display: inline
+  button
+    +reset-box-model
+    +text-shadow(none)
+    display: inline
+    background: none
+    color: $alt
+    font-weight: normal
+    #{$focus}
+      color: $accent
   .help
     +box-shadow(rgba($blue-light,$small) 0 0 $xxsmallem inset)
     +rhythm-borders(1px,.25)

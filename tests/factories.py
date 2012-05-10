@@ -106,6 +106,14 @@ class RoleFactory(factory.Factory):
 
 
 
+class ApiKeyFactory(factory.Factory):
+    FACTORY_FOR = model.ApiKey
+
+    owner = factory.SubFactory(UserFactory)
+    key = factory.Sequence(lambda n: "Test-ApiKey-{0}".format(n))
+
+
+
 class ProductFactory(TeamFactoryMixin, factory.Factory):
     FACTORY_FOR = model.Product
 

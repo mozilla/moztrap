@@ -7,7 +7,7 @@ from django.db.models import ProtectedError
 from registration.models import RegistrationProfile
 
 from .mtmodel import ConcurrencyError
-from .core.models import Product, ProductVersion
+from .core.models import Product, ProductVersion, ApiKey
 from .core.auth import User, Role, Permission
 from .environments.models import Environment, Profile, Element, Category
 from .execution.models import Run, RunSuite, RunCaseVersion, Result, StepResult

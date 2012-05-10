@@ -7,6 +7,7 @@ from functools import partial
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -57,6 +58,7 @@ def login(request):
 
 
 
+@require_POST
 def logout(request):
     return auth_views.logout_then_login(request)
 
