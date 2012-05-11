@@ -20,6 +20,7 @@ urlpatterns = patterns(
         "password_reset_confirm",
         name="auth_password_reset_confirm"),
     url(r"^set_name/$", "set_username", name="auth_set_username"),
+    url(r"^(?P<user_id>\d+)/apikey/$", "create_apikey", name="auth_create_apikey"),
 
     # registration -----------------------------------------------------------
 
