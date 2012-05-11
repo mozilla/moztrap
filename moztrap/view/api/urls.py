@@ -6,10 +6,10 @@ from moztrap.model.core import api as core
 from moztrap.model.environments import api as environments
 from moztrap.model.execution import api as execution
 from moztrap.model.library import api as library
-from moztrap.model.mtresource import MTModelResource
+from moztrap.model import API_VERSION
 
 
-v1_api = Api(api_name=MTModelResource.API_VERSION)
+v1_api = Api(api_name=API_VERSION)
 
 v1_api.register(execution.RunResource())
 v1_api.register(execution.RunCaseVersionResource())

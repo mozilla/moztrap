@@ -146,7 +146,10 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        return result_summary(Result.objects.filter(runcaseversion__run=self))
+        rcv = Result.objects.filter(runcaseversion__run=self).annotate(
+            latest=models.Max("modified_on")).filter(modified_on=models.F("latest"))
+
+        return result_summary(rcv)
 
 
     def completion(self):

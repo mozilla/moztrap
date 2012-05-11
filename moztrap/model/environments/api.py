@@ -1,5 +1,5 @@
 from tastypie import fields
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL
 
 from .models import Environment, Element
 
@@ -18,5 +18,6 @@ class EnvironmentResource(ModelResource):
 
     class Meta:
         queryset = Environment.objects.all()
+        list_allowed_methods = ['get']
         fields = ["id", "resource_uri"]
-        filtering = {"elements"}
+        filtering = {"elements": ALL}

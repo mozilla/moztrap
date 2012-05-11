@@ -52,9 +52,8 @@ class ResultFor(Tag):
                 candidates = list(dupes)
             # keep the last-modified result of the prioritized set
             result = candidates[0]
-            model.Result.objects.filter(
-                **result_kwargs).exclude(pk=result.pk).delete()
-
+            # do not delete the dupes.  just allow the view to also show only
+            # the latest result.
         context[varname] = result
         return u""
 

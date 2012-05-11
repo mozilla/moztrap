@@ -2,15 +2,8 @@
 Tests for RunResource api.
 
 """
-import datetime
-
-from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
-
-from moztrap.model.execution.api import RunResource
 
 from tests import case
-from json import loads, dumps
 
 
 class RunResourceTest(case.api.ApiTestCase):
@@ -21,10 +14,9 @@ class RunResourceTest(case.api.ApiTestCase):
         return self.F.RunFactory
 
 
-    def get(self, id=None, params={}):
-        params.update({"format": "json"})
-
-        return self.app.get(self.get_resource_url("run", id=id), params=params)
+    @property
+    def resource_name(self):
+        return "run"
 
 
     def test_run_list(self):
@@ -37,7 +29,7 @@ class RunResourceTest(case.api.ApiTestCase):
             productversion=pv,
             )
 
-        res = self.get()
+        res = self.get_list()
         self.assertEqual(res.status_int, 200)
 
         act = res.json
@@ -76,7 +68,7 @@ class RunResourceTest(case.api.ApiTestCase):
         r1 = self.factory.create(name="Foo", description="this")
         r2 = self.factory.create(name="Bar", description="that", status="active")
 
-        res = self.get(params={"status": "active"})
+        res = self.get_list(params={"status": "active"})
         self.assertEqual(res.status_int, 200)
 
         act = res.json["objects"]
@@ -93,7 +85,7 @@ class RunResourceTest(case.api.ApiTestCase):
             productversion=pv,
             )
 
-        res = self.get(params={"productversion__version": "3.14"})
+        res = self.get_list(params={"productversion__version": "3.14"})
         self.assertEqual(res.status_int, 200)
 
         act = res.json["objects"]
@@ -105,22 +97,22 @@ class RunResourceTest(case.api.ApiTestCase):
         """Get a single test run, by id"""
         r = self.factory(name="Floo")
 
-        res = self.get(id=r.id)
+        res = self.get_detail(r.id)
         self.assertEqual(res.status_int, 200, res)
 
         act = res.json
-        self.assertEqual(unicode(r1.name), act["name"])
+        self.assertEqual(unicode(r.name), act["name"])
 
 
     def test_run_by_id_environments(self):
         """Get a single test run, by id"""
         r = self.factory(name="Floo")
 
-        res = self.get(id=r.id)
+        res = self.get_detail(r.id)
         self.assertEqual(res.status_int, 200, res)
 
         act = res.json
-        self.assertEqual(unicode(r1.name), act["name"])
+        self.assertEqual(unicode(r.name), act["name"])
 
 
 

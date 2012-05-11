@@ -1,5 +1,5 @@
 """
-Tests for RunResource api.
+Tests for EnvironmentResource api.
 
 """
 
@@ -7,21 +7,22 @@ from tests import case
 
 
 
-class RunCaseVersionResourceTest(case.api.ApiTestCase):
+class EnvironmentResourceTest(case.api.ApiTestCase):
 
     @property
     def factory(self):
         """The model factory for this object."""
-        return self.F.RunCaseVersionFactory
+        return self.F.EnvironmentFactory
 
 
     @property
     def resource_name(self):
-        return "runcaseversion"
+        return "environment"
 
 
-    def test_runcaseversion_list(self):
+    def test_environment_list(self):
         """Get a list of existing test runs"""
+        assert False, "need implementation"
         r1 = self.F.RunFactory.create(name="RunA")
 
         c1 = self.F.CaseVersionFactory.create(name="Case1", description="ab")
@@ -70,7 +71,13 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
         self.assertEqual(exp_objects, act_objects)
 
 
-    def test_runcaseversion_by_id(self):
+    def test_environment_list_filter_element(self):
+        """Get a list of environments that contain a specific element"""
+        assert False, "need implementation"
+
+
+    def test_environment_by_id(self):
+        assert False, "need implementation"
         """Get a single test run, by id"""
         r = self.F.RunFactory.create(name="RunA")
         cv = self.F.CaseVersionFactory.create(name="Case1")

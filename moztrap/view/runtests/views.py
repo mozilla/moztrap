@@ -103,8 +103,7 @@ def run(request, run_id, env_id):
             "Please select a different test run.")
         return redirect("runtests")
 
-    # if an environment hasn't been set in this session yet, then ask the
-    # user for one
+    # if an environment isn't specified in the url, then ask the user for one
     try:
         environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:

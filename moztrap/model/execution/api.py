@@ -1,20 +1,19 @@
+from django.core.exceptions import ValidationError
+
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from tastypie.authorization import Authorization
-from tastypie.authentication import Authentication
 
-from .models import Run, RunCaseVersion, Result, StepResult
+from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, UserResource,
                         ReportResultsAuthorization, MTApiKeyAuthentication)
 from ..core.auth import User
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
-from ..mtresource import MTModelResource
 
 
 
-class RunResource(MTModelResource):
+class RunResource(ModelResource):
     """ Fetch the test runs for the specified product and version. """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
@@ -22,6 +21,7 @@ class RunResource(MTModelResource):
 
     class Meta:
         queryset = Run.objects.all()
+        list_allowed_methods = ['get']
         fields = [
             "id",
             "name",
@@ -33,8 +33,8 @@ class RunResource(MTModelResource):
             "runcaseversions",
             ]
         filtering = {
-            "productversion": (ALL_WITH_RELATIONS),
-            "status": ("exact"),
+            "productversion": ALL_WITH_RELATIONS,
+            "status": "exact",
         }
 
     def dehydrate(self, bundle):
@@ -77,9 +77,10 @@ class RunCaseVersionResource(ModelResource):
 
     class Meta:
         queryset = RunCaseVersion.objects.all()
+        list_allowed_methods = ['get']
         filtering = {
-            "run": (ALL_WITH_RELATIONS),
-            "caseversion": (ALL_WITH_RELATIONS),
+            "run": ALL_WITH_RELATIONS,
+            "caseversion": ALL_WITH_RELATIONS,
             }
         fields = {"id", "run", "run_id"}
 
@@ -87,21 +88,42 @@ class RunCaseVersionResource(ModelResource):
     def dehydrate(self, bundle):
 
         # give the id of the run for convenience
-        bundle.data["run_id"] = bundle.obj.run.id
+        bundle.data["run_id"] = str(bundle.obj.run.id)
         return bundle
 
 
 
 class ResultResource(ModelResource):
-    environment = fields.ForeignKey(EnvironmentResource, "environment")
-    runcaseversion = fields.ForeignKey(RunCaseVersionResource, "runcaseversion")
-    tester = fields.ForeignKey(UserResource, "tester")
+    """
+    Endpoint for submitting results for a set of runcaseversions.
+
+    This endpoint is write only.  The submitted result objects should
+    be formed like this::
+
+        [
+            {
+                "environment": 1,
+                "status": "passed",
+                "tester": 1,
+                "runcaseversion": 2
+            },
+            {
+                "status": "failed",
+                "comment": "why u no pass?",
+                "tester": 1,
+                "environment": 1,
+                "runcaseversion": 19,
+                "bug": "https://bugzilla.mycompany.com/show_bug.cgi?id=3502",
+                "stepnumber": 1
+            }
+        ]
+
+    """
 
     class Meta:
-
         queryset = Result.objects.all()
-        resource_name = 'result'
-        list_allowed_methods = ['patch']
+        resource_name = "result"
+        list_allowed_methods = ["patch"]
 
         authentication = MTApiKeyAuthentication()
         authorization = ReportResultsAuthorization()
@@ -118,11 +140,17 @@ class ResultResource(ModelResource):
 
         data = bundle.data.copy()
 
-        rcv = RunCaseVersion.objects.get(pk=data.pop("runcaseversion"))
-        env = Environment.objects.get(pk=data.pop("environment"))
-        tester = User.objects.get(pk=data.pop("tester"))
-        user = User.objects.get(username=request.GET.get("username"))
+        try:
+            rcv = RunCaseVersion.objects.get(pk=data.pop("runcaseversion"))
+            env = Environment.objects.get(pk=data.pop("environment"))
+            tester = User.objects.get(pk=data.pop("tester"))
+            status = data.pop("status")
 
+        except Exception as e:
+            raise ValidationError(
+                "bad result object data missing key: {0}".format(e))
+
+        user = User.objects.get(username=request.user.username)
         data["user"] = user
 
         result = Result(
@@ -139,23 +167,8 @@ class ResultResource(ModelResource):
             "invalidated": result.finishinvalidate,
             }
 
-        set_status = status_methods[data.pop("status")]
+        set_status = status_methods[status]
         set_status(**data)
 
         bundle.obj = result
         return bundle
-
-
-
-
-
-
-"""
-Authentication:  use API Key.
-    In short term, we create an API key for every user, and they have to ask the admin for that key.
-    the admin gets it in the admin console.
-    admin goes to the user management page a button to generate api key and copy and email it to the user.
-
-Authorization: need custom class
-
-"""

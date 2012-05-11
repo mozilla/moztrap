@@ -20,8 +20,9 @@ class CaseVersionResource(ModelResource):
 
     class Meta:
         queryset = CaseVersion.objects.all()
+        list_allowed_methods = ['get']
         fields = ["id", "name", "description", "resource_uri", "case"]
-        filtering = {"environments": (ALL)}
+        filtering = {"environments": ALL}
 
 
 

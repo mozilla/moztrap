@@ -27,7 +27,7 @@ class ReportResultsAuthorization(Authorization):
 
 
     def is_authorized(self, request, object=None):
-        if request.user.has_perm("execution.EXECUTE"):
+        if request.user.has_perm("execution.execute"):
             return True
         else:
             return False
@@ -38,8 +38,9 @@ class ProductResource(ModelResource):
 
     class Meta:
         queryset = Product.objects.all()
+        list_allowed_methods = ['get']
         fields = ["id", "name", "description", "resource_uri"]
-        filtering = {"name": (ALL)}
+        filtering = {"name": ALL}
 
 
 
@@ -54,10 +55,11 @@ class ProductVersionResource(ModelResource):
 
     class Meta:
         queryset = ProductVersion.objects.all()
+        list_allowed_methods = ['get']
         fields = ["id", "version", "codename", "resource_uri"]
         filtering = {
-            "version": (ALL),
-            "product": (ALL_WITH_RELATIONS),
+            "version": ALL,
+            "product": ALL_WITH_RELATIONS,
             }
 
 
@@ -69,15 +71,18 @@ class ProductVersionResource(ModelResource):
 
 
 class UserResource(ModelResource):
+    """
+    Return the username of a user only.
 
+    This is used to fill the username field for returned objects.
+    """
 
     class Meta:
         queryset = User.objects.all()
+        list_allowed_methods = ['get']
         fields = ["username", "resource_uri"]
 
         authentication = MTApiKeyAuthentication()
-        # TODO @@@ not clear what kind of auth to use here.
-#        authorization = ReportResultsAuthorization()
 
 
 
