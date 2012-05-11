@@ -191,10 +191,20 @@ class CorePreferences(Preferences):
 
 
 
+class ApiKeyManager(models.Manager):
+    use_for_related_fields = True
+
+    def active(self):
+        return self.get_query_set().filter(active=True)
+
+
+
 class ApiKey(MTModel):
     owner = models.ForeignKey(User, related_name="api_keys")
     key = models.CharField(max_length=36, unique=True)
     active = models.BooleanField(default=True, db_index=True)
+
+    objects = ApiKeyManager()
 
     def __unicode__(self):
         return self.key
