@@ -2,6 +2,8 @@
 Core MozTrap models (Product).
 
 """
+import uuid
+
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -9,7 +11,7 @@ from pkg_resources import parse_version
 from preferences.models import Preferences
 
 from ..environments.models import HasEnvironmentsModel
-from ..mtmodel import MTModel, TeamModel
+from ..mtmodel import MTModel, MTManager, TeamModel
 from .auth import Role, User
 
 
@@ -191,7 +193,7 @@ class CorePreferences(Preferences):
 
 
 
-class ApiKeyManager(models.Manager):
+class ApiKeyManager(MTManager):
     use_for_related_fields = True
 
     def active(self):
@@ -206,5 +208,21 @@ class ApiKey(MTModel):
 
     objects = ApiKeyManager()
 
+
     def __unicode__(self):
         return self.key
+
+
+    @classmethod
+    def generate(cls, owner, user=None):
+        """
+        Generate, save and return a new API key.
+
+        ``owner`` is the owner of the new key, ``user`` is the creating user.
+
+        """
+        if user is None:
+            user = owner
+
+        return cls.objects.create(
+            owner=owner, user=user, key=unicode(uuid.uuid4()))
