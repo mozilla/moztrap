@@ -149,6 +149,10 @@ def run(request, run_id, env_id):
                     environment=environment,
                     user=request.user)
 
+            # make sure this result, and no other, is marked as latest.
+            result.set_latest()
+            result.save()
+
             for argname in defaults.keys():
                 try:
                     defaults[argname] = request.POST[argname]

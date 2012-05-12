@@ -146,10 +146,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
     def result_summary(self):
         """Return a dict summarizing status of results."""
-        rcv = Result.objects.filter(runcaseversion__run=self).annotate(
-            latest=models.Max("modified_on")).filter(modified_on=models.F("latest"))
-
-        return result_summary(rcv)
+        return result_summary(Result.objects.filter(runcaseversion__run=self))
 
 
     def completion(self):
@@ -296,6 +293,7 @@ class Result(MTModel):
     started = models.DateTimeField(blank=True, null=True)
     completed = models.DateTimeField(blank=True, null=True)
     comment = models.TextField(blank=True)
+    is_latest = models.BooleanField(default=True)
 
     review = models.CharField(
         max_length=50, db_index=True, choices=REVIEW, default=REVIEW.pending)
@@ -382,6 +380,22 @@ class Result(MTModel):
         self.save(force_update=True, user=user)
 
 
+    def set_latest(self):
+        """
+        Set this result to latest, and unset all others with this env/user/rcv
+
+        """
+
+        Result.objects.filter(
+            tester=self.tester,
+            runcaseversion=self.runcaseversion,
+            environment=self.environment,
+            is_latest=True,
+            ).update(is_latest=False)
+
+        self.is_latest=True
+
+
 
 class StepResult(MTModel):
     """A result of a particular step in a test case."""
@@ -407,7 +421,7 @@ def result_summary(results):
     """
     states = Result.COMPLETED_STATES
 
-    result_ids = results.values_list("id", flat=True)
+    result_ids = results.filter(is_latest=True).values_list("id", flat=True)
 
     if not result_ids:
         return dict((s, 0) for s in states)

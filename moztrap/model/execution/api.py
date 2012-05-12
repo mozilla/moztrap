@@ -159,7 +159,9 @@ class ResultResource(ModelResource):
             tester=tester,
             created_by=user,
         )
+        result.set_latest()
         result.save()
+
 
         status_methods = {
             "passed": result.finishsucceed,
