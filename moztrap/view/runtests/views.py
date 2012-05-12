@@ -137,21 +137,12 @@ def run(request, run_id, env_id):
                     "{0} is not a valid run/caseversion ID.".format(rcv_id))
                 break
 
-            # check if there are existing results for this user/env combination
-            # and if not, then create them.
-            try:
-                result = rcv.results.get(
-                    tester=request.user, environment=environment)
-            except model.Result.DoesNotExist:
-                result = model.Result.objects.create(
-                    runcaseversion=rcv,
-                    tester=request.user,
-                    environment=environment,
-                    user=request.user)
+            result = model.Result.objects.create(
+                runcaseversion=rcv,
+                tester=request.user,
+                environment=environment,
+                user=request.user)
 
-            # make sure this result, and no other, is marked as latest.
-            result.set_latest()
-            result.save()
 
             for argname in defaults.keys():
                 try:

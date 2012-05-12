@@ -380,6 +380,12 @@ class Result(MTModel):
         self.save(force_update=True, user=user)
 
 
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.set_latest()
+        super(Result, self).save(*args, **kwargs)
+
+
     def set_latest(self):
         """
         Set this result to latest, and unset all others with this env/user/rcv
