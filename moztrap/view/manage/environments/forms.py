@@ -107,6 +107,6 @@ class PopulateProductVersionEnvsForm(mtforms.NonFieldErrorsClassFormMixin,
         """Save envs from selected source to productversion."""
         source = self.choice_map[self.cleaned_data["source"]]
 
-        self.productversion.environments.add(*source.environments.all())
+        self.productversion.add_envs(*source.environments.all())
 
         return self.productversion

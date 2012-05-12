@@ -652,6 +652,24 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
         self.assertEqual(self.productversion.environments.count(), 0)
 
 
+    def test_remove_cascades(self):
+        """Removing environments cascades to caseversions."""
+        self.factory()
+
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.productversion,
+            case__product=self.productversion.product
+            )
+
+        self.get_form().submit(
+            name="action-remove",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
+
+        self.assertEqual(cv.environments.count(), 0)
+
+
     def test_manage_products_permission_required(self):
         """Requires manage products permission."""
         res = self.app.get(self.url, user=self.F.UserFactory.create())
@@ -700,6 +718,27 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
         env = self.productversion.environments.get()
         self.assertEqual(set(env.elements.all()), set([e1, e2]))
         self.assertEqual(self.productversion.environments.get(), env)
+
+
+    def test_add_cascades(self):
+        """Adding an environment cascades to caseversions."""
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.productversion,
+            case__product=self.productversion.product
+            )
+
+        e1 = self.F.ElementFactory.create(name="Linux")
+
+        self.ajax_post(
+            "add-environment-form",
+            {
+                "add-environment": "1",
+                "element-element": [str(e1.id)],
+                },
+            )
+
+        env = self.productversion.environments.get()
+        self.assertEqual(cv.environments.get(), env)
 
 
     def test_no_elements(self):
@@ -967,6 +1006,26 @@ class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
 
         self.assertRedirects(res, reverse(self.redirect_to))
         self.assertEqual(self.object.environments.get(), envs[1])
+
+
+    def test_cascade(self):
+        """Removed environment cascades to runcaseversion."""
+        self.add_perm(self.perm)
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.object.productversion.environments.add(*envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            **{self.object_type: self.object})
+        self.object.environments.add(*envs)
+        rcv.environments.add(*envs)
+
+        form = self.get_form()
+        for field in form.fields["environments"]:
+            if field.value != str(envs[1].id):
+                field.value = None
+        form.submit(status=302)
+
+        self.assertEqual(rcv.environments.get(), envs[1])
 
 
 
