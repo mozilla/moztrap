@@ -110,6 +110,11 @@ def run(request, run_id, env_id):
         return redirect("runtests_environment", run_id=run_id)
 
     if request.method == "POST":
+        """
+        Based on this action, create a new Result object with the values we get from the post.
+
+
+        """
         prefix = "action-"
         while True:
             rcv = None
@@ -137,20 +142,22 @@ def run(request, run_id, env_id):
                     "{0} is not a valid run/caseversion ID.".format(rcv_id))
                 break
 
-            result = model.Result.objects.create(
-                runcaseversion=rcv,
-                tester=request.user,
-                environment=environment,
-                user=request.user)
-
-
+            # take the values out of the POST so we can pass them in to the
+            # method call on the Result object
             for argname in defaults.keys():
                 try:
                     defaults[argname] = request.POST[argname]
                 except KeyError:
                     pass
 
-            getattr(result, action)(**defaults)
+            result = model.Result.objects.create(
+                runcaseversion=rcv,
+                tester=request.user,
+                environment=environment,
+                user=request.user,
+                **defaults)
+
+#            getattr(result, action)(**defaults)
             break
 
         if request.is_ajax():

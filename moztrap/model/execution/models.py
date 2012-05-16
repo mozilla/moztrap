@@ -381,7 +381,7 @@ class Result(MTModel):
 
 
     def save(self, *args, **kwargs):
-        if self.pk is None:
+        if True: #self.pk is None:
             self.set_latest()
         super(Result, self).save(*args, **kwargs)
 

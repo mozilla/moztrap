@@ -14,14 +14,18 @@ from ..library.api import CaseVersionResource
 
 
 class RunResource(ModelResource):
-    """ Fetch the test runs for the specified product and version. """
+    """
+    Fetch the test runs for the specified product and version.
+
+    It is also possible to create a new testrun as a copy of an existing one.
+    """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
     environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
 
     class Meta:
         queryset = Run.objects.all()
-        list_allowed_methods = ['get']
+        list_allowed_methods = ["get", "post"]
         fields = [
             "id",
             "name",
@@ -39,8 +43,8 @@ class RunResource(ModelResource):
 
     def dehydrate(self, bundle):
         pv = bundle.obj.productversion
-        bundle.data['productversion_name'] = pv.version
-        bundle.data['product_name'] = pv.product.name
+        bundle.data["productversion_name"] = pv.version
+        bundle.data["product_name"] = pv.product.name
 
         return bundle
 
