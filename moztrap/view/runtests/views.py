@@ -82,7 +82,7 @@ ACTIONS = {
     "finishsucceed": {},
     "finishinvalidate": {"comment": ""},
     "finishfail": {"stepnumber": None, "comment": "", "bug": ""},
-    "restart": {},
+    "start": {},
     }
 
 
@@ -103,18 +103,17 @@ def run(request, run_id, env_id):
             "Please select a different test run.")
         return redirect("runtests")
 
-    # if an environment isn't specified in the url, then ask the user for one
+    # if the environment specified in the URL doesn't exist for this run,
+    # then ask the user to specify one that does.
     try:
         environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:
         return redirect("runtests_environment", run_id=run_id)
 
     if request.method == "POST":
-        """
-        Based on this action, create a new Result object with the values we get from the post.
+        # Based on this action, create a new Result object with the values we
+        # get from the post.
 
-
-        """
         prefix = "action-"
         while True:
             rcv = None
@@ -150,14 +149,14 @@ def run(request, run_id, env_id):
                 except KeyError:
                     pass
 
-            result = model.Result.objects.create(
-                runcaseversion=rcv,
-                tester=request.user,
-                environment=environment,
-                user=request.user,
-                **defaults)
+            # put the values specific to this run
+            defaults.update({
+                "environment": environment,
+                "user": request.user,
+                })
 
-#            getattr(result, action)(**defaults)
+
+            getattr(rcv, action)(**defaults)
             break
 
         if request.is_ajax():

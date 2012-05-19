@@ -28,9 +28,9 @@ class ResultInline(MTStackedInline):
     fieldsets = [(None, {"fields": [
                     "runcaseversion",
                     ("tester", "environment"),
-                    ("status", "started", "completed"),
+                    ("status"),
                     "comment",
-                    ("review", "reviewed_on", "reviewed_by"),
+                    ("review", "reviewed_by"),
                     "exists",
                     ]})]
 
@@ -59,9 +59,9 @@ class ResultAdmin(MTModelAdmin):
     fieldsets = [(None, {"fields": [
                     "runcaseversion",
                     ("tester", "environment"),
-                    ("status", "started", "completed"),
+                    ("status"),
                     "comment",
-                    ("review", "reviewed_on", "reviewed_by"),
+                    ("review", "reviewed_by"),
                     ]})]
     inlines = [StepResultInline]
 

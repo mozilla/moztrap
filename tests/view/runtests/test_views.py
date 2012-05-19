@@ -549,7 +549,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             headers={"X-Requested-With": "XMLHttpRequest"}, status=200)
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-restart"})
+            res.json["html"], "button", attrs={"name": "action-start"})
 
 
     def test_pass_case(self):
@@ -559,16 +559,16 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["test-status-form-{0}".format(rcv.id)]
 
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(name="action-finishsucceed", index=0, status=302)
+        res = form.submit(name="action-finishsucceed", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
-        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+        result = rcv.results.get(
+            tester=self.user,
+            environment=self.envs[0],
+            is_latest=True)
 
         self.assertEqual(result.status, result.STATUS.passed)
-        self.assertEqual(result.completed, datetime(2012, 2, 3))
 
 
     def test_pass_case_ajax(self):
@@ -586,7 +586,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             )
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-restart"})
+            res.json["html"], "button", attrs={"name": "action-start"})
 
 
     def test_invalidate_case(self):
@@ -599,18 +599,18 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form["comment"] = "it ain't valid"
 
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(
-                name="action-finishinvalidate", index=0, status=302)
+        res = form.submit(
+            name="action-finishinvalidate", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
-        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+        result = rcv.results.get(
+            tester=self.user,
+            environment=self.envs[0],
+            is_latest=True)
 
         self.assertEqual(result.status, result.STATUS.invalidated)
         self.assertEqual(result.comment, "it ain't valid")
-        self.assertEqual(result.completed, datetime(2012, 2, 3))
 
 
     def test_invalidate_case_ajax(self):
@@ -631,7 +631,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             )
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-restart"})
+            res.json["html"], "button", attrs={"name": "action-start"})
 
 
     def test_fail_case(self):
@@ -645,18 +645,18 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form["comment"] = "it didn't pass"
 
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(
-                name="action-finishfail", index=0, status=302)
+        res = form.submit(
+            name="action-finishfail", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
-        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+        result = rcv.results.get(
+            tester=self.user,
+            environment=self.envs[0],
+            is_latest=True)
 
         self.assertEqual(result.status, result.STATUS.failed)
         self.assertEqual(result.comment, "it didn't pass")
-        self.assertEqual(result.completed, datetime(2012, 2, 3))
 
 
     def test_fail_case_ajax(self):
@@ -678,7 +678,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
             )
 
         self.assertElement(
-            res.json["html"], "button", attrs={"name": "action-restart"})
+            res.json["html"], "button", attrs={"name": "action-start"})
 
 
     def test_restart_case(self):
@@ -690,14 +690,17 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(name="action-restart", index=0, status=302)
+            res = form.submit(name="action-start", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
-        result = rcv.results.get(tester=self.user, environment=self.envs[0])
+        result = rcv.results.get(
+            tester=self.user,
+            environment=self.envs[0],
+            is_latest=True,
+            )
 
         self.assertEqual(result.status, result.STATUS.started)
-        self.assertEqual(result.started, datetime(2012, 2, 3))
 
 
     def test_restart_case_ajax(self):
@@ -708,7 +711,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
         form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
         res = form.submit(
-            name="action-restart",
+            name="action-start",
             index=0,
             headers={"X-Requested-With": "XMLHttpRequest"},
             status=200
@@ -733,7 +736,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         self.assertRedirects(res, self.url)
 
-        result = self.refresh(result)
+        result = rcv.results.get(is_latest=True)
 
         self.assertEqual(result.status, result.STATUS.invalidated)
         self.assertEqual(result.comment, "")

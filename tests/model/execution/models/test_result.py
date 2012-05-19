@@ -47,265 +47,29 @@ class ResultTest(case.DBTestCase):
             )
 
 
-    def test_start(self):
-        """Start method marks status started and sets started timestamp."""
-        r = self.F.ResultFactory.create()
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.start()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "started")
-        self.assertEqual(r.started, datetime(2012, 2, 3))
-
-
-    def test_start_sets_modified_user(self):
-        """Start method can set modified-by user."""
-        r = self.F.ResultFactory.create()
+    def test_save_old_result_doesnt_become_latest(self):
+        """Finishsucceed marks status passed."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
 
-        r.start(user=u)
+        rcv.finishsucceed(envs[0], user=u)
+        r1 = rcv.results.get(is_latest=True)
 
-        self.assertEqual(self.refresh(r).modified_by, u)
+        rcv.finishfail(envs[0], user=u)
+        r2 = rcv.results.get(is_latest=True)
 
+        r1 = self.refresh(r1)
+        r1.comment="this is it"
+        r1.save()
 
-    def test_finishsucceed(self):
-        """Finishsucceed marks status passed and sets completed timestamp."""
-        r = self.F.ResultFactory.create(
-            status="started", started=datetime(2012, 2, 2))
+        r1 = self.refresh(r1)
+        r2 = self.refresh(r2)
 
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishsucceed()
+        self.assertEqual(r2.status, "failed")
+        self.assertEqual(r2.is_latest, True)
+        self.assertEqual(r1.is_latest, False)
 
-        r = self.refresh(r)
-        self.assertEqual(r.status, "passed")
-        self.assertEqual(r.started, datetime(2012, 2, 2))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
 
-
-    def test_finishsucceed_not_started(self):
-        """Finishsucceed w/out start also sets started timestamp."""
-        r = self.F.ResultFactory.create(status="assigned")
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishsucceed()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "passed")
-        self.assertEqual(r.started, datetime(2012, 2, 3))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
-
-
-    def test_finishsucceed_sets_modified_user(self):
-        """Finishsucceed method can set modified-by user."""
-        r = self.F.ResultFactory.create(status="started")
-        u = self.F.UserFactory.create()
-
-        r.finishsucceed(user=u)
-
-        self.assertEqual(self.refresh(r).modified_by, u)
-
-
-    def test_finishinvalidate(self):
-        """Finishinvalidate sets status invalidated and completed timestamp."""
-        r = self.F.ResultFactory.create(
-            status="started", started=datetime(2012, 2, 2))
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishinvalidate()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "invalidated")
-        self.assertEqual(r.started, datetime(2012, 2, 2))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
-
-
-    def test_finishinvalidate_not_started(self):
-        """Finishinvalidate w/out start also sets started timestamp."""
-        r = self.F.ResultFactory.create(status="assigned")
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishinvalidate()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "invalidated")
-        self.assertEqual(r.started, datetime(2012, 2, 3))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
-
-
-    def test_finishinvalidate_sets_modified_user(self):
-        """Finishinvalidate method can set modified-by user."""
-        r = self.F.ResultFactory.create(status="started")
-        u = self.F.UserFactory.create()
-
-        r.finishinvalidate(user=u)
-
-        self.assertEqual(self.refresh(r).modified_by, u)
-
-
-    def test_finishinvalidate_with_comment(self):
-        """Finishinvalidate method can include comment."""
-        r = self.F.ResultFactory.create(status="started")
-
-        r.finishinvalidate(comment="and this is why")
-
-        self.assertEqual(self.refresh(r).comment, "and this is why")
-
-
-    def test_finishfail(self):
-        """Finishfail sets status failed and completed timestamp."""
-        r = self.F.ResultFactory.create(
-            status="started", started=datetime(2012, 2, 2))
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishfail()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "failed")
-        self.assertEqual(r.started, datetime(2012, 2, 2))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
-
-
-    def test_finishfail_not_started(self):
-        """Finishfail w/out start also sets started timestamp."""
-        r = self.F.ResultFactory.create(status="assigned")
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.finishfail()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "failed")
-        self.assertEqual(r.started, datetime(2012, 2, 3))
-        self.assertEqual(r.completed, datetime(2012, 2, 3))
-
-
-    def test_finishfail_sets_modified_user(self):
-        """Finishfail method can set modified-by user."""
-        r = self.F.ResultFactory.create(status="started")
-        u = self.F.UserFactory.create()
-
-        r.finishfail(user=u)
-
-        self.assertEqual(self.refresh(r).modified_by, u)
-
-
-    def test_finishfail_with_comment(self):
-        """Finishfail method can include comment."""
-        r = self.F.ResultFactory.create(status="started")
-
-        r.finishfail(comment="and this is why")
-
-        self.assertEqual(self.refresh(r).comment, "and this is why")
-
-
-    def test_finishfail_with_stepnumber(self):
-        """Finishfail method can mark particular failed step."""
-        step = self.F.CaseStepFactory.create(number=1)
-        r = self.F.ResultFactory.create(
-            status="started", runcaseversion__caseversion=step.caseversion)
-
-        r.finishfail(stepnumber="1")
-
-        sr = r.stepresults.get()
-        self.assertEqual(sr.step, step)
-        self.assertEqual(sr.status, "failed")
-
-
-    def test_finishfail_with_stepnumber_and_existing_stepresult(self):
-        """Finishfail method can update existing step result."""
-        step = self.F.CaseStepFactory.create(number=1)
-        r = self.F.ResultFactory.create(
-            status="started", runcaseversion__caseversion=step.caseversion)
-        sr = self.F.StepResultFactory.create(result=r, step=step, status="passed")
-
-        r.finishfail(stepnumber="1")
-
-        updated = r.stepresults.get()
-        self.assertEqual(updated, sr)
-        self.assertEqual(updated.step, step)
-        self.assertEqual(updated.status, "failed")
-
-
-    def test_finishfail_with_stepnumber_and_bug(self):
-        """Finishfail method can include bug with failed step."""
-        step = self.F.CaseStepFactory.create(number=1)
-        r = self.F.ResultFactory.create(
-            status="started", runcaseversion__caseversion=step.caseversion)
-
-        r.finishfail(stepnumber="1", bug="http://www.example.com/")
-
-        sr = r.stepresults.get()
-        self.assertEqual(sr.bug_url, "http://www.example.com/")
-
-
-    def test_finishfail_bad_stepnumber_ignored(self):
-        """Finishfail method ignores bad stepnumber."""
-        step = self.F.CaseStepFactory.create(number=1)
-        r = self.F.ResultFactory.create(
-            status="started", runcaseversion__caseversion=step.caseversion)
-
-        r.finishfail(stepnumber="2")
-
-        self.assertEqual(r.stepresults.count(), 0)
-
-
-    def test_restart(self):
-        """Restart method marks status started and sets started timestamp."""
-        r = self.F.ResultFactory.create(
-            status="passed", started=datetime(2011, 12, 1))
-
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            r.restart()
-
-        r = self.refresh(r)
-        self.assertEqual(r.status, "started")
-        self.assertEqual(r.started, datetime(2012, 2, 3))
-
-
-    def test_restart_sets_modified_user(self):
-        """Restart method can set modified-by user."""
-        r = self.F.ResultFactory.create()
-        u = self.F.UserFactory.create()
-
-        r.restart(user=u)
-
-        self.assertEqual(self.refresh(r).modified_by, u)
-
-
-    def test_restart_clears_completed_timestamp(self):
-        """Restart method clears completed timestamp."""
-        r = self.F.ResultFactory.create(completed=datetime(2011, 12, 1))
-
-        r.restart()
-
-        self.assertEqual(self.refresh(r).completed, None)
-
-
-    def test_restart_clears_comment(self):
-        """Restart method clears comment."""
-        r = self.F.ResultFactory.create(
-            status="invalidated", comment="it ain't valid")
-
-        r.restart()
-
-        self.assertEqual(self.refresh(r).comment, "")
-
-
-    def test_restart_clears_stepresults(self):
-        """Restart method clears any step results."""
-        sr = self.F.StepResultFactory.create(
-            status="failed", result__status="failed")
-
-        sr.result.restart()
-
-        r = self.refresh(sr.result)
-        self.assertEqual(r.status, "started")
-        self.assertEqual(r.stepresults.count(), 0)

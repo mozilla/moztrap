@@ -7,9 +7,42 @@ from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, UserResource,
                         ReportResultsAuthorization, MTApiKeyAuthentication)
 from ..core.auth import User
+from ..core.models import ProductVersion
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
+from ..library.models import CaseVersion
+
+
+
+class RunCaseVersionResource(ModelResource):
+    """
+    RunCaseVersion represents the connection between a run and a caseversion.
+
+    It is possible to return a result for each runcaseversion.  So the result
+    will sit as a peer to the caseversion under the runcaseversion.
+
+    """
+
+    #    run = fields.ForeignKey(RunResource, "run")
+    caseversion = fields.ForeignKey(CaseVersionResource, "caseversion", full=True)
+
+    class Meta:
+        queryset = RunCaseVersion.objects.all()
+        list_allowed_methods = ['get']
+        filtering = {
+            "run": ALL_WITH_RELATIONS,
+            "caseversion": ALL_WITH_RELATIONS,
+            }
+        fields = {"id", "run", "run_id"}
+
+
+    def dehydrate(self, bundle):
+
+        # give the id of the run for convenience
+        bundle.data["run_id"] = str(bundle.obj.run.id)
+        return bundle
+
 
 
 
@@ -21,7 +54,15 @@ class RunResource(ModelResource):
     """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
-    environments = fields.ToManyField(EnvironmentResource, "environments", full=True)
+    environments = fields.ToManyField(
+        EnvironmentResource,
+        "environments",
+        full=False,
+        )
+    runcaseversions = fields.ToManyField(
+        RunCaseVersionResource,
+        "runcaseversions",
+        )
 
     class Meta:
         queryset = Run.objects.all()
@@ -30,7 +71,6 @@ class RunResource(ModelResource):
             "id",
             "name",
             "description",
-            "resource_uri",
             "status",
             "productversion",
             "environments",
@@ -40,6 +80,9 @@ class RunResource(ModelResource):
             "productversion": ALL_WITH_RELATIONS,
             "status": "exact",
         }
+        authentication = MTApiKeyAuthentication()
+        authorization = ReportResultsAuthorization()
+
 
     def dehydrate(self, bundle):
         pv = bundle.obj.productversion
@@ -66,34 +109,73 @@ class RunResource(ModelResource):
         return super(RunResource, self).dispatch_list(request, **kwargs)
 
 
+    def obj_create(self, bundle, request=None, **kwargs):
+        """Set the created_by field for the run to the request's user"""
 
-class RunCaseVersionResource(ModelResource):
-    """
-    RunCaseVersion represents the connection between a run and a caseversion.
-
-    It is possible to return a result for each runcaseversion.  So the result
-    will sit as a peer to the caseversion under the runcaseversion.
-
-    """
-
-    run = fields.ForeignKey(RunResource, "run")
-    caseversion = fields.ForeignKey(CaseVersionResource, "caseversion", full=True)
-
-    class Meta:
-        queryset = RunCaseVersion.objects.all()
-        list_allowed_methods = ['get']
-        filtering = {
-            "run": ALL_WITH_RELATIONS,
-            "caseversion": ALL_WITH_RELATIONS,
-            }
-        fields = {"id", "run", "run_id"}
-
-
-    def dehydrate(self, bundle):
-
-        # give the id of the run for convenience
-        bundle.data["run_id"] = str(bundle.obj.run.id)
+        bundle = super(RunResource, self).obj_create(bundle=bundle, request=request, **kwargs)
+        user = User.objects.get(username=bundle.request.user.username)
+        bundle.obj.created_by = user
+        bundle.obj.save()
         return bundle
+
+
+    def hydrate_runcaseversions(self, bundle):
+
+        """
+        Manually create the test run based on results objects.
+
+        This is necessary because we have special handler methods for
+        setting the statuses which we want to keep DRY.
+
+        """
+
+        try:
+            run = bundle.obj
+            run.save()
+
+            # walk results
+
+            for result in bundle.data["runcaseversions"]:
+
+                # find caseversion for case
+                cv = CaseVersion.objects.get(
+                    productversion=run.productversion,
+                    case=result.pop("case"),
+                    )
+
+                # create runcaseversion for this run to caseversion
+                rcv, created = RunCaseVersion.objects.get_or_create(
+                    run=run,
+                    caseversion=cv,
+                    )
+
+
+                user = User.objects.get(username=bundle.request.user.username)
+                result["user"] = user
+                result["environment"] = Environment.objects.get(
+                    pk=result["environment"])
+
+                # create result via methods on runcaseversion
+                status = result.pop("status")
+                status_methods = {
+                    "passed": rcv.finishsucceed,
+                    "failed": rcv.finishfail,
+                    "invalidated": rcv.finishinvalidate,
+                    }
+
+                set_status = status_methods[status]
+                set_status(**result)
+
+            #TODO @@@ Cookbook for Tastypie
+            #don't act on the data in here, we already did.  So emptying it.
+            bundle.data["runcaseversions"] = []
+            return bundle
+
+        except Exception as e:
+            raise ValidationError(
+                "bad result object data missing key: {0}".format(e))
+
+
 
 
 
@@ -167,9 +249,9 @@ class ResultResource(ModelResource):
 
 
         status_methods = {
-            "passed": result.finishsucceed,
-            "failed": result.finishfail,
-            "invalidated": result.finishinvalidate,
+            "passed": rcv.finishsucceed,
+            "failed": rcv.finishfail,
+            "invalidated": rcv.finishinvalidate,
             }
 
         set_status = status_methods[status]

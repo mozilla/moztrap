@@ -18,8 +18,10 @@ v1_api.register(library.CaseResource())
 v1_api.register(library.CaseVersionResource())
 v1_api.register(environments.EnvironmentResource())
 v1_api.register(environments.ElementResource())
+v1_api.register(environments.CategoryResource())
 v1_api.register(core.ProductResource())
 v1_api.register(core.ProductVersionResource())
+v1_api.register(core.ProductVersionEnvironmentsResource())
 v1_api.register(core.UserResource())
 
 urlpatterns = patterns(

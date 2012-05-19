@@ -1,5 +1,5 @@
 """
-Tests for RunCaseVersionResource api.
+Tests for ResultResource api.
 
 """
 
@@ -7,7 +7,7 @@ from tests import case
 
 
 
-class RunCaseVersionResourceTest(case.api.ApiTestCase):
+class ResultResourceTest(case.api.ApiTestCase):
 
     @property
     def factory(self):
@@ -17,10 +17,10 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
 
     @property
     def resource_name(self):
-        return "runcaseversion"
+        return "result"
 
 
-    def test_runcaseversion_list(self):
+    def test_submit_results(self):
         """Get a list of existing test runs"""
         r1 = self.F.RunFactory.create(name="RunA")
 

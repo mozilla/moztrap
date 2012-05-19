@@ -19,7 +19,7 @@
     {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
       <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
         {% csrf_token %}
-        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-restart" title="restart '{{ caseversion.name }}'">restart</button>
+        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-start" title="restart '{{ caseversion.name }}'">restart</button>
       </form>
     {% endif %}
 

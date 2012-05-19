@@ -208,3 +208,260 @@ class RunCaseVersionTest(case.DBTestCase):
         self.F.ResultFactory.create(tester=t2, runcaseversion=rcv)
 
         self.assertEqual(set(rcv.testers()), set([t1, t2]))
+
+
+    def test_start(self):
+        """Start method marks status started."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(r.status, "started")
+
+
+    def test_start_sets_modified_user(self):
+        """Start method can set modified-by user."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(r.modified_by, u)
+
+
+    def test_finishsucceed(self):
+        """Finishsucceed marks status passed."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.finishsucceed(envs[0], user=u)
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(r.status, "passed")
+
+
+    def test_finishsucceed_started(self):
+        """Finishsucceed marks status passed and has only 1 latest."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(envs[0], user=u)
+        rcv.finishsucceed(envs[0], user=u)
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(r.status, "passed")
+
+
+    def test_finishinvalidate(self):
+        """Finishinvalidate w/out start."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.finishinvalidate(environment=envs[0], user=u)
+
+        r = rcv.results.get()
+        self.assertEqual(r.status, "invalidated")
+
+
+    def test_finishinvalidate_started(self):
+        """Finishinvalidate sets status invalidated and has only 1 latest."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.finishinvalidate(environment=envs[0], user=u)
+
+        r = rcv.results.get(is_latest=True)
+        self.assertEqual(r.status, "invalidated")
+
+
+    def test_finishinvalidate_with_comment(self):
+        """Finishinvalidate method can include comment."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.finishinvalidate(
+            environment=envs[0],
+            user=u,
+            comment="and this is why",
+            )
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+        self.assertEqual(self.refresh(r).comment, "and this is why")
+
+
+    def test_finishfail(self):
+        """Finishfail sets status failed."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.finishfail(environment= envs[0], user=u)
+
+        r = rcv.results.get()
+        self.assertEqual(r.status, "failed")
+
+
+    def test_finishfail_started(self):
+        """Finishfail after start sets status failed and has only 1 latest."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.finishfail(environment=envs[0], user=u)
+
+        r = rcv.results.get(is_latest=True)
+        self.assertEqual(r.status, "failed")
+
+
+    def test_finishfail_with_comment(self):
+        """Finishfail method can include comment."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(run=run)
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.finishfail(
+            environment=envs[0],
+            user=u,
+            comment="and this is why",
+            )
+
+        r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
+
+        self.assertEqual(self.refresh(r).comment, "and this is why")
+
+
+    def test_finishfail_with_stepnumber(self):
+        """Finishfail method can mark particular failed step."""
+        step = self.F.CaseStepFactory.create(number=1)
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=run,
+            caseversion=step.caseversion,
+            )
+        u = self.F.UserFactory.create()
+
+        rcv.start(environment=envs[0], user=u)
+        rcv.finishfail(
+            environment=envs[0],
+            user=u,
+            stepnumber=1,
+            )
+
+        r = rcv.results.get(is_latest=True)
+
+        sr = r.stepresults.get()
+        self.assertEqual(sr.step, step)
+        self.assertEqual(sr.status, "failed")
+
+
+    def test_finishfail_with_stepnumber_and_existing_stepresult(self):
+        """Finishfail method will point result to latest step step result."""
+        step = self.F.CaseStepFactory.create(number=1)
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=run,
+            caseversion=step.caseversion,
+            )
+        u = self.F.UserFactory.create()
+
+        rcv.finishsucceed(environment=envs[0], user=u)
+
+        pass_r = rcv.results.get(is_latest=True)
+        sr = self.F.StepResultFactory.create(result=pass_r, step=step, status="passed")
+
+        rcv.finishfail(
+            environment=envs[0],
+            user=u,
+            stepnumber=1,
+            )
+
+        fail_r = rcv.results.get(is_latest=True)
+        new_sr = fail_r.stepresults.get()
+        self.assertNotEqual(new_sr, sr)
+        self.assertEqual(new_sr.step, step)
+        self.assertEqual(new_sr.status, "failed")
+
+
+    def test_finishfail_with_stepnumber_and_bug(self):
+        """Finishfail method can include bug with failed step."""
+        step = self.F.CaseStepFactory.create(number=1)
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=run,
+            caseversion=step.caseversion,
+            )
+        u = self.F.UserFactory.create()
+
+        rcv.finishfail(
+            environment=envs[0],
+            user=u,
+            stepnumber="1",
+            bug="http://www.example.com/",
+            )
+
+        r = rcv.results.get(is_latest=True)
+        sr = r.stepresults.get()
+        self.assertEqual(sr.bug_url, "http://www.example.com/")
+
+
+    def test_finishfail_bad_stepnumber_ignored(self):
+        """Finishfail method ignores bad stepnumber."""
+        step = self.F.CaseStepFactory.create(number=1)
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"], "Language": ["English"]})
+        run = self.F.RunFactory.create(environments=envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=run,
+            caseversion=step.caseversion,
+            )
+        u = self.F.UserFactory.create()
+
+        rcv.finishfail(
+            environment=envs[0],
+            user=u,
+            stepnumber="2",
+            )
+
+        r = rcv.results.get(is_latest=True)
+        self.assertEqual(r.stepresults.count(), 0)
+

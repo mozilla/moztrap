@@ -253,6 +253,64 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
             pk__in=self.results.values_list("tester", flat=True).distinct())
 
 
+    def start(self, environment=None, user=None):
+        """Mark this result started."""
+        Result.objects.create(
+            runcaseversion=self,
+            tester=user,
+            environment=environment,
+            status=Result.STATUS.started,
+            user=user
+            )
+
+
+    def finishsucceed(self, environment=None, user=None):
+        """Create a passed result for this case."""
+        Result.objects.create(
+            runcaseversion=self,
+            tester=user,
+            environment=environment,
+            status=Result.STATUS.passed,
+            user=user
+        )
+
+
+    def finishinvalidate(self, environment=None, comment="", user=None):
+        """Create an invalidated result for this case."""
+        Result.objects.create(
+            runcaseversion=self,
+            tester=user,
+            environment=environment,
+            status=Result.STATUS.invalidated,
+            comment=comment,
+            user=user,
+        )
+
+
+    def finishfail(self, environment=None, comment="", stepnumber=None, bug="", user=None):
+        """Create a failed result for this case."""
+        result = Result.objects.create(
+            runcaseversion=self,
+            tester=user,
+            environment=environment,
+            status=Result.STATUS.failed,
+            comment=comment,
+            user=user,
+            )
+        if stepnumber:
+            try:
+                step = self.caseversion.steps.get(
+                    number=stepnumber)
+            except CaseStep.DoesNotExist:
+                pass
+            else:
+                stepresult = StepResult(result=result, step=step)
+                stepresult.status = StepResult.STATUS.failed
+                stepresult.bug_url = bug
+                stepresult.save(user=user)
+        self.save(force_update=True, user=user)
+
+
 
 class RunSuite(MTModel):
     """
@@ -290,14 +348,11 @@ class Result(MTModel):
     environment = models.ForeignKey(Environment, related_name="results")
     status = models.CharField(
         max_length=50, db_index=True, choices=STATUS, default=STATUS.assigned)
-    started = models.DateTimeField(blank=True, null=True)
-    completed = models.DateTimeField(blank=True, null=True)
     comment = models.TextField(blank=True)
     is_latest = models.BooleanField(default=True)
 
     review = models.CharField(
         max_length=50, db_index=True, choices=REVIEW, default=REVIEW.pending)
-    reviewed_on = models.DateTimeField(blank=True, null=True)
     reviewed_by = models.ForeignKey(
         User, related_name="reviews", blank=True, null=True)
 
@@ -320,68 +375,8 @@ class Result(MTModel):
             )
 
 
-    def start(self, user=None):
-        """Mark this result started."""
-        self.status = self.STATUS.started
-        self.started = utcnow()
-        self.save(force_update=True, user=user)
-
-
-    def finishsucceed(self, user=None):
-        """Mark this result passed."""
-        self.status = self.STATUS.passed
-        self.completed = utcnow()
-        if not self.started:
-            self.started = utcnow()
-        self.save(force_update=True, user=user)
-
-
-    def finishinvalidate(self, comment="", user=None):
-        """Mark this result invalidated."""
-        self.status = self.STATUS.invalidated
-        self.comment = comment
-        self.completed = utcnow()
-        if not self.started:
-            self.started = utcnow()
-        self.save(force_update=True, user=user)
-
-
-    def finishfail(self, comment="", stepnumber=None, bug="", user=None):
-        """Mark this result failed."""
-        self.status = self.STATUS.failed
-        self.completed = utcnow()
-        if not self.started:
-            self.started = utcnow()
-        self.comment = comment
-        if stepnumber:
-            try:
-                step = self.runcaseversion.caseversion.steps.get(
-                    number=stepnumber)
-            except CaseStep.DoesNotExist:
-                pass
-            else:
-                try:
-                    stepresult = self.stepresults.get(step=step)
-                except StepResult.DoesNotExist:
-                    stepresult = StepResult(result=self, step=step)
-                stepresult.status = StepResult.STATUS.failed
-                stepresult.bug_url = bug
-                stepresult.save(user=user)
-        self.save(force_update=True, user=user)
-
-
-    def restart(self, user=None):
-        """Restart this test, clearing any previous result."""
-        self.stepresults.all().delete()
-        self.status = self.STATUS.started
-        self.started = utcnow()
-        self.completed = None
-        self.comment = ""
-        self.save(force_update=True, user=user)
-
-
     def save(self, *args, **kwargs):
-        if True: #self.pk is None:
+        if self.pk is None:
             self.set_latest()
         super(Result, self).save(*args, **kwargs)
 

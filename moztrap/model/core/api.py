@@ -4,6 +4,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Product, ProductVersion, ApiKey
+from ..environments.api import EnvironmentResource
 
 from .auth import User
 
@@ -34,7 +35,28 @@ class ReportResultsAuthorization(Authorization):
 
 
 
+class ProductVersionResource(ModelResource):
+    """
+    Fetch the versions for the specified test product
+
+    """
+
+    class Meta:
+        queryset = ProductVersion.objects.all()
+        list_allowed_methods = ['get']
+        fields = ["id", "version", "codename", "resource_uri"]
+        filtering = {
+            "version": ALL,
+            }
+
+
 class ProductResource(ModelResource):
+
+    productversions = fields.ToManyField(
+        ProductVersionResource,
+        "versions",
+        full=True,
+        )
 
     class Meta:
         queryset = Product.objects.all()
@@ -44,29 +66,19 @@ class ProductResource(ModelResource):
 
 
 
-class ProductVersionResource(ModelResource):
-    """
-    Fetch the versions for the specified test product
-
-    """
-
-    product = fields.ForeignKey(ProductResource, "product")
-
+class ProductVersionEnvironmentsResource(ModelResource):
+    """Environments for a specific productversion."""
+    environments = fields.ToManyField(
+        EnvironmentResource,
+        "environments",
+        full=True,
+        )
 
     class Meta:
+#        resource_name="productversion/environments"
         queryset = ProductVersion.objects.all()
         list_allowed_methods = ['get']
         fields = ["id", "version", "codename", "resource_uri"]
-        filtering = {
-            "version": ALL,
-            "product": ALL_WITH_RELATIONS,
-            }
-
-
-    def dehydrate(self, bundle):
-        product_name = bundle.obj.product.name
-        bundle.data['product__name'] = product_name
-        return bundle
 
 
 
