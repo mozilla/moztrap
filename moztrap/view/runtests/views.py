@@ -79,9 +79,9 @@ def set_environment(request, run_id):
 # maps valid action names to default parameters
 ACTIONS = {
     "start": {},
-    "finishsucceed": {"status": "passed"},
-    "finishinvalidate": {"status": "invalidated", "comment": ""},
-    "finishfail": {"status": "failed", "stepnumber": None, "comment": "", "bug": ""},
+    "result_pass": {},
+    "result_invalid": {"comment": ""},
+    "result_fail": {"stepnumber": None, "comment": "", "bug": ""},
     "start": {},
     }
 
@@ -153,11 +153,9 @@ def run(request, run_id, env_id):
             defaults.update({
                 "environment": environment,
                 "user": request.user,
-                "tester": request.user,
                 })
 
-
-            rcv.create_result(**defaults)
+            getattr(rcv, action)(**defaults)
             break
 
         if request.is_ajax():

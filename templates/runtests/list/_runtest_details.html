@@ -10,7 +10,7 @@
   {% csrf_token %}
 
   {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
-    <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-finishsucceed">pass test</button>
+    <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-result_pass">pass test</button>
   {% endif %}
 </form>
 
@@ -29,7 +29,7 @@
       <label for="invalid-comment-{{ runcaseversion.id }}" class="invalid-label">description of problem:</label>
       <textarea class="invalid-input" name="comment" id="invalid-comment-{{ runcaseversion.id }}" placeholder="please explain why this test case is invalid." required></textarea>
       <div class="form-actions">
-        <button class="invalid" value="{{ runcaseversion.id }}" name="action-finishinvalidate">mark as invalid</button>
+        <button class="invalid" value="{{ runcaseversion.id }}" name="action-result_invalid">mark as invalid</button>
       </div>
     </form>
   </div>
@@ -85,7 +85,7 @@
           {% endwith %}
 
           <div class="form-actions">
-            <button class="fail" value="{{ runcaseversion.id }}" name="action-finishfail">submit failure</button>
+            <button class="fail" value="{{ runcaseversion.id }}" name="action-result_fail">submit failure</button>
           </div>
         </form>
       </div>

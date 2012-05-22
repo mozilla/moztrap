@@ -55,10 +55,10 @@ class ResultTest(case.DBTestCase):
         rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
 
-        rcv.finishsucceed(envs[0], user=u)
+        rcv.result_pass(envs[0], user=u)
         r1 = rcv.results.get(is_latest=True)
 
-        rcv.finishfail(envs[0], user=u)
+        rcv.result_fail(envs[0], user=u)
         r2 = rcv.results.get(is_latest=True)
 
         r1 = self.refresh(r1)

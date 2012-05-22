@@ -138,12 +138,14 @@ class RunResource(ModelResource):
 
             # walk results
 
-            for result in bundle.data["runcaseversions"]:
+            for data in bundle.data["runcaseversions"]:
+
+                status = data.pop("status")
 
                 # find caseversion for case
                 cv = CaseVersion.objects.get(
                     productversion=run.productversion,
-                    case=result.pop("case"),
+                    case=data.pop("case"),
                     )
 
                 # create runcaseversion for this run to caseversion
@@ -154,13 +156,12 @@ class RunResource(ModelResource):
 
 
                 user = User.objects.get(username=bundle.request.user.username)
-                result["user"] = user
-                result["tester"] = user
-                result["environment"] = Environment.objects.get(
-                    pk=result["environment"])
+                data["user"] = user
+                data["environment"] = Environment.objects.get(
+                    pk=data["environment"])
 
                 # create result via methods on runcaseversion
-                rcv.create_result(**result)
+                rcv.get_result_method(status)(**data)
 
 
             #TODO @@@ Cookbook for Tastypie
@@ -224,24 +225,24 @@ class ResultResource(ModelResource):
         data = bundle.data.copy()
 
         try:
+            status = data.pop("status")
             case=data.pop("case")
             env = Environment.objects.get(pk=data.get("environment"))
-            data["environment"] = env
             run=data.pop("run_id")
-
-            rcv = RunCaseVersion.objects.get(
-                run=run,
-                caseversion__case__id=case,
-                environments=env,
-                )
 
         except Exception as e:
             raise ValidationError(
                 "bad result object data missing key: {0}".format(e))
 
+        data["environment"] = env
+        rcv = RunCaseVersion.objects.get(
+            run=run,
+            caseversion__case__id=case,
+            environments=env,
+            )
+
         user = User.objects.get(username=request.user.username)
         data["user"] = user
-        data["tester"] = user
 
-        bundle.obj = rcv.create_result(**data)
+        bundle.obj = rcv.get_result_method(status)(**data)
         return bundle
