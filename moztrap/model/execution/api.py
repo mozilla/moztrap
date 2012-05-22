@@ -24,8 +24,11 @@ class RunCaseVersionResource(ModelResource):
 
     """
 
-    #    run = fields.ForeignKey(RunResource, "run")
-    caseversion = fields.ForeignKey(CaseVersionResource, "caseversion", full=True)
+    run = fields.ToOneField(
+        "moztrap.model.execution.api.RunResource",
+        "run",
+        related_name="runcaseversion")
+    caseversion = fields.ToOneField(CaseVersionResource, "caseversion", full=True)
 
     class Meta:
         queryset = RunCaseVersion.objects.all()
@@ -152,19 +155,13 @@ class RunResource(ModelResource):
 
                 user = User.objects.get(username=bundle.request.user.username)
                 result["user"] = user
+                result["tester"] = user
                 result["environment"] = Environment.objects.get(
                     pk=result["environment"])
 
                 # create result via methods on runcaseversion
-                status = result.pop("status")
-                status_methods = {
-                    "passed": rcv.finishsucceed,
-                    "failed": rcv.finishfail,
-                    "invalidated": rcv.finishinvalidate,
-                    }
+                rcv.create_result(**result)
 
-                set_status = status_methods[status]
-                set_status(**result)
 
             #TODO @@@ Cookbook for Tastypie
             #don't act on the data in here, we already did.  So emptying it.
@@ -227,10 +224,16 @@ class ResultResource(ModelResource):
         data = bundle.data.copy()
 
         try:
-            rcv = RunCaseVersion.objects.get(pk=data.pop("runcaseversion"))
-            env = Environment.objects.get(pk=data.pop("environment"))
-            tester = User.objects.get(pk=data.pop("tester"))
-            status = data.pop("status")
+            case=data.pop("case")
+            env = Environment.objects.get(pk=data.get("environment"))
+            data["environment"] = env
+            run=data.pop("run_id")
+
+            rcv = RunCaseVersion.objects.get(
+                run=run,
+                caseversion__case__id=case,
+                environments=env,
+                )
 
         except Exception as e:
             raise ValidationError(
@@ -238,24 +241,7 @@ class ResultResource(ModelResource):
 
         user = User.objects.get(username=request.user.username)
         data["user"] = user
+        data["tester"] = user
 
-        result = Result(
-            runcaseversion=rcv,
-            environment=env,
-            tester=tester,
-            created_by=user,
-        )
-        result.save()
-
-
-        status_methods = {
-            "passed": rcv.finishsucceed,
-            "failed": rcv.finishfail,
-            "invalidated": rcv.finishinvalidate,
-            }
-
-        set_status = status_methods[status]
-        set_status(**data)
-
-        bundle.obj = result
+        bundle.obj = rcv.create_result(**data)
         return bundle

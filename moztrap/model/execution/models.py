@@ -264,51 +264,36 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
             )
 
 
-    def finishsucceed(self, environment=None, user=None):
-        """Create a passed result for this case."""
-        Result.objects.create(
-            runcaseversion=self,
-            tester=user,
-            environment=environment,
-            status=Result.STATUS.passed,
-            user=user
-        )
+    def create_result(self, **kwargs):
+        try:
+            bug = kwargs.pop("bug", None)
+            user = kwargs.get("user")
+            stepnumber = kwargs.pop("stepnumber", None)
 
-
-    def finishinvalidate(self, environment=None, comment="", user=None):
-        """Create an invalidated result for this case."""
-        Result.objects.create(
-            runcaseversion=self,
-            tester=user,
-            environment=environment,
-            status=Result.STATUS.invalidated,
-            comment=comment,
-            user=user,
-        )
-
-
-    def finishfail(self, environment=None, comment="", stepnumber=None, bug="", user=None):
-        """Create a failed result for this case."""
-        result = Result.objects.create(
-            runcaseversion=self,
-            tester=user,
-            environment=environment,
-            status=Result.STATUS.failed,
-            comment=comment,
-            user=user,
+            result = Result.objects.create(
+                runcaseversion=self,
+                **kwargs
             )
-        if stepnumber:
-            try:
-                step = self.caseversion.steps.get(
-                    number=stepnumber)
-            except CaseStep.DoesNotExist:
-                pass
-            else:
-                stepresult = StepResult(result=result, step=step)
-                stepresult.status = StepResult.STATUS.failed
-                stepresult.bug_url = bug
-                stepresult.save(user=user)
-        self.save(force_update=True, user=user)
+            if (kwargs.get("status")==Result.STATUS.failed and stepnumber):
+                try:
+                    step = self.caseversion.steps.get(
+                        number=stepnumber)
+                except CaseStep.DoesNotExist:
+                    pass
+                else:
+                    stepresult = StepResult(result=result, step=step)
+                    stepresult.status = StepResult.STATUS.failed
+                    stepresult.bug_url = bug
+                    stepresult.save(user=user)
+
+            return result
+
+        except Exception as e:
+            raise ValidationError(
+                "bad result object data missing key: {0}".format(e))
+
+
+#        self.save(force_update=True, user=user)
 
 
 
