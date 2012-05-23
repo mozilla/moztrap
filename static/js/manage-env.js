@@ -426,6 +426,8 @@ var MT = (function (MT, $) {
 
         // Update bulk-select after filter-change
         context.on('after-filter', '.itemlist .items', updateBulkSelect);
+
+        updateBulkSelect();
     };
 
     return MT;
