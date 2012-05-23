@@ -158,10 +158,10 @@ def productversion_environments_edit(request, productversion_id):
             else:
                 env = model.Environment.objects.create(user=request.user)
                 env.elements.add(*element_ids)
-                productversion.environments.add(env)
+                productversion.add_envs(env)
         elif "action-remove" in request.POST:
             env_id = request.POST.get("action-remove")
-            productversion.environments.remove(env_id)
+            productversion.remove_envs(env_id)
         elif "populate" in request.POST:
             form = forms.PopulateProductVersionEnvsForm(
                 request.POST, productversion=productversion)
@@ -251,8 +251,8 @@ def narrow_environments(request, object_type, object_id):
         remove = current_env_ids.difference(env_ids)
         add = env_ids.difference(current_env_ids)
 
-        obj.environments.add(*add)
-        obj.environments.remove(*remove)
+        obj.add_envs(*add)
+        obj.remove_envs(*remove)
 
         messages.success(request, u"Saved environments for '{0}'".format(obj))
 

@@ -118,3 +118,26 @@ class PopulateProductVersionEnvsFormTest(case.DBTestCase):
         self.assertEqual(pv, self.pv)
         self.assertEqual(
             [unicode(e) for e in pv.environments.all()], [u"Windows"])
+
+
+    def test_cascade(self):
+        """Populated envs cascade to cases."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.pv, case__product=self.pv.product)
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "profile-{0}".format(profile.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in cv.environments.all()], [u"Windows"])
