@@ -22,7 +22,6 @@ v1_api.register(environments.CategoryResource())
 v1_api.register(core.ProductResource())
 v1_api.register(core.ProductVersionResource())
 v1_api.register(core.ProductVersionEnvironmentsResource())
-v1_api.register(core.UserResource())
 
 urlpatterns = patterns(
     "moztrap.view.api",

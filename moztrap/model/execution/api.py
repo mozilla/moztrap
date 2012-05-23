@@ -1,13 +1,12 @@
 from django.core.exceptions import ValidationError
 
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Run, RunCaseVersion, Result
-from ..core.api import (ProductVersionResource, UserResource,
-                        ReportResultsAuthorization, MTApiKeyAuthentication)
+from ..core.api import (ProductVersionResource, ReportResultsAuthorization,
+                        MTApiKeyAuthentication)
 from ..core.auth import User
-from ..core.models import ProductVersion
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
@@ -37,15 +36,7 @@ class RunCaseVersionResource(ModelResource):
             "run": ALL_WITH_RELATIONS,
             "caseversion": ALL_WITH_RELATIONS,
             }
-        fields = {"id", "run", "run_id"}
-
-
-    def dehydrate(self, bundle):
-
-        # give the id of the run for convenience
-        bundle.data["run_id"] = str(bundle.obj.run.id)
-        return bundle
-
+        fields = {"id", "run"}
 
 
 
@@ -53,7 +44,8 @@ class RunResource(ModelResource):
     """
     Fetch the test runs for the specified product and version.
 
-    It is also possible to create a new testrun as a copy of an existing one.
+    It is also possible to create a new testrun, when posted.
+
     """
 
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
@@ -88,6 +80,8 @@ class RunResource(ModelResource):
 
 
     def dehydrate(self, bundle):
+        """Add some convenience fields to the return JSON."""
+
         pv = bundle.obj.productversion
         bundle.data["productversion_name"] = pv.version
         bundle.data["product_name"] = pv.product.name
@@ -95,19 +89,20 @@ class RunResource(ModelResource):
         return bundle
 
     #TODO @@@ Cookbook for Tastypie
-    """
-    Cookbook item for Tastypie docs.
-    Want full=false in the list endpoint and full=True in
-    the detail endpoint
-    """
+    #    Cookbook item for Tastypie docs.
+    #    Want full=false in the list endpoint and full=True in
+    #    the detail endpoint
+
     def dispatch_detail(self, request, **kwargs):
         """For details, we want the full info on environments for the run """
+
         self.fields["environments"].full=True
         return super(RunResource, self).dispatch_detail(request, **kwargs)
 
 
     def dispatch_list(self, request, **kwargs):
         """For list, we don't want the full info on environments """
+
         self.fields["environments"].full=False
         return super(RunResource, self).dispatch_list(request, **kwargs)
 
@@ -123,11 +118,11 @@ class RunResource(ModelResource):
 
 
     def hydrate_runcaseversions(self, bundle):
-
         """
-        Manually create the test run based on results objects.
+        Handle the runcaseversion creation during a POST of a new Run.
 
-        This is necessary because we have special handler methods for
+        Tastypie handles the creation of the run itself.  But we handle the
+        RunCaseVersions and Results because we have special handler methods for
         setting the statuses which we want to keep DRY.
 
         """
@@ -165,7 +160,8 @@ class RunResource(ModelResource):
 
 
             #TODO @@@ Cookbook for Tastypie
-            #don't act on the data in here, we already did.  So emptying it.
+            #don't have tastypie act on the data in here, we already did.
+            # So emptying it.
             bundle.data["runcaseversions"] = []
             return bundle
 
@@ -184,23 +180,32 @@ class ResultResource(ModelResource):
     This endpoint is write only.  The submitted result objects should
     be formed like this::
 
-        [
-            {
-                "environment": 1,
-                "status": "passed",
-                "tester": 1,
-                "runcaseversion": 2
-            },
-            {
-                "status": "failed",
-                "comment": "why u no pass?",
-                "tester": 1,
-                "environment": 1,
-                "runcaseversion": 19,
-                "bug": "https://bugzilla.mycompany.com/show_bug.cgi?id=3502",
-                "stepnumber": 1
-            }
-        ]
+        {
+            "objects": [
+                {
+                    "case": "1",
+                    "environment": "23",
+                    "run_id": "1",
+                    "status": "passed"
+                },
+                {
+                    "case": "14",
+                    "comment": "why u no make sense??",
+                    "environment": "23",
+                    "run_id": "1",
+                    "status": "invalidated"
+                },
+                {
+                    "bug": "http://www.deathvalleydogs.com",
+                    "case": "326",
+                    "comment": "why u no pass?",
+                    "environment": "23",
+                    "run_id": "1",
+                    "status": "failed",
+                    "stepnumber": 1
+                }
+            ]
+        }
 
     """
 
@@ -217,8 +222,8 @@ class ResultResource(ModelResource):
         """
         Manually create the proper results objects.
 
-        This is necessary because we have special handler methods for
-        setting the statuses which we want to keep DRY.
+        This is necessary because we have special handler methods in
+        RunCaseVersion for setting the statuses which we want to keep DRY.
 
         """
 

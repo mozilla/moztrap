@@ -21,7 +21,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
 
 
     def test_runcaseversion_list(self):
-        """Get a list of existing test runs"""
+        """Get a list of existing runcaseversions"""
         r1 = self.F.RunFactory.create(name="RunA")
 
         c1 = self.F.CaseVersionFactory.create(name="Case1", description="ab")
@@ -61,26 +61,9 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                     u"resource_uri": unicode(self.get_detail_uri("caseversion",cv.id)),
                     },
                 u"id": unicode(rcv.id),
-                u"run_id": unicode(rcv.run.id),
                 u"run": unicode(self.get_detail_uri("run",rcv.run.id)),
                 u"resource_uri": unicode(self.get_detail_uri("runcaseversion",rcv.id)),
                 })
 
         self.maxDiff = None
         self.assertEqual(exp_objects, act_objects)
-
-
-    def test_runcaseversion_by_id(self):
-        """Get a single test run, by id"""
-        r = self.F.RunFactory.create(name="RunA")
-        cv = self.F.CaseVersionFactory.create(name="Case1")
-        rcv = self.factory.create(caseversion=cv, run=r)
-
-        res = self.get_detail(rcv.id)
-        self.assertEqual(res.status_int, 200, res)
-
-        act = res.json
-        self.assertEqual(
-            unicode(self.get_detail_uri("runcaseversion", rcv.id)),
-            act["resource_uri"],
-            )

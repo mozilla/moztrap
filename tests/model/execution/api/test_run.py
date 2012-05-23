@@ -28,6 +28,7 @@ class RunResourceTest(case.api.ApiTestCase):
             description="that",
             productversion=pv,
             )
+        assert Fail, "needs environments, uri only"
 
         res = self.get_list()
         self.assertEqual(res.status_int, 200)
@@ -64,36 +65,22 @@ class RunResourceTest(case.api.ApiTestCase):
         self.assertEqual(exp_objects, act_objects)
 
 
-    def test_run_list_filtered_status(self):
-        r1 = self.factory.create(name="Foo", description="this")
-        r2 = self.factory.create(name="Bar", description="that", status="active")
-
-        res = self.get_list(params={"status": "active"})
-        self.assertEqual(res.status_int, 200)
-
-        act = res.json["objects"]
-        self.assertEqual(len(act), 1, "expect 1 item in list")
-        self.assertEqual(unicode(r2.name), act[0]["name"])
+    def test_run_authentication(self):
+        assert False, "needs impl"
 
 
-    def test_run_list_filtered_productversion(self):
-        r1 = self.factory.create(name="Foo", description="this")
-        pv = self.F.ProductVersionFactory.create(version="3.14")
-        r2 = self.factory.create(
-            name="Bar",
-            description="that",
-            productversion=pv,
-            )
-
-        res = self.get_list(params={"productversion__version": "3.14"})
-        self.assertEqual(res.status_int, 200)
-
-        act = res.json["objects"]
-        self.assertEqual(len(act), 1, "expect 1 item in list")
-        self.assertEqual(unicode(r2.name), act[0]["name"])
+    def test_run_authorization(self):
+        assert False, "needs impl"
 
 
-    def test_run_by_id(self):
+    def test_post_run_results(self):
+        """
+        Validate the run is created correctly, plus all the results.
+        """
+        assert False, "needs impl"
+
+
+    def test_run_by_id_shows_env_detail(self):
         """Get a single test run, by id"""
         r = self.factory(name="Floo")
 
@@ -104,15 +91,6 @@ class RunResourceTest(case.api.ApiTestCase):
         self.assertEqual(unicode(r.name), act["name"])
 
 
-    def test_run_by_id_environments(self):
-        """Get a single test run, by id"""
-        r = self.factory(name="Floo")
-
-        res = self.get_detail(r.id)
-        self.assertEqual(res.status_int, 200, res)
-
-        act = res.json
-        self.assertEqual(unicode(r.name), act["name"])
 
 
 
