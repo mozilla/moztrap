@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for Result model.
 
@@ -68,7 +51,7 @@ class ResultTest(case.DBTestCase):
         """Start method marks status started and sets started timestamp."""
         r = self.F.ResultFactory.create()
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.start()
 
@@ -89,14 +72,30 @@ class ResultTest(case.DBTestCase):
 
     def test_finishsucceed(self):
         """Finishsucceed marks status passed and sets completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishsucceed()
 
         r = self.refresh(r)
         self.assertEqual(r.status, "passed")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishsucceed_not_started(self):
+        """Finishsucceed w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishsucceed()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "passed")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
@@ -112,14 +111,30 @@ class ResultTest(case.DBTestCase):
 
     def test_finishinvalidate(self):
         """Finishinvalidate sets status invalidated and completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishinvalidate()
 
         r = self.refresh(r)
         self.assertEqual(r.status, "invalidated")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishinvalidate_not_started(self):
+        """Finishinvalidate w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishinvalidate()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "invalidated")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
@@ -144,14 +159,30 @@ class ResultTest(case.DBTestCase):
 
     def test_finishfail(self):
         """Finishfail sets status failed and completed timestamp."""
-        r = self.F.ResultFactory.create(status="started")
+        r = self.F.ResultFactory.create(
+            status="started", started=datetime(2012, 2, 2))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.finishfail()
 
         r = self.refresh(r)
         self.assertEqual(r.status, "failed")
+        self.assertEqual(r.started, datetime(2012, 2, 2))
+        self.assertEqual(r.completed, datetime(2012, 2, 3))
+
+
+    def test_finishfail_not_started(self):
+        """Finishfail w/out start also sets started timestamp."""
+        r = self.F.ResultFactory.create(status="assigned")
+
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime(2012, 2, 3)
+            r.finishfail()
+
+        r = self.refresh(r)
+        self.assertEqual(r.status, "failed")
+        self.assertEqual(r.started, datetime(2012, 2, 3))
         self.assertEqual(r.completed, datetime(2012, 2, 3))
 
 
@@ -230,7 +261,7 @@ class ResultTest(case.DBTestCase):
         r = self.F.ResultFactory.create(
             status="passed", started=datetime(2011, 12, 1))
 
-        with patch("cc.model.execution.models.utcnow") as mock_utcnow:
+        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime(2012, 2, 3)
             r.restart()
 

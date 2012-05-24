@@ -1,7 +1,7 @@
 User's Guide
 ============
 
-This guide provides documentation of Case Conductor's underlying concepts and
+This guide provides documentation of MozTrap's underlying concepts and
 design decisions.
 
 .. toctree::

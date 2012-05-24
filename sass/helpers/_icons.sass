@@ -1,6 +1,7 @@
 // Hide the text, but keep enough width for the desired icon
 =replace-width($img,$small:false)
   +hide-text
+  text-indent: 200%
   background-position: center
   @if $small
     width: image-width($img)
@@ -9,7 +10,7 @@
 
 // Make room for an icon to the left of the text.
 =pad-icon($img)
-  padding-left: image-width($img) + $smallpx*2
+  padding-left: image-width($img) + $xsmallpx + $xxsmallpx
 
 // Add an icon, with or without text and a background.
 =icon($img, $color:false, $notext:true, $small:false)
@@ -26,7 +27,7 @@
     +replace-width($img,$small)
   @else
     +pad-icon($img)
-    background-position: $smallpx
+    background-position: $xsmallpx
 
 // common icons
 .goto

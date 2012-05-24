@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for auth proxy models.
 
@@ -38,7 +21,7 @@ class UserTest(case.DBTestCase):
 
 
     def test_can_pass_user_to_delete(self):
-        """Can pass user to User.delete() even though its not a CCModel."""
+        """Can pass user to User.delete() even though its not a MTModel."""
         u = self.F.UserFactory.create()
 
         u.delete(user=u)
@@ -80,7 +63,7 @@ class ModelBackendTest(case.DBTestCase):
     @property
     def backend(self):
         """An instance of the backend class under test."""
-        from cc.model.core.auth import ModelBackend
+        from moztrap.model.core.auth import ModelBackend
         return ModelBackend()
 
 
@@ -107,6 +90,32 @@ class ModelBackendTest(case.DBTestCase):
         res = self.backend.authenticate(username="foo", password="wrong")
 
         self.assertIsNone(res)
+
+
+    def test_get_user(self):
+        """Can get a user with correct user_id."""
+        u = self.F.UserFactory.create()
+
+        res = self.backend.get_user(u.id)
+
+        self.assertEqual(res, u)
+
+
+    def test_get_user_bad_id(self):
+        """Cannot get a user with bad user_id."""
+        res = self.backend.get_user(-1)
+
+        self.assertIsNone(res)
+
+
+
+class BrowserIDBackendTest(case.DBTestCase):
+    """Tests for our custom BrowserIDBackend."""
+    @property
+    def backend(self):
+        """An instance of the backend class under test."""
+        from moztrap.model.core.auth import BrowserIDBackend
+        return BrowserIDBackend()
 
 
     def test_get_user(self):

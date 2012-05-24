@@ -25,7 +25,16 @@
             bulkExclude = context.find(options.bulkExcludeSel),
             form = $(options.formSel),
             headers = context.find(options.headerSel),
+            bulkSelects = context.find(options.bulkSel),
             items,
+
+            updateBulkSel = function (select, list) {
+                if (list.find(options.itemSel + ' ' + options.inputSel + ':checked').length && list.find(options.itemSel + ' ' + options.inputSel + ':checked').length === list.find(options.itemSel + ' ' + options.inputSel).length) {
+                    select.prop('checked', true);
+                } else {
+                    select.prop('checked', false);
+                }
+            },
 
             filterItems = function () {
                 items = availableList.find(options.itemSel);
@@ -91,6 +100,9 @@
             tolerance: 'pointer',
             update: function (event, ui) {
                 ui.item.closest(options.availableSel).find(options.filterListSel + ' ' + options.filterSel + ':checked').prop('checked', false).change();
+                ui.item.find(options.inputSel).prop('checked', false);
+                updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
+                updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
             }
         });
 
@@ -119,12 +131,12 @@
                     }
                 });
                 if (labels.filter(function () { return $(this).data('clicked') === true; }).length) {
-                    filteredLabels.closest(options.itemSel).find(options.inputSel).prop('checked', true);
+                    filteredLabels.closest(options.itemSel).find(options.inputSel).prop('checked', true).change();
                     labels.data('clicked', false).data('unclicked', false);
                     thisLabel.data('clicked', true);
                     e.preventDefault();
                 } else if (labels.filter(function () { return $(this).data('unclicked') === true; }).length) {
-                    filteredLabels.closest(options.itemSel).find(options.inputSel).prop('checked', false);
+                    filteredLabels.closest(options.itemSel).find(options.inputSel).prop('checked', false).change();
                     labels.data('clicked', false).data('unclicked', false);
                     thisLabel.data('unclicked', true);
                     e.preventDefault();
@@ -147,16 +159,20 @@
         });
 
         bulkInclude.click(function (e) {
-            e.preventDefault();
             var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(includedList);
+            updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
+            updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
+            e.preventDefault();
         });
 
         bulkExclude.click(function (e) {
-            e.preventDefault();
             var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(availableList);
             filterLists.find(options.filterSel + ':checked').prop('checked', false).change();
+            updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
+            updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
+            e.preventDefault();
         });
 
         form.submit(function (e) {
@@ -196,6 +212,25 @@
             $(this).blur();
             e.preventDefault();
         });
+
+        // Bulk-select
+        bulkSelects.change(function (e) {
+            var thisSelect = $(this),
+                items = thisSelect.closest('.itemlist').find(options.itemSel + ' ' + options.inputSel);
+
+            if (thisSelect.is(':checked')) {
+                items.prop('checked', true).change();
+            } else {
+                items.prop('checked', false).change();
+            }
+        });
+
+        // Update bulk-select status when items are selected/unselected
+        context.on('change', options.itemSel + ' ' + options.inputSel, function (e) {
+            var thisList = $(this).closest('.itemlist'),
+                thisSelect = thisList.find(options.bulkSel);
+            updateBulkSel(thisSelect, thisList);
+        });
     };
 
     /* Setup plugin defaults */
@@ -208,10 +243,11 @@
         itemListSel: '.select',
         labelSel: '.bulk-type',
         inputSel: '.bulk-value',
-        bulkIncludeSel: '.multiunselected .listordering .action-include',
-        bulkExcludeSel: '.multiselected .listordering .action-exclude',
+        bulkIncludeSel: '.action-include',
+        bulkExcludeSel: '.action-exclude',
         headerSel: '.listordering .sortlink',
-        formSel: '.manage-form'
+        formSel: '.manage-form',
+        bulkSel: '.listordering .bybulk-value'
     };
 
 }(jQuery));

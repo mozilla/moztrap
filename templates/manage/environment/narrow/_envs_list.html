@@ -6,7 +6,9 @@
 
     <div class="items select">
       {% for env in environments %}
-      {% include "manage/environment/narrow/_env_list_item.html" %}
+        {% include "manage/environment/narrow/_env_list_item.html" %}
+      {% empty %}
+        {% include "manage/environment/narrow/_env_list_empty.html" %}
       {% endfor %}
     </div>
 

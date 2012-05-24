@@ -11,6 +11,13 @@ body.login
     +squish(5,5)
     +suffix(4)
     padding-left: 0
+    h2, p
+      +full(10)
+      +prefix(4,10)
+      color: $mid
+
+    h2
+      +trailer
 
   #brand
     +un-column
@@ -20,45 +27,86 @@ body.login
     a
       #{$link}
         +squish(9,9,24)
-        +padding-leader(7)
+        +padding-leader(6.25)
         +trailer(.5)
         display: block
         position: relative
+        color: $mid
+      #{$focus}
+        color: $alt
     .logo
       top: rhythm(1)
       width: 100%
       height: rhythm(6)
       background: image-url('126x126.png') no-repeat scroll center center
     .wordmark
-      +adjust-font-size-to($medpx)
+      +adjust-font-size-to($xlargepx)
       +reset-box-model
+      +text-shadow(rgba($lightest,$xsmall) 0 1px 0, rgba($base,$small) 0 -1px 0)
 
   .message
-    +squish(6,6)
-
-  h2, p
-    +full(10)
-    +prefix(4,10)
-    color: $mid
-
-  h2
-    +trailer
+    +squish(3,3)
 
   .forgot
-    +leader
     +trailer(0)
     +italic
     text-align: right
 
   // Forms -------------------------------------------------------------------
+  form
+    > .errorlist
+      +push(4,10)
+  .formfield
+    .type
+      +box-sizing(border-box)
+      +columns(4,10)
+      padding-left: rhythm(.5)
+    .value, .errorlist
+      +columns(6,10)
+      +omega(10)
 
-  form > .errorlist
-    +push(4,10)
+// BrowserID -----------------------------------------------------------------
+.logintype-browserid
+  h2
+    +gone
+  .browserid
+    +leader(.5)
+    +trailer(.5)
+    +pre(2,10)
+    +post(-2,10)
+    +rhythm-borders(1px,1)
+    +border-radius
+    +box-shadow(rgba($base,$xxsmall) 0 0 $xxsmallem inset)
+    +text-shadow(rgba($lightest,$small) 0 1px 0)
+    +demi
+    color: rgba($dark,$small)
+    border-color: $blue-light
+    background: $blue-hint image-url('noise.png') repeat scroll
 
-  label
-    +box-sizing(border-box)
-    +columns(4,10)
-    padding-left: rhythm(.5)
-  input, .formfield .errorlist
-    +columns(6,10)
-    +omega(10)
+#loginform
+  .password-field
+    +trailer(0)
+
+#browserid
+  +replace-text('browserid.png')
+  display: inline-block
+  margin: 0 $xxxsmallem
+  width: image-width('browserid.png')
+  vertical-align: top
+
+#setusername    
+  +clearfix
+  .form-actions
+    float: right
+  .action-cancel-setusername
+    +reset-box-model
+    color: $alt
+    background: none
+    font-weight: normal
+    #{$focus}
+      color: $accent
+  #logoutform
+    float: right
+    padding: rhythm(.75) .4em
+    &::after
+      content: ' or '

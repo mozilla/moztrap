@@ -1,22 +1,9 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """Tests for template tags/filters for running tests."""
+import datetime
+
 from django.template import Template, Context
+
+import mock
 
 from tests import case
 
@@ -42,6 +29,68 @@ class ResultForTest(case.DBTestCase):
                 r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
             str(r.id)
             )
+
+
+    def test_dupe_results_keeps_completed(self):
+        """If dupe results exists, keep the one that's completed."""
+        r = self.F.ResultFactory(status="passed")
+        self.F.ResultFactory(
+            tester=r.tester,
+            runcaseversion=r.runcaseversion,
+            environment=r.environment,
+            )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
+
+
+    def test_dupe_complete_results_keeps_latest(self):
+        """If dupe completed results exists, keep the last-modified."""
+
+        with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            r = self.F.ResultFactory(
+                status="passed",
+                )
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            r2 = self.F.ResultFactory(
+                tester=r.tester,
+                runcaseversion=r.runcaseversion,
+                environment=r.environment,
+                status="failed",
+                )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r2.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
+
+
+    def test_dupe_incomplete_results_keeps_latest(self):
+        """If dupe incomplete results exists, keep the last-modified."""
+
+        with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            r = self.F.ResultFactory()
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            r2 = self.F.ResultFactory(
+                tester=r.tester,
+                runcaseversion=r.runcaseversion,
+                environment=r.environment,
+                )
+
+        self.assertEqual(
+            self.result_for(
+                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
+            str(r2.id),
+            )
+        self.assertEqual(self.model.Result.objects.count(), 1)
 
 
     def test_result_does_not_exist(self):

@@ -11,11 +11,11 @@
 
   <!-- Page Info -->
   {% block robots %}<meta name="robots" content="index, follow" />{% endblock %}
-  <meta name="description" content="{% block description %}each page should have a short description{% endblock description %}" />
+  <meta name="description" content="{% block description %}Mozilla's open-source distributed test case management system{% endblock description %}" />
   <meta name="author" content="Mozilla" />
   <meta name="keywords" content="keywords" />
   <meta name="language" content="en-us" />
-  <title>{% block title %}Mozilla Case Conductor{% endblock %}</title>
+  <title>{% block title %}MozTrap{% endblock %}</title>
 
   <!-- Microformat Profiles -->
   <!-- hCard, hCalendar, rel-license, rel-tag, XOXO, XFN, VoteLinks -->
@@ -26,33 +26,34 @@
 	<!-- favicon.ico -->
   <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" />
 
+  <style>
+    /*
+     * Web Fonts from fontspring.com
+     *
+     * All OpenType features and all extended glyphs have been removed.
+     * Fully installable fonts can be purchased at http://www.fontspring.com
+     *
+     * The fonts included in this stylesheet are subject to the End User License you purchased
+     * from Fontspring. The fonts are protected under domestic and international trademark and
+     * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
+     * distributing this font software.
+     *
+     * (c) 2010-2011 Fontspring
+     *
+     *
+     *
+     *
+     * The fonts included are copyrighted by the vendor listed below.
+     *
+     * Vendor:      Aviation Partners
+     * License URL: http://www.fontspring.com/fflicense/aviation-partners
+     *
+     *
+     */
+  </style>
+
   {% compress css %}
   {% block styles %}
-  <!--
-  /*
-   * Web Fonts from fontspring.com
-   *
-   * All OpenType features and all extended glyphs have been removed.
-   * Fully installable fonts can be purchased at http://www.fontspring.com
-   *
-   * The fonts included in this stylesheet are subject to the End User License you purchased
-   * from Fontspring. The fonts are protected under domestic and international trademark and
-   * copyright law. You are prohibited from modifying, reverse engineering, duplicating, or
-   * distributing this font software.
-   *
-   * (c) 2010-2011 Fontspring
-   *
-   *
-   *
-   *
-   * The fonts included are copyrighted by the vendor listed below.
-   *
-   * Vendor:      Aviation Partners
-   * License URL: http://www.fontspring.com/fflicense/aviation-partners
-   *
-   *
-   */
-  -->
   <link rel="stylesheet" href="{{ STATIC_URL }}css/screen.css" media="screen, projection" />
   {% endblock styles %}
   {% endcompress %}
@@ -67,7 +68,7 @@
   {% block extrahead %}{% endblock %}
 </head>
 
-<body id="caseconductor-com" class="{% block bodyclasses %}{% endblock %}">
+<body id="moztrap-com" class="{% block bodyclasses %}{% endblock %}">
 {% block body %}
 
 <div>
@@ -85,10 +86,11 @@
 {% endblock body %}
 
 <!-- JavaScript -->
-{% compress js %}
 {% block js %}
-<script src="{{ STATIC_URL }}js/jquery-1.7.1.js"></script>
-<script src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.js"></script>
+<script src="https://browserid.org/include.js"></script>
+{% compress js %}
+<script src="{{ STATIC_URL }}js/jquery-1.7.2.js"></script>
+<script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.mockjax.js"></script>
 <script src="{{ STATIC_URL }}js/ICanHaz.js"></script>
 <script src="{{ STATIC_URL }}js/owa-include.js"></script>
@@ -97,6 +99,7 @@
 <script src="{{ STATIC_URL }}js/jquery.placeholder.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.superformset.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.sorter.js"></script>
+<script src="{{ STATIC_URL }}browserid/browserid.js"></script>
 <script src="{{ STATIC_URL }}html5accordion/jquery.html5accordion.js"></script>
 <script src="{{ STATIC_URL }}messages_ui/jquery.messages-ui.js"></script>
 <script src="{{ STATIC_URL }}ajax_loading_overlay/jquery.ajax-loading-overlay.js"></script>
@@ -114,8 +117,8 @@
 <script src="{{ STATIC_URL }}js/runtests.js"></script>
 <script src="{{ STATIC_URL }}js/owa.js"></script>
 <script src="{{ STATIC_URL }}js/init.js"></script>
-{% endblock %}
 {% endcompress %}
+{% endblock %}
 
 {% block last %}
 {% endblock %}

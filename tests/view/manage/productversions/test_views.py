@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for productversion management views.
 
@@ -27,7 +10,8 @@ from tests import case
 
 class ProductVersionsTest(case.view.manage.ListViewTestCase,
                           case.view.ListFinderTests,
-                          case.view.manage.CCModelListTests,
+                          case.view.manage.MTModelListTests,
+                          case.view.NoCacheTest,
                           ):
     """Test for productversions manage list view."""
     form_id = "manage-productversions-form"
@@ -128,7 +112,9 @@ class ProductVersionsTest(case.view.manage.ListViewTestCase,
 
 
 
-class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
+class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase,
+                               case.view.NoCacheTest,
+                               ):
     """Test for productversion-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a productversion."""
@@ -176,7 +162,9 @@ class ProductVersionDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddProductVersionTest(case.view.FormViewTestCase):
+class AddProductVersionTest(case.view.FormViewTestCase,
+                            case.view.NoCacheTest,
+                            ):
     """Tests for add product version view."""
     form_id = "productversion-add-form"
 
@@ -225,11 +213,13 @@ class AddProductVersionTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
-class EditProductVersionTest(case.view.FormViewTestCase):
+class EditProductVersionTest(case.view.FormViewTestCase,
+                             case.view.NoCacheTest,
+                             ):
     """Tests for edit-productversion view."""
     form_id = "productversion-edit-form"
 
@@ -255,7 +245,7 @@ class EditProductVersionTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

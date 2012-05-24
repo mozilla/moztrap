@@ -1,37 +1,18 @@
-/*
-Case Conductor is a Test Case Management system.
-Copyright (C) 2011-2012 Mozilla
-
-This file is part of Case Conductor.
-
-Case Conductor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Case Conductor is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-*/
 /*jslint    browser:    true,
             indent:     4 */
 /*global    ich, jQuery, VALID_ENVIRONMENTS */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // hide empty run-tests environments form on initial load
-    CC.hideEmptyRuntestsEnv = function () {
+    MT.hideEmptyRuntestsEnv = function () {
         $('.runenvselect.empty').hide();
     };
 
     // Add focus to ``invalid`` and ``fail`` textboxes when expanded
-    CC.autoFocus = function (trigger, context) {
+    MT.autoFocus = function (trigger, context) {
         $(context).on('click', trigger, function () {
             if ($(this).parent().hasClass('open')) {
                 $(this).parent().find('textarea').focus();
@@ -40,7 +21,7 @@ var CC = (function (CC, $) {
     };
 
     // Open hierarchical navigation directly to clicked breadcrumb link
-    CC.breadcrumb = function (context) {
+    MT.breadcrumb = function (context) {
         var finder = $(context);
         finder.find('.runsdrill .colcontent').each(function () {
             $(this).data('originalHTML', $(this).html());
@@ -58,7 +39,7 @@ var CC = (function (CC, $) {
     };
 
     // Expand all tests on bulk-open
-    CC.expandAllTests = function (container) {
+    MT.expandAllTests = function (container) {
         var context = $(container),
             trigger = context.find('.itemlist .listordering .bybulk-open > a'),
             target,
@@ -97,9 +78,9 @@ var CC = (function (CC, $) {
     };
 
     // Ajax submit runtest forms
-    CC.runTests = function (container) {
+    MT.runTests = function (container) {
         var context = $(container),
-            tests = context.find('.listitem.action-ajax-replace'),
+            tests = context.find('.listitem'),
             ajaxFormsInit = function (test) {
                 var forms = test.find('form');
 
@@ -117,16 +98,25 @@ var CC = (function (CC, $) {
                         }
                     }
                 });
+            },
+            ajaxifyTests = function () {
+                tests.each(function () {
+                    var thisTest = $(this);
+                    ajaxFormsInit(thisTest);
+                });
             };
 
-        tests.each(function () {
-            var thisTest = $(this);
-            ajaxFormsInit(thisTest);
+        ajaxifyTests();
+
+        // Re-attach ajax-form handlers after list is ajax-replaced (sorting/filtering called in listpages.js)
+        context.on('after-replace', '.itemlist.action-ajax-replace', function (event, replacement) {
+            tests = context.find('.listitem');
+            ajaxifyTests();
         });
     };
 
     // Enable/disable failed test bug URL input on-select
-    CC.failedTestBug = function (container) {
+    MT.failedTestBug = function (container) {
         var context = $(container);
 
         context.on('change', '.listitem .stepfail input[type="radio"][name="bug"]', function () {
@@ -147,8 +137,19 @@ var CC = (function (CC, $) {
         });
     };
 
+    // Clicking anywhere on test header expands test
+    MT.expandTestDetails = function (container) {
+        var context = $(container);
+
+        context.on('click', '.itemlist .listitem .itemhead', function (e) {
+            if (!($(e.target).is('button') || $(e.target).is('.filter-link'))) {
+                $(this).closest('.listitem').find('.itembody .item-summary').click();
+            }
+        });
+    };
+
     // Filter environment form options
-    CC.filterEnvironments = function (container) {
+    MT.filterEnvironments = function (container) {
         var context = $(container),
             triggers = context.find('select'),
             doFilter;
@@ -237,6 +238,6 @@ var CC = (function (CC, $) {
         }
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

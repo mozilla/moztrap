@@ -1,31 +1,15 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Utility base TestCase classes for testing views.
 
 """
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from BeautifulSoup import BeautifulSoup
 import django_webtest
 import django_webtest.backends
 
-from cc import model
+from moztrap import model
 
 from ...utils import Url
 from ..base import DBMixin
@@ -139,7 +123,10 @@ class ViewTestCase(WebTest):
 
 
     def get(self, **kwargs):
-        """Shortcut for getting url."""
+        """Shortcut for getting url; supports `ajax` boolean kwarg."""
+        if kwargs.pop("ajax", False):
+            kwargs.setdefault("headers", {}).setdefault(
+                "X-Requested-With", "XMLHttpRequest")
         return self.app.get(self.url, **kwargs)
 
 
@@ -154,7 +141,7 @@ class AuthenticatedViewTestCase(ViewTestCase):
     def get(self, **kwargs):
         """Shortcut for getting url, authenticated."""
         kwargs.setdefault("user", self.user)
-        return self.app.get(self.url, **kwargs)
+        return super(AuthenticatedViewTestCase, self).get(**kwargs)
 
 
     def post(self, data, **kwargs):
@@ -171,9 +158,9 @@ class AuthenticatedViewTestCase(ViewTestCase):
 
     def test_login_required(self):
         """Requires login."""
-        response = self.app.get(self.url, status=302)
+        res = self.app.get(self.url, status=302)
 
-        self.assertIn("login", response.headers["Location"])
+        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
 
 
 
@@ -299,3 +286,12 @@ class ListFinderTests(object):
             'data-sub-url="?finder=1&amp;col=runs&amp;id={0}"'.format(pv.id),
             res.json["html"]
             )
+
+
+
+class NoCacheTest(object):
+    """Test that a given view marks it's responses as uncacheable."""
+    def test_never_cache(self):
+        res = self.get()
+
+        self.assertEqual(res.headers["Cache-Control"], "max-age=0")

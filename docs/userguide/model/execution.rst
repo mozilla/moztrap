@@ -41,6 +41,26 @@ Version, you must clone the existing Test Run, then edit the new clone while it
 is still in draft mode. Once your changes are made, you can activate the new
 run to use it.
 
+.. _test-run-edit-fields:
+
+Run Edit Fields
+^^^^^^^^^^^^^^^^
+
+* **Product Version** - The product version of this test run.  Runs are
+  specific to a version of a product, not just the product in general.
+* **Name** - The summary name for the run.  When testing a product that has
+  build numbers, you may choose to include the build number in the name to
+  distinguish it from other runs against the same version of the product.
+  Dates in the name are another good way to distinguish runs from one another.
+* **Description** - (optional) Any description for the run.
+* **Start** - The first date that the run can be executed
+* **End** - The date the run expires.  A run cannot be executed after its
+  end date.
+* **Available Suites** - All the suites that apply to the specified Product
+  Version.  This field is filterable.
+* **Selected Suites** - The suites from which to gather test cases for this
+  run.  When the run is activated, only suites and cases that were active at
+  that time will be included in the run.  This field is not filterable.
 
 .. _test-results:
 

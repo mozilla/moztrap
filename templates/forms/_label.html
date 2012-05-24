@@ -1,7 +1,7 @@
-{% load ccforms %}
+{% load mtforms %}
 
 {% if id %}
-  <label for="{{ id }}" class="type">
+  <label for="{{ id }}" class="type" title="{{ label_text }} ({% if field|optional %}optional{% else %}required{% endif %})">
     {{ label_text }}
     {% if field|optional %}
       <span class="isoptional">optional</span>

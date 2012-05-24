@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for user management views.
 
@@ -26,12 +9,18 @@ from tests import case
 
 
 class UsersTest(case.view.manage.ListViewTestCase,
-                case.view.manage.StatusListTests
+                case.view.NoCacheTest,
                 ):
     """Test for users manage list view."""
     form_id = "manage-users-form"
     perm = "manage_users"
     name_attr = "username"
+
+
+    def setUp(self):
+        """Any access to this view requires manage_users perm."""
+        super(UsersTest, self).setUp()
+        self.add_perm(self.perm)
 
 
     @property
@@ -46,10 +35,18 @@ class UsersTest(case.view.manage.ListViewTestCase,
         return reverse("manage_users")
 
 
+    def test_create_link_requires_perms(self):
+        """This test from superclass doesn't apply here."""
+        pass
+
+
+    def test_delete_requires_permission(self):
+        """This test from superclass doesn't apply here."""
+        pass
+
+
     def test_activate(self):
         """Can activate objects in list."""
-        self.add_perm(self.perm)
-
         s = self.factory.create(is_active=False, username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(
@@ -63,8 +60,6 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
     def test_deactivate(self):
         """Can deactivate objects in list."""
-        self.add_perm(self.perm)
-
         s = self.factory.create(is_active=True, username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(
@@ -78,8 +73,6 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
     def test_delete(self):
         """Can delete objects from list."""
-        self.add_perm(self.perm)
-
         o = self.factory.create(username="foo")
 
         self.get_form(params={"filter-username": "foo"}).submit(
@@ -170,7 +163,9 @@ class UsersTest(case.view.manage.ListViewTestCase,
 
 
 
-class AddUserTest(case.view.FormViewTestCase):
+class AddUserTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for add user view."""
     form_id = "user-add-form"
 
@@ -221,11 +216,13 @@ class AddUserTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
-class EditUserTest(case.view.FormViewTestCase):
+class EditUserTest(case.view.FormViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for edit-user view."""
     form_id = "user-edit-form"
 
@@ -248,7 +245,7 @@ class EditUserTest(case.view.FormViewTestCase):
         """Requires manage-users permission."""
         res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

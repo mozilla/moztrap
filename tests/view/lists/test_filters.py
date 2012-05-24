@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for queryset-filtering.
 
@@ -30,11 +13,11 @@ from tests import case
 
 
 class FiltersTestCase(case.TestCase):
-    """A test case for testing classes in the cc.view.lists.filters module."""
+    """A test case for testing classes in the moztrap.view.lists.filters module."""
     @property
     def filters(self):
         """The module under test."""
-        from cc.view.lists import filters
+        from moztrap.view.lists import filters
         return filters
 
 
@@ -44,7 +27,7 @@ class FilterUrlTest(FiltersTestCase):
     @property
     def Product(self):
         """The Product model."""
-        from cc.model import Product
+        from moztrap.model import Product
         return Product
 
 
@@ -62,7 +45,7 @@ class FilterUrlTest(FiltersTestCase):
         """Can find filter url by view function."""
         p = self.Product(pk=2)
 
-        from cc.view.manage.cases.views import cases_list
+        from moztrap.view.manage.cases.views import cases_list
 
         self.assertEqual(
             self.filters.filter_url(cases_list, p),
@@ -501,7 +484,7 @@ class FilterTest(FiltersTestCase):
         """Can force values to be coerced."""
         f = self.filters.Filter("name", coerce=int)
 
-        self.assertEqual(f.values({"name": ["1", "two"]}), [1])
+        self.assertEqual(f.values({"name": ["1", "two"]}), [1, None])
 
 
 

@@ -12,9 +12,6 @@
     position: absolute
     left: rhythm(.5)
 
-  .bulk-type
-    +icon('ui/grip.png')
-
 .multi-header
   @extend .allcaps
   +trailer(.5)
@@ -24,11 +21,11 @@
   .multiselected &
     position: absolute
     top: rhythm(.5)
-    left: columns(12,24) + gutter(24)
+    left: columns(13,24) + gutter(24)
 
 .selectbox
   +box-sizing(border-box)
-  +columns(12,24)
+  +columns(11,24)
   .multiselected &
     +omega(24)
 
@@ -37,19 +34,50 @@
     height: rhythm(12)
     border-bottom: 1px solid
     overflow-y: scroll
-    background-color: rgba($blue-hint,$xxsmall)
+    &:empty
+      position: relative
+      &::after
+        +stretch
+        +italic
+        padding: rhythm(1)
+        color: $red
+        text-align: center
+    .multiunselected &
+      background-color: rgba($red-lightest,$xxsmall)
+      &:empty::after
+        content: "No available items."
+    .multiselected &
+      background-color: rgba($green-lightest,$xxsmall)
+      &:empty::after
+        content: "No included items. Drag items here (or select and transfer multiple) to include them."
 
 .selectsearch
   @extend .magicfilter
   +full(24)
-  +suffix(12,24)
+  +suffix(13,24)
   +pie-clearfix
   .textual
     +un-column
-    +full(12)
+    +full(11)
     +trailer(.5)
 
 .selectitem
   position: relative
+  background-color: $blue-hint
+  cursor: move
   &:last-child
     +box-shadow(rgba($base,$xxxsmall) 0 $xxsmallem $xxsmallem)
+
+.include-exclude
+  +columns(2,24)
+  +padding-leader(4)
+
+.action-include
+  +button-style($green-light,'ui/arrow_right.png',$notext:true)
+
+.action-exclude
+  +button-style($red-lighter,'ui/arrow_left.png',$notext:true)
+
+.action-include, .action-exclude
+  +trailer
+  width: 100%

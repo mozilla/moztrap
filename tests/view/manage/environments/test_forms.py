@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for environment forms.
 
@@ -28,7 +11,7 @@ class AddProfileFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.environments.forms import AddProfileForm
+        from moztrap.view.manage.environments.forms import AddProfileForm
         return AddProfileForm
 
 
@@ -79,3 +62,82 @@ class AddProfileFormTest(case.DBTestCase):
         rendered = unicode(f["elements"])
         self.assertIn('id="element-{0}">'.format(unsel.id), rendered)
         self.assertIn('id="element-{0}" checked>'.format(sel.id), rendered)
+
+
+
+class PopulateProductVersionEnvsFormTest(case.DBTestCase):
+    """Tests for PopulateProductVersionEnvsForm."""
+    def setUp(self):
+        """All these tests need a productversion."""
+        super(PopulateProductVersionEnvsFormTest, self).setUp()
+        self.pv = self.F.ProductVersionFactory.create()
+
+
+    @property
+    def PopulateProductVersionEnvsForm(self):
+        """The form class under test."""
+        from moztrap.view.manage.environments import forms
+        return forms.PopulateProductVersionEnvsForm
+
+
+    def test_populate_from_profile(self):
+        """Can populate pv's envs from a profile."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "profile-{0}".format(profile.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in pv.environments.all()], [u"Windows"])
+
+
+    def test_populate_from_other_version(self):
+        """Can populate pv's envs from another version of the same product."""
+        pv2 = self.F.ProductVersionFactory.create(product=self.pv.product)
+        pv2.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "productversion-{0}".format(pv2.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in pv.environments.all()], [u"Windows"])
+
+
+    def test_cascade(self):
+        """Populated envs cascade to cases."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.pv, case__product=self.pv.product)
+
+        form = self.PopulateProductVersionEnvsForm(
+            {"source": "profile-{0}".format(profile.id)},
+            productversion=self.pv,
+            )
+
+        self.assertTrue(form.is_valid())
+
+        pv = form.save()
+
+        self.assertEqual(pv, self.pv)
+        self.assertEqual(
+            [unicode(e) for e in cv.environments.all()], [u"Windows"])

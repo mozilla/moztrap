@@ -78,9 +78,10 @@
 // Versioning
 
 .versioning
+  +pie-clearfix
   +trailer(2)
 
-  .product-field
+  .product-field, .suite-field, .id-prefix-field
     +columns(11,24)
     .type
       +columns(2,11)
@@ -100,13 +101,6 @@
     +columns(4,24)
     +padding-leader(.25)
 
-  .suite-field
-    +full(24)
-    .type
-      +columns(2,24)
-    .value, .errorlist
-      +columns(20,24)
-
 // ---------------------------------------------------------------------------
 // Versioned
 
@@ -115,7 +109,7 @@
   .caseinfo-fields
     +columns(11,24)
 
-  .name-field, .description-field
+  .name-field, .description-field, .id-prefix-field
     .type
       +columns(2,11)
     .value, .errorlist
@@ -145,6 +139,8 @@
     +full(24)
     +pad(2,13,24)
     +trailer(2)
+    .help-link
+      +float(right)
 
   .add-attachment-field
     +float(right)
@@ -161,6 +157,8 @@
     +padding-leader
     +pie-clearfix
     .fieldhelp
+      h3
+        +gone
       +columns(11,24)
       +omega(24)
       +cond
@@ -173,7 +171,8 @@
     .value, .errorlist
       +columns(11,13)
       +omega(13)
-      min-height: rhythm(10)
+    .value
+      min-height: rhythm(12)
 
 // ---------------------------------------------------------------------------
 // Steps

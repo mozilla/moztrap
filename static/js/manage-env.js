@@ -1,32 +1,13 @@
-/*
-Case Conductor is a Test Case Management system.
-Copyright (C) 2011-2012 Mozilla
-
-This file is part of Case Conductor.
-
-Case Conductor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Case Conductor is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-*/
 /*jslint    browser:    true,
             indent:     4,
             confusion:  true */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
-    CC.createEnvProfile = function (container) {
+    MT.createEnvProfile = function (container) {
         var context = $(container),
             elements = context.find('.bulkselectitem .elements .element'),
             updateLabels = function () {
@@ -76,7 +57,7 @@ var CC = (function (CC, $) {
 
         // ENTER in Name textbox shifts focus to submit button
         context.on('keydown', '#id_name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 event.preventDefault();
                 context.find('.form-actions button[type="submit"]').focus();
             }
@@ -101,7 +82,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit new elements
         context.on('keydown', '.bulkselectitem .add-element input[name="new-element-name"]', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         name = input.val(),
@@ -141,7 +122,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit new categories
         context.on('keydown', '#new-category-name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     var input = $(this),
                         loading = input.closest('.itembody'),
@@ -218,7 +199,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit edited element name
         context.on('keydown', '.bulkselectitem .elements .editing input', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     if ($(this).val() !== $(this).data('original-value')) {
                         var input = $(this),
@@ -273,7 +254,7 @@ var CC = (function (CC, $) {
 
         // Ajax-submit edited category name
         context.on('keydown', '.bulkselectitem .item-content .editing.category input', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER) {
+            if (event.keyCode === MT.keycodes.ENTER) {
                 if ($(this).val().length) {
                     if ($(this).val() !== $(this).data('original-value')) {
                         var input = $(this),
@@ -320,15 +301,15 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.addEnvToProfile = function (container) {
+    MT.addEnvToProfile = function (container, form) {
         var context = $(container),
 
             // Setup add-env form for ajax-submit
             addEnv = function () {
                 var replaceList = context.find('.itemlist.action-ajax-replace');
 
-                if (replaceList.length && context.find('#add-environment-form').length) {
-                    context.find('#add-environment-form').ajaxForm({
+                if (replaceList.length && context.find(form).length) {
+                    context.find(form).ajaxForm({
                         beforeSubmit: function (arr, form, options) {
                             replaceList.loadingOverlay();
                         },
@@ -337,6 +318,7 @@ var CC = (function (CC, $) {
                             replaceList.loadingOverlay('remove');
                             if (response.html) {
                                 replaceList.replaceWith(newList);
+                                $('#filter').find('input.check:checked').prop('checked', false).change();
                                 context.find('.add-item').customAutocomplete({
                                     textbox: '#env-elements-input',
                                     inputList: '.env-element-list',
@@ -374,7 +356,7 @@ var CC = (function (CC, $) {
         });
     };
 
-    CC.editEnvProfileName = function (container) {
+    MT.editEnvProfileName = function (container) {
         var context = $(container),
             profileNameInput = context.find('#profile-name'),
             profileName = profileNameInput.val(),
@@ -391,7 +373,7 @@ var CC = (function (CC, $) {
 
         // Prevent submission of profile-name form if value hasn't changed
         context.on('keydown', '#profile-name', function (event) {
-            if (event.keyCode === CC.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
+            if (event.keyCode === MT.keycodes.ENTER && !profileNameSubmit.is(':visible')) {
                 event.preventDefault();
             }
         });
@@ -409,7 +391,7 @@ var CC = (function (CC, $) {
     };
 
     // Bulk-select for visible (filtered) environments
-    CC.bulkSelectEnvs = function (container) {
+    MT.bulkSelectEnvs = function (container) {
         var context = $(container),
             bulkSelect = context.find('#bulk_select'),
             items = context.find('.itemlist .items .listitem'),
@@ -444,8 +426,10 @@ var CC = (function (CC, $) {
 
         // Update bulk-select after filter-change
         context.on('after-filter', '.itemlist .items', updateBulkSelect);
+
+        updateBulkSelect();
     };
 
-    return CC;
+    return MT;
 
-}(CC || {}, jQuery));
+}(MT || {}, jQuery));

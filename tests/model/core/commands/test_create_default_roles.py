@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for management command to create default roles.
 
@@ -71,7 +54,7 @@ class CreateDefaultRolesTest(case.DBTestCase):
     def test_unknown_permission(self):
         """Gracefully skips unknown permission."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
+            "moztrap.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command()
 
@@ -84,15 +67,13 @@ class CreateDefaultRolesTest(case.DBTestCase):
         """Test output when all roles are created."""
         output = self.call_command()
 
-        self.assertEqual(
-            output,
-            """Role 'Test Creator' created.
+        expected = """Role 'Test Creator' created.
   Permission 'library.create_cases' added.
   Permission 'library.manage_suite_cases' added.
   Permission 'execution.execute' added.
 Role 'Admin' created.
-  Permission 'core.manage_products' added.
   Permission 'core.manage_users' added.
+  Permission 'core.manage_products' added.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
@@ -103,6 +84,7 @@ Role 'Admin' created.
   Permission 'library.manage_suite_cases' added.
   Permission 'execution.execute' added.
 Role 'Test Manager' created.
+  Permission 'core.manage_products' added.
   Permission 'library.manage_cases' added.
   Permission 'library.manage_suites' added.
   Permission 'tags.manage_tags' added.
@@ -114,7 +96,9 @@ Role 'Test Manager' created.
   Permission 'execution.execute' added.
 Role 'Tester' created.
   Permission 'execution.execute' added.
-""")
+"""
+
+        self.assertEqual(output, expected)
 
 
     def test_creates_all_quietly(self):
@@ -136,7 +120,7 @@ Role 'Tester' created.
     def test_skips_unknown_permission_quietly(self):
         """Skips unknown permission silently with verbosity 0."""
         with patch(
-            "cc.model.core.management.commands.create_default_roles.ROLES",
+            "moztrap.model.core.management.commands.create_default_roles.ROLES",
             {"Foo": ["foo.foo"]}):
             output = self.call_command(verbosity=0)
 

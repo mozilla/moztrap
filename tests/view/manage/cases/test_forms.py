@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for case management forms.
 
@@ -23,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
 from django.utils.datastructures import MultiValueDict
 
-from cc import model
+from moztrap import model
 from tests import case
 
 
@@ -47,7 +30,7 @@ class AddCaseFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import AddCaseForm
+        from moztrap.view.manage.cases.forms import AddCaseForm
         return AddCaseForm
 
 
@@ -55,13 +38,14 @@ class AddCaseFormTest(case.DBTestCase):
         defaults = {
             "product": [self.product.id],
             "productversion": [self.productversion.id],
+            "idprefix": ["pref"],
             "name": ["Can register."],
             "description": ["A user can sign up for the site."],
             "steps-TOTAL_FORMS": [1],
             "steps-INITIAL_FORMS": [0],
             "steps-0-instruction": ["Fill in form and submit."],
             "steps-0-expected": ["You should get a welcome email."],
-            "status": ["draft"],
+            "status": ["active"],
             }
         return MultiValueDict(defaults)
 
@@ -78,7 +62,6 @@ class AddCaseFormTest(case.DBTestCase):
         html = unicode(self.form()["productversion"])
 
         self.assertIn('data-product-id="{0}"'.format(self.product.id), html)
-
 
 
     def test_success(self):
@@ -99,6 +82,13 @@ class AddCaseFormTest(case.DBTestCase):
         self.assertEqual(cv.case.created_by, self.user)
         self.assertEqual(cv.created_by, self.user)
         self.assertEqual(cv.steps.get().created_by, self.user)
+
+
+    def test_initial_state(self):
+        """New cases should default to active state."""
+        form = self.form()
+
+        self.assertEqual(form["status"].value(), "active")
 
 
     def test_wrong_product_version(self):
@@ -273,7 +263,7 @@ class AddBulkCasesFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import AddBulkCaseForm
+        from moztrap.view.manage.cases.forms import AddBulkCaseForm
         return AddBulkCaseForm
 
 
@@ -478,14 +468,18 @@ class EditCaseVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.cases.forms import EditCaseVersionForm
+        from moztrap.view.manage.cases.forms import EditCaseVersionForm
         return EditCaseVersionForm
 
 
     def test_initial(self):
         """Initial data is populated accurately."""
         cv = self.F.CaseVersionFactory.create(
-            name="a name", description="a desc", status="active")
+            case__idprefix="pref",
+            name="a name",
+            description="a desc",
+            status="active",
+            )
         self.F.CaseStepFactory.create(
             caseversion=cv, instruction="do this", expected="see that")
 
@@ -496,6 +490,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
             {
                 "name": "a name",
                 "description": "a desc",
+                "idprefix": "pref",
                 "status": "active",
                 "cc_version": cv.cc_version,
                 }
@@ -523,6 +518,7 @@ class EditCaseVersionFormTest(case.DBTestCase):
                 {
                     "name": ["new name"],
                     "description": ["new desc"],
+                    "idprefix": ["pref"],
                     "status": ["active"],
                     "cc_version": str(cv.cc_version),
                     "steps-TOTAL_FORMS": ["2"],
@@ -653,7 +649,7 @@ class StepFormSetTest(case.DBTestCase):
     @property
     def formset(self):
         """The class under test."""
-        from cc.view.manage.cases.forms import StepFormSet
+        from moztrap.view.manage.cases.forms import StepFormSet
         return StepFormSet
 
 

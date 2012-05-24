@@ -7,7 +7,10 @@
 {% with product.versions.all as productversions %}
 {% if productversions %}
   <div class="productversions">
-    <h4 class="productversions-title"><a href="{{ 'manage_productversions'|filter_url:product }}">Versions</a></h4>
+    <h4 class="productversions-title">
+      <a href="{{ 'manage_productversions'|filter_url:product }}">Versions</a>
+      {% include "_helplink.html" with helpURL="products.html#product-versions" %}
+    </h4>
     <ul class="productversion-list">
       {% for productversion in productversions %}
       <li><a href="{{ 'manage_productversions'|filter_url:product }}#productversion-id-{{ productversion.id }}" title="{{ productversion.name }}" class="productversion">{{ productversion }}</a></li>

@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for Case and related models (CaseVersion, CaseStep).
 
@@ -86,13 +69,13 @@ class CaseVersionTest(case.DBTestCase):
         self.assertEqual(new.name, "two")
 
 
-    def test_clone_sets_draft_state(self):
-        """Clone of active caseversion is still draft."""
+    def test_clone_gets_source_state(self):
+        """Clone of active caseversion is still active."""
         cv = self.F.CaseVersionFactory(status="active")
 
         new = cv.clone()
 
-        self.assertEqual(new.status, "draft")
+        self.assertEqual(new.status, "active")
 
 
     def test_clone_steps(self):
@@ -144,6 +127,13 @@ class CaseVersionTest(case.DBTestCase):
         new = cv.clone(overrides={"productversion": pv})
 
         self.assertEqual(len(new.environments.all()), 2)
+
+
+    def test_default_active(self):
+        """New CaseVersion defaults to active state."""
+        cv = self.F.CaseVersionFactory()
+
+        self.assertEqual(cv.status, "active")
 
 
     def test_gets_productversion_envs(self):
@@ -257,7 +247,7 @@ class CaseVersionTest(case.DBTestCase):
             )
 
 
-    @patch("cc.model.ccmodel.datetime")
+    @patch("moztrap.model.mtmodel.datetime")
     def test_update_latest_version_does_not_change_modified_on(self, mock_dt):
         """Updating latest case version does not change modified_on."""
         mock_dt.datetime.utcnow.return_value = datetime(2012, 1, 30)

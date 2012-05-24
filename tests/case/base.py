@@ -1,22 +1,5 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
-Utility base TestCase classes for Case Conductor.
+Utility base TestCase classes for MozTrap.
 
 """
 from django import test as django_test
@@ -27,11 +10,11 @@ import mock
 
 
 class DBMixin(object):
-    """Mixin for Case Conductor test case classes that need the database."""
+    """Mixin for MozTrap test case classes that need the database."""
     @property
     def model(self):
         """The data model."""
-        from cc import model
+        from moztrap import model
         return model
 
 
@@ -53,7 +36,7 @@ class DBMixin(object):
 
 
 class DBTestCase(DBMixin, django_test.TestCase):
-    """Base test case class for Case Conductor tests that need the database."""
+    """Base test case class for MozTrap tests that need the database."""
     pass
 
 

@@ -19,5 +19,6 @@
 {% endblock caseversions %}
 
 {% block versioningform %}
+{% include "forms/_field.html" with field=form.idprefix label="ID Prefix" %}
 {{ form.cc_version }}
 {% endblock versioningform %}

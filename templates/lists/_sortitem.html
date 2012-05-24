@@ -2,8 +2,8 @@
 
 <li class="by{{ sortname|slugify }} sortitem">
   {% if sortname == "bulk" %}
-    <input type="checkbox" name="bulk_select" class="bybulk-value" value="" id="bulk_select" {% if bulk == "checked" %}checked{% endif %}>
-    <label for="bulk_select" class="bybulk-type">bulk select</label>
+    <input type="checkbox" name="bulk_select{% if multiID %}_{{ multiID }}{% endif %}" class="bybulk-value" value="" id="bulk_select{% if multiID %}_{{ multiID }}{% endif %}" {% if bulk == "checked" %}checked{% endif %}>
+    <label for="bulk_select{% if multiID %}_{{ multiID }}{% endif %}" class="bybulk-type">bulk select</label>
   {% else %}
     {% if sortID %}
       <a href="{{ sort|url:sortID }}" class="{{ sort|dir:sortID }} sortlink">{{ sortname }}</a>

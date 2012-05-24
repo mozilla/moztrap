@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for results-list view.
 
@@ -48,6 +31,31 @@ class ResultsViewTest(case.view.ListViewTestCase,
         """Create a result for this test case's runcaseversion."""
         kwargs.setdefault("runcaseversion", self.rcv)
         return self.F.ResultFactory.create(**kwargs)
+
+
+    def test_description(self):
+        """Includes description, markdownified safely."""
+        cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
+        self.rcv = self.F.RunCaseVersionFactory.create(caseversion=cv)
+        res = self.get()
+
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
+
+
+    def test_step(self):
+        """Includes steps, markdownified safely."""
+        self.F.CaseStepFactory.create(
+            caseversion=self.rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
+
+        res = self.get()
+
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
 
 
     def test_filter_by_status(self):

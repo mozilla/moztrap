@@ -3,7 +3,7 @@
 Environments
 ============
 
-Case Conductor allows fine-grained and flexible specification of the
+MozTrap allows fine-grained and flexible specification of the
 environment(s) in which each test should be run.
 
 An **Environment** is a collection of :ref:`environment
@@ -45,13 +45,40 @@ the set of environments relevant for testing that particular product version,
 test run, or test case. These profiles are
 :ref:`inherited<environment-inheritance>`.
 
+.. _environment-edit-fields:
+
+Environment Edit Fields
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Name** - The name of the :ref:`Environment Profile <environment-profiles>`.
+  This name is what you'll see when selecting environments for a
+  :ref:`product version <product-versions>`.
+* **Table**
+
+  - **Name** - The name of each
+    :ref:`environment category <environment-categories>`.  Select the
+    environment categories you want to include in your profile.  You can create
+    new categories as you need them (see **Add a Category** below)
+  - **Elements** - The :ref:`environment elements <environment-elements>` that
+    exist in this category.  You can select **all** elements from a category,
+    or specific ones.  You can also create new ones, as you need.
+  - **Add a Category** - Click this bar to add a new
+    :ref:`environment category <environment-categories>`.  Just type the new
+    category name in the field and hit enter.  You can then add elements to it.
+
+* **save profile** - Clicking this will auto-generate all combinations of the
+  categories and elements you chose above.  You will then be taken to a screen
+  where you can pare the list of environments down to only the ones you truly
+  want to have included in the profile.  See **Auto-generation** below for
+  more info.
+
 
 Auto-generation
 ---------------
 
 Given a set of :ref:`environment categories<environment-categories>` (or
 subsets of the :ref:`elements<environment-elements>` from each
-:ref:`category<environment-categories>`) Case Conductor can auto-generate an
+:ref:`category<environment-categories>`) MozTrap can auto-generate an
 environment profile containing every possible combination of one element from
 each category.
 
@@ -125,3 +152,15 @@ applies to that case.
 :ref:`Test results<test-results>`, once recorded, are never deleted, even if
 their corresponding environment is removed from their product version or run's
 environment profile.
+
+Select Environments
+^^^^^^^^^^^^^^^^^^^
+
+This page allows you to narrow the list of environments for a given object.
+This can be a :ref:`product version <product-versions>`,
+:ref:`test run <test-runs>`, :ref:`test suite <test-suites>`, or
+:ref:`test case <test-cases>`.  See **Inheritance** and **Cascades** above for
+a detailed explanation.  In this dialog, you can uncheck any environments that
+you do not want to apply the version/run/suite/case in question.  You can also
+add environments back in that may have been previously removed.  Just check or
+uncheck items to include / exclude them.

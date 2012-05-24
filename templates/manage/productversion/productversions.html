@@ -6,7 +6,10 @@
 {% block content %}
 
 <section id="manageproductversions" class="manage listpage">
-  <h2>Manage Product Versions</h2>
+  <h2>
+    Manage Product Versions
+    {% include "_helplink.html" with helpURL="products.html#product-versions" %}
+  </h2>
 
   {% if user|has_perm:"core.manage_products" %}
     <a href="{% url manage_productversion_add %}" class="create single">create a version</a>

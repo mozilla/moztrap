@@ -5,16 +5,16 @@
 /**
  * jQuery SuperFormset 0.2
  *
- * Copyright (c) 2012, Jonny Gerig Meyer
- * All rights reserved.
+ * Based on jQuery Formset 1.1r14
+ * by Stanislaus Madueke (stan DOT madueke AT gmail DOT com)
  *
  * @requires jQuery 1.2.6 or later
  *
+ * original portions copyright (c) 2009, Stanislaus Madueke
+ * modifications copyright (c) 2012, Jonny Gerig Meyer
+ *
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
- *
- * Based on jQuery Formset 1.1r14
- * by Stanislaus Madueke (stan DOT madueke AT gmail DOT com)
  */
 (function ($) {
 
@@ -211,7 +211,7 @@
         // Clone the form template to generate new form instances:
         template = $(options.formTemplate);
         template.removeAttr('id').find('input, select, textarea, label').each(function () {
-            if ($(this).is(':required')) {
+            if ($(this).attr('required')) {
                 $(this).addClass('required');
             }
         });

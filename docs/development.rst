@@ -8,7 +8,7 @@ Development
 
 
 The :doc:`upgrading` documentation is also applicable to updating your
-development checkout of Case Conductor.
+development checkout of MozTrap.
 
 
 Coding standards
@@ -21,7 +21,7 @@ style and quality with the rest of the codebase.
 User registration
 -----------------
 
-Case Conductor's default settings use Django's "console" email backend to avoid
+MozTrap's default settings use Django's "console" email backend to avoid
 requiring an SMTP server or sending real emails in development/testing mode. So
 when registering a new user, pay attention to your runserver console; this is
 where the confirmation email text will appear with the link you need to visit
@@ -53,12 +53,12 @@ in submodules::
 Compass/Sass
 ------------
 
-Case Conductor's CSS (located in `static/css`) is generated using `Sass`_ and
+MozTrap's CSS (located in `static/css`) is generated using `Sass`_ and
 the `Compass`_ framework, with the `Susy`_ grid plugin. Sass source files are
 located in `sass/`.
 
-The generated CSS is included with Case Conductor, so Sass and Compass are not
-needed to run Case Conductor. You only need them if you plan to modify the Sass
+The generated CSS is included with MozTrap, so Sass and Compass are not
+needed to run MozTrap. You only need them if you plan to modify the Sass
 sources and re-generate the CSS.
 
 To install the necessary Ruby gems for Compass/Sass development, run
@@ -101,8 +101,8 @@ run these commands:
 
 ::
 
-    mysqladmin drop caseconductor
-    echo "CREATE DATABASE caseconductor CHARACTER SET utf8" | mysql
+    mysqladmin drop moztrap
+    echo "CREATE DATABASE moztrap CHARACTER SET utf8" | mysql
     python manage.py syncdb --migrate
     bin/load-sample-data
 
@@ -114,10 +114,12 @@ will not overwrite that superuser.
 Regenerating the sample data
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The sample data fixture is generated using `django-fixture-generator`_ via the
-code in ``cc/model/core/fixture_gen.py``,
-``cc/model/environments/fixture_gen.py``, ``cc/model/tags/fixture_gen.py``,
-``cc/model/library/fixture_gen.py`` and ``cc/model/execution/fixture_gen.py``.
+The sample data fixture is generated using `django-fixture-generator`_ via
+the code in ``moztrap/model/core/fixture_gen.py``,
+``moztrap/model/environments/fixture_gen.py``,
+``moztrap/model/tags/fixture_gen.py``,
+``moztrap/model/library/fixture_gen.py`` and
+``moztrap/model/execution/fixture_gen.py``.
 
 If you've modified one of the above files, you can regenerate the fixture by
 running ``bin/regenerate-sample-data``.
@@ -142,13 +144,13 @@ so that anyone can check them out. In order to push commits to the submodules,
 you'll need to switch the push url to use ssh. Make this change as follows::
 
     cd requirements/dist
-    git remote set-url --push origin git@github.com:mozilla/caseconductor-reqs
+    git remote set-url --push origin git@github.com:mozilla/moztrap-reqs
 
     cd ../vendor
-    git remote set-url --push origin git@github.com:mozilla/caseconductor-vendor-lib
+    git remote set-url --push origin git@github.com:mozilla/moztrap-vendor-lib
 
 This assumes that you have permission to push to the primary
-``caseconductor-reqs`` and ``caseconductor-vendor-lib`` repositories. If
+``moztrap-reqs`` and ``moztrap-vendor-lib`` repositories. If
 instead you have made your own forks of one or both of these repositories,
 adjust the above URLs to push to your fork.
 
@@ -158,7 +160,7 @@ Adding the dependency tarball
 
 Assuming the new dependency is a Python package available on `PyPI`_ (for the
 sake of this example we'll assume that we want the `2.1.1 version of the
-Markdown package`_), from the root of your Case Conductor checkout run this
+Markdown package`_), from the root of your MozTrap checkout run this
 command in order to download the tarball into ``requirements/dist``::
 
     pip install -d requirements/dist Markdown==2.1.1
@@ -181,23 +183,22 @@ and commit there::
 
 .. note::
 
-   If you are working on a release branch of Case Conductor rather than the
-   master branch, you may find that updating the submodule to ``master``
-   updates the version of some dependency to a more recent version, and your
-   branch of Case Conductor is not prepared for this dependency update. In that
-   case rather than updating to the submodule's master branch, you should
-   create a new branch of the submodule with a name matching the branch of Case
-   Conductor you are working on; replace ``git checkout master`` in the above
-   with e.g. ``git branch 0.8.X``. (If you've already done the ``git checkout
-   master``, go back out to the Case Conductor repo root and ``git submodule
-   update`` to get back to the pinned commit of the submodule, then ``cd
-   requirements/dist`` and ``git branch 0.8.X``.) If you create your own branch
-   of the submodule, you may need to also replace ``git push`` with e.g. ``git
-   push -u origin 0.8.X``).
+   If you are working on a release branch of MozTrap rather than the master
+   branch, you may find that updating the submodule to ``master`` updates the
+   version of some dependency to a more recent version, and your branch of
+   MozTrap is not prepared for this dependency update. In that case rather than
+   updating to the submodule's master branch, you should create a new branch of
+   the submodule with a name matching the branch of MozTrap you are working on;
+   replace ``git checkout master`` in the above with e.g. ``git branch
+   0.8.X``. (If you've already done the ``git checkout master``, go back out to
+   the MozTrap repo root and ``git submodule update`` to get back to the pinned
+   commit of the submodule, then ``cd requirements/dist`` and ``git branch
+   0.8.X``.) If you create your own branch of the submodule, you may need to
+   also replace ``git push`` with e.g. ``git push -u origin 0.8.X``).
 
    Similarly, if you are working on a feature branch, and your feature branch
    requires a newer version of a dependency, it is preferable to make a branch
-   of the submodule. The master branch of Case Conductor is tied to a specific
+   of the submodule. The master branch of MozTrap is tied to a specific
    commit of the submodule, so it won't create an immediate problem if you just
    push to the submodule's master branch; but if some other feature on the
    master branch must also update a dependency, there could be a problem if
@@ -240,7 +241,7 @@ Updating the vendor library
    virtualenv, ``pip freeze`` should show only the ``wsgiref`` package (which
    is part of the Python standard library).
 
-Now, from the root of the Case Conductor repo, run::
+Now, from the root of the MozTrap repo, run::
 
     bin/generate-vendor-lib
     cd requirements/vendor
@@ -250,15 +251,15 @@ The only changed files shown here should be the new Python files for your added
 dependency (or, if upgrading a dependency, possibly some added/modified/removed
 files, but nothing outside the one upgraded package).
 
-If that is the case, commit your changes and push using the same steps as shown
-above for the ``requirements/dist`` submodule (and the same branching
-considerations).
+If that is the case, commit your changes to the master branch (or the branch
+you chose earlier) and push using the same steps as shown above for the
+``requirements/dist`` submodule.
 
 
 Pulling it all together
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-At this point, if you run ``git status`` in the root of the Case Conductor
+At this point, if you run ``git status`` in the root of the MozTrap
 repo, you should see three modifications: a modification to
 ``requirements/pure.txt`` and ``(new commits)`` in the ``requirements/dist``
 and ``requirements/vendor`` submodules (or, if you added a compiled module, a

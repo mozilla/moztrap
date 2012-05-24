@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for environment management views.
 
@@ -29,7 +12,8 @@ from tests import case
 
 
 class ProfilesViewTest(case.view.manage.ListViewTestCase,
-                       case.view.manage.CCModelListTests,
+                       case.view.manage.MTModelListTests,
+                       case.view.NoCacheTest,
                        ):
     """Tests for environment profiles manage list."""
     form_id = "manage-profiles-form"
@@ -87,7 +71,9 @@ class ProfilesViewTest(case.view.manage.ListViewTestCase,
 
 
 
-class ProfileDetailTest(case.view.AuthenticatedViewTestCase):
+class ProfileDetailTest(case.view.AuthenticatedViewTestCase,
+                        case.view.NoCacheTest,
+                        ):
     """Test for profile-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a profile."""
@@ -115,7 +101,9 @@ class ProfileDetailTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class AddProfileTest(case.view.FormViewTestCase):
+class AddProfileTest(case.view.FormViewTestCase,
+                     case.view.NoCacheTest,
+                     ):
     """Tests for add profile view."""
     form_id = "profile-add-form"
 
@@ -163,7 +151,7 @@ class AddProfileTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -424,7 +412,9 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class EditProfileViewTest(case.view.FormViewTestCase):
+class EditProfileViewTest(case.view.FormViewTestCase,
+                          case.view.NoCacheTest,
+                          ):
     """
     Tests for editing an environment profile.
 
@@ -481,9 +471,9 @@ class EditProfileViewTest(case.view.FormViewTestCase):
 
     def test_manage_environments_permission_required(self):
         """Requires manage environments permission."""
-        res = self.app.get(self.url)
+        res = self.app.get(self.url, user=self.F.UserFactory.create())
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def ajax_post(self, form_id, data):
@@ -600,7 +590,9 @@ class EditProfileViewTest(case.view.FormViewTestCase):
 
 
 
-class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
+class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase,
+                                             case.view.NoCacheTest,
+                                             ):
     """
     Tests for editing environments of a product version.
 
@@ -640,10 +632,11 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
         self.productversion.environments.add(*envs)
 
         res = self.get(
+            ajax=True,
             params={"filter-envelement": envs[0].elements.get().id})
 
         res.mustcontain("Linux")
-        self.assertNotIn(res.body, "Windows")
+        self.assertNotIn("Windows", res.json["html"])
 
 
     def test_remove(self):
@@ -659,11 +652,29 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
         self.assertEqual(self.productversion.environments.count(), 0)
 
 
+    def test_remove_cascades(self):
+        """Removing environments cascades to caseversions."""
+        self.factory()
+
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.productversion,
+            case__product=self.productversion.product
+            )
+
+        self.get_form().submit(
+            name="action-remove",
+            index=0,
+            headers={"X-Requested-With": "XMLHttpRequest"}
+            )
+
+        self.assertEqual(cv.environments.count(), 0)
+
+
     def test_manage_products_permission_required(self):
         """Requires manage products permission."""
-        res = self.app.get(self.url)
+        res = self.app.get(self.url, user=self.F.UserFactory.create())
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def ajax_post(self, form_id, data):
@@ -709,6 +720,27 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
         self.assertEqual(self.productversion.environments.get(), env)
 
 
+    def test_add_cascades(self):
+        """Adding an environment cascades to caseversions."""
+        cv = self.F.CaseVersionFactory.create(
+            productversion=self.productversion,
+            case__product=self.productversion.product
+            )
+
+        e1 = self.F.ElementFactory.create(name="Linux")
+
+        self.ajax_post(
+            "add-environment-form",
+            {
+                "add-environment": "1",
+                "element-element": [str(e1.id)],
+                },
+            )
+
+        env = self.productversion.environments.get()
+        self.assertEqual(cv.environments.get(), env)
+
+
     def test_no_elements(self):
         """Add env with no elements results in error message."""
         res = self.ajax_post(
@@ -728,8 +760,72 @@ class EditProductVersionEnvironmentsViewTest(case.view.FormViewTestCase):
             )
 
 
+    def test_no_populate_form_if_filtered_to_none(self):
+        """If pv has envs but view's filtered to show none, no populate form."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.productversion.environments.add(envs[0])
 
-class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
+        res = self.get(
+            ajax=True,
+            params={"filter-envelement": envs[1].elements.get().id})
+
+        self.assertNotIn("populate", res.json["html"])
+
+
+    def test_populate(self):
+        """Can populate a productversion's envs from a profile."""
+        profile = self.F.ProfileFactory.create()
+        profile.environments.add(
+            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+        self.assertIn("Windows", res.json["html"])
+
+        self.assertEqual(
+            [unicode(e) for e in self.productversion.environments.all()],
+            [u"Windows"],
+            )
+
+
+    def test_populate_error(self):
+        """Error message on failure to populate envs."""
+        profile = self.F.ProfileFactory.create()
+
+        form = self.get_form()
+        form["source"] = "profile-{0}".format(profile.id)
+
+        profile.delete()
+
+        res = form.submit(
+            name="populate",
+            headers={"X-Requested-With": "XMLHttpRequest"},
+            status=200,
+            )
+
+        self.assertEqual(
+            res.json["messages"][0],
+            {
+                "message": (
+                    "Unable to populate environments. "
+                    "Please select a different source."
+                    ),
+                "level": 30,
+                "tags": "warning",
+                }
+            )
+
+
+
+class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase,
+                               case.view.NoCacheTest,
+                               ):
     """Test for elements autocomplete view."""
     @property
     def url(self):
@@ -801,7 +897,7 @@ class ElementsAutocompleteTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class NarrowEnvironmentsViewTests(object):
+class NarrowEnvironmentsViewTests(case.view.NoCacheTest):
     """Common tests for narrow-environments view."""
     form_id = "narrow-envs-form"
     # subclasses should set these
@@ -832,7 +928,7 @@ class NarrowEnvironmentsViewTests(object):
         """Passing an unknown object_type raises 404."""
         # Have to test this by calling the view func directly, as the URL
         # pattern prevents a bad object_type from getting through.
-        from cc.view.manage.environments.views import narrow_environments
+        from moztrap.view.manage.environments.views import narrow_environments
         req = Mock()
         req.user = self.user
 
@@ -840,8 +936,16 @@ class NarrowEnvironmentsViewTests(object):
             narrow_environments(req, "foo", "1")
 
 
+    def test_requires_perm(self):
+        """Narrowing envs requires manage perm on appropriate model."""
+        res = self.get(status=302)
+
+        self.assertIn("login", res.headers["Location"])
+
+
     def test_list_parent_envs(self):
         """Lists parent productversion environments; mine selected."""
+        self.add_perm(self.perm)
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows", "OS X"]})
         self.object.productversion.environments.add(envs[0], envs[1])
@@ -886,6 +990,7 @@ class NarrowEnvironmentsViewTests(object):
 
     def test_set_envs(self):
         """Can set object's environments."""
+        self.add_perm(self.perm)
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows", "OS X"]})
         self.object.productversion.environments.add(envs[0], envs[1])
@@ -903,6 +1008,26 @@ class NarrowEnvironmentsViewTests(object):
         self.assertEqual(self.object.environments.get(), envs[1])
 
 
+    def test_cascade(self):
+        """Removed environment cascades to runcaseversion."""
+        self.add_perm(self.perm)
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        self.object.productversion.environments.add(*envs)
+        rcv = self.F.RunCaseVersionFactory.create(
+            **{self.object_type: self.object})
+        self.object.environments.add(*envs)
+        rcv.environments.add(*envs)
+
+        form = self.get_form()
+        for field in form.fields["environments"]:
+            if field.value != str(envs[1].id):
+                field.value = None
+        form.submit(status=302)
+
+        self.assertEqual(rcv.environments.get(), envs[1])
+
+
 
 class NarrowRunEnvironmentsTest(NarrowEnvironmentsViewTests,
                                 case.view.FormViewTestCase
@@ -910,6 +1035,7 @@ class NarrowRunEnvironmentsTest(NarrowEnvironmentsViewTests,
     """Tests for narrowing run environments."""
     object_type = "run"
     redirect_to = "manage_runs"
+    perm = "manage_runs"
 
 
     @property
@@ -925,6 +1051,7 @@ class NarrowCaseVersionEnvironmentsTest(NarrowEnvironmentsViewTests,
     """Tests for narrowing caseversion environments."""
     object_type = "caseversion"
     redirect_to = "manage_cases"
+    perm = "manage_cases"
 
 
     @property

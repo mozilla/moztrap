@@ -1,32 +1,14 @@
-/*
-Case Conductor is a Test Case Management system.
-Copyright (C) 2011-2012 Mozilla
-
-This file is part of Case Conductor.
-
-Case Conductor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Case Conductor is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-*/
 /*jslint    browser:    true,
-            indent:     4 */
+            indent:     4,
+            confusion:  true */
 /*global    ich, jQuery */
 
-var CC = (function (CC, $) {
+var MT = (function (MT, $) {
 
     'use strict';
 
     // Ajax-load list-page list item contents
-    CC.loadListItemDetails = function () {
+    MT.loadListItemDetails = function () {
         $('.listpage').on('click', '.itemlist .listitem .details .summary', function (event) {
             var item = $(this),
                 content = item.siblings('.content'),
@@ -45,7 +27,7 @@ var CC = (function (CC, $) {
     };
 
     // Expand list item details on direct hashtag links
-    CC.openListItemDetails = function (context) {
+    MT.openListItemDetails = function (context) {
         if ($(context).length && window.location.hash && $(window.location.hash).length) {
             $(window.location.hash).find('.summary').first().click();
             window.location.hash = '';
@@ -53,7 +35,7 @@ var CC = (function (CC, $) {
     };
 
     // Ajax for manage list actions (clone and delete)
-    CC.manageActionsAjax = function (context) {
+    MT.manageActionsAjax = function (context) {
         $(context).on(
             'click',
             'button[name^=action-]',
@@ -87,7 +69,7 @@ var CC = (function (CC, $) {
     };
 
     // Hijack Manage/Results list sorting and pagination links to use Ajax
-    CC.listActionAjax = function (container, trigger) {
+    MT.listActionAjax = function (container, trigger) {
         var context = $(container);
 
         context.on('click', trigger, function (e) {
@@ -102,6 +84,7 @@ var CC = (function (CC, $) {
                 if (response.html) {
                     replaceList.replaceWith(newList);
                     newList.find('.details').html5accordion();
+                    newList.trigger('after-replace', [newList]);
                 }
             });
 
@@ -109,6 +92,46 @@ var CC = (function (CC, $) {
         });
     };
 
-    return CC;
+    // Show/hide item-status dropdown
+    MT.itemStatusDropdown = function (container) {
+        var context = $(container),
+            counter = 0;
 
-}(CC || {}, jQuery));
+        context.on('click', '.itemlist .listitem .status .status-select .status-title', function (e) {
+            var summary = $(this),
+                status = summary.closest('.status-select'),
+                details = status.find('.status-options'),
+                thisCounter = status.data('counter');
+
+            status.toggleClass('open');
+
+            if (status.hasClass('open')) {
+                details.slideDown('fast');
+                if (!thisCounter) {
+                    counter = counter + 1;
+                    thisCounter = counter;
+                    status.data('counter', thisCounter);
+                }
+                $(document).on('click.statusDropdown.' + thisCounter, function (e) {
+                    if ($(e.target).parents().andSelf().index(status) === -1) {
+                        if (status.hasClass('open')) {
+                            status.removeClass('open');
+                            details.slideUp('fast');
+                        }
+                        $(document).off('click.statusDropdown.' + thisCounter);
+                    }
+                });
+            } else {
+                details.slideUp('fast');
+                $(document).off('click.statusDropdown.' + thisCounter);
+            }
+        });
+
+        context.on('before-replace', '.itemlist.action-ajax-replace', function () {
+            $(document).off('click.statusDropdown');
+        });
+    };
+
+    return MT;
+
+}(MT || {}, jQuery));

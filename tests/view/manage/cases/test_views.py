@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for case management views.
 
@@ -28,8 +11,9 @@ from tests import case
 
 class CasesTest(case.view.manage.ListViewTestCase,
                 case.view.ListFinderTests,
-                case.view.manage.CCModelListTests,
-                case.view.manage.StatusListTests
+                case.view.manage.MTModelListTests,
+                case.view.manage.StatusListTests,
+                case.view.NoCacheTest,
                 ):
     """Test for cases manage list view."""
     form_id = "manage-cases-form"
@@ -95,12 +79,12 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
 
     def test_filter_by_bad_id(self):
-        """Attempt to filter by non-integer id is ignored."""
+        """Attempt to filter by non-integer id returns no items."""
         self.F.CaseVersionFactory.create(name="Case 1")
 
         res = self.get(params={"filter-id": "foo"})
 
-        self.assertInList(res, "Case 1")
+        self.assertNotInList(res, "Case 1")
 
 
     def test_filter_by_name(self):
@@ -226,7 +210,9 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
 
 
-class CaseDetailTest(case.view.AuthenticatedViewTestCase):
+class CaseDetailTest(case.view.AuthenticatedViewTestCase,
+                     case.view.NoCacheTest,
+                     ):
     """Test for case-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a caseversion."""
@@ -241,31 +227,107 @@ class CaseDetailTest(case.view.AuthenticatedViewTestCase):
             "manage_case_details", kwargs=dict(caseversion_id=self.cv.id))
 
 
-    def test_details(self):
-        """Returns details HTML snippet for given caseversion."""
-        self.F.CaseStepFactory.create(
-            caseversion=self.cv,
-            instruction="Frobnigate.",
-            )
+    def test_id_prefix(self):
+        """Details shows the id prefix"""
+        self.cv = self.F.CaseVersionFactory.create(case__idprefix="moo")
+        res = self.get(ajax=True)
 
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res.mustcontain("#moo-{0}".format(self.cv.case.id))
 
-        res.mustcontain("Frobnigate.")
+
+    def test_id_no_prefix(self):
+        """Details show the id properly when no prefix is specified."""
+        self.cv = self.F.CaseVersionFactory.create()
+        res = self.get(ajax=True)
+
+        res.mustcontain("#{0}".format(self.cv.case.id))
+
 
     def test_description(self):
-        """Returns details HTML snippet for given caseversion"""
-        desc_markdown = "_Valmorphanize_"
-
+        """Details includes description, markdownified safely."""
         self.cv = self.F.CaseVersionFactory.create(
-            name="FooBar",
-            description=desc_markdown,
+            description="_Valmorphanize_ <script>",
             )
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res = self.get(ajax=True)
 
-        res.mustcontain("<em>Valmorphanize</em>")
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
 
 
-class AddCaseTest(case.view.FormViewTestCase):
+    def test_step(self):
+        """Details includes steps, markdownified safely."""
+        self.F.CaseStepFactory.create(
+            caseversion=self.cv,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
+
+        res = self.get(ajax=True)
+
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")
+
+
+
+class CaseTest(case.view.AuthenticatedViewTestCase):
+    """Tests for case-id redirect view."""
+    def setUp(self):
+        """Setup for case-url tests; creates a case."""
+        super(CaseTest, self).setUp()
+        self.case = self.F.CaseFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for case-id redirect view."""
+        return reverse("manage_case", kwargs=dict(case_id=self.case.id))
+
+
+    def test_redirect(self):
+        """Redirects to show latest version of this case in manage list."""
+        self.F.CaseVersionFactory(
+            productversion__version="1.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+        cv = self.F.CaseVersionFactory(
+            productversion__version="2.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+
+        res = self.get()
+
+        self.assertRedirects(
+            res,
+            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            )
+
+
+    def test_deleted_version(self):
+        """Excludes deleted versions from consideration."""
+        self.F.CaseVersionFactory(
+            productversion__version="1.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            ).delete()
+        cv = self.F.CaseVersionFactory(
+            productversion__version="2.0",
+            productversion__product=self.case.product,
+            case=self.case,
+            )
+
+        res = self.get()
+
+        self.assertRedirects(
+            res,
+            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            )
+
+
+
+class AddCaseTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for add-case-single view."""
     form_id = "single-case-add"
 
@@ -300,7 +362,7 @@ class AddCaseTest(case.view.FormViewTestCase):
 
         res.follow().mustcontain("Test case 'Can log in.' added.")
 
-        from cc.model import CaseVersion
+        from moztrap.model import CaseVersion
         cv = CaseVersion.objects.get()
         self.assertEqual(cv.case.product, pv.product)
         self.assertEqual(cv.productversion, pv)
@@ -335,11 +397,13 @@ class AddCaseTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
-class AddBulkCaseTest(case.view.FormViewTestCase):
+class AddBulkCaseTest(case.view.FormViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
     """Tests for add-case-bulk view."""
     form_id = "bulk-case-add"
 
@@ -379,7 +443,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase):
 
         res.follow().mustcontain("Added 2 test cases.")
 
-        from cc.model import CaseVersion
+        from moztrap.model import CaseVersion
         cv1, cv2 = list(CaseVersion.objects.all())
 
         self.assertEqual(cv1.case.product, pv.product)
@@ -432,7 +496,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
@@ -445,7 +509,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
         self.cv = self.F.CaseVersionFactory.create(
-            name="Can log in", productversion__product__name="Case Conductor")
+            name="Can log in", productversion__product__name="MozTrap")
         self.add_perm("manage_cases")
 
 
@@ -478,7 +542,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
             status=302,
             )
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_requires_post(self):
@@ -539,7 +603,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         res = self.post({"productversion": pv.id}, status=302)
 
         res.follow().mustcontain(
-            "Created new version of 'Can log in' for Case Conductor 2.0.")
+            "Created new version of 'Can log in' for MozTrap 2.0.")
 
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
@@ -554,7 +618,9 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
 
 
 
-class EditCaseVersionTest(case.view.FormViewTestCase):
+class EditCaseVersionTest(case.view.FormViewTestCase,
+                          case.view.NoCacheTest,
+                          ):
     """Tests for edit-caseversion view."""
     form_id = "single-case-edit"
 
@@ -578,7 +644,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_existing_version_links(self):

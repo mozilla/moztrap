@@ -5,7 +5,10 @@
 {% block content %}
 
 <section id="manageruns" class="manage listpage">
-  <h2>Manage Test Runs</h2>
+  <h2>
+    Manage Test Runs
+    {% include "_helplink.html" with helpURL="execution.html#test-runs" %}
+  </h2>
 
   {% if user|has_perm:"execution.manage_runs" %}
     <a href="{% url manage_run_add %}" class="create single">create a test run</a>

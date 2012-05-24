@@ -1,35 +1,21 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for login/logout/account views.
 
 """
+from django.conf import settings
 from django.core import mail
 from django.core.urlresolvers import reverse
 
 # @@@ import from Django in 1.4
 from djangosecure.test_utils import override_settings
+import mock
 
 from tests import case
 from tests.utils import patch_session
 
 
 
+@mock.patch.object(settings, "USE_BROWSERID", False)
 class LoginTest(case.view.ViewTestCase):
     """Tests for login view."""
     @property
@@ -44,6 +30,19 @@ class LoginTest(case.view.ViewTestCase):
 
         form = self.get().forms["loginform"]
         form["username"] = "test"
+        form["password"] = "sekrit"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("home"))
+
+
+    def test_email_login(self):
+        """Can log in with email address."""
+        self.F.UserFactory.create(
+            username="test", email="test@example.com", password="sekrit")
+
+        form = self.get().forms["loginform"]
+        form["username"] = "test@example.com"
         form["password"] = "sekrit"
         res = form.submit(status=302)
 
@@ -116,6 +115,105 @@ class LoginTest(case.view.ViewTestCase):
 
 
 
+@mock.patch.object(settings, "USE_BROWSERID", True)
+class BrowserIDTest(case.view.ViewTestCase):
+    """Tests for BrowserID verify view."""
+    @property
+    def url(self):
+        """Shortcut for login url with a next URL."""
+        return reverse("auth_login")
+
+
+    def new_browserid(self, email="test@example.com"):
+        """Create a new user via browserID login; return the redirect."""
+        with mock.patch("django_browserid.auth.verify") as verify:
+            verify.return_value = {"email": email}
+
+            form = self.get().forms["browserid-form"]
+            form["assertion"].force_value("foo")
+            res = form.submit(status=302)
+
+        return res
+
+
+    def test_fail_redirect(self):
+        """Failed BrowserID verification redirects without losing 'next'."""
+        url = reverse("auth_login") + "?next=/foo"
+        form = self.app.get(url).forms["browserid-form"]
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, url)
+
+
+    def test_fail_message(self):
+        """Failed BrowserID verification has a message for the user."""
+        form = self.get().forms["browserid-form"]
+        res = form.submit(status=302).follow()
+
+        self.assertContains(res, "Unable to sign in with that email address")
+
+
+    def test_new_user(self):
+        """Successful new BrowserID login creates User with auto username."""
+        self.new_browserid()
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.username.startswith(":auto:"))
+
+
+    def test_new_user_role(self):
+        """New user has default new user role."""
+        from preferences import preferences
+        cp = preferences.CorePreferences
+        role = self.F.RoleFactory.create()
+        cp.default_new_user_role = role
+        cp.save()
+
+        self.new_browserid()
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.roles.get(), role)
+
+
+    def test_set_username_initial(self):
+        """A new browserID user gets a set-username form, initially blank."""
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+
+        self.assertEqual(form.fields["username"][0].value, "")
+
+
+    def test_set_username(self):
+        """A new browserID user is prompted to set their username, and can."""
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+        form["username"] = "tester"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, "/")
+        user = self.model.User.objects.get()
+        self.assertEqual(user.username, "tester")
+
+
+    def test_set_username_error(self):
+        """A new browserID user gets an error if they choose an in-use name."""
+        self.F.UserFactory.create(username="tester")
+
+        form = self.new_browserid().follow().follow().forms["setusernameform"]
+        form["username"] = "tester"
+        res = form.submit(status=200)
+
+        res.mustcontain("User with this Username already exists.")
+
+
+    def test_auto_username_logout(self):
+        """A user with an auto-username can logout."""
+        logoutform = self.new_browserid().follow().follow().forms["logoutform"]
+        res = logoutform.submit().follow()
+
+        self.assertRedirects(res, reverse("auth_login") + "?next=/")
+
+
+
+@mock.patch.object(settings, "USE_BROWSERID", False)
 class LogoutTest(case.view.ViewTestCase):
     """Tests for logout view."""
     @property
@@ -124,18 +222,19 @@ class LogoutTest(case.view.ViewTestCase):
         return reverse("auth_logout")
 
 
-    def test_logout(self):
-        """Successful logout redirects to login."""
-        self.F.UserFactory.create(username="test", password="sekrit")
+    def test_get_405(self):
+        """GETting the logout view results in HTTP 405 Method Not Allowed."""
+        self.get(status=405)
 
-        form = self.app.get(reverse("auth_login")).forms["loginform"]
-        form["username"] = "test"
-        form["password"] = "sekrit"
-        form.submit()
 
-        res = self.get(status=302)
+    def test_logout_redirect(self):
+        """Successful logout POST redirects to the page you were on."""
+        user = self.F.UserFactory.create()
 
-        self.assertRedirects(res, reverse("auth_login"))
+        form = self.app.get("/manage/runs/", user=user).forms["logoutform"]
+        res = form.submit()
+
+        self.assertRedirects(res, "/manage/runs/")
 
 
 
@@ -315,6 +414,20 @@ class RegisterTest(PasswordStrengthTests, case.view.ViewTestCase):
         res = self.submit_form("sekrit123", status=302).follow().follow()
 
         res.mustcontain("Check your email for an account activation link")
+
+
+    def test_new_user_role(self):
+        """New user has default new user role."""
+        from preferences import preferences
+        cp = preferences.CorePreferences
+        role = self.F.RoleFactory.create()
+        cp.default_new_user_role = role
+        cp.save()
+
+        self.submit_form("sekrit123", status=302)
+
+        user = self.model.User.objects.get()
+        self.assertTrue(user.roles.get(), role)
 
 
 

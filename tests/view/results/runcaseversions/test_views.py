@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for runcaseversion results view.
 
@@ -69,12 +52,12 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
 
 
     def test_filter_by_bad_id(self):
-        """Attempt to filter by non-integer id is ignored."""
+        """Attempt to filter by non-integer id returns no cases."""
         self.F.RunCaseVersionFactory.create(caseversion__name="Case 1")
 
         res = self.get(params={"filter-id": "foo"})
 
-        self.assertInList(res, "Case 1")
+        self.assertNotInList(res, "Case 1")
 
 
     def test_filter_by_name(self):
@@ -181,9 +164,10 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
         """Can filter by suite."""
         rcv = self.F.RunCaseVersionFactory.create(caseversion__name="Case 1")
         self.F.RunCaseVersionFactory.create(caseversion__name="Case 2")
-        sc = self.F.SuiteCaseFactory.create(case=rcv.caseversion.case)
+        ts = self.F.SuiteFactory.create(product=rcv.run.productversion.product)
+        rcv.suites.add(ts)
 
-        res = self.get(params={"filter-suite": sc.suite.id})
+        res = self.get(params={"filter-suite": ts.id})
 
         self.assertInList(res, "Case 1")
         self.assertNotInList(res, "Case 2")
@@ -279,16 +263,6 @@ class RunCaseVersionDetailTest(case.view.AuthenticatedViewTestCase):
             )
 
 
-    def test_details_steps(self):
-        """Details lists case steps."""
-        self.F.CaseStepFactory.create(
-            instruction="fooinstr", caseversion=self.rcv.caseversion)
-
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
-
-        res.mustcontain("fooinstr")
-
-
     def test_details_envs(self):
         """Details lists envs."""
         self.rcv.environments.add(
@@ -317,12 +291,27 @@ class RunCaseVersionDetailTest(case.view.AuthenticatedViewTestCase):
             reverse("results_results", kwargs={"rcv_id": self.rcv.id})
             )
 
+
     def test_description(self):
-        """Returns details HTML snippet for given caseversion"""
-
-        cv = self.F.CaseVersionFactory.create(description="_Valmorphanize_")
+        """Details includes description, markdownified safely."""
+        cv = self.F.CaseVersionFactory.create(
+            description="_Valmorphanize_ <script>",
+            )
         self.rcv = self.F.RunCaseVersionFactory.create(caseversion=cv)
+        res = self.get(ajax=True)
 
-        res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
+        res.mustcontain("<em>Valmorphanize</em> &lt;script&gt;")
 
-        res.mustcontain("<em>Valmorphanize</em>")
+
+    def test_step(self):
+        """Details includes steps, markdownified safely."""
+        self.F.CaseStepFactory.create(
+            caseversion=self.rcv.caseversion,
+            instruction="<script>alert(foo);</script>",
+            expected="{@onclick=alert(1)}paragraph",
+            ).caseversion
+
+        res = self.get(ajax=True)
+
+        res.mustcontain("<p>&lt;script&gt;alert(foo);&lt;/script&gt;</p>")
+        res.mustcontain("<p>{@onclick=alert(1)}paragraph</p>")

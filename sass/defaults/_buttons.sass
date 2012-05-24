@@ -1,22 +1,3 @@
-// Case Conductor is a Test Case Management system.
-// Copyright (C) 2011-12 Mozilla
-//
-// This file is part of Case Conductor.
-//
-// Case Conductor is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Case Conductor is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
-// ---------------------------------------------------------------------------
-
 // ---------------------------------------------------------------------------
 // Resets browser styles on a button.
 
@@ -40,17 +21,17 @@ button
 // $notext  - [true | false] if the button should have text.
 // $hover   - [true | false] if the button should respond to hovering.
 
-=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false, $small:false)
-  $highlight: rgba($lightest,$xsmall)
-  $lowlight : rgba($base,$xxxsmall)
+=button-style($c:$green, $icon:false, $notext:false, $hover:true, $inset:false, $issmall:false)
+  $highlight: rgba($lightest,$small)
+  $lowlight : rgba($base,$xsmall)
   $bgrad    : false
   $bhover   : false
   $bactive  : false
 
   @if $c
-    $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bgrad    : linear-gradient(top center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, rgba($lowlight,$xxsmall))
     $bhover   : linear-gradient(top center, $highlight 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
-    $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, $lowlight)
+    $bactive  : linear-gradient(bottom center, rgba($highlight,$xxsmall) 0%, rgba($highlight,0) 50%, rgba($lowlight,0) 50%, rgba($lowlight,$xxsmall))
     $border   : darken(desaturate($c,25),15)
 
     @if lightness($border) > 40%
@@ -85,6 +66,7 @@ button
 
     @if $notext
       +replace-width($icon)
+      text-indent: 200%
     @else
       +pad-icon($icon)
       @if $c
@@ -105,7 +87,7 @@ button
   @if $inset
     +box-shadow($lowlight 0 0 $smallpx inset)
 
-  @if $small
+  @if $issmall
     height: rhythm(.5)
 
 // Applies default button styles.

@@ -1,0 +1,10 @@
+{% extends 'lists/_emptylist.html' %}
+
+{% block empty-options %}
+  {% if populate_form %}
+  <div class="populate-field formfield">
+    {% include "forms/_field.html" with field=populate_form.source %}
+    <button class="action-submit" name="populate" value="1">Populate</button>
+  </div>
+  {% endif %}
+{% endblock empty-options %}

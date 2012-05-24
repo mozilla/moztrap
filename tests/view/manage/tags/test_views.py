@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for tag management views.
 
@@ -26,7 +9,8 @@ from tests import case
 
 
 class TagsTest(case.view.manage.ListViewTestCase,
-               case.view.manage.CCModelListTests,
+               case.view.manage.MTModelListTests,
+               case.view.NoCacheTest,
                ):
     """Test for tags manage list view."""
     form_id = "manage-tags-form"
@@ -91,7 +75,9 @@ class TagsTest(case.view.manage.ListViewTestCase,
 
 
 
-class AddTagTest(case.view.FormViewTestCase):
+class AddTagTest(case.view.FormViewTestCase,
+                 case.view.NoCacheTest,
+                 ):
     """Tests for add tag view."""
     form_id = "tag-add-form"
 
@@ -139,11 +125,13 @@ class AddTagTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
-class EditTagTest(case.view.FormViewTestCase):
+class EditTagTest(case.view.FormViewTestCase,
+                  case.view.NoCacheTest,
+                  ):
     """Tests for edit-tag view."""
     form_id = "tag-edit-form"
 
@@ -166,7 +154,7 @@ class EditTagTest(case.view.FormViewTestCase):
         """Requires manage-tags permission."""
         res = self.app.get(self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):
@@ -208,7 +196,9 @@ class EditTagTest(case.view.FormViewTestCase):
 
 
 
-class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase):
+class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase,
+                           case.view.NoCacheTest,
+                           ):
     """Test for tags autocomplete view."""
     @property
     def url(self):

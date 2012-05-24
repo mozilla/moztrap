@@ -8,9 +8,9 @@
 
 <header role="banner">
   <h1 id="brand">
-    <a href="/" rel="home">
+    <a href="{% url home %}" rel="home">
       <span class="logo"> </span>
-      <span class="wordmark">case conductor</span>
+      <span class="wordmark">MozTrap</span>
     </a>
   </h1>
 
@@ -22,7 +22,7 @@
       <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
         {% if user|has_perm:"execution.execute" %}
-        <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %}">
+        <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %} nav-tests">
           <a href="{% url runtests %}">Run Tests</a>
           <div class="secondary">
             <ol>
@@ -35,7 +35,7 @@
         {% endif %}
 
         {% if user %}
-        <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %}">
+        <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %} nav-results">
           <a href="{% url results %}">View Results</a>
           <div class="secondary">
             <ol>
@@ -49,22 +49,24 @@
           </div>
         </li>
 
-        <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %}">
+        <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %} nav-manage">
           <a href="{% url manage %}">Manage</a>
           <div class="secondary">
-            <ul>
-              <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %}">
-                <a href="{% url manage_users %}">Users</a>
-              </li>
-              <li class="{% block managetag-active-nav %}{% endblock managetag-active-nav %}">
+            <ul class="global">
+              {% if user|has_perm:"core.manage_users" %}
+                <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %} nav-users">
+                  <a href="{% url manage_users %}">Users</a>
+                </li>
+              {% endif %}
+              <li class="{% block managetag-active-nav %}{% endblock managetag-active-nav %} nav-tags">
                 <a href="{% url manage_tags %}">Tags</a>
               </li>
-              <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %}">
+              <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %} nav-envs">
                 <a href="{% url manage_profiles %}">Environments</a>
               </li>
               <li>
                 <ol class="tertiary">
-                  <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %}">
+                  <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %} nav-products">
                     <a href="{% url manage_products %}">Products</a>
                   </li>
                   <li class="{% block manageproductversion-active-nav %}{% endblock manageproductversion-active-nav %}">

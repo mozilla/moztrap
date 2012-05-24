@@ -7,11 +7,16 @@
   <div class="status">
     {% if user|has_perm:"core.manage_users" %}
 
-      {% if subject.is_active %}
-        <button title="disable" type="submit" name="action-deactivate" value="{{ subject.id }}" class="active status-action">active</button>
-      {% else %}
-        <button title="activate" type="submit" name="action-activate" value="{{ subject.id }}" class="disabled status-action">disabled</button>
-      {% endif %}
+      <div class="{% if subject.is_active %}active{% else %}disabled{% endif %} status-select">
+        <div class="status-title">{% if subject.is_active %}active{% else %}disabled{% endif %}</div>
+        <div class="status-options">
+          {% if subject.is_active %}
+            <button type="submit" name="action-deactivate" value="{{ subject.id }}" class="disabled status-action">disable</button>
+          {% else %}
+            <button type="submit" name="action-activate" value="{{ subject.id }}" class="active status-action">activate</button>
+          {% endif %}
+        </div>
+      </div>
 
     {% else %}
 

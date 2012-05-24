@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Choose a username | {{ block.super }}{% endblock title %}
+
+{% block content %}
+<section id="setusername">
+  <h2>Welcome! Please choose a username</h2>
+
+  <p>We keep your email private, so we need a username to publicly identify
+  you on the site.</p>
+
+  <form method="POST" id="setusernameform">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next|default:'/' }}" />
+    {{ form.non_field_errors }}
+    <div class="formfields">
+      {% for field in form %}
+      {% include "forms/_field.html" %}
+      {% endfor %}
+    </div>
+    <div class="form-actions">
+      <button type="submit" class="action-setusername">continue!</button>
+    </div>
+  </form>
+  <form method="POST" action="{% url auth_logout %}?next={{ next|default:'/' }}" id="logoutform">
+    {% csrf_token %}
+    <button type="submit" class="action-cancel-setusername">cancel</button>
+  </form>
+</section>
+{% endblock content %}

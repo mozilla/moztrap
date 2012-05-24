@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for Run model.
 
@@ -98,6 +81,13 @@ class RunTest(case.DBTestCase):
         new = r.clone()
 
         self.assertEqual(new.status, "draft")
+
+
+    def test_default_draft(self):
+        """New run defaults to draft state."""
+        r = self.F.RunFactory.create()
+
+        self.assertEqual(r.status, "draft")
 
 
     def test_clone_included_suite(self):
@@ -306,7 +296,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv9, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -323,8 +313,28 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="draft")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertCaseVersions(r, [])
+
+
+    def test_only_active_suite(self):
+        """Only test cases in an active suite are considered."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="draft")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="locked")
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
         self.F.RunSuiteFactory.create(suite=ts, run=r)
@@ -340,7 +350,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv9, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -360,7 +370,7 @@ class RunActivationTest(case.DBTestCase):
             case=tc, productversion=self.pv8, status="active")
         tcv1.remove_envs(*self.envs[:2])
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8)
@@ -384,9 +394,9 @@ class RunActivationTest(case.DBTestCase):
         tcv3 = self.F.CaseVersionFactory.create(
             case=tc3, productversion=self.pv8, status="active")
 
-        ts1 = self.F.SuiteFactory.create(product=self.p)
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts1, case=tc3, order=1)
-        ts2 = self.F.SuiteFactory.create(product=self.p)
+        ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts2, case=tc2, order=1)
         self.F.SuiteCaseFactory.create(suite=ts2, case=tc1, order=2)
 
@@ -414,7 +424,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8, status="active")
@@ -431,7 +441,7 @@ class RunActivationTest(case.DBTestCase):
         self.F.CaseVersionFactory.create(
             case=tc, productversion=self.pv8, status="active")
 
-        ts = self.F.SuiteFactory.create(product=self.p)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=tc)
 
         r = self.F.RunFactory.create(productversion=self.pv8, status="disabled")
@@ -441,3 +451,130 @@ class RunActivationTest(case.DBTestCase):
 
         self.assertCaseVersions(r, [])
         self.assertEqual(self.refresh(r).status, "active")
+
+
+    def test_source_suite(self):
+        """Sets source suites for each runcaseversion."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(list(rcv.suites.all()), [ts])
+
+
+    def test_multiple_source_suites(self):
+        """Sets source suites for a caseversion in multiple included suites."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
+
+        ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts2, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts1, run=r)
+        self.F.RunSuiteFactory.create(suite=ts2, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(set(rcv.suites.all()), set([ts1, ts2]))
+
+
+    def test_removes_duplicate_runcaseversions(self):
+        """
+        Re-activating a run that has dupe runcaseversions cleans them up.
+
+        Environments are set to current values; all results are preserved.
+
+        """
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv1 = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            )
+        rcv1.environments.remove(self.envs[1])
+        self.F.ResultFactory.create(runcaseversion=rcv1)
+        rcv2 = self.F.RunCaseVersionFactory.create(
+            caseversion=rcv1.caseversion, run=r)
+        self.F.ResultFactory.create(runcaseversion=rcv2)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+        r.environments.remove(self.envs[0])
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(set(rcv.environments.all()), set(self.envs[1:]))
+        self.assertEqual(rcv.results.count(), 2)
+
+
+    def test_updates_envs_on_previously_included_rcv(self):
+        """Re-activating updates envs on previously-included caseversions."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            )
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+        rcv.caseversion.environments.remove(self.envs[0])
+
+        r.activate()
+
+        self.assertEqual(set(rcv.environments.all()), set(self.envs[1:]))
+
+
+    def test_removes_draft_caseversions_and_their_results(self):
+        """Re-activating removes caseversions that are now draft."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="draft",
+            )
+        self.F.ResultFactory.create(runcaseversion=rcv)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertEqual(r.runcaseversions.count(), 0)
+        self.assertEqual(
+            self.model.Result.objects.filter(runcaseversion__run=r).count(), 0)
+
+
+    def test_removes_no_env_overlap_caseversions(self):
+        """Re-activating removes caseversions that now have no env overlap."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="draft",
+            )
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+        rcv.caseversion.environments.remove(self.envs[0])
+        r.environments.remove(*self.envs[1:])
+
+        r.activate()
+
+        self.assertEqual(r.runcaseversions.count(), 0)

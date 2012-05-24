@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for suite management views.
 
@@ -27,8 +10,9 @@ from tests import case
 
 class SuitesTest(case.view.manage.ListViewTestCase,
                  case.view.ListFinderTests,
-                 case.view.manage.CCModelListTests,
-                 case.view.manage.StatusListTests
+                 case.view.manage.MTModelListTests,
+                 case.view.manage.StatusListTests,
+                 case.view.NoCacheTest,
                  ):
     """Test for suites manage list view."""
     form_id = "manage-suites-form"
@@ -210,7 +194,9 @@ class SuitesTest(case.view.manage.ListViewTestCase,
 
 
 
-class SuiteDetailTest(case.view.AuthenticatedViewTestCase):
+class SuiteDetailTest(case.view.AuthenticatedViewTestCase,
+                      case.view.NoCacheTest,
+                      ):
     """Test for suite-detail ajax view."""
     def setUp(self):
         """Setup for case details tests; create a suite."""
@@ -228,17 +214,19 @@ class SuiteDetailTest(case.view.AuthenticatedViewTestCase):
 
 
     def test_details_description(self):
-        """Details lists description."""
-        self.testsuite.description = "foodesc"
+        """Details includes description, markdownified safely."""
+        self.testsuite.description = "_foodesc_ <script>"
         self.testsuite.save()
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
-        res.mustcontain("foodesc")
+        res.mustcontain("<em>foodesc</em> &lt;script&gt;")
 
 
 
-class AddSuiteTest(case.view.FormViewTestCase):
+class AddSuiteTest(case.view.FormViewTestCase,
+                   case.view.NoCacheTest,
+                   ):
     """Tests for add suite view."""
     form_id = "suite-add-form"
 
@@ -289,11 +277,13 @@ class AddSuiteTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
 
-class EditSuiteTest(case.view.FormViewTestCase):
+class EditSuiteTest(case.view.FormViewTestCase,
+                    case.view.NoCacheTest,
+                    ):
     """Tests for edit-suite view."""
     form_id = "suite-edit-form"
 
@@ -317,7 +307,7 @@ class EditSuiteTest(case.view.FormViewTestCase):
         res = self.app.get(
             self.url, user=self.F.UserFactory.create(), status=302)
 
-        self.assertRedirects(res, reverse("auth_login") + "?next=" + self.url)
+        self.assertRedirects(res, "/")
 
 
     def test_save_basic(self):

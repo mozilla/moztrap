@@ -45,11 +45,11 @@ upgrade, whether it's necessary or not.
 
    It is possible that a database migration will include the creation of a new
    database table. If you've commented out the ``SET storage_engine=InnoDB``
-   ``init_command`` in your ``cc/settings/local.py`` for performance reasons
+   ``init_command`` in your ``moztrap/settings/local.py`` for performance reasons
    (see :ref:`database-performance-tweak`), you should uncomment it before
    running any migrations, to ensure that all new tables are created as
    ``InnoDB`` tables.
 
 
 .. _git: http://git-scm.com
-.. _GitHub repository: https://github.com/mozilla/caseconductor/
+.. _GitHub repository: https://github.com/mozilla/moztrap/

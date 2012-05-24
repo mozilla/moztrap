@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for suite-management forms.
 
@@ -28,7 +11,7 @@ class EditSuiteFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.suites.forms import EditSuiteForm
+        from moztrap.view.manage.suites.forms import EditSuiteForm
         return EditSuiteForm
 
 
@@ -149,7 +132,7 @@ class AddSuiteFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.suites.forms import AddSuiteForm
+        from moztrap.view.manage.suites.forms import AddSuiteForm
         return AddSuiteForm
 
 
@@ -163,7 +146,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "product": str(p.id),
                 "name": "Foo",
                 "description": "foo desc",
-                "status": "draft",
+                "status": "active",
                 "cc_version": "0",
                 },
             user=u
@@ -177,6 +160,13 @@ class AddSuiteFormTest(case.DBTestCase):
         self.assertEqual(suite.created_by, u)
 
 
+    def test_initial_state(self):
+        """New suites should default to active state."""
+        form = self.form()
+
+        self.assertEqual(form["status"].value(), "active")
+
+
     def test_add_with_cases(self):
         """Can add cases to a new suite."""
         c = self.F.CaseFactory()
@@ -186,7 +176,7 @@ class AddSuiteFormTest(case.DBTestCase):
                 "product": str(c.product.id),
                 "name": "some name",
                 "description": "some desc",
-                "status": "draft",
+                "status": "active",
                 "cases": [str(c.id)],
                 "cc_version": "0",
                 },

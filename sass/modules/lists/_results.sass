@@ -6,25 +6,14 @@
   white-space: nowrap
   text-transform: capitalize
   text-overflow: ellipsis
-  &::before
-    +opacity(.75)
-    margin-right: rhythm(.25)
   &.started
-    background-color: $blue-lightest
-    &::before
-      content: image-url('ui/power_sm.png')
+    +icon('ui/clock.png',$blue-lightest,$notext:false)
   &.invalidated
-    background-color: $yellow-light
-    &::before
-      content: image-url('ui/warning_sm.png')
+    +icon('ui/warning_sm.png',$yellow-lighter,$notext:false)
   &.failed
-    background-color: $red-lightest
-    &::before
-      content: image-url('ui/x_sm.png')
+    +icon('ui/x_sm.png',$red-lightest,$notext:false)
   &.passed
-    background-color: $green-lightest
-    &::before
-      content: image-url('ui/check_sm.png')
+    +icon('ui/check_sm.png',$green-lightest,$notext:false)
 
 .results-summary
   +inline-list

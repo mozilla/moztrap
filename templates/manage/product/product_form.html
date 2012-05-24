@@ -2,7 +2,10 @@
 
 {% block content %}
 <section class="{% block sectionclass %}{% endblock %}">
-  <h2>create a new product</h2>
+  <h2>
+    {% block sectionhead %}create a new product{% endblock sectionhead %}
+    {% include "_helplink.html" with helpURL="products.html#product-edit-fields" %}
+  </h2>
   <form id="{% block formid %}{% endblock %}" method="POST" class="manage-form product-form">
     {% csrf_token %}
     {{ form.cc_version }}

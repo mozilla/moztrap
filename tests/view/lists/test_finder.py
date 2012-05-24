@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-12 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for finder.
 
@@ -33,7 +16,7 @@ class FinderDecoratorTest(case.DBTestCase):
     @property
     def finder(self):
         """The decorator under test."""
-        from cc.view.lists.decorators import finder
+        from moztrap.view.lists.decorators import finder
         return finder
 
 
@@ -88,7 +71,7 @@ class FinderDecoratorTest(case.DBTestCase):
         self.assertEqual(record, [("a",), {"b": 2}])
 
 
-    @patch("cc.view.lists.finder.render")
+    @patch("moztrap.view.lists.finder.render")
     def test_ajax(self, render):
         """Ajax response is rendered column template."""
         render.return_value = "some HTML"
@@ -151,7 +134,7 @@ class FinderTest(case.DBTestCase):
     @property
     def ManageFinder(self):
         """ManageFinder; a sample finder subclass to exercise Finder."""
-        from cc.view.manage.finders import ManageFinder
+        from moztrap.view.manage.finders import ManageFinder
         return ManageFinder
 
 
@@ -335,7 +318,7 @@ class FinderTest(case.DBTestCase):
 
     def test_no_parent_relationship(self):
         """If no relationship to parent model is found, raises ValueError."""
-        from cc.view.lists.finder import Finder, Column
+        from moztrap.view.lists.finder import Finder, Column
 
         class BadFinder(Finder):
             columns = [
@@ -374,7 +357,7 @@ class ColumnTest(case.DBTestCase):
     """Tests for finder Column."""
     @property
     def column(self):
-        from cc.view.lists.finder import Column
+        from moztrap.view.lists.finder import Column
         return Column
 
 
@@ -388,7 +371,7 @@ class ColumnTest(case.DBTestCase):
         self.assertIs(objects, qs.all.return_value)
 
 
-    @patch("cc.view.lists.finder.filter_url")
+    @patch("moztrap.view.lists.finder.filter_url")
     def test_goto_url(self, filter_url):
         """goto_url method calls filter_url if goto is given."""
         c = self.column("thing", "_things.html", Mock(), "goto_name")

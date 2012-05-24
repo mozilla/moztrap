@@ -3,13 +3,6 @@ Coding Standards
 
 .. contents:: :local:
 
-License blocks
---------------
-
-Every code file (including Python, Javascript, and Sass, but excluding
-templates) should begin with the standard license comment header block.
-
-
 Python
 ------
 
@@ -121,18 +114,19 @@ the next by a single blank line:
 
 4. Other third-party module imports.
 
-5. Imports from other modules in Case Conductor.
+5. Imports from other modules in MozTrap.
 
 Within each group, order imports alphabetically.
 
-For imports from within Case Conductor, use explicit relative imports for
-imports from the same package or the parent package (i.e. where the explicit
-relative import path begins with one or two dots). For more distant imports,
-it's usually more readable to give the full absolute path. Thus, for code in
-``cc.view.manage.runs.views``, you could do ``from .forms import AddRunForm``
-and ``from ..cases.forms import AddCaseForm``, but it's probably better to do
-``from cc.view.lists import decorators`` rather than ``from ....lists import
-decorators``; more than two dots become difficult to distinguish visually.
+For imports from within MozTrap, use explicit relative imports for imports
+from the same package or the parent package (i.e.  where the explicit
+relative import path begins with one or two dots).  For more distant
+imports, it's usually more readable to give the full absolute path.  Thus,
+for code in ``moztrap.view.manage.runs.views``, you could do ``from .forms
+import AddRunForm`` and ``from ..cases.forms import AddCaseForm``, but it's
+probably better to do ``from moztrap.view.lists import decorators`` rather
+than ``from ....lists import decorators``; more than two dots become
+difficult to distinguish visually.
 
 Never use implicit relative imports; if an import does not begin with a dot, it
 should be a top-level module. In other words, if ``models.py`` is a sibling
@@ -171,10 +165,10 @@ parenthesis, brace or bracket::
 
     foo.some_long_method_name(
         arg_one, arg_two, arg_three, keyword="arg")
-    
+
     my_dict = {
         "foo": "bar", "boo": "baz"}
-    
+
     my_list_comprehension = [
         x[0] for x in my_list_of_tuples]
 
@@ -189,13 +183,13 @@ addition/removal of items with full-line cut/paste). For example::
         baz=baz_arg,
         something_else="foo",
         )
-    
+
     my_dict = {
         "foo": "bar",
         "boo": "baz",
         "something else": "foo",
         }
-    
+
     my_list_comprehension = [
         x[0] for x in my_list_of_tuples
         if x[1] is not None

@@ -1,20 +1,3 @@
-# Case Conductor is a Test Case Management system.
-# Copyright (C) 2011-2012 Mozilla
-#
-# This file is part of Case Conductor.
-#
-# Case Conductor is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Case Conductor is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Case Conductor.  If not, see <http://www.gnu.org/licenses/>.
 """
 Tests for productversion-management forms.
 
@@ -28,7 +11,7 @@ class EditProductVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.productversions.forms import EditProductVersionForm
+        from moztrap.view.manage.productversions.forms import EditProductVersionForm
         return EditProductVersionForm
 
 
@@ -60,22 +43,23 @@ class AddProductVersionFormTest(case.DBTestCase):
     @property
     def form(self):
         """The form class under test."""
-        from cc.view.manage.productversions.forms import AddProductVersionForm
+        from moztrap.view.manage.productversions.forms import AddProductVersionForm
         return AddProductVersionForm
 
 
     def test_add_productversion(self):
-        """Can add productversion; sets created-by user."""
-        pv = self.F.ProductVersionFactory(version="1.0")
+        """Can add productversion; sets created-by user, clones envs/cases."""
+        pv = self.F.ProductVersionFactory.create(version="1.0")
         envs = self.F.EnvironmentFactory.create_full_set({"OS": ["Linux"]})
         pv.environments.add(*envs)
+        cv = self.F.CaseVersionFactory.create(productversion=pv)
         u = self.F.UserFactory()
 
         f = self.form(
             {
                 "product": str(pv.product.id),
                 "version": "2.0",
-                "clone_envs_from": str(pv.id),
+                "clone_from": str(pv.id),
                 "codename": "Foo",
                 "cc_version": "0",
                 },
@@ -88,6 +72,9 @@ class AddProductVersionFormTest(case.DBTestCase):
 
         self.assertEqual(productversion.product, pv.product)
         self.assertEqual(set(productversion.environments.all()), set(envs))
+        new_cv = productversion.caseversions.get()
+        self.assertEqual(new_cv.case, cv.case)
+        self.assertEqual(new_cv.name, cv.name)
         self.assertEqual(productversion.version, "2.0")
         self.assertEqual(productversion.codename, "Foo")
         self.assertEqual(productversion.created_by, u)

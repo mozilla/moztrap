@@ -9,7 +9,10 @@
   {% icanhaz "autocomplete_input" %}
   {% icanhaz "autocomplete_no_inputs" %}
 
-  <h2>{% block formtitle %}{% endblock formtitle %}</h2>
+  <h2>
+    {% block formtitle %}{% endblock formtitle %}
+    {% include "_helplink.html" with helpURL="library.html#case-edit-fields" %}
+  </h2>
 
   {% block caseversions %}
   {% endblock caseversions %}
@@ -18,16 +21,17 @@
     {% csrf_token %}
     {{ form.non_field_errors }}
 
-    {% block versioningform %}
     <div class="versioning">
+    {% block versioningform %}
       {% include "forms/_field.html" with field=form.product %}
       {% include "forms/_field.html" with field=form.productversion label="Version" %}
       {% include "forms/_field.html" with field=form.and_later_versions %}
       {% if user|has_perm:"library.manage_suite_cases" %}
       {% include "forms/_field.html" with field=form.initial_suite label="Suite" %}
+      {% include "forms/_field.html" with field=form.idprefix label="ID Prefix" %}
       {% endif %}
-    </div>
     {% endblock versioningform %}
+    </div>
 
     <div class="versioned">
       {% block versionedform %}{% endblock %}

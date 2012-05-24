@@ -1,4 +1,4 @@
-<li class="element element-field formfield optional action-ajax-replace" data-element-id="{{ element.id }}">
+<li class="element element-field formfield optional action-ajax-replace" data-element-id="{{ element.id }}" data-title="{{ element.name }}">
   <input type="checkbox" name="{{ name }}" class="value check-value" value="{{ element.id }}" id="element-{{ element.id }}"{% if element.id in selected_element_ids %} checked{% endif %}>
   <div class="check-item">
     <a href="#{{ element.id }}" title="edit {{ element.name }}" class="edit-link">edit</a>
