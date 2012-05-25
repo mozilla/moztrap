@@ -191,6 +191,7 @@ var MT = (function (MT, $) {
         MT.bulkSelectEnvs('#envnarrowing');
 
         // runtests.js
+
         MT.hideEmptyRuntestsEnv();
         MT.autoFocus('.details.stepfail > .summary', '#runtests');
         MT.autoFocus('.details.testinvalid > .summary', '#runtests');
@@ -200,6 +201,10 @@ var MT = (function (MT, $) {
         MT.failedTestBug('#runtests');
         MT.expandTestDetails('#runtests');
         MT.filterEnvironments('#runtests-environment-form');
+
+        // owa.js
+        MT.owa();
+
     });
 
     $(window).load(function () {

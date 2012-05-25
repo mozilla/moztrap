@@ -88,6 +88,7 @@
 <!-- JavaScript -->
 {% block js %}
 <script src="https://browserid.org/include.js"></script>
+<script src="https://myapps.mozillalabs.com/jsapi/include.js"></script>
 {% compress js %}
 <script src="{{ STATIC_URL }}js/jquery-1.7.2.js"></script>
 <script src="{{ STATIC_URL }}js/jquery-ui-1.8.18.custom.js"></script>
@@ -114,6 +115,7 @@
 <script src="{{ STATIC_URL }}js/manage-products.js"></script>
 <script src="{{ STATIC_URL }}js/manage-env.js"></script>
 <script src="{{ STATIC_URL }}js/runtests.js"></script>
+<script src="{{ STATIC_URL }}js/owa.js"></script>
 <script src="{{ STATIC_URL }}js/init.js"></script>
 {% endcompress %}
 {% endblock %}

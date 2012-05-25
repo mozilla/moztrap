@@ -138,6 +138,7 @@ INSTALLED_APPS = [
     "moztrap.view.lists",
     "moztrap.view.markup",
     "moztrap.view.manage",
+    "moztrap.view.owa",
     "moztrap.view.results",
     "moztrap.view.runtests",
 ]

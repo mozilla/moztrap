@@ -33,3 +33,7 @@ Frequently Asked Questions
     instruction, it will say that you must fill out that field.  To avoid this,
     simply click the "X" next to that step, it will be deleted, and you can
     save your case without steps.
+
+4. **Please help us add more to the FAQ!**
+
+  - New FAQ items help everyone.  Your contributions help!

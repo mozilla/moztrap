@@ -44,4 +44,7 @@ urlpatterns = patterns(
     # api --------------------------------------------------------------------
     url(r"^api/", include("moztrap.view.api.urls")),
 
+    # open web apps-----------------------------------------------------------
+    url("^owa/", include("moztrap.view.owa.urls")),
+
     ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

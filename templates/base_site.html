@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load permissions %}
+{% load permissions owa %}
 
 {% block site %}
 
@@ -14,11 +14,11 @@
     </a>
   </h1>
 
-  {% block site-navigation %}
+    {% block site-navigation %}
     {% include "_accountnav.html" %}
-
+    <div id="owa"><a href="#" data-url="{{ request|owa_manifest_url }}">Install as Open Web App</a></div>
     <nav role="navigation">
-      <h2 class="navhead">Primary Navigation</h2>
+        <h2 class="navhead">Primary Navigation</h2>
       <ul class="primary">
         {% if user|has_perm:"execution.execute" %}
         <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %} nav-tests">
