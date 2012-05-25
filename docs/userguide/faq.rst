@@ -36,4 +36,4 @@ Frequently Asked Questions
 
 4. **Please help us add more to the FAQ!**
 
-  - New FAQ items help everyone figure things out.
+  - New FAQ items help everyone.  Your contributions help!
