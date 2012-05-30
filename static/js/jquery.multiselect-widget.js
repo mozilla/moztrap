@@ -29,7 +29,9 @@
             items,
 
             updateBulkSel = function (select, list) {
-                if (list.find(options.itemSel + ' ' + options.inputSel + ':checked').length && list.find(options.itemSel + ' ' + options.inputSel + ':checked').length === list.find(options.itemSel + ' ' + options.inputSel).length) {
+                var visibleNum = list.find(options.itemSel + ' ' + options.inputSel + ':visible').length,
+                    checkedNum = list.find(options.itemSel + ' ' + options.inputSel + ':visible:checked').length;
+                if (checkedNum && checkedNum === visibleNum) {
                     select.prop('checked', true);
                 } else {
                     select.prop('checked', false);
@@ -78,6 +80,7 @@
 
         filterLists.on('change', options.filterSel, function () {
             filterItems();
+            updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
         });
 
         availableList.add(includedList).on('click', options.itemSel + ' .tags a', function (e) {
@@ -103,13 +106,14 @@
                 ui.item.find(options.inputSel).prop('checked', false);
                 updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
                 updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
+                headers.removeClass('asc desc');
             }
         });
 
         context.on('click', options.itemListSel + ' ' + options.labelSel, function (e) {
             var thisLabel = $(this),
                 thisInput = thisLabel.closest(options.itemSel).find(options.inputSel),
-                labels = thisLabel.closest(options.itemListSel).find(options.labelSel),
+                labels = thisLabel.closest(options.itemListSel).find(options.labelSel + ':visible'),
                 thisIndex,
                 recentlyClicked,
                 recentlyClickedIndex,
@@ -159,7 +163,7 @@
         });
 
         bulkInclude.click(function (e) {
-            var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked');
+            var selectedItems = availableList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(includedList);
             updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
             updateBulkSel(includedList.closest('.itemlist').find(options.bulkSel), includedList);
@@ -167,7 +171,7 @@
         });
 
         bulkExclude.click(function (e) {
-            var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked');
+            var selectedItems = includedList.find(options.itemSel + ' ' + options.inputSel + ':checked:visible');
             selectedItems.prop('checked', false).closest(options.itemSel).detach().prependTo(availableList);
             filterLists.find(options.filterSel + ':checked').prop('checked', false).change();
             updateBulkSel(availableList.closest('.itemlist').find(options.bulkSel), availableList);
@@ -216,7 +220,7 @@
         // Bulk-select
         bulkSelects.change(function (e) {
             var thisSelect = $(this),
-                items = thisSelect.closest('.itemlist').find(options.itemSel + ' ' + options.inputSel);
+                items = thisSelect.closest('.itemlist').find(options.itemSel + ' ' + options.inputSel + ':visible');
 
             if (thisSelect.is(':checked')) {
                 items.prop('checked', true).change();
