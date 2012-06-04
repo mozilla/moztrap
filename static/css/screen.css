@@ -4000,6 +4000,70 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
 }
 
+.apikeys {
+  *zoom: 1;
+  margin-bottom: 1.5em;
+  padding-left: 25.263%;
+  padding-right: 25.263%;
+}
+.apikeys:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.apikeys h3 {
+  font-weight: 500;
+  line-height: 3em;
+  display: inline-block;
+}
+.apikeys .apikey-form {
+  display: inline-block;
+}
+.apikeys button {
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #666666;
+  background-color: #fafafa;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-repeat: no-repeat;
+  padding-left: 24px;
+  background-position: 9px, left;
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+}
+.apikeys button:hover, .apikeys button:focus {
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/refresh.png?1333395141'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/refresh.png?1333395141'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/refresh.png?1333395141'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/refresh.png?1333395141'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+.apikeys button:active {
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/refresh.png?1333395141'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/refresh.png?1333395141'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
+
 .tag-form {
   padding-right: 25.263%;
 }
