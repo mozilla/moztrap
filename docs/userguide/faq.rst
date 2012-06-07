@@ -14,8 +14,10 @@ Frequently Asked Questions
     "unit of work" that won't be altered.
 
   - When you have activated new test cases and/or suites and want a test run to
-    reflect that, simply clone the existing test run, and activate it. Your
-    newly active cases and suites will be reflected.
+    reflect that, you have two options:
+
+    1. clone the existing test run, and activate it.
+    2. mark your existing run draft, then active again.
 
 2. **Why don't I see the results I expect when I type in a filter?**
 
