@@ -6,7 +6,7 @@ from functools import partial
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_POST
 
 from django.contrib.auth import REDIRECT_FIELD_NAME, views as auth_views
@@ -18,6 +18,7 @@ from ratelimit.decorators import ratelimit
 from registration import views as registration_views
 from session_csrf import anonymous_csrf
 
+from moztrap import model
 from . import forms
 
 
@@ -168,3 +169,14 @@ def set_username(request):
 
     return render(
         request, "users/set_username_form.html", {"form": form, "next": next})
+
+
+
+@require_POST
+@login_required
+def create_apikey(request, user_id):
+    """Generate an API key for the given user; redirect to their edit page."""
+    user = get_object_or_404(model.User, pk=user_id)
+    model.ApiKey.generate(owner=user, user=request.user)
+
+    return redirect("manage_user_edit", user_id=user_id)

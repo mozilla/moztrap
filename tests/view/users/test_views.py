@@ -464,3 +464,30 @@ class ActivateTest(case.view.ViewTestCase):
             )
 
         res.mustcontain("that activation key is not valid")
+
+
+
+class CreateApiKeyTest(case.view.AuthenticatedViewTestCase):
+    """Tests for the create_apikey view."""
+    def setUp(self):
+        """Creating an API key requires a user."""
+        super(CreateApiKeyTest, self).setUp()
+        self.owner = self.F.UserFactory.create()
+
+
+    @property
+    def url(self):
+        """Shortcut for user-edit url (from where we can create an API key)."""
+        return reverse("manage_user_edit", kwargs={"user_id": self.owner.id})
+
+
+    def test_post(self):
+        """POSTing to create_apikey creates a key and redirects to user-edit."""
+        self.add_perm("manage_users")
+        res = self.get().forms["create-apikey-form"].submit()
+
+        self.assertRedirects(res, self.url)
+
+        ak = self.model.ApiKey.objects.get()
+        self.assertEqual(ak.created_by, self.user)
+        self.assertEqual(ak.owner, self.owner)

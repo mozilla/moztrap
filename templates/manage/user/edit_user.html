@@ -3,3 +3,25 @@
 {% block sectionid %}edit-user{% endblock %}
 {% block formid %}user-edit-form{% endblock %}
 {% block formtitle %}Edit User '{{ subject }}'{% endblock %}
+
+{% block afterform %}
+<div class="apikeys">
+  {% with subject.api_keys.active as apikeys %}
+
+  {% if apikeys %}
+  <h3>API Keys</h3>
+  <ul class="key-list">
+    {% for apikey in apikeys %}
+      <li>{{ apikey.key }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <form action="{% url auth_create_apikey user_id=subject.id %}" method="POST" id="create-apikey-form" class="apikey-form">
+    {% csrf_token %}
+    <button type="submit">generate an API key</button>
+  </form>
+  {% endif %}
+
+  {% endwith %}
+</div>
+{% endblock %}
