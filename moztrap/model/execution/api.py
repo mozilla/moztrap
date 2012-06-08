@@ -237,14 +237,21 @@ class ResultResource(ModelResource):
 
         except Exception as e:
             raise ValidationError(
-                "bad result object data missing key: {0}".format(e))
+                "bad result object data missing key: {0}".format(e.message))
 
         data["environment"] = env
-        rcv = RunCaseVersion.objects.get(
-            run=run,
-            caseversion__case__id=case,
-            environments=env,
-            )
+
+        try:
+            rcv = RunCaseVersion.objects.get(
+                run=run,
+                caseversion__case__id=case,
+                environments=env,
+                )
+        except Exception as e:
+            raise ValidationError(
+                "RunCaseVersion not found for run: {0}, " +
+                    "case: {1}, environment: {2}:\nError {3}".format(
+                        str(run), str(case), str(env), e.message))
 
         user = User.objects.get(username=request.user.username)
         data["user"] = user

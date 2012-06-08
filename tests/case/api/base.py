@@ -32,17 +32,25 @@ class ApiTestCase(WebTest):
             )
 
 
-    def get(self, url, params={}):
-        params["format"] ="json"
-        return self.app.get(url, params=params)
+    def get(self, url, params={}, status=200):
+        params.setdefault("format": "json")
+        return self.app.get(url, params=params, status=status)
 
 
-    def get_list(self, params={}):
-        return self.get(self.get_list_url(self.resource_name), params)
+    def get_list(self, params={}, status=200):
+        return self.get(
+            self.get_list_url(self.resource_name),
+            params=params,
+            status=status,
+            )
 
 
-    def get_detail(self, id, params={}):
-        return self.get(self.get_detail_url(self.resource_name, id), params)
+    def get_detail(self, id, params={}, status=200):
+        return self.get(
+            self.get_detail_url(self.resource_name, id),
+            params=params,
+            status=status,
+            )
 
 
     def get_detail_uri(self, resource_name, id):

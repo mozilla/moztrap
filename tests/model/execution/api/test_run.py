@@ -10,7 +10,7 @@ class RunResourceTest(case.api.ApiTestCase):
 
     @property
     def factory(self):
-        """The model factory for this manage list."""
+        """The model factory for Runs."""
         return self.F.RunFactory
 
 
@@ -31,11 +31,7 @@ class RunResourceTest(case.api.ApiTestCase):
         assert Fail, "needs environments, uri only"
 
         res = self.get_list()
-        self.assertEqual(res.status_int, 200)
 
-        act = res.json
-
-        act_meta = act["meta"]
         exp_meta = {
             "limit" : 20,
             "next" : None,
@@ -44,9 +40,9 @@ class RunResourceTest(case.api.ApiTestCase):
             "total_count" : 2,
             }
 
-        self.assertEquals(act_meta, exp_meta)
+        self.assertEquals(act["meta"], exp_meta)
 
-        act_objects = act["objects"]
+        act_objects = res.json["objects"]
         exp_objects = []
         for exp_run in [r1, r2]:
             exp_objects.append({
@@ -81,14 +77,13 @@ class RunResourceTest(case.api.ApiTestCase):
 
 
     def test_run_by_id_shows_env_detail(self):
-        """Get a single test run, by id"""
+        """Get a single test run, by id shows expanded deatil for environments"""
         r = self.factory(name="Floo")
 
         res = self.get_detail(r.id)
-        self.assertEqual(res.status_int, 200, res)
 
-        act = res.json
-        self.assertEqual(unicode(r.name), act["name"])
+        self.assertEqual(unicode(r.name), res.json["name"])
+        assert False, "needs impl"
 
 
 
