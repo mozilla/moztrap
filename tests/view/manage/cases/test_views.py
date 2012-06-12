@@ -283,7 +283,8 @@ class CaseTest(case.view.AuthenticatedViewTestCase):
 
         self.assertRedirects(
             res,
-            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            "{0}?filter-id={1}#caseversion-id-{2}".format(
+                reverse("manage_cases"), cv.case.id, cv.id),
             )
 
 
@@ -304,7 +305,8 @@ class CaseTest(case.view.AuthenticatedViewTestCase):
 
         self.assertRedirects(
             res,
-            "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id),
+            "{0}?filter-id={1}#caseversion-id-{2}".format(
+                reverse("manage_cases"), cv.case.id, cv.id),
             )
 
 
