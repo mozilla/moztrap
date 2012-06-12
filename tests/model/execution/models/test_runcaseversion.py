@@ -238,22 +238,22 @@ class RunCaseVersionTest(case.DBTestCase):
         self.assertEqual(r.modified_by, u)
 
 
-    def test_finishsucceed(self):
-        """Finishsucceed marks status passed."""
+    def test_result_pass(self):
+        """result_pass marks status passed."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
         rcv = self.F.RunCaseVersionFactory.create(run=run)
         u = self.F.UserFactory.create()
 
-        rcv.finishsucceed(envs[0], user=u)
+        rcv.result_pass(envs[0], user=u)
 
         r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
         self.assertEqual(r.status, "passed")
 
 
-    def test_finishsucceed_started(self):
-        """Finishsucceed marks status passed and has only 1 latest."""
+    def test_result_pass_started(self):
+        """result_pass marks status passed and has only 1 latest."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -261,7 +261,7 @@ class RunCaseVersionTest(case.DBTestCase):
         u = self.F.UserFactory.create()
 
         rcv.start(envs[0], user=u)
-        rcv.finishsucceed(envs[0], user=u)
+        rcv.result_pass(envs[0], user=u)
 
         r = rcv.results.get(environment=envs[0], tester=u, is_latest=True)
         self.assertEqual(r.status, "passed")
@@ -402,7 +402,7 @@ class RunCaseVersionTest(case.DBTestCase):
             )
         u = self.F.UserFactory.create()
 
-        rcv.finishsucceed(environment=envs[0], user=u)
+        rcv.result_pass(environment=envs[0], user=u)
 
         pass_r = rcv.results.get(is_latest=True)
         sr = self.F.StepResultFactory.create(result=pass_r, step=step, status="passed")

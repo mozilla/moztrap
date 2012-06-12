@@ -53,16 +53,31 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
 
             exp_objects.append({
                 u"caseversion": {
-                    u"case": unicode(self.get_detail_uri("case",cv.case.id)),
+                    u"case": {
+                        u"id": unicode(cv.case.id),
+                        u"resource_uri": unicode(self.get_detail_uri(
+                            "case",
+                            cv.case.id,
+                            )),
+                        },
                     u"description": unicode(cv.description),
                     u'environments': [],
                     u"id": unicode(cv.id),
                     u"name": unicode(cv.name),
-                    u"resource_uri": unicode(self.get_detail_uri("caseversion",cv.id)),
+                    u"productversion": unicode(self.get_detail_uri(
+                        "productversion",
+                        cv.productversion.id)),
+                    u"resource_uri": unicode(self.get_detail_uri(
+                        "caseversion",
+                        cv.id,
+                        )),
                     },
                 u"id": unicode(rcv.id),
                 u"run": unicode(self.get_detail_uri("run",rcv.run.id)),
-                u"resource_uri": unicode(self.get_detail_uri("runcaseversion",rcv.id)),
+                u"resource_uri": unicode(self.get_detail_uri(
+                    "runcaseversion",
+                    rcv.id,
+                    )),
                 })
 
         self.maxDiff = None

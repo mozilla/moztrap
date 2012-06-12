@@ -4,6 +4,7 @@ Tests for RunResource api.
 """
 
 from tests import case
+from moztrap.model.execution.models import Run
 
 
 class RunResourceTest(case.api.ApiTestCase):
@@ -61,11 +62,21 @@ class RunResourceTest(case.api.ApiTestCase):
         self.assertEqual(exp_objects, act_objects)
 
 
-    def test_run_authentication(self):
+    def test_run_by_id_shows_env_detail(self):
+        """Get a single test run, by id shows expanded deatil for environments"""
+        r = self.factory(name="Floo")
+
+        res = self.get_detail(r.id)
+
+        self.assertEqual(unicode(r.name), res.json["name"])
         assert False, "needs impl"
 
 
-    def test_run_authorization(self):
+    def test_run_no_authentication(self):
+        assert False, "needs impl"
+
+
+    def test_run_no_authorization(self):
         assert False, "needs impl"
 
 
@@ -76,15 +87,57 @@ class RunResourceTest(case.api.ApiTestCase):
         assert False, "needs impl"
 
 
-    def test_run_by_id_shows_env_detail(self):
-        """Get a single test run, by id shows expanded deatil for environments"""
-        r = self.factory(name="Floo")
+    def test_submit_new_run_with_results(self):
+        """Submit a new test run with results."""
 
-        res = self.get_detail(r.id)
+        user = self.F.UserFactory.create(
+            username="foo",
+            permissions=["execution.execute"],
+            )
+        apikey = self.F.ApiKeyFactory.create(user=user)
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create()
+        c_p = self.F.CaseVersionFactory.create(productversion=pv)
+        c_i = self.F.CaseVersionFactory.create(productversion=pv)
+        c_f = self.F.CaseVersionFactory.create(productversion=pv)
 
-        self.assertEqual(unicode(r.name), res.json["name"])
-        assert False, "needs impl"
+        # submit results for these cases
+        params = {"username": user.username, "api_key": apikey.key}
+        payload = {
+            "description": "a description",
+            "environments": [
+                self.get_detail_uri("environment", envs[0].id),
+            ],
+            "name": "atari autorun.sys",
+            "productversion": self.get_detail_uri("productversion", pv.id),
+            "runcaseversions": [
+                {"case": c_i.case.id,
+                "comment": "what the hellfire?",
+                "environment": envs[0].id,
+                "status": "invalidated",
+                },
+                {"case": c_p.case.id,
+                 "environment": envs[0].id,
+                 "status": "passed"
+                },
+                {"bug": "http://www.deathvalleydogs.com",
+                "case": c_f.case.id,
+                "comment": "dang thing...",
+                "environment": envs[0].id,
+                "status": "failed",
+                "stepnumber": 0
+                },
+            ],
+            "status": "active"
+        }
 
+        res = self.post(
+            self.get_list_url(self.resource_name, params=params),
+            payload=payload,
+            )
+
+        self.assert_equals("atari autorun.sys", Run.get().name)
 
 
 
