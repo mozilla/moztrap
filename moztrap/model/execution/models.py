@@ -309,7 +309,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
             comment=comment,
             user=user,
             )
-        if stepnumber:
+        if stepnumber is not None:
             try:
                 step = self.caseversion.steps.get(
                     number=stepnumber)

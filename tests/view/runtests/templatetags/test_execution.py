@@ -5,6 +5,8 @@ from django.template import Template, Context
 
 import mock
 
+from moztrap.model.execution.models import Result
+
 from tests import case
 
 
@@ -77,34 +79,42 @@ class ResultForTest(case.DBTestCase):
 
 
     def test_dupe_latest_results_sets_non_latest_to_false(self):
-        """If dupe latest results exists, setkeep the last-modified."""
+        """If dupe latest results exists, keep the last-modified."""
 
         with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
-            r = self.F.ResultFactory(
+            res1 = self.F.ResultFactory(
                 status="passed",
             )
             mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
-            r2 = self.F.ResultFactory(
-                tester=r.tester,
-                runcaseversion=r.runcaseversion,
-                environment=r.environment,
-                status="failed",
+            res2 = self.F.ResultFactory(
+                tester=res1.tester,
+                runcaseversion=res1.runcaseversion,
+                environment=res1.environment,
+                status="passed",
                 )
 
             # manually set a non-latest result to is_latest=True
-            r = self.refresh(r)
-            r.is_latest=True
-            r.save()
-
-            r = self.refresh(r)
-            r2 = self.refresh(r2)
-
-        self.assertEqual(
-            self.result_for(
-                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
-                str(r2.id),
+            # since res1 has already been saved, and has a pk assigned,
+            # it will not try to set all the other results to NOT latest.
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            res1 = self.refresh(res1)
+            Result.objects.filter(pk=res1.pk).update(
+                is_latest=True,
                 )
+#            res1.update(is_latest=True)
+#            res1.save()
+
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            res1 = self.refresh(res1)
+            res2 = self.refresh(res2)
+
+        self.assertEqual(self.result_for(
+                res1.runcaseversion,
+                res1.tester,
+                res1.environment,
+                "{{ result.id }}",
+                ), str(res2.id))
         self.assertEqual(self.model.Result.objects.count(), 2)
         self.assertEqual(self.model.Result.objects.count(is_latest=True), 1)
 
