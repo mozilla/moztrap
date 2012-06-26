@@ -404,7 +404,7 @@ class Result(MTModel):
             runcaseversion=self.runcaseversion,
             environment=self.environment,
             is_latest=True,
-            ).update(is_latest=False)
+            ).exclude(pk=self.pk).update(is_latest=False)
 
         self.is_latest=True
 

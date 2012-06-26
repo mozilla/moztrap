@@ -45,10 +45,10 @@ class ResultFor(Tag):
         except model.Result.MultipleObjectsReturned:
             # find the latest one and set it to latest, which will set all
             # others to is_latest=False
-            latest = model.Result.objects.filter(**result_kwargs).order_by(
+            result = model.Result.objects.filter(**result_kwargs).order_by(
                 "-modified_on")[0]
-            latest.set_latest()
-            latest.save()
+            result.set_latest()
+            result.save()
 
         context[varname] = result
         return u""

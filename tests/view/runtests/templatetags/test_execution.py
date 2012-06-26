@@ -96,14 +96,9 @@ class ResultForTest(case.DBTestCase):
             # since res1 has already been saved, and has a pk assigned,
             # it will not try to set all the other results to NOT latest.
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
-            res1 = self.refresh(res1)
             self.model.Result.objects.filter(pk=res1.pk).update(
                 is_latest=True,
                 )
-
-            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
-            res1 = self.refresh(res1)
-            res2 = self.refresh(res2)
 
         self.assertEqual(self.result_for(
                 res1.runcaseversion,
@@ -112,7 +107,8 @@ class ResultForTest(case.DBTestCase):
                 "{{ result.id }}",
                 ), str(res2.id))
         self.assertEqual(self.model.Result.objects.count(), 2)
-        self.assertEqual(self.model.Result.objects.count(is_latest=True), 1)
+        self.assertEqual(
+            self.model.Result.objects.get(is_latest=True).pk, res2.pk)
 
 
     def test_result_does_not_exist(self):
