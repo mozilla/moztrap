@@ -688,9 +688,7 @@ class RunTestsTest(case.view.AuthenticatedViewTestCase,
 
         form = self.get(status=200).forms["restart-form-{0}".format(rcv.id)]
 
-        with patch("moztrap.model.execution.models.utcnow") as mock_utcnow:
-            mock_utcnow.return_value = datetime(2012, 2, 3)
-            res = form.submit(name="action-start", index=0, status=302)
+        res = form.submit(name="action-start", index=0, status=302)
 
         self.assertRedirects(res, self.url)
 
