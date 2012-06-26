@@ -5,8 +5,6 @@ from django.template import Template, Context
 
 import mock
 
-from moztrap.model.execution.models import Result
-
 from tests import case
 
 
@@ -99,11 +97,9 @@ class ResultForTest(case.DBTestCase):
             # it will not try to set all the other results to NOT latest.
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
             res1 = self.refresh(res1)
-            Result.objects.filter(pk=res1.pk).update(
+            self.model.Result.objects.filter(pk=res1.pk).update(
                 is_latest=True,
                 )
-#            res1.update(is_latest=True)
-#            res1.save()
 
             mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
             res1 = self.refresh(res1)

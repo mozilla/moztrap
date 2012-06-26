@@ -2,10 +2,6 @@
 Tests for Result model.
 
 """
-from datetime import datetime
-
-from mock import patch
-
 from tests import case
 
 
@@ -48,7 +44,7 @@ class ResultTest(case.DBTestCase):
 
 
     def test_save_old_result_doesnt_become_latest(self):
-        """Finishsucceed marks status passed."""
+        """Saving an older result doesn't mark it as latest."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -71,5 +67,3 @@ class ResultTest(case.DBTestCase):
         self.assertEqual(r2.status, "failed")
         self.assertEqual(r2.is_latest, True)
         self.assertEqual(r1.is_latest, False)
-
-

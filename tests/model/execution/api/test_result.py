@@ -7,7 +7,6 @@ This works by providing results for an existing test run.
 """
 
 from tests import case
-from moztrap.model.execution.models import Run, Result, RunCaseVersion, StepResult
 
 
 
@@ -92,24 +91,24 @@ class ResultResourceTest(case.api.ApiTestCase):
             params=params,
             payload=payload,
             )
-#        results = Result.objects.all()
+#        results = self.model.Result.objects.all()
 #        case_names = [res.case.name for res in results]
 #        self.assertEqual(set(case_names), set())
 
         # verify pass results
-        result = Result.objects.get(runcaseversion__caseversion=c_p)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_p)
         self.assertEqual(result.status, "passed")
         self.assertEqual(result.environment, envs[0])
 
         # verify fail results
-        result = Result.objects.get(runcaseversion__caseversion=c_f)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_f)
         self.assertEqual(result.status, "failed")
         self.assertEqual(result.comment, "why u no pass?")
         self.assertEqual(set(result.bug_urls()), set(["http://www.deathvalleydogs.com"]))
         self.assertEqual(result.environment, envs[0])
 
         # verify invalid results
-        result = Result.objects.get(runcaseversion__caseversion=c_i)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_i)
         self.assertEqual(result.status, "invalidated")
         self.assertEqual(result.environment, envs[0])
         self.assertEqual(result.comment, "why u no make sense??")

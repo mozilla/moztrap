@@ -211,7 +211,7 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_start(self):
-        """Start method marks status started."""
+        """Start method creates a result with status started."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -239,7 +239,7 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_result_pass(self):
-        """result_pass marks status passed."""
+        """result_pass creates result with status passed."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -253,7 +253,7 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_result_pass_started(self):
-        """result_pass marks status passed and has only 1 latest."""
+        """result_pass creates result with status passed and only 1 latest."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -282,7 +282,7 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_result_invalid_started(self):
-        """result_invalid sets status invalidated and has only 1 latest."""
+        """result_invalid creates result with invalidated and only 1 latest."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -316,7 +316,7 @@ class RunCaseVersionTest(case.DBTestCase):
 
 
     def test_result_fail(self):
-        """result_fail sets status failed."""
+        """result_fail creates result with status failed."""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"], "Language": ["English"]})
         run = self.F.RunFactory.create(environments=envs)
@@ -464,4 +464,3 @@ class RunCaseVersionTest(case.DBTestCase):
 
         r = rcv.results.get(is_latest=True)
         self.assertEqual(r.stepresults.count(), 0)
-

@@ -4,8 +4,7 @@ Tests for RunResource api.
 """
 
 from tests import case
-from moztrap.model.execution.models import Run, Result, RunCaseVersion, StepResult
-import json
+
 
 
 class RunResourceTest(case.api.ApiTestCase):
@@ -172,28 +171,28 @@ class RunResourceTest(case.api.ApiTestCase):
             "status": "active"
         }
 
-        res = self.post(
+        self.post(
             self.get_list_url(self.resource_name),
             payload=payload,
             params=self.auth_params,
             )
 
         # verify run
-        run = Run.objects.get()
+        run = self.model.Run.objects.get()
         self.assertEqual("atari autorun.sys", run.name)
 
         # verify runcaseversions
         for cv in [c_f, c_p, c_i]:
-            rcv = RunCaseVersion.objects.get(caseversion__id=cv.id)
+            rcv = self.model.RunCaseVersion.objects.get(caseversion__id=cv.id)
             self.assertEqual(rcv.run.id, run.id)
 
         # verify pass results
-        result = Result.objects.get(runcaseversion__caseversion=c_p)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_p)
         self.assertEqual(result.status, "passed")
         self.assertEqual(result.environment, envs[0])
 
         # verify fail results
-        result = Result.objects.get(runcaseversion__caseversion=c_f)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_f)
         self.assertEqual(result.status, "failed")
         self.assertEqual(result.comment, "dang thing...")
 
@@ -201,7 +200,7 @@ class RunResourceTest(case.api.ApiTestCase):
         self.assertEqual(result.environment, envs[0])
 
         # verify invalid results
-        result = Result.objects.get(runcaseversion__caseversion=c_i)
+        result = self.model.Result.objects.get(runcaseversion__caseversion=c_i)
         self.assertEqual(result.status, "invalidated")
         self.assertEqual(result.environment, envs[0])
         self.assertEqual(result.comment, "what the hellfire?")
@@ -238,7 +237,7 @@ class RunResourceTest(case.api.ApiTestCase):
             "status": "active"
         }
 
-        res = self.post(
+        self.post(
             self.get_list_url(self.resource_name),
             payload=payload,
             params=self.auth_params,

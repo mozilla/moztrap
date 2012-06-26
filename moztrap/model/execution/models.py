@@ -9,7 +9,7 @@ from django.db import connection, models
 
 from model_utils import Choices
 
-from ..mtmodel import MTModel, TeamModel, DraftStatusModel, utcnow
+from ..mtmodel import MTModel, TeamModel, DraftStatusModel
 from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
