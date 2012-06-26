@@ -73,7 +73,8 @@ def case_id_redirect(request, case_id):
     cv = get_object_or_404(
         model.CaseVersion.objects.all(), case=case_id, latest=True)
     return HttpResponseRedirect(
-        "{0}#caseversion-id-{1}".format(reverse("manage_cases"), cv.id))
+        "{0}?filter-id={1}#caseversion-id-{2}".format(
+            reverse("manage_cases"), cv.case.id, cv.id))
 
 
 
