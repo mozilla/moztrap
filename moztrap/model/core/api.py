@@ -21,6 +21,33 @@ class MTApiKeyAuthentication(ApiKeyAuthentication):
         return True
 
 
+    def is_authenticated(self, request, **kwargs):
+        """
+        Finds the user and checks their API key.
+
+        This overrides Tastypie's default impl, because we use a User
+        proxy class, which Tastypie doesn't find
+
+        Should return either ``True`` if allowed, ``False`` if not or an
+        ``HttpResponse`` if you need something custom.
+        """
+        from .auth import User
+
+        username = request.GET.get('username') or request.POST.get('username')
+        api_key = request.GET.get('api_key') or request.POST.get('api_key')
+
+        if not username or not api_key:
+            return self._unauthorized()
+
+        try:
+            user = User.objects.get(username=username)
+        except (User.DoesNotExist, User.MultipleObjectsReturned):
+            return self._unauthorized()
+
+        request.user = user
+        return self.get_key(user, api_key)
+
+
 
 class ReportResultsAuthorization(Authorization):
     """Authorization that only allows users with execute privileges."""
@@ -72,7 +99,7 @@ class ProductResource(ModelResource):
 
 
 class ProductVersionEnvironmentsResource(ModelResource):
-    """Return a list of environments for a specific productversion."""
+    """Return a list of productversions with full environment info."""
 
     environments = fields.ToManyField(
         EnvironmentResource,

@@ -1,12 +1,10 @@
-from django.core.exceptions import ValidationError
-
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, ReportResultsAuthorization,
                         MTApiKeyAuthentication)
-from ..core.auth import User
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
@@ -88,10 +86,6 @@ class RunResource(ModelResource):
 
         return bundle
 
-    #TODO @@@ Cookbook for Tastypie
-    #    Cookbook item for Tastypie docs.
-    #    Want full=false in the list endpoint and full=True in
-    #    the detail endpoint
 
     def dispatch_detail(self, request, **kwargs):
         """For details, we want the full info on environments for the run """
@@ -111,8 +105,7 @@ class RunResource(ModelResource):
         """Set the created_by field for the run to the request's user"""
 
         bundle = super(RunResource, self).obj_create(bundle=bundle, request=request, **kwargs)
-        user = User.objects.get(username=bundle.request.user.username)
-        bundle.obj.created_by = user
+        bundle.obj.created_by = request.user
         bundle.obj.save()
         return bundle
 
@@ -150,24 +143,22 @@ class RunResource(ModelResource):
                     )
 
 
-                user = User.objects.get(username=bundle.request.user.username)
-                data["user"] = user
+                data["user"] = bundle.request.user
                 data["environment"] = Environment.objects.get(
                     pk=data["environment"])
 
                 # create result via methods on runcaseversion
                 rcv.get_result_method(status)(**data)
 
-
-            #TODO @@@ Cookbook for Tastypie
-            #don't have tastypie act on the data in here, we already did.
-            # So emptying it.
             bundle.data["runcaseversions"] = []
             return bundle
 
-        except Exception as e:
+        except KeyError as e:
             raise ValidationError(
                 "bad result object data missing key: {0}".format(e))
+
+        except ObjectDoesNotExist as e:
+            raise ValidationError(e)
 
 
 
@@ -235,9 +226,14 @@ class ResultResource(ModelResource):
             env = Environment.objects.get(pk=data.get("environment"))
             run=data.pop("run_id")
 
-        except Exception as e:
+        except KeyError as e:
             raise ValidationError(
                 "bad result object data missing key: {0}".format(e.message))
+
+        except Environment.DoesNotExist as e:
+            raise ValidationError(
+                "Specified environment does not exist: {0}".format(e.message))
+
 
         data["environment"] = env
 
@@ -247,14 +243,14 @@ class ResultResource(ModelResource):
                 caseversion__case__id=case,
                 environments=env,
                 )
-        except Exception as e:
+
+        except RunCaseVersion.DoesNotExist as e:
             raise ValidationError(
                 "RunCaseVersion not found for run: {0}, " +
                     "case: {1}, environment: {2}:\nError {3}".format(
                         str(run), str(case), str(env), e.message))
 
-        user = User.objects.get(username=request.user.username)
-        data["user"] = user
+        data["user"] = request.user
 
         bundle.obj = rcv.get_result_method(status)(**data)
         return bundle
