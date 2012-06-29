@@ -43,7 +43,7 @@ class CategoryResourceTest(case.api.ApiTestCase):
         exp_objects.append({
             u'id': unicode(category.id),
             u'name': u'OS',
-            u'resource_uri': unicode(self.get_detail_uri(
+            u'resource_uri': unicode(self.get_detail_url(
                 "category",
                 category.id,
                 )),

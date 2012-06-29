@@ -45,14 +45,14 @@ class ElementResourceTest(case.api.ApiTestCase):
             u'category': {
                 u'id': unicode(category.id),
                 u'name': u'OS',
-                u'resource_uri': unicode(self.get_detail_uri(
+                u'resource_uri': unicode(self.get_detail_url(
                     "category",
                     category.id,
                     )),
                 },
             u'id': unicode(element.id),
             u'name': u'OS X',
-            u'resource_uri': unicode(self.get_detail_uri(
+            u'resource_uri': unicode(self.get_detail_url(
                 "element",
                 element.id,
                 )),

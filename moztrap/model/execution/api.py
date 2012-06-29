@@ -239,15 +239,14 @@ class ResultResource(ModelResource):
 
         try:
             rcv = RunCaseVersion.objects.get(
-                run=run,
+                run__id=run,
                 caseversion__case__id=case,
                 environments=env,
                 )
 
         except RunCaseVersion.DoesNotExist as e:
             raise ValidationError(
-                "RunCaseVersion not found for run: {0}, " +
-                    "case: {1}, environment: {2}:\nError {3}".format(
+                "RunCaseVersion not found for run: {0}, case: {1}, environment: {2}:\nError {3}".format(
                         str(run), str(case), str(env), e.message))
 
         data["user"] = request.user

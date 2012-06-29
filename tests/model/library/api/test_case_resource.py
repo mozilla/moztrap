@@ -47,7 +47,7 @@ class CaseResourceTest(case.api.ApiTestCase):
 
             exp_objects.append({
                 u"id": unicode(case.id),
-                u"resource_uri": unicode(self.get_detail_uri("case",case.id)),
+                u"resource_uri": unicode(self.get_detail_url("case",case.id)),
                 })
 
         self.maxDiff = None

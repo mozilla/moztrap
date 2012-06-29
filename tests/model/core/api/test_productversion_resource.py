@@ -47,7 +47,7 @@ class ProductVersionResourceTest(case.api.ApiTestCase):
         exp_objects.append({
             u"codename": unicode(pv.codename),
             u"id": unicode(pv.id),
-            u"resource_uri": unicode(self.get_detail_uri("productversion",pv.id)),
+            u"resource_uri": unicode(self.get_detail_url("productversion",pv.id)),
             u"version": u"3.2",
             })
 

@@ -55,7 +55,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                 u"caseversion": {
                     u"case": {
                         u"id": unicode(cv.case.id),
-                        u"resource_uri": unicode(self.get_detail_uri(
+                        u"resource_uri": unicode(self.get_detail_url(
                             "case",
                             cv.case.id,
                             )),
@@ -64,17 +64,17 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                     u'environments': [],
                     u"id": unicode(cv.id),
                     u"name": unicode(cv.name),
-                    u"productversion": unicode(self.get_detail_uri(
+                    u"productversion": unicode(self.get_detail_url(
                         "productversion",
                         cv.productversion.id)),
-                    u"resource_uri": unicode(self.get_detail_uri(
+                    u"resource_uri": unicode(self.get_detail_url(
                         "caseversion",
                         cv.id,
                         )),
                     },
                 u"id": unicode(rcv.id),
-                u"run": unicode(self.get_detail_uri("run",rcv.run.id)),
-                u"resource_uri": unicode(self.get_detail_uri(
+                u"run": unicode(self.get_detail_url("run",rcv.run.id)),
+                u"resource_uri": unicode(self.get_detail_url(
                     "runcaseversion",
                     rcv.id,
                     )),

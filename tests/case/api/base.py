@@ -81,17 +81,18 @@ class ApiTestCase(WebTest):
             )
 
 
-    def get_detail_uri(self, resource_name, id):
-        url = self.get_detail_url(resource_name, id)
-        return "/{0}".format(url.split("/", 1)[1])
-
-
     def renew_app(self):
         """
-        Resets self.app (drops the stored state): cookies, etc.
-        Note: this renews only self.app, not the responses fetched by self.app.
+        Add support for PATCH method via our custom class.
+
+        This overrides django_webtest/__init.py___.WebTest to renew with our
+        custom DjangoAPITestApp, rather than the DjangoTestApp.
+        DjangoAPITestApp is adding support for the http PATCH method, which is
+        not supported in DjangoTestApp.
+
         """
         self.app = DjangoAPITestApp(extra_environ=self.extra_environ)
+
 
 
 class DjangoAPITestApp(DjangoTestApp):
@@ -100,7 +101,7 @@ class DjangoAPITestApp(DjangoTestApp):
              status=None, upload_files=None, expect_errors=False,
              content_type=None):
         """
-        Do a POST request.  Very like the ``.get()`` method.
+        Do a PATCH request.  Very like the ``.get()`` method.
         ``params`` are put in the body of the request.
 
         ``upload_files`` is for file uploads.  It should be a list of
@@ -109,6 +110,9 @@ class DjangoAPITestApp(DjangoTestApp):
         read from disk.
 
         Returns a ``webob.Response`` object.
+
+        Note: this method is basically copied from the superclass .post()
+        method, but using 'PATCH' instead.
         """
         return self._gen_request('PATCH', url, params=params, headers=headers,
                                  extra_environ=extra_environ, status=status,

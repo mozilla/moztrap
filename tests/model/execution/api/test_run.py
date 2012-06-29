@@ -69,8 +69,8 @@ class RunResourceTest(case.api.ApiTestCase):
             exp_objects.append({
                 u"description": unicode(exp_run.description),
                 u'environments': set([
-                    unicode(self.get_detail_uri("environment", envs[0].id)),
-                    unicode(self.get_detail_uri("environment", envs[1].id)),
+                    unicode(self.get_detail_url("environment", envs[0].id)),
+                    unicode(self.get_detail_url("environment", envs[1].id)),
                     ]),
                 u"id": unicode(exp_run.id),
                 u"name": unicode(exp_run.name),
@@ -97,14 +97,14 @@ class RunResourceTest(case.api.ApiTestCase):
         exp_objects = {
             u'elements': [
                 {u'category':
-                     {u'resource_uri': unicode(self.get_detail_uri(
+                     {u'resource_uri': unicode(self.get_detail_url(
                          "category",
                          envs[0].elements.get().category.id),
                         ),
                       u'id': unicode(envs[0].elements.get().category.id),
                       u'name': u'OS'
                      },
-                 u'resource_uri': unicode(self.get_detail_uri(
+                 u'resource_uri': unicode(self.get_detail_url(
                      "element",
                      envs[0].elements.get().id),
                  ),
@@ -112,7 +112,7 @@ class RunResourceTest(case.api.ApiTestCase):
                  u'name': u'OS X'
                 }],
             u'id': unicode(envs[0].id),
-            u'resource_uri': unicode(self.get_detail_uri(
+            u'resource_uri': unicode(self.get_detail_url(
                 "environment",
                 envs[0].id),
                 )
@@ -146,10 +146,10 @@ class RunResourceTest(case.api.ApiTestCase):
         payload = {
             "description": "a description",
             "environments": [
-                self.get_detail_uri("environment", envs[0].id),
+                self.get_detail_url("environment", envs[0].id),
                 ],
             "name": "atari autorun.sys",
-            "productversion": self.get_detail_uri("productversion", pv.id),
+            "productversion": self.get_detail_url("productversion", pv.id),
             "runcaseversions": [
                     {"case": unicode(c_i.case.id),
                      "comment": "what the hellfire?",
@@ -206,7 +206,75 @@ class RunResourceTest(case.api.ApiTestCase):
         self.assertEqual(result.comment, "what the hellfire?")
 
 
-    def test_submit_new_run_with_bad_data(self):
+    def test_submit_new_run_bad_case_id(self):
+        """Submit a new test run for a case that doesn't exist."""
+
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs)
+
+        # submit results for these cases
+        payload = {
+            "description": "a description",
+            "environments": [
+                self.get_detail_url("environment", envs[0].id),
+                ],
+            "name": "atari autorun.sys",
+            "productversion": self.get_detail_url("productversion", pv.id),
+            "runcaseversions": [
+                    {"case": unicode(2),
+                     "environment": unicode(envs[0].id),
+                     "status": "passed"
+                },
+            ],
+            "status": "active"
+        }
+
+        self.post(
+            self.get_list_url(self.resource_name),
+            payload=payload,
+            params=self.auth_params,
+            status=400,
+            )
+
+
+    def test_submit_new_run_bad_env_id(self):
+        """Submit a new test run with results."""
+
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs)
+        c_p = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            )
+
+        # submit results for these cases
+        payload = {
+            "description": "a description",
+            "environments": [
+                self.get_detail_url("environment", envs[0].id),
+                ],
+            "name": "atari autorun.sys",
+            "productversion": self.get_detail_url("productversion", pv.id),
+            "runcaseversions": [
+                {"case": unicode(c_p.case.id),
+                     "environment": unicode(envs[0].id + 1),
+                     "status": "passed"
+                     },
+            ],
+            "status": "active"
+        }
+
+        self.post(
+            self.get_list_url(self.resource_name),
+            payload=payload,
+            params=self.auth_params,
+            status=400,
+            )
+
+
+    def test_submit_new_run_with_missing_status_field(self):
         """
         Submit a new test run with bad results data.
 
@@ -225,10 +293,10 @@ class RunResourceTest(case.api.ApiTestCase):
         payload = {
             "description": "a description",
             "environments": [
-                self.get_detail_uri("environment", envs[0].id),
+                self.get_detail_url("environment", envs[0].id),
                 ],
             "name": "atari autorun.sys",
-            "productversion": self.get_detail_uri("productversion", pv.id),
+            "productversion": self.get_detail_url("productversion", pv.id),
             "runcaseversions": [
                 {"case": unicode(c_p.case.id),
                  "environment": unicode(envs[0].id),
@@ -258,10 +326,10 @@ class RunResourceTest(case.api.ApiTestCase):
         payload = {
             "description": "a description",
             "environments": [
-                self.get_detail_uri("environment", envs[0].id),
+                self.get_detail_url("environment", envs[0].id),
                 ],
             "name": "atari autorun.sys",
-            "productversion": self.get_detail_uri("productversion", pv.id),
+            "productversion": self.get_detail_url("productversion", pv.id),
             "runcaseversions": [
                     {"case": unicode(c_p.case.id),
                      "environment": unicode(envs[0].id),
@@ -296,10 +364,10 @@ class RunResourceTest(case.api.ApiTestCase):
         payload = {
             "description": "a description",
             "environments": [
-                self.get_detail_uri("environment", envs[0].id),
+                self.get_detail_url("environment", envs[0].id),
                 ],
             "name": "atari autorun.sys",
-            "productversion": self.get_detail_uri("productversion", pv.id),
+            "productversion": self.get_detail_url("productversion", pv.id),
             "runcaseversions": [
                     {"case": unicode(c_p.case.id),
                      "environment": unicode(envs[0].id),
@@ -336,10 +404,10 @@ class RunResourceTest(case.api.ApiTestCase):
         payload = {
             "description": "a description",
             "environments": [
-                self.get_detail_uri("environment", envs[0].id),
+                self.get_detail_url("environment", envs[0].id),
                 ],
             "name": "atari autorun.sys",
-            "productversion": self.get_detail_uri("productversion", pv.id),
+            "productversion": self.get_detail_url("productversion", pv.id),
             "runcaseversions": [
                 {"case": unicode(c_p.case.id),
                  "environment": unicode(envs[0].id),
@@ -357,3 +425,37 @@ class RunResourceTest(case.api.ApiTestCase):
             )
 
 
+    def test_submit_run_no_user(self):
+
+        envs = self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["OS X", "Linux"]})
+        pv = self.F.ProductVersionFactory.create(environments=envs)
+        c_p = self.F.CaseVersionFactory.create(
+            case__product=pv.product,
+            productversion=pv,
+            )
+
+        # submit results for these cases
+        params = {"username": "foo", "api_key": "abc123"}
+        payload = {
+            "description": "a description",
+            "environments": [
+                self.get_detail_url("environment", envs[0].id),
+                ],
+            "name": "atari autorun.sys",
+            "productversion": self.get_detail_url("productversion", pv.id),
+            "runcaseversions": [
+                    {"case": unicode(c_p.case.id),
+                     "environment": unicode(envs[0].id),
+                     "status": "passed"
+                },
+            ],
+            "status": "active"
+        }
+
+        self.post(
+            self.get_list_url(self.resource_name),
+            payload=payload,
+            params=params,
+            status=401,
+            )
