@@ -13,9 +13,9 @@ import json
 
 
 class ApiTestCase(WebTest):
-
-
+    """A test-case for API tests."""
     def get_resource_url(self, url_name, resource_name, params={}):
+        """Get a given type of URL for a given resource."""
         kwargs = {
             "resource_name": resource_name,
             "api_name": API_VERSION,
@@ -25,10 +25,12 @@ class ApiTestCase(WebTest):
 
 
     def get_list_url(self, resource_name):
+        """Get the list URL for the given resource."""
         return self.get_resource_url("api_dispatch_list", resource_name)
 
 
     def get_detail_url(self, resource_name, id):
+        """Get the detail URL for the given resource and ID."""
         return self.get_resource_url(
             "api_dispatch_detail",
             resource_name,
@@ -37,6 +39,7 @@ class ApiTestCase(WebTest):
 
 
     def patch(self, url, payload="", params={}, status=202):
+        """Submit a PATCH request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
         json_data = json.dumps(payload)
@@ -49,6 +52,7 @@ class ApiTestCase(WebTest):
 
 
     def post(self, url, payload="", params={}, status=201):
+        """Submit a POST request and return the response."""
         params.setdefault("format", "json")
         url = "{0}?{1}".format(url, urllib.urlencode(params))
         json_data = json.dumps(payload)
@@ -61,11 +65,13 @@ class ApiTestCase(WebTest):
 
 
     def get(self, url, params={}, status=200):
+        """Submit a GET request and return the response."""
         params.setdefault("format", "json")
         return self.app.get(url, params=params, status=status)
 
 
     def get_list(self, params={}, status=200):
+        """GET the list URL for this testcase's resource, return response."""
         return self.get(
             self.get_list_url(self.resource_name),
             params=params,
@@ -74,6 +80,7 @@ class ApiTestCase(WebTest):
 
 
     def get_detail(self, id, params={}, status=200):
+        """GET the detail URL for this testcase's resource, return response."""
         return self.get(
             self.get_detail_url(self.resource_name, id),
             params=params,
@@ -83,12 +90,12 @@ class ApiTestCase(WebTest):
 
     def renew_app(self):
         """
-        Add support for PATCH method via our custom class.
+        Add support for PATCH method via our custom TestApp subclass.
 
         This overrides django_webtest/__init.py___.WebTest to renew with our
         custom DjangoAPITestApp, rather than the DjangoTestApp.
-        DjangoAPITestApp is adding support for the http PATCH method, which is
-        not supported in DjangoTestApp.
+        DjangoAPITestApp adds support for the http PATCH method, which is not
+        supported in DjangoTestApp.
 
         """
         self.app = DjangoAPITestApp(extra_environ=self.extra_environ)
@@ -96,6 +103,7 @@ class ApiTestCase(WebTest):
 
 
 class DjangoAPITestApp(DjangoTestApp):
+    """A ``DjangoTestApp`` subclass that adds a .patch() method."""
 
     def patch(self, url, params='', headers=None, extra_environ=None,
              status=None, upload_files=None, expect_errors=False,
@@ -113,6 +121,7 @@ class DjangoAPITestApp(DjangoTestApp):
 
         Note: this method is basically copied from the superclass .post()
         method, but using 'PATCH' instead.
+
         """
         return self._gen_request('PATCH', url, params=params, headers=headers,
                                  extra_environ=extra_environ, status=status,
