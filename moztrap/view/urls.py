@@ -10,11 +10,13 @@ from django.contrib import admin
 
 from moztrap.model import mtadmin
 
+
 admin.site = mtadmin.MTAdminSite()
 admin.autodiscover()
 
 import session_csrf
 session_csrf.monkeypatch()
+
 
 
 urlpatterns = patterns(
@@ -38,6 +40,9 @@ urlpatterns = patterns(
 
     # browserid --------------------------------------------------------------
     url(r"^browserid/", include("moztrap.view.users.browserid_urls")),
+
+    # api --------------------------------------------------------------------
+    url(r"^api/", include("moztrap.view.api.urls")),
 
     # open web apps-----------------------------------------------------------
     url("^owa/", include("moztrap.view.owa.urls")),

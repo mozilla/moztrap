@@ -35,25 +35,20 @@ class ResultFor(Tag):
         result_kwargs = dict(
             environment=environment,
             tester=user,
-            runcaseversion=runcaseversion
+            runcaseversion=runcaseversion,
+            is_latest=True,
             )
         try:
             result = model.Result.objects.get(**result_kwargs)
         except model.Result.DoesNotExist:
             result = model.Result(**result_kwargs)
         except model.Result.MultipleObjectsReturned:
-            dupes = model.Result.objects.filter(**result_kwargs).order_by(
-                "-modified_on")
-            incomplete_states = set(
-                [model.Result.STATUS.assigned, model.Result.STATUS.started])
-            # prioritize keeping completed results
-            candidates = [r for r in dupes if r.status not in incomplete_states]
-            if not candidates:
-                candidates = list(dupes)
-            # keep the last-modified result of the prioritized set
-            result = candidates[0]
-            model.Result.objects.filter(
-                **result_kwargs).exclude(pk=result.pk).delete()
+            # find the latest one and set it to latest, which will set all
+            # others to is_latest=False
+            result = model.Result.objects.filter(**result_kwargs).order_by(
+                "-modified_on")[0]
+            result.set_latest()
+            result.save()
 
         context[varname] = result
         return u""

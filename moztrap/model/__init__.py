@@ -15,3 +15,6 @@ from .library.bulk import BulkParser
 from .library.models import (
     Case, CaseVersion, CaseAttachment, CaseStep, Suite, SuiteCase)
 from .tags.models import Tag
+
+# version of the REST endpoint APIs for TastyPie
+API_VERSION = "v1"

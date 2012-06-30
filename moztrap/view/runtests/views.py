@@ -79,10 +79,10 @@ def set_environment(request, run_id):
 # maps valid action names to default parameters
 ACTIONS = {
     "start": {},
-    "finishsucceed": {},
-    "finishinvalidate": {"comment": ""},
-    "finishfail": {"stepnumber": None, "comment": "", "bug": ""},
-    "restart": {},
+    "result_pass": {},
+    "result_invalid": {"comment": ""},
+    "result_fail": {"stepnumber": None, "comment": "", "bug": ""},
+    "start": {},
     }
 
 
@@ -103,12 +103,17 @@ def run(request, run_id, env_id):
             "Please select a different test run.")
         return redirect("runtests")
 
+    # if the environment specified in the URL doesn't exist for this run,
+    # then ask the user to specify one that does.
     try:
         environment = run.environments.get(pk=env_id)
     except model.Environment.DoesNotExist:
         return redirect("runtests_environment", run_id=run_id)
 
     if request.method == "POST":
+        # Based on this action, create a new Result object with the values we
+        # get from the post.
+
         prefix = "action-"
         while True:
             rcv = None
@@ -136,23 +141,21 @@ def run(request, run_id, env_id):
                     "{0} is not a valid run/caseversion ID.".format(rcv_id))
                 break
 
-            try:
-                result = rcv.results.get(
-                    tester=request.user, environment=environment)
-            except model.Result.DoesNotExist:
-                result = model.Result.objects.create(
-                    runcaseversion=rcv,
-                    tester=request.user,
-                    environment=environment,
-                    user=request.user)
-
+            # take the values out of the POST so we can pass them in to the
+            # method call on the Result object
             for argname in defaults.keys():
                 try:
                     defaults[argname] = request.POST[argname]
                 except KeyError:
                     pass
 
-            getattr(result, action)(**defaults)
+            # put the values specific to this run
+            defaults.update({
+                "environment": environment,
+                "user": request.user,
+                })
+
+            getattr(rcv, action)(**defaults)
             break
 
         if request.is_ajax():

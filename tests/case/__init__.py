@@ -12,5 +12,6 @@ and admin sub-modules.
 
 """
 from . import admin
+from . import api
 from . import view
 from .base import TestCase, DBTestCase, TransactionTestCase

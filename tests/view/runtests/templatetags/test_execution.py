@@ -31,25 +31,8 @@ class ResultForTest(case.DBTestCase):
             )
 
 
-    def test_dupe_results_keeps_completed(self):
-        """If dupe results exists, keep the one that's completed."""
-        r = self.F.ResultFactory(status="passed")
-        self.F.ResultFactory(
-            tester=r.tester,
-            runcaseversion=r.runcaseversion,
-            environment=r.environment,
-            )
-
-        self.assertEqual(
-            self.result_for(
-                r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
-            str(r.id),
-            )
-        self.assertEqual(self.model.Result.objects.count(), 1)
-
-
-    def test_dupe_complete_results_keeps_latest(self):
-        """If dupe completed results exists, keep the last-modified."""
+    def test_dupe_complete_results_keeps_both_finds_latest(self):
+        """If dupe completed results exists, find the last-modified."""
 
         with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
@@ -69,11 +52,11 @@ class ResultForTest(case.DBTestCase):
                 r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
             str(r2.id),
             )
-        self.assertEqual(self.model.Result.objects.count(), 1)
+        self.assertEqual(self.model.Result.objects.count(), 2)
 
 
-    def test_dupe_incomplete_results_keeps_latest(self):
-        """If dupe incomplete results exists, keep the last-modified."""
+    def test_dupe_incomplete_results_keeps_both_finds_latest(self):
+        """If dupe incomplete results exists, find the last-modified."""
 
         with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
             mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
@@ -90,7 +73,42 @@ class ResultForTest(case.DBTestCase):
                 r.runcaseversion, r.tester, r.environment, "{{ result.id }}"),
             str(r2.id),
             )
-        self.assertEqual(self.model.Result.objects.count(), 1)
+        self.assertEqual(self.model.Result.objects.count(), 2)
+
+
+    def test_dupe_latest_results_sets_non_latest_to_false(self):
+        """If dupe latest results exists, keep the last-modified."""
+
+        with mock.patch("moztrap.model.mtmodel.utcnow") as mock_utcnow:
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            res1 = self.F.ResultFactory(
+                status="passed",
+            )
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 25)
+            res2 = self.F.ResultFactory(
+                tester=res1.tester,
+                runcaseversion=res1.runcaseversion,
+                environment=res1.environment,
+                status="passed",
+                )
+
+            # manually set a non-latest result to is_latest=True
+            # since res1 has already been saved, and has a pk assigned,
+            # it will not try to set all the other results to NOT latest.
+            mock_utcnow.return_value = datetime.datetime(2012, 3, 24)
+            self.model.Result.objects.filter(pk=res1.pk).update(
+                is_latest=True,
+                )
+
+        self.assertEqual(self.result_for(
+                res1.runcaseversion,
+                res1.tester,
+                res1.environment,
+                "{{ result.id }}",
+                ), str(res2.id))
+        self.assertEqual(self.model.Result.objects.count(), 2)
+        self.assertEqual(
+            self.model.Result.objects.get(is_latest=True).pk, res2.pk)
 
 
     def test_result_does_not_exist(self):
