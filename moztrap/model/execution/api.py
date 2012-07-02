@@ -34,7 +34,7 @@ class RunCaseVersionResource(ModelResource):
             "run": ALL_WITH_RELATIONS,
             "caseversion": ALL_WITH_RELATIONS,
             }
-        fields = {"id", "run"}
+        fields = ["id", "run"]
 
 
 
