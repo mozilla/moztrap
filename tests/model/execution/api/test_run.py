@@ -171,7 +171,7 @@ class RunResourceTest(case.api.ApiTestCase):
             "status": "active"
         }
 
-        self.post(
+        res = self.post(
             self.get_list_url(self.resource_name),
             payload=payload,
             params=self.auth_params,
@@ -180,6 +180,13 @@ class RunResourceTest(case.api.ApiTestCase):
         # verify run
         run = self.model.Run.objects.get()
         self.assertEqual("atari autorun.sys", run.name)
+
+        # verify returned content
+        self.assertEqual(
+            res.json, {
+                u"Location": unicode(self.get_detail_url("run", run.id)),
+                u"UI-Location": u"/results/cases/?filter-run={0}".format(run.id)
+            })
 
         # verify runcaseversions
         for cv in [c_f, c_p, c_i]:

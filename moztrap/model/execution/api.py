@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie import fields
+import json
 
 from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, ReportResultsAuthorization,
@@ -9,6 +10,8 @@ from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
 from ..library.models import CaseVersion
+
+from ...view.lists.filters import filter_url
 
 
 
@@ -99,6 +102,25 @@ class RunResource(ModelResource):
 
         self.fields["environments"].full=False
         return super(RunResource, self).dispatch_list(request, **kwargs)
+
+
+    def post_list(self, request, **kwargs):
+        """On posting a run, return a url to the MozTrap UI for that new run."""
+
+        resp = super(RunResource, self).post_list(request, **kwargs);
+        #"https://moztrap.mozilla.org/results/cases/?filter-run=33"
+        location = resp._headers.get("location", None)
+        if location:
+            # the last split item will be the id of the run
+            run_id = location[1].split("/")[-2]
+            full_url = filter_url("results_runcaseversions", Run.objects.get(pk=run_id))
+            resp.content = json.dumps({
+                "Location": location[1],
+                "UI-Location": full_url,
+                });
+            # need to set the content type to application/json
+            resp._headers["content-type"] = ("Content-Type", "application/json; charset=utf-8")
+        return resp
 
 
     def obj_create(self, bundle, request=None, **kwargs):
@@ -228,11 +250,11 @@ class ResultResource(ModelResource):
 
         except KeyError as e:
             raise ValidationError(
-                "bad result object data missing key: {0}".format(e.message))
+                "bad result object data missing key: {0}".format(e))
 
         except Environment.DoesNotExist as e:
             raise ValidationError(
-                "Specified environment does not exist: {0}".format(e.message))
+                "Specified environment does not exist: {0}".format(e))
 
 
         data["environment"] = env
@@ -247,7 +269,7 @@ class ResultResource(ModelResource):
         except RunCaseVersion.DoesNotExist as e:
             raise ValidationError(
                 "RunCaseVersion not found for run: {0}, case: {1}, environment: {2}:\nError {3}".format(
-                        str(run), str(case), str(env), e.message))
+                        str(run), str(case), str(env), e))
 
         data["user"] = request.user
 
