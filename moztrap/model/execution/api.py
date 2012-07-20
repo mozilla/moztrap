@@ -1,7 +1,11 @@
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from tastypie.resources import ModelResource, ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.bundle import Bundle
+
 import json
+
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.http import HttpResponse
 
 from .models import Run, RunCaseVersion, Result
 from ..core.api import (ProductVersionResource, ReportResultsAuthorization,
@@ -78,6 +82,7 @@ class RunResource(ModelResource):
         }
         authentication = MTApiKeyAuthentication()
         authorization = ReportResultsAuthorization()
+        always_return_data = True
 
 
     def dehydrate(self, bundle):
@@ -104,20 +109,30 @@ class RunResource(ModelResource):
         return super(RunResource, self).dispatch_list(request, **kwargs)
 
 
-    def post_list(self, request, **kwargs):
+    def create_response(self, request, data,
+                        response_class=HttpResponse, **response_kwargs):
         """On posting a run, return a url to the MozTrap UI for that new run."""
 
-        resp = super(RunResource, self).post_list(request, **kwargs);
-        #"https://moztrap.mozilla.org/results/cases/?filter-run=33"
-        location = resp._headers.get("location", None)
-        if location:
-            # the last split item will be the id of the run
-            run_id = location[1].split("/")[-2]
-            full_url = filter_url("results_runcaseversions", Run.objects.get(pk=run_id))
-            resp.content = json.dumps({
-                "Location": location[1],
-                "UI-Location": full_url,
-                });
+        resp = super(RunResource, self).create_response(
+            request,
+            data,
+            response_class=response_class,
+            **response_kwargs
+            );
+
+        if isinstance(data, Bundle):
+            # data will be a bundle if we are creating a new Run.  And in that
+            # case we want to add a URI to viewing this new run result in the UI
+            full_url = filter_url(
+                "results_runcaseversions",
+                Run.objects.get(pk=data.data["id"]),
+                )
+
+            new_content = json.loads(resp.content)
+            new_content["ui_uri"] = full_url
+            new_content["resource_uri"] = data.data["resource_uri"]
+
+            resp.content = json.dumps(new_content);
             # need to set the content type to application/json
             resp._headers["content-type"] = ("Content-Type", "application/json; charset=utf-8")
         return resp

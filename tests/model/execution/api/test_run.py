@@ -87,7 +87,7 @@ class RunResourceTest(case.api.ApiTestCase):
 
 
     def test_run_by_id_shows_env_detail(self):
-        """Get a single test run, by id shows expanded deatil for environments"""
+        """Get a single test run, by id shows expanded detail for environments"""
         envs = self.F.EnvironmentFactory.create_full_set(
                 {"OS": ["OS X"]})
         r = self.factory(name="Floo", environments=envs)
@@ -118,7 +118,7 @@ class RunResourceTest(case.api.ApiTestCase):
                 )
             }
 
-        self.assertEqual(unicode(r.name), res.json["name"])
+        self.assertEqual(unicode(r.name), res.json["name"], res.json)
         self.assertEqual(res.json["environments"][0], exp_objects)
 
 
@@ -183,10 +183,9 @@ class RunResourceTest(case.api.ApiTestCase):
 
         # verify returned content
         self.assertEqual(
-            res.json, {
-                u"Location": unicode(self.get_detail_url("run", run.id)),
-                u"UI-Location": u"/results/cases/?filter-run={0}".format(run.id)
-            })
+            res.json["ui_uri"],
+            u"/results/cases/?filter-run={0}".format(run.id),
+            )
 
         # verify runcaseversions
         for cv in [c_f, c_p, c_i]:
