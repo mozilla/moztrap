@@ -16,7 +16,7 @@ To build and view an HTML version of the documentation::
     $ cd docs
     $ pip install sphinx
     $ make html
-    $ firefox _build/index.html
+    $ firefox _build/html/index.html
 
 
 Related repositories
