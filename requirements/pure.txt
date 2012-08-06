@@ -1,5 +1,5 @@
 # Pure python dependencies.
-Django==1.3.1
+Django==1.3.3
 
 South==0.7.3.hg1008
 django_compressor==1.1.2
