@@ -9,7 +9,7 @@ Documentation
 -------------
 
 For more information about setting up, developing, and using MozTrap, see the
-documentation in the `docs/` directory.
+documentation in the `docs/` directory (or `read it online`_).
 
 To build and view an HTML version of the documentation::
 
@@ -17,6 +17,8 @@ To build and view an HTML version of the documentation::
     $ pip install sphinx
     $ make html
     $ firefox _build/html/index.html
+
+.. _read it online: http://moztrap.readthedocs.org
 
 
 Related repositories
