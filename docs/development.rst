@@ -11,6 +11,15 @@ The :doc:`upgrading` documentation is also applicable to updating your
 development checkout of MozTrap.
 
 
+Community
+---------
+
+To connect with MozTrap development, visit the ``#moztrap`` IRC channel at
+``irc.mozilla.org``, or see the `Pivotal Tracker backlog`_.
+
+.. _Pivotal Tracker backlog: https://www.pivotaltracker.com/projects/280483
+
+
 Coding standards
 ----------------
 
