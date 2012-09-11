@@ -25,6 +25,7 @@ class CaseResource(ModelResource):
 
     class Meta:
         queryset = Case.objects.all()
+        fields= ["id", "suites"]
         filtering = {
             "suites": ALL_WITH_RELATIONS,
             }

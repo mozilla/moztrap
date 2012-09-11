@@ -55,6 +55,7 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                 u"caseversion": {
                     u"case": {
                         u"id": unicode(cv.case.id),
+                        u"suites": [],
                         u"resource_uri": unicode(self.get_detail_url(
                             "case",
                             cv.case.id,
@@ -71,6 +72,8 @@ class RunCaseVersionResourceTest(case.api.ApiTestCase):
                         "caseversion",
                         cv.id,
                         )),
+                    u'steps': [],
+                    u'tags': [],
                     },
                 u"id": unicode(rcv.id),
                 u"run": unicode(self.get_detail_url("run",rcv.run.id)),

@@ -9,6 +9,7 @@ design decisions.
 
    model/products
    model/library
+   api/library
    model/execution
    model/environments
    model/teams

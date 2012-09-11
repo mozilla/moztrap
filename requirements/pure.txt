@@ -40,3 +40,7 @@ django-fixture-generator==0.2.0.cc.1
 
 # only needed if cache backend is set to memcached
 python-memcached==1.47
+
+# in order to be able to build the documentation
+Sphinx==1.1.3
+sphinxcontrib-httpdomain==1.1.7
