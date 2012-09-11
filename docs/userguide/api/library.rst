@@ -19,6 +19,7 @@ Test Case Version
     :productversion__version: (optional) The ProductVersion ``name`` to filter
         on.  For example, if the Product and Version are ``Firefox 10`` then
         the ``productversion__version`` would be ``10``.
+    :productversion__product__name: (optional) The Product ``name`` to filter on.
     :case__suites: (optional) The Suite id to filter on.
     :case__suites__name: (optional) The Suite name to filter on.
     :tags__name: (optional) The tag name to filter on.
@@ -28,6 +29,7 @@ Test Case Version
     .. sourcecode:: http
 
         GET /api/v1/caseversion/?format=json&productversion__version=10&case__suites__name=Sweet%20Suite
+        GET /api/v1/caseversion/?format=json&productversion__product__name=Firefox
 
     **Example response**:
 

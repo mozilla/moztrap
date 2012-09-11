@@ -1,6 +1,6 @@
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import  Authorization
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from .models import Product, ProductVersion, ApiKey
@@ -66,13 +66,15 @@ class ProductVersionResource(ModelResource):
 
     Filterable by version field.
     """
+    product = fields.ToOneField("moztrap.model.core.api.ProductResource", "product")
 
     class Meta:
         queryset = ProductVersion.objects.all()
         list_allowed_methods = ['get']
-        fields = ["id", "version", "codename"]
+        fields = ["id", "version", "codename", "product"]
         filtering = {
             "version": ALL,
+            "product": ALL_WITH_RELATIONS,
             }
 
 
