@@ -57,4 +57,5 @@ class CaseVersionResource(ModelResource):
             "environments": ALL,
             "productversion": ALL_WITH_RELATIONS,
             "case": ALL_WITH_RELATIONS,
+            "tags": ALL_WITH_RELATIONS,
             }
