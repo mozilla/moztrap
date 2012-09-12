@@ -9,11 +9,11 @@ design decisions.
 
    model/products
    model/library
-   api/library
    model/execution
    model/environments
    model/teams
    model/roles
+   api/index
    ui/lists
    ui/import
    faq

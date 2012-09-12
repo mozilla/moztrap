@@ -23,6 +23,8 @@ Test Case Version
     :case__suites: (optional) The Suite id to filter on.
     :case__suites__name: (optional) The Suite name to filter on.
     :tags__name: (optional) The tag name to filter on.
+    :limit: (optional) Defaults to 20 items, but can be set higher or lower.  0
+        will return all records.
 
     **Example request**:
 
@@ -122,3 +124,20 @@ Test Case Version
             ]
 
         }
+
+
+.. http:get:: /api/v1/suite
+
+    Return a list of test suite names
+
+
+    :format: (required) The API **always** requires a value of ``json`` for this
+        field.
+    :name: (optional) The name of the suite
+
+    **Example request**:
+
+    .. sourcecode:: http
+
+        GET /api/v1/suite/?format=json
+
