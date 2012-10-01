@@ -117,6 +117,19 @@ class RunTest(case.DBTestCase):
         self.assertEqual(len(new.environments.all()), 2)
 
 
+    def test_clone_tags(self):
+        """Cloning a run clones its tag relationships."""
+        tag = self.F.TagFactory.create()
+        r = self.F.RunFactory.create()
+        r.tags.add(tag)
+        pv = self.F.ProductVersionFactory.create(
+            product=r.product, version="2.0")
+
+        new = r.clone(overrides={"productversion": pv})
+
+        self.assertEqual(new.tags.get(), tag)
+
+
     def test_clone_environments_narrowed(self):
         """Cloning a Run clones its environments exactly, even if narrowed."""
         envs = self.F.EnvironmentFactory.create_full_set(

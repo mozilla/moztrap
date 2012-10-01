@@ -1,0 +1,7 @@
+<li class="tag-item">
+  <input type="checkbox" class="check" name="tag-tag" data-name="tag" value="{{ tag.id }}" id="id-tag-tag-{{ tag.id }}" checked{% if tag.product %} data-product-id="{{ tag.product.id }}"{% endif %}>
+  <span class="onoff">
+    <label for="id-tag-tag-{{ tag.id }}" class="onoffswitch">{{ tag }}</label>
+    <span class="content">{{ tag }}</span>
+  </span>
+</li>

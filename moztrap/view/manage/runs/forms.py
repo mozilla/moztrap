@@ -7,11 +7,15 @@ import floppyforms as forms
 from moztrap import model
 from moztrap.view.lists import filters
 from moztrap.view.utils import mtforms
+from ..tags.forms import ApplyTagsFormMixin
 
 
 
 
-class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
+class RunForm(mtforms.NonFieldErrorsClassFormMixin,
+              ApplyTagsFormMixin,
+              mtforms.MTModelForm,
+              ):
     """Base form for adding/editing runs."""
     suites = mtforms.MTModelMultipleChoiceField(
         queryset=model.Suite.objects.all(),
@@ -45,7 +49,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
 
     def save(self, user=None):
-        """Save and return run, with suite associations."""
+        """Save and return run, with suite and tag associations."""
         user = user or self.user
         run = super(RunForm, self).save(user=user)
 
@@ -53,6 +57,9 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         for i, suite in enumerate(self.cleaned_data["suites"]):
             model.RunSuite.objects.create(
                 run=run, suite=suite, order=i, user=user)
+
+        self.save_new_tags(self.instance.product)
+        self.save_tags(self.instance)
 
         return run
 

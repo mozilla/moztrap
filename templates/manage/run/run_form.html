@@ -17,7 +17,7 @@
     {% include "forms/_field.html" with field=form.description %}
     {% include "forms/_field.html" with field=form.start %}
     {% include "forms/_field.html" with field=form.end %}
-
+    {% include "manage/_tagging.html" with tagged_object=run %}
     {% include "forms/_field.html" with field=form.suites nolabel=1 %}
 
     {% comment %}

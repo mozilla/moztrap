@@ -181,6 +181,41 @@ class EditRunFormTest(case.DBTestCase):
             )
 
 
+    def test_save_tags(self):
+        """Can add/remove tags."""
+        self.user.user_permissions.add(
+            model.Permission.objects.get(codename="manage_tags"))
+
+        r = self.F.RunFactory.create()
+
+        t1 = self.F.TagFactory.create(name="one")
+        t2 = self.F.TagFactory.create(name="two")
+        t3 = self.F.TagFactory.create(name="three")
+
+        r.tags.add(t1, t2)
+
+        form = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": "new name",
+                "description": "new desc",
+                "tag-tag": [t2.id, t3.id],
+                "tag-newtag": ["foo"],
+                "start": "1/3/2012",
+                "end": "1/10/2012",
+                "cc_version": str(r.cc_version),
+                },
+            instance=r,
+            )
+
+        r = form.save()
+
+        self.assertEqual(
+            set([t.name for t in r.tags.all()]),
+            set(["two", "three", "foo"])
+        )
+
+
 
 class AddRunFormTest(case.DBTestCase):
     """Tests for AddRunForm."""
@@ -238,3 +273,51 @@ class AddRunFormTest(case.DBTestCase):
         run = f.save()
 
         self.assertEqual(set(run.suites.all()), set([s]))
+
+
+    def test_tag_autocomplete_url(self):
+        """Tag autocomplete field renders data-autocomplete-url."""
+        self.assertIn(
+            'data-autocomplete-url="{0}"'.format(
+                reverse("manage_tags_autocomplete")),
+            unicode(self.form()["add_tags"])
+        )
+
+
+    def test_tag(self):
+        """Can tag a new case with some existing tags."""
+        t1 = self.F.TagFactory.create(name="foo")
+        t2 = self.F.TagFactory.create(name="bar")
+        data = self.get_form_data()
+        data.setlist("tag-tag", [t1.id, t2.id])
+
+        r = self.form(data=data).save().versions.get()
+
+        self.assertEqual(list(r.tags.all()), [t1, t2])
+
+
+    def test_new_tag(self):
+        """Can create a new case with a new tag, with correct perm."""
+        self.user.user_permissions.add(
+            model.Permission.objects.get(codename="manage_tags"))
+        data = self.get_form_data()
+        data.setlist("tag-newtag", ["baz"])
+
+        r = self.form(data=data, user=self.user).save().versions.get()
+
+        self.assertEqual([t.name for t in r.tags.all()], ["baz"])
+
+
+    def test_new_tag_requires_manage_tags_permission(self):
+        """Cannot add new tag without correct permission."""
+        data = self.get_form_data()
+        data.setlist("tag-newtag", ["baz"])
+
+        form = self.form(data=data)
+
+        self.assertEqual(
+            form.errors["__all__"],
+            ["You do not have permission to create new tags."]
+        )
+
+

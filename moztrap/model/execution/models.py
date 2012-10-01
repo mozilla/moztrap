@@ -14,7 +14,7 @@ from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
-
+from ..tags.models import Tag
 
 
 class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
@@ -29,6 +29,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         CaseVersion, through="RunCaseVersion", related_name="runs")
     suites = models.ManyToManyField(
         Suite, through="RunSuite", related_name="runs")
+    tags = models.ManyToManyField(Tag, blank=True, related_name="runs")
 
 
     def __unicode__(self):
@@ -61,7 +62,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def clone(self, *args, **kwargs):
         """Clone this Run with default cascade behavior."""
         kwargs.setdefault(
-            "cascade", ["runsuites", "environments", "team"])
+            "cascade", ["runsuites", "environments", "team", "tags"])
         overrides = kwargs.setdefault("overrides", {})
         overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))

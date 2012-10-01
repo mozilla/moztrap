@@ -1,0 +1,15 @@
+{# need to have a common ancestor for this and case stuff. #}
+<div class="tagging"{% if run %} data-product-id="{{ tagged_object.product.id }}"{% endif %}>
+  {% include "forms/_field.html" with field=form.add_tags %}
+
+  <ul class="taglist">
+  {% if run %}
+    {% for tag in tagged_object.tags.all %}
+      {% include "manage/_tag_item.html" %}
+    {% endfor %}
+  {% else %}
+    <li class="none">no tags</li>
+  {% endif %}
+  </ul>
+
+</div>
