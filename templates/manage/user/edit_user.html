@@ -16,7 +16,7 @@
     {% endfor %}
   </ul>
   {% else %}
-  <form action="{% url auth_create_apikey user_id=subject.id %}" method="POST" id="create-apikey-form" class="apikey-form">
+  <form action="{% url 'auth_create_apikey' user_id=subject.id %}" method="POST" id="create-apikey-form" class="apikey-form">
     {% csrf_token %}
     <button type="submit">generate an API key</button>
   </form>

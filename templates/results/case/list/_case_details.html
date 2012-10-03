@@ -3,7 +3,7 @@
 <div class="iteminfo">
   {% include "lists/_case_byline.html" with item=runcaseversion.caseversion %}
 
-  <a href="{% url results_results rcv_id=runcaseversion.id %}" class="drill-link" title="test results related to {{ runcaseversion.caseversion.name }}">See related test results.</a>
+  <a href="{% url 'results_results' rcv_id=runcaseversion.id %}" class="drill-link" title="test results related to {{ runcaseversion.caseversion.name }}">See related test results.</a>
 
   {% if runcaseversion.caseversion.description %}
     <p class="description">

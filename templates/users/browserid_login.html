@@ -6,7 +6,7 @@
   <div class="browserid">
     <a id="browserid" href="#">Sign in</a> with <a href="https://browserid.org/">Mozilla Persona</a>.
   </div>
-  <form method="POST" action="{% url browserid_verify %}" id="browserid-form">
+  <form method="POST" action="{% url 'browserid_verify' %}" id="browserid-form">
     {% csrf_token %}
     <input type="hidden" name="assertion" id="id_assertion" />
     <input type="hidden" name="next" id="id_next" value="{{ next|default:'/' }}" />

@@ -7,7 +7,7 @@
 
       <div class="controls">
         {% if user|has_perm:"tags.manage_tags" %}
-          {% url manage_tag_edit tag_id=tag.id as tag_edit_url %}
+          {% url 'manage_tag_edit' tag_id=tag.id as tag_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=tag_edit_url edit_name=tag.name %}
           {% include "lists/controls/_clone.html" with clone_id=tag.id clone_name=tag.name %}
           {% include "lists/controls/_delete.html" with delete_id=tag.id delete_name=tag.name %}

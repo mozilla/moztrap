@@ -12,16 +12,16 @@
   </p>
   <ul class="account-links">
     {% if request.user.is_authenticated %}
-      <li><form action="{% url auth_logout %}?next={{ request.path }}" method="POST" class="signout" id="logoutform">{% csrf_token %}<button type="submit">Sign Out</button></form></li>
+      <li><form action="{% url 'auth_logout' %}?next={{ request.path }}" method="POST" class="signout" id="logoutform">{% csrf_token %}<button type="submit">Sign Out</button></form></li>
 
       {% if not USE_BROWSERID %}
-        <li><a href="{% url auth_password_change %}" class="changepwd">Password</a></li>
+        <li><a href="{% url 'auth_password_change' %}" class="changepwd">Password</a></li>
       {% endif %}
       {# @@@ <li><a href="#">Account Settings</a></li> #}
     {% else %}
-      <li><a href="{% url auth_login %}?next={{ request.path }}" class="signin">Sign In</a></li>
+      <li><a href="{% url 'auth_login' %}?next={{ request.path }}" class="signin">Sign In</a></li>
       {% if not USE_BROWSERID %}
-        <li><a href="{% url registration_register %}">Register</a></li>
+        <li><a href="{% url 'registration_register' %}">Register</a></li>
       {% endif %}
     {% endif %}
   </ul>

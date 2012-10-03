@@ -9,13 +9,13 @@
 
       <div class="controls">
         {% if user|has_perm:"library.manage_suites" %}
-          {% url manage_suite_edit suite_id=suite.id as suite_edit_url %}
+          {% url 'manage_suite_edit' suite_id=suite.id as suite_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=suite_edit_url edit_name=suite.name %}
           {% include "lists/controls/_clone.html" with clone_id=suite.id clone_name=suite.name %}
           {% include "lists/controls/_delete.html" with delete_id=suite.id delete_name=suite.name %}
         {% endif %}
         {% if user|has_perm:"library.manage_suite_cases" and user|has_perm:"library.create_cases" %}
-          <a href="{% url manage_case_add %}?product={{ suite.product.id }}&initial_suite={{ suite.id }}" title="create new test case in this suite" class="create-child-link">create new test case in this suite</a>
+          <a href="{% url 'manage_case_add' %}?product={{ suite.product.id }}&initial_suite={{ suite.id }}" title="create new test case in this suite" class="create-child-link">create new test case in this suite</a>
         {% endif %}
       </div>
 
@@ -30,7 +30,7 @@
 
   </header>
 
-  {% url manage_suite_details suite.id as details_url %}
+  {% url 'manage_suite_details' suite.id as details_url %}
   {# _suite_details.html loaded via ajax #}
   {% include "lists/_itembody.html" %}
 

@@ -4,7 +4,7 @@
 
       <div class="add-elements-field formfield optional">
         <label for="env-elements-input" class="type">include one or more elements</label>
-        <input type="text" name="text-filter" class="value" value="" id="env-elements-input" autocomplete="off" placeholder="such as 'linux', 'firefox', or 'spanish'" data-autocomplete-url="{% url manage_environment_autocomplete_elements %}">
+        <input type="text" name="text-filter" class="value" value="" id="env-elements-input" autocomplete="off" placeholder="such as 'linux', 'firefox', or 'spanish'" data-autocomplete-url="{% url 'manage_environment_autocomplete_elements' %}">
         <ul class="suggest">
           {# (provided by filtering) icanhaz "autocomplete_suggestion" #}
         </ul>

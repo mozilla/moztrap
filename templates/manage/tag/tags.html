@@ -11,7 +11,7 @@
   </h2>
 
   {% if user|has_perm:"tags.manage_tags" %}
-    <a href="{% url manage_tag_add %}" class="create single">create a tag</a>
+    <a href="{% url 'manage_tag_add' %}" class="create single">create a tag</a>
   {% endif %}
 
   {% include "lists/_filter.html" %}
