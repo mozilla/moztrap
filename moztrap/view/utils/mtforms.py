@@ -186,9 +186,10 @@ class FilteredSelectMultiple(MTSelectMultiple):
     """
     template_name = (
         "forms/widgets/filtered_select_multiple/_filtered_select_multiple.html")
-    choice_template_name = (
-        "forms/widgets/filtered_select_multiple/"
-        "_filtered_select_multiple_item.html")
+    # these are now added by AJAX, not by this widged directly.
+#    choice_template_name = (
+#        "forms/widgets/filtered_select_multiple/"
+#        "_filtered_select_multiple_item.html")
     listordering_template_name = (
         "forms/widgets/filtered_select_multiple/"
         "_filtered_select_multiple_listordering.html")

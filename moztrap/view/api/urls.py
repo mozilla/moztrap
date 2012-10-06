@@ -19,6 +19,8 @@ v1_api.register(library.CaseResource())
 v1_api.register(library.CaseVersionResource())
 v1_api.register(library.CaseStepResource())
 v1_api.register(library.SuiteResource())
+v1_api.register(library.SuiteCaseSelectionResource())
+
 v1_api.register(environments.EnvironmentResource())
 v1_api.register(environments.ElementResource())
 v1_api.register(environments.CategoryResource())

@@ -182,6 +182,7 @@ var MT = (function (MT, $) {
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');
+        MT.filterProductCases('#single-case-add, #bulk-case-add');
         MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js

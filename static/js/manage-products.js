@@ -100,6 +100,7 @@ var MT = (function (MT, $) {
             trigger = context.find('#id_product'),
             tags,
             filterTags = function () {
+                console.log("mac");
                 if (trigger.find('option:selected').data('product-id')) {
                     tags = context.find('.tagging .taglist .tag-item');
                     tags.filter(function () {
@@ -116,6 +117,34 @@ var MT = (function (MT, $) {
             };
 
         trigger.change(filterTags);
+    };
+
+    // Filter product-specific cases when changing product
+    MT.filterProductCases = function (container) {
+        var context = $(container),
+            trigger = context.find('#id_product'),
+            filterCases = function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/api/v1/suitecaseselection/?format=json&limit=100&productversion__product=" + $('option:selected').data('product-id'),
+                    context: document.body,
+                    success: function(response) {
+                        var select = $(".multiunselected").find(".select");
+//                        var item = {"name": "foo", "tags": []}
+                        var item = response
+                        console.log(response)
+                        var html_str = ich.case_select_item(item);
+                        console.log(html_str);
+                        select.html(html_str);
+                    },
+                    error: function() {
+                        alert("Error hap'nd");}
+                });
+            };
+        $('#id_product').change(filterCases);
+//        $('#id_product').change(function() {
+//            console.log("in there");
+//        });
     };
 
     // Adding/removing attachments on cases
