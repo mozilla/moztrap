@@ -120,31 +120,70 @@ var MT = (function (MT, $) {
     };
 
     // Filter product-specific cases when changing product
-    MT.filterProductCases = function (container) {
-        var context = $(container),
-            trigger = context.find('#id_product'),
-            filterCases = function () {
-                $.ajax({
-                    type: "GET",
-                    url: "/api/v1/suitecaseselection/?format=json&limit=100&productversion__product=" + $('option:selected').data('product-id'),
-                    context: document.body,
-                    success: function(response) {
-                        var select = $(".multiunselected").find(".select");
-//                        var item = {"name": "foo", "tags": []}
-                        var item = response
-                        console.log(response)
-                        var html_str = ich.case_select_item(item);
-                        console.log(html_str);
-                        select.html(html_str);
-                    },
-                    error: function() {
-                        alert("Error hap'nd");}
-                });
-            };
-        $('#id_product').change(filterCases);
-//        $('#id_product').change(function() {
-//            console.log("in there");
-//        });
+    MT.filterProductCasesOnChange = function (container) {
+        if ($(container).length > 0) {
+            $('#id_product').change(MT.filterCasesNewSuite);
+        }
+    };
+
+    // Filter product-specific cases on page load
+    MT.filterProductCasesOnReady = function (container) {
+        if ($(container).length > 0) {
+            $(MT.filterCasesEditSuite);
+        }
+        else if ($(container).length > 0) {
+            $('#id_product').change(MT.filterCasesNewSuite);
+        }
+    };
+
+    // load product cases on the new suite page
+    MT.filterCasesNewSuite = function () {
+        MT.doFilterProductCases($('option:selected').data('product-id'), null);
+    }
+
+    // load product cases on the edit suite page
+    MT.filterCasesEditSuite = function() {
+        MT.doFilterProductCases($("#id_product").val(), $(".edit-suite").data("suite-id"));
+
+    }
+
+    // Use AJAX to get a set of cases filtered by product_id
+    MT.doFilterProductCases = function (product_id, suite_id) {
+        var cases_url = "/api/v1/suitecaseselection/?format=json&productversion__product=" + product_id
+        if (suite_id) {
+            cases_url += "&for_suite=" + suite_id
+        }
+        $.ajax({
+            type: "GET",
+            url: cases_url,
+            context: document.body,
+            success: function(response) {
+                /*
+                  We need to fetch those that are NOT selected, and those that
+                  are.  So use two separate AJAX calls.
+                  1. all possible cases
+                  2. selected for this suite (if any)
+                  3. remove list 2 from list 1
+                  or
+                  Perhaps we can call 1 with the suite ID and not return them?
+                 */
+                var unselect = $(".multiunselected").find(".select");
+                var unsel_html = ich.case_select_item({"cases": response.objects.unsel});
+                unselect.html(unsel_html);
+
+                var select = $(".multiselected").find(".select");
+                var sel_html = ich.case_select_item({"cases": response.objects.sel});
+                select.html(sel_html);
+
+            },
+            error: function(response) {
+                console.error(response);
+            },
+            loading: function() {
+                var select = $(".multiunselected").find(".select");
+                select.html("<p>Loading...</p>");
+            }
+        });
     };
 
     // Adding/removing attachments on cases

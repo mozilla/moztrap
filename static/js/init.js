@@ -182,7 +182,17 @@ var MT = (function (MT, $) {
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');
-        MT.filterProductCases('#single-case-add, #bulk-case-add');
+        MT.filterProductCasesOnChange('#suite-add-form');
+        /*
+        This isn't doing any automatic filtering based on the container value,
+        that has to be done in the method with an if or something.  I think
+        many functions are being called when they shouldn't.
+
+        how could it be finding #single-case-add in the context, when that
+        doesn't exist on the page?  confusing to me...
+
+         */
+        MT.filterProductCasesOnReady('#suite-edit-form');
         MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js

@@ -1,7 +1,7 @@
 {% extends 'manage/suite/base.html' %}
 
 {% block content %}
-<section class="{% block sectionid %}{% endblock %}">
+<section class="{% block sectionid %}{% endblock %}" data-suite-id="{% block suiteid %}{% endblock %}">
   <h2>
     {% block formtitle %}{% endblock %}
     {% include "_helplink.html" with helpURL="library.html#suite-edit-fields" %}

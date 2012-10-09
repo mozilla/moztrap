@@ -50,7 +50,8 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         run = super(RunForm, self).save(user=user)
 
         run.runsuites.all().delete(permanent=True)
-        for i, suite in enumerate(self.cleaned_data["suites"]):
+        for i, suite_id in enumerate(self.cleaned_data["suites"]):
+            suite = model.Suite.objects.get(pk=suite_id)
             model.RunSuite.objects.create(
                 run=run, suite=suite, order=i, user=user)
 

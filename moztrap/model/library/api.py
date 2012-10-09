@@ -2,7 +2,7 @@ from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.resources import ModelResource
 
-from .models import CaseVersion, Case, Suite, CaseStep
+from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
 from ..environments.api import EnvironmentResource
 from ..core.api import ProductVersionResource
 from ..tags.api import TagResource
@@ -74,9 +74,11 @@ class SuiteCaseSelectionResource(ModelResource):
     productversion = fields.ForeignKey(ProductVersionResource, "productversion")
     tags = fields.ToManyField(TagResource, "tags", full=True)
 
-
     class Meta:
-        queryset = CaseVersion.objects.filter(latest=True).select_related("case", "productversion")
+        queryset = CaseVersion.objects.filter(latest=True).select_related(
+            "case",
+            "productversion",
+            )
         # @@@ Django 1.4 - use prefetch_related on the tag field
         list_allowed_methods = ['get']
         fields = ["id", "name"]
@@ -90,5 +92,24 @@ class SuiteCaseSelectionResource(ModelResource):
         case = bundle.obj.case
         bundle.data["case_id"] = case.id
         bundle.data["created_by"] = case.created_by
+        order = None
+        try:
+            if hasattr(bundle.request.GET, "for_suite"):
+                order = case.suitecases.get(
+                    suite__id=bundle.request.GET["for_suite"]
+                    ).order
+        except SuiteCase.DoesNotExist:
+            pass
+
+        bundle.data["order"] = order
 
         return bundle
+
+
+    def alter_list_data_to_serialize(self, request, data):
+        """Split list of cases between included and excluded from the suite"""
+        included = [x for x in data["objects"] if x.data["order"] is not None]
+        included = sorted(included, key=lambda k: k.data["order"])
+        excluded =  [x for x in data["objects"] if x.data["order"] is None]
+        data["objects"] = {"sel": included, "unsel": excluded}
+        return data

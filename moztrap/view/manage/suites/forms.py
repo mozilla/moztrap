@@ -12,13 +12,13 @@ from moztrap.view.utils import mtforms
 
 class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing suites."""
-    cases = mtforms.MTModelMultipleChoiceField(
+    cases = mtforms.MTMultipleChoiceField(
 #        queryset=model.Case.objects.all()[:0],
         # TODO @@@ perhaps we can use a non-model MultipleChoiceField here?
         # not sure how it SAVES the data.  But we don't need the model for the
         # source any longer.
         # fetch at most one record in this queryset.
-        queryset=model.Case.objects.filter(pk=0),
+#        queryset=model.Case.objects.filter(pk=0),
         required=False,
         choice_attrs=mtforms.product_id_attrs,
         widget=mtforms.FilteredSelectMultiple(
@@ -56,7 +56,8 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         suite = super(SuiteForm, self).save(user=user)
 
         suite.suitecases.all().delete(permanent=True)
-        for i, case in enumerate(self.cleaned_data["cases"]):
+        for i, case_id in enumerate(self.cleaned_data["cases"]):
+            case = model.Case.objects.get(pk=case_id)
             model.SuiteCase.objects.create(
                 suite=suite, case=case, order=i, user=user)
 
