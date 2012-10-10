@@ -91,10 +91,18 @@ class SuiteCaseSelectionResource(ModelResource):
 
         case = bundle.obj.case
         bundle.data["case_id"] = case.id
-        bundle.data["created_by"] = case.created_by
+        bundle.data["author"] = {
+            "id": case.created_by.id,
+            "username": case.created_by.username,
+            }
+        bundle.data["created_by"] = {
+            "id": case.created_by.id,
+            "username": case.created_by.username,
+            }
+
         order = None
         try:
-            if hasattr(bundle.request.GET, "for_suite"):
+            if "for_suite" in bundle.request.GET.keys():
                 order = case.suitecases.get(
                     suite__id=bundle.request.GET["for_suite"]
                     ).order
@@ -111,5 +119,5 @@ class SuiteCaseSelectionResource(ModelResource):
         included = [x for x in data["objects"] if x.data["order"] is not None]
         included = sorted(included, key=lambda k: k.data["order"])
         excluded =  [x for x in data["objects"] if x.data["order"] is None]
-        data["objects"] = {"sel": included, "unsel": excluded}
+        data["objects"] = {"selected": included, "unselected": excluded}
         return data

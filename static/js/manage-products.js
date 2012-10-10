@@ -38,11 +38,7 @@ var MT = (function (MT, $) {
                         filter = thisFilter.closest('.filter-item').find('.onoffswitch').text().toLowerCase(),
                         excludeThisFilter = false;
 
-                    if (type === 'status') {
-                        if (!(items.find('.status span').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
-                            excludeThisFilter = true;
-                        }
-                    } else if (type === 'tag') {
+                    if (type === 'tag') {
                         if (!(items.find('.tags a').filter(function () { return $(this).text().toLowerCase() === filter; }).length)) {
                             excludeThisFilter = true;
                         }
@@ -95,12 +91,12 @@ var MT = (function (MT, $) {
     };
 
     // Filter product-specific tags when changing case product
+    // in the add case form.
     MT.filterProductTags = function (container) {
         var context = $(container),
             trigger = context.find('#id_product'),
             tags,
             filterTags = function () {
-                console.log("mac");
                 if (trigger.find('option:selected').data('product-id')) {
                     tags = context.find('.tagging .taglist .tag-item');
                     tags.filter(function () {
@@ -120,70 +116,92 @@ var MT = (function (MT, $) {
     };
 
     // Filter product-specific cases when changing product
-    MT.filterProductCasesOnChange = function (container) {
+    // in the suite edit or add form
+    MT.filterProductCases = function (container) {
         if ($(container).length > 0) {
-            $('#id_product').change(MT.filterCasesNewSuite);
+            var product = $(container).find('#id_product');
+
+            // if the product field is a select, then we know it's
+            // editable and so we add the change handler.
+            if (product.is("select")) {
+                // update the cases list if this field changes
+                product.change(function () {
+                    var product = $('#id_product');
+                    MT.doFilterProductCases(product.find('option:selected').data('product-id'), null);
+                });
+            }
+
+            // we should load the cases on page load whether it's a
+            // select or not.  But if no item is selected, it will have
+            // no effect.
+            $(function() {
+                var product = $('#id_product');
+                var product_id = null;
+                var suite_id = $(".edit-suite").data("suite-id");
+
+                // Get the correct product_id, depending on the type of the
+                // id_product field.
+                if (product.is("select")) {
+                    // if none is selected, this will return "" which is
+                    // caught in the doFilterProductCases method.
+                    product_id = product.find("option:selected").val();
+                }
+                else if (product.is("input")) {
+                    product_id = product.val();
+                }
+                MT.doFilterProductCases(product_id, suite_id);
+
+            });
+
         }
     };
-
-    // Filter product-specific cases on page load
-    MT.filterProductCasesOnReady = function (container) {
-        if ($(container).length > 0) {
-            $(MT.filterCasesEditSuite);
-        }
-        else if ($(container).length > 0) {
-            $('#id_product').change(MT.filterCasesNewSuite);
-        }
-    };
-
-    // load product cases on the new suite page
-    MT.filterCasesNewSuite = function () {
-        MT.doFilterProductCases($('option:selected').data('product-id'), null);
-    }
-
-    // load product cases on the edit suite page
-    MT.filterCasesEditSuite = function() {
-        MT.doFilterProductCases($("#id_product").val(), $(".edit-suite").data("suite-id"));
-
-    }
 
     // Use AJAX to get a set of cases filtered by product_id
     MT.doFilterProductCases = function (product_id, suite_id) {
         var cases_url = "/api/v1/suitecaseselection/?format=json&productversion__product=" + product_id
+        var unselect = $(".multiunselected").find(".select");
+        var select = $(".multiselected").find(".select");
+
+        // This will be present when editing a suite, not creating a new one.
+        // if a suite_id was passed in, then add it to the query params so that
+        // we check for included cases.
         if (suite_id) {
             cases_url += "&for_suite=" + suite_id
         }
-        $.ajax({
-            type: "GET",
-            url: cases_url,
-            context: document.body,
-            success: function(response) {
-                /*
-                  We need to fetch those that are NOT selected, and those that
-                  are.  So use two separate AJAX calls.
-                  1. all possible cases
-                  2. selected for this suite (if any)
-                  3. remove list 2 from list 1
-                  or
-                  Perhaps we can call 1 with the suite ID and not return them?
-                 */
-                var unselect = $(".multiunselected").find(".select");
-                var unsel_html = ich.case_select_item({"cases": response.objects.unsel});
-                unselect.html(unsel_html);
+        if (product_id != "") {
+            $.ajax({
+                type: "GET",
+                url: cases_url,
+                context: document.body,
+                beforeSend: function() {
+                    unselect.loadingOverlay()
+                    select.loadingOverlay()
+                },
+                success: function(response) {
+                    /*
+                        This ajax call will fetch 2 lists of cases.  It will look
+                        like this:
+                            objects: { selected: [case1, case2, ...],
+                                       unselected: [case1, case2, ...]
+                                       }
+                        The selected section comes in sorted by order they fall in the suite.
+                        remove the "Loading..." overlay once they're loaded up.
+                     */
+                    unselect.html(ich.case_select_item({"cases": response.objects.unselected}));
+                    unselect.loadingOverlay("remove")
 
-                var select = $(".multiselected").find(".select");
-                var sel_html = ich.case_select_item({"cases": response.objects.sel});
-                select.html(sel_html);
+                    var sel_html = ich.case_select_item({"cases": response.objects.selected});
+                    select.html(sel_html);
+                    select.loadingOverlay("remove")
 
-            },
-            error: function(response) {
-                console.error(response);
-            },
-            loading: function() {
-                var select = $(".multiunselected").find(".select");
-                select.html("<p>Loading...</p>");
-            }
-        });
+                },
+                error: function(response) {
+                    $(".multiselected").loadingOverlay("remove")
+                    $(".multiunselected").loadingOverlay("remove")
+                    console.error(response);
+                }
+            });
+        }
     };
 
     // Adding/removing attachments on cases
