@@ -147,13 +147,6 @@ var MT = (function (MT, $) {
         MT.clientSideFilter({container: '#envnarrowing'});
 
         // manage-products.js
-//        MT.formOptionsFilter({
-//            container: '#run-add-form, #run-edit-form',
-//            trigger_sel: '#id_productversion',
-//            target_sel: '.multiunselected .select',
-//            option_sel: '.selectitem',
-//            multiselect_widget_bool: true
-//        });
         MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',

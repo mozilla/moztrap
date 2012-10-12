@@ -15,7 +15,6 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing runs."""
     suites = mtforms.MTMultipleChoiceField(
         required=False,
-        choice_attrs=mtforms.product_id_attrs,
         widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/run/suite_select/_suite_select_item.html",
             listordering_template=(
@@ -83,10 +82,5 @@ class EditRunForm(RunForm):
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
                 product=self.instance.productversion.product_id)
-#            sf.queryset = sf.queryset.filter(
-#                product=self.instance.productversion.product_id)
 
-        #@@@ TODO: what does this do?  Does this fetch the included suites?
-        # if so, do we still need this?  Perhaps only if run is active/readonly.
-        self.initial["suites"] = list(
-            self.instance.suites.values_list("id", flat=True))
+            # ajax populates available and included suites on page load

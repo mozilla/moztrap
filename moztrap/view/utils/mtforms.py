@@ -186,10 +186,6 @@ class FilteredSelectMultiple(MTSelectMultiple):
     """
     template_name = (
         "forms/widgets/filtered_select_multiple/_filtered_select_multiple.html")
-    # these are now added by AJAX, not by this widged directly.
-#    choice_template_name = (
-#        "forms/widgets/filtered_select_multiple/"
-#        "_filtered_select_multiple_item.html")
     listordering_template_name = (
         "forms/widgets/filtered_select_multiple/"
         "_filtered_select_multiple_listordering.html")
@@ -318,56 +314,19 @@ class MTModelChoiceField(forms.ModelChoiceField):
         return {}
 
 
+
 class MTChoiceField(forms.ChoiceField):
-    """
-    A ChoiceField where each choice object's label is a ``SmartLabel``.
 
-    Accepts additional optional keyword arguments ``label_from_instance`` and
-    ``choice_attrs``: each should be a one-argument callable that takes a model
-    instance and returns suitable label text and a dictionary of choice
-    attributes, respectively.
-
-    """
     widget = MTSelect
 
-
-    def __init__(self, *args, **kwargs):
-        """Create field, checking for label_from_instance and choice_attrs."""
-        self.custom_label_from_instance = kwargs.pop(
-            "label_from_instance", None)
-
-        self.custom_choice_attrs = kwargs.pop("choice_attrs", None)
-
-        super(MTChoiceField, self).__init__(*args, **kwargs)
-
-
-#    def label_from_instance(self, obj):
-#        """Use custom label_from_instance method if provided."""
-#        if self.custom_label_from_instance is not None:
-#            return self.custom_label_from_instance(obj)
-#        return super(MTChoiceField, self).label_from_instance(obj)
-
-
-    def _get_choices(self):
-        """Use MTModelChoiceIterator."""
-        if hasattr(self, "_choices"):
-            return self._choices
-
-        return MTModelChoiceIterator(self)
-
-
-    choices = property(_get_choices, forms.ChoiceField._set_choices)
-
-
-    def choice_attrs(self, obj):
-        """Get choice attributes for a model instance."""
-        if self.custom_choice_attrs is not None:
-            return self.custom_choice_attrs(obj)
-        return {}
-
-
     def valid_value(self, value):
-        "Check to see if the provided value is a valid choice"
+        """
+        Skip validation of values.
+
+        The available choices are loaded on the client side, so we have
+        nothing to check.
+
+        """
         return True
 
 

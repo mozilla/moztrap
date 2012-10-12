@@ -4522,17 +4522,11 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 .add-suite .cases-field, .edit-suite .cases-field {
   margin-bottom: 0em;
 }
-.add-suite .cases-field .status, .edit-suite .cases-field .status {
-  left: 2.25em;
-  margin: 0;
-}
-.add-suite .cases-field .bystatus, .edit-suite .cases-field .bystatus {
-  margin-left: -1.875em;
-}
 .add-suite .cases-field .itemhead, .add-suite .cases-field #results .case-details .summary, #results .case-details .add-suite .cases-field .summary, .add-suite .cases-field .listordering, .edit-suite .cases-field .itemhead, .edit-suite .cases-field #results .case-details .summary, #results .case-details .edit-suite .cases-field .summary, .edit-suite .cases-field .listordering {
   padding-left: 4.125em;
 }
 .add-suite .cases-field .name-tags, .add-suite .cases-field .byname-tags, .edit-suite .cases-field .name-tags, .edit-suite .cases-field .byname-tags {
+  margin-left: -1.875em;
   display: inline;
   float: left;
   width: 72.093%;

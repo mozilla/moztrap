@@ -14,7 +14,6 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing suites."""
     cases = mtforms.MTMultipleChoiceField(
         required=False,
-        choice_attrs=mtforms.product_id_attrs,
         widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
             listordering_template=(
@@ -22,9 +21,9 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             filters=[
                 filters.KeywordFilter("name"),
                 filters.ModelFilter(
-                    "author", queryset=model.User.objects.all()),
-                filters.ModelFilter(
                     "tag", lookup="tags", queryset=model.Tag.objects.all()),
+                filters.ModelFilter(
+                    "author", queryset=model.User.objects.all()),
                 ],
             )
         )
@@ -76,9 +75,4 @@ class EditSuiteForm(SuiteForm):
             pf.queryset = pf.queryset.filter(pk=self.instance.product_id)
             pf.readonly = True
 
-            # set of cases is populated on page load via ajax instead of
-            # doing it here.
-        #@@@ TODO: what does this do?  Does this fetch the included cases?
-        # if so, we don't need this any longer.
-        self.initial["cases"] = list(
-            self.instance.cases.values_list("id", flat=True))
+            # ajax populates available and included cases on page load

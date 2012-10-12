@@ -91,7 +91,6 @@ var MT = (function (MT, $) {
     };
 
     // Filter product-specific tags when changing case product
-    // in the add case form.
     MT.filterProductTags = function (container) {
         var context = $(container),
             trigger = context.find('#id_product'),
@@ -115,8 +114,8 @@ var MT = (function (MT, $) {
         trigger.change(filterTags);
     };
 
-    // Filter product-specific cases when changing product
-    // in the suite edit or add form
+    // Populate the list of available and selected items on page load
+    // and when the ``trigger_field`` value is changed.
     MT.populateMultiselectItems = function (opts) {
         var defaults = {
                 container: 'body',
@@ -132,7 +131,7 @@ var MT = (function (MT, $) {
             // if the product field is a select, then we know it's
             // editable and so we add the change handler.
             if (product.is("select") && options.refetch_on_trigger) {
-                // update the cases list if this field changes
+                // update the item list if this field changes
                 product.change(function () {
                     var product = $(opts.trigger_field);
                     var trigger_id = product.find('option:selected').data(options.data_attr)
@@ -145,8 +144,8 @@ var MT = (function (MT, $) {
                 });
             }
 
-            // we should load the cases on page load whether it's a
-            // select or not.  But if no item is selected, it will have
+            // we should load the items on page load whether it's a
+            // <select> or not.  But if no item is selected, it will have
             // no effect.
             $(function() {
                 // the field items are filtered on (usu. product or productversion)
@@ -158,8 +157,6 @@ var MT = (function (MT, $) {
                 // Get the correct product_id, depending on the type of the
                 // id_product field.
                 if (trigger.is("select")) {
-                    // if none is selected, this will return "" which is
-                    // caught in the doFilterProductCases method.
                     trigger_id = trigger.find("option:selected").data(options.data_attr);
                 }
                 else if (trigger.is("input")) {
@@ -180,7 +177,7 @@ var MT = (function (MT, $) {
         }
     };
 
-    // Use AJAX to get a set of cases filtered by product_id
+    // Use AJAX to get a set of items filtered by product_id
     MT.doPopulateMultiselect = function (url, ich_template) {
         var unselect = $(".multiunselected").find(".select");
         var select = $(".multiselected").find(".select");
