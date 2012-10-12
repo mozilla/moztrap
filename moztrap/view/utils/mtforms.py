@@ -378,7 +378,7 @@ class MTMultipleChoiceField(forms.MultipleChoiceField,
 
 
 
-class MTModelMultipleChoiceField(forms.MultipleChoiceField,
+class MTModelMultipleChoiceField(forms.ModelMultipleChoiceField,
                                  MTModelChoiceField):
     widget = MTSelectMultiple
 

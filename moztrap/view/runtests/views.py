@@ -134,7 +134,7 @@ def run(request, run_id, env_id):
                 break
 
             try:
-                rcv = run.runcaseversions.get(pk=rcv_id).order_by("order")
+                rcv = run.runcaseversions.get(pk=rcv_id)
             except model.RunCaseVersion.DoesNotExist:
                 messages.error(
                     request,
