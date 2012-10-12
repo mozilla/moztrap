@@ -13,10 +13,8 @@ from moztrap.view.utils import mtforms
 
 class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing runs."""
-    suites = mtforms.MTModelMultipleChoiceField(
-        queryset=model.Suite.objects.all(),
+    suites = mtforms.MTMultipleChoiceField(
         required=False,
-        choice_attrs=mtforms.product_id_attrs,
         widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/run/suite_select/_suite_select_item.html",
             listordering_template=(
@@ -50,7 +48,8 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         run = super(RunForm, self).save(user=user)
 
         run.runsuites.all().delete(permanent=True)
-        for i, suite in enumerate(self.cleaned_data["suites"]):
+        for i, suite_id in enumerate(self.cleaned_data["suites"]):
+            suite = model.Suite.objects.get(pk=suite_id)
             model.RunSuite.objects.create(
                 run=run, suite=suite, order=i, user=user)
 
@@ -83,8 +82,5 @@ class EditRunForm(RunForm):
             # regardless, can't switch to different product entirely
             pvf.queryset = pvf.queryset.filter(
                 product=self.instance.productversion.product_id)
-            sf.queryset = sf.queryset.filter(
-                product=self.instance.productversion.product_id)
 
-        self.initial["suites"] = list(
-            self.instance.suites.values_list("id", flat=True))
+            # ajax populates available and included suites on page load

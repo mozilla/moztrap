@@ -91,7 +91,7 @@ ACTIONS = {
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.filter("runcaseversions", filterset_class=RunTestsRunCaseVersionFilterSet)
-@lists.sort("runcaseversions")
+@lists.sort("runcaseversions", defaultfield="order")
 @ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)

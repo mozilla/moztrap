@@ -7,13 +7,13 @@ import json
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 
-from .models import Run, RunCaseVersion, Result
-from ..core.api import (ProductVersionResource, ReportResultsAuthorization,
-                        MTApiKeyAuthentication)
+from .models import Run, RunCaseVersion, RunSuite, Result
+from ..core.api import (ProductVersionResource, ProductResource,
+                        ReportResultsAuthorization, MTApiKeyAuthentication)
 from ..environments.api import EnvironmentResource
 from ..environments.models import Environment
 from ..library.api import CaseVersionResource
-from ..library.models import CaseVersion
+from ..library.models import CaseVersion, Suite
 
 from ...view.lists.filters import filter_url
 
@@ -290,3 +290,57 @@ class ResultResource(ModelResource):
 
         bundle.obj = rcv.get_result_method(status)(**data)
         return bundle
+
+
+
+class RunSuiteSelectionResource(ModelResource):
+    """
+    Specialty end-point for an AJAX call in the Run form multi-select widget
+    for selecting suites.
+    """
+
+    product = fields.ForeignKey(ProductResource, "product")
+
+    class Meta:
+        queryset = Suite.objects.all()
+        # @@@ Django 1.4 - use prefetch_related
+        list_allowed_methods = ['get']
+        fields = ["id", "name"]
+        filtering = {
+            "product": ALL_WITH_RELATIONS,
+            }
+
+    def dehydrate(self, bundle):
+        """Add some convenience fields to the return JSON."""
+
+        suite = bundle.obj
+        try:
+            bundle.data["created_by"] = {
+                "id": suite.created_by.id,
+                "username": suite.created_by.username,
+                }
+        except AttributeError:
+            bundle.data["author"] = None
+
+        order = None
+        try:
+            if "for_run" in bundle.request.GET.keys():
+                order = suite.runsuites.get(
+                    run__id=bundle.request.GET["for_run"]
+                ).order
+        except RunSuite.DoesNotExist:
+            pass
+
+        bundle.data["order"] = order
+        bundle.data["suite_id"] = suite.id
+
+        return bundle
+
+
+    def alter_list_data_to_serialize(self, request, data):
+        """Split list of cases between included and excluded from the suite"""
+        included = [x for x in data["objects"] if x.data["order"] is not None]
+        included = sorted(included, key=lambda k: k.data["order"])
+        excluded =  [x for x in data["objects"] if x.data["order"] is None]
+        data["objects"] = {"selected": included, "unselected": excluded}
+        return data

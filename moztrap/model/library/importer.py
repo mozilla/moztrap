@@ -1,5 +1,7 @@
 """Importer for suites and cases from a dictionary."""
 
+import json
+
 from django.db import transaction
 
 from ..core.auth import User
@@ -577,7 +579,7 @@ class ImportResult(object):
         """
 
         result_list = [
-            "{0}: {1}".format(x["reason"], x["item"])
+            "{0}: {1}".format(x["reason"], json.dumps(x["item"], indent=4))
             for x in self.warnings
             ]
 
