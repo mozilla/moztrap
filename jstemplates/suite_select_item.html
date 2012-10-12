@@ -1,0 +1,12 @@
+{{#items}}
+<article class="selectitem" data-title="{{ name }}" data-product-id="{{ product_id }}">
+    <input type="checkbox" name="bulk-select" value="{{ suite_id }}" class="bulk-value" id="bulk-select-{{ suite_id }}" {{ checked }}>
+    <div class="listitem itemhead bulk-item">
+        <label for="bulk-select-{{ suite_id }}" class="bulk-type" title="select or drag">bulk select {{ suite_id }}</label>
+        <div class="name">
+            <h5 class="title" title="{{ name }}">{{ name }}</h5>
+        </div>
+        <div class="author vcard"><span class="fn">{{ created_by.username }}</span></div>
+    </div>
+</article>
+{{/items}}

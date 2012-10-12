@@ -90,15 +90,17 @@ class SuiteCaseSelectionResource(ModelResource):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
+        try:
+            bundle.data["created_by"] = {
+                "id": case.created_by.id,
+                "username": case.created_by.username,
+                }
+        except AttributeError:
+            bundle.data["author"] = None
+
         bundle.data["case_id"] = case.id
-        bundle.data["author"] = {
-            "id": case.created_by.id,
-            "username": case.created_by.username,
-            }
-        bundle.data["created_by"] = {
-            "id": case.created_by.id,
-            "username": case.created_by.username,
-            }
+        bundle.data["product_id"] = case.product_id
+        bundle.data["product"] = {"id": case.product_id}
 
         order = None
         try:

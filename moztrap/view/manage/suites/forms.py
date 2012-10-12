@@ -21,12 +21,10 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
                 "manage/suite/case_select/_case_select_listordering.html"),
             filters=[
                 filters.KeywordFilter("name"),
-#                filters.ModelFilter(
-#                    "tag", lookup="tags", queryset=model.Tag.objects.all()),
                 filters.ModelFilter(
                     "author", queryset=model.User.objects.all()),
-                filters.KeywordFilter("tag"),
-#                filters.KeywordFilter("author"),
+                filters.ModelFilter(
+                    "tag", lookup="tags", queryset=model.Tag.objects.all()),
                 ],
             )
         )
@@ -80,5 +78,7 @@ class EditSuiteForm(SuiteForm):
 
             # set of cases is populated on page load via ajax instead of
             # doing it here.
+        #@@@ TODO: what does this do?  Does this fetch the included cases?
+        # if so, we don't need this any longer.
         self.initial["cases"] = list(
             self.instance.cases.values_list("id", flat=True))

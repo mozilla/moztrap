@@ -14,6 +14,7 @@ v1_api = Api(api_name=API_VERSION)
 
 v1_api.register(execution.RunResource())
 v1_api.register(execution.RunCaseVersionResource())
+v1_api.register(execution.RunSuiteSelectionResource())
 v1_api.register(execution.ResultResource())
 v1_api.register(library.CaseResource())
 v1_api.register(library.CaseVersionResource())

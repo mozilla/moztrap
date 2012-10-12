@@ -117,17 +117,31 @@ var MT = (function (MT, $) {
 
     // Filter product-specific cases when changing product
     // in the suite edit or add form
-    MT.filterProductCases = function (container) {
-        if ($(container).length > 0) {
-            var product = $(container).find('#id_product');
+    MT.populateMultiselectItems = function (opts) {
+        var defaults = {
+                container: 'body',
+                data_attr: 'product-id',
+                refetch_on_trigger: true
+            },
+            options = $.extend({}, defaults, opts)
+
+
+        if ($(opts.container).length > 0) {
+            var product = $(opts.container).find(opts.trigger_field);
 
             // if the product field is a select, then we know it's
             // editable and so we add the change handler.
-            if (product.is("select")) {
+            if (product.is("select") && options.refetch_on_trigger) {
                 // update the cases list if this field changes
                 product.change(function () {
-                    var product = $('#id_product');
-                    MT.doFilterProductCases(product.find('option:selected').data('product-id'), null);
+                    var product = $(opts.trigger_field);
+                    var trigger_id = product.find('option:selected').data(options.data_attr)
+                    var url = opts.ajax_url_root + trigger_id
+                    var included_id = $(".edit-" + opts.for_type).data(opts.for_type + "-id");
+                    if (included_id) {
+                        url += "&for_" + opts.for_type + "=" + included_id
+                    }
+                    MT.doPopulateMultiselect(url, opts.ich_template);
                 });
             }
 
@@ -135,21 +149,31 @@ var MT = (function (MT, $) {
             // select or not.  But if no item is selected, it will have
             // no effect.
             $(function() {
-                var product = $('#id_product');
-                var product_id = null;
-                var suite_id = $(".edit-suite").data("suite-id");
+                // the field items are filtered on (usu. product or productversion)
+                var trigger = $(opts.trigger_field);
+                var trigger_id;
+                // the id to check for included items (usu. suite_id or run_id)
+                var included_id = $(".edit-" + opts.for_type).data(opts.for_type + "-id");
 
                 // Get the correct product_id, depending on the type of the
                 // id_product field.
-                if (product.is("select")) {
+                if (trigger.is("select")) {
                     // if none is selected, this will return "" which is
                     // caught in the doFilterProductCases method.
-                    product_id = product.find("option:selected").val();
+                    trigger_id = trigger.find("option:selected").data(options.data_attr);
                 }
-                else if (product.is("input")) {
-                    product_id = product.val();
+                else if (trigger.is("input")) {
+                    trigger_id = product.val();
                 }
-                MT.doFilterProductCases(product_id, suite_id);
+                if (trigger_id != "") {
+                    var url = opts.ajax_url_root + trigger_id
+                    // This will be present when editing a suite, not creating a new one.
+                    if (included_id) {
+                        url += "&for_" + opts.for_type + "=" + included_id
+                    }
+
+                    MT.doPopulateMultiselect(url, opts.ich_template);
+                }
 
             });
 
@@ -157,51 +181,42 @@ var MT = (function (MT, $) {
     };
 
     // Use AJAX to get a set of cases filtered by product_id
-    MT.doFilterProductCases = function (product_id, suite_id) {
-        var cases_url = "/api/v1/suitecaseselection/?format=json&productversion__product=" + product_id
+    MT.doPopulateMultiselect = function (url, ich_template) {
         var unselect = $(".multiunselected").find(".select");
         var select = $(".multiselected").find(".select");
 
-        // This will be present when editing a suite, not creating a new one.
-        // if a suite_id was passed in, then add it to the query params so that
-        // we check for included cases.
-        if (suite_id) {
-            cases_url += "&for_suite=" + suite_id
-        }
-        if (product_id != "") {
-            $.ajax({
-                type: "GET",
-                url: cases_url,
-                context: document.body,
-                beforeSend: function() {
-                    unselect.loadingOverlay()
-                    select.loadingOverlay()
-                },
-                success: function(response) {
-                    /*
-                        This ajax call will fetch 2 lists of cases.  It will look
-                        like this:
-                            objects: { selected: [case1, case2, ...],
-                                       unselected: [case1, case2, ...]
-                                       }
-                        The selected section comes in sorted by order they fall in the suite.
-                        remove the "Loading..." overlay once they're loaded up.
-                     */
-                    unselect.html(ich.case_select_item({"cases": response.objects.unselected}));
-                    unselect.loadingOverlay("remove")
+        $.ajax({
+            type: "GET",
+            url: url,
+            context: document.body,
+            beforeSend: function() {
+                unselect.loadingOverlay()
+                select.loadingOverlay()
+            },
+            success: function(response) {
+                /*
+                    This ajax call will fetch 2 lists of items.  It will look
+                    like this:
+                        objects: { selected: [item1, item2, ...],
+                                   unselected: [item1, item2, ...]
+                                   }
+                    The selected section comes in sorted by order they fall.
+                    remove the "Loading..." overlay once they're loaded up.
+                 */
+                unselect.html(ich_template({"items": response.objects.unselected}));
+                unselect.loadingOverlay("remove")
 
-                    var sel_html = ich.case_select_item({"cases": response.objects.selected});
-                    select.html(sel_html);
-                    select.loadingOverlay("remove")
+                var sel_html = ich_template({"items": response.objects.selected});
+                select.html(sel_html);
+                select.loadingOverlay("remove")
 
-                },
-                error: function(response) {
-                    $(".multiselected").loadingOverlay("remove")
-                    $(".multiunselected").loadingOverlay("remove")
-                    console.error(response);
-                }
-            });
-        }
+            },
+            error: function(response) {
+                $(".multiselected").loadingOverlay("remove")
+                $(".multiunselected").loadingOverlay("remove")
+                console.error(response);
+            }
+        });
     };
 
     // Adding/removing attachments on cases

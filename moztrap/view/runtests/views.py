@@ -91,7 +91,7 @@ ACTIONS = {
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.filter("runcaseversions", filterset_class=RunTestsRunCaseVersionFilterSet)
-@lists.sort("runcaseversions")
+@lists.sort("runcaseversions", defaultfield="order")
 @ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)
@@ -134,7 +134,7 @@ def run(request, run_id, env_id):
                 break
 
             try:
-                rcv = run.runcaseversions.get(pk=rcv_id)
+                rcv = run.runcaseversions.get(pk=rcv_id).order_by("order")
             except model.RunCaseVersion.DoesNotExist:
                 messages.error(
                     request,
@@ -193,7 +193,7 @@ def run(request, run_id, env_id):
             "run": run,
             "envform": envform,
             "runcaseversions": run.runcaseversions.select_related(
-                "caseversion").filter(environments=environment),
+                "caseversion").filter(environments=environment).order_by("order"),
             "finder": {
                 # finder decorator populates top column (products), we
                 # prepopulate the other two columns
