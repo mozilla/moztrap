@@ -4,6 +4,8 @@ Management forms for runs.
 """
 import floppyforms as forms
 
+from django.core.exceptions import ValidationError
+
 from moztrap import model
 from moztrap.view.lists import filters
 from moztrap.view.utils import mtforms
@@ -42,14 +44,26 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             }
 
 
+    def clean_suites(self):
+        """
+        Make sure all the ids for the suites are valid and populate
+        self.cleaned_data with the real objects.
+        """
+        suites = dict((unicode(x.id), x) for x in
+            model.Suite.objects.filter(pk__in=self.cleaned_data["suites"]))
+        try:
+            return [suites[x] for x in self.cleaned_data["suites"]]
+        except KeyError as e:
+            raise ValidationError(e)
+
+
     def save(self, user=None):
         """Save and return run, with suite associations."""
         user = user or self.user
         run = super(RunForm, self).save(user=user)
 
         run.runsuites.all().delete(permanent=True)
-        for i, suite_id in enumerate(self.cleaned_data["suites"]):
-            suite = model.Suite.objects.get(pk=suite_id)
+        for i, suite in enumerate(self.cleaned_data["suites"]):
             model.RunSuite.objects.create(
                 run=run, suite=suite, order=i, user=user)
 

@@ -2,6 +2,7 @@
 Management forms for suites.
 
 """
+from django.core.exceptions import ValidationError
 import floppyforms as forms
 
 from moztrap import model
@@ -41,14 +42,26 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             }
 
 
+    def clean_cases(self):
+        """
+        Make sure all the ids for the cases are valid and populate
+        self.cleaned_data with the real objects.
+        """
+        cases = dict((unicode(x.id), x) for x in
+            model.Case.objects.filter(pk__in=self.cleaned_data["cases"]))
+        try:
+            return [cases[x] for x in self.cleaned_data["cases"]]
+        except KeyError as e:
+            raise ValidationError(e)
+
+
     def save(self, user=None):
         """Save the suite and case associations."""
         user = user or self.user
         suite = super(SuiteForm, self).save(user=user)
 
         suite.suitecases.all().delete(permanent=True)
-        for i, case_id in enumerate(self.cleaned_data["cases"]):
-            case = model.Case.objects.get(pk=case_id)
+        for i, case in enumerate(self.cleaned_data["cases"]):
             model.SuiteCase.objects.create(
                 suite=suite, case=case, order=i, user=user)
 

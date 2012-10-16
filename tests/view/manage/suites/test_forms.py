@@ -202,14 +202,3 @@ class AddSuiteFormTest(case.DBTestCase):
                 ],
             [case.product.id]
             )
-        # these are now populated with ajax and icanhaz templates.
-        # I don't think they're test-able this way any longer...
-        # Jonny, can you confirm?
-        self.assertEqual(
-            [
-                c[1].attrs["data-product-id"]
-                for c in f.fields["cases"].choices
-                if c[0]
-                ],
-            [case.product.id]
-            )

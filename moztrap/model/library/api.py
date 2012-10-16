@@ -2,6 +2,8 @@ from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from tastypie.resources import ModelResource
 
+from django.http import HttpResponse
+
 from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
 from ..environments.api import EnvironmentResource
 from ..core.api import ProductVersionResource
@@ -86,34 +88,57 @@ class SuiteCaseSelectionResource(ModelResource):
             "productversion": ALL_WITH_RELATIONS,
             }
 
+    def get_list(self, request, **kwargs):
+        """
+        Save the suitecases orders so we don't have to query for each case.
+
+        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
+        in Django 1.4
+        """
+        if "for_suite" in request.GET.keys():
+             sc = SuiteCase.objects.filter(suite__id=request.GET["for_suite"])
+             self.suitecases_cache = dict((x.case_id, x.order) for x in sc)
+        return super(SuiteCaseSelectionResource, self).get_list(
+            request, **kwargs)
+
+
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
+        bundle.data["case_id"] = case.id
+        bundle.data["product_id"] = case.product_id
+        bundle.data["product"] = {"id": case.product_id}
+
         try:
             bundle.data["created_by"] = {
                 "id": case.created_by.id,
                 "username": case.created_by.username,
                 }
         except AttributeError:
-            bundle.data["author"] = None
+            bundle.data["created_by"] = None
 
-        bundle.data["case_id"] = case.id
-        bundle.data["product_id"] = case.product_id
-        bundle.data["product"] = {"id": case.product_id}
-
-        order = None
         try:
-            if "for_suite" in bundle.request.GET.keys():
-                order = case.suitecases.get(
-                    suite__id=bundle.request.GET["for_suite"]
-                    ).order
-        except SuiteCase.DoesNotExist:
-            pass
-
-        bundle.data["order"] = order
+            bundle.data["order"] = self.suitecases_cache[case.id]
+        except (KeyError, TypeError, AttributeError):
+            # suitecases_cache may not be defined, or may be none
+            # or may just not contain the id we're looking for.
+            # either way, set it to None
+            bundle.data["order"] = None
 
         return bundle
+
+
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """
+        Remove the "cached" runsuites because we're done with it.
+
+        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
+        in Django 1.4
+        """
+        self.suitecases_cache = None
+        return super(SuiteCaseSelectionResource, self).create_response(
+            request, data, response_class=HttpResponse, **response_kwargs)
 
 
     def alter_list_data_to_serialize(self, request, data):

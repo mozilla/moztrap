@@ -303,38 +303,64 @@ class RunSuiteSelectionResource(ModelResource):
 
     class Meta:
         queryset = Suite.objects.all()
-        # @@@ Django 1.4 - use prefetch_related
+        # @@@ Django 1.4 - use prefetch_related on "runsuites" for order field
         list_allowed_methods = ['get']
         fields = ["id", "name"]
         filtering = {
             "product": ALL_WITH_RELATIONS,
             }
 
+
+    def get_list(self, request, **kwargs):
+        """
+        Save the runsuites orders so we don't have to query for each suite item.
+
+        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
+        in Django 1.4
+        """
+        if "for_run" in request.GET.keys():
+            rs = RunSuite.objects.filter(run__id=request.GET["for_run"])
+            self.runsuites_cache = dict((x.suite_id, x.order) for x in rs)
+        return super(RunSuiteSelectionResource, self).get_list(
+            request, **kwargs)
+
+
     def dehydrate(self, bundle):
         """Add some convenience fields to the return JSON."""
 
         suite = bundle.obj
+        bundle.data["suite_id"] = suite.id
+
         try:
             bundle.data["created_by"] = {
                 "id": suite.created_by.id,
                 "username": suite.created_by.username,
                 }
         except AttributeError:
-            bundle.data["author"] = None
+            bundle.data["created_by"] = None
 
-        order = None
         try:
-            if "for_run" in bundle.request.GET.keys():
-                order = suite.runsuites.get(
-                    run__id=bundle.request.GET["for_run"]
-                ).order
-        except RunSuite.DoesNotExist:
-            pass
-
-        bundle.data["order"] = order
-        bundle.data["suite_id"] = suite.id
+            bundle.data["order"] = self.runsuites_cache[suite.id]
+        except (KeyError, TypeError, AttributeError):
+            # runsuites_cache may not be defined, or may be none
+            # or may just not contain the id we're looking for.
+            # either way, set it to None
+            bundle.data["order"] = None
 
         return bundle
+
+
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """
+        Remove the "cached" runsuites because we're done with it.
+
+        @@@ Django 1.4 - shouldn't need this when we have prefetch_related
+        in Django 1.4
+        """
+        self.runsuites_cache = None
+        return super(RunSuiteSelectionResource, self).create_response(
+            request, data, response_class=HttpResponse, **response_kwargs)
+
 
 
     def alter_list_data_to_serialize(self, request, data):
