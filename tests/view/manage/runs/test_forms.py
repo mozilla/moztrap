@@ -3,6 +3,7 @@ Tests for run-management forms.
 
 """
 from datetime import date
+from django.core.exceptions import ValidationError
 
 from tests import case
 
@@ -67,6 +68,32 @@ class EditRunFormTest(case.DBTestCase):
         run = f.save()
 
         self.assertEqual(set(run.suites.all()), set([s]))
+
+
+    def test_add_bad_suite(self):
+        """Attempt to add non-existent suite to a run."""
+        pv = self.F.ProductVersionFactory.create()
+        r = self.F.RunFactory.create(productversion__product=pv.product)
+        s = self.F.SuiteFactory.create(product=pv.product)
+
+        f = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": r.name,
+                "description": r.description,
+                "start": r.start.strftime("%m/%d/%Y"),
+                "end": "",
+                "suites": [str(s.id + 1)],
+                "cc_version": str(r.cc_version),
+                },
+            instance=r,
+            )
+
+        self.assertFalse(f.is_valid())
+        self.assertEqual(
+            f.errors["suites"],
+            [u"Not a valid suite for this run."]
+        )
 
 
     def test_edit_suites(self):

@@ -54,7 +54,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         try:
             return [suites[x] for x in self.cleaned_data["suites"]]
         except KeyError as e:
-            raise ValidationError(e)
+            raise ValidationError("Not a valid suite for this run.")
 
 
     def save(self, user=None):

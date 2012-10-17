@@ -52,7 +52,7 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         try:
             return [cases[x] for x in self.cleaned_data["cases"]]
         except KeyError as e:
-            raise ValidationError(e)
+            raise ValidationError("Not a valid case for this suite.")
 
 
     def save(self, user=None):

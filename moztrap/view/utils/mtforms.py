@@ -208,7 +208,10 @@ class FilteredSelectMultiple(MTSelectMultiple):
     def get_context_data(self):
         ctx = super(FilteredSelectMultiple, self).get_context_data()
         ctx["filters"] = filters.FilterSet(self.filters).bind(MultiValueDict())
-        ctx["choice_template"] = self.choice_template_name
+        try:
+            ctx["choice_template"] = self.choice_template_name
+        except AttributeError:
+            pass
         ctx["listordering_template"] = self.listordering_template_name
         return ctx
 
