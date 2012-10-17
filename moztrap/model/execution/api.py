@@ -329,11 +329,11 @@ class RunSuiteSelectionResource(ModelResource):
         """Add some convenience fields to the return JSON."""
 
         suite = bundle.obj
-        bundle.data["suite_id"] = suite.id
+        bundle.data["suite_id"] = unicode(suite.id)
 
         try:
             bundle.data["created_by"] = {
-                "id": suite.created_by.id,
+                "id": unicode(suite.created_by.id),
                 "username": suite.created_by.username,
                 }
         except AttributeError:

@@ -106,13 +106,13 @@ class SuiteCaseSelectionResource(ModelResource):
         """Add some convenience fields to the return JSON."""
 
         case = bundle.obj.case
-        bundle.data["case_id"] = case.id
-        bundle.data["product_id"] = case.product_id
-        bundle.data["product"] = {"id": case.product_id}
+        bundle.data["case_id"] = unicode(case.id)
+        bundle.data["product_id"] = unicode(case.product_id)
+        bundle.data["product"] = {"id": unicode(case.product_id)}
 
         try:
             bundle.data["created_by"] = {
-                "id": case.created_by.id,
+                "id": unicode(case.created_by.id),
                 "username": case.created_by.username,
                 }
         except AttributeError:
