@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'Run.build'
         db.add_column('execution_run', 'build',
-                      self.gf('django.db.models.fields.TextField')(default='', blank=True),
+                      self.gf('django.db.models.fields.TextField')(default='', blank=True, null=True),
                       keep_default=False)
 
         # Adding field 'Run.is_series'
@@ -177,7 +177,7 @@ class Migration(SchemaMigration):
         },
         'execution.run': {
             'Meta': {'object_name': 'Run'},
-            'build': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'build': ('django.db.models.fields.TextField', [], {'blank': 'True', 'null': 'True'}),
             'caseversions': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'runs'", 'symmetrical': 'False', 'through': "orm['execution.RunCaseVersion']", 'to': "orm['library.CaseVersion']"}),
             'cc_version': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'created_by': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'+'", 'null': 'True', 'on_delete': 'models.SET_NULL', 'to': "orm['auth.User']"}),

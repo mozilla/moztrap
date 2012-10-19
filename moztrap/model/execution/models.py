@@ -71,6 +71,21 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         return super(Run, self).clone(*args, **kwargs)
 
 
+    def clone_for_series(self, *args, **kwargs):
+        """Clone this Run to create a new series item."""
+        build = kwargs.pop("build", None)
+        kwargs.setdefault(
+            "cascade", ["runsuites", "environments", "team"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "{0} - Build: {1}".format(
+            self.name, build))
+        overrides["status"] = self.STATUS.draft
+        overrides.setdefault("is_series", False)
+        overrides.setdefault("build", build)
+        overrides.setdefault("series", self)
+        return super(Run, self).clone(*args, **kwargs)
+
+
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:

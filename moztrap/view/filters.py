@@ -61,6 +61,12 @@ class RunFilterSet(filters.FilterSet):
             lookup="environments__elements",
             key="envelement",
             queryset=model.Element.objects.all()),
+        filters.ChoicesFilter(
+            "Series",
+            lookup="is_series",
+            choices=[(1, "series"), (0, "individual")],
+            coerce=int,
+            ),
         ]
 
 

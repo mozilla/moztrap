@@ -4376,17 +4376,17 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   #margin-left: -1em;
 }
 
-.add-run .product-version-field, .add-run .name-field, .add-run .description-field, .edit-run .product-version-field, .edit-run .name-field, .edit-run .description-field {
+.add-run .product-version-field, .add-run .description-field, .add-run .build-field, .edit-run .product-version-field, .edit-run .description-field, .edit-run .build-field {
   clear: both;
   padding-right: 25.263%;
 }
-.add-run .product-version-field .type, .add-run .name-field .type, .add-run .description-field .type, .edit-run .product-version-field .type, .edit-run .name-field .type, .edit-run .description-field .type {
+.add-run .product-version-field .type, .add-run .description-field .type, .add-run .build-field .type, .edit-run .product-version-field .type, .edit-run .description-field .type, .edit-run .build-field .type {
   display: inline;
   float: left;
   width: 32.394%;
   margin-right: 1.408%;
 }
-.add-run .product-version-field .value, .add-run .product-version-field .errorlist, .add-run .name-field .value, .add-run .name-field .errorlist, .add-run .description-field .value, .add-run .description-field .errorlist, .edit-run .product-version-field .value, .edit-run .product-version-field .errorlist, .edit-run .name-field .value, .edit-run .name-field .errorlist, .edit-run .description-field .value, .edit-run .description-field .errorlist {
+.add-run .product-version-field .value, .add-run .product-version-field .errorlist, .add-run .description-field .value, .add-run .description-field .errorlist, .add-run .build-field .value, .add-run .build-field .errorlist, .edit-run .product-version-field .value, .edit-run .product-version-field .errorlist, .edit-run .description-field .value, .edit-run .description-field .errorlist, .edit-run .build-field .value, .edit-run .build-field .errorlist {
   display: inline;
   float: left;
   width: 66.197%;
@@ -4395,6 +4395,39 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.add-run .name-field, .edit-run .name-field {
+  display: inline;
+  float: left;
+  width: 74.737%;
+  margin-right: 1.053%;
+}
+.add-run .name-field .type, .edit-run .name-field .type {
+  display: inline;
+  float: left;
+  width: 32.394%;
+  margin-right: 1.408%;
+}
+.add-run .name-field .value, .add-run .name-field .errorlist, .edit-run .name-field .value, .edit-run .name-field .errorlist {
+  display: inline;
+  float: left;
+  width: 66.197%;
+  margin-right: 1.408%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+.add-run .is-series-field, .edit-run .is-series-field {
+  display: inline;
+  float: left;
+  width: 24.211%;
+  margin-right: 1.053%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+  margin-top: 0.375em;
 }
 .add-run .start-field, .add-run .end-field, .edit-run .start-field, .edit-run .end-field {
   display: inline;

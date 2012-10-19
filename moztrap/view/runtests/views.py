@@ -19,7 +19,7 @@ from ..users.decorators import permission_required
 from ..utils.ajax import ajax
 
 from .finders import RunTestsFinder
-from .forms import EnvironmentSelectionForm
+from .forms import EnvironmentSelectionForm, EnvironmentBuildSelectionForm
 
 
 
@@ -48,22 +48,43 @@ def set_environment(request, run_id):
         current = int(request.GET.get("environment", None))
     except (TypeError, ValueError):
         current = None
+    try:
+        build = int(request.GET.get("build", None))
+    except (TypeError, ValueError):
+        build = None
 
     form_kwargs = {
         "current": current,
         "environments": run.environments.all()
         }
 
+    # the run could be an individual, or a series.
+    # if it's a series, we need to use the right form
+    # that will prompt them for a build number.
+    # if a run for this series exists with that build number
+    # already, then use that id, otherwise clone this run,
+    # set it active and
+    # create a new one with the build id set.
+    if run.is_series:
+        form_kwargs["run"] = run
+        form_kwargs["build"] = run.build
+        form_class = EnvironmentBuildSelectionForm
+    else:
+        form_class = EnvironmentSelectionForm
+
     if request.method == "POST":
-        form = EnvironmentSelectionForm(
+        # user responding to this form with their selections
+        # they may or may not be valid
+        form = form_class(
             request.POST,
             **form_kwargs)
 
         if form.is_valid():
-            envid = form.save()
-            return redirect("runtests_run", run_id=run_id, env_id=envid)
+            envid, runid = form.save()
+            return redirect("runtests_run", run_id=runid, env_id=envid)
     else:
-        form = EnvironmentSelectionForm(**form_kwargs)
+        # run just specified, prompt user for env and possibly build
+        form = form_class(**form_kwargs)
 
     return TemplateResponse(
         request,

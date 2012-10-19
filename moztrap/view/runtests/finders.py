@@ -26,7 +26,10 @@ class RunTestsFinder(finder.Finder):
         finder.Column(
             "runs",
             "_runs.html",
-            model.Run.objects.filter(status=model.Run.STATUS.active),
+            model.Run.objects.filter(
+                status=model.Run.STATUS.active,
+                series=None,
+                ),
             ),
         ]
 
