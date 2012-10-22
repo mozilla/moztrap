@@ -28,6 +28,11 @@ class RunTestsFinder(finder.Finder):
             "_runs.html",
             model.Run.objects.filter(
                 status=model.Run.STATUS.active,
+                # only show stand-alone runs or runs that are a series.
+                # don't show runs that are individual members of a series.
+                # to run a member of a series, run the series, then specify
+                # the build id that has an existing series member for it.
+                # Having the series members here would be noisy and confusing.
                 series=None,
                 ),
             ),

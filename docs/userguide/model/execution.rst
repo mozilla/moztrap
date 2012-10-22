@@ -21,10 +21,8 @@ A Test Run applies to a Product and a Product Version. Usually, a product has
 had several iterations (or builds) prior to the release of a final
 Version. Therefore, a Test Run is a single execution pass over a specific
 iteration of that Product Version. And your product will likely have more than
-one iteration prior to release of that version. Therefore, you may choose to
-name your test runs after the build they are testing like Build 23, Build 24,
-etc. Once your product goes Alpha or Beta, you may choose to name your test
-runs that way: "Alpha 1, Build 86," "Alpha 1, Build 87," etc.
+one iteration prior to release of that version. For this purpose, you may
+want to make a Test Run that is a :ref:`Series <test-run-series>`.
 
 The test case steps executed in test runs may be different for each Product
 Version, as the Product itself evolves. See :ref:`Test Cases <test-cases>` for
@@ -33,6 +31,28 @@ more info on how test case versions relate to Product Versions.
 An active test run can be disabled, which halts all execution of tests in that
 run until it is made active again.
 
+.. _test-run-series:
+
+Test Run Series
+~~~~~~~~~~~~~~~
+
+A **Test Run** can be marked as a series of runs, by checking the "Is Series"
+box.  You define the run just as you would any other run by specifying the
+:ref:`product <products>` version and suites.  The difference is that, this
+**Series** run is now just a template used for each build of your product to
+be tested.
+
+When you execute a run that is a series, you will be prompted for
+a build id.  If a member of this series with that build id already exists, it
+will be used for execution.  If not, then a new instance of this run series
+will be created with the build field set and the name to match.  For instance,
+with a run series called "Smashing" specifying a build of "Alpha1" will result
+in a new run in the series named "Smashing - Build: Alpha1" with distinct results
+from any other build in the series.
+
+When viewing the list of runs in the manage or results lists, you can then
+filter to see only runs that belong to a specific series.
+
 Cloning Test Runs
 ~~~~~~~~~~~~~~~~~
 
@@ -40,6 +60,12 @@ If you have a Test Run that you would like to apply to a different Product
 Version, you must clone the existing Test Run, then edit the new clone while it
 is still in draft mode. Once your changes are made, you can activate the new
 run to use it.
+
+Sharing links to Runs
+~~~~~~~~~~~~~~~~~~~~~
+
+Often you might create a run or run series and want to send a link to your
+testers asking them to
 
 .. _test-run-edit-fields:
 

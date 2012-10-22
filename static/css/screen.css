@@ -5453,9 +5453,11 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
+#manageruns .title, #manageruns .suitecount, #manageruns .runseries {
+  display: inline;
+}
 #manageruns .title {
   font-weight: 500;
-  display: inline;
 }
 #manageruns .iteminfo {
   display: inline;
@@ -5913,6 +5915,16 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   text-align: right;
 }
 #runtests-environment-form select {
+  display: inline;
+  float: left;
+  width: 65.957%;
+  margin-right: 2.128%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
+}
+#runtests-environment-form input {
   display: inline;
   float: left;
   width: 65.957%;

@@ -71,7 +71,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
     def clean_build(self):
         """If this is a series, then null out the build field."""
-        if self.cleaned_data["is_series"] == True:
+        if self.cleaned_data["is_series"]:
             return None
 
 

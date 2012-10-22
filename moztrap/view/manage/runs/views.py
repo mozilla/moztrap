@@ -9,6 +9,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib import messages
 
 from moztrap import model
+from moztrap.model.mtmodel import NotDeletedCount
 
 from moztrap.view.filters import RunFilterSet
 from moztrap.view.lists import decorators as lists
@@ -38,7 +39,8 @@ def runs_list(request):
         request,
         "manage/run/runs.html",
         {
-            "runs": model.Run.objects.select_related(),
+            "runs": model.Run.objects.select_related().annotate(
+                suite_count=NotDeletedCount("suites", distinct=True)),
             }
         )
 

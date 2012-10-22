@@ -62,11 +62,17 @@ class RunFilterSet(filters.FilterSet):
             key="envelement",
             queryset=model.Element.objects.all()),
         filters.ChoicesFilter(
-            "Series",
+            "is Series",
             lookup="is_series",
             choices=[(1, "series"), (0, "individual")],
             coerce=int,
             ),
+        filters.ModelFilter(
+            "members of series",
+            lookup="series",
+            queryset=model.Run.objects.filter(is_series=True)
+            ),
+        filters.KeywordExactFilter("build"),
         ]
 
 

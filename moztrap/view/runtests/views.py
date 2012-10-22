@@ -67,7 +67,7 @@ def set_environment(request, run_id):
     # create a new one with the build id set.
     if run.is_series:
         form_kwargs["run"] = run
-        form_kwargs["build"] = run.build
+        form_kwargs["build"] = build
         form_class = EnvironmentBuildSelectionForm
     else:
         form_class = EnvironmentSelectionForm
@@ -75,12 +75,22 @@ def set_environment(request, run_id):
     if request.method == "POST":
         # user responding to this form with their selections
         # they may or may not be valid
-        form = form_class(
-            request.POST,
-            **form_kwargs)
+        form = form_class(request.POST, **form_kwargs)
 
         if form.is_valid():
-            envid, runid = form.save()
+            result = form.save()
+
+            # @@@ seems like there may be a better pattern for this than
+            # what I'm doing here.  Carl, any ideas?
+            try:
+                # If a runid WAS returned, then that would be the new run
+                # created for the build of the runseries.
+                envid, runid = result
+            except TypeError:
+                # if no runid was returned, then this is not a runseries, and
+                # we should just use the run id from this run.
+                envid = result
+                runid = run_id
             return redirect("runtests_run", run_id=runid, env_id=envid)
     else:
         # run just specified, prompt user for env and possibly build
