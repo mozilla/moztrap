@@ -65,7 +65,20 @@ Sharing links to Runs
 ~~~~~~~~~~~~~~~~~~~~~
 
 Often you might create a run or run series and want to send a link to your
-testers asking them to
+testers asking them to execute it in their own testing environment.  This also
+works great for a run :ref:`series <test-run-series>`.  To get this link:
+
+1. go to **Run Tests**
+
+2. select the run you want to share
+
+3. when you see the form asking you to specify your values for the test run,
+   find the text that says "SET YOUR VALUES TO RUN TESTS IN MYRUNNAMEHERE".
+
+4. right-click "RUN TESTS IN MYRUNNAMEHERE" and select "copy link location"
+
+5. send that url to your testers
+
 
 .. _test-run-edit-fields:
 
