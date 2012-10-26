@@ -208,6 +208,37 @@ class EditRunFormTest(case.DBTestCase):
             )
 
 
+    def test_active_run_suites_preserved(self):
+        """
+        Can save run with suite list as names and not disturb suites.
+
+        This happens when you try to save an active run.  The suites
+        are names rather than ids, and are read-only.  So there should
+        be no change.
+        """
+        pv = self.F.ProductVersionFactory.create()
+        s = self.F.SuiteFactory.create(product=pv.product)
+        r = self.F.RunFactory.create(productversion__product=pv.product)
+        self.F.RunSuiteFactory.create(run=r, suite=s)
+
+        f = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": r.name,
+                "description": r.description,
+                "start": r.start.strftime("%m/%d/%Y"),
+                "end": "",
+                "suites": [str(s.name)],
+                "cc_version": str(r.cc_version),
+                },
+            instance=r,
+            )
+
+        run = f.save()
+
+        self.assertEqual(set(run.suites.all()), set([s]))
+
+
 
 class AddRunFormTest(case.DBTestCase):
     """Tests for AddRunForm."""

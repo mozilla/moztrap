@@ -173,7 +173,7 @@ var MT = (function (MT, $) {
             trigger_field: '#id_product',
             ajax_url_root: "/api/v1/suitecaseselection/?format=json&limit=0&productversion__product=",
             for_type: "suite",
-            ich_template: ich.case_select_item,
+            ich_template: ich.case_select_item
         });
         MT.populateMultiselectItems({
             container: '#run-add-form',
