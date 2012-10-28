@@ -45,6 +45,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             "build",
             "start",
             "end",
+            "is_series",
             ]
         widgets = {
             "name": forms.TextInput,
