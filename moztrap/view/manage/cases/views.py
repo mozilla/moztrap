@@ -183,7 +183,7 @@ def caseversion_clone(request, caseversion_id):
             )
         messages.success(
             request,
-            "Created new version of '{0}' for {1}.".format(
+            u"Created new version of '{0}' for {1}.".format(
                 caseversion.name, productversion)
             )
 

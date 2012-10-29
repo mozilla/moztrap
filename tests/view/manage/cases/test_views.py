@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for case management views.
 
@@ -374,6 +375,24 @@ class AddCaseTest(case.view.FormViewTestCase,
         step = cv.steps.get()
         self.assertEqual(step.instruction, "Type creds and click login.")
         self.assertEqual(step.expected, "You should see a welcome message.")
+
+
+    def test_international_char_test_name(self):
+        """Can add a test case with basic data, including a step."""
+        pv = self.F.ProductVersionFactory.create()
+
+        form = self.get_form()
+        form["product"] = pv.product.id
+        form["productversion"] = pv.id
+        form["name"] = u"test with high ascii values (ùê...)"
+        form["steps-0-instruction"] = "Type creds and click login."
+        form["steps-0-expected"] = "You should see a welcome message."
+        form["status"] = "active"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("manage_cases"))
+
+        res.follow().mustcontain(u"test with high ascii values (ùê...)")
 
 
     def test_prepopulate_from_querystring(self):
