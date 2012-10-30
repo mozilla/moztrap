@@ -24,7 +24,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     description = models.TextField(blank=True)
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
-    build = models.TextField(blank=True)
+    build = models.TextField(null=True, blank=True)
     is_series = models.BooleanField(default=False)
     series = models.ForeignKey("self", null=True, blank=True)
 
