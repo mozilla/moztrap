@@ -173,3 +173,76 @@ class EnvironmentSelectionFormTest(case.DBTestCase):
 
         self.assertTrue(f.is_valid(), f.errors)
         self.assertEqual(f.save(), winff.id)
+
+
+
+class EnvironmentBuildSelectionFormTest(case.DBTestCase):
+    """
+    Tests for environment build selection form.
+
+    This form extends the EnvironmentSelectionForm and is used when a
+    run is a series and you need to specify a build.
+    """
+    @property
+    def form(self):
+        """The form class under test."""
+        from moztrap.view.runtests.forms import EnvironmentBuildSelectionForm
+        return EnvironmentBuildSelectionForm
+
+
+    def test_no_extra_arguments(self):
+        """By default, form has no env, but always has a build field."""
+        f = self.form()
+
+        self.assertEqual(len(f.fields), 1)
+
+
+    def test_save_series(self):
+        """Save method returns ID of selected environment and new run id."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        cat = self.model.Category.objects.get()
+        r = self.F.RunFactory(is_series=True)
+
+        f = self.form(
+            {
+                "category_{0}".format(cat.id): str(envs[0].elements.get().id),
+                "build": "foobuild",
+                },
+            run=r,
+            environments=self.model.Environment.objects.all())
+
+        self.assertTrue(f.is_valid(), f.errors)
+
+        envid, runid = f.save()
+        newrun = self.F.model.Run.objects.get(pk=runid)
+
+        self.assertEqual(envid, envs[0].id)
+
+        self.assertEqual(
+            newrun.name,
+            "{0} - Build: foobuild".format(r.name),
+            )
+        self.assertEqual(newrun.is_series, False)
+        self.assertEqual(newrun.series, r)
+
+
+    def test_series_without_build_set(self):
+        """Try to save form without setting the build fails."""
+        envs = self.F.EnvironmentFactory.create_full_set(
+            {"OS": ["Linux", "Windows"]})
+        cat = self.model.Category.objects.get()
+        r = self.F.RunFactory(is_series=True)
+
+        f = self.form(
+            {
+                "category_{0}".format(cat.id): str(envs[0].elements.get().id),
+                },
+            run=r,
+            environments=self.model.Environment.objects.all())
+
+        self.assertFalse(f.is_valid(), f.errors)
+        self.assertEqual(
+            f.errors,
+            {'build': [u'You must specify a build to test.']},
+            )

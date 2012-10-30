@@ -83,6 +83,19 @@ class RunTest(case.DBTestCase):
         self.assertEqual(new.status, "draft")
 
 
+    def test_clone_for_series(self):
+        """Clone of active run series makes a new run that is ready to run."""
+        r = self.F.RunFactory.create(status="active", is_series=True)
+
+        new = r.clone_for_series(build="ABERCIE")
+
+        self.assertEqual(new.status, "draft")
+        self.assertEqual(new.name, "Test Run - Build: ABERCIE")
+        self.assertEqual(new.is_series, False)
+        self.assertEqual(new.series, r)
+        self.assertEqual(new.build, "ABERCIE")
+
+
     def test_default_draft(self):
         """New run defaults to draft state."""
         r = self.F.RunFactory.create()

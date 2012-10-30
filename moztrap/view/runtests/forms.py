@@ -119,28 +119,23 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
 
     """
     build = forms.CharField(max_length=200, required=False)
-
+    fields = ["build"]
 
     def __init__(self, *args, **kwargs):
-        self.build = kwargs.pop("build", None)
         self.run = kwargs.pop("run", None)
-
+        self.build = kwargs.pop("build", None)
         super(EnvironmentBuildSelectionForm, self).__init__(*args, **kwargs)
 
 
-    def clean(self):
+    def clean_build(self):
         """
-        Decide if we are creating a new run, or using an existing one.
-
-        Based on the run_id and build value, search for a run in this series with that
-        build.  If none exists, then create a new one.
-
-        Either way, return the run_id of the run we are using.
+        Check that the build value is set.
         """
-        super(EnvironmentBuildSelectionForm, self).clean()
+#        super(EnvironmentBuildSelectionForm, self).clean()
         if not self.cleaned_data["build"]:
             raise ValidationError("You must specify a build to test.")
-        return self.cleaned_data
+
+        return self.cleaned_data["build"]
 
 
     def save(self):

@@ -45,6 +45,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             "build",
             "start",
             "end",
+            "is_series",
             ]
         widgets = {
             "name": forms.TextInput,
@@ -80,8 +81,6 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             # from the read-only list of suites.  so return None so that we
             # don't try to remove and re-add them.
             return None
-
-
 
 
     def clean_build(self):
