@@ -203,6 +203,8 @@ class EnvironmentBuildSelectionFormTest(case.DBTestCase):
             {"OS": ["Linux", "Windows"]})
         cat = self.model.Category.objects.get()
         r = self.F.RunFactory(is_series=True)
+        user = self.F.UserFactory.create()
+
 
         f = self.form(
             {
@@ -210,7 +212,9 @@ class EnvironmentBuildSelectionFormTest(case.DBTestCase):
                 "build": "foobuild",
                 },
             run=r,
-            environments=self.model.Environment.objects.all())
+            environments=self.model.Environment.objects.all(),
+            user=user,
+            )
 
         self.assertTrue(f.is_valid(), f.errors)
 
@@ -225,6 +229,7 @@ class EnvironmentBuildSelectionFormTest(case.DBTestCase):
             )
         self.assertEqual(newrun.is_series, False)
         self.assertEqual(newrun.series, r)
+        self.assertEqual(newrun.created_by, user)
 
 
     def test_series_without_build_set(self):

@@ -124,6 +124,7 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
     def __init__(self, *args, **kwargs):
         self.run = kwargs.pop("run", None)
         self.build = kwargs.pop("build", None)
+        self.user = kwargs.pop("user", None)
         super(EnvironmentBuildSelectionForm, self).__init__(*args, **kwargs)
 
 
@@ -147,7 +148,9 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
                 )
         except ObjectDoesNotExist:
             this_run = self.run.clone_for_series(
-                build=self.cleaned_data["build"])
+                build=self.cleaned_data["build"],
+                user=self.user,
+                )
             this_run.activate()
         # now we need to return this new run as the one to be executed.
         return super(EnvironmentBuildSelectionForm, self).save(), this_run.id
