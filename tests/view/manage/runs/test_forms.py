@@ -208,6 +208,37 @@ class EditRunFormTest(case.DBTestCase):
             )
 
 
+    def test_active_run_suites_preserved(self):
+        """
+        Can save run with suite list as names and not disturb suites.
+
+        This happens when you try to save an active run.  The suites
+        are names rather than ids, and are read-only.  So there should
+        be no change.
+        """
+        pv = self.F.ProductVersionFactory.create()
+        s = self.F.SuiteFactory.create(product=pv.product)
+        r = self.F.RunFactory.create(productversion__product=pv.product)
+        self.F.RunSuiteFactory.create(run=r, suite=s)
+
+        f = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": r.name,
+                "description": r.description,
+                "start": r.start.strftime("%m/%d/%Y"),
+                "end": "",
+                "suites": [str(s.name)],
+                "cc_version": str(r.cc_version),
+                },
+            instance=r,
+            )
+
+        run = f.save()
+
+        self.assertEqual(set(run.suites.all()), set([s]))
+
+
 
 class AddRunFormTest(case.DBTestCase):
     """Tests for AddRunForm."""
@@ -243,6 +274,30 @@ class AddRunFormTest(case.DBTestCase):
         self.assertEqual(run.start, date(2012, 1, 3))
         self.assertEqual(run.end, date(2012, 1, 10))
         self.assertEqual(run.created_by, u)
+
+
+    def test_add_run_series_clears_build(self):
+        """Can add run as a series, and clears the build field if set."""
+        pv = self.F.ProductVersionFactory()
+        u = self.F.UserFactory()
+
+        f = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": "Foo",
+                "description": "foo desc",
+                "start": "1/3/2012",
+                "end": "1/10/2012",
+                "cc_version": "0",
+                "is_series": True,
+                "build": "rah",
+                },
+            user=u
+        )
+
+        run = f.save()
+
+        self.assertEqual(run.build, None)
 
 
     def test_add_run_withsuites(self):

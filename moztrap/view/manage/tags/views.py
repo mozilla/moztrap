@@ -57,7 +57,7 @@ def tag_add(request):
         tag = form.save_if_valid()
         if tag is not None:
             messages.success(
-                request, "Tag '{0}' added.".format(
+                request, u"Tag '{0}' added.".format(
                     tag.name)
                 )
             return redirect("manage_tags")
@@ -83,7 +83,7 @@ def tag_edit(request, tag_id):
             request.POST, instance=tag, user=request.user)
         saved_tag = form.save_if_valid()
         if saved_tag is not None:
-            messages.success(request, "Saved '{0}'.".format(saved_tag.name))
+            messages.success(request, u"Saved '{0}'.".format(saved_tag.name))
             return redirect("manage_tags")
     else:
         form = forms.EditTagForm(instance=tag, user=request.user)

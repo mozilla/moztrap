@@ -45,6 +45,7 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             "build",
             "start",
             "end",
+            "is_series",
             ]
         widgets = {
             "name": forms.TextInput,
@@ -60,13 +61,26 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         """
         Make sure all the ids for the suites are valid and populate
         self.cleaned_data with the real objects.
+
+        If these are not ids, then they are read-only strings of the title
+        and therefore don't need to be validated.  So first verify they're
+        all ints.
         """
-        suites = dict((unicode(x.id), x) for x in
-            model.Suite.objects.filter(pk__in=self.cleaned_data["suites"]))
+
         try:
-            return [suites[x] for x in self.cleaned_data["suites"]]
-        except KeyError as e:
-            raise ValidationError("Not a valid suite for this run.")
+            suites = dict((unicode(x.id), x) for x in
+                model.Suite.objects.filter(pk__in=self.cleaned_data["suites"]))
+            try:
+                return [suites[x] for x in self.cleaned_data["suites"]]
+
+            except KeyError as e:
+                raise ValidationError("Not a valid suite for this run.")
+
+        except ValueError:
+            # some of the values weren't ints, and therefore this is
+            # from the read-only list of suites.  so return None so that we
+            # don't try to remove and re-add them.
+            return None
 
 
     def clean_build(self):
@@ -80,10 +94,14 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
         user = user or self.user
         run = super(RunForm, self).save(user=user)
 
-        run.runsuites.all().delete(permanent=True)
-        for i, suite in enumerate(self.cleaned_data["suites"]):
-            model.RunSuite.objects.create(
-                run=run, suite=suite, order=i, user=user)
+        if self.cleaned_data["suites"]:
+            # if this is empty, then don't make any changes, because
+            # either there are no suites, or this came from the read
+            # only suite list.
+            run.runsuites.all().delete(permanent=True)
+            for i, suite in enumerate(self.cleaned_data["suites"]):
+                model.RunSuite.objects.create(
+                    run=run, suite=suite, order=i, user=user)
 
         return run
 

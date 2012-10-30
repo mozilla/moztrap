@@ -72,7 +72,7 @@ def profile_add(request):
         profile = form.save_if_valid()
         if profile is not None:
             messages.success(
-                request, "Profile '{0}' added.".format(
+                request, u"Profile '{0}' added.".format(
                     profile.name)
                 )
             return redirect("manage_profiles")

@@ -123,7 +123,7 @@ var MT = (function (MT, $) {
                 refetch_on_trigger: true
             },
             options = $.extend({}, defaults, opts);
-        var cache = {}
+        var cache = {};
 
 
         if ($(options.container).length) {
@@ -148,34 +148,39 @@ var MT = (function (MT, $) {
 
             // we should load the items on page load whether it's a
             // <select> or not.  But if no item is selected, it will have
-            // no effect.
-            $(function() {
-                // the field items are filtered on (usu. product or productversion)
-                var trigger = $(options.trigger_field);
-                var trigger_id;
-                // the id to check for included items (usu. suite_id or run_id)
-                var included_id = $(".edit-" + options.for_type).data(options.for_type + "-id");
+            // no effect.  but ONLY do this call on page load if we have
+            // a multi-select widget.  if not, it's pointless, because the
+            // view has already given us the values we need to display
+            // in a bulleted list.
+            //
+            if ($(options.container).find(".multiselect").length) {
+                $(function() {
+                    // the field items are filtered on (usu. product or productversion)
+                    var trigger = $(options.trigger_field);
+                    var trigger_id;
+                    // the id to check for included items (usu. suite_id or run_id)
+                    var included_id = $(".edit-" + options.for_type).data(options.for_type + "-id");
 
-                // Get the correct product_id, depending on the type of the
-                // id_product field.
-                if (trigger.is("select")) {
-                    trigger_id = trigger.find("option:selected").data(options.data_attr);
-                }
-                else if (trigger.is("input")) {
-                    trigger_id = product.val();
-                }
-                if (trigger_id) {
-                    var url = options.ajax_url_root + trigger_id;
-                    // This will be present when editing a suite, not creating a new one.
-                    if (included_id) {
-                        url += "&for_" + options.for_type + "=" + included_id;
+                    // Get the correct product_id, depending on the type of the
+                    // id_product field.
+                    if (trigger.is("select")) {
+                        trigger_id = trigger.find("option:selected").data(options.data_attr);
+                    }
+                    else if (trigger.is("input")) {
+                        trigger_id = product.val();
+                    }
+                    if (trigger_id) {
+                        var url = options.ajax_url_root + trigger_id;
+                        // This will be present when editing a suite, not creating a new one.
+                        if (included_id) {
+                            url += "&for_" + options.for_type + "=" + included_id;
+                        }
+
+                        MT.doPopulateMultiselect(url, options.ich_template);
                     }
 
-                    MT.doPopulateMultiselect(url, options.ich_template);
-                }
-
-            });
-
+                });
+            }
         }
     };
 
@@ -187,50 +192,52 @@ var MT = (function (MT, $) {
         var unselect = $(".multiunselected").find(".select");
         var select = $(".multiselected").find(".select");
 
-        var setHtmlInMultiselect = function (sel_html, unsel_html) {
-            unselect.html(unsel_html);
-            select.html(sel_html);
-        };
+        if (unselect.length) {
+            var setHtmlInMultiselect = function (sel_html, unsel_html) {
+                unselect.html(unsel_html);
+                select.html(sel_html);
+            };
 
-        if (cache[url]) {
-            setHtmlInMultiselect(cache[url].sel_html, cache[url].unsel_html);
-        }
-        else {
-            $.ajax({
-                type: "GET",
-                url: url,
-                context: document.body,
-                beforeSend: function() {
-                    unselect.loadingOverlay();
-                    select.loadingOverlay();
-                },
-                success: function(response) {
-                    /*
-                        This ajax call will fetch 2 lists of items.  It will look
-                        like this:
-                            objects: { selected: [item1, item2, ...],
-                                       unselected: [item1, item2, ...]
-                                       }
-                        The selected section comes in sorted by order they fall.
-                        remove the "Loading..." overlay once they're loaded up.
-                     */
-                    var unsel_html = ich_template({items: response.objects.unselected});
-                    unselect.html(unsel_html);
-                    unselect.loadingOverlay("remove");
+            if (cache[url]) {
+                setHtmlInMultiselect(cache[url].sel_html, cache[url].unsel_html);
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    context: document.body,
+                    beforeSend: function() {
+                        unselect.loadingOverlay();
+                        select.loadingOverlay();
+                    },
+                    success: function(response) {
+                        /*
+                            This ajax call will fetch 2 lists of items.  It will look
+                            like this:
+                                objects: { selected: [item1, item2, ...],
+                                           unselected: [item1, item2, ...]
+                                           }
+                            The selected section comes in sorted by order they fall.
+                            remove the "Loading..." overlay once they're loaded up.
+                         */
+                        var unsel_html = ich_template({items: response.objects.unselected});
+                        unselect.html(unsel_html);
+                        unselect.loadingOverlay("remove");
 
-                    var sel_html = ich_template({items: response.objects.selected});
-                    select.html(sel_html);
-                    select.loadingOverlay("remove");
+                        var sel_html = ich_template({items: response.objects.selected});
+                        select.html(sel_html);
+                        select.loadingOverlay("remove");
 
-                    cache[url] = {sel_html: sel_html, unsel_html: unsel_html};
-                    setHtmlInMultiselect(sel_html, unsel_html)
-                },
-                error: function(response) {
-                    $(".multiselected").loadingOverlay("remove");
-                    $(".multiunselected").loadingOverlay("remove");
-                    console.error(response);
-                }
-            });
+                        cache[url] = {sel_html: sel_html, unsel_html: unsel_html};
+                        setHtmlInMultiselect(sel_html, unsel_html)
+                    },
+                    error: function(response) {
+                        $(".multiselected").loadingOverlay("remove");
+                        $(".multiunselected").loadingOverlay("remove");
+                        console.error(response);
+                    }
+                });
+            }
         }
     };
 
