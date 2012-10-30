@@ -59,44 +59,44 @@ class CasesTest(case.view.manage.ListViewTestCase,
 
     def test_filter_by_status(self):
         """Can filter by status."""
-        self.F.CaseVersionFactory.create(status="draft", name="Case 1")
-        self.F.CaseVersionFactory.create(status="active", name="Case 2")
+        self.F.CaseVersionFactory.create(status="draft", name=u"Case 1 ùê")
+        self.F.CaseVersionFactory.create(status="active", name=u"Case 2 ùê")
 
         res = self.get(params={"filter-status": "draft"})
 
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
+        self.assertInList(res, u"Case 1 ùê")
+        self.assertNotInList(res, u"Case 2 ùê")
 
 
     def test_filter_by_id(self):
         """Can filter by id."""
-        cv1 = self.F.CaseVersionFactory.create(name="Case 1")
-        self.F.CaseVersionFactory.create(name="Case 2")
+        cv1 = self.F.CaseVersionFactory.create(name=u"Case 1 ùê")
+        self.F.CaseVersionFactory.create(name=u"Case 2 ùê")
 
         res = self.get(params={"filter-id": cv1.case.id})
 
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
+        self.assertInList(res, u"Case 1 ùê")
+        self.assertNotInList(res, u"Case 2 ùê")
 
 
     def test_filter_by_bad_id(self):
         """Attempt to filter by non-integer id returns no items."""
-        self.F.CaseVersionFactory.create(name="Case 1")
+        self.F.CaseVersionFactory.create(name=u"Case 1 ùê")
 
         res = self.get(params={"filter-id": "foo"})
 
-        self.assertNotInList(res, "Case 1")
+        self.assertNotInList(res, u"Case 1 ùê")
 
 
     def test_filter_by_name(self):
         """Can filter by name."""
-        self.F.CaseVersionFactory.create(name="Case 1")
-        self.F.CaseVersionFactory.create(name="Case 2")
+        self.F.CaseVersionFactory.create(name=u"Case 1 ùê")
+        self.F.CaseVersionFactory.create(name=u"Case 2 ùê")
 
         res = self.get(params={"filter-name": "1"})
 
-        self.assertInList(res, "Case 1")
-        self.assertNotInList(res, "Case 2")
+        self.assertInList(res, u"Case 1 ùê")
+        self.assertNotInList(res, u"Case 2 ùê")
 
 
     def test_filter_by_tag(self):
@@ -354,7 +354,7 @@ class AddCaseTest(case.view.FormViewTestCase,
         form = self.get_form()
         form["product"] = pv.product.id
         form["productversion"] = pv.id
-        form["name"] = "Can log in."
+        form["name"] = u"Can log in ùê."
         form["description"] = "Tests that a user can log in."
         form["steps-0-instruction"] = "Type creds and click login."
         form["steps-0-expected"] = "You should see a welcome message."
@@ -363,36 +363,18 @@ class AddCaseTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_cases"))
 
-        res.follow().mustcontain("Test case 'Can log in.' added.")
+        res.follow().mustcontain(u"Test case 'Can log in ùê.' added.")
 
         from moztrap.model import CaseVersion
         cv = CaseVersion.objects.get()
         self.assertEqual(cv.case.product, pv.product)
         self.assertEqual(cv.productversion, pv)
-        self.assertEqual(cv.name, "Can log in.")
+        self.assertEqual(cv.name, u"Can log in ùê.")
         self.assertEqual(cv.description, "Tests that a user can log in.")
         self.assertEqual(cv.status, "active")
         step = cv.steps.get()
         self.assertEqual(step.instruction, "Type creds and click login.")
         self.assertEqual(step.expected, "You should see a welcome message.")
-
-
-    def test_international_char_test_name(self):
-        """Can add a test case with basic data, including a step."""
-        pv = self.F.ProductVersionFactory.create()
-
-        form = self.get_form()
-        form["product"] = pv.product.id
-        form["productversion"] = pv.id
-        form["name"] = u"test with high ascii values (ùê...)"
-        form["steps-0-instruction"] = "Type creds and click login."
-        form["steps-0-expected"] = "You should see a welcome message."
-        form["status"] = "active"
-        res = form.submit(status=302)
-
-        self.assertRedirects(res, reverse("manage_cases"))
-
-        res.follow().mustcontain(u"test with high ascii values (ùê...)")
 
 
     def test_prepopulate_from_querystring(self):
@@ -449,7 +431,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase,
         form["product"] = pv.product.id
         form["productversion"] = pv.id
         form["cases"] = (
-            "Test that I can log in\n"
+            u"Test that I can log in ùê\n"
             "description here\n"
             "When I type creds and click login\n"
             "Then I should see a welcome message.\n"
@@ -469,7 +451,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase,
 
         self.assertEqual(cv1.case.product, pv.product)
         self.assertEqual(cv1.productversion, pv)
-        self.assertEqual(cv1.name, "Test that I can log in")
+        self.assertEqual(cv1.name, u"Test that I can log in ùê")
         self.assertEqual(cv1.description, "description here")
         self.assertEqual(cv1.status, "active")
         step = cv1.steps.get()
@@ -494,7 +476,7 @@ class AddBulkCaseTest(case.view.FormViewTestCase,
         form["product"] = pv.product.id
         form["productversion"] = pv.id
         form["cases"] = (
-            "Test that I can log in\n"
+            u"Test that I can log in ùê\n"
             "description here\n"
             "When I type creds and click login\n"
             "Then I should see a welcome message.\n"
@@ -530,7 +512,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         """Setup for caseversion clone tests; create a caseversion, add perm."""
         super(CloneCaseVersionTest, self).setUp()
         self.cv = self.F.CaseVersionFactory.create(
-            name="Can log in", productversion__product__name="MozTrap")
+            name=u"Can log in ùê", productversion__product__name="MozTrap")
         self.add_perm("manage_cases")
 
 
@@ -624,7 +606,7 @@ class CloneCaseVersionTest(case.view.AuthenticatedViewTestCase):
         res = self.post({"productversion": pv.id}, status=302)
 
         res.follow().mustcontain(
-            "Created new version of 'Can log in' for MozTrap 2.0.")
+            u"Created new version of 'Can log in ùê' for MozTrap 2.0.")
 
         new = pv.caseversions.get()
         self.assertEqual(new.name, self.cv.name)
@@ -702,14 +684,14 @@ class EditCaseVersionTest(case.view.FormViewTestCase,
 
     def test_initial_data(self):
         """Form prepopulates with correct initial data."""
-        self.cv.name = "Some name"
+        self.cv.name = u"Some name ùê"
         self.cv.description = "Some desc"
         self.cv.status = "active"
         self.cv.save(force_update=True)
 
         form = self.get_form()
 
-        self.assertEqual(form.fields["name"][0].value, "Some name")
+        self.assertEqual(form.fields["name"][0].value, u"Some name ùê")
         self.assertEqual(form.fields["description"][0].value, "Some desc")
         self.assertEqual(form.fields["status"][0].value, "active")
 
@@ -745,18 +727,30 @@ class EditCaseVersionTest(case.view.FormViewTestCase,
         """Can save updates; redirects to manage cases list."""
         form = self.get_form()
         form["status"] = "active"
-        form["name"] = "new name"
+        form["name"] = u"new name ùê"
         form["description"] = "new desc"
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_cases"))
 
-        res.follow().mustcontain("Saved 'new name'.")
+        res.follow().mustcontain(u"Saved 'new name ùê'.")
 
         cv = self.refresh(self.cv)
-        self.assertEqual(cv.name, "new name")
+        self.assertEqual(cv.name, u"new name ùê")
         self.assertEqual(cv.description, "new desc")
         self.assertEqual(cv.status, "active")
+
+
+    def test_save_intl_name(self):
+        """Can save updates; redirects to manage cases list."""
+        form = self.get_form()
+        form["status"] = "active"
+        form["name"] = u"test with ùê"
+        res = form.submit(status=302)
+
+        self.assertRedirects(res, reverse("manage_cases"))
+
+        res.follow().mustcontain(u"Saved 'test with ùê'.")
 
 
     def test_edit_step(self):
@@ -818,7 +812,7 @@ class EditCaseVersionTest(case.view.FormViewTestCase,
 
         self.cv.save()
 
-        form["name"] = "New"
+        form["name"] = u"New ùê"
         res = form.submit(status=200)
 
         res.mustcontain("Another user saved changes to this object")

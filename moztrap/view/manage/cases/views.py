@@ -87,7 +87,7 @@ def case_add(request):
         if form.is_valid():
             case = form.save()
             messages.success(
-                request, "Test case '{0}' added.".format(
+                request, u"Test case '{0}' added.".format(
                     case.versions.all()[0].name)
                 )
             return redirect("manage_cases")
@@ -113,7 +113,7 @@ def case_add_bulk(request):
         if form.is_valid():
             cases = form.save()
             messages.success(
-                request, "Added {0} test case{1}.".format(
+                request, u"Added {0} test case{1}.".format(
                     len(cases), "" if len(cases) == 1 else "s")
                 )
             return redirect("manage_cases")
@@ -142,7 +142,7 @@ def caseversion_edit(request, caseversion_id):
             user=request.user)
         cv = form.save_if_valid()
         if cv is not None:
-            messages.success(request, "Saved '{0}'.".format(cv.name))
+            messages.success(request, u"Saved '{0}'.".format(cv.name))
             return redirect("manage_cases")
     else:
         form = forms.EditCaseVersionForm(
