@@ -68,6 +68,7 @@ def set_environment(request, run_id):
     if run.is_series:
         form_kwargs["run"] = run
         form_kwargs["build"] = build
+        form_kwargs["user"] = request.user
         form_class = EnvironmentBuildSelectionForm
     else:
         form_class = EnvironmentSelectionForm
