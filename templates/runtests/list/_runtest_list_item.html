@@ -9,9 +9,9 @@
   <div class="itemhead">
     <div class="results">
         {% if already_tested and result.status == result.STATUS.assigned or already_tested and result.status == result.STATUS.started %}
-            <span class="result {{ already_tested }}" title="{{ already_tested.status }} by {{already_tested.modified_by}}">
+            <span class="result already-{{ already_tested.status }}" title="{{ already_tested.status }} by {{already_tested.modified_by}}">
         {% else %}
-            <span class="result {{ result.status }}">
+            <span class="result {{ result.status }}" title="{{ result.status }} by you">
         {% endif %}
         {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
             {% if already_tested %}
