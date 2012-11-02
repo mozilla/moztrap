@@ -2,14 +2,23 @@
 
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
+{% already_tested runcaseversion user environment as already_tested %}
 
 <article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
-      <span class="result {{ result.status }}">
+        {% if already_tested and result.status == result.STATUS.assigned or already_tested and result.status == result.STATUS.started %}
+            <span class="result {{ already_tested }}" title="{{ already_tested.status }} by {{already_tested.modified_by}}">
+        {% else %}
+            <span class="result {{ result.status }}">
+        {% endif %}
         {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
-          pending
+            {% if already_tested %}
+              already tested
+            {% else %}
+              pending
+            {% endif %}
         {% else %}
           {{ result.status }}
         {% endif %}

@@ -58,6 +58,47 @@ register.tag(ResultFor)
 
 
 
+class AlreadyTested(Tag):
+    """
+    Places whether other user has a result for this runcaseversion/env in context.
+
+    If no relevant Result exists, returns false
+
+    """
+    name = "already_tested"
+    options = Options(
+        Argument("runcaseversion"),
+        Argument("user"),
+        Argument("environment"),
+        "as",
+        Argument("varname", resolve=False),
+        )
+
+
+    def render_tag(self, context, runcaseversion, user, environment, varname):
+        """Get/construct Result and place it in context under ``varname``"""
+        include_kwargs = dict(
+            environment=environment,
+            runcaseversion=runcaseversion,
+            is_latest=True,
+            )
+        exclude_kwargs = dict(
+            tester=user,
+        )
+        try:
+            result = model.Result.objects.filter(
+                **include_kwargs).exclude(**exclude_kwargs).order_by(
+                "-modified_on")[0]
+            context[varname] = result
+        except IndexError:
+            context[varname] = None
+        return u""
+
+
+register.tag(AlreadyTested)
+
+
+
 class StepResultFor(Tag):
     """
     Places StepResult for this result/casestep in context.
