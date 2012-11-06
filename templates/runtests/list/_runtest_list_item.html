@@ -36,10 +36,10 @@
 
       {% if result.status == result.STATUS.invalidated %}
         <p class="invalid-note">{{ result.comment }}</p>
-        {% endif %}
+      {% endif %}
       {% if result.status == result.STATUS.failed %}
         <p class="failed-note">{{ result.comment }}</p>
-        {% endif %}
+      {% endif %}
 
       {% with caseversion.tags.all as tags %}
       {% if tags %}
