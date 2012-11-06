@@ -5979,7 +5979,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #runtests .results + .name, #runtests .byname {
   padding-left: 8.421%;
 }
-#runtests .results + .restart + .name, #runtests .results + .other-result + .name {
+#runtests .results + .restart + .name, #runtests .results + .other-result {
   padding-left: 4.211%;
 }
 #runtests .title, #runtests .invalid-note, #runtests .failed-note {
@@ -6124,12 +6124,23 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-position: 6px;
 }
 
+.other-result {
+  margin-top: 2px;
+  height: 30px;
+}
 .other-result .other-invalidated, .other-result .other-passed, .other-result .other-failed {
-  height: 100%;
   border-style: solid;
   border-width: 0.071em;
   padding: 0.304em;
   text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
+  height: 100%;
+  width: 100%;
+}
+.other-result .other-empty {
+  height: 40px;
+  border-style: solid;
+  border-width: 0em;
+  padding: 0.375em;
 }
 .other-result .other-invalidated {
   -webkit-box-shadow: rgba(253, 201, 13, 0.444) 0 3px 3px inset;

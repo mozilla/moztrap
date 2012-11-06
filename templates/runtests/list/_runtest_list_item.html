@@ -24,13 +24,13 @@
       </form>
     {% endif %}
 
-    {% if other_result %}
       <div class="other-result">
-          <span class="other-{{ other_result.status }}" title="marked {{ other_result.status }} by {{ other_result.tester }}">
-
-          </span>
+          {% if other_result and other_result.status != result.STATUS.assigned and other_result.status != result.STATUS.started %}
+            <span class="other-{{ other_result.status }}" title="marked {{ other_result.status }} by {{ other_result.tester }}"></span>
+          {% else %}
+            <span class="other-empty"></span>
+          {% endif %}
       </div>
-    {% endif %}
     <div class="name">
       <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
 

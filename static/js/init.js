@@ -209,7 +209,7 @@ var MT = (function (MT, $) {
         MT.failedTestBug('#runtests');
         MT.expandTestDetails('#runtests');
         MT.filterEnvironments('#runtests-environment-form');
-        MT.runtestsUpdateAjax('.run');
+        MT.runtestsUpdateAjax('#runtests');
 
         // owa.js
         MT.owa();

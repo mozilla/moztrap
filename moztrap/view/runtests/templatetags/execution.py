@@ -81,6 +81,7 @@ class OtherResultFor(Tag):
             environment=environment,
             runcaseversion=runcaseversion,
             is_latest=True,
+            status__in=model.Result.COMPLETED_STATES,
             )
         exclude_kwargs = dict(
             tester=user,
