@@ -103,39 +103,6 @@ register.tag(OtherResultFor)
 
 
 
-class ResultTitle(Tag):
-    """
-    Returns the title test that should show over the displayed result
-
-    Depends if there is no result yet, or if its not tested by user
-    and IS tested by another user
-
-    """
-    name = "result_title"
-    options = Options(
-        Argument("result"),
-        Argument("user"),
-        "as",
-        Argument("varname", resolve=False),
-        )
-
-
-    def render_tag(self, context, result, user, varname):
-        """Get/construct text and place it in context under ``varname``"""
-
-        if result.status == result.STATUS.assigned or result.status == result.STATUS.started:
-            context[varname] = "not yet tested"
-        elif result.tester == user:
-            context[varname] = "{0} by you".format(result.status)
-        else:
-            context[varname] = "{0} by {1} - click to submit your own result".format(result.status, result.tester)
-        return u""
-
-
-register.tag(ResultTitle)
-
-
-
 class StepResultFor(Tag):
     """
     Places StepResult for this result/casestep in context.
