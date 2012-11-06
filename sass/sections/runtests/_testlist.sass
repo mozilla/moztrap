@@ -15,8 +15,11 @@
   .restart
     +columns(1,24)
 
+  .other-result
+    +columns(1,24)
+
   .name, .byname
-    +columns(14,24)
+    +columns(13,24)
   .name
     .buglist
       @extend .chicklist
@@ -27,6 +30,9 @@
       +trailer(0)
 
   .results + .name, .byname
+    +prefix(2,24)
+
+  .results + .restart + .name, .results + .other-result + .name
     +prefix(1,24)
 
   .title, .invalid-note, .failed-note
@@ -76,7 +82,7 @@
     +padding-leader(.25)
     +padding-trailer(.25)
     +icon('ui/clock.png',$notext:false)
-  .invalidated, .passed, .failed, .already-invalidated, .already-passed, .already-failed
+  .invalidated, .passed, .failed
     +rhythm-borders(1px,.25)
     +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
   .invalidated, .passed, .failed
@@ -88,15 +94,23 @@
     +icon('ui/check.png',$green-lightest,$notext:false)
   .failed
     +icon('ui/x.png',$red-lightest,$notext:false)
-  .already-invalidated
+
+.other-result
+  .other-invalidated, .other-passed, .other-failed
+    //+demi
+    height: 100%
+
+    +rhythm-borders(1px,.25)
+    +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
+  .other-invalidated
     +box-shadow(rgba($yellow-dark,$xsmall) 0 3px $xxxsmallpx inset)
     border-color: rgba($blue-dark,$small)
     +icon('ui/warning.png',$notext:false)
-  .already-passed
+  .other-passed
     +box-shadow(rgba($green,$xsmall) 0 2px $xxxsmallpx inset)
     border-color: rgba($green-dark,$small)
     +icon('ui/check.png',$notext:false)
-  .already-failed
+  .other-failed
     +box-shadow(rgba($red,$xsmall) 0 2px $xxxsmallpx inset)
     border-color: rgba($red-dark,$small)
     +icon('ui/x.png',$notext:false)

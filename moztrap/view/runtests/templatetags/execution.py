@@ -11,27 +11,6 @@ from .... import model
 register = template.Library()
 
 
-def get_result(runcaseversion, user, environment):
-    result_kwargs = dict(
-        environment=environment,
-        tester=user,
-        runcaseversion=runcaseversion,
-        is_latest=True,
-        )
-    try:
-        result = model.Result.objects.get(**result_kwargs)
-    except model.Result.DoesNotExist:
-        result = model.Result(**result_kwargs)
-    except model.Result.MultipleObjectsReturned:
-        # find the latest one and set it to latest, which will set all
-        # others to is_latest=False
-        result = model.Result.objects.filter(**result_kwargs).order_by(
-            "-modified_on")[0]
-        result.set_latest()
-        result.save()
-    return result
-
-
 class ResultFor(Tag):
     """
     Places Result for this runcaseversion/user/env in context.
@@ -52,25 +31,25 @@ class ResultFor(Tag):
 
     def render_tag(self, context, runcaseversion, user, environment, varname):
         """Get/construct Result and place it in context under ``varname``"""
-#        result_kwargs = dict(
-#            environment=environment,
-#            tester=user,
-#            runcaseversion=runcaseversion,
-#            is_latest=True,
-#            )
-#        try:
-#            result = model.Result.objects.get(**result_kwargs)
-#        except model.Result.DoesNotExist:
-#            result = model.Result(**result_kwargs)
-#        except model.Result.MultipleObjectsReturned:
-#            # find the latest one and set it to latest, which will set all
-#            # others to is_latest=False
-#            result = model.Result.objects.filter(**result_kwargs).order_by(
-#                "-modified_on")[0]
-#            result.set_latest()
-#            result.save()
+        result_kwargs = dict(
+            environment=environment,
+            tester=user,
+            runcaseversion=runcaseversion,
+            is_latest=True,
+            )
+        try:
+            result = model.Result.objects.get(**result_kwargs)
+        except model.Result.DoesNotExist:
+            result = model.Result(**result_kwargs)
+        except model.Result.MultipleObjectsReturned:
+            # find the latest one and set it to latest, which will set all
+            # others to is_latest=False
+            result = model.Result.objects.filter(**result_kwargs).order_by(
+                "-modified_on")[0]
+            result.set_latest()
+            result.save()
 
-        context[varname] = get_result(runcaseversion, user, environment)
+        context[varname] = result
         return u""
 
 
@@ -78,60 +57,48 @@ register.tag(ResultFor)
 
 
 
-class SummaryResultFor(Tag):
+class OtherResultFor(Tag):
     """
-    Places Result for this runcaseversion/user/env in context.
-
-    If no relevant Result exists, returns *unsaved* default Result for use in
-    template (result will be saved when case is started.)
+    Places Result for this runcaseversion/env in context for other users.
 
     """
-    name = "summary_result_for"
+    name = "other_result_for"
     options = Options(
         Argument("runcaseversion"),
         Argument("user"),
         Argument("environment"),
         "as",
-        Argument("varname", resolve=False),
-        "and",
-        Argument("summary_varname", resolve=False)
+        Argument("varname", resolve=False)
         )
 
 
-    def render_tag(self, context, runcaseversion, user, environment, varname,
-                   summary_varname):
+    def render_tag(self, context, runcaseversion, user, environment, varname):
         """Get/construct Result and place it in context under ``varname``"""
-
-        result =  get_result(runcaseversion, user, environment)
-        context[varname] = result
-
-        summary_result = result
 
         # if the result.status is pending or assigned, then we try to find a result
         # from another user to return instead.
-        if result.status == result.STATUS.assigned or result.status == result.STATUS.started:
-            include_kwargs = dict(
-                environment=environment,
-                runcaseversion=runcaseversion,
-                is_latest=True,
-                )
-            exclude_kwargs = dict(
-                tester=user,
-                )
+        include_kwargs = dict(
+            environment=environment,
+            runcaseversion=runcaseversion,
+            is_latest=True,
+            )
+        exclude_kwargs = dict(
+            tester=user,
+            )
 
-            try:
-                summary_result = model.Result.objects.filter(
-                    **include_kwargs).exclude(**exclude_kwargs).order_by(
-                    "-modified_on")[0]
-            except IndexError:
-                pass
+        try:
+            result = model.Result.objects.filter(
+                **include_kwargs).exclude(**exclude_kwargs).order_by(
+                "-modified_on")[0]
+        except IndexError:
+            result = None
 
 
-        context[summary_varname] = summary_result
+        context[varname] = result
         return u""
 
 
-register.tag(SummaryResultFor)
+register.tag(OtherResultFor)
 
 
 

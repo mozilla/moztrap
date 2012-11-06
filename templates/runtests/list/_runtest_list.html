@@ -1,6 +1,6 @@
-{% load pagination %}
+{% load pagination execution urls %}
 
-<div class="itemlist action-ajax-replace">
+<div class="itemlist action-ajax-replace" data-ajax-update-url="{% url runtests_run run_id=run.id env_id=environment.id %}">
 
   {% include "runtests/list/_run_listordering.html" %}
 

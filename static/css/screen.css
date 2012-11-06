@@ -5480,6 +5480,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #manageruns .iteminfo + .suites {
   padding-left: 17.582%;
 }
+#manageruns .status-note {
+  font-style: italic;
+}
 
 #managesuites .listordering, #managesuites .itemhead, #managesuites #results .case-details .summary, #results .case-details #managesuites .summary, #managesuites .itembody .content {
   padding-left: 3.75em;
@@ -5954,10 +5957,16 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   width: 3.158%;
   margin-right: 1.053%;
 }
+#runtests .other-result {
+  display: inline;
+  float: left;
+  width: 3.158%;
+  margin-right: 1.053%;
+}
 #runtests .name, #runtests .byname {
   display: inline;
   float: left;
-  width: 57.895%;
+  width: 53.684%;
   margin-right: 1.053%;
 }
 #runtests .name .buglist {
@@ -5968,6 +5977,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-bottom: 0em;
 }
 #runtests .results + .name, #runtests .byname {
+  padding-left: 8.421%;
+}
+#runtests .results + .restart + .name, #runtests .results + .other-result + .name {
   padding-left: 4.211%;
 }
 #runtests .title, #runtests .invalid-note, #runtests .failed-note {
@@ -6063,7 +6075,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-left: 24px;
   background-position: 6px;
 }
-.results .invalidated, .results .passed, .results .failed, .results .already-invalidated, .results .already-passed, .results .already-failed {
+.results .invalidated, .results .passed, .results .failed {
   border-style: solid;
   border-width: 0.071em;
   padding: 0.304em;
@@ -6111,7 +6123,15 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-left: 24px;
   background-position: 6px;
 }
-.results .already-invalidated {
+
+.other-result .other-invalidated, .other-result .other-passed, .other-result .other-failed {
+  height: 100%;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
+}
+.other-result .other-invalidated {
   -webkit-box-shadow: rgba(253, 201, 13, 0.444) 0 3px 3px inset;
   -moz-box-shadow: rgba(253, 201, 13, 0.444) 0 3px 3px inset;
   box-shadow: rgba(253, 201, 13, 0.444) 0 3px 3px inset;
@@ -6127,7 +6147,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-left: 24px;
   background-position: 6px;
 }
-.results .already-passed {
+.other-result .other-passed {
   -webkit-box-shadow: rgba(117, 184, 40, 0.444) 0 2px 3px inset;
   -moz-box-shadow: rgba(117, 184, 40, 0.444) 0 2px 3px inset;
   box-shadow: rgba(117, 184, 40, 0.444) 0 2px 3px inset;
@@ -6143,7 +6163,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   padding-left: 24px;
   background-position: 6px;
 }
-.results .already-failed {
+.other-result .other-failed {
   -webkit-box-shadow: rgba(184, 40, 45, 0.444) 0 2px 3px inset;
   -moz-box-shadow: rgba(184, 40, 45, 0.444) 0 2px 3px inset;
   box-shadow: rgba(184, 40, 45, 0.444) 0 2px 3px inset;

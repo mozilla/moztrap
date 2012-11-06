@@ -209,6 +209,7 @@ var MT = (function (MT, $) {
         MT.failedTestBug('#runtests');
         MT.expandTestDetails('#runtests');
         MT.filterEnvironments('#runtests-environment-form');
+        MT.runtestsUpdateAjax('.run');
 
         // owa.js
         MT.owa();
@@ -221,6 +222,7 @@ var MT = (function (MT, $) {
 
         // filtering.js
         MT.removeInitialFilterParams('#filter');
+
     });
 
     return MT;

@@ -1,44 +1,44 @@
 {% load execution urls %}
 
 {% with runcaseversion.caseversion as caseversion %}
-{% summary_result_for runcaseversion user environment as result and summary_result%}
-{# If the summary_result.tester != user, then this result is from another user, so we use a different css class in some places. #}
-{% result_title summary_result user as result_title %}
+{% result_for runcaseversion user environment as result %}
+{% other_result_for runcaseversion user environment as other_result %}
 
-<article id="test-id-{{ runcaseversion.id }}" class="listitem {{ summary_result.status }}" data-title="{{ caseversion.name }}">
+<article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
-      <span class="result {% if summary_result.tester != user%}already-{% endif %}{{ summary_result.status }}" title="{{ result_title }}">
-        {% if summary_result.status == summary_result.STATUS.assigned or summary_result.status == summary_result.STATUS.started %}
+      <span class="result {{ result.status }}" title="your result">
+        {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
           pending
         {% else %}
-          {% if summary_result.tester == user %}
-            {{ summary_result.status }}
-          {% else %}
-            already tested
-          {% endif %}
+          {{ result.status }}
         {% endif %}
       </span>
     </div>
 
-    {% if summary_result.tester == user %}
-      {% if summary_result.status == summary_result.STATUS.passed or summary_result.status == summary_result.STATUS.invalidated or summary_result.status == summary_result.STATUS.failed %}
-        <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
-          {% csrf_token %}
-          <button class="action-restart" value="{{ runcaseversion.id }}" name="action-start" title="restart '{{ caseversion.name }}'">restart</button>
-        </form>
-      {% endif %}
+    {% if result.status == result.STATUS.passed or result.status == result.STATUS.invalidated or result.status == result.STATUS.failed %}
+      <form method="post" id="restart-form-{{ runcaseversion.id }}" class="restart">
+        {% csrf_token %}
+        <button class="action-restart" value="{{ runcaseversion.id }}" name="action-start" title="restart '{{ caseversion.name }}'">restart</button>
+      </form>
     {% endif %}
 
+    {% if other_result %}
+      <div class="other-result">
+          <span class="other-{{ other_result.status }}" title="marked {{ other_result.status }} by {{ other_result.tester }}">
+
+          </span>
+      </div>
+    {% endif %}
     <div class="name">
       <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
 
-      {% if summary_result.status == summary_result.STATUS.invalidated %}
-        <p class="invalid-note">{{ summary_result.comment }}</p>
+      {% if result.status == result.STATUS.invalidated %}
+        <p class="invalid-note">{{ result.comment }}</p>
         {% endif %}
-      {% if summary_result.status == summary_result.STATUS.failed %}
-        <p class="failed-note">{{ summary_result.comment }}</p>
+      {% if result.status == result.STATUS.failed %}
+        <p class="failed-note">{{ result.comment }}</p>
         {% endif %}
 
       {% with caseversion.tags.all as tags %}
@@ -51,10 +51,10 @@
       {% endif %}
       {% endwith %}
 
-      {% if summary_result.status == summary_result.STATUS.failed %}
-        {% if summary_result.bug_urls %}
+      {% if result.status == result.STATUS.failed %}
+        {% if result.bug_urls %}
           <ul class="buglist">
-            {% for bug in summary_result.bug_urls %}
+            {% for bug in result.bug_urls %}
               <li class="bugurl">
                 {% include "bugs/bug.html" %}
               </li>
