@@ -271,7 +271,7 @@ var MT = (function (MT, $) {
                         });
                     }
                 },
-                always: function() {
+                complete: function() {
                     setTimeout("MT.runtestsUpdateAjax('#runtests')", 10000);
                 }
             });
