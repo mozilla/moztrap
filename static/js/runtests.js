@@ -239,11 +239,12 @@ var MT = (function (MT, $) {
     };
 
     // Refetch list items according to filters to update existing list items
-    MT.runtestsUpdateAjax = function (container) {
+    MT.refreshRuntests = function (container) {
         var context = $(container),
             filterForm = context.find('#filterform');
         if (context.length) {
             var replaceList = context.find('.action-ajax-replace')
+            console.log(replaceList.data("ajax-update-url"))
             var pagenum = replaceList.find(".listnav").find(".current").html();
             $.ajax({
                 url: replaceList.data("ajax-update-url"),
@@ -272,9 +273,17 @@ var MT = (function (MT, $) {
                     }
                 },
                 complete: function() {
-                    setTimeout("MT.runtestsUpdateAjax('#runtests')", 10000);
+                    setTimeout("MT.refreshRuntests('#runtests')", 30000);
                 }
             });
+        }
+    };
+
+    MT.startRefreshTimer = function (container) {
+        var context = $(container),
+            filterForm = context.find('#filterform');
+        if (context.length) {
+            setTimeout("MT.refreshRuntests('#runtests')", 30000);
         }
     };
 

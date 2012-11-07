@@ -74,7 +74,7 @@ var MT = (function (MT, $) {
                     context.find('.action-ajax-replace').replaceWith(newList);
                     newList.find('.details').html5accordion();
                     newList.trigger('after-replace', [newList]);
-                    context.find('.action-ajax-replace').data("purl", "dewd");
+                    context.find('.action-ajax-replace').data("ajax-update-url", response.url);
                 }
             }
         });
