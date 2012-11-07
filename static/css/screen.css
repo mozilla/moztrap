@@ -6080,8 +6080,6 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   border-width: 0.071em;
   padding: 0.304em;
   text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
-}
-.results .invalidated, .results .passed, .results .failed {
   -webkit-box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
   -moz-box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
   box-shadow: rgba(69, 69, 69, 0.444) 0 1px 3px inset;
@@ -6124,23 +6122,20 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   background-position: 6px;
 }
 
-.other-result {
-  margin-top: 2px;
-  height: 30px;
+.other-result .other-invalidated, .other-result .other-passed, .other-result .other-failed, .other-result .other-empty {
+  height: 1.5em;
+  display: block;
+}
+.other-result .other-empty {
+  border-style: solid;
+  border-width: 0em;
+  padding: 0.375em;
 }
 .other-result .other-invalidated, .other-result .other-passed, .other-result .other-failed {
   border-style: solid;
   border-width: 0.071em;
   padding: 0.304em;
   text-shadow: rgba(255, 255, 255, 0.444) 0 1px 0;
-  height: 100%;
-  width: 100%;
-}
-.other-result .other-empty {
-  height: 40px;
-  border-style: solid;
-  border-width: 0em;
-  padding: 0.375em;
 }
 .other-result .other-invalidated {
   -webkit-box-shadow: rgba(253, 201, 13, 0.444) 0 3px 3px inset;
@@ -6155,8 +6150,12 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  padding-left: 24px;
-  background-position: 6px;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
 }
 .other-result .other-passed {
   -webkit-box-shadow: rgba(117, 184, 40, 0.444) 0 2px 3px inset;
@@ -6171,8 +6170,12 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  padding-left: 24px;
-  background-position: 6px;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
 }
 .other-result .other-failed {
   -webkit-box-shadow: rgba(184, 40, 45, 0.444) 0 2px 3px inset;
@@ -6187,8 +6190,12 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   -o-border-radius: 0.296em;
   border-radius: 0.296em;
   background-color: false;
-  padding-left: 24px;
-  background-position: 6px;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
 }
 
 .result-action, .invalid-summary {

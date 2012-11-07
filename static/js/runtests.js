@@ -244,12 +244,13 @@ var MT = (function (MT, $) {
             filterForm = context.find('#filterform');
         if (context.length) {
             var replaceList = context.find('.action-ajax-replace')
-
+            var pagenum = replaceList.find(".listnav").find(".current").html();
             $.ajax({
-                url: replaceList.attr("data-ajax-update-url"),
+                url: replaceList.data("ajax-update-url"),
                 cache: false,
                 data: {
-                    pagesize: replaceList.find('.listnav').data('pagesize')
+                    pagesize: replaceList.find('.listnav').data('pagesize'),
+                    pagenumber: replaceList.find(".listnav").find(".current").html()
                 },
                 success: function (response) {
                     var newList = $(response.html);
@@ -269,6 +270,8 @@ var MT = (function (MT, $) {
 
                         });
                     }
+                },
+                always: function() {
                     setTimeout("MT.runtestsUpdateAjax('#runtests')", 10000);
                 }
             });
