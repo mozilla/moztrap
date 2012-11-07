@@ -222,7 +222,6 @@ var MT = (function (MT, $) {
 
         // filtering.js
         MT.removeInitialFilterParams('#filter');
-
     });
 
     return MT;

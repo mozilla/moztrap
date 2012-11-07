@@ -264,7 +264,6 @@ var MT = (function (MT, $) {
                             var match = newList.find("#" + item.id);
                             if (match.length) {
                                 var other = $(item).find(".other-result");
-                                console.log(match.find(".other-result").html());
                                 other.html(match.find(".other-result").html());
                             }
 
