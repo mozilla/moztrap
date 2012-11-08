@@ -5480,6 +5480,9 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #manageruns .iteminfo + .suites {
   padding-left: 17.582%;
 }
+#manageruns .status-note {
+  font-style: italic;
+}
 
 #managesuites .listordering, #managesuites .itemhead, #managesuites #results .case-details .summary, #results .case-details #managesuites .summary, #managesuites .itembody .content {
   padding-left: 3.75em;
