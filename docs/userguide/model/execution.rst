@@ -42,13 +42,16 @@ box.  You define the run just as you would any other run by specifying the
 **Series** run is now just a template used for each build of your product to
 be tested.
 
-When you execute a run that is a series, you will be prompted for
-a build id.  If a member of this series with that build id already exists, it
-will be used for execution.  If not, then a new instance of this run series
-will be created with the build field set and the name to match.  For instance,
-with a run series called "Smashing" specifying a build of "Alpha1" will result
-in a new run in the series named "Smashing - Build: Alpha1" with distinct results
-from any other build in the series.
+When you execute a run that is a series, you will be prompted for your
+environment options, like always.  But you will also be asked for a build id.
+If there is already a member of this series that has that build id, then you
+will begin testing it.  If, however, no one has run this series on that build
+yet, then a new member of the series will be created and you will start
+testing it.  The name of this new member of the series will contain the build
+id you specified.  For instance, with a run series called "Smoketest,"
+specifying a build of "Alpha1" will result in a new member of the series
+named "Smoketest - Build: Alpha1" with distinct results from any other member
+in the series.
 
 When viewing the list of runs in the manage or results lists, you can then
 filter to see only runs that belong to a specific series.
