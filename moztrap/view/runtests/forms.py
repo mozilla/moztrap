@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 import floppyforms as forms
 
 from ... import model
-from moztrap.model import Run
 
 
 class EnvironmentSelectionForm(forms.Form):
@@ -76,6 +75,8 @@ class EnvironmentSelectionForm(forms.Form):
 
     def clean(self):
         """Validate that selected elements form valid environment."""
+        # only act on category_ items.  There may be other fields
+        # like "build" in here if a run series is being executed.
         selected_element_ids = set(
             [int(eid) for k, eid in self.cleaned_data.iteritems()
                 if k.find("category_") == 0 and eid])
@@ -115,8 +116,6 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
         2. If it does not exist, then clone this run, set the build field
             and execute it with the env specified.
 
-
-
     """
     build = forms.CharField(max_length=200, required=False)
     fields = ["build"]
@@ -132,7 +131,6 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
         """
         Check that the build value is set.
         """
-#        super(EnvironmentBuildSelectionForm, self).clean()
         if not self.cleaned_data["build"]:
             raise ValidationError("You must specify a build to test.")
 
@@ -142,7 +140,7 @@ class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
     def save(self):
         """Find the run with this build, or create a new one."""
         try:
-            this_run = Run.objects.get(
+            this_run = model.Run.objects.get(
                 series=self.run,
                 build=self.cleaned_data["build"],
                 )

@@ -23,6 +23,7 @@ def update_querystring(url, **kwargs):
             queryargs[k] = v
 
     # make sure all the values (such as filter params) are encoded to utf-8
+    # in case they have non-ascii characters in them.
     for k, v in queryargs.items():
         try:
             if isinstance(v, list):
