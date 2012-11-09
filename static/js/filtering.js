@@ -17,6 +17,16 @@ var MT = (function (MT, $) {
         });
     };
 
+    // Copy url of list to the clipboard
+    MT.copyListUrl = function (context) {
+        if ($(context).length) {
+            $(".copy-list-url").click(function() {
+                var url = $(location).attr("host") + $(".action-ajax-replace").attr("action");
+                console.log(url);
+            });
+        }
+    };
+
     // Remove filter params from URL on page-load (to avoid "stuck" filters)
     MT.removeInitialFilterParams = function (context) {
         if ($(context).length && window.location.search) {

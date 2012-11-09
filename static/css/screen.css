@@ -499,7 +499,7 @@ button {
   background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
 }
 
-.buttoninlay, .toggle a:link, .toggle a:visited, #save-profile-name {
+.buttoninlay, .toggle a:link, .toggle a:visited, .copy-list-url a:link, .copy-list-url a:visited, #save-profile-name {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -526,7 +526,7 @@ button {
   text-overflow: ellipsis;
 }
 
-.buttoninlayfocus, .toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a, #save-profile-name:focus, #save-profile-name:hover, #save-profile-name:active {
+.buttoninlayfocus, .toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a, .copy-list-url a:focus, .copy-list-url a:hover, .copy-list-url a:active, .expanded .copy-list-url a, #save-profile-name:focus, #save-profile-name:hover, #save-profile-name:active {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -551,7 +551,7 @@ button {
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
-.buttoninlayfocus:hover, .toggle a:hover, #save-profile-name:hover, .buttoninlayfocus:focus, .toggle a:focus, #save-profile-name:focus {
+.buttoninlayfocus:hover, .toggle a:hover, .copy-list-url a:hover, #save-profile-name:hover, .buttoninlayfocus:focus, .toggle a:focus, .copy-list-url a:focus, #save-profile-name:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
   background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
@@ -559,7 +559,7 @@ button {
   background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
-.buttoninlayfocus:active, .toggle a:active, #save-profile-name:active {
+.buttoninlayfocus:active, .toggle a:active, .copy-list-url a:active, #save-profile-name:active {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
@@ -3058,7 +3058,15 @@ body > div {
 .toggle {
   display: inline;
   float: left;
-  width: 20%;
+  width: 15.789%;
+  margin-right: 1.053%;
+  text-transform: capitalize;
+}
+
+.copy-list-url {
+  display: inline;
+  float: left;
+  width: 11.579%;
   margin-right: 1.053%;
   text-transform: capitalize;
 }

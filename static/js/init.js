@@ -145,6 +145,7 @@ var MT = (function (MT, $) {
         MT.directFilterLinks();
         MT.filterFormAjax('.manage, .results, .run');
         MT.clientSideFilter({container: '#envnarrowing'});
+        MT.copyListUrl('#filter');
 
         // manage-products.js
         MT.formOptionsFilter({
