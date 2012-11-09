@@ -31,14 +31,27 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     productversion = mtforms.MTModelChoiceField(
         queryset=model.ProductVersion.objects.all(),
         choice_attrs=mtforms.product_id_attrs)
+    build = forms.CharField(max_length=200, required=False)
+    is_series = forms.BooleanField(required=False)
 
 
     class Meta:
         model = model.Run
-        fields = ["productversion", "name", "description", "start", "end"]
+        fields = [
+            "productversion",
+            "name",
+            "description",
+            "is_series",
+            "build",
+            "start",
+            "end",
+            "is_series",
+            ]
         widgets = {
             "name": forms.TextInput,
             "description": mtforms.BareTextarea,
+            "build": forms.TextInput,
+            "is_series": forms.CheckboxInput,
             "start": forms.DateInput,
             "end": forms.DateInput,
             }
@@ -70,6 +83,10 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             return None
 
 
+    def clean_build(self):
+        """If this is a series, then null out the build field."""
+        if self.cleaned_data["is_series"]:
+            return None
 
 
     def save(self, user=None):

@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for run management views.
 
@@ -120,7 +121,7 @@ class AddRunTest(case.view.FormViewTestCase,
         pv = self.F.ProductVersionFactory.create()
         form = self.get_form()
         form["productversion"] = str(pv.id)
-        form["name"] = "Foo Run"
+        form["name"] = "Foo Run ùê"
         form["description"] = "Foo desc"
         form["start"] = "2012-1-2"
         form["end"] = "2012-1-20"
@@ -129,10 +130,10 @@ class AddRunTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_runs"))
 
-        res.follow().mustcontain("Run 'Foo Run' added.")
+        res.follow().mustcontain("Run 'Foo Run ùê' added.")
 
         r = pv.runs.get()
-        self.assertEqual(r.name, "Foo Run")
+        self.assertEqual(unicode(r.name), u"Foo Run ùê")
         self.assertEqual(r.description, "Foo desc")
         self.assertEqual(r.start, date(2012, 1, 2))
         self.assertEqual(r.end, date(2012, 1, 20))
@@ -200,15 +201,15 @@ class EditRunTest(case.view.FormViewTestCase,
     def test_save_basic(self):
         """Can save updates; redirects to manage runs list."""
         form = self.get_form()
-        form["name"] = "New Foo"
+        form["name"] = "New Foo ùê"
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_runs"))
 
-        res.follow().mustcontain("Saved 'New Foo'.")
+        res.follow().mustcontain("Saved 'New Foo ùê'.")
 
         r = self.refresh(self.testrun)
-        self.assertEqual(r.name, "New Foo")
+        self.assertEqual(unicode(r.name), u"New Foo ùê")
 
 
 

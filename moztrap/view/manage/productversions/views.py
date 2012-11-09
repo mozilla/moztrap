@@ -70,7 +70,7 @@ def productversion_add(request):
         productversion = form.save_if_valid()
         if productversion is not None:
             messages.success(
-                request, "Product version '{0}' added.".format(
+                request, u"Product version '{0}' added.".format(
                     productversion.name)
                 )
             return redirect("manage_productversions")
@@ -97,7 +97,7 @@ def productversion_edit(request, productversion_id):
             request.POST, instance=productversion, user=request.user)
         pv = form.save_if_valid()
         if pv is not None:
-            messages.success(request, "Saved '{0}'.".format(pv.name))
+            messages.success(request, u"Saved '{0}'.".format(pv.name))
             return redirect("manage_productversions")
     else:
         form = forms.EditProductVersionForm(

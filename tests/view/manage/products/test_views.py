@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for product management views.
 
@@ -112,7 +113,7 @@ class AddProductTest(case.view.FormViewTestCase,
     def test_success(self):
         """Can add a product with basic data, including a version."""
         form = self.get_form()
-        form["name"] = "Some browser"
+        form["name"] = "Some browser ùê"
         form["description"] = "Some old browser or other."
         form["version"] = "1.0"
 
@@ -120,10 +121,10 @@ class AddProductTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_products"))
 
-        res.follow().mustcontain("Product 'Some browser' added.")
+        res.follow().mustcontain("Product 'Some browser ùê' added.")
 
         p = self.model.Product.objects.get()
-        self.assertEqual(p.name, "Some browser")
+        self.assertEqual(unicode(p.name), u"Some browser ùê")
         self.assertEqual(p.description, "Some old browser or other.")
         self.assertEqual(p.versions.get().version, "1.0")
 
@@ -176,16 +177,16 @@ class EditProductTest(case.view.FormViewTestCase,
     def test_save_basic(self):
         """Can save updates; redirects to manage products list."""
         form = self.get_form()
-        form["name"] = "new name"
+        form["name"] = "new name ùê"
         form["description"] = "new desc"
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_products"))
 
-        res.follow().mustcontain("Saved 'new name'.")
+        res.follow().mustcontain("Saved 'new name ùê'.")
 
         p = self.refresh(self.product)
-        self.assertEqual(p.name, "new name")
+        self.assertEqual(unicode(p.name), u"new name ùê")
         self.assertEqual(p.description, "new desc")
 
 

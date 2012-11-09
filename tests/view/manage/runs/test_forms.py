@@ -276,6 +276,30 @@ class AddRunFormTest(case.DBTestCase):
         self.assertEqual(run.created_by, u)
 
 
+    def test_add_run_series_clears_build(self):
+        """Can add run as a series, and clears the build field if set."""
+        pv = self.F.ProductVersionFactory()
+        u = self.F.UserFactory()
+
+        f = self.form(
+            {
+                "productversion": str(pv.id),
+                "name": "Foo",
+                "description": "foo desc",
+                "start": "1/3/2012",
+                "end": "1/10/2012",
+                "cc_version": "0",
+                "is_series": True,
+                "build": "rah",
+                },
+            user=u
+        )
+
+        run = f.save()
+
+        self.assertEqual(run.build, None)
+
+
     def test_add_run_withsuites(self):
         """Can add suites to a new run."""
         pv = self.F.ProductVersionFactory.create()

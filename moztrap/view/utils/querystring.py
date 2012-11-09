@@ -22,5 +22,15 @@ def update_querystring(url, **kwargs):
             del queryargs[k]
         else:
             queryargs[k] = v
+
+    # make sure all the values (such as filter params) are encoded to utf-8
+    # in case they have non-ascii characters in them.
+    for k, v in queryargs.items():
+        try:
+            if isinstance(v, list):
+                queryargs[k] = [x.encode("utf-8") for x in v]
+        except:
+            pass
+
     parts[4] = urllib.urlencode(queryargs, doseq=True)
     return urlparse.urlunparse(parts)

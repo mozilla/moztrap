@@ -70,7 +70,7 @@ def suite_add(request):
         suite = form.save_if_valid()
         if suite is not None:
             messages.success(
-                request, "Suite '{0}' added.".format(
+                request, u"Suite '{0}' added.".format(
                     suite.name)
                 )
             return redirect("manage_suites")
@@ -97,7 +97,7 @@ def suite_edit(request, suite_id):
             request.POST, instance=suite, user=request.user)
         saved_suite = form.save_if_valid()
         if saved_suite is not None:
-            messages.success(request, "Saved '{0}'.".format(saved_suite.name))
+            messages.success(request, u"Saved '{0}'.".format(saved_suite.name))
             return redirect("manage_suites")
     else:
         form = forms.EditSuiteForm(

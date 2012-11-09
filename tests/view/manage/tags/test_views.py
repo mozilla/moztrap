@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for tag management views.
 
@@ -98,17 +99,17 @@ class AddTagTest(case.view.FormViewTestCase,
         """Can add a tag with basic data, including a product."""
         p = self.F.ProductFactory.create()
         form = self.get_form()
-        form["name"] = "Some browser"
+        form["name"] = "Some browser ùê"
         form["product"] = str(p.id)
 
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_tags"))
 
-        res.follow().mustcontain("Tag 'Some browser' added.")
+        res.follow().mustcontain("Tag 'Some browser ùê' added.")
 
         t = self.model.Tag.objects.get()
-        self.assertEqual(t.name, "Some browser")
+        self.assertEqual(unicode(t.name), u"Some browser ùê")
         self.assertEqual(t.product, p)
 
 
@@ -161,16 +162,16 @@ class EditTagTest(case.view.FormViewTestCase,
         """Can save updates; redirects to manage tags list."""
         p = self.F.ProductFactory.create()
         form = self.get_form()
-        form["name"] = "new name"
+        form["name"] = "new name ùê"
         form["product"] = str(p.id)
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_tags"))
 
-        res.follow().mustcontain("Saved 'new name'.")
+        res.follow().mustcontain("Saved 'new name ùê'.")
 
         t = self.refresh(self.tag)
-        self.assertEqual(t.name, "new name")
+        self.assertEqual(unicode(t.name), u"new name ùê")
         self.assertEqual(t.product, p)
 
 
@@ -216,7 +217,7 @@ class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase,
 
     def test_matching_tags_json(self):
         """Returns list of matching tags in JSON."""
-        t = self.F.TagFactory.create(name="foo")
+        t = self.F.TagFactory.create(name="foùêo")
 
         res = self.get("o")
 
@@ -226,8 +227,8 @@ class TagsAutocompleteTest(case.view.AuthenticatedViewTestCase,
                 "suggestions": [
                     {
                         "id": t.id,
-                        "name": "foo",
-                        "postText": "o",
+                        "name": u"foùêo",
+                        "postText": u"ùêo",
                         "preText": "f",
                         "product-id": None,
                         "type": "tag",

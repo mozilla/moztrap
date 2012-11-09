@@ -1,4 +1,4 @@
-{% load permissions %}
+{% load permissions filters %}
 
 <article id="run-id-{{ run.id }}" class="listitem" data-title="{{ run.name }}">
   {% include "manage/_status.html" with item=run permission="execution.manage_runs" %}
@@ -19,6 +19,15 @@
       </div>
 
       <h3 class="title" title="{{ run.name }}">{{ run.name }}</h3>
+
+      <div class="suitecount">
+          (<a href="{{ 'manage_suites'|filter_url:run }}" class="drill-link" title="manage all suites in {{ run.name }}">{{ run.suite_count }} Suites</a>)
+      </div>
+      {% if run.is_series %}
+      <div class="runseries">
+          (<a href="{{ 'manage_runs'|filter_url:run }}" class="drill-link" title="manage all runs in this series">Series Runs</a>)
+      </div>
+      {% endif %}
 
     </div>
 

@@ -170,7 +170,7 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
         kwargs.setdefault(
             "cascade", ["steps", "attachments", "tags", "environments"])
         overrides = kwargs.setdefault("overrides", {})
-        overrides.setdefault("name", "Cloned: {0}".format(self.name))
+        overrides.setdefault("name", u"Cloned: {0}".format(self.name))
         if "productversion" not in overrides and "case" not in overrides:
             overrides["case"] = self.case.clone(cascade=[])
         return super(CaseVersion, self).clone(*args, **kwargs)

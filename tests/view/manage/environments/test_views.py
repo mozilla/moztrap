@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for environment management views.
 
@@ -34,40 +35,40 @@ class ProfilesViewTest(case.view.manage.ListViewTestCase,
 
     def test_filter_by_name(self):
         """Can filter by name."""
-        self.factory.create(name="Foo 1")
-        self.factory.create(name="Foo 2")
+        self.factory.create(name=u"Foo 1 ùê")
+        self.factory.create(name=u"Foo 2 ùê")
 
         res = self.get(params={"filter-name": "1"})
 
-        self.assertInList(res, "Foo 1")
-        self.assertNotInList(res, "Foo 2")
+        self.assertInList(res, u"Foo 1 ùê")
+        self.assertNotInList(res, u"Foo 2 ùê")
 
 
     def test_filter_by_env_elements(self):
         """Can filter by environment elements."""
         envs = self.F.EnvironmentFactory.create_full_set(
             {"OS": ["Linux", "Windows"]})
-        p1 = self.factory.create(name="Foo 1")
+        p1 = self.factory.create(name=u"Foo 1 ùê")
         p1.environments.add(*envs)
-        p2 = self.factory.create(name="Foo 2")
+        p2 = self.factory.create(name=u"Foo 2 ùê")
         p2.environments.add(*envs[1:])
 
         res = self.get(
             params={"filter-envelement": envs[0].elements.all()[0].id})
 
-        self.assertInList(res, "Foo 1")
-        self.assertNotInList(res, "Foo 2")
+        self.assertInList(res, u"Foo 1 ùê")
+        self.assertNotInList(res, u"Foo 2 ùê")
 
 
     def test_sort_by_name(self):
         """Can sort by name."""
-        self.factory.create(name="Profile 1")
-        self.factory.create(name="Profile 2")
+        self.factory.create(name=u"Profile 1 ùê")
+        self.factory.create(name=u"Profile 2 ùê")
 
         res = self.get(
             params={"sortfield": "name", "sortdirection": "desc"})
 
-        self.assertOrderInList(res, "Profile 2", "Profile 1")
+        self.assertOrderInList(res, u"Profile 2 ùê", u"Profile 1 ùê")
 
 
 
@@ -93,7 +94,8 @@ class ProfileDetailTest(case.view.AuthenticatedViewTestCase,
     def test_details_envs(self):
         """Details lists envs."""
         self.profile.environments.add(
-            *self.F.EnvironmentFactory.create_full_set({"OS": ["Windows"]}))
+            *self.F.EnvironmentFactory.create_full_set(
+                {"OS": ["Windows"]}))
 
         res = self.get(headers={"X-Requested-With": "XMLHttpRequest"})
 
@@ -124,17 +126,17 @@ class AddProfileTest(case.view.FormViewTestCase,
         """Can add a profile with basic data."""
         el = self.F.ElementFactory.create()
         form = self.get_form()
-        form["name"] = "Foo Profile"
+        form["name"] = u"Foo Profile ùê"
         form["elements"] = [str(el.id)]
 
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_profiles"))
 
-        res.follow().mustcontain("Profile 'Foo Profile' added.")
+        res.follow().mustcontain(u"Profile 'Foo Profile ùê' added.")
 
         p = self.model.Profile.objects.get()
-        self.assertEqual(p.name, "Foo Profile")
+        self.assertEqual(p.name, u"Foo Profile ùê")
         self.assertEqual(p.environments.get().elements.get(), el)
 
 
@@ -247,14 +249,14 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
 
     def test_add_category(self):
         """Can add a new category."""
-        res = self.post({"new-category-name": "FooCat"})
+        res = self.post({"new-category-name": u"FooCat ùê".encode("utf-8")})
 
         self.assertElement(
             res.json["html"],
             lambda t: (
                 t.name == "h3" and
                 t["class"] == "title" and
-                t.text == "FooCat"
+                t.text == u"FooCat ùê"
                 )
             )
 
@@ -282,19 +284,24 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
         """Can change the name of a category."""
         c = self.F.CategoryFactory.create(name="OldName")
 
-        res = self.post(
-            {"new-category-name": "FooCat", "category-id": str(c.id)})
+        res = self.post({
+            "new-category-name": u"FooCat ùê".encode("utf-8"),
+            "category-id": str(c.id),
+            })
 
         self.assertElement(
             res.json["html"],
             lambda t: (
                 t.name == "h3" and
                 t["class"] == "title" and
-                t.text == "FooCat"
+                unicode(t.text).encode("utf-8") == u"FooCat ùê".encode("utf-8")
                 )
             )
 
-        self.assertEqual(self.refresh(c).name, "FooCat")
+        self.assertEqual(
+            unicode(self.refresh(c).name).encode("utf-8"),
+            u"FooCat ùê".encode("utf-8"),
+            )
 
 
     def test_edit_category_with_elements(self):
@@ -305,7 +312,7 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
 
         res = self.post(
             {
-                "new-category-name": "FooCat",
+                "new-category-name": u"FooCat ùê",
                 "category-id": str(c.id),
                 "elements": [str(el1.id)],
                 }
@@ -338,16 +345,21 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
         """Can add a new element."""
         c = self.F.CategoryFactory.create()
 
-        res = self.post(
-            {"new-element-name": "FooElement", "category-id": str(c.id)})
+        res = self.post({
+            "new-element-name": u"FooElement ùê".encode("utf-8"),
+            "category-id": str(c.id)},
+            )
 
         label_finder = lambda t: (
             t.name == "label" and
-            t.text == "FooElement"
+            unicode(t.text).encode("utf-8") == u"FooElement ùê".encode("utf-8")
             )
 
         e = self.model.Element.objects.get()
-        self.assertEqual(e.name, "FooElement")
+        self.assertEqual(
+            unicode(e.name).encode("utf-8"),
+            u"FooElement ùê".encode("utf-8"),
+            )
         self.assertEqual(e.category, c)
 
         self.assertElement(res.json["elem"], label_finder)
@@ -387,12 +399,14 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
         """Can change the name of a element."""
         e = self.F.ElementFactory.create(name="OldName")
 
-        res = self.post(
-            {"new-element-name": "FooElement", "element-id": str(e.id)})
+        res = self.post({
+            "new-element-name": u"FooElement ùê".encode("utf-8"),
+            "element-id": str(e.id)},
+            )
 
         label_finder = lambda t: (
                 t.name == "label" and
-                t.text == "FooElement"
+                unicode(t.text).encode("utf-8") == u"FooElement ùê".encode("utf-8")
                 )
 
         self.assertElement(res.json["elem"], label_finder)
@@ -408,7 +422,10 @@ class CategoryManagementViewTest(case.view.AuthenticatedViewTestCase):
                 }
             )
 
-        self.assertEqual(self.refresh(e).name, "FooElement")
+        self.assertEqual(
+            unicode(self.refresh(e).name).encode("utf-8"),
+            u"FooElement ùê".encode("utf-8"),
+            )
 
 
 
@@ -504,7 +521,7 @@ class EditProfileViewTest(case.view.FormViewTestCase,
             "profile-name-form",
             {
                 "save-profile-name": "1",
-                "profile-name": "FooProf",
+                "profile-name": u"FooProf ùê".encode("utf-8"),
                 },
             )
 
@@ -521,7 +538,10 @@ class EditProfileViewTest(case.view.FormViewTestCase,
                 "success": True,
                 }
             )
-        self.assertEqual(self.refresh(self.profile).name, "FooProf")
+        self.assertEqual(
+            unicode(self.refresh(self.profile).name).encode("utf-8"),
+            u"FooProf ùê".encode("utf-8"),
+            )
 
 
     def test_blank_profile_name(self):

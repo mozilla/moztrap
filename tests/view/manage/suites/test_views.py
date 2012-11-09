@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for suite management views.
 
@@ -248,7 +249,7 @@ class AddSuiteTest(case.view.FormViewTestCase,
         p = self.F.ProductFactory.create()
         form = self.get_form()
         form["product"] = str(p.id)
-        form["name"] = "Foo Suite"
+        form["name"] = "Foo Suite ùê"
         form["description"] = "Foo desc"
         form["status"] = "active"
 
@@ -256,10 +257,10 @@ class AddSuiteTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_suites"))
 
-        res.follow().mustcontain("Suite 'Foo Suite' added.")
+        res.follow().mustcontain("Suite 'Foo Suite ùê' added.")
 
         s = p.suites.get()
-        self.assertEqual(s.name, "Foo Suite")
+        self.assertEqual(unicode(s.name), u"Foo Suite ùê")
         self.assertEqual(s.description, "Foo desc")
         self.assertEqual(s.status, "active")
 
@@ -313,15 +314,15 @@ class EditSuiteTest(case.view.FormViewTestCase,
     def test_save_basic(self):
         """Can save updates; redirects to manage suites list."""
         form = self.get_form()
-        form["name"] = "New Foo"
+        form["name"] = "New Foo ùê"
         res = form.submit(status=302)
 
         self.assertRedirects(res, reverse("manage_suites"))
 
-        res.follow().mustcontain("Saved 'New Foo'.")
+        res.follow().mustcontain("Saved 'New Foo ùê'.")
 
         r = self.refresh(self.suite)
-        self.assertEqual(r.name, "New Foo")
+        self.assertEqual(unicode(r.name), u"New Foo ùê")
 
 
 

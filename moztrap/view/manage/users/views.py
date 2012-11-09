@@ -52,7 +52,7 @@ def user_add(request):
         if form.is_valid():
             user = form.save()
             messages.success(
-                request, "User '{0}' added.".format(
+                request, u"User '{0}' added.".format(
                     user.username)
                 )
             return redirect("manage_users")
@@ -78,7 +78,7 @@ def user_edit(request, user_id):
             request.POST, instance=user)
         if form.is_valid():
             u = form.save()
-            messages.success(request, "Saved '{0}'.".format(u.username))
+            messages.success(request, u"Saved '{0}'.".format(u.username))
             return redirect("manage_users")
     else:
         form = forms.EditUserForm(instance=user)

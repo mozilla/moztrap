@@ -201,6 +201,32 @@ class SetEnvironmentTest(case.view.AuthenticatedViewTestCase,
             )
 
 
+    def test_set_environment_and_build(self):
+        """Selecting an environment and build redirects to run view for that run/env."""
+        self.add_perm("execute")
+        self.testrun.environments.add(*self.envs)
+        self.testrun.is_series = True
+        self.testrun.save()
+
+        cat = self.model.Category.objects.get()
+
+        form = self.get().forms["runtests-environment-form"]
+        form["category_{0}".format(cat.id)] = self.envs[0].elements.get().id
+        form["build"] = "rahbuild"
+
+        res = form.submit(status=302)
+
+        # we now need to find the run that was created for the series
+        # by having the old run as its series value.
+        newrun = self.F.model.Run.objects.get(series=self.testrun)
+        self.assertRedirects(
+            res,
+            reverse(
+                "runtests_run",
+                kwargs={"run_id": newrun.id, "env_id": self.envs[0].id})
+        )
+
+
 
 class RunTestsTest(case.view.AuthenticatedViewTestCase,
                    case.view.NoCacheTest,

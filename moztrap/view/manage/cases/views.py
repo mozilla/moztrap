@@ -113,7 +113,7 @@ def case_add_bulk(request):
         if form.is_valid():
             cases = form.save()
             messages.success(
-                request, "Added {0} test case{1}.".format(
+                request, u"Added {0} test case{1}.".format(
                     len(cases), "" if len(cases) == 1 else "s")
                 )
             return redirect("manage_cases")
@@ -183,7 +183,7 @@ def caseversion_clone(request, caseversion_id):
             )
         messages.success(
             request,
-            "Created new version of '{0}' for {1}.".format(
+            u"Created new version of '{0}' for {1}.".format(
                 caseversion.name, productversion)
             )
 
