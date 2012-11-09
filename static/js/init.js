@@ -148,20 +148,6 @@ var MT = (function (MT, $) {
 
         // manage-products.js
         MT.formOptionsFilter({
-            container: '#suite-add-form, #suite-edit-form',
-            trigger_sel: '#id_product',
-            target_sel: '.multiunselected .select',
-            option_sel: '.selectitem',
-            multiselect_widget_bool: true
-        });
-        MT.formOptionsFilter({
-            container: '#run-add-form, #run-edit-form',
-            trigger_sel: '#id_productversion',
-            target_sel: '.multiunselected .select',
-            option_sel: '.selectitem',
-            multiselect_widget_bool: true
-        });
-        MT.formOptionsFilter({
             container: '#single-case-add, #bulk-case-add',
             trigger_sel: '#id_product',
             target_sel: '#id_productversion'
@@ -182,6 +168,28 @@ var MT = (function (MT, $) {
             }
         });
         MT.filterProductTags('#single-case-add, #bulk-case-add');
+        MT.populateMultiselectItems({
+            container: '#suite-edit-form, #suite-add-form',
+            trigger_field: '#id_product',
+            ajax_url_root: "/api/v1/suitecaseselection/?format=json&limit=0&productversion__product=",
+            for_type: "suite",
+            ich_template: ich.case_select_item
+        });
+        MT.populateMultiselectItems({
+            container: '#run-add-form',
+            trigger_field: '#id_productversion',
+            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            for_type: "run",
+            ich_template: ich.suite_select_item
+        });
+        MT.populateMultiselectItems({
+            container: '#run-edit-form',
+            trigger_field: '#id_productversion',
+            ajax_url_root: "/api/v1/runsuiteselection/?format=json&limit=0&product=",
+            for_type: "run",
+            ich_template: ich.suite_select_item,
+            refetch_on_trigger: false
+        });
         MT.testcaseAttachments('.case-form .attach');
 
         // manage-env.js

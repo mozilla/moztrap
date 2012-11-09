@@ -9,6 +9,7 @@ from django.views.decorators.cache import never_cache
 from django.contrib import messages
 
 from moztrap import model
+from moztrap.model.mtmodel import NotDeletedCount
 
 from moztrap.view.filters import RunFilterSet
 from moztrap.view.lists import decorators as lists
@@ -38,7 +39,8 @@ def runs_list(request):
         request,
         "manage/run/runs.html",
         {
-            "runs": model.Run.objects.select_related(),
+            "runs": model.Run.objects.select_related().annotate(
+                suite_count=NotDeletedCount("suites", distinct=True)),
             }
         )
 
@@ -69,7 +71,7 @@ def run_add(request):
         run = form.save_if_valid()
         if run is not None:
             messages.success(
-                request, "Run '{0}' added.".format(
+                request, u"Run '{0}' added.".format(
                     run.name)
                 )
             return redirect("manage_runs")
@@ -96,7 +98,7 @@ def run_edit(request, run_id):
             request.POST, instance=run, user=request.user)
         saved_run = form.save_if_valid()
         if saved_run is not None:
-            messages.success(request, "Saved '{0}'.".format(saved_run.name))
+            messages.success(request, u"Saved '{0}'.".format(saved_run.name))
             return redirect("manage_runs")
     else:
         form = forms.EditRunForm(

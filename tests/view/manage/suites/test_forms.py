@@ -102,6 +102,30 @@ class EditSuiteFormTest(case.DBTestCase):
         self.assertEqual(set(suite.cases.all()), set([c]))
 
 
+    def test_add_bad_case(self):
+        """Try to add a non-existent case to a suite, get exception."""
+        s = self.F.SuiteFactory()
+        c = self.F.CaseFactory(product=s.product)
+
+        f = self.form(
+            {
+                "product": str(s.product.id),
+                "name": s.name,
+                "description": s.description,
+                "status": s.status,
+                "cases": [str(c.id + 1)],
+                "cc_version": str(s.cc_version),
+                },
+            instance=s,
+            )
+
+        self.assertFalse(f.is_valid())
+        self.assertEqual(
+            f.errors["cases"],
+            [u"Not a valid case for this suite."]
+        )
+
+
     def test_edit_cases(self):
         """Can edit cases of a suite."""
         s = self.F.SuiteFactory.create()
@@ -198,14 +222,6 @@ class AddSuiteFormTest(case.DBTestCase):
             [
                 c[1].attrs["data-product-id"]
                 for c in f.fields["product"].choices
-                if c[0]
-                ],
-            [case.product.id]
-            )
-        self.assertEqual(
-            [
-                c[1].attrs["data-product-id"]
-                for c in f.fields["cases"].choices
                 if c[0]
                 ],
             [case.product.id]

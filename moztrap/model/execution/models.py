@@ -24,6 +24,9 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     description = models.TextField(blank=True)
     start = models.DateField(default=datetime.date.today)
     end = models.DateField(blank=True, null=True)
+    build = models.TextField(null=True, blank=True)
+    is_series = models.BooleanField(default=False)
+    series = models.ForeignKey("self", null=True, blank=True)
 
     caseversions = models.ManyToManyField(
         CaseVersion, through="RunCaseVersion", related_name="runs")
@@ -65,6 +68,21 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         overrides = kwargs.setdefault("overrides", {})
         overrides["status"] = self.STATUS.draft
         overrides.setdefault("name", "Cloned: {0}".format(self.name))
+        return super(Run, self).clone(*args, **kwargs)
+
+
+    def clone_for_series(self, *args, **kwargs):
+        """Clone this Run to create a new series item."""
+        build = kwargs.pop("build", None)
+        kwargs.setdefault(
+            "cascade", ["runsuites", "environments", "team"])
+        overrides = kwargs.setdefault("overrides", {})
+        overrides.setdefault("name", "{0} - Build: {1}".format(
+            self.name, build))
+        overrides["status"] = self.STATUS.draft
+        overrides.setdefault("is_series", False)
+        overrides.setdefault("build", build)
+        overrides.setdefault("series", self)
         return super(Run, self).clone(*args, **kwargs)
 
 

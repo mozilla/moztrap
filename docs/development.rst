@@ -74,6 +74,16 @@ To install the necessary Ruby gems for Compass/Sass development, run
 ``bin/install-gems``.  Update ``requirements/gems.txt`` if newer gems should be
 used.
 
+While tweaking the sass files, you should run the command line file to update
+the CSS as you go.  To do this::
+
+    compass watch
+
+or a workaround to a bug for Mac OS 10.8::
+
+    compass watch --poll
+
+
 .. _Sass: http://sass-lang.com
 .. _Compass: http://compass-style.org
 .. _Susy: http://susy.oddbird.net

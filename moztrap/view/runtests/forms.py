@@ -3,11 +3,11 @@ Forms for test execution.
 
 """
 import json
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 import floppyforms as forms
 
 from ... import model
-
 
 
 class EnvironmentSelectionForm(forms.Form):
@@ -75,8 +75,11 @@ class EnvironmentSelectionForm(forms.Form):
 
     def clean(self):
         """Validate that selected elements form valid environment."""
+        # only act on category_ items.  There may be other fields
+        # like "build" in here if a run series is being executed.
         selected_element_ids = set(
-            [int(eid) for eid in self.cleaned_data.itervalues() if eid])
+            [int(eid) for k, eid in self.cleaned_data.iteritems()
+                if k.find("category_") == 0 and eid])
         matches = [
             envid for envid, element_ids in self.elementids_by_envid.items()
             if set([e for e in element_ids if e]).issubset(selected_element_ids)
@@ -99,3 +102,53 @@ class EnvironmentSelectionForm(forms.Form):
     def valid_environments_json(self):
         """Return lists of element IDs representing valid envs, as JSON."""
         return json.dumps(self.elementids_by_envid.values())
+
+
+class EnvironmentBuildSelectionForm(EnvironmentSelectionForm):
+    """
+    Form to select your environment and specify a build.
+
+    This is if the user is running a Run that is a series.  If so, then it
+    prompts for a build number::
+
+        1. If the clone of this run with that build number already exists,
+            Then execute that run with the specified env.
+        2. If it does not exist, then clone this run, set the build field
+            and execute it with the env specified.
+
+    """
+    build = forms.CharField(max_length=200, required=False)
+    fields = ["build"]
+
+    def __init__(self, *args, **kwargs):
+        self.run = kwargs.pop("run", None)
+        self.build = kwargs.pop("build", None)
+        self.user = kwargs.pop("user", None)
+        super(EnvironmentBuildSelectionForm, self).__init__(*args, **kwargs)
+
+
+    def clean_build(self):
+        """
+        Check that the build value is set.
+        """
+        if not self.cleaned_data["build"]:
+            raise ValidationError("You must specify a build to test.")
+
+        return self.cleaned_data["build"]
+
+
+    def save(self):
+        """Find the run with this build, or create a new one."""
+        try:
+            this_run = model.Run.objects.get(
+                series=self.run,
+                build=self.cleaned_data["build"],
+                )
+        except ObjectDoesNotExist:
+            this_run = self.run.clone_for_series(
+                build=self.cleaned_data["build"],
+                user=self.user,
+                )
+            this_run.activate()
+        # now we need to return this new run as the one to be executed.
+        return super(EnvironmentBuildSelectionForm, self).save(), this_run.id

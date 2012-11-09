@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for productversion management views.
 
@@ -228,7 +229,7 @@ class EditProductVersionTest(case.view.FormViewTestCase,
         """Setup for edit tests; create productversion, add perm."""
         super(EditProductVersionTest, self).setUp()
         self.productversion = self.F.ProductVersionFactory.create(
-            product__name="Foo")
+            product__name="Foo ùê")
         self.add_perm("manage_products")
 
 
@@ -257,10 +258,10 @@ class EditProductVersionTest(case.view.FormViewTestCase,
 
         self.assertRedirects(res, reverse("manage_productversions"))
 
-        res.follow().mustcontain("Saved 'Foo 2.0'.")
+        res.follow().mustcontain("Saved 'Foo ùê 2.0'.")
 
         pv = self.refresh(self.productversion)
-        self.assertEqual(pv.name, "Foo 2.0")
+        self.assertEqual(unicode(pv.name), u"Foo ùê 2.0")
         self.assertEqual(pv.codename, "new code")
 
 

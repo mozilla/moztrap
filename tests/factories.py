@@ -169,7 +169,7 @@ class SuiteCaseFactory(factory.Factory):
         CaseFactory,
         product=factory.LazyContainerAttribute(
             lambda obj, containers: containers[0].suite.product))
-
+    order = 0
 
 
 class CaseVersionFactory(EnvironmentsFactoryMixin, factory.Factory):
@@ -350,7 +350,7 @@ class RunSuiteFactory(factory.Factory):
         SuiteFactory,
         product=factory.LazyContainerAttribute(
             lambda obj, containers: containers[0].run.productversion.product))
-
+    order = 0
 
 
 class ResultFactory(factory.Factory):

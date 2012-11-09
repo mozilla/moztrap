@@ -1,7 +1,7 @@
 {% extends 'manage/run/base.html' %}
 
 {% block content %}
-<section class="{% block sectionid %}{% endblock %}">
+<section class="{% block sectionid %}{% endblock %}" data-run-id="{% block runid %}{% endblock %}">
   <h2>
     {% block formtitle %}{% endblock %}
     {% include "_helplink.html" with helpURL="execution.html#run-edit-fields" %}
@@ -14,7 +14,9 @@
 
     {% include "forms/_field.html" with field=form.productversion label="Product Version" %}
     {% include "forms/_field.html" with field=form.name %}
+    {% include "forms/_field.html" with field=form.is_series label="This is a series" %}
     {% include "forms/_field.html" with field=form.description %}
+    {% include "forms/_field.html" with field=form.build %}
     {% include "forms/_field.html" with field=form.start %}
     {% include "forms/_field.html" with field=form.end %}
 

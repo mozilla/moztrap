@@ -2,6 +2,7 @@
 Management forms for suites.
 
 """
+from django.core.exceptions import ValidationError
 import floppyforms as forms
 
 from moztrap import model
@@ -12,17 +13,13 @@ from moztrap.view.utils import mtforms
 
 class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
     """Base form for adding/editing suites."""
-    cases = mtforms.MTModelMultipleChoiceField(
-        queryset=model.Case.objects.all(),
+    cases = mtforms.MTMultipleChoiceField(
         required=False,
-        choice_attrs=mtforms.product_id_attrs,
         widget=mtforms.FilteredSelectMultiple(
             choice_template="manage/suite/case_select/_case_select_item.html",
             listordering_template=(
                 "manage/suite/case_select/_case_select_listordering.html"),
             filters=[
-                filters.ChoicesFilter(
-                    "status", choices=model.CaseVersion.STATUS),
                 filters.KeywordFilter("name"),
                 filters.ModelFilter(
                     "tag", lookup="tags", queryset=model.Tag.objects.all()),
@@ -43,6 +40,19 @@ class SuiteForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
             "description": mtforms.BareTextarea,
             "status": forms.Select,
             }
+
+
+    def clean_cases(self):
+        """
+        Make sure all the ids for the cases are valid and populate
+        self.cleaned_data with the real objects.
+        """
+        cases = dict((unicode(x.id), x) for x in
+            model.Case.objects.filter(pk__in=self.cleaned_data["cases"]))
+        try:
+            return [cases[x] for x in self.cleaned_data["cases"]]
+        except KeyError as e:
+            raise ValidationError("Not a valid case for this suite.")
 
 
     def save(self, user=None):
@@ -78,8 +88,4 @@ class EditSuiteForm(SuiteForm):
             pf.queryset = pf.queryset.filter(pk=self.instance.product_id)
             pf.readonly = True
 
-            cf = self.fields["cases"]
-            cf.queryset = cf.queryset.filter(product=self.instance.product_id)
-
-        self.initial["cases"] = list(
-            self.instance.cases.values_list("id", flat=True))
+            # ajax populates available and included cases on page load

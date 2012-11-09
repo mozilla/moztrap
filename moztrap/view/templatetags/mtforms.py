@@ -56,7 +56,10 @@ def values_text(boundfield):
     val = boundfield.value()
     # If choices is set, use the display label
     choice_dict = dict(getattr(boundfield.field, "choices", []))
-    return [unicode(choice_dict.get(v, v)) for v in val]
+    if val:
+        return [unicode(choice_dict.get(v, v)) for v in val]
+    else:
+        return []
 
 
 @register.filter

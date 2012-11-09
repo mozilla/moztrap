@@ -19,7 +19,7 @@ from ..users.decorators import permission_required
 from ..utils.ajax import ajax
 
 from .finders import RunTestsFinder
-from .forms import EnvironmentSelectionForm
+from .forms import EnvironmentSelectionForm, EnvironmentBuildSelectionForm
 
 
 
@@ -48,22 +48,54 @@ def set_environment(request, run_id):
         current = int(request.GET.get("environment", None))
     except (TypeError, ValueError):
         current = None
+    try:
+        build = int(request.GET.get("build", None))
+    except (TypeError, ValueError):
+        build = None
 
     form_kwargs = {
         "current": current,
         "environments": run.environments.all()
         }
 
+    # the run could be an individual, or a series.
+    # if it's a series, we need to use the right form
+    # that will prompt them for a build number.
+    # if a run for this series exists with that build number
+    # already, then use that id, otherwise clone this run,
+    # set it active and
+    # create a new one with the build id set.
+    if run.is_series:
+        form_kwargs["run"] = run
+        form_kwargs["build"] = build
+        form_kwargs["user"] = request.user
+        form_class = EnvironmentBuildSelectionForm
+    else:
+        form_class = EnvironmentSelectionForm
+
     if request.method == "POST":
-        form = EnvironmentSelectionForm(
-            request.POST,
-            **form_kwargs)
+        # user responding to this form with their selections
+        # they may or may not be valid
+        form = form_class(request.POST, **form_kwargs)
 
         if form.is_valid():
-            envid = form.save()
-            return redirect("runtests_run", run_id=run_id, env_id=envid)
+            result = form.save()
+
+            # @@@ seems like there may be a better pattern for this than
+            # what I'm doing here.  Carl, any ideas?
+            try:
+                # If a runid WAS returned, then that would be the new run
+                # created for the build of the runseries.
+                envid, runid = result
+            except TypeError:
+                # if no runid was returned, then this is not a runseries, and
+                # we should just use the run id from this run.
+                envid = result
+                runid = run_id
+            return redirect("runtests_run", run_id=runid, env_id=envid)
     else:
-        form = EnvironmentSelectionForm(**form_kwargs)
+        # run just specified, prompt user for env and possibly build
+        form = form_class(**form_kwargs)
 
     return TemplateResponse(
         request,
@@ -91,7 +123,7 @@ ACTIONS = {
 @permission_required("execution.execute")
 @lists.finder(RunTestsFinder)
 @lists.filter("runcaseversions", filterset_class=RunTestsRunCaseVersionFilterSet)
-@lists.sort("runcaseversions")
+@lists.sort("runcaseversions", defaultfield="order")
 @ajax("runtests/list/_runtest_list.html")
 def run(request, run_id, env_id):
     run = get_object_or_404(model.Run.objects.select_related(), pk=run_id)

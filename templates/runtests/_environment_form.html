@@ -1,12 +1,12 @@
 {% if envform %}
-<script>
+<script xmlns="http://www.w3.org/1999/html">
 VALID_ENVIRONMENTS = {{ envform.valid_environments_json }};
 </script>
 {% endif %}
 
 <div class="runenvselect {% if not envform %}empty{% endif %}">
   {% if envform %}
-    <h3 class="selectenvhead">Set your environment</h3>
+    <h3 class="selectenvhead">Set your values to <a href="{% url 'runtests_environment' run_id=run.id %}">run tests in {{ run }}</a></h3>
     <form id="runtests-environment-form" method="POST" action="{% url 'runtests_environment' run_id=run.id %}">
       {% csrf_token %}
       {{ envform.non_field_errors }}
