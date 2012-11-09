@@ -4418,7 +4418,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-run .is-series-field, .edit-run .is-series-field {
+.add-run .this-is-a-series-field, .edit-run .this-is-a-series-field {
   display: inline;
   float: left;
   width: 24.211%;
