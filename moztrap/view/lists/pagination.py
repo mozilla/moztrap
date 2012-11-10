@@ -4,7 +4,6 @@ List pagination utilities.
 """
 import math
 from django.db.utils import DatabaseError
-from moztrap.model.core.auth import User
 from ..utils.querystring import update_querystring
 
 
