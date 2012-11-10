@@ -3,7 +3,8 @@ List pagination utilities.
 
 """
 import math
-
+from django.db.utils import DatabaseError
+from moztrap.model.core.auth import User
 from ..utils.querystring import update_querystring
 
 
@@ -93,7 +94,13 @@ class Pager(object):
     def total(self):
         """The total number of objects."""
         if self._cached_total is None:
-            self._cached_total = self._queryset.count()
+            # @@@ Django 1.5 should not require the except block in this try.
+            # Bug 18248
+            try:
+                self._cached_total = self._queryset.count()
+            except DatabaseError:
+                self._cached_total = len(self._queryset.values())
+
         return self._cached_total
 
 
