@@ -93,12 +93,11 @@ class Pager(object):
     def total(self):
         """The total number of objects."""
         if self._cached_total is None:
-            # @@@ Django 1.5 should not require the except block in this try.
+            # @@@ Django 1.5 should not require the .values part and could be
+            # changed to just:
+            #     self._cached_total = self._queryset.count()
             # Bug 18248
-            try:
-                self._cached_total = self._queryset.count()
-            except DatabaseError:
-                self._cached_total = len(self._queryset.values())
+            self._cached_total = self._queryset.values("id").count()
 
         return self._cached_total
 

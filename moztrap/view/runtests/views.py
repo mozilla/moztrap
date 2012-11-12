@@ -81,8 +81,8 @@ def set_environment(request, run_id):
         if form.is_valid():
             result = form.save()
 
-            # @@@ seems like there may be a better pattern for this than
-            # what I'm doing here.  Carl, any ideas?
+            # @@@ Carl: seems like there may be a better pattern for this than
+            # what I'm doing here.  Any ideas?
             try:
                 # If a runid WAS returned, then that would be the new run
                 # created for the build of the runseries.
