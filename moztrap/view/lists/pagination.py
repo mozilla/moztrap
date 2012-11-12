@@ -97,7 +97,10 @@ class Pager(object):
             # changed to just:
             #     self._cached_total = self._queryset.count()
             # Bug 18248
-            self._cached_total = self._queryset.values("id").count()
+            try:
+                self._cached_total = self._queryset.count()
+            except DatabaseError:
+                self._cached_total = self._queryset.values("id").count()
 
         return self._cached_total
 
