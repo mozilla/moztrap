@@ -238,6 +238,55 @@ var MT = (function (MT, $) {
         }
     };
 
+    // Refetch list items according to filters to update existing list items
+    MT.refreshRuntests = function (container) {
+        var context = $(container),
+            filterForm = context.find('#filterform');
+        if (context.length) {
+            var replaceList = context.find('.action-ajax-replace')
+            console.log(replaceList.data("ajax-update-url"))
+            var pagenum = replaceList.find(".listnav").find(".current").html();
+            $.ajax({
+                url: replaceList.data("ajax-update-url"),
+                cache: false,
+                data: {
+                    pagesize: replaceList.find('.listnav').data('pagesize'),
+                    pagenumber: replaceList.find(".listnav").find(".current").html()
+                },
+                success: function (response) {
+                    var newList = $(response.html);
+
+                    if (response.html) {
+                        // here we want to walk each existing item in the list,
+                        // and replace its other-result with what we have in this response
+
+                        // loop through all the articles.
+                        $('article').each(function(idx, item) {
+                            // find the matching one in the response.html
+                            var match = newList.find("#" + item.id);
+                            if (match.length) {
+                                var other = $(item).find(".other-result");
+                                other.html(match.find(".other-result").html());
+                            }
+
+                        });
+                    }
+                },
+                complete: function() {
+                    setTimeout("MT.refreshRuntests('#runtests')", 30000);
+                }
+            });
+        }
+    };
+
+    MT.startRefreshTimer = function (container) {
+        var context = $(container),
+            filterForm = context.find('#filterform');
+        if (context.length) {
+            setTimeout("MT.refreshRuntests('#runtests')", 30000);
+        }
+    };
+
     return MT;
 
 }(MT || {}, jQuery));

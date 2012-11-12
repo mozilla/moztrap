@@ -2,12 +2,13 @@
 
 {% with runcaseversion.caseversion as caseversion %}
 {% result_for runcaseversion user environment as result %}
+{% other_result_for runcaseversion user environment as other_result %}
 
 <article id="test-id-{{ runcaseversion.id }}" class="listitem {{ result.status }}" data-title="{{ caseversion.name }}">
 
   <div class="itemhead">
     <div class="results">
-      <span class="result {{ result.status }}">
+      <span class="result {{ result.status }}" title="your result">
         {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
           pending
         {% else %}
@@ -23,6 +24,13 @@
       </form>
     {% endif %}
 
+      <div class="other-result">
+          {% if other_result and other_result.status != result.STATUS.assigned and other_result.status != result.STATUS.started %}
+            <span class="other-{{ other_result.status }}" title="marked {{ other_result.status }} by {{ other_result.tester }}"></span>
+          {% else %}
+            <span class="other-empty"></span>
+          {% endif %}
+      </div>
     <div class="name">
       <h3 class="title" title="{{ caseversion.name }}">{{ caseversion.name }}</h3>
 

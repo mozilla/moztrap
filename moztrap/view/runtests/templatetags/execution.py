@@ -11,7 +11,6 @@ from .... import model
 register = template.Library()
 
 
-
 class ResultFor(Tag):
     """
     Places Result for this runcaseversion/user/env in context.
@@ -55,6 +54,52 @@ class ResultFor(Tag):
 
 
 register.tag(ResultFor)
+
+
+
+class OtherResultFor(Tag):
+    """
+    Places Result for this runcaseversion/env in context for other users.
+
+    """
+    name = "other_result_for"
+    options = Options(
+        Argument("runcaseversion"),
+        Argument("user"),
+        Argument("environment"),
+        "as",
+        Argument("varname", resolve=False)
+        )
+
+
+    def render_tag(self, context, runcaseversion, user, environment, varname):
+        """Get/construct Result and place it in context under ``varname``"""
+
+        # if the result.status is pending or assigned, then we try to find a result
+        # from another user to return instead.
+        include_kwargs = dict(
+            environment=environment,
+            runcaseversion=runcaseversion,
+            is_latest=True,
+            status__in=model.Result.COMPLETED_STATES,
+            )
+        exclude_kwargs = dict(
+            tester=user,
+            )
+
+        try:
+            result = model.Result.objects.filter(
+                **include_kwargs).exclude(**exclude_kwargs).order_by(
+                "-modified_on")[0]
+        except IndexError:
+            result = None
+
+
+        context[varname] = result
+        return u""
+
+
+register.tag(OtherResultFor)
 
 
 

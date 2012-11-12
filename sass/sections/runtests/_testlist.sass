@@ -15,8 +15,11 @@
   .restart
     +columns(1,24)
 
+  .other-result
+    +columns(1,24)
+
   .name, .byname
-    +columns(14,24)
+    +columns(13,24)
   .name
     .buglist
       @extend .chicklist
@@ -27,6 +30,9 @@
       +trailer(0)
 
   .results + .name, .byname
+    +prefix(2,24)
+
+  .results + .restart + .name, .results + .other-result
     +prefix(1,24)
 
   .title, .invalid-note, .failed-note
@@ -78,8 +84,8 @@
     +icon('ui/clock.png',$notext:false)
   .invalidated, .passed, .failed
     +rhythm-borders(1px,.25)
-    +box-shadow(rgba($base,$xsmall) 0 1px $xxxsmallpx inset)
     +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
+    +box-shadow(rgba($base,$xsmall) 0 1px $xxxsmallpx inset)
     border-color: rgba($blue-dark,$small)
   .invalidated
     +icon('ui/warning.png',$yellow-lighter,$notext:false)
@@ -87,6 +93,29 @@
     +icon('ui/check.png',$green-lightest,$notext:false)
   .failed
     +icon('ui/x.png',$red-lightest,$notext:false)
+
+.other-result
+  .other-invalidated, .other-passed, .other-failed, .other-empty
+    height: rhythm(1)
+    display: block
+  .other-empty
+    +rhythm-borders(0px,.25)
+  .other-invalidated, .other-passed, .other-failed
+    +rhythm-borders(1px,.25)
+    +text-shadow(rgba($lightest,$xsmall) 0 1px 0)
+  .other-invalidated
+    +box-shadow(rgba($yellow-dark,$xsmall) 0 3px $xxxsmallpx inset)
+    border-color: rgba($blue-dark,$small)
+    +icon('ui/warning.png',$notext:true)
+  .other-passed
+    +box-shadow(rgba($green,$xsmall) 0 2px $xxxsmallpx inset)
+    border-color: rgba($green-dark,$small)
+    +icon('ui/check.png',$notext:true)
+  .other-failed
+    +box-shadow(rgba($red,$xsmall) 0 2px $xxxsmallpx inset)
+    border-color: rgba($red-dark,$small)
+    +icon('ui/x.png',$notext:true)
+
 
 // ---------------------------------------------------------------------------
 // Result action buttons
@@ -133,6 +162,7 @@
 // ---------------------------------------------------------------------------
 // Step Fail
 #runtests
+
   .step.failed
     .instruction, .outcome
       color: $red

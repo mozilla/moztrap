@@ -6,7 +6,6 @@ import urllib
 import urlparse
 
 
-
 def update_querystring(url, **kwargs):
     """
     Updates the querystring of ``url`` with keys/values in ``kwargs``,
