@@ -591,3 +591,21 @@ class RunActivationTest(case.DBTestCase):
         r.activate()
 
         self.assertEqual(r.runcaseversions.count(), 0)
+
+
+    def test_query_count_on_activate(self):
+        """Count number of queries needed for activation of complex run."""
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        for num in range(3):
+            tc = self.F.CaseFactory.create(product=self.p)
+            self.F.CaseVersionFactory.create(
+                case=tc, productversion=self.pv8, status="active")
+            self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+
+        with self.assertNumQueries(17):
+            r.activate()
