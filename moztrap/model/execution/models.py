@@ -6,6 +6,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import connection, models
+from django.db.models import Count
 
 from model_utils import Choices
 
@@ -14,6 +15,81 @@ from ..core.auth import User
 from ..core.models import ProductVersion
 from ..environments.models import Environment, HasEnvironmentsModel
 from ..library.models import CaseVersion, Suite, CaseStep, SuiteCase
+
+
+
+class BulkInsertManager(models.Manager):
+    """
+    The concept of this handy manager was borrowed
+    from a gist by mmohiudd: https://gist.github.com/3903508
+
+    Except I made this work with model objects instead of lists of
+    specific fields to update and insert.  We figure it out based on the
+    fields of the model object.
+
+    This provides bulk insert and UPDATE ON DUPLICATE KEY.
+
+    """
+
+    def _bulk_insert_or_update(self, values):
+
+        create_fields = [field.get_attname_column()[1]
+            for field in values[0]._meta.fields]
+        update_fields = set(create_fields) - set(["id", "created_by_id", "created_on"])
+        pass
+
+    #        from django.db import connection, transaction
+    #        cursor = connection.cursor()
+    #
+    #        db_table = self.model._meta.db_table
+    #
+    #        values_sql = []
+    #        values_data =[]
+    #
+    #        for value_lists in values:
+    #            values_sql.append( "(%s)" % (
+    #                ','.join([ "%s" for i in range(len(value_lists))]),) )
+    #            values_data.extend(value_lists)
+    #
+    #        base_sql = "INSERT INTO %s (%s) VALUES " % (
+    #            db_table,
+    #            ",".join(create_fields),
+    #            )
+    #
+    #        on_duplicates = []
+    #
+    #        for field in update_fields:
+    #            on_duplicates.append(field + "=VALUES(" + field +")")
+    #
+    #        sql = "%s %s ON DUPLICATE KEY UPDATE %s" % (
+    #            base_sql,
+    #            ", ".join(values_sql),
+    #            ",".join(on_duplicates),
+    #            )
+    #
+    #        try:
+    #            cursor.executemany(sql, [values_data])
+    #            if print_sql is True:
+    #                print cursor._last_executed
+    #            transaction.commit_unless_managed()
+    #            return True
+    #        except Exception as e:
+    #            print e
+    #            return False
+
+
+    # return the fields that can be updated for
+    def _get_update_fields(self):
+        # fields that can not be updated
+        unique_fields = list(list(unique_field) for unique_field
+            in self.model._meta.unique_together)[0]
+
+        # include the primary key field to the unique fields list
+        unique_fields.append(self.model._meta.pk.column)
+
+        return list(set(list(
+            field.column for field in self.model._meta.fields
+        )) - set(unique_fields))
 
 
 
@@ -89,11 +165,183 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:
-            self._lock_case_versions()
+#            self._lock_case_versions_orig()
+            self._lock_case_versions_env_loop()
         super(Run, self).activate(*args, **kwargs)
 
 
-    def _lock_case_versions(self):
+
+    def _remove_rcv_dupes(self):
+        pass
+#        cv_ids_with_dupes = self.runcaseversions.values(
+#            "caseversion_id").annotate(cv_count=Count(
+#            "caseversion_id")).exclude(cv_count=1)
+        # @@@ needs impl
+
+
+    def _lock_case_versions_env_loop(self):
+        """Select caseversions from suites, create runcaseversions."""
+        from django.db import connection
+
+        order = 1
+        rcv_ids = set()
+
+        self._remove_rcv_dupes()
+
+#        preexisting_rcv_ids = set(
+#            self.runcaseversions.values_list("id", flat=True))
+
+        # make a list of cvs in order
+
+        # @@@ I shouldn't need the name here, but for some reason it's required
+        # and will do a query if I don't fetch it first.
+        cv_list = CaseVersion.objects.raw("""
+            SELECT cv.id as id, cv.name as name
+            FROM execution_runsuite as rs
+                INNER JOIN library_suitecase as sc ON rs.suite_id = sc.suite_id
+                INNER JOIN library_caseversion as cv ON cv.case_id = sc.case_id
+            WHERE rs.run_id = %s
+            ORDER BY rs.order, sc.order
+            """, [self.id])
+        cv_set = set([x.id for x in cv_list])
+
+        # delete rcvs that we won't be needing anymore
+        self.runcaseversions.exclude(caseversion__in=cv_set).delete()
+
+        # remaining rcvs should be ones we want to keep, and we need to inject
+        # those ids into the insert/update list for bulk_insert.  So create
+        # a dict mapping cv_id: rcv_id.  If one exists, its order field will
+        # be updated in the buld_update cmd.
+        existing_rcv_map = {}
+        for map_item in self.runcaseversions.values("id", "caseversion_id"):
+            existing_rcv_map[map_item["caseversion_id"]] = map_item["id"]
+
+        # build the list of rcvs that we DO need.  Be sure to include the ids
+        # for rcvs that alredy exist so that we will just be updating the order
+        # and not replacing it.  We will use a special manager that does an
+        # update on insert error.
+        rcv_proxies = []
+        order = 1
+        for cv in cv_list:
+            kwargs = {
+                "run": self,
+                "caseversion": cv,
+                "order": order,
+                }
+            try:
+                kwargs["id"] = existing_rcv_map[cv.id]
+            except KeyError:
+                pass
+            rcv_proxies.append(RunCaseVersion(**kwargs))
+            order += 1
+
+        # insert these rcvs in bulk
+        RunCaseVersion.objects._bulk_insert_or_update(rcv_proxies)
+
+        """
+            run - runsuite - suite - suitecase - case - caseversion - m2m - env
+
+            create run - m2m - caseversion - m2m - env
+
+            remove rcv duplicates:
+                list of rcvs that have dups
+                list of rcv dupes that are to be deleted
+                list of results to update to rcv winner
+                update results to winner rcv
+                delete rcv dupes
+
+            update rcvs:
+                list of existing rcvs
+                list of all rcvs we need
+                list of rcvs to delete: existing rcvs - rcvs we need
+                    batch delete this list
+                implement update on insert error manager
+                    insert list of all needed, updating where existing (for order)
+
+            update rcv to envs
+                delete all first?
+
+
+        """
+
+        # get all the runcaseversions that exist already
+#        rcvs = RunCaseVersion.objects.filter(run=self).select_related("caseversion__environments")
+
+#        for env in self.environments.values_list("id", flat=True):
+#            pass
+
+#            for suitecase in SuiteCase.objects.filter(
+#                suite=runsuite.suite).order_by(
+#                "order").select_related("case"):
+#                try:
+#                    caseversion = suitecase.case.versions.filter(
+#                        productversion=self.productversion,
+#                        status=CaseVersion.STATUS.active).get()
+#                except CaseVersion.DoesNotExist:
+#                    pass
+#                else:
+#                    rcv_id = self._add_caseversion_env_loop(
+#                        caseversion, runsuite.suite, order)
+#                    if rcv_id is not None:
+#                        order += 1
+#                        rcv_ids.add(rcv_id)
+#        self.runcaseversions.filter(
+#            id__in=preexisting_rcv_ids.difference(rcv_ids)).delete()
+
+
+    def _add_caseversion_env_loop(self, caseversion, suite, order):
+        """
+        Add given caseversion to this run, from given suite, at given order.
+
+        Returns runcaseversion ID if the caseversion was actually added (or
+        found to already exist), else None.
+
+        """
+        envs = _environment_intersection(self, caseversion)
+        if not envs:
+            return None
+        found = False
+        try:
+            rcv = RunCaseVersion.objects.get(
+                run=self, caseversion=caseversion)
+            found = True
+        except RunCaseVersion.MultipleObjectsReturned:
+            # remove dupes, if they exist
+            dupes = list(
+                RunCaseVersion.objects.filter(
+                    run=self, caseversion=caseversion)
+            )
+            rcv = dupes.pop()
+            for dupe in dupes:
+                dupe.results.update(runcaseversion=rcv)
+                dupe.delete(permanent=True)
+            found = True
+        except RunCaseVersion.DoesNotExist:
+            # no match, so create it for all envs
+            rcv = RunCaseVersion(
+                run=self, caseversion=caseversion, order=order)
+            rcv.save(force_insert=True, inherit_envs=False)
+            rcv.environments.add(*envs)
+        if found:
+            rcv.order = order
+            rcv.save()
+            current_envs = set(rcv.environments.values_list("id", flat=True))
+            rcv.environments.remove(*current_envs.difference(envs))
+            rcv.environments.add(*envs.difference(current_envs))
+        rcv.suites.add(suite)
+        return rcv.id
+
+
+
+
+
+
+
+
+
+
+
+    def _lock_case_versions_orig(self):
         """Select caseversions from suites, create runcaseversions."""
         order = 1
         rcv_ids = set()
@@ -201,6 +449,8 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
     a run when the run is activated.
 
     """
+    objects = BulkInsertManager()
+
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     suites = models.ManyToManyField(Suite, related_name="runcaseversions")
@@ -466,3 +716,5 @@ def result_summary(results):
     cursor.execute(sql, states)
 
     return dict(zip(states, cursor.fetchone()))
+
+
