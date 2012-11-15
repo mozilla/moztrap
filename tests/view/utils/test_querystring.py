@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Tests for querystring utilities.
 
@@ -59,3 +60,14 @@ class TestUpdateQueryString(case.TestCase):
         self.assertEqual(
             self.func("http://fake.base/?blah=one&blah=two", arg="foo"),
             "http://fake.base/?blah=one&blah=two&arg=foo")
+
+
+    def test_intl_list(self):
+        self.assertEqual(
+            self.func(u"http://fake.base/?blah=ÒÒ&blah=2"),
+            "http://fake.base/?blah=%C3%92%C3%92&blah=2")
+
+    def test_intl_single(self):
+        self.assertEqual(
+            self.func(u"http://fake.base/?blah=ÒÒ"),
+            "http://fake.base/?blah=%C3%92%C3%92")
