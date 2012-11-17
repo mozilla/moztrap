@@ -597,28 +597,39 @@ class RunActivationTest(case.DBTestCase):
         """Count number of queries needed for activation of complex run."""
 
         r = self.F.RunFactory.create(productversion=self.pv8)
-        ts = self.F.SuiteFactory.create(product=self.p, status="active")
 
+        # one that should get deleted because it's not in the suite
+        old_cv = self.F.CaseVersionFactory.create(
+            name="I shouldn't be here",
+            productversion=self.pv8,
+            status="active",
+            )
+        old_rcv = self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
+        old_rcv_id = old_rcv.id
+
+        print(r.runcaseversions.all().values_list("id", "caseversion__name", "caseversion_id"))
+
+        # test suite add to run
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        # cases that belong to the suite
         cv_needed = []
-        for num in range(3):
-            tc = self.F.CaseFactory.create(product=self.p)
+        for num in range(6):
             cv = self.F.CaseVersionFactory.create(
-                case=tc, productversion=self.pv8, status="active")
-            self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+                name="casey"+str(num),
+                productversion=self.pv8,
+                status="active",
+                )
+            self.F.SuiteCaseFactory.create(suite=ts, case=cv.case)
             cv_needed.append(cv)
 
         # existing one that we should keep
-        self.F.RunCaseVersionFactory(run=r, caseversion=cv_needed[0])
+        self.F.RunCaseVersionFactory(run=r,
+            caseversion=cv_needed[3],
+            order=0,
+            )
 
-
-        # one that should get deleted because it's not in the suite
-        old_tc = self.F.CaseFactory.create(product=self.p)
-        old_cv = self.F.CaseVersionFactory.create(
-            case=old_tc, productversion=self.pv8, status="active")
-        self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
-
-
-        self.F.RunSuiteFactory.create(suite=ts, run=r)
 
         from django.conf import settings
         from django.db import connection
@@ -633,14 +644,24 @@ class RunActivationTest(case.DBTestCase):
         selects = [x["sql"] for x in connection.queries if x["sql"].startswith("SELECT")]
         inserts = [x["sql"] for x in connection.queries if x["sql"].startswith("INSERT")]
         updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
+        deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
 
         print("SELECT count={0}".format(len(selects)))
         print("INSERT count={0}".format(len(inserts)))
         print("UPDATE count={0}".format(len(updates)))
+        print("DELETE count={0}".format(len(deletes)))
 
 
 #        with self.assertNumQueries(17):
 #            r.activate()
 
         settings.DEBUG = False
-        self.assertEqual(r.runcaseversions.all(), {"foo": "bar"})
+        self.refresh(r)
+        print(r.runcaseversions.all().values_list("id", "caseversion__name", "caseversion_id"))
+
+        self.assertEqual(r.runcaseversions.count(), 6)
+        for rcv_env in self.F.model.RunCaseVersion.environments.through.objects.all().values():
+            print(json.dumps(rcv_env, indent=4))
+
+        print(old_rcv_id)
+        self.assertEqual(r.runcaseversions.all(), "foo")
