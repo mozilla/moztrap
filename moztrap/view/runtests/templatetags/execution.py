@@ -136,3 +136,33 @@ class StepResultFor(Tag):
 
 
 register.tag(StepResultFor)
+
+
+
+class SuitesFor(Tag):
+    """Return suite intersection of case and run."""
+
+    name = "suites_for"
+    options = Options(
+        Argument("run"),
+        Argument("runcaseversion"),
+        "as",
+        Argument("varname", resolve=False),
+        )
+
+
+    def render_tag(self, context, run, runcaseversion, varname):
+        """Get/construct StepResult and place it in context under ``varname``"""
+        stepresult_kwargs = dict(
+            run=run,
+            rcv=runcaseversion,
+            )
+        casesuites = set(runcaseversion.caseversion.case.suites.values_list("id", flat=True))
+        runsuites = set(run.suites.values_list("id", flat=True))
+        result = model.Suites.objects.filter(pk__in=casesuites.intersection(runsuites))
+
+        context[varname] = result
+        return u""
+
+
+register.tag(SuitesFor)

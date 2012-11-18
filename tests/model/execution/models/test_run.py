@@ -607,6 +607,7 @@ class RunActivationTest(case.DBTestCase):
         old_rcv = self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
         old_rcv_id = old_rcv.id
 
+
         print(r.runcaseversions.all().values_list("id", "caseversion__name", "caseversion_id"))
 
         # test suite add to run
@@ -625,11 +626,19 @@ class RunActivationTest(case.DBTestCase):
             cv_needed.append(cv)
 
         # existing one that we should keep
-        self.F.RunCaseVersionFactory(run=r,
+        existing_rcv = self.F.RunCaseVersionFactory(run=r,
             caseversion=cv_needed[3],
             order=0,
             )
-
+        # existing env that should be removed in removal phase
+        old_env = self.F.EnvironmentFactory.create_set(
+            ["OS", "Browser"],
+            ["Atari", "RS-232"],
+            )[0]
+        self.F.model.RunCaseVersion.environments.through(
+            runcaseversion=existing_rcv,
+            environment=old_env,
+            ).save()
 
         from django.conf import settings
         from django.db import connection
@@ -659,9 +668,10 @@ class RunActivationTest(case.DBTestCase):
         self.refresh(r)
         print(r.runcaseversions.all().values_list("id", "caseversion__name", "caseversion_id"))
 
-        self.assertEqual(r.runcaseversions.count(), 6)
         for rcv_env in self.F.model.RunCaseVersion.environments.through.objects.all().values():
             print(json.dumps(rcv_env, indent=4))
+        print("removed_rcv_id={0}".format(old_rcv_id))
 
-        print(old_rcv_id)
+        self.assertEqual(r.runcaseversions.count(), 6)
+        self.assertEqual(self.F.model.RunCaseVersion.environments.through.objects.count(), 24)
         self.assertEqual(r.runcaseversions.all(), "foo")

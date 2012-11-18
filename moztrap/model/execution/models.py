@@ -105,16 +105,21 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
 
     def _lock_case_versions(self):
-        """Select caseversions from suites, create runcaseversions."""
+        """
+        Select caseversions from suites, create runcaseversions.
+
+        WARNING: Testing this code in the PyCharm debugger will give an incorrect
+        number of queries, because for the debugger to show all the information
+        it wants, it must do queries itself.  When testing with
+        assertnumqueries, don't use the PyCharm debugger.
+
+        """
 
         self._remove_rcv_dupes()
 
         # make a list of cvs in order
-
-        # @@@ I shouldn't need the name here, but for some reason it's required
-        # and will do a query if I don't fetch it first.
         cvs = CaseVersion.objects.raw("""
-            SELECT cv.id as id, cv.name as name
+            SELECT cv.id as id
             FROM execution_runsuite as rs
                 INNER JOIN library_suitecase as sc ON rs.suite_id = sc.suite_id
                 INNER JOIN library_caseversion as cv ON cv.case_id = sc.case_id
@@ -144,7 +149,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
         order = 1
         for cv in cv_set:
-            kwargs = {"run": self, "caseversion_id": cv, "order": order}
+            kwargs = {"run_id": self.id, "caseversion_id": cv, "order": order}
             try:
                 kwargs["id"] = existing_rcv_map[cv]
             except KeyError:
@@ -156,9 +161,23 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         # insert these rcvs in bulk
         RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
 
-        # build a list of RunCaseVersion_environment objects
-        # and use bulk_create.
-        #
+        self._bulk_update_runcaseversion_environments_for_lock()
+#        self._bulk_update_runcaseversion_suites_for_lock()
+
+
+    def _bulk_update_runcaseversion_environments_for_lock(self):
+        """
+        update runcaseversion_environment records with latest state.
+
+        Approach:
+          do another raw sql query to get all existing_rcv_envs for this run
+          existing_rcv_envs - needed_rcv_envs = list to delete (no longer needed)
+          needed_rcv_envs - existing_rcv_envs = list to create
+        build a list of RunCaseVersion_environment objects
+        and use bulk_create.
+
+        """
+
         # re-query all the rcvs (including newly created) for this run
         final_rcvs = RunCaseVersion.objects.filter(run=self).select_related(
             "caseversion").prefetch_related("caseversion__environments")
@@ -172,61 +191,51 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
                 "runcaseversion_id", "environment_id"))
 
         # runcaseversion_environment objects we will use to bulk create
-        needed_rcv_envs = []
+        # loop through all cvs and fetch the env intersection with this run
         needed_rcv_envs_tuples = []
-        # runcaseversion_environment ids that we need to delete
-        delete_rcv_envs = []
-
-        #loop through all cvs and fetch the env intersection with this run
         run_env_ids = set(
             self.environments.values_list("id", flat=True))
         for rcv in final_rcvs:
             case_env_ids = set([x.id for x in rcv.caseversion.environments.all()])
             for env in run_env_ids.intersection(case_env_ids):
                 needed_rcv_envs_tuples.append((rcv.id, env))
+        needed_rcv_envs_set = set(needed_rcv_envs_tuples)
 
         # get the set of rcv_envs we need to delete because they don't belong
         # to the needed set.
-        delete_rcv_envs = prev_rcv_envs_set - set(needed_rcv_envs_tuples)
-        delquery = Q()
-        for combo in delete_rcv_envs:
-            delquery = delquery | Q(
-                **{"runcaseversion_id": combo[0],
-                   "environment_id": combo[1]})
-
-        RunCaseVersion.environments.through.objects.filter(delquery).delete()
+        delete_rcv_envs = prev_rcv_envs_set - needed_rcv_envs_set
+        if len(delete_rcv_envs):
+            delquery = Q()
+            for combo in delete_rcv_envs:
+                delquery = delquery | Q(
+                    **{"runcaseversion_id": combo[0],
+                       "environment_id": combo[1]})
+            RunCaseVersion.environments.through.objects.filter(delquery).delete()
 
         # get the set of rcv_envs we need to create that don't already exist
-        needed_rcv_envs_tuples = set(needed_rcv_envs_tuples) - prev_rcv_envs_set
+        needed_rcv_envs_set = needed_rcv_envs_set - prev_rcv_envs_set
 
+        # build all the objects to pass to bulk_create
         needed_rcv_envs = [RunCaseVersion.environments.through(
-            runcaseversion=needed[0],
-            environment_id=needed[1]) for needed in needed_rcv_envs_tuples]
+            runcaseversion_id=needed[0],
+            environment_id=needed[1]) for needed in needed_rcv_envs_set]
 
         RunCaseVersion.environments.through.objects.bulk_create(needed_rcv_envs)
-#        """
-#        Approach:
-#            do another raw sql query to get all existing_rcv_envs for this run
-#            existing_rcv_envs - needed_rcv_envs = list to delete (no longer needed)
-#            needed_rcv_envs - existing_rcv_envs = list to create
-#        """
-#        rcv_env_proxies = []
-#        for cv_envs in needed_rcv_envs:
-#            rcv_env_proxies.append(RunCaseVersion.environments.through(
-#                caseversion=needed_env[0]))
-#        rcv_env_model = RunCaseVersion.environments.through
-#        rcv_env_model.bulk_create(rcv_env_proxies)
 
 
+    def _bulk_update_runcaseversion_suites_for_lock(self):
+        """
+        update runcaseversion_suite records with latest state.
 
+        Approach:
+            get list of suites from run
+            loop through that where
 
-        # @TODO: still need runcaseversion_suites
-
-
-
-
-
-
+        """
+        pass
+        # @TODO: I don't think I need this.  I can do this with a
+        # template tag to get the intersection of suites to caseversion
+        # to display it.
 
         """
             run - runsuite - suite - suitecase - case - caseversion - m2m - env
