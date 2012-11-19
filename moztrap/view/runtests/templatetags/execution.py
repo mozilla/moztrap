@@ -152,14 +152,10 @@ class SuitesFor(Tag):
 
 
     def render_tag(self, context, run, runcaseversion, varname):
-        """Get/construct StepResult and place it in context under ``varname``"""
-        stepresult_kwargs = dict(
-            run=run,
-            rcv=runcaseversion,
-            )
+        """Get/construct Suite list and place it in context under ``varname``"""
         casesuites = set(runcaseversion.caseversion.case.suites.values_list("id", flat=True))
         runsuites = set(run.suites.values_list("id", flat=True))
-        result = model.Suites.objects.filter(pk__in=casesuites.intersection(runsuites))
+        result = model.Suite.objects.filter(pk__in=casesuites.intersection(runsuites))
 
         context[varname] = result
         return u""
