@@ -414,6 +414,32 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         self.assertEqual(result.num_cases, 1)
 
 
+    def test_create_caseversion_existing_tag_different_case(self):
+        """A caseversion that uses an existing product tag with different case"""
+
+        # need a tag to exist, so the import can find it.
+        tag = self.model.Tag.objects.create(
+            name="footag",
+            product=self.pv.product,
+            )
+
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "steps": [{"instruction": "do this"}],
+                        "tags": ["FooTag"],
+                        }
+                ]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.tags.get(), tag)
+        self.assertEqual(result.num_cases, 1)
+
+
     def test_create_caseversion_existing_suite(self):
         """A case that uses an existing suite."""
 
@@ -423,10 +449,34 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             product=self.pv.product,
             )
 
+        result = self.import_data({
+            "cases": [{
+                "name": "Foo",
+                "steps": [{"instruction": "do this"}],
+                "suites": ["FooSuite"],
+                }]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.case.suites.get(), suite)
+        self.assertEqual(result.num_cases, 1)
+        self.assertEqual(result.num_suites, 0)
+
+
+    def test_create_caseversion_existing_suite_different_case(self):
+        """A case that uses an existing suite with different case."""
+
+        # need a suite to exist, so the import can find it.
+        suite = self.model.Suite.objects.create(
+            name="foosuite",
+            product=self.pv.product,
+            )
+
         result = self.import_data(
-                {
+            {
                 "cases": [
-                        {
+                    {
                         "name": "Foo",
                         "steps": [{"instruction": "do this"}],
                         "suites": ["FooSuite"],

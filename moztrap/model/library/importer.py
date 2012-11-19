@@ -502,7 +502,7 @@ class SuiteImporter(object):
                 for case in suite_data["cases"]:
                     SuiteCase.objects.create(case=case, suite=suite)
 
-        # we have imported (or warned on) these items, so reset ourself.
+        # we have imported (or warned on) these items, so reset map.
         self.map.clear()
 
         return self.result

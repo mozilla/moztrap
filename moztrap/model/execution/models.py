@@ -6,6 +6,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.db import connection, models
+from django.db.models import Count, Q
 
 from model_utils import Choices
 
@@ -89,11 +90,185 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
         if self.status == self.STATUS.draft:
+#            self._lock_case_versions_orig()
             self._lock_case_versions()
         super(Run, self).activate(*args, **kwargs)
 
 
+
+    def _remove_rcv_dupes(self):
+        pass
+#        cv_ids_with_dupes = self.runcaseversions.values(
+#            "caseversion_id").annotate(cv_count=Count(
+#            "caseversion_id")).exclude(cv_count=1)
+        # @@@ needs impl
+
+
     def _lock_case_versions(self):
+        """
+        Select caseversions from suites, create runcaseversions.
+
+        WARNING: Testing this code in the PyCharm debugger will give an incorrect
+        number of queries, because for the debugger to show all the information
+        it wants, it must do queries itself.  When testing with
+        assertnumqueries, don't use the PyCharm debugger.
+
+        """
+
+        self._remove_rcv_dupes()
+
+        # make a list of cvs in order
+        cvs = CaseVersion.objects.raw("""
+            SELECT cv.id as id
+            FROM execution_runsuite as rs
+                INNER JOIN library_suitecase as sc ON rs.suite_id = sc.suite_id
+                INNER JOIN library_caseversion as cv ON cv.case_id = sc.case_id
+            WHERE rs.run_id = %s
+            ORDER BY rs.order, sc.order
+            """, [self.id])
+        cv_set = set([x.id for x in cvs])
+
+        # delete rcvs that we won't be needing anymore
+        self.runcaseversions.exclude(caseversion__in=cv_set).delete(permanent=True)
+
+        # remaining rcvs should be ones we want to keep, and we need to inject
+        # those ids into the insert/update list for bulk_insert.  So create
+        # a dict mapping cv_id: rcv_id.  If one exists, its order field will
+        # be updated in the buld_update cmd.
+        existing_rcv_map = {}
+        for map_item in self.runcaseversions.values("id", "caseversion_id"):
+            existing_rcv_map[map_item["caseversion_id"]] = map_item["id"]
+
+        # build the list of rcvs that we DO need.  Be sure to include the ids
+        # for rcvs that alredy exist so that we will just be updating the order
+        # and not replacing it.  We will use a special manager that does an
+        # update on insert error.
+
+        # runcaseversion objects we will use to bulk create
+        rcv_proxies = []
+
+        order = 1
+        for cv in cv_set:
+            kwargs = {"run_id": self.id, "caseversion_id": cv, "order": order}
+            try:
+                kwargs["id"] = existing_rcv_map[cv]
+            except KeyError:
+                # this caseversion had not been previously included in the run
+                pass
+            rcv_proxies.append(RunCaseVersion(**kwargs))
+            order += 1
+
+        # insert these rcvs in bulk
+        RunCaseVersion.objects.bulk_insert_or_update(rcv_proxies)
+
+        self._bulk_update_runcaseversion_environments_for_lock()
+#        self._bulk_update_runcaseversion_suites_for_lock()
+
+
+    def _bulk_update_runcaseversion_environments_for_lock(self):
+        """
+        update runcaseversion_environment records with latest state.
+
+        Approach:
+          do another raw sql query to get all existing_rcv_envs for this run
+          existing_rcv_envs - needed_rcv_envs = list to delete (no longer needed)
+          needed_rcv_envs - existing_rcv_envs = list to create
+        build a list of RunCaseVersion_environment objects
+        and use bulk_create.
+
+        """
+
+        # re-query all the rcvs (including newly created) for this run
+        final_rcvs = RunCaseVersion.objects.filter(run=self).select_related(
+            "caseversion").prefetch_related("caseversion__environments")
+
+        final_rcv_ids = [x.id for x in final_rcvs]
+
+        # delete all existing
+        # runcaseversion_environments that were there prior to our changes
+        prev_rcv_envs_set = set(RunCaseVersion.environments.through.objects.filter(
+            runcaseversion_id__in=final_rcv_ids).values_list(
+                "runcaseversion_id", "environment_id"))
+
+        # runcaseversion_environment objects we will use to bulk create
+        # loop through all cvs and fetch the env intersection with this run
+        needed_rcv_envs_tuples = []
+        run_env_ids = set(
+            self.environments.values_list("id", flat=True))
+        for rcv in final_rcvs:
+            case_env_ids = set([x.id for x in rcv.caseversion.environments.all()])
+            for env in run_env_ids.intersection(case_env_ids):
+                needed_rcv_envs_tuples.append((rcv.id, env))
+        needed_rcv_envs_set = set(needed_rcv_envs_tuples)
+
+        # get the set of rcv_envs we need to delete because they don't belong
+        # to the needed set.
+        delete_rcv_envs = prev_rcv_envs_set - needed_rcv_envs_set
+        if len(delete_rcv_envs):
+            delquery = Q()
+            for combo in delete_rcv_envs:
+                delquery = delquery | Q(
+                    **{"runcaseversion_id": combo[0],
+                       "environment_id": combo[1]})
+            RunCaseVersion.environments.through.objects.filter(delquery).delete()
+
+        # get the set of rcv_envs we need to create that don't already exist
+        needed_rcv_envs_set = needed_rcv_envs_set - prev_rcv_envs_set
+
+        # build all the objects to pass to bulk_create
+        needed_rcv_envs = [RunCaseVersion.environments.through(
+            runcaseversion_id=needed[0],
+            environment_id=needed[1]) for needed in needed_rcv_envs_set]
+
+        RunCaseVersion.environments.through.objects.bulk_create(needed_rcv_envs)
+
+
+    def _bulk_update_runcaseversion_suites_for_lock(self):
+        """
+        update runcaseversion_suite records with latest state.
+
+        Approach:
+            get list of suites from run
+            loop through that where
+
+        """
+        pass
+        # @TODO: I don't think I need this.  I can do this with a
+        # template tag to get the intersection of suites to caseversion
+        # to display it.
+
+        """
+            run - runsuite - suite - suitecase - case - caseversion - m2m - env
+
+            create run - m2m - caseversion - m2m - env
+
+            remove rcv duplicates:
+                list of rcvs that have dups
+                list of rcv dupes that are to be deleted
+                list of results to update to rcv winner
+                update results to winner rcv
+                delete rcv dupes
+
+            update rcvs:
+                list of existing rcvs
+                list of all rcvs we need
+                list of rcvs to delete: existing rcvs - rcvs we need
+                    batch delete this list
+                implement update on insert error manager
+                    insert list of all needed, updating where existing (for order)
+
+            update rcv to envs
+                delete all first?
+
+
+        """
+
+
+
+
+
+
+    def _lock_case_versions_orig(self):
         """Select caseversions from suites, create runcaseversions."""
         order = 1
         rcv_ids = set()
@@ -201,6 +376,7 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
     a run when the run is activated.
 
     """
+
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
     suites = models.ManyToManyField(Suite, related_name="runcaseversions")
@@ -466,3 +642,5 @@ def result_summary(results):
     cursor.execute(sql, states)
 
     return dict(zip(states, cursor.fetchone()))
+
+

@@ -118,7 +118,7 @@ class RunCaseVersionFilterSet(filters.FilterSet):
             queryset=model.Element.objects.all()),
         filters.ModelFilter(
             "suite",
-            lookup="suites",
+            lookup="caseversion__case__suites",
             queryset=model.Suite.objects.all()),
         ]
 
@@ -146,7 +146,7 @@ class RunTestsRunCaseVersionFilterSet(filters.FilterSet):
             queryset=model.User.objects.all()),
         filters.ModelFilter(
             "suite",
-            lookup="suites",
+            lookup="caseversion__case__suites",
             queryset=model.Suite.objects.all()),
         ]
 
