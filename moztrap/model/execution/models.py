@@ -89,7 +89,10 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
     def activate(self, *args, **kwargs):
         """Make run active, locking in runcaseversions for all suites."""
-        if self.status == self.STATUS.draft:
+
+        # we don't need all the runcaseversions for a series.  It is the
+        # series member runs that will use them.
+        if self.status == self.STATUS.draft and not self.is_series:
 #            self._lock_case_versions_orig()
             self._lock_case_versions()
         super(Run, self).activate(*args, **kwargs)
