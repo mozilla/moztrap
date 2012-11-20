@@ -155,36 +155,37 @@ class MTManager(models.Manager):
     def bulk_insert_or_update(self, obj_list):
         """ Bulk insert with a list of model objects"""
 
-        create_fields = [
-        field.get_attname_column()[1] for field in obj_list[0]._meta.fields
-        ]
-        update_fields = set(create_fields) - set([
-            "id", "created_by_id", "created_on", "deleted_by_id", "deleted_on"
-        ])
+        if len(obj_list):
+            create_fields = [
+                field.get_attname_column()[1] for field in obj_list[0]._meta.fields
+                ]
+            update_fields = set(create_fields) - set([
+                "id", "created_by_id", "created_on", "deleted_by_id", "deleted_on"
+            ])
 
-        def getfield(obj, field):
-            value = getattr(obj, field)
-            if isinstance(value, (str, datetime.datetime)):
-                return "'{0}'".format(value)
-            elif value is None:
-                return "NULL"
-            else:
-                return value
+            def getfield(obj, field):
+                value = getattr(obj, field)
+                if isinstance(value, (str, datetime.datetime)):
+                    return "'{0}'".format(value)
+                elif value is None:
+                    return "NULL"
+                else:
+                    return value
 
-        values = []
-        for obj in obj_list:
-            values.append("({0})".format(", ".join(
-                ["{0}".format(getfield(obj, field)) for field in create_fields]
-            )))
+            values = []
+            for obj in obj_list:
+                values.append("({0})".format(", ".join(
+                    ["{0}".format(getfield(obj, field)) for field in create_fields]
+                )))
 
-        db_table = self.model._meta.db_table
+            db_table = self.model._meta.db_table
 
-        bulk_insert_or_update(
-            db_table,
-            create_fields,
-            update_fields,
-            values,
-            )
+            bulk_insert_or_update(
+                db_table,
+                create_fields,
+                update_fields,
+                values,
+                )
 
 
 class MTModel(models.Model):

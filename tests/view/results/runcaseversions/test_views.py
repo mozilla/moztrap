@@ -166,7 +166,9 @@ class RunCaseVersionResultsViewTest(case.view.ListViewTestCase,
         self.F.RunCaseVersionFactory.create(caseversion__name="Case 2")
         ts = self.F.SuiteFactory.create(
             product=rcv.run.productversion.product)
-        ts.add(rcv.caseversion.case)
+        self.F.SuiteCaseFactory(suite=ts,
+            case=rcv.caseversion.case,
+            )
 
         res = self.get(params={"filter-suite": ts.id})
 
