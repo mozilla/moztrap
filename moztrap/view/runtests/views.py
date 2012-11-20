@@ -205,7 +205,8 @@ def run(request, run_id, env_id):
                 "runtests/list/_runtest_list_item.html",
                 {
                     "environment": environment,
-                    "runcaseversion": rcv
+                    "runcaseversion": rcv,
+                    "run": run
                     }
                 )
         else:

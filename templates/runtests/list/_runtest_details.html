@@ -8,7 +8,9 @@
 
 <form method="POST" id="test-status-form-{{ runcaseversion.id }}">
   {% csrf_token %}
-  <div><span class="detailstitle">Submit your test result</span></div>
+  <div><span class="detailstitle">Submit your test result for case </span>
+  {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}
+  </div>
   {% if result.status == result.STATUS.assigned or result.status == result.STATUS.started %}
     <button class="action-pass result-action" value="{{ runcaseversion.id }}" name="action-result_pass">pass test</button>
   {% endif %}
@@ -16,7 +18,6 @@
 
 {% if caseversion.description %}
   <div class="description">
-    {% block id %}<strong class="id">#{{ caseversion.case.id }}</strong>{% endblock id %}
     {{ caseversion.description|markdown }}
   </div>
 {% endif %}

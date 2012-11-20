@@ -179,3 +179,72 @@ class StepResultForTest(case.DBTestCase):
                 "{{ stepresult.step.id }}"),
             "None None {0}".format(step.id)
             )
+
+
+class SuitesForTest(case.DBTestCase):
+    """Tests for the suites_for template tag."""
+
+    def suites_for(self, run, runcaseversion, render):
+        """Execute template tag with given args and render given string."""
+        t = Template(
+            "{% load execution %}{% suites_for run runcaseversion as suites %}"
+            + render)
+        return t.render(
+            Context({"run": run, "runcaseversion": runcaseversion}))
+
+
+    def test_multiple_source_suites(self):
+        """Sets source suites for a caseversion in multiple included suites."""
+        envs = self.F.EnvironmentFactory.create_set(["os"], ["Atari"])
+        pv = self.F.ProductVersionFactory(environments=envs)
+        tc = self.F.CaseFactory.create(product=pv.product)
+        cv = self.F.CaseVersionFactory.create(
+            case=tc, productversion=pv, status="active")
+
+        ts1 = self.F.SuiteFactory.create(product=pv.product, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
+
+        ts2 = self.F.SuiteFactory.create(product=pv.product, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts2, case=tc)
+
+        r = self.F.RunFactory.create(productversion=pv, environments=envs)
+        self.F.RunSuiteFactory.create(suite=ts1, run=r)
+        self.F.RunSuiteFactory.create(suite=ts2, run=r)
+
+        r.activate()
+
+        self.assertEqual(
+            self.suites_for(
+                r,
+                self.model.RunCaseVersion.objects.get(),
+                "{% for suite in suites %}{{ suite.id }} {% endfor %}"),
+            "{0} {1} ".format(ts1.id, ts2.id)
+        )
+
+
+    def test_source_suite(self):
+        """Sets source suites for each runcaseversion."""
+        envs = self.F.EnvironmentFactory.create_set(["os"], ["Atari"])
+        pv = self.F.ProductVersionFactory(environments=envs)
+        tc = self.F.CaseFactory.create(product=pv.product)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=pv, status="active")
+
+        ts = self.F.SuiteFactory.create(product=pv.product, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=pv, environments=envs)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        rcv = r.runcaseversions.get()
+        self.assertEqual(
+            self.suites_for(
+                r,
+                self.model.RunCaseVersion.objects.get(),
+                "{% for suite in suites %}{{ suite.id }} {% endfor %}"),
+            "{0} ".format(ts.id)
+        )
+
+
