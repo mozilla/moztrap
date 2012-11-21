@@ -4418,7 +4418,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-run .this-is-a-series-field, .edit-run .this-is-a-series-field {
+.add-run .series-field, .edit-run .series-field {
   display: inline;
   float: left;
   width: 24.211%;
@@ -4427,7 +4427,25 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.add-run .series-field.optional, .edit-run .series-field.optional {
   margin-top: 0.375em;
+}
+.add-run .series-field.optional + .add-run .series-field.readonly .type, .edit-run .series-field.optional + .edit-run .series-field.readonly .type {
+  display: inline;
+  float: left;
+  width: 13.043%;
+  margin-right: 4.348%;
+}
+.add-run .series-field.optional + .add-run .series-field.readonly .value, .add-run .series-field.optional + .add-run .series-field.readonly .errorlist, .edit-run .series-field.optional + .edit-run .series-field.readonly .value, .edit-run .series-field.optional + .edit-run .series-field.readonly .errorlist {
+  display: inline;
+  float: left;
+  width: 82.609%;
+  margin-right: 4.348%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
 }
 .add-run .start-field, .add-run .end-field, .edit-run .start-field, .edit-run .end-field {
   display: inline;

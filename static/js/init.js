@@ -198,6 +198,13 @@ var MT = (function (MT, $) {
         MT.editEnvProfileName('#editprofile');
         MT.bulkSelectEnvs('#envnarrowing');
 
+        // manage.js
+        MT.disableOnChecked({
+            container: '#run-add-form, #run-edit-form',
+            trigger_field: '#id_is_series',
+            target_field: '#id_build'
+        });
+
         // runtests.js
 
         MT.hideEmptyRuntestsEnv();
