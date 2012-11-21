@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-{% load permissions owa %}
+{% load permissions owa site %}
 
 {% block site %}
 
+
 {% include "_messages.html" %}
+
 
 <header role="banner">
   <h1 id="brand">
     <a href="{% url 'home' %}" rel="home">
       <span class="logo"> </span>
-      <span class="wordmark">MozTrap</span>
+      <span class="wordmark">MozTrap{% settings_value "MOZTRAP_NAME_SUFFIX" %}</span>
     </a>
   </h1>
 

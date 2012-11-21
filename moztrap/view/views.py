@@ -13,4 +13,4 @@ def home(request):
     """Home view; redirects to run-tests or results depending on permissions."""
     if request.user.has_perm("execution.execute"):
         return redirect("runtests")
-    return redirect("manage_cases") # @@@ should be run results, once it exists
+    return redirect("results")
