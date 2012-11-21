@@ -121,11 +121,14 @@ class EditRunForm(RunForm):
 
         pvf = self.fields["productversion"]
         sf = self.fields["suites"]
+        isf = self.fields["is_series"]
         if self.instance.status == model.Run.STATUS.active:
             # can't change the product version of an active run.
             pvf.queryset = pvf.queryset.filter(
                 pk=self.instance.productversion_id)
             pvf.readonly = True
+            # can't change being a series in an active run
+            isf.readonly = True
             # can't change suites of an active run either
             sf.readonly = True
             self.initial["suites"] = list(

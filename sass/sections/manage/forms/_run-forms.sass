@@ -17,10 +17,19 @@
       +columns(12,18)
       +omega(18)
 
-  .this-is-a-series-field
+  .series-field
     +columns(6,24)
     +omega(24)
-    +leader(.25)
+
+    &.optional
+      +leader(.25)
+
+    &.optional + &.readonly
+      .type
+        +columns(1,6)
+      .value, .errorlist
+        +columns(5,6)
+        +omega(6)
 
   .start-field, .end-field
     +columns(7,24)
