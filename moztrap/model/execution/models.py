@@ -92,10 +92,25 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
 
         # we don't need all the runcaseversions for a series.  It is the
         # series member runs that will use them.
-        if self.status == self.STATUS.draft and not self.is_series:
-            self._lock_case_versions()
+        if self.status == self.STATUS.draft:
+            self.update_case_versions()
         super(Run, self).activate(*args, **kwargs)
 
+
+    def refresh(self, *args, **kwargs):
+        """Update all the runcaseversions while the run is active."""
+        if self.status == self.STATUS.active:
+            self.update_case_versions()
+
+
+    def update_case_versions(self):
+        """
+        Update the runcaseversions with any changes to suites.
+
+        This can happen while the run is still active.
+        """
+        if not self.is_series:
+            self._lock_case_versions()
 
 
     def _lock_case_versions(self):
@@ -105,7 +120,7 @@ class Run(MTModel, TeamModel, DraftStatusModel, HasEnvironmentsModel):
         WARNING: Testing this code in the PyCharm debugger will give an incorrect
         number of queries, because for the debugger to show all the information
         it wants, it must do queries itself.  When testing with
-        assertnumqueries, don't use the PyCharm debugger.
+        assertNumQueries, don't use the PyCharm debugger.
 
         """
 

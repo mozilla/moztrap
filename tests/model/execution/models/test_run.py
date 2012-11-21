@@ -883,3 +883,70 @@ class RunActivationTest(case.DBTestCase):
             run=r,
             caseversion=old_cv,
             ).count(), 0)
+
+
+    def test_run_refresh(self):
+        """
+        Refresh the runcaseversions while the run remains active
+
+        Very similar to previous test case, but this all happens while the
+        run is in active state.  Ensuring that it has the same end-result.
+
+        """
+        r = self.F.RunFactory.create(
+            productversion=self.pv8)
+
+        r.activate()
+
+        # one that should get deleted because it's no longer in the suite
+        old_cv = self.F.CaseVersionFactory.create(
+            name="I shouldn't be here",
+            productversion=self.pv8,
+            status="active",
+            )
+        self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
+
+        # test suite add to run
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        # cases that belong to the suite
+        cv_needed = []
+        for num in range(6):
+            cv = self.F.CaseVersionFactory.create(
+                name="casey"+str(num),
+                productversion=self.pv8,
+                status="active",
+                )
+            self.F.SuiteCaseFactory.create(suite=ts, case=cv.case)
+            cv_needed.append(cv)
+
+        # existing one that we should keep
+        existing_rcv = self.F.RunCaseVersionFactory(
+            run=r,
+            caseversion=cv_needed[3],
+            order=0,
+            )
+        # existing env that should be removed in removal phase
+        old_env = self.F.EnvironmentFactory.create_set(
+            ["OS", "Browser"],
+            ["Atari", "RS-232"],
+            )[0]
+        self.F.model.RunCaseVersion.environments.through(
+            runcaseversion=existing_rcv,
+            environment=old_env,
+            ).save()
+
+        r.refresh()
+
+        self.refresh(r)
+
+        self.assertEqual(r.runcaseversions.count(), 6)
+        self.assertEqual(
+            self.F.model.RunCaseVersion.environments.through.objects.count(),
+            24,
+            )
+        self.assertEqual(self.F.model.RunCaseVersion.objects.filter(
+                run=r,
+                caseversion=old_cv,
+                ).count(), 0)
