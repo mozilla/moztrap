@@ -291,7 +291,6 @@ class RunCaseVersion(HasEnvironmentsModel, MTModel):
 
     run = models.ForeignKey(Run, related_name="runcaseversions")
     caseversion = models.ForeignKey(CaseVersion, related_name="runcaseversions")
-    suites = models.ManyToManyField(Suite, related_name="runcaseversions")
     order = models.IntegerField(default=0, db_index=True)
 
 

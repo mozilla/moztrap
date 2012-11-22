@@ -851,26 +851,30 @@ class RunActivationTest(case.DBTestCase):
         settings.DEBUG = True
         connection.queries = []
 
-        with self.assertNumQueries(17):
-            r.activate()
+        try:
+            with self.assertNumQueries(16):
+                r.activate()
 
-        # to debug, uncomment these lines:
-#        import json
-#        r.activate()
-#        print(json.dumps([x["sql"] for x in connection.queries], indent=4))
-#        print("NumQueries={0}".format(len(connection.queries)))
+            # to debug, uncomment these lines:
+#            import json
+#            r.activate()
+#            print(json.dumps([x["sql"] for x in connection.queries], indent=4))
+#            print("NumQueries={0}".format(len(connection.queries)))
 
-        selects = [x["sql"] for x in connection.queries if x["sql"].startswith("SELECT")]
-        inserts = [x["sql"] for x in connection.queries if x["sql"].startswith("INSERT")]
-        updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
-        deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
+            selects = [x["sql"] for x in connection.queries if x["sql"].startswith("SELECT")]
+            inserts = [x["sql"] for x in connection.queries if x["sql"].startswith("INSERT")]
+            updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
+            deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
 
-        self.assertEqual(len(selects), 10)
-        self.assertEqual(len(inserts), 2)
-        self.assertEqual(len(updates), 1)
-        self.assertEqual(len(deletes), 4)
+            self.assertEqual(len(selects), 10)
+            self.assertEqual(len(inserts), 2)
+            self.assertEqual(len(updates), 1)
+            self.assertEqual(len(deletes), 3)
+        except AssertionError as e:
+            raise e
+        finally:
+            settings.DEBUG = False
 
-        settings.DEBUG = False
         self.refresh(r)
 
         self.assertEqual(r.runcaseversions.count(), 6)
