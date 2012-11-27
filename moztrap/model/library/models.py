@@ -93,7 +93,7 @@ class CaseVersion(MTModel, DraftStatusModel, HasEnvironmentsModel):
     productversion = models.ForeignKey(
         ProductVersion, related_name="caseversions")
     case = models.ForeignKey(Case, related_name="versions")
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
     # denormalized for queries
