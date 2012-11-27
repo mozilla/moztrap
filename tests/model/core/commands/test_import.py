@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from cStringIO import StringIO
 import json
 import os
-from tempfile import mkstemp
+from tempfile import mkstemp, mkdtemp
 
 from django.core.management import call_command
 
@@ -38,7 +38,7 @@ class ImportCasesTest(case.DBTestCase):
 
 
     @contextmanager
-    def tempfile(self, contents):
+    def tempfile(self, contents, dir=None):
         """
         Write given contents to a temporary file, yielding its path.
 
@@ -46,7 +46,7 @@ class ImportCasesTest(case.DBTestCase):
         when context manager exits.
 
         """
-        (fd, path) = mkstemp()
+        (fd, path) = mkstemp(dir=dir)
         fh = os.fdopen(fd, "w")
         fh.write(contents)
         fh.close()
@@ -126,7 +126,7 @@ class ImportCasesTest(case.DBTestCase):
         self.assertIn("Error: Could not parse JSON: Expecting", output[1])
 
 
-    def test_success(self):
+    def test_success_single_file(self):
         """Successful import prints summary data and creates objects."""
         self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
 
@@ -138,3 +138,65 @@ class ImportCasesTest(case.DBTestCase):
 
         self.assertEqual(output, ("Imported 1 cases\nImported 0 suites\n", ""))
         self.assertEqual(self.model.CaseVersion.objects.get().name, "Foo")
+
+
+    def test_success_multiple_files(self):
+        """Successful import prints summary data and creates objects."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        data1 = {
+            "cases": [{"name": "Foo", "steps": [{"instruction": "do this"}]}]}
+        data2 = {
+            "cases": [{"name": "Foo2", "steps": [{"instruction": "do this"}]}]}
+        data3 = {
+            "cases": [{"name": "Foo3", "steps": [{"instruction": "do this"}]}]}
+
+        dir = mkdtemp()
+        with self.tempfile(json.dumps(data1), dir=dir) as filepath:
+            # create another file in that same directory
+            with open("{0}/{1}".format(dir, "file2"), "w") as fh:
+                fh.write(json.dumps(data2))
+                fh.close()
+            with open("{0}/{1}".format(dir, "file3"), "w") as fh:
+                fh.write(json.dumps(data3))
+                fh.close()
+
+            output = self.call_command("Foo", "1.0", dir)
+
+        self.assertEqual(output, ("Imported 3 cases\nImported 0 suites\n", ""))
+        self.assertEqual(
+            set(self.model.CaseVersion.objects.values_list("name", flat=True)),
+            set(["Foo", "Foo2", "Foo3"]))
+
+
+    def test_skip_hidden_files(self):
+        """Don't attempt to import hidden files in a directory."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        data1 = {
+            "cases": [{"name": "Foo", "steps": [{"instruction": "do this"}]}]}
+        data2 = {
+            "cases": [{"name": "Foo2", "steps": [{"instruction": "do this2"}]}]}
+
+        dir = mkdtemp()
+        with self.tempfile(json.dumps(data1), dir=dir) as filepath:
+            # create another file in that same directory
+            with open("{0}/{1}".format(dir, ".file2"), "w") as fh:
+                fh.write(json.dumps(data2))
+                fh.close()
+
+            output = self.call_command("Foo", "1.0", dir)
+
+        self.assertEqual(output, ("Imported 1 cases\nImported 0 suites\n", ""))
+        self.assertEqual(self.model.CaseVersion.objects.get().name, "Foo")
+
+
+    def test_no_files_in_dir(self):
+        """Don't attempt to import hidden files in a directory."""
+        self.F.ProductVersionFactory.create(product__name="Foo", version="1.0")
+
+        dir = mkdtemp()
+        output = self.call_command("Foo", "1.0", dir)
+
+        self.assertEqual(output, ("No files found to import.\n", ""))
+        self.assertEqual(self.model.CaseVersion.objects.count(), 0)

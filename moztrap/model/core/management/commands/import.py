@@ -33,6 +33,7 @@ The data must be in JSON format and structured like this::
 from django.core.management.base import BaseCommand, CommandError
 
 import json
+import os.path
 
 from moztrap.model.core.models import Product, ProductVersion
 from moztrap.model.library.importer import Importer
@@ -65,17 +66,48 @@ class Command(BaseCommand):
                 )
 
         try:
-            with open(args[2]) as fh:
+            files = []
+            # if this is a directory, import all files in it
+            if os.path.isdir(args[2]):
+                for file in os.listdir(args[2]):
+                    if not file.startswith("."):
+                        files.append("{0}/{1}".format(args[2], file))
+            else:
+                files.append(args[2])
 
-                # try to import this as JSON
-                try:
-                    case_data = json.load(fh)   # pragma: no branch
-                except ValueError as e:
-                    raise CommandError(
-                        "Could not parse JSON: {0}".format(str(e)))
+            results_for_files = None
+            for file in files:
+                with open(file) as fh:
 
-                # @@@: support importing as CSV.  Rather than returning an
-                # error above, just try CSV import instead.
+                    # try to import this as JSON
+                    try:
+                        case_data = json.load(fh)   # pragma: no branch
+                    except ValueError as e:
+                        raise CommandError(
+                            "Could not parse JSON: {0}: {1}".format(
+                                str(e),
+                                fh,
+                                ))
+
+                    # @@@: support importing as CSV.  Rather than returning an
+                    # error above, just try CSV import instead.
+
+                    result = Importer().import_data(
+                        product_version, case_data)
+
+                    # append this result to those for any of the other files.
+                    if not results_for_files:
+                        results_for_files = result
+                    else:
+                        results_for_files.append(result)  # pragma: no branch
+
+            if results_for_files:
+                result_list = results_for_files.get_as_list()
+                result_list.append("")
+                self.stdout.write("\n".join(result_list))
+            else:
+                self.stdout.write("No files found to import.\n")
+
 
         except IOError as (errno, strerror):
             raise CommandError(
@@ -83,7 +115,3 @@ class Command(BaseCommand):
                     args[2], errno, strerror)
                 )
 
-        result_list = Importer().import_data(
-            product_version, case_data).get_as_list()
-        result_list.append("")
-        self.stdout.write("\n".join(result_list))
