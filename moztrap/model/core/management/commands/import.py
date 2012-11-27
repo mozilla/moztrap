@@ -32,6 +32,7 @@ The data must be in JSON format and structured like this::
 
 from django.core.management.base import BaseCommand, CommandError
 
+from optparse import make_option
 import json
 import os.path
 
@@ -46,10 +47,23 @@ class Command(BaseCommand):
         "Imports the cases from a JSON file into "
         "the specified Product Version")
 
+    option_list = BaseCommand.option_list + (
+        make_option(
+            "-f",
+            "--force_dupes",
+            action='store_true',
+            dest="force_dupes",
+            default=False,
+            help="Force importing cases, even if the case name is a"
+            " duplicate"),
+
+        )
 
     def handle(self, *args, **options):
         if not len(args) == 3:
             raise CommandError("Usage: {0}".format(self.args))
+
+        force_dupes = options.get("force_dupes")
 
         try:
             product = Product.objects.get(name=args[0])
@@ -93,7 +107,7 @@ class Command(BaseCommand):
                     # error above, just try CSV import instead.
 
                     result = Importer().import_data(
-                        product_version, case_data)
+                        product_version, case_data, force_dupes=force_dupes)
 
                     # append this result to those for any of the other files.
                     if not results_for_files:
