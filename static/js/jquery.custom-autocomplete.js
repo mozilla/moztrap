@@ -258,7 +258,7 @@
                         }
                     }
                 };
-                if (options.ajax) {
+                if (options.ajax || options.debounce) {
                     $(this).doTimeout('autocomplete', 200, function () {
                         updateSuggestionList();
                     });
