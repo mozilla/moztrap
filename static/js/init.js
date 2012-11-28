@@ -26,7 +26,8 @@ var MT = (function (MT, $) {
             fakePlaceholder: true,
             initialFocus: true,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('#clientfilter').customAutocomplete({
             textbox: '#text-filter',
@@ -39,7 +40,8 @@ var MT = (function (MT, $) {
             fakePlaceholder: true,
             initialFocus: true,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('.tagging').customAutocomplete({
             textbox: '#id_add_tags',
@@ -84,7 +86,8 @@ var MT = (function (MT, $) {
             allowNew: true,
             triggerSubmit: null,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('.runsdrill').html5finder({
             loading: true,
