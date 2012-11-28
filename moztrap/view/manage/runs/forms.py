@@ -109,7 +109,12 @@ class RunForm(mtforms.NonFieldErrorsClassFormMixin, mtforms.MTModelForm):
 
 class AddRunForm(RunForm):
     """Form for adding a run."""
-    pass
+    def __init__(self, *args, **kwargs):
+        """Initialize AddRunForm; default to being a series."""
+        super(AddRunForm, self).__init__(*args, **kwargs)
+
+        isf = self.fields["is_series"]
+        isf.initial = True
 
 
 
