@@ -91,10 +91,17 @@ var MT = (function (MT, $) {
                     success: function (response) {
                         var newTest = $(response.html);
                         test.loadingOverlay('remove');
-                        if (response.html) {
+                        if ($(response.html).is("article")) {
                             test.replaceWith(newTest);
                             ajaxFormsInit(newTest);
                             newTest.find('.details').html5accordion();
+                        }
+                        else {
+                            $(ich.message({
+                                  message: "This test run is no longer available.  Please see your test manager.",
+                                  tags: "error"
+                              })).appendTo($('#messages ul'));
+                            $('#messages ul').messages();
                         }
                     }
                 });
