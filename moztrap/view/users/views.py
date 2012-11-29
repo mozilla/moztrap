@@ -87,8 +87,7 @@ def password_reset(request):
         password_reset_form=forms.PasswordResetForm,
         template_name="users/password_reset_form.html",
         email_template_name="registration/password_reset_email.txt",
-        # @@@ enable this in Django 1.4
-        # subject_template_name="registration/password_reset_subject.txt",
+        subject_template_name="registration/password_reset_subject.txt",
         post_reset_redirect=reverse("home")
         )
 

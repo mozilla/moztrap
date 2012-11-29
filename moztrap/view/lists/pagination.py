@@ -3,7 +3,7 @@ List pagination utilities.
 
 """
 import math
-
+from django.db.utils import DatabaseError
 from ..utils.querystring import update_querystring
 
 
@@ -93,7 +93,15 @@ class Pager(object):
     def total(self):
         """The total number of objects."""
         if self._cached_total is None:
-            self._cached_total = self._queryset.count()
+            # @@@ Django 1.5 should not require the .values part and could be
+            # changed to just:
+            #     self._cached_total = self._queryset.count()
+            # Bug 18248
+            try:
+                self._cached_total = self._queryset.count()
+            except DatabaseError:
+                self._cached_total = self._queryset.values("id").count()
+
         return self._cached_total
 
 

@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 
-{% load permissions owa %}
+{% load permissions owa site %}
 
 {% block site %}
 
+
 {% include "_messages.html" %}
+
 
 <header role="banner">
   <h1 id="brand">
-    <a href="{% url home %}" rel="home">
+    <a href="{% url 'home' %}" rel="home">
       <span class="logo"> </span>
-      <span class="wordmark">MozTrap</span>
+      <span class="wordmark">MozTrap{% settings_value "MOZTRAP_NAME_SUFFIX" %}</span>
     </a>
   </h1>
 
@@ -22,7 +24,7 @@
       <ul class="primary">
         {% if user|has_perm:"execution.execute" %}
         <li class="runtests-nav {% block run-active-nav %}{% endblock run-active-nav %} nav-tests">
-          <a href="{% url runtests %}">Run Tests</a>
+          <a href="{% url 'runtests' %}">Run Tests</a>
           <div class="secondary">
             <ol>
               {% block test-subnav %}
@@ -35,50 +37,50 @@
 
         {% if user %}
         <li class="results-nav {% block result-active-nav %}{% endblock result-active-nav %} nav-results">
-          <a href="{% url results %}">View Results</a>
+          <a href="{% url 'results' %}">View Results</a>
           <div class="secondary">
             <ol>
               <li class="{% block resultrun-active-nav %}{% endblock resultrun-active-nav %}">
-                <a href="{% url results_runs %}?filter-status=active">Test Runs</a>
+                <a href="{% url 'results_runs' %}?filter-status=active">Test Runs</a>
               </li>
               <li class="{% block resultcase-active-nav %}{% endblock resultcase-active-nav %}">
-                <a href="{% url results_runcaseversions %}">Test Cases</a>
+                <a href="{% url 'results_runcaseversions' %}">Test Cases</a>
               </li>
             </ol>
           </div>
         </li>
 
         <li class="manage-nav {% block manage-active-nav %}{% endblock manage-active-nav %} nav-manage">
-          <a href="{% url manage %}">Manage</a>
+          <a href="{% url 'manage' %}">Manage</a>
           <div class="secondary">
             <ul class="global">
               {% if user|has_perm:"core.manage_users" %}
                 <li class="{% block manageuser-active-nav %}{% endblock manageuser-active-nav %} nav-users">
-                  <a href="{% url manage_users %}">Users</a>
+                  <a href="{% url 'manage_users' %}">Users</a>
                 </li>
               {% endif %}
               <li class="{% block managetag-active-nav %}{% endblock managetag-active-nav %} nav-tags">
-                <a href="{% url manage_tags %}">Tags</a>
+                <a href="{% url 'manage_tags' %}">Tags</a>
               </li>
               <li class="{% block manageenv-active-nav %}{% endblock manageenv-active-nav %} nav-envs">
-                <a href="{% url manage_profiles %}">Environments</a>
+                <a href="{% url 'manage_profiles' %}">Environments</a>
               </li>
               <li>
                 <ol class="tertiary">
                   <li class="{% block manageproduct-active-nav %}{% endblock manageproduct-active-nav %} nav-products">
-                    <a href="{% url manage_products %}">Products</a>
+                    <a href="{% url 'manage_products' %}">Products</a>
                   </li>
                   <li class="{% block manageproductversion-active-nav %}{% endblock manageproductversion-active-nav %}">
-                    <a href="{% url manage_productversions %}">Versions</a>
+                    <a href="{% url 'manage_productversions' %}">Versions</a>
                   </li>
                   <li class="{% block managerun-active-nav %}{% endblock managerun-active-nav %}">
-                    <a href="{% url manage_runs %}">Runs</a>
+                    <a href="{% url 'manage_runs' %}">Runs</a>
                   </li>
                   <li class="{% block managesuite-active-nav %}{% endblock managesuite-active-nav %}">
-                    <a href="{% url manage_suites %}">Suites</a>
+                    <a href="{% url 'manage_suites' %}">Suites</a>
                   </li>
                   <li class="{% block managecase-active-nav %}{% endblock managecase-active-nav %}">
-                    <a href="{% url manage_cases %}">Cases</a>
+                    <a href="{% url 'manage_cases' %}">Cases</a>
                   </li>
                 </ol>
               </li>

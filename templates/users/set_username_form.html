@@ -22,7 +22,7 @@
       <button type="submit" class="action-setusername">continue!</button>
     </div>
   </form>
-  <form method="POST" action="{% url auth_logout %}?next={{ next|default:'/' }}" id="logoutform">
+  <form method="POST" action="{% url 'auth_logout' %}?next={{ next|default:'/' }}" id="logoutform">
     {% csrf_token %}
     <button type="submit" class="action-cancel-setusername">cancel</button>
   </form>

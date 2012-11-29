@@ -19,7 +19,7 @@
 
   </header>
 
-  {% url results_run_details run.id as details_url %}
+  {% url 'results_run_details' run.id as details_url %}
   {# _run_details.html loaded via ajax #}
   {% include "lists/_itembody.html" %}
 

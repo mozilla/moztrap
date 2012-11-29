@@ -35,7 +35,7 @@
 
       <div class="controls">
         {% if user|has_perm:"core.manage_users" %}
-          {% url manage_user_edit user_id=subject.id as user_edit_url %}
+          {% url 'manage_user_edit' user_id=subject.id as user_edit_url %}
           {% include "lists/controls/_edit.html" with edit_url=user_edit_url edit_name=subject.name %}
           {% include "lists/controls/_delete.html" with delete_id=subject.id delete_name=subject.name %}
         {% endif %}

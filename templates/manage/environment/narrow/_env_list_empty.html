@@ -1,5 +1,5 @@
 {% extends 'lists/_emptylist.html' %}
 
 {% block empty-options %}
-<p>First, <a href="{% url manage_productversion_environments productversion_id=obj.productversion.id %}">add some environments to the {{ obj.productversion }} product version</a>.</p>
+<p>First, <a href="{% url 'manage_productversion_environments' productversion_id=obj.productversion.id %}">add some environments to the {{ obj.productversion }} product version</a>.</p>
 {% endblock empty-options %}

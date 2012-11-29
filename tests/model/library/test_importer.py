@@ -155,6 +155,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             `auth_user`.`date_joined` FROM `auth_user` WHERE
             `auth_user`.`email` = sumbudee@mozilla.com
 
+        Transaction: SAVEPOINT s140735243669888_x1
+
         Query 3: Create the first new case object::
 
             INSERT INTO `library_case` (`created_on`, `created_by_id`,
@@ -225,6 +227,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             (2012-03-07 19:35:34, None, 2012-03-07 19:35:34, None, None, None,
             10, 1, do this, )
 
+        Transaction: RELEASE SAVEPOINT s140735243669888_x1
+
         Query 10: Ensure the second caseversion with this name and pv doesn't
         exist::
 
@@ -232,6 +236,8 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             (`library_caseversion`.`deleted_on` IS NULL AND
             `library_caseversion`.`name` = Bar AND
             `library_caseversion`.`productversion_id` = 12 ) LIMIT 1
+
+        Transaction: SAVEPOINT s140735243669888_x2
 
         **NOTE: We didn't have to search for the user again, since it was
         cached**
@@ -307,6 +313,26 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             (2012-03-07 19:35:34, None, 2012-03-07 19:35:34, None, None, None,
             11, 1, do this, )
 
+        Transaction: RELEASE SAVEPOINT s140735243669888_x2
+
+        Note: Django 1.4 now logs transaction points in the connection.queries
+
+        EXPECT: 17 Queries + 4 Transaction actions = 21 queries.
+
+        To re-capture this query list, use a block like this in place
+            of the "with self.assertNumQueries..." block::
+
+                from django.conf import settings
+                from django.db import connection
+                import json
+
+                settings.DEBUG = True
+                connection.queries = []
+                result = self.import_data(case_data)
+
+                self.assertFalse(json.dumps(connection.queries, indent=4))
+                settings.DEBUG = False
+
         """
 
         # need a user to exist, so the import can find it.
@@ -327,8 +353,9 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
                 ]
             }
 
-        with self.assertNumQueries(17):
-           result = self.import_data(case_data)
+        # Test code as normal
+        with self.assertNumQueries(21):
+            result = self.import_data(case_data)
 
         cv1 = self.model.CaseVersion.objects.get(name="Foo")
         self.assertEqual(cv1.created_by, user)
@@ -387,6 +414,32 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
         self.assertEqual(result.num_cases, 1)
 
 
+    def test_create_caseversion_existing_tag_different_case(self):
+        """A caseversion that uses an existing product tag with different case"""
+
+        # need a tag to exist, so the import can find it.
+        tag = self.model.Tag.objects.create(
+            name="footag",
+            product=self.pv.product,
+            )
+
+        result = self.import_data(
+            {
+                "cases": [
+                    {
+                        "name": "Foo",
+                        "steps": [{"instruction": "do this"}],
+                        "tags": ["FooTag"],
+                        }
+                ]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.tags.get(), tag)
+        self.assertEqual(result.num_cases, 1)
+
+
     def test_create_caseversion_existing_suite(self):
         """A case that uses an existing suite."""
 
@@ -396,10 +449,34 @@ class ImporterTest(ImporterTestBase, case.DBTestCase):
             product=self.pv.product,
             )
 
+        result = self.import_data({
+            "cases": [{
+                "name": "Foo",
+                "steps": [{"instruction": "do this"}],
+                "suites": ["FooSuite"],
+                }]
+            }
+        )
+
+        cv = self.model.CaseVersion.objects.get()
+        self.assertEqual(cv.case.suites.get(), suite)
+        self.assertEqual(result.num_cases, 1)
+        self.assertEqual(result.num_suites, 0)
+
+
+    def test_create_caseversion_existing_suite_different_case(self):
+        """A case that uses an existing suite with different case."""
+
+        # need a suite to exist, so the import can find it.
+        suite = self.model.Suite.objects.create(
+            name="foosuite",
+            product=self.pv.product,
+            )
+
         result = self.import_data(
-                {
+            {
                 "cases": [
-                        {
+                    {
                         "name": "Foo",
                         "steps": [{"instruction": "do this"}],
                         "suites": ["FooSuite"],

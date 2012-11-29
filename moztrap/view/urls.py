@@ -11,6 +11,7 @@ from django.contrib import admin
 from moztrap.model import mtadmin
 
 
+
 admin.site = mtadmin.MTAdminSite()
 admin.autodiscover()
 

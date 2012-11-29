@@ -26,7 +26,8 @@ var MT = (function (MT, $) {
             fakePlaceholder: true,
             initialFocus: true,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('#clientfilter').customAutocomplete({
             textbox: '#text-filter',
@@ -39,7 +40,8 @@ var MT = (function (MT, $) {
             fakePlaceholder: true,
             initialFocus: true,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('.tagging').customAutocomplete({
             textbox: '#id_add_tags',
@@ -84,7 +86,8 @@ var MT = (function (MT, $) {
             allowNew: true,
             triggerSubmit: null,
             inputsNeverRemoved: true,
-            prefix: 'filter'
+            prefix: 'filter',
+            debounce: true
         });
         $('.runsdrill').html5finder({
             loading: true,
@@ -198,6 +201,13 @@ var MT = (function (MT, $) {
         MT.addEnvToProfile('#editprofile, #editproductversionenvs', '#add-environment-form, #productversion-environments-form');
         MT.editEnvProfileName('#editprofile');
         MT.bulkSelectEnvs('#envnarrowing');
+
+        // manage.js
+        MT.disableOnChecked({
+            container: '#run-add-form, #run-edit-form',
+            trigger_field: '#id_is_series',
+            target_field: '#id_build'
+        });
 
         // runtests.js
 

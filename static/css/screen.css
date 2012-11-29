@@ -1885,7 +1885,7 @@ body > div {
   display: inline;
 }
 
-.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .create-child-link, .controls .select-env-link {
+.action, .actionbutton, .action-clone, .action-delete, .action-remove, .actionlink, .edit-link, .refresh-link, .create-child-link, .controls .select-env-link {
   margin: 0;
   padding: 0;
   border: 0;
@@ -1896,7 +1896,7 @@ body > div {
   vertical-align: text-bottom;
   background: none;
 }
-.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .create-child-link:active, .controls .select-env-link:active {
+.action:focus, .actionbutton:focus, .action-clone:focus, .action-delete:focus, .action-remove:focus, .actionlink:focus, .edit-link:focus, .refresh-link:focus, .create-child-link:focus, .controls .select-env-link:focus, .action:hover, .actionbutton:hover, .action-clone:hover, .action-delete:hover, .action-remove:hover, .actionlink:hover, .edit-link:hover, .refresh-link:hover, .create-child-link:hover, .controls .select-env-link:hover, .action:active, .actionbutton:active, .action-clone:active, .action-delete:active, .action-remove:active, .actionlink:active, .edit-link:active, .refresh-link:active, .create-child-link:active, .controls .select-env-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -1920,6 +1920,29 @@ body > div {
   opacity: 0.296;
 }
 .edit-link:focus, .edit-link:hover, .edit-link:active {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.refresh-link {
+  background-image: url('../images/ui/refresh.png?1328730630');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: false;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 14px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+  opacity: 0.296;
+}
+.refresh-link:focus, .refresh-link:hover, .refresh-link:active {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
@@ -4426,7 +4449,7 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   margin-right: 0;
   #margin-left: -1em;
 }
-.add-run .is-series-field, .edit-run .is-series-field {
+.add-run .series-field, .edit-run .series-field {
   display: inline;
   float: left;
   width: 24.211%;
@@ -4435,7 +4458,25 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
   float: right;
   margin-right: 0;
   #margin-left: -1em;
+}
+.add-run .series-field.optional, .edit-run .series-field.optional {
   margin-top: 0.375em;
+}
+.add-run .series-field.optional + .add-run .series-field.readonly .type, .edit-run .series-field.optional + .edit-run .series-field.readonly .type {
+  display: inline;
+  float: left;
+  width: 13.043%;
+  margin-right: 4.348%;
+}
+.add-run .series-field.optional + .add-run .series-field.readonly .value, .add-run .series-field.optional + .add-run .series-field.readonly .errorlist, .edit-run .series-field.optional + .edit-run .series-field.readonly .value, .edit-run .series-field.optional + .edit-run .series-field.readonly .errorlist {
+  display: inline;
+  float: left;
+  width: 82.609%;
+  margin-right: 4.348%;
+  display: inline;
+  float: right;
+  margin-right: 0;
+  #margin-left: -1em;
 }
 .add-run .start-field, .add-run .end-field, .edit-run .start-field, .edit-run .end-field {
   display: inline;
@@ -5952,6 +5993,14 @@ h2 + .select-env-link:active, .selectenvhead + .select-env-link:active {
 #runtests .item-summary, #runtests .item-content {
   padding-top: 0.75em;
   padding-bottom: 0.75em;
+}
+#runtests .run-description {
+  clear: both;
+  margin-left: 1.031%;
+  margin-right: 1.031%;
+  padding-top: 0.375em;
+  margin-bottom: 0.75em;
+  font-style: italic;
 }
 #runtests .results, #runtests .byresults {
   display: inline;

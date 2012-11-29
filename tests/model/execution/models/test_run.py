@@ -337,6 +337,24 @@ class RunActivationTest(case.DBTestCase):
         self.assertCaseVersions(r, [])
 
 
+    def test_soft_deleted_not_included(self):
+        """Only active test cases are considered."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        cv = self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        cv.delete()
+        r.activate()
+
+        self.assertCaseVersions(r, [])
+
+
     def test_only_active_suite(self):
         """Only test cases in an active suite are considered."""
         tc = self.F.CaseFactory.create(product=self.p)
@@ -466,49 +484,9 @@ class RunActivationTest(case.DBTestCase):
         self.assertEqual(self.refresh(r).status, "active")
 
 
-    def test_source_suite(self):
-        """Sets source suites for each runcaseversion."""
-        tc = self.F.CaseFactory.create(product=self.p)
-        self.F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, status="active")
-
-        ts = self.F.SuiteFactory.create(product=self.p, status="active")
-        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
-
-        r = self.F.RunFactory.create(productversion=self.pv8)
-        self.F.RunSuiteFactory.create(suite=ts, run=r)
-
-        r.activate()
-
-        rcv = r.runcaseversions.get()
-        self.assertEqual(list(rcv.suites.all()), [ts])
-
-
-    def test_multiple_source_suites(self):
-        """Sets source suites for a caseversion in multiple included suites."""
-        tc = self.F.CaseFactory.create(product=self.p)
-        self.F.CaseVersionFactory.create(
-            case=tc, productversion=self.pv8, status="active")
-
-        ts1 = self.F.SuiteFactory.create(product=self.p, status="active")
-        self.F.SuiteCaseFactory.create(suite=ts1, case=tc)
-
-        ts2 = self.F.SuiteFactory.create(product=self.p, status="active")
-        self.F.SuiteCaseFactory.create(suite=ts2, case=tc)
-
-        r = self.F.RunFactory.create(productversion=self.pv8)
-        self.F.RunSuiteFactory.create(suite=ts1, run=r)
-        self.F.RunSuiteFactory.create(suite=ts2, run=r)
-
-        r.activate()
-
-        rcv = r.runcaseversions.get()
-        self.assertEqual(set(rcv.suites.all()), set([ts1, ts2]))
-
-
     def test_removes_duplicate_runcaseversions(self):
         """
-        Re-activating a run that has dupe runcaseversions cleans them up.
+        Re-activating a run that has had a caseversion removed cleans them up.
 
         Environments are set to current values; all results are preserved.
 
@@ -521,11 +499,16 @@ class RunActivationTest(case.DBTestCase):
             )
         rcv1.environments.remove(self.envs[1])
         self.F.ResultFactory.create(runcaseversion=rcv1)
+        self.F.ResultFactory.create(runcaseversion=rcv1)
         rcv2 = self.F.RunCaseVersionFactory.create(
-            caseversion=rcv1.caseversion, run=r)
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="active",
+            )
         self.F.ResultFactory.create(runcaseversion=rcv2)
         ts = self.F.SuiteFactory.create(product=self.p, status="active")
         self.F.SuiteCaseFactory.create(suite=ts, case=rcv1.caseversion.case)
+        # rcv2 is NOT in the suite, so should be removed during activate
         self.F.RunSuiteFactory.create(suite=ts, run=r)
         r.environments.remove(self.envs[0])
 
@@ -572,6 +555,8 @@ class RunActivationTest(case.DBTestCase):
         self.assertEqual(r.runcaseversions.count(), 0)
         self.assertEqual(
             self.model.Result.objects.filter(runcaseversion__run=r).count(), 0)
+        self.assertEqual(
+            self.model.Result.objects.count(), 0)
 
 
     def test_removes_no_env_overlap_caseversions(self):
@@ -591,3 +576,381 @@ class RunActivationTest(case.DBTestCase):
         r.activate()
 
         self.assertEqual(r.runcaseversions.count(), 0)
+
+
+    def test_query_count_on_activate(self):
+        """
+        Count number of queries needed for activation of complex run.
+
+        Queries explained:
+        ------------------
+
+        Query 1: Get the environment ids from this run
+
+            "SELECT `environments_environment`.`id` FROM
+            `environments_environment` INNER JOIN
+            `execution_run_environments` ON (`environments_environment`.`id`
+             = `execution_run_environments`.`environment_id`) WHERE (
+             `environments_environment`.`deleted_on` IS NULL AND
+             `execution_run_environments`.`run_id` = 1 )",
+
+        Query 2: Get the caseversion ids that SHOULD be included in this run,
+            in order
+
+            "SELECT DISTINCT cv.id as id
+            FROM execution_run as r
+                INNER JOIN execution_runsuite as rs
+                    ON rs.run_id = r.id
+                INNER JOIN library_suitecase as sc
+                    ON rs.suite_id = sc.suite_id
+                INNER JOIN library_suite as s
+                    ON sc.suite_id = s.id
+                INNER JOIN library_caseversion as cv
+                    ON cv.case_id = sc.case_id
+                    AND cv.productversion_id = r.productversion_id
+                INNER JOIN library_caseversion_environments as cve
+                    ON cv.id = cve.caseversion_id
+            WHERE cv.status = 'active'
+                AND s.status = 'active'
+                AND rs.run_id = 1
+                AND cve.environment_id IN (1,2,3,4)
+            ORDER BY rs.order, sc.order
+            ",
+
+        Query 3-7: Get all the runcaseversions that are not in the result of
+         Query 2
+            to be used for delete. and then delete them.
+
+            "SELECT `execution_runcaseversion`.`id`,
+            `execution_runcaseversion`.`created_on`,
+            `execution_runcaseversion`.`created_by_id`,
+            `execution_runcaseversion`.`modified_on`,
+            `execution_runcaseversion`.`modified_by_id`,
+            `execution_runcaseversion`.`deleted_on`,
+            `execution_runcaseversion`.`deleted_by_id`,
+            `execution_runcaseversion`.`cc_version`,
+            `execution_runcaseversion`.`run_id`, `execution_runcaseversion`
+            .`caseversion_id`, `execution_runcaseversion`.`order` FROM
+            `execution_runcaseversion` WHERE (`execution_runcaseversion`
+            .`deleted_on` IS NULL AND `execution_runcaseversion`.`run_id` =
+            1  AND NOT (`execution_runcaseversion`.`caseversion_id` IN (2,
+            3, 4, 5, 6, 7))) ORDER BY `execution_runcaseversion`.`order` ASC",
+
+            "SELECT `execution_result`.`id`, `execution_result`
+            .`created_on`, `execution_result`.`created_by_id`,
+            `execution_result`.`modified_on`,
+            `execution_result`.`modified_by_id`,
+            `execution_result`.`deleted_on`, `execution_result`
+            .`deleted_by_id`, `execution_result`.`cc_version`,
+            `execution_result`.`tester_id`, `execution_result`
+            .`runcaseversion_id`, `execution_result`.`environment_id`,
+            `execution_result`.`status`, `execution_result`.`comment`,
+            `execution_result`.`is_latest`, `execution_result`.`review`,
+            `execution_result`.`reviewed_by_id` FROM `execution_result`
+            WHERE `execution_result`.`runcaseversion_id` IN (1)",
+
+            "DELETE FROM `execution_runcaseversion_suites` WHERE
+            `runcaseversion_id` IN (1)",
+
+            "DELETE FROM `execution_runcaseversion_environments` WHERE
+            `runcaseversion_id` IN (1)",
+
+            "DELETE FROM `execution_runcaseversion` WHERE `id` IN (1)",
+
+        Query 8: Get existing runcaseversions with the caseversion ids so we
+         can use
+            Them to build the new RunCaseVersion objects we will only be
+            updated
+            with order in the bulk create.
+
+            "SELECT `execution_runcaseversion`.`id`,
+            `execution_runcaseversion`.`caseversion_id` FROM
+            `execution_runcaseversion` WHERE (`execution_runcaseversion`
+            .`deleted_on` IS NULL AND `execution_runcaseversion`.`run_id` =
+            1 ) ORDER BY `execution_runcaseversion`.`order` ASC",
+
+        Query 9: bulk insert for RunCaseVersions, updates if already existing
+
+            "INSERT INTO execution_runcaseversion (`id`, `created_on`,
+            `created_by_id`, `modified_on`, `modified_by_id`, `deleted_on`,
+            `deleted_by_id`, `cc_version`, `run_id`, `caseversion_id`,
+            `order`) VALUES (NULL, '2012-11-20 00:11:25.417158', NULL,
+            '2012-11-20 00:11:25.417176', NULL, NULL, NULL, 0, 1, 2, 1),
+            (NULL, '2012-11-20 00:11:25.417239', NULL,
+            '2012-11-20 00:11:25.417251', NULL, NULL, NULL, 0, 1, 3, 2),
+            (NULL, '2012-11-20 00:11:25.417298', NULL,
+            '2012-11-20 00:11:25.417310', NULL, NULL, NULL, 0, 1, 4, 3), (2,
+             '2012-11-20 00:11:25.417353', NULL, '2012-11-20 00:11:25
+             .417365', NULL, NULL, NULL, 0, 1, 5, 4), (NULL,
+             '2012-11-20 00:11:25.417411', NULL, '2012-11-20 00:11:25
+             .417423', NULL, NULL, NULL, 0, 1, 6, 5), (NULL,
+             '2012-11-20 00:11:25.417469', NULL, '2012-11-20 00:11:25
+             .417481', NULL, NULL, NULL, 0, 1, 7, 6) ON DUPLICATE KEY UPDATE
+              `caseversion_id`=VALUES(`caseversion_id`),
+              `run_id`=VALUES(`run_id`), `cc_version`=VALUES(`cc_version`),
+              `modified_by_id`=VALUES(`modified_by_id`),
+              `modified_on`=VALUES(`modified_on`), `order`=VALUES(`order`)",
+
+        Query 10: In order to add the runcaseversion_environment records,
+        we need to
+            have all the relevant runcaseversions and prefetch the
+            environments for the
+            caseversions
+
+            "SELECT `execution_runcaseversion`.`id`,
+            `execution_runcaseversion`.`created_on`,
+            `execution_runcaseversion`.`created_by_id`,
+            `execution_runcaseversion`.`modified_on`,
+            `execution_runcaseversion`.`modified_by_id`,
+            `execution_runcaseversion`.`deleted_on`,
+            `execution_runcaseversion`.`deleted_by_id`,
+            `execution_runcaseversion`.`cc_version`,
+            `execution_runcaseversion`.`run_id`, `execution_runcaseversion`
+            .`caseversion_id`, `execution_runcaseversion`.`order`,
+            `library_caseversion`.`id`, `library_caseversion`.`created_on`,
+            `library_caseversion`.`created_by_id`, `library_caseversion`
+            .`modified_on`, `library_caseversion`.`modified_by_id`,
+            `library_caseversion`.`deleted_on`, `library_caseversion`
+            .`deleted_by_id`, `library_caseversion`.`cc_version`,
+            `library_caseversion`.`status`, `library_caseversion`
+            .`productversion_id`, `library_caseversion`.`case_id`,
+            `library_caseversion`.`name`, `library_caseversion`
+            .`description`, `library_caseversion`.`latest`,
+            `library_caseversion`.`envs_narrowed` FROM
+            `execution_runcaseversion` INNER JOIN `library_caseversion` ON (
+            `execution_runcaseversion`.`caseversion_id` =
+            `library_caseversion`.`id`) WHERE (`execution_runcaseversion`
+            .`deleted_on` IS NULL AND `execution_runcaseversion`.`run_id` =
+            1 ) ORDER BY `execution_runcaseversion`.`order` ASC",
+
+        Query 11: This is the prefetch_related query used with Query 9.  Django
+            makes a separate query and links them in-memory.
+
+            "SELECT (`library_caseversion_environments`.`caseversion_id`) AS
+             `_prefetch_related_val`, `environments_environment`.`id`,
+             `environments_environment`.`created_on`,
+             `environments_environment`.`created_by_id`,
+             `environments_environment`.`modified_on`,
+             `environments_environment`.`modified_by_id`,
+             `environments_environment`.`deleted_on`,
+             `environments_environment`.`deleted_by_id`,
+             `environments_environment`.`cc_version`,
+             `environments_environment`.`profile_id` FROM
+             `environments_environment` INNER JOIN
+             `library_caseversion_environments` ON (
+             `environments_environment`.`id` =
+             `library_caseversion_environments`.`environment_id`) WHERE (
+             `environments_environment`.`deleted_on` IS NULL AND
+             `library_caseversion_environments`.`caseversion_id` IN (2, 3,
+             4, 5, 6, 7))",
+
+        Query 12: runcaseversion_environments that already existed that
+        pertain to
+            the runcaseversions that are still relevant.
+
+            "SELECT `execution_runcaseversion_environments`
+            .`runcaseversion_id`, `execution_runcaseversion_environments`
+            .`environment_id` FROM `execution_runcaseversion_environments`
+            WHERE `execution_runcaseversion_environments`
+            .`runcaseversion_id` IN (3, 4, 5, 2, 6, 7)",
+
+        Query 13: Get the environments for this run so we can find the
+        intersection
+            with the caseversions.
+
+            "SELECT `environments_environment`.`id` FROM
+            `environments_environment` INNER JOIN
+            `execution_run_environments` ON (`environments_environment`.`id`
+             = `execution_run_environments`.`environment_id`) WHERE (
+             `environments_environment`.`deleted_on` IS NULL AND
+             `execution_run_environments`.`run_id` = 1 )",
+
+        Query 14: Find the runcaseversion_environments that are no longer
+        relevant.
+
+            "SELECT `execution_runcaseversion_environments`.`id`,
+            `execution_runcaseversion_environments`.`runcaseversion_id`,
+            `execution_runcaseversion_environments`.`environment_id` FROM
+            `execution_runcaseversion_environments`
+            WHERE ((`execution_runcaseversion_environments`.`runcaseversion_id`
+            = 2  AND `execution_runcaseversion_environments`.`environment_id`
+            = 5 ))",
+
+        Query 15: Delete the runcaseversion_environments that pertained to the
+            caseversion that are no longer relevant.
+
+            "DELETE FROM `execution_runcaseversion_environments` WHERE `id`
+            IN (9)",
+
+        Query 16: Bulk insert of runcaseversion_environment mappings.
+
+            "INSERT INTO `execution_runcaseversion_environments`
+            (`runcaseversion_id`, `environment_id`) VALUES (7, 3), (5, 4),
+            (3, 1), (3, 3), (6, 4), (7, 4), (5, 2), (6, 1), (4, 4), (3, 2),
+            (7, 1), (6, 3), (6, 2), (4, 3), (4, 2), (3, 4), (5, 1), (4, 1),
+            (7, 2), (5, 3)",
+
+        Query 17: Update the test run to make it active.
+
+            "UPDATE `execution_run` SET `created_on` = '2012-11-20 00:11:25',
+            `created_by_id` = NULL, `modified_on` = '2012-11-20 00:11:25',
+            `modified_by_id` = NULL, `deleted_on` = NULL, `deleted_by_id` =
+            NULL, `cc_version` = 1, `has_team` = 0, `status` = 'active',
+            `productversion_id` = 1, `name` = 'Test Run', `description` = '',
+            `start` = '2012-11-19', `end` = NULL, `build` = NULL,
+            `is_series` = 0, `series_id` = NULL
+            WHERE (`execution_run`.`deleted_on` IS NULL
+            AND `execution_run`.`id` = 1
+            AND `execution_run`.`cc_version` = 0 )"
+
+        """
+
+        r = self.F.RunFactory.create(productversion=self.pv8)
+
+        # one that should get deleted because it's not in the suite
+        old_cv = self.F.CaseVersionFactory.create(
+            name="I shouldn't be here",
+            productversion=self.pv8,
+            status="active",
+            )
+        self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
+
+        # test suite add to run
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        # cases that belong to the suite
+        cv_needed = []
+        for num in range(6):
+            cv = self.F.CaseVersionFactory.create(
+                name="casey"+str(num),
+                productversion=self.pv8,
+                status="active",
+                )
+            self.F.SuiteCaseFactory.create(suite=ts, case=cv.case)
+            cv_needed.append(cv)
+
+        # existing one that we should keep
+        existing_rcv = self.F.RunCaseVersionFactory(run=r,
+            caseversion=cv_needed[3],
+            order=0,
+            )
+        # existing env that should be removed in removal phase
+        old_env = self.F.EnvironmentFactory.create_set(
+            ["OS", "Browser"],
+            ["Atari", "RS-232"],
+            )[0]
+        self.F.model.RunCaseVersion.environments.through(
+            runcaseversion=existing_rcv,
+            environment=old_env,
+            ).save()
+
+        from django.conf import settings
+        from django.db import connection
+
+        settings.DEBUG = True
+        connection.queries = []
+
+        try:
+            with self.assertNumQueries(16):
+                r.activate()
+
+            # to debug, uncomment these lines:
+#            import json
+#            r.activate()
+#            print(json.dumps([x["sql"] for x in connection.queries], indent=4))
+#            print("NumQueries={0}".format(len(connection.queries)))
+
+            selects = [x["sql"] for x in connection.queries if x["sql"].startswith("SELECT")]
+            inserts = [x["sql"] for x in connection.queries if x["sql"].startswith("INSERT")]
+            updates = [x["sql"] for x in connection.queries if x["sql"].startswith("UPDATE")]
+            deletes = [x["sql"] for x in connection.queries if x["sql"].startswith("DELETE")]
+
+            self.assertEqual(len(selects), 10)
+            self.assertEqual(len(inserts), 2)
+            self.assertEqual(len(updates), 1)
+            self.assertEqual(len(deletes), 3)
+        except AssertionError as e:
+            raise e
+        finally:
+            settings.DEBUG = False
+
+        self.refresh(r)
+
+        self.assertEqual(r.runcaseversions.count(), 6)
+        self.assertEqual(
+            self.F.model.RunCaseVersion.environments.through.objects.count(),
+            24,
+            )
+        self.assertEqual(
+            self.F.model.RunCaseVersion.objects.filter(
+            run=r,
+            caseversion=old_cv,
+            ).count(), 0)
+
+
+    def test_run_refresh(self):
+        """
+        Refresh the runcaseversions while the run remains active
+
+        Very similar to previous test case, but this all happens while the
+        run is in active state.  Ensuring that it has the same end-result.
+
+        """
+        r = self.F.RunFactory.create(
+            productversion=self.pv8)
+
+        r.activate()
+
+        # one that should get deleted because it's no longer in the suite
+        old_cv = self.F.CaseVersionFactory.create(
+            name="I shouldn't be here",
+            productversion=self.pv8,
+            status="active",
+            )
+        self.F.RunCaseVersionFactory(run=r, caseversion=old_cv)
+
+        # test suite add to run
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        # cases that belong to the suite
+        cv_needed = []
+        for num in range(6):
+            cv = self.F.CaseVersionFactory.create(
+                name="casey"+str(num),
+                productversion=self.pv8,
+                status="active",
+                )
+            self.F.SuiteCaseFactory.create(suite=ts, case=cv.case)
+            cv_needed.append(cv)
+
+        # existing one that we should keep
+        existing_rcv = self.F.RunCaseVersionFactory(
+            run=r,
+            caseversion=cv_needed[3],
+            order=0,
+            )
+        # existing env that should be removed in removal phase
+        old_env = self.F.EnvironmentFactory.create_set(
+            ["OS", "Browser"],
+            ["Atari", "RS-232"],
+            )[0]
+        self.F.model.RunCaseVersion.environments.through(
+            runcaseversion=existing_rcv,
+            environment=old_env,
+            ).save()
+
+        r.refresh()
+
+        self.refresh(r)
+
+        self.assertEqual(r.runcaseversions.count(), 6)
+        self.assertEqual(
+            self.F.model.RunCaseVersion.environments.through.objects.count(),
+            24,
+            )
+        self.assertEqual(self.F.model.RunCaseVersion.objects.filter(
+                run=r,
+                caseversion=old_cv,
+                ).count(), 0)

@@ -3,7 +3,7 @@ Account-related URLs.
 
 """
 from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 
 
 
@@ -35,7 +35,6 @@ urlpatterns = patterns(
         "register",
         name="registration_register"),
     url(r"^register/closed/$",
-        direct_to_template,
-        {"template": "users/registration_closed.html"},
+        TemplateView.as_view(template_name="users/registration_closed.html"),
         name="registration_disallowed"),
     )

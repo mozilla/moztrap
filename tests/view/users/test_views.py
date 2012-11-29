@@ -6,8 +6,7 @@ from django.conf import settings
 from django.core import mail
 from django.core.urlresolvers import reverse
 
-# @@@ import from Django in 1.4
-from djangosecure.test_utils import override_settings
+from django.test.utils import override_settings
 import mock
 
 from tests import case

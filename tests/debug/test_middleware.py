@@ -1,7 +1,6 @@
 from django.core.exceptions import MiddlewareNotUsed
 
-# @@@ import from Django in 1.4
-from djangosecure.test_utils import override_settings
+from django.test.utils import override_settings
 from mock import patch, Mock
 
 from tests import case

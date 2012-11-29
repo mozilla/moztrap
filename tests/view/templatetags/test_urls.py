@@ -4,9 +4,7 @@ Tests for URL-related template filters.
 """
 from django.template import Template, Context
 
-# @@@ import from Django in 1.4
-from djangosecure.test_utils import override_settings
-
+from django.test.utils import override_settings
 from tests import case
 
 

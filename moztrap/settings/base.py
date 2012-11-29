@@ -4,6 +4,9 @@ Default Django settings for MozTrap project.
 """
 from os.path import dirname, join, abspath
 from os import environ
+import django.template
+
+django.template.add_to_builtins('django.templatetags.future')
 
 BASE_PATH = dirname(dirname(dirname(abspath(__file__))))
 

@@ -1,5 +1,5 @@
 <ol class="case-version-list">
-  <form id="case-version-list-form" action="{% url manage_caseversion_clone caseversion_id=caseversion.id %}" method="POST">
+  <form id="case-version-list-form" action="{% url 'manage_caseversion_clone' caseversion_id=caseversion.id %}" method="POST">
   {% csrf_token %}
   {% for productversion, othercaseversion in caseversion.case.all_versions %}
   <li class="case-version">
@@ -10,7 +10,7 @@
           <span class="vname">{{ othercaseversion.name }}</span>
         </span>
       {% else %}
-        <a href="{% url manage_caseversion_edit caseversion_id=othercaseversion.id %}" class="vaction-edit" title="edit {{ othercaseversion.name }} for {{ productversion.version }}">
+        <a href="{% url 'manage_caseversion_edit' caseversion_id=othercaseversion.id %}" class="vaction-edit" title="edit {{ othercaseversion.name }} for {{ productversion.version }}">
           <span class="vnumber">{{ productversion.version }}</span>
           <span class="vname">{{ othercaseversion.name }}</span>
         </a>
