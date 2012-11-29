@@ -1,5 +1,7 @@
 {% extends 'runtests/base.html' %}
 
+{% load execution markup %}
+
 {% block test-subnav %}
 <li><a href="{% url 'runtests' %}">Run Tests</a></li>
 <li><a href="#" class="breadcrumb" data-id="finder-products-{{ product.id }}">{{ product }}</a></li>
@@ -21,6 +23,12 @@
 {% block content %}
   <section id="runtests" class="run listpage">
     <h2>Run Tests:</h2>
+
+  {% if run.description %}
+  <div class="run-description">
+    {{ run.description|markdown }}
+  </div>
+  {% endif %}
 
     {% include "lists/_filter.html" %}
     {% include "runtests/list/_runtest_list.html" %}
