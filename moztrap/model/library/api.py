@@ -4,21 +4,27 @@ from tastypie.resources import ModelResource
 
 from django.http import HttpResponse
 
+from ..core.api import (ProductVersionResource, ProductResource,
+                        ReportResultsAuthorization, MTApiKeyAuthentication)
 from .models import CaseVersion, Case, Suite, CaseStep, SuiteCase
 from ..environments.api import EnvironmentResource
-from ..core.api import ProductVersionResource
 from ..tags.api import TagResource
 
 
 class SuiteResource(ModelResource):
 
+    product = fields.ToOneField(ProductResource, 'product')
 
     class Meta:
         queryset = Suite.objects.all()
-        fields = ["name"]
+        fields = ["name", "product", "description", "status", "id"]
+        list_allowed_methods = ["get", "post", "delete"]
         filtering = {
             "name": ALL,
+            "product": ALL_WITH_RELATIONS,
             }
+        authentication = MTApiKeyAuthentication()
+        authorization = ReportResultsAuthorization()
 
 
 
