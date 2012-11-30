@@ -19,15 +19,17 @@
       @extend .buttoninlayfocus
 
 .share-list
-  +columns(1,24)
+  display: inline
+  float: left
+  margin-right: 10px
+
   .share-list-button
-    +box-sizing(border-box)
-    +border-radius
-    width: rhythm(.4)
-    height: rhythm(1.5)
-    border: 1px solid rgba($blue-darker,$small)
-    cursor: pointer
-    +button-style($blue-lightest,'ui/link.png')
+    height: rhythm(1)
+    display: block
+    +rhythm-borders(1px,.25)
+    +box-shadow(rgba($blue,$xsmall) 0 2px $xxxsmallpx inset)
+    border-color: rgba($blue-darker,$small)
+    +icon('ui/link.png',$blue-lightest,$notext:true)
 
   .share-list-popup
     +leader(.25)
