@@ -30,7 +30,7 @@ Simple Example::
         ],
         "cases": [
             {
-                "title": "case title",
+                "name": "case title",
                 "description": "case description",
                 "tags": ["tag1", "tag2", "tag3"],
                 "suites": ["suite1 name", "suite2 name", "suite3 name"],

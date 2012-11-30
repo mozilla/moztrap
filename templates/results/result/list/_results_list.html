@@ -1,6 +1,6 @@
 {% load pagination %}
 
-<div class="itemlist action-ajax-replace">
+<div class="itemlist action-ajax-replace" data-ajax-update-url="{{ request.get_full_path }}">
 
   {% include "results/result/list/_results_listordering.html" %}
 

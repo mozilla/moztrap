@@ -3081,9 +3081,86 @@ body > div {
 .toggle {
   display: inline;
   float: left;
-  width: 20%;
+  width: 15.789%;
   margin-right: 1.053%;
   text-transform: capitalize;
+}
+
+.share-list {
+  display: inline;
+  float: left;
+  margin-right: 10px;
+}
+.share-list .share-list-button {
+  height: 1.5em;
+  display: block;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  -webkit-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
+  -moz-box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
+  box-shadow: rgba(81, 105, 133, 0.444) 0 2px 3px inset;
+  border-color: rgba(72, 78, 85, 0.667);
+  background-image: url('../images/ui/link.png?1354249636');
+  background-repeat: no-repeat;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  background-color: #cbcfd6;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-indent: 200%;
+  background-position: center;
+  width: 1.5em;
+}
+.share-list .share-list-popup {
+  margin-top: 0.375em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  -webkit-box-shadow: white 0 0 0.375em;
+  -moz-box-shadow: white 0 0 0.375em;
+  box-shadow: white 0 0 0.375em;
+  position: absolute;
+  width: 30%;
+  padding: 0.75em;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 900;
+  display: none;
+}
+.share-list .share-list-popup::after {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+  background: -webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0)));
+  background: -webkit-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -moz-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -o-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -ms-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  content: " ";
+  display: block;
+  position: absolute;
+  top: -0.375em;
+  width: 0.75em;
+  height: 0.75em;
+}
+.share-list .url-text {
+  margin-bottom: 0.375em;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: rgba(240, 240, 240, 0.73);
+}
+.share-list .url-text:last-child {
+  margin-bottom: 0em;
 }
 
 #filterform {
