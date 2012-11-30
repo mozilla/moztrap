@@ -2,6 +2,12 @@
 
 <nav id="{% block filterid %}filter{% endblock %}" class="magicfilter">
   <h3 class="navhead">List Filtering</h3>
+    <div class="share-list">
+        <div class="share-list-button" title="get a link to this list"></div>
+        <div class="share-list-popup">
+            <input class=url-text>
+        </div>
+    </div>
     <div class="textual">
       <label for="text-filter">filter</label>
       <input type="text" name="text-filter" value="" id="text-filter" autocomplete="off" placeholder="Enter filter terms">
@@ -9,10 +15,8 @@
         {% icanhaz "autocomplete_suggestion" %}
       </ul>
     </div>
-
     <section class="visual compact">
       <h4 class="toggle"><a href="#">Advanced Filtering</a></h4>
-      <h4 class="copy-list-url"><a href="#" title="copy url for this list to clipboard">Share this list</a></h4>
       <form method="GET" id="filterform" autocomplete="off">
         {# preserve pagination and sort state, if any #}
         {# re-filtering should jump back to page 1 #}

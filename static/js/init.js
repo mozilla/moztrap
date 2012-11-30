@@ -141,6 +141,7 @@ var MT = (function (MT, $) {
             '.listordering .sortlink, .pagination .prev, .pagination .next, .pagination .page, .perpage a'
         );
         MT.itemStatusDropdown('.manage');
+        MT.shareListUrlDropdown('.listpage');
 
         // filtering.js
         MT.toggleAdvancedFiltering('.magicfilter');
@@ -148,7 +149,6 @@ var MT = (function (MT, $) {
         MT.directFilterLinks();
         MT.filterFormAjax('.manage, .results, .run');
         MT.clientSideFilter({container: '#envnarrowing'});
-        MT.copyListUrl('#filter');
 
         // manage-products.js
         MT.formOptionsFilter({

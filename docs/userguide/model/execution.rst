@@ -69,19 +69,10 @@ Sharing links to Runs
 
 Often you might create a run or run series and want to send a link to your
 testers asking them to execute it in their own testing environment.  This also
-works great for a run :ref:`series <test-run-series>`.  To get this link:
-
-1. go to **Run Tests**
-
-2. select the run you want to share
-
-3. when you see the form asking you to specify your values for the test run,
-   find the text that says "SET YOUR VALUES TO RUN TESTS IN MYRUNNAMEHERE".
-
-4. right-click "RUN TESTS IN MYRUNNAMEHERE" and select "copy link location"
-
-5. send that url to your testers
-
+works great for a run :ref:`series <test-run-series>`.  To get this link,
+expand the details for your run in the manage runs area.  You'll see a big
+green button saying **run tests in <yourrunname>**.  Just right-click and copy
+that url location to share.
 
 .. _test-run-edit-fields:
 
@@ -94,7 +85,13 @@ Run Edit Fields
   build numbers, you may choose to include the build number in the name to
   distinguish it from other runs against the same version of the product.
   Dates in the name are another good way to distinguish runs from one another.
-* **Description** - (optional) Any description for the run.
+* **Series** - (optional) Whether or not this run is a
+  :ref:`series <test-run-series>` of runs.  Default to True.
+* **Description** - (optional) Any description for the run.  This description
+  is displayed in the management details area as well as at the top of the
+  page while executing a run.  Description text supports Markdown_ syntax which
+  could include links to things like entering a new bug in one or more areas or
+  extra info for your testers.
 * **Start** - The first date that the run can be executed
 * **End** - The date the run expires.  A run cannot be executed after its
   end date.
@@ -103,6 +100,8 @@ Run Edit Fields
 * **Selected Suites** - The suites from which to gather test cases for this
   run.  When the run is activated, only suites and cases that were active at
   that time will be included in the run.  This field is not filterable.
+
+.. _Markdown: http://daringfireball.net/projects/markdown/syntax
 
 .. _test-results:
 

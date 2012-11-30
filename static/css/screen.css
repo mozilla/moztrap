@@ -499,7 +499,7 @@ button {
   background-image: linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
 }
 
-.buttoninlay, .toggle a:link, .toggle a:visited, .copy-list-url a:link, .copy-list-url a:visited, #save-profile-name {
+.buttoninlay, .toggle a:link, .toggle a:visited, #save-profile-name {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -526,7 +526,7 @@ button {
   text-overflow: ellipsis;
 }
 
-.buttoninlayfocus, .toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a, .copy-list-url a:focus, .copy-list-url a:hover, .copy-list-url a:active, .expanded .copy-list-url a, #save-profile-name:focus, #save-profile-name:hover, #save-profile-name:active {
+.buttoninlayfocus, .toggle a:focus, .toggle a:hover, .toggle a:active, .expanded .toggle a, #save-profile-name:focus, #save-profile-name:hover, #save-profile-name:active {
   font-weight: 500;
   -webkit-border-radius: 0.296em;
   -moz-border-radius: 0.296em;
@@ -551,7 +551,7 @@ button {
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   cursor: pointer;
 }
-.buttoninlayfocus:hover, .toggle a:hover, .copy-list-url a:hover, #save-profile-name:hover, .buttoninlayfocus:focus, .toggle a:focus, .copy-list-url a:focus, #save-profile-name:focus {
+.buttoninlayfocus:hover, .toggle a:hover, #save-profile-name:hover, .buttoninlayfocus:focus, .toggle a:focus, #save-profile-name:focus {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
   background-image: -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
@@ -559,7 +559,7 @@ button {
   background-image: -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
   background-image: linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
 }
-.buttoninlayfocus:active, .toggle a:active, .copy-list-url a:active, #save-profile-name:active {
+.buttoninlayfocus:active, .toggle a:active, #save-profile-name:active {
   background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
   background-image: -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
   background-image: -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
@@ -3086,12 +3086,113 @@ body > div {
   text-transform: capitalize;
 }
 
-.copy-list-url {
+.share-list {
   display: inline;
   float: left;
-  width: 11.579%;
+  width: 3.158%;
   margin-right: 1.053%;
-  text-transform: capitalize;
+}
+.share-list .share-list-button {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  width: 0.6em;
+  height: 2.25em;
+  border: 1px solid rgba(72, 78, 85, 0.667);
+  cursor: pointer;
+  font-weight: 500;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  border-style: solid;
+  border-width: 0.071em;
+  padding: 0.304em;
+  text-shadow: rgba(255, 255, 255, 0.444) 1px 1px 0;
+  color: #454545;
+  border-color: #666666;
+  background-color: #cbcfd6;
+  background-repeat: no-repeat;
+  padding-left: 1em;
+  padding-right: 1em;
+  background-repeat: no-repeat;
+  padding-left: 26px;
+  background-position: 9px, left;
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), linear-gradient(top center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  cursor: pointer;
+}
+.share-list .share-list-button:hover, .share-list .share-list-button:focus {
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, rgba(255, 255, 255, 0.667)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.444)));
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/link.png?1354237295'), -moz-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/link.png?1354237295'), -o-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/link.png?1354237295'), -ms-linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+  background-image: url('../images/ui/link.png?1354237295'), linear-gradient(top center, rgba(255, 255, 255, 0.667) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.444));
+}
+.share-list .share-list-button:active {
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(255, 255, 255, 0.296)), color-stop(50%, rgba(255, 255, 255, 0)), color-stop(50%, rgba(69, 69, 69, 0)), color-stop(100%, rgba(69, 69, 69, 0.296)));
+  background-image: url('../images/ui/link.png?1354237295'), -webkit-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -moz-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -o-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), -ms-linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+  background-image: url('../images/ui/link.png?1354237295'), linear-gradient(bottom center, rgba(255, 255, 255, 0.296) 0%, rgba(255, 255, 255, 0) 50%, rgba(69, 69, 69, 0) 50%, rgba(69, 69, 69, 0.296));
+}
+.share-list .share-list-popup {
+  margin-top: 0.375em;
+  -webkit-border-radius: 0.296em;
+  -moz-border-radius: 0.296em;
+  -ms-border-radius: 0.296em;
+  -o-border-radius: 0.296em;
+  border-radius: 0.296em;
+  -webkit-box-shadow: white 0 0 0.375em;
+  -moz-box-shadow: white 0 0 0.375em;
+  box-shadow: white 0 0 0.375em;
+  position: absolute;
+  width: 30%;
+  padding: 0.75em;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 900;
+  display: none;
+}
+.share-list .share-list-popup::after {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+  background: -webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0.75)), color-stop(50%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0)));
+  background: -webkit-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -moz-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -o-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: -ms-linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  background: linear-gradient(bottom left, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0));
+  content: " ";
+  display: block;
+  position: absolute;
+  top: -0.375em;
+  width: 0.75em;
+  height: 0.75em;
+}
+.share-list .url-text {
+  margin-bottom: 0.375em;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: rgba(240, 240, 240, 0.73);
+}
+.share-list .url-text:last-child {
+  margin-bottom: 0em;
 }
 
 #filterform {
