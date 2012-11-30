@@ -16,10 +16,6 @@ Version 1.3
   creating a new bug in your bugsystem of choice. (You **ARE** using
   Bugzilla, aren't you?) See :ref:`Run Edit Fields<test-run-edit-fields>` for
   more info.
-* **Update active test runs** - The new *refresh* button in
-  the management area will update an active run to newly added or removed
-  test cases.  See :ref:`Refreshing a Run<test-run-refresh>` for more
-  information.
 * **Filtering performance** - In some screens, the auto-complete filters were
   being displayed for every keystroke.  Now they always wait till you're done
   typing before showing auto-complete options.
@@ -30,6 +26,10 @@ Version 1.2.7
 * **Run activation scalability** - Using some new features in Django 1.4
   and a couple raw queries, we expanded support for test runs from ~700
   cases to several thousand.
+* **Update active test runs** - The new *refresh* button in
+  the management area will update an active run to newly added or removed
+  test cases.  See :ref:`Refreshing a Run<test-run-refresh>` for more
+  information.
 * **Case import management command** - The feature for importing cases would
   prevent you from importing duplicates, even if you wanted to.  So added
   a param for that.  It also accepts a directory of several files instead
