@@ -147,7 +147,7 @@ var MT = (function (MT, $) {
             var actionUrl = $(".action-ajax-replace").attr("action");
             var dataUrl = $(".action-ajax-replace").data("ajax-update-url");
             var url = null;
-            if (actionUrl != undefined && actionUrl != null) {
+            if (actionUrl != undefined && actionUrl != false) {
                 url = $(location).attr("host") + actionUrl
             } else {
                 url = $(location).attr("host") + dataUrl
