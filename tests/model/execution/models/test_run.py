@@ -466,6 +466,26 @@ class RunActivationTest(case.DBTestCase):
         self.assertCaseVersions(r, [])
 
 
+    def test_run_series_no_runcaseversions(self):
+        """Run series don't get runcaseversions."""
+        tc = self.F.CaseFactory.create(product=self.p)
+        self.F.CaseVersionFactory.create(
+            case=tc, productversion=self.pv8, status="active")
+
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=tc)
+
+        r = self.F.RunFactory.create(
+            productversion=self.pv8,
+            status="draft",
+            is_series=True)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.activate()
+
+        self.assertCaseVersions(r, [])
+
+
     def test_disabled(self):
         """Sets disabled run to active but does not create runcaseversions."""
         tc = self.F.CaseFactory.create(product=self.p)
@@ -954,3 +974,25 @@ class RunActivationTest(case.DBTestCase):
                 run=r,
                 caseversion=old_cv,
                 ).count(), 0)
+
+
+    def test_run_refresh_draft_no_op(self):
+        """Refresh the runcaseversions on draft run is no op."""
+        r = self.F.RunFactory.create(productversion=self.pv8, status="draft")
+        rcv = self.F.RunCaseVersionFactory.create(
+            run=r,
+            caseversion__productversion=self.pv8,
+            caseversion__status="draft",
+            )
+        self.F.ResultFactory.create(runcaseversion=rcv)
+        ts = self.F.SuiteFactory.create(product=self.p, status="active")
+        self.F.SuiteCaseFactory.create(suite=ts, case=rcv.caseversion.case)
+        self.F.RunSuiteFactory.create(suite=ts, run=r)
+
+        r.refresh()
+
+        self.assertEqual(r.runcaseversions.count(), 1)
+        self.assertEqual(
+            self.model.Result.objects.filter(runcaseversion__run=r).count(), 1)
+        self.assertEqual(
+            self.model.Result.objects.count(), 1)

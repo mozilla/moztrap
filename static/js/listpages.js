@@ -132,6 +132,50 @@ var MT = (function (MT, $) {
         });
     };
 
+    // Show/hide "share this list" dropdown to display url with filtering
+    // so the user can copy and share it.
+    MT.shareListUrlDropdown = function (container) {
+        var context = $(container),
+            counter = 0;
+
+        context.on('click', '.share-list', function (e) {
+            var shareList = $(this),
+                popup = shareList.find('.share-list-popup'),
+                text = popup.find('.url-text');
+
+
+            var actionUrl = $(".action-ajax-replace").attr("action");
+            var dataUrl = $(".action-ajax-replace").data("ajax-update-url");
+            var uri = null;
+            if (actionUrl != undefined && actionUrl != false) {
+                uri = actionUrl;
+            } else {
+                uri = dataUrl;
+            }
+            var url = $(location).attr("protocol") + "//" + $(location).attr("host") + uri;
+            text.val(url);
+
+            shareList.toggleClass('open');
+            if (shareList.hasClass('open')) {
+                popup.slideDown('fast');
+                text.focus();
+                text.select();
+                $(document).on('click.shareDropdown', function (e) {
+                    if ($(e.target).parents().andSelf().index(shareList) === -1) {
+                        if (shareList.hasClass('open')) {
+                            shareList.removeClass('open');
+                            popup.slideUp('fast');
+                        }
+                        $(document).off('click.shareDropdown');
+                    }
+                });
+            } else {
+                popup.slideUp('fast');
+                $(document).off('click.shareDropdown');
+            }
+        });
+    };
+
     return MT;
 
 }(MT || {}, jQuery));
