@@ -54,6 +54,10 @@ class CaseVersionResourceTest(case.api.ApiTestCase):
                 u"case": {
                     u"id": unicode(cv.case.id),
                     u'suites': [{u'name': u'Test Suite',
+                                 u'id': unicode(suitecase.suite.id),
+                                 u'status': u'active',
+                                 u'description': u'',
+                                 u'product': unicode(self.get_detail_url("product",suitecase.suite.product.id)),
                                  u'resource_uri': unicode(
                                     self.get_detail_url("suite",suitecase.suite.id))
                                  }],
